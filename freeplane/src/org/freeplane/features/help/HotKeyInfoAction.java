@@ -129,6 +129,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		final String title = TextUtils.getText("hot_keys_table");
 		final String html = formatAsHtml(menuEntryTree.children());
 		JEditorPane refPane = new JEditorPane("text/html", html);
+		refPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
 		refPane.setCaretPosition(0);
 		refPane.setEditable(false);
 		final Dimension preferredSize = refPane.getPreferredSize();

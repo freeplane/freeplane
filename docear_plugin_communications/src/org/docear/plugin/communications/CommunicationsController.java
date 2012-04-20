@@ -131,7 +131,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 		}
 	}	
 	
-	public String getLatestVersionXml(String minStatus) throws UniformInterfaceException, URISyntaxException {
+	public String getLatestVersionXml(String minStatus) throws Exception {
 		if (minStatus == null) {
 			return null;
 		}

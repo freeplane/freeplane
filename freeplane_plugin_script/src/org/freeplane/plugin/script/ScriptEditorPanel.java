@@ -327,6 +327,7 @@ class ScriptEditorPanel extends JDialog {
 			}
 		});
 		final JEditorPane editorPane = new JEditorPane();
+		editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		mScriptTextField = editorPane;
 		mScriptTextField.setEnabled(false);
 		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, new JScrollPane(mScriptTextField));

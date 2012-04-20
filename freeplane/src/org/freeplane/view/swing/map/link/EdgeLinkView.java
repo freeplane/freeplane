@@ -111,6 +111,6 @@ public class EdgeLinkView extends AConnectorView {
 	}
 
 	private void paintArrow(final Graphics graphics, Point p1, Point p2) {
-	    paintArrow(p1, p2, (Graphics2D)graphics, getZoom() * 7, 1);
+	    paintArrow(p1, p2, (Graphics2D)graphics, getZoom() * 10);
     }
 }

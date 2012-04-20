@@ -3,6 +3,8 @@ package org.freeplane.features.export.mindmapmode;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +58,11 @@ public class ExportController implements IExtension{
 		createImageExporters();
 		createXSLTExportActions(xmlDescriptorFile);
 		new XsltExportEngineFactory().gatherXsltScripts(this);
+		Collections.sort(fileFilters, new Comparator<FileFilter>() {
+			public int compare(FileFilter f1, FileFilter f2) {
+	            return f1.getDescription().compareToIgnoreCase(f2.getDescription());
+            }
+		});
 	}
 
 	public void createImageExporters() {

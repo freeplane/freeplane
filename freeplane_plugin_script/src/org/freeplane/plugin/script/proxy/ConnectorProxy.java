@@ -31,11 +31,17 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		return getDelegate();
 	}
 
+	@Override
+    public boolean hasEndArrow() {
+        return getConnector().getEndArrow() == ArrowType.DEFAULT;
+    }
+
+    @Deprecated
 	public ArrowType getEndArrow() {
-		return getConnector().getEndArrow();
+        return getConnector().getEndArrow();
 	}
 
-	private MLinkController getLinkController() {
+    private MLinkController getLinkController() {
 		return (MLinkController) LinkController.getController();
 	}
 
@@ -51,6 +57,12 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		return getConnector().getSourceLabel();
 	}
 
+    @Override
+    public boolean hasStartArrow() {
+        return getConnector().getStartArrow() == ArrowType.DEFAULT;
+    }
+
+    @Deprecated
 	public ArrowType getStartArrow() {
 		return getConnector().getStartArrow();
 	}
@@ -71,9 +83,18 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		setColor(ColorUtils.stringToColor(rgbString));
 	}
 
+    private void setEndArrowImpl(final ArrowType arrowType) {
+        final ConnectorModel connector = getConnector();
+        getLinkController().changeArrowsOfArrowLink(connector, connector.getStartArrow(), arrowType);
+    }
+
+    public void setEndArrow(boolean showArrow) {
+        setEndArrowImpl(showArrow ? ArrowType.DEFAULT : ArrowType.NONE);
+    }
+
+	@Deprecated
 	public void setEndArrow(final ArrowType arrowType) {
-		final ConnectorModel connector = getConnector();
-		getLinkController().changeArrowsOfArrowLink(connector, connector.getStartArrow(), arrowType);
+		setEndArrowImpl(arrowType);
 	}
 
 	public void setMiddleLabel(final String label) {
@@ -92,9 +113,18 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		getLinkController().setSourceLabel(getConnector(), label);
 	}
 
+    public void setStartArrow(boolean showArrow) {
+        setStartArrowImpl(showArrow ? ArrowType.DEFAULT : ArrowType.NONE);
+    }
+
+    private void setStartArrowImpl(final ArrowType arrowType) {
+        final ConnectorModel connector = getConnector();
+        getLinkController().changeArrowsOfArrowLink(connector, arrowType, connector.getEndArrow());
+    }
+
+	@Deprecated
 	public void setStartArrow(final ArrowType arrowType) {
-		final ConnectorModel connector = getConnector();
-		getLinkController().changeArrowsOfArrowLink(connector, arrowType, connector.getEndArrow());
+		setStartArrowImpl(arrowType);
 	}
 
 	public void setTargetLabel(final String label) {

@@ -70,6 +70,9 @@ import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
@@ -169,6 +172,20 @@ public class StyleEditorPanel extends JPanel {
 			.getCurrentModeController().getExtension(
 					NodeStyleController.class);
 			styleController.setItalic(node, enabled ? mNodeFontItalic.getBooleanValue() : null);
+		}
+	}
+
+	private class FontHyperlinkChangeListener extends ChangeListener {
+		public FontHyperlinkChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MLinkController styleController = (MLinkController) Controller
+			.getCurrentModeController().getExtension(
+				LinkController.class);
+			styleController.setFormatNodeAsHyperlink(node, enabled ? mNodeFontHyperlink.getBooleanValue() : null);
 		}
 	}
 
@@ -406,6 +423,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_COLOR = "nodecolor";
 	private static final String NODE_FONT_BOLD = "nodefontbold";
 	private static final String NODE_FONT_ITALIC = "nodefontitalic";
+	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
 	private static final String NODE_FONT_NAME = "nodefontname";
 	private static final String NODE_FONT_SIZE = "nodefontsize";
 	private static final String NODE_NUMBERING = "nodenumbering";
@@ -450,6 +468,7 @@ public class StyleEditorPanel extends JPanel {
 	private ColorProperty mNodeColor;
 	private BooleanProperty mNodeFontBold;
 	private BooleanProperty mNodeFontItalic;
+	private BooleanProperty mNodeFontHyperlink;
 	private FontProperty mNodeFontName;
 	private ComboProperty mNodeFontSize;
 	private BooleanProperty mNodeNumbering;
@@ -467,6 +486,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetNodeColor;
 	private BooleanProperty mSetNodeFontBold;
 	private BooleanProperty mSetNodeFontItalic;
+	private BooleanProperty mSetNodeFontHyperlink;
 	private BooleanProperty mSetNodeFontName;
 	private BooleanProperty mSetNodeFontSize;
 	private BooleanProperty mSetNodeNumbering;
@@ -640,6 +660,17 @@ public class StyleEditorPanel extends JPanel {
 		mNodeFontItalic.fireOnMouseClick();
 	}
 
+	private void addFontHyperlinkControl(final List<IPropertyControl> controls) {
+		mSetNodeFontHyperlink = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetNodeFontHyperlink);
+		mNodeFontHyperlink = new BooleanProperty(StyleEditorPanel.NODE_FONT_HYPERLINK);
+		controls.add(mNodeFontHyperlink);
+		final FontHyperlinkChangeListener listener = new FontHyperlinkChangeListener(mSetNodeFontHyperlink, mNodeFontHyperlink);
+		mSetNodeFontHyperlink.addPropertyChangeListener(listener);
+		mNodeFontHyperlink.addPropertyChangeListener(listener);
+		mNodeFontHyperlink.fireOnMouseClick();
+	}
+
 	private void addFontNameControl(final List<IPropertyControl> controls) {
 		mSetNodeFontName = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFontName);
@@ -694,6 +725,7 @@ public class StyleEditorPanel extends JPanel {
 		addFontSizeControl(controls);
 		addFontBoldControl(controls);
 		addFontItalicControl(controls);
+		addFontHyperlinkControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
 		addEdgeWidthControl(controls);
@@ -917,6 +949,12 @@ public class StyleEditorPanel extends JPanel {
 				final Boolean viewitalic = styleController.isItalic(node);
 				mSetNodeFontItalic.setValue(italic != null);
 				mNodeFontItalic.setValue(viewitalic);
+			}
+			{
+				final Boolean hyperlink = NodeLinks.formatNodeAsHyperlink(node);
+				final Boolean viewhyperlink = LinkController.getController().formatNodeAsHyperlink(node);
+				mSetNodeFontHyperlink.setValue(hyperlink != null);
+				mNodeFontHyperlink.setValue(viewhyperlink);
 			}
 			{
 				final Boolean nodeNumbering = NodeStyleModel.getNodeNumbering(node);

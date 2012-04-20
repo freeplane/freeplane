@@ -188,7 +188,7 @@ public class DocearLicenseDialogPanel extends JPanel {
 	
 	private String getDataPrivacyTerms() {
 		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("Docear_data_privacy.txt"));
+			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_privacy.txt"));
 		}
 		catch (IOException e) {
 			LogUtils.warn(e);
@@ -198,7 +198,7 @@ public class DocearLicenseDialogPanel extends JPanel {
 	
 	private String getTermsOfUse() {
 		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("Docear_terms_of_use.txt"));
+			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_terms_of_use.txt"));
 		}
 		catch (IOException e) {
 			LogUtils.warn(e);
@@ -208,7 +208,7 @@ public class DocearLicenseDialogPanel extends JPanel {
 	
 	private String getDataProcessingTerms() {
 		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("Docear_data_processing.txt"));
+			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_processing.txt"));
 		}
 		catch (IOException e) {
 			LogUtils.warn(e);

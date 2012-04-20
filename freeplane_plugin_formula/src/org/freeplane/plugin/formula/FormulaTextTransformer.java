@@ -8,6 +8,8 @@ import javax.swing.JEditorPane;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.format.FormattedFormula;
+import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.AbstractContentTransformer;
@@ -24,25 +26,32 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		super(priority);
 	}
 
-	public Object transformContent(TextController textController, final Object obj, final NodeModel node, Object transformedExtension) {
-		if (! (obj instanceof String)) {
-			return obj;
-		}
+    public Object transformContent(TextController textController, final Object obj, final NodeModel node,
+                                   Object transformedExtension) {
+        if (obj instanceof FormattedFormula) {
+            final FormattedFormula formattedFormula = (FormattedFormula) obj;
+            final Object evaluationResult = transformContent(textController, formattedFormula.getObject(), node,
+                transformedExtension);
+            return new FormattedObject(evaluationResult, formattedFormula.getPattern());
+        }
+        if (!(obj instanceof String)) {
+            return obj;
+        }
         if (PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
             return obj;
-		final String text = obj.toString();
-		final String plainText = HtmlUtils.htmlToPlain(text);
-		if (!FormulaUtils.containsFormula(plainText)) {
-			return obj;
-		}
-		// starting a new ScriptContext in evalIfScript
-		final Object result = FormulaUtils.evalIfScript(node, null, plainText);
-		if (result == null) {
-			throw new ExecuteScriptException("got null result from evaluating " + node.getID() + ", text='"
-			        + plainText.substring(1) + "'");
-		}
-		return result;
-	}
+        final String text = obj.toString();
+        final String plainText = HtmlUtils.htmlToPlain(text);
+        if (!FormulaUtils.containsFormula(plainText)) {
+            return obj;
+        }
+        // starting a new ScriptContext in evalIfScript
+        final Object result = FormulaUtils.evalIfScript(node, null, plainText);
+        if (result == null) {
+            throw new ExecuteScriptException("got null result from evaluating " + node.getID() + ", text='"
+                    + plainText.substring(1) + "'");
+        }
+        return result;
+    }
 
 	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
 	                                 String text, final boolean editLong) {
@@ -57,6 +66,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		}
 		if(text.startsWith("=")){
 			JEditorPane textEditor = new JEditorPane();
+			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
 			final EditNodeDialog editNodeDialog = new FormulaEditor(node, text, firstKeyEvent, editControl, false, textEditor);

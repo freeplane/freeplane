@@ -21,7 +21,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -172,7 +171,53 @@
 </richcontent>
 </node>
 <node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1323806734662" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VGAP="2" HGAP="21" VSHIFT="94" MIN_WIDTH="180">
-<node TEXT="Goal" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1329892191407" HGAP="23" VSHIFT="97">
+<node STYLE_REF="Beginner" ID="ID_1820104438" CREATED="1332872487760" MODIFIED="1332872686000" HGAP="21" VSHIFT="88">
+<icon BUILTIN="video"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/ViewingGuide">Viewing Guide</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node STYLE_REF="Beginner" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1332872639010" HGAP="21" VSHIFT="1">
+<icon BUILTIN="video"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/WHY_FreeplaneVideo">Why Freeplane</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This link needs an Internet connection.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Goal" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1332434705576" HGAP="21" VSHIFT="2">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -335,7 +380,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_434382705" CREATED="1323465258749" MODIFIED="1329771890103" HGAP="-68" VSHIFT="110"><richcontent TYPE="NODE">
+<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1332436536084" HGAP="-68" VSHIFT="138"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -355,11 +400,16 @@
       
     </p>
     <p>
-      <b>Excetion</b>
+      <b>Exceptions</b>
     </p>
-    <p>
-      It is possible to keep a node from folding by setting <i>Edit &gt; Node Group &gt; Always unfolded node (set/unset)</i>. This can be useful in cloud groups.
-    </p>
+    <ul>
+      <li>
+        It is possible to keep a node from folding by setting <i>Edit &gt; Node Group &gt; Always unfolded node (set/unset)</i>. This can be useful in cloud groups.
+      </li>
+      <li>
+        If a node being folded has a connector to one of its hidden children. a dotted line (and possibly a label) is visible which can be clicked to make the connected node visible.
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
@@ -499,7 +549,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Main map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1323431803244" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Core map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1331389267654" NUMBERED="true" MIN_WIDTH="180">
 <node TEXT="Node core" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1323989022951" HGAP="24" VSHIFT="10" MIN_WIDTH="115" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -1234,7 +1284,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1329415808579" HGAP="-85" VSHIFT="95"><richcontent TYPE="NODE">
+<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1332024614988" HGAP="-85" VSHIFT="121"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1242,14 +1292,19 @@
   </head>
   <body>
     <p>
-      A multiline node core can be distributed over several nodes with each node containing one line by selecting the node and choosing menu <i>Edit &gt; Node core &gt; Split node; </i>or in the in-line editor pressing<i>&#160; Alt + S</i>
+      There are two different actions for splitting nodes. One is called from the main menu, the other from the editor.
     </p>
     <p>
       
     </p>
-    <p>
-      The dialog editor contains a button <i>Split</i>. When this button is pressed the node core text will be splitted at the cursor position.
-    </p>
+    <ol>
+      <li>
+        A selected, multiline node core can be distributed over several nodes with each node containing one line by selecting the node and choosing menu <i>Edit &gt; Node core &gt; Split node.</i>
+      </li>
+      <li>
+        When editing a node, the text can be split at the cursor and distributed over two nodes. In the dialog editor, press the <i>Split button. Or</i>&#160;in the in-line editor press&#160;&#160;<i>Alt + S</i>.
+      </li>
+    </ol>
     <p>
       
     </p>
@@ -2312,7 +2367,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Styles" STYLE_REF="Advanced" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1323807169965" NUMBERED="true" MIN_WIDTH="90" HGAP="26">
+<node TEXT="Styles" STYLE_REF="Advanced" FOLDED="true" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1323807169965" NUMBERED="true" MIN_WIDTH="90" HGAP="26">
 <node TEXT="Why styles ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323807405276" HGAP="30" VSHIFT="138" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
@@ -2511,7 +2566,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1330610101427" HGAP="-125" VSHIFT="161"><richcontent TYPE="NODE">
+<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1331060692668" HGAP="-125" VSHIFT="161"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2532,7 +2587,7 @@
         Select menu <i>Styles &gt; Edit style</i>
       </li>
       <li>
-        Select the node level you want (Title, Header 1, Header 2, Header 3 or Header 4)
+        Select the node level you want (Root, Level 1, Level 2, Level 3 Level 4 Level 5 Level 6)
       </li>
       <li>
         Change its format
@@ -3076,7 +3131,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1323807948157" HGAP="-90" VSHIFT="201"><richcontent TYPE="NODE">
+<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1332872399518" HGAP="-90" VSHIFT="219"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3122,9 +3177,13 @@
       <li>
         The image is a node featture and is displayed below the node core. The node core itself can also have an image. This image cannot be resized.
       </li>
+      <li>
+        Take care that the image is not in a tempory file. For example, I you want to use an image from an e-mail program like Thunderbird, first copy the image to a non-temporary directory.
+      </li>
     </ul>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3135,7 +3194,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1329839399330" HGAP="-94" VSHIFT="89" MAX_WIDTH="550"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1332872221990" HGAP="-89" VSHIFT="145" MAX_WIDTH="550"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3151,13 +3210,26 @@
     <p>
       <b>Note</b>
     </p>
+    <p>
+      The pasted image is not part of the mindmap itself.
+    </p>
     <ul>
       <li>
-        The pasted image is not part of the mindmap itself. The image file is saved in the directory of the mindmap. The name of this file is shown above the image, in the node core.
+        In case of the source is on the Internet, there must be an Internet connection to see the image. To keep the image, first copy it to your computer.
+      </li>
+      <li>
+        If you paste an image copied with<i>&#160;print screen</i>, Freeplane asks where you want to save this image first.
+      </li>
+      <li>
+        If you paste or drop an image from a program which keeps the image in a tempory file (e.g. Thunderbird), the image may show at first but disappear laler. First copy the image to a fixed directory. &#160;
+      </li>
+      <li>
+        If you select and paste more than one image at a time, only the hyperlinks are pasted.
       </li>
     </ul>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
@@ -3546,7 +3618,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1650348629" CREATED="1323769479560" MODIFIED="1329854479440" HGAP="-167" VSHIFT="167"><richcontent TYPE="NODE">
+<node ID="ID_1650348629" CREATED="1323769479560" MODIFIED="1332437099056" HGAP="-167" VSHIFT="167"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3567,7 +3639,7 @@
         <b><i>Value</i></b>&#160;of component
       </li>
       <li>
-        If value is text, relevancy of <b><i>case</i></b>
+        If value is text, relevancy of <b><i>case </i></b>and<b><i>&#160;Approximate search </i></b>(fuzzy search)
       </li>
     </ul>
     <p>
@@ -5123,6 +5195,23 @@
 </node>
 </node>
 <node TEXT="Display revisions" STYLE_REF="Advanced" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1329893483412" LINK="#ID_1437965047"/>
+<node TEXT="Multiple views of one map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1926778226" CREATED="1331306719166" MODIFIED="1331307078020">
+<node STYLE_REF="TitlesContent" ID="ID_1319135286" CREATED="1331306733589" MODIFIED="1331307817401" HGAP="-151" VSHIFT="56"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Working on large maps may be difficult if you need to work at two different node locations of the map. For this you can open two views of the same map and work in both views if they were the same map.<i>&#160;Choose View &gt; New map view</i>&#160;for this. Switch between views by selecting the respective tabs. You cannot see both views at once. For this you could open a second version of Freeplane. However, in that case they are treated as different maps.
+    </p>
+  </body>
+</html>
+</richcontent>
+<font ITALIC="false"/>
+</node>
+</node>
 <node TEXT="Restore from local history" STYLE_REF="Professional" FOLDED="true" ID="ID_1448419614" CREATED="1329412616257" MODIFIED="1329893496953">
 <node STYLE_REF="TitlesContent" ID="ID_1628771343" CREATED="1329412632660" MODIFIED="1329413400142" HGAP="-147" VSHIFT="27"><richcontent TYPE="NODE">
 

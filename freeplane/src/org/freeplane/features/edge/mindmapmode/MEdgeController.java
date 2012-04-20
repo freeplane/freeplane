@@ -35,6 +35,12 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  */
 public class MEdgeController extends EdgeController {
 	private static class ExtensionCopier implements IExtensionCopier {
+		final private ModeController modeController;
+
+		public ExtensionCopier(ModeController modeController) {
+	        this.modeController = modeController;
+        }
+
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
@@ -99,11 +105,68 @@ public class MEdgeController extends EdgeController {
 			if(deltaFound)
 				from.addExtension(delta);
 		}
+
+		public void resolveParentExtensions(Object key, NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			resolveColor(to);
+			resolveWidth(to);
+			resolveStyle(to);
+        }
+
+		private void resolveColor(NodeModel to) {
+	        if (null != getColor(to))
+				return;
+			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
+				final Color color = getColor(source);
+				if(color != null){
+					EdgeModel.createEdgeModel(to).setColor(color);
+					return;
+				}
+			}
+        }
+		
+		private Color getColor(NodeModel node) {
+			return modeController.getExtension(EdgeController.class).getColor(node, false);
+		}
+
+		private void resolveWidth(NodeModel to) {
+	        if (null != getWidth(to))
+				return;
+			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
+				final Integer width = getWidth(source);
+				if(width != null){
+					EdgeModel.createEdgeModel(to).setWidth(width);
+					return;
+				}
+			}
+        }
+
+		private Integer getWidth(NodeModel node) {
+			return modeController.getExtension(EdgeController.class).getWidth(node, false);
+		}
+
+		private void resolveStyle(NodeModel to) {
+	        if (null != getStyle(to))
+				return;
+			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
+				final EdgeStyle style = getStyle(source);
+				if(style != null){
+					EdgeModel.createEdgeModel(to).setStyle(style);
+					return;
+				}
+			}
+        }
+		private EdgeStyle getStyle(NodeModel node) {
+			return modeController.getExtension(EdgeController.class).getStyle(node, false);
+		}
+
 	}
 
 	public MEdgeController(final ModeController modeController) {
 		super(modeController);
-		modeController.registerExtensionCopier(new ExtensionCopier());
+		modeController.registerExtensionCopier(new ExtensionCopier(modeController));
 		modeController.addAction(new EdgeColorAction());
 		modeController.addAction(new EdgeWidthAction(EdgeModel.WIDTH_PARENT));
 		modeController.addAction(new EdgeWidthAction(EdgeModel.WIDTH_THIN));

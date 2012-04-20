@@ -1,8 +1,22 @@
 ===============================
+1.2.14 beta
+===============================
+Fix calculation of all font sizes
+Properties "Apply system screen resolution default" and "User defined screen resolution (dpi)"
+Various fixes for formatting of attributes
+
+===============================
 1.2.13 beta
 ===============================
 Search enhancements: Approximate search feature, control search via key presses, busy cursor, some fixes
 Fix editable Comboboxes for some L&Fs
+New UI for folding 
+Formatting option to display hyper links as HTML 
+Insert free nodes on double click + folding
+Options for editing on double click and folding on click inside a node
+Drop images if control is pressed and links to files otherwise
+Hyperlink in text as node text style option
+Performance and memory optimizations for scaling of external bitmap images 
 
 ===============================
 1.2.12 beta

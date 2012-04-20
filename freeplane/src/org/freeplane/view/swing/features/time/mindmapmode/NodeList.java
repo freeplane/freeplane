@@ -136,9 +136,6 @@ class NodeList {
 		public void afterMapChange(MapModel oldMap, MapModel newMap) {
        }
 
-		public void afterMapClose(MapModel oldMap) {
-        }
-
 		public void beforeMapChange(MapModel oldMap, MapModel newMap) {
 			disposeDialog();
         }

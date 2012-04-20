@@ -12,16 +12,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.net.URI;
 import java.net.URL;
+import java.security.AccessControlException;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -69,6 +72,9 @@ public class NodeTooltip extends JToolTip {
 	public NodeTooltip(){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
+		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+		final HTMLEditorKit kit = ScaledEditorKit.create();
+		tip.setEditorKit(kit);
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
 		final LinkMouseListener mouseListener = new LinkMouseListener();
@@ -107,17 +113,36 @@ public class NodeTooltip extends JToolTip {
 
 	@Override
     public void setTipText(String tipText) {
+		try{
+        	setTipTextUnsafe(tipText);
+        }
+        catch (Exception e1) {
+        	if(e1 instanceof AccessControlException)
+        		LogUtils.warn(e1.getMessage());
+        	else
+        		LogUtils.severe(e1);
+            final String localizedMessage = e1.getLocalizedMessage();
+        	final String htmlEscapedText = HtmlUtils.plainToHTML(localizedMessage + '\n' + tipText);
+        	try{
+        		setTipTextUnsafe(htmlEscapedText);
+        	}
+        	catch (Exception e2){
+        	}
+        }
+    }
+
+	private void setTipTextUnsafe(String tipText) throws Exception{
 		tip.setText(tipText);
 		Dimension preferredSize = tip.getPreferredSize();
 		if (preferredSize.width < maximumWidth) {
 			return ;
 		}
-        final HTMLDocument document = (HTMLDocument) tip.getDocument();
-        document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
-        // bad hack: call "setEditable" only to update view
-        tip.setEditable(true);
-        tip.setEditable(false);
-    }
+		final HTMLDocument document = (HTMLDocument) tip.getDocument();
+		document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
+		// bad hack: call "setEditable" only to update view
+		tip.setEditable(true);
+		tip.setEditable(false);
+	}
 
 	@Override
     public Dimension getPreferredSize() {

@@ -53,8 +53,6 @@ public interface IUserInputListenerFactory {
 
 	KeyListener getNodeKeyListener();
 
-	IMouseListener getNodeMotionListener();
-
 	IMouseListener getNodeMouseMotionListener();
 
 	JPopupMenu getNodePopupMenu();

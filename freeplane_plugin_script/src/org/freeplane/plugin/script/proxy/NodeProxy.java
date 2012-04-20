@@ -25,7 +25,9 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -260,6 +262,18 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return getParent();
 	}
 
+    // NodeRO: R
+    public Node getNext() {
+        final NodeModel node = MapNavigationUtils.findNext(Direction.FORWARD, getDelegate(), null);
+        return node == null ? null : new NodeProxy(node, getScriptContext());
+    }
+    
+    // NodeRO: R
+    public Node getPrevious() {
+        final NodeModel node = MapNavigationUtils.findPrevious(Direction.BACK, getDelegate(), null);
+        return node == null ? null : new NodeProxy(node, getScriptContext());
+    }
+
 	// NodeRO: R
 	public String getPlainText() {
 		return HtmlUtils.htmlToPlain(getDelegate().getText());
@@ -450,7 +464,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// Node: R/W
 	public void setObject(final Object object) {
 	    final MTextController textController = (MTextController) TextController.getController();
-		textController.setNodeObject(getDelegate(), ProxyUtils.transformObject(object));
+		textController.setNodeObject(getDelegate(), ProxyUtils.transformObject(object, null));
 	}
 
     // Node: R/W

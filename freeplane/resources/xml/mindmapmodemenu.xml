@@ -65,6 +65,7 @@
 			<menu_separator/>
 			<menu_submenu name="menu_title" name_ref="menu_title">
 				<menu_action action="EditAction" accelerator="F2" />
+				<menu_action action="SetBooleanPropertyAction.edit_on_double_click" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
 				<menu_action action="JoinNodesAction" accelerator="control J" ></menu_action>
 				<menu_action action="SplitNode" />
@@ -150,7 +151,8 @@
 			<menu_separator />
 			<menu_category name="find">				
 				<menu_action action="FindAction" accelerator="control G" />
-				<menu_action action="FindNextAction" accelerator="control shift G" />
+				<menu_action action="QuickFindAction.FORWARD" accelerator="control shift G" />
+				<menu_action action="QuickFindAction.BACK"/>
 				<menu_action action="NodeListAction" accelerator="control shift F" />
 				<menu_action action="AllMapsNodeListAction" />				
 			</menu_category>
@@ -530,8 +532,8 @@
 		</menu_category>
 			<menu_category name="find">				
 				<menu_action action="FindAction"/>
-				<!-- <menu_action action="QuickFindAction.BACK" /> -->
-				<menu_action action="FindNextAction"/>
+				<menu_action action="QuickFindAction.FORWARD"/>
+				<menu_action action="QuickFindAction.BACK"/>
 				<menu_action action="NodeListAction"/>
 			</menu_category>
 			<menu_action action="EnterPassword" />

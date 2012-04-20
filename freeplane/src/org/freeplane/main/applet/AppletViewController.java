@@ -154,7 +154,7 @@ class AppletViewController extends ViewController {
 		try {
 			final String scheme = location.getScheme();
 			final String host = location.getHost();
-			final String path = location.getPath();
+			final String path = location.isOpaque() ? location.getSchemeSpecificPart() : location.getPath();
 			final int port = location.getPort();
 			final String query = location.getQuery();
 			final String fragment = location.getFragment();

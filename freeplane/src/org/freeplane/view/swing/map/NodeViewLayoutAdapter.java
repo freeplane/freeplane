@@ -26,7 +26,6 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
@@ -62,7 +61,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
     private static Dimension minDimension;
     private int childCount;
     private JComponent content;
-    protected final int LISTENER_VIEW_WIDTH = 10;
     protected Point location = new Point();
     private NodeModel model;
     private int spaceAround;
@@ -277,8 +275,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             final boolean isItem = !isSummary || useSummaryAsItem;
             final int oldLevel = level;
             if(isItem){
+            	if(level > 0)
+            		useSummaryAsItem = true;
                 level = 0;
-                useSummaryAsItem = true;
             }
             else{
                 level++;
@@ -301,13 +300,14 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             boolean isFreeNode = child.isFree();
 			data.free[i] = isFreeNode;
 			data.summary[i] = ! isItem;
-			if(isItem && isFreeNode){
+			if(isItem) {
+				if (isFreeNode){
 				data.ly[i] = childShiftY - childContentShift-childCloudHeigth/2 - getSpaceAround();
-            }
-            else if(isItem){
-                if (childShiftY < 0 || visibleChildCounter == 0) {
-                    top += childShiftY;
-                }
+				}
+				else{
+					if (childShiftY < 0 || visibleChildCounter == 0) {
+						top += childShiftY;
+					}
                 top -= childContentShift;
 
                 top += child.getTopOverlap();
@@ -341,13 +341,16 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                     summaryBaseX[0] = 0;
                     groupStart[0] = i;
                 }
-                if (child.getHeight() - 2 * getSpaceAround() != 0) {
+                if (childHeight != 0) {
                     if (visibleChildCounter > 0)
                         childContentHeightSum +=  getVGap();
-                    visibleChildCounter++;
-                    useSummaryAsItem = false;
                 }
-            }
+				}
+	            if (childHeight != 0) {
+	                visibleChildCounter++;
+	                useSummaryAsItem = false;
+				}
+			}
             else{
                 final int itemLevel = level - 1;
                 if(child.isFirstGroupNode()){
@@ -500,14 +503,4 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         view.setTopOverlap(topOverlap);
         view.setBottomOverlap(height - heigthWithoutOverlap);
     }
-
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		final NodeView movedView = view.getMovedView();
-		final JComponent content = movedView.getContent();
-		location.x = -LISTENER_VIEW_WIDTH;
-		location.y = 0;
-		UITools.convertPointToAncestor(content, location, view.getParent());
-		view.setLocation(location);
-		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
-	}
 }

@@ -19,7 +19,7 @@ import org.freeplane.features.ui.ViewController;
 abstract class AEditStylesAction extends AFreeplaneAction {
 	private Controller controller = null;
 	private SModeController modeController;
-	abstract void commit(MapModel map);
+	abstract void commit();
 	abstract void rollback();
 
 	public AEditStylesAction(String key) {
@@ -70,7 +70,7 @@ abstract class AEditStylesAction extends AFreeplaneAction {
     			switch (modeController.getStatus()) {
     				case JOptionPane.OK_OPTION:
     					if (undoHandler.canUndo()) {
-    						commit(map);
+    						commit();
     						break;
     					}
     				case JOptionPane.CANCEL_OPTION:

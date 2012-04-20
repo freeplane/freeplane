@@ -38,8 +38,9 @@
 				<menu_action accelerator="control DOWN" action="NodeDownAction"/>
 				</menu_submenu>			
 			<menu_category name="find">				
-				<menu_action accelerator="control F" action="FindAction"/>
-				<menu_action accelerator="control G" action="FindNextAction"/>
+				<menu_action accelerator="control G" action="FindAction"/>
+				<menu_action accelerator="control shift G" action="QuickFindAction.FORWARD"/>
+				<menu_action action="QuickFindAction.BACK"/>
 				</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">

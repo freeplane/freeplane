@@ -28,8 +28,10 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -58,6 +60,7 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.html.ScaledStyleSheet;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -114,7 +117,7 @@ public class UITools {
 
 	public static void convertPointFromAncestor(final Component ancestor, final Point p, Component c) {
 		int x, y;
-		while (c != ancestor) {
+		while (c != ancestor && c != null) {
 			x = c.getX();
 			y = c.getY();
 			p.x -= x;
@@ -128,9 +131,16 @@ public class UITools {
 		UITools.convertPointToAncestor(source, point, destination);
 	}
 
+	public static void convertRectangleToAncestor(final Component from, final Rectangle r, final Component destination) {
+		Point p = new Point(r.x, r.y);
+		UITools.convertPointToAncestor(from, p , destination);
+		r.x = p.x;
+		r.y = p.y;
+	}
+		
 	public static void convertPointToAncestor(final Component from, final Point p, final Component destination) {
 		int x, y;
-		for (Component c = from; c != destination;c = c.getParent()) {
+		for (Component c = from; c != destination && c != null; c = c.getParent()) {
 			x = c.getX();
 			y = c.getY();
 			p.x += x;
@@ -562,4 +572,32 @@ public class UITools {
 
 		return -1;
 	}
+
+	public static final float FONT_SCALE_FACTOR;
+	static {
+		float factor = 1f; 
+		try {
+	        factor = UITools.getScreenResolution()  / 72f;
+        }
+        catch (Exception e) {
+        }
+		FONT_SCALE_FACTOR = factor;
+	}
+	
+	public static int getScreenResolution() {
+		final int systemScreenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
+		if(ResourceController.getResourceController().getBooleanProperty("apply_system_screen_resolution")){
+			return systemScreenResolution;
+		}
+		else
+			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution);
+    }
+	
+	public static Font scale(Font font) {
+		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
+	}
+	public static Font invertScale(Font font) {
+		return font.deriveFont(font.getSize2D()/FONT_SCALE_FACTOR);
+	}
+	
 }

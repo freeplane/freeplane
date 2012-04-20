@@ -33,10 +33,6 @@ import org.freeplane.features.styles.MapViewLayout;
 public class SelectableLayout implements INodeViewLayout {
 	static final SelectableLayout selectableLayoutInstance = new SelectableLayout();
 
-	public void layoutNodeMotionListenerView(final NodeMotionListenerView view) {
-		getLayout(view.getMovedView()).layoutNodeMotionListenerView(view);
-	}
-
 	public void addLayoutComponent(final String name, final Component comp) {
 	}
 

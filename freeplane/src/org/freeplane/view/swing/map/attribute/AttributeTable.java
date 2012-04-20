@@ -61,6 +61,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.TypedListCellRenderer;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
@@ -68,6 +69,7 @@ import org.freeplane.features.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -77,8 +79,8 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
@@ -423,7 +425,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public TableCellEditor getCellEditor(final int row, final int col) {
 		return getCellEditor(row, col, (EventObject) getClientProperty("AttributeTable.EditEvent"));
 	}
-	public TableCellEditor getCellEditor(final int row, final int col, EventObject e) {
+
+	@SuppressWarnings("serial")
+    public TableCellEditor getCellEditor(final int row, final int col, EventObject e) {
 		if (dce != null) {
 			dce.stopCellEditing();
 		}
@@ -434,7 +438,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				textController.getEventQueue().setFirstEvent(kev);
 			}
 			final IAttributeTableModel model = (IAttributeTableModel) getModel();
-			final String text = getValueAt(row, col).toString();
+			final String text = getValueForEdit(row, col);
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
 			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, dialogTableCellEditor.getEditControl(), false);
 			if(base != null){
@@ -448,11 +452,20 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			comboBox.addFocusListener(AttributeTable.focusListener);
 			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
 			comboBox.setRenderer(new TypedListCellRenderer());
-			dce = new DefaultCellEditor(comboBox);
+			dce = new DefaultCellEditor(comboBox) {
+		        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int col) {
+		            return super.getTableCellEditorComponent(table, ((AttributeTable)table).getValueForEdit(row, col), isSelected, row, col);
+		        }
+			};
 			dce.setClickCountToStart(CLICK_COUNT_TO_START);
 		}
 		return dce;
 	}
+
+    private String getValueForEdit(final int row, final int col) {
+        final Object value = getValueAt(row, col);
+        return (value instanceof IFormattedObject ? ((IFormattedObject) value).getObject() : value).toString();
+    }
 
 
 	@Override
@@ -461,7 +474,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private float getFontSize() {
-		return AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
+		return UITools.FONT_SCALE_FACTOR * AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
 	}
 
 	@Override
@@ -650,7 +663,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		boolean requestFocus = editorComponent != null && focusOwner != null && 
 		(focusOwner == editorComponent || SwingUtilities.isDescendingFrom(focusOwner, editorComponent)); 
 		getAttributeTableModel().editingCanceled();
+		final boolean focusCycleRoot = isFocusCycleRoot();
+		setFocusCycleRoot(true);
 		super.removeEditor();
+		setFocusCycleRoot(focusCycleRoot);
 		if(requestFocus)
 			requestFocusInWindow();
 	}
@@ -816,8 +832,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	            Object value = editor.getCellEditorValue();
 				if (value != null) {
 					final MTextController textController = (MTextController) TextController.getController();
-					// attributes don't have a format override - there's only the formatted object so oldFormat is null
-					setValueAt(textController.guessObjectOrURI(value, null), editingRow, editingColumn);
+					final Object oldValue = getValueAt(editingRow, editingColumn);
+					final String pattern  = oldValue instanceof IFormattedObject
+					        ? ((IFormattedObject) oldValue).getPattern() : null;
+					setValueAt(textController.guessObjectOrURI(value, pattern), editingRow, editingColumn);
 				}
 	            removeEditor();
 	        }
