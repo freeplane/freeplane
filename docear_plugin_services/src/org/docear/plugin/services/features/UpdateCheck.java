@@ -24,11 +24,18 @@ import org.docear.plugin.services.features.elements.Version;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 public class UpdateCheck {
+	public static final String DOCEAR_UPDATE_CHECKER_DISABLE = "docear.update_checker.disable";
+	public static final String DOCEAR_UPDATE_CHECKER_ALL = "docear.update_checker.all";
+	public static final String DOCEAR_UPDATE_CHECKER_BETA = "docear.update_checker.beta";
+	public static final String DOCEAR_UPDATE_CHECKER_MINOR = "docear.update_checker.minor";
+	public static final String DOCEAR_UPDATE_CHECKER_MIDDLE = "docear.update_checker.middle";
+	public static final String DOCEAR_UPDATE_CHECKER_MAJOR = "docear.update_checker.major";
 			
 	final private ReadManager readManager;
 	
@@ -47,13 +54,32 @@ public class UpdateCheck {
 	StatusNumberCreator statusNumberCreator;
 	ReleaseNotesCreator releaseNotesCreator;
 	
+	
+	
 	public UpdateCheck() {
 		this.readManager = new ReadManager();
 		initReadManager();
 		
 		String xml;
 		try {
-			xml = CommunicationsController.getController().getLatestVersionXml();
+			String choice = ResourceController.getResourceController().getProperty("docear.update_checker.options");
+			if (choice == null || DOCEAR_UPDATE_CHECKER_DISABLE.equals(choice)) {
+				return;
+			}
+			
+			String minStatus = null;
+			if (choice.equals(DOCEAR_UPDATE_CHECKER_ALL)) {
+				minStatus = Version.StatusName.devel.name();
+			}
+			else if (choice.equals(DOCEAR_UPDATE_CHECKER_BETA)) {
+				minStatus = Version.StatusName.beta.name();
+			}
+			else {
+				minStatus = Version.StatusName.stable.name();
+			}			
+			
+			xml = CommunicationsController.getController().getLatestVersionXml(minStatus);
+			System.out.println(xml);
 			load(xml);
 			application = getApplication();
 			
@@ -62,16 +88,38 @@ public class UpdateCheck {
 			if (latestVersion == null || runningVersion == null) {
 				return;
 			}
-			
+						
 			int compCode = latestVersion.compareTo(runningVersion);
 			
-			UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", getStringFromVersion(runningVersion), getStringFromVersion(latestVersion));
+			if (showUpdateCheckerDialog(compCode, choice)) {			
+				UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", getStringFromVersion(runningVersion), getStringFromVersion(latestVersion));
+				JOptionPane.showMessageDialog(UITools.getFrame(), dialogPanel, TextUtils.getText("docear.new_version_available.title"), JOptionPane.INFORMATION_MESSAGE);
+				ResourceController.getResourceController().setProperty("docear.update_checker.options", dialogPanel.getChoice());
+			}
 			
-			JOptionPane.showMessageDialog(UITools.getFrame(), dialogPanel, TextUtils.getText("docear.new_version_available.title"), JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
 			LogUtils.warn(e.getMessage());
+		}		
+	}
+	
+	private boolean showUpdateCheckerDialog(int compCode, String choice) {
+		if (choice.equals(DOCEAR_UPDATE_CHECKER_ALL) && compCode >= Version.CompareCode.DEVEL.code) {
+			return true;
+		}
+		else if (choice.equals(DOCEAR_UPDATE_CHECKER_BETA) && compCode >= Version.CompareCode.BETA.code) {
+			return true;
+		}
+		else if (choice.equals(DOCEAR_UPDATE_CHECKER_MINOR) && compCode >= Version.CompareCode.MINOR.code) {
+			return true;
+		}
+		else if (choice.equals(DOCEAR_UPDATE_CHECKER_MIDDLE) && compCode >= Version.CompareCode.MIDDLE.code) {
+			return true;
+		}
+		else if (choice.equals(DOCEAR_UPDATE_CHECKER_MAJOR) && compCode >= Version.CompareCode.MAJOR.code) {
+			return true;
 		}
 		
+		return false;
 	}
 	
 	public void load(final String xml) {		
@@ -81,7 +129,7 @@ public class UpdateCheck {
 			reader.load(new StringReader(xml));			
 		}
 		catch (final Exception e) {
-			LogUtils.warn(e);
+			LogUtils.warn(e.getMessage());
 		}		
 	}
 	
@@ -132,12 +180,12 @@ public class UpdateCheck {
 			versionString += " "+status;
 		}
 		Integer statusNumber = version.getStatusNumber();
-		if (statusNumber != null && statusNumber > -1) {
+		if (statusNumber != null && statusNumber > 0) {
 			versionString += statusNumber;
 		}
 		versionString += " build";
 		Integer buildNumber = version.getBuildNumber();
-		if (buildNumber != null && buildNumber>-1) {
+		if (buildNumber != null && buildNumber>0) {
 			versionString += buildNumber;
 		}
 		return versionString;

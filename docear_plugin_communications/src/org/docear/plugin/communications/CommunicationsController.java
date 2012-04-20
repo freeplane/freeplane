@@ -199,8 +199,12 @@ public class CommunicationsController extends ALanguageController implements Pro
 		}
 	}
 	
-	public String getLatestVersionXml() throws UniformInterfaceException, URISyntaxException {
-		ClientResponse response = client.resource(getServiceUri()).path("/applications/docear/versions/latest").accept("text/plain").get(ClientResponse.class);
+	public String getLatestVersionXml(String minStatus) throws UniformInterfaceException, URISyntaxException {
+		if (minStatus == null) {
+			return null;
+		}
+		
+		ClientResponse response = client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus).get(ClientResponse.class);
 		return response.getEntity(String.class);
 	}
 
