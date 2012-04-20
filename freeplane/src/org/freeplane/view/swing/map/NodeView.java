@@ -862,7 +862,8 @@ public class NodeView extends JComponent implements INodeView {
 		if (preferred == null) {
 			preferred = this;
 		}
-		getMap().selectVisibleAncestorOrSelf(preferred);
+		if(getMap().getSelected() ==  null)
+			getMap().selectVisibleAncestorOrSelf(preferred);
 		revalidate();
 	}
 

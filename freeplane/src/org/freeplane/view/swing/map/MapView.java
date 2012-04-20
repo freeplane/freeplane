@@ -112,7 +112,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		@Override
 		public void ancestorResized(HierarchyEvent e) {
-			if (anchor == null) {
+			if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
 				return;
 			}
 			if (nodeToBeVisible == null) {
@@ -321,10 +321,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				else
 					selectedList.remove(node);
 				node.repaintSelected();
-				if(selectedChanged && size() > 0){
-					selectedNode = selectedSet.iterator().next();
-					addSelectionForHooks(selectedNode);
-				}
+				if(selectedChanged) {
+	                if (size() > 0) {
+	                	selectedNode = selectedSet.iterator().next();
+	                	addSelectionForHooks(selectedNode);
+	                }
+	                else{
+	                	selectedNode = null;
+	                }
+                }
 				return true;
 			}
 			return false;
