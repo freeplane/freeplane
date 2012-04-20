@@ -117,10 +117,10 @@ public class TextUtils {
 	}
 
 	public static boolean isNumber(String text) {
-		if("".equals(text))
+		if (isEmpty(text))
 			return false;
 		final char first = text.charAt(0);
-		if(Character.isLetter(first) || Character.isSpaceChar(first))
+		if (Character.isLetter(first) || Character.isSpaceChar(first))
 			return false;
 		try {
 	        Double.parseDouble(text);
