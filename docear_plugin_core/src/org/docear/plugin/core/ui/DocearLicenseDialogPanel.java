@@ -1,26 +1,33 @@
 package org.docear.plugin.core.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-
-import org.freeplane.core.util.TextUtils;
 import javax.swing.UIManager;
-import java.awt.Color;
+import javax.swing.border.TitledBorder;
+
+import org.docear.plugin.core.DocearController;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class DocearLicenseDialogPanel extends JPanel {
 	
@@ -32,10 +39,10 @@ public class DocearLicenseDialogPanel extends JPanel {
 	
 	private JButton okButton;
 	
-	private JTextArea txtrLicenseA;
-	private JCheckBox chckbxAcceptLicenseA;
-	private JTextArea txtrLicenseB;
-	private JCheckBox chckbxAcceptLicenseB;
+	private JTextArea txtTermsOfUse;
+	private JCheckBox chckbxAcceptTermsOfUse;
+	private JTextArea txtDataPrivacyTerms;
+	private JCheckBox chckbxAcceptDataPrivacyTerms;
 
 	private final ActionListener actionListener = new ActionListener() {
 		public void actionPerformed(final ActionEvent e) {
@@ -48,8 +55,8 @@ public class DocearLicenseDialogPanel extends JPanel {
 	};
 	private JPanel SectionLicenseCPanel;
 	private JScrollPane scrollPane_2;
-	private JTextArea txtrLicenseC;
-	private JCheckBox chckbxAcceptLicenseC;
+	private JTextArea txtDataProcessingTerms;
+	private JCheckBox chckbxAcceptDataProcessingTerms;
 	
 	public DocearLicenseDialogPanel() {
 		setPreferredSize(new Dimension(600, 450));
@@ -85,11 +92,12 @@ public class DocearLicenseDialogPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		SectionLicenseAPanel.add(scrollPane, "1, 1, fill, fill");
 		
-		txtrLicenseA = new JTextArea();
-		txtrLicenseA.setEditable(false);
-		txtrLicenseA.setRows(10);
-		txtrLicenseA.setText("LicenseA");
-		scrollPane.setViewportView(txtrLicenseA);
+		txtTermsOfUse = new JTextArea();
+		txtTermsOfUse.setEditable(false);
+		txtTermsOfUse.setRows(10);
+		txtTermsOfUse.setText(getTermsOfUse());
+		txtTermsOfUse.setLineWrap(true);
+		scrollPane.setViewportView(txtTermsOfUse);
 		
 		JPanel SectionLicenseBPanel = new JPanel();
 		SectionLicenseBPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), TextUtils.getText("docear.license.section.b"), TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -104,11 +112,11 @@ public class DocearLicenseDialogPanel extends JPanel {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		SectionLicenseBPanel.add(scrollPane_1, "1, 1, fill, fill");
 		
-		txtrLicenseB = new JTextArea();
-		txtrLicenseB.setEditable(false);
-		txtrLicenseB.setRows(10);
-		txtrLicenseB.setText("LicenseB");
-		scrollPane_1.setViewportView(txtrLicenseB);
+		txtDataPrivacyTerms = new JTextArea();
+		txtDataPrivacyTerms.setEditable(false);
+		txtDataPrivacyTerms.setRows(10);
+		txtDataPrivacyTerms.setText(getDataPrivacyTerms());
+		scrollPane_1.setViewportView(txtDataPrivacyTerms);
 		
 		SectionLicenseCPanel = new JPanel();
 		SectionLicenseCPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), TextUtils.getText("docear.license.section.c"), TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -123,24 +131,24 @@ public class DocearLicenseDialogPanel extends JPanel {
 		scrollPane_2 = new JScrollPane();
 		SectionLicenseCPanel.add(scrollPane_2, "1, 1, fill, fill");
 		
-		txtrLicenseC = new JTextArea();
-		txtrLicenseC.setEditable(false);
-		txtrLicenseC.setRows(10);
-		txtrLicenseC.setText("LicenseC");
-		scrollPane_2.setViewportView(txtrLicenseC);
+		txtDataProcessingTerms = new JTextArea();
+		txtDataProcessingTerms.setEditable(false);
+		txtDataProcessingTerms.setRows(10);
+		txtDataProcessingTerms.setText(getDataProcessingTerms());
+		scrollPane_2.setViewportView(txtDataProcessingTerms);
 		
-		chckbxAcceptLicenseA = new JCheckBox(TextUtils.getText("docear.license.ckbx.accept.a"));
-		add(chckbxAcceptLicenseA, "2, 8");
+		chckbxAcceptTermsOfUse = new JCheckBox(TextUtils.getText("docear.license.ckbx.accept.a"));
+		add(chckbxAcceptTermsOfUse, "2, 8");
 		
-		chckbxAcceptLicenseB = new JCheckBox(TextUtils.getText("docear.license.ckbx.accept.b"));
-		add(chckbxAcceptLicenseB, "4, 8");
-		chckbxAcceptLicenseB.addActionListener(actionListener);
+		chckbxAcceptDataPrivacyTerms = new JCheckBox(TextUtils.getText("docear.license.ckbx.accept.b"));
+		add(chckbxAcceptDataPrivacyTerms, "4, 8");
+		chckbxAcceptDataPrivacyTerms.addActionListener(actionListener);
 		
-		chckbxAcceptLicenseC = new JCheckBox(TextUtils.getText("docear.license.ckbx.accept.c"));
-		add(chckbxAcceptLicenseC, "6, 8");
+		chckbxAcceptDataProcessingTerms = new JCheckBox(TextUtils.getText("docear.license.ckbx.accept.c"));
+		add(chckbxAcceptDataProcessingTerms, "6, 8");
 		
-		chckbxAcceptLicenseC.addActionListener(actionListener);
-		chckbxAcceptLicenseA.addActionListener(actionListener);
+		chckbxAcceptDataProcessingTerms.addActionListener(actionListener);
+		chckbxAcceptTermsOfUse.addActionListener(actionListener);
 	}
 	
 	public void integrateButtons(JButton[] buttons) {
@@ -155,27 +163,72 @@ public class DocearLicenseDialogPanel extends JPanel {
 		}
 	}
 	
-	public void setLicenseText(LICENSE_POSITION position, String text) {
-		switch(position) {
-			case BOTTOM: {
-				txtrLicenseC.setText(text);
-				txtrLicenseC.setSelectionStart(0);
-				txtrLicenseC.setSelectionEnd(0);
-				break;
-			}
-			case MIDDLE: {
-				txtrLicenseB.setText(text);
-				txtrLicenseB.setSelectionStart(0);
-				txtrLicenseB.setSelectionEnd(0);
-				break;
-			}
-			default: {
-				txtrLicenseA.setText(text);
-				txtrLicenseA.setSelectionStart(0);
-				txtrLicenseA.setSelectionEnd(0);
-				break;
-			}
+//	public void setLicenseText(LICENSE_POSITION position, String text) {
+//		switch(position) {
+//			case BOTTOM: {
+//				txtrLicenseC.setText(text);
+//				txtrLicenseC.setSelectionStart(0);
+//				txtrLicenseC.setSelectionEnd(0);
+//				break;
+//			}
+//			case MIDDLE: {
+//				txtrLicenseB.setText(text);
+//				txtrLicenseB.setSelectionStart(0);
+//				txtrLicenseB.setSelectionEnd(0);
+//				break;
+//			}
+//			default: {
+//				txtTermsOfUse.setText(text);
+//				txtTermsOfUse.setSelectionStart(0);
+//				txtTermsOfUse.setSelectionEnd(0);
+//				break;
+//			}
+//		}
+//	}
+	
+	private String getDataPrivacyTerms() {
+		try {
+			return getStringFromStream(DocearController.class.getResourceAsStream("Docear_data_privacy.txt"));
 		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+			return "Data Privacy";
+		}
+	}
+	
+	private String getTermsOfUse() {
+		try {
+			return getStringFromStream(DocearController.class.getResourceAsStream("Docear_terms_of_use.txt"));
+		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+			return "Terms of Use";
+		}
+	}
+	
+	private String getDataProcessingTerms() {
+		try {
+			return getStringFromStream(DocearController.class.getResourceAsStream("Docear_data_processing.txt"));
+		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+			return "Data Processing";
+		}
+	}
+	
+	private String getStringFromStream(InputStream is) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		StringBuilder sb = new StringBuilder();
+	
+		String line;
+		while ((line = br.readLine()) != null) {
+			sb.append(line + System.getProperty("line.separator"));
+		} 
+	
+		System.out.println(sb.toString());
+	
+		br.close();
+		return sb.toString();
 	}
 	
 	private void closeDialogManually() {
@@ -188,7 +241,7 @@ public class DocearLicenseDialogPanel extends JPanel {
 	
 	private void enableButtonIfPossible() {
 		if(okButton != null) {
-			if(chckbxAcceptLicenseA.isSelected() && chckbxAcceptLicenseB.isSelected() && chckbxAcceptLicenseC.isSelected()) {
+			if(chckbxAcceptTermsOfUse.isSelected() && chckbxAcceptDataPrivacyTerms.isSelected() && chckbxAcceptDataProcessingTerms.isSelected()) {
 				okButton.setEnabled(true);
 			}
 			else {

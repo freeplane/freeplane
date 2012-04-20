@@ -1,0 +1,42 @@
+Terms of Use
+
+The software “Docear” (hereinafter: “the Software”), which was developed by Docear, Jöran Beel, Edithawinkel 3, D-39108 Magdeburg (hereinafter: “Docear”), is a reference and document management application for researchers which features several functions with respect to the research and management of electronic documents. A detailed description of the functions is retrievable at http://www.docear.org/software/details/. The Software can be downloaded for free on the Internet, in particular at http://www.docear.org.
+The basic functions of the Software can be used without registration with Docear being necessary. If the user registers with Docear he may choose from a range of further functions. The user may, for instance, save on the Docear server documents including text or figures, mind maps or other contents (hereinafter: “Contents”), which are created or managed with the Software, or receive personalised recommendations regarding literature.
+For the use of the Software the following conditions shall exclusively apply.
+Sec. 1 The Software
+(1) The software is open source software software which may be redistributed and revised under the terms of the GNU General Public License of the Free Software Foundation, version 2 or any later version, see http://www.gnu.org/licenses.
+(2) The programming of the software also includes other programs such as, for instance, Freeplane (GPL 2 or later), JabRef (GPL 2) and JPod (License BSD).
+Sec. 2 Provision of Storage Space and Granting Access to Contents
+Docear shall provide the user with storage space for the purpose of saving Contents, and grant access to the Contents which the user saves on the Docear server within the framework of the functions selected. Docear reserves the right to limit the storage space or define certain formats of data which may be saved on the Docear server.
+Sec. 3 Use of the Contents by Docear
+(1) Docear is entitled to analyse and evaluate the user behaviour and the Contents saved on the Docear server in order to improve the Software and its functions and to develop new applications for the management of literature and other scientific resources. Detailed information as to the scope of use of the Contents by Docear is retrievable at http://www.docear.org/give-back/share-your-data/.
+(2) To the extent required for the purpose set forth in Sec. 3(1), the user shall grant Docear the gratuitous, non-exclusive, transferable right to use the Contents, which he saved on the Docear server, without limitation in time or place.
+
+In particular, Docear is entitled
+-   to copy the respective Contents, to save the respective Contents in electronic databases and to make these Contents publicly available 
+-   to transfer the rights granted by virtue of these terms of use to third parties and to grant third parties – even in return for payment – rights to use the respective Contents, without a specific consent to this being required.
+(3) If the user uses only the basic functions of the software without being registered, Docear shall not be entitled to analyse and use the respective Contents to the aforementioned extent. In this case Docear shall only be entitled to analyse the use made of the Software by the user for simple, anonymous user statistics (see http://www.docear.org/give-back/share-your-data/).
+Sec. 4 Obligations of Users and Blocking 
+(1) If the user registers under www.docear.org or a partner website, he shall indicate his data correctly completely.
+(2) The user of the Software shall not save on the Docear server any Contents which are in breach or violate applicable law. This applies in particular to any rights of third parties.
+(3) The user shall take no actions likely to affect the safe and smooth operation of the Docear server, for instance, the distribution of viruses, Trojans or other malware or malicious data.
+(4) In case the user is in breach with his obligations, Docear is entitled to block the user’s access.
+Sec. 5 Liability for Contents 
+(1) The user has complete liability for his Contents saved on the Docear server. Docear shall not check any of these Contents for, including without limitation, lawfulness, accuracy, or fitness for a certain purpose.
+(2) If the user is not, or is only partly, the owner of the rights to Content saved by it on the Docear server, he shall affirmatively warrant that the owner of the rights to such Content has given consent for Docear to save and use such Content on the Docear Server, including without limitation, to make such Content publicly available.
+(3) The user shall exempt Docear from all claims asserted by third parties arising from the storage of any Contents on the Docear server by the user, unless the user can prove that he was not legally responsible for such infringement of law and/or obligations. This exemption also stipulates that appropriate lawyers and/or legal advisor fees must be borne by the user.
+
+Sec. 6 Data Protection
+(1) If the user transfers the personal data of third parties, e.g. of colleagues or staff members, to Docear, the user shall warrant that he is entitled to do so according to any relevant data protection regulations, shall assume responsibility in case of any infringement, and shall exempt Docear from any claims of third parties.
+(2) Docear shall only gather and use data related to the user to the extent necessary for executing this contract and, in so doing, shall observe the relevant data protection regulations. The user agrees that such data will be gathered and used to the extent described herein.
+Sec. 7 Warranty Concerning Defects and Liability
+(1) Docear excludes any and all liability with respect to the delivery of the software, see http://www.gnu.org/licenses.
+(2) Regarding the use of storage space available on the Docear server, Docear excludes any and all liability not due to its own error or for initial defects of the server. Later objections arising from any open or hidden defects are excluded hereby.
+(3) Docear shall only be liable for such damage – independent of the legal basis – if it has breached a material tenant of or obligation under this contract (a “cardinal duty”) in a culpable manner which endangers the contract’s object, or if said breach is attributable to gross negligence or willful conduct. This limitation of liability shall also apply if an agent of Docear is responsible for such damages.
+(4) Docear excludes any and all liability resulting from loss of the Contents saved on the Docear server or from unavailability of the Docear server.
+§ 8 Closing Provisions
+(1) Any amendment to this contract must be made in written form. This shall also apply to the requirement of written form itself. 
+(2) The contract shall be construed under governed by German law.
+(3) The exclusive place of venue for all disputes arising from this contractual relationship shall be Magdeburg, Germany. Docear shall, however, remain entitled to file suit in the jurisdiction of the user or to institute other court proceedings.
+(4) Invalidity or legal ineffectiveness of one provision of this contract will not touch this contract’s validity as a whole. Any provision deemed invalid by a competent court or legal authority shall be replaced by a similar provision which, as nearly as possible, meets the economic and legal purposes of invalid provision.
+
