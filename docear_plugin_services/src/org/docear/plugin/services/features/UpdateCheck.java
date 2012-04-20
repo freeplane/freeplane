@@ -91,8 +91,16 @@ public class UpdateCheck {
 						
 			int compCode = latestVersion.compareTo(runningVersion);
 			
-			if (showUpdateCheckerDialog(compCode, choice)) {			
-				UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", getStringFromVersion(runningVersion), getStringFromVersion(latestVersion));
+			if (showUpdateCheckerDialog(compCode, choice)) {
+				// don't show Dialog again if latestVersionFromServer was already announced to the user
+				String lastLatestVersionString = ResourceController.getResourceController().getProperty("docer.update_checker.savedLatestVersion", "");
+				String latestVersionString = latestVersion.toString();
+				if (lastLatestVersionString.equals(latestVersionString)) {
+					return;
+				}
+				ResourceController.getResourceController().setProperty("docer.update_checker.savedLatestVersion", latestVersionString);
+				
+				UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", runningVersion.toString(), latestVersionString);
 				JOptionPane.showMessageDialog(UITools.getFrame(), dialogPanel, TextUtils.getText("docear.new_version_available.title"), JOptionPane.INFORMATION_MESSAGE);
 				ResourceController.getResourceController().setProperty("docear.update_checker.options", dialogPanel.getChoice());
 			}
@@ -171,24 +179,6 @@ public class UpdateCheck {
 	
 	public Version getLatestAvailableVersion() {
 		return ServiceController.getController().getApplication().getVersions().entrySet().iterator().next().getValue();		
-	}
-	
-	private String getStringFromVersion(Version version) {
-		String versionString = ""+version.getMajorVersion()+"."+version.getMiddleVersion()+"."+version.getMinorVersion();
-		String status = version.getStatus();
-		if (status != null && status.length()>0) {
-			versionString += " "+status;
-		}
-		Integer statusNumber = version.getStatusNumber();
-		if (statusNumber != null && statusNumber > 0) {
-			versionString += statusNumber;
-		}
-		versionString += " build";
-		Integer buildNumber = version.getBuildNumber();
-		if (buildNumber != null && buildNumber>0) {
-			versionString += buildNumber;
-		}
-		return versionString;
 	}
 	
 	private IElementHandler getReleaseNotesCreator() {		
