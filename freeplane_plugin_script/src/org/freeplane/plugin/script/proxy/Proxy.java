@@ -124,7 +124,7 @@ public interface Proxy {
 	/** Node's attribute table: <code>node.attributes</code> - read-write.
 	 * <p>
 	 * <b>Notes on attribute setters:</b><ul>
-	 * <li> All setter methods try to convert strings to dates, numbers or URLs.
+	 * <li> All setter methods try to convert strings to dates, numbers or URIs.
 	 * <li> All setter methods apply a default formatting (for display) of the value for dates and numbers.
 	 * <li> Attributes don't have style properties so the value objects must know about the right formatting for
 	 *      themselves.
@@ -153,11 +153,11 @@ public interface Proxy {
      *   // change the date while keeping the silly format
      *   def index = node.attributes.findAttribute("another date")
      *   node.attributes.set(index, new Date(0L))
-     *   // == URLs
-     *   def url = new URL("http://www.freeplane.org")
-     *   node["url"] = url
-     *   assert node["url"].object.getClass().simpleName == "URL"
-     *   assert node["url"].object == url
+     *   // == URIs
+     *   def uri = new URI("http://www.freeplane.org")
+     *   node["uri"] = uri
+     *   assert node["uri"].object.getClass().simpleName == "URI"
+     *   assert node["uri"].object == uri
      *   // == remove an attribute
      *   node["removed attribute"] = "to be removed"
      *   assert node["removed attribute"] == "to be removed"
