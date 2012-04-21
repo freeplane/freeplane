@@ -1344,13 +1344,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
-	private RoundRectangle2D.Float getRoundRectangleAround(NodeView selected) {
+	private RoundRectangle2D.Float getRoundRectangleAround(NodeView selected, int gap, int arcw) {
 		final JComponent content = selected.getContent();
 		final Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, this);
-		final int arcWidth = 4;
-		final RoundRectangle2D.Float roundRectClip = new RoundRectangle2D.Float(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
-			content.getHeight() + 2 * arcWidth, 15, 15);
+		gap -= 1;
+		final RoundRectangle2D.Float roundRectClip = new RoundRectangle2D.Float(
+			contentLocation.x - gap, contentLocation.y - gap, 
+			content.getWidth() + 2 * gap, content.getHeight() + 2 * gap, arcw, arcw);
 		return roundRectClip;
 	}
 	
@@ -1358,23 +1359,28 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (selected.getMainView().isEdited()) {
 			return;
 		}
-		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected);
+		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 6, 15);
 		g.draw(roundRectClip);
 	}
 
 	private void highlightSelected(Graphics2D g, NodeView selected, PaintingMode[] paintedModes) {
-		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected);
-		final java.awt.Shape clip = g.getClip();
-		final Rectangle clipBounds = g.getClipBounds();
+		final java.awt.Shape highlightClip;
+		if (MapView.standardDrawRectangleForSelection)
+			highlightClip = getRoundRectangleAround(selected, 6, 15);
+		else
+			highlightClip = getRoundRectangleAround(selected, 4, 2);
+		final java.awt.Shape oldClip = g.getClip();
+		final Rectangle oldClipBounds = g.getClipBounds();
 		try{
-			g.setClip(roundRectClip);
-			if(clipBounds != null)
-				g.clipRect(clipBounds.x, clipBounds.y, clipBounds.width, clipBounds.width);
-			g.clearRect((int)roundRectClip.x, (int)roundRectClip.y, (int)roundRectClip.width, (int)roundRectClip.height);
+			g.setClip(highlightClip);
+			if(oldClipBounds != null)
+				g.clipRect(oldClipBounds.x, oldClipBounds.y, oldClipBounds.width, oldClipBounds.height);
+			final Rectangle clipBounds = highlightClip.getBounds();
+			g.clearRect(clipBounds.x, clipBounds.y, clipBounds.width, clipBounds.height);
 			paintChildren(g, paintedModes);
 		}
 		finally{
-			g.setClip(clip);
+			g.setClip(oldClip);
 		}
     }
 
