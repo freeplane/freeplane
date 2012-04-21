@@ -84,6 +84,7 @@
             <color name="revision_color"/>
             <boolean name="printonwhitebackground"/>
             <color name="standardcloudcolor"/>
+            <number name="presentation_dimmer_transparency" min="0" max="255"/>
          </separator>
         <separator name="selection_colors">        
             <boolean name="standarddrawrectangleforselection"/>

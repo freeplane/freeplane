@@ -182,6 +182,7 @@
 				<menu_separator />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
 				<menu_action action="ToggleFullScreenAction" />
+				<menu_action action="SetBooleanPropertyAction.presentation_mode" />
 				<menu_action action="ToggleStatusAction" />
 				</menu_category>
 				<menu_separator />

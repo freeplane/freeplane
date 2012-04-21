@@ -135,6 +135,7 @@
 		<menu_action action="ToggleToolbarAction"/>
 		<menu_action action="ShowFilterToolbarAction"/>
 		<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
+		<menu_action action="SetBooleanPropertyAction.presentation_mode" />
 		<menu_action action="CenterSelectedNodeAction"/>
 		<menu_action accelerator="ESCAPE" action="MoveToRootAction"/>
 		<menu_action action="GotoNodeAction"/>				

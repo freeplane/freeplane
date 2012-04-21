@@ -23,6 +23,7 @@
 							<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
 							<menu_action action="ToggleToolbarAction"/>
 							<menu_action action="ShowFilterToolbarAction" accelerator="control F"/>
+							<menu_action action="SetBooleanPropertyAction.presentation_mode" />
 							</menu_submenu>
 						</menu_category>
 				</menu_category>

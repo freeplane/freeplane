@@ -40,6 +40,7 @@ import java.awt.dnd.Autoscroll;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.AbstractList;
@@ -96,12 +97,16 @@ import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
 
+import org.freeplane.view.swing.map.PaintingMode.*;
+
 /**
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener {
 	
+	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
+
 	private class Resizer extends HierarchyBoundsAdapter{
 
 		@Override
@@ -117,10 +122,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 	}
-
-	enum PaintingMode {
-		CLOUDS, NODES, ALL
-	};
 
 	private MapViewLayout layoutType;
 
@@ -147,7 +148,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		getRoot().updateAll();
 	}
 
-	private PaintingMode paintingMode = PaintingMode.ALL;
+	private PaintingMode paintingMode = null;
 
 	private class MapSelection implements IMapSelection {
 		public void centerNode(final NodeModel node) {
@@ -388,6 +389,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
 	static boolean standardDrawRectangleForSelection;
 	static Color standardSelectColor;
 	private static Stroke standardSelectionStroke;
@@ -420,6 +422,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private Font detailFont;
     private Color detailForeground;
     private Color detailBackground;
+	private static boolean presentationModeEnabled;
+	private static int transparency;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -440,6 +444,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final String printOnWhite = ResourceController.getResourceController()
 			    .getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
+			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
+			MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
+
 			createPropertyChangeListener();
 		}
 		this.setAutoscrolls(true);
@@ -534,7 +541,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		nodeToBeCentered = null;
 	}
 
-	private void createPropertyChangeListener() {
+	static private void createPropertyChangeListener() {
 		MapView.propertyChangeListener = new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				final Component mapView = Controller.getCurrentController().getViewController().getMapView();
@@ -560,6 +567,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
 					return;
 				}
+				if (propertyName.equals(PRESENTATION_DIMMER_TRANSPARENCY)) {
+					MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
+					((MapView) mapView).repaint();
+					return;
+				}
+				if (propertyName.equals(PRESENTATION_MODE_ENABLED)) {
+					MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
+					((MapView) mapView).repaint();
+					return;
+				}
+
 			}
 		};
 		ResourceController.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
@@ -1170,28 +1188,62 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			super.paint(g2);
 		}
 		finally {
+			this.paintingMode = null;
 			g2.dispose();
 		}
-	};
+	}
 
 	@Override
-	public void paintChildren(final Graphics graphics) {
-		final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
-		    "paint_connectors_behind");
-		if (paintLinksBehind) {
-			paintingMode = PaintingMode.CLOUDS;
-			super.paintChildren(graphics);
-			paintLinks((Graphics2D) graphics);
-			paintingMode = PaintingMode.NODES;
-			super.paintChildren(graphics);
+	protected void paintChildren(final Graphics g) {
+	    final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
+	    	    "paint_connectors_behind");
+	    final PaintingMode paintModes[];
+	    if(paintLinksBehind)
+	    	paintModes = new PaintingMode[]{
+	    		PaintingMode.CLOUDS, 
+	    		PaintingMode.LINKS, PaintingMode.NODES, PaintingMode.SELECTED_NODES
+	    		};
+	    else
+	    	paintModes = new PaintingMode[]{
+	    		PaintingMode.CLOUDS, 
+	    		PaintingMode.NODES,PaintingMode.SELECTED_NODES, PaintingMode.LINKS
+	    		};
+	    Graphics2D g2 = (Graphics2D) g;
+	    paintChildren(g2, paintModes);
+	    if(presentationModeEnabled)
+	    	paintDimmer(g2, paintModes);
+		paintSelecteds(g2);
+    }
+
+	private void paintChildren(Graphics2D g2, final PaintingMode[] paintModes) {
+	    for(PaintingMode paintingMode : paintModes){
+	    	this.paintingMode = paintingMode;
+			switch(paintingMode){
+	    		case LINKS:
+	    			paintLinks(g2);
+	    			break;
+	    		default:
+	    			super.paintChildren(g2);
+	    	}
+	    }
+    };
+
+    
+	private void paintDimmer(Graphics2D g2, PaintingMode[] paintModes) {
+		final Color color = g2.getColor();
+		try{
+			Color dimmer = new Color(0, 0, 0, transparency);
+			g2.setColor(dimmer);
+			g2.fillRect(0, 0, getWidth(), getHeight());
 		}
-		else {
-			paintingMode = PaintingMode.ALL;
-			super.paintChildren(graphics);
-			paintLinks((Graphics2D) graphics);
+		finally{
+			g2.setColor(color);
 		}
-		paintSelecteds((Graphics2D) graphics);
-	}
+		for (final NodeView selected : getSelection()) {
+			highlightSelected(g2, selected, paintModes);
+		}
+	    
+    }
 
 	protected PaintingMode getPaintingMode() {
 		return paintingMode;
@@ -1273,18 +1325,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	private void paintSelected(final Graphics2D g, final NodeView selected) {
-		if (selected.getMainView().isEdited()) {
-			return;
-		}
-		final JComponent content = selected.getContent();
-		final Point contentLocation = new Point();
-		UITools.convertPointToAncestor(content, contentLocation, this);
-		final int arcWidth = 4;
-		g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
-		    content.getHeight() + 2 * arcWidth, 15, 15);
-	}
-
 	private void paintSelecteds(final Graphics2D g) {
 		if (!MapView.standardDrawRectangleForSelection || isPrinting()) {
 			return;
@@ -1296,12 +1336,46 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		g.setStroke(standardSelectionStroke);
 		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
-			paintSelected(g, selected);
+			paintSelectionRectangle(g, selected);
 		}
 		g.setColor(c);
 		g.setStroke(s);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
+
+	private RoundRectangle2D.Float getRoundRectangleAround(NodeView selected) {
+		final JComponent content = selected.getContent();
+		final Point contentLocation = new Point();
+		UITools.convertPointToAncestor(content, contentLocation, this);
+		final int arcWidth = 4;
+		final RoundRectangle2D.Float roundRectClip = new RoundRectangle2D.Float(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
+			content.getHeight() + 2 * arcWidth, 15, 15);
+		return roundRectClip;
+	}
+	
+	private void paintSelectionRectangle(final Graphics2D g, final NodeView selected) {
+		if (selected.getMainView().isEdited()) {
+			return;
+		}
+		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected);
+		g.draw(roundRectClip);
+	}
+
+	private void highlightSelected(Graphics2D g, NodeView selected, PaintingMode[] paintedModes) {
+		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected);
+		final java.awt.Shape clip = g.getClip();
+		final Rectangle clipBounds = g.getClipBounds();
+		try{
+			g.setClip(roundRectClip);
+			if(clipBounds != null)
+				g.clipRect(clipBounds.x, clipBounds.y, clipBounds.width, clipBounds.width);
+			g.clearRect((int)roundRectClip.x, (int)roundRectClip.y, (int)roundRectClip.width, (int)roundRectClip.height);
+			paintChildren(g, paintedModes);
+		}
+		finally{
+			g.setClip(clip);
+		}
+    }
 
 	Stroke getStandardSelectionStroke() {
 	    if (MapView.standardSelectionStroke == null) {

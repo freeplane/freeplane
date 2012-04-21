@@ -89,7 +89,7 @@ class ForkMainView extends MainView {
 	}
 
 	@Override
-	public void paint(final Graphics graphics) {
+	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
@@ -98,7 +98,7 @@ class ForkMainView extends MainView {
 		}
 		paintBackgound(g);
 		paintDragOver(g);
-		super.paint(g);
+		super.paintComponent(g);
 	}
 
 	@Override

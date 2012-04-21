@@ -67,7 +67,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.view.swing.map.MapView.PaintingMode;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
@@ -914,11 +913,10 @@ public class NodeView extends JComponent implements INodeView {
 			final Graphics2D g2 = (Graphics2D) g;
 			final ModeController modeController = map.getModeController();
 			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-			final boolean isRoot = isRoot();
 			switch (paintingMode) {
 				case CLOUDS:
-				case ALL:
 					modeController.getController().getViewController().setEdgesRenderingHint(g2);
+					final boolean isRoot = isRoot();
 					if (isRoot) {
 						paintCloud(g);
 					}
@@ -927,7 +925,6 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			switch (paintingMode) {
 				case NODES:
-				case ALL:
 					g2.setStroke(BubbleMainView.DEF_STROKE);
 					modeController.getController().getViewController().setEdgesRenderingHint(g2);
                     paintEdges(g2, this);
@@ -935,15 +932,9 @@ public class NodeView extends JComponent implements INodeView {
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 		}
-		super.paintComponent(g);
-		if (PAINT_DEBUG_BORDER && isSelected()){
+		if (PAINT_DEBUG_BORDER && isSelected()&& paintingMode.equals(PaintingMode.SELECTED_NODES)){
 			final int spaceAround = getZoomed(SPACE_AROUND);
 			g.drawRect(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
-//			if(getMap().getLayoutType().equals(MapViewLayout.MAP)){
-//			    Point p = new Point();
-//			    UITools.convertPointToAncestor(getContent(), p, getMap().getRoot());
-//			    g.drawString("" + p.x + ":" + p.y, spaceAround, getHeight() - spaceAround + 15);
-//			}
 		}
 	}
 

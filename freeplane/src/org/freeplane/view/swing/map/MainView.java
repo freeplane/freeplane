@@ -195,6 +195,18 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
 		return xCoord < getSize().width * p;
 	}
+	
+	@Override
+	final public void paint(Graphics g){
+		final PaintingMode paintingMode = getMap().getPaintingMode();
+		if(!paintingMode.equals(PaintingMode.SELECTED_NODES)
+				&& !paintingMode.equals(PaintingMode.NODES))
+			return;
+		final NodeView nodeView = getNodeView();
+		final boolean selected = nodeView.isSelected();
+		if(paintingMode.equals(PaintingMode.SELECTED_NODES) == selected)
+			super.paint(g);
+	}
 
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
