@@ -105,7 +105,6 @@ import org.freeplane.view.swing.map.PaintingMode.*;
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener {
 	
-	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 
 	private class Resizer extends HierarchyBoundsAdapter{
 
@@ -385,11 +384,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static private IFreeplanePropertyListener propertyChangeListener;
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
+	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
+	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
 	static boolean standardDrawRectangleForSelection;
 	static Color standardSelectColor;
 	private static Stroke standardSelectionStroke;
