@@ -24,8 +24,6 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.edge.EdgeController;
-import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;

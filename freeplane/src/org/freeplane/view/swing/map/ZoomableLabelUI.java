@@ -9,8 +9,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.beans.PropertyChangeEvent;
-import java.security.AccessControlException;
-
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -21,7 +19,6 @@ import javax.swing.plaf.basic.BasicLabelUI;
 import javax.swing.text.View;
 
 import org.freeplane.core.ui.components.html.ScaledHTML;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 /*

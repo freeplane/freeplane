@@ -29,7 +29,6 @@ import javax.swing.event.EventListenerList;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.core.util.collection.SortedMapVector;

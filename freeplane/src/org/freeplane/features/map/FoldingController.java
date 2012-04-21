@@ -17,26 +17,16 @@
  */
 package org.freeplane.features.map;
 
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.plaf.basic.BasicButtonUI;
-import javax.swing.plaf.basic.BasicMenuItemUI;
-import javax.swing.plaf.basic.BasicMenuUI;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
