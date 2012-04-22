@@ -793,6 +793,7 @@ public class NodeView extends JComponent implements INodeView {
 		final Object property = event.getProperty();
 		if (property == NodeChangeType.FOLDING) {
 			treeStructureChanged();
+			getMap().selectIfSelectionIsEmpty(this);
 			String shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
 			if (shape.equals(NodeStyleModel.SHAPE_COMBINED))
 				update();
