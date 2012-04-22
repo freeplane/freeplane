@@ -995,7 +995,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void initRoot() {
 		anchorContentLocation = new Point();
-		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), 0, this, this);
+		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), this, this);
 		anchor = rootView;
 	}
 

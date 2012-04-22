@@ -122,7 +122,7 @@ public class NodeView extends JComponent implements INodeView {
 	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 	
-	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
+	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
 		this.model = model;
 		this.map = map;
@@ -718,9 +718,9 @@ public class NodeView extends JComponent implements INodeView {
 		return preferredFoldingSymbolHalfWidth;
 	}
 
-	void insertChildViews() {
+	void addChildViews() {
 		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
-			insert(child, 0);
+			addChildView(child);
 		}
 	}
 
@@ -728,8 +728,8 @@ public class NodeView extends JComponent implements INodeView {
 	 * Create views for the newNode and all his descendants, set their isLeft
 	 * attribute according to this view.
 	 */
-	NodeView insert(final NodeModel newNode, final int position) {
-		final NodeView newView = NodeViewFactory.getInstance().newNodeView(newNode, position, getMap(), this);
+	NodeView addChildView(final NodeModel newNode) {
+		final NodeView newView = NodeViewFactory.getInstance().newNodeView(newNode, getMap(), this);
 		return newView;
 	}
 
@@ -870,7 +870,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (getMap().getModeController().getMapController().isFolded(model)) {
 			return;
 		}
-		insert(child, index);
+		addChildView(child);
 		numberingChanged(index + 1);
 		revalidate();
 	}
@@ -1224,7 +1224,7 @@ public class NodeView extends JComponent implements INodeView {
 		for (final ListIterator<NodeView> i = getChildrenViews().listIterator(); i.hasNext();) {
 			i.next().remove();
 		}
-		insertChildViews();
+		addChildViews();
 		map.revalidateSelecteds();
 		revalidate();
 	}

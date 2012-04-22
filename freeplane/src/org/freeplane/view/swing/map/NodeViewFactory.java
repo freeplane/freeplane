@@ -126,8 +126,8 @@ class NodeViewFactory {
 	/**
 	 * Factory method which creates the right NodeView for the model.
 	 */
-	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
-		final NodeView newView = new NodeView(model, position, map, parent);
+	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent) {
+		final NodeView newView = new NodeView(model, map, parent);
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else
@@ -161,7 +161,7 @@ class NodeViewFactory {
 		updateNoteViewer(newView);
 		newView.update();
         fireNodeViewCreated(newView);
-        newView.insertChildViews();
+        newView.addChildViews();
 	}
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
