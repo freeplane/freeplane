@@ -129,6 +129,7 @@
 			<menu_category name="navigate">
 				<menu_category name="folding">
 					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
+					<menu_action action="ShowNextChildAction" accelerator="shift SPACE" />
 					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
 					</menu_category>
 			</menu_category>			

@@ -62,6 +62,7 @@
 				<menu_action accelerator="control TAB" action="NavigationNextMapAction"/>
 				<menu_category name="folding">
 					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
+					<menu_action action="ShowNextChildAction" accelerator="shift SPACE" />
 					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
 					<menu_action accelerator="alt PAGE_DOWN" action="UnfoldOneLevelAction"/>
 					<menu_action accelerator="alt PAGE_UP" action="FoldOneLevelAction"/>

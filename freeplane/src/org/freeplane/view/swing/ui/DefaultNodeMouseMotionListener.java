@@ -186,7 +186,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					}
 				}
 			}
-			else if(Compat.isCtrlEvent(e)){
+			else if(Compat.isShiftEvent(e)){
 				if (isInFoldingRegion(e)) {
 					if (! mapController.showNextChild(node))
 						mapController.setFolded(node, true);

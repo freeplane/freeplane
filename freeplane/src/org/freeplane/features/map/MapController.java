@@ -284,9 +284,9 @@ public class MapController extends SelectionController implements IExtension{
 		final UnknownElementWriter unknownElementWriter = new UnknownElementWriter();
 		writeManager.addExtensionAttributeWriter(UnknownElements.class, unknownElementWriter);
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
-		createActions();
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
+		createActions();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {
@@ -444,6 +444,7 @@ public class MapController extends SelectionController implements IExtension{
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new ToggleFoldedAction());
 		modeController.addAction(new ToggleChildrenFoldedAction());
+		modeController.addAction(new ShowNextChildAction());
 		modeController.addAction(new GotoNodeAction());
 	}
 
@@ -552,16 +553,7 @@ public class MapController extends SelectionController implements IExtension{
 		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
 	}
 
-	/**
-	 * Determines whether the nodes should be folded or unfolded depending on
-	 * their states. If not all nodes have the same folding status, the result
-	 * means folding
-	 *
-	 * @param iterator
-	 *            an iterator of MindMapNodes.
-	 * @return true, if the nodes should be folded.
-	 */
-	public boolean getFoldingState(final Collection<NodeModel> list) {
+	private boolean getFoldingState(final Collection<NodeModel> list) {
 		/*
 		 * Retrieve the information whether or not all nodes have the same
 		 * folding state.
@@ -573,10 +565,10 @@ public class MapController extends SelectionController implements IExtension{
 				continue;
 			}
 			if (state == null) {
-				state = isFolded(node);
+				state = hasHiddenChildren(node);
 			}
 			else {
-				if (isFolded(node) != state) {
+				if (hasHiddenChildren(node) != state) {
 					allNodeHaveSameFoldedStatus = false;
 					break;
 				}
@@ -954,19 +946,10 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void toggleFolded(final Collection<NodeModel> collection) {
-		if(collection.size() != 1){
-			final boolean fold = getFoldingState(collection);
-			final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
-			for (final NodeModel node:nodes) {
-				setFolded(node, fold);
-			}
-		}
-		else {
-			final NodeModel node = collection.iterator().next();
-			if(node.isRoot()){
-				setFolded(node, false);
-			} else
-				toggleFolded(node);
+		final boolean fold = getFoldingState(collection);
+		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
+		for (final NodeModel node:nodes) {
+			setFolded(node, fold);
 		}
 	}
 
