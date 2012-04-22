@@ -295,22 +295,80 @@ public class MapController extends SelectionController implements IExtension{
 		}
 		if (node.getChildCount() == 0) 
 			return;
+		final boolean unfold = ! folded;
+		final boolean childShown = makeAllChildrenVisible(node);
 		boolean mapChanged = false;
-	    if(! folded)
-	    	mapChanged = unfoldInvisibleChildren(node, true);
+	    if (unfold && unfoldInvisibleChildren(node, true))
+	        mapChanged = true;
 		if (node.isFolded() != folded && !(node.isRoot() && folded)){ 
 			node.setFolded(folded);
 			mapChanged = true;
 		}
 		if(mapChanged){
-			final ResourceController resourceController = ResourceController.getResourceController();
-			if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
-				NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
-				final MapModel map = node.getMap();
-				setSaved(map, false);
+			fireFoldingChanged(node);
+		}
+		else if(childShown)
+			node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
+				Boolean.FALSE));
+	}
+
+	public boolean showNextChild(final NodeModel node) {
+		if (node.getChildCount() == 0) 
+			return false;
+		final boolean unfold = node.isFolded();
+		if (unfold){ 
+			for(NodeModel child:childrenUnfolded(node)){
+				child.addExtension(HideChildSubtree.instance);
+			}
+			node.setFolded(false);
+		}
+		boolean childMadeVisible = false;
+		for(NodeModel child:childrenUnfolded(node)){
+			if (child.removeExtension(HideChildSubtree.instance) && 
+					(child.isVisible() || unfoldInvisibleChildren(child, true))){
+				childMadeVisible = true;
+				break;
 			}
 		}
+		if(childMadeVisible){
+			node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
+				Boolean.FALSE));
+		}
+		return childMadeVisible;
 	}
+	
+	public boolean hasHiddenChildren(final NodeModel node){
+		if(! node.hasChildren())
+			return false;
+		if(node.isFolded())
+			return true;
+		for(NodeModel child:childrenUnfolded(node)){
+			if (child.containsExtension(HideChildSubtree.class)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void fireFoldingChanged(final NodeModel node) {
+	    final ResourceController resourceController = ResourceController.getResourceController();
+	    if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
+	    	NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+	    	final MapModel map = node.getMap();
+	    	setSaved(map, false);
+	    }
+    }
+
+
+	private boolean makeAllChildrenVisible(NodeModel node) {
+		final List<NodeModel> children = childrenFolded(node);
+		boolean changed = false;
+		for (NodeModel child : children){
+			if(child.removeExtension(HideChildSubtree.class) != null)
+				changed = true;
+		}
+		return changed;
+    }
 
 
 	private boolean unfoldInvisibleChildren(final NodeModel node, final boolean reportUnfolded) {

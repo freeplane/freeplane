@@ -155,6 +155,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final NodeModel node = nodeView.getModel();
 		final boolean plainEvent = Compat.isPlainEvent(e);
 		final boolean inside = isInside(e);
+		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
 			if(plainEvent){
 				if (component.isInFollowLinkRegion(e.getX())) {
@@ -175,14 +176,21 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 				
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 					if(!shouldSelectOnClick(e)){
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
-								mc.getMapController().setFolded(node, fold);
+								mapController.setFolded(node, fold);
 							}
 						});
 					}
+				}
+			}
+			else if(Compat.isCtrlEvent(e)){
+				if (isInFoldingRegion(e)) {
+					if (! mapController.showNextChild(node))
+						mapController.setFolded(node, true);
+					e.consume();
 				}
 			}
 		}
@@ -190,8 +198,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion 
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
 				&& !shouldSelectOnClick(e)) {
-			final MapController mapController = mc.getMapController();
-			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
+			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 			doubleClickTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();

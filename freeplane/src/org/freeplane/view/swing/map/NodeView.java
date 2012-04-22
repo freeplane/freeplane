@@ -51,6 +51,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
@@ -718,6 +719,8 @@ public class NodeView extends JComponent implements INodeView {
 	void addChildViews() {
 		int index = 0;
 		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
+			if(child.containsExtension(HideChildSubtree.class))
+				return;
 			addChildView(child, index++);
 		}
 	}
@@ -728,7 +731,9 @@ public class NodeView extends JComponent implements INodeView {
 	 * @param index2 
 	 */
 	void addChildView(final NodeModel newNode, int index) {
-		NodeViewFactory.getInstance().newNodeView(newNode, getMap(), this, index);
+		if(getComponentCount() < index 
+				|| ! (getComponent(index) instanceof NodeView))
+			NodeViewFactory.getInstance().newNodeView(newNode, getMap(), this, index);
 	}
 
 	/* fc, 25.1.2004: Refactoring necessary: should call the model. */
