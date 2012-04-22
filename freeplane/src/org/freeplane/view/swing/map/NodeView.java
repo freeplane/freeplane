@@ -122,11 +122,10 @@ public class NodeView extends JComponent implements INodeView {
 	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 	
-	protected NodeView(final NodeModel model, final MapView map, final Container parent, int index) {
+	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
 		this.model = model;
 		this.map = map;
-		parent.add(this, index);
 	}
 
 	void addDragListener(final DragGestureListener dgl) {

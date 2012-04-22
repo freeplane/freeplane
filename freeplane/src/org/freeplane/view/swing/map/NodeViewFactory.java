@@ -128,7 +128,8 @@ class NodeViewFactory {
 	 * Factory method which creates the right NodeView for the model.
 	 */
 	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
-		final NodeView newView = new NodeView(model, map, parent, index);
+		final NodeView newView = new NodeView(model, map, parent);
+		parent.add(newView, index);
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else
