@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.TextUtils;
@@ -126,8 +127,8 @@ class NodeViewFactory {
 	/**
 	 * Factory method which creates the right NodeView for the model.
 	 */
-	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent) {
-		final NodeView newView = new NodeView(model, map, parent);
+	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
+		final NodeView newView = new NodeView(model, map, parent, index);
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else

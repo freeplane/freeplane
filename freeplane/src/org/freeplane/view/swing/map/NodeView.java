@@ -122,12 +122,10 @@ public class NodeView extends JComponent implements INodeView {
 	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 	
-	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
+	protected NodeView(final NodeModel model, final MapView map, final Container parent, int index) {
 		setFocusCycleRoot(true);
 		this.model = model;
 		this.map = map;
-		final TreeNode parentNode = model.getParent();
-		final int index = parentNode == null ? 0 : parentNode.getIndex(model);
 		parent.add(this, index);
 	}
 
@@ -719,18 +717,19 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void addChildViews() {
+		int index = 0;
 		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
-			addChildView(child);
+			addChildView(child, index++);
 		}
 	}
 
 	/**
 	 * Create views for the newNode and all his descendants, set their isLeft
 	 * attribute according to this view.
+	 * @param index2 
 	 */
-	NodeView addChildView(final NodeModel newNode) {
-		final NodeView newView = NodeViewFactory.getInstance().newNodeView(newNode, getMap(), this);
-		return newView;
+	void addChildView(final NodeModel newNode, int index) {
+		NodeViewFactory.getInstance().newNodeView(newNode, getMap(), this, index);
 	}
 
 	/* fc, 25.1.2004: Refactoring necessary: should call the model. */
@@ -870,7 +869,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (getMap().getModeController().getMapController().isFolded(model)) {
 			return;
 		}
-		addChildView(child);
+		addChildView(child, index);
 		numberingChanged(index + 1);
 		revalidate();
 	}
