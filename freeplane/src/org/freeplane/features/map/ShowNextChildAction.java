@@ -22,7 +22,7 @@ package org.freeplane.features.map;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -30,7 +30,7 @@ import org.freeplane.features.mode.Controller;
  * 22.04.2012
  */
 @SuppressWarnings("serial")
-@SelectableAction(checkOnNodeChange = true)
+@EnabledAction(checkOnNodeChange = true)
 public class ShowNextChildAction extends AFreeplaneAction {
 	public ShowNextChildAction() {
 	    super("ShowNextChildAction");
@@ -44,11 +44,11 @@ public class ShowNextChildAction extends AFreeplaneAction {
 	}
 
 	@Override
-    public void setSelected() {
+    public void setEnabled() {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel selected = controller.getSelection().getSelected();
 		final MapController mapController = controller.getModeController().getMapController();
-	    super.setSelected(mapController.hasHiddenChildren(selected));
+	    super.setEnabled(mapController.hasHiddenChildren(selected));
     }
 	
 	
