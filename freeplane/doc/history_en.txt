@@ -6,6 +6,7 @@ Properties "Apply system screen resolution default" and "User defined screen res
 Various fixes for formatting of attributes
 Scripting: treat URIs special to allow clickable attribute values
 Presentation mode (see menu View and preferences->Appearance->default colors)
+Unfold children one-by-one by shift + SPACE, Navigate -> Show next child or shift + click inside folding circle
 
 ===============================
 1.2.13 beta
