@@ -308,8 +308,7 @@ public class MapController extends SelectionController implements IExtension{
 			fireFoldingChanged(node);
 		}
 		else if(childShown)
-			node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
-				Boolean.FALSE));
+	        fireNodeUnfold(node);
 	}
 
 	public boolean showNextChild(final NodeModel node) {
@@ -331,11 +330,16 @@ public class MapController extends SelectionController implements IExtension{
 			}
 		}
 		if(childMadeVisible){
-			node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
-				Boolean.FALSE));
+			fireNodeUnfold(node);
 		}
 		return childMadeVisible;
 	}
+
+
+	private void fireNodeUnfold(final NodeModel node) {
+	    node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
+	    	Boolean.FALSE));
+    }
 	
 	public boolean hasHiddenChildren(final NodeModel node){
 		if(! node.hasChildren())
@@ -463,8 +467,8 @@ public class MapController extends SelectionController implements IExtension{
 				if (nodesUnfoldedByDisplay != null) {
 					nodesUnfoldedByDisplay.add(nodeOnPath);
 				}
-				setFolded(nodeOnPath, false);
 			}
+			setFolded(nodeOnPath, false);
 		}
 	}
 
