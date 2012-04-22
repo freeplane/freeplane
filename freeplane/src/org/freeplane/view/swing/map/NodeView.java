@@ -721,7 +721,9 @@ public class NodeView extends JComponent implements INodeView {
 		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
 			if(child.containsExtension(HideChildSubtree.class))
 				return;
-			addChildView(child, index++);
+			if(getComponentCount() <= index 
+					|| ! (getComponent(index) instanceof NodeView))
+				addChildView(child, index++);
 		}
 	}
 
@@ -731,8 +733,6 @@ public class NodeView extends JComponent implements INodeView {
 	 * @param index2 
 	 */
 	void addChildView(final NodeModel newNode, int index) {
-		if(getComponentCount() < index 
-				|| ! (getComponent(index) instanceof NodeView))
 			NodeViewFactory.getInstance().newNodeView(newNode, getMap(), this, index);
 	}
 
