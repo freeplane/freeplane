@@ -184,10 +184,10 @@
 				<menu_action action="ToggleFullScreenAction" />
 				<menu_action action="SetBooleanPropertyAction.presentation_mode" />
 				<menu_action action="ToggleStatusAction" />
+				<menu_action action="ShowSelectionAsRectangleAction" />					
 				</menu_category>
 				<menu_separator />
 				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
-					<menu_action action="ShowSelectionAsRectangleAction" />					
 					<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
 					<menu_action action="RevisionPluginAction" />
 					<menu_action action="HierarchicalIconsAction" />
