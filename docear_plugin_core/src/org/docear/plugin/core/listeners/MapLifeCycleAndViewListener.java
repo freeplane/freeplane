@@ -24,9 +24,7 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 			if (f!=null) {
 				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_OPENED, f);
 				File installWelcomeMap = new File(System.getProperty("user.dir"), "doc" + File.separator + "docear-welcome.mm");
-				File userdirWelcomeMap = new File(WorkspaceUtils.getDataDirectory(), "help" + File.separator + "docear-welcome.mm");
-				System.out.println("Test: "+ installWelcomeMap);
-				System.out.println("Test: "+ userdirWelcomeMap);
+				File userdirWelcomeMap = new File(WorkspaceUtils.getDataDirectory(), "help" + File.separator + "docear-welcome.mm");				
 				if(f.equals(installWelcomeMap) || f.equals(userdirWelcomeMap)){
 					map.setReadOnly(true);
 				}
