@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.docear.plugin.backup
-Bundle-SymbolicName: org.docear.plugin.backup
+Bundle-Name: org.docear.plugin.services
+Bundle-SymbolicName: org.docear.plugin.services
 Bundle-Version: 1.0.0
 Bundle-Activator: org.docear.plugin.services.Activator
 Bundle-ActivationPolicy: lazy

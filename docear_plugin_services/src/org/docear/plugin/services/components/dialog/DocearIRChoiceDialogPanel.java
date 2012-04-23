@@ -42,6 +42,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import java.awt.Color;
 
 public class DocearIRChoiceDialogPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -84,7 +85,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		public void actionPerformed(final ActionEvent e) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					enableButtonIfPossible(e);
+					enableButtonIfPossible(e);					
 				}
 			});
 		}
@@ -105,14 +106,14 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		this.allowCancelAction = allowCancelAction;
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("right:default:grow"),
+				ColumnSpec.decode("default:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
 				RowSpec.decode("fill:default"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:default"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+				RowSpec.decode("top:default"),}));
 		
 		JPanel uploadPanel = new JPanel();
 		uploadPanel.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.upload"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -124,6 +125,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				ColumnSpec.decode("left:default:grow"),},
 			new RowSpec[] {
 				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
@@ -137,33 +139,32 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		chckbxAllowbackup.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowbackup, "2, 1");
 		
-		lblConsideration = new JLabel(TextUtils.getText("docear.uploadchooser.consideration.text"));
-		lblConsideration.setVerticalAlignment(SwingConstants.TOP);
-		lblConsideration.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		uploadPanel.add(lblConsideration, "2, 2, 3, 1");
-		
 		int irNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(ServiceController.DOCEAR_INFORMATION_RETRIEVAL, "13"));
 		
 		chckbxAllowRecommendations = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.recommendations"));	
 		chckbxAllowRecommendations.addActionListener(actionListener);
 		chckbxAllowRecommendations.setSelected((irNumber&ServiceController.ALLOW_RECOMMENDATIONS) > 0);
-		uploadPanel.add(chckbxAllowRecommendations, "2, 4");
+		uploadPanel.add(chckbxAllowRecommendations, "2, 3");
 		
 		chckbxAllowResearchContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.content"));
 		chckbxAllowResearchContent.setSelected((irNumber&ServiceController.ALLOW_CONTENT_RESEARCH) > 0);
 		chckbxAllowResearchContent.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowResearchContent, "2, 6");
+		uploadPanel.add(chckbxAllowResearchContent, "2, 5");
 		
 		chckbxAllowResearchUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.usage"));
 		chckbxAllowResearchUsage.setSelected((irNumber&ServiceController.ALLOW_USAGE_RESEARCH) > 0);
 		chckbxAllowResearchUsage.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowResearchUsage, "4, 6");
+		uploadPanel.add(chckbxAllowResearchUsage, "4, 5");
 		
 		
 		chckbxAllowIR = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.ir.content"));
 		chckbxAllowIR.setSelected((irNumber&ServiceController.ALLOW_INFORMATION_RETRIEVAL) > 0);
 		chckbxAllowIR.addActionListener(actionListener);
-		uploadPanel.add(chckbxAllowIR, "2, 8");
+		uploadPanel.add(chckbxAllowIR, "2, 7");
+		
+		lblMoreinfo = new JHyperlink(TextUtils.getText("docear.uploadchooser.more.text"), "http://www.docear.org/give-back/share-your-data/");
+		uploadPanel.add(lblMoreinfo, "2, 9, 3, 1");
+		lblMoreinfo.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		JPanel userDataPane = new JPanel();
 		userDataPane.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.userdata"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -291,9 +292,11 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		lblRequiredFields.setFont(new Font("Tahoma", Font.BOLD, 9));
 		userDataPane.add(lblRequiredFields, "2, 14");
 		
-		lblMoreinfo = new JHyperlink(TextUtils.getText("docear.uploadchooser.more.text"), "http://www.docear.org/give-back/share-your-data/");
-		add(lblMoreinfo, "2, 5");
-		lblMoreinfo.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblConsideration = new JLabel(TextUtils.getText("docear.uploadchooser.consideration.text"));
+		lblConsideration.setForeground(Color.RED);
+		add(lblConsideration, "2, 5");
+		lblConsideration.setVerticalAlignment(SwingConstants.TOP);
+		lblConsideration.setFont(new Font("Tahoma", Font.BOLD, 11));
 		enableRegistration(true);
 	}
 	
@@ -451,26 +454,32 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	}
 	
 	private void enableButtonIfPossible(AWTEvent event) {
-		if(okButton != null) {
+		if(okButton != null) {			
 			if(chckbxAllowbackup.isSelected()) {
 				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 5) {	
 					okButton.setEnabled(true);
+					lblConsideration.setVisible(false);
 				}
 				else if(rdbtnRegister.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword().length > 5 && txtEmail.getText().trim().length() > 6 && pwdRetypepasswd.getPassword().length > 5 && getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {	
 					okButton.setEnabled(true);
+					lblConsideration.setVisible(false);
 				}
 				else {
+					lblConsideration.setVisible(true);
 					okButton.setEnabled(false);
 				}
 			} else {
 				if((chckbxAllowIR.isSelected() || chckbxAllowResearchContent.isSelected() || chckbxAllowResearchUsage.isSelected())) {
 					okButton.setEnabled(true);
+					lblConsideration.setVisible(false);
 				}
 				else if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected()) {
 					okButton.setEnabled(true);
+					lblConsideration.setVisible(false);
 				}
 				else {
 					okButton.setEnabled(false);
+					lblConsideration.setVisible(true);
 				}
 			}
 		}
