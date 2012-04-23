@@ -36,7 +36,7 @@ public class DocearLicenseDialogLWPanel extends JPanel {
 	private JButton okButton;
 	private JCheckBox chckbxAcceptTermsOfUse;
 	private JCheckBox chckbxAcceptDataPrivacyTerms;
-	private JCheckBox chckbxAcceptDataProcessingTerms;
+	private JLabel labelReadDataProcessingStatement;
 
 	private final ActionListener actionListener = new ActionListener() {
 		public void actionPerformed(final ActionEvent e) {
@@ -100,10 +100,10 @@ public class DocearLicenseDialogLWPanel extends JPanel {
 		});
 		add(lblDataPrivacyTerms, "4, 4, fill, fill");
 		
-		chckbxAcceptDataProcessingTerms = new JCheckBox(TextUtils.getText("docear.license.ckbx.accept.c"));
-		add(chckbxAcceptDataProcessingTerms, "2, 6");
+		labelReadDataProcessingStatement = new JLabel(TextUtils.getText("docear.license.ckbx.accept.c"));
+		add(labelReadDataProcessingStatement, "2, 6");
 		
-		chckbxAcceptDataProcessingTerms.addActionListener(actionListener);
+//		labelReadDataProcessingStatement.addActionListener(actionListener);
 		JLabel lblDataProcessingTerms = new TextPopup(TextUtils.getText("docear.license.ckbx.link"));
 		lblDataProcessingTerms.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent e) {}
@@ -183,7 +183,7 @@ public class DocearLicenseDialogLWPanel extends JPanel {
 	
 	private void enableButtonIfPossible() {
 		if(okButton != null) {
-			if(chckbxAcceptTermsOfUse.isSelected() && chckbxAcceptDataPrivacyTerms.isSelected() && chckbxAcceptDataProcessingTerms.isSelected()) {
+			if(chckbxAcceptTermsOfUse.isSelected() && chckbxAcceptDataPrivacyTerms.isSelected()) {
 				okButton.setEnabled(true);
 			}
 			else {
