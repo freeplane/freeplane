@@ -14,11 +14,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
@@ -29,7 +27,6 @@ import java.util.logging.StreamHandler;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -282,7 +279,7 @@ public class ReportGenerator extends StreamHandler {
 			String lastReportInfo = ResourceController.getResourceController().getProperty(LAST_BUG_REPORT_INFO, NO_REPORTS_SENT_BEFORE);
 			sb.append(lastReportInfo).append('\n');
 			final String userId = ResourceController.getResourceController().getProperty(BUGREPORT_USER_ID);
-			if(! userId.isEmpty()){
+			if (userId.length() > 0){
 				sb.append("user : ").append(userId).append('\n');
 			}
 			sb.append(info);
