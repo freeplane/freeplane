@@ -14,6 +14,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapViewChangeListener {
 
@@ -22,8 +23,15 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 			File f = map.getFile();
 			if (f!=null) {
 				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_OPENED, f);
+				File installWelcomeMap = new File(System.getProperty("user.dir"), "doc" + File.separator + "docear-welcome.mm");
+				File userdirWelcomeMap = new File(WorkspaceUtils.getDataDirectory(), "help" + File.separator + "docear-welcome.mm");
+				System.out.println("Test: "+ installWelcomeMap);
+				System.out.println("Test: "+ userdirWelcomeMap);
+				if(f.equals(installWelcomeMap) || f.equals(userdirWelcomeMap)){
+					map.setReadOnly(true);
+				}
 			}
-			else {
+			else {				
 				DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MAP_NEW);				
 			}
 			
