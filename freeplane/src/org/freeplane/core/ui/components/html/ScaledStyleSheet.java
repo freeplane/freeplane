@@ -53,7 +53,7 @@ public class ScaledStyleSheet extends StyleSheet{
 			return 1/1.3f;
 		if(fontSize.endsWith("%") || fontSize.endsWith("em") || fontSize.endsWith("ex")
 				|| fontSize.endsWith("er"))
-			return getFontScaleFactor(a);
+			return getFontScaleFactor(a.getResolveParent());
 		return UITools.FONT_SCALE_FACTOR;
     }
 
