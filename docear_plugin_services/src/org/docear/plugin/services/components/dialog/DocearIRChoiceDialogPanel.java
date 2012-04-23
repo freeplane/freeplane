@@ -454,32 +454,33 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	}
 	
 	private void enableButtonIfPossible(AWTEvent event) {
-		if(okButton != null) {			
+		if(okButton != null) {
+			lblConsideration.setOpaque(true);
 			if(chckbxAllowbackup.isSelected()) {
 				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 5) {	
-					okButton.setEnabled(true);
-					lblConsideration.setVisible(false);
+					okButton.setEnabled(true);					
+					lblConsideration.setForeground(new Color(0x00000000, true));
 				}
 				else if(rdbtnRegister.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword().length > 5 && txtEmail.getText().trim().length() > 6 && pwdRetypepasswd.getPassword().length > 5 && getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {	
 					okButton.setEnabled(true);
-					lblConsideration.setVisible(false);
+					lblConsideration.setForeground(new Color(0x00000000, true));
 				}
 				else {
-					lblConsideration.setVisible(true);
 					okButton.setEnabled(false);
+					lblConsideration.setForeground(new Color(0xFFFF0000, true));
 				}
 			} else {
 				if((chckbxAllowIR.isSelected() || chckbxAllowResearchContent.isSelected() || chckbxAllowResearchUsage.isSelected())) {
 					okButton.setEnabled(true);
-					lblConsideration.setVisible(false);
+					lblConsideration.setForeground(new Color(0x00000000, true));
 				}
 				else if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected()) {
 					okButton.setEnabled(true);
-					lblConsideration.setVisible(false);
+					lblConsideration.setForeground(new Color(0x00000000, true));
 				}
 				else {
 					okButton.setEnabled(false);
-					lblConsideration.setVisible(true);
+					lblConsideration.setForeground(new Color(0xFFFF0000, true));
 				}
 			}
 		}
