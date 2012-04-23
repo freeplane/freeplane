@@ -74,6 +74,7 @@
 				<menu_action accelerator="control alt RIGHT" action="NextNodeAction.FORWARD"/>
 				<menu_action accelerator="control alt shift LEFT" action="NextNodeAction.BACK_N_FOLD"/>
 				<menu_action accelerator="control alt shift RIGHT" action="NextNodeAction.FORWARD_N_FOLD"/>
+				<menu_action action="NextPresentationItemAction"/>
 				<menu_category name="links">
 			<menu_action accelerator="control ENTER" action="FollowLinkAction"/>
 				<!-- goto -->

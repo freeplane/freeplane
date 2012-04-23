@@ -178,6 +178,7 @@
 					<menu_action action="ZoomOutAction" accelerator="alt DOWN" />
 					<menu_action action="FitToPage" />
 					<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
+					<menu_action action="SetBooleanPropertyAction.center_selected_node"/>
 					</menu_category>
 				<menu_separator />
 				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
@@ -320,6 +321,7 @@
 				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
 				<menu_action action="NextNodeAction.BACK_N_FOLD" accelerator="control alt shift LEFT" />
 				<menu_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control alt shift RIGHT" />
+				<menu_action action="NextPresentationItemAction"/>
 				<menu_action action="BackAction" accelerator="alt LEFT" />
 				<menu_action action="ForwardAction" accelerator="alt RIGHT" />				
 			<menu_category name="links">

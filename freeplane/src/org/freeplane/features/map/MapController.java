@@ -464,11 +464,9 @@ public class MapController extends SelectionController implements IExtension{
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = path[i];
-			if (isFolded(nodeOnPath)) {
-				if (nodesUnfoldedByDisplay != null) {
-					nodesUnfoldedByDisplay.add(nodeOnPath);
-				}
-			}
+			if (nodesUnfoldedByDisplay != null && isFolded(nodeOnPath)) {
+            	nodesUnfoldedByDisplay.add(nodeOnPath);
+            }
 			setFolded(nodeOnPath, false);
 		}
 	}
