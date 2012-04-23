@@ -41,30 +41,10 @@ class BubbleMainView extends MainView {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public int getDeltaX() {
-		final NodeModel model = getNodeView().getModel();
-		if (getNodeView().getMap().getModeController().getMapController().isFolded(model) && getNodeView().isLeft()) {
-			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 2;
-		}
-		return super.getDeltaX();
-	}
-
-	@Override
     public
 	Point getLeftPoint() {
 		final Point in = new Point(0, getHeight() / 2);
 		return in;
-	}
-
-	@Override
-	protected int getMainViewWidthWithFoldingMark() {
-		int width = getWidth();
-		final int dW = getZoomedFoldingSymbolHalfWidth() * 2;
-		final NodeModel model = getNodeView().getModel();
-		if (getNodeView().getMap().getModeController().getMapController().isFolded(model)) {
-			width += dW;
-		}
-		return width + dW;
 	}
 
 	@Override

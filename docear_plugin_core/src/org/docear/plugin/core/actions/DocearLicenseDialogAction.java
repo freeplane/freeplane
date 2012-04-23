@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
-import org.docear.plugin.core.ui.DocearLicenseDialogPanel;
+import org.docear.plugin.core.ui.DocearLicenseDialogLWPanel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -31,7 +31,8 @@ public class DocearLicenseDialogAction extends AFreeplaneAction {
 	}
 
 	public static void showDialog() {
-		final DocearLicenseDialogPanel dialog = new DocearLicenseDialogPanel();
+		//final DocearLicenseDialogPanel dialog = new DocearLicenseDialogPanel();
+		final DocearLicenseDialogLWPanel dialog = new DocearLicenseDialogLWPanel();
 		
 		ArrayList<JButton> buttonsList = new ArrayList<JButton>();
 		buttonsList.add(new JButton(TextUtils.getText("docear.license.button.ok")));

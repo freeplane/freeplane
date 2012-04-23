@@ -128,7 +128,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 	@Override
     public void mouseClicked(MouseEvent e) {
 
-		if(Compat.isCtrlEvent(e)){
+		if(e.getClickCount() == 2 && Compat.isCtrlEvent(e)){
 			final MapView mapView = (MapView) e.getComponent();
 			final Object object = mapView.detectCollision(new Point(originX, originY));
 			if(object != null)

@@ -45,7 +45,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 			getPathToRoot(builder, node);
 			builder.append(' ');
 			if (isHtml) {
-				obj = insertPrefix((String)obj, builder.toString());
+				obj = insertPrefix(obj.toString(), builder.toString());
 			}
 			else{
 				obj = builder.toString() + obj;

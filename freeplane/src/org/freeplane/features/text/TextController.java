@@ -31,6 +31,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -224,10 +225,24 @@ public class TextController implements IExtension {
 						 return null;
 					 }
 					final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
-					final Font font = style.getFont(node);
+			        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+			        final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
+			        Font detailFont = style.getFont(detailStyleNode);
+			        Color detailBackground = style.getBackgroundColor(detailStyleNode);
+			        Color detailForeground = style.getColor(detailStyleNode);
+					
 					final StringBuilder rule = new StringBuilder();
-					rule.append("font-family: " + font.getFamily() + ";");
-					rule.append("font-size: " + font.getSize() + "pt;");
+					rule.append("font-family: " + detailFont.getFamily() + ";");
+					rule.append("font-size: " + detailFont.getSize() + "pt;");
+	                if (detailFont.isItalic()) {
+	                    rule.append("font-style: italic; ");
+	                }
+	                if (detailFont.isBold()) {
+	                    rule.append("font-weight: bold; ");
+	                }
+					rule.append("color: ").append(ColorUtils.colorToString(detailForeground)).append(";");
+					rule.append("background-color: ").append(ColorUtils.colorToString(detailBackground)).append(";");
+					
 					String noteText= detailText.getHtml();
 					final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
 					    .replaceFirst("</body>", "</div></body>");

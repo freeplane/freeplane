@@ -150,7 +150,7 @@ public class AddOnsController {
 		}
     }
 
-	public void deInstall(AddOnProperties addOn) {
+	public void deinstall(AddOnProperties addOn) {
 		LogUtils.info("deinstalling " + addOn);
 		for (String[] rule : addOn.getDeinstallationRules()) {
 			if (rule[0].equals("delete")) {

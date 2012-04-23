@@ -55,7 +55,6 @@ import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;
@@ -70,7 +69,7 @@ public class MapController extends SelectionController implements IExtension{
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
 
-	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
+	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange, IMapChangeListener {
 		final AFreeplaneAction action;
 
 		public ActionEnablerOnChange(final AFreeplaneAction action) {
@@ -92,6 +91,41 @@ public class MapController extends SelectionController implements IExtension{
 		public void onSelect(final NodeModel node) {
 			action.setEnabled();
 		}
+
+		public void mapChanged(MapChangeEvent event) {
+			action.setEnabled();	
+		}
+
+		public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+			action.setEnabled();
+		}
+
+		public void onNodeInserted(NodeModel parent, NodeModel child,
+				int newIndex) {
+			action.setEnabled();
+		}
+
+		public void onNodeMoved(NodeModel oldParent, int oldIndex,
+				NodeModel newParent, NodeModel child, int newIndex) {
+			action.setEnabled();
+		}
+
+		public void onPreNodeMoved(NodeModel oldParent, int oldIndex,
+				NodeModel newParent, NodeModel child, int newIndex) {
+		}
+
+		public void onPreNodeDelete(NodeModel oldParent,
+				NodeModel selectedNode, int index) {
+			setActionEnabled();
+		}
+
+		private void setActionEnabled() {
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			if (selection == null || selection.getSelected() == null) {
+				return;
+			}
+			action.setEnabled();
+		}
 	}
 
 	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener,
@@ -111,6 +145,10 @@ public class MapController extends SelectionController implements IExtension{
 			if (NodeChangeType.REFRESH.equals(event.getProperty())) {
 				return;
 			}
+			setActionSelected();
+		}
+
+		private void setActionSelected() {
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			if (selection == null || selection.getSelected() == null) {
 				return;
@@ -122,32 +160,33 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		public void onSelect(final NodeModel node) {
-			action.setSelected();
+			setActionSelected();
 		}
 
 		public void mapChanged(final MapChangeEvent event) {
-			final Object property = event.getProperty();
-			if (property.equals(MapStyle.MAP_STYLES)) {
-				action.setSelected();
-				return;
-			}
+			setActionSelected();
 		}
 
 		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+			setActionSelected();
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+			setActionSelected();
 		}
 
 		public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 		                        final NodeModel child, final int newIndex) {
+			setActionSelected();
 		}
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+			setActionSelected();
 		}
 
 		public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 		                           final NodeModel child, final int newIndex) {
+			setActionSelected();
 		}
 	}
 	
@@ -162,6 +201,7 @@ public class MapController extends SelectionController implements IExtension{
 			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
 			addNodeSelectionListener(listener);
 			addNodeChangeListener(listener);
+			addMapChangeListener(listener);
 		}
 		if (AFreeplaneAction.checkSelectionOnChange(action)) {
 			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
@@ -175,6 +215,7 @@ public class MapController extends SelectionController implements IExtension{
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			removeNodeSelectionListener(ActionEnablerOnChange.class, action);
 			removeNodeChangeListener(ActionEnablerOnChange.class, action);
+			removeMapChangeListener(ActionEnablerOnChange.class, action);
 		}
 		if (AFreeplaneAction.checkSelectionOnChange(action)) {
 			removeNodeSelectionListener(ActionSelectorOnChange.class, action);
@@ -371,14 +412,16 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void fireMapChanged(final MapChangeEvent event) {
+		final MapModel map = event.getMap();
+		if (map != null) {
+			setSaved(map, false);
+		}
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
 		for (final IMapChangeListener next : list) {
 			next.mapChanged(event);
 		}
-		final MapModel map = event.getMap();
 		if (map != null) {
 			map.fireMapChangeEvent(event);
-			setSaved(map, false);
 		}
 	}
 
@@ -713,23 +756,70 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
-	private final ConcurrentHashMap<NodeModel, ModeController> nodesToRefresh = new ConcurrentHashMap<NodeModel, ModeController>();
+	private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
+	
+	private static class NodeRefreshKey{
+		final NodeModel node;
+		final Object property;
+		public NodeRefreshKey(NodeModel node, Object property) {
+			super();
+			this.node = node;
+			this.property = property;
+		}
+		@Override
+		public int hashCode() {
+			return node.hashCode() + propertyHash();
+		}
+		protected int propertyHash() {
+			return property != null ? 37 * property.hashCode() : 0;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null || ! obj.getClass().equals(getClass()))
+				return false;
+			NodeRefreshKey key2 = (NodeRefreshKey)obj;
+			return node.equals(key2.node) && (property == key2.property || property != null && property.equals(key2.property));
+		}
+	}
+
+	private static class NodeRefreshValue{
+		final ModeController controller;
+		Object oldValue;
+		Object newValue;
+		public NodeRefreshValue(ModeController controller, 
+				Object oldValue, Object newValue) {
+			super();
+			this.controller = controller;
+			this.oldValue = oldValue;
+			this.newValue = newValue;
+		}
+		
+	}
 
 	/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
 	 * list when the thread was started.*/
 	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 	                               final Object newValue) {
 	    final boolean startThread = nodesToRefresh.isEmpty();
-	    nodesToRefresh.put(node, Controller.getCurrentModeController());
+	    final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
+		final NodeRefreshKey key = new NodeRefreshKey(node, property);
+		final NodeRefreshValue old = nodesToRefresh.put(key, value);
+		if(old != null && old.newValue != value.newValue){
+			old.newValue = value.newValue;
+			nodesToRefresh.put(key, old);
+		}
         if (startThread) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final ModeController currentModeController = Controller.getCurrentModeController();
-					final Iterator<Entry<NodeModel, ModeController>> it = nodesToRefresh.entrySet().iterator();
+					final Iterator<Entry<NodeRefreshKey, NodeRefreshValue>> it = nodesToRefresh.entrySet().iterator();
 					while (it.hasNext()) {
-					    final Entry<NodeModel, ModeController> entry = it.next();
-					    if (entry.getValue() == currentModeController)
-					        currentModeController.getMapController().nodeRefresh(node, property, oldValue, newValue);
+					    final Entry<NodeRefreshKey, NodeRefreshValue> entry = it.next();
+					    final NodeRefreshValue info = entry.getValue();
+					    if (info.controller == currentModeController){
+					        final NodeRefreshKey key = entry.getKey();
+							currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
+					    }
 					    it.remove();
 					}
 				}
@@ -835,9 +925,13 @@ public class MapController extends SelectionController implements IExtension{
 			final NodeModel node = collection.iterator().next();
 			if(node.isRoot()){
 				setFolded(node, false);
-			}
-			else
-				setFolded(node, ! node.isFolded());
+			} else
+				toggleFolded(node);
 		}
+	}
+
+
+	public void toggleFolded(final NodeModel node) {
+		setFolded(node, ! node.isFolded());
 	}
 }

@@ -456,9 +456,6 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		attributesChanged();
 	}
 
-	public void afterMapClose(final MapModel pOldMapView) {
-	}
-
 	private void attributesChanged() {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);

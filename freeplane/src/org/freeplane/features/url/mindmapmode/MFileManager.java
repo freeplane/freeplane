@@ -395,10 +395,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         	assert(map.getRootNode() == root);
         	
         }
-        else{
-        	map.createNewRoot();
-        }
-	}
+		if(map.getRootNode() == null)
+			map.createNewRoot();
+ 	}
 
 	public URL getAlternativeURL(final URL url, AlternativeFileMode mode){
 		try {

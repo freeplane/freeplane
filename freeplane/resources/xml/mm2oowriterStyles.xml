@@ -147,6 +147,47 @@
 				style:font-weight-asian="bold" style:font-size-complex="14pt"
 				style:font-weight-complex="bold" />
 		</style:style>
+		<style:style style:name="Heading_20_4"
+			style:display-name="Heading 4" style:family="paragraph"
+			style:parent-style-name="Heading"
+			style:next-style-name="Text_20_body" style:class="text"
+			style:default-outline-level="4">
+			<style:text-properties fo:font-size="85%"
+				fo:font-style="italic" fo:font-weight="bold"
+				style:font-size-asian="85%" style:font-style-asian="italic"
+				style:font-weight-asian="bold" style:font-size-complex="85%"
+				style:font-style-complex="italic" style:font-weight-complex="bold"/>
+		</style:style>
+		<style:style style:name="Heading_20_5"
+			style:display-name="Heading 5" style:family="paragraph"
+			style:parent-style-name="Heading"
+			style:next-style-name="Text_20_body" style:class="text"
+			style:default-outline-level="5">
+			<style:text-properties fo:font-size="85%"
+				fo:font-weight="bold" style:font-size-asian="85%"
+				style:font-weight-asian="bold" style:font-size-complex="85%"
+				style:font-weight-complex="bold"/>
+		</style:style>
+		<style:style style:name="Heading_20_6"
+			style:display-name="Heading 6" style:family="paragraph"
+			style:parent-style-name="Heading"
+			style:next-style-name="Text_20_body" style:class="text"
+			style:default-outline-level="6">
+			<style:text-properties fo:font-size="75%"
+				fo:font-weight="bold" style:font-size-asian="75%"
+				style:font-weight-asian="bold" style:font-size-complex="75%"
+				style:font-weight-complex="bold"/>
+		</style:style>
+		<style:style style:name="Heading_20_7"
+			style:display-name="Heading 7" style:family="paragraph"
+			style:parent-style-name="Heading" style:class="text"
+			style:next-style-name="Text_20_body"
+			style:default-outline-level="7">
+			<style:text-properties fo:font-size="75%"
+				fo:font-weight="bold" style:font-size-asian="75%"
+				style:font-weight-asian="bold" style:font-size-complex="75%"
+				style:font-weight-complex="bold"/>
+		</style:style>
 		<style:style style:name="List" style:family="paragraph"
 			style:parent-style-name="Text_20_body" style:class="list" />
 		<style:style style:name="Caption" style:family="paragraph"

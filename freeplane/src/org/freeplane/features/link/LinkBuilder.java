@@ -46,6 +46,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter {
+	private static final String FORMAT_AS_HYPERLINK = "FORMAT_AS_HYPERLINK";
+	private static final String LINK = "LINK";
 	final private HashSet<NodeLinkModel> arrowLinks;
 	private final LinkController linkController;
 
@@ -94,12 +96,21 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "LINK", new IAttributeHandler() {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, LINK, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				linkController.loadLink(node, value);
 			}
 		});
+		
+		final IAttributeHandler hyperlinkHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				linkController.loadLinkFormat(node, Boolean.parseBoolean(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, FORMAT_AS_HYPERLINK, hyperlinkHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, FORMAT_AS_HYPERLINK, hyperlinkHandler);
 		
 		reader.addAttributeHandler("arrowlink", "EDGE_LIKE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
@@ -315,7 +326,11 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 					return;
 				}
 			}
-			writer.addAttribute("LINK", string);
+			writer.addAttribute(LINK, string);
+		}
+		final Boolean formatNodeAsHyperlink = links.formatNodeAsHyperlink();
+		if (formatNodeAsHyperlink != null) {
+			writer.addAttribute(FORMAT_AS_HYPERLINK, formatNodeAsHyperlink.toString());
 		}
 	}
 

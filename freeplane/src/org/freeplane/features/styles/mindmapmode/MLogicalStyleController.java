@@ -176,6 +176,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			from.removeExtension(fromStyle);
 		}
+		
+		public void resolveParentExtensions(Object key, NodeModel to) {
+        }
 	}
 
 // 	private final ModeController modeController;
@@ -210,9 +213,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 				removeStyleMenu(menuBuilder, "main_menu_styles");
 				removeStyleMenu(menuBuilder, "node_popup_styles");
-			}
-
-			public void afterMapClose(final MapModel oldMap) {
 			}
 
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {

@@ -80,9 +80,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				// evaluate values only
 				final TextController textController = TextController.getController();
 				text = textController.getTransformedText(value, attributeTableModel.getNode(), null);
-				final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
-				    .getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
-				if (markTransformedText && text != originalText) {
+				if (text != originalText && markTransformedText()) {
 					borderColor = Color.GREEN;
 				}
 			}
@@ -121,6 +119,11 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		return rendererComponent;
 	}
+
+    private boolean markTransformedText() {
+        return !Controller.getCurrentController().getResourceController()
+            .getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
+    }
 
 	/*
 	 * (non-Javadoc)

@@ -679,13 +679,27 @@ public class HtmlUtils {
 	}
 
 	public static String extractRawBody(final String text) {
-		final int start = text.indexOf("<body>");
-		if (start == -1)
-			return "";
-		final int textBegin = start + "<body>".length();
-		final int end = text.indexOf("</body>", textBegin);
-		if (end == -1)
-			return "";
+		int start = text.indexOf("<body>");
+		final int textBegin;
+		if (start != -1)
+			textBegin = start + "<body>".length();
+		else{
+			start = text.indexOf("</head>");
+			if (start != -1){
+				textBegin = start+ "</head>".length();
+			}
+			else {
+				start = text.indexOf("<html>");
+				textBegin = start+ "<html>".length();
+			}
+		}
+		int end = text.indexOf("</body>", textBegin);
+		if (end == -1){
+			end = text.indexOf("</html>", textBegin);
+			if (end == -1){
+				end = text.length();
+			}
+		}
 		return text.substring(textBegin, end).trim();
 	}
 

@@ -11,6 +11,9 @@ public class PropertiesActionListener implements ActionListener{
 		if ("docear.allow.upload.action".equals(e.getActionCommand())) {
 			DocearAllowUploadChooserAction.showDialog(true);
 		}
+		if ("docear.update_checker.show".equals(e.getActionCommand())) {
+			
+		}
 		
 	}
 

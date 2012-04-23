@@ -166,7 +166,7 @@ class RootMainView extends MainView {
             }
             final double nWidth = mainView.getWidth() / 2f;
             final double nHeight = mainView.getHeight() / 2f;
-            int dx = getNodeView().getZoomed(LocationModel.HGAP);
+            int dx = Math.max(Math.abs(p.x), getNodeView().getZoomed(LocationModel.HGAP));
             if(p.x < 0)
             	dx = -dx;
 			double angle = Math.atan((p.y - nHeight) / dx);
@@ -176,4 +176,9 @@ class RootMainView extends MainView {
             final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
             return out;
     }
+
+	@Override
+	public boolean isInDragRegion(Point p) {
+		return false;
+	}
 }

@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -52,14 +51,14 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.FreeNode;
-import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
@@ -116,7 +115,6 @@ public class NodeView extends JComponent implements INodeView {
 	private MainView mainView;
 	private final MapView map;
 	private NodeModel model;
-	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
 	private EdgeStyle edgeStyle = EdgeStyle.EDGESTYLE_HIDDEN;
 	private Integer edgeWidth = 1;
@@ -135,10 +133,6 @@ public class NodeView extends JComponent implements INodeView {
 		final TreeNode parentNode = model.getParent();
 		final int index = parentNode == null ? 0 : parentNode.getIndex(model);
 		parent.add(this, index);
-		if (!model.isRoot()) {
-			motionListenerView = new NodeMotionListenerView(this);
-			map.add(motionListenerView, 0);
-		}
 	}
 
 	void addDragListener(final DragGestureListener dgl) {
@@ -168,13 +162,19 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
+	public static int ADDITIONAL_MOUSE_SENSITIVE_AREA = 50;
 	@Override
 	public boolean contains(final int x, final int y) {
-		// if (!isValid()) {
-		// return false;
-		// }
-		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
-		return (x >= space) && (x < getWidth() - space) && (y >= space) && (y < getHeight() - space);
+		final int space = getMap().getZoomed(NodeView.SPACE_AROUND);
+		final int reducedSpace = space - ADDITIONAL_MOUSE_SENSITIVE_AREA;
+		if (x >= reducedSpace && x < getWidth() - reducedSpace && y >= reducedSpace && y < getHeight() - reducedSpace){
+			for(int i = getComponentCount()-1; i >= 0; i--){
+				final Component comp = getComponent(i);
+				if(comp.isVisible() && comp.contains(x-comp.getX(), y-comp.getY()))
+					return true;
+			}
+		}
+		return false;
 	}
 
 	protected void convertPointToMap(final Point p) {
@@ -467,10 +467,6 @@ public class NodeView extends JComponent implements INodeView {
 		return model;
 	}
 
-	public NodeMotionListenerView getMotionListenerView() {
-		return motionListenerView;
-	}
-
 	protected NodeView getNextSiblingSingle() {
 		LinkedList<NodeView> v = null;
 		if (getParentView().getModel().isRoot()) {
@@ -692,10 +688,6 @@ public class NodeView extends JComponent implements INodeView {
 		return color;
 	}
 
-	public Font getTextFont() {
-		return getMainView().getFont();
-	}
-
 	/**
 	 * @return Returns the VGAP.
 	 */
@@ -723,7 +715,7 @@ public class NodeView extends JComponent implements INodeView {
 		return preferredFoldingSymbolHalfWidth;
 	}
 
-	void insert() {
+	void insertChildViews() {
 		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
 			insert(child, 0);
 		}
@@ -735,7 +727,6 @@ public class NodeView extends JComponent implements INodeView {
 	 */
 	NodeView insert(final NodeModel newNode, final int position) {
 		final NodeView newView = NodeViewFactory.getInstance().newNodeView(newNode, position, getMap(), this);
-		newView.insert();
 		return newView;
 	}
 
@@ -895,8 +886,11 @@ public class NodeView extends JComponent implements INodeView {
 			for (int i = firstChangedIndex; i < components.length; i++) {
 				if (components[i] instanceof NodeView) {
 					final NodeView view = (NodeView) components[i];
-					view.getMainView().updateText(view.getModel());
-					view.numberingChanged(0);
+					final MainView childMainView = view.getMainView();
+					if(childMainView != null){
+						childMainView.updateText(view.getModel());
+						view.numberingChanged(0);
+					}
 				}
 			}
 		}
@@ -908,7 +902,7 @@ public class NodeView extends JComponent implements INodeView {
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	@Override
-	public void paint(final Graphics g) {
+	public void paintComponent(final Graphics g) {
 		if (modifyModelWithoutRepaint) {
 			return;
 		}
@@ -930,7 +924,6 @@ public class NodeView extends JComponent implements INodeView {
 				paintClouds(g2);
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
-			super.paint(g);
 			switch (paintingMode) {
 			case NODES:
 			case ALL:
@@ -941,10 +934,8 @@ public class NodeView extends JComponent implements INodeView {
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 		}
-		else {
-			super.paint(g);
-		}
-		if (PAINT_DEBUG_BORDER && isSelected()) {
+		super.paintComponent(g);
+		if (PAINT_DEBUG_BORDER && isSelected()){
 			final int spaceAround = getZoomed(SPACE_AROUND);
 			g.drawRect(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
 			// if(getMap().getLayoutType().equals(MapViewLayout.MAP)){
@@ -1093,9 +1084,6 @@ public class NodeView extends JComponent implements INodeView {
 	protected void removeFromMap() {
 		setFocusCycleRoot(false);
 		getParent().remove(this);
-		if (motionListenerView != null) {
-			map.remove(motionListenerView);
-		}
 	}
 
 	private void repaintEdge(final NodeView target) {
@@ -1167,14 +1155,6 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.requestFocus();
 	}
 
-	@Override
-	public void setBounds(final int x, final int y, final int width, final int height) {
-		super.setBounds(x, y, width, height);
-		if (motionListenerView != null) {
-			motionListenerView.invalidate();
-		}
-	}
-
 	void setMainView(final MainView newMainView) {
 		if (contentPane != null) {
 			assert (contentPane.getParent() == this);
@@ -1226,13 +1206,6 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.setText(string);
 	}
 
-	@Override
-	public void setVisible(final boolean isVisible) {
-		super.setVisible(isVisible);
-		if (motionListenerView != null) {
-			motionListenerView.setVisible(isVisible);
-		}
-	}
 
 	void syncronizeAttributeView() {
 		if (attributeView != null) {
@@ -1261,10 +1234,7 @@ public class NodeView extends JComponent implements INodeView {
 		for (final ListIterator<NodeView> i = getChildrenViews().listIterator(); i.hasNext();) {
 			i.next().remove();
 		}
-		insert();
-		if (map.getSelected() == null) {
-			map.selectAsTheOnlyOneSelected(this);
-		}
+		insertChildViews();
 		map.revalidateSelecteds();
 		revalidate();
 	}

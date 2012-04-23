@@ -12,7 +12,6 @@ import java.util.zip.ZipOutputStream;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.services.ServiceController;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
@@ -37,7 +36,8 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		}
 	}
 	
-	private Properties getMapProperties(MapModel map, boolean backup, int informationRetrieval) {
+	private Properties getMapProperties(MapModel map) {
+		ServiceController serviceController = ServiceController.getController();
 		DocearController docearController = DocearController.getController();
 		
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
@@ -47,8 +47,12 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		Properties properties = new Properties();
 		properties.put("mindmap_id", dmme.getMapId());
 		properties.put("timestamp", ""+System.currentTimeMillis());
-		properties.put("backup", new Boolean(backup).toString());
-		properties.put("allow_ir", ""+informationRetrieval);
+		properties.put("backup", new Boolean(serviceController.isBackupAllowed()).toString());
+		properties.put("allow_content_research", new Boolean(serviceController.isAllowedContentResearch()).toString());
+		properties.put("allow_information_retrieval", new Boolean(serviceController.isAllowedInformationRetrieval()).toString());		
+		properties.put("allow_usage_research", new Boolean(serviceController.isAllowedUsageResearch()).toString());
+		properties.put("allow_recommendations", new Boolean(serviceController.isAllowedRecommendations()).toString());
+		
 		properties.put("map_version", dmme.getVersion());
 		properties.put("application_name", docearController.getApplicationName());
 		properties.put("application_version", docearController.getApplicationVersion());
@@ -70,7 +74,7 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 			return;
 		}
 		
-		final Properties meta = getMapProperties(map, backup, ServiceController.getController().getInformationRetrievalCode());
+		final Properties meta = getMapProperties(map);
 		if (meta == null) {
 			return;
 		}

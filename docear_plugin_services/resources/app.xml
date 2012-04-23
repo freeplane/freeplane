@@ -1,0 +1,24 @@
+<application name="Docear" id="docear" href="http://api.docear.org/applications/docear">
+	<versions>
+		<version id="2" href="http://api.docear.org/applications/docear/2" >
+			<release_date>2012-04-18</release_date>
+			<build>60</build>
+			<major>1</major>
+			<middle>0</middle>
+			<minor>0</minor>
+			<status>beta</status>
+			<status_number>2</status_number>
+			<release_notes>2nd Beta of Docear</release_notes>
+		</version>
+		<version id="1" href="http://api.docear.org/applications/docear/1" >
+			<release_date>2012-04-14</release_date>
+			<build>31</build>
+			<major>1</major>
+			<middle>0</middle>
+			<minor>0</minor>
+			<status>beta</status>
+			<status_number>1</status_number>
+			<release_notes>1st Beta of Docear</release_notes>
+		</version>
+	</versions>
+</application>

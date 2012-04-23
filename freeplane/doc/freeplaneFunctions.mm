@@ -127,7 +127,7 @@
   </head>
   <body>
     <p>
-      Hover with the cursor over the different texts to unhide links to <b><i>Quick reference</i></b>&#160;and <b><i>Documentation</i></b>.
+      Hover with the cursor over the different texts to unhide links to <b><i><i>Tutorial</i></i></b>&#160;and <b><i>Documentation</i></b>.
     </p>
     <p>
       
@@ -177,7 +177,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1337127972">Basic map</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1337127972">Basic map</a>
       </li>
       <li>
         <i>Help &gt; Documentation</i>&#160;<a href="freeplane.mm#ID_1154882439">Edit &gt; Node core</a>
@@ -212,7 +212,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_265318117">Edit &gt; Node core text</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_265318117">Edit &gt; Node core text</a>&#160;
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_1162372089">Edit &gt; Node core &gt; text...</a>
@@ -248,7 +248,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="http://freeplaneTutorial.mm#ID_1795262306">Image (node core)</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="http://freeplaneTutorial.mm#ID_1795262306">Image (node core)</a>
       </li>
       <li>
         <i>Help &gt; Documentation</i>&#160;<a href="http://freeplane.mm#ID_1277752024">Edit &gt; Node core &gt; Image</a>
@@ -284,7 +284,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1830541497">Green arrow link</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1830541497">Green arrow link</a>&#160;
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_271903009">Edit &gt; Link &gt; Add local hyperlink</a>
@@ -308,7 +308,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1913035829">Red arrow link</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1913035829">Red arrow link</a>&#160;
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_178833757">Edit &gt; Link &gt; Add hyperlink</a>
@@ -335,7 +335,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_715025500">Icons</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_715025500">Icons</a>&#160;
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_835126969">Edit &gt; Node core &gt; Icon...</a>
@@ -359,7 +359,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_707469329">Progress</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_707469329">Progress</a>&#160;
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_1053622072">Edit &gt; Node core &gt; Progress.</a>
@@ -382,7 +382,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1531819965">Automatic node numbering</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1531819965">Automatic node numbering</a>&#160;
       </li>
     </ul>
   </body>
@@ -404,7 +404,7 @@
     </p>
     <ul>
       <li>
-        <a href="freeplaneTutorial.mm#ID_15604512">Quick reference</a>
+        <a href="freeplaneTutorial.mm#ID_15604512"><i>Tutorial</i></a>
       </li>
     </ul>
   </body>
@@ -427,7 +427,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
       </li>
       <li>
         <i>Help &gt; Documentation:</i>&#160;<a href="freeplane.mm#ID_572207726">Edit&#160;&gt; Free positioned node (set/reset)</a>
@@ -463,7 +463,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
       </li>
       <li>
         <i>Help &gt; Documentation: </i>Menu&#160;<a href="freeplane.mm#ID_114978489">Format&#160;&gt; Apply style &gt; Floating node</a>
@@ -515,7 +515,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
       </li>
       <li>
         <i>Help &gt; Documentation:</i>&#160;<a href="freeplane.mm#ID_572207726">Edit&#160;&gt; Free positioned node (set/reset)</a>
@@ -554,7 +554,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_143196514">Node extensions</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_143196514">Node extensions</a>
       </li>
       <li>
         <i>Help &gt; Documentation:</i>&#160;<a href="freeplane.mm#ID_1400990107">Edit&#160;&#160;&gt; Node extensions</a>
@@ -609,7 +609,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_898889730">Edit text in node details</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_898889730">Edit text in node details</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_742575187">Edit &gt; Node extensions &gt; Edit node detalis in-line/ in dialog</a>
@@ -657,7 +657,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference <a href="freeplaneTutorial.mm#ID_288274844">Show in tool tip (hover text)</a>
+        <i>Help &gt;  </i><i>Tutorial</i> <a href="freeplaneTutorial.mm#ID_288274844">Show in tool tip (hover text)</a>
       </li>
       <li>
         <i>Help &gt; Documentation</i>&#160;<a href="freeplane.mm#ID_180063018">View &gt; Minimize node</a>
@@ -684,7 +684,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_1324773677">Attributes in node extensions</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1324773677">Attributes in node extensions</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_147715298">Edit &gt; Attributes</a>
@@ -723,7 +723,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_616494746">Scientific formula</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_616494746">Scientific formula</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1750517188">Edit &gt; Node extensions &gt; LaTeX formula</a>
@@ -762,7 +762,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_575269438">Image</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_575269438">Image</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1620391394">Edit &gt; Node extensions &gt; Image?</a>
@@ -808,7 +808,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1812601804">Properties panel,</a>&#160;</b>&#160;<a href="freeplaneTutorial#ID_1492225657">Edges</a>&#160;and <a href="freeplaneTutorial.mm#ID_1005719714">Automatic edge colour</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1812601804">Properties panel,</a>&#160;</b>&#160;<a href="freeplanefreeplane.mm#ID_1492225657">Edges</a>&#160;and <a href="freeplaneTutorial.mm#ID_1005719714">Automatic edge colour</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_881523974">Format &gt; Edge styles/width/colour; automatic edge colour</a>
@@ -819,8 +819,8 @@
 </richcontent>
 <hook NAME="FreeNode"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-48;91;" ENDINCLINATION="-48;91;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-137;25;" ENDINCLINATION="-137;25;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="Format edge" ID="ID_1601648824" CREATED="1319796287461" MODIFIED="1319922320701" HGAP="30" VSHIFT="-172">
 <edge STYLE="bezier"/>
 <node TEXT="dikte tak" ID="ID_241458321" CREATED="1288541466835" MODIFIED="1288646970331" VSHIFT="7">
@@ -885,7 +885,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_274601394">Note</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_274601394">Note</a>&#160;
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_1365598976">Edit &gt; Note</a>
@@ -907,7 +907,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1759348470">Format &gt; Cloud properties</a>
@@ -932,7 +932,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
       </li>
       <li>
         <i>Help &gt; Documentation:</i>&#160;<a href="freeplane.mm#ID_759607649">View&#160;&#160;&gt; Add cloud or change style</a>
@@ -956,7 +956,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
       </li>
       <li>
         <i>Help &gt; Documentation:</i>&#160;<a href="freeplane.mm#ID_759607649">View&#160;&#160;&gt; Add cloud or change style</a>
@@ -1075,7 +1075,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1803275985">Edit &gt; Connect</a>
@@ -1100,7 +1100,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1803275985">Edit &gt; Connect</a>
@@ -1146,7 +1146,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started:<b>&#160;</b></i><b>Quick reference</b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1803275985">Edit &gt; Connect</a>
@@ -1157,7 +1157,7 @@
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-60;-48;" ENDINCLINATION="-60;-48;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1329860060499" HGAP="538" VSHIFT="263"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1332446557124" HGAP="538" VSHIFT="263"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1165,10 +1165,11 @@
   </head>
   <body>
     <p>
-      <a href="http://www.kioo.nl/freeplane/CoreMeeting">Demonstration</a><br/>creating a map
+      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo">Demonstration</a><br/>creating a map
     </p>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="FreeNode"/>
 <cloud COLOR="#ffff00" SHAPE="ARC"/>
@@ -1198,7 +1199,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1778719162">Formatting and styling</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1778719162">Formatting and styling</a>
       </li>
       <li>
         <i>Help &gt; Documentation:</i>&#160;<a href="freeplane.mm#ID_39827582">Format &gt; Node core</a>
@@ -1269,7 +1270,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1232153769">Protecting nodes</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1232153769">Protecting nodes</a>
       </li>
       <li>
         <i>Help &gt; Documentation: </i>Menu&#160;<a href="freeplane.mm#ID_83654353">Tools &gt; Password protection</a>
@@ -1304,7 +1305,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_448338872">Perform calculation</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_448338872">Perform calculation</a>
       </li>
       <li>
         <i>Help &gt; Documentation: Wiki</i>&#160;<a href="freeplane.mm#ID_1130453106">Formula evaluation</a>
@@ -1362,7 +1363,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1959496513">Date and time actions</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1959496513">Date and time actions</a>
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;<a href="freeplane.mm#ID_1959496513">Tools &gt; Time management</a>
@@ -1399,7 +1400,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_828862571">Filtering and finding nodes</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1014457432">Sorting</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_828862571">Filtering and finding nodes</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1014457432">Sorting</a>
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;<a href="freeplane.mm#ID_1254354349">Filter</a>&#160;&#160;resp. <a href="freeplane.mm#ID_1942706169">Edit &gt; Move and sort</a>
@@ -1435,7 +1436,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_1268042238">Template-like information</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1838680824">Styles</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1268042238">Template-like information</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1838680824">Styles</a>
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;<a href="freeplane.mm#ID_258919699">Format</a>&#160;&#160;resp. <a href="freeplane.mm#ID_1796388799">Templates</a>
@@ -1445,6 +1446,28 @@
 </html>
 </richcontent>
 <edge STYLE="horizontal"/>
+</node>
+<node TEXT="Publish &amp; share" ID="ID_671406309" CREATED="1330890243562" MODIFIED="1330891132190"><richcontent TYPE="NOTE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i><i>&#160;<a href="freeplaneTutorial.mm#ID_1613405030">7. Publishing and sharing</a></i>
+      </li>
+      <li>
+        <i>Help &gt; Documentation:</i>&#160;&#160;<a href="freeplane.mm#ID_1111281504">Publish images</a>&#160;&#160;resp. <a href="freeplane.mm#ID_126764093">Publish on a website or share</a>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
 </node>
 <node ID="ID_1058310897" CREATED="1319923489096" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
@@ -1471,7 +1494,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_519455593">Writing and using scripts</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1156954596">Add-ons</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_519455593">Writing and using scripts</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1156954596">Add-ons</a>
       </li>
       <li>
         <i>Help &gt; Documentation: Menu</i>&#160;<a href="freeplane.mm#ID_1890181858">Tools &gt; Scripts</a>&#160;&#160;resp. <a href="freeplane.mm#ID_100406395">Tools &gt; Add-ons</a>
@@ -1507,7 +1530,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="freeplaneTutorial.mm#ID_141336344">Spelling dictionaries</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_170927482">Academic writing suite</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_141336344">Spelling dictionaries</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_170927482">Academic writing suite</a>
       </li>
     </ul>
   </body>
@@ -1530,7 +1553,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Getting started: </i>Quick reference&#160;<a href="http://freeplaneTutorial.mm#ID_651594550">Summary node group</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="http://freeplaneTutorial.mm#ID_651594550">Summary node group</a>
       </li>
       <li>
         <i>Help &gt; Documentation:</i>&#160;<a href="http://freeplane.mm#ID_1700918771">Edit&#160;&gt; Node group &gt; New summary node group (selected nodes)</a>

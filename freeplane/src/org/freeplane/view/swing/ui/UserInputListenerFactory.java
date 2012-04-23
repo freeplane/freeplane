@@ -88,9 +88,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				menuBuilder.afterMapChange(newMap);
 			}
 
-			public void afterMapClose(final MapModel oldMap) {
-			}
-
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 			}
 		});

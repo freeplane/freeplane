@@ -329,9 +329,6 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	public void afterMapClose(final MapModel oldMap) {
-	}
-
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 		disposeDialog();
 	}

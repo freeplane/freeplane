@@ -5,6 +5,16 @@
 		    <separator name="account_options">		    			
 				<action name="docear.allow.upload.action" />
 			</separator>
+			<separator name="docear.update_checker">
+			    <combo name="docear.update_checker.options">
+			        <choice value="docear.update_checker.major" />
+					<choice value="docear.update_checker.middle" />
+					<choice value="docear.update_checker.minor" />
+					<choice value="docear.update_checker.beta" />
+					<choice value="docear.update_checker.all" />
+					<choice value="docear.update_checker.disable" />
+			    </combo>
+			</separator>
 		</tab>			
 	</tabbed_pane>
 </preferences_structure>

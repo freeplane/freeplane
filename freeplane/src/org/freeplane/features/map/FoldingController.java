@@ -17,12 +17,27 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.basic.BasicMenuItemUI;
+import javax.swing.plaf.basic.BasicMenuUI;
+
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
@@ -32,9 +47,11 @@ import org.freeplane.features.mode.ModeController;
 /**
  * @author foltin
  */
-public class UnfoldAll implements IMouseWheelEventHandler {
+public class FoldingController implements IMouseWheelEventHandler, IExtension {
+	
+	@SuppressWarnings("serial")
 	private class FoldAllAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
+		
 
 		public FoldAllAction() {
 			super("FoldAllAction");
@@ -45,9 +62,10 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			foldAll(node);
 		}
 	}
-
+	
+	@SuppressWarnings("serial")
 	private class FoldOneLevelAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
+		
 
 		public FoldOneLevelAction() {
 			super("FoldOneLevelAction");
@@ -59,8 +77,9 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private class UnfoldAllAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
+		
 
 		public UnfoldAllAction() {
 			super("UnfoldAllAction");
@@ -72,8 +91,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private class UnfoldOneLevelAction extends AMultipleNodeAction {
-		private static final long serialVersionUID = 1L;
 
 		public UnfoldOneLevelAction() {
 			super("UnfoldOneLevelAction");
@@ -84,10 +103,70 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			unfoldOneStage(node);
 		}
 	}
+	
+	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
+	
+	@SuppressWarnings("serial")
+	private class FoldingPopupMenu extends JPopupMenu{
+		final private NodeModel node;
+		FoldingPopupMenu(NodeModel node){
+			this.node = node;
+			addAction(new UnfoldOneLevelPopupAction());
+			addAction(new FoldOneLevelPopupAction());
+			addAction(new UnfoldAllPopupAction());
+			addAction(new FoldAllPopupAction());
+		}
+		
+        private JButton addAction(Action a) {
+	        final JButton menuItem = new JButton(a);
+	        menuItem.setToolTipText(menuItem.getText());
+	        menuItem.setText(null);
+	        add(menuItem);
+	        menuItem.setMargin(nullInsets);
+			return menuItem;
+        }
+
+		@SuppressWarnings("serial")
+		private class FoldAllPopupAction extends FoldAllAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+			}
+		}
+
+		@SuppressWarnings("serial")
+		private class FoldOneLevelPopupAction extends FoldOneLevelAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+			}
+		}
+
+		@SuppressWarnings("serial")
+		private class UnfoldAllPopupAction extends UnfoldAllAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+			}
+		}
+
+		@SuppressWarnings("serial")
+		private class UnfoldOneLevelPopupAction extends UnfoldOneLevelAction{
+			@Override 
+			public void actionPerformed(final ActionEvent e){
+				actionPerformed(e, node);
+		}
+	}
+	}
+	
+	
 
 // // 	final private Controller controller;
 
-	public UnfoldAll() {
+	public static void install( final FoldingController foldingController) {
+		Controller.getCurrentModeController().addExtension(FoldingController.class, foldingController);
+	}
+	public FoldingController() {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
@@ -140,7 +219,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public void foldStageN(final NodeModel node, final int stage) {
-		final int k = node.depth();
+		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
@@ -156,7 +235,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	protected int getMaxDepth(final NodeModel node) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node) || !mapController.hasChildren(node)) {
-			return node.depth();
+			return depth(node);
 		}
 		int k = 0;
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
@@ -169,11 +248,15 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public int getMinDepth(final NodeModel node) {
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
+		if (encryptionModel != null && !encryptionModel.isAccessible() ) {
+			return Integer.MAX_VALUE;
+		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node)) {
-			return node.depth();
+			return depth(node);
 		}
-		if (!mapController.hasChildren(node)) {
+		if (!mapController.hasChildren(node)||AlwaysUnfoldedNode.isConnectorNode(node)) {
 			return Integer.MAX_VALUE;
 		}
 		int k = Integer.MAX_VALUE;
@@ -227,7 +310,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	public void unfoldStageN(final NodeModel node, final int stage) {
-		final int k = node.depth();
+		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
@@ -238,5 +321,20 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		else {
 			foldAll(node);
 		}
+	}
+
+	private int depth(NodeModel node) {
+		if (node.isRoot())
+			return 0;
+		final int parentDepth = depth(node.getParentNode());
+		if (! node.isVisible() || AlwaysUnfoldedNode.isConnectorNode(node)) {
+			return parentDepth;
+		}
+		else
+			return parentDepth + 1;
+	}
+	
+	public JPopupMenu createFoldingPopupMenu(NodeModel node){
+		return new FoldingPopupMenu(node);
 	}
 }

@@ -29,6 +29,7 @@ import java.util.Properties;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.edge.EdgeModel;
@@ -66,6 +67,8 @@ public class UserPropertiesUpdater {
 	        userProp.remove("lastOpened_1.0.20");
 	        userProp.remove("openedNow_1.0.20");
 	        userProp.remove("browse_url_storage");
+	        fixFontSize(userProp, "defaultfontsize");
+	        fixFontSize(userProp, "label_font_size");
 	        userProp.store(new FileOutputStream(userPreferencesFile), null);
         }
         catch (IOException e) {
@@ -74,6 +77,19 @@ public class UserPropertiesUpdater {
 			FileUtils.silentlyClose(inputStream);
 		}
 	}
+	
+	private void fixFontSize(Properties userProp, String name) {
+	    final Object defaultFontSizeObj = userProp.remove(name);
+	    if(defaultFontSizeObj == null)
+	    	return;
+	    try {
+	        int oldDefaultFontSize = Integer.parseInt(defaultFontSizeObj.toString());
+	        int newDefaultFontSize = Math.round(oldDefaultFontSize / UITools.FONT_SCALE_FACTOR);
+	        userProp.put(name, Integer.toString(newDefaultFontSize));
+        }
+        catch (NumberFormatException e) {
+        }
+    }
 	void importOldDefaultStyle() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager fm = (MFileManager) MFileManager.getController(modeController);

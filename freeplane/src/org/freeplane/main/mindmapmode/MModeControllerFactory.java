@@ -65,7 +65,7 @@ import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
-import org.freeplane.features.map.UnfoldAll;
+import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.mindmapmode.ChangeNodeLevelController;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.NewParentNode;
@@ -116,7 +116,6 @@ import org.freeplane.view.swing.ui.mindmapmode.MMapMouseListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeDragListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeDropListener;
 import org.freeplane.view.swing.ui.mindmapmode.MNodeMotionListener;
-import org.freeplane.view.swing.ui.mindmapmode.MNodeMouseMotionListener;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -189,7 +188,7 @@ public class MModeControllerFactory {
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		
-        final IMouseListener nodeMouseMotionListener = new MNodeMouseMotionListener();
+        final IMouseListener nodeMouseMotionListener = new MNodeMotionListener();
         userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
@@ -259,7 +258,7 @@ public class MModeControllerFactory {
 		    .getController()).getIconToolBarScrollPane());
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
 		new RevisionPlugin();
-		new UnfoldAll();
+		FoldingController.install(new FoldingController());
 		
 		uiFactory = new MUIFactory();
 		mapController.addNodeChangeListener(uiFactory);

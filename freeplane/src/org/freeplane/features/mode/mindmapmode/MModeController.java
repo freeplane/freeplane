@@ -198,6 +198,9 @@ public class MModeController extends ModeController {
 
 	public void undo() {
 		undo.actionPerformed(null);
+	}
+	
+	public void resetRedo() {
 		redo.reset();
 	}
 

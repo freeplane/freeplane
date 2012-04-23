@@ -1,9 +1,7 @@
 package org.docear.plugin.communications;
 
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -13,16 +11,16 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Collection;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar;
 import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar.CONNECTION_STATE;
-import org.docear.plugin.communications.components.dialog.DocearServiceConnectionWaitPanel;
+import org.docear.plugin.communications.components.dialog.ConnectionWaitDialog;
 import org.docear.plugin.communications.features.AccountRegisterer;
 import org.docear.plugin.communications.features.DocearServiceException;
+import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
@@ -64,8 +62,11 @@ public class CommunicationsController extends ALanguageController implements Pro
 	public final static String DOCEAR_CONNECTION_TOKEN_PROPERTY = "docear.service.connect.token";
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY = "docear.service.connect.anonyous.username";
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY = "docear.service.connect.anonymous.token";
+	public static final String CONNECTION_BAR_CLICKED = "CONNECTION_BAR_CLICKED";
 
 	private boolean allowTransmission = true;
+
+	private ConnectionWaitDialog waitDialog;
 
 	public CommunicationsController() {
 		super();
@@ -86,120 +87,114 @@ public class CommunicationsController extends ALanguageController implements Pro
 		return communicationsController;
 	}
 
-	private void closeDialogManually(Container container) {
-		while (!(container instanceof JDialog)) {
-			container = container.getParent();
+	public ConnectionWaitDialog getWaitDialog() {
+		if(waitDialog == null) {
+			waitDialog = new ConnectionWaitDialog();
 		}
-		((JDialog) container).dispose();
+		return waitDialog;
 	}
-
+	
+	
 	public void tryToConnect(final String username, final String password, final boolean registeredUser, final boolean silent) throws DocearServiceException, URISyntaxException {
-		final String propertyUserName = registeredUser ? DOCEAR_CONNECTION_USERNAME_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY;
-		final String propertyAccessToken = registeredUser ? DOCEAR_CONNECTION_TOKEN_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY;
-
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
 		try {
+			startWaitDialog(silent);			
 			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 			formParams.add("password", password);
-
-			final JButton[] dialogButtons = new JButton[] { new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.cancel")) };
-			final DocearServiceConnectionWaitPanel waitPanel = new DocearServiceConnectionWaitPanel();
-			dialogButtons[0].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Container cont = waitPanel.getParent();
-					closeDialogManually(cont);
-				}
-			});
-
-			Thread waitRunner = new Thread(new Runnable() {
-				public void run() {
-					int choice = JOptionPane.showOptionDialog(UITools.getFrame(), waitPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, dialogButtons[0]);
-					if (choice == 0) {
-						// try to interrupt the connection process
-					}
-				}
-			});
-
-			if (!silent) {
-				waitRunner.start();
-			}
-
-			WebResource webRes;
-
+			
 			try {
-				webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
-			}
-			// DOCEAR: should not happen because the URI is hard coded for now
-			catch (URISyntaxException ex) {				
-				if (!silent) {
-					dialogButtons[0].doClick();
-				}
-				throw(ex);
-			}
-
-			try {
+				WebResource webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
+		
 				ClientResponse response = webRes.post(ClientResponse.class, formParams);
 				Status status = response.getClientResponseStatus();
-				if (!silent) {
-					dialogButtons[0].doClick();
+				stopWaitDialog(silent);
+				processResponse(username, registeredUser, silent, response, status);
+			}
+			catch (URISyntaxException ex) {				
+				// DOCEAR: should not happen because the URI is hard coded for now
+				stopWaitDialog(silent);
+				throw(ex);
+			}
+			catch (Exception e) {				
+				stopWaitDialog(silent);
+				if(e instanceof DocearServiceException) {
+					throw ((DocearServiceException)e);
 				}
-
-				if (Status.OK.equals(status)) {
-					String token = response.getHeaders().getFirst("accessToken");
-					if (!silent) {
-						JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username), TextUtils.getText("docear.service.connect.success.title"), JOptionPane.PLAIN_MESSAGE);
-					}
-
-					ResourceController.getResourceController().setProperty(propertyUserName, username);
-					if (registeredUser) {
-						IPropertyControl ctrl = Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName);
-						if(ctrl != null) {
-							((StringProperty) ctrl).setValue(username);
-						}
-					}
-					ResourceController.getResourceController().setProperty(propertyAccessToken, token);
-					InputStream is = response.getEntityInputStream();
-					while (is.read() > -1)
-						;
-					is.close();
-				}
-				else {
-					InputStream is = response.getEntityInputStream();
-					int chr;
-					StringBuilder message = new StringBuilder();
-					while ((chr = is.read()) > -1) {
-						message.append((char) chr);
-					}
-					is.close();
-					if (!silent) {						
-						throw new DocearServiceException("");
-					}
-
-					ResourceController.getResourceController().setProperty(propertyUserName, "");
-					if (registeredUser) {
-						IPropertyControl ctrl = Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName);
-						if(ctrl != null) {
-							((StringProperty) ctrl).setValue("");
-						}
-					}
-					ResourceController.getResourceController().setProperty(propertyAccessToken, "");
-				}
-			} catch (Exception e) {				
-				if (!silent) {
-					dialogButtons[0].doClick();					
-				}	
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
-				throw(new DocearServiceException(TextUtils.getText("docear.login_failed")));				
+				throw(new DocearServiceException(TextUtils.getText("docear.no_connection"), DocearServiceExceptionType.NO_CONNECTION));				
 			}
 
 		} finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
+	}	
+	
+	public String getLatestVersionXml(String minStatus) throws Exception {
+		if (minStatus == null) {
+			return null;
+		}
+		
+		ClientResponse response = client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus).get(ClientResponse.class);
+		return response.getEntity(String.class);
+	}
+
+	private void processResponse(final String username, final boolean registeredUser, final boolean silent, ClientResponse response, Status status) throws IOException, DocearServiceException {
+		if (Status.OK.equals(status)) {
+			String token = response.getHeaders().getFirst("accessToken");
+			if (!silent) {
+				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username), TextUtils.getText("docear.service.connect.success.title"), JOptionPane.PLAIN_MESSAGE);
+			}
+			setConnectionProperties(registeredUser, username, token);
+			readResponseContent(response.getEntityInputStream());
+		}
+		else {
+			if (!silent) {						
+				throw new DocearServiceException(readResponseContent(response.getEntityInputStream()));
+			}
+			setConnectionProperties(registeredUser, "", "");
+		}
+	}
+
+	private void setConnectionProperties(final boolean registeredUser, final String username,  String token) {
+		final String propertyUserName = registeredUser ? DOCEAR_CONNECTION_USERNAME_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY;
+		final String propertyAccessToken = registeredUser ? DOCEAR_CONNECTION_TOKEN_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY;
+		
+		ResourceController.getResourceController().setProperty(propertyUserName, username);
+		if (registeredUser) {
+			IPropertyControl ctrl = Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName);
+			if(ctrl != null) {
+				((StringProperty) ctrl).setValue(username);
+			}
+		}
+		ResourceController.getResourceController().setProperty(propertyAccessToken, token);
+	}
+	
+	private String readResponseContent(InputStream is) throws IOException {
+		int chr;
+		StringBuilder message = new StringBuilder();
+		while ((chr = is.read()) > -1) {
+			message.append((char) chr);
+		}
+		is.close();
+		return message.toString();
+	}
+	
+	private void startWaitDialog(final boolean silent) {
+		if (!silent) {
+			getWaitDialog().start();
+		}
+	}
+
+	private void stopWaitDialog(final boolean silent) {
+		if (!silent) {
+			getWaitDialog().stop();
+		}
 	}
 
 	public boolean checkConnection() {
 		client.setConnectTimeout(1000);
+		client.setReadTimeout(1000);
 		try {
 			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 			formParams.add("password", "");
@@ -209,17 +204,15 @@ public class CommunicationsController extends ALanguageController implements Pro
 				return true;
 			}
 		} catch (Exception e) {
-			if (e.getCause() instanceof SocketTimeoutException) {
-				// no connection to server
-			}
-			else if (e.getCause() instanceof ConnectException) {
-				// connection refused (no server running
-			}
-			else if (e.getCause() instanceof UnknownHostException) {
-				// maybe no connection
+			if ((e.getCause() instanceof SocketTimeoutException)	// no connection to server
+				|| (e.getCause() instanceof ConnectException) // connection refused (no server running
+				|| (e.getCause() instanceof UnknownHostException)) // maybe no connection 
+			{
+				DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
 			}
 		} finally {
 			client.setConnectTimeout(5000);
+			client.setReadTimeout(10000);
 		}
 		return false;
 	}
@@ -381,6 +374,11 @@ public class CommunicationsController extends ALanguageController implements Pro
 
 	public void workspaceChanged(WorkspaceEvent event) {
 		WorkspaceController.getController().addToolBar(connectionBar);
+		SwingUtilities.invokeLater(new Runnable() {			
+			public void run() {
+				checkConnection();
+			}
+		});
 	}
 
 	public void openWorkspace(WorkspaceEvent event) {

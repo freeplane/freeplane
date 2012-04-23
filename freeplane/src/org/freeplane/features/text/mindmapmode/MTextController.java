@@ -20,6 +20,7 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -222,12 +223,7 @@ public class MTextController extends TextController {
 		if (joinedContent.equals("")) {
 			return nodeContent;
 		}
-		if (isHtml || isHtmlNode) {
-			joinedContent += '\n';
-		}
-		else {
-			joinedContent += ' ';
-		}
+		joinedContent += '\n';
 		joinedContent += nodeContent;
 		return joinedContent;
 	}
@@ -469,15 +465,22 @@ public class MTextController extends TextController {
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
 				if (isNewNode) {
-					((MModeController) Controller.getCurrentModeController()).undo();
+					final String detailText = DetailTextModel.getDetailTextText(nodeModel);
+					final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+					if(detailText != null)
+	                    modeController.undo();
+					modeController.resetRedo();
 				}
 				stop();
 			}
 
 			public void ok(final String newText) {
 				if(HtmlUtils.isEmpty(newText))
-					if (isNewNode) 
-						((MModeController) Controller.getCurrentModeController()).undo();
+					if (isNewNode) {
+						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+						modeController.undo();
+						modeController.resetRedo();
+					}
 					else
 						setDetailsHtmlText(nodeModel, null);
 				else
@@ -730,7 +733,9 @@ public class MTextController extends TextController {
 				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
 				    if(nodeModel.getParent() != null){
 				        controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
-				        ((MModeController) Controller.getCurrentModeController()).undo();
+				        final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+						modeController.undo();
+						modeController.resetRedo();
 				    }
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
 					mapController.select(prevSelectedModel);
@@ -832,6 +837,7 @@ public class MTextController extends TextController {
     			return resourceString;
     		}
     	});
+    	com.lightdev.app.shtm.ScaledStyleSheet.FONT_SCALE_FACTOR = UITools.FONT_SCALE_FACTOR;
     	SHTMLPanel.setActionBuilder(new ActionBuilder() {
 			
 			public void initActions(SHTMLPanel panel) {
@@ -851,12 +857,27 @@ public class MTextController extends TextController {
 			}});
 
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
+    	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
 		return shtmlPanel;
     }
 
 	public JEditorPane createEditorPane(Object purpose) {
-     	final JEditorPane editorPane = new JEditorPane();
+     	@SuppressWarnings("serial")
+        final JEditorPane editorPane = new JEditorPane(){
+
+			@Override
+            protected void paintComponent(Graphics g) {
+	            try {
+	                super.paintComponent(g);
+                }
+                catch (Exception e) {
+	                LogUtils.warn(e);
+                }
+            }
+     		
+     	};
+     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
 		return editorPane;
     }

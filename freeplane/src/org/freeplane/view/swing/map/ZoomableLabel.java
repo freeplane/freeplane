@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.security.AccessControlException;
+
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
@@ -18,6 +20,7 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 
@@ -73,8 +76,28 @@ public class ZoomableLabel extends JLabel {
 		super.paint(g);
 	}
 
-	protected void updateText(String nodeText) {
-		final NodeView node = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
+	protected void updateText(String text) {
+		try{
+			updateTextUnsafe(text);
+		}
+        catch (Exception e1) {
+        	if(e1 instanceof AccessControlException)
+        		LogUtils.warn(e1.getMessage());
+        	else
+        		LogUtils.severe(e1);
+	        final String localizedMessage = e1.getLocalizedMessage();
+	        if(text.length() > 603)
+	        	text = text.substring(0, 600) + "...";
+			try{
+				updateTextUnsafe(localizedMessage + '\n' + text);
+			}
+			catch (Exception e2){
+			}
+        }
+	}
+
+	private void updateTextUnsafe(String nodeText) throws Exception{
+	    final NodeView node = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
 		final MapView map = node.getMap();
 		if (map == null || nodeText == null) {
 			return;
@@ -131,8 +154,8 @@ public class ZoomableLabel extends JLabel {
 		else {
 			setText(nodeText);
 		}
-	}
-
+    }
+	
 	public ZoomableLabel() {
 		setUI(ZoomableLabelUI.createUI(this));
 	}
@@ -178,7 +201,9 @@ public class ZoomableLabel extends JLabel {
 			return null;
 		if(!textR.contains(p))
 			return null;
-		final int pos = view.viewToModel(p.x, p.y, textR);
+		int x = (int) (p.x / getZoom());
+		int y = (int) (p.y / getZoom());
+		final int pos = view.viewToModel(x, y, textR);
 		final HTMLDocument document = (HTMLDocument) view.getDocument();
 		final String linkURL = HtmlUtils.getURLOfExistingLink(document, pos);
 		return linkURL;

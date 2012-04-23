@@ -161,6 +161,10 @@ public class FreeplaneApplet extends JApplet {
 			glassPane.setVisible(true);
 			controller.getViewController().setMenubarVisible(false);
 		}
+		catch(RuntimeException e){
+			e.printStackTrace();
+			throw e;
+		}
 		finally{
 			appletLock.unlock();
 		}

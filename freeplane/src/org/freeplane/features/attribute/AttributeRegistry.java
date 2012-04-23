@@ -43,7 +43,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
-	private static final int TABLE_FONT_SIZE = 12;
+	private static final int TABLE_FONT_SIZE = 9;
+
 	public static AttributeRegistry getRegistry(final MapModel map) {
 		AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
 		if (registry == null) {

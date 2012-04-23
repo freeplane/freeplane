@@ -126,13 +126,14 @@ public class MNodeDropListener implements DropTargetListener {
 					return;
 				}
 			}
-			dtde.acceptDrop(dtde.getDropAction());
 			final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
-				((MClipboardController) ClipboardController.getController()).paste(t, targetNode, dropAsSibling, isLeft);
+				dtde.acceptDrop(DnDConstants.ACTION_COPY);
+				((MClipboardController) ClipboardController.getController()).paste(t, targetNode, dropAsSibling, isLeft, dropAction);
 				dtde.dropComplete(true);
 				return;
 			}
+			dtde.acceptDrop(dropAction);
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (controller.getSelection().size() >= 5) {

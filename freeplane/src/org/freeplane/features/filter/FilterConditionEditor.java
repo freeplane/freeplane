@@ -206,6 +206,7 @@ public class FilterConditionEditor extends JComponent {
 		
 		// Ignore case checkbox
 		caseSensitive = new JCheckBox();
+		caseSensitive.setModel(filterController.getCaseSensitiveButtonModel());
 		caseSensitive.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE_TOOLTIP));
 		//add(caseSensitive, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
@@ -216,6 +217,7 @@ public class FilterConditionEditor extends JComponent {
 		
 		// add approximate matching checkbox	
 		approximateMatching = new JCheckBox();
+		approximateMatching.setModel(filterController.getApproximateMatchingButtonModel());
 		approximateMatching.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP));
 		MenuBuilder.setLabelAndMnemonic(approximateMatching, TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH));
 		//add(approximateMatching, gridBagConstraints);
