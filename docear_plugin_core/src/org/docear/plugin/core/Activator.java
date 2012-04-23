@@ -31,7 +31,9 @@ public class Activator extends WorkspaceDependentService {
 			if (dependends != null) {
 				List<DocearService> services = sortOnDependencies(dependends, context);
 				for(DocearService service : services) {
-					service.startService(context, modeController);
+					if(isValid(service)) {
+						service.startService(context, modeController);
+					}
 				}
 				
 			}
@@ -39,6 +41,20 @@ public class Activator extends WorkspaceDependentService {
 		catch (final InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean isValid(DocearService service) {
+		if(isBlacklisted(service)) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isBlacklisted(DocearService service) {
+		if("org.docear.plugin.backup".equals(service.getBundleInfo().getBundleName())) {
+			return true;
+		}
+		return false;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
