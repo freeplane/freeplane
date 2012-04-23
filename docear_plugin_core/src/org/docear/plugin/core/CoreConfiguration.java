@@ -142,8 +142,8 @@ public class CoreConfiguration extends ALanguageController {
 		//replace this actions if docear_core is present
 		Controller.getCurrentModeController().removeAction("SaveAsAction");
 		Controller.getCurrentModeController().addAction(new SaveAsAction());
-//		Controller.getCurrentModeController().removeAction("SaveAction");
-//		Controller.getCurrentModeController().addAction(new SaveAction());
+		Controller.getCurrentModeController().removeAction("SaveAction");
+		Controller.getCurrentModeController().addAction(new SaveAction());
 		
 		
 		//remove sidepanel switcher
