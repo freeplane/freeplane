@@ -24,6 +24,7 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.model.WorkspaceTreeModelEvent.WorkspaceTreeModelEventType;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.ALinkNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
@@ -196,6 +197,64 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			}
 		}
 	}
+	
+	/**
+	 * Notifies all listeners that have registered interest for notification on
+	 * this event type. The event instance is lazily created using the
+	 * parameters passed into the fire method.
+	 * 
+	 * @param source
+	 *            the node where the tree model has changed
+	 * @param path
+	 *            the path to the root node
+	 * @see EventListenerList
+	 */
+	protected void fireTreeStructureMoved(Object source, TreePath path, Object from, Object to) {
+		// Guaranteed to return a non-null array
+		Object[] listeners = listenerList.getListenerList();
+		TreeModelEvent e = null;
+		// Process the listeners last to first, notifying
+		// those that are interested in this event
+		for (int i = listeners.length - 2; i >= 0; i -= 2) {
+			if (listeners[i] == TreeModelListener.class) {
+				// Lazily create the event:
+				if (e == null)
+					e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.move, from, to);
+				((TreeModelListener) listeners[i + 1]).treeStructureChanged(e);
+			}
+		}
+	}
+	
+	/**
+	 * Notifies all listeners that have registered interest for notification on
+	 * this event type. The event instance is lazily created using the
+	 * parameters passed into the fire method.
+	 * 
+	 * @param source
+	 *            the node where the tree model has changed
+	 * @param path
+	 *            the path to the root node
+	 * @param from
+	 *            the old name
+	 * @param path
+	 *            the new name
+	 * @see EventListenerList
+	 */
+	protected void fireTreeNodeRenamed(Object source, TreePath path, Object from, Object to) {
+		// Guaranteed to return a non-null array
+		Object[] listeners = listenerList.getListenerList();
+		TreeModelEvent e = null;
+		// Process the listeners last to first, notifying
+		// those that are interested in this event
+		for (int i = listeners.length - 2; i >= 0; i -= 2) {
+			if (listeners[i] == TreeModelListener.class) {
+				// Lazily create the event:
+				if (e == null)
+					e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.rename, from, to);
+				((TreeModelListener) listeners[i + 1]).treeNodesChanged(e);
+			}
+		}
+	}
 
 	public void reload(AWorkspaceTreeNode node) {
 		if (node != null) {
@@ -234,6 +293,10 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 				nodesChanged(node, null);
 			}
 		}
+	}
+	
+	public void nodeMoved(AWorkspaceTreeNode node, Object from, Object to) {
+		fireTreeStructureMoved(this, node.getTreePath(), from, to);
 	}
 
 	/**
@@ -417,15 +480,23 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	
 	public void changeNodeName(AWorkspaceTreeNode node, String newName) throws WorkspaceModelException {
 		String oldName = node.getName();
+		File oldFile = null;
+		if(node instanceof DefaultFileNode){
+			oldFile = new File(((DefaultFileNode)node).getFile().getParent(), oldName);
+		}			
 		node.setName(newName);
 		if(this.hashStringKeyIndex.containsKey(node.getKey())) {
 			node.setName(oldName);
 			throw new WorkspaceModelException("A Node with the name '"+newName+"' already exists.");
 		}
-		node.setName(oldName);
+		node.setName(oldName);		
 		removeFromIndexRecursively(node);
 		node.setName(newName);
-		addToIndexRecursively(node, node.getParent());		
+		addToIndexRecursively(node, node.getParent());
+		if(node instanceof DefaultFileNode){
+			File newFile = ((DefaultFileNode)node).getFile();
+			fireTreeNodeRenamed(this, node.getTreePath(), oldFile, newFile);
+		}		
 	}	
 		
 	/**

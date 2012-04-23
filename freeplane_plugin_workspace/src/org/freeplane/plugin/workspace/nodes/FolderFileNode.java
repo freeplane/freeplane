@@ -146,10 +146,13 @@ public class FolderFileNode extends DefaultFileNode {
 							((DefaultFileNode) node).copyTo(targetDir);
 						} 
 						else if(dropAction == DnDConstants.ACTION_MOVE) {
+							File oldFile = ((DefaultFileNode) node).getFile();
 							((DefaultFileNode) node).moveTo(targetDir);
-							AWorkspaceTreeNode parent = node.getParent();
+							File newFile = new File(targetDir, ((DefaultFileNode) node).getName());
+							AWorkspaceTreeNode parent = node.getParent();							
 							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
+							WorkspaceUtils.getModel().nodeMoved(node, oldFile, newFile);
 						}
 					}
 				}
@@ -161,6 +164,7 @@ public class FolderFileNode extends DefaultFileNode {
 							AWorkspaceTreeNode parent = node.getParent();
 							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
+							WorkspaceUtils.getModel().nodeMoved(node, srcFile, new File(targetDir, srcFile.getName()));
 						}
 					}
 				}

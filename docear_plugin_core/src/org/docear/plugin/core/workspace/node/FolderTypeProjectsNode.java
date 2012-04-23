@@ -162,10 +162,13 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 							((DefaultFileNode) node).copyTo(targetDir);
 						} 
 						else if(dropAction == DnDConstants.ACTION_MOVE) {
+							File oldFile = ((DefaultFileNode) node).getFile();
 							((DefaultFileNode) node).moveTo(targetDir);
+							File newFile = new File(targetDir, ((DefaultFileNode) node).getName());
 							AWorkspaceTreeNode parent = node.getParent();
 							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
+							WorkspaceUtils.getModel().nodeMoved(node, oldFile, newFile);
 						}
 					}
 				}
@@ -177,6 +180,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 							AWorkspaceTreeNode parent = node.getParent();
 							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
+							WorkspaceUtils.getModel().nodeMoved(node, srcFile, new File(targetDir, srcFile.getName()));
 						}
 					}
 				}

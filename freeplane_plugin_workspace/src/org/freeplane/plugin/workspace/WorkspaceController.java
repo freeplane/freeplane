@@ -35,6 +35,7 @@ import org.freeplane.plugin.workspace.controller.DefaultWorkspaceComponentHandle
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceExpansionStateHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceKeyHandler;
 import org.freeplane.plugin.workspace.controller.DefaultWorkspaceMouseHandler;
+import org.freeplane.plugin.workspace.controller.DefaultWorkspaceTreeModelListener;
 import org.freeplane.plugin.workspace.controller.INodeTypeIconManager;
 import org.freeplane.plugin.workspace.controller.IOController;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler;
@@ -87,9 +88,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	protected WorkspaceController() {
 		LogUtils.info("Initializing WorkspaceEnvironment");
-		registerToIMapLifeCycleListener();
+		registerToIMapLifeCycleListener();		
 		getPreferences();
 		initTree();
+		registerTreeModelEventListener();
 		this.fsReader = new FilesystemManager(getFileTypeManager());
 	}
 	
@@ -98,6 +100,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	 **********************************************************************************/
 	private void registerToIMapLifeCycleListener() {
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);
+	}
+	
+	private void registerTreeModelEventListener(){
+		getWorkspaceModel().addTreeModelListener(new DefaultWorkspaceTreeModelListener());
 	}
 	
 	public static boolean isFirstApplicationStart() {
@@ -483,5 +489,5 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	public void onSaved(MapModel map) {
 		
-	}
+	}	
 }

@@ -182,6 +182,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			else {
 				FileUtils.moveFileToDirectory(getFile(), destFile, true);
 			}
+			
 			//copyFileTo(getFile(), getFile());
 		} 
 		else {
