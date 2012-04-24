@@ -13,6 +13,7 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.MindMapNodesSelection;
@@ -38,12 +39,13 @@ public class MNodeDragListener implements DragGestureListener {
 		if (dragActionType == DnDConstants.ACTION_MOVE) {
 			final NodeModel node = nodeView.getModel();
 			if (node.isRoot()) {
-				return;
+				if(! isLinkDragEvent(e))
+					return;
 			}
 		}
 		final String dragActionName;
 		Cursor cursor = getCursorByAction(dragActionType);
-		if ((e.getTriggerEvent().getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
+		if (isLinkDragEvent(e)) {
 			cursor = DragSource.DefaultLinkDrop;
 			dragActionName = "LINK";
 		}
@@ -78,6 +80,10 @@ public class MNodeDragListener implements DragGestureListener {
 		catch (final InvalidDnDOperationException ex) {
 		}
 	}
+
+	private boolean isLinkDragEvent(final DragGestureEvent e) {
+	    return (e.getTriggerEvent().getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0;
+    }
 
 	public Cursor getCursorByAction(final int dragAction) {
 		switch (dragAction) {
