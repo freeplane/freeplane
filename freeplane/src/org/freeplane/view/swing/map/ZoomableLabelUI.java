@@ -91,7 +91,6 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	                          final Rectangle viewR, final Rectangle iconR, final Rectangle textR) {
 		final ZoomableLabel zLabel = (ZoomableLabel) label;
 		View v = null;
-		Number preferredWidth = null;
 		if (isPainting) {
 			final Insets insets = zLabel.getInsets();
 			final int width = zLabel.getWidth();
@@ -108,12 +107,17 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			if(viewR.width < 0)
 				viewR.width = 0;
 			v = (View) label.getClientProperty(BasicHTML.propertyKey);
-			preferredWidth = (Number) label.getClientProperty("preferredWidth");
 		    if (v != null) {
+		    	float preferredWidth = v.getPreferredSpan(View.X_AXIS);
+		    	float minimumWidth = v.getMinimumSpan(View.X_AXIS);
 		    	int textWidth = viewR.width;
 				if(icon != null)
 		    		textWidth -= icon.getIconWidth() + label.getIconTextGap();
-				if(preferredWidth.intValue() > textWidth){
+				if(preferredWidth > textWidth){
+					if(minimumWidth > textWidth){
+						viewR.width += minimumWidth - textWidth;
+						textWidth = (int) minimumWidth;
+					}
 					v.setSize(textWidth, 1);
 					super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
 					v.setSize(textR.width, textR.height);
