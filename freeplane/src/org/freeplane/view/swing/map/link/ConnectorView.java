@@ -403,16 +403,14 @@ public class ConnectorView extends AConnectorView{
 		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
 			if (startPoint != null) {
 				g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
-				if(isSourceVisible())
-					drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
+				drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
 			    if (arrowLinkCurve == null) {
 			    	arrowLinkCurve = createLine(startPoint, startPoint2);
 				}
 			}
 			if (endPoint != null) {
 				g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
-				if(isTargetVisible())
-					drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
+				drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
 			    if (arrowLinkCurve == null) {
 			    	arrowLinkCurve = createLine(endPoint, endPoint2);
 				}
