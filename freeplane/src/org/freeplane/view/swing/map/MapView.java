@@ -93,6 +93,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.IContentTransformer;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
@@ -110,7 +111,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		@Override
 		public void ancestorResized(HierarchyEvent e) {
-			if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
+			if (! isAncorPositionSet()) {
 				return;
 			}
 			if (nodeToBeVisible == null) {
@@ -153,7 +154,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public void centerNode(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
 			if (nodeView != null) {
-				MapView.this.centerNode(nodeView);
+				MapView.this.centerNode(nodeView, false);
 			}
 		}
 
@@ -423,6 +424,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private Font detailFont;
     private Color detailForeground;
     private Color detailBackground;
+	private boolean slowScroll;
 	private static boolean presentationModeEnabled;
 	private static int transparency;
 
@@ -516,9 +518,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * actually scrolled. Thus, as a workaround, I simply call
 	 * scrollRectToVisible twice, the first time the location of the node is
 	 * calculated, the second time the scrollPane is actually scrolled.
+	 * @param slowScroll TODO
 	 */
-	public void centerNode(final NodeView node) {
+//	public void centerNode(final NodeView node) {
+//		
+//	}
+		public void centerNode(final NodeView node, boolean slowScroll) {
 		nodeToBeCentered = node;
+		this.slowScroll = slowScroll;
 		if (SwingUtilities.getRoot(this) == null) {
 			return;
 		}
@@ -527,6 +534,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		final JViewport viewPort = (JViewport) getParent();
+		if(slowScroll)
+			viewPort.putClientProperty(ViewController.SLOW_SCROLLING, Boolean.TRUE);
 		final Dimension d = viewPort.getExtentSize();
 		final JComponent content = nodeToBeCentered.getContent();
 		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
@@ -540,6 +549,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			anchorContentLocation = oldAnchorContentLocation;
 		}
 		nodeToBeCentered = null;
+		this.slowScroll = false;
 	}
 
 	static private void createPropertyChangeListener() {
@@ -1544,7 +1554,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void scrollNodeToVisible(final NodeView node, final int extraWidth) {
 		if (nodeToBeCentered != null) {
 			if (node != nodeToBeCentered) {
-				centerNode(node);
+				centerNode(node, false);
 			}
 			return;
 		}
@@ -1579,7 +1589,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(! newSelected.getModel().isVisible())
 			throw new AssertionError("select invisible node");
 		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
-			centerNode(newSelected);
+			centerNode(newSelected, true);
 		}
 		else {
 			scrollNodeToVisible(newSelected);
@@ -1685,8 +1695,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void setViewPositionAfterValidate() {
 		if(nodeToBeCentered != null){
-			centerNodeCounter = 5;;
-			centerNodeLater();
+			centerNodeCounter = 5;
+			centerNodeLater(slowScroll);
 		}
 		if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
 			return;
@@ -1724,16 +1734,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	private void centerNodeLater() {
+	private void centerNodeLater(final boolean slowScroll) {
 	    EventQueue.invokeLater(new Runnable() {
 	    	public void run() {
 	    		if(centerNodeCounter == 0 && nodeToBeCentered != null){
-	    			centerNode(nodeToBeCentered);
+	    			centerNode(nodeToBeCentered, slowScroll);
 	    			return;
 	    		}
 	    		if(centerNodeCounter > 0){
 	    			centerNodeCounter--;
-	    			centerNodeLater();
+	    			centerNodeLater(slowScroll);
 	    		}
 	    	}
 	    });
@@ -1778,7 +1788,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(selectedView == null){
 			final NodeView root = getRoot();
 			selectAsTheOnlyOneSelected(root);
-			centerNode(root);
+			centerNode(root, false);
 			return;
 		}
 		final NodeModel selectedNode = selectedView.getModel();
@@ -1863,6 +1873,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	void selectIfSelectionIsEmpty(NodeView nodeView) {
 		if(selection.selectedNode == null)
 			selectAsTheOnlyOneSelected(nodeView);
+    }
+
+	private boolean isAncorPositionSet() {
+	    return anchorContentLocation.getX() != 0 || anchorContentLocation.getY() != 0;
     }
     
 }

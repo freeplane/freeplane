@@ -170,6 +170,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	private int winState;
 	final private String propertyKeyPrefix;
+	public static final String SLOW_SCROLLING = "slowScrolling";
 	public static Icon textIcon;
 	public static Icon numberIcon;
 	public static Icon dateIcon;
