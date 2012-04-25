@@ -93,8 +93,9 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default">
+<stylenode LOCALIZED_TEXT="default" FORMAT_AS_HYPERLINK="true">
 <edge COLOR="#808080" WIDTH="thin"/>
+<font SIZE="8"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note">
@@ -134,7 +135,7 @@
   </body>
 </html>
 </richcontent>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1332441682471" HGAP="0" VSHIFT="-166">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1335125652463" HGAP="-27" VSHIFT="-167">
 <icon BUILTIN="video"/>
 <richcontent TYPE="NODE">
 
@@ -144,7 +145,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/WHY_FreeplaneVideo">Why Freeplane</a>
+      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides.mm">Freeplane (video) guides</a>
     </p>
   </body>
 </html>
@@ -2884,9 +2885,28 @@
 </html>
 </richcontent>
 </node>
+<node TEXT="Problem installing Java" FOLDED="true" ID="ID_46334346" CREATED="1334319547907" MODIFIED="1334319583944">
+<node TEXT="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=207" ID="ID_1177663722" CREATED="1334319586932" MODIFIED="1334319586932" LINK="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=207"/>
+</node>
+<node TEXT="Arrow-hyperlink does not work" ID="ID_109939023" CREATED="1335123601556" MODIFIED="1335124349145" LINK="#ID_265935349"/>
+<node TEXT="New node vertically displaced" ID="ID_1733238613" CREATED="1335301768149" MODIFIED="1335301844716" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Select all siblings and apply<i>&#160;Edit &gt; Reset node position</i>.
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1330615467171" MODIFIED="1330618274268" HGAP="18" VSHIFT="99" TEXT_SHORTENED="true" LINK="#ID_566454554"><richcontent TYPE="NODE">
+</node>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1330615467171" MODIFIED="1334843601497" VSHIFT="111" TEXT_SHORTENED="true" LINK="#ID_566454554"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2914,7 +2934,7 @@
 </html>
 </richcontent>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="Contributers" ID="ID_1675707038" CREATED="1330616960325" MODIFIED="1330617037843" HGAP="-90" VSHIFT="27" LINK="http://freeplane.sourceforge.net/wiki/index.php/Contributors"/>
+<node TEXT="Contributers" ID="ID_1675707038" CREATED="1330616960325" MODIFIED="1335124396331" HGAP="-95" VSHIFT="29" LINK="http://freeplane.sourceforge.net/wiki/index.php/Contributors"/>
 </node>
 <node TEXT="Reference" STYLE_REF="Title" POSITION="right" ID="ID_332175012" CREATED="1286914216123" MODIFIED="1330615754041" HGAP="-37" VSHIFT="-64" TEXT_SHORTENED="true">
 <icon BUILTIN="wizard"/>
@@ -5906,7 +5926,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -7743,7 +7762,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Format properties" FOLDED="true" ID="ID_786320758" CREATED="1293305969634" MODIFIED="1311405889214" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Format properties" ID="ID_786320758" CREATED="1293305969634" MODIFIED="1311405889214" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -8021,7 +8040,7 @@
 <node TEXT="Node shape" STYLE_REF="MenuGroupLabel" ID="ID_1665588957" CREATED="1321889018010" MODIFIED="1321889063968">
 <hook NAME="SummaryNode"/>
 </node>
-<node TEXT="Node Font" FOLDED="true" ID="ID_724156158" CREATED="1310714589873" MODIFIED="1311405449387" TEXT_SHORTENED="true">
+<node TEXT="Node Font" ID="ID_724156158" CREATED="1310714589873" MODIFIED="1311405449387" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -8044,6 +8063,20 @@
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+<node TEXT="Hyperlink" ID="ID_265935349" CREATED="1335124093251" MODIFIED="1335124253846" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If an arrow-link is defined and no underlined link is defined, sets the whole node core to an underlined hyperlink. So the used does not have to click the arrow ican, but can click on the whole core to follow the link
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 <node TEXT="Node color" ID="ID_242110669" CREATED="1310714589873" MODIFIED="1311405449450" TEXT_SHORTENED="true">
@@ -9629,6 +9662,23 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
+<node TEXT="Presentation view" ID="ID_1832499665" CREATED="1335126665090" MODIFIED="1335126897583" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Greys all nodes but one.
+    </p>
+    <p>
+      The transparency of the dimming color can be changed from Preferences-&gt;Appearance-&gt;Default colors-&gt;presentation dimmer transparency. The texts are likely to be changed if I get better suggestions. Both properties with names &quot;presentation_mode&quot; (true/false) and &quot;presentation_dimmer_transparency&quot; (0&lt;=x&lt;=255) can be read and set via ResourceController.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 <node TEXT="Full screen mode" FOLDED="true" ID="ID_1526004925" CREATED="1310672109364" MODIFIED="1314888524183" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
@@ -10463,7 +10513,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
-<node TEXT="Apply style" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1315735285080" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Apply style" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1315735285080" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -10509,6 +10559,20 @@
 </hook>
 <attribute NAME="Chapter" VALUE="4"/>
 <hook NAME="FirstGroupNode"/>
+<node TEXT="Reset node style" STYLE_REF="Method" ID="ID_332653861" CREATED="1335277767965" MODIFIED="1335278208566" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Removes a previously (last) manually set style. Useful when using a temporary style. E.g. when using automatic level styles, some nodes may need a temporary accent which is removed later.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 <node TEXT="Default" ID="ID_1111398038" CREATED="1310066467081" MODIFIED="1322064137683" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
