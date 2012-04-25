@@ -319,9 +319,9 @@
 				<menu_action action="GotoNodeAction"/>
 				<menu_action action="NextNodeAction.BACK" accelerator="control alt LEFT" />
 				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
-				<menu_action action="NextNodeAction.BACK_N_FOLD" accelerator="control alt shift LEFT" />
-				<menu_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control alt shift RIGHT" />
-				<menu_action action="NextPresentationItemAction"/>
+				<menu_action action="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
+				<menu_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+				<menu_action action="NextPresentationItemAction"  accelerator="control shift SPACE"/>
 				<menu_action action="BackAction" accelerator="alt LEFT" />
 				<menu_action action="ForwardAction" accelerator="alt RIGHT" />				
 			<menu_category name="links">
