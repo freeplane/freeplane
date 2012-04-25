@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.util.HtmlUtils;
 import org.docear.plugin.core.util.Tools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
@@ -35,7 +36,8 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 					}
 				}			
 				for(AnnotationModel annotation : importedPdfs.get(Tools.getAbsoluteUri(node))){
-					if(annotation.getTitle().equals(node.getText())){
+					String nodeText = HtmlUtils.extractText(node.getText());							
+					if(annotation.getTitle().replaceAll("[\\n\\t ]", "").equals(nodeText.replaceAll("[\\n\\t ]", ""))){
 						AnnotationController.setModel(node, annotation);	
 						changed = true;
 						break;
