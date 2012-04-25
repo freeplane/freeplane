@@ -750,11 +750,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			writeToFile(map, file);
 			if (!isInternal) {
 				setFile(map, file);
 				map.setSaved(true);
 			}
+			writeToFile(map, file);
 			map.scheduleTimerForAutomaticSaving();
 			return true;
 		}
