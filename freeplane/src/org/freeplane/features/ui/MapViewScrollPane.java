@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.Timer;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 
 /**
@@ -54,20 +55,20 @@ class MapViewScrollPane extends JScrollPane {
         }
 
 		private void slowSetViewPosition(final Point p) {
+			if(timer != null) {
+				timer.stop();
+				timer = null;
+			}
 			final Point viewPosition = getViewPosition();
 	        int dx = p.x - viewPosition.x;
 	        int dy = p.y - viewPosition.y;
-	        if(Math.abs(dx) <= 1 && Math.abs(dy) <= 1){
-	        	super.setViewPosition(p);
-	        	return;
-	        }
-	        dx = calcScrollIncrement(dx);
-	        dy = calcScrollIncrement(dy);
-	        viewPosition.translate(dx, dy);
+	        int slowDx = calcScrollIncrement(dx);
+	        int slowDy = calcScrollIncrement(dy);
+	        viewPosition.translate(slowDx, slowDy);
 	        super.setViewPosition(viewPosition);
-	        if(timer != null)
-	        	timer.stop();
-	        timer = new Timer(1, new ActionListener() {
+	        if(slowDx == dx && slowDy == dy)
+	            return;
+	        timer = new Timer(20, new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					timer = null;
 					MapViewPort.this.slowSetViewPosition(p);
@@ -78,11 +79,11 @@ class MapViewScrollPane extends JScrollPane {
         }
 
 		private int calcScrollIncrement(int dx) {
-			int i = 5;
-			if (Math.abs(dx) > i)
-				dx /= i;
-			else
-				dx = Integer.signum(dx);
+			int v = ResourceController.getResourceController().getIntProperty("scrolling_speed");
+			final int slowDX = (int) (v  / 5.0 *  Math.sqrt(Math.abs(dx)));
+			if (Math.abs(dx) > 2 && slowDX < Math.abs(dx)) {
+	            dx = slowDX * Integer.signum(dx);
+            }
 			return dx;
         }
 		
