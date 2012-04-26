@@ -270,7 +270,8 @@ public abstract class MainView extends ZoomableLabel {
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {
 		if (! hasChildren())
 			return;
-		final MapController mapController = getMap().getModeController().getMapController();
+		final MapView map = getMap();
+		final MapController mapController = map.getModeController().getMapController();
 		final NodeModel node = nodeView.getModel();
 		final FoldingMark markType = foldingMarkType(mapController, node);
 	    Point mousePosition = null;
@@ -279,7 +280,7 @@ public abstract class MainView extends ZoomableLabel {
         }
         catch (Exception e) {
         }
-		if(mousePosition != null){
+		if(mousePosition != null && ! map.isPrinting()){
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			final Point p = getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
 			if(p.y + width/2 > getHeight())
