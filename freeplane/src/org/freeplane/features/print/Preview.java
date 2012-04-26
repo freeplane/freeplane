@@ -127,8 +127,10 @@ class Preview extends JComponent {
 	}
 
 	public void resize() {
-		final int size = (int) Math.max(getPageFormat().getWidth() * zoom, getPageFormat().getHeight() * zoom);
-		setPreferredSize(new Dimension(size, size));
+		final PageFormat pageFormat = getPageFormat();
+		int width = getPageWidth(pageFormat);
+		int height = getPageHeight(pageFormat);
+		setPreferredSize(new Dimension(width, height));
 		previewPageImage = null;
 		revalidate();
 	}

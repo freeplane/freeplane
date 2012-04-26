@@ -50,8 +50,8 @@ class PreviewDialog extends JDialog implements ActionListener {
 	public PreviewDialog(final PrintController printController, final String title, final Component c) {
 		super(JOptionPane.getFrameForComponent(c), title, true);
 		view = (Printable) c;
-		final Preview preview = new Preview(printController, view, 1);
-		final JScrollPane scrollPane = new JScrollPane(preview);
+		final Preview preview = new Preview(printController, view, /* 50 % */ UITools.FONT_SCALE_FACTOR / 2);
+		final JScrollPane scrollPane = new JScrollPane(preview, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		UITools.setScrollbarIncrement(scrollPane);
 		getContentPane().add(scrollPane, "Center");
 		final JToolBar toolbar = new FreeplaneToolBar("preview_toolbar", SwingConstants.HORIZONTAL);
