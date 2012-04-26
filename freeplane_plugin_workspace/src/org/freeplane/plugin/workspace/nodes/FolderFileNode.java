@@ -145,8 +145,9 @@ public class FolderFileNode extends DefaultFileNode {
 						if(dropAction == DnDConstants.ACTION_COPY) {
 							((DefaultFileNode) node).copyTo(targetDir);
 						} 
-						else if(dropAction == DnDConstants.ACTION_MOVE) {
+						else if(dropAction == DnDConstants.ACTION_MOVE) {							
 							File oldFile = ((DefaultFileNode) node).getFile();
+							if(oldFile.equals(targetDir)) return;
 							((DefaultFileNode) node).moveTo(targetDir);
 							File newFile = new File(targetDir, ((DefaultFileNode) node).getName());
 							AWorkspaceTreeNode parent = node.getParent();							

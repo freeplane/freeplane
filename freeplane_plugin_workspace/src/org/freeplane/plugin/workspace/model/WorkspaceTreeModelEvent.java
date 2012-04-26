@@ -32,7 +32,8 @@ public class WorkspaceTreeModelEvent extends TreeModelEvent {
 
 	public enum WorkspaceTreeModelEventType{
 		rename,
-		move
+		move,
+		delete
 	}
 	
 }
