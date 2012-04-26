@@ -354,25 +354,30 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					}
 				}
 				if(orphanedNodes.size() > 0){
-					int result = UITools.showConfirmDialog(target, TextUtils.getText("AbstractMonitoringAction.18"), TextUtils.getText("AbstractMonitoringAction.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
-					if(result == JOptionPane.OK_OPTION){
-						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.20")); //$NON-NLS-1$
-						for(final NodeModel node : orphanedNodes){
-							SwingUtilities.invokeAndWait(
-							        new Runnable() {
-							            public void run(){
-							            	try{
-							            		if(node.getParentNode() != null){
-							            			node.removeFromParent();
-							            		}
-							            	} catch(Exception e){
-							            		LogUtils.warn(e);
-							            	}
-							            }
-							        }
-								);
+					if(canceled()) return false;
+					try{
+						int result = UITools.showConfirmDialog(target, TextUtils.getText("AbstractMonitoringAction.18"), TextUtils.getText("AbstractMonitoringAction.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+						if(result == JOptionPane.OK_OPTION){
+							fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+							fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.20")); //$NON-NLS-1$
+							for(final NodeModel node : orphanedNodes){
+								SwingUtilities.invokeAndWait(
+								        new Runnable() {
+								            public void run(){
+								            	try{
+								            		if(node.getParentNode() != null){
+								            			node.removeFromParent();
+								            		}
+								            	} catch(Exception e){
+								            		LogUtils.warn(e);
+								            	}
+								            }
+								        }
+									);
+							}
 						}
+					}catch(Exception e){
+						LogUtils.warn(e);
 					}
 				}				
 				return true;
