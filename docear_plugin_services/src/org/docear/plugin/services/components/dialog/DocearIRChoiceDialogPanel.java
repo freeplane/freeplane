@@ -587,7 +587,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	}
 	
 	private boolean checkAccountSettings() throws DocearServiceException, URISyntaxException {
-		if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected()) {
+		if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected() && isEmpty(getPassword())) {
 			return true;
 		}
 		
@@ -605,7 +605,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			}
 		}
 				
-		if (allowBackup()) {			
+		if (!isEmpty(getUserName()) && !isEmpty(getPassword())) {			
 			CommunicationsController.getController().tryToConnect(getUserName(), getPassword(), true, false);
 			
 			
@@ -616,7 +616,8 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				return false;
 			}
 		}
-		else if (code > 0) {
+		
+		if (code > 0) {
 			//if user name is empty --> create anonymous user automatically when the information retrieval action runs 
 			if (!isEmpty(getUserName())) {
 				if (isEmpty(getPassword())) {
