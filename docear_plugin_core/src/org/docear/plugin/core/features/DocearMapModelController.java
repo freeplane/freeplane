@@ -67,13 +67,10 @@ public class DocearMapModelController implements IExtension{
 		DocearMapModelExtension mapModelExtension = new DocearMapModelExtension();
 		ResourceController resourceController = ResourceController.getResourceController();
 		mapModelExtension.setVersion(resourceController.getProperty("docear_map_extension_version"));
-		mapModelExtension.setMapId(createMapId());
-		if (map.getFile() != null) {			
-			mapModelExtension.setUri(LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile()));
-		}
+		mapModelExtension.setMapId(createMapId());		
 		DocearMapModelController.setModel(map, mapModelExtension);
 	}
-	
+			
 	public static String createMapId() {
 		return ""+System.currentTimeMillis()+"_"+CoreUtils.createRandomString(16);
 	}
