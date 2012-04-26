@@ -2,10 +2,12 @@ package org.freeplane.plugin.workspace.controller;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.Collection;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
+import org.apache.commons.io.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
@@ -51,29 +53,42 @@ public class DefaultWorkspaceTreeModelListener implements TreeModelListener {
 		if(event.getFrom().toString().toLowerCase().endsWith(".mm")){				
 			File oldFile = (File) event.getFrom();
 			File newFile = (File) event.getTo();
-			String mapExtensionKey = null;
-			try {
-				mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(oldFile.toURL());
-			} catch (MalformedURLException ex) {
-				LogUtils.warn(ex);
+			updateOpenedMaps(event, oldFile, newFile);
+		}
+		if(((File)event.getTo()).isDirectory()){
+			File oldFile = (File) event.getFrom();
+			File newFile = (File) event.getTo();
+			Collection<File> mindmaps = FileUtils.listFiles(newFile, new String[]{ "mm" }, true);
+			for(File mindmap : mindmaps){
+				String oldPath = mindmap.getPath().replace(newFile.getPath(), oldFile.getPath());
+				updateOpenedMaps(event, new File(oldPath), mindmap);
 			}
-			if(mapExtensionKey != null){
-				MapModel map = Controller.getCurrentController().getMapViewManager().getMaps().get(mapExtensionKey);
-				if(map != null){
-					try {
-						boolean isSaved = map.isSaved();
-						map.setURL(newFile.toURL());						
-						MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, UrlManager.MAP_URL, oldFile.toURL(), newFile.toURL());								
-						Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
-						if(event.getType() == WorkspaceTreeModelEventType.rename){
-							Controller.getCurrentController().getMapViewManager().updateMapViewName();
-						}
-						map.setSaved(isSaved);
-						Controller.getCurrentController().getViewController().setTitle();								
-					} catch (MalformedURLException ex) {
-						LogUtils.warn(ex);
-					}							
-				}
+		}
+	}
+
+	private void updateOpenedMaps(WorkspaceTreeModelEvent event, File oldFile,	File newFile) {
+		String mapExtensionKey = null;
+		try {
+			mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(oldFile.toURL());
+		} catch (MalformedURLException ex) {
+			LogUtils.warn(ex);
+		}
+		if(mapExtensionKey != null){
+			MapModel map = Controller.getCurrentController().getMapViewManager().getMaps().get(mapExtensionKey);
+			if(map != null){
+				try {
+					boolean isSaved = map.isSaved();
+					map.setURL(newFile.toURL());						
+					MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, UrlManager.MAP_URL, oldFile.toURL(), newFile.toURL());								
+					Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
+					if(event.getType() == WorkspaceTreeModelEventType.rename){
+						Controller.getCurrentController().getMapViewManager().updateMapViewName();
+					}
+					map.setSaved(isSaved);
+					Controller.getCurrentController().getViewController().setTitle();								
+				} catch (MalformedURLException ex) {
+					LogUtils.warn(ex);
+				}							
 			}
 		}
 	}
