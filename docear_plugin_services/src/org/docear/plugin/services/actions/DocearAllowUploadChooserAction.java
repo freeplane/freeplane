@@ -28,14 +28,12 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 		// TODO Auto-generated method stub
 	}
 
-	public static void showDialog(boolean showCancelButton) {
-		final DocearIRChoiceDialogPanel chooser = new DocearIRChoiceDialogPanel(showCancelButton);
+	public static void showDialog(boolean exitOnCancel) {
+		final DocearIRChoiceDialogPanel chooser = new DocearIRChoiceDialogPanel();
 		
 		ArrayList<JButton> buttonsList = new ArrayList<JButton>();
 		buttonsList.add(new JButton(TextUtils.getText("docear.uploadchooser.button.ok")));
-		if (showCancelButton) {
-			buttonsList.add(new JButton(TextUtils.getText("docear.uploadchooser.button.cancel")));
-		}		
+		buttonsList.add(new JButton(TextUtils.getText("docear.uploadchooser.button.cancel")));		
 		
 		JButton[] dialogButtons = buttonsList.toArray(new JButton[] {});		
 		chooser.integrateButtons(dialogButtons);
@@ -44,6 +42,11 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 		if (result == 0) {			
 			ServiceController.getController().setBackupEnabled(chooser.allowBackup());
 			ServiceController.getController().setInformationRetrievalCode(chooser.getIrCode());
+		} 
+		else {
+			if(exitOnCancel) {
+				System.exit(0);
+			}
 		}
 		
 	}

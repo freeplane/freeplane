@@ -1,7 +1,6 @@
 package org.docear.plugin.core.logger;
 
 import java.io.File;
-import java.net.URL;
 
 import org.freeplane.core.util.LogUtils;
 

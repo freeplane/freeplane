@@ -9,7 +9,7 @@ public class PropertiesActionListener implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		if ("docear.allow.upload.action".equals(e.getActionCommand())) {
-			DocearAllowUploadChooserAction.showDialog(true);
+			DocearAllowUploadChooserAction.showDialog(false);
 		}
 		if ("docear.update_checker.show".equals(e.getActionCommand())) {
 			
