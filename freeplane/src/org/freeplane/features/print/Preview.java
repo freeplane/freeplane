@@ -61,7 +61,7 @@ class Preview extends JComponent {
 	}
 
 	public void changeZoom(final double zoom) {
-		this.zoom = Math.max(Preview.MINIMUM_ZOOM_FACTOR, this.zoom + zoom);
+		this.zoom = Math.max(Preview.MINIMUM_ZOOM_FACTOR, this.zoom * zoom);
 		resize();
 	}
 

@@ -39,7 +39,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 
 class PreviewDialog extends JDialog implements ActionListener {
-	final private static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
+	final private static double DEFAULT_ZOOM_FACTOR_STEP = Math.sqrt(2);
 	/**
 	 * 
 	 */
@@ -66,7 +66,7 @@ class PreviewDialog extends JDialog implements ActionListener {
 		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview, pageNumber, 1)));
 		toolbar.add(new JToolBar.Separator());
 		toolbar.add(getButton("ZoomIn24.png", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
-		toolbar.add(getButton("ZoomOut24.png", new ZoomAction(preview, -PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomOut24.png", new ZoomAction(preview, 1.0/PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
 		toolbar.add(new JToolBar.Separator());
 		final JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
