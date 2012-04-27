@@ -1470,8 +1470,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (fitMap == FitMap.PAGE && pageIndex > 0) {
 			return Printable.NO_SUCH_PAGE;
 		}
-		final Graphics2D g2 = (Graphics2D) graphics;
-		final java.awt.Shape clip = g2.getClip();
+		final Graphics2D g2 = (Graphics2D) graphics.create();
 		preparePrinting();
 		final double zoomFactor;
 		final double imageableX = pageFormat.getImageableX();
@@ -1513,7 +1512,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final double mapY = boundingRectangle.getY();
 		g2.translate(-mapX, -mapY);
 		print(g2);
-		g2.setClip(clip);
+		g2.dispose();
 		return Printable.PAGE_EXISTS;
 	}
 
