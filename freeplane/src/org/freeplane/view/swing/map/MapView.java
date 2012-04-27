@@ -1386,7 +1386,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if(oldClipBounds != null)
 				g.clipRect(oldClipBounds.x, oldClipBounds.y, oldClipBounds.width, oldClipBounds.height);
 			final Rectangle clipBounds = highlightClip.getBounds();
-			g.clearRect(clipBounds.x, clipBounds.y, clipBounds.width, clipBounds.height);
+			final Color color = g.getColor();
+			g.setColor(getBackground());
+			g.fillRect(clipBounds.x, clipBounds.y, clipBounds.width, clipBounds.height);
+			g.setColor(color);
 			paintChildren(g, paintedModes);
 		}
 		finally{
