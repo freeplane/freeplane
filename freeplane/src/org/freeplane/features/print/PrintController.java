@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.print;
 
+import java.awt.Component;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.Printable;
@@ -159,7 +160,13 @@ public class PrintController implements IExtension {
 		if(! showDlg || printDialog()){
 			if(mapView instanceof MapView)
 				((MapView)mapView).preparePrinting();
-			getPrinterJob().print();
+			final PrinterJob printerJob = getPrinterJob();
+			if (mapView instanceof Component){
+				final String name = ((Component)mapView).getName();
+				if(name != null)
+					printerJob.setJobName(name);
+			}
+			printerJob.print();
 			if(mapView instanceof MapView)
 				((MapView)mapView).endPrinting();
 		}
