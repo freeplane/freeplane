@@ -17,6 +17,7 @@ package org.freeplane.features.print;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.Printable;
@@ -50,7 +51,9 @@ class PreviewDialog extends JDialog implements ActionListener {
 	public PreviewDialog(final PrintController printController, final String title, final Component c) {
 		super(JOptionPane.getFrameForComponent(c), title, true);
 		view = (Printable) c;
-		final Preview preview = new Preview(printController, view, /* 50 % */ UITools.FONT_SCALE_FACTOR / 2);
+		final Rectangle desktopBounds = UITools.getDesktopBounds(c);
+		Dimension previewSize = new Dimension(desktopBounds.width * 3/4, desktopBounds.height * 3/4);
+		final Preview preview = new Preview(printController, view, previewSize );
 		final JScrollPane scrollPane = new JScrollPane(preview, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		UITools.setScrollbarIncrement(scrollPane);
 		getContentPane().add(scrollPane, "Center");

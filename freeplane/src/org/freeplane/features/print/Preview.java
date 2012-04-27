@@ -25,6 +25,7 @@ import java.awt.print.PrinterException;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.view.swing.map.MapView;
 
@@ -42,21 +43,11 @@ class Preview extends JComponent {
 	private final Printable view;
 	protected double zoom = 0.0;
 
-	public Preview(final PrintController printController, final Printable view, final double zoom) {
+	public Preview(final PrintController printController, final Printable view, Dimension size) {
 		this.printController = printController;
 		this.view = view;
 		final PageFormat format = getPageFormat();
-		if (zoom == 0.0) {
-			if (format.getOrientation() == PageFormat.PORTRAIT) {
-				this.zoom = Preview.DEFAULT_PREVIEW_SIZE / format.getHeight();
-			}
-			else {
-				this.zoom = Preview.DEFAULT_PREVIEW_SIZE / format.getWidth();
-			}
-		}
-		else {
-			this.zoom = zoom;
-		}
+		this.zoom = Math.min(size.getHeight() / format.getHeight(), size.getWidth() / format.getWidth());
 		resize();
 	}
 

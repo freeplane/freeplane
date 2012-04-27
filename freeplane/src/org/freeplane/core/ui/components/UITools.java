@@ -219,33 +219,40 @@ public class UITools {
 	}
 
 	static public void setBounds(final Component frame, int win_x, int win_y, int win_width, int win_height) {
-		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
-		final Dimension screenSize = defaultToolkit.getScreenSize();
-		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
+		final Rectangle desktopBounds = getDesktopBounds(frame);
+		int screenWidth = desktopBounds.width;
 		if(win_width != -1)
-			win_width = Math.min(win_width, screenWidth);
+			win_width = Math.min(win_width, screenWidth );
 		else
 			win_width =  screenWidth * 4 / 5;
-		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
+		int screenHeight = desktopBounds.height;
 		if(win_height != -1)
 			win_height = Math.min(win_height, screenHeight);
 		else
 			win_height =  screenHeight * 4 / 5;
 		if(win_x != -1){
-			win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
-			win_x = Math.max(screenInsets.left, win_x);
+			win_x = Math.min(screenWidth + desktopBounds.x - win_width, win_x);
+			win_x = Math.max(desktopBounds.x, win_x);
 		}
 		else
-			win_x = screenInsets.left + (screenWidth - win_width) / 2;
+			win_x = desktopBounds.x + (screenWidth - win_width) / 2;
 		if(win_y != -1){
-			win_y = Math.max(screenInsets.top, win_y);
-			win_y = Math.min(screenHeight + screenInsets.top - win_height, win_y);
+			win_y = Math.max(desktopBounds.y, win_y);
+			win_y = Math.min(screenHeight + desktopBounds.y - win_height, win_y);
 		}
 		else
-			win_y = screenInsets.top + (screenHeight - win_height) / 2;
+			win_y = desktopBounds.y + (screenHeight - win_height) / 2;
 		frame.setBounds(win_x, win_y, win_width, win_height);
 	}
+
+	public static Rectangle getDesktopBounds(Component frame) {
+		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+		final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
+		final Dimension screenSize = defaultToolkit.getScreenSize();
+		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
+		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
+		return new Rectangle(screenInsets.left,  screenInsets.top, screenWidth, screenHeight);
+    }
 
 	public static void setDialogLocationRelativeTo(final JDialog dialog, final Component c) {
 		if (c == null || ! c.isShowing()) {
@@ -260,13 +267,11 @@ public class UITools {
 		final int ph = parent.getHeight();
 		final int dw = dialog.getWidth();
 		final int dh = dialog.getHeight();
-		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(dialog.getGraphicsConfiguration());
-		final Dimension screenSize = defaultToolkit.getScreenSize();
-		final int minX = Math.max(parentLocation.x, screenInsets.left);
-		final int minY = Math.max(parentLocation.y, screenInsets.top);
-		final int maxX = Math.min(parentLocation.x + pw, screenSize.width - screenInsets.right);
-		final int maxY = Math.min(parentLocation.y + ph, screenSize.height - screenInsets.bottom);
+		final Rectangle desktopBounds = getDesktopBounds(c);
+		final int minX = Math.max(parentLocation.x, desktopBounds.x);
+		final int minY = Math.max(parentLocation.y, desktopBounds.y);
+		final int maxX = Math.min(parentLocation.x + pw, desktopBounds.x + desktopBounds.width);
+		final int maxY = Math.min(parentLocation.y + ph, desktopBounds.y + desktopBounds.height);
 		int dx, dy;
 		if (compLocation.x + cw < minX) {
 			dx = minX;
