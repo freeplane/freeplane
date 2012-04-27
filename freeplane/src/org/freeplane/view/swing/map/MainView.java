@@ -364,7 +364,7 @@ public abstract class MainView extends ZoomableLabel {
 		else{
 			return;
 		}
-		g.drawRect(0, 0, getWidth(), getHeight());
+		g.drawRect(-1, -1, getWidth() + 2, getHeight() + 2);
 		g.setColor(color);
     }
 
