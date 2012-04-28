@@ -71,14 +71,13 @@
 				<menu_action action="SplitNode" />
 				<menu_action action="RevisionPluginAction" />
 				<menu_separator />
-				<menu_category name="actions">
-					<menu_action action="IconSelectionPlugin" accelerator="control F2"/>
-				</menu_category>
+				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />
+			</menu_submenu>
+			<menu_submenu name="icons" name_ref="menu_iconView">
+				<menu_action action="IconSelectionPlugin" accelerator="control F2"/>
 				<menu_submenu name="icons" name_ref="menu_iconByCategory">
-				<menu_separator />
-				<menu_category name="icons_list" menu_key="main_menu_icons">
-				<menu_action action="HierarchicalIconsAction" />
-				<menu_action action="HierarchicalIcons2Action" />
+					<menu_separator />
+					<menu_category name="icons_list" menu_key="main_menu_icons">
 				</menu_category>
 				</menu_submenu>
 				<menu_submenu name="progress" name_ref="menu_progress">
@@ -90,13 +89,13 @@
 					<menu_separator/>
 					<menu_action action="IconProgressRemoveAction" />
 				</menu_submenu>
+				<menu_action action="HierarchicalIconsAction" />
+				<menu_action action="HierarchicalIcons2Action" />
 				<menu_submenu name="menu_remove_icons" >
 					<menu_action action="RemoveIcon_0_Action" />
 					<menu_action action="RemoveIconAction" />
 					<menu_action action="RemoveAllIconsAction" />					
 				</menu_submenu>
-				<menu_separator />
-				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />
 			</menu_submenu>
 			<menu_submenu name="menu_extensions" name_ref="menu_extensions">
 				<menu_action action="EditDetailsAction"/>
@@ -207,7 +206,6 @@
 					<menu_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />
 				</menu_submenu>
 			</menu_category>
-			<menu_separator />
 			<menu_submenu name="menu_noteView" name_ref="menu_noteView">				
 				<menu_action action="ShowHideNoteAction" accelerator="control GREATER" />
 				<menu_submenu name="note_window_location" name_ref="note_window_location">
