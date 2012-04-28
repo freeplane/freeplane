@@ -53,15 +53,15 @@
 							</menu_submenu>
 						</menu_category>
 				</menu_category>
-			<menu_category name="MapView">
 				<menu_category name="zoom">
 					<menu_action accelerator="alt UP" action="ZoomInAction"/>
 					<menu_action accelerator="alt DOWN" action="ZoomOutAction"/>
 					<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
 					</menu_category>
-				<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
-				<menu_action action="ShowSelectionAsRectangleAction"/>	
-				</menu_category>
+				<menu_submenu name="menu_viewmode" name_ref="menu_viewmode">	
+					<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
+					<menu_action action="ShowSelectionAsRectangleAction"/>
+				</menu_submenu>		
 				<menu_submenu name="menu_hoverView" name_ref="menu_hoverView">
 				<menu_action accelerator="alt F2" action="ToggleDetailsAction"/>
 				</menu_submenu>
