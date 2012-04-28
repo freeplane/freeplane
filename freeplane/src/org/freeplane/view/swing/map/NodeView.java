@@ -104,8 +104,6 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		PAINT_DEBUG_BORDER = paintDebugBorder;
 	};
-	static final boolean DONT_MARK_FORMULAS = Controller.getCurrentController().getResourceController()
-	    .getBooleanProperty("formula_dont_mark_formulas");
 	static private int maxToolTipWidth;
 	private AttributeView attributeView;
 	private JComponent contentPane;

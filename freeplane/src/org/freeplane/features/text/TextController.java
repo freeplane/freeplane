@@ -62,6 +62,12 @@ public class TextController implements IExtension {
 	private static final Integer DETAILS_TOOLTIP = 2;
 	private final List<IContentTransformer> textTransformers;
 	protected final ModeController modeController;
+	public static final String MARK_TRANSFORMED_TEXT = "mark_transformed_text";
+
+
+	public static boolean isMarkTransformedTextSet() {
+		return Controller.getCurrentController().getResourceController().getBooleanProperty(MARK_TRANSFORMED_TEXT);
+    }
 
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();

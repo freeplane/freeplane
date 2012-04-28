@@ -38,7 +38,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
-import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 
 /**
@@ -193,8 +192,7 @@ public class AttributeController implements IExtension {
 			private String getTransformedValue(NodeModel node, final TextController textController, final String originalText) {
 				try {
 					final String text = textController.getTransformedText(originalText, node, null);
-					final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
-					.getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
+					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
 					final String unicodeText = HtmlUtils.unicodeToHTMLUnicodeEntity(text);
 					if (markTransformedText && text != originalText)
 						return colorize(unicodeText, "green");

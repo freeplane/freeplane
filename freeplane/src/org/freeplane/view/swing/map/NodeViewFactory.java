@@ -49,6 +49,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
@@ -238,7 +239,8 @@ class NodeViewFactory {
 				final String originalText = extension.getHtml();
 				try {
 					newText = textController.getTransformedTextNoThrow(originalText, model, extension);
-					if (!NodeView.DONT_MARK_FORMULAS && newText != originalText)
+					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
+					if (markTransformedText && newText != originalText)
 						newText = colorize(newText, "green");
 				}
 				catch (Exception e) {

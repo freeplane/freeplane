@@ -189,7 +189,7 @@
 					<menu_action action="ToggleFullScreenAction" />
 					<menu_action action="SetBooleanPropertyAction.presentation_mode" />
 					<menu_action action="ShowSelectionAsRectangleAction" />					
-					<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
+					<menu_action action="SetBooleanPropertyAction.mark_transformed_text" />
 				</menu_submenu>
 				<menu_separator />
 			<menu_action action="SetShortenerStateAction" />
