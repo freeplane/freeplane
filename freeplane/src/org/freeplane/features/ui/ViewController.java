@@ -840,6 +840,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 		
+		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
+		
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
 		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created

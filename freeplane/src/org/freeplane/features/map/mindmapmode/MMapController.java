@@ -46,12 +46,14 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -99,22 +101,8 @@ public class MMapController extends MapController {
 	}
 
 	public NodeModel addNewNode(int newNodeMode) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		final TextController textController = TextController.getController();
-		if (textController instanceof MTextController) {
-			((MTextController) textController).stopEditing();
-		}
-		final NodeModel target = getSelectedNode();
-		if (textController instanceof MTextController) {
-			modeController.startTransaction();
-			try {
-				((MTextController) TextController.getController()).stopEditing();
-			}
-			finally {
-				modeController.commit();
-			}
-		}
-		final NodeModel targetNode = target;
+		stopEditing();
+		final NodeModel targetNode = getSelectedNode();
 		final NodeModel newNode;
 		switch (newNodeMode) {
 			case MMapController.NEW_SIBLING_BEFORE:
@@ -129,18 +117,7 @@ public class MMapController extends MapController {
 					if (newNode == null) {
 						return null;
 					}
-					final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
-					if(component == null)
-						return newNode;
-					component.addFocusListener(new FocusListener() {
-						public void focusLost(FocusEvent e) {
-						}
-						
-						public void focusGained(FocusEvent e) {
-							e.getComponent().removeFocusListener(this);
-							((MTextController) textController).edit(newNode, targetNode, true, false, false);
-						}
-					});
+					startEditingAfterSelect(newNode);
 					select(newNode);
 					break;
 				}
@@ -159,18 +136,7 @@ public class MMapController extends MapController {
 				if (newNode == null) {
 					return null;
 				}
-				final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
-				if(component == null)
-					return newNode;
-				component.addFocusListener(new FocusListener() {
-					public void focusLost(FocusEvent e) {
-					}
-					
-					public void focusGained(FocusEvent e) {
-						e.getComponent().removeFocusListener(this);
-						((MTextController) textController).edit(newNode, targetNode, true, false, false);
-					}
-				});
+				startEditingAfterSelect(newNode);
 				select(newNode);
 				break;
 			}
@@ -178,6 +144,67 @@ public class MMapController extends MapController {
 				newNode = null;
 		}
 		return newNode;
+	}
+	
+	private void startEditingAfterSelect(final NodeModel newNode) {
+		final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
+		component.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+			}
+			
+			public void focusGained(FocusEvent e) {
+				e.getComponent().removeFocusListener(this);
+				final TextController textController = TextController.getController();
+				((MTextController) textController).edit(newNode, newNode.getParentNode(), true, false, false);
+			}
+		});
+    }
+
+	private void stopEditing() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final TextController textController = TextController.getController();
+		if (textController instanceof MTextController) {
+			((MTextController) textController).stopEditing();
+		}
+		if (textController instanceof MTextController) {
+			modeController.startTransaction();
+			try {
+				((MTextController) TextController.getController()).stopEditing();
+			}
+			finally {
+				modeController.commit();
+			}
+		}
+    }
+
+	public void addNewSummaryNodeStartEditing(final int summaryLevel, final int start, final int end){
+		stopEditing();
+		ModeController modeController = getMModeController();
+		final IMapSelection selection = modeController.getController().getSelection();
+		NodeModel selected = selection.getSelected();
+		final NodeModel parentNode = selected.getParentNode();
+		final boolean isLeft = selected.isLeft();
+		final NodeModel newNode = addNewNode(parentNode, end+1, isLeft);
+		final SummaryNode summary = (SummaryNode) modeController.getExtension(SummaryNode.class);
+		summary.undoableActivateHook(newNode, summary);
+		final FirstGroupNode firstGroup = (FirstGroupNode) modeController.getExtension(FirstGroupNode.class);
+		final NodeModel firstNode = (NodeModel) parentNode.getChildAt(start);
+		firstGroup.undoableActivateHook(firstNode, firstGroup);
+		int level = summaryLevel;
+		for(int i = start+1; i < end; i++){
+			NodeModel node = (NodeModel) parentNode.getChildAt(i);
+			if(isLeft != node.isLeft())
+				continue;
+			if(SummaryNode.isSummaryNode(node))
+				level++;
+			else
+				level = 0;
+			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
+				firstGroup.undoableActivateHook(node, firstGroup);
+		}
+		startEditingAfterSelect(newNode);
+		select(newNode);
+
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
