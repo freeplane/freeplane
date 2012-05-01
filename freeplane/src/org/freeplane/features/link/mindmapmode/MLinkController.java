@@ -1067,11 +1067,7 @@ public class MLinkController extends LinkController {
 	}
 
 	public boolean isAnchored() {
-		if(anchorID == null) {
-			return false;
-		}else {
-			return true;
-		}
+		return anchorID != null;
 	}
 
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
