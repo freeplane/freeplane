@@ -204,7 +204,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			e.consume();
 			return;
 		}
-		if(inside && ! e.isAltDown())
+		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			extendSelection(e);
 	}
 
