@@ -1813,8 +1813,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		selection.clear();
 		for (final NodeView nodeView : selectedNodes) {
 			if (nodeView.isContentVisible()) {
-				if(getSelected() == null)
-					selection.add(nodeView);
+				selection.add(nodeView);
 			}
 		}
 		if (getSelected() != null) {
