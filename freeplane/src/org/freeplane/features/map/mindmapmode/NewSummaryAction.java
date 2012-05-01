@@ -27,6 +27,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
@@ -50,34 +51,8 @@ class NewSummaryAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("summary_not_possible"));
 			return;
 		}
-		final int summaryLevel = this.summaryLevel;
-		final int start = this.start;
-		final int end = this.end;
-		final ModeController modeController = Controller.getCurrentModeController();
-		final IMapSelection selection = modeController.getController().getSelection();
-		NodeModel selected = selection.getSelected();
-		final NodeModel parentNode = selected.getParentNode();
-		final boolean isLeft = selected.isLeft();
-		final MMapController mapController = (MMapController) modeController.getMapController();
-		final NodeModel newNode = mapController.addNewNode(parentNode, end+1, isLeft);
-		final SummaryNode summary = (SummaryNode) modeController.getExtension(SummaryNode.class);
-		summary.undoableActivateHook(newNode, summary);
-		final FirstGroupNode firstGroup = (FirstGroupNode) modeController.getExtension(FirstGroupNode.class);
-		final NodeModel firstNode = (NodeModel) parentNode.getChildAt(start);
-		firstGroup.undoableActivateHook(firstNode, firstGroup);
-		int level = summaryLevel;
-		for(int i = start+1; i < end; i++){
-			NodeModel node = (NodeModel) parentNode.getChildAt(i);
-			if(isLeft != node.isLeft())
-				continue;
-			if(SummaryNode.isSummaryNode(node))
-				level++;
-			else
-				level = 0;
-			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
-				firstGroup.undoableActivateHook(node, firstGroup);
-		}
-		mapController.select(newNode);
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		mapController.addNewSummaryNodeStartEditing(summaryLevel, start, end);
 	}
 
 	private boolean check() {

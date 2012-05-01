@@ -3,6 +3,8 @@ package org.freeplane.plugin.script.proxy;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingMethodException;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -105,6 +107,19 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		return result;
 	}
 
+    public URI getUri() throws ConversionException {
+        if (text == null)
+            return null;
+        try {
+            if (TextUtils.matchUriPattern(text))
+                return new URI(text);
+        }
+        catch (URISyntaxException e) {
+            // throw below
+        }
+        throw new ConversionException("not an uri: " + text);
+    }
+
 	/**
 	 * Uses the following priority ranking to determine the type of the text:
 	 * <ol>
@@ -127,12 +142,17 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 				return getDate();
 			}
 			catch (ConversionException e2) {
-				return text;
+	            try {
+	                return getUri();
+	            }
+	            catch (ConversionException e3) {
+	                return text;
+	            }
 			}
 		}
 	}
 
-	/** Allow statements like this: <code>node['attr_name'].to.num</code>. */
+    /** Allow statements like this: <code>node['attr_name'].to.num</code>. */
 	public Convertible getTo() {
 		return this;
 	}
@@ -158,6 +178,8 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 			// same for isDate()/getDate()
 			if (property.equals("date"))
 				return getDate();
+			if (property.equals("uri"))
+			    return getUri();
 			return super.getProperty(property);
 		}
 		catch (ConversionException e) {

@@ -8,17 +8,17 @@
 			<menu_submenu name="menu_group" name_ref="menu_group">
 				<menu_action accelerator="control shift B" action="CloudAction"/>
 			</menu_submenu>	
-			<menu_submenu name="menu_title" name_ref="menu_title">
+			<menu_submenu name="icons" name_ref="menu_iconView">
 				<menu_submenu name="icons" name_ref="menu_iconByCategory">
 				<menu_category menu_key="main_menu_icons" name="icons_list">
 				</menu_category>
-				<menu_category name="remove icons">
-					<menu_action action="RemoveIcon_0_Action"/>
-					<menu_action action="RemoveIconAction"/>
-					<menu_action action="RemoveAllIconsAction"/>					
-				</menu_category>
 				</menu_submenu>
+				<menu_submenu name="menu_remove_icons" >
+					<menu_action action="RemoveIcon_0_Action" />
+					<menu_action action="RemoveIconAction" />
+					<menu_action action="RemoveAllIconsAction" />					
 				</menu_submenu>
+			</menu_submenu>
 			<menu_submenu name="menu_extensions" name_ref="menu_extensions">
 				<menu_action action="EditDetailsAction"/>
 				<menu_action action="EditDetailsInDialogAction"/>
@@ -53,17 +53,15 @@
 							</menu_submenu>
 						</menu_category>
 				</menu_category>
-			<menu_category name="MapView">
 				<menu_category name="zoom">
 					<menu_action accelerator="alt UP" action="ZoomInAction"/>
 					<menu_action accelerator="alt DOWN" action="ZoomOutAction"/>
 					<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
 					</menu_category>
-				<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
-				</menu_category>
-				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
-					<menu_action action="ShowSelectionAsRectangleAction"/>	
-					</menu_submenu>
+				<menu_submenu name="menu_viewmode" name_ref="menu_viewmode">	
+					<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
+					<menu_action action="ShowSelectionAsRectangleAction"/>
+				</menu_submenu>		
 				<menu_submenu name="menu_hoverView" name_ref="menu_hoverView">
 				<menu_action accelerator="alt F2" action="ToggleDetailsAction"/>
 				</menu_submenu>
@@ -129,6 +127,7 @@
 			<menu_category name="navigate">
 				<menu_category name="folding">
 					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
+					<menu_action action="ShowNextChildAction" accelerator="shift SPACE" />
 					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
 					</menu_category>
 			</menu_category>			

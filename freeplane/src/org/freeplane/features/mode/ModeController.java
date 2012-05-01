@@ -182,6 +182,43 @@ public class ModeController extends AController {
 		execute(actor, map);
 	}
 
+	public void resolveParentExtensions(final Object key, final NodeModel to) {
+		for (final IExtensionCopier copier : copiers) {
+			copier.resolveParentExtensions(key, to);
+		}
+	}
+
+	public void undoableResolveParentExtensions(final Object key,  final NodeModel to) {
+		final MapModel map = to.getMap();
+		if (map == null) {
+			resolveParentExtensions(key, to);
+			return;
+		}
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		if (undoHandler == null) {
+			resolveParentExtensions(key, to);
+			return;
+		}
+		final NodeModel backup = new NodeModel(null);
+		copyExtensions(key, to, backup);
+		final IActor actor = new IActor() {
+			public void undo() {
+				copyExtensions(key, backup, to);
+				getMapController().nodeChanged(to);
+			}
+
+			public String getDescription() {
+				return "undoableCopyExtensions";
+			}
+
+			public void act() {
+				resolveParentExtensions(key, to);
+				getMapController().nodeChanged(to);
+			}
+		};
+		execute(actor, map);
+	}
+
 	void removeExtensions(final Object key, final NodeModel from) {
 		for (final IExtensionCopier copier : copiers) {
 			copier.remove(key, from, from);
@@ -348,7 +385,7 @@ public class ModeController extends AController {
 		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
 		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
 		final String style = "<style type='text/css'>" //
-		        + " body { font-size: 13pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
+		        + " body { font-size: 10pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
 		        + "</style>";
 		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
 		boolean tooltipSet = false;

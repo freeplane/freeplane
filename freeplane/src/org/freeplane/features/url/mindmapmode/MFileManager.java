@@ -397,10 +397,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         	assert(map.getRootNode() == root);
         	setFile(map, file);
         }
-        else{
-        	map.createNewRoot();
-        }
-	}
+		if(map.getRootNode() == null)
+			map.createNewRoot();
+ 	}
 
 	public URL getAlternativeURL(final URL url, AlternativeFileMode mode){
 		try {
@@ -751,11 +750,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			writeToFile(map, file);
 			if (!isInternal) {
 				setFile(map, file);
 				map.setSaved(true);
 			}
+			writeToFile(map, file);
 			map.scheduleTimerForAutomaticSaving();
 			return true;
 		}

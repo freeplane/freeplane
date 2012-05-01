@@ -66,6 +66,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		}
 		if(text.startsWith("=")){
 			JEditorPane textEditor = new JEditorPane();
+			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
 			final EditNodeDialog editNodeDialog = new FormulaEditor(node, text, firstKeyEvent, editControl, false, textEditor);

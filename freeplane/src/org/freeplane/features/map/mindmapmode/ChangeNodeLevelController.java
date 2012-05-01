@@ -101,19 +101,15 @@ public class ChangeNodeLevelController {
 		final ModeController currentModeController = Controller.getCurrentModeController();
 		final MapController mapController = currentModeController.getMapController();
 		final NodeModel selectedNode = mapController.getSelectedNode();
-		if (selectedNode.isRoot()) {
+		final NodeModel selectedParent = selectedNode.getParentNode();
+		if (selectedParent == null) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 			return false;
 		}
-		final NodeModel selectedParent = selectedNode.getParentNode();
 		final Collection<NodeModel> selectedNodes = mapController.getSelectedNodes();
 		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
 				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
-				return false;
-			}
-			if (node.isRoot()) {
-				UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 				return false;
 			}
 		}

@@ -62,6 +62,12 @@ public class TextController implements IExtension {
 	private static final Integer DETAILS_TOOLTIP = 2;
 	private final List<IContentTransformer> textTransformers;
 	protected final ModeController modeController;
+	public static final String MARK_TRANSFORMED_TEXT = "mark_transformed_text";
+
+
+	public static boolean isMarkTransformedTextSet() {
+		return Controller.getCurrentController().getResourceController().getBooleanProperty(MARK_TRANSFORMED_TEXT);
+    }
 
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -224,10 +230,24 @@ public class TextController implements IExtension {
 						 return null;
 					 }
 					final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
-					final Font font = style.getFont(node);
+			        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+			        final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
+			        Font detailFont = style.getFont(detailStyleNode);
+			        Color detailBackground = style.getBackgroundColor(detailStyleNode);
+			        Color detailForeground = style.getColor(detailStyleNode);
+					
 					final StringBuilder rule = new StringBuilder();
-					rule.append("font-family: " + font.getFamily() + ";");
-					rule.append("font-size: " + font.getSize() + "pt;");
+					rule.append("font-family: " + detailFont.getFamily() + ";");
+					rule.append("font-size: " + detailFont.getSize() + "pt;");
+	                if (detailFont.isItalic()) {
+	                    rule.append("font-style: italic; ");
+	                }
+	                if (detailFont.isBold()) {
+	                    rule.append("font-weight: bold; ");
+	                }
+					rule.append("color: ").append(ColorUtils.colorToString(detailForeground)).append(";");
+					rule.append("background-color: ").append(ColorUtils.colorToString(detailBackground)).append(";");
+					
 					String noteText= detailText.getHtml();
 					final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
 					    .replaceFirst("</body>", "</div></body>");

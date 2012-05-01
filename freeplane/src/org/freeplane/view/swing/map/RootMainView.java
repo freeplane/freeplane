@@ -105,7 +105,7 @@ class RootMainView extends MainView {
     }
 
 	@Override
-	public void paint(final Graphics graphics) {
+	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
 		if (getNodeView().getModel() == null) {
 			return;
@@ -118,7 +118,7 @@ class RootMainView extends MainView {
 		g.setStroke(new BasicStroke(1.0f));
 		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		super.paint(g);
+		super.paintComponent(g);
 	}
 
 	@Override

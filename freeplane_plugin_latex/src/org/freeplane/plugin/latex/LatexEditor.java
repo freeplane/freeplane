@@ -72,6 +72,7 @@ public class LatexEditor {
 	 */
 	public static String editLatex(final String oldEquation, final NodeModel node) {
 		final JEditorPane textArea = new JEditorPane();
+		textArea.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
 		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		editorScrollPane.setPreferredSize(new Dimension(700, 200));

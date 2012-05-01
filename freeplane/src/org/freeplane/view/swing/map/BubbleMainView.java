@@ -66,7 +66,7 @@ class BubbleMainView extends MainView {
 	}
 
 	@Override
-	public void paint(final Graphics graphics) {
+	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
@@ -82,7 +82,7 @@ class BubbleMainView extends MainView {
 		g.setStroke(BubbleMainView.DEF_STROKE);
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		super.paint(g);
+		super.paintComponent(g);
 	}
 
 	@Override

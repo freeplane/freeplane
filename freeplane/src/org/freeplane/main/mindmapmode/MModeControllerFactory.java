@@ -63,7 +63,7 @@ import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
-import org.freeplane.features.map.UnfoldAll;
+import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.mindmapmode.ChangeNodeLevelController;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.NewParentNode;
@@ -254,7 +254,7 @@ public class MModeControllerFactory {
 		    .getController()).getIconToolBarScrollPane());
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
 		new RevisionPlugin();
-		new UnfoldAll();
+		FoldingController.install(new FoldingController());
 		
 		uiFactory = new MUIFactory();
 		mapController.addNodeChangeListener(uiFactory);

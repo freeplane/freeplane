@@ -38,7 +38,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
-import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 
 /**
@@ -161,7 +160,10 @@ public class AttributeController implements IExtension {
 					return null;
 				}
 				final StringBuilder tooltip = new StringBuilder();
-				tooltip.append("<html><body><table style='border: 1px black solid; background-color: black' width='100%' cellspacing='1' cellpadding='2'>");
+				final int fontSize = registry.getFontSize();
+				tooltip.append("<html><body><table style='border: 1px black solid; background-color: black;");
+				tooltip.append(" font-size: "); tooltip.append(fontSize); tooltip.append("pt");
+				tooltip.append("' width='100%' cellspacing='1' cellpadding='2' ");
 				final int currentRowCount = attributes.getRowCount();
 				for (int i = 0; i < currentRowCount; i++) {
 					tooltip.append("<tr><td>");
@@ -190,8 +192,7 @@ public class AttributeController implements IExtension {
 			private String getTransformedValue(NodeModel node, final TextController textController, final String originalText) {
 				try {
 					final String text = textController.getTransformedText(originalText, node, null);
-					final boolean markTransformedText = !Controller.getCurrentController().getResourceController()
-					.getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
+					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
 					final String unicodeText = HtmlUtils.unicodeToHTMLUnicodeEntity(text);
 					if (markTransformedText && text != originalText)
 						return colorize(unicodeText, "green");

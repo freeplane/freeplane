@@ -38,6 +38,7 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
@@ -125,8 +126,11 @@ public class DefaultMapMouseListener implements IMouseListener {
 		final MapView map = (MapView) source;
 		final Controller controller = map.getModeController().getController();
 		final IMapSelection selection = controller.getSelection();
-		if(selection != null)
-			selection.selectAsTheOnlyOneSelected(selection.getSelected());
+		if(selection != null){
+			final NodeModel selected = selection.getSelected();
+			if(selected != null)
+				controller.getViewController().getComponent(selected).requestFocusInWindow();
+		}
 	}
 
 	public void mouseEntered(final MouseEvent e) {
