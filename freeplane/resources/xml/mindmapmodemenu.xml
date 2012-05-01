@@ -368,9 +368,8 @@
 					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="SetAcceleratorOnNextClickAction" />
 					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
-						<menu_category name="new" menu_key="main_menu_new_accelerator_presets"/>
-						<menu_separator />
-						<menu_category name="save" menu_key="main_menu_save_accelerator_presets"/>
+						<menu_submenu name="load_accelerator_presets" menu_key="main_menu_new_load_accelerator_presets"/>
+						<menu_action action="SaveAcceleratorPresetsAction"/>
 					</menu_submenu>
 				</menu_category>
 				<menu_separator />
