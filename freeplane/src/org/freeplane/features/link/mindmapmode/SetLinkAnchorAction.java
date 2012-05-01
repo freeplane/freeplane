@@ -41,6 +41,15 @@ public class SetLinkAnchorAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		
+		/**
+		 * @TODO
+		 * 
+		 * -# implement GUID as reliable nodeID
+		 * -# correct tickmark handling in menu (BUG)
+		 * -# set tooltip for mouse-over SetLinkAnchorAction in menu
+		 * 
+		 */
+		
 		// get reference to selected node
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel node = controller.getSelection().getSelected();
@@ -52,42 +61,16 @@ public class SetLinkAnchorAction extends AFreeplaneAction {
 			return;
 		}
 
-		/**
-		 * @TODO
-		 * 
-		 * -# implement GUID as reliable nodeID
-		 * 
-		 */
-		
 		// set idString variable according to file and node info
 		final String idString = mindmapFile.toURI().toString() + '#' + node.createID();
 
 		// save idString in LinkController
 		((MLinkController)(LinkController.getController())).setAnchorID( idString );
-
-		/**
-		 * @TODO
-		 *
-		 * -# correct tickmark handling in menu (BUG)
-		 * -# set tooltip for mouse-over SetLinkAnchorAction in menu
-		 * 
-		 */
-
-//		setSelected( ((MLinkController)(LinkController.getController())).isAnchored() );
-		
-		// debug
-		System.out.println("SetLinkAnchorAction.actionPerformed:");
-		System.out.println(this.isSelected());
-		
 	}
 	
 	@Override
 	public void setSelected() {
 		final boolean isAnchored = ((MLinkController)(LinkController.getController())).isAnchored();
 		setSelected( isAnchored );
-		
-		// debug
-		System.out.println("SetLinkAnchorAction.setSelected():");
-		System.out.println(this.isSelected());
 	}
 }
