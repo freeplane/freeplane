@@ -159,7 +159,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return key + ".text";
 	}
 
-	final String getTooltipKey() {
+	public final String getTooltipKey() {
 		return key + ".tooltip";
 	}
 

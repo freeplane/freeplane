@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -31,6 +32,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
+@EnabledAction(checkOnPopup=true)
 public class MakeLinkToAnchorAction extends AFreeplaneAction {
 
 	private static final long serialVersionUID = 1L;
@@ -77,5 +79,10 @@ public class MakeLinkToAnchorAction extends AFreeplaneAction {
 
 			}
 		}
+	}
+	@Override
+	public void setEnabled() {
+		final boolean isAnchored = ((MLinkController)(LinkController.getController())).isAnchored();
+		setEnabled( isAnchored );
 	}
 }
