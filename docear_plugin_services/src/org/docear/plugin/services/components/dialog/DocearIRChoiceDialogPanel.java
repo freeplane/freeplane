@@ -119,7 +119,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	private String adviceText1;
 	private String adviceText2;
 	
-	public DocearIRChoiceDialogPanel() {
+	public DocearIRChoiceDialogPanel(final boolean withoutLicense) {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
@@ -136,7 +136,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		
 		initUserDataSection();
 		
-		initLegalMattersSection();		
+		initLegalMattersSection(withoutLicense);		
 		
 		adviceText1 = TextUtils.getText("docear.uploadchooser.advice1.text");
 		adviceText2 = TextUtils.getText("docear.uploadchooser.advice2.text");
@@ -147,12 +147,13 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		
 		add(lblAdvice, "2, 6");
 		
-		enableRegistration(true);
+		enableRegistration(isEmpty(txtUsername.getText()));
+		
 	}
 
 
 
-	private void initLegalMattersSection() {
+	private void initLegalMattersSection(boolean withoutLicense) {
 		LegalMattersPane = new JPanel();
 		LegalMattersPane.setBorder(new TitledBorder(null, TextUtils.getText("docear.uploadchooser.section.legal_matters"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(LegalMattersPane, "2, 5, fill, fill");
@@ -211,18 +212,25 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if("tos".equals(e.getActionCommand())) {
 					licenseText.setLicenseText(getTermsOfUse());
-					JOptionPane.showConfirmDialog(DocearIRChoiceDialogPanel.this, licenseText, TextUtils.getText("docear.license.terms_of_use.title"), JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showConfirmDialog(DocearIRChoiceDialogPanel.this, licenseText, TextUtils.getText("docear.license.terms_of_use.title"), JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null);
 					return;
 				}
 				if("dps".equals(e.getActionCommand())) {
 					licenseText.setLicenseText(getDataPrivacyTerms());
-					JOptionPane.showConfirmDialog(DocearIRChoiceDialogPanel.this, licenseText, TextUtils.getText("docear.license.data_privacy.title"), JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showConfirmDialog(DocearIRChoiceDialogPanel.this, licenseText, TextUtils.getText("docear.license.data_privacy.title"), JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null);
 					return;
 				}
 			
 			}
 		});
 		panel.add(lblAcceptTermsOfService, "2, 1, fill, fill");
+		
+		if(withoutLicense) {
+			chckbxAcceptDataUsage.setEnabled(false);
+			chckbxAcceptDataUsage.setSelected(true);
+			chckbxAcceptTermsOfService.setEnabled(false);
+			chckbxAcceptTermsOfService.setSelected(true);
+		}
 	}
 
 
@@ -270,6 +278,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		
 		txtUsername = /*new JTextField();	//*/ new OverlayTextField(TextUtils.getText("docear.uploadchooser.username.label"));	
 		txtUsername.setText(ResourceController.getResourceController().getProperty("docear.service.connect.username",""));
+		txtUsername.setForeground(new Color(txtUsername.getForeground().getRGB(), false));
 		txtUsername.setColumns(10);
 		txtUsername.addKeyListener(keyListener);
 		userDataPane.add(txtUsername, "2, 3");

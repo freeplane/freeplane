@@ -29,7 +29,7 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 	}
 
 	public static void showDialog(boolean exitOnCancel) {
-		final DocearIRChoiceDialogPanel chooser = new DocearIRChoiceDialogPanel();
+		final DocearIRChoiceDialogPanel chooser = new DocearIRChoiceDialogPanel(!exitOnCancel);
 		
 		ArrayList<JButton> buttonsList = new ArrayList<JButton>();
 		buttonsList.add(new JButton(TextUtils.getText("docear.uploadchooser.button.ok")));
