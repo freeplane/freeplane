@@ -170,6 +170,22 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	public void setEnabled() {
 		setEnabled(true);
 	}
+	
+	
+
+	@Override
+	public boolean isEnabled() {
+		if(! Boolean.TRUE.equals(getValue("AFreeplaneAction.setEnabled")) && AFreeplaneAction.checkEnabledOnPopup(this))
+			setEnabled();
+		return super.isEnabled();
+	}
+
+	@Override
+	public void setEnabled(boolean newValue) {
+		putValue("AFreeplaneAction.setEnabled", Boolean.TRUE);
+		super.setEnabled(newValue);
+		putValue("AFreeplaneAction.setEnabled", null);
+	}
 
 	public void setSelected() {
 	}
