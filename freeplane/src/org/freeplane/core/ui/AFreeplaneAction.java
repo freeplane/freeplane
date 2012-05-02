@@ -136,12 +136,12 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public void afterMapChange(final Object newMap) {
 		if (newMap == null) {
-			if (isEnabled()) {
+			if (super.isEnabled()) {
 				setEnabled(false);
 			}
 		}
 		else {
-			if (!isEnabled()) {
+			if (!super.isEnabled()) {
 				setEnabled(true);
 			}
 		}
