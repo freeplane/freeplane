@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -175,7 +176,8 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	@Override
 	public boolean isEnabled() {
-		if(! Boolean.TRUE.equals(getValue("AFreeplaneAction.setEnabled")) && AFreeplaneAction.checkEnabledOnPopup(this))
+		if(! Boolean.TRUE.equals(getValue("AFreeplaneAction.setEnabled")) && AFreeplaneAction.checkEnabledOnPopup(this)
+				&& Controller.getCurrentController().getSelection() != null)
 			setEnabled();
 		return super.isEnabled();
 	}
