@@ -15,7 +15,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -33,19 +35,15 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.features.AccountRegisterer;
 import org.docear.plugin.communications.features.DocearServiceException;
-import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.ui.MultiLineActionLabel;
 import org.docear.plugin.core.ui.components.DocearLicensePanel;
 import org.docear.plugin.services.ServiceController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.swingplus.JHyperlink;
+import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -75,6 +73,8 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	private JLabel lblRetypePassword;
 	private JLabel lblEmail;
 	
+	private List<ActionListener> listeners = new  ArrayList<ActionListener>();
+	
 	private final KeyListener keyListener = new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
@@ -103,7 +103,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	private JLabel lblRequiredFields;
 	private JLabel lblBirthyear;
 	private JTextField txtBirthYear;
-	private JLabel lblMoreinfo;
+	private JPanel lblMoreinfo;
 	private JLabel lblAdvice;
 	private JPanel LegalMattersPane;
 	private JScrollPane scrollPane;
@@ -407,12 +407,35 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		uploadPanel.add(chckbxAllowResearchUsage, "8, 1");
 		uploadPanel.add(chckbxAllowIR, "10, 1");
 		
-		lblMoreinfo = new JHyperlink(TextUtils.getText("docear.uploadchooser.more.text"), "http://www.docear.org/give-back/share-your-data/");
-		uploadPanel.add(lblMoreinfo, "2, 3, 9, 1");
-		lblMoreinfo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblMoreinfo = new MultiLineActionLabel(TextUtils.getText("docear.uploadchooser.more.text"));
+		((MultiLineActionLabel)lblMoreinfo).addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if("more info".equals(e.getActionCommand())) {
+					try {
+						Controller.getCurrentController().getViewController().openDocument(new URI("http://www.docear.org/give-back/share-your-data/"));
+					} 
+					catch (Exception e1) {
+						LogUtils.warn("could not open link to \"more info\"!");
+					}
+				}
+			}
+		});
+		((MultiLineActionLabel)lblMoreinfo).setHorizontalAlignment(MultiLineActionLabel.RIGHT);
+		uploadPanel.add(lblMoreinfo, "8, 3, 3, 1");
 	}
 	
 	
+	
+	public void addActionListener(ActionListener listener) {
+		if(listeners.contains(listener)) {
+			return;
+		}
+		listeners.add(listener);
+	}
+	
+	public void removeActionListener(ActionListener listener) {
+		listeners.remove(listener);
+	}
 	
 	public final boolean useRegistration() {
 		return this.registrationNecessary;
@@ -464,54 +487,55 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	}
 
 
-	public final String getPassword() {
+	public final String getPassword() throws DocearServiceException {
+		String pwd = new String(pwdPassword.getPassword());
+		if(registrationNecessary && !pwd.equals(new String(pwdRetypepasswd.getPassword()))) {
+			throw new DocearServiceException(TextUtils.getText("docear.uploadchooser.warning.not_matching_passwords"));
+		}
 		return new String(pwdPassword.getPassword());
 	}
 
-	public void integrateButtons(JButton[] buttons) {
+	public void integrateButtons(final JButton[] buttons) {
 		okButton = buttons[0];
 		enableButtonIfPossible(null);
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
-				try {
-					checkAccountSettings();
-					Container cont = getParent();
-					while(!(cont instanceof JOptionPane)) {
-						cont = cont.getParent();
-					}
-					((JOptionPane)cont).setValue(e.getSource());
-				} 
-				catch (DocearServiceException e1) {
-					JOptionPane.showMessageDialog(DocearIRChoiceDialogPanel.this, 
-							TextUtils.getText("docear.uploadchooser.warning.notregistered")+e1.getMessage(), 
-							TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), 
-							JOptionPane.WARNING_MESSAGE);
-					LogUtils.info("DocearServiceException: "+e1.getMessage());
-					if(DocearServiceExceptionType.NO_CONNECTION.equals(e1.getType())) {
-						chckbxAllowbackup.setSelected(false);
-						clearUserData();
-					}
-				} 
-				catch (URISyntaxException e1) {
-					JOptionPane.showMessageDialog(DocearIRChoiceDialogPanel.this, TextUtils.getText("docear.uploadchooser.warning.notregistered"), TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), JOptionPane.WARNING_MESSAGE);
-					LogUtils.warn(e1);
-				}
-			}
-		});
-		for(int i=1; i < buttons.length; i++) {
+		for(int i=0; i < buttons.length; i++) {
+			final int id = i;
 			buttons[i].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					closeDialogManually();
+					//closeDialogManually();
+					fireActionEvent(buttons[id] ,id, "");
 				}
 			});
 		}
 	}
 	
-	private void clearUserData() {
+	
+	private void fireActionEvent(Object source, int id, String command) {
+		ActionEvent event = new ActionEvent(this, id, command);
+		if(listeners.size() <= 0 ) {
+			Container cont = getParent();
+			while(!(cont instanceof JOptionPane)) {
+				cont = cont.getParent();
+			}
+			((JOptionPane)cont).setValue(source);
+			close();
+		}
+		else {
+			for(ActionListener listener : listeners) {
+				listener.actionPerformed(event);
+			}
+		}
+		
+	}
+	public void clearUserData() {
 		txtUsername.setText("");
 		txtEmail.setText("");
 		pwdPassword.setText("");
 		pwdRetypepasswd.setText("");
+	}
+	
+	public void close() {
+		closeDialogManually();
 	}
 		
 	private void closeDialogManually() {
@@ -533,11 +557,11 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			}
 			else
 			if(chckbxAllowbackup.isSelected()) {
-				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 5) {	
+				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 0 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 0) {	
 					okButton.setEnabled(true);					
 					lblAdvice.setForeground(new Color(0x00000000, true));
 				}
-				else if(rdbtnRegister.isSelected() && txtUsername.getText().trim().length() > 2 && pwdPassword.getPassword().length > 5 && txtEmail.getText().trim().length() > 6 && pwdRetypepasswd.getPassword().length > 5 && getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {	
+				else if(rdbtnRegister.isSelected() && txtUsername.getText().trim().length() > 0 && pwdPassword.getPassword().length > 0 && txtEmail.getText().trim().length() > 0 && pwdRetypepasswd.getPassword().length > 0 ) {	
 					okButton.setEnabled(true);
 					lblAdvice.setForeground(new Color(0x00000000, true));
 				}
@@ -562,6 +586,12 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		}
 	}
 	
+	public JButton getOkButton() {
+		return okButton;
+	}
+
+
+
 	public void enableRegistration(boolean enabled) {
 		rdbtnRegister.setSelected(enabled);
 		rdbtnLogin.setSelected(!enabled);
@@ -593,64 +623,6 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		}
 		
 		return code;
-	}
-	
-	private boolean checkAccountSettings() throws DocearServiceException, URISyntaxException {
-		if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected() && isEmpty(getPassword())) {
-			return true;
-		}
-		
-		AccountRegisterer accountRegisterer = new AccountRegisterer();
-		int code = getIrCode();
-		if (useRegistration()) {
-			if(!chckbxAllowbackup.isSelected() && isEmpty(getUserName()) && isEmpty(getPassword()) && isEmpty(new String(pwdRetypepasswd.getPassword())) && isEmpty(getEmail())) {
-				return true;
-			}
-			else if (isEmpty(getPassword()) || isEmpty(getEmail())  || !getPassword().equals(new String(pwdRetypepasswd.getPassword()))) {
-				throw new DocearServiceException(TextUtils.getText("docear.uploadchooser.warning.enterall"));
-			}
-			else {
-				accountRegisterer.createRegisteredUser(getUserName(), getPassword(), getEmail(), null, wantsNewsletter(), isMale());
-			}
-		}
-				
-		if (!isEmpty(getUserName()) && !isEmpty(getPassword())) {			
-			CommunicationsController.getController().tryToConnect(getUserName(), getPassword(), true, false);
-			
-			
-			if (ServiceController.getController().isBackupAllowed()) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		
-		if (code > 0) {
-			//if user name is empty --> create anonymous user automatically when the information retrieval action runs 
-			if (!isEmpty(getUserName())) {
-				if (isEmpty(getPassword())) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.nopassword"), TextUtils.getText("docear.uploadchooser.warning.nopassword.title"), JOptionPane.WARNING_MESSAGE);
-					return false;
-				}
-				else {
-					CommunicationsController.getController().tryToConnect(getUserName(), getPassword(), true, false);
-					if (!isEmpty(CommunicationsController.getController().getRegisteredAccessToken())) {
-						return true;
-					}
-					else {
-						return false;
-					}
-				}
-			}
-			else {
-				//if user name is empty --> create anonymous user automatically when the information retrieval action runs 
-				return true;
-			}
-			
-		}
-		
-		return true;
 	}
 
 	private boolean isEmpty(String s) {
