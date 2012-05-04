@@ -158,10 +158,18 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if (backupDir.exists()) {
 			final File backupFile = MFileManager.renameBackupFiles(backupDir, file, backupFileNumber, extension);
 			if (!backupFile.exists()) {
-				file.renameTo(backupFile);
+				performBackup(file, backupFile);
 			}
 		}
 	}
+
+	private static void performBackup(final File file, final File backupFile) {
+	    try {
+	        FileUtils.copyFile(file, backupFile);
+        }
+        catch (IOException e) {
+        }
+    }
 
 	private static File backupDir(final File file) {
 		if (singleBackupDirectory != null)
