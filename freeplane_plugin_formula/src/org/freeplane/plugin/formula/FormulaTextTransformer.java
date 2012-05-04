@@ -76,4 +76,8 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		}
 		return null;
     }
+	
+	public boolean markTransformation() {
+	    return true;
+    }
 }

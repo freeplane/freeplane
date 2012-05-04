@@ -60,11 +60,11 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
 
 
@@ -350,7 +350,7 @@ public abstract class MainView extends ZoomableLabel {
 
     private void drawModificationRect(Graphics g) {
 		final Color color = g.getColor();
-		if(TextModificationState.SUCCESS.equals(textModified)){
+		if(TextModificationState.HIGHLIGHT.equals(textModified)){
 			final boolean markTransformedText = TextController.isMarkTransformedTextSet();
 			if(! markTransformedText)
 				return;
@@ -442,7 +442,7 @@ public abstract class MainView extends ZoomableLabel {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
 	}
 	
-	static enum TextModificationState{NONE, SUCCESS, FAILURE};
+	static enum TextModificationState{NONE, HIGHLIGHT, FAILURE};
 
 	public void updateText(NodeModel nodeModel) {
 		final NodeView nodeView = getNodeView();
@@ -461,7 +461,7 @@ public abstract class MainView extends ZoomableLabel {
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(obj);
 			}
 			text = obj.toString();
-			textModified = text.equals(content.toString()) ? TextModificationState.NONE : TextModificationState.SUCCESS;
+			textModified = obj instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
