@@ -72,7 +72,7 @@ public class DocearServiceSettingsDialogListener implements ActionListener {
 				throw new DocearServiceException(TextUtils.getText("docear.uploadchooser.warning.enterall"));
 			}
 			else {
-				accountRegisterer.createRegisteredUser(settings.getUserName(), settings.getPassword(), settings.getEmail(), null, settings.wantsNewsletter(), settings.isMale());
+				accountRegisterer.createRegisteredUser(settings.getUserName(), settings.getPassword(), settings.getEmail(), settings.getBirthYear(), settings.wantsNewsletter(), settings.isMale());
 			}
 		}
 		else {		
