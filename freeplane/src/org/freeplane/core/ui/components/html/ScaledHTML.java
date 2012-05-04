@@ -80,13 +80,14 @@ public class ScaledHTML extends BasicHTML{
     "p { margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0 }" +
     "body { margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0 }";
 
-    /**
+	/**
      * Root text view that acts as an HTML renderer.
      */
     static class Renderer extends View {
 
         Renderer(JComponent c, ViewFactory f, View v) {
             super(null);
+        setSizeRunning = true;   
 	    host = c;
 	    factory = f;
 	    view = v;
@@ -116,8 +117,10 @@ public class ScaledHTML extends BasicHTML{
         }
 
         public void preferenceChanged(View child, boolean width, boolean height) {
+        	if(! setSizeRunning)
+        		setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
             host.revalidate();
-	    host.repaint();
+            host.repaint();
         }
 
         public float getAlignment(int axis) {
@@ -170,8 +173,10 @@ public class ScaledHTML extends BasicHTML{
         }
 
         public void setSize(float width, float height) {
-	    this.width = (int) width;
-	    view.setSize(width, height);
+        	setSizeRunning = true;
+        	this.width = (int) width;
+        	view.setSize(width, height);
+        	setSizeRunning = false;
         }
 
         public Container getContainer() {
@@ -186,6 +191,7 @@ public class ScaledHTML extends BasicHTML{
         private View view;
 	private ViewFactory factory;
 	private JComponent host;
+	private boolean setSizeRunning;
 
     }
 }
