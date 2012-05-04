@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
+import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.ui.MultiLineActionLabel;
@@ -380,7 +381,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		chckbxAllowbackup = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.backup"));
-		chckbxAllowbackup.setSelected(Boolean.parseBoolean(ResourceController.getResourceController().getProperty(ServiceController.DOCEAR_SAVE_BACKUP, "true")));
+		chckbxAllowbackup.setSelected(Boolean.parseBoolean(ResourceController.getResourceController().getProperty(ServiceController.DOCEAR_SAVE_BACKUP, "false")));
 		chckbxAllowbackup.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowbackup, "2, 1");
 		
@@ -392,7 +393,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		uploadPanel.add(chckbxAllowRecommendations, "4, 1");
 		
 		chckbxAllowResearchContent = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.content"));
-		chckbxAllowResearchContent.setSelected((irNumber&ServiceController.ALLOW_CONTENT_RESEARCH) > 0);
+		chckbxAllowResearchContent.setSelected((irNumber&ServiceController.ALLOW_RESEARCH) > 0);
 		chckbxAllowResearchContent.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowResearchContent, "6, 1");
 		
@@ -402,7 +403,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		chckbxAllowIR.addActionListener(actionListener);
 		
 		chckbxAllowResearchUsage = new JCheckBox(TextUtils.getText("docear.uploadchooser.ckbx.research.usage"));
-		chckbxAllowResearchUsage.setSelected((irNumber&ServiceController.ALLOW_USAGE_RESEARCH) > 0);
+		chckbxAllowResearchUsage.setSelected((irNumber&ServiceController.ALLOW_USAGE_MINING) > 0);
 		chckbxAllowResearchUsage.addActionListener(actionListener);
 		uploadPanel.add(chckbxAllowResearchUsage, "8, 1");
 		uploadPanel.add(chckbxAllowIR, "10, 1");
@@ -557,7 +558,11 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			}
 			else
 			if(chckbxAllowbackup.isSelected()) {
-				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 0 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 0) {	
+				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 0 && !isEmpty(CommunicationsController.getController().getAccessToken())) {
+					okButton.setEnabled(true);					
+					lblAdvice.setForeground(new Color(0x00000000, true));
+				}
+				else if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 0 && pwdPassword.getPassword() != null && pwdPassword.getPassword().length > 0) {	
 					okButton.setEnabled(true);					
 					lblAdvice.setForeground(new Color(0x00000000, true));
 				}
@@ -610,13 +615,13 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	public int getIrCode() {
 		int code = 0;
 		if (allowContentResearch()) {
-			code += ServiceController.ALLOW_CONTENT_RESEARCH;
+			code += ServiceController.ALLOW_RESEARCH;
 		}
 		if (allowInformationRetrieval()) {
 			code += ServiceController.ALLOW_INFORMATION_RETRIEVAL;
 		}
 		if (allowUsageResearch()) {
-			code += ServiceController.ALLOW_USAGE_RESEARCH;
+			code += ServiceController.ALLOW_USAGE_MINING;
 		}
 		if (allowRecommendations()) {
 			code += ServiceController.ALLOW_RECOMMENDATIONS;

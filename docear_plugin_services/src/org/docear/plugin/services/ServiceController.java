@@ -30,9 +30,9 @@ public class ServiceController {
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
 	public static final int ALLOW_RECOMMENDATIONS = 8;
-	public static final int ALLOW_USAGE_RESEARCH = 4;
+	public static final int ALLOW_USAGE_MINING = 4;
 	public static final int ALLOW_INFORMATION_RETRIEVAL = 2;
-	public static final int ALLOW_CONTENT_RESEARCH = 1;
+	public static final int ALLOW_RESEARCH = 1;
 	
 	private Application application;
 
@@ -55,7 +55,7 @@ public class ServiceController {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {				
 				backupRunner.run();
-				UpdateCheck updateCheck = new UpdateCheck();
+				new UpdateCheck();
 			}		
 		});
 		
@@ -95,19 +95,19 @@ public class ServiceController {
 		return Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_INFORMATION_RETRIEVAL, "0"));
 	}
 	
-	public boolean isAllowedContentResearch() {
-		return (getInformationRetrievalCode() & ALLOW_CONTENT_RESEARCH) > 0;
+	public boolean isResearchAllowed() {
+		return (getInformationRetrievalCode() & ALLOW_RESEARCH) > 0;
 	}
 	
-	public boolean isAllowedInformationRetrieval() {
+	public boolean isInformationRetrievalSelected() {
 		return (getInformationRetrievalCode() & ALLOW_INFORMATION_RETRIEVAL) > 0;
 	}
 	
-	public boolean isAllowedUsageResearch() {
-		return (getInformationRetrievalCode() & ALLOW_USAGE_RESEARCH) > 0;
+	public boolean isUsageMiningAllowed() {
+		return (getInformationRetrievalCode() & ALLOW_USAGE_MINING) > 0;
 	}
 	
-	public boolean isAllowedRecommendations() {
+	public boolean isRecommendationsAllowed() {
 		return (getInformationRetrievalCode() & ALLOW_RECOMMENDATIONS) > 0;
 	}
 	
