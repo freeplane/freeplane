@@ -595,7 +595,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void deselect(final NodeView newSelected) {
-		if (selection.deselect(newSelected)) {
+		if (selection.contains(newSelected) && selection.deselect(newSelected)) {
 			newSelected.repaintSelected();
 		}
 	}
@@ -748,7 +748,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public NodeView getSelected() {
-		validateSelecteds();
+		if(! selectedsValid && 
+				(selection.selectedNode == null || ! SwingUtilities.isDescendingFrom(selection.selectedNode, this)  || ! selection.selectedNode.getContent().isVisible()))
+			validateSelecteds();
 		return selection.selectedNode;
 	}
 
@@ -1014,10 +1016,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public boolean isSelected(final NodeView n) {
-		validateSelecteds();
-		if (isPrinting) {
+		if(isPrinting || (! selectedsValid && 
+				(selection.selectedNode == null || ! SwingUtilities.isDescendingFrom(selection.selectedNode, this)  || ! selection.selectedNode.getContent().isVisible())))
 			return false;
-		}
 		return selection.contains(n);
 	}
 
