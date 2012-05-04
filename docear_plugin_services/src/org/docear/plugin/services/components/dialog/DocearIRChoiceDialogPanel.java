@@ -802,4 +802,15 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 
 		
 	}
+
+	public Integer getBirthYear() {
+		try {
+			return new Integer(txtBirthYear.getText());
+		}
+		catch(Exception e) {
+		}
+		
+		return null;
+		
+	}
 }
