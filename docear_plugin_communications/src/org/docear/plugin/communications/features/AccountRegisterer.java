@@ -1,15 +1,21 @@
 package org.docear.plugin.communications.features;
 
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 
+import javax.swing.plaf.TextUI;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.FiletransferClient;
+import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.util.CoreUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
@@ -71,7 +77,15 @@ public class AccountRegisterer {
 				throw new DocearServiceException(response.getEntity(String.class));
 			}
 		}
-		finally{
+		catch(ClientHandlerException e) {
+		    LogUtils.warn(e);
+		    throw new DocearServiceException(TextUtils.getText("docear.service.connect.no_connection"), DocearServiceExceptionType.NO_CONNECTION);
+		}
+		catch(Exception e) {
+		    LogUtils.warn(e);
+		    throw new DocearServiceException(TextUtils.getText("docear.service.connect.unknown_error"));
+		}
+ 		finally{
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
 

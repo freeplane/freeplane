@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.AccountRegisterer;
 import org.docear.plugin.communications.features.DocearServiceException;
+import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.components.dialog.DocearIRChoiceDialogPanel;
 import org.freeplane.core.resources.ResourceController;
@@ -43,11 +44,14 @@ public class DocearServiceSettingsDialogListener implements ActionListener {
 			}
 			((JOptionPane)cont).setValue(settings.getOkButton());
 		} 
-		catch (DocearServiceException e) {
+		catch (DocearServiceException e) {		    
 			JOptionPane.showMessageDialog(settings, 
 					TextUtils.getText("docear.uploadchooser.warning.notregistered")+e.getMessage(), 
 					TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), 
 					JOptionPane.WARNING_MESSAGE);
+			if (DocearServiceExceptionType.NO_CONNECTION.equals(e.getType())) {
+			    settings.clearUserData();
+			}
 			LogUtils.info("DocearServiceException: "+e.getMessage());
 		} 
 		catch (URISyntaxException e1) {
