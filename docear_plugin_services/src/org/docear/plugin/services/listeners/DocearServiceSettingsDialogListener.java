@@ -13,7 +13,6 @@ import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.components.dialog.DocearIRChoiceDialogPanel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -96,9 +95,13 @@ public class DocearServiceSettingsDialogListener implements ActionListener {
 		if (code > 0) {
 			//if user name is empty --> create anonymous user automatically when the information retrieval action runs 
 			if (!isEmpty(settings.getUserName())) {
+				if(!isEmpty(CommunicationsController.getController().getRegisteredAccessToken())) {
+					return true;
+				}
 				if (isEmpty(settings.getPassword())) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.nopassword"), TextUtils.getText("docear.uploadchooser.warning.nopassword.title"), JOptionPane.WARNING_MESSAGE);
-					return false;
+					//JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.nopassword"), TextUtils.getText("docear.uploadchooser.warning.nopassword.title"), JOptionPane.WARNING_MESSAGE);
+					throw new DocearServiceException(TextUtils.getText("docear.uploadchooser.warning.nopassword"));
+					//return false;
 				}
 				else {
 					CommunicationsController.getController().tryToConnect(settings.getUserName(), settings.getPassword(), true, false);
