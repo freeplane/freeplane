@@ -18,8 +18,8 @@
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600" MIN_WIDTH="1">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600" MIN_WIDTH="1" FORMAT_AS_HYPERLINK="true">
+<font NAME="SansSerif" SIZE="8" BOLD="false" ITALIC="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
@@ -62,16 +62,16 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="11"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="2"/>
 <edge STYLE="linear" WIDTH="1"/>
-<node TEXT="Met minder" POSITION="left" ID="ID_892290459" CREATED="1318451679082" MODIFIED="1320853996155" HGAP="178" VSHIFT="28" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
+<node TEXT="Met minder" POSITION="left" ID="ID_892290459" CREATED="1318451679082" MODIFIED="1336121957827" HGAP="213" VSHIFT="30" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
 <icon BUILTIN="idea"/>
-<font SIZE="24" BOLD="true" ITALIC="true"/>
+<font SIZE="12" BOLD="true" ITALIC="true"/>
 <hook NAME="FreeNode"/>
 <edge STYLE="hide_edge" COLOR="#007c00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1129302195" STARTINCLINATION="132;0;" ENDINCLINATION="132;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" CREATED="1319315217232" MODIFIED="1332447305662" HGAP="-414" VSHIFT="208" LINK="http://www.kioo.nl/freeplane/CoreMeeting">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" CREATED="1319315217232" MODIFIED="1336121299635" HGAP="-432" VSHIFT="247" LINK="http://www.kioo.nl/freeplane/CoreMeeting">
 <icon BUILTIN="video"/>
 <richcontent TYPE="NODE">
 
@@ -113,16 +113,17 @@
 </html>
 </richcontent>
 </node>
-<node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1318716147407" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
+<node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1336132579445" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
 
 <html>
   <head>
     
   </head>
   <body>
-    <img src="freeplaneApplications.png"/>
+    <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
+
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="FreeNode"/>
@@ -163,7 +164,7 @@
 </richcontent>
 <edge COLOR="#007c00" WIDTH="3"/>
 </node>
-<node TEXT="Brainstormen" LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_747441325" CREATED="1317963460911" MODIFIED="1321009261242" HGAP="200" VSHIFT="-159">
+<node TEXT="Brainstormen" LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_747441325" CREATED="1317963460911" MODIFIED="1336121273942" HGAP="200" VSHIFT="-159">
 <icon BUILTIN="family"/>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -183,7 +184,7 @@
 </html>
 </richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="36" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="Bedenken" STARTINCLINATION="247;0;" ENDINCLINATION="201;-53;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="16" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="Bedenken" STARTINCLINATION="247;0;" ENDINCLINATION="148;-57;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 <node TEXT="central topic" ID="ID_1607807952" CREATED="1318450079927" MODIFIED="1318450164274">
 <edge STYLE="linear"/>
 <node TEXT="with" ID="ID_1232722180" CREATED="1318450103144" MODIFIED="1318450108729"/>
@@ -278,13 +279,13 @@
 </richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
 </node>
-<node TEXT="Doe meer" POSITION="right" ID="ID_1129302195" CREATED="1317972413136" MODIFIED="1320852384353" HGAP="-189" VSHIFT="-42" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
+<node TEXT="Doe meer" POSITION="right" ID="ID_1129302195" CREATED="1317972413136" MODIFIED="1336120108668" HGAP="-189" VSHIFT="-42" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
 <icon BUILTIN="wizard"/>
-<font SIZE="24" BOLD="true" ITALIC="true"/>
+<font SIZE="12" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge" COLOR="#7c7c00" WIDTH="3"/>
 <hook NAME="FreeNode"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1300937459" CREATED="1317963516276" MODIFIED="1320852636000" HGAP="396" VSHIFT="-39">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1300937459" CREATED="1317963516276" MODIFIED="1336120493295" HGAP="455" VSHIFT="-38">
 <icon BUILTIN="attach"/>
 <richcontent TYPE="NODE">
 
@@ -303,7 +304,7 @@
 <edge COLOR="#00ff00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1300937459" STARTINCLINATION="86;0;" ENDINCLINATION="86;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1380673058" CREATED="1317963795719" MODIFIED="1320852575425" HGAP="443" VSHIFT="18"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1380673058" CREATED="1317963795719" MODIFIED="1336121058473" HGAP="538" VSHIFT="29"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -350,9 +351,47 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Doe" POSITION="right" ID="ID_692068107" CREATED="1317972888300" MODIFIED="1320852813169" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble" HGAP="0" VSHIFT="30">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1510399467" CREATED="1317965217458" MODIFIED="1336121090266" HGAP="484" VSHIFT="94">
+<icon BUILTIN="list"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Scientific_environment">Schrijven</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Ondersteuning voor
+    </p>
+    <p>
+      schrijven en weten-
+    </p>
+    <p>
+      schappelijke referenties
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FreeNode"/>
+<edge COLOR="#007c7c" WIDTH="3"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="4" TRANSPARENCY="255" FONT_SIZE="14" FONT_FAMILY="Britannic Bold" DESTINATION="ID_360719522" MIDDLE_LABEL="Delen" STARTINCLINATION="28;230;" ENDINCLINATION="16;224;" STARTARROW="NONE" ENDARROW="NONE"/>
+</node>
+<node TEXT="Doe" POSITION="right" ID="ID_692068107" CREATED="1317972888300" MODIFIED="1336122192113" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble" HGAP="0" VSHIFT="30">
 <icon BUILTIN="wizard"/>
-<font SIZE="16" BOLD="true"/>
+<font SIZE="12" BOLD="true"/>
 <edge STYLE="sharp_bezier" COLOR="#ff00ff" WIDTH="7"/>
 <hook NAME="FirstGroupNode"/>
 <node TEXT="wat" ID="ID_1911860200" CREATED="1318453489510" MODIFIED="1320852825774" HGAP="50" VSHIFT="-10">
@@ -365,8 +404,8 @@
 <edge WIDTH="1"/>
 </node>
 </node>
-<node TEXT="Jouw&#xa;manier" POSITION="right" ID="ID_1333704057" CREATED="1317972906157" MODIFIED="1320852870946" HGAP="10" VSHIFT="10" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble">
-<font SIZE="18" BOLD="true"/>
+<node TEXT="Jouw&#xa;manier" POSITION="right" ID="ID_1333704057" CREATED="1317972906157" MODIFIED="1336122199991" HGAP="10" VSHIFT="10" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble">
+<font SIZE="12" BOLD="true"/>
 <edge STYLE="sharp_bezier" COLOR="#ff0000" WIDTH="5"/>
 <cloud COLOR="#ffff33" SHAPE="ARC"/>
 <node TEXT="op" ID="ID_1525382905" CREATED="1318453097317" MODIFIED="1320852886188">
@@ -386,12 +425,12 @@
 <edge STYLE="horizontal" WIDTH="1"/>
 </node>
 </node>
-<node TEXT="" POSITION="right" ID="ID_45669475" CREATED="1317972993975" MODIFIED="1318512559178">
+<node TEXT="" POSITION="right" ID="ID_742181469" CREATED="1336120997196" MODIFIED="1336121075649" HGAP="30">
 <icon BUILTIN="ksmiletris"/>
-<edge WIDTH="1"/>
+<edge COLOR="#0000ff" WIDTH="3"/>
 <hook NAME="SummaryNode"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_941087087" CREATED="1317963530737" MODIFIED="1320854033985" HGAP="-237" VSHIFT="98">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_941087087" CREATED="1317963530737" MODIFIED="1336120196745" HGAP="-237" VSHIFT="108">
 <icon BUILTIN="group"/>
 <richcontent TYPE="NODE">
 
@@ -447,44 +486,6 @@
 <node TEXT="Gevorderde" ID="ID_1404449457" CREATED="1317972719278" MODIFIED="1320852087687">
 <icon BUILTIN="ksmiletris"/>
 </node>
-</node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1510399467" CREATED="1317965217458" MODIFIED="1321009277200" HGAP="356" VSHIFT="111">
-<icon BUILTIN="list"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Scientific_environment">Schrijven</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Ondersteuning voor
-    </p>
-    <p>
-      schrijven en weten-
-    </p>
-    <p>
-      schappelijke referenties
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<edge COLOR="#007c7c" WIDTH="3"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="4" TRANSPARENCY="255" FONT_SIZE="24" FONT_FAMILY="Britannic Bold" DESTINATION="ID_360719522" MIDDLE_LABEL="Delen" STARTINCLINATION="82;175;" ENDINCLINATION="-9;207;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
 <node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_360719522" CREATED="1317966438145" MODIFIED="1318589645732" HGAP="-2" VSHIFT="149" LINK="menuitem:_$GettingStartedAction$0"><richcontent TYPE="NODE">
 
@@ -560,11 +561,10 @@
     </ol>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#808080"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1875337895" CREATED="1317967170441" MODIFIED="1320852218228" HGAP="324" VSHIFT="187"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1875337895" CREATED="1317967170441" MODIFIED="1336121070282" HGAP="425" VSHIFT="185"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -619,7 +619,7 @@
 <edge COLOR="#ffff00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1583240168" STARTINCLINATION="-9;57;" ENDINCLINATION="-9;57;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
-<node TEXT="Presenteren" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_501841034" CREATED="1317963565525" MODIFIED="1320852612069" HGAP="222" VSHIFT="221">
+<node TEXT="Presenteren" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_501841034" CREATED="1317963565525" MODIFIED="1336121085945" HGAP="227" VSHIFT="250">
 <hook NAME="FreeNode"/>
 <edge COLOR="#7c0000" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0033" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_501841034" STARTINCLINATION="-2;53;" ENDINCLINATION="-2;53;" STARTARROW="NONE" ENDARROW="NONE"/>

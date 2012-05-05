@@ -223,16 +223,17 @@
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
-<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1334839371837" HGAP="316" VSHIFT="-75" STYLE="bubble"><richcontent TYPE="NODE">
+<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1336132729252" HGAP="316" VSHIFT="-75" STYLE="bubble"><richcontent TYPE="NODE">
 
 <html>
   <head>
     
   </head>
   <body>
-    <img src="freeplaneApplications.png"/>
+    <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge STYLE="hide_edge"/>
@@ -564,7 +565,7 @@
 </html>
 </richcontent>
 <edge STYLE="sharp_bezier" COLOR="#cc0000" WIDTH="2"/>
-<node TEXT="Below this node core:" ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1320163018155" STYLE="bubble" VGAP="0" VSHIFT="-9">
+<node TEXT="Below this node core:" ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1336132743870" STYLE="bubble" VGAP="0" VSHIFT="-9">
 <font ITALIC="false"/>
 <attribute NAME="a1" VALUE="value1"/>
 <attribute NAME="a2" VALUE="value2"/>
@@ -581,9 +582,9 @@
   </body>
 </html>
 </richcontent>
-<hook URI="freeplaneApplications.png" SIZE="0.4765625" NAME="ExternalObject"/>
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
 <edge STYLE="bezier" WIDTH="thin"/>
+<hook URI="Images/doc/freeplaneApplications.png" SIZE="0.4148148" NAME="ExternalObject"/>
 <node STYLE_REF="Reference" ID="ID_965583686" CREATED="1319872918353" MODIFIED="1320248359904" HGAP="240" VSHIFT="-1"><richcontent TYPE="NODE">
 
 <html>

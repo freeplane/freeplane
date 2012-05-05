@@ -25,7 +25,10 @@
 <hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="false" STYLE_REF="Revision" LAST="false">
-            <time_condition_modified_after DATE="1329751370546"/>
+            <conjunct_condition user_name="Example">
+                <time_condition_modified_after DATE="1335514983501"/>
+                <time_condition_modified_before DATE="1335515403501"/>
+            </conjunct_condition>
         </conditional_style>
     </conditional_styles>
     <properties show_icon_for_attributes="false" show_note_icons="true" show_notes_in_map="false"/>
@@ -280,9 +283,9 @@
 </node>
 </node>
 <node TEXT="Main menu&apos;s" STYLE_REF="Beginner" FOLDED="true" ID="ID_767122736" CREATED="1333268936129" MODIFIED="1335300198085">
-<node TEXT="" ID="ID_1720964325" CREATED="1333220288493" MODIFIED="1333269365738" HGAP="80" VSHIFT="84">
+<node TEXT="" ID="ID_1720964325" CREATED="1333220288493" MODIFIED="1336131921892" HGAP="80" VSHIFT="84" STYLE="fork">
 <edge STYLE="hide_edge"/>
-<hook URI="MenusPropertiesPanel.png" SIZE="0.43956044" NAME="ExternalObject"/>
+<hook URI="Images/doc/MenusPropertiesPanel.png" SIZE="0.43956044" NAME="ExternalObject"/>
 <node TEXT="Menu bar" ID="ID_745779360" CREATED="1333220342855" MODIFIED="1333266989761" HGAP="-712" VSHIFT="17">
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
@@ -314,9 +317,7 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_303482588" STARTINCLINATION="20;-28;" ENDINCLINATION="20;-28;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Background&#xa;context menu" FOLDED="true" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1333280484335" HGAP="34" VSHIFT="-6">
-<hook URI="mouse_RB.png" SIZE="1.0" NAME="ExternalObject"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Background&#xa;context menu" FOLDED="true" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336131961095" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -329,10 +330,11 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Background Context Menu" ID="ID_1485150857" CREATED="1333223496821" MODIFIED="1335091049793" VSHIFT="180">
+<hook URI="Images/mouse/mouse_RB.png" SIZE="1.0" NAME="ExternalObject"/>
+<node TEXT="Background Context Menu" ID="ID_1485150857" CREATED="1333223496821" MODIFIED="1336131984089" VSHIFT="180" STYLE="fork">
 <font BOLD="true" ITALIC="true"/>
-<hook URI="BackgroundContextMenu.png" SIZE="1.0" NAME="ExternalObject"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+<hook URI="Images/doc/BackgroundContextMenu.png" SIZE="1.0" NAME="ExternalObject"/>
 <node TEXT="Open/close&#xa;Properties panel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1333278233097" HGAP="56">
 <edge STYLE="hide_edge"/>
 <font BOLD="true" ITALIC="true"/>
@@ -353,8 +355,8 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Hot keystable" ID="ID_1337797684" CREATED="1333278113064" MODIFIED="1333278139790">
-<hook URI="HotKeysTable.png" SIZE="0.8633093" NAME="ExternalObject"/>
+<node TEXT="Hot keystable" ID="ID_1337797684" CREATED="1333278113064" MODIFIED="1336132025414">
+<hook URI="Images/doc/HotKeysTable.png" SIZE="0.8633093" NAME="ExternalObject"/>
 </node>
 </node>
 </node>
@@ -1109,7 +1111,7 @@
 <node TEXT="Icons" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1335300258068" STYLE="combined" MIN_WIDTH="80">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
-<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1335095030668" HGAP="-56" VSHIFT="153" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1335982080280" HGAP="-56" VSHIFT="153" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1124,10 +1126,10 @@
         The bar of icons which is showing at the side of the screen. If it is not showing, select <i>View &gt; Toolbars &gt; Icons toolbar.</i>
       </li>
       <li>
-        A table of icons which is displayed when you select <i>Edit&#160;&gt; Core &gt; Icon from table.</i>
+        A table of icons which is displayed when you select <i>Edit&#160;&gt; Icons &gt; Icon from table.</i>
       </li>
       <li>
-        The structured menu of icons showing when you select <i>Edit &gt; Core&#160;&#160;&gt; Icons by category. </i>
+        The structured menu of icons showing when you select <i>Edit &gt; Icons&#160;&#160;&gt; Icons by category. </i>
       </li>
     </ol>
     <p>
@@ -1668,7 +1670,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2971,7 +2972,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Publishing &amp; sharing" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1335300531756" NUMBERED="true" MIN_WIDTH="200">
+<node TEXT="Publishing &amp; sharing" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1335515320385" NUMBERED="true" MIN_WIDTH="200">
 <node TEXT="Printing" STYLE_REF="Advanced" FOLDED="true" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1335300511773" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -2997,7 +2998,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Presenting" STYLE_REF="Advanced" FOLDED="true" ID="ID_1747402695" CREATED="1335276169448" MODIFIED="1335300511773">
+<node TEXT="Presenting" STYLE_REF="Advanced" FOLDED="true" ID="ID_1747402695" CREATED="1335276169448" MODIFIED="1335515369728">
 <node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1335279324412" HGAP="-54" VSHIFT="45"><richcontent TYPE="NODE">
 
 <html>
@@ -3027,7 +3028,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1335095771996" HGAP="-215" VSHIFT="187"><richcontent TYPE="NODE">
+<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1336073288622" HGAP="-215" VSHIFT="233"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3048,6 +3049,9 @@
     </p>
     <ul>
       <li>
+        .svg images cannot be published in a Java applet.
+      </li>
+      <li>
         See the Freeplane documentation for more options. See <a href="http://freeplane.sourceforge.net/wiki/index.php/Embedding_mind_maps">this page</a>&#160;to publish a map on the Freeplane wiki.
       </li>
       <li>
@@ -3055,6 +3059,9 @@
       </li>
       <li>
         It is possible to set in <i>Tools &gt; Preferences</i>&#160;that the folding state must be saved, such that the map opens each time with the same folding.
+      </li>
+      <li>
+        Freeplanre developers can also publish on http://freeplane.sourceforge.net/mapsOnline. Documents published here, can be opened without Java Applet if they are linked through the map opened by <i>Help &gt; Documentation Maps Online.</i><b>&#160;In that case .svg images can be published</b><i>.</i>
       </li>
     </ul>
   </body>
@@ -3070,7 +3077,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Professional" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_685749368" CREATED="1323895981367" MODIFIED="1335095784492" HGAP="-246" VSHIFT="87"><richcontent TYPE="NODE">
+<node ID="ID_685749368" CREATED="1323895981367" MODIFIED="1336072642148" HGAP="-246" VSHIFT="115"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3088,7 +3095,10 @@
     </p>
     <ul>
       <li>
-        In windows, right click the link of the mind map and choose copy hyperlink. Next paste this address in the URL above.
+        In MS Windows, right click the link of the mind map and choose copy hyperlink. Next paste this address in the URL above
+      </li>
+      <li>
+        http://freeplane.sourceforge.net/mapsOnline is a directory containing mind maps which can be opened without Java Applet, if the link <i>Help &gt; Documentation Maps Online </i>is followed. In that case svg images are displayed too.
       </li>
     </ul>
   </body>
@@ -4697,7 +4707,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1335096257910" HGAP="-164" VSHIFT="66"><richcontent TYPE="NODE">
+<node ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1336124389430" HGAP="-166" VSHIFT="114"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4707,6 +4717,17 @@
     <p>
       In menu <i>View</i>&#160;you can set characteristics for node core, like width, selection border, border marking for formulas and the background color of revisions. You can set if and how node details should be displayed, with or without tool tip (hover text) and modification times.&#160;&#160;You can set if and which attributes are displayed. Also you can set if and how notes are displayed and with which type of window. Finally it is possible to set some characteristics of icons. Open menu <i>View</i>&#160;and select all options one by one to know which options are available. In the preferences much more can be set.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        Viewing settings contains options for printing (outline view) and presentation (Presentation mode).
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
@@ -4945,7 +4966,28 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Theminimal vertical spacing between nodes can be set for all nodes, existing and new ones. Keep Ctrl pressed, select a nodes handle (oval)  and move the cursor up/down to change the vertical space for all nodes." ID="ID_801516363" CREATED="1324029189260" MODIFIED="1335096322121" HGAP="-189" VSHIFT="43">
+<node ID="ID_801516363" CREATED="1324029189260" MODIFIED="1336124569174" HGAP="-193" VSHIFT="70"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The vertical spacing between nodes can be set for all nodes of a branch, existing and new ones. Keep Ctrl pressed, select a nodes handle (oval)&#160;&#160;and move the cursor up/down to change the vertical space for all nodes.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      To reset the original posisitons, select a node and Edit &gt; Set default node positions.
+    </p>
+  </body>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -5101,7 +5143,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -5116,7 +5157,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1335300552676" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180">
