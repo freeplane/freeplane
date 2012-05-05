@@ -30,5 +30,8 @@ public interface IFreeplaneAction extends Action {
 
 	public boolean isSelected();
 
+	public void setSelected(boolean b);
+
 	public String getIconKey();
+
 }

@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -136,12 +137,12 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public void afterMapChange(final Object newMap) {
 		if (newMap == null) {
-			if (isEnabled()) {
+			if (super.isEnabled()) {
 				setEnabled(false);
 			}
 		}
 		else {
-			if (!isEnabled()) {
+			if (!super.isEnabled()) {
 				setEnabled(true);
 			}
 		}
@@ -159,7 +160,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return key + ".text";
 	}
 
-	final String getTooltipKey() {
+	public final String getTooltipKey() {
 		return key + ".tooltip";
 	}
 
@@ -169,6 +170,23 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public void setEnabled() {
 		setEnabled(true);
+	}
+	
+	
+
+	@Override
+	public boolean isEnabled() {
+		if(! Boolean.TRUE.equals(getValue("AFreeplaneAction.setEnabled")) && AFreeplaneAction.checkEnabledOnPopup(this)
+				&& Controller.getCurrentController().getSelection() != null)
+			setEnabled();
+		return super.isEnabled();
+	}
+
+	@Override
+	public void setEnabled(boolean newValue) {
+		putValue("AFreeplaneAction.setEnabled", Boolean.TRUE);
+		super.setEnabled(newValue);
+		putValue("AFreeplaneAction.setEnabled", null);
 	}
 
 	public void setSelected() {

@@ -52,6 +52,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.filemode.FModeController;
@@ -187,11 +188,18 @@ public class FreeplaneStarter {
     }
 
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
-	    controller.getModeController(MModeController.MODENAME).updateMenus("/xml/mindmapmodemenu.xml", plugins);
+	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
 		LoadAcceleratorPresetsAction.install();
 		controller.getModeController(BModeController.MODENAME).updateMenus("/xml/browsemodemenu.xml", plugins);
 		controller.getModeController(FModeController.MODENAME).updateMenus("/xml/filemodemenu.xml", plugins);
     }
+
+	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {
+		ModeController modeController = controller.getModeController(mode);
+		controller.selectModeForBuild(modeController);
+		modeController.updateMenus(xml, plugins);
+		controller.selectModeForBuild(null);
+	}
 
 	public void createFrame(final String[] args) {
 		Compat.macMenuChanges();
