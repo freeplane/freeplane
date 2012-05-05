@@ -292,10 +292,10 @@ class NodeViewFactory {
 			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
-			detailContent.setIcon(new ArrowIcon(nodeView, false));
-			detailContent.updateText(detailText.getHtml());
 			final MapView map = nodeView.getMap();
 			detailContent.setFont(map.getDetailFont());
+			detailContent.setIcon(new ArrowIcon(nodeView, false));
+			detailContent.updateText(detailText.getHtml());
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
 			detailContent.setPreferredSize(null);
