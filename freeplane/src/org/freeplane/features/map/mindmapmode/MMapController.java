@@ -40,6 +40,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
@@ -593,7 +594,11 @@ public class MMapController extends MapController {
 		final boolean setTitle = saved != mapModel.isSaved();
 		mapModel.setSaved(saved);
 		if (setTitle) {
-			Controller.getCurrentModeController().getController().getViewController().setTitle();
+			final Controller controller = Controller.getCurrentController();
+			controller.getViewController().setTitle();
+			final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
+			if(saveAction != null)
+				saveAction.setEnabled();
 		}
 	}
 
