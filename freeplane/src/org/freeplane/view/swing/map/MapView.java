@@ -748,9 +748,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public NodeView getSelected() {
-		if(! selectedsValid && 
-				(selection.selectedNode == null || ! SwingUtilities.isDescendingFrom(selection.selectedNode, this)  || ! selection.selectedNode.getContent().isVisible()))
-			validateSelecteds();
+		if(! selectedsValid) {
+			NodeView node = selection.selectedNode;
+	        if (node == null || ! SwingUtilities.isDescendingFrom(node, this))
+		        validateSelecteds();
+            else {
+	            final JComponent content = node.getContent();
+	            if (content == null || ! content.isVisible())
+	                validateSelecteds();
+            }
+        }
 		return selection.selectedNode;
 	}
 
