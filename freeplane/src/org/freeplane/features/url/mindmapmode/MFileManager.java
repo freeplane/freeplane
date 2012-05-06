@@ -86,7 +86,6 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
-	private static final boolean SET_NEW_MAP_SAVED = true;
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final int DEBUG_OFFSET = 0;
 
@@ -551,7 +550,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final MapModel map = mapController.newMap();
-		mapController.setSaved(map, SET_NEW_MAP_SAVED);
+		mapController.setSaved(map, true);
 		return map;
 	}
 
@@ -613,7 +612,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if(rootText instanceof NamedObject){
 				map.getRootNode().setText(rootText.toString());
 			}
-			controller.getModeController().getMapController().setSaved(map, SET_NEW_MAP_SAVED);
+			controller.getModeController().getMapController().setSaved(map, true);
 			return map;
 		}
 		catch (Exception e) {
