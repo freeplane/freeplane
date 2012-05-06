@@ -60,6 +60,7 @@ import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.format.ScannerController;
@@ -819,6 +820,10 @@ public class MTextController extends TextController {
 	public SHTMLPanel createSHTMLPanel(String purpose) {
     	SHTMLPanel.setResources(new TextResources() {
     		public String getString(String pKey) {
+    			if (pKey.equals("approximate_search_threshold"))
+    			{
+    				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
+    			}
     			pKey = "simplyhtml." + pKey;
     			String resourceString = ResourceController.getResourceController().getText(pKey, null);
     			if (resourceString == null) {
