@@ -40,10 +40,10 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         if (PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
             return obj;
         final String text = obj.toString();
-        final String plainText = HtmlUtils.htmlToPlain(text);
-        if (!FormulaUtils.containsFormula(plainText)) {
+        if (!FormulaUtils.containsFormulaCheckHTML(text)) {
             return obj;
         }
+        final String plainText = HtmlUtils.htmlToPlain(text);
         // starting a new ScriptContext in evalIfScript
         final Object result = FormulaUtils.evalIfScript(node, null, plainText);
         if (result == null) {
@@ -66,6 +66,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		}
 		if(text.startsWith("=")){
 			JEditorPane textEditor = new JEditorPane();
+			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
 			final EditNodeDialog editNodeDialog = new FormulaEditor(node, text, firstKeyEvent, editControl, false, textEditor);
@@ -74,5 +75,9 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 			return editNodeDialog;
 		}
 		return null;
+    }
+	
+	public boolean markTransformation() {
+	    return true;
     }
 }

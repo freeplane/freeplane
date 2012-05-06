@@ -44,9 +44,9 @@
 				<menu_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				<menu_action action="NewParentNode" accelerator="shift INSERT" />
 				<menu_action action="NewFreeNodeAction" />
+				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 			</menu_submenu>
 			<menu_submenu name="menu_group" name_ref="menu_group">
-				<menu_action action="NewSummaryAction" accelerator="alt shift INSERT" />
 				<menu_action action="FirstGroupNodeAction" accelerator = "alt shift B"/>
 				<menu_action action="SummaryNodeAction" accelerator = "alt shift S"/>
 				<menu_action action="AlwaysUnfoldedNodeAction"/>
@@ -60,22 +60,30 @@
 				<menu_separator/>
 				<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 				<menu_action action="AddMenuItemLinkAction" accelerator="" />
+				<menu_separator/>
+				<menu_action action="SetLinkAnchorAction" accelerator="" />
+				<menu_action action="MakeLinkFromAnchorAction" accelerator="" />
+				<menu_action action="MakeLinkToAnchorAction" accelerator="" />
+				<menu_action action="ClearLinkAnchorAction" accelerator="" />
 			</menu_submenu>	
+			<menu_separator />
 			<menu_action action="DeleteAction" accelerator="DELETE" />
-			<menu_separator/>
+			<menu_separator />
 			<menu_submenu name="menu_title" name_ref="menu_title">
 				<menu_action action="EditAction" accelerator="F2" />
 				<menu_action action="SetBooleanPropertyAction.edit_on_double_click" />
 				<menu_action action="EditLongAction" accelerator="alt ENTER" />
 				<menu_action action="JoinNodesAction" accelerator="control J" ></menu_action>
 				<menu_action action="SplitNode" />
+				<menu_action action="RevisionPluginAction" />
 				<menu_separator />
-				<menu_category name="actions">
-					<menu_action action="IconSelectionPlugin" accelerator="control F2"/>
-				</menu_category>
+				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />
+			</menu_submenu>
+			<menu_submenu name="icons" name_ref="menu_iconView">
+				<menu_action action="IconSelectionPlugin" accelerator="control F2"/>
 				<menu_submenu name="icons" name_ref="menu_iconByCategory">
-				<menu_separator />
-				<menu_category name="icons_list" menu_key="main_menu_icons">
+					<menu_separator />
+					<menu_category name="icons_list" menu_key="main_menu_icons">
 				</menu_category>
 				</menu_submenu>
 				<menu_submenu name="progress" name_ref="menu_progress">
@@ -87,13 +95,13 @@
 					<menu_separator/>
 					<menu_action action="IconProgressRemoveAction" />
 				</menu_submenu>
+				<menu_action action="HierarchicalIconsAction" />
+				<menu_action action="HierarchicalIcons2Action" />
 				<menu_submenu name="menu_remove_icons" >
 					<menu_action action="RemoveIcon_0_Action" />
 					<menu_action action="RemoveIconAction" />
 					<menu_action action="RemoveAllIconsAction" />					
 				</menu_submenu>
-				<menu_separator />
-				<menu_action action="SetImageByFileChooserAction" accelerator="alt shift K" />
 			</menu_submenu>
 			<menu_submenu name="menu_extensions" name_ref="menu_extensions">
 				<menu_action action="EditDetailsAction"/>
@@ -167,32 +175,26 @@
 							<menu_action action="ShowFilterToolbarAction"  accelerator="control F"/>
 							<menu_action action="ToggleFBarAction" />
 							<menu_action action="ToggleLeftToolbarAction" />
+							<menu_action action="ToggleStatusAction" />
 							</menu_submenu>
 						<menu_action action="ShowFormatPanel" />
 						</menu_category>
 				<menu_separator />
 				</menu_category>
-			<menu_category name="MapView">
 				<menu_category name="zoom">
 					<menu_action action="ZoomInAction" accelerator="alt UP" />
 					<menu_action action="ZoomOutAction" accelerator="alt DOWN" />
 					<menu_action action="FitToPage" />
 					<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
+					<menu_action action="SetBooleanPropertyAction.center_selected_node"/>
 					</menu_category>
 				<menu_separator />
-				<menu_action action="ViewLayoutTypeAction.OUTLINE" />
-				<menu_action action="ToggleFullScreenAction" />
-				<menu_action action="ToggleStatusAction" />
-				</menu_category>
-				<menu_separator />
-				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
+				<menu_submenu name="menu_viewmode" name_ref="menu_viewmode">
+					<menu_action action="ViewLayoutTypeAction.OUTLINE" />
+					<menu_action action="ToggleFullScreenAction" />
+					<menu_action action="SetBooleanPropertyAction.presentation_mode" />
 					<menu_action action="ShowSelectionAsRectangleAction" />					
-					<menu_action action="SetBooleanPropertyAction.formula_dont_mark_formulas" />
-					<menu_action action="RevisionPluginAction" />
-					<menu_action action="HierarchicalIconsAction" />
-					<menu_action action="HierarchicalIcons2Action" />
-					<menu_action action="SetBooleanMapPropertyAction.show_note_icons" />	
-					<menu_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />	
+					<menu_action action="SetBooleanPropertyAction.highlight_formulas" />
 				</menu_submenu>
 				<menu_separator />
 			<menu_action action="SetShortenerStateAction" />
@@ -207,9 +209,9 @@
 					<menu_radio_action action="ShowSelectedAttributesAction" />
 					<menu_radio_action action="ShowAllAttributesAction" />
 					<menu_radio_action action="HideAllAttributesAction" />
-					</menu_submenu>
-				</menu_category>
-				<menu_separator />
+					<menu_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+				</menu_submenu>
+			</menu_category>
 			<menu_submenu name="menu_noteView" name_ref="menu_noteView">				
 				<menu_action action="ShowHideNoteAction" accelerator="control GREATER" />
 				<menu_submenu name="note_window_location" name_ref="note_window_location">
@@ -217,7 +219,8 @@
 					<menu_radio_action action="SetNoteWindowPosition.left" />
 					<menu_radio_action action="SetNoteWindowPosition.right" />
 					<menu_radio_action action="SetNoteWindowPosition.bottom" />
-					</menu_submenu>
+				</menu_submenu>
+				<menu_action action="SetBooleanMapPropertyAction.show_note_icons" />
 				<menu_action action="ShowNotesInMapAction"/>
 				</menu_submenu>
 			</menu_submenu>
@@ -301,6 +304,7 @@
 				<menu_separator />
 				<menu_category name="folding">
 					<menu_action action="ToggleFoldedAction" accelerator="SPACE" />
+					<menu_action action="ShowNextChildAction" accelerator="shift SPACE" />
 					<menu_action action="ToggleChildrenFoldedAction" accelerator="control SPACE" />
 					<menu_action action="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
 					<menu_action action="FoldOneLevelAction" accelerator="alt PAGE_UP" />
@@ -316,8 +320,9 @@
 				<menu_action action="GotoNodeAction"/>
 				<menu_action action="NextNodeAction.BACK" accelerator="control alt LEFT" />
 				<menu_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
-				<menu_action action="NextNodeAction.BACK_N_FOLD" accelerator="control alt shift LEFT" />
-				<menu_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control alt shift RIGHT" />
+				<menu_action action="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
+				<menu_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+				<menu_action action="NextPresentationItemAction"  accelerator="control shift SPACE"/>
 				<menu_action action="BackAction" accelerator="alt LEFT" />
 				<menu_action action="ForwardAction" accelerator="alt RIGHT" />				
 			<menu_category name="links">
@@ -369,9 +374,8 @@
 					<menu_action action="ManageAddOnsAction" plugin="org.freeplane.plugin.script"/>
 					<menu_action action="SetAcceleratorOnNextClickAction" />
 					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
-						<menu_category name="new" menu_key="main_menu_new_accelerator_presets"/>
-						<menu_separator />
-						<menu_category name="save" menu_key="main_menu_save_accelerator_presets"/>
+						<menu_submenu name="load_accelerator_presets" menu_key="main_menu_new_load_accelerator_presets"/>
+						<menu_action action="SaveAcceleratorPresetsAction"/>
 					</menu_submenu>
 				</menu_category>
 				<menu_separator />
@@ -465,6 +469,11 @@
 			<menu_separator/>
 			<menu_action action="AddLocalLinkAction" accelerator="alt shift L" />
 			<menu_action action="AddMenuItemLinkAction" accelerator="" />
+			<menu_separator/>
+			<menu_action action="SetLinkAnchorAction" accelerator="" />
+			<menu_action action="MakeLinkFromAnchorAction" accelerator="" />
+			<menu_action action="MakeLinkToAnchorAction" accelerator="" />
+			<menu_action action="ClearLinkAnchorAction" accelerator="" />
 			<menu_category menu_key="popup_goto_links"/>
 		</menu_submenu>	
 		<menu_separator />

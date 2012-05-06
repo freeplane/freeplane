@@ -3,8 +3,6 @@ package org.freeplane.view.swing.ui;
 import java.awt.Cursor;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.net.URI;
@@ -21,10 +19,12 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.components.AutoHide;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -41,6 +41,7 @@ import org.freeplane.view.swing.map.NodeView;
  * The MouseMotionListener which belongs to every NodeView
  */
 public class DefaultNodeMouseMotionListener implements IMouseListener {
+	private static final String FOLD_ON_CLICK_INSIDE = "fold_on_click_inside";
 	private static final String SELECTION_METHOD_DIRECT = "selection_method_direct";
 	private static final String SELECTION_METHOD_BY_CLICK = "selection_method_by_click";
 	private static final String TIME_FOR_DELAYED_SELECTION = "time_for_delayed_selection";
@@ -154,6 +155,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final NodeModel node = nodeView.getModel();
 		final boolean plainEvent = Compat.isPlainEvent(e);
 		final boolean inside = isInside(e);
+		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
 			if(plainEvent){
 				if (component.isInFollowLinkRegion(e.getX())) {
@@ -173,15 +175,22 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					return;
 				}
 				
-				if(inside && e.getClickCount() == 1){
-					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
+				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 					if(!shouldSelectOnClick(e)){
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
-								mc.getMapController().setFolded(node, fold);
+								mapController.setFolded(node, fold);
 							}
 						});
 					}
+				}
+			}
+			else if(Compat.isShiftEvent(e)){
+				if (isInFoldingRegion(e)) {
+					if (! mapController.showNextChild(node))
+						mapController.setFolded(node, true);
+					e.consume();
 				}
 			}
 		}
@@ -189,14 +198,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion 
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
 				&& !shouldSelectOnClick(e)) {
-			final MapController mapController = mc.getMapController();
-			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
+			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 			doubleClickTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();
 			return;
 		}
-		if(inside && ! e.isAltDown())
+		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			extendSelection(e);
 	}
 
@@ -295,23 +303,47 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void showPopupMenu(final MouseEvent e) {
-		if (isInside(e) 
-				&& e.isPopupTrigger()) {
-			stopTimerForDelayedSelection();
-			final MainView component = (MainView) e.getComponent();
-			final NodeView nodeView = component.getNodeView();
-			if(! nodeView.isSelected()){
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
+		if (! e.isPopupTrigger())
+			return;
+		final boolean inside = isInside(e);
+		final boolean inFoldingRegion = ! inside && isInFoldingRegion(e);
+		if (inside || inFoldingRegion) {
+			if(inside){
+				stopTimerForDelayedSelection();
+				ModeController mc = Controller.getCurrentController().getModeController();
+				final MainView component = (MainView) e.getComponent();
+				final NodeView nodeView = component.getNodeView();
+				if(! nodeView.isSelected()){
+					Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
+				}
+				final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+				showMenuAndConsumeEvent(popupmenu, e);
 			}
-			ModeController mc = Controller.getCurrentController().getModeController();
-			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-			if (popupmenu != null) {
-				popupmenu.addHierarchyListener(popupListener);
-				popupmenu.show(e.getComponent(), e.getX(), e.getY());
-				e.consume();
+			else if(inFoldingRegion){
+				showFoldingPopup(e);
 			}
 		}
 	}
+
+	private void showFoldingPopup(MouseEvent e) {
+		ModeController mc = Controller.getCurrentController().getModeController();
+		final FoldingController foldingController = mc.getExtension(FoldingController.class);
+		if(foldingController == null)
+			return;
+		final MainView component = (MainView) e.getComponent();
+		final NodeView nodeView = component.getNodeView();
+		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
+		AutoHide.start(popupmenu);
+		showMenuAndConsumeEvent(popupmenu, e);
+    }
+
+	private void showMenuAndConsumeEvent(final JPopupMenu popupmenu, final MouseEvent e) {
+	    if (popupmenu != null) {
+	    	popupmenu.addHierarchyListener(popupListener);
+	    	popupmenu.show(e.getComponent(), e.getX(), e.getY());
+	    	e.consume();
+	    }
+    }
 
 	protected boolean isInside(final MouseEvent e) {
 		return new Rectangle(0, 0, e.getComponent().getWidth(), e.getComponent().getHeight()).contains(e.getPoint());

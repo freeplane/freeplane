@@ -324,12 +324,22 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, this);
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
 			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
-			item.setText(key);
+			String text = createOpenMapItemName(key);
+			item.setText(createOpenMapItemName(text));
 			item.setMnemonic(0);
 			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(),
 			    UIBuilder.AS_CHILD);
 		}
 	}
+
+	private String createOpenMapItemName(final String restorable) {
+		final int separatorIndex = restorable.indexOf(':');
+		if(separatorIndex == -1)
+			return restorable;
+		String key = restorable.substring(0, separatorIndex);
+		return TextUtils.getText("open_as" + key, key) + restorable.substring(separatorIndex);
+		
+    }
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                           final NodeModel child, final int newIndex) {

@@ -64,11 +64,14 @@
                 <choice value="org.freeplane.plugin.bugreport.denied"/>
                 <choice value="org.freeplane.plugin.bugreport.ask"/>
             </combo>
+            <string name="org.freeplane.plugin.bugreport.userid"/>
         </separator>
     </tab>
     <tab name="Appearance">
         <separator name="look_and_feel">
             <group name="lookandfeel"/>
+            <boolean name="apply_system_screen_resolution"/>
+            <number name="user_defined_screen_resolution" min="72" max="1200"/>
             <boolean name="use_tabbed_pane"/>
             <boolean name="resources_use_default_font_for_notes_too"/>
             <boolean name="resources_use_margin_top_zero_for_notes"/>
@@ -81,6 +84,7 @@
             <color name="revision_color"/>
             <boolean name="printonwhitebackground"/>
             <color name="standardcloudcolor"/>
+            <number name="presentation_dimmer_transparency" min="0" max="255"/>
          </separator>
         <separator name="selection_colors">        
             <boolean name="standarddrawrectangleforselection"/>
@@ -149,12 +153,13 @@
                 <choice value="first"/>
                 <choice value="last"/>
             </combo>
-            <boolean name="paste_images"/>
             <boolean name="unfold_on_paste"/>
+            <boolean name="fold_on_click_inside"/>
             <boolean name="disable_cursor_move_paper"/>
             <number name="foldingsymbolwidth"/>
             <boolean name="edit_on_double_click"/>
             <number name="grid_size" min = "1"/>
+            <number name="scrolling_speed" min = "1" max="30"/>
             <boolean name="goto_note_end_on_edit"/>    
             <combo name="key_type_action">
             	<choice value="EDIT_CURRENT"/>

@@ -39,6 +39,12 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  */
 public class MNodeStyleController extends NodeStyleController {
 	private static class StyleCopier implements IExtensionCopier {
+		final private ModeController modeController;
+
+		public StyleCopier(ModeController modeController) {
+	        this.modeController = modeController;
+        }
+
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
@@ -131,11 +137,38 @@ public class MNodeStyleController extends NodeStyleController {
 				fromStyle.setNodeNumbering(null);
 			}
         }
+
+		public void resolveParentExtensions(Object key, NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			resolveShape(to);
+       }
+		private void resolveShape(NodeModel to) {
+	        if (hasOwnShape(to))
+				return;
+			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
+				if(hasOwnShape(source)){
+					final String shape = getShape(source);
+					NodeStyleModel.createNodeStyleModel(to).setShape(shape);
+					return;
+				}
+			}
+        }
+
+		private boolean hasOwnShape(NodeModel to) {
+	        return ! NodeStyleModel.SHAPE_AS_PARENT.equals(getShape(to));
+        }
+		
+		private String getShape(NodeModel node) {
+			return modeController.getExtension(NodeStyleController.class).getShape(node);
+		}
+
 	}
 
 	public MNodeStyleController(final ModeController modeController) {
 		super(modeController);
-		modeController.registerExtensionCopier(new StyleCopier());
+		modeController.registerExtensionCopier(new StyleCopier(modeController));
 		modeController.addAction(new BoldAction());
 		modeController.addAction(new ItalicAction());
 		modeController.addAction(new CopyFormat());

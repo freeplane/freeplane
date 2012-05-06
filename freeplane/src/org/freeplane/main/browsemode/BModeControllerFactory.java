@@ -37,7 +37,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
-import org.freeplane.features.map.UnfoldAll;
+import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
@@ -98,7 +98,7 @@ public class BModeControllerFactory {
 		    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
-		new UnfoldAll();
+		FoldingController.install(new FoldingController());
 		new ViewerController();
 		EncryptionController.install(new EncryptionController(modeController));
 		return modeController;

@@ -74,6 +74,7 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 
 	protected void editScript(boolean selectAll) {
 		JEditorPane textEditor = new JEditorPane();
+		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 		scrollPane.setMinimumSize(minimumSize);
 		textEditor.setContentType("text/groovy");

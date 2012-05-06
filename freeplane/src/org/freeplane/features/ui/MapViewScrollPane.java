@@ -20,9 +20,17 @@
 package org.freeplane.features.ui;
 
 import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.Timer;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 
 /**
@@ -30,6 +38,58 @@ import org.freeplane.core.ui.components.UITools;
  * 10.01.2009
  */
 class MapViewScrollPane extends JScrollPane {
+	@SuppressWarnings("serial")
+    static class MapViewPort extends JViewport{
+
+		private Timer timer;
+
+		@Override
+        public void setViewPosition(Point p) {
+			boolean scrollingToVisible = Boolean.TRUE.equals(getClientProperty(ViewController.SLOW_SCROLLING)) ;
+			if(scrollingToVisible){
+				putClientProperty(ViewController.SLOW_SCROLLING, null);
+				slowSetViewPosition(p);
+			}
+			else
+				super.setViewPosition(p);
+        }
+
+		private void slowSetViewPosition(final Point p) {
+			if(timer != null) {
+				timer.stop();
+				timer = null;
+			}
+			final Point viewPosition = getViewPosition();
+	        int dx = p.x - viewPosition.x;
+	        int dy = p.y - viewPosition.y;
+	        int slowDx = calcScrollIncrement(dx);
+	        int slowDy = calcScrollIncrement(dy);
+	        viewPosition.translate(slowDx, slowDy);
+	        super.setViewPosition(viewPosition);
+	        if(slowDx == dx && slowDy == dy)
+	            return;
+	        timer = new Timer(20, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					timer = null;
+					MapViewPort.this.slowSetViewPosition(p);
+				}
+			});
+	        timer.setRepeats(false);
+	        timer.start();
+        }
+
+		private int calcScrollIncrement(int dx) {
+			int v = ResourceController.getResourceController().getIntProperty("scrolling_speed");
+			final int slowDX = (int) (v  / 5.0 *  Math.sqrt(Math.abs(dx)));
+			if (Math.abs(dx) > 2 && slowDX < Math.abs(dx)) {
+	            dx = slowDX * Integer.signum(dx);
+            }
+			return dx;
+        }
+		
+		
+		
+	}
 	/**
 	 * 
 	 */
@@ -37,6 +97,7 @@ class MapViewScrollPane extends JScrollPane {
 
 	public MapViewScrollPane() {
 		super();
+		setViewport(new MapViewPort());
 		UITools.setScrollbarIncrement(this);
 		UITools.addScrollbarIncrementPropertyListener(this);
 	}

@@ -24,8 +24,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
@@ -57,7 +59,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	public TimeComboBoxEditor(boolean timeVisible) {
 		showEditorBtn = new JButton();
 		showEditorBtn.addActionListener(new ShowCalendarAction());
-		calenderComponent = new JCalendar(null, null, true, true, timeVisible);
+		calenderComponent = new JCalendar(new Date(), Locale.getDefault(), true, true, timeVisible);
 		calenderComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {

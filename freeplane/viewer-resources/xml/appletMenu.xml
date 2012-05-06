@@ -31,17 +31,15 @@
 							</menu_submenu>
 						</menu_category>
 				</menu_category>
-			<menu_category name="MapView">
 				<menu_category name="zoom">
 					<menu_action accelerator="alt UP" action="ZoomInAction"/>
 					<menu_action accelerator="alt DOWN" action="ZoomOutAction"/>
 					<menu_action accelerator="control alt C" action="CenterSelectedNodeAction"/>
 					</menu_category>
-				<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
-				</menu_category>
-				<menu_submenu name="menu_nodeView" name_ref="menu_nodeView">
+				<menu_submenu name="menu_viewmode" name_ref="menu_viewmode">	
+					<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
 					<menu_action action="ShowSelectionAsRectangleAction"/>					
-					</menu_submenu>
+				</menu_submenu>
 				<menu_submenu name="menu_hoverView" name_ref="menu_hoverView">
 				<menu_action accelerator="alt F2" action="ToggleDetailsAction"/>
 				<menu_action action="SetBooleanPropertyAction.show_node_tooltips"/>	
@@ -58,6 +56,7 @@
 			<menu_category name="navigate">
 				<menu_category name="folding">
 					<menu_action accelerator="SPACE" action="ToggleFoldedAction"/>
+					<menu_action action="ShowNextChildAction" accelerator="shift SPACE" />
 					<menu_action accelerator="control SPACE" action="ToggleChildrenFoldedAction"/>
 					<menu_action accelerator="alt PAGE_DOWN" action="UnfoldOneLevelAction"/>
 					<menu_action accelerator="alt PAGE_UP" action="FoldOneLevelAction"/>
@@ -69,8 +68,9 @@
 				<menu_action action="GotoNodeAction"/>
 				<menu_action accelerator="control alt LEFT" action="NextNodeAction.BACK"/>
 				<menu_action accelerator="control alt RIGHT" action="NextNodeAction.FORWARD"/>
-				<menu_action accelerator="control alt shift LEFT" action="NextNodeAction.BACK_N_FOLD"/>
-				<menu_action accelerator="control alt shift RIGHT" action="NextNodeAction.FORWARD_N_FOLD"/>
+				<menu_action accelerator="control shift LEFT" action="NextNodeAction.BACK_N_FOLD"/>
+				<menu_action accelerator="control shift RIGHT" action="NextNodeAction.FORWARD_N_FOLD"/>
+				<menu_action action="NextPresentationItemAction" accelerator="control shift SPACE" />
 				<menu_category name="links">
 			<menu_action accelerator="control ENTER" action="FollowLinkAction"/>
 				<!-- goto -->

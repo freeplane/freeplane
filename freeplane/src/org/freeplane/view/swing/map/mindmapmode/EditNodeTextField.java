@@ -74,6 +74,7 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -538,19 +539,19 @@ public class EditNodeTextField extends EditNodeBase {
 			final float fontSize = (int) (Math.rint(font.getSize() * zoom));
 			font = font.deriveFont(fontSize);
 		}
-		textfield.setEditorKit(new HTMLEditorKit(){
-
+		final HTMLEditorKit kit = new ScaledEditorKit(){
 			@Override
-            public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
-	            if (doc instanceof HTMLDocument) {
-                    HTMLWriter w = new SHTMLWriter(out, (HTMLDocument)doc, pos, len);
-                    w.write();
-                } else {
-                    super.write(out, doc, pos, len);
-                }
-            }
-			
-		});
+			public void write(Writer out, Document doc, int pos, int len) throws IOException, BadLocationException {
+				if (doc instanceof HTMLDocument) {
+					HTMLWriter w = new SHTMLWriter(out, (HTMLDocument) doc, pos, len);
+					w.write();
+				}
+				else {
+					super.write(out, doc, pos, len);
+				}
+			}
+		};
+		textfield.setEditorKit(kit);
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
@@ -588,7 +589,8 @@ public class EditNodeTextField extends EditNodeBase {
 		final StringBuilder ruleBuilder = new StringBuilder(100);
 		ruleBuilder.append("body {");
 		ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
-		ruleBuilder.append("font-size: ").append(font.getSize()).append("pt;");
+		final int fontSize = Math.round(font.getSize() / UITools.FONT_SCALE_FACTOR);
+		ruleBuilder.append("font-size: ").append(fontSize).append("pt;");
 		if (font.isItalic()) {
 			ruleBuilder.append("font-style: italic; ");
 		}
@@ -599,11 +601,8 @@ public class EditNodeTextField extends EditNodeBase {
 	    final Color bgColor = getBackground();
 		ruleBuilder.append("background-color: ").append(ColorUtils.colorToString(bgColor)).append(";");
 		ruleBuilder.append("}\n");
-		ruleBuilder.append("p {margin-top:0;}\n");
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
-		styleSheet.removeStyle("p");
-		styleSheet.removeStyle("body");
 		styleSheet.addRule(ruleBuilder.toString());
 		textfield.setText(text);
 		final MapView mapView = (MapView) viewController.getMapView();

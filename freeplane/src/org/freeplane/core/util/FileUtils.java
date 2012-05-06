@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
@@ -279,4 +281,28 @@ public class FileUtils {
 			}
         }
     }
+	
+	public static void copyFile(File in, File out) throws IOException {
+	    FileChannel inChannel = new FileInputStream(in).getChannel();
+	    FileChannel outChannel = new FileOutputStream(out).getChannel();
+	    try {
+	        // inChannel.transferTo(0, inChannel.size(), outChannel); 
+	    	// original -- apparently has trouble copying large files on Windows
+	        // magic number for Windows, (64Mb - 32Kb)
+	        int maxCount = (64 * 1024 * 1024) - (32 * 1024);
+	        long size = inChannel.size();
+	        long position = 0;
+	        while (position < size) {
+	            position += inChannel.transferTo(position, maxCount, outChannel);
+	        }
+	    } finally {
+	        if (inChannel != null) {
+	            inChannel.close();
+	        }
+	        if (outChannel != null) {
+	            outChannel.close();
+	        }
+	    }
+	}
+
 }

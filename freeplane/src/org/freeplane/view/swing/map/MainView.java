@@ -26,7 +26,6 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -61,12 +60,11 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapViewLayout;
-import org.freeplane.features.text.IContentTransformer;
+import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
 
 
@@ -188,21 +186,6 @@ public abstract class MainView extends ZoomableLabel {
 		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
 
-	private boolean canBeFolded() {
-		final NodeView nodeView = getNodeView();
-		final NodeModel node = nodeView.getModel();
-		if (node.hasChildren()){
-			if(node.isRoot()){
-				final MapController mapController = nodeView.getMap().getModeController().getMapController();
-				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED.equals(foldingMarkType(mapController, node));
-			}
-			else
-				return true;
-		}
-		else
-			return false;
-	}
-
 	/**
 	 * Determines whether or not the xCoord is in the part p of the node: if
 	 * node is on the left: part [1-p,1] if node is on the right: part[ 0,p] of
@@ -210,6 +193,18 @@ public abstract class MainView extends ZoomableLabel {
 	 */
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
 		return xCoord < getSize().width * p;
+	}
+	
+	@Override
+	final public void paint(Graphics g){
+		final PaintingMode paintingMode = getMap().getPaintingMode();
+		if(!paintingMode.equals(PaintingMode.SELECTED_NODES)
+				&& !paintingMode.equals(PaintingMode.NODES))
+			return;
+		final NodeView nodeView = getNodeView();
+		final boolean selected = nodeView.isSelected();
+		if(paintingMode.equals(PaintingMode.SELECTED_NODES) == selected)
+			super.paint(g);
 	}
 
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
@@ -272,16 +267,19 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {
-		if (! canBeFolded())
+		if (! hasChildren())
 			return;
-		final FoldingMark markType = foldingMarkType(getMap().getModeController().getMapController(), nodeView.getModel());
+		final MapView map = getMap();
+		final MapController mapController = map.getModeController().getMapController();
+		final NodeModel node = nodeView.getModel();
+		final FoldingMark markType = foldingMarkType(mapController, node);
 	    Point mousePosition = null;
 	    try {
 	        mousePosition = getMousePosition();
         }
         catch (Exception e) {
         }
-		if(mousePosition != null){
+		if(mousePosition != null && ! map.isPrinting()){
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			final Point p = getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
 			if(p.y + width/2 > getHeight())
@@ -292,7 +290,10 @@ public abstract class MainView extends ZoomableLabel {
 				p.x -= width;
 			final FoldingMark foldingCircle;
 			if(markType.equals(FoldingMark.UNFOLDED)) {
-	            foldingCircle = FoldingMark.FOLDING_CIRCLE_UNFOLDED;
+				if(mapController.hasHiddenChildren(node))
+					foldingCircle = FoldingMark.FOLDING_CIRCLE_HIDDEN_CHILD;
+				else
+					foldingCircle = FoldingMark.FOLDING_CIRCLE_UNFOLDED;
             }
 			else{
 				foldingCircle = FoldingMark.FOLDING_CIRCLE_FOLDED;
@@ -349,10 +350,9 @@ public abstract class MainView extends ZoomableLabel {
 
     private void drawModificationRect(Graphics g) {
 		final Color color = g.getColor();
-		if(TextModificationState.SUCCESS.equals(textModified)){
-			final boolean dontMarkTransformedText = Controller.getCurrentController().getResourceController()
-		    .getBooleanProperty(IContentTransformer.DONT_MARK_TRANSFORMED_TEXT);
-			if(dontMarkTransformedText)
+		if(TextModificationState.HIGHLIGHT.equals(textModified)){
+			final boolean markTransformedText = TextController.isMarkTransformedTextSet();
+			if(! markTransformedText)
 				return;
 			g.setColor(Color.GREEN);
 		}
@@ -362,7 +362,7 @@ public abstract class MainView extends ZoomableLabel {
 		else{
 			return;
 		}
-		g.drawRect(0, 0, getWidth(), getHeight());
+		g.drawRect(-1, -1, getWidth() + 2, getHeight() + 2);
 		g.setColor(color);
     }
 
@@ -405,7 +405,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	public void updateFont(final NodeView node) {
 		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel());
-		setFont(font);
+		setFont(UITools.scale(font));
 	}
 
 	void updateIcons(final NodeView node) {
@@ -442,7 +442,7 @@ public abstract class MainView extends ZoomableLabel {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
 	}
 	
-	static enum TextModificationState{NONE, SUCCESS, FAILURE};
+	static enum TextModificationState{NONE, HIGHLIGHT, FAILURE};
 
 	public void updateText(NodeModel nodeModel) {
 		final NodeView nodeView = getNodeView();
@@ -461,7 +461,7 @@ public abstract class MainView extends ZoomableLabel {
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(obj);
 			}
 			text = obj.toString();
-			textModified = text.equals(content.toString()) ? TextModificationState.NONE : TextModificationState.SUCCESS;
+			textModified = obj instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
@@ -471,8 +471,7 @@ public abstract class MainView extends ZoomableLabel {
 		if(isShortened){
 			text = shortenText(text);
 		}
-		if(! HtmlUtils.isHtmlNode(text) && ! text.contains("\n"))
-			text = convertTextToHtmlLink(text,  nodeModel);
+		text = convertTextToHtmlLink(text,  nodeModel);
 		updateText(text);
 	}
 
@@ -480,10 +479,12 @@ public abstract class MainView extends ZoomableLabel {
 		URI link = NodeLinks.getLink(node);
 		if(link == null || ! LinkController.getController().formatNodeAsHyperlink(node))
 			return text;
+		if (HtmlUtils.isHtmlNode(text))
+			text = HtmlUtils.htmlToPlain(text);
 		StringBuilder sb = new StringBuilder("<html><body><a href=\"");
 		sb.append(link.toString());
 		sb.append("\">");
-		final String xmlEscapedText = HtmlUtils.toXMLEscapedText(text);
+		final String xmlEscapedText = HtmlUtils.toHTMLEscapedText(text);
 		sb.append(xmlEscapedText);
 		sb.append("</a></body></html>");
 		return sb.toString();
@@ -622,7 +623,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean isInFoldingRegion(Point p) {
-		if (canBeFolded() && p.y >= 0 && p.y < getHeight()) {
+		if (hasChildren() && p.y >= 0 && p.y < getHeight()) {
 			final boolean isLeft = getNodeView().isLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			if (isLeft) {
@@ -637,6 +638,10 @@ public abstract class MainView extends ZoomableLabel {
         else
 			return false;
 	}
+
+	private boolean hasChildren() {
+	    return getNodeView().getModel().hasChildren();
+    }
 
 	public MouseArea getMouseArea() {
 		return mouseArea;

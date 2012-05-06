@@ -60,7 +60,6 @@ html { height:100% }
             <xsl:attribute name="code">org.freeplane.main.applet.FreeplaneApplet.class</xsl:attribute>
             <xsl:attribute name="archive">
             	./<xsl:value-of select="$destination_dir"/>freeplaneviewer.jar,
-            	./<xsl:value-of select="$destination_dir"/>imgscalr-lib-3.2.jar
             </xsl:attribute>
             <xsl:attribute name="width">100%</xsl:attribute>
             <xsl:attribute name="height">100%</xsl:attribute>

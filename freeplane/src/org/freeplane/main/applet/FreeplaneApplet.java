@@ -42,6 +42,7 @@ import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
+import org.freeplane.features.filter.NextPresentationItemAction;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.help.HelpController;
 import org.freeplane.features.icon.IconController;
@@ -153,6 +154,7 @@ public class FreeplaneApplet extends JApplet {
 			controller.addAction(new ShowSelectionAsRectangleAction());
 			controller.addAction(new NextNodeAction(Direction.FORWARD));
 			controller.addAction(new NextNodeAction(Direction.BACK));
+			controller.addAction(new NextPresentationItemAction());
 			controller.selectMode(browseController);
 			appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
 			appletViewController.init(controller);
@@ -160,6 +162,10 @@ public class FreeplaneApplet extends JApplet {
 			setGlassPane(glassPane);
 			glassPane.setVisible(true);
 			controller.getViewController().setMenubarVisible(false);
+		}
+		catch(RuntimeException e){
+			e.printStackTrace();
+			throw e;
 		}
 		finally{
 			appletLock.unlock();

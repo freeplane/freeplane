@@ -30,6 +30,7 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
+
 public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener, IKeyBindingManager {
 	/**
 	 * 
@@ -39,9 +40,8 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements Property
 
 	public JAutoCheckBoxMenuItem(final IFreeplaneAction a) {
 		super(a);
-		if (a.isSelected()) {
-			setSelected(true);
-		}
+		setModel(new ActionToggleButtonModel(a));
+		setSelected(a.isSelected());
 	}
 
 	@Override

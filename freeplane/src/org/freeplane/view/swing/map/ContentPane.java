@@ -19,12 +19,14 @@ class ContentPane extends JComponent {
 	}
 
 	@Override
-	public void paint(final Graphics g) {
-		switch (((NodeView) getParent()).getMap().getPaintingMode()) {
-			case CLOUDS:
+	final public void paint(final Graphics g) {
+		final NodeView parent = (NodeView) getParent();
+		final PaintingMode paintingMode = parent.getMap().getPaintingMode();
+		if(paintingMode.equals(PaintingMode.CLOUDS))
 				return;
-		}
-		super.paint(g);
+		final boolean selected = parent.isSelected();
+		if(paintingMode.equals(PaintingMode.SELECTED_NODES) == selected)
+			super.paint(g);
 	}
 	
 	@Override

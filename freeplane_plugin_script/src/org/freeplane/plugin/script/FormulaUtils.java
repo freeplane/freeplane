@@ -3,6 +3,8 @@ package org.freeplane.plugin.script;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -33,6 +35,19 @@ public class FormulaUtils {
 
 	public static boolean containsFormula(final String text) {
 	    return text != null && text.length() > 1 && text.charAt(0) == '=';
+    }
+
+	public static boolean containsFormulaCheckHTML(String text) {
+	    if(HtmlUtils.isHtmlNode(text))
+	    	return htmlContainsFormula(text);
+	    else
+	    	return containsFormula(text);
+    }
+	
+	private static Pattern FIRST_CHARACTER_IN_HTML = Pattern.compile("(?m)>\\s*[^<\\s]");
+	private static boolean htmlContainsFormula(String text) {
+	    final Matcher matcher = FIRST_CHARACTER_IN_HTML.matcher(text);
+		return matcher.find() && text.charAt(matcher.end()-1) == '=';
     }
 
 	/** evaluate text as a script.
@@ -134,4 +149,5 @@ public class FormulaUtils {
 		map.removeExtension(FormulaCache.class);
 		map.removeExtension(EvaluationDependencies.class);
 	}
+
 }

@@ -237,7 +237,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			ruleBuilder.append("body {");
 			if(font != null){
 				ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
-				ruleBuilder.append("font-size: ").append(font.getSize()).append("pt;");
+				final int fontSize = Math.round(font.getSize() / UITools.FONT_SCALE_FACTOR);
+				ruleBuilder.append("font-size: ").append(fontSize).append("pt;");
 				if (font.isItalic()) {
 					ruleBuilder.append("font-style: italic; ");
 				}

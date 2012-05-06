@@ -54,7 +54,6 @@ class LatexViewer extends JComponent {
 
 	LatexViewer(final LatexNodeHook nodeHook, final LatexExtension latexExtension) {
 		this.nodeHook = nodeHook;
-		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setModel(latexExtension);
 		if (LatexViewer.editorTitle == null) {
 			LatexViewer.editorTitle = TextUtils.getText("plugins/latex/LatexNodeHook.editorTitle");
@@ -111,7 +110,10 @@ class LatexViewer extends JComponent {
 	public void setModel(final LatexExtension latexExtension) {
 		model = latexExtension;
 		try {
-			teXFormula = new TeXFormula(model.getEquation());
+			teXFormula = new TeXFormula("\\begin{array}{l} \\raisebox{0}{ "
+					+model.getEquation()
+					+" } \\end{array}"
+			);
 			teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
 		}
 		catch (final Exception e) {

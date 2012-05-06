@@ -28,6 +28,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IExtensionCopier;
@@ -176,6 +177,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			from.removeExtension(fromStyle);
 		}
+		
+		public void resolveParentExtensions(Object key, NodeModel to) {
+        }
 	}
 
 // 	private final ModeController modeController;
@@ -272,6 +276,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 		 if(null == menuBuilder.get(formatMenuString))
 		     return;
 		 final NodeModel rootNode = extension.getStyleMap().getRootNode();
+			final AssignStyleAction resetAction = new AssignStyleAction(null);
+			actions.add(resetAction);
+			menuBuilder.addAction(formatMenuString, resetAction, MenuBuilder.AS_CHILD);
 		 addStyleMenu(menuBuilder, formatMenuString, rootNode, extension);
 	}
 
@@ -283,7 +290,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 				addStyleMenu(menuBuilder, category, child, extension);
 			}
 			else if(null != extension.getStyleNode(style)){
-				final AssignStyleAction action = new AssignStyleAction(style, style.toString(), null);
+				final AssignStyleAction action = new AssignStyleAction(style);
 				actions.add(action);
 				menuBuilder.addAction(category, action, MenuBuilder.AS_CHILD);
 			}

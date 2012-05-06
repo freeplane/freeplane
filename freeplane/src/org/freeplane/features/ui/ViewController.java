@@ -54,6 +54,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -63,6 +64,7 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+import javax.swing.plaf.metal.MetalFileChooserUI;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.NamedObject;
@@ -168,6 +170,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	private int winState;
 	final private String propertyKeyPrefix;
+	public static final String SLOW_SCROLLING = "slowScrolling";
 	public static Icon textIcon;
 	public static Icon numberIcon;
 	public static Icon dateIcon;
@@ -242,12 +245,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setViewportView(pNewMap);
 			final IMapSelection mapSelection = mapViewManager.getMapSelection();
 			final NodeModel selected = mapSelection.getSelected();
-			if (selected == null) {
-				mapSelection.selectRoot();
-			}
-			else {
-				mapSelection.scrollNodeToVisible(selected);
-			}
+			mapSelection.scrollNodeToVisible(selected);
 			setZoomComboBox(mapViewManager.getZoom());
 			obtainFocusForSelected();
 			newModeController = mapViewManager.getModeController(pNewMap);
@@ -840,6 +838,22 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		catch (final Exception ex) {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
+		}
+		
+		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
+		
+		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
+		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
+		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created
+		try{
+			new JFileChooser();
+		}
+		catch (Throwable t){
+			try{
+				UIManager.getLookAndFeelDefaults().put("FileChooserUI", MetalFileChooserUI.class.getName());
+			}
+			catch (Throwable t1){
+			}
 		}
 	}
 

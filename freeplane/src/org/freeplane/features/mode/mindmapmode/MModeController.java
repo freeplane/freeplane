@@ -97,6 +97,7 @@ public class MModeController extends ModeController {
 		addAction(redo);
 		addAction(new SelectBranchAction());
 		addAction(new SelectAllAction());
+		addAction(new SaveAcceleratorPresetsAction());
 	}
 
 	private void createOptionPanelControls() {
@@ -192,6 +193,9 @@ public class MModeController extends ModeController {
 
 	public void undo() {
 		undo.actionPerformed(null);
+	}
+	
+	public void resetRedo() {
 		redo.reset();
 	}
 

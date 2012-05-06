@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.TextUtils;
@@ -48,6 +49,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
@@ -126,29 +128,43 @@ class NodeViewFactory {
 	/**
 	 * Factory method which creates the right NodeView for the model.
 	 */
-	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
-		final NodeView newView = new NodeView(model, position, map, parent);
-		model.addViewer(newView);
+	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
+		final NodeView newView = new NodeView(model, map, parent);
+		parent.add(newView, index);
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else
-			map.addHierarchyListener(new HierarchyListener() {
+			newView.addHierarchyListener(new HierarchyListener() {
 				public void hierarchyChanged(HierarchyEvent e) {
-					if(map.isDisplayable()){
-						map.removeHierarchyListener(this);
-						updateNewView(newView);
+					NodeView view = (NodeView) e.getComponent();
+					if(displayed(view, e)){
+						view.removeHierarchyListener(this);
+						updateNewView(view);
 					}
+					else if(removed(view, e)){
+						view.removeHierarchyListener(this);
+					}
+				}
+
+				private boolean removed(NodeView view, HierarchyEvent e) {
+					return 0 != (e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) && view.getParent() == null;
+				}
+
+				private boolean displayed(NodeView view, HierarchyEvent e) {
+					return 0 != (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) && view.isDisplayable();
 				}
 			});
 		return newView;
 	}
 
 	private void updateNewView(final NodeView newView) {
+		newView.getModel().addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.setMainView(newMainView(newView));
 		updateNoteViewer(newView);
 		newView.update();
         fireNodeViewCreated(newView);
+        newView.addChildViews();
 	}
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
@@ -223,7 +239,8 @@ class NodeViewFactory {
 				final String originalText = extension.getHtml();
 				try {
 					newText = textController.getTransformedTextNoThrow(originalText, model, extension);
-					if (!NodeView.DONT_MARK_FORMULAS && newText != originalText)
+					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
+					if (markTransformedText && newText != originalText)
 						newText = colorize(newText, "green");
 				}
 				catch (Exception e) {
@@ -275,10 +292,10 @@ class NodeViewFactory {
 			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
-			detailContent.setIcon(new ArrowIcon(nodeView, false));
-			detailContent.updateText(detailText.getHtml());
 			final MapView map = nodeView.getMap();
 			detailContent.setFont(map.getDetailFont());
+			detailContent.setIcon(new ArrowIcon(nodeView, false));
+			detailContent.updateText(detailText.getHtml());
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
 			detailContent.setPreferredSize(null);
