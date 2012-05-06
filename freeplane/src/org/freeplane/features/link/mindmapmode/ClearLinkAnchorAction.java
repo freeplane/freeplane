@@ -23,9 +23,10 @@ package org.freeplane.features.link.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.link.LinkController;
 
-
+@EnabledAction(checkOnPopup=true)
 public class ClearLinkAnchorAction extends AFreeplaneAction {
 	public ClearLinkAnchorAction() {
 		super("ClearLinkAnchorAction");
@@ -45,5 +46,10 @@ public class ClearLinkAnchorAction extends AFreeplaneAction {
 		
 		// clear current anchor in LinkModule
 		((MLinkController)(LinkController.getController())).setAnchorID( null );
+	}
+	@Override
+	public void setEnabled() {
+		final boolean isAnchored = ((MLinkController)(LinkController.getController())).isAnchored();
+		setEnabled( isAnchored );
 	}
 }

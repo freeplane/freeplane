@@ -377,13 +377,14 @@ public class MLinkController extends LinkController {
 
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
-	static private String anchorID;
+	private String anchorID;
+	private ModeController modeController;
 	
 	public MLinkController() {
 		super();
+		modeController = Controller.getCurrentModeController();
 		createActions();
 		anchorID = null;
-		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.registerExtensionCopier(new StyleCopier());
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
@@ -1063,15 +1064,19 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setAnchorID(final String anchorID) {
-		MLinkController.anchorID = anchorID;
+		this.anchorID = anchorID;
+		final String tooltip; 
+		AFreeplaneAction setLinkAnchorAction = modeController.getAction("SetLinkAnchorAction");
+		if(isAnchored())
+			tooltip = TextUtils.format(setLinkAnchorAction.getTooltipKey() + "_anchored", anchorID);
+		else
+			tooltip = TextUtils.getRawText(setLinkAnchorAction.getTooltipKey());
+		setLinkAnchorAction.putValue(Action.SHORT_DESCRIPTION, tooltip);
+		setLinkAnchorAction.putValue(Action.LONG_DESCRIPTION, tooltip);
 	}
 
 	public boolean isAnchored() {
-		if(anchorID == null) {
-			return false;
-		}else {
-			return true;
-		}
+		return anchorID != null;
 	}
 
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
