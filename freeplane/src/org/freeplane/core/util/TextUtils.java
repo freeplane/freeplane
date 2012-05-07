@@ -3,6 +3,7 @@ package org.freeplane.core.util;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
@@ -12,7 +13,13 @@ import org.freeplane.features.format.FormatController;
 /** utilities for translations, conversions to/from number and dates etc.
  * In scripts available as "global variable" <code>textUtils</code>. */
 public class TextUtils {
-	public static String format(final String resourceKey, final Object... messageArguments) {
+    // from http://lists.xml.org/archives/xml-dev/200108/msg00891.html
+    // but make scheme mandatory
+    private static final String URI_REGEXP = "([a-zA-Z][0-9a-zA-Z+\\-\\.]+:" //
+            + "/{0,2}[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?(#[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?";
+    private static Pattern uriPattern = Pattern.compile(URI_REGEXP);
+
+    public static String format(final String resourceKey, final Object... messageArguments) {
 		final String text = TextUtils.getText(resourceKey);
 		if (text == null)
 			return null;
@@ -135,6 +142,11 @@ public class TextUtils {
 	    return str == null || str.length() == 0;
 	}
 
+	/** in opposite to the URI make scheme mandatory. */
+	public static boolean matchUriPattern(String text) {
+        return text.length() > 0 && uriPattern.matcher(text).matches();
+    }
+
 	/** accessor for scripts. */
 	public DecimalFormat getDefaultNumberFormat() {
 		return FormatController.getController().getDefaultNumberFormat();
@@ -149,5 +161,4 @@ public class TextUtils {
 	public SimpleDateFormat getDefaultDateTimeFormat() {
 		return FormatController.getController().getDefaultDateTimeFormat();
 	}
-
 }

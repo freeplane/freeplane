@@ -1,6 +1,6 @@
 <map version="freeplane 1.2.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1319230624596" VGAP="0" BACKGROUND_COLOR="#ffcc00"><richcontent TYPE="NODE">
+<node FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1334842513243" VGAP="0" BACKGROUND_COLOR="#ffcc00"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8,7 +8,7 @@
   </head>
   <body>
     <p style="text-align: center">
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD"><font size="5"><b>G</b></font>etting&#160;<font size="5"><b>T</b></font>hings <font size="5"><b>D</b></font>one</a><br/>With<i>&#160;<b>Freeplane</b></i>
+      <font size="4"><a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD"><b>G</b></a></font><a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD">etting<font size="3">&#160;</font><font size="4"><b>T</b></font>hings <font size="4"><b>D</b></font>one</a><br/>With<i>&#160;<b>Freeplane</b></i>
     </p>
   </body>
 </html>
@@ -19,7 +19,7 @@
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600" MIN_WIDTH="1">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<font NAME="SansSerif" SIZE="8" BOLD="false" ITALIC="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
@@ -64,9 +64,9 @@
 </hook>
 <hook NAME="AutomaticEdgeColor" COUNTER="11"/>
 <edge STYLE="linear" WIDTH="1"/>
-<node TEXT="With less" POSITION="left" ID="ID_892290459" CREATED="1318451679082" MODIFIED="1318589877016" HGAP="158" VSHIFT="28" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
+<node TEXT="With less" POSITION="left" ID="ID_892290459" CREATED="1318451679082" MODIFIED="1334842547204" HGAP="181" VSHIFT="25" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
 <icon BUILTIN="idea"/>
-<font SIZE="24" BOLD="true" ITALIC="true"/>
+<font SIZE="12" BOLD="true" ITALIC="true"/>
 <hook NAME="FreeNode"/>
 <edge STYLE="hide_edge" COLOR="#007c00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1129302195" STARTINCLINATION="132;0;" ENDINCLINATION="132;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
@@ -113,22 +113,23 @@
 </html>
 </richcontent>
 </node>
-<node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1318716147407" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
+<node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1336132515904" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
 
 <html>
   <head>
     
   </head>
   <body>
-    <img src="freeplaneApplications.png"/>
+    <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
+
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="FreeNode"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </node>
-<node TEXT="Brainstorm" LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_747441325" CREATED="1317963460911" MODIFIED="1329860254720" HGAP="200" VSHIFT="-159">
+<node TEXT="Brainstorm" LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_747441325" CREATED="1317963460911" MODIFIED="1335089608016" HGAP="200" VSHIFT="-159">
 <icon BUILTIN="family"/>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -139,7 +140,7 @@
   </head>
   <body>
     <p>
-      Write <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Brainstorming_with_digital_post-its">digital post-its</a>
+      Write <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Floating_nodes">digital post-its</a>
     </p>
     <p>
       and order them in a map.<br/>
@@ -148,7 +149,7 @@
 </html>
 </richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="36" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="Think it" STARTINCLINATION="247;0;" ENDINCLINATION="204;-61;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="16" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="Think it" STARTINCLINATION="247;0;" ENDINCLINATION="204;-61;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 <node TEXT="central topic" ID="ID_1607807952" CREATED="1318450079927" MODIFIED="1318450164274">
 <edge STYLE="linear"/>
 <node TEXT="with" ID="ID_1232722180" CREATED="1318450103144" MODIFIED="1318450108729"/>
@@ -229,7 +230,7 @@
 </richcontent>
 <edge COLOR="#00007c" WIDTH="3"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1839755402" CREATED="1317963473454" MODIFIED="1329860293237" HGAP="316" VSHIFT="-106">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1839755402" CREATED="1317963473454" MODIFIED="1335089373407" HGAP="316" VSHIFT="-106">
 <icon BUILTIN="xmag"/>
 <richcontent TYPE="NODE">
 
@@ -239,7 +240,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#SWOT_analysis">Analyze</a>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#SWOT_analysis">Analyze</a>
     </p>
   </body>
 </html>
@@ -278,13 +279,13 @@
 </richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
 </node>
-<node TEXT="Do more" POSITION="right" ID="ID_1129302195" CREATED="1317972413136" MODIFIED="1318589887433" HGAP="-189" VSHIFT="-42" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
+<node TEXT="Do more" POSITION="right" ID="ID_1129302195" CREATED="1317972413136" MODIFIED="1334842539513" HGAP="-189" VSHIFT="-42" COLOR="#0000ff" BACKGROUND_COLOR="#33ff00" STYLE="bubble">
 <icon BUILTIN="wizard"/>
-<font SIZE="24" BOLD="true" ITALIC="true"/>
+<font SIZE="12" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge" COLOR="#7c7c00" WIDTH="3"/>
 <hook NAME="FreeNode"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1300937459" CREATED="1317963516276" MODIFIED="1320247729133" HGAP="396" VSHIFT="-39">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1300937459" CREATED="1317963516276" MODIFIED="1335089284317" HGAP="396" VSHIFT="-39">
 <icon BUILTIN="attach"/>
 <richcontent TYPE="NODE">
 
@@ -294,7 +295,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Organize_your_collection">Organize</a>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Organize_your_collection">Organize</a>
     </p>
   </body>
 </html>
@@ -337,9 +338,9 @@
 <hook NAME="FreeNode"/>
 <edge COLOR="#00ffff" WIDTH="3"/>
 </node>
-<node TEXT="Do it" POSITION="right" ID="ID_692068107" CREATED="1317972888300" MODIFIED="1318588709080" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble" HGAP="0" VSHIFT="30">
+<node TEXT="Do it" POSITION="right" ID="ID_692068107" CREATED="1317972888300" MODIFIED="1334842448376" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble" HGAP="0" VSHIFT="30">
 <icon BUILTIN="wizard"/>
-<font SIZE="16" BOLD="true"/>
+<font SIZE="12" BOLD="true"/>
 <edge STYLE="sharp_bezier" COLOR="#ff00ff" WIDTH="7"/>
 <hook NAME="FirstGroupNode"/>
 <node TEXT="what" ID="ID_1911860200" CREATED="1318453489510" MODIFIED="1318512293822" HGAP="50" VSHIFT="-10">
@@ -352,8 +353,8 @@
 <edge WIDTH="1"/>
 </node>
 </node>
-<node TEXT="your&#xa;way" POSITION="right" ID="ID_1333704057" CREATED="1317972906157" MODIFIED="1318527530602" HGAP="10" VSHIFT="10" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble">
-<font SIZE="18" BOLD="true"/>
+<node TEXT="your&#xa;way" POSITION="right" ID="ID_1333704057" CREATED="1317972906157" MODIFIED="1334842455474" HGAP="10" VSHIFT="10" COLOR="#ffffff" BACKGROUND_COLOR="#999900" STYLE="bubble">
+<font SIZE="12" BOLD="true"/>
 <edge STYLE="sharp_bezier" COLOR="#ff0000" WIDTH="5"/>
 <cloud COLOR="#ffff33" SHAPE="ARC"/>
 <node TEXT="the" ID="ID_1525382905" CREATED="1318453097317" MODIFIED="1318512372727">
@@ -378,7 +379,7 @@
 <edge WIDTH="1"/>
 <hook NAME="SummaryNode"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_941087087" CREATED="1317963530737" MODIFIED="1318533354787" HGAP="-237" VSHIFT="98">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_941087087" CREATED="1317963530737" MODIFIED="1335088176296" HGAP="-237" VSHIFT="98">
 <icon BUILTIN="group"/>
 <richcontent TYPE="NODE">
 
@@ -388,7 +389,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Meeting_support">Meet</a>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Meeting_support">Meet</a>
     </p>
   </body>
 </html>
@@ -415,7 +416,7 @@
 </richcontent>
 <edge COLOR="#ff00ff" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0000ff" WIDTH="3" TRANSPARENCY="255" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1100351552" STARTINCLINATION="-217;-41;" ENDINCLINATION="-189;0;" STARTARROW="NONE" ENDARROW="NONE"/>
-<node ID="ID_184991784" CREATED="1317972712983" MODIFIED="1319316038308">
+<node ID="ID_184991784" CREATED="1317972712983" MODIFIED="1335088675136">
 <icon BUILTIN="smiley-oh"/>
 <richcontent TYPE="NODE">
 
@@ -425,17 +426,30 @@
   </head>
   <body>
     <p>
-      <a href="http://www.kioo.nl/freeplane/CoreMeeting">Beginner</a>
+      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=MeetingBeginner.mm">Beginner</a>
     </p>
   </body>
 </html>
 </richcontent>
 </node>
-<node TEXT="Advanced" ID="ID_1404449457" CREATED="1317972719278" MODIFIED="1318589115142">
+<node ID="ID_1404449457" CREATED="1317972719278" MODIFIED="1335088750262">
 <icon BUILTIN="ksmiletris"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=MeetingAdvanced.mm">Advanced</a>
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1510399467" CREATED="1317965217458" MODIFIED="1329860218965" HGAP="356" VSHIFT="111">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1510399467" CREATED="1317965217458" MODIFIED="1335089125284" HGAP="356" VSHIFT="111">
 <icon BUILTIN="list"/>
 <richcontent TYPE="NODE">
 
@@ -445,7 +459,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Scientific_environment">Write</a>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Writing_with_Freeplane">Write</a>
     </p>
   </body>
 </html>
@@ -468,9 +482,9 @@
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#007c7c" WIDTH="3"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="4" TRANSPARENCY="255" FONT_SIZE="24" FONT_FAMILY="Britannic Bold" DESTINATION="ID_360719522" MIDDLE_LABEL="Share it" STARTINCLINATION="88;183;" ENDINCLINATION="-3;215;" STARTARROW="NONE" ENDARROW="NONE"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="4" TRANSPARENCY="255" FONT_SIZE="16" FONT_FAMILY="Britannic Bold" DESTINATION="ID_360719522" MIDDLE_LABEL="Share it" STARTINCLINATION="88;183;" ENDINCLINATION="-3;215;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_360719522" CREATED="1317966438145" MODIFIED="1332170797298" HGAP="-2" VSHIFT="149" LINK="menuitem:_$GettingStartedAction$0"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_360719522" CREATED="1317966438145" MODIFIED="1335089993602" HGAP="-2" VSHIFT="149" LINK="menuitem:_$GettingStartedAction$0"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -478,7 +492,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Examples">Document</a>
+      <a href="freeplaneTutorial.mm">Document</a>
     </p>
   </body>
 </html>
@@ -495,7 +509,7 @@
       Versatile support for efficient documenting.
     </p>
     <p>
-      The Freeplane <a href="http://www.kioo.nl/freeplane/tutorial_en">Tutorial</a>&#160;is an example.
+      The Freeplane <a href="freeplaneTutorial.mm">Tutorial</a>&#160;is an example.
     </p>
   </body>
 </html>
@@ -547,7 +561,6 @@
     </ol>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#808080"/>
 </node>
@@ -568,7 +581,7 @@
 <edge COLOR="#0000ff" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1875337895" STARTINCLINATION="32;38;" ENDINCLINATION="32;38;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1583240168" CREATED="1317963552842" MODIFIED="1320247610603" HGAP="110" VSHIFT="208">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1583240168" CREATED="1317963552842" MODIFIED="1335088980275" HGAP="110" VSHIFT="208">
 <icon BUILTIN="male1"/>
 <richcontent TYPE="NODE">
 
@@ -578,7 +591,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#School_environment">Learn</a>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Assignment_.26_Presentation">Learn</a>
     </p>
   </body>
 </html>

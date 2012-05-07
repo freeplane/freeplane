@@ -24,12 +24,8 @@ import java.awt.Font;
 import java.io.StringReader;
 
 import javax.swing.text.Document;
-import javax.swing.text.Element;
-import javax.swing.text.View;
-import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.ImageView;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.UITools;
@@ -116,33 +112,6 @@ public class ScaledEditorKit extends HTMLEditorKit {
 		return rule.toString();
 	}
 
-	/**
-	 * Returns the ViewFactory that is used to make sure the Views don't
-	 * load in the background.
-	 */
-	public ViewFactory getViewFactory() {
-		if (basicHTMLViewFactory == null) {
-			basicHTMLViewFactory = new BasicHTMLViewFactory();
-		}
-		return basicHTMLViewFactory;
-	}
-
-    /**
-    * BasicHTMLViewFactory extends HTMLFactory to force images to be loaded
-    * synchronously.
-    */
-   static class BasicHTMLViewFactory extends HTMLEditorKit.HTMLFactory {
-       public View create(Element elem) {
-           View view = super.create(elem);
-
-           if (view instanceof ImageView) {
-               ((ImageView)view).setLoadsSynchronously(true);
-           }
-           return view;
-       }
-   }
-
-
 	static public ScaledEditorKit create() {
 		if (kit == null) {
 			kit = new ScaledEditorKit();
@@ -154,8 +123,4 @@ public class ScaledEditorKit extends HTMLEditorKit {
 	 * The source of the html renderers
 	 */
 	private static ScaledEditorKit kit;
-	/**
-	 * Creates the Views that visually represent the model.
-	 */
-	static ViewFactory basicHTMLViewFactory;
 }

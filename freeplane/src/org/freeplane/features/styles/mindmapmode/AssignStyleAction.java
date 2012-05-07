@@ -25,11 +25,13 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.StyleNamedObject;
 
 /**
@@ -40,10 +42,22 @@ import org.freeplane.features.styles.StyleNamedObject;
 public class AssignStyleAction extends AMultipleNodeAction {
 	final private IStyle style;
 
-	public AssignStyleAction(final IStyle style, final String title, final ImageIcon icon) {
-		super("AssignStyleAction." + StyleNamedObject.toKeyString(style), title, icon);
+	public AssignStyleAction(final IStyle style) {
+		super(actionName(style), actionText(style), null);
 		this.style = style;
 	}
+
+	private static String actionText(final IStyle style) {
+		if(style != null)
+			return style.toString();
+		return TextUtils.getRawText("ResetStyleAction.text");
+    }
+
+	private static String actionName(final IStyle style) {
+		if(style != null)
+			return "AssignStyleAction." + StyleNamedObject.toKeyString(style);
+		return "ResetStyleAction";
+    }
 
 	/**
 	 * 
@@ -62,8 +76,8 @@ public class AssignStyleAction extends AMultipleNodeAction {
 		IMapSelection selection = Controller.getCurrentController().getSelection();
 		if(selection != null){
 			NodeModel node= selection.getSelected();
-			final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
-			setSelected(this.style.equals(style));
+			final IStyle style = LogicalStyleModel.getStyle(node);
+			setSelected(this.style == style || this.style != null && this.style.equals(style));
 		}
 		else
 			setSelected(false);

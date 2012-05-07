@@ -3,8 +3,6 @@ package org.freeplane.view.swing.ui;
 import java.awt.Cursor;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.net.URI;
@@ -157,6 +155,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final NodeModel node = nodeView.getModel();
 		final boolean plainEvent = Compat.isPlainEvent(e);
 		final boolean inside = isInside(e);
+		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
 			if(plainEvent){
 				if (component.isInFollowLinkRegion(e.getX())) {
@@ -177,14 +176,21 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 				
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mc.getMapController(), node));
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 					if(!shouldSelectOnClick(e)){
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
-								mc.getMapController().setFolded(node, fold);
+								mapController.setFolded(node, fold);
 							}
 						});
 					}
+				}
+			}
+			else if(Compat.isShiftEvent(e)){
+				if (isInFoldingRegion(e)) {
+					if (! mapController.showNextChild(node))
+						mapController.setFolded(node, true);
+					e.consume();
 				}
 			}
 		}
@@ -192,14 +198,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion 
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
 				&& !shouldSelectOnClick(e)) {
-			final MapController mapController = mc.getMapController();
-			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node));
+			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 			doubleClickTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();
 			return;
 		}
-		if(inside && ! e.isAltDown())
+		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			extendSelection(e);
 	}
 

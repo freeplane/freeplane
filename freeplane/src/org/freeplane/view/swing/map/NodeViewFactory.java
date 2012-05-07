@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.TextUtils;
@@ -48,6 +49,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
@@ -126,8 +128,9 @@ class NodeViewFactory {
 	/**
 	 * Factory method which creates the right NodeView for the model.
 	 */
-	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
-		final NodeView newView = new NodeView(model, position, map, parent);
+	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
+		final NodeView newView = new NodeView(model, map, parent);
+		parent.add(newView, index);
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else
@@ -161,7 +164,7 @@ class NodeViewFactory {
 		updateNoteViewer(newView);
 		newView.update();
         fireNodeViewCreated(newView);
-        newView.insertChildViews();
+        newView.addChildViews();
 	}
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
@@ -236,7 +239,8 @@ class NodeViewFactory {
 				final String originalText = extension.getHtml();
 				try {
 					newText = textController.getTransformedTextNoThrow(originalText, model, extension);
-					if (!NodeView.DONT_MARK_FORMULAS && newText != originalText)
+					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
+					if (markTransformedText && newText != originalText)
 						newText = colorize(newText, "green");
 				}
 				catch (Exception e) {
@@ -288,10 +292,10 @@ class NodeViewFactory {
 			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
-			detailContent.setIcon(new ArrowIcon(nodeView, false));
-			detailContent.updateText(detailText.getHtml());
 			final MapView map = nodeView.getMap();
 			detailContent.setFont(map.getDetailFont());
+			detailContent.setIcon(new ArrowIcon(nodeView, false));
+			detailContent.updateText(detailText.getHtml());
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
 			detailContent.setPreferredSize(null);

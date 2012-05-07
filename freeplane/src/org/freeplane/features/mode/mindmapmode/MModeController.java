@@ -97,6 +97,7 @@ public class MModeController extends ModeController {
 		addAction(redo);
 		addAction(new SelectBranchAction());
 		addAction(new SelectAllAction());
+		addAction(new SaveAcceleratorPresetsAction());
 	}
 
 	private void createOptionPanelControls() {

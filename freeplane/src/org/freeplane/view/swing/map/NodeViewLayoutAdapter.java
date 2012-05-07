@@ -179,21 +179,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         }
         spaceAround = view.getSpaceAround();
 		if (view.isContentVisible()) {
-            final MapView mapView = view.getMap();
-			final ModeController modeController = mapView.getModeController();
-			final NodeStyleController nsc = NodeStyleController.getController(modeController);
-			int minNodeWidth = nsc.getMinWidth(view.getModel());
-	        Dimension contentPreferredSize;
-	        if (content instanceof ZoomableLabel){
-				int maxNodeWidth = nsc.getMaxWidth(view.getModel());
-	        	contentPreferredSize=  ((ZoomableLabel)content).getPreferredSize(maxNodeWidth);
-			}
-			else{
-				contentPreferredSize=  content.getPreferredSize();
-			}
-            contentPreferredSize = content.getPreferredSize();
-        	contentWidth = Math.max(view.getZoomed(minNodeWidth),contentPreferredSize.width);
-            contentHeight = contentPreferredSize.height;
+			final Dimension contentSize = calculateContentSize(view);
+        	contentWidth = contentSize.width;
+            contentHeight = contentSize.height;
             cloudHeight = getAdditionalCloudHeigth(view);
 		}
         else {
@@ -204,7 +192,26 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		return true;
     }
 
-    protected void shutDown() {
+	protected Dimension calculateContentSize(final NodeView view) {
+    	final JComponent content = view.getContent();
+        final ModeController modeController = view.getMap().getModeController();
+        final NodeStyleController nsc = NodeStyleController.getController(modeController);
+        Dimension contentSize;
+        if (content instanceof ZoomableLabel){
+        	int maxNodeWidth = nsc.getMaxWidth(view.getModel());
+        	contentSize=  ((ZoomableLabel)content).getPreferredSize(maxNodeWidth);
+        }
+        else{
+        	contentSize=  content.getPreferredSize();
+        }
+        int minNodeWidth = nsc.getMinWidth(view.getModel());
+        int contentWidth = Math.max(view.getZoomed(minNodeWidth),contentSize.width);
+        int contentHeight = contentSize.height;
+        final Dimension contentProfSize = new Dimension(contentWidth, contentHeight);
+        return contentProfSize;
+    }
+
+	protected void shutDown() {
         view = null;
         model = null;
         content = null;

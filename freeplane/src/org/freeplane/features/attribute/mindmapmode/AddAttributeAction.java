@@ -19,11 +19,14 @@
  */
 package org.freeplane.features.attribute.mindmapmode;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Collection;
@@ -69,7 +72,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent arg0) {
 		final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final int selection = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(),
-		    getDialog(), TextUtils.getText("attributes_AddAttributeAction.text"),
+		    getPanel(), TextUtils.getText("attributes_AddAttributeAction.text"),
 		    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		//OK button pressed
 		if (selection == JOptionPane.OK_OPTION) {
@@ -97,10 +100,10 @@ public class AddAttributeAction extends AFreeplaneAction {
 	 * 
 	 * @return : the input dialog
 	 */
-	private JPanel getDialog() {
-		final JPanel dialog = new JPanel();
-		dialog.setLayout(new GridBagLayout());
-		dialog.setBorder(new EtchedBorder());
+	private JPanel getPanel() {
+		final JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		panel.setBorder(new EtchedBorder());
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
@@ -113,12 +116,12 @@ public class AddAttributeAction extends AFreeplaneAction {
 		comboBoxMaximumSize.width += 4;
 		comboBoxMaximumSize.height += 10;
 		//Label: name
-		final JLabel nameLabel = new JLabel("Attribute Name");
-		dialog.add(nameLabel, gridBagConstraints);
+		final JLabel nameLabel = new JLabel(TextUtils.getText("attribute_name"));
+		panel.add(nameLabel, gridBagConstraints);
 		gridBagConstraints.gridx++;
 		//Label: value
-		final JLabel valueLabel = new JLabel("Attribute Value");
-		dialog.add(valueLabel, gridBagConstraints);
+		final JLabel valueLabel = new JLabel(TextUtils.getText("attribute_value"));
+		panel.add(valueLabel, gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy++;
 		//Attribute name combo-box
@@ -136,21 +139,25 @@ public class AddAttributeAction extends AFreeplaneAction {
 				selectedAttributeChanged(e.getItem(), attributeValues);
 			}
 		});
-		dialog.add(attributeNames, gridBagConstraints);
+		panel.add(attributeNames, gridBagConstraints);
 		//Attribute value combo-box
 		attributeValues = new JComboBox();
 		attributeValues.setRenderer(new TypedListCellRenderer());
 		attributeValues.setMaximumSize(comboBoxMaximumSize);
 		attributeValues.setPreferredSize(comboBoxMaximumSize);
 		gridBagConstraints.gridx++;
-		dialog.add(attributeValues, gridBagConstraints);
+		panel.add(attributeValues, gridBagConstraints);
 		//set focus to attributeNames
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				attributeNames.requestFocusInWindow();
+		panel.addHierarchyListener(new HierarchyListener() {
+			public void hierarchyChanged(HierarchyEvent e) {
+				final Component component = e.getComponent();
+				if(component.isShowing()){
+					attributeNames.requestFocus();
+					component.removeHierarchyListener(this);
+				}
 			}
 		});
-		return dialog;
+		return panel;
 	}
 
 	protected void selectedAttributeChanged(final Object selectedAttributeName, final JComboBox values) {

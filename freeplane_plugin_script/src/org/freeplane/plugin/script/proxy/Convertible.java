@@ -3,8 +3,8 @@ package org.freeplane.plugin.script.proxy;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingMethodException;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -107,15 +107,17 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		return result;
 	}
 
-    public URL getUrl() throws ConversionException {
+    public URI getUri() throws ConversionException {
         if (text == null)
             return null;
         try {
-            return new URL(text);
+            if (TextUtils.matchUriPattern(text))
+                return new URI(text);
         }
-        catch (MalformedURLException e) {
-            throw new ConversionException("not an url: " + text);
+        catch (URISyntaxException e) {
+            // throw below
         }
+        throw new ConversionException("not an uri: " + text);
     }
 
 	/**
@@ -141,7 +143,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 			}
 			catch (ConversionException e2) {
 	            try {
-	                return getUrl();
+	                return getUri();
 	            }
 	            catch (ConversionException e3) {
 	                return text;
@@ -176,8 +178,8 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 			// same for isDate()/getDate()
 			if (property.equals("date"))
 				return getDate();
-			if (property.equals("url"))
-			    return getUrl();
+			if (property.equals("uri"))
+			    return getUri();
 			return super.getProperty(property);
 		}
 		catch (ConversionException e) {

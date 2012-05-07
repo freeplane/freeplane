@@ -2,7 +2,7 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -216,7 +216,7 @@ public class ProxyUtils {
             return createDefaultFormattedDate((Date) object);
     	else if (object instanceof Calendar)
             return createDefaultFormattedDate(((Calendar) object).getTime());
-    	else if (object instanceof URL)
+    	else if (object instanceof URI)
     	    return object;
         else
             return Convertible.toString(object);

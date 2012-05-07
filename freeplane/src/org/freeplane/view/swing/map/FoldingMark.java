@@ -51,10 +51,12 @@ class DrawableEllipse extends DrawableShape{
 
 class FoldingCircle extends DrawableEllipse{
 	final private boolean folded;
+	final private boolean hiddenChild;
 
-	public FoldingCircle(Color fillColor, boolean folded) {
+	public FoldingCircle(Color fillColor, boolean folded, boolean hiddenChild) {
 		super(fillColor);
 		this.folded  = folded;
+		this.hiddenChild =hiddenChild;
 	}
 
 	@Override
@@ -63,8 +65,9 @@ class FoldingCircle extends DrawableEllipse{
 		if(nodeView.isRoot() & ! folded || ! nodeView.getMainView().getMouseArea().equals(MouseArea.FOLDING))
 			return;
 		g.setColor(super.getFillColor(nodeView));
-		g.drawLine(r.x + r.width / 4, r.y + r.height / 2, r.x + r.width * 3/ 4, r.y + r.height / 2);
-		if(folded)
+		if(! hiddenChild)
+			g.drawLine(r.x + r.width / 4, r.y + r.height / 2, r.x + r.width * 3/ 4, r.y + r.height / 2);
+		if(folded || hiddenChild)
 			g.drawLine(r.x + r.width / 2, r.y + r.height / 4, r.x + r.width / 2, r.y + r.height * 3 / 4);
 	}
 
@@ -96,7 +99,8 @@ class DrawableTriangle extends DrawableShape{
 public enum FoldingMark implements Drawable{
 	UNFOLDED(new DrawableNothing()), ITSELF_FOLDED(new DrawableEllipse(Color.WHITE)), UNVISIBLE_CHILDREN_FOLDED(new DrawableEllipse(Color.GRAY)), 
 	SHORTENED(new DrawableTriangle(Color.WHITE)), 
-	FOLDING_CIRCLE_FOLDED(new FoldingCircle(Color.WHITE, true)), FOLDING_CIRCLE_UNFOLDED(new FoldingCircle(Color.WHITE, false));
+	FOLDING_CIRCLE_FOLDED(new FoldingCircle(Color.WHITE, true, false)), FOLDING_CIRCLE_UNFOLDED(new FoldingCircle(Color.WHITE, false, false)),
+	FOLDING_CIRCLE_HIDDEN_CHILD(new FoldingCircle(Color.WHITE, false, true));
 	final Drawable drawable;
 
 	FoldingMark(Drawable drawable){

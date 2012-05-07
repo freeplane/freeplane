@@ -43,6 +43,7 @@ import org.freeplane.core.util.MenuUtils;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
+import org.freeplane.features.filter.NextPresentationItemAction;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.help.HelpController;
@@ -51,6 +52,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.filemode.FModeController;
@@ -161,6 +163,7 @@ public class FreeplaneStarter {
 			controller.addAction(new NextNodeAction(Direction.BACK));
 			controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
 			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
+			controller.addAction(new NextPresentationItemAction());
 			controller.addAction(new ShowSelectionAsRectangleAction());
 			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
 			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(7,
@@ -185,13 +188,23 @@ public class FreeplaneStarter {
     }
 
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
-	    controller.getModeController(MModeController.MODENAME).updateMenus("/xml/mindmapmodemenu.xml", plugins);
-		LoadAcceleratorPresetsAction.install();
-		controller.getModeController(BModeController.MODENAME).updateMenus("/xml/browsemodemenu.xml", plugins);
-		controller.getModeController(FModeController.MODENAME).updateMenus("/xml/filemodemenu.xml", plugins);
+	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
+	    LoadAcceleratorPresetsAction.install();
+	    buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
+	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
     }
 
+	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {
+		ModeController modeController = controller.getModeController(mode);
+		controller.selectModeForBuild(modeController);
+		modeController.updateMenus(xml, plugins);
+		controller.selectModeForBuild(null);
+	}
+
 	public void createFrame(final String[] args) {
+		Controller controller = Controller.getCurrentController();
+		ModeController modeController = controller.getModeController(MModeController.MODENAME);
+		controller.selectModeForBuild(modeController);
 		Compat.macMenuChanges();
 		new UserPropertiesUpdater().importOldDefaultStyle();
 		EventQueue.invokeLater(new Runnable() {
