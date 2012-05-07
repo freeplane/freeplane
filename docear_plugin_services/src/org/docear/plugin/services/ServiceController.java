@@ -9,11 +9,12 @@ import javax.swing.SwingUtilities;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
+import org.docear.plugin.services.actions.DocearCheckForUpdatesAction;
+import org.docear.plugin.services.actions.DocearClearUserDataAction;
 import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
-import org.docear.plugin.services.listeners.PropertiesActionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -50,7 +51,9 @@ public class ServiceController {
 	    new ServicePreferences();
 		
 		addPluginDefaults();
-		Controller.getCurrentModeController().addAction(new DocearAllowUploadChooserAction());
+		Controller.getCurrentController().addAction(new DocearClearUserDataAction());
+		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
+		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 	
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {				
@@ -64,8 +67,7 @@ public class ServiceController {
 	
 	public void initListeners() {
 		DocearController.getController().addDocearEventListener(new DocearEventListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);		
-		Controller.getCurrentController().getOptionPanelController().addButtonListener(new PropertiesActionListener());
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
 	}
 	
 	public static ServiceController getController() {

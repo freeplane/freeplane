@@ -14,6 +14,7 @@
 					<choice value="docear.update_checker.all" />
 					<choice value="docear.update_checker.disable" />
 			    </combo>
+			    <action name="docear.update_checker.show" />
 			</separator>
 		</tab>			
 	</tabbed_pane>
