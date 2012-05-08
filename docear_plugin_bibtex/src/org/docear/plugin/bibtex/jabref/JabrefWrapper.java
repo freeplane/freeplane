@@ -1,4 +1,4 @@
-package org.docear.plugin.bibtex;
+package org.docear.plugin.bibtex.jabref;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,13 +28,11 @@ import net.sf.jabref.imports.CheckForNewEntryTypesAction;
 import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
-import net.sf.jabref.label.HandleDuplicateWarnings;
 
+import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
-import org.docear.plugin.bibtex.actions.HandleDuplicateKeys;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.logger.DocearLogEvent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -65,7 +63,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		// Add the action for warning about and handling duplicate BibTeX keys:
 		//postOpenActions.add(new HandleDuplicateWarnings());
 		//DOCEAR: don't warn, just resolve --> #464
-		postOpenActions.add(new HandleDuplicateKeys());
+		//postOpenActions.add(new HandleDuplicateKeys());
 	}
 
 	private static final MapViewListener mapViewListener = new MapViewListener();

@@ -177,7 +177,8 @@ public class GUIGlobals {
 	infoField = new Color(254, 255, 225) // color for an info field
 	;
 
-    public static Color
+	//DOCEAR - set private
+    private static Color
         editorTextColor = null, validFieldBackgroundColor = null,
         activeBackground = null, invalidFieldBackgroundColor = null;
 
@@ -256,7 +257,8 @@ public class GUIGlobals {
 
 
 		// Set up entry editor colors, first time:
-		updateEntryEditorColors();
+		//DOCEAR - causes recursive contructor call on JabRefPreferences
+		//updateEntryEditorColors();
 	}
 
     public static void updateEntryEditorColors() {
@@ -265,6 +267,39 @@ public class GUIGlobals {
         invalidFieldBackgroundColor = JabRefPreferences.getInstance().getColor("invalidFieldBackgroundColor");
         editorTextColor = JabRefPreferences.getInstance().getColor("fieldEditorTextColor");
     }
+    
+    //DOCEAR
+    public static Color getInvalidFieldBackgroundColor() {
+    	if(invalidFieldBackgroundColor == null) {
+    		updateEntryEditorColors();
+    	}
+		return invalidFieldBackgroundColor;
+	}
+    
+    //DOCEAR
+	public static Color getActiveBackground() {
+		if(activeBackground == null) {
+    		updateEntryEditorColors();
+    	}
+		return activeBackground;
+	}
+	
+	//DOCEAR
+	public static Color getValidFieldBackgroundColor() {
+		if(validFieldBackgroundColor == null) {
+    		updateEntryEditorColors();
+    	}
+		return validFieldBackgroundColor;
+	}
+	
+	//DOCEAR
+	public static Color getEditorTextColor() {
+		if(editorTextColor == null) {
+    		updateEntryEditorColors();
+    	}
+		return editorTextColor;
+	}
+	
 	/**
 	 * Read either the default icon theme, or a custom one. If loading of the custom theme
 	 * fails, try to fall back on the default theme.

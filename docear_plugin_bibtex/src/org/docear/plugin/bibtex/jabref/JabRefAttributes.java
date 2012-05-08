@@ -1,4 +1,4 @@
-package org.docear.plugin.bibtex;
+package org.docear.plugin.bibtex.jabref;
 
 import java.io.File;
 import java.net.URI;
@@ -13,6 +13,8 @@ import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.Globals;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
+import org.docear.plugin.bibtex.Reference;
+import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.Reference.Item;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.pdfutilities.util.NodeUtils;

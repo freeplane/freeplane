@@ -2,6 +2,7 @@ package org.docear.plugin.bibtex;
 
 import java.util.HashMap;
 
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;

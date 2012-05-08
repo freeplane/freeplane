@@ -30,6 +30,9 @@ import org.docear.plugin.bibtex.actions.UpdateReferencesAllMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesAllOpenMapsAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesCurrentMapAction;
 import org.docear.plugin.bibtex.actions.UpdateReferencesInLibrary;
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
+import org.docear.plugin.bibtex.jabref.JabrefWrapper;
+import org.docear.plugin.bibtex.jabref.labelPattern.ILabelPattern;
 import org.docear.plugin.bibtex.listeners.BibtexNodeDropListener;
 import org.docear.plugin.bibtex.listeners.JabRefChangeListener;
 import org.docear.plugin.bibtex.listeners.MapChangeListenerAdapter;
@@ -134,8 +137,9 @@ public class ReferencesController extends ALanguageController implements IDocear
 	
 
 	private void setPreferencesForDocear() {
-		JabRefPreferences.getInstance().put("groupAutoShow", "false");
-		JabRefPreferences.getInstance().put("searchPanelVisible", "false");
+		JabRefPreferences.getInstance(JabrefWrapper.class).put("groupAutoShow", "false");
+		JabRefPreferences.getInstance(JabrefWrapper.class).put("searchPanelVisible", "false");
+		JabRefPreferences.getInstance(JabrefWrapper.class).setLabelPatternSavePackage(ILabelPattern.class);
 	}
 	
 

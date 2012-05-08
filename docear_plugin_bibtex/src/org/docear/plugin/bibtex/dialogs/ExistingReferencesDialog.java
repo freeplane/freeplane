@@ -21,8 +21,8 @@ import net.sf.jabref.Globals;
 import net.sf.jabref.SearchManager2;
 import net.sf.jabref.SidePaneManager;
 
-import org.docear.plugin.bibtex.JabrefWrapper;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabrefWrapper;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;

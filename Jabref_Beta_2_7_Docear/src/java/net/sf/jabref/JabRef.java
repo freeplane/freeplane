@@ -88,10 +88,7 @@ public class JabRef {
 	}
     
     public JabRef(JFrame parent) {
-    	this.parent = parent;
-    	String[] args = new String[]{ "-s" };
-    	init(args);
-    	openWindow(processArguments(args, true), false);
+    	this(parent, new String[]{});
 	}
     
     public JabRef(JFrame parent, String[] args) {
@@ -101,6 +98,7 @@ public class JabRef {
     	for(int i=0; i < args.length; i++) {
     		argArray[i+1] = args[i];
     	}
+    	JabRefPreferences.getInstance(parent.getClass());
     	init(argArray);
     	openWindow(processArguments(argArray, true), false);
 	}

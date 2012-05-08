@@ -11,6 +11,7 @@ import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.Globals;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;

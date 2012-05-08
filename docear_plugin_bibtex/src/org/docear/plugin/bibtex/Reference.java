@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import net.sf.jabref.BibtexEntry;
 
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 

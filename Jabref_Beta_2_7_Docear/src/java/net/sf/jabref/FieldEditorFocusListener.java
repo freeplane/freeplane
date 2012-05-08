@@ -24,7 +24,7 @@ public class FieldEditorFocusListener implements FocusListener {
         if (event.getSource() instanceof FieldEditor)
             ((FieldEditor)event.getSource()).setActiveBackgroundColor();
         else
-            ((JComponent)event.getSource()).setBackground(GUIGlobals.activeBackground);
+            ((JComponent)event.getSource()).setBackground(GUIGlobals.getActiveBackground()); //DOCEAR
     }
 
 
@@ -32,7 +32,7 @@ public class FieldEditorFocusListener implements FocusListener {
         if (event.getSource() instanceof FieldEditor)
             ((FieldEditor)event.getSource()).setValidBackgroundColor();
         else
-            ((JComponent)event.getSource()).setBackground(GUIGlobals.validFieldBackgroundColor);
+            ((JComponent)event.getSource()).setBackground(GUIGlobals.getValidFieldBackgroundColor()); //DOCEAR
     }
 
 }
