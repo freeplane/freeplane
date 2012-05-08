@@ -48,7 +48,7 @@ public class ServiceController {
 		initListeners();
 		
 		new ServiceConfiguration();	    
-	    new ServicePreferences();
+		new ServicePreferences();
 		
 		addPluginDefaults();
 		Controller.getCurrentController().addAction(new DocearClearUserDataAction());

@@ -122,6 +122,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 	public ReferencesController(ModeController modeController) {
 		super();
+		new ReferencesPreferences();
+		
 		setReferencesController(this);
 		setPreferencesForDocear();
 		this.modeController = modeController;
