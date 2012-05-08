@@ -2,14 +2,12 @@ package org.docear.plugin.services;
 
 import java.net.URL;
 
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class ServicePreferences {
 	
-	ServicePreferences() {
-		LogUtils.info("starting DocearBackupPreferences()");
+	ServicePreferences() {		
 		addPropertiesToOptionPanel();
 	}
 		

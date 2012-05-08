@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences_structure>
+    <tabbed_pane>
+        <tab name="docear.reference_manager.title" >
+            <separator name="docear.reference_manager.docear" >
+                <boolean name="docear.reference_manager.resolve_duplicate_keys" />
+            </separator>
+            <separator name="docear.reference_manager.jabref" >
+                <action name="show_jabref_preferences"/>
+            </separator>
+        </tab>
+    </tabbed_pane>
+</preferences_structure>

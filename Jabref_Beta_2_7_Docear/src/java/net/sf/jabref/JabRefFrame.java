@@ -573,7 +573,7 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 			public void run() {
 				output(Globals.lang("Opening preferences..."));
 				if (prefsDialog == null) {
-					prefsDialog = new PrefsDialog3(JabRefFrame.this);
+					prefsDialog = new PrefsDialog3(JabRefFrame.this);					
 					Util.placeDialog(prefsDialog, JabRefFrame.this);
 				}
 				else

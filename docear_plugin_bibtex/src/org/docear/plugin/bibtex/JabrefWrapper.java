@@ -63,9 +63,14 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		// 2.3:
 		postOpenActions.add(new FileLinksUpgradeWarning());
 		// Add the action for warning about and handling duplicate BibTeX keys:
-		//postOpenActions.add(new HandleDuplicateWarnings());
+		
 		//DOCEAR: don't warn, just resolve --> #464
-		postOpenActions.add(new HandleDuplicateKeys());
+		if (ResourceController.getResourceController().getBooleanProperty("docear.reference_manager.resolve_duplicate_keys")) {
+		    postOpenActions.add(new HandleDuplicateKeys());
+		}
+		else {
+		    postOpenActions.add(new HandleDuplicateWarnings());
+		}
 	}
 
 	private static final MapViewListener mapViewListener = new MapViewListener();
