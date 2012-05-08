@@ -15,7 +15,7 @@ import org.freeplane.core.util.TextUtils;
 
 public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 
-	public static final String KEY = "DocearAllowUploadChooserAction";
+	public static final String KEY = "docear.allow.upload.action";
 	
 	public DocearAllowUploadChooserAction() {
 		super(KEY);
@@ -26,7 +26,7 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 
 	
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		DocearAllowUploadChooserAction.showDialog(false);
 	}
 
 	public static void showDialog(boolean exitOnCancel) {
