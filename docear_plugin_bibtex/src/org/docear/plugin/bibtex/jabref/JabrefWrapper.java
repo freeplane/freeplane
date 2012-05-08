@@ -28,6 +28,7 @@ import net.sf.jabref.imports.CheckForNewEntryTypesAction;
 import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
+import net.sf.jabref.label.HandleDuplicateWarnings;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
@@ -64,7 +65,12 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		// Add the action for warning about and handling duplicate BibTeX keys:
 		//postOpenActions.add(new HandleDuplicateWarnings());
 		//DOCEAR: don't warn, just resolve --> #464
-		postOpenActions.add(new HandleDuplicateKeys());
+		if (ResourceController.getResourceController().getBooleanProperty("docear.reference_manager.resolve_duplicate_keys")) {
+		    postOpenActions.add(new HandleDuplicateKeys());
+		}
+		else {
+		    postOpenActions.add(new HandleDuplicateWarnings());
+		}
 	}
 
 	private static final MapViewListener mapViewListener = new MapViewListener();

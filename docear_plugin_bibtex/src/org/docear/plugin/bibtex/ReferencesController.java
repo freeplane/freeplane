@@ -132,8 +132,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.addPluginDefaults();
 		this.addMenuEntries();
 		this.registerListeners();
-		
-		//FreeplaneActionCascade.addAction(new ReferenceQuitAction());
+
 		this.initJabref();		
 	}
 	
@@ -219,13 +218,14 @@ public class ReferencesController extends ALanguageController implements IDocear
 							jabrefWrapper = new JabrefWrapper(Controller.getCurrentController().getViewController().getJFrame());
 						} 
 						modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new KeyBindInterceptor());
-						createOptionPanel(jabrefWrapper.getJabrefFrame());					
+						createOptionPanel(jabrefWrapper.getJabrefFrame());
 					}
 				});
 			}
 			catch (Exception e) {
 				LogUtils.severe(e);
 			}
+			Controller.getCurrentController().addAction(new ShowJabrefPreferencesAction("show_jabref_preferences"));
 		}
 	}
 	
