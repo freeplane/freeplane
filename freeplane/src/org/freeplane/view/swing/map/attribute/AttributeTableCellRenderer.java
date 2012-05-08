@@ -34,6 +34,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
@@ -78,8 +79,9 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			try {
 				// evaluate values only
 				final TextController textController = TextController.getController();
-				text = textController.getTransformedText(value, attributeTableModel.getNode(), null);
-				if (text != originalText && TextController.isMarkTransformedTextSet()) {
+				Object transformedObject = textController.getTransformedObject(value, attributeTableModel.getNode(), null);
+				text = transformedObject.toString();
+				if (transformedObject instanceof HighlightedTransformedObject && TextController.isMarkTransformedTextSet()) {
 					borderColor = Color.GREEN;
 				}
 			}

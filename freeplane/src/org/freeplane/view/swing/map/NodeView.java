@@ -232,7 +232,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public JComponent getContent() {
 		final JComponent c = contentPane == null ? mainView : contentPane;
-		assert (c.getParent() == this);
+		assert (c == null || c.getParent() == this);
 		return c;
 	}
 
