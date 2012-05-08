@@ -252,7 +252,7 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 				}
 		  	}
 		}
-		writeMatrix(matrix);
+		//writeMatrix(matrix);
 		if (type == Type.Global)
 		{
 			return matrix[searchTerm.length()][searchText.length()];
