@@ -1,13 +1,12 @@
 package org.docear.plugin.core;
 
-import java.io.File;
 import java.net.URL;
 import java.util.Collection;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.OptionPanelController;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.mode.Controller;
 

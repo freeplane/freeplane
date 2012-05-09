@@ -769,11 +769,12 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			writeToFile(map, file);
+			//DOCEAR: we need to know the file when we build the xml of a map
 			if (!isInternal) {
-				setFile(map, file);
+				map.setURL(Compat.fileToUrl(file));
 				map.setSaved(true);
 			}
+			writeToFile(map, file);			
 			map.scheduleTimerForAutomaticSaving();
 			return true;
 		}
@@ -796,6 +797,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
 	public void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
+		
 		final FileOutputStream out = new FileOutputStream(file);
 		final FileLock lock = out.getChannel().tryLock();
 		if (lock == null) {

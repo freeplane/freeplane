@@ -9,11 +9,11 @@ import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 public class DocearEventListener implements IDocearEventListener {
 
 	public void handleEvent(DocearEvent event) {
-		if (event.getType() == DocearEventType.LICENSES_ACCEPTED) {
-			DocearAllowUploadChooserAction.showDialog(false);
+		if (event.getType() == DocearEventType.SHOW_LICENSES) {
+			DocearAllowUploadChooserAction.showDialog(true);
 		}
 		else if( CommunicationsController.CONNECTION_BAR_CLICKED.equals(event.getSource()) ) {
-			DocearAllowUploadChooserAction.showDialog(true);
+			DocearAllowUploadChooserAction.showDialog(false);
 		}
 	}
 
