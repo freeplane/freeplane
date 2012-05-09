@@ -6,8 +6,8 @@ import java.net.URI;
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
 
-import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.core.features.AnnotationID;
 import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;

@@ -122,9 +122,20 @@ public class JabRefPreferences {
 			singleton = new JabRefPreferences();
 		return singleton;
 	}
+    
+    public static JabRefPreferences getInstance(Class<?> c) {
+		if (singleton == null)
+			singleton = new JabRefPreferences(c);
+		return singleton;
+	}
 
-    // The constructor is made private to enforce this as a singleton class:
     private JabRefPreferences() {
+    	this(JabRef.class);
+    }
+    
+    // The constructor is made private to enforce this as a singleton class:
+    //DOCEAR: added argument to supply various packages to save the prefs
+    private JabRefPreferences(Class<?> c) {
 
         try {
             if (new File("jabref.xml").exists()){
@@ -134,7 +145,7 @@ public class JabRefPreferences {
             Globals.logger("Could not import preferences from jabref.xml:" + e.getLocalizedMessage());
         }
         
-        prefs = Preferences.userNodeForPackage(JabRef.class);
+        prefs = Preferences.userNodeForPackage(c);
         
         if (Globals.osName.equals(Globals.MAC)) {
 			//defaults.put("pdfviewer", "/Applications/Preview.app");
@@ -775,8 +786,7 @@ public class JabRefPreferences {
         public LabelPattern getKeyPattern(){
 
             keyPattern = new LabelPattern(KEY_PATTERN);
-            Preferences pre = Preferences.userNodeForPackage
-                (net.sf.jabref.labelPattern.LabelPattern.class);
+            Preferences pre = getLabelPatternPreferences();
             try {
                 String[] keys = pre.keys();
             if (keys.length > 0) for (int i=0; i<keys.length; i++)
@@ -793,6 +803,17 @@ public class JabRefPreferences {
             return keyPattern;
         }
 
+        //DOCEAR: allow to set the LabelPattern save path with a different package
+        private Class<?> labelPatternSaveClass = net.sf.jabref.labelPattern.LabelPattern.class;
+        public void setLabelPatternSavePackage(Class<?> c) {
+        	this.labelPatternSaveClass = c;
+        }
+        
+        //DOCEAR: allow to set the LabelPattern save path with a different package
+		private Preferences getLabelPatternPreferences() {
+			return Preferences.userNodeForPackage(this.labelPatternSaveClass);
+		}
+
         public void putKeyPattern(LabelPattern pattern){
             keyPattern = pattern;
             LabelPattern parent = pattern.getParent();
@@ -800,8 +821,7 @@ public class JabRefPreferences {
                 return;
 
             // Store overridden definitions to Preferences.
-            Preferences pre = Preferences.userNodeForPackage
-                (net.sf.jabref.labelPattern.LabelPattern.class);
+            Preferences pre = getLabelPatternPreferences();
             try {
                 pre.clear(); // We remove all old entries.
             } catch (BackingStoreException ex) {

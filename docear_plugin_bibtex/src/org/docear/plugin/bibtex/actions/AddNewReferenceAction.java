@@ -12,8 +12,8 @@ import net.sf.jabref.BibtexEntryType;
 import net.sf.jabref.EntryTypeDialog;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
 
-import org.docear.plugin.bibtex.JabrefWrapper;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabrefWrapper;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;

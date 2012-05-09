@@ -170,6 +170,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	private int winState;
 	final private String propertyKeyPrefix;
+	public static final String SLOW_SCROLLING = "slowScrolling";
 	public static Icon textIcon;
 	public static Icon numberIcon;
 	public static Icon dateIcon;
@@ -839,6 +840,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		catch (final Exception ex) {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
+		
+		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid

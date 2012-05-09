@@ -285,9 +285,9 @@ public class MapController extends SelectionController implements IExtension{
 		final UnknownElementWriter unknownElementWriter = new UnknownElementWriter();
 		writeManager.addExtensionAttributeWriter(UnknownElements.class, unknownElementWriter);
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
-		createActions();
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
+		createActions();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {
@@ -296,22 +296,84 @@ public class MapController extends SelectionController implements IExtension{
 		}
 		if (node.getChildCount() == 0) 
 			return;
+		final boolean unfold = ! folded;
+		final boolean childShown = makeAllChildrenVisible(node);
 		boolean mapChanged = false;
-	    if(! folded)
-	    	mapChanged = unfoldInvisibleChildren(node, true);
+	    if (unfold && unfoldInvisibleChildren(node, true))
+	        mapChanged = true;
 		if (node.isFolded() != folded && !(node.isRoot() && folded)){ 
 			node.setFolded(folded);
 			mapChanged = true;
 		}
 		if(mapChanged){
-			final ResourceController resourceController = ResourceController.getResourceController();
-			if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
-				NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
-				final MapModel map = node.getMap();
-				setSaved(map, false);
+			fireFoldingChanged(node);
+		}
+		else if(childShown)
+	        fireNodeUnfold(node);
+	}
+
+	public boolean showNextChild(final NodeModel node) {
+		if (node.getChildCount() == 0) 
+			return false;
+		final boolean unfold = node.isFolded();
+		if (unfold){ 
+			for(NodeModel child:childrenUnfolded(node)){
+				child.addExtension(HideChildSubtree.instance);
+			}
+			node.setFolded(false);
+		}
+		boolean childMadeVisible = false;
+		for(NodeModel child:childrenUnfolded(node)){
+			if (child.removeExtension(HideChildSubtree.instance) && 
+					(child.isVisible() || unfoldInvisibleChildren(child, true))){
+				childMadeVisible = true;
+				break;
 			}
 		}
+		if(childMadeVisible){
+			fireNodeUnfold(node);
+		}
+		return childMadeVisible;
 	}
+
+
+	private void fireNodeUnfold(final NodeModel node) {
+	    node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
+	    	Boolean.FALSE));
+    }
+	
+	public boolean hasHiddenChildren(final NodeModel node){
+		if(! node.hasChildren())
+			return false;
+		if(node.isFolded())
+			return true;
+		for(NodeModel child:childrenUnfolded(node)){
+			if (child.containsExtension(HideChildSubtree.class)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void fireFoldingChanged(final NodeModel node) {
+	    final ResourceController resourceController = ResourceController.getResourceController();
+	    if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
+	    	NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+	    	final MapModel map = node.getMap();
+	    	setSaved(map, false);
+	    }
+    }
+
+
+	private boolean makeAllChildrenVisible(NodeModel node) {
+		final List<NodeModel> children = childrenFolded(node);
+		boolean changed = false;
+		for (NodeModel child : children){
+			if(child.removeExtension(HideChildSubtree.class) != null)
+				changed = true;
+		}
+		return changed;
+    }
 
 
 	private boolean unfoldInvisibleChildren(final NodeModel node, final boolean reportUnfolded) {
@@ -383,6 +445,7 @@ public class MapController extends SelectionController implements IExtension{
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new ToggleFoldedAction());
 		modeController.addAction(new ToggleChildrenFoldedAction());
+		modeController.addAction(new ShowNextChildAction());
 		modeController.addAction(new GotoNodeAction());
 	}
 
@@ -402,12 +465,10 @@ public class MapController extends SelectionController implements IExtension{
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = path[i];
-			if (isFolded(nodeOnPath)) {
-				if (nodesUnfoldedByDisplay != null) {
-					nodesUnfoldedByDisplay.add(nodeOnPath);
-				}
-				setFolded(nodeOnPath, false);
-			}
+			if (nodesUnfoldedByDisplay != null && isFolded(nodeOnPath)) {
+            	nodesUnfoldedByDisplay.add(nodeOnPath);
+            }
+			setFolded(nodeOnPath, false);
 		}
 	}
 
@@ -505,16 +566,7 @@ public class MapController extends SelectionController implements IExtension{
 		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
 	}
 
-	/**
-	 * Determines whether the nodes should be folded or unfolded depending on
-	 * their states. If not all nodes have the same folding status, the result
-	 * means folding
-	 *
-	 * @param iterator
-	 *            an iterator of MindMapNodes.
-	 * @return true, if the nodes should be folded.
-	 */
-	public boolean getFoldingState(final Collection<NodeModel> list) {
+	private boolean getFoldingState(final Collection<NodeModel> list) {
 		/*
 		 * Retrieve the information whether or not all nodes have the same
 		 * folding state.
@@ -526,10 +578,10 @@ public class MapController extends SelectionController implements IExtension{
 				continue;
 			}
 			if (state == null) {
-				state = isFolded(node);
+				state = hasHiddenChildren(node);
 			}
 			else {
-				if (isFolded(node) != state) {
+				if (hasHiddenChildren(node) != state) {
 					allNodeHaveSameFoldedStatus = false;
 					break;
 				}
@@ -914,19 +966,10 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void toggleFolded(final Collection<NodeModel> collection) {
-		if(collection.size() != 1){
-			final boolean fold = getFoldingState(collection);
-			final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
-			for (final NodeModel node:nodes) {
-				setFolded(node, fold);
-			}
-		}
-		else {
-			final NodeModel node = collection.iterator().next();
-			if(node.isRoot()){
-				setFolded(node, false);
-			} else
-				toggleFolded(node);
+		final boolean fold = getFoldingState(collection);
+		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
+		for (final NodeModel node:nodes) {
+			setFolded(node, fold);
 		}
 	}
 

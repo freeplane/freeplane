@@ -20,6 +20,7 @@
 package org.freeplane.features.clipboard;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -30,9 +31,11 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
@@ -123,6 +126,8 @@ class MindMapHTMLWriter {
 	final private MapController mapController;
 	private boolean writeFoldingCode;
 	private final NodeStyleController nodeStyleController;
+	private Font defaultFont;
+	private Color defaultColor;
 
 	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
 		this.mapController = mapController;
@@ -132,25 +137,25 @@ class MindMapHTMLWriter {
 		basedOnHeadings = (getProperty("html_export_folding").equals("html_export_based_on_headings"));
 	}
 
-	private String fontStyle(final NodeModel model) throws IOException {
-		String fontStyle = "";
-		final Color color = nodeStyleController.getColor(model);
-		fontStyle += "color: " + ColorUtils.colorToString(color) + ";";
-		final int fontSize = nodeStyleController.getFontSize(model);
-		final int defaultFontSize = 12;
-		final int procentSize = (int) (fontSize * 100 / defaultFontSize);
-		if (procentSize != 100) {
-			fontStyle += "font-size: " + procentSize + "%;";
+	private String fontStyle(Color color, Font font) throws IOException {
+		StringBuilder fontStyle = new StringBuilder();
+		if(color != null && (defaultColor == null || ! color.equals(defaultColor)))
+			fontStyle.append("color: ").append(ColorUtils.colorToString(color)).append( "; ");
+		if(font != null){
+			final int fontSize = font.getSize();
+			if (defaultFont == null || fontSize != defaultFont.getSize())
+				fontStyle.append("font-size: ").append(fontSize).append( "pt; ");
+			final String fontFamily = font.getFamily();
+			if (defaultFont == null || ! fontFamily.equals(defaultFont.getFamily()))
+				fontStyle.append("font-family: ").append(fontFamily).append( ", sans-serif; ");
+			if (defaultFont == null || font.isItalic() && ! defaultFont.isItalic()) {
+				fontStyle.append("font-style: italic; ");
+			}
+			if (defaultFont == null || font.isBold() && ! defaultFont.isBold()) {
+				fontStyle.append("font-weight: bold; ");
+			}
 		}
-		final String fontFamily = nodeStyleController.getFontFamilyName(model);
-		fontStyle += "font-family: " + fontFamily + ", sans-serif; ";
-		if (nodeStyleController.isItalic(model)) {
-			fontStyle += "font-style: italic; ";
-		}
-		if (nodeStyleController.isBold(model)) {
-			fontStyle += "font-weight: bold; ";
-		}
-		return fontStyle;
+		return fontStyle.toString();
 	}
 
 	private String getProperty(final String key) {
@@ -177,7 +182,11 @@ class MindMapHTMLWriter {
 
 	void writeHTML(final Collection<NodeModel> selectedNodes) throws IOException {
 		fileout.write("<html>" + MindMapHTMLWriter.el + "<head>" + MindMapHTMLWriter.el);
-		writeStyle();
+		if(! selectedNodes.isEmpty()){
+			final MapModel map = selectedNodes.iterator().next().getMap();
+			setDefaultsFrom(map);
+			writeStyle();
+		}
 		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body>" + MindMapHTMLWriter.el);
 		for (NodeModel node : selectedNodes) {
 			writeHTML(node, "1", 0, /* isRoot */true, true, /* depth */1);
@@ -185,7 +194,16 @@ class MindMapHTMLWriter {
 		fileout.write("</body>" + MindMapHTMLWriter.el);
 		fileout.write("</html>" + MindMapHTMLWriter.el);
 		fileout.close();
+		defaultFont = null;
+		defaultColor = null;
 	}
+
+	private void setDefaultsFrom(MapModel map) {
+	    final MapStyleModel model = MapStyleModel.getExtension(map);
+        final NodeModel styleNode = model.getStyleNodeSafe(MapStyleModel.DEFAULT_STYLE);
+        defaultFont = nodeStyleController.getFont(styleNode);
+        defaultColor =  nodeStyleController.getColor(styleNode);
+    }
 
 	void writeHTML(final NodeModel rootNodeOfBranch) throws IOException {
 		final String htmlExportFoldingOption = getProperty("html_export_folding");
@@ -257,7 +275,7 @@ class MindMapHTMLWriter {
 			}
 			fileout.write("<a href=\"" + link + "\" target=\"_blank\"><span class=l>~</span>&nbsp;");
 		}
-		final String fontStyle = fontStyle(model);
+		final String fontStyle = fontStyle(nodeStyleController.getColor(model), nodeStyleController.getFont(model));
 		if (!fontStyle.equals("")) {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
@@ -439,6 +457,9 @@ class MindMapHTMLWriter {
     }
 	private void writeStyle() throws IOException {
 		fileout.write("<style type=\"text/css\">" + MindMapHTMLWriter.el);
+		fileout.write("    body {");
+		writeDefaultFontStyle();
+		fileout.write("}" + MindMapHTMLWriter.el);
 		fileout.write("    li { list-style: none;  margin: 0; }" + MindMapHTMLWriter.el);
 		fileout.write("    p { margin: 0; }" + MindMapHTMLWriter.el);
 		if (writeFoldingCode) {
@@ -479,4 +500,14 @@ class MindMapHTMLWriter {
 		        + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el + "</style>" + MindMapHTMLWriter.el
 		        + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
 	}
+
+	private void writeDefaultFontStyle() throws IOException {
+	    Font font = defaultFont;
+		defaultFont = null;
+		Color color = defaultColor;
+		defaultColor = null;
+		fontStyle(color, font);
+		defaultFont = font;
+		defaultColor = color;
+    }
 }

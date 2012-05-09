@@ -196,13 +196,17 @@ public class Compat {
 	}
 
 	static public boolean isPlainEvent(final MouseEvent e) {
-        final int modifiers = e.getModifiersEx() & 
+        final int modifiers = getModifiers(e);
+        return modifiers == 0;
+    }
+
+	private static int getModifiers(final MouseEvent e) {
+	    return e.getModifiersEx() & 
         		(InputEvent.CTRL_DOWN_MASK 
         				| InputEvent.META_DOWN_MASK
         				| InputEvent.SHIFT_DOWN_MASK
         				| InputEvent.ALT_DOWN_MASK
         				);
-        return modifiers == 0;
     }
 
 	static public boolean isCtrlEvent(final MouseEvent e) {
@@ -218,15 +222,15 @@ public class Compat {
     }
 	
 	static private boolean isExtendedCtrlEvent(final MouseEvent e, int otherModifiers) {
-        final int modifiers = e.getModifiersEx() & 
-        		(InputEvent.CTRL_DOWN_MASK 
-        				| InputEvent.META_DOWN_MASK
-        				| InputEvent.SHIFT_DOWN_MASK
-        				| InputEvent.ALT_DOWN_MASK
-        				);
+        final int modifiers = getModifiers(e);
 		if (isMacOsX())
         	return modifiers == (InputEvent.META_DOWN_MASK | otherModifiers);
         return modifiers == (InputEvent.CTRL_DOWN_MASK|otherModifiers);
+    }
+
+	public static boolean isShiftEvent(MouseEvent e) {
+        final int modifiers = getModifiers(e);
+        return modifiers == InputEvent.SHIFT_DOWN_MASK;
     }
 
 

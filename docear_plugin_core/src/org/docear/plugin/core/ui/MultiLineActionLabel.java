@@ -1,6 +1,5 @@
 package org.docear.plugin.core.ui;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,8 +10,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -23,7 +20,6 @@ import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.swing.Icon;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
@@ -114,6 +110,38 @@ public class MultiLineActionLabel extends JPanel implements SwingConstants, Acce
 
 	public String getText() {
 		return text;
+	}
+	
+	public int getVerticalAlignment() {
+		return verticalAlignment;
+	}
+
+	public void setVerticalAlignment(int verticalAlignment) {
+		this.verticalAlignment = verticalAlignment;
+	}
+
+	public int getHorizontalAlignment() {
+		return horizontalAlignment;
+	}
+
+	public void setHorizontalAlignment(int horizontalAlignment) {
+		this.horizontalAlignment = horizontalAlignment;
+	}
+
+	public int getVerticalTextPosition() {
+		return verticalTextPosition;
+	}
+
+	public void setVerticalTextPosition(int verticalTextPosition) {
+		this.verticalTextPosition = verticalTextPosition;
+	}
+
+	public int getHorizontalTextPosition() {
+		return horizontalTextPosition;
+	}
+
+	public void setHorizontalTextPosition(int horizontalTextPosition) {
+		this.horizontalTextPosition = horizontalTextPosition;
 	}
 
 	public void paint(Graphics g) {

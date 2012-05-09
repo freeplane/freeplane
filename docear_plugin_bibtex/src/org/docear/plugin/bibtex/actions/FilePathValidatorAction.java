@@ -8,7 +8,7 @@ import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
 
-import org.docear.plugin.bibtex.JabRefAttributes;
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.freeplane.core.util.LogUtils;
 
 public class FilePathValidatorAction implements PostOpenAction {

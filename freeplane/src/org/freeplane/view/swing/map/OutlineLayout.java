@@ -21,6 +21,9 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Container;
 import java.awt.Dimension;
+
+import javax.swing.JComponent;
+
 import org.freeplane.core.resources.ResourceController;
 
 /**
@@ -34,9 +37,9 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 		return hGap;
 	}
 
-	static private final OutlineLayout instance = new OutlineLayout();
+	static private final NodeViewLayoutAdapter instance = new OutlineLayout();
 
-    static OutlineLayout getInstance() {
+    static NodeViewLayoutAdapter getInstance() {
         return OutlineLayout.instance;
     }
     
@@ -44,14 +47,16 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 	protected void layout() {
 		final int x = getSpaceAround();
 		final int y = x;
-		if (getView().isContentVisible()) {
+		final JComponent content = getContent();
+		final NodeView view = getView();
+		if (view.isContentVisible()) {
 			getContent().setVisible(true);
-			final Dimension contentPreferredSize = getContent().getPreferredSize();
-			getContent().setBounds(x, y, contentPreferredSize.width, contentPreferredSize.height);
+			final Dimension contentProfSize = calculateContentSize(view);
+			content.setBounds(x, y, contentProfSize.width, contentProfSize.height);
 		}
 		else {
-			getContent().setVisible(false);
-			getContent().setBounds(x, y, 0, 0);
+			content.setVisible(false);
+			content.setBounds(x, y, 0, 0);
 		}
 		placeChildren();
 	}

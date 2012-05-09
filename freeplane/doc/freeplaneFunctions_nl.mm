@@ -9,8 +9,8 @@
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600" MIN_WIDTH="1">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600" MIN_WIDTH="1" FORMAT_AS_HYPERLINK="true">
+<font NAME="SansSerif" SIZE="8" BOLD="false" ITALIC="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
@@ -210,16 +210,17 @@
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
-<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1332444881037" HGAP="341" VSHIFT="-61" STYLE="bubble"><richcontent TYPE="NODE">
+<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1336132643156" HGAP="363" VSHIFT="-71" STYLE="bubble"><richcontent TYPE="NODE">
 
 <html>
   <head>
     
   </head>
   <body>
-    <img src="freeplaneApplications.png"/>
+    <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge STYLE="hide_edge"/>
@@ -480,7 +481,7 @@
 </html>
 </richcontent>
 <edge STYLE="sharp_bezier" COLOR="#cc0000" WIDTH="2"/>
-<node TEXT="Onder deze knoopkern:" ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1321010721787" STYLE="bubble" VGAP="0" VSHIFT="-9">
+<node TEXT="Onder deze knoopkern:" ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1336132660269" STYLE="bubble" VGAP="0" VSHIFT="-9">
 <font ITALIC="false"/>
 <attribute NAME="a1" VALUE="waarde 1"/>
 <attribute NAME="a2" VALUE="waarde 2"/>
@@ -497,9 +498,9 @@
   </body>
 </html>
 </richcontent>
-<hook URI="freeplaneApplications.png" SIZE="0.4765625" NAME="ExternalObject"/>
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
 <edge STYLE="bezier" WIDTH="thin"/>
+<hook URI="Images/doc/freeplaneApplications.png" SIZE="0.51111114" NAME="ExternalObject"/>
 <node STYLE_REF="Reference" ID="ID_965583686" CREATED="1319872918353" MODIFIED="1321010685262" HGAP="280" VSHIFT="-11"><richcontent TYPE="NODE">
 
 <html>
@@ -731,9 +732,9 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-121;31;" ENDINCLINATION="-121;31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-28;99;" ENDINCLINATION="-28;99;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-121;31;" ENDINCLINATION="-121;31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="Opmaken tak" ID="ID_1601648824" CREATED="1319796287461" MODIFIED="1321037919116" HGAP="30" VSHIFT="-172">
 <edge STYLE="bezier"/>
 <node TEXT="dikte tak" ID="ID_241458321" CREATED="1288541466835" MODIFIED="1288646970331" VSHIFT="7">
@@ -895,8 +896,8 @@
 </richcontent>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="boven a" ID="ID_1863548649" CREATED="1288536207761" MODIFIED="1321011061055" HGAP="37" VSHIFT="-13" STYLE="bubble"/>
-<node TEXT="knoop a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1321011178198" STYLE="bubble" HGAP="53" VSHIFT="7">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="5" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_268922755" SOURCE_LABEL="ouder" TARGET_LABEL="kleinkind" MIDDLE_LABEL="hierarchie" STARTINCLINATION="-2;23;" ENDINCLINATION="-21;59;" STARTARROW="NONE" ENDARROW="NONE"/>
+<node TEXT="knoop a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1336118905285" STYLE="bubble" HGAP="53" VSHIFT="7">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="5" TRANSPARENCY="80" FONT_SIZE="8" FONT_FAMILY="SansSerif" DESTINATION="ID_268922755" SOURCE_LABEL="ouder" TARGET_LABEL="kleinkind" MIDDLE_LABEL="hierarchie" STARTINCLINATION="-2;23;" ENDINCLINATION="-21;59;" STARTARROW="NONE" ENDARROW="NONE"/>
 <node TEXT="knoop b" ID="ID_1908863616" CREATED="1288535688688" MODIFIED="1321011087862" VGAP="0" VSHIFT="10" STYLE="bubble">
 <edge STYLE="bezier" WIDTH="thin"/>
 <node ID="ID_1947425814" CREATED="1319799725287" MODIFIED="1323790434784" HGAP="5" VSHIFT="-46" BACKGROUND_COLOR="#ffff99">
@@ -1069,7 +1070,7 @@
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-46;-50;" ENDINCLINATION="-46;-50;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1332446345238" HGAP="510" VSHIFT="267"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1336118927905" HGAP="542" VSHIFT="271"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1081,7 +1082,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <cloud COLOR="#ffff00" SHAPE="ARC"/>

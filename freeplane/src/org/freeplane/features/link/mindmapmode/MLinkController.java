@@ -377,11 +377,14 @@ public class MLinkController extends LinkController {
 
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
-
+	private String anchorID;
+	private ModeController modeController;
+	
 	public MLinkController() {
 		super();
+		modeController = Controller.getCurrentModeController();
 		createActions();
-		final ModeController modeController = Controller.getCurrentModeController();
+		anchorID = null;
 		modeController.registerExtensionCopier(new StyleCopier());
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
@@ -428,6 +431,10 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new AddLocalLinkAction());
 		modeController.addAction(new AddMenuItemLinkAction());
 		modeController.addAction(new ExtractLinkFromTextAction());
+		modeController.addAction(new SetLinkAnchorAction());		// new by Nnamdi Kohn
+		modeController.addAction(new MakeLinkToAnchorAction());		// new by Nnamdi Kohn
+		modeController.addAction(new MakeLinkFromAnchorAction());	// new by Nnamdi Kohn
+		modeController.addAction(new ClearLinkAnchorAction());		// new by Nnamdi Kohn
 	}
 
 	@Override
@@ -781,7 +788,7 @@ public class MLinkController extends LinkController {
 			}
 		}
 		return argUri;
-	}
+	}	
 	
 	public void setLinkTypeDependantLink(final NodeModel node, final URI argUri) {
 		setLink(node, argUri, getLinkType());
@@ -1066,7 +1073,27 @@ public class MLinkController extends LinkController {
 			}
 		}
 	}
-	
+
+	public String getAnchorID() {
+		return anchorID;
+	}
+
+	public void setAnchorID(final String anchorID) {
+		this.anchorID = anchorID;
+		final String tooltip; 
+		AFreeplaneAction setLinkAnchorAction = modeController.getAction("SetLinkAnchorAction");
+		if(isAnchored())
+			tooltip = TextUtils.format(setLinkAnchorAction.getTooltipKey() + "_anchored", anchorID);
+		else
+			tooltip = TextUtils.getRawText(setLinkAnchorAction.getTooltipKey());
+		setLinkAnchorAction.putValue(Action.SHORT_DESCRIPTION, tooltip);
+		setLinkAnchorAction.putValue(Action.LONG_DESCRIPTION, tooltip);
+	}
+
+	public boolean isAnchored() {
+		return anchorID != null;
+	}
+
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeLinks links = NodeLinks.createLinkExtension(node);

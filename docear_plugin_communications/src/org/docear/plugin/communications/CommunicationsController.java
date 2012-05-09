@@ -296,6 +296,10 @@ public class CommunicationsController extends ALanguageController implements Pro
 			return getRegisteredAccessToken();
 		}
 	}
+	
+	public void resetRegisteredUser() {
+		setConnectionProperties(true, "", "");		
+	}
 
 	private String getAnonymousAccessToken() {
 		String accessToken = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY);
@@ -398,4 +402,6 @@ public class CommunicationsController extends ALanguageController implements Pro
 
 	public void configurationBeforeLoading(WorkspaceEvent event) {
 	}
+
+	
 }

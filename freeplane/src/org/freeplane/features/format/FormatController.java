@@ -317,15 +317,20 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 			final Object toFormat = (obj instanceof IFormattedObject) ? ((IFormattedObject) obj).getObject() : obj;
 			if (format == null)
 				return toFormat;
-			if (format.acceptsDate() && toFormat instanceof Date) {
+			if (toFormat instanceof String) {
+			    final String string = (String) toFormat;
+                return string.startsWith("=") ? new FormattedFormula(string, formatString) //
+                        : new FormattedObject(toFormat, format);
+            }
+            else if (format.acceptsDate() && toFormat instanceof Date) {
 				return new FormattedDate((Date) toFormat, formatString);
 			}
-			else if (format.acceptsNumber()) {
-				final Number number = toFormat instanceof Number ? (Number) toFormat : TextUtils.toNumber(HtmlUtils
-				    .htmlToPlain(toFormat.toString()));
-				return new FormattedNumber(number, formatString, format.formatObject(number).toString());
-			}
-			else {
+            else if (format.acceptsNumber()) {
+                final Number number = toFormat instanceof Number ? (Number) toFormat : TextUtils.toNumber(HtmlUtils
+                    .htmlToPlain(toFormat.toString()));
+                return new FormattedNumber(number, formatString, format.formatObject(number).toString());
+            }
+            else {
 				return new FormattedObject(toFormat, format);
 			}
 		}

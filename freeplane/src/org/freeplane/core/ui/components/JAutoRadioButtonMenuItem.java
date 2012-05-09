@@ -44,9 +44,8 @@ public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements Pr
 
 	public JAutoRadioButtonMenuItem(final IFreeplaneAction a) {
 		super(a);
-		if (a.isSelected()) {
-			setSelected(true);
-		}
+		setModel(new ActionToggleButtonModel(a));
+		setSelected(a.isSelected());
 	}
 
 	@Override

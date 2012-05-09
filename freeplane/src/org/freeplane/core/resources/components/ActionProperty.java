@@ -26,17 +26,16 @@ import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.RowSpec;
 
 /**
  * @author Stefan Langer
  */
 public class ActionProperty extends PropertyBean implements IPropertyControl {
-	private static RowSpec rowSpec;
 	private Icon icon;
 	private String labelText;
 	private String actionCommand;
@@ -56,8 +55,12 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 
 	public void layout(final DefaultFormBuilder builder) {
 		mButton.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
-				Controller.getCurrentController().getOptionPanelController().actionPerformed(arg0);
+			public void actionPerformed(final ActionEvent event) {
+				AFreeplaneAction action = Controller.getCurrentController().getAction(getName());
+				if(action == null) {
+					return;
+				}
+				action.actionPerformed(event);		
 			}
 		});
 		mButton.setActionCommand(this.actionCommand);
@@ -70,19 +73,7 @@ public class ActionProperty extends PropertyBean implements IPropertyControl {
 		mButton.setText(labelText);
 		mButton.setEnabled(true);		
 		
-		if (ActionProperty.rowSpec == null) {
-			ActionProperty.rowSpec = new RowSpec("fill:20dlu");			
-		}
-		if (3 < builder.getColumn()) {
-			builder.appendRelatedComponentsGapRow();
-			builder.appendRow(ActionProperty.rowSpec);
-			builder.nextLine(2);
-		}
-		else {
-			builder.nextColumn(2);
-		}		
-		builder.nextColumn(2);
-		builder.add(mButton);
+		builder.append("", mButton);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

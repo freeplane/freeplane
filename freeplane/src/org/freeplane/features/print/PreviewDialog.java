@@ -17,6 +17,7 @@ package org.freeplane.features.print;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.Printable;
@@ -39,7 +40,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 
 class PreviewDialog extends JDialog implements ActionListener {
-	final private static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
+	final private static double DEFAULT_ZOOM_FACTOR_STEP = Math.sqrt(2);
 	/**
 	 * 
 	 */
@@ -50,8 +51,10 @@ class PreviewDialog extends JDialog implements ActionListener {
 	public PreviewDialog(final PrintController printController, final String title, final Component c) {
 		super(JOptionPane.getFrameForComponent(c), title, true);
 		view = (Printable) c;
-		final Preview preview = new Preview(printController, view, 1);
-		final JScrollPane scrollPane = new JScrollPane(preview);
+		final Rectangle desktopBounds = UITools.getDesktopBounds(c);
+		Dimension previewSize = new Dimension(desktopBounds.width * 3/4, desktopBounds.height * 3/4);
+		final Preview preview = new Preview(printController, view, previewSize );
+		final JScrollPane scrollPane = new JScrollPane(preview, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		UITools.setScrollbarIncrement(scrollPane);
 		getContentPane().add(scrollPane, "Center");
 		final JToolBar toolbar = new FreeplaneToolBar("preview_toolbar", SwingConstants.HORIZONTAL);
@@ -66,7 +69,7 @@ class PreviewDialog extends JDialog implements ActionListener {
 		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview, pageNumber, 1)));
 		toolbar.add(new JToolBar.Separator());
 		toolbar.add(getButton("ZoomIn24.png", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
-		toolbar.add(getButton("ZoomOut24.png", new ZoomAction(preview, -PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomOut24.png", new ZoomAction(preview, 1.0/PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
 		toolbar.add(new JToolBar.Separator());
 		final JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));

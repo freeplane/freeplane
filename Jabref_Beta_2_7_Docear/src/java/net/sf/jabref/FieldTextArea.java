@@ -91,8 +91,8 @@ public class FieldTextArea extends JTextArea implements FieldEditor {
 		fieldName = fieldName_;
 
 		label = new FieldNameLabel(" " + Util.nCase(fieldName) + " ");
-        setBackground(GUIGlobals.validFieldBackgroundColor);
-        setForeground(GUIGlobals.editorTextColor);
+        setBackground(GUIGlobals.getValidFieldBackgroundColor());  //DOCEAR
+        setForeground(GUIGlobals.getEditorTextColor());  //DOCEAR
 
         //setFont(new Font("Times", Font.PLAIN, 10));
 
@@ -137,19 +137,19 @@ public class FieldTextArea extends JTextArea implements FieldEditor {
 	}
 
     public void setActiveBackgroundColor() {
-        setBackground(GUIGlobals.activeBackground);
+        setBackground(GUIGlobals.getActiveBackground());  //DOCEAR
     }
 
     public void setValidBackgroundColor() {
-        setBackground(GUIGlobals.validFieldBackgroundColor);
+        setBackground(GUIGlobals.getValidFieldBackgroundColor()); //DOCEAR
     }
 
     public void setInvalidBackgroundColor() {
-        setBackground(GUIGlobals.invalidFieldBackgroundColor);
+        setBackground(GUIGlobals.getInvalidFieldBackgroundColor()); //DOCEAR
     }
 
     public void updateFontColor() {
-        setForeground(GUIGlobals.editorTextColor);
+        setForeground(GUIGlobals.getEditorTextColor());  //DOCEAR
     }
 
     public void updateFont() {

@@ -25,7 +25,7 @@ public class DeleteMonitoringFolderAction extends AbstractMonitoringAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
+	    for (NodeModel selected : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
 		URI uri = NodeUtils.getPdfDirFromMonitoringNode(selected);
 		File folder = null;
 		if (uri != null) {
@@ -34,7 +34,7 @@ public class DeleteMonitoringFolderAction extends AbstractMonitoringAction {
 		
 		NodeUtils.removeMonitoringEntries(selected);
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.MONITORING_FOLDER_REMOVE, folder);
-				
+	    }		
 	}
 
 	@Override

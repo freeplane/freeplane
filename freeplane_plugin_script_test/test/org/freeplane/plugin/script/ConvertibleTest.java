@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ConvertibleTest {
-	private static final String FREEPLANE_URL = "http://www.freeplane.org";
+	private static final String FREEPLANE_URI = "http://www.freeplane.org";
 
     /** provides an easy mean to create a Convertible with a null text. */
 	public static final class TestConvertible extends Convertible {
@@ -178,17 +178,19 @@ public class ConvertibleTest {
 
     @Test
     public void testGetUrl() throws ConversionException {
-        assertEquals(null, convertible(null).getUrl());
-        assertEquals(url(FREEPLANE_URL), convertible(FREEPLANE_URL).getUrl());        
-        assertThrowsUrlConversionException("");
-        assertThrowsUrlConversionException("12");
+        assertEquals(null, convertible(null).getUri());
+        assertEquals(uri(FREEPLANE_URI), convertible(FREEPLANE_URI).getUri());        
+        // scheme: is mandatory
+        assertThrowsUriConversionException("");
+        assertThrowsUriConversionException("scheme:");
+        assertEquals(uri("scheme:bla"), convertible("scheme:bla").getUri());
     }
 
-    private void assertThrowsUrlConversionException(String string) {
+    private void assertThrowsUriConversionException(String string) {
         boolean caughtException = false;
         final String notAnUrl = string;
         try {
-            convertible(notAnUrl).getUrl();
+            convertible(notAnUrl).getUri();
         }
         catch (ConversionException e) {
             caughtException = true;
@@ -196,11 +198,11 @@ public class ConvertibleTest {
         assertTrue("should have been detected as not-an-url: \"" + notAnUrl + '"', caughtException);
     }
 
-    private URL url(String string) {
+    private URI uri(String string) {
         try {
-            return new URL(string);
+            return new URI(string);
         }
-        catch (MalformedURLException e) {
+        catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -305,7 +307,7 @@ public class ConvertibleTest {
 		assertEquals("12", new String((byte[]) convertible("12").getProperty("bytes")));
 		assertEquals(date("2010-08-16 22:31"), convertible("2010-08-16T22:31").getProperty("date"));
 		assertEquals(calendar("2010-08-16 22:31"), convertible("2010-08-16T22:31").getProperty("calendar"));
-		assertEquals(url(FREEPLANE_URL), convertible(FREEPLANE_URL).getProperty("url"));
+		assertEquals(uri(FREEPLANE_URI), convertible(FREEPLANE_URI).getProperty("uri"));
 	}
 
     @Test

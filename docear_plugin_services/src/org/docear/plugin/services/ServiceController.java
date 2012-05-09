@@ -9,11 +9,12 @@ import javax.swing.SwingUtilities;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
+import org.docear.plugin.services.actions.DocearCheckForUpdatesAction;
+import org.docear.plugin.services.actions.DocearClearUserDataAction;
 import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
-import org.docear.plugin.services.listeners.PropertiesActionListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -30,9 +31,9 @@ public class ServiceController {
 	
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
 	public static final int ALLOW_RECOMMENDATIONS = 8;
-	public static final int ALLOW_USAGE_RESEARCH = 4;
+	public static final int ALLOW_USAGE_MINING = 4;
 	public static final int ALLOW_INFORMATION_RETRIEVAL = 2;
-	public static final int ALLOW_CONTENT_RESEARCH = 1;
+	public static final int ALLOW_RESEARCH = 1;
 	
 	private Application application;
 
@@ -47,15 +48,17 @@ public class ServiceController {
 		initListeners();
 		
 		new ServiceConfiguration();	    
-	    new ServicePreferences();
+		new ServicePreferences();
 		
 		addPluginDefaults();
-		Controller.getCurrentModeController().addAction(new DocearAllowUploadChooserAction());
+		Controller.getCurrentController().addAction(new DocearClearUserDataAction());
+		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
+		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 	
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {				
 				backupRunner.run();
-				UpdateCheck updateCheck = new UpdateCheck();
+				new UpdateCheck();
 			}		
 		});
 		
@@ -64,8 +67,7 @@ public class ServiceController {
 	
 	public void initListeners() {
 		DocearController.getController().addDocearEventListener(new DocearEventListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);		
-		Controller.getCurrentController().getOptionPanelController().addButtonListener(new PropertiesActionListener());
+		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
 	}
 	
 	public static ServiceController getController() {
@@ -95,19 +97,19 @@ public class ServiceController {
 		return Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_INFORMATION_RETRIEVAL, "0"));
 	}
 	
-	public boolean isAllowedContentResearch() {
-		return (getInformationRetrievalCode() & ALLOW_CONTENT_RESEARCH) > 0;
+	public boolean isResearchAllowed() {
+		return (getInformationRetrievalCode() & ALLOW_RESEARCH) > 0;
 	}
 	
-	public boolean isAllowedInformationRetrieval() {
+	public boolean isInformationRetrievalSelected() {
 		return (getInformationRetrievalCode() & ALLOW_INFORMATION_RETRIEVAL) > 0;
 	}
 	
-	public boolean isAllowedUsageResearch() {
-		return (getInformationRetrievalCode() & ALLOW_USAGE_RESEARCH) > 0;
+	public boolean isUsageMiningAllowed() {
+		return (getInformationRetrievalCode() & ALLOW_USAGE_MINING) > 0;
 	}
 	
-	public boolean isAllowedRecommendations() {
+	public boolean isRecommendationsAllowed() {
 		return (getInformationRetrievalCode() & ALLOW_RECOMMENDATIONS) > 0;
 	}
 	

@@ -6,8 +6,8 @@ import javax.swing.event.TableModelListener;
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 
-import org.docear.plugin.bibtex.JabRefAttributes;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;

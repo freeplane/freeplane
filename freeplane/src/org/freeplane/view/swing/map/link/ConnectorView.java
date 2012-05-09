@@ -49,7 +49,7 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
-	private static final int NORMAL_LENGTH = 100;
+	private static final int NORMAL_LENGTH = 50;
 	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 	private static final int LABEL_SHIFT = 4;
@@ -73,8 +73,7 @@ public class ConnectorView extends AConnectorView{
 
 		final int width = linkController.getWidth(connectorModel);
 		if (!isSourceVisible() || !isTargetVisible()) {
-			float[] dash = zoomDash(DOTTED_DASH);
-			stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0, dash, 0);
+			stroke = new BasicStroke(width);
 		}
 		else{
 			stroke = UITools.createStroke(width, linkController.getDash(connectorModel));
@@ -326,7 +325,7 @@ public class ConnectorView extends AConnectorView{
 			startPoint2 = new Point(startPoint);
 			Point startInclination = connectorModel.getStartInclination();
 			if(endPoint == null){
-				normalize(NORMAL_LENGTH, startInclination);
+				normalizeLength(NORMAL_LENGTH, startInclination);
 			}
 			startPoint2.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(startInclination.x),
 				getMap().getZoomed(startInclination.y));
@@ -336,7 +335,7 @@ public class ConnectorView extends AConnectorView{
 			endPoint2 = new Point(endPoint);
 			Point endInclination = connectorModel.getEndInclination();
 			if(startPoint == null){
-				normalize(NORMAL_LENGTH, endInclination);
+				normalizeLength(NORMAL_LENGTH, endInclination);
 			}
 			endPoint2.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(endInclination.x), getMap()
 				.getZoomed(endInclination.y));
@@ -346,7 +345,7 @@ public class ConnectorView extends AConnectorView{
 		g.setColor(oldColor);
 	}
 
-	private void normalize(int normalLength, Point startInclination) {
+	private void normalizeLength(int normalLength, Point startInclination) {
 		double k = normalLength / Math.sqrt(startInclination.x * startInclination.x + startInclination.y * startInclination.y);
 		startInclination.x *= k;
 		startInclination.y *= k;
@@ -404,17 +403,24 @@ public class ConnectorView extends AConnectorView{
 		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
 			if (startPoint != null) {
 				g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
+				drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
 			    if (arrowLinkCurve == null) {
 			    	arrowLinkCurve = createLine(startPoint, startPoint2);
 				}
 			}
 			if (endPoint != null) {
 				g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
+				drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
 			    if (arrowLinkCurve == null) {
 			    	arrowLinkCurve = createLine(endPoint, endPoint2);
 				}
 			}
 		}
+    }
+
+	private void drawCircle(Graphics2D g, Point p, int hw) {
+		g.setStroke(DEF_STROKE);
+		g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
     }
 
 	private void paintArrow(final Graphics2D g, Point startPoint, Point endPoint) {

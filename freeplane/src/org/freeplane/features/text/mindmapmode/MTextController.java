@@ -108,11 +108,6 @@ public class MTextController extends TextController {
 	private EditNodeBase mCurrentEditDialog = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
-	// from http://lists.xml.org/archives/xml-dev/200108/msg00891.html
-	// but make scheme mandatory
-	private static final String URI_REGEXP = "([a-zA-Z][0-9a-zA-Z+\\-\\.]+:" //
-			+ "/{0,2}[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?(#[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?";
-	private static Pattern uriPattern = Pattern.compile(URI_REGEXP);
 
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
@@ -379,13 +374,12 @@ public class MTextController extends TextController {
 	}
 	
 	private boolean matchUriPattern(Object object) {
-		if (!(object instanceof String))
-			return false;
-		final String text = (String) object;
-		return text.length() > 0 && uriPattern.matcher(text).matches();
-	}
+        if (!(object instanceof String))
+            return false;
+        return TextUtils.matchUriPattern((String) object);
+    }
 
-	public void setNodeText(final NodeModel node, final String newText) {
+    public void setNodeText(final NodeModel node, final String newText) {
 		setNodeObject(node, newText);
 	}
 

@@ -48,10 +48,10 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 		properties.put("mindmap_id", dmme.getMapId());
 		properties.put("timestamp", ""+System.currentTimeMillis());
 		properties.put("backup", new Boolean(serviceController.isBackupAllowed()).toString());
-		properties.put("allow_content_research", new Boolean(serviceController.isAllowedContentResearch()).toString());
-		properties.put("allow_information_retrieval", new Boolean(serviceController.isAllowedInformationRetrieval()).toString());		
-		properties.put("allow_usage_research", new Boolean(serviceController.isAllowedUsageResearch()).toString());
-		properties.put("allow_recommendations", new Boolean(serviceController.isAllowedRecommendations()).toString());
+		properties.put("allow_content_research", new Boolean(serviceController.isResearchAllowed()).toString());
+		properties.put("allow_information_retrieval", new Boolean(serviceController.isInformationRetrievalSelected()).toString());		
+		properties.put("allow_usage_research", new Boolean(serviceController.isUsageMiningAllowed()).toString());
+		properties.put("allow_recommendations", new Boolean(serviceController.isRecommendationsAllowed()).toString());
 		
 		properties.put("map_version", dmme.getVersion());
 		properties.put("application_name", docearController.getApplicationName());

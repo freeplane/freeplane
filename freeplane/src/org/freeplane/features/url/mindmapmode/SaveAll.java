@@ -57,11 +57,8 @@ public class SaveAll extends AFreeplaneAction {
 			final Entry<String, MapModel> entry = iterator.next();
 			controller.getMapViewManager().changeToMapView(entry.getKey());
 			final ModeController modeController = controller.getModeController();
-			if (modeController instanceof MModeController && !((MModeController) modeController).save()) {
-                //DOCEAR: remove meaningless (static text "Freeplane") dialog 
-//				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), "Freeplane", TextUtils
-//				    .getText("accessories/plugins/SaveAll.properties_save_all_cancelled"), JOptionPane.ERROR_MESSAGE);
-				return;
+			if (modeController instanceof MModeController) {
+				((MModeController) modeController).save();
 			}
 		}
 		if (initialMapView != null) {

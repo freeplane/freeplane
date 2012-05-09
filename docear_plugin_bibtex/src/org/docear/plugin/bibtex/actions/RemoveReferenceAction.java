@@ -1,6 +1,7 @@
 package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -11,41 +12,44 @@ import org.freeplane.view.swing.map.MapView;
 
 @EnabledAction(checkOnPopup = true)
 public class RemoveReferenceAction extends AFreeplaneAction {
-	
-	/**
+
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public RemoveReferenceAction(String key) {
-		super(key);
+    public RemoveReferenceAction(String key) {
+	super(key);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+	for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+	    ReferencesController.getController().getJabRefAttributes().removeReferenceFromNode(node);
+
+	    ((MapView) Controller.getCurrentController().getViewController().getMapView()).getNodeView(node).updateAll();
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
-			ReferencesController.getController().getJabRefAttributes().removeReferenceFromNode(node);
-			
-			((MapView) Controller.getCurrentController().getViewController().getMapView()).getNodeView(node).updateAll();
-		}
-		
-	}
-	
-	public void setEnabled() {
-		NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		if (node == null) {
-			setEnabled(false);
-			return;
-		}		
-		
-		final String bibtexKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);
-		
-		if (bibtexKey != null && bibtexKey.length()>0) {
-			setEnabled(true);
-		}
-		else {
-			setEnabled(false);
-		}
-		
-	}
+    }
+
+//    public void setEnabled() {
+//	Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+//
+//	for (NodeModel node : nodes) {
+//	    if (node == null) {
+//		setEnabled(false);
+//		return;
+//	    }
+//
+//	    final String bibtexKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);
+//
+//	    if (bibtexKey != null && bibtexKey.length() > 0) {
+//		setEnabled(true);
+//	    }
+//	    else {
+//		setEnabled(false);
+//	    }
+//	}
+//
+//    }
 
 }
