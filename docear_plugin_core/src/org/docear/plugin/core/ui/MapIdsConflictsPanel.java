@@ -53,7 +53,6 @@ public class MapIdsConflictsPanel extends JPanel {
 		radioThisMap = new JRadioButton(TextUtils.getText("docear.conflicting_map_ids.this_map"));
 		radioThisMap.setSelected(true);
 		radioThisMap.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {				
 				radioConflictingMap.setSelected(false);
 				radioKeepIds.setSelected(false);
@@ -67,7 +66,6 @@ public class MapIdsConflictsPanel extends JPanel {
 		
 		radioConflictingMap = new JRadioButton(TextUtils.getText("docear.conflicting_map_ids.conflicting_map"));
 		radioConflictingMap.addActionListener(new ActionListener() {			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				radioThisMap.setSelected(false);
 				radioKeepIds.setSelected(false);
@@ -81,7 +79,6 @@ public class MapIdsConflictsPanel extends JPanel {
 		
 		radioKeepIds = new JRadioButton(TextUtils.getText("docear.conflicting_map_ids.keep_ids"));
 		radioKeepIds.addActionListener(new ActionListener() {			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				radioThisMap.setSelected(false);
 				radioConflictingMap.setSelected(false);

@@ -89,7 +89,9 @@ public class AnnotationController implements IExtension{
 		Map<AnnotationID, Collection<IAnnotation>> result = new HashMap<AnnotationID, Collection<IAnnotation>>();
 		if(oldAnnotations.containsKey(importedAnnotation.getAnnotationID())){
 			for(AnnotationNodeModel oldAnnotation : oldAnnotations.get(importedAnnotation.getAnnotationID())){
-				if(!importedAnnotation.getTitle().equals(oldAnnotation.getTitle()) && !oldAnnotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
+				String importedAnnotationTitle = importedAnnotation.getTitle().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+				String oldAnnotationTitle = oldAnnotation.getTitle().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+				if(!importedAnnotationTitle.equals(oldAnnotationTitle) && !oldAnnotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 					importedAnnotation.setConflicted(true);					
 				}
 				
