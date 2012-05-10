@@ -253,7 +253,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
     }
 
 	@Override
-	protected void add(final NodeModel node, final IExtension extension) {
+	public void add(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		scheduleTimer(reminderExtension);
 		modeController.getMapController().addMapChangeListener(reminderExtension);
@@ -293,7 +293,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	}
 
 	@Override
-	protected void remove(final NodeModel node, final IExtension extension) {
+	public void remove(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		reminderExtension.deactivateTimer();
 		reminderExtension.displayState(null, reminderExtension.getNode(), true);

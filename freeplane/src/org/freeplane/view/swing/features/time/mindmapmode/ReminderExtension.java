@@ -31,7 +31,7 @@ import org.freeplane.features.mode.Controller;
 /**
  * @author Dimitry Polivaev 30.11.2008
  */
-class ReminderExtension implements IExtension, IMapChangeListener {
+public class ReminderExtension implements IExtension, IMapChangeListener {
 	static final int BLINKING_PERIOD = 1000;
 	/**
 	 */
@@ -72,6 +72,14 @@ class ReminderExtension implements IExtension, IMapChangeListener {
     	this.periodUnit = periodUnit;
     }
 
+    public String getPeriodUnitAsString() {
+        return periodUnit == null ? null : periodUnit.name();
+    }
+
+    public void setPeriodUnitAsString(String periodUnit) {
+        this.periodUnit = PeriodUnit.valueOf(periodUnit);
+    }
+
 	public int getPeriod() {
     	return period;
     }
@@ -80,11 +88,11 @@ class ReminderExtension implements IExtension, IMapChangeListener {
     	this.period = period;
     }
 
-	String getScript() {
+	public String getScript() {
     	return script;
     }
 
-	void setScript(String script) {
+	public void setScript(String script) {
     	this.script = script;
     }
 
