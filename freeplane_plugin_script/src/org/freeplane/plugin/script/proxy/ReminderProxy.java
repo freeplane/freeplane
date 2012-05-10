@@ -84,6 +84,12 @@ public class ReminderProxy extends AbstractProxy<NodeModel> implements Proxy.Rem
         reminder.setScript(scriptSource);
     }
 
+    // Reminder
+    public void remove() {
+        final ReminderHook reminderHook = Controller.getCurrentModeController().getExtension(ReminderHook.class);
+        removeOldReminder(reminderHook);
+    }
+
     /** make <code>if (node.reminder) println "has reminder"</code> work. */
     public boolean asBoolean() {
         return getDelegate().getExtension(ReminderExtension.class) != null;

@@ -1305,9 +1305,13 @@ public interface Proxy {
          * @param period counts the periodUnits.
          * @throws Exception if there is no reminder yet. */
         void createOrReplace(Date remindAt, String periodUnit, Integer period);
+
         /** optional: a Groovy script to execute when the reminder fires.
          * @param scriptSource the script itself, not a path to a file.
          * @throws NullPointerException if there is no reminder yet. */
         void setScript(String scriptSource);
+
+        /** removes a reminder from a node. It's not an error if there is no reminder to remove. */
+        void remove();
     }
 }
