@@ -10,6 +10,7 @@ import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;
 import org.docear.plugin.core.listeners.SplmmMapsConvertEvent;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -58,6 +59,11 @@ public class MapConverter implements IMapConverter {
 				currentlyConverting = false;
 				return true;
 			}
+			currentlyConverting = false;
+			return false;
+		}
+		catch(Exception e){
+			LogUtils.warn(e);
 			currentlyConverting = false;
 			return false;
 		}

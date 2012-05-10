@@ -15,6 +15,7 @@ import org.docear.plugin.core.features.AnnotationNodeModel;
 import org.docear.plugin.core.features.AnnotationXmlBuilder;
 import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.util.HtmlUtils;
 import org.docear.plugin.core.util.Tools;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
@@ -89,9 +90,11 @@ public class AnnotationController implements IExtension{
 		Map<AnnotationID, Collection<IAnnotation>> result = new HashMap<AnnotationID, Collection<IAnnotation>>();
 		if(oldAnnotations.containsKey(importedAnnotation.getAnnotationID())){
 			for(AnnotationNodeModel oldAnnotation : oldAnnotations.get(importedAnnotation.getAnnotationID())){
+				String oldAnnotationWithoutHTML = HtmlUtils.extractText(oldAnnotation.getTitle());
 				String importedAnnotationTitle = importedAnnotation.getTitle().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
 				String oldAnnotationTitle = oldAnnotation.getTitle().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
-				if(!importedAnnotationTitle.equals(oldAnnotationTitle) && !oldAnnotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
+				oldAnnotationWithoutHTML = oldAnnotationWithoutHTML.replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+				if(!importedAnnotationTitle.equals(oldAnnotationTitle) && !importedAnnotationTitle.equals(oldAnnotationWithoutHTML) && !oldAnnotation.getAnnotationType().equals(AnnotationType.PDF_FILE)){
 					importedAnnotation.setConflicted(true);					
 				}
 				
