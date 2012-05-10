@@ -139,4 +139,9 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 		}
 	    return false;
     }
+
+    /** make <code>if (node.link) println "has link"</code> work. */
+    public boolean asBoolean() {
+        return getUri() != null;
+    }
 }
