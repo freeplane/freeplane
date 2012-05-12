@@ -232,7 +232,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public JComponent getContent() {
 		final JComponent c = contentPane == null ? mainView : contentPane;
-		assert (c.getParent() == this);
+		assert (c == null || c.getParent() == this);
 		return c;
 	}
 
@@ -1063,9 +1063,7 @@ public class NodeView extends JComponent implements INodeView {
 		for (final ListIterator<NodeView> e = getChildrenViews().listIterator(); e.hasNext();) {
 			e.next().remove();
 		}
-		if (isSelected()) {
-			getMap().deselect(this);
-		}
+		getMap().deselect(this);
 		getMap().getModeController().onViewRemoved(this);
 		removeFromMap();
 		if (attributeView != null) {

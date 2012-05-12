@@ -11,7 +11,7 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.2.14 beta"
+#define MyVersion "1.2.15 beta"
 #define MyAppName "Freeplane"
 #define MyAppVerName "Freeplane"
 #define MyAppPublisher "Open source"
@@ -34,7 +34,7 @@ DefaultGroupName={#MyAppName}
 OutputDir=..\dist
 OutputBaseFilename=Freeplane-Setup-{#MyVersion}
 SetupIconFile=Setup.ico
-VersionInfoDescription=Amazing open source program for mind mapping
+VersionInfoDescription=Free mind mapping software. Fast. Simple. Streamlined.
 ChangesAssociations=true
 PrivilegesRequired=none
 AllowNoIcons=true

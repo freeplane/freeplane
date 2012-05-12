@@ -62,7 +62,7 @@ public class TextController implements IExtension {
 	private static final Integer DETAILS_TOOLTIP = 2;
 	private final List<IContentTransformer> textTransformers;
 	protected final ModeController modeController;
-	public static final String MARK_TRANSFORMED_TEXT = "mark_transformed_text";
+	public static final String MARK_TRANSFORMED_TEXT = "highlight_formulas";
 
 
 	public static boolean isMarkTransformedTextSet() {
@@ -134,15 +134,21 @@ public class TextController implements IExtension {
 					return string.substring(1);
 			}
 		}
+		boolean markTransformation = false;
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			try {
-	            object = textTransformer.transformContent(this, object, nodeModel, extension);
+				Object in = object;
+	            object = textTransformer.transformContent(this, in, nodeModel, extension);
+	            markTransformation = markTransformation || textTransformer.markTransformation() && ! in.equals(object); 
             }
             catch (RuntimeException e) {
             	throw new TransformationException(e);
             }
 		}
-		return object;
+		if(markTransformation)
+			return new HighlightedTransformedObject(object);
+		else
+			return object;
 	}
 
 	public boolean isTextFormattingDisabled(final NodeModel nodeModel) {

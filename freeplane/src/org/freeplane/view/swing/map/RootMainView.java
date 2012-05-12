@@ -166,8 +166,8 @@ class RootMainView extends MainView {
             }
             final double nWidth = mainView.getWidth() / 2f;
             final double nHeight = mainView.getHeight() / 2f;
-            int dx = Math.max(Math.abs(p.x), getNodeView().getZoomed(LocationModel.HGAP));
-            if(p.x < 0)
+            int dx = Math.max(Math.abs(p.x -  mainView.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
+            if(p.x < mainView.getWidth()/2)
             	dx = -dx;
 			double angle = Math.atan((p.y - nHeight) / dx);
             if (dx < 0) {

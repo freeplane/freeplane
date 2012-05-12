@@ -15,4 +15,9 @@ public abstract class AbstractContentTransformer implements IContentTransformer 
 		int thatPriority = that.getPriority();
 		return (this.priority < thatPriority ? -1 : (this.priority == thatPriority ? 0 : 1));
 	}
+
+	public boolean markTransformation() {
+	    return false;
+    }
+	
 }

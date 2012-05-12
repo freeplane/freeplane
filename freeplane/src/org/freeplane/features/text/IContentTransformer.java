@@ -11,4 +11,6 @@ public interface IContentTransformer extends Comparable<IContentTransformer> {
 	 * Transformers are sorted by priority numerically, that is the transformer with the least priority value
 	 * comes first. */
 	int getPriority();
+	
+	boolean markTransformation();
 }

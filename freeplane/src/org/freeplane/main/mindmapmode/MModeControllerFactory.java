@@ -151,7 +151,7 @@ public class MModeControllerFactory {
 		AlwaysUnfoldedNode.install();
 		FreeNode.install();
 		new CreationModificationPlugin();
-		new ReminderHook(modeController);
+		modeController.addExtension(ReminderHook.class, new ReminderHook(modeController));
 		new AutomaticEdgeColorHook();
 		new ViewerController();
 		modeController.addAction(new AddAttributeAction());

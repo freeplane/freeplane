@@ -113,16 +113,17 @@
 </html>
 </richcontent>
 </node>
-<node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1318716147407" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
+<node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1336132515904" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
 
 <html>
   <head>
     
   </head>
   <body>
-    <img src="freeplaneApplications.png"/>
+    <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
+
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="FreeNode"/>
@@ -146,7 +147,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="16" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="Think it" STARTINCLINATION="247;0;" ENDINCLINATION="204;-61;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
@@ -244,7 +244,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -300,7 +299,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#00ff00" WIDTH="3"/>
@@ -395,7 +393,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -433,7 +430,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node ID="ID_1404449457" CREATED="1317972719278" MODIFIED="1335088750262">
@@ -450,7 +446,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -468,7 +463,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -502,7 +496,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -520,7 +513,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#7c7c00" WIDTH="3"/>
 </node>
@@ -603,7 +595,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">

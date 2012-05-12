@@ -41,6 +41,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
+import org.freeplane.plugin.script.proxy.Proxy.Reminder;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	private static final Integer ONE = 1;
@@ -216,6 +217,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public Proxy.Link getLink() {
 		return new LinkProxy(getDelegate(), getScriptContext());
 	}
+
+	// NodeRO: R
+    public Reminder getReminder() {
+        return new ReminderProxy(getDelegate(), getScriptContext());
+    }
 
 	// NodeRO: R
 	public String getId() {

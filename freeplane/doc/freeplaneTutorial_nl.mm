@@ -4,7 +4,7 @@
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1330893671691" VGAP="10" BACKGROUND_COLOR="#00ff66">
+<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1330893671691" VGAP="9" BACKGROUND_COLOR="#00ff66">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 
@@ -42,8 +42,9 @@
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default">
+<stylenode LOCALIZED_TEXT="default" FORMAT_AS_HYPERLINK="true">
 <edge COLOR="#808080" WIDTH="thin"/>
+<font SIZE="8"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
@@ -140,7 +141,7 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1330891483629" HGAP="8" VSHIFT="-93" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1333917844727" HGAP="8" VSHIFT="-93" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -148,7 +149,7 @@
   </head>
   <body>
     <p style="text-align: center">
-      <a href="freeplaneFunctions_nl.mm">Functie index</a>
+      Functieindex
     </p>
   </body>
 </html>
@@ -179,9 +180,10 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1323682151885" BACKGROUND_COLOR="#00cc33" NUMBERED="true" VSHIFT="90" MIN_WIDTH="180">
-<node STYLE_REF="Beginner" ID="ID_1788333692" CREATED="1332873790447" MODIFIED="1332873996844" VSHIFT="31">
+<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1335976646145" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180">
+<node STYLE_REF="Beginner" ID="ID_1820104438" CREATED="1332872487760" MODIFIED="1336124917514">
 <icon BUILTIN="video"/>
+<icon BUILTIN="internet_warning"/>
 <richcontent TYPE="NODE">
 
 <html>
@@ -190,38 +192,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/ViewingGuide_nl">Gids voor het bekijken van een mindmap</a>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hiervoor is een Internetverbinding nodig.
-    </p>
-  </body>
-</html>
-
-</richcontent>
-</node>
-<node STYLE_REF="Beginner" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1332873950465" HGAP="22" VSHIFT="3">
-<icon BUILTIN="video"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/WHY_FreeplaneVideo_nl">Waarom Freeplane</a>
+      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides_nl.mm">Freeplane (video) gidsen</a>
     </p>
   </body>
 </html>
@@ -234,17 +205,17 @@
   </head>
   <body>
     <p>
-      Deze hyperlink vereist een Internet verbinding.
+      Deze gidsen bevatten een snelle maar onvolledige (video) introductie. Hiervoor is een Internetverbinding noodzakelijk. Deze gidsen zijn ook toegankelijk via <i>Help &gt; Online documentatie mindmaps.</i>
     </p>
   </body>
 </html>
 </richcontent>
 </node>
-<node TEXT="Doel" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1332434901858" HGAP="23" VSHIFT="1">
+<node TEXT="Doel" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1336124917514">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1704300991" CREATED="1323439375808" MODIFIED="1323681032897" HGAP="-22" VSHIFT="70" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_1704300991" CREATED="1323439375808" MODIFIED="1335971337895" HGAP="-19" VSHIFT="88" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -252,13 +223,7 @@
   </head>
   <body>
     <p>
-      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken, delen en gebruiken van <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane_nl#Wat_is_mindmappen">mindmaps</a>, een soort van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>. &#160;De <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>wiki</b></a>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications_nl.mm">toepassingsgebieden.</a>&#160;De knoop <a href="freeplaneFunctions.mm">functieindex</a>&#160; bevat een visueel overzicht van alle functies en hyperlinks naar beschrijvingen van deze functies..
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Het doel van deze handleiding is om je snel op weg te helpen met de meest gebruikte mogelijkheden. Voor meer informatie, of meer details, ga naar de documentatie in menu <a href="freeplane.mm">Help &gt; Documentatie</a>.
+      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken, delen en gebruiken van <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane_nl#Wat_is_mindmappen">mindmaps</a>, een soort van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>. &#160;De Freeplane <b><a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">wiki</a></b>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications_nl.mm">toepassingsgebieden.</a>&#160;De knoop <a href="freeplaneFunctions.mm">functieindex</a>&#160;&#160;bevat een visueel overzicht van alle functies en hyperlinks naar beschrijvingen van deze functies. Een snelle inleiding is te vinden in de Freeplane videogidsen (zie <i>Help&gt;Online documentatiemindmaps</i>).&#160;Het doel van deze Handleiding is om in aanvulling op de videogidsen de mogelijkeheden van Freeplane op een systemaische wijze te presenteren, en met voldoende diepgang voor de meeste gebruikers. Voor meer informatie, of meer details, ga naar de documentatie in menu <a href="freeplane.mm">Help &gt; Documentatie</a>.
     </p>
   </body>
 </html>
@@ -266,60 +231,13 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="Basisinstructie voor het gebruiken van mindmaps (animatie)" STYLE_REF="Beginner" ID="ID_1059593400" CREATED="1316334611538" MODIFIED="1323681922705" LINK="freeplaneTutorialConsumer_nl.htm" HGAP="-549" VSHIFT="145"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het rode pijltje om de animatie te starten. Druk tijdens de animatie op de pijlen om door/terug te gaan.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Basisinstructie voor het maken van een elementaire mindmap (animatie)" STYLE_REF="Beginner" ID="ID_886108715" CREATED="1316337673931" MODIFIED="1323681998069" LINK="freeplaneTutorialBeginnerNodeHandling_nl.htm" HGAP="-549" VSHIFT="12"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik op het rode pijltje om de instructie te starten.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Let op: </b>de instructie is gebaseerd op Freeplane 1.3. De werking van Freeplane 1.2 is in principe gelijk, aleen zijn de menu's anders georganiseerd. Hieronder wordt de nieuwe structuur beschreven.
-    </p>
-    <p>
-      
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
-</hook>
-<edge STYLE="hide_edge"/>
 </node>
 </node>
-</node>
-<node TEXT="Leeswijzer" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1329925609545" MIN_WIDTH="1" HGAP="23" VSHIFT="2">
+<node TEXT="Leeswijzer" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1336124917514" MIN_WIDTH="1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1330288332070" STYLE="fork" HGAP="-54" VSHIFT="193"><richcontent TYPE="NODE">
+<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1335971639644" STYLE="fork" HGAP="-55" VSHIFT="233"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -349,9 +267,14 @@
     <p>
       <b>BELANGRIJK:</b>
     </p>
-    <p>
-      Installeer de<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29#NL">&#160;language add-on NL</a>&#160;voor meer uitgebreide ondersteuning..
-    </p>
+    <ul>
+      <li>
+        Installeer de<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29#NL">&#160;language add-on NL</a>&#160;voor meer uitgebreide ondersteuning..
+      </li>
+      <li>
+        Raadpleeg zo mogelijk als inleiding de eerste drie <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides_nl.mm">Freeplane (video) gidsen.</a>
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
@@ -360,11 +283,89 @@
 </hook>
 </node>
 </node>
-<node TEXT="Knopen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1329925353063" HGAP="22" VSHIFT="1" MIN_WIDTH="1">
+<node TEXT="Hoofdmenu&apos;s" STYLE_REF="Beginner" FOLDED="true" ID="ID_27625495" CREATED="1333268936129" MODIFIED="1336124917514">
+<node TEXT="" ID="ID_1025673726" CREATED="1333220288493" MODIFIED="1336132113540" HGAP="80" VSHIFT="94" STYLE="fork">
+<edge STYLE="hide_edge"/>
+<hook URI="Images/doc/MenusPropertiesPanel_nl.png" SIZE="0.44052863" NAME="ExternalObject"/>
+<node TEXT="Menubalk" ID="ID_545376045" CREATED="1333220342855" MODIFIED="1335975121455" HGAP="-712" VSHIFT="25">
+<font NAME="SansSerif" BOLD="true" ITALIC="true"/>
+<edge STYLE="hide_edge"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_545376045" STARTINCLINATION="39;1;" ENDINCLINATION="39;1;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Werkbalk" ID="ID_1776942057" CREATED="1333220356591" MODIFIED="1333280804275" HGAP="-709">
+<font NAME="SansSerif" BOLD="true" ITALIC="true"/>
+<edge STYLE="hide_edge"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1776942057" STARTINCLINATION="40;-5;" ENDINCLINATION="40;-5;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Filterbalk" ID="ID_1116647408" CREATED="1333220363978" MODIFIED="1333280765971" HGAP="-711">
+<font NAME="SansSerif" BOLD="true" ITALIC="true"/>
+<edge STYLE="hide_edge"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1116647408" STARTINCLINATION="43;-13;" ENDINCLINATION="43;-13;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="F-balk" ID="ID_572885056" CREATED="1333220384297" MODIFIED="1333280813073" HGAP="-692" VSHIFT="-1">
+<font NAME="SansSerif" BOLD="true" ITALIC="true"/>
+<edge STYLE="hide_edge"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_572885056" STARTINCLINATION="46;-24;" ENDINCLINATION="46;-24;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Pictogrammenbalk" ID="ID_40915018" CREATED="1333220561873" MODIFIED="1335975130629" HGAP="-762" VSHIFT="-4">
+<font BOLD="true" ITALIC="true"/>
+<edge STYLE="hide_edge"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_40915018" STARTINCLINATION="38;-2;" ENDINCLINATION="38;-2;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+<node TEXT="Opmaakpaneel" ID="ID_879868478" CREATED="1333220390249" MODIFIED="1335976066336" HGAP="-152" VSHIFT="14">
+<font NAME="SansSerif" BOLD="true" ITALIC="true"/>
+<edge STYLE="hide_edge"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_879868478" STARTINCLINATION="0;-16;" ENDINCLINATION="0;-16;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</node>
+</node>
+<node TEXT="Achtergrond&#xa;contextmenu" FOLDED="true" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336132131246" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Klik met rechter muisknop in en vrij gebied in de achtergrond
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook URI="Images/mouse/mouse_RB.png" SIZE="1.0" NAME="ExternalObject"/>
+<node TEXT="Achtergrond Context Menu" ID="ID_1485150857" CREATED="1333223496821" MODIFIED="1336132153024" VSHIFT="180" STYLE="fork">
+<font BOLD="true" ITALIC="true"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+<hook URI="Images/doc/BackgroundContextMenu_nl.png" SIZE="1.0" NAME="ExternalObject"/>
+<node TEXT="Openen/sluiten&#xa;Opmaakpaneel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1335976061079" HGAP="56">
+<edge STYLE="hide_edge"/>
+<font BOLD="true" ITALIC="true"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="107;-186;" ENDINCLINATION="107;-186;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+</node>
+</node>
+</node>
+<node TEXT="Help &gt; Sneltoetsen" FOLDED="true" ID="ID_291675950" CREATED="1333224017380" MODIFIED="1333280691852" HGAP="39" VSHIFT="-217" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Sneltoetsen voor de meeste functies.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Tabel met sneltoetsen" ID="ID_1337797684" CREATED="1333278113064" MODIFIED="1336132187235">
+<hook URI="Images/doc/HotKeysTable_nl.png" SIZE="0.8695652" NAME="ExternalObject"/>
+</node>
+</node>
+</node>
+<node TEXT="Knopen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1336124917514" MIN_WIDTH="1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_859940648" CREATED="1323460494762" MODIFIED="1323809277390" HGAP="-35" VSHIFT="70"><richcontent TYPE="NODE">
+<node ID="ID_859940648" CREATED="1323460494762" MODIFIED="1335976547537" HGAP="-37" VSHIFT="79"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -388,11 +389,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Familierelaties" STYLE_REF="Beginner" FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1329925361284" HGAP="22" TEXT_SHORTENED="true">
+<node TEXT="Familierelaties" STYLE_REF="Beginner" FOLDED="true" ID="ID_1971514033" CREATED="1314122290117" MODIFIED="1336124917514" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1269567767" CREATED="1323465595335" MODIFIED="1323809284956" HGAP="-75" VSHIFT="69"><richcontent TYPE="NODE">
+<node ID="ID_1269567767" CREATED="1323465595335" MODIFIED="1335976539612" HGAP="-79" VSHIFT="88"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -431,11 +432,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Open- en dichtvouwen van knopen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1329925368491" VSHIFT="-3">
+<node TEXT="Open- en dichtvouwen van knopen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1338867820" CREATED="1314122456335" MODIFIED="1336124917514">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1332436415028" HGAP="-185" VSHIFT="113"><richcontent TYPE="NODE">
+<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1335976515073" HGAP="-204" VSHIFT="188"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -443,7 +444,7 @@
   </head>
   <body>
     <p>
-      Je kunt een knoop open- en dichtvouwen door op de knoop te klikken. <b>Openvouwen</b>&#160; (uitvouwen) toont verborgen kinderen en <b>dichtvouwen</b>&#160;(invouwen) verbergt kinderen. Als een knoop is dichtgevouwen verschijnt een cirketje aan de kindzijde van de knoop.
+      Je kunt een knoop open- en dichtvouwen door op de knoop te killken als een cirkel met een plus- of min-teken&#160;&#160;verschijnt als de cursor zich boven de knoopkern bevindt. <b>Openvouwen</b>&#160;&#160;(uitvouwen) toont verborgen kinderen en <b>dichtvouwen</b>&#160;(invouwen) verbergt kinderen. Als een knoop is dichtgevouwen verschijnt een cirketje aan de kindzijde van de knoop.
     </p>
     <p>
       
@@ -457,9 +458,17 @@
     <p>
       <b>Uitzondering </b>
     </p>
-    <p>
-      Als een&#160;knoop wordt dichtgevouwen die een verbindingslijn heeft met een van zijn kindknopen, dan blijft een gestippelde lijn (en een eventueel label) zichtbaar. Door hier op te klikken verschijnt de knoop waarmee de verbinding bestaat.
-    </p>
+    <ul>
+      <li>
+        Open en dichtvouwen gebeurt met een vertraging, behalve als op de cirkel wordt geklikt.
+      </li>
+      <li>
+        Als het vinkje achter <i>Extra &gt; open/dichtvouwen bij intern klikken</i>&#160;&#160;is gezet, dan hoef je niet op de cirkel met het +/- teken te klikken, maar kun je voor open/dichtvouwen op het hele gebied van de knoopkern klikken. Merk op dat dubbelklikken op de knoopkern dan niet de het bewerkingsvenster opent.
+      </li>
+      <li>
+        Als een&#160;knoop wordt dichtgevouwen die een verbindingslijn heeft met een van zijn kindknopen, dan blijft een gestippelde lijn (en een eventueel label) zichtbaar. Door hier op te klikken verschijnt de knoop waarmee de verbinding bestaat.
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
@@ -582,11 +591,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Mindap op Internet openen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1857240761" CREATED="1329414112893" MODIFIED="1332434922263" HGAP="21" VSHIFT="-29">
+<node TEXT="Mindap op Internet openen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1857240761" CREATED="1329414112893" MODIFIED="1336124917514">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Consumer" LAST="false"/>
 </hook>
-<node STYLE_REF="TitlesContent" ID="ID_1054557588" CREATED="1329414148558" MODIFIED="1329414274504" HGAP="-137" VSHIFT="30"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1054557588" CREATED="1329414148558" MODIFIED="1335976530158" HGAP="-152" VSHIFT="35"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -602,12 +611,12 @@
 </node>
 </node>
 </node>
-<node TEXT="Basis mindmap" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1323684772516" NUMBERED="true" MIN_WIDTH="180">
-<node TEXT="Knoopkern" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1323683596009" HGAP="24" VSHIFT="5" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Basis mindmap" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1335976646145" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Knoopkern" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1336124936608" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1314148002" CREATED="1323461584875" MODIFIED="1323809491267" HGAP="-53" VSHIFT="110"><richcontent TYPE="NODE">
+<node ID="ID_1314148002" CREATED="1323461584875" MODIFIED="1336115236512" HGAP="-56" VSHIFT="121"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -637,9 +646,9 @@
 </hook>
 </node>
 </node>
-<node TEXT="Bewerken knoopkern (snel)" STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1323809457274" HGAP="22" STYLE="combined" MIN_WIDTH="115">
+<node TEXT="Bewerken knoopkern (snel)" STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1336124936608" STYLE="combined" MIN_WIDTH="115">
 <edge STYLE="bezier"/>
-<node FOLDED="true" ID="ID_265318117" CREATED="1323437723250" MODIFIED="1329926126545" HGAP="-146" VSHIFT="142" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1336115251987" HGAP="-156" VSHIFT="169" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -841,8 +850,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Bewerken knoopkern (in venster)" STYLE_REF="Beginner" FOLDED="true" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1323809447181" STYLE="combined" HGAP="23" MIN_WIDTH="115">
-<node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1329926184765" HGAP="-179" VSHIFT="120" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Bewerken knoopkern (in venster)" STYLE_REF="Beginner" FOLDED="true" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1336124936608" STYLE="combined" MIN_WIDTH="115">
+<node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1336115391125" HGAP="-195" VSHIFT="141" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -881,8 +890,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Bewaren en sluiten" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1323809442064" HGAP="22" STYLE="combined" MIN_WIDTH="115">
-<node ID="ID_1460485800" CREATED="1323438690647" MODIFIED="1323809505775" HGAP="-103" VSHIFT="37" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Bewaren en sluiten" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1336124936608" STYLE="combined" MIN_WIDTH="115">
+<node ID="ID_1460485800" CREATED="1323438690647" MODIFIED="1336115404354" HGAP="-104" VSHIFT="40" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -959,9 +968,9 @@
 </node>
 </node>
 </node>
-<node TEXT="Vrije knopen" STYLE_REF="Advanced" FOLDED="true" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1323809434654" MIN_WIDTH="80">
+<node TEXT="Vrije knopen" STYLE_REF="Advanced" FOLDED="true" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1336124936608" MIN_WIDTH="80">
 <node TEXT="Post-it knopen: vrij positioneerbaar, vrij zwevend" STYLE_REF="Advanced" FOLDED="true" ID="ID_630972811" CREATED="1323076049931" MODIFIED="1323809737825" HGAP="23" VSHIFT="212" STYLE="combined">
-<node ID="ID_830664496" CREATED="1323434577171" MODIFIED="1329980423956" HGAP="-262" VSHIFT="69" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_830664496" CREATED="1323434577171" MODIFIED="1336115417739" HGAP="-297" VSHIFT="77" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -977,7 +986,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node STYLE_REF="SubWidth" ID="ID_1557640435" CREATED="1323470600645" MODIFIED="1330026389591" HGAP="-544" VSHIFT="141"><richcontent TYPE="NODE">
+<node STYLE_REF="SubWidth" ID="ID_1557640435" CREATED="1323470600645" MODIFIED="1336115423573" HGAP="-548" VSHIFT="165"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -993,27 +1002,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Maken en verplaatsen vrije knopen" STYLE_REF="Advanced" FOLDED="true" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1323809740633" VGAP="0" HGAP="24" VSHIFT="-210" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Maken en verplaatsen vrije knopen" STYLE_REF="Advanced" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1323809740633" VGAP="0" HGAP="24" VSHIFT="-210" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Vrije knoop" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1323685884299" HGAP="590" VSHIFT="19" MAX_WIDTH="150">
-<hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Zweef met de cursor over mijn linker zijde tot het blauwe ovaal zichtbaar wordt. Sleep me aan dit blauwe ovaal, mijn handle.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node ID="ID_1188410566" CREATED="1323685758847" MODIFIED="1330028328487" HGAP="-184" VSHIFT="174"><richcontent TYPE="NODE">
+<node ID="ID_1188410566" CREATED="1323685758847" MODIFIED="1336115446146" HGAP="-210" VSHIFT="195"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1054,12 +1047,28 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
+<node TEXT="Vrije knoop" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1336115463462" HGAP="599" VSHIFT="29" MAX_WIDTH="150">
+<hook NAME="FreeNode"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Zweef met de cursor over mijn linker zijde tot het blauwe ovaal zichtbaar wordt. Sleep me aan dit blauwe ovaal, mijn handle.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
-<node TEXT="Pictogrammen" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1323809422970" STYLE="combined" HGAP="21" MIN_WIDTH="80">
+</node>
+<node TEXT="Pictogrammen" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1336124936608" STYLE="combined" MIN_WIDTH="80">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
-<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1330028412696" HGAP="-108" VSHIFT="146" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1336115475038" HGAP="-115" VSHIFT="162" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1074,10 +1083,10 @@
         Met de pictogrammenbalk naast het scherm. Als je deze balk niet ziet, kies dan <i>Beeld &gt; werkbalken &gt; Tonen pictogrammenbalk.</i><br/>
       </li>
       <li>
-        Door de pictogrammen te kiezen uit een tabel: kies Knoopkenmerken &gt; Pictogram &gt; Kiezen pictogram uit tabel.
+        Door de pictogrammen te kiezen uit een tabel: kies Bewerken &gt; Pictogram &gt; Kiezen pictogram uit tabel.
       </li>
       <li>
-        Via een gestructureerde opsomming van pictogrammen: kies<i>&#160;Knoopkenmerken &gt; Pictogram. </i>
+        Via een gestructureerde opsomming van pictogrammen: kies<i>&#160;Bewerken &gt; Pictogram. </i>
       </li>
     </ol>
     <p>
@@ -1109,9 +1118,9 @@
 <edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="Afbeeldingen" STYLE_REF="Advanced" FOLDED="true" ID="ID_1795262306" CREATED="1323469507087" MODIFIED="1323687172762" MIN_WIDTH="80">
+<node TEXT="Afbeeldingen" STYLE_REF="Advanced" FOLDED="true" ID="ID_1795262306" CREATED="1323469507087" MODIFIED="1336124936608" MIN_WIDTH="80">
 <node TEXT="Afbeelding (knoopkern)" STYLE_REF="Advanced" FOLDED="true" ID="ID_806240384" CREATED="1315581148847" MODIFIED="1323809760149" STYLE="combined" HGAP="22" VSHIFT="45">
-<node ID="ID_199889694" CREATED="1323435536299" MODIFIED="1323809600015" HGAP="-123" VSHIFT="80" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_199889694" CREATED="1323435536299" MODIFIED="1336115488906" HGAP="-136" VSHIFT="97" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1146,7 +1155,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_728788498" CREATED="1323469662830" MODIFIED="1323809612822" HGAP="-192" VSHIFT="111"><richcontent TYPE="NODE">
+<node ID="ID_728788498" CREATED="1323469662830" MODIFIED="1336115771721" HGAP="-219" VSHIFT="199"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1160,11 +1169,25 @@
       
     </p>
     <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        Als bij het plakken van een hyperlink de <i>Ctrl</i>&#160;toets wordt ingedrukt, wordt een plaatje toegevoegd in knoopdetails.
+      </li>
+    </ul>
+    <p>
+      
+    </p>
+    <p>
       <b>Zie ook</b>
     </p>
     <ul>
       <li>
         Onderstreepte hyperlinks. Hiermee kunnen in &#233;&#233;n tekst meerdere hyperlinks naar plaatjes worden gemaakt.
+      </li>
+      <li>
+        Als in het <i>Opmaakpaneel</i>&#160;de optie &quot;hyperlink&quot; is aangevinkt wordt de tekst naast het rode pijltje onderstreept en kan ook deze onderstreepte tekst worden gelikt om de hyperlink te openen.
       </li>
     </ul>
   </body>
@@ -1180,21 +1203,21 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor de handleiding (Help &gt; Handleiding)." ID="ID_990348986" CREATED="1323469818677" MODIFIED="1323809657376" HGAP="-137" VSHIFT="29">
+<node TEXT="Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor de handleiding (Help &gt; Handleiding)." ID="ID_990348986" CREATED="1323469818677" MODIFIED="1336115550060" HGAP="-155" VSHIFT="33">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
 </node>
-<node TEXT="Voortgang %" STYLE_REF="Professional" FOLDED="true" ID="ID_1644368711" CREATED="1314283858479" MODIFIED="1323809414764" HGAP="21" MIN_WIDTH="100">
+<node TEXT="Voortgang %" STYLE_REF="Professional" FOLDED="true" ID="ID_1644368711" CREATED="1314283858479" MODIFIED="1336124936608" MIN_WIDTH="100">
 <node TEXT="Als je in een knoop wilt laten zien dat er sprake is van voortgang, dan kun je gebruik maken van een kleine of grote voortgangsindicator." ID="ID_707469329" CREATED="1323436243939" MODIFIED="1323687803128" HGAP="29" VSHIFT="80" STYLE="fork"/>
 <node TEXT="Kleine voortgangsindicator (%Schijf pictogram)" STYLE_REF="Advanced" ID="ID_1826965169" CREATED="1314283872699" MODIFIED="1330028682827" HGAP="33" VSHIFT="10" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="25%"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1268781768" CREATED="1323470955796" MODIFIED="1330028632860" HGAP="-223" VSHIFT="38"><richcontent TYPE="NODE">
+<node ID="ID_1268781768" CREATED="1323470955796" MODIFIED="1336115823388" HGAP="-300" VSHIFT="40"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1218,7 +1241,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node ID="ID_522359814" CREATED="1323470998328" MODIFIED="1330028773260" HGAP="-250" VSHIFT="127"><richcontent TYPE="NODE">
+<node ID="ID_522359814" CREATED="1323470998328" MODIFIED="1336115834995" HGAP="-322" VSHIFT="137"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1251,11 +1274,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Samenvoegen knoopkernen" STYLE_REF="Professional" FOLDED="true" ID="ID_998103410" CREATED="1316668137651" MODIFIED="1323809403485" HGAP="19" MAX_WIDTH="600" MIN_WIDTH="100" STYLE="combined">
+<node TEXT="Samenvoegen knoopkernen" STYLE_REF="Professional" FOLDED="true" ID="ID_998103410" CREATED="1316668137651" MODIFIED="1336124936624" MAX_WIDTH="600" MIN_WIDTH="100" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_795220191" CREATED="1323468276180" MODIFIED="1330029123481" HGAP="-146" VSHIFT="80"><richcontent TYPE="NODE">
+<node ID="ID_795220191" CREATED="1323468276180" MODIFIED="1336115847053" HGAP="-165" VSHIFT="88"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1284,12 +1307,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Een knoopkern splitsen" STYLE_REF="Professional" FOLDED="true" ID="ID_247213553" CREATED="1316668117473" MODIFIED="1323809681260" HGAP="19" MAX_WIDTH="600" MIN_WIDTH="100" STYLE="combined">
+<node TEXT="Een knoopkern splitsen" STYLE_REF="Professional" FOLDED="true" ID="ID_247213553" CREATED="1316668117473" MODIFIED="1336124936624" MAX_WIDTH="600" MIN_WIDTH="100" STYLE="combined">
 <font ITALIC="false"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1332025009399" HGAP="-122" VSHIFT="129"><richcontent TYPE="NODE">
+<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1336115855602" HGAP="-133" VSHIFT="145"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1332,11 +1355,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Berekenen" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1323809389555" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" MIN_WIDTH="100" HGAP="19" VSHIFT="-1" STYLE="combined">
+<node TEXT="Berekenen" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1336124936624" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" MIN_WIDTH="100" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_60050529" CREATED="1323467815625" MODIFIED="1330029367390" HGAP="-85" VSHIFT="111" FORMAT="STANDARD_FORMAT"><richcontent TYPE="NODE">
+<node ID="ID_60050529" CREATED="1323467815625" MODIFIED="1336115867474" HGAP="-80" VSHIFT="124" FORMAT="STANDARD_FORMAT"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1375,12 +1398,12 @@
 </node>
 </node>
 </node>
-<node TEXT="Selecteren en verplaatsen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_272980743" CREATED="1314248580003" MODIFIED="1323691983233" NUMBERED="true" MIN_WIDTH="180">
-<node TEXT="Vrij scrollen van de hele mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1323767192200" HGAP="19" VSHIFT="22" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Selecteren en verplaatsen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_272980743" CREATED="1314248580003" MODIFIED="1335976646145" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Vrij scrollen van de hele mindmap" STYLE_REF="Beginner" FOLDED="true" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1336124972644" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1560196388" CREATED="1323511488363" MODIFIED="1329426523225" HGAP="-181" VSHIFT="45"><richcontent TYPE="NODE">
+<node ID="ID_1560196388" CREATED="1323511488363" MODIFIED="1336115888908" HGAP="-206" VSHIFT="51"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1406,12 +1429,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Selecteren" STYLE_REF="Beginner" FOLDED="true" ID="ID_1573267345" CREATED="1323507663956" MODIFIED="1330029504468" MIN_WIDTH="60">
-<node TEXT="Automatisch selekteren" STYLE_REF="Beginner" FOLDED="true" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1330029422520" VSHIFT="107" MAX_WIDTH="600" STYLE="combined">
+<node TEXT="Selecteren" STYLE_REF="Beginner" ID="ID_1573267345" CREATED="1323507663956" MODIFIED="1336124972644" MIN_WIDTH="60">
+<node TEXT="Automatisch selekteren" STYLE_REF="Beginner" FOLDED="true" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1336124972660" MAX_WIDTH="600" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1185537684" CREATED="1323506992696" MODIFIED="1323690544786" HGAP="-120" VSHIFT="35"><richcontent TYPE="NODE">
+<node ID="ID_1185537684" CREATED="1323506992696" MODIFIED="1336115900203" HGAP="-132" VSHIFT="40"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1429,12 +1452,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Selectie vasthouden" STYLE_REF="Beginner" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1330029491801" HGAP="22" VSHIFT="-1" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Selectie vasthouden" STYLE_REF="Beginner" FOLDED="true" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1336124972660" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
-<node ID="ID_299898759" CREATED="1323507254371" MODIFIED="1323809843968" HGAP="-105" VSHIFT="30"><richcontent TYPE="NODE">
+<node ID="ID_299898759" CREATED="1323507254371" MODIFIED="1336115909516" HGAP="-113" VSHIFT="32"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1453,9 +1476,9 @@
 <edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="Esc naar stamknoop" STYLE_REF="Beginner" FOLDED="true" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1323690715216" HGAP="24" VSHIFT="-105" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Esc naar stamknoop" STYLE_REF="Beginner" FOLDED="true" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1336124972644" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <edge STYLE="bezier"/>
-<node ID="ID_279008116" CREATED="1323507943923" MODIFIED="1323809848336" HGAP="-106" VSHIFT="25"><richcontent TYPE="NODE">
+<node ID="ID_279008116" CREATED="1323507943923" MODIFIED="1336115919126" HGAP="-115" VSHIFT="28"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1474,22 +1497,22 @@
 </node>
 </node>
 </node>
-<node TEXT="Verplaatsen" STYLE_REF="Beginner" FOLDED="true" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1323767095714" MAX_WIDTH="600" MIN_WIDTH="60">
-<node TEXT="Een knoop verschuiven" STYLE_REF="Beginner" FOLDED="true" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1323692025759" HGAP="16" VSHIFT="2" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Verplaatsen" STYLE_REF="Beginner" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1336124972644" MAX_WIDTH="600" MIN_WIDTH="60">
+<node TEXT="Een knoop verschuiven" STYLE_REF="Beginner" FOLDED="true" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1336124972660" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Je kunt een knoop verplaatsen maar de verbinding met andere knopen in takt laten. Hiervoor moet je de verplaatsingshandel van de te verplaatsen knoop zoeken. Deze bevindt zich aan de ouderzijde. Zweef met de cursor over de ouderzijde en wacht tot het ovaaltje verschijnt. Klik vervolgens op het ovaaltje en sleep de knoop naar de gewenste positie." ID="ID_1319283887" CREATED="1323510779368" MODIFIED="1323809856822" HGAP="-121" VSHIFT="45">
+<node TEXT="Je kunt een knoop verplaatsen maar de verbinding met andere knopen in takt laten. Hiervoor moet je de verplaatsingshandel van de te verplaatsen knoop zoeken. Deze bevindt zich aan de ouderzijde. Zweef met de cursor over de ouderzijde en wacht tot het ovaaltje verschijnt. Klik vervolgens op het ovaaltje en sleep de knoop naar de gewenste positie." ID="ID_1319283887" CREATED="1323510779368" MODIFIED="1336115927113" HGAP="-131" VSHIFT="50">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="Een knoop verplaatsen in de hierarchie" STYLE_REF="Beginner" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1323692043481" HGAP="17" VSHIFT="-2" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Een knoop verplaatsen in de hierarchie" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1336124972660" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Om een knoop los te maken van zijn ouder en aan een andere knoop vast te maken, klik en sleep de knoop naar zijn nieuwe ouder. Hieronder kun je lezen dat het verschil maakt op welk punt van de doelknoop je de gesleepte knoop laat vallen. Je kunt kindknopen ook verplaatsen door deze te sorteren." FOLDED="true" ID="ID_1599927930" CREATED="1323510888467" MODIFIED="1330029605041" HGAP="-211" VSHIFT="37">
+<node TEXT="Om een knoop los te maken van zijn ouder en aan een andere knoop vast te maken, klik en sleep de knoop naar zijn nieuwe ouder. Hieronder kun je lezen dat het verschil maakt op welk punt van de doelknoop je de gesleepte knoop laat vallen. Je kunt kindknopen ook verplaatsen door deze te sorteren." FOLDED="true" ID="ID_1599927930" CREATED="1323510888467" MODIFIED="1336115934070" HGAP="-235" VSHIFT="40">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -1500,11 +1523,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Valposities" STYLE_REF="Beginner" FOLDED="true" ID="ID_1039655261" CREATED="1314250309213" MODIFIED="1330029674261" HGAP="17" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Valposities" STYLE_REF="Beginner" FOLDED="true" ID="ID_1039655261" CREATED="1314250309213" MODIFIED="1336124972660" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_786303568" CREATED="1323511320373" MODIFIED="1330029683636" HGAP="-50" VSHIFT="78" MIN_WIDTH="80"><richcontent TYPE="NODE">
+<node ID="ID_786303568" CREATED="1323511320373" MODIFIED="1336115943368" HGAP="-56" VSHIFT="89" MIN_WIDTH="80"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1536,11 +1559,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Verplaatsen groepsknoop (accollade)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1323692128922" HGAP="18" VSHIFT="-1" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Verplaatsen groepsknoop (accollade)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1336124972660" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1239614830" CREATED="1323511365121" MODIFIED="1330029734056" HGAP="-204" VSHIFT="72"><richcontent TYPE="NODE">
+<node ID="ID_1239614830" CREATED="1323511365121" MODIFIED="1336115953633" HGAP="-220" VSHIFT="77"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1566,12 +1589,28 @@
 </hook>
 </node>
 </node>
+<node TEXT="Reset node position" STYLE_REF="Advanced" FOLDED="true" ID="ID_1352824494" CREATED="1335300691836" MODIFIED="1336124972660">
+<node STYLE_REF="TitlesContent" ID="ID_688846542" CREATED="1335300712264" MODIFIED="1336115962728" HGAP="-115" VSHIFT="34"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      After displacing nodes they can be set to their original positions. Select the nodes and choose <i>Edit &gt; Reset node position.</i>
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
-<node TEXT="Knopen sorteren" STYLE_REF="Advanced" FOLDED="true" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1323767189907" HGAP="18" VSHIFT="-18" MAX_WIDTH="600" STYLE="combined">
+</node>
+</node>
+<node TEXT="Knopen sorteren" STYLE_REF="Advanced" FOLDED="true" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1336124972644" MAX_WIDTH="600" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_915226922" CREATED="1323511424855" MODIFIED="1323691750107" HGAP="-85" VSHIFT="30"><richcontent TYPE="NODE">
+<node ID="ID_915226922" CREATED="1323511424855" MODIFIED="1336115972774" HGAP="-90" VSHIFT="32"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1590,8 +1629,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Relaties en groepen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_215646874" CREATED="1314109445053" MODIFIED="1323694436026" NUMBERED="true" MIN_WIDTH="180">
-<node TEXT="Tak" STYLE_REF="Beginner" FOLDED="true" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1323809937740" VSHIFT="201" STYLE="combined">
+<node TEXT="Relaties en groepen" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_215646874" CREATED="1314109445053" MODIFIED="1335976646160" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Tak" STYLE_REF="Beginner" FOLDED="true" ID="ID_1492225657" CREATED="1314162236991" MODIFIED="1336124993564" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -1601,12 +1640,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Verbindingslijn" STYLE_REF="Beginner" FOLDED="true" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1330030695449" STYLE="combined">
+<node TEXT="Verbindingslijn" STYLE_REF="Beginner" FOLDED="true" ID="ID_1073407528" CREATED="1314129123086" MODIFIED="1336124993564" STYLE="combined">
 <font BOLD="true"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1649729730" CREATED="1323514507513" MODIFIED="1330030430654" HGAP="-75" VSHIFT="135"><richcontent TYPE="NODE">
+<node ID="ID_1649729730" CREATED="1323514507513" MODIFIED="1336116034332" HGAP="-79" VSHIFT="151"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1642,22 +1681,22 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="a" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1323517469534" HGAP="25" STYLE="as_parent">
+<node TEXT="a" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1336116120168" HGAP="25" STYLE="as_parent">
 <edge STYLE="hide_edge"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="b" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1323517479815">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="8" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="b" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1336116107610">
 <edge STYLE="bezier"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="connector&#xa;without&#xa;begin" STARTINCLINATION="19;86;" ENDINCLINATION="19;86;" STARTARROW="NONE" ENDARROW="NONE"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="8" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="verbindingslijn &#xa;zonder&#xa;begin" STARTINCLINATION="19;86;" ENDINCLINATION="19;86;" STARTARROW="NONE" ENDARROW="NONE"/>
 <node TEXT="c" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1314130945036"/>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="Knoopgroep met accollade" STYLE_REF="Advanced" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1323694206003" STYLE="combined">
+<node TEXT="Knoopgroep met accollade" STYLE_REF="Advanced" FOLDED="true" ID="ID_1700918771" CREATED="1314129783832" MODIFIED="1336124993564" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_651594550" CREATED="1323514659262" MODIFIED="1323809976365" HGAP="-139" VSHIFT="87"><richcontent TYPE="NODE">
+<node ID="ID_651594550" CREATED="1323514659262" MODIFIED="1336116145612" HGAP="-156" VSHIFT="96"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1697,11 +1736,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Knoopgroep met wolk" STYLE_REF="Advanced" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1323694233834" VSHIFT="-195" STYLE="combined">
+<node TEXT="Knoopgroep met wolk" STYLE_REF="Advanced" FOLDED="true" ID="ID_1150908697" CREATED="1314130460475" MODIFIED="1336124993564" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1862713604" CREATED="1323514733122" MODIFIED="1330030740829" HGAP="-115" VSHIFT="68"><richcontent TYPE="NODE">
+<node ID="ID_1862713604" CREATED="1323514733122" MODIFIED="1336116158139" HGAP="-123" VSHIFT="80"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1773,8 +1812,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Kopelingen (Hyperlinks)" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1323696055168" NUMBERED="true" MIN_WIDTH="180">
-<node ID="ID_55001637" CREATED="1323100759475" MODIFIED="1323696035153" VSHIFT="40"><richcontent TYPE="NODE">
+<node TEXT="Kopelingen (Hyperlinks)" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_114835202" CREATED="1314284617264" MODIFIED="1335976646160" NUMBERED="true" MIN_WIDTH="180">
+<node ID="ID_55001637" CREATED="1323100759475" MODIFIED="1333273307216" VSHIFT="40"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1782,18 +1821,18 @@
   </head>
   <body>
     <p>
-      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als onderstreepte tekst, een <b>rood pijltje</b>&#160;(externe&#160;hyperlink) of <b>groen pijltje</b>&#160;(interne snelkoppeling), of <b>e-mail pictogram</b>. Een knoop kan meerdere onderstreepte hyperlinks hebben en &#233;&#233;n pijl- of e-mail-hyperlink. Daarnaast kunnen knoopattributen meerdere hyperlinks (&#233;&#233;n per attribuut) bevatten. Het is ook mogelijk vanuit een andere mindmap of programma naar een bepaalde knoop te linken.
+      Een dynamische koppeling is een electronische verbinding van een bronknoop naar een bestemming. De bestemming kan een map, bestand, webpagina, applicatie, e-mail, enz. zijn. De koppeling is in de bronknoop zichtbaar als onderstreepte tekst, een <b>rood pijltje</b>&#160;(externe&#160;hyperlink) of <b>groen pijltje</b>&#160;(interne snelkoppeling), of <b>e-mail pictogram</b>. Een knoop kan meerdere onderstreepte hyperlinks hebben en &#233;&#233;n pijl- of e-mail-hyperlink. Daarnaast kunnen knoopattributen meerdere hyperlinks (&#233;&#233;n per attribuut) bevatten. Het is ook mogelijk vanuit een andere mindmap of programma naar een bepaalde knoop te linken. Om de onderstreepte hyperlink te activeren, moet je hierop dubbelklikken.
     </p>
   </body>
 </html>
 </richcontent>
 </node>
-<node TEXT="Externe koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1323696207713" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
+<node TEXT="Externe koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1336125011738" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1913035829" CREATED="1323512829161" MODIFIED="1330034687029" HGAP="-91" VSHIFT="178"><richcontent TYPE="NODE">
+<node ID="ID_1913035829" CREATED="1323512829161" MODIFIED="1336116193161" HGAP="-101" VSHIFT="249"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1835,6 +1874,14 @@
         verwijder de tekst (het adres) in het tekstveld
       </li>
     </ul>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        In het Opmaakpaneel kan worden ingesteld dat de hele tekst van de knoopkern er uit ziet als een onderstreepte hyperlink. Dit werkt alleen als er geen (echte) onderstreepte hyperlink is gedefinieeerd.
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
@@ -1843,11 +1890,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Interne koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1323696231659" LINK="#ID_86446891" STYLE="combined">
+<node TEXT="Interne koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_1942100751" CREATED="1314360169447" MODIFIED="1336125011738" LINK="#ID_86446891" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1830541497" CREATED="1323512880196" MODIFIED="1323810037299" HGAP="-106" VSHIFT="88"><richcontent TYPE="NODE">
+<node ID="ID_1830541497" CREATED="1323512880196" MODIFIED="1336116210805" HGAP="-106" VSHIFT="97"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1879,11 +1926,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Email koppeling" STYLE_REF="Professional" FOLDED="true" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1323696417440" LINK="mailto:%20jokro@freeplane.nl">
+<node TEXT="Email koppeling" STYLE_REF="Professional" FOLDED="true" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1336125011738" LINK="mailto:%20jokro@freeplane.nl">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1480409284" CREATED="1323512986970" MODIFIED="1323810043711" HGAP="-95" VSHIFT="147"><richcontent TYPE="NODE">
+<node ID="ID_1480409284" CREATED="1323512986970" MODIFIED="1336116221803" HGAP="-95" VSHIFT="162"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1935,7 +1982,7 @@
 </hook>
 </node>
 </node>
-<node STYLE_REF="Professional" FOLDED="true" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1329980089554"><richcontent TYPE="NODE">
+<node STYLE_REF="Professional" FOLDED="true" ID="ID_241324782" CREATED="1315336877701" MODIFIED="1336125011754"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1951,7 +1998,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1356533861" CREATED="1323512914336" MODIFIED="1330034536332" HGAP="-138" VSHIFT="233"><richcontent TYPE="NODE">
+<node ID="ID_1356533861" CREATED="1323512914336" MODIFIED="1336116233799" HGAP="-149" VSHIFT="259"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1995,11 +2042,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Hyperlink naar menu" STYLE_REF="Professional" FOLDED="true" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1323697235817" STYLE="combined">
+<node TEXT="Hyperlink naar menu" STYLE_REF="Professional" FOLDED="true" ID="ID_350080162" CREATED="1314359739019" MODIFIED="1336125011754" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1108178356" CREATED="1323513038412" MODIFIED="1323810066268" HGAP="-107" VSHIFT="79"><richcontent TYPE="NODE">
+<node ID="ID_1108178356" CREATED="1323513038412" MODIFIED="1336116245078" HGAP="-115" VSHIFT="87"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2031,11 +2078,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="F-toetsen en andere sneltoesen" STYLE_REF="Professional" FOLDED="true" ID="ID_1819697018" CREATED="1314526511158" MODIFIED="1323697357576" STYLE="combined">
+<node TEXT="F-toetsen en andere sneltoesen" STYLE_REF="Professional" FOLDED="true" ID="ID_1819697018" CREATED="1314526511158" MODIFIED="1336125011754" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_116460964" CREATED="1323513079714" MODIFIED="1323810074801" HGAP="-171" VSHIFT="93"><richcontent TYPE="NODE">
+<node ID="ID_116460964" CREATED="1323513079714" MODIFIED="1336116255686" HGAP="-180" VSHIFT="112"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2065,11 +2112,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Koppeling van buiten naar een bepaalde knoop" STYLE_REF="Professional" FOLDED="true" ID="ID_1418102707" CREATED="1322224946352" MODIFIED="1323810143349" STYLE="combined" HGAP="18" VSHIFT="-57">
+<node TEXT="Koppeling van buiten naar een bepaalde knoop" STYLE_REF="Professional" FOLDED="true" ID="ID_1418102707" CREATED="1322224946352" MODIFIED="1336125011754" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_822375535" CREATED="1323513104618" MODIFIED="1330032229603" HGAP="-250" VSHIFT="203"><richcontent TYPE="NODE">
+<node ID="ID_822375535" CREATED="1323513104618" MODIFIED="1336116264796" HGAP="-285" VSHIFT="228"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2113,17 +2160,17 @@
 </node>
 </node>
 </node>
-<node TEXT="Opmaken en stijlen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1330206827997" NUMBERED="true" MIN_WIDTH="180" VGAP="0" TEXT_SHORTENED="true">
+<node TEXT="Opmaken en stijlen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1778719162" CREATED="1291143603918" MODIFIED="1335976646160" NUMBERED="true" MIN_WIDTH="180" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<node TEXT="Eigenschappen" STYLE_REF="Advanced" FOLDED="true" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1330085580730" NUMBERED="true" HGAP="25" VSHIFT="66" MIN_WIDTH="110">
-<node TEXT="Opmaakpaneel" STYLE_REF="Advanced" FOLDED="true" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1323698385867" HGAP="25" VSHIFT="454" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Eigenschappen" STYLE_REF="Advanced" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1336125047759" NUMBERED="true" MIN_WIDTH="110">
+<node TEXT="Opmaakpaneel" STYLE_REF="Advanced" FOLDED="true" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1336125047759" MAX_WIDTH="550" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="info"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_503272481" CREATED="1323517943396" MODIFIED="1323810168574" HGAP="-77" VSHIFT="87"><richcontent TYPE="NODE">
+<node ID="ID_503272481" CREATED="1323517943396" MODIFIED="1336116298726" HGAP="-88" VSHIFT="96"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2155,11 +2202,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Bewerken opmaak" STYLE_REF="Advanced" FOLDED="true" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1323697988550" HGAP="30" VSHIFT="1" MAX_WIDTH="500" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Bewerken opmaak" STYLE_REF="Advanced" FOLDED="true" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1336125047759" MAX_WIDTH="500" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_676577574" CREATED="1323518049125" MODIFIED="1323698072572" HGAP="-95" VSHIFT="109"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_676577574" CREATED="1323518049125" MODIFIED="1336116308461" HGAP="-102" VSHIFT="131"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2201,11 +2248,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Automatische takkleur" STYLE_REF="Advanced" FOLDED="true" ID="ID_1005719714" CREATED="1314164029738" MODIFIED="1323698008455" HGAP="30" VSHIFT="-2" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Automatische takkleur" STYLE_REF="Advanced" FOLDED="true" ID="ID_1005719714" CREATED="1314164029738" MODIFIED="1336125047759" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1565463565" CREATED="1323518106869" MODIFIED="1323810180898" HGAP="-119" VSHIFT="37"><richcontent TYPE="NODE">
+<node ID="ID_1565463565" CREATED="1323518106869" MODIFIED="1336116317275" HGAP="-129" VSHIFT="40"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2223,11 +2270,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Automatisch knoopnummer" STYLE_REF="Advanced" FOLDED="true" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1323698092009" HGAP="30" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Automatisch knoopnummer" STYLE_REF="Advanced" FOLDED="true" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1336125047759" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1531819965" CREATED="1323518137156" MODIFIED="1323810191366" HGAP="-147" VSHIFT="30"><richcontent TYPE="NODE">
+<node ID="ID_1531819965" CREATED="1323518137156" MODIFIED="1336116333265" HGAP="-163" VSHIFT="32"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2245,18 +2292,18 @@
 </hook>
 </node>
 </node>
-<node TEXT="Andere eigenschappen" STYLE_REF="Advanced" FOLDED="true" ID="ID_457725429" CREATED="1314167397870" MODIFIED="1323698164175" HGAP="30" VSHIFT="3" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Andere eigenschappen" STYLE_REF="Advanced" FOLDED="true" ID="ID_457725429" CREATED="1314167397870" MODIFIED="1336125047759" MAX_WIDTH="550" STYLE="combined">
 <font ITALIC="false"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Loop door de opties van het opmaakpaneel heen om een indruk te krijgen wat er allemaal kan worden ingesteld. De eigenschappen voor (conditionele) stijlen worden hieronder besproken. Alle eigenschappen zijn meer gedetailleerd beschreven in de Handleiding Freeplane." STYLE_REF="TitlesContent" ID="ID_1014522598" CREATED="1323518167241" MODIFIED="1323810196919" HGAP="-119" VSHIFT="37"/>
+<node TEXT="Loop door de opties van het opmaakpaneel heen om een indruk te krijgen wat er allemaal kan worden ingesteld. De eigenschappen voor (conditionele) stijlen worden hieronder besproken. Alle eigenschappen zijn meer gedetailleerd beschreven in de Handleiding Freeplane." STYLE_REF="TitlesContent" ID="ID_1014522598" CREATED="1323518167241" MODIFIED="1336116344809" HGAP="-133" VSHIFT="42"/>
 </node>
-<node TEXT="Menu Opmaken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1128382958" CREATED="1314167687616" MODIFIED="1323698221162" HGAP="30" VSHIFT="3" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Menu Opmaken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1128382958" CREATED="1314167687616" MODIFIED="1336125047774" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1716769321" CREATED="1323518205453" MODIFIED="1323810207746" HGAP="-76" VSHIFT="37"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1716769321" CREATED="1323518205453" MODIFIED="1336116354855" HGAP="-86" VSHIFT="41"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2319,11 +2366,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Werkmenu (Tool bar)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1323768601123" HGAP="30" VSHIFT="-461" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Werkmenu (Tool bar)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1336125047774" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_158808063" CREATED="1323518244867" MODIFIED="1323810214719" HGAP="-108" VSHIFT="87"><richcontent TYPE="NODE">
+<node ID="ID_158808063" CREATED="1323518244867" MODIFIED="1336116366696" HGAP="-117" VSHIFT="97"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2356,13 +2403,13 @@
 </node>
 </node>
 </node>
-<node TEXT="Sijlen" STYLE_REF="Advanced" FOLDED="true" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1330085584131" NUMBERED="true" MIN_WIDTH="110" HGAP="25" VSHIFT="4">
-<node TEXT="Waarom stijlen ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323768599017" HGAP="30" VSHIFT="110">
+<node TEXT="Sijlen" STYLE_REF="Advanced" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1336125047759" NUMBERED="true" MIN_WIDTH="110">
+<node TEXT="Waarom stijlen ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1336125047774">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
 </hook>
-<node ID="ID_795139567" CREATED="1323768015986" MODIFIED="1330082033977" HGAP="-82" VSHIFT="38"><richcontent TYPE="NODE">
+<node ID="ID_795139567" CREATED="1323768015986" MODIFIED="1336116387412" HGAP="-90" VSHIFT="52"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2380,11 +2427,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Een stijl vinden en toepassen" STYLE_REF="Advanced" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1323698515924" HGAP="30" VSHIFT="2" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Een stijl vinden en toepassen" STYLE_REF="Advanced" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1336125047774" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_602520818" CREATED="1323521250360" MODIFIED="1330082303443" HGAP="-155" VSHIFT="105"><richcontent TYPE="NODE">
+<node ID="ID_602520818" CREATED="1323521250360" MODIFIED="1336116402451" HGAP="-170" VSHIFT="122"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2422,11 +2469,27 @@
 </hook>
 </node>
 </node>
-<node TEXT="Een stijl bewerken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1323698589759" HGAP="30" VSHIFT="3" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Removing an applied style" STYLE_REF="Advanced" FOLDED="true" ID="ID_1937448981" CREATED="1335278263350" MODIFIED="1336125047774">
+<node STYLE_REF="TitlesContent" ID="ID_1278689402" CREATED="1335278278365" MODIFIED="1335278541211" HGAP="-157" VSHIFT="43"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Normally you select another style, e.g. style Default. When using e.g. Automatic Level Styles, you may have added a style to overrule the automatic style. In that case, use <i>Format &gt; Apply style &gt; Reset node style </i>to remove a manually set style.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Een stijl bewerken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1336125047774" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_443461395" CREATED="1323521242303" MODIFIED="1323810254920" HGAP="-95" VSHIFT="104"><richcontent TYPE="NODE">
+<node ID="ID_443461395" CREATED="1323521242303" MODIFIED="1336116417084" HGAP="-105" VSHIFT="111"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2470,12 +2533,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Meerdere stijlen toepassen op dezelfde knoop" STYLE_REF="Advanced" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1323698705044" HGAP="31" VSHIFT="1" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Meerdere stijlen toepassen op dezelfde knoop" STYLE_REF="Advanced" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1336125047774" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Introduction" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<node ID="ID_1030002880" CREATED="1323521314827" MODIFIED="1330083073786" HGAP="-267" VSHIFT="161"><richcontent TYPE="NODE">
+<node ID="ID_1030002880" CREATED="1323521314827" MODIFIED="1336116429579" HGAP="-277" VSHIFT="188"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2525,11 +2588,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Conditionele stijlen" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1330084921633" HGAP="32" VSHIFT="-2" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Conditionele stijlen" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1336125047774" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1437965047" CREATED="1323521350949" MODIFIED="1330259148025" HGAP="-100" VSHIFT="218"><richcontent TYPE="NODE">
+<node ID="ID_1437965047" CREATED="1323521350949" MODIFIED="1336116440437" HGAP="-107" VSHIFT="249"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2593,11 +2656,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Knoopniveaustijlen" STYLE_REF="Professional" FOLDED="true" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1323810435803" HGAP="34" VSHIFT="-1" MAX_WIDTH="550">
+<node TEXT="Knoopniveaustijlen" STYLE_REF="Professional" FOLDED="true" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1336125047774" MAX_WIDTH="550">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1331059859430" HGAP="-97" VSHIFT="136"><richcontent TYPE="NODE">
+<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1336116455990" HGAP="-106" VSHIFT="162"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2635,11 +2698,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Map style" STYLE_REF="Professional" FOLDED="true" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1323810431123" HGAP="34" VSHIFT="-129" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Map style" STYLE_REF="Professional" FOLDED="true" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1336125047774" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1896765128" CREATED="1323521437116" MODIFIED="1323699258564" HGAP="-45" VSHIFT="85"><richcontent TYPE="NODE">
+<node ID="ID_1896765128" CREATED="1323521437116" MODIFIED="1336116466193" HGAP="-46" VSHIFT="93"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2664,8 +2727,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Sjablonen" STYLE_REF="Advanced" FOLDED="true" ID="ID_183210534" CREATED="1323612770999" MODIFIED="1330085596112" HGAP="25" VSHIFT="4" NUMBERED="true" MIN_WIDTH="110">
-<node ID="ID_1268042238" CREATED="1323521409870" MODIFIED="1323810293374" HGAP="47" VSHIFT="-11" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Sjablonen" STYLE_REF="Advanced" FOLDED="true" ID="ID_183210534" CREATED="1323612770999" MODIFIED="1336125047759" NUMBERED="true" MIN_WIDTH="110">
+<node ID="ID_1268042238" CREATED="1323521409870" MODIFIED="1336116485053" HGAP="48" VSHIFT="-18" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2678,7 +2741,7 @@
   </body>
 </html>
 </richcontent>
-<node ID="ID_357953420" CREATED="1323613544023" MODIFIED="1323810320721" HGAP="-598" VSHIFT="123"><richcontent TYPE="NODE">
+<node ID="ID_357953420" CREATED="1323613544023" MODIFIED="1336116505427" HGAP="-599" VSHIFT="143"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2717,7 +2780,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="My Example" STYLE_REF="MyTemplate" ID="ID_679492060" CREATED="1323614118804" MODIFIED="1323615655812">
+<node TEXT="My Example" STYLE_REF="MyTemplate" ID="ID_679492060" CREATED="1323614118804" MODIFIED="1336116516159" HGAP="63" VSHIFT="1">
 <attribute NAME="birth date" VALUE=""/>
 <attribute NAME="e-mail" VALUE=""/>
 <attribute NAME="birth date" VALUE=""/>
@@ -2747,15 +2810,15 @@
 </node>
 </node>
 </node>
-<node TEXT="Overig" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1330085621947" HGAP="25" VSHIFT="-66" NUMBERED="true" MIN_WIDTH="110">
+<node TEXT="Overig" STYLE_REF="Advanced" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1336125047759" NUMBERED="true" MIN_WIDTH="110">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
-<node TEXT="Plakken van tekst zonder opmaak" STYLE_REF="Advanced" FOLDED="true" ID="ID_1745656146" CREATED="1323251632079" MODIFIED="1323768653025" HGAP="30" VSHIFT="134" STYLE="combined">
+<node TEXT="Plakken van tekst zonder opmaak" STYLE_REF="Advanced" FOLDED="true" ID="ID_1745656146" CREATED="1323251632079" MODIFIED="1336125047774" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_885396924" CREATED="1323522491275" MODIFIED="1330085463916" HGAP="-183" VSHIFT="29"><richcontent TYPE="NODE">
+<node ID="ID_885396924" CREATED="1323522491275" MODIFIED="1336116546658" HGAP="-201" VSHIFT="31"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2773,11 +2836,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Vaste knoopbreedte" STYLE_REF="Advanced" FOLDED="true" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1323810457658" HGAP="32" VSHIFT="1" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Vaste knoopbreedte" STYLE_REF="Advanced" FOLDED="true" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1336125047774" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_15604512" CREATED="1323522575632" MODIFIED="1323810343716" HGAP="-107" VSHIFT="80" MAX_WIDTH="300" MIN_WIDTH="300"><richcontent TYPE="NODE">
+<node ID="ID_15604512" CREATED="1323522575632" MODIFIED="1336116558654" HGAP="-114" VSHIFT="94" MAX_WIDTH="300" MIN_WIDTH="300"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2809,11 +2872,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Opmaak van knoopkern kopieren en plakken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1195279427" CREATED="1316670043816" MODIFIED="1323768640982" HGAP="32" STYLE="combined">
+<node TEXT="Opmaak van knoopkern kopieren en plakken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1195279427" CREATED="1316670043816" MODIFIED="1336125047774" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_670948093" CREATED="1323522647369" MODIFIED="1330085505116" HGAP="-243" VSHIFT="38"><richcontent TYPE="NODE">
+<node ID="ID_670948093" CREATED="1323522647369" MODIFIED="1336116908501" HGAP="-271" VSHIFT="42"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2831,11 +2894,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Opties voor plakken" STYLE_REF="Advanced" FOLDED="true" ID="ID_506336466" CREATED="1322990524257" MODIFIED="1323700568703" HGAP="32" VSHIFT="-137" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Opties voor plakken" STYLE_REF="Advanced" FOLDED="true" ID="ID_506336466" CREATED="1322990524257" MODIFIED="1336125047790" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1072558009" CREATED="1323522694317" MODIFIED="1330085564101" HGAP="-104" VSHIFT="72"><richcontent TYPE="NODE">
+<node ID="ID_1072558009" CREATED="1323522694317" MODIFIED="1336116920435" HGAP="-111" VSHIFT="77"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2869,12 +2932,42 @@
 </node>
 </node>
 </node>
-<node TEXT="Publiceren en delen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1323704802892" NUMBERED="true" MIN_WIDTH="180" VSHIFT="-90">
-<node TEXT="Afdrukken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1323700953774" VSHIFT="265" STYLE="combined">
+<node LOCALIZED_STYLE_REF="default" POSITION="right" ID="ID_871432906" CREATED="1335301290823" MODIFIED="1335976772971" HGAP="38" VSHIFT="116">
+<icon BUILTIN="idea"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="freeplane.mm#ID_1040911735">FAQ</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Frequently Asked Questions
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="FreeNode"/>
+</node>
+<node TEXT="Publiceren en delen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1335976656503" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Afdrukken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1336125067212" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1759870173" CREATED="1323523347602" MODIFIED="1323700688979" HGAP="-50" VSHIFT="35"><richcontent TYPE="NODE">
+<node ID="ID_1759870173" CREATED="1323523347602" MODIFIED="1336116943726" HGAP="-54" VSHIFT="40"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2892,11 +2985,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Delen van mindmaps" STYLE_REF="Advanced" FOLDED="true" ID="ID_566359973" CREATED="1314352830240" MODIFIED="1323700787696" STYLE="combined">
+<node TEXT="Delen van mindmaps" STYLE_REF="Advanced" FOLDED="true" ID="ID_566359973" CREATED="1314352830240" MODIFIED="1336125067212" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1964465318" CREATED="1323523371275" MODIFIED="1323810508218" HGAP="-108" VSHIFT="54"><richcontent TYPE="NODE">
+<node ID="ID_1964465318" CREATED="1323523371275" MODIFIED="1336116954006" HGAP="-118" VSHIFT="68"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2917,11 +3010,38 @@
 </hook>
 </node>
 </node>
-<node TEXT="Publiceren op Internet (Java Applet)" STYLE_REF="Professional" FOLDED="true" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1323897593663" STYLE="combined">
+<node TEXT="Presenteren" STYLE_REF="Advanced" FOLDED="true" ID="ID_1747402695" CREATED="1335276169448" MODIFIED="1336125067212">
+<node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1336118094192" HGAP="-65" VSHIFT="80"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Als je een presentatie wilt geven met een mindmap, kunnen de knopen die niet de aandacht hebben grijs worden gemaakt. Selecteer hiervoor <i>Beeld &gt; Beeldinstellingen &gt; Presentatiemode</i>. De knopen kunnen &#233;&#233;n voor &#233;&#233;n worden getoond door <i>Navigeren &gt; Volgend</i>&#160;kind te kiezen.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        De functie <i>Navigeren &gt; Volgend kind </i>kan&#160;&#160;aan een sneltoets worden toegewezen.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Publiceren op Internet (Java Applet)" STYLE_REF="Professional" FOLDED="true" ID="ID_1417348323" CREATED="1314352836706" MODIFIED="1336125067212" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1323897761956" HGAP="-191" VSHIFT="136"><richcontent TYPE="NODE">
+<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1336073596649" HGAP="-215" VSHIFT="169"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2938,6 +3058,9 @@
       <b>Opmerking</b>
     </p>
     <ul>
+      <li>
+        Afbeeldingen in .svg formaat worden niet getoond.
+      </li>
       <li>
         Je kunt deze zelfde werkwijze gebruiken om de mindmap uit te wisselen met een gebruiker die geen Freeplane heeft.
       </li>
@@ -2956,12 +3079,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Publiceren op Internet (met Freeplane)" FOLDED="true" ID="ID_1269157254" CREATED="1323895951531" MODIFIED="1323897812030" STYLE="combined">
+<node TEXT="Publiceren op Internet (met Freeplane)" FOLDED="true" ID="ID_1269157254" CREATED="1323895951531" MODIFIED="1336125067212" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Professional" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_685749368" CREATED="1323895981367" MODIFIED="1330085792177" HGAP="-210" VSHIFT="79"><richcontent TYPE="NODE">
+<node ID="ID_685749368" CREATED="1323895981367" MODIFIED="1336073518024" HGAP="-234" VSHIFT="114"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2981,6 +3104,9 @@
       <li>
         In windows, rechtsklik op de link van de mindmap en kies hyperlink kopieren. Plak dit adres vervolgens in het URL-adres.
       </li>
+      <li>
+        Via <i>Help &gt; Documentatiemindmaps online</i>&#160;kunnen mindmaps op<i>&#160; http://freeplane.sourceforge.net/mapsOnline</i>&#160;worden geopend. Ook .svg plaatjes worden dan getoond..
+      </li>
     </ul>
   </body>
 </html>
@@ -2990,18 +3116,18 @@
 </hook>
 </node>
 </node>
-<node TEXT="Uitwisselen met tekstverwerker" STYLE_REF="Professional" FOLDED="true" ID="ID_118482" CREATED="1314353836801" MODIFIED="1323897780250" HGAP="19" VSHIFT="-255" STYLE="combined">
+<node TEXT="Uitwisselen met tekstverwerker" STYLE_REF="Professional" FOLDED="true" ID="ID_118482" CREATED="1314353836801" MODIFIED="1336125067212" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Zie Help &gt; Handleiding  Freeplane: je kunt opmaakcode behouden." ID="ID_1023242392" CREATED="1323523390908" MODIFIED="1323810525986" HGAP="-175" VSHIFT="21">
+<node TEXT="Zie Help &gt; Handleiding  Freeplane: je kunt opmaakcode behouden." ID="ID_1023242392" CREATED="1323523390908" MODIFIED="1336118122147" HGAP="-182" VSHIFT="23">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1330891487607" HGAP="6" VSHIFT="149" LINK="freeplaneApplications.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1336126292751" HGAP="14" VSHIFT="158" LINK="freeplaneApplications_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3079,7 +3205,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1704074218" CREATED="1323527323490" MODIFIED="1330086233230" HGAP="-239" VSHIFT="130"><richcontent TYPE="NODE">
+<node ID="ID_1704074218" CREATED="1323527323490" MODIFIED="1336118157141" HGAP="-256" VSHIFT="144"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3162,7 +3288,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1332873600556" HGAP="-104" VSHIFT="153"><richcontent TYPE="NODE">
+<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1336118180151" HGAP="-106" VSHIFT="169"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3194,7 +3320,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3205,7 +3330,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1332873725809" HGAP="-109" VSHIFT="97" MAX_WIDTH="550"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1336118194598" HGAP="-110" VSHIFT="115" MAX_WIDTH="550"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3231,7 +3356,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3239,7 +3363,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor wiki pagina over scrips of Help &gt; Handleiding." ID="ID_796258305" CREATED="1323528211774" MODIFIED="1323810620211" HGAP="-77" VSHIFT="31" STYLE="combined">
+<node TEXT="Ervaren gebruikers kunnen ook met zogenaamde HTML-code plaatjes invoegen. Er is zelfs een script om dit te doen. Raadpleeg hiervoor wiki pagina over scrips of Help &gt; Handleiding." ID="ID_796258305" CREATED="1323528211774" MODIFIED="1336118210915" HGAP="-112" VSHIFT="32" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -3247,7 +3371,7 @@
 </node>
 </node>
 <node TEXT="Attributen (knoopuitbreiding)" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1323706758395" MIN_WIDTH="1">
-<node TEXT="Wat zijn attributen ?" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1323707290781" HGAP="-170" VSHIFT="80" MAX_WIDTH="550">
+<node TEXT="Wat zijn attributen ?" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1336118227857" HGAP="-170" VSHIFT="83" MAX_WIDTH="550">
 <attribute_layout NAME_WIDTH="34" VALUE_WIDTH="92"/>
 <attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
@@ -3264,7 +3388,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Attributen toevoegen" STYLE_REF="Professional" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1323707243384" HGAP="-550" VSHIFT="196" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
+<node TEXT="Attributen toevoegen" STYLE_REF="Professional" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1336118236359" HGAP="-550" VSHIFT="204" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3300,7 +3424,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Attribuutwaarden" STYLE_REF="Professional" ID="ID_1108500341" CREATED="1314211635490" MODIFIED="1330086601553" HGAP="-550" VSHIFT="181" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
+<node TEXT="Attribuutwaarden" STYLE_REF="Professional" ID="ID_1108500341" CREATED="1314211635490" MODIFIED="1336118247451" HGAP="-552" VSHIFT="207" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3320,7 +3444,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Professioneel bewerken van attrtibuten" STYLE_REF="Professional" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1330086857442" HGAP="-551" VSHIFT="106" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
+<node TEXT="Professioneel bewerken van attrtibuten" STYLE_REF="Professional" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1336118255157" HGAP="-553" VSHIFT="131" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -3333,7 +3457,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Hyperlink (pijl) in attribuutwaarde" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1330087027418" HGAP="-550" VSHIFT="71" MAX_WIDTH="550">
+<node TEXT="Hyperlink (pijl) in attribuutwaarde" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1336118261522" HGAP="-550" VSHIFT="80" MAX_WIDTH="550">
 <attribute_layout NAME_WIDTH="48" VALUE_WIDTH="101"/>
 <richcontent TYPE="DETAILS">
 
@@ -3358,7 +3482,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1460441144" CREATED="1323527775837" MODIFIED="1330087078556"><richcontent TYPE="NODE">
+<node ID="ID_1460441144" CREATED="1323527775837" MODIFIED="1336118280819" HGAP="-226" VSHIFT="60"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3440,13 +3564,13 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Managen tijd" STYLE_REF="Professional" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1323810805788" VSHIFT="10" MAX_WIDTH="450" STYLE="combined">
+<node TEXT="Managen tijd" STYLE_REF="Professional" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1323810805788" VSHIFT="10" MAX_WIDTH="450" STYLE="combined">
 <icon BUILTIN="../TimeManagementAction"/>
 <hook NAME="FirstGroupNode"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Dit submenu opent een venster waarmee een herinneringsmoment aan de geselecteerde knoop wordt gekoppeld. De knoop en al zijn voorouders tonen een klok-pictogram. Als de ingestede tijd is verstreken knipperen de klokjes en knippert een uitroepteken in de stamknoop." ID="ID_1158360877" CREATED="1323528703218" MODIFIED="1330162617364" HGAP="-99" VSHIFT="54" MAX_WIDTH="400" MIN_WIDTH="400">
+<node TEXT="Dit submenu opent een venster waarmee een herinneringsmoment aan de geselecteerde knoop wordt gekoppeld. De knoop en al zijn voorouders tonen een klok-pictogram. Als de ingestede tijd is verstreken knipperen de klokjes en knippert een uitroepteken in de stamknoop." ID="ID_1158360877" CREATED="1323528703218" MODIFIED="1336118302878" HGAP="-108" VSHIFT="60" MAX_WIDTH="400" MIN_WIDTH="400">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3478,13 +3602,13 @@
 </node>
 </node>
 </node>
-<node TEXT="Managen taken" STYLE_REF="Professional" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1323810826817" MAX_WIDTH="450" MIN_WIDTH="1" STYLE="combined">
+<node TEXT="Managen taken" STYLE_REF="Professional" FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1323810826817" MAX_WIDTH="450" MIN_WIDTH="1" STYLE="combined">
 <icon BUILTIN="../TimeListAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node ID="ID_1400536343" CREATED="1323528892096" MODIFIED="1330162598347" MAX_WIDTH="400" HGAP="-112" VSHIFT="97"><richcontent TYPE="NODE">
+<node ID="ID_1400536343" CREATED="1323528892096" MODIFIED="1336118311972" MAX_WIDTH="400" HGAP="-116" VSHIFT="117"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3592,7 +3716,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Filteren zorgt er voor dat je alleen die knopen ziet die je wilt zien. De filterregel bepaalt welke knopen je wel en niet ziet. Dezelfde filterregel kan worden gebruikt om selectief knopen te zoeken." ID="ID_1511890775" CREATED="1323770291298" MODIFIED="1323770322483" HGAP="-105" VSHIFT="30">
+<node TEXT="Filteren zorgt er voor dat je alleen die knopen ziet die je wilt zien. De filterregel bepaalt welke knopen je wel en niet ziet. Dezelfde filterregel kan worden gebruikt om selectief knopen te zoeken." ID="ID_1511890775" CREATED="1323770291298" MODIFIED="1336118344873" HGAP="-116" VSHIFT="33">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -3602,7 +3726,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1492352902" CREATED="1323770358262" MODIFIED="1332437002071" HGAP="-95" VSHIFT="135"><richcontent TYPE="NODE">
+<node ID="ID_1492352902" CREATED="1323770358262" MODIFIED="1336118353796" HGAP="-101" VSHIFT="150"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4123,7 +4247,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_49510380" CREATED="1323529306279" MODIFIED="1330251993340" HGAP="-109" VSHIFT="103"><richcontent TYPE="NODE">
+<node ID="ID_49510380" CREATED="1323529306279" MODIFIED="1336118373889" HGAP="-127" VSHIFT="115"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4360,7 +4484,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1274034553" CREATED="1323529940039" MODIFIED="1323713961853" HGAP="-145" VSHIFT="25"><richcontent TYPE="NODE">
+<node ID="ID_1274034553" CREATED="1323529940039" MODIFIED="1336123531402" HGAP="-170" VSHIFT="116"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4368,8 +4492,22 @@
   </head>
   <body>
     <p>
-      Een nieuwe knoop krijgt stijl <i>Default</i>. Deze stijl kan worden vernaderd : <i>Opmaken &gt; Beheren stijlen &gt; Bewerken stijlen. </i>Als je <i>omlijning</i>&#160;instelt krijgen alle nieuwe knopen een omlijning of kader.
+      Een nieuwe knoop krijgt stijl Standaardstijl. Deze stijl kan worden vernaderd : <i>Opmaken &gt; Beheren stijlen &gt; Bewerken stijlen. </i>Als je <i>omlijning</i>&#160;instelt krijgen alle nieuwe knopen een omlijning of kader.
     </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        De veranderde standaardstijl geldt alleen voor de mindmap waarin je werkt. Om de standaardstijl voor alle nieuwe mindmaps toe te passen, moet je de mindmap <i>standard.mm</i>&#160;aanpassen. Deze bevindt zich in: <i>Extra &gt; Openen gebruikersdirectory &gt; Templates.</i>
+      </li>
+      <li>
+        Overweeg om in standard.mm de optie &quot;Hyperlinks&quot; aan te vinken. Dit zorgt er voor dat de tekst van een pijl-hyperlink wordt onderstreept en klikbaar is.
+      </li>
+    </ul>
   </body>
 </html>
 </richcontent>
@@ -4382,7 +4520,30 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="In menu Beeld kun je verschillende eigenschappen van de knoopkern instellen zoals de breedte van de tekst, of een selectierand moet worden getoond, of formules met een rand moeten worden omgeven en welke achtergrondkleur voor een revisie moet worden toegepast. Je kunt verder instellen hoe knoopdetails moeten worden getoond, met of zonder zweeftekst en revisies (tijdstippen). Je kunt verder aangeven welke attributen moeten moeten worden getoond of verborgen. En je kunt aangeven of knoopnotities in een apart venster moeten worden getoond dat op het scherm blijft staan, en op welke positie van het scherm." ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1323714034721" HGAP="-155" VSHIFT="60">
+<node ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1336123764505" HGAP="-172" VSHIFT="122"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In menu Beeld kun je verschillende eigenschappen van de knoopkern instellen zoals de breedte van de tekst, of een selectierand moet worden getoond, of formules met een rand moeten worden omgeven en welke achtergrondkleur voor een revisie moet worden toegepast. Je kunt verder instellen hoe knoopdetails moeten worden getoond, met of zonder zweeftekst en revisies (tijdstippen). Je kunt verder aangeven welke attributen moeten moeten worden getoond of verborgen. En je kunt aangeven of knoopnotities in een apart venster moeten worden getoond dat op het scherm blijft staan, en op welke positie van het scherm.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking</b>
+    </p>
+    <ul>
+      <li>
+        <i>Beeld &gt; Beeldinstellingen</i>&#160;bevat opties die belangrijk zijn bij printen (Outline) en presenteren (Presentatiemode).
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -4392,7 +4553,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1788895132" CREATED="1323530348451" MODIFIED="1330254725953" HGAP="-155" VSHIFT="102"><richcontent TYPE="NODE">
+<node ID="ID_1788895132" CREATED="1323530348451" MODIFIED="1336118463309" HGAP="-231" VSHIFT="123"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4438,7 +4599,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Omgeving" FOLDED="true" ID="ID_908072469" CREATED="1314708954177" MODIFIED="1330255389819" HGAP="-190" VSHIFT="104" MAX_WIDTH="550" MIN_WIDTH="550" STYLE="fork">
+<node TEXT="Omgeving" FOLDED="true" ID="ID_908072469" CREATED="1314708954177" MODIFIED="1336118478160" HGAP="-284" VSHIFT="97" MAX_WIDTH="550" MIN_WIDTH="550" STYLE="fork">
 <font BOLD="true"/>
 <richcontent TYPE="DETAILS">
 
@@ -4602,11 +4763,47 @@
 </node>
 </node>
 </node>
+<node TEXT="Vertikale afstand tussen knopen" STYLE_REF="Professional" FOLDED="true" ID="ID_1934584954" CREATED="1324029133997" MODIFIED="1336123856094" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_801516363" CREATED="1324029189260" MODIFIED="1336124253959" HGAP="-202" VSHIFT="97"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      De vertikale afstand tussen knopen kan als volgt worden veranderd: selecteer een knoop, houdt Ctrl ingedrukt en sleep de blauwe handle van de knoop naar boven of benededen; of gebruik het rolletje op de muis.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Opmerking </b>
+    </p>
+    <ul>
+      <li>
+        De verandering beinvloedt (alleen) de broer/zusterknopen.
+      </li>
+      <li>
+        Om de standaardinstelling terug te krijgen: selecteer een knoop en kies <i>Bewerken &gt; Herstellen oorspronkelijke knoopposities.</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
 <node TEXT="Scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1323811193426" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1965879157" CREATED="1323530732191" MODIFIED="1330258920981" HGAP="-63" VSHIFT="46"><richcontent TYPE="NODE">
+<node ID="ID_1965879157" CREATED="1323530732191" MODIFIED="1336118501997" HGAP="-65" VSHIFT="62"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4634,7 +4831,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_844014092" CREATED="1323530829949" MODIFIED="1323714635916" HGAP="-150" VSHIFT="149"><richcontent TYPE="NODE">
+<node ID="ID_844014092" CREATED="1323530829949" MODIFIED="1336118513728" HGAP="-170" VSHIFT="168"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4690,7 +4887,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Download het bestand dictionary_nl.ortho. En bewaar dit bestand in Extra &gt; Gebruikersdirectory &gt; Resources/Ortho.  Raadpleeg verder de Handleiding Freeplane." ID="ID_1759599610" CREATED="1323530909501" MODIFIED="1323714704743" HGAP="-230" VSHIFT="35">
+<node TEXT="Spellingcontrole is standaard voor Engels ingesteld. Voor het Nederlands moet de woordenlijst worden opgehaald van Internet. Klik op het rode pijltje. Download het bestand dictionary_nl.ortho. En bewaar dit bestand in Extra &gt; Gebruikersdirectory &gt; Resources/Ortho.  Raadpleeg verder de Handleiding Freeplane." ID="ID_1759599610" CREATED="1323530909501" MODIFIED="1336118526130" HGAP="-256" VSHIFT="50">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -4700,7 +4897,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_667200365" CREATED="1323530988242" MODIFIED="1323714784693" HGAP="-130" VSHIFT="35"><richcontent TYPE="NODE">
+<node ID="ID_667200365" CREATED="1323530988242" MODIFIED="1336118534850" HGAP="-141" VSHIFT="41"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4719,7 +4916,7 @@
 </node>
 </node>
 <node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1323531432400" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29" VSHIFT="-140" MIN_WIDTH="1">
-<node STYLE_REF="TitlesContent" ID="ID_605874491" CREATED="1330288366116" MODIFIED="1330288502337" HGAP="-67" VSHIFT="33"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_605874491" CREATED="1330288366116" MODIFIED="1336118542978" HGAP="-73" VSHIFT="34"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5018,7 +5215,7 @@
 </node>
 <node TEXT="Versies (revisies)" STYLE_REF="Advanced" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1331307188668" LINK="#ID_1437965047"/>
 <node TEXT="Meerdere views van dezelfde mind map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1926778226" CREATED="1331306719166" MODIFIED="1331307303845">
-<node STYLE_REF="TitlesContent" ID="ID_1319135286" CREATED="1331306733589" MODIFIED="1331307874372" HGAP="-222" VSHIFT="48"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1319135286" CREATED="1331306733589" MODIFIED="1336118591291" HGAP="-252" VSHIFT="51"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5035,7 +5232,7 @@
 </node>
 </node>
 <node TEXT="Herstel vanuit automatische back up" STYLE_REF="Professional" FOLDED="true" ID="ID_1223302157" CREATED="1329413171735" MODIFIED="1331307176921">
-<node STYLE_REF="TitlesContent" ID="ID_518626633" CREATED="1329413197325" MODIFIED="1330259118603" HGAP="-201" VSHIFT="26"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_518626633" CREATED="1329413197325" MODIFIED="1336118600370" HGAP="-224" VSHIFT="26"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5051,7 +5248,7 @@
 </node>
 </node>
 <node TEXT="Batch jobs" STYLE_REF="Professional" FOLDED="true" ID="ID_1371818753" CREATED="1330372522196" MODIFIED="1330372862294">
-<node STYLE_REF="TitlesContent" ID="ID_804893281" CREATED="1330372555097" MODIFIED="1330373585179" HGAP="-62" VSHIFT="81"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_804893281" CREATED="1330372555097" MODIFIED="1336118610354" HGAP="-67" VSHIFT="82"><richcontent TYPE="NODE">
 
 <html>
   <head>
