@@ -1,7 +1,8 @@
 ===============================
 1.2.15 beta
 ===============================
-approximative search in rich text editor
+Approximative search in rich text editor
+Add and remove reminders via scripting api
 
 ===============================
 1.2.14 beta
