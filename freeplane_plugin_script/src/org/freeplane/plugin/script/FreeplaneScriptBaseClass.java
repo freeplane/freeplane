@@ -6,6 +6,7 @@ import groovy.lang.MissingMethodException;
 import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.ScannerController;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.plugin.script.proxy.Convertible;
 import org.freeplane.plugin.script.proxy.Proxy;
 
@@ -219,12 +221,17 @@ public abstract class FreeplaneScriptBaseClass extends Script {
         return FormatController.formatUsingDefault(object);
     }
 
-	/** formats according to the internal standard, that is the conversion will be reversible
-	 * for types that are handled special by the scripting api namely Dates and Numbers.
-	 * @see Convertible#toString(Object) */
-	public String toString(final Object o) {
-		return Convertible.toString(o);
-	}
+    /** formats according to the internal standard, that is the conversion will be reversible
+     * for types that are handled special by the scripting api namely Dates and Numbers.
+     * @see Convertible#toString(Object) */
+    public String toString(final Object o) {
+        return Convertible.toString(o);
+    }
+
+    /** opens a {@link URI} */
+    public void loadUri(final URI uri) {
+        LinkController.getController().loadURI(uri);
+    }
 
 //	/** Shortcut for new {@link org.freeplane.plugin.script.proxy.Convertible}. */
 //	public Convertible convertible(String string) {
