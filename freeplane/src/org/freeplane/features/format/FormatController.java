@@ -67,6 +67,7 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 	private static final String ROOT_ELEMENT = "formats";
 	private String pathToFile;
 	private Locale locale;
+	private List<PatternFormat> specialFormats = new ArrayList<PatternFormat>();
 	private List<PatternFormat> dateFormats = new ArrayList<PatternFormat>();
 	private List<PatternFormat> numberFormats = new ArrayList<PatternFormat>();
 	private List<PatternFormat> stringFormats = new ArrayList<PatternFormat>();
@@ -131,6 +132,8 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 	private void initPatternFormats() {
 		if (formatsLoaded)
 			return;
+		specialFormats.add(PatternFormat.getStandardPatternFormat());
+		specialFormats.add(PatternFormat.getIdentityPatternFormat());
 		try {
 			if (pathToFile != null)
 				loadFormats();
@@ -242,10 +245,12 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		}
 	}
 
+	public void addPatternFormat(PatternFormat format){
+		specialFormats.add(format);
+	}
 	public ArrayList<PatternFormat> getAllFormats() {
 		final ArrayList<PatternFormat> formats = new ArrayList<PatternFormat>();
-		formats.add(PatternFormat.getStandardPatternFormat());
-		formats.add(PatternFormat.getIdentityPatternFormat());
+		formats.addAll(specialFormats);
 		formats.addAll(numberFormats);
 		formats.addAll(dateFormats);
 		formats.addAll(stringFormats);
@@ -463,4 +468,8 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
             locale = FormatUtils.getFormatLocaleFromResources();
         }
     }
+
+	public List<PatternFormat> getSpecialFormats() {
+		return specialFormats;
+	}
 }

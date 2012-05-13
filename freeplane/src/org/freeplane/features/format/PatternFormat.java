@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /** a thin wrapper around {@link SimpleDateFormat}, {@link DecimalFormat} and {@link Formatter}.
@@ -52,8 +53,8 @@ public abstract class PatternFormat /*extends Format*/ {
 	private Locale locale;
 
 	public PatternFormat(String pattern, String type) {
-		this.type = type;
 		this.pattern = pattern;
+		this.type = type;
 	}
 
 	/** the formal format description. */
@@ -169,11 +170,10 @@ public abstract class PatternFormat /*extends Format*/ {
 				return new DecimalPatternFormat(pattern);
 			}
 			// only as a last resort?!
-			if (pattern.equals(IDENTITY_PATTERN)) {
-			    return IDENTITY;
-			}
-			if (pattern.equals(STANDARD_FORMAT_PATTERN)) {
-			    return STANDARD;
+			for(PatternFormat f : Controller.getCurrentController().getExtension(FormatController.class).getSpecialFormats()){
+				if (pattern.equals(f.getPattern())) {
+					return f;
+				}
 			}
 			LogUtils.warn("not a pattern format: '" + pattern + "'");
 			return null;

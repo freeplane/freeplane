@@ -2,6 +2,7 @@ package org.freeplane.plugin.latex;
 
 import javax.swing.Icon;
 
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
@@ -29,21 +30,32 @@ public class LatexRenderer extends AbstractContentTransformer {
 			NodeModel node, Object transformedExtension) {
 		if(transformedExtension  == node.getUserObject()){
 			String string = content.toString();
+			String nodeFormat = textController.getNodeFormat(node);
+			if (PatternFormat.IDENTITY_PATTERN.equals(nodeFormat))
+				return null;
+			final String latext;
 			int startLength = LATEX.length() + 1;
 			if(string.length() > startLength && string.startsWith(LATEX) && Character.isWhitespace(string.charAt(startLength - 1))){
-				try {
-					TeXFormula teXFormula = new TeXFormula("\\begin{array}{l} \\raisebox{0}{ "
-							+string.substring(startLength)
-							+" } \\end{array}"
-					);
-					TeXIcon icon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE);
-					return icon;
-				}
-				catch (final Exception e) {
-					
-				}
-				
+				latext = string.substring(startLength);
 			}
+			else if(LatexFormat.LATEX_FORMAT.equals(nodeFormat)){
+				latext = string; 
+			}
+			else
+				return null;
+
+			try {
+				TeXFormula teXFormula = new TeXFormula("\\begin{array}{l} \\raisebox{0}{ "
+						+latext
+						+" } \\end{array}"
+						);
+				TeXIcon icon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE);
+				return icon;
+			}
+			catch (final Exception e) {
+
+			}
+
 		}
 		return null;
 	}
