@@ -29,10 +29,11 @@ public class LatexRenderer extends AbstractContentTransformer {
 			NodeModel node, Object transformedExtension) {
 		if(transformedExtension  == node.getUserObject()){
 			String string = content.toString();
-			if(string.startsWith(LATEX)){
+			int startLength = LATEX.length() + 1;
+			if(string.length() > startLength && string.startsWith(LATEX) && Character.isWhitespace(string.charAt(startLength - 1))){
 				try {
 					TeXFormula teXFormula = new TeXFormula("\\begin{array}{l} \\raisebox{0}{ "
-							+string.substring(LATEX.length() + 1)
+							+string.substring(startLength)
 							+" } \\end{array}"
 					);
 					TeXIcon icon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE);
