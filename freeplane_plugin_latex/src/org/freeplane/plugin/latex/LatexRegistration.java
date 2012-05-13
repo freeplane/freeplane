@@ -21,6 +21,7 @@ package org.freeplane.plugin.latex;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.text.TextController;
 
 /**
  * @author Stefan Ott
@@ -38,6 +39,7 @@ class LatexRegistration {
 			modeController.addAction(new InsertLatexAction(nodeHook));
 			modeController.addAction(new EditLatexAction(nodeHook));
 			modeController.addAction(new DeleteLatexAction(nodeHook));
+			modeController.getExtension(TextController.class).addTextTransformer(new LatexRenderer());
 		}
 	}
 }

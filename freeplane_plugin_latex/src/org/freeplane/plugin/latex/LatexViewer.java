@@ -40,7 +40,7 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 
 class LatexViewer extends JComponent {
-	private static final int DEFAULT_FONT_SIZE = 16;
+	static final int DEFAULT_FONT_SIZE = 16;
 	static String editorTitle = null;
 	/**
 	 * 
