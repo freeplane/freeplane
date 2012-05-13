@@ -31,6 +31,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -40,7 +41,7 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 
 class LatexViewer extends JComponent {
-	static final int DEFAULT_FONT_SIZE = 16;
+	static final int DEFAULT_FONT_SIZE = Math.round(10 * UITools.FONT_SCALE_FACTOR);
 	static String editorTitle = null;
 	/**
 	 * 
