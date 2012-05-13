@@ -107,7 +107,15 @@ public class DefaultNodeKeyListener implements KeyListener {
 					popupmenu.show(mainView, mainView.getX(), mainView.getY());
 				}
 		}
-		
+	}
+
+	public void keyReleased(final KeyEvent e) {
+	}
+
+	public void keyTyped(final KeyEvent e) {
+		if ((e.isAltDown() || e.isControlDown() || e.isMetaDown())) {
+			return;
+		}
 		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action",
 		    FirstAction.EDIT_CURRENT.toString());
 		final FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);
@@ -119,11 +127,5 @@ public class DefaultNodeKeyListener implements KeyListener {
 				return;
 			}
 		}
-	}
-
-	public void keyReleased(final KeyEvent e) {
-	}
-
-	public void keyTyped(final KeyEvent e) {
 	}
 }
