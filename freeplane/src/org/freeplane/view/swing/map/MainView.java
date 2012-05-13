@@ -451,12 +451,13 @@ public abstract class MainView extends ZoomableLabel {
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
 		isShortened = textController.isMinimized(nodeModel);
-		Object content = nodeModel.getUserObject();
+		final Object userObject = nodeModel.getUserObject();
+		Object content = userObject;
 		String text;
 		try {
 			if(isShortened && (content instanceof String))
 				content = HtmlUtils.htmlToPlain((String) content);
-			final Object obj = textController.getTransformedObject(content, nodeModel, content);
+			final Object obj = textController.getTransformedObject(content, nodeModel, userObject);
 			if(nodeView.isSelected()){
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(obj);
 			}
