@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URI;
@@ -64,7 +62,7 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.NodeView;
 
-public class ReferencesController extends ALanguageController implements IDocearEventListener, ActionListener {
+public class ReferencesController extends ALanguageController implements IDocearEventListener {
 
 	//mapModel with reference which is currently changed
 	private MapModel inChange = null;
@@ -116,7 +114,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private AFreeplaneAction AddNewReference = new AddNewReferenceAction(ADD_NEW_REFERENCE_LANG_KEY);
 	private AFreeplaneAction CopyBibtex = new CopyBibtexToClipboard(COPY_BIBTEX_LANG_KEY);
 	
-	private AFreeplaneAction ShowJabrefPreferences = new ShowJabrefPreferencesAction("show_jabref_preferences");
+	//private AFreeplaneAction ShowJabrefPreferences = new ShowJabrefPreferencesAction("show_jabref_preferences");
 	
 	private boolean isRunning = false;
 
@@ -307,7 +305,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 //				builder.addAction(parentMenu + REFERENCE_MANAGEMENT_MENU + UPDATE_REFERENCES_MENU, 
 //						ConvertSplmmReferences,	MenuBuilder.AS_CHILD);
 				
-				builder.addAction(MENU_BAR + TOOLS_MENU, ShowJabrefPreferences, MenuBuilder.AS_CHILD);
+//				builder.addAction(MENU_BAR + TOOLS_MENU, ShowJabrefPreferences, MenuBuilder.AS_CHILD);
 
 			}
 		});
@@ -359,13 +357,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.inAdd = inAdd;
 	}
 
-
-
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(ShowJabrefPreferences.getKey())) {
-			ShowJabrefPreferences.actionPerformed(e);
-		}		
-	}
 	
 	private class KeyBindInterceptor implements IKeyStrokeInterceptor {
 		
