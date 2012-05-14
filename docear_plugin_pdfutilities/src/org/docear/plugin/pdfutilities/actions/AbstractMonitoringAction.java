@@ -34,6 +34,7 @@ import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
+import org.docear.plugin.core.util.HtmlUtils;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
@@ -354,25 +355,30 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					}
 				}
 				if(orphanedNodes.size() > 0){
-					int result = UITools.showConfirmDialog(target, TextUtils.getText("AbstractMonitoringAction.18"), TextUtils.getText("AbstractMonitoringAction.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
-					if(result == JOptionPane.OK_OPTION){
-						fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
-						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.20")); //$NON-NLS-1$
-						for(final NodeModel node : orphanedNodes){
-							SwingUtilities.invokeAndWait(
-							        new Runnable() {
-							            public void run(){
-							            	try{
-							            		if(node.getParentNode() != null){
-							            			node.removeFromParent();
-							            		}
-							            	} catch(Exception e){
-							            		LogUtils.warn(e);
-							            	}
-							            }
-							        }
-								);
+					if(canceled()) return false;
+					try{
+						int result = UITools.showConfirmDialog(target, TextUtils.getText("AbstractMonitoringAction.18"), TextUtils.getText("AbstractMonitoringAction.18"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+						if(result == JOptionPane.OK_OPTION){
+							fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+							fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.20")); //$NON-NLS-1$
+							for(final NodeModel node : orphanedNodes){
+								SwingUtilities.invokeAndWait(
+								        new Runnable() {
+								            public void run(){
+								            	try{
+								            		if(node.getParentNode() != null){
+								            			node.removeFromParent();
+								            		}
+								            	} catch(Exception e){
+								            		LogUtils.warn(e);
+								            	}
+								            }
+								        }
+									);
+							}
 						}
+					}catch(Exception e){
+						LogUtils.warn(e);
 					}
 				}				
 				return true;
@@ -515,7 +521,11 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								if(oldAnnotation.getAnnotationType() == null) continue;
 								if(oldAnnotation.getAnnotationType().equals(AnnotationType.PDF_FILE)) continue;
 								if(oldAnnotation.getAnnotationType().equals(AnnotationType.FILE)) continue;
-								if(!importedAnnotation.getTitle().trim().equals(oldAnnotation.getTitle().trim())){
+								String oldAnnotationWithoutHTML = HtmlUtils.extractText(oldAnnotation.getTitle());
+								String importedAnnotationTitle = importedAnnotation.getTitle().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+								String oldAnnotationTitle = oldAnnotation.getTitle().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+								oldAnnotationWithoutHTML = oldAnnotationWithoutHTML.replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+								if(!importedAnnotationTitle.trim().equals(oldAnnotationTitle.trim()) && !importedAnnotationTitle.trim().equals(oldAnnotationWithoutHTML.trim())){
 									importedAnnotation.setConflicted(true);
 									AnnotationController.addConflictedAnnotation(importedAnnotation, conflicts);
 									for(NodeModel conflictedNode : nodeIndex.get(id)){

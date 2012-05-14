@@ -298,7 +298,12 @@ public class MindmapUpdateController {
 					final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 					attributes.setAttributeViewType(type);
 					final MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, ModelessAttributeController.ATTRIBUTE_VIEW_TYPE, attributeViewType, type);
-					Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
+					try{
+						Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
+					}
+					catch(Exception e){
+						LogUtils.warn(e);
+					}
 				}
 			}
 			

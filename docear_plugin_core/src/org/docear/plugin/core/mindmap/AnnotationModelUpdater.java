@@ -34,10 +34,14 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 						AnnotationModel pdf = importer.importPdf(Tools.getAbsoluteUri(node));
 						importedPdfs.put(Tools.getAbsoluteUri(node), this.getPlainAnnotationList(pdf));
 					}
-				}			
-				for(AnnotationModel annotation : importedPdfs.get(Tools.getAbsoluteUri(node))){
-					String nodeText = HtmlUtils.extractText(node.getText());							
-					if(annotation.getTitle().replaceAll("[\\n\\t ]", "").equals(nodeText.replaceAll("[\\n\\t ]", ""))){
+				}	
+				String nodeTextWithoutHTML = HtmlUtils.extractText(node.getText());
+				String nodeText = node.getText().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+				nodeTextWithoutHTML = nodeTextWithoutHTML.replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+				for(AnnotationModel annotation : importedPdfs.get(Tools.getAbsoluteUri(node))){					
+					String importedAnnotationTitle = annotation.getTitle().replace("\r", "").replace("\n", "").replace("\t", "").replace(" ", "");
+					
+					if(importedAnnotationTitle.equals(nodeText) || importedAnnotationTitle.equals(nodeTextWithoutHTML)){
 						AnnotationController.setModel(node, annotation);	
 						changed = true;
 						break;
