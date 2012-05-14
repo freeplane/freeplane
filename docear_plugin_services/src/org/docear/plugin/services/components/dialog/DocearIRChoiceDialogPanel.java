@@ -11,10 +11,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +171,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		txtrLicense.setWrapStyleWord(true);
 		txtrLicense.setEditable(false);
 		txtrLicense.setFont(new Font("Monospaced", Font.PLAIN, 11));
-		txtrLicense.setText(getDataProcessingTerms());
+		txtrLicense.setText(DocearController.getController().getDataProcessingTerms());
 		scrollPane.setViewportView(txtrLicense);
 		
 		panel_1 = new JPanel();
@@ -212,12 +208,12 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		((MultiLineActionLabel) lblAcceptTermsOfService).addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if("tos".equals(e.getActionCommand())) {
-					licenseText.setLicenseText(getTermsOfUse());
+					licenseText.setLicenseText(DocearController.getController().getTermsOfUse());
 					JOptionPane.showConfirmDialog(DocearIRChoiceDialogPanel.this, licenseText, TextUtils.getText("docear.license.terms_of_use.title"), JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null);
 					return;
 				}
 				if("dps".equals(e.getActionCommand())) {
-					licenseText.setLicenseText(getDataPrivacyTerms());
+					licenseText.setLicenseText(DocearController.getController().getDataPrivacyTerms());
 					JOptionPane.showConfirmDialog(DocearIRChoiceDialogPanel.this, licenseText, TextUtils.getText("docear.license.data_privacy.title"), JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null);
 					return;
 				}
@@ -632,49 +628,6 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 
 	private boolean isEmpty(String s) {
 		return s==null || s.trim().length()==0;
-	}
-	
-	private String getDataProcessingTerms() {
-		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_processing.txt"));
-		}
-		catch (IOException e) {
-			LogUtils.warn(e);
-			return "Data Processing";
-		}
-	}
-	
-	private String getDataPrivacyTerms() {
-		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_privacy.txt"));
-		}
-		catch (IOException e) {
-			LogUtils.warn(e);
-			return "Data Privacy";
-		}
-	}
-	
-	private String getTermsOfUse() {
-		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_terms_of_use.txt"));
-		}
-		catch (IOException e) {
-			LogUtils.warn(e);
-			return "Terms of Use";
-		}
-	}
-	
-	private String getStringFromStream(InputStream is) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-		StringBuilder sb = new StringBuilder();
-	
-		String line;
-		while ((line = br.readLine()) != null) {
-			sb.append(line + System.getProperty("line.separator"));
-		}
-	
-		br.close();
-		return sb.toString();
 	}
 	
 	

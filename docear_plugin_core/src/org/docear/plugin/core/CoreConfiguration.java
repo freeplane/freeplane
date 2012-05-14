@@ -14,6 +14,9 @@ import javax.swing.SwingUtilities;
 import org.docear.plugin.core.actions.DocearAboutAction;
 import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
+import org.docear.plugin.core.actions.DocearShowDataPrivacyStatementAction;
+import org.docear.plugin.core.actions.DocearShowDataProcessingTermsAction;
+import org.docear.plugin.core.actions.DocearShowTermsOfUseAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
@@ -110,6 +113,7 @@ public class CoreConfiguration extends ALanguageController {
 		modeController.addAction(new DocearRenameAction());
 		
 		addPluginDefaults();
+		addMenus(modeController);
 		registerListeners();
 		//prepareWorkspace();
 		
@@ -125,6 +129,19 @@ public class CoreConfiguration extends ALanguageController {
 		}
 	}
 		
+	private void addMenus(ModeController modeController) {
+		modeController.addMenuContributor(new IMenuContributor() {
+			public void updateMenus(ModeController modeController, MenuBuilder builder) {
+				builder.addAction("/menu_bar/help", new DocearShowTermsOfUseAction(),	MenuBuilder.AS_CHILD);
+				builder.addAction("/menu_bar/help", new DocearShowDataPrivacyStatementAction(),	MenuBuilder.AS_CHILD);
+				builder.addAction("/menu_bar/help", new DocearShowDataProcessingTermsAction(),	MenuBuilder.AS_CHILD);
+			}
+		});
+		
+	}
+
+
+
 	private void setDocearMapWriter() {
 		DocearMapWriter mapWriter = new DocearMapWriter(Controller.getCurrentModeController().getMapController());
 		mapWriter.setMapWriteHandler();		

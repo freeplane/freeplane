@@ -4,8 +4,10 @@
  */
 package org.docear.plugin.core;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Properties;
@@ -249,6 +251,50 @@ public class DocearController implements IDocearEventListener {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	public String getDataProcessingTerms() {
+		try {
+			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_processing.txt"));
+		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+			return "Data Processing";
+		}
+	}
+	
+	public String getDataPrivacyTerms() {
+		try {
+			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_privacy.txt"));
+		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+			return "Data Privacy";
+		}
+	}
+	
+	public String getTermsOfUse() {
+		try {
+			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_terms_of_use.txt"));
+		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+			return "Terms of Use";
+		}
+	}
+	
+	private String getStringFromStream(InputStream is) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+		StringBuilder sb = new StringBuilder();
+	
+		String line;
+		while ((line = br.readLine()) != null) {
+			sb.append(line + System.getProperty("line.separator"));
+		}
+	
+		br.close();
+		return sb.toString();
 	}
 	
 	/***********************************************************************************
