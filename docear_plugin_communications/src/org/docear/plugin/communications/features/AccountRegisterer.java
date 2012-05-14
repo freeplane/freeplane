@@ -77,6 +77,10 @@ public class AccountRegisterer {
 				throw new DocearServiceException(response.getEntity(String.class));
 			}
 		}
+		catch(DocearServiceException e) {
+		    LogUtils.warn(e);
+		    throw e;
+		}
 		catch(ClientHandlerException e) {
 		    LogUtils.warn(e);
 		    throw new DocearServiceException(TextUtils.getText("docear.service.connect.no_connection"), DocearServiceExceptionType.NO_CONNECTION);

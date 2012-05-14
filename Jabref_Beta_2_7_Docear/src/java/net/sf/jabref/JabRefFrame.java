@@ -574,7 +574,10 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 				output(Globals.lang("Opening preferences..."));
 				if (prefsDialog == null) {
 					prefsDialog = new PrefsDialog3(JabRefFrame.this);
-					prefsDialog.setModal(true);
+					//DOCEAR
+					if (!isTopLevel) {
+					    prefsDialog.setModal(true);
+					}
 					Util.placeDialog(prefsDialog, JabRefFrame.this);
 				}
 				else
