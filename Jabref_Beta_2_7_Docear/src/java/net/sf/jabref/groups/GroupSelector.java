@@ -71,6 +71,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CompoundEdit;
 
+import com.mysql.jdbc.log.Log;
+
 import net.sf.jabref.AbstractWorker;
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
@@ -84,6 +86,7 @@ import net.sf.jabref.SearchRule;
 import net.sf.jabref.SearchRuleSet;
 import net.sf.jabref.SidePaneComponent;
 import net.sf.jabref.SidePaneManager;
+import net.sf.jabref.Util;
 import net.sf.jabref.undo.NamedCompound;
 
 public class GroupSelector extends SidePaneComponent implements
@@ -1247,9 +1250,9 @@ public class GroupSelector extends SidePaneComponent implements
             frame.sidePaneManager.hide("groups");
             frame.groupToggle.setSelected(false);
         }
-
-        validateTree();
-
+        synchronized (getTreeLock()) {
+            validateTree();
+        }
     }
 
 
