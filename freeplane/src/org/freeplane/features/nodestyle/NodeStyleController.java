@@ -189,7 +189,7 @@ public class NodeStyleController implements IExtension {
 			}
 			return maxTextWidth;
 		}
-		return getDefaultMaxNodeWidth();
+		return ResourceController.getResourceController().getIntProperty("max_node_width");
 	}
 	
 	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
@@ -209,7 +209,7 @@ public class NodeStyleController implements IExtension {
 			}
 			return minWidth;
 		}
-		return getDefaultMinNodeWidth();
+		return ResourceController.getResourceController().getIntProperty("min_node_width");
 	}
 	
 	public static Font getDefaultFont() {
@@ -404,16 +404,5 @@ public class NodeStyleController implements IExtension {
 
 	public ModeController getModeController() {
 	    return modeController;
-    }
-
-	public static int getDefaultMinNodeWidth() {
-    		return ResourceController.getResourceController().getIntProperty("min_node_width", 1);
-    }
-
-	public static int getDefaultMaxNodeWidth() {
-    		final int w = ResourceController.getResourceController().getIntProperty("max_node_width", -1);
-			if(w != -1)
-				return w;
-    		return ResourceController.getResourceController().getIntProperty("el__max_default_window_width", 600) * 2 / 3;
     }
 }
