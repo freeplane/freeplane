@@ -99,14 +99,30 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			viewR.y = insets.top;
 			viewR.width = (int) (width  / zoom) - (insets.left + insets.right);
 			viewR.height = (int)(height / zoom) - (insets.top + insets.bottom);
+			if(viewR.width < 0)
+				viewR.width = 0;
+			ScaledHTML.Renderer v = (ScaledHTML.Renderer) label.getClientProperty(BasicHTML.propertyKey);
+		    if (v != null) {
+		    	float preferredWidth = v.getPreferredSpan(View.X_AXIS);
+		    	int textWidth = viewR.width;
+				if(icon != null)
+		    		textWidth -= icon.getIconWidth() + label.getIconTextGap();
+				if(preferredWidth < textWidth){
+					v.setSize(textWidth, 1);
+					super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
+					v.setSize(textR.width, textR.height);
+					return text;
+				}
+		    }
 		}
 		else if(maximumWidth != Integer.MAX_VALUE){
 			final Insets insets = label.getInsets();
 			viewR.width = maximumWidth - insets.left - insets.right;
 			if(viewR.width < 0)
 				viewR.width = 0;
-			View v = (View) label.getClientProperty(BasicHTML.propertyKey);
+			ScaledHTML.Renderer v = (ScaledHTML.Renderer) label.getClientProperty(BasicHTML.propertyKey);
 		    if (v != null) {
+		    	v.resetSize();
 		    	float preferredWidth = v.getPreferredSpan(View.X_AXIS);
 		    	float minimumWidth = v.getMinimumSpan(View.X_AXIS);
 		    	int textWidth = viewR.width;
@@ -302,7 +318,13 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	public void paint(final Graphics g, final JComponent label) {
 		final ZoomableLabel mainView = (ZoomableLabel) label;
 		if (!mainView.useFractionalMetrics()) {
-			superPaintSafe(g, mainView);
+			try {
+				isPainting = true;
+				superPaintSafe(g, mainView);
+			}
+			finally {
+				isPainting = false;
+			}
 			return;
 		}
 		final Graphics2D g2 = (Graphics2D) g;

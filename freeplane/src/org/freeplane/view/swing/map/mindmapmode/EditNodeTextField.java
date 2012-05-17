@@ -641,8 +641,10 @@ public class EditNodeTextField extends EditNodeBase {
 			setLineWrap();
 			textFieldSize.height = textfield.getPreferredSize().height;
 		}
-		textfield.setSize(textFieldSize.width, textFieldSize.height);
 		final Rectangle textR = ((ZoomableLabelUI)parent.getUI()).getTextR(parent);
+		textFieldSize.width = Math.max(textFieldSize.width, textR.width);
+		textFieldSize.height = Math.max(textFieldSize.height, textR.height);
+		textfield.setSize(textFieldSize.width, textFieldSize.height);
 		horizontalSpace = Math.max(nodeWidth - textFieldSize.width, textR.x);
 		verticalSpace = Math.max(nodeHeight - textFieldSize.height, textR.y);
 		final Dimension newParentSize = new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height);
