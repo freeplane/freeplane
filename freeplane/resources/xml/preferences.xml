@@ -103,8 +103,6 @@
         </separator>
         <separator name="size_limits">        
             <number name="max_shortened_text_length"/>
-            <number name="max_node_width"/>
-            <number name="min_node_width"/>
             <number name="max_image_width"/>
             <number name="toolTipManager.max_tooltip_width" />
             <number name="default_attribute_key_column_width"  min = "10"/>

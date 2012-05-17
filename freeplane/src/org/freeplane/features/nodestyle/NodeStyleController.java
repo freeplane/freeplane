@@ -189,7 +189,7 @@ public class NodeStyleController implements IExtension {
 			}
 			return maxTextWidth;
 		}
-		return ResourceController.getResourceController().getIntProperty("max_node_width");
+		return 600;
 	}
 	
 	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
@@ -209,7 +209,7 @@ public class NodeStyleController implements IExtension {
 			}
 			return minWidth;
 		}
-		return ResourceController.getResourceController().getIntProperty("min_node_width");
+		return 1;
 	}
 	
 	public static Font getDefaultFont() {
