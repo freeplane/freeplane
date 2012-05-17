@@ -120,7 +120,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 		    FirstAction.EDIT_CURRENT.toString());
 		final FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);
 		if (!FirstAction.IGNORE.equals(keyTypeAction)) {
-			if (!e.isActionKey() && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
+			if (! isActionEvent(e)) {
 				if (editHandler != null) {
 					editHandler.edit(e, keyTypeAction, false);
 				}
@@ -128,4 +128,12 @@ public class DefaultNodeKeyListener implements KeyListener {
 			}
 		}
 	}
+
+	private boolean isActionEvent(final KeyEvent e) {
+	    return e.isActionKey() || isControlCharacter(e.getKeyChar());
+    }
+
+	private boolean isControlCharacter(char keyChar) {
+	    return keyChar == KeyEvent.CHAR_UNDEFINED || keyChar <= KeyEvent.VK_SPACE|| keyChar == KeyEvent.VK_DELETE;
+    }
 }
