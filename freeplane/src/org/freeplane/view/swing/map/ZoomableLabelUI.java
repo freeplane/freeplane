@@ -375,25 +375,10 @@ public class ZoomableLabelUI extends BasicLabelUI {
 
 	private void paintIcons(Graphics g, ZoomableLabel label, Icon textRenderingIcon) {
         Icon icon = (label.isEnabled()) ? label.getIcon() : label.getDisabledIcon();
-
-		Insets insets = label.getInsets(null);
-		Icon icon1 = (label.isEnabled()) ? label.getIcon() :
-		                                  label.getDisabledIcon();
-		final int width = label.getWidth();
-		final int height = label.getHeight();
-		final float zoom = label.getZoom();
-		Rectangle paintViewR = new Rectangle(
-				insets.left,
-				insets.top,
-				(int) (width  / zoom) - (insets.left + insets.right),
-				(int)(height / zoom) - (insets.top + insets.bottom)
-		);
-		if(paintViewR.width < 0)
-			paintViewR.width = 0;
+        Rectangle paintViewR = new Rectangle();
         Rectangle paintIconR = new Rectangle();
 		Rectangle paintTextR = new Rectangle();
-		layoutLabelWithTextIcon(textRenderingIcon, icon1, paintViewR, paintIconR, paintTextR, label);
-
+		layoutCL(label, null, null, icon, paintViewR, paintIconR, paintTextR);
         if (icon != null) {
             icon.paintIcon(label, g, paintIconR.x, paintIconR.y);
         }
