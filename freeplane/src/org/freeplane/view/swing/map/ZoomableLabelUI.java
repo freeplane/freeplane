@@ -186,7 +186,6 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		    hTextPos = (orientationIsLeftToRight) ? SwingUtilities.RIGHT : SwingUtilities.LEFT;
 		    break;
 		}
-		FontMetrics fm = zLabel.getFontMetrics();
 		int verticalAlignment = zLabel.getVerticalAlignment();
 		int verticalTextPosition = zLabel.getVerticalTextPosition();
 		if (icon != null) {
@@ -380,11 +379,17 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		Insets insets = label.getInsets(null);
 		Icon icon1 = (label.isEnabled()) ? label.getIcon() :
 		                                  label.getDisabledIcon();
-		Rectangle paintViewR = new Rectangle();
-		paintViewR.x = insets.left;
-		paintViewR.y = insets.top;
-		paintViewR.width = label.getWidth() - (insets.left + insets.right);
-		paintViewR.height = label.getHeight() - (insets.top + insets.bottom);
+		final int width = label.getWidth();
+		final int height = label.getHeight();
+		final float zoom = label.getZoom();
+		Rectangle paintViewR = new Rectangle(
+				insets.left,
+				insets.top,
+				(int) (width  / zoom) - (insets.left + insets.right),
+				(int)(height / zoom) - (insets.top + insets.bottom)
+		);
+		if(paintViewR.width < 0)
+			paintViewR.width = 0;
         Rectangle paintIconR = new Rectangle();
 		Rectangle paintTextR = new Rectangle();
 		layoutLabelWithTextIcon(textRenderingIcon, icon1, paintViewR, paintIconR, paintTextR, label);
