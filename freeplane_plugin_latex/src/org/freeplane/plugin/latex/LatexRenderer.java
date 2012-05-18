@@ -8,6 +8,7 @@ import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
 import org.scilab.forge.jlatexmath.TeXConstants;
+import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 public class LatexRenderer extends AbstractContentTransformer {
@@ -44,11 +45,11 @@ public class LatexRenderer extends AbstractContentTransformer {
 				return null;
 
 			try {
-				TeXText teXText = new TeXText("\\begin{array}{l} \\raisebox{0}{ "
+				TeXFormula teXFormula = new TeXFormula("\\begin{array}{l} \\raisebox{0}{ "
 						+latext
 						+" } \\end{array}"
 						);
-				TeXIcon icon = teXText.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE);
+				TeXIcon icon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE);
 				return icon;
 			}
 			catch (final Exception e) {
