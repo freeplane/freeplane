@@ -26,7 +26,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -38,7 +37,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.scilab.forge.jlatexmath.TeXConstants;
-import org.scilab.forge.jlatexmath.TeXFormula;
 
 class LatexViewer extends JComponent {
 	static final int DEFAULT_FONT_SIZE = Math.round(10 * UITools.FONT_SCALE_FACTOR);
@@ -51,7 +49,7 @@ class LatexViewer extends JComponent {
 	@SuppressWarnings("unused")
 	final private LatexNodeHook nodeHook;
 	private LatexExtension model;
-	private TeXFormula teXFormula;
+	private TeXText teXText;
 
 	LatexViewer(final LatexNodeHook nodeHook, final LatexExtension latexExtension) {
 		this.nodeHook = nodeHook;
@@ -93,7 +91,7 @@ class LatexViewer extends JComponent {
 			return;
 		}
 		zoom = mapZoom;
-		final Icon latexIcon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE * zoom);
+		final Icon latexIcon = teXText.createTeXIcon(TeXConstants.STYLE_DISPLAY, Math.round(DEFAULT_FONT_SIZE * zoom));
 		final Insets insets = getInsets();
 		final Dimension dimension = new Dimension(latexIcon.getIconWidth() + insets.left + insets.right,
 		    latexIcon.getIconHeight() + insets.top + insets.bottom);
@@ -102,7 +100,7 @@ class LatexViewer extends JComponent {
 
 	@Override
 	public void paint(final Graphics g) {
-		final Icon latexIcon = teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE * zoom);
+		final Icon latexIcon = teXText.createTeXIcon(TeXConstants.STYLE_DISPLAY, Math.round(DEFAULT_FONT_SIZE * zoom));
 		final Insets insets = getInsets();
 		latexIcon.paintIcon(this, g, insets.left, insets.top);
 		super.paint(g);
@@ -111,19 +109,19 @@ class LatexViewer extends JComponent {
 	public void setModel(final LatexExtension latexExtension) {
 		model = latexExtension;
 		try {
-			teXFormula = new TeXFormula("\\begin{array}{l} \\raisebox{0}{ "
+			teXText = new TeXText("\\begin{array}{l} \\raisebox{0}{ "
 					+model.getEquation()
 					+" } \\end{array}"
 			);
-			teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
+			teXText.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
 		}
 		catch (final Exception e) {
 			try {
-				teXFormula = new TeXFormula("\\mbox{" + e.getMessage() + "}");
-				teXFormula.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
+				teXText = new TeXText("\\mbox{" + e.getMessage() + "}");
+				teXText.createTeXIcon(TeXConstants.STYLE_DISPLAY, DEFAULT_FONT_SIZE);
 			}
 			catch (final Exception e1) {
-				teXFormula = new TeXFormula("\\mbox{Can not parse given equation}");
+				teXText = new TeXText("\\mbox{Can not parse given equation}");
 			}
 		}
 		zoom = 0;
