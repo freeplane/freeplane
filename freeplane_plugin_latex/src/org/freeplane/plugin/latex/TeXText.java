@@ -18,30 +18,39 @@ public class TeXText
         rawText = t;
     }
 
-
-    public TeXIcon createTeXIcon(int size, int align)
+    public TeXIcon createTeXIcon(int size)
     {
-        StringBuffer sb = new StringBuffer();
-        sb.append("\\begin{array}{l} \\raisebox{0}{");
+    	return createTeXIcon(TeXConstants.STYLE_DISPLAY, size, TeXConstants.ALIGN_LEFT);
+    }
 
+    public TeXIcon createTeXIcon(int style, int size)
+    {
+    	return createTeXIcon(style, size, TeXConstants.ALIGN_LEFT);
+    }
+
+    public TeXIcon createTeXIcon(int style, int size, int align)
+    {
         rawText = rawText.replace("\\begin{align}", "\n\n$\\quad ");
         rawText = rawText.replace("\\end{align}", "$\n\n");
 
         rawText = rawText.replace("\\begin{align*}", "\n\n$\\quad ");
         rawText = rawText.replace("\\end{align*}", "$\n\n");
 
+        StringBuffer sb = new StringBuffer();
+        sb.append("\\raisebox{0}{ \\begin{array}{l} ");
+
         String[] lines = rawText.split("\n");
         for (int i = 0; i < lines.length; i++)
         {
             sb.append("\\text{");
             sb.append(lines[i]);
-            sb.append("}\\\\");
+            sb.append("}\\\\ ");
         }
 
-        sb.append("} \\end{array}");
+        sb.append("\\end{array} }");
 
         TeXFormula tf = new TeXFormula(sb.toString());
-        return tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, size, align);
+        return tf.createTeXIcon(style, size, align);
     }
 
     public static void main(String[] argv)

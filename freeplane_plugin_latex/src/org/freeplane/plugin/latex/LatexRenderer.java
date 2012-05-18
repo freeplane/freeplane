@@ -8,7 +8,6 @@ import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
 import org.scilab.forge.jlatexmath.TeXConstants;
-import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 public class LatexRenderer extends AbstractContentTransformer {
