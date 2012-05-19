@@ -1286,8 +1286,7 @@ public interface Proxy {
      *  def inAMinute = new Date(System.currentTimeMillis() + 60*1000)
      *  node.reminder.createOrReplace(inAMinute, "WEEK", 2)
      *  if (node.map.file) {
-     *      def linkController = 'org.freeplane.features.link.LinkController.controller'
-     *      node.reminder.setScript("${linkController}.loadURI(new URI('${node.map.file.toURI()}#${node.id}'))")
+     *      node.reminder.setScript("loadUri(new URI('${node.map.file.toURI()}#${node.id}'))")
      *  }
      *  // a click on the node opens time management dialog
      *  node.link.text = 'menuitem:_$TimeListAction$0'
