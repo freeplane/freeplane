@@ -346,16 +346,17 @@ public class MTextController extends TextController {
 
     /** converts strings to date or number if possible. All other data types are left unchanged. */
     public Object guessObject(final Object text, final String oldFormat) {
-        if (ResourceController.getResourceController().getBooleanProperty("parse_data") && text instanceof String) {
-            if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
-                return text;
-            final Object parseResult = ScannerController.getController().parse((String) text);
-            if (oldFormat != null) {
-                final Object formatted = FormatController.format(parseResult, oldFormat, null);
-                return (formatted == null) ? text : formatted;
-            }
-            return parseResult;
-        }
+    	// TODO FIXME what a mess!
+//        if (ResourceController.getResourceController().getBooleanProperty("parse_data") && text instanceof String) {
+//            if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
+//                return text;
+//            final Object parseResult = ScannerController.getController().parse((String) text);
+//            if (oldFormat != null) {
+//                final Object formatted = FormatController.format(parseResult, oldFormat, null);
+//                return (formatted == null) ? text : formatted;
+//            }
+//            return parseResult;
+//        }
         return text;
     }
 	
