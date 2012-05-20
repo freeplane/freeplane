@@ -332,7 +332,7 @@ public class TextController implements IExtension {
 				return format;
 			}
 		}
-		return null;
+		return PatternFormat.STANDARD_FORMAT_PATTERN;
     }
 
 	public boolean getNodeNumbering(NodeModel node) {
