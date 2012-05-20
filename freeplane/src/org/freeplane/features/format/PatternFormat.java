@@ -87,7 +87,11 @@ public abstract class PatternFormat /*extends Format*/ {
 	public abstract String getStyle();
 	
 	public static PatternFormat create(final String pattern, final String style, final String type) {
-		if (style.equals(STYLE_DATE))
+	    if (pattern.equals(IDENTITY_PATTERN))
+	        return new IdentityPatternFormat();
+	    else if (pattern.equals(STANDARD_FORMAT_PATTERN))
+	        return new StandardPatternFormat();
+	    else if (style.equals(STYLE_DATE))
 			return new DatePatternFormat(pattern);
 		else if (style.equals(STYLE_FORMATTER))
 			return new FormatterPatternFormat(pattern, type);
