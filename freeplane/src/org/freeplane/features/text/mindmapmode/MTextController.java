@@ -34,6 +34,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +64,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.icon.IconController;
@@ -340,11 +342,15 @@ public class MTextController extends TextController {
     public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
 			setNodeObject(node, newText);
-		else
-			setNodeObject(node, guessObject(newText, NodeStyleModel.getNodeFormat(node)));
+        else {
+	        final Object guessedObject = guessObject(newText, NodeStyleModel.getNodeFormat(node));
+	        if(guessedObject instanceof IFormattedObject)
+	        	setNodeObject(node, ((IFormattedObject) guessedObject).getObject());
+	        else
+	        	setNodeObject(node, newText);
+        }
 	}
 
-    /** converts strings to date or number if possible. All other data types are left unchanged. */
     public Object guessObject(final Object text, final String oldFormat) {
         if (ResourceController.getResourceController().getBooleanProperty("parse_data") && text instanceof String) {
             if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
