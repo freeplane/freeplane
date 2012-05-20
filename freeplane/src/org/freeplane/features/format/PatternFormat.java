@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -248,5 +249,9 @@ public abstract class PatternFormat /*extends Format*/ {
     @Override
     public String toString() {
         return pattern;
+    }
+    
+    public boolean canFormat(Class<?> clazz){
+    	return true;
     }
 }
