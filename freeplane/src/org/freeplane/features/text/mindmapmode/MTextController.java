@@ -344,10 +344,15 @@ public class MTextController extends TextController {
 			setNodeObject(node, newText);
         else {
 	        final Object guessedObject = guessObject(newText, NodeStyleModel.getNodeFormat(node));
-	        if(guessedObject instanceof IFormattedObject)
-	        	setNodeObject(node, ((IFormattedObject) guessedObject).getObject());
-	        else
-	        	setNodeObject(node, newText);
+	        if(guessedObject instanceof IFormattedObject) {
+                setNodeObject(node, ((IFormattedObject) guessedObject).getObject());
+                // parser applies standard format - use it
+                ((MNodeStyleController) NodeStyleController.getController()).setNodeFormat(node,
+                    PatternFormat.STANDARD_FORMAT_PATTERN);
+	        }
+	        else {
+	            setNodeObject(node, newText);
+	        }
         }
 	}
 
