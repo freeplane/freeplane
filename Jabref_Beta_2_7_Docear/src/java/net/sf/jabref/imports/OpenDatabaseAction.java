@@ -1,15 +1,21 @@
 package net.sf.jabref.imports;
 
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -331,6 +337,17 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
     			}
     		}
     	}
+    	try{
+			for(BibtexEntry entry : pr.getDatabase().getEntries()){
+				for(String field : entry.getAllFields()){
+					String value = entry.getField(field);
+					value = convertHTMLunicode(value);
+					entry.setField(field, value);
+				}
+			}
+    	} catch(Exception e){
+    		System.out.println(e);
+    	}
     	return pr;
     }
     
@@ -341,9 +358,20 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
         }        
         return path;
     }
-	
-	public static String parseSpecialChars(String s){
-		if(s == null) return s;
+    
+    public static String convertHTMLunicode(String s){
+    	if(s == null) return s;
+    	Pattern p = Pattern.compile("&#([0-9][0-9]?[0-9]?[0-9]?);");
+        Matcher m = p.matcher(s);
+        StringBuffer buffer = new StringBuffer();        
+    	while (m.find()){
+    		m.appendReplacement(buffer, new String(Character.toChars(Integer.parseInt(m.group(1)))));
+    	}
+    	m.appendTail(buffer);    	
+    	return buffer.toString();        
+    }
+        	
+	public static String parseSpecialChars(String s){		
 		s = s.replaceAll("\\\\\"[{]([a-zA-Z])[}]",  "$1" + "\u0308"); // replace äöü
         s = s.replaceAll("\\\\`[{]([a-zA-Z])[}]",  "$1" + "\u0300"); // replace `        
         s = s.replaceAll("\\\\'[{]([a-zA-Z])[}]",  "$1" + "\u0301"); // replace Ã‚Â´
@@ -439,10 +467,9 @@ public class OpenDatabaseAction extends MnemonicAwareAction {
         } else {
             // We couldn't find a header with info about encoding. Use default:
             reader = ImportFormatReader.getReader(fileToOpen, encoding);
-        }
-
+        }        
         BibtexParser bp = new BibtexParser(reader);
-
+        
         ParserResult pr = bp.parse();
         pr.setEncoding(encoding);
         pr.setFile(fileToOpen);        
