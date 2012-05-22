@@ -48,38 +48,12 @@ public class MakeLinkToAnchorAction extends AFreeplaneAction {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 
 		// get anchorID from MLinkController
-		String targetID = ((MLinkController)(LinkController.getController())).getAnchorID();
-
-		// check if anchorID is valid, then set link in current node
-		if (targetID != null && ! targetID.matches("\\w+://")) {
-
-			final MLinkController linkController = (MLinkController) MLinkController.getController();
-
-			// extract fileName from target map
-			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.indexOf("#") );
-
-			// get fileName of selected node (source)
-			final File sourceMapFile = selectedNode.getMap().getFile();
-			if(sourceMapFile == null) {
-				UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
-				return;
-			}
-			
-			// check if target and source reside within same map
-			final String sourceMapFileNameURI = sourceMapFile.toURI().toString();
-			if( sourceMapFileNameURI.substring(sourceMapFileNameURI.indexOf("/")+1).equals(targetMapFileName) ) {
-
-				// insert only targetNodeID as link
-				linkController.setLink(selectedNode, targetID.substring(targetID.indexOf("#")), false);
-			
-			} else {
-				
-				// insert whole targetPath (including targetNodeID) as link for current node
-				linkController.setLink(selectedNode, targetID, false);
-
-			}
-		}
+		final MLinkController mLinkController = (MLinkController)(LinkController.getController());
+		final String link = mLinkController.getAnchorIDforNode(selectedNode);
+        if(link != null)
+        	mLinkController.setLink(selectedNode, link, false);
 	}
+
 	@Override
 	public void setEnabled() {
 		final boolean isAnchored = ((MLinkController)(LinkController.getController())).isAnchored();

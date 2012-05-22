@@ -317,10 +317,8 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 			final Object toFormat = (obj instanceof IFormattedObject) ? ((IFormattedObject) obj).getObject() : obj;
 			if (format == null)
 				return toFormat;
-			if (toFormat instanceof String) {
-			    final String string = (String) toFormat;
-                return string.startsWith("=") ? new FormattedFormula(string, formatString) //
-                        : new FormattedObject(toFormat, format);
+			if (toFormat instanceof String && ((String) toFormat).startsWith("=")) {
+			    return new FormattedFormula((String) toFormat, formatString);
             }
             else if (format.acceptsDate() && toFormat instanceof Date) {
 				return new FormattedDate((Date) toFormat, formatString);

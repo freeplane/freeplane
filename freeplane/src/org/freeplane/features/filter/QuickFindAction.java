@@ -64,6 +64,9 @@ final class QuickFindAction extends AFreeplaneAction {
 			return;
 		}
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		if(selection == null){
+			return;
+		}
 		final NodeModel selected = selection.getSelected();
 
 		final NodeModel next;
