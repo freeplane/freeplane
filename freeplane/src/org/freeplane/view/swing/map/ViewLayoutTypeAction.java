@@ -52,10 +52,12 @@ public class ViewLayoutTypeAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final MapView map = (MapView) Controller.getCurrentController().getViewController().getMapView();
 		if (isSelected()) {
-			map.setLayoutType(layoutType);
+			map.setLayoutType(MapViewLayout.MAP);
+			setSelected(false);
 		}
 		else {
-			map.setLayoutType(MapViewLayout.MAP);
+			map.setLayoutType(layoutType);
+			setSelected(true);
 		}
 		final MapStyle mapStyle = (MapStyle) map.getModeController().getExtension(MapStyle.class);
 		mapStyle.setMapViewLayout(map.getModel(), map.getLayoutType());
