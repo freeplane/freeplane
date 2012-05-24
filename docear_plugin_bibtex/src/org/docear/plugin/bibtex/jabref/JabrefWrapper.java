@@ -31,6 +31,7 @@ import net.sf.jabref.imports.PostOpenAction;
 import net.sf.jabref.label.HandleDuplicateWarnings;
 
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.actions.DocearHandleDuplicateWarning;
 import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
 import org.docear.plugin.bibtex.actions.HandleDuplicateKeys;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
@@ -69,7 +70,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		    postOpenActions.add(new HandleDuplicateKeys());
 		}
 		else {
-		    postOpenActions.add(new HandleDuplicateWarnings());
+		    postOpenActions.add(new DocearHandleDuplicateWarning());
 		}
 	}
 
