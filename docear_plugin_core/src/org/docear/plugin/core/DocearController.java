@@ -76,7 +76,7 @@ public class DocearController implements IDocearEventListener {
 	
 	public boolean isLicenseDialogNecessary() {		
 		int storedBuildNumber = Integer.parseInt(ResourceController.getResourceController().getProperty(DOCEAR_VERSION_NUMBER, "0"));
-		if (storedBuildNumber != this.applicationBuildNumber) {
+		if (storedBuildNumber == 0) {
 			ResourceController.getResourceController().setProperty(DOCEAR_VERSION_NUMBER, ""+this.applicationBuildNumber);
 			return true;
 		}
