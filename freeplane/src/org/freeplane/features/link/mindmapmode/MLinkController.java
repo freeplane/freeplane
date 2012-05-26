@@ -1067,12 +1067,17 @@ public class MLinkController extends LinkController {
 		this.anchorID = anchorID;
 		final String tooltip; 
 		AFreeplaneAction setLinkAnchorAction = modeController.getAction("SetLinkAnchorAction");
-		if(isAnchored())
+		final boolean anchored = isAnchored();
+		if(anchored)
 			tooltip = TextUtils.format(setLinkAnchorAction.getTooltipKey() + "_anchored", anchorID);
 		else
 			tooltip = TextUtils.getRawText(setLinkAnchorAction.getTooltipKey());
 		setLinkAnchorAction.putValue(Action.SHORT_DESCRIPTION, tooltip);
 		setLinkAnchorAction.putValue(Action.LONG_DESCRIPTION, tooltip);
+		setLinkAnchorAction.setSelected(anchored);
+		modeController.getAction("ClearLinkAnchorAction").setEnabled(anchored);
+		modeController.getAction("MakeLinkToAnchorAction").setEnabled(anchored);
+		modeController.getAction("MakeLinkFromAnchorAction").setEnabled(anchored);
 	}
 
 	public boolean isAnchored() {
