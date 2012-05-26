@@ -131,7 +131,7 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
     			container,
     			containerPoint.x,
     			containerPoint.y);
-    	if(component instanceof MainView){
+    	if(component instanceof MainView || component instanceof MapView){
 	    	return component;
     	}
     	return SwingUtilities.getAncestorOfClass(MapView.class, component);
