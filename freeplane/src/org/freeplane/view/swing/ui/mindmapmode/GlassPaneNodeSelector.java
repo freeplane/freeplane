@@ -45,6 +45,7 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
      * 
      */
     private final INodeSelector nodeSelector;
+	private Component activeComponent;
 	/**
      * @param nodeSelector
      */
@@ -104,6 +105,7 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
         final Component component = findMapComponent(e);
         if(canRedispatchEventFor(component)){
         	redispatchMouseEvent(e, component);
+        	activeComponent = component;
         }
     }
 
@@ -111,9 +113,9 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
     	if(e.getButton() != 1){
     		return;
     	}
-        final Component component = findMapComponent(e);
-        if(canRedispatchEventFor(component)){
-        	redispatchMouseEvent(e, component);
+        if(activeComponent != null){
+        	redispatchMouseEvent(e, activeComponent);
+        	activeComponent = null;
         }
     }
 
@@ -131,7 +133,7 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
     			container,
     			containerPoint.x,
     			containerPoint.y);
-    	if(component instanceof MainView || component instanceof MapView){
+    	if(component instanceof MainView || component instanceof MapView || component instanceof JScrollBar){
 	    	return component;
     	}
     	return SwingUtilities.getAncestorOfClass(MapView.class, component);
