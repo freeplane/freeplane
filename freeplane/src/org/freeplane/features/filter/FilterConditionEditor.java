@@ -305,7 +305,6 @@ public class FilterConditionEditor extends JComponent {
 			}
 		}
 		else {
-			values.setSelectedIndex(-1);
 			filteredPropertiesComponent.setSelectedIndex(-1);
 			filteredPropertiesModel.setExtensionList(null);
 		}
