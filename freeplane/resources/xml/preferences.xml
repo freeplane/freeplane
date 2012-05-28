@@ -225,6 +225,12 @@
         <separator name="undo">
             <number name="undo_levels"/>
         </separator>
+        <separator name="RichTextEditor">
+        	<combo name="simplyhtml.default_paste_mode">
+        		<choice value="PASTE_HTML"/>
+        		<choice value="PASTE_PLAIN_TEXT"/>
+        	</combo>
+        </separator>
     </tab>
     <tab name="HTML">
         <separator name="browser">
