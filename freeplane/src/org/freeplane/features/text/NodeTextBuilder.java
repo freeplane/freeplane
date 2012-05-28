@@ -34,6 +34,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
@@ -91,11 +92,17 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 				}
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "OBJECT", new IAttributeHandler() {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_OBJECT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				final Object newInstance = TypeReference.create(value);
-				node.setUserObject(newInstance);
+				// work around for old maps : 
+				// actually we do not need IFormattedObject as user objects
+				// because formatting is saved as an extra attribute
+				if(newInstance instanceof IFormattedObject)
+					node.setUserObject(((IFormattedObject) newInstance).getObject());
+				else
+					node.setUserObject(newInstance);
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, new IAttributeHandler() {

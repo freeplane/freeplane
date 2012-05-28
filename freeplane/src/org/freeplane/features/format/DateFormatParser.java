@@ -29,14 +29,18 @@ public class DateFormatParser extends Parser {
 	private final String missingFields;
 	private boolean forbidLeadingSpaces;
 
-    public DateFormatParser(final String format) {
-        super(Parser.STYLE_DATE, getTypeDependingOnFormat(format), format);
+    public DateFormatParser(final String format, final String type) {
+        super(Parser.STYLE_DATE, type, format);
         forbidLeadingSpaces = (format.charAt(0) != ' ');
         parser = new SimpleDateFormat(format.replaceFirst("^\\s", ""));
         parser.setLenient(false);
         missingFields = (format.contains("y") ? "" : "y") //
                 + (format.contains("M") ? "" : "M") //
                 + (format.contains("d") ? "" : "d");
+    }
+    
+    public DateFormatParser(final String format) {
+        this(format, getTypeDependingOnFormat(format));
     }
 
 	private static String getTypeDependingOnFormat(final String format) {

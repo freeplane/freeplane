@@ -83,7 +83,7 @@ public class ScaledHTML extends BasicHTML{
 	/**
      * Root text view that acts as an HTML renderer.
      */
-    static class Renderer extends View {
+    public static class Renderer extends View {
 
         Renderer(JComponent c, ViewFactory f, View v) {
             super(null);
@@ -107,8 +107,8 @@ public class ScaledHTML extends BasicHTML{
 	    }
 	    return view.getPreferredSpan(axis);
         }
-
-          public float getMinimumSpan(int axis) {
+         
+       public float getMinimumSpan(int axis) {
 	    return view.getMinimumSpan(axis);
         }
 
@@ -179,6 +179,11 @@ public class ScaledHTML extends BasicHTML{
         	setSizeRunning = false;
         }
 
+        public void resetSize() {
+        	setSize(0, 0);
+        	setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
+        }
+        
         public Container getContainer() {
             return host;
         }

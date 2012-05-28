@@ -1232,6 +1232,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    if(presentationModeEnabled)
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
+		highlightEditor(g2);
     }
 
 	private void paintChildren(Graphics2D g2, final PaintingMode[] paintModes) {
@@ -1261,6 +1262,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		for (final NodeView selected : getSelection()) {
 			highlightSelected(g2, selected, paintModes);
 		}
+    }
+
+	private void highlightEditor(Graphics2D g2) {
+	    final Component editor = getComponent(0);
+		if(editor instanceof NodeView)
+	    	return;
+	    final java.awt.Shape oldClip = g2.getClip();
+	    try{
+	    	g2.setClip(editor.getX(), editor.getY(), editor.getWidth(), editor.getHeight());
+	    	super.paintChildren(g2);
+	    }
+	    finally{
+	    	g2.setClip(oldClip);
+	    }
 	    
     }
 

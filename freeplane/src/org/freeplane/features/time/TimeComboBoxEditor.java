@@ -46,7 +46,8 @@ import org.freeplane.features.format.IFormattedObject;
 public class TimeComboBoxEditor implements ComboBoxEditor {
 	private class ShowCalendarAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
-			calendarPopupMenu.show(showEditorBtn, 0, showEditorBtn.getHeight());
+			if(showEditorBtn.isShowing())
+				calendarPopupMenu.show(showEditorBtn, 0, showEditorBtn.getHeight());
 		}
 	}
 

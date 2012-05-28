@@ -1067,18 +1067,57 @@ public class MLinkController extends LinkController {
 		this.anchorID = anchorID;
 		final String tooltip; 
 		AFreeplaneAction setLinkAnchorAction = modeController.getAction("SetLinkAnchorAction");
-		if(isAnchored())
+		final boolean anchored = isAnchored();
+		if(anchored)
 			tooltip = TextUtils.format(setLinkAnchorAction.getTooltipKey() + "_anchored", anchorID);
 		else
 			tooltip = TextUtils.getRawText(setLinkAnchorAction.getTooltipKey());
 		setLinkAnchorAction.putValue(Action.SHORT_DESCRIPTION, tooltip);
 		setLinkAnchorAction.putValue(Action.LONG_DESCRIPTION, tooltip);
+		setLinkAnchorAction.setSelected(anchored);
+		modeController.getAction("ClearLinkAnchorAction").setEnabled(anchored);
+		modeController.getAction("MakeLinkToAnchorAction").setEnabled(anchored);
+		modeController.getAction("MakeLinkFromAnchorAction").setEnabled(anchored);
 	}
 
 	public boolean isAnchored() {
 		return anchorID != null;
 	}
 
+	public String getAnchorIDforNode(final NodeModel node) {
+	    String targetID = getAnchorID();
+	    final String link;
+		// check if anchorID is valid, then set link in current node
+		if (targetID != null && ! targetID.matches("\\w+://")) {
+
+			// extract fileName from target map
+			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.indexOf("#") );
+
+			// get fileName of selected node (source)
+			final File sourceMapFile = node.getMap().getFile();
+			if(sourceMapFile == null) {
+				UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
+				return null;
+			}
+			
+			// check if target and source reside within same map
+			final String sourceMapFileNameURI = sourceMapFile.toURI().toString();
+			if( sourceMapFileNameURI.substring(sourceMapFileNameURI.indexOf("/")+1).equals(targetMapFileName) ) {
+
+				// insert only targetNodeID as link
+				link = targetID.substring(targetID.indexOf("#"));
+			
+			} else {
+				
+				// insert whole targetPath (including targetNodeID) as link for current node
+				link = targetID;
+			}
+		}
+		else{
+			link = null;
+		}
+	    return link;
+    }
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeLinks links = NodeLinks.createLinkExtension(node);
