@@ -75,6 +75,7 @@
 					<include name="**/FreeplaneVersion.java" />
 					<include name="**/HtmlUtils.java" />
 					<include name="**/LogUtils.java" />
+					<include name="**/MenuUtils.java" />
 				</fileset>
 			</sourcefiles>
 		</javadoc>
