@@ -9,6 +9,7 @@ import groovy.lang.Script;
 import java.net.URI;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
@@ -17,6 +18,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
@@ -65,6 +67,15 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 			return ResourceController.getResourceController().getProperties();
 		}
 
+		/** support config['key'] from Groovy. */
+		public String getAt(final String name) {
+            return getProperty(name);
+		}
+		
+		public ResourceBundle getResources() {
+		    return ResourceController.getResourceController().getResources();
+		}
+		
 		public String getFreeplaneUserDirectory() {
 			return ResourceController.getResourceController().getFreeplaneUserDirectory();
 		}
@@ -104,6 +115,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		binding.setProperty("ui", new UITools());
 		binding.setProperty("htmlUtils", HtmlUtils.getInstance());
 		binding.setProperty("textUtils", new TextUtils());
+		binding.setProperty("menuUtils", new MenuUtils());
 		binding.setProperty("config", new ConfigProperties());
 	    return binding;
     }
