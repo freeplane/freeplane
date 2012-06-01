@@ -12,7 +12,7 @@ public abstract class AMindmapUpdater {
 
 	public String getTitle() {
 		return title;
-	}
+	}	
 	
 	/**
 	 * update a node (e.g. references)

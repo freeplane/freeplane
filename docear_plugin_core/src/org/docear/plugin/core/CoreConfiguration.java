@@ -16,6 +16,7 @@ import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.actions.DocearShowDataPrivacyStatementAction;
 import org.docear.plugin.core.actions.DocearShowDataProcessingTermsAction;
+import org.docear.plugin.core.actions.DocearShowNotificationBar;
 import org.docear.plugin.core.actions.DocearShowTermsOfUseAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
@@ -29,6 +30,7 @@ import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.listeners.WorkspaceOpenDocumentListener;
 import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.mindmap.MapConverter;
+import org.docear.plugin.core.ui.NotificationBar;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
 import org.docear.plugin.core.workspace.actions.WorkspaceChangeLocationsAction;
@@ -47,6 +49,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -126,7 +129,7 @@ public class CoreConfiguration extends ALanguageController {
 		URI uri = CoreConfiguration.projectPathObserver.getUri();
 		if (uri != null) {
 			UrlManager.getController().setLastCurrentDir(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()));
-		}
+		}		
 	}
 		
 	private void addMenus(ModeController modeController) {
@@ -135,9 +138,12 @@ public class CoreConfiguration extends ALanguageController {
 				builder.addAction("/menu_bar/help", new DocearShowTermsOfUseAction(),	MenuBuilder.AS_CHILD);
 				builder.addAction("/menu_bar/help", new DocearShowDataPrivacyStatementAction(),	MenuBuilder.AS_CHILD);
 				builder.addAction("/menu_bar/help", new DocearShowDataProcessingTermsAction(),	MenuBuilder.AS_CHILD);
+				//builder.addAction("/menu_bar/help", new DocearShowNotificationBar(),	MenuBuilder.AS_CHILD);
 			}
 		});
-		
+		modeController.getUserInputListenerFactory().addToolBar(NotificationBar.TOOLBAR_NAME, ViewController.TOP, new NotificationBar());
+		String propertyName = Controller.getCurrentController().getViewController().completeVisiblePropertyKey(NotificationBar.getNotificationBar());
+		ResourceController.getResourceController().setProperty(propertyName, false);
 	}
 
 

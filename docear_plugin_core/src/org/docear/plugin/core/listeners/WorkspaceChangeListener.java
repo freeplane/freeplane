@@ -49,7 +49,9 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 
 	public void toolBarChanged(WorkspaceEvent event) {}
 
-	public void workspaceReady(WorkspaceEvent event) {}
+	public void workspaceReady(WorkspaceEvent event) {
+		WorkspaceController.getController().getWorkspaceModel().addTreeModelListener(new DocearWorkspaceTreeModelListener());
+	}
 
 	public void configurationLoaded(WorkspaceEvent event) {
 		linkWelcomeMindmapAfterWorkspaceCreation();

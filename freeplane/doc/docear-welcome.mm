@@ -1,4 +1,4 @@
-<map version="0.9.0" dialect="docear 1.0" docear_map_version="1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
+<map version="freeplane 1.2.0" dialect="docear 1.0" dcr_id="" dcr_uri="workspace:/../DocearWorkspace/trunk/freeplane/doc/docear-welcome.mm" docear_map_version="1.0" software_name="SciPlore_MindMapping" software_version="0.14" private="1" mapID="88c560da-0c67-49c7-870a-fa7c1b63bc38">
 <!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <node TEXT="Welcome" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1322910607046" COLOR="#ffffff" BACKGROUND_COLOR="#0099cc">
 <font SIZE="16" BOLD="true" ITALIC="false"/>

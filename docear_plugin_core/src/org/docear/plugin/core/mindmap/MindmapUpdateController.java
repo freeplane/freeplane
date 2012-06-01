@@ -1,10 +1,14 @@
 package org.docear.plugin.core.mindmap;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 
@@ -26,7 +30,15 @@ import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
 public class MindmapUpdateController {
+	
 	private final ArrayList<AMindmapUpdater> updaters = new ArrayList<AMindmapUpdater>();
+	private boolean showDialog = true;
+	
+	public MindmapUpdateController(){}
+	
+	public MindmapUpdateController(boolean showDialog){
+		this.showDialog = showDialog;
+	}
 
 	public void addMindmapUpdater(AMindmapUpdater updater) {
 		this.updaters.add(updater);
@@ -118,13 +130,31 @@ public class MindmapUpdateController {
 	}
 
 	public boolean updateMindmaps(List<MapItem> maps, boolean closeWhenDone) {
-		SwingWorker<Void, Void> thread = getUpdateThread(maps, closeWhenDone);
-
-		SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
-		workerDialog.setHeadlineText(TextUtils.getText("updating_mindmaps_headline"));
-		workerDialog.setSubHeadlineText(TextUtils.getText("updating_mindmaps_subheadline"));
-		workerDialog.showDialog(thread);
-		workerDialog = null;
+		final SwingWorker<Void, Void> thread = getUpdateThread(maps, closeWhenDone);
+		if(showDialog){
+			SwingWorkerDialog workerDialog = new SwingWorkerDialog(Controller.getCurrentController().getViewController().getJFrame());
+			workerDialog.setHeadlineText(TextUtils.getText("updating_mindmaps_headline"));
+			workerDialog.setSubHeadlineText(TextUtils.getText("updating_mindmaps_subheadline"));
+			workerDialog.showDialog(thread);
+			workerDialog = null;
+		}
+		else{
+			final ExecutorService executor = Executors.newSingleThreadExecutor();			
+			thread.addPropertyChangeListener(new PropertyChangeListener() {
+				
+				public void propertyChange(PropertyChangeEvent evt) {
+					if(evt.getPropertyName().equals(SwingWorkerDialog.IS_CANCELED) || evt.getPropertyName().equals(SwingWorkerDialog.IS_DONE)){
+						if(thread != null){
+							thread.cancel(true);							
+						}
+						if(executor != null){			
+							executor.shutdownNow();							
+						}
+					}
+				}
+			});
+			executor.execute(thread);
+		}
 
 		return !thread.isCancelled();
 	}

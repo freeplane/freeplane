@@ -207,10 +207,14 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 							((DefaultFileNode) node).copyTo(targetDir);
 						} 
 						else if(dropAction == DnDConstants.ACTION_MOVE) {
+							File oldFile = ((DefaultFileNode) node).getFile();
+							if(oldFile.equals(targetDir)) return;
 							((DefaultFileNode) node).moveTo(targetDir);
+							File newFile = new File(targetDir, ((DefaultFileNode) node).getName());
 							AWorkspaceTreeNode parent = node.getParent();
 							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
+							WorkspaceUtils.getModel().nodeMoved(node, oldFile, newFile);
 						}
 					}
 				}
@@ -222,6 +226,7 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 							AWorkspaceTreeNode parent = node.getParent();
 							WorkspaceUtils.getModel().cutNodeFromParent(node);
 							parent.refresh();
+							WorkspaceUtils.getModel().nodeMoved(node, srcFile, new File(targetDir, srcFile.getName()));
 						}
 					}
 				}
