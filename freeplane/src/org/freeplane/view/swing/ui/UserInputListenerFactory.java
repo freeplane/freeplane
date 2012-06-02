@@ -85,7 +85,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder = new MenuBuilder(modeController);
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-				menuBuilder.afterMapChange(newMap);
+				if(modeController.equals(Controller.getCurrentModeController()))
+					menuBuilder.afterMapChange(newMap);
 			}
 
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
