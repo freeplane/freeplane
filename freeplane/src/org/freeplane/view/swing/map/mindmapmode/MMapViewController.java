@@ -55,12 +55,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
-			final String title;
-			if(EditedComponent.TEXT.equals(editControl.getEditType())) 
-				title = "edit_long_node";
-			else
-				title = "edit_details";
-			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(title, node, text, editControl, true);
+			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(node, text, editControl, true);
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){ 
 				int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
@@ -80,6 +75,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	        final NodeView nodeView = mainView.getNodeView();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
 	            final Font font = viewController.getFont(node);
+	            editNodeWYSIWYG.setTitle("edit_long_node");
 	            editNodeWYSIWYG.setFont(font);
 	            final Color nodeTextColor = viewController.getTextColor(node);
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
@@ -87,9 +83,16 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();
+	            editNodeWYSIWYG.setTitle("edit_details");
                 editNodeWYSIWYG.setFont(map.getDetailFont());
                 editNodeWYSIWYG.setTextColor(map.getDetailForeground());
                 editNodeWYSIWYG.setBackground (nodeView.getDetailBackground());
+			}
+			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
+			    final MapView map = nodeView.getMap();
+	            editNodeWYSIWYG.setTitle("edit_note");
+                editNodeWYSIWYG.setFont(map.getDefaultNoteFont());
+                editNodeWYSIWYG.setBackground (Color.WHITE);
 			}
 			return editNodeWYSIWYG;
 		}
