@@ -60,9 +60,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.RootPaneContainer;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
@@ -219,6 +223,24 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			zoomModel.setSelectedItem("100%");
 			LogUtils.severe(e);
 		}
+		zoomModel.addListDataListener(new  ListDataListener() {
+			public void intervalRemoved(ListDataEvent e) {
+			}
+			
+			public void intervalAdded(ListDataEvent e) {
+			}
+			
+			public void contentsChanged(ListDataEvent e) {
+				if(e.getIndex0() == -1){
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							setZoomByItem(zoomModel.getSelectedItem());
+						}
+					});
+				}
+			}
+		}) ;
+		
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
 		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
@@ -700,10 +722,20 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	private void setZoomByItem(final Object item) {
+		final float zoomValue;
 		if (((String) item).equals(userDefinedZoom)) {
-			return;
+			final float zoom = mapViewManager.getZoom();
+			final int zoomInt = Math.round(100 * zoom);
+			final SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(zoomInt, 1, 3200, 1);
+			JSpinner spinner = new JSpinner(spinnerNumberModel);
+			final int option = JOptionPane.showConfirmDialog(scrollPane, spinner, TextUtils.getText("enter_zoom"), JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION)
+				zoomValue = spinnerNumberModel.getNumber().floatValue() / 100;
+			else
+				zoomValue = zoom;
 		}
-		final float zoomValue = getZoomValue(item);
+		else
+			zoomValue = getZoomValue(item);
 		setZoom(zoomValue);
 	}
 
@@ -721,13 +753,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	public void updateMenus(final MenuBuilder menuBuilder) {
 		if (menuBuilder.contains("main_toolbar_zoom")) {
 			final JComboBox zoomBox = new JComboBox(zoomModel);
-			zoomBox.addItemListener(new ItemListener() {
-				public void itemStateChanged(final ItemEvent e) {
-					if (e.getStateChange() == ItemEvent.SELECTED) {
-						setZoomByItem(e.getItem());
-					}
-				}
-			});
 			menuBuilder.addElement("main_toolbar_zoom", zoomBox, MenuBuilder.AS_CHILD);
 			// FELIXHACK
 			//zoomBox.setRenderer(new ComboBoxRendererWithTooltip(zoomBox));
