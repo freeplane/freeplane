@@ -37,6 +37,7 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleFactory;
+import org.freeplane.features.styles.StyleNamedObject;
 
 /**
  * @author Dimitry Polivaev
@@ -86,7 +87,14 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		}
 		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
 		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
-		mapController.insertNode(newNode, styleModel.getUserStyleParentNode(styleMap), false, false, true);
+		NodeModel userStyleParentNode = styleModel.getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
+		if(userStyleParentNode == null){
+			userStyleParentNode = new NodeModel(styleMap);
+			userStyleParentNode.setUserObject(new StyleNamedObject(MapStyleModel.STYLES_USER_DEFINED));
+			mapController.insertNode(userStyleParentNode, styleMap.getRootNode(), false, false, true);
+
+		}
+		mapController.insertNode(newNode, userStyleParentNode, false, false, true);
 		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {

@@ -3,6 +3,7 @@
 ===============================
 Approximative search in rich text editor
 Add and remove reminders via scripting api
+rich text editor: add "Paste plain text" context menu item and "default paste mode" preference option
 
 ===============================
 1.2.14 beta

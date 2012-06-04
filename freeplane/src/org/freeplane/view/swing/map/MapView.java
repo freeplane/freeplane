@@ -1392,14 +1392,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (selected.getMainView().isEdited()) {
 			return;
 		}
-		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 6, 15);
+		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 4, 15);
 		g.draw(roundRectClip);
 	}
 
 	private void highlightSelected(Graphics2D g, NodeView selected, PaintingMode[] paintedModes) {
 		final java.awt.Shape highlightClip;
 		if (MapView.standardDrawRectangleForSelection)
-			highlightClip = getRoundRectangleAround(selected, 6, 15);
+			highlightClip = getRoundRectangleAround(selected, 4, 15);
 		else
 			highlightClip = getRoundRectangleAround(selected, 4, 2);
 		final java.awt.Shape oldClip = g.getClip();
