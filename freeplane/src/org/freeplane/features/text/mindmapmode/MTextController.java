@@ -51,6 +51,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
@@ -98,6 +99,7 @@ import org.freeplane.features.url.UrlManager;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
+import com.lightdev.app.shtm.SHTMLPrefsChangeListener;
 import com.lightdev.app.shtm.TextResources;
 
 
@@ -121,6 +123,30 @@ public class MTextController extends TextController {
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
+	}
+	
+	/**
+	 * This class forwards changes in Freeplane pref properties that are relevant to simplyhtml
+	 * ("simplyhtml.*") to a SHTMLPrefsChangeListener.
+	 * @author Felix Natter
+	 *
+	 */
+	private static class FreeplaneToSHTMLPropertyChangeAdapter implements IFreeplanePropertyListener
+	{
+		private final SHTMLPrefsChangeListener shtmlPrefsChangedListener;
+		public FreeplaneToSHTMLPropertyChangeAdapter(final SHTMLPrefsChangeListener shtmlPrefsChangeListener)
+		{
+			this.shtmlPrefsChangedListener = shtmlPrefsChangeListener;
+		}
+		
+		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+			if (propertyName.startsWith("simplyhtml."))
+			{
+				final String shtmlProp = propertyName.substring("simplyhtml.".length());
+				shtmlPrefsChangedListener.shtmlPrefChanged(shtmlProp, newValue, oldValue);
+			}
+		}
+		
 	}
 
 	private void createActions() {
@@ -864,6 +890,10 @@ public class MTextController extends TextController {
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
+    	
+    	ResourceController.getResourceController().addPropertyChangeListener(
+    			new FreeplaneToSHTMLPropertyChangeAdapter(shtmlPanel));
+    	
 		return shtmlPanel;
     }
 
