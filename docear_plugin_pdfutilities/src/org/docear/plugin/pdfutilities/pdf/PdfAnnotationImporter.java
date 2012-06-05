@@ -414,7 +414,10 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 	}
 
 	private Integer getPageFromCOSArray(PDDocument document, COSArray destination) {
-		
+		//DOCEAR: fallback if no etry was found
+		if(destination == null) {
+			return 1;
+		}
 		Iterator<?> it = destination.iterator();
 	    while(it.hasNext()){
 	         COSObject o = (COSObject)it.next();

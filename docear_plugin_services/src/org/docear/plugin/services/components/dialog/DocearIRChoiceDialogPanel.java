@@ -4,11 +4,8 @@ import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URI;
@@ -37,6 +34,8 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.ui.MultiLineActionLabel;
 import org.docear.plugin.core.ui.components.DocearLicensePanel;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.components.OverlayPasswordField;
+import org.docear.plugin.services.components.OverlayTextField;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -631,131 +630,6 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	}
 	
 	
-	class OverlayTextField extends JTextField implements FocusListener {
-		
-		private static final long serialVersionUID = 1L;
-		private final String startText;
-
-		public OverlayTextField(String initText) {
-			super();
-			this.startText = initText;
-			addFocusListener(this);
-			setGhostText();
-		}
-		
-		public String getText() {
-			if(getTextInternal().equals(startText)) {
-				return "";
-			}
-			return super.getText();
-		}
-				
-		public void focusGained(FocusEvent e) {
-			removeGhostText();
-		}
-
-		public void focusLost(FocusEvent e) {
-			setGhostText();
-		}
-		
-		public void paint(Graphics g) {
-			setGhostText();
-			super.paint(g);
-		}
-		
-		boolean inGhostSet = false;
-		private void setGhostText() {
-			if(inGhostSet) return;
-			inGhostSet = true;
-			if(!hasFocus() && "".equals(getTextInternal().trim()) ) {
-				setForeground(new Color(0x88FFFFFF&getForeground().getRGB(), true));
-				setText(startText);
-			}
-			inGhostSet = false;
-		}
-		
-		private void removeGhostText() {
-			setForeground(new Color(getForeground().getRGB(), false));
-			if(startText.equals(getTextInternal())) {
-				setText("");
-			}
-			revalidate();
-			repaint();
-		}
-		
-		private String getTextInternal() {
-			return super.getText();
-		}
-
-		
-	}
-	
-	class OverlayPasswordField extends JPasswordField implements FocusListener {
-		
-		private static final long serialVersionUID = 1L;
-		private final String startText;
-		private char echoChar;
-		
-		public OverlayPasswordField(String initText) {
-			super();
-			this.startText = initText;
-			addFocusListener(this);
-			echoChar = getEchoChar();
-			setGhostText();
-		}
-				
-		public void focusGained(FocusEvent e) {
-			removeGhostText();
-		}
-
-		public void focusLost(FocusEvent e) {
-			setGhostText();
-		}
-		
-		public void paint(Graphics g) {
-			setGhostText();
-			super.paint(g);
-		}
-		
-		public char[] getPassword() {
-			String pw = getTextInternal();
-			if(startText.equals(pw)) {
-				return new char[]{};
-			}
-			return super.getPassword();
-		}
-		
-		
-		boolean inGhostSet = false;
-		private void setGhostText() {
-			if(inGhostSet) return;
-			inGhostSet = true;
-			//setEchoChar(echoChar);
-			if(!hasFocus() && "".equals(getTextInternal()) ) {
-				setEchoChar((char) 0);
-				setForeground(new Color(0x88FFFFFF&getForeground().getRGB(), true));
-				setText(startText);
-			}
-			inGhostSet = false;
-		}
-		
-		private String getTextInternal() {
-			return new String(super.getPassword());
-		}
-		
-		private void removeGhostText() {
-			setForeground(new Color(getForeground().getRGB(), false));
-			if(startText.equals(getTextInternal())) {
-				setEchoChar(echoChar);
-				setText("");
-			}
-			revalidate();
-			repaint();
-		}
-
-		
-	}
-
 	public Integer getBirthYear() {
 		try {
 			return new Integer(txtBirthYear.getText());

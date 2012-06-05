@@ -1,5 +1,6 @@
 package org.docear.plugin.communications;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import org.docear.plugin.communications.components.dialog.ConnectionWaitDialog;
 import org.docear.plugin.communications.features.AccountRegisterer;
 import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
+import org.docear.plugin.communications.features.DocearServiceResponse;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
@@ -215,6 +217,29 @@ public class CommunicationsController extends ALanguageController implements Pro
 			client.setReadTimeout(10000);
 		}
 		return false;
+	}
+	
+	public WebResource getServiceResource() {
+		try {
+			return client.resource(getServiceUri());
+		} catch (URISyntaxException e) {
+			return null;
+		}
+	}
+	
+	public DocearServiceResponse get(String path) {
+		try {
+			ClientResponse response = client.resource(getServiceUri()).path(path).get(ClientResponse.class);
+			Status status = response.getClientResponseStatus();
+			if (status != null && status.equals(Status.OK)) {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
+			} else {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, response.getEntityInputStream());
+			}
+		} catch (Exception e) {
+			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(new String(e.getMessage()).getBytes()));
+		} 
+		
 	}
 
 	private void addPluginDefaults() {

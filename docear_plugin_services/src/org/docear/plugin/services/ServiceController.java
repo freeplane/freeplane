@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
 
+import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.communications.CommunicationsController;
@@ -15,10 +16,15 @@ import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
+import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 public class ServiceController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
@@ -51,18 +57,18 @@ public class ServiceController {
 		new ServicePreferences();
 		
 		addPluginDefaults();
+		addMenuEntries();
 		Controller.getCurrentController().addAction(new DocearClearUserDataAction());
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
+		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
 	
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {				
 				backupRunner.run();
 				new UpdateCheck();
 			}		
-		});
-		
-				
+		});			
 	}
 	
 	public void initListeners() {
@@ -151,5 +157,18 @@ public class ServiceController {
 
 	public void setApplication(Application application) {
 		this.application = application;
+	}
+	
+	private void addMenuEntries() {
+
+		Controller.getCurrentModeController().addMenuContributor(new IMenuContributor() {
+
+			public void updateMenus(ModeController modeController, MenuBuilder builder) {
+				builder.addMenuItem("/menu_bar/extras",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/menu_bar/recommendations", MenuBuilder.AFTER);
+				builder.addAction("/menu_bar/recommendations", new ShowRecommendationsAction(),	MenuBuilder.AS_CHILD);				
+				builder.addMenuItem("/node_popup",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/node_popup/recommendations", MenuBuilder.AFTER);
+				builder.addAction("/node_popup/recommendations", new ShowRecommendationsAction(), MenuBuilder.AS_CHILD);
+			}
+		});
 	}
 }
