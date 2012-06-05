@@ -17,64 +17,64 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
-public class JabRefChangeListener implements DatabaseChangeListener, PropertyChangeListener {	
+public class JabRefChangeListener implements DatabaseChangeListener, PropertyChangeListener {
 
 	private final Component focusTarget;
 	private Component previousFocus = null;
 	private boolean memorize = true;
-	
+
 	public JabRefChangeListener() {
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(this);
 		focusTarget = Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBar();
 	}
-	
+
 	public synchronized void databaseChanged(DatabaseChangeEvent e) {
-		memorize = false;
-		//WorkspaceController.getController().getWorkspaceViewTree().requestFocus();
-		focusTarget.requestFocus();
-		
+
 		if (DocearReferenceUpdateController.isLocked()) {
 			return;
 		}
-		
+
 		if (e.getEntry() == null || e.getEntry().getCiteKey() == null) {
 			return;
 		}
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
-			
 
-			public void run() {	
-				DocearReferenceUpdateController.lock();
-				MapModel currentMap = Controller.getCurrentController().getMap();
-				if (currentMap == null) {
-					return;
-				}
+			public void run() {
+				try {
 
-				MindmapUpdateController mindmapUpdateController = new MindmapUpdateController();
-				mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils
-						.getText("update_references_open_mindmaps")));
-				mindmapUpdateController.updateCurrentMindmap(true);
+					memorize = false;
+					focusTarget.requestFocus();
 
-				DocearReferenceUpdateController.unlock();
-				
-				if(previousFocus != null) {
+					DocearReferenceUpdateController.lock();
+					MapModel currentMap = Controller.getCurrentController().getMap();
+					if (currentMap == null) {
+						return;
+					}
+
+					MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(false);
+					mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+					mindmapUpdateController.updateCurrentMindmap(true);
+
+					DocearReferenceUpdateController.unlock();
+				} finally {
+					if (previousFocus != null) {
 						previousFocus.requestFocus();
-						memorize=true;
+						memorize = true;
+					}
 				}
-				
 			}
+
 		});
-			
+
 	}
 
-	
 	public void propertyChange(PropertyChangeEvent evt) {
-		if("permanentFocusOwner".equals(evt.getPropertyName()) && evt.getNewValue() != null) {
-			if(memorize || (!memorize && !focusTarget.equals(evt.getNewValue()) && !focusTarget.equals(evt.getOldValue())) ) {
+		if ("permanentFocusOwner".equals(evt.getPropertyName()) && evt.getNewValue() != null) {
+			if (memorize || (!memorize && !focusTarget.equals(evt.getNewValue()) && !focusTarget.equals(evt.getOldValue()))) {
 				previousFocus = (Component) evt.getNewValue();
 			}
-		}		
+		}
 	}
-	
+
 }
