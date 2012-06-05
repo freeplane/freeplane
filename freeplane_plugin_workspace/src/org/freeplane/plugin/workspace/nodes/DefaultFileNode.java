@@ -289,7 +289,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 	public Transferable getTransferable() {
 		WorkspaceTransferable transferable = new WorkspaceTransferable();
 		try {
-			URI uri = getFile().toURI().toURL().openConnection().getURL().toURI().normalize();
+			URI uri = WorkspaceUtils.absoluteURI(getFile().toURI());
 			transferable.addData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR, uri.toString());
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));

@@ -120,7 +120,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 	public Transferable getTransferable() {
 		WorkspaceTransferable transferable = new WorkspaceTransferable();
 		try {
-			URI uri = getLinkPath().toURL().openConnection().getURL().toURI().normalize();
+			URI uri = WorkspaceUtils.absoluteURI(getLinkPath());
 			transferable.addData(WorkspaceTransferable.WORKSPACE_URI_LIST_FLAVOR, uri.toString());
 			List<File> fileList = new Vector<File>();
 			fileList.add(new File(uri));
