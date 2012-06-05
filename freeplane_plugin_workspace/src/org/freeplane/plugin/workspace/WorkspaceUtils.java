@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
@@ -45,6 +46,8 @@ import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
  * 
  */
 public class WorkspaceUtils {
+	private static final String UNC_PREFIX = "//";
+
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -229,9 +232,9 @@ public class WorkspaceUtils {
 	public static URI getProfileBaseURI() {
 		URI base = getWorkspaceBaseFile().toURI();
 		try {
-			return (new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), base.getPath() + "/" 
+			return normalize((new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), base.getPath() + "/" 
 					+ WorkspaceController.getController().getPreferences().getWorkspaceProfileHome()+"/", base.getQuery(),
-					base.getFragment())).normalize();
+					base.getFragment())));
 		}
 		catch (URISyntaxException e) {
 		}
@@ -293,7 +296,8 @@ public class WorkspaceUtils {
 				return null;
 			}
 			else {
-				return urlConnection.getURL().toURI().normalize();
+				URI normalizedUri = normalize(urlConnection.getURL().toURI());							
+				return normalizedUri;
 			}
 		}
 		catch (URISyntaxException e) {
@@ -305,10 +309,36 @@ public class WorkspaceUtils {
 		catch (Exception e){
 			LogUtils.warn(e);
 		}
-		return uri.normalize();
+		return normalize(uri);
 
 	}
 	
+	private static URI normalize(URI uri){
+		URI normalizedUri = uri.normalize();
+		//Fix UNC paths that are incorrectly normalized by URI#resolve (see Java bug 4723726)
+		String normalizedPath = normalizedUri.getPath();
+		if ("file".equalsIgnoreCase(uri.getScheme()) && uri.getPath() != null && uri.getPath().startsWith(UNC_PREFIX) && (normalizedPath == null || !normalizedPath.startsWith(UNC_PREFIX))){
+			try {
+				normalizedUri = new URI(normalizedUri.getScheme(), ensureUNCPath(normalizedUri.getSchemeSpecificPart()), normalizedUri.getFragment());
+			} catch (URISyntaxException e) {
+				LogUtils.warn(e);
+			}
+		}				
+		return normalizedUri;
+	}
+	
+	private static String ensureUNCPath(String path) {
+		int len = path.length();
+		StringBuffer result = new StringBuffer(len);
+		for (int i = 0; i < 4; i++) {
+			//    if we have hit the first non-slash character, add another leading slash
+			if (i >= len || result.length() > 0 || path.charAt(i) != '/')
+				result.append('/');
+		}
+		result.append(path);
+		return result.toString();
+	}
+
 	public static URI getWorkspaceRelativeURI(File file) {
 		return LinkController.toRelativeURI(null, file, LinkController.LINK_RELATIVE_TO_WORKSPACE);
 	}
@@ -349,7 +379,7 @@ public class WorkspaceUtils {
 	}
 
 	public static URI getURI(final File f) {
-		return f.toURI().normalize();
+		return normalize(f.toURI());
 	}
 
 	/**
