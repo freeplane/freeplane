@@ -1,29 +1,61 @@
 package org.docear.plugin.services.recommendations.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.net.URL;
 import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import org.docear.plugin.services.recommendations.RecommendationEntry;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.workspace.controller.LinkTypeFileIconHandler;
+
+import sun.swing.SwingUtilities2;
 
 public class RecommendationsResultPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-
+	private static Icon icon;
+	static {
+		URL url = null;
+		String iconPath = "/images/16x16/text-html-2.png";
+		if(iconPath !=null) {
+			url = LinkTypeFileIconHandler.class.getResource(iconPath);
+			if(url == null) {
+				url = ResourceController.class.getResource(iconPath);
+				if(url == null) {
+					url = ClassLoader.getSystemResource(iconPath);
+					if(url == null) {
+						url = ClassLoader.getSystemResource(iconPath);
+					}					
+				}				
+			}
+		}
+		if(url != null) {
+			icon = new ImageIcon(url);
+		}
+	
+	}
 	private JTable table;
 
 	public RecommendationsResultPanel(final List<RecommendationEntry> recommandations) {
@@ -33,7 +65,7 @@ public class RecommendationsResultPanel extends JPanel {
 		add(scrollPane, BorderLayout.CENTER);
 
 		table = new JTable();
-		table.setModel(new DefaultTableModel(new String[] { "Document Title", "Link" }, recommandations.size()) {
+		table.setModel(new DefaultTableModel(new String[] { TextUtils.getText("docear.recommendations.table.head.title"), TextUtils.getText("docear.recommendations.table.head.link")}, recommandations.size()) {
 			private static final long serialVersionUID = 1L;
 			Class<?>[] columnTypes = new Class<?>[] { String.class, JButton.class };
 
@@ -42,7 +74,14 @@ public class RecommendationsResultPanel extends JPanel {
 					return recommandations.get(row).getTitle();
 				}
 				if (column == 1) {
-					JButton button = new JButton("Link");
+					JButton button;
+					if(icon != null) {
+						button = new JButton(icon);
+					}
+					else { 
+						button = new JButton(TextUtils.getText("docear.recommendations.table.link.label"));
+					}
+					
 					button.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							try {
@@ -68,13 +107,23 @@ public class RecommendationsResultPanel extends JPanel {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setPreferredWidth(250);
-		table.getColumnModel().getColumn(0).setMinWidth(250);
+//		table.getColumnModel().getColumn(0).setPreferredWidth(250);
+//		table.getColumnModel().getColumn(0).setMinWidth(250);
+		if(icon  != null) {
+			TableColumn col = table.getColumnModel().getColumn(1);
+			FontMetrics fm = SwingUtilities2.getFontMetrics(table, UITools.getFrame().getGraphics());
+			int colWidth = SwingUtilities2.stringWidth(table, fm, TextUtils.getText("docear.recommendations.table.head.link"));
+			colWidth += 14;
+			col.setPreferredWidth(colWidth);
+			col.setMinWidth(colWidth);
+			col.setMaxWidth(colWidth);
+		}
 		table.setDefaultRenderer(JButton.class, new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				if (value instanceof JButton) {
+					((JButton) value).setBackground(Color.WHITE);
 					return (Component) value;
 				}
 				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -129,6 +178,7 @@ public class RecommendationsResultPanel extends JPanel {
 				
 			}
 		});
+		table.setRowHeight(24);
 		scrollPane.setViewportView(table);
 	}
 

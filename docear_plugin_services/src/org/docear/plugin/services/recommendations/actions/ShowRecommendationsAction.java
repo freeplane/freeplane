@@ -54,12 +54,10 @@ public class ShowRecommendationsAction extends AFreeplaneAction {
 			if (response.getStatus() == Status.OK) {
 				try {
 					DocearXmlBuilder xmlBuilder = new DocearXmlBuilder();
-					String xml = response.getContentAsString();
 					IXMLReader reader = new StdXMLReader(new InputStreamReader(response.getContent(), "UTF8"));
 					IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 					parser.setBuilder(xmlBuilder);
 					parser.setReader(reader);
-	
 					parser.parse();
 					DocearXmlRootElement result = (DocearXmlRootElement)xmlBuilder.getRoot();
 					Collection<DocearXmlElement> documents = result.findAll("document");
