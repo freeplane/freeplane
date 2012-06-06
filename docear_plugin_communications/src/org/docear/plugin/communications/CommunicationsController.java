@@ -237,7 +237,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, response.getEntityInputStream());
 			}
 		} catch (Exception e) {
-			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(new String(e.getMessage()).getBytes()));
+			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream("error".getBytes()));
 		} 
 		
 	}

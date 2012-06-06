@@ -2,21 +2,20 @@ package org.docear.plugin.services.recommendations.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.freeplane.core.util.LogUtils;
@@ -63,7 +62,7 @@ public class RecommendationsResultPanel extends JPanel {
 				return columnTypes[columnIndex];
 			}
 
-			boolean[] columnEditables = new boolean[] { false, true };
+			boolean[] columnEditables = new boolean[] { false, false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -72,6 +71,8 @@ public class RecommendationsResultPanel extends JPanel {
 		table.getColumnModel().getColumn(0).setPreferredWidth(250);
 		table.getColumnModel().getColumn(0).setMinWidth(250);
 		table.setDefaultRenderer(JButton.class, new DefaultTableCellRenderer() {
+			private static final long serialVersionUID = 1L;
+
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				if (value instanceof JButton) {
 					return (Component) value;
@@ -80,32 +81,51 @@ public class RecommendationsResultPanel extends JPanel {
 			}
 		});
 		table.addMouseListener(new MouseListener() {
-			
+
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
-			
+
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
-			
+
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
-			
+
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
+			}
+
+			public void mouseClicked(MouseEvent e) {
+				int row = table.rowAtPoint(e.getPoint());
+				int col = table.columnAtPoint(e.getPoint());
+				Object comp = table.getModel().getValueAt(row, col);
+				if (comp instanceof JButton) {
+					((JButton) comp).doClick();
+					e.consume();
+				}
+
+			}
+		});
+		table.addMouseMotionListener(new MouseMotionListener() {
+			private final Cursor hand = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+			
+			public void mouseMoved(MouseEvent e) {
+				int row = table.rowAtPoint(e.getPoint());
+				int col = table.columnAtPoint(e.getPoint());
+				try {
+					Object comp = table.getModel().getValueAt(row, col);
+					if (comp instanceof JButton) {
+						table.setCursor(hand);
+					}
+					else {
+						table.setCursor(Cursor.getDefaultCursor());
+					}
+				} catch (Exception ex) {
+				}
 				
 			}
 			
-			public void mouseClicked(MouseEvent e) {
-				Component comp = table.getComponentAt(e.getX(),e.getY());
-				if(comp instanceof JButton) {
-					comp.dispatchEvent(e);
-				}
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
 				
 			}
 		});

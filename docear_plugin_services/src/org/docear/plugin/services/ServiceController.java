@@ -162,11 +162,10 @@ public class ServiceController {
 	private void addMenuEntries() {
 
 		Controller.getCurrentModeController().addMenuContributor(new IMenuContributor() {
-
-			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				builder.addMenuItem("/menu_bar/extras",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/menu_bar/recommendations", MenuBuilder.AFTER);
+			public void updateMenus(ModeController modeController, MenuBuilder builder) { // /EditDetailsInDialogAction
+				builder.addMenuItem("/menu_bar/extras",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/menu_bar/recommendations", MenuBuilder.BEFORE);
 				builder.addAction("/menu_bar/recommendations", new ShowRecommendationsAction(),	MenuBuilder.AS_CHILD);				
-				builder.addMenuItem("/node_popup",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/node_popup/recommendations", MenuBuilder.AFTER);
+				builder.addMenuItem("/node_popup",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/node_popup/recommendations", MenuBuilder.PREPEND);
 				builder.addAction("/node_popup/recommendations", new ShowRecommendationsAction(), MenuBuilder.AS_CHILD);
 			}
 		});

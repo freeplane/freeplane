@@ -1,6 +1,7 @@
 package org.docear.plugin.services.recommendations.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.docear.plugin.services.xml.DocearXmlBuilder;
 import org.docear.plugin.services.xml.DocearXmlElement;
 import org.docear.plugin.services.xml.DocearXmlRootElement;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -23,12 +25,22 @@ import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 
+@EnabledAction(checkOnPopup = true)
 public class ShowRecommendationsAction extends AFreeplaneAction {
 
 	private static final long serialVersionUID = 1L;
 
 	public ShowRecommendationsAction() {
 		super("ShowRecommendationsAction");
+	}
+	
+	public void setEnabled() {
+		if(CommunicationsController.getController().getUserName() == null) {
+			setEnabled(false);
+		}
+		else {
+			setEnabled(true);
+		}		
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -43,7 +55,7 @@ public class ShowRecommendationsAction extends AFreeplaneAction {
 				try {
 					DocearXmlBuilder xmlBuilder = new DocearXmlBuilder();
 					String xml = response.getContentAsString();
-					IXMLReader reader = StdXMLReader.stringReader(xml);
+					IXMLReader reader = new StdXMLReader(new InputStreamReader(response.getContent(), "UTF8"));
 					IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 					parser.setBuilder(xmlBuilder);
 					parser.setReader(reader);
