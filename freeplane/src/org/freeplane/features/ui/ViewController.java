@@ -174,6 +174,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	private int winState;
 	final private String propertyKeyPrefix;
+	private boolean setZoomComboBoxRun;
 	public static final String SLOW_SCROLLING = "slowScrolling";
 	public static Icon textIcon;
 	public static Icon numberIcon;
@@ -231,7 +232,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 			
 			public void contentsChanged(ListDataEvent e) {
-				if(e.getIndex0() == -1){
+				if (!setZoomComboBoxRun && e.getIndex0() == -1) {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							setZoomByItem(zoomModel.getSelectedItem());
@@ -739,7 +740,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		setZoom(zoomValue);
 	}
 
-	public void setZoomComboBox(final float f) {
+	private void setZoomComboBox(final float f) {
+		setZoomComboBoxRun = true;
+		try {
 		final String toBeFound = getItemForZoom(f);
 		for (int i = 0; i < zoomModel.getSize(); ++i) {
 			if (toBeFound.equals(zoomModel.getElementAt(i))) {
@@ -748,6 +751,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 		}
 		zoomModel.setSelectedItem(userDefinedZoom);
+		}
+		finally {
+			setZoomComboBoxRun = false;
+		}
 	}
 
 	public void updateMenus(final MenuBuilder menuBuilder) {
@@ -764,7 +771,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public void zoomIn() {
 		final float currentZoomIndex = getCurrentZoomIndex();
-		if (currentZoomIndex < zoomModel.getSize() - 1) {
+		if (currentZoomIndex < zoomModel.getSize() - 2) {
 			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex + 1f)));
 		}
 	}
