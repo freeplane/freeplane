@@ -315,6 +315,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		if (htmlEditorWindow == null) {
 			htmlEditorWindow = new HTMLDialog(this, "", "", frame);
 			rootPane.putClientProperty(HTMLDialog.class, htmlEditorWindow);
+			// make sure that SHTML gets notified of relevant config changes!
+		   	ResourceController.getResourceController().addPropertyChangeListener(
+	    			new FreeplaneToSHTMLPropertyChangeAdapter(htmlEditorWindow.getHtmlEditorPanel()));
 		}
 	    return htmlEditorWindow;
     }

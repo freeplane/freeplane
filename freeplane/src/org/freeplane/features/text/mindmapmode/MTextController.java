@@ -51,6 +51,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
@@ -98,6 +99,7 @@ import org.freeplane.features.url.UrlManager;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
+import com.lightdev.app.shtm.SHTMLPrefsChangeListener;
 import com.lightdev.app.shtm.TextResources;
 
 
@@ -827,6 +829,12 @@ public class MTextController extends TextController {
 		}
 	}
 
+	/**
+	 * Note: when creating an SHTMLPanel using this method, you must make sure to attach
+	 * a FreeplaneToSHTMLPropertyChangeAdapter to the panel (see for example EditNodeWYSIWYG.HTMLDialog.createEditorPanel(String))
+	 * @param purpose
+	 * @return
+	 */
 	public SHTMLPanel createSHTMLPanel(String purpose) {
     	SHTMLPanel.setResources(new TextResources() {
     		public String getString(String pKey) {
@@ -864,6 +872,7 @@ public class MTextController extends TextController {
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
+    	    	
 		return shtmlPanel;
     }
 
