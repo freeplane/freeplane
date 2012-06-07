@@ -124,30 +124,6 @@ public class MTextController extends TextController {
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
 	}
-	
-	/**
-	 * This class forwards changes in Freeplane pref properties that are relevant to simplyhtml
-	 * ("simplyhtml.*") to a SHTMLPrefsChangeListener.
-	 * @author Felix Natter
-	 *
-	 */
-	private static class FreeplaneToSHTMLPropertyChangeAdapter implements IFreeplanePropertyListener
-	{
-		private final SHTMLPrefsChangeListener shtmlPrefsChangedListener;
-		public FreeplaneToSHTMLPropertyChangeAdapter(final SHTMLPrefsChangeListener shtmlPrefsChangeListener)
-		{
-			this.shtmlPrefsChangedListener = shtmlPrefsChangeListener;
-		}
-		
-		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.startsWith("simplyhtml."))
-			{
-				final String shtmlProp = propertyName.substring("simplyhtml.".length());
-				shtmlPrefsChangedListener.shtmlPrefChanged(shtmlProp, newValue, oldValue);
-			}
-		}
-		
-	}
 
 	private void createActions() {
 		ModeController modeController = Controller.getCurrentModeController();
@@ -853,6 +829,12 @@ public class MTextController extends TextController {
 		}
 	}
 
+	/**
+	 * Note: when creating an SHTMLPanel using this method, you must make sure to attach
+	 * a FreeplaneToSHTMLPropertyChangeAdapter to the panel (see for example EditNodeWYSIWYG.HTMLDialog.createEditorPanel(String))
+	 * @param purpose
+	 * @return
+	 */
 	public SHTMLPanel createSHTMLPanel(String purpose) {
     	SHTMLPanel.setResources(new TextResources() {
     		public String getString(String pKey) {
@@ -890,10 +872,7 @@ public class MTextController extends TextController {
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
-    	
-    	ResourceController.getResourceController().addPropertyChangeListener(
-    			new FreeplaneToSHTMLPropertyChangeAdapter(shtmlPanel));
-    	
+    	    	
 		return shtmlPanel;
     }
 

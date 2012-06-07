@@ -119,6 +119,11 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		private SHTMLPanel createEditorPanel(String purpose) throws Exception {
 			if (htmlEditorPanel == null) {
 				htmlEditorPanel = MTextController.getController().createSHTMLPanel(purpose);
+				
+				// make sure that SHTML gets notified of relevant config changes!
+			   	ResourceController.getResourceController().addPropertyChangeListener(
+		    			new FreeplaneToSHTMLPropertyChangeAdapter(htmlEditorPanel));
+			   	
 				final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
 				final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
 				spellCheckerController.enableAutoSpell(editorPane, true);
