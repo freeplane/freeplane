@@ -32,6 +32,7 @@ public class Activator implements BundleActivator {
 				public void installExtension(ModeController modeController) {
 			    	registerLinkTypeOption();
 			    	changeQuitAction();
+				    WorkspaceController.createController(modeController);
 				    WorkspaceController.getController().initialStart();
 				    startPluginServices(context, modeController);
 				    WorkspaceController.getController().loadWorkspace();

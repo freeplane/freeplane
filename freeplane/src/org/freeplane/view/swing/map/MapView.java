@@ -98,8 +98,6 @@ import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
 
-import org.freeplane.view.swing.map.PaintingMode.*;
-
 /**
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
@@ -1212,6 +1210,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
+	//DOCEAR - use default component paint instead of the mind map painting behavior
+	protected void paintInternal(Graphics g) {
+		super.paint(g);
+	}
+	
+	//DOCEAR - use default component paintChildren instead of the mind map painting behavior
+	protected void paintChildrenInternal(Graphics g) {
+		super.paintChildren(g);
+	}
+	
 	@Override
 	protected void paintChildren(final Graphics g) {
 	    final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(

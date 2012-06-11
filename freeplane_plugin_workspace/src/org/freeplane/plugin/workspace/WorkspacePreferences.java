@@ -39,9 +39,9 @@ public class WorkspacePreferences {
 
 	private ModeController modeController;
 
-	public WorkspacePreferences() {
+	public WorkspacePreferences(ModeController modeController) {
 		LogUtils.info("WorkspacePreferences");
-		this.modeController = Controller.getCurrentModeController();
+		this.modeController = modeController;
 		addLanguageResources();
 		addMenuEntries();
 		addDefaultPreferences();	
@@ -104,7 +104,8 @@ public class WorkspacePreferences {
 	}
 
 	public String getWorkspaceLocation() {
-		return Controller.getCurrentController().getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION);
+		String loc = ResourceController.getResourceController().getProperty(WorkspacePreferences.WORKSPACE_LOCATION); 
+		return loc;
 	}
 	
 	public void setNewWorkspaceLocation(URI newWorkspaceLocation) {
@@ -151,8 +152,14 @@ public class WorkspacePreferences {
 		}
 		
 		public void setSelected() {
-			setSelected(ResourceController.getResourceController().getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
+			setSelected(isWorkspaceVisible());
 		}
+	}
+
+
+	public boolean isWorkspaceVisible() {
+		boolean b = ResourceController.getResourceController().getBooleanProperty(SHOW_WORKSPACE_PROPERTY_KEY);
+		return b;
 	}
 
 }

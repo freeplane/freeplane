@@ -16,7 +16,6 @@ import org.docear.plugin.core.actions.DocearOpenUrlAction;
 import org.docear.plugin.core.actions.DocearQuitAction;
 import org.docear.plugin.core.actions.DocearShowDataPrivacyStatementAction;
 import org.docear.plugin.core.actions.DocearShowDataProcessingTermsAction;
-import org.docear.plugin.core.actions.DocearShowNotificationBar;
 import org.docear.plugin.core.actions.DocearShowTermsOfUseAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
@@ -117,13 +116,13 @@ public class CoreConfiguration extends ALanguageController {
 		
 		addPluginDefaults();
 		addMenus(modeController);
-		registerListeners();
+		registerListeners(modeController);
 		//prepareWorkspace();
 		
-		replaceFreeplaneStringsAndActions();
+		replaceFreeplaneStringsAndActions(modeController);
 		DocearMapModelController.install(new DocearMapModelController(modeController));
 		
-		setDocearMapWriter();
+		setDocearMapWriter(modeController);
 		
 		registerController(modeController);
 		URI uri = CoreConfiguration.projectPathObserver.getUri();
@@ -148,8 +147,8 @@ public class CoreConfiguration extends ALanguageController {
 
 
 
-	private void setDocearMapWriter() {
-		DocearMapWriter mapWriter = new DocearMapWriter(Controller.getCurrentModeController().getMapController());
+	private void setDocearMapWriter(ModeController modeController) {
+		DocearMapWriter mapWriter = new DocearMapWriter(modeController.getMapController());
 		mapWriter.setMapWriteHandler();		
 	}
 
@@ -157,7 +156,7 @@ public class CoreConfiguration extends ALanguageController {
 		DocearNodeModelExtensionController.install(new DocearNodeModelExtensionController(modeController));		
 	}
 
-	private void replaceFreeplaneStringsAndActions() {
+	private void replaceFreeplaneStringsAndActions(ModeController modeController) {
 		disableAutoUpdater();
 		
 		ResourceController resourceController = ResourceController.getResourceController();		
@@ -171,7 +170,7 @@ public class CoreConfiguration extends ALanguageController {
 		
 		//remove sidepanel switcher
 		//Controller.getCurrentModeController().removeAction("ShowFormatPanel");
-		Controller.getCurrentModeController().addMenuContributor(new IMenuContributor() {
+		modeController.addMenuContributor(new IMenuContributor() {
 			public void updateMenus(ModeController modeController,final  MenuBuilder builder) {
 				SwingUtilities.invokeLater(new Runnable() {					
 					public void run() {
@@ -281,10 +280,10 @@ public class CoreConfiguration extends ALanguageController {
 		Controller.getCurrentController().addAction(new DocearQuitAction());
 	}
 	
-	private void registerListeners() {
+	private void registerListeners(ModeController modeController) {
 		Controller.getCurrentController().getOptionPanelController().addPropertyLoadListener(new PropertyLoadListener());
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(new PropertyListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(new MapLifeCycleAndViewListener());
+		modeController.getMapController().addMapLifeCycleListener(new MapLifeCycleAndViewListener());
 		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(new MapLifeCycleAndViewListener());
 		WorkspaceController.getIOController().registerNodeActionListener(AWorkspaceTreeNode.class, WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT, new WorkspaceOpenDocumentListener());
 	}	
