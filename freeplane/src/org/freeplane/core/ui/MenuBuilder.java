@@ -101,6 +101,8 @@ public class MenuBuilder extends UIBuilder {
 		 * freeplane.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
 		 */
 		public void setDisplayedMnemonicIndex(final int mnemoSignIndex) {
+			action.putValue(Action.DISPLAYED_MNEMONIC_INDEX_KEY, mnemoSignIndex);
+			
 		}
 
 		/*

@@ -58,7 +58,7 @@ public abstract class Parser {
 		else if (style.equals(STYLE_ISODATE))
 			parser = new IsoDateParser();
 		else if (style.equals(STYLE_DATE))
-			parser = new DateFormatParser(format);
+			parser = new DateFormatParser(format, type);
 		else
 			throw new IllegalArgumentException("illegal parser style " + style);
 		parser.setComment(comment);

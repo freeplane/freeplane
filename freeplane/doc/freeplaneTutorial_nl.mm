@@ -141,7 +141,7 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1333917844727" HGAP="8" VSHIFT="-93" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1337167628576" HGAP="17" VSHIFT="-92" LINK="freeplaneFunctions_nl.mm" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -180,8 +180,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1335976646145" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180">
-<node STYLE_REF="Beginner" ID="ID_1820104438" CREATED="1332872487760" MODIFIED="1336124917514">
+<node STYLE_REF="Beginner" POSITION="right" ID="ID_1820104438" CREATED="1332872487760" MODIFIED="1337167623241" HGAP="0" VSHIFT="-136">
 <icon BUILTIN="video"/>
 <icon BUILTIN="internet_warning"/>
 <richcontent TYPE="NODE">
@@ -192,7 +191,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides_nl.mm">Freeplane (video) gidsen</a>
+      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides_nl.mm">Video gidsen</a>
     </p>
   </body>
 </html>
@@ -210,7 +209,9 @@
   </body>
 </html>
 </richcontent>
+<hook NAME="FreeNode"/>
 </node>
+<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1335976646145" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180">
 <node TEXT="Doel" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1336124917514">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -334,8 +335,8 @@
 <hook URI="Images/mouse/mouse_RB.png" SIZE="1.0" NAME="ExternalObject"/>
 <node TEXT="Achtergrond Context Menu" ID="ID_1485150857" CREATED="1333223496821" MODIFIED="1336132153024" VSHIFT="180" STYLE="fork">
 <font BOLD="true" ITALIC="true"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 <hook URI="Images/doc/BackgroundContextMenu_nl.png" SIZE="1.0" NAME="ExternalObject"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 <node TEXT="Openen/sluiten&#xa;Opmaakpaneel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1335976061079" HGAP="56">
 <edge STYLE="hide_edge"/>
 <font BOLD="true" ITALIC="true"/>
@@ -1827,6 +1828,47 @@
 </html>
 </richcontent>
 </node>
+<node TEXT="Koppelen knopen via een anker" STYLE_REF="Beginner" FOLDED="true" ID="ID_1524719322" CREATED="1336298056719" MODIFIED="1336299746224">
+<node STYLE_REF="TitlesContent" ID="ID_1594135890" CREATED="1336298585173" MODIFIED="1336300147529" HGAP="-190" VSHIFT="127"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Op de volgende manier kun je gemakkelijk een link leggen tussen twee knopen die verder uit elkaar liggen of die zich in verschillende mindmaps bevinden:
+    </p>
+    <p>
+      
+    </p>
+    <ul>
+      <li>
+        rechtsklik een van beide knopen en kies Koppeling &gt; <i>Zet koppelingsanker</i>
+      </li>
+      <li>
+        rechtsklik de andere knoop en kies <i>Koppeling &gt; Maak een link van/naar het anker</i>.
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <i>Zet koppeelingsanker </i>&#160;vervangt het vorige anker. (Er kan maar &#233;&#233;n anker zijn).
+      </li>
+      <li>
+        Het anker wordt &quot;vergeten&quot; na het sluiten van Freeplane.
+      </li>
+      <li>
+        Zie onder voor een alternatieve procedure in het geval dat de twee knopen niet ver uitelkaar liggen.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
 <node TEXT="Externe koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1336125011738" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
 <attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
 <hook NAME="NodeConditionalStyles">
@@ -3011,7 +3053,7 @@
 </node>
 </node>
 <node TEXT="Presenteren" STYLE_REF="Advanced" FOLDED="true" ID="ID_1747402695" CREATED="1335276169448" MODIFIED="1336125067212">
-<node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1336118094192" HGAP="-65" VSHIFT="80"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1336149776984" HGAP="-64" VSHIFT="89"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3019,7 +3061,7 @@
   </head>
   <body>
     <p>
-      Als je een presentatie wilt geven met een mindmap, kunnen de knopen die niet de aandacht hebben grijs worden gemaakt. Selecteer hiervoor <i>Beeld &gt; Beeldinstellingen &gt; Presentatiemode</i>. De knopen kunnen &#233;&#233;n voor &#233;&#233;n worden getoond door <i>Navigeren &gt; Volgend</i>&#160;kind te kiezen.
+      Als je een presentatie wilt geven met een mindmap, kunnen de knopen die niet de aandacht hebben grijs worden gemaakt. Selecteer hiervoor <i>Beeld &gt; Beeldinstellingen &gt; Presentatiemode</i>. De knopen kunnen &#233;&#233;n voor &#233;&#233;n worden getoond door <i>Navigeren &gt; Volgend</i>&#160;kind te kiezen, of Shift + klikken in cirkel voor open/dichtvouwen.
     </p>
     <p>
       
@@ -3284,7 +3326,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Interne oorsprong" STYLE_REF="Advanced" FOLDED="true" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1323706335345" HGAP="25" VSHIFT="1" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Interne oorsprong" STYLE_REF="Advanced" FOLDED="true" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1336383968560" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3326,7 +3368,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Externe oorsprong" STYLE_REF="Advanced" FOLDED="true" ID="ID_17945363" CREATED="1323528121146" MODIFIED="1323810716822" STYLE="combined">
+<node TEXT="Externe oorsprong" STYLE_REF="Advanced" FOLDED="true" ID="ID_17945363" CREATED="1323528121146" MODIFIED="1336383968560" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3359,7 +3401,10 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="In-line afbeelding" STYLE_REF="Professional" FOLDED="true" ID="ID_1242295211" CREATED="1314282819174" MODIFIED="1330086463723" HGAP="30" VSHIFT="-30" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="Andere afbeelding" STYLE_REF="Advanced" FOLDED="true" ID="ID_1790215961" CREATED="1336383825170" MODIFIED="1336383968560">
+<node TEXT="Als je een afbeelding hebt, kun je deze vervangen door te rechtsklikken en &quot;Veranderen&quot; te kiezen." STYLE_REF="TitlesContent" ID="ID_843309222" CREATED="1336383853415" MODIFIED="1336383998956" HGAP="-117" VSHIFT="26"/>
+</node>
+<node TEXT="In-line afbeelding" STYLE_REF="Professional" FOLDED="true" ID="ID_1242295211" CREATED="1314282819174" MODIFIED="1336383968560" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>

@@ -20,6 +20,7 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Window;
 import java.io.File;
@@ -264,14 +265,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		catch (final Exception ex) {
 			LogUtils.warn(ex);
 			final String message = TextUtils.format("remove_file_from_list_on_error", restoreable);
+			UITools.showFrame();
 			final Frame frame = UITools.getFrame();
-			final Window[] ownedWindows = frame.getOwnedWindows();
-			for (int i = 0; i < ownedWindows.length; i++) {
-				final Window window = ownedWindows[i];
-				if (window.getClass().equals(FreeplaneSplashModern.class) && window.isVisible()) {
-					window.setVisible(false);
-				}
-			}
 			final int remove = JOptionPane.showConfirmDialog(frame, message, "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (remove == JOptionPane.YES_OPTION) {
 				remove(restoreable);

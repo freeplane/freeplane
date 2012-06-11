@@ -34,6 +34,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,6 +51,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
@@ -61,7 +63,9 @@ import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.icon.IconController;
@@ -95,6 +99,7 @@ import org.freeplane.features.url.UrlManager;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
+import com.lightdev.app.shtm.SHTMLPrefsChangeListener;
 import com.lightdev.app.shtm.TextResources;
 
 
@@ -339,11 +344,15 @@ public class MTextController extends TextController {
     public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
 			setNodeObject(node, newText);
-		else
-			setNodeObject(node, guessObject(newText, NodeStyleModel.getNodeFormat(node)));
+        else {
+	        final Object guessedObject = guessObject(newText, NodeStyleModel.getNodeFormat(node));
+	        if(guessedObject instanceof IFormattedObject)
+	        	setNodeObject(node, ((IFormattedObject) guessedObject).getObject());
+	        else
+	        	setNodeObject(node, newText);
+        }
 	}
 
-    /** converts strings to date or number if possible. All other data types are left unchanged. */
     public Object guessObject(final Object text, final String oldFormat) {
         if (ResourceController.getResourceController().getBooleanProperty("parse_data") && text instanceof String) {
             if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
@@ -820,9 +829,19 @@ public class MTextController extends TextController {
 		}
 	}
 
+	/**
+	 * Note: when creating an SHTMLPanel using this method, you must make sure to attach
+	 * a FreeplaneToSHTMLPropertyChangeAdapter to the panel (see for example EditNodeWYSIWYG.HTMLDialog.createEditorPanel(String))
+	 * @param purpose
+	 * @return
+	 */
 	public SHTMLPanel createSHTMLPanel(String purpose) {
     	SHTMLPanel.setResources(new TextResources() {
     		public String getString(String pKey) {
+    			if (pKey.equals("approximate_search_threshold"))
+    			{
+    				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
+    			}
     			pKey = "simplyhtml." + pKey;
     			String resourceString = ResourceController.getResourceController().getText(pKey, null);
     			if (resourceString == null) {
@@ -853,6 +872,7 @@ public class MTextController extends TextController {
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
+    	    	
 		return shtmlPanel;
     }
 

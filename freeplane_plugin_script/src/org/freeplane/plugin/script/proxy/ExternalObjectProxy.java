@@ -70,4 +70,9 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
 		if (externalObject != null)
 			getViewerController().setZoom(getModeController(), getDelegate().getMap(), externalObject, zoom);
 	}
+
+    /** make <code>if (node.externalObject) println "has an externalObject"</code> work. */
+    public boolean asBoolean() {
+        return getExternalObjectModel() != null;
+    }
 }

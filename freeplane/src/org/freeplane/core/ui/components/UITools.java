@@ -66,6 +66,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.main.application.FreeplaneSplashModern;
 
 /**
  * Utilities for accessing the GUI, creating dialogs etc.: In scripts available as "global variable" <code>ui</code>.
@@ -602,5 +603,20 @@ public class UITools {
 	public static Font invertScale(Font font) {
 		return font.deriveFont(font.getSize2D()/FONT_SCALE_FACTOR);
 	}
+
+	public static void showFrame() {
+		final Frame frame = UITools.getFrame();
+		final Window[] ownedWindows = frame.getOwnedWindows();
+		for (int i = 0; i < ownedWindows.length; i++) {
+			final Window window = ownedWindows[i];
+			if (window.getClass().equals(FreeplaneSplashModern.class) && window.isVisible()) {
+				window.setVisible(false);
+			}
+		}
+		if(frame != null && ! frame.isVisible()){
+			frame.setVisible(true);
+			frame.toFront();
+		}
+    }
 	
 }

@@ -189,11 +189,19 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 	private static final Dimension PREFERRED_SIZE = new Dimension(600, 400);
 
-	final private String purpose;
+	private String title;
 	
 	private Font font;
 	private Color textColor = Color.BLACK;
 	private Dimension preferredSize = PREFERRED_SIZE;
+
+	public String getTitle() {
+    	return title;
+    }
+
+	public void setTitle(String purpose) {
+    	this.title = purpose;
+    }
 
 	public Font getFont() {
     	return font;
@@ -219,18 +227,17 @@ public class EditNodeWYSIWYG extends EditNodeBase {
     	this.preferredSize = preferredSize;
     }
 
-	public EditNodeWYSIWYG(String purpose, final NodeModel node, final String text, final IEditControl editControl, boolean enableSplit) {
+	public EditNodeWYSIWYG(final NodeModel node, final String text, final IEditControl editControl, boolean enableSplit) {
 		super(node, text, editControl);
-		this.purpose = purpose;
 	}
 
 	public void show(final RootPaneContainer frame) {
 		try {
 			HTMLDialog htmlEditorWindow = createHtmlEditor(frame);
 			htmlEditorWindow.setBase(this);
-			final String title;
-			title = TextUtils.getText(purpose);
-			htmlEditorWindow.getDialog().setTitle(title);
+			final String titleText;
+			titleText = TextUtils.getText(title);
+			htmlEditorWindow.getDialog().setTitle(titleText);
 			htmlEditorWindow.setSplitEnabled(getEditControl().canSplit());
 			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
 			final StringBuilder ruleBuilder = new StringBuilder(100);
@@ -308,6 +315,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		if (htmlEditorWindow == null) {
 			htmlEditorWindow = new HTMLDialog(this, "", "", frame);
 			rootPane.putClientProperty(HTMLDialog.class, htmlEditorWindow);
+			// make sure that SHTML gets notified of relevant config changes!
+		   	ResourceController.getResourceController().addPropertyChangeListener(
+	    			new FreeplaneToSHTMLPropertyChangeAdapter(htmlEditorWindow.getHtmlEditorPanel()));
 		}
 	    return htmlEditorWindow;
     }

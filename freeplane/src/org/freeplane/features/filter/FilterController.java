@@ -258,6 +258,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		if (newMap != null) {
 			filterToolbar.setEnabled(true);
 			activeFilterConditionComboBox.setEnabled(true);
+			quickEditor.setEnabled(true);
 			quickEditor.mapChanged(newMap);
 			final Filter filter = newMap.getFilter();
 			updateSettingsFromFilter(filter);
@@ -265,6 +266,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		else {
 			filterConditions.setSelectedItem(filterConditions.getElementAt(0));
 			filterToolbar.setEnabled(false);
+			quickEditor.setEnabled(false);
 			activeFilterConditionComboBox.setEnabled(false);
 		}
 	}

@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -80,12 +81,13 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		@Override
         protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
 			if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
-				return dispatchKeyEvent(e);
+				return processFKey(e);
 			return false;
         }
 	}
 
 	public FButtonBar(JRootPane rootPane) {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		final Container oldContentPane = rootPane.getContentPane();
 		final ContentPane newContentPane = new ContentPane();
 		final LayoutManager layoutManager = oldContentPane.getLayout();
@@ -185,7 +187,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		}
 		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
 		if (windowAncestor == ownWindowAncestor && ownWindowAncestor.getJMenuBar().isEnabled()) {
-			return processDispatchedKeyEvent(e);
+			processDispatchedKeyEvent(e);
 		}
 		else {
 			resetModifiers();
@@ -222,7 +224,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		repaint();
 	}
 
-	private boolean processDispatchedKeyEvent(final KeyEvent e) {
+	private void processDispatchedKeyEvent(final KeyEvent e) {
 		final int keyCode = e.getKeyCode();
 		switch (e.getID()) {
 			case KeyEvent.KEY_PRESSED:
@@ -241,20 +243,6 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 						break;
 					case KeyEvent.VK_ALT_GRAPH:
 						setModifiers(KeyEvent.ALT_GRAPH_MASK);
-						break;
-					default:
-					    if (keyCode >= KeyEvent.VK_F1 && keyCode <= KeyEvent.VK_F12 ) {
-					        final JButton btn = createButtons(nextModifiers)[keyCode - KeyEvent.VK_F1];
-					        if(btn.getAction() instanceof SetAcceleratorOnNextClickAction 
-					        		&& e.getComponent() instanceof JTextComponent)
-					        	return false;
-					        if(timer.isRunning()){
-					            timer.stop();
-					            onModifierChangeImpl();
-					        }
-							btn.doClick();
-					        return true;
-					    }
 						break;
 				}
 				break;
@@ -280,6 +268,29 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 				break;
             default:
                 break;
+		}
+	}
+	
+	private boolean processFKey(final KeyEvent e){
+		if(e.getID() != KeyEvent.KEY_PRESSED)
+			return false;
+		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
+		if (windowAncestor != ownWindowAncestor || !ownWindowAncestor.getJMenuBar().isEnabled()) {
+			resetModifiers();
+			return false;
+		}
+		int keyCode = e.getKeyCode();
+		if (keyCode >= KeyEvent.VK_F1 && keyCode <= KeyEvent.VK_F12 ) {
+			final JButton btn = createButtons(nextModifiers)[keyCode - KeyEvent.VK_F1];
+			if(btn.getAction() instanceof SetAcceleratorOnNextClickAction 
+					&& e.getComponent() instanceof JTextComponent)
+				return false;
+			if(timer.isRunning()){
+				timer.stop();
+				onModifierChangeImpl();
+			}
+			btn.doClick();
+			return true;
 		}
 		return false;
 	}

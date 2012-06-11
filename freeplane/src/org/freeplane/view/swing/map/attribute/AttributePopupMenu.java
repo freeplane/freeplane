@@ -43,6 +43,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
@@ -70,6 +71,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	private int col;
 	private JMenuItem insertLink;
 	private JMenuItem insertNodeLink;
+	private JMenuItem insertAnchoredLink;
 
 	@Override
 	protected void firePopupMenuWillBecomeInvisible() {
@@ -230,6 +232,35 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		return insertNodeLink;
 	}
 
+	private JMenuItem getInsertAnchoredLink() {
+		if (insertAnchoredLink == null) {
+			insertAnchoredLink = new JMenuItem(TextUtils.getText("MakeLinkToAnchorAction.text"));
+			insertAnchoredLink.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e) {
+					final AttributeTable table = AttributePopupMenu.this.table;
+					final Object oldValue = table.getValueAt(row, col);
+					final LinkController linkController = LinkController.getController();
+					if(linkController instanceof MLinkController) {
+	                    final MLinkController mLinkController = (MLinkController)linkController;
+						if (mLinkController.isAnchored()) {
+                            try {
+                            	final String anchorIDforNode = mLinkController.getAnchorIDforNode(((IAttributeTableModel) table.getModel()).getNode());
+                            	if(anchorIDforNode != null){
+                            		URI link = LinkController.createURI(anchorIDforNode);
+                            		if(! oldValue.equals(link))
+                            			table.setValueAt(link, row, col);
+                            	}
+                            }
+                            catch (URISyntaxException e1) {
+                            }
+	                    }
+                    }
+				}
+
+			});
+		}
+		return insertAnchoredLink;
+	}
 	/**
 	 * @return Returns the optimalWidth.
 	 */
@@ -276,6 +307,9 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			add(getInsertLink());
 			add(getInsertFileLink());
 			add(getInsertNodeLink());
+			final LinkController linkController = LinkController.getController();
+			if(linkController instanceof MLinkController && ((MLinkController)linkController).isAnchored())
+				add(getInsertAnchoredLink());
 		}
 		if (attributeViewType.equals(AttributeTableLayoutModel.SHOW_ALL)) {
 			add(getInsert());

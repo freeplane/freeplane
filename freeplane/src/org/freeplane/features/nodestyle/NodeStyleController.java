@@ -53,22 +53,23 @@ public class NodeStyleController implements IExtension {
 	public static NodeStyleController getController(ModeController modeController) {
 		return (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 	}
-	public static void install( final NodeStyleController styleController) {
+
+	public static void install(final NodeStyleController styleController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(NodeStyleController.class, styleController);
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> backgroundColorHandlers;
-// // //	final private Controller controller;
+	// // // final private Controller controller;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
- 	final private ModeController modeController;
+	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
-//		controller = modeController.getController();
+		// controller = modeController.getController();
 		fontHandlers = new CombinedPropertyChain<Font, NodeModel>(true);
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
@@ -125,23 +126,19 @@ public class NodeStyleController implements IExtension {
 		styleBuilder.registerBy(readManager, writeManager);
 	}
 
-	public IPropertyHandler<Color, NodeModel> addBackgroundColorGetter(final Integer key,
-	                                                                   final IPropertyHandler<Color, NodeModel> getter) {
+	public IPropertyHandler<Color, NodeModel> addBackgroundColorGetter(final Integer key, final IPropertyHandler<Color, NodeModel> getter) {
 		return backgroundColorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                         final IPropertyHandler<Color, NodeModel> getter) {
+	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key, final IPropertyHandler<Color, NodeModel> getter) {
 		return textColorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
-	                                                       final IPropertyHandler<Font, NodeModel> getter) {
+	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key, final IPropertyHandler<Font, NodeModel> getter) {
 		return fontHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<String, NodeModel> addShapeGetter(final Integer key,
-	                                                          final IPropertyHandler<String, NodeModel> getter) {
+	public IPropertyHandler<String, NodeModel> addShapeGetter(final Integer key, final IPropertyHandler<String, NodeModel> getter) {
 		return shapeHandlers.addGetter(key, getter);
 	}
 
@@ -155,7 +152,7 @@ public class NodeStyleController implements IExtension {
 
 	private Color getStyleBackgroundColor(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for (IStyle styleKey : styleKeys) {
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -164,7 +161,7 @@ public class NodeStyleController implements IExtension {
 			if (styleModel == null) {
 				continue;
 			}
-			final Color styleColor =styleModel.getBackgroundColor();
+			final Color styleColor = styleModel.getBackgroundColor();
 			if (styleColor == null) {
 				continue;
 			}
@@ -175,7 +172,7 @@ public class NodeStyleController implements IExtension {
 
 	private int getStyleMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) throws Exception {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
+		for (IStyle styleKey : styleKeys) {
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -190,14 +187,14 @@ public class NodeStyleController implements IExtension {
 			}
 			return maxTextWidth;
 		}
-		return getDefaultMaxNodeWidth();
+		return 600;
 	}
-	
-	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) throws NullPointerException {		
+
+	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) throws NullPointerException {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		//DOCEAR
+		// DOCEAR
 		try {
-			for(IStyle styleKey : styleKeys){
+			for (IStyle styleKey : styleKeys) {
 				final NodeModel styleNode = model.getStyleNode(styleKey);
 				if (styleNode == null) {
 					continue;
@@ -216,9 +213,9 @@ public class NodeStyleController implements IExtension {
 		catch (NullPointerException e) {
 			LogUtils.warn(e);
 		}
-		return getDefaultMinNodeWidth();
+		return 1;
 	}
-	
+
 	public static Font getDefaultFont() {
 		final int fontSize = NodeStyleController.getDefaultFontSize();
 		final int fontStyle = NodeStyleController.getDefaultFontStyle();
@@ -249,10 +246,10 @@ public class NodeStyleController implements IExtension {
 	private Font getStyleFont(final Font baseFont, final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		Boolean bold = null;
-        Boolean italic = null;
-        String fontFamilyName = null;
-        Integer fontSize = null;
-		for(IStyle styleKey : collection){
+		Boolean italic = null;
+		String fontFamilyName = null;
+		Integer fontSize = null;
+		for (IStyle styleKey : collection) {
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -265,7 +262,7 @@ public class NodeStyleController implements IExtension {
 			if (italic == null) italic = styleModel.isItalic();
 			if (fontFamilyName == null) fontFamilyName = styleModel.getFontFamilyName();
 			if (fontSize == null) fontSize = styleModel.getFontSize();
-			if(bold != null && italic != null && fontFamilyName != null && fontSize != null) break;
+			if (bold != null && italic != null && fontFamilyName != null && fontSize != null) break;
 		}
 		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
 	}
@@ -298,7 +295,7 @@ public class NodeStyleController implements IExtension {
 
 	private String getStyleShape(final MapModel map, final Collection<IStyle> style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : style){
+		for (IStyle styleKey : style) {
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -318,7 +315,7 @@ public class NodeStyleController implements IExtension {
 
 	private Color getStyleTextColor(final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : collection){
+		for (IStyle styleKey : collection) {
 			final NodeModel styleNode = model.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
@@ -382,8 +379,7 @@ public class NodeStyleController implements IExtension {
 
 	public Boolean getNodeNumbering(NodeModel node) {
 		final NodeStyleModel style = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		if (style == null)
-			return false;
+		if (style == null) return false;
 		final Boolean nodeNumbering = style.getNodeNumbering();
 		return nodeNumbering == null ? false : nodeNumbering.booleanValue();
 	}
@@ -396,17 +392,24 @@ public class NodeStyleController implements IExtension {
 	public int getMaxWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-		//DOCEAR - FIXME: asynch threads collide while reseting and reading nodestyle
+		// DOCEAR - FIXME: asynch threads collide while reseting and reading
+		// nodestyle
 		try {
 			final Collection<IStyle> style = styleController.getStyles(node);
 			final int maxTextWidth = getStyleMaxNodeWidth(map, style);
 			return maxTextWidth;
 		}
-		catch(Exception ex) {
+		catch (Exception ex) {
 			LogUtils.warn(ex);
 			return getDefaultMaxNodeWidth();
 		}
-    }
+	}
+
+	public static int getDefaultMaxNodeWidth() {
+		final int w = ResourceController.getResourceController().getIntProperty("max_node_width", -1);
+		if (w != -1) return w;
+		return ResourceController.getResourceController().getIntProperty("el__max_default_window_width", 600) * 2 / 3;
+	}
 
 	public int getMinWidth(NodeModel node) {
 		final MapModel map = node.getMap();
@@ -414,20 +417,9 @@ public class NodeStyleController implements IExtension {
 		final Collection<IStyle> style = styleController.getStyles(node);
 		final int minWidth = getStyleMinWidth(map, style);
 		return minWidth;
-    }
+	}
 
 	public ModeController getModeController() {
-	    return modeController;
-    }
-
-	public static int getDefaultMinNodeWidth() {
-    		return ResourceController.getResourceController().getIntProperty("min_node_width", 1);
-    }
-
-	public static int getDefaultMaxNodeWidth() {
-    		final int w = ResourceController.getResourceController().getIntProperty("max_node_width", -1);
-			if(w != -1)
-				return w;
-    		return ResourceController.getResourceController().getIntProperty("el__max_default_window_width", 600) * 2 / 3;
-    }
+		return modeController;
+	}
 }
