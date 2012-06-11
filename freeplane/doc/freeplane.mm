@@ -131,10 +131,10 @@
     </p>
   </body>
 </html>
-
 </richcontent>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1335125652463" HGAP="-27" VSHIFT="-167">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1337169970931" HGAP="-27" VSHIFT="-167">
 <icon BUILTIN="video"/>
+<icon BUILTIN="internet"/>
 <richcontent TYPE="NODE">
 
 <html>
@@ -2887,6 +2887,7 @@
 <node TEXT="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=207" ID="ID_1177663722" CREATED="1334319586932" MODIFIED="1334319586932" LINK="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=207"/>
 </node>
 <node TEXT="Arrow-hyperlink does not work" ID="ID_109939023" CREATED="1335123601556" MODIFIED="1335124349145" LINK="#ID_265935349"/>
+<node TEXT="Setting the default properties" ID="ID_1547921090" CREATED="1337170375273" MODIFIED="1337170394839" LINK="http://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=219"/>
 </node>
 </node>
 <node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1330615467171" MODIFIED="1334843601497" VSHIFT="111" TEXT_SHORTENED="true" LINK="#ID_566454554"><richcontent TYPE="NODE">
@@ -4690,6 +4691,80 @@
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
+</node>
+<node TEXT="Set link anchor" STYLE_REF="Method" ID="ID_232225786" CREATED="1336331814202" MODIFIED="1336332420035" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Remembers the currently selected node. Only one node can be remembered. If&#160;&#160;a new node is set to be the anchor node, the previous anchor node is forgotten.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Make link from anchor" STYLE_REF="Method" ID="ID_617064872" CREATED="1336331823758" MODIFIED="1336332308383" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Creates a link in the anchor node to the currently selected node. The anchor node will show a red or geen arrow.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      The nodes linked may be in different maps.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Make link to anchor" STYLE_REF="Method" ID="ID_209345036" CREATED="1336331834372" MODIFIED="1336332322815" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Makes a link in the currently selected node to the the anchor node. The current node will display a red or green arrow link.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <p>
+      The nodes linked may be in different maps.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Delete link anchor" STYLE_REF="Method" ID="ID_115302013" CREATED="1336331844006" MODIFIED="1336332447383" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      If an anchor is set, it is forgotten.
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 <node TEXT="" STYLE_REF="Aggregatie als Toelichting" ID="ID_557988874" CREATED="1305558188109" MODIFIED="1330597806535" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
@@ -9001,7 +9076,7 @@
 <node TEXT="Center selected node automatically" ID="ID_1299718023" CREATED="1335982472005" MODIFIED="1335982683146">
 <icon BUILTIN="help"/>
 </node>
-<node TEXT="View settings" FOLDED="true" ID="ID_1492135940" CREATED="1335978381041" MODIFIED="1335978389341">
+<node TEXT="View settings" ID="ID_1492135940" CREATED="1335978381041" MODIFIED="1335978389341">
 <node TEXT="Outline view" ID="ID_519734292" CREATED="1266247214640" MODIFIED="1310721911393" TEXT_SHORTENED="true">
 <icon BUILTIN="../outline_view"/>
 <richcontent TYPE="DETAILS">
@@ -9130,7 +9205,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Mark automatically changed text" ID="ID_1847984972" CREATED="1303929296863" MODIFIED="1335980680146" TEXT_SHORTENED="true">
+<node TEXT="Highlight formulas" ID="ID_1847984972" CREATED="1303929296863" MODIFIED="1337170665678" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -14572,7 +14647,7 @@ elements from the styles activated by conditions are copied.</pre>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Preferences ..." FOLDED="true" ID="ID_827606855" CREATED="1310134532679" MODIFIED="1312967785134" TEXT_SHORTENED="true">
+<node TEXT="Preferences ..." ID="ID_827606855" CREATED="1310134532679" MODIFIED="1312967785134" TEXT_SHORTENED="true">
 <icon BUILTIN="../PropertyAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -14853,7 +14928,7 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="Look and feel" STYLE_REF="Method" FOLDED="true" ID="ID_702879709" CREATED="1311711679398" MODIFIED="1312921365030">
+<node TEXT="Look and feel" STYLE_REF="Method" ID="ID_702879709" CREATED="1311711679398" MODIFIED="1312921365030">
 <node TEXT="Default" ID="ID_1366474327" CREATED="1311483239570" MODIFIED="1311711744124">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -14884,6 +14959,10 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
 </node>
+</node>
+<node TEXT="Apply system screen resolution default" STYLE_REF="IsChecked" ID="ID_719531600" CREATED="1337169567729" MODIFIED="1337169616794"/>
+<node TEXT="User defined screen resolution (dpi)" STYLE_REF="Method" ID="ID_1436875119" CREATED="1337169642248" MODIFIED="1337169863197">
+<node TEXT="96" STYLE_REF="OptionalValue" ID="ID_1116758038" CREATED="1337169873733" MODIFIED="1337169894594"/>
 </node>
 <node TEXT="Use Tabs" ID="ID_678230606" CREATED="1310755710026" MODIFIED="1311924298928">
 <hook NAME="NodeConditionalStyles">
@@ -16242,10 +16321,23 @@ elements from the styles activated by conditions are copied.</pre>
 </html>
 </richcontent>
 </node>
-<node TEXT="Scripting API" ID="ID_1515623567" CREATED="1303933416063" MODIFIED="1310883900178">
+<node TEXT="Scripting API" ID="ID_1515623567" CREATED="1303933416063" MODIFIED="1336551200257" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Mind map with links to functions which can be called from a script
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 </node>

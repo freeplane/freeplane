@@ -305,7 +305,6 @@ public class FilterConditionEditor extends JComponent {
 			}
 		}
 		else {
-			values.setSelectedIndex(-1);
 			filteredPropertiesComponent.setSelectedIndex(-1);
 			filteredPropertiesModel.setExtensionList(null);
 		}
@@ -324,5 +323,18 @@ public class FilterConditionEditor extends JComponent {
 		this.enterKeyActionListener = enterKeyActionListener;
 		values.getEditor().addActionListener(enterKeyActionListener);
 	}
+
+	@Override
+    public void setEnabled(boolean enabled) {
+	    super.setEnabled(enabled);
+	    for(int i = 0; i < getComponentCount(); i++){
+	    	Component c = getComponent(i);
+	    	c.setEnabled(enabled);
+	    	if (c instanceof JComboBox)
+	    		((JComboBox)c).getEditor().getEditorComponent().setEnabled(enabled);
+	    }
+    }
+	
+	
 
 }

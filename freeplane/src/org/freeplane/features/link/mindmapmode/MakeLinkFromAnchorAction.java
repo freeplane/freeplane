@@ -35,7 +35,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-@EnabledAction(checkOnPopup=true)
+@EnabledAction
 public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 

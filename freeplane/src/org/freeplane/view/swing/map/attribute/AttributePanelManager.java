@@ -127,7 +127,7 @@ public class AttributePanelManager{
                 boolean handlingEvent = false;
 
                 public void itemStateChanged(final ItemEvent e) {
-                    if (handlingEvent || !formatChooser.isEnabled())
+                    if (handlingEvent || !formatChooser.isEnabled() || e.getStateChange() != ItemEvent.SELECTED)
                         return;
                     handlingEvent = true;
                     final PatternFormat newFormat = toPatternFormat(e.getItem());
@@ -137,8 +137,7 @@ public class AttributePanelManager{
                         try {
                             final Object newValue = formatValue(newFormat, table, value);
                             if (newValue != null)
-                                attributeView.getCurrentAttributeTableModel().setValueAt(newValue,
-                                    table.getSelectedRow(), table.getSelectedColumn());
+                            	table.setValueAt(newValue, table.getSelectedRow(), table.getSelectedColumn());
                         }
                         catch (Exception e2) {
                             Controller.getCurrentController().getViewController()
@@ -158,12 +157,12 @@ public class AttributePanelManager{
 
                 private Object formatValue(final PatternFormat newFormat, final AttributeTable table,
                                            final Object toFormat) {
-                    if (formatChooser.getSelectedItem() == null)
-                        return null;
+                	if (formatChooser.getSelectedItem() == null)
+                		return null;
+                	if(toFormat instanceof IFormattedObject)
+                		return formatValue(newFormat, table, ((IFormattedObject) toFormat).getObject());
                     if (toFormat instanceof String && ((String)toFormat).startsWith("="))
                         return new FormattedFormula((String) toFormat, newFormat.getPattern());
-                    if (toFormat instanceof FormattedFormula)
-                        return new FormattedFormula(((FormattedFormula) toFormat).getObject(), newFormat.getPattern());
                     return newFormat.formatObject(toFormat);
                 }
             });
@@ -172,21 +171,7 @@ public class AttributePanelManager{
                 public void valueChanged(final ListSelectionEvent event) {
                     // update format chooser
                     if (!event.getValueIsAdjusting()) {
-                        final AttributeTable table = attributeView.getAttributeTable();
-                        if (table.getSelectedColumn() == 1 && table.getSelectedRow() != -1) {
-                            formatChooser.setEnabled(true);
-                            final Object value = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
-                            if (value instanceof IFormattedObject) {
-                                final String format = ((IFormattedObject) value).getPattern();
-                                formatChooser.setSelectedItem(format);
-                            }
-                            else {
-                                formatChooser.setSelectedItem(null);
-                            }
-                        }
-                        else {
-                            formatChooser.setEnabled(false);
-                        }
+                        setSelectedFormatItem();
                     }
                 }
             });
@@ -199,6 +184,24 @@ public class AttributePanelManager{
             tablePanel.repaint();
         }
 
+    	private void setSelectedFormatItem() {
+    	    final AttributeTable table = attributeView.getAttributeTable();
+    	    if (table.getSelectedColumn() == 1 && table.getSelectedRow() != -1) {
+    	        formatChooser.setEnabled(true);
+    	        final Object value = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+    	        if (value instanceof IFormattedObject) {
+    	            final String format = ((IFormattedObject) value).getPattern();
+    	            formatChooser.setSelectedItem(format);
+    	        }
+    	        else {
+    	            formatChooser.setSelectedItem(null);
+    	        }
+    	    }
+    	    else {
+    	        formatChooser.setEnabled(false);
+    	    }
+        }
+    	
         private JComboBox createFormatChooser() {
             final List<PatternFormat> formats = FormatController.getController().getAllFormats();
             final JComboBox formatChooser = new JComboBox(new Vector<PatternFormat>(formats));
@@ -219,6 +222,7 @@ public class AttributePanelManager{
 
 		public void nodeChanged(NodeChangeEvent event) {
 			if(attributeView != null && event.getProperty().equals(NodeAttributeTableModel.class)){
+				setSelectedFormatItem();
 				attributeView.update();
 			}
         }

@@ -802,6 +802,9 @@ public interface Proxy {
 
 		Link getLink();
 
+		/** use it to create and inspect {@link Reminder}s. This property is never null. */
+		Reminder getReminder();
+
 		/** the map this node belongs to. */
 		Map getMap();
 
@@ -1252,4 +1255,62 @@ public interface Proxy {
 		 *  @since 1.2 */
 		void setTextColorCode(String rgbString);
 	}
+
+	/** Reminder: <code>node.reminder</code> - read-only.
+	 * <pre>
+     *  def rem = node.reminder
+     *  if (!rem.remindAt)
+     *      c.statusInfo = "this node has no reminder"
+     *  else
+     *      c.statusInfo = "reminder fires at ${rem.remindAt} and then every ${rem.period} ${rem.periodUnit}"
+	 * </pre> */
+    interface ReminderRO {
+        /** The timestamp when the reminder fires first. */
+        Date getRemindAt();
+        /** One of ["MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "YEAR"]. */
+        String getPeriodUnit();
+        /** Count in units of "PeriodUnit". (period=2, periodUnit="WEEK") reminds every two weeks. */
+        Integer getPeriod();
+        /** optional: a Groovy script to execute when the reminder fires. */
+        String getScript();
+    }
+
+    /** Reminder: <code>node.reminder</code> - read-write. For creating and modifying reminders:
+     * <pre>
+     *  def reminder = node.reminder
+     *  if (!reminder)
+     *      c.statusInfo = "node has no reminder"
+     *  else
+     *      c.statusInfo = "node has a reminder: $reminder"
+     *  
+     *  def inAMinute = new Date(System.currentTimeMillis() + 60*1000)
+     *  node.reminder.createOrReplace(inAMinute, "WEEK", 2)
+     *  if (node.map.file) {
+     *      node.reminder.setScript("loadUri(new URI('${node.map.file.toURI()}#${node.id}'))")
+     *  }
+     *  // a click on the node opens time management dialog
+     *  node.link.text = 'menuitem:_$TimeListAction$0'
+     * </pre> */
+    interface Reminder extends ReminderRO {
+//        /** Creates a new reminder. Removes existing reminders for the same node if they exist.
+//         * @param remindAt The timestamp when the reminder should fire. */
+//        void createOrReplace(Date remindAt);
+        /** Creates a periodic reminder. To make the reminder fire every second week:
+         * <pre>
+         *   node.reminder.createOrReplace(new Date() + 1, "WEEK", 2)
+         * </pre>
+         * @param remindAt The timestamp when the reminder fires first.
+         * @param periodUnit one of ["MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "YEAR"].
+         * @param period counts the periodUnits.
+         * @throws Exception if there is no reminder yet. */
+        void createOrReplace(Date remindAt, String periodUnit, Integer period);
+
+        /** optional: a Groovy script to execute when the reminder fires.
+         * @param scriptSource the script itself, not a path to a file.
+         * @throws NullPointerException if there is no reminder yet. */
+        void setScript(String scriptSource);
+
+        /** removes a reminder from a node. It's not an error if there is no reminder to remove. */
+        void remove();
+    }
 }

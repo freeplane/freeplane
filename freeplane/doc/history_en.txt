@@ -1,4 +1,11 @@
 ===============================
+1.2.15 beta
+===============================
+Approximative search in rich text editor
+Add and remove reminders via scripting api
+rich text editor: add "Paste plain text" context menu item and "default paste mode" preference option
+
+===============================
 1.2.14 beta
 ===============================
 Fix calculation of all font sizes
@@ -7,6 +14,7 @@ Various fixes for formatting of attributes
 Scripting: treat URIs special to allow clickable attribute values
 Presentation mode (see menu View and preferences->Appearance->default colors)
 Unfold children one-by-one by shift + SPACE, Navigate -> Show next child or shift + click inside folding circle
+Creating of links between nodes and maps using link anchor actions
 
 ===============================
 1.2.13 beta

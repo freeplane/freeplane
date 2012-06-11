@@ -569,9 +569,13 @@ public class NodeView extends JComponent implements INodeView {
 			if (getUpper) {
 				return childView;
 			}
-			final Point childPoint = new Point(left ? childView.getContent().getWidth() : 0,
-					childView.getContent().getHeight() / 2);
-			UITools.convertPointToAncestor(childView.getContent(), childPoint, baseComponent);
+
+			final JComponent childContent = childView.getContent();
+			if(childContent == null)
+				continue;
+			final Point childPoint = new Point(left ? childContent.getWidth() : 0, childContent.getHeight() / 2);
+			UITools.convertPointToAncestor(childContent, childPoint, baseComponent);
+
 			final int dy = childPoint.y - ownY;
 			final int dx = childPoint.x - ownX;
 			final int gapToChild = dy * dy + dx * dx;
@@ -934,7 +938,6 @@ public class NodeView extends JComponent implements INodeView {
 					g2.setStroke(BubbleMainView.DEF_STROKE);
 					modeController.getController().getViewController().setEdgesRenderingHint(g2);
                     paintEdges(g2, this);
-					paintDecoration(g2);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 		}
@@ -943,6 +946,12 @@ public class NodeView extends JComponent implements INodeView {
 			g.drawRect(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
 		}
 	}
+
+	@Override
+    public void paint(Graphics g) {
+	    super.paint(g);
+		paintDecoration((Graphics2D) g);
+    }
 
 	private void paintCloud(final Graphics g) {
 		if (!isContentVisible()) {
@@ -1034,7 +1043,17 @@ public class NodeView extends JComponent implements INodeView {
 		return getMap().getZoomed(x);
 	}
 
-	void paintDecoration(final Graphics2D g) {
+	private void paintDecoration(final Graphics2D g) {
+		final PaintingMode paintingMode = map.getPaintingMode();
+		if(! (getMainView() != null && 
+				( paintingMode.equals(PaintingMode.NODES) && !isSelected() || paintingMode.equals(PaintingMode.SELECTED_NODES) && isSelected()) 
+				&& isContentVisible()))
+			return;
+		final Graphics2D g2 = (Graphics2D) g;
+		final ModeController modeController = map.getModeController();
+		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		g2.setStroke(BubbleMainView.DEF_STROKE);
+		modeController.getController().getViewController().setEdgesRenderingHint(g2);
 		final Point origin = new Point();
 		UITools.convertPointToAncestor(mainView, origin, this);
 		g.translate(origin.x, origin.y);
@@ -1053,8 +1072,8 @@ public class NodeView extends JComponent implements INodeView {
 			    content.getHeight() + 2 * arcWidth, 15, 15);
 			g.setColor(oldColor);
 			g.setStroke(oldStroke);
-			
 		}
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
 	/**

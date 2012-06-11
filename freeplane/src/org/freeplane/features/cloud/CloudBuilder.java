@@ -98,6 +98,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 		registerAttributeHandlers(reader);
 		writer.addExtensionElementWriter(CloudModel.class, this);
 		writer.addElementWriter(NodeBuilder.XML_NODE, this);
+		writer.addElementWriter(NodeBuilder.XML_STYLENODE, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {

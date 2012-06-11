@@ -86,7 +86,11 @@ public abstract class PatternFormat /*extends Format*/ {
 	public abstract String getStyle();
 	
 	public static PatternFormat create(final String pattern, final String style, final String type) {
-		if (style.equals(STYLE_DATE))
+	    if (pattern.equals(IDENTITY_PATTERN))
+	        return new IdentityPatternFormat();
+	    else if (pattern.equals(STANDARD_FORMAT_PATTERN))
+	        return new StandardPatternFormat();
+	    else if (style.equals(STYLE_DATE))
 			return new DatePatternFormat(pattern);
 		else if (style.equals(STYLE_FORMATTER))
 			return new FormatterPatternFormat(pattern, type);
@@ -214,15 +218,15 @@ public abstract class PatternFormat /*extends Format*/ {
     }
 
 	public boolean acceptsDate() {
-	    return getType().equals(IFormattedObject.TYPE_DATE);
+	    return getType().equals(IFormattedObject.TYPE_DATE) || getPattern().equals(STANDARD_FORMAT_PATTERN);
     }
 	
 	public boolean acceptsNumber() {
-		return getType().equals(IFormattedObject.TYPE_NUMBER);
+		return getType().equals(IFormattedObject.TYPE_NUMBER) || getPattern().equals(STANDARD_FORMAT_PATTERN);
 	}
 	
 	public boolean acceptsString() {
-		return getType().equals(IFormattedObject.TYPE_STRING);
+		return getType().equals(IFormattedObject.TYPE_STRING) || getPattern().equals(STANDARD_FORMAT_PATTERN);
 	}
 
 	abstract public Object formatObject(Object toFormat);

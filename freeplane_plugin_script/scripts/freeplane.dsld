@@ -1,3 +1,5 @@
+import java.net.URI;
+
 (enclosingScript()).accept {
     provider = 'Freeplane'
 
@@ -49,4 +51,8 @@
         type: 'java.lang.String',
         params: [object: 'java.lang.Object'],
         doc: 'formats according to the internal standard'
+    method name: 'loadUri',
+        type: 'void',
+        params: [object: 'java.net.URI'],
+        doc: 'opens a URI'
 }

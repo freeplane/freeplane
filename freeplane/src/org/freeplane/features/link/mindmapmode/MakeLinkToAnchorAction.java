@@ -21,18 +21,15 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-@EnabledAction(checkOnPopup=true)
+@EnabledAction
 public class MakeLinkToAnchorAction extends AFreeplaneAction {
 
 	private static final long serialVersionUID = 1L;
@@ -48,38 +45,12 @@ public class MakeLinkToAnchorAction extends AFreeplaneAction {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 
 		// get anchorID from MLinkController
-		String targetID = ((MLinkController)(LinkController.getController())).getAnchorID();
-
-		// check if anchorID is valid, then set link in current node
-		if (targetID != null && ! targetID.matches("\\w+://")) {
-
-			final MLinkController linkController = (MLinkController) MLinkController.getController();
-
-			// extract fileName from target map
-			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.indexOf("#") );
-
-			// get fileName of selected node (source)
-			final File sourceMapFile = selectedNode.getMap().getFile();
-			if(sourceMapFile == null) {
-				UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
-				return;
-			}
-			
-			// check if target and source reside within same map
-			final String sourceMapFileNameURI = sourceMapFile.toURI().toString();
-			if( sourceMapFileNameURI.substring(sourceMapFileNameURI.indexOf("/")+1).equals(targetMapFileName) ) {
-
-				// insert only targetNodeID as link
-				linkController.setLinkTypeDependantLink(selectedNode, targetID.substring(targetID.indexOf("#")));
-			
-			} else {
-				
-				// insert whole targetPath (including targetNodeID) as link for current node
-				linkController.setLinkTypeDependantLink(selectedNode, targetID);
-
-			}
-		}
+		final MLinkController mLinkController = (MLinkController)(LinkController.getController());
+		final String link = mLinkController.getAnchorIDforNode(selectedNode);
+        if(link != null)
+        	mLinkController.setLinkTypeDependantLink(selectedNode, link);
 	}
+
 	@Override
 	public void setEnabled() {
 		final boolean isAnchored = ((MLinkController)(LinkController.getController())).isAnchored();
