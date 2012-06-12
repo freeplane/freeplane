@@ -460,8 +460,8 @@ public class NodeUtils {
 	public static int getAttributeIntValue(NodeModel target, String attributeKey) {
 		Object o = NodeUtils.getAttributeValue(target, attributeKey);
 		Integer value = 0;
-		if(o == null){
-			LogUtils.severe("Could not read Attribute Key: " + attributeKey);
+		if(o == null){			
+			return value;
 		}		
 		if (o instanceof Integer) {
 			value = (Integer) o;
