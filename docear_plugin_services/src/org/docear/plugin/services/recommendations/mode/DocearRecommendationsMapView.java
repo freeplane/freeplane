@@ -22,13 +22,12 @@ import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.recommendations.dialog.RecommendationEntryComponent;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsNodeModel.RecommendationContainer;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 public class DocearRecommendationsMapView extends MapView {
 
@@ -80,38 +79,8 @@ public class DocearRecommendationsMapView extends MapView {
 
 	public DocearRecommendationsMapView(final MapModel model, final ModeController modeController) {
 		super(model, modeController);
-		model.addMapChangeListener(new IMapChangeListener() {
-			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void mapChanged(MapChangeEvent event) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 		this.setLayout(new BorderLayout());
+		this.removeAll();
 		layoutModel(model);
 
 	}
@@ -197,5 +166,9 @@ public class DocearRecommendationsMapView extends MapView {
 
 	public Component add(Component comp, int index) {
 		return super.add(comp, index);
+	}
+	
+	public void centerNode(final NodeView node, boolean slowScroll) {
+		
 	}
 }

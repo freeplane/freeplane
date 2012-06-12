@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import org.docear.plugin.services.recommendations.RecommendationEntry;
-import org.freeplane.core.resources.ResourceController;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -64,16 +62,6 @@ public class RecommendationEntryComponent extends JPanel {
 					e.consume();
 				}
 			}			
-		});
-		lblOpenButton.addMouseMotionListener(new MouseMotionListener() {			
-			public void mouseMoved(MouseEvent e) {
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));				
-			}
-			
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
 		add(lblOpenButton, "1, 1");
 		
