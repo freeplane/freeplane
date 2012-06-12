@@ -694,7 +694,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}
 			
 			private boolean isFlattenSubfolders(NodeModel target) {
-				int value = (Integer)NodeUtils.getAttributeValue(target, PdfUtilitiesController.MON_FLATTEN_DIRS);
+				int value = NodeUtils.getAttributeIntValue(target, PdfUtilitiesController.MON_FLATTEN_DIRS);
 				switch(value){					
 					default:
 						return false;					
@@ -704,7 +704,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}
 
 			private boolean isMonitorSubDirectories(NodeModel target) {
-				int value = (Integer)NodeUtils.getAttributeValue(target, PdfUtilitiesController.MON_SUBDIRS);
+				int value = NodeUtils.getAttributeIntValue(target, PdfUtilitiesController.MON_SUBDIRS);
 				switch(value){
 					
 					default:

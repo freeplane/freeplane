@@ -1,7 +1,10 @@
 package org.docear.plugin.dragbase;
 
+import java.util.Collection;
+
 import org.docear.plugin.core.DocearService;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -30,6 +33,12 @@ public class Activator extends DocearService implements BundleActivator {
 	@Override
 	public void startService(BundleContext context,	ModeController modeController) {
 		DragbaseController.startDragbasePlugin(modeController);		
+	}
+
+	@Override
+	protected Collection<IControllerExtensionProvider> getControllerExtensions() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
