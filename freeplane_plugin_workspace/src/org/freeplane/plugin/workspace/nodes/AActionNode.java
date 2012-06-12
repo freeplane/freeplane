@@ -24,6 +24,7 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 public abstract class AActionNode extends AWorkspaceTreeNode implements IWorkspaceNodeActionListener, IWorkspaceTransferableCreator {
 	
 	private static final long serialVersionUID = 1L;
+	public static final String NODE_TYPE = "action";
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS

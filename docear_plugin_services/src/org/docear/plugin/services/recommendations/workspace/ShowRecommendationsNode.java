@@ -5,6 +5,8 @@ import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
@@ -20,8 +22,9 @@ public class ShowRecommendationsNode extends AActionNode {
 	private WorkspacePopupMenu popupMenu = null;
 	
 	
-	public ShowRecommendationsNode(String type) {
-		super(type);
+	public ShowRecommendationsNode() {
+		super(ShowRecommendationsAction.TYPE);
+		setName(TextUtils.getText("recommendations.workspace.node"));
 	}
 
 	@Override
@@ -61,7 +64,7 @@ public class ShowRecommendationsNode extends AActionNode {
 
 	@Override
 	public AWorkspaceTreeNode clone() {
-		ShowRecommendationsNode node = new ShowRecommendationsNode(getType());
+		ShowRecommendationsNode node = new ShowRecommendationsNode();
 		return clone(node);
 	}
 }
