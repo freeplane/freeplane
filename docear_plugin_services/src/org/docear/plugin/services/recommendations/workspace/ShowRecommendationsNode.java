@@ -5,7 +5,6 @@ import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.docear.plugin.services.ServiceController;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
@@ -13,7 +12,8 @@ import org.freeplane.plugin.workspace.nodes.AActionNode;
 
 public class ShowRecommendationsNode extends AActionNode {
 
-	private static final Icon DEFAULT_ICON = new ImageIcon(ShowRecommendationsNode.class.getResource("/icons/books.png"));
+	//private static final Icon DEFAULT_ICON = new ImageIcon(ShowRecommendationsNode.class.getResource("/icons/books.png"));
+	private static final Icon DEFAULT_ICON = new ImageIcon(ShowRecommendationsNode.class.getResource("/icons/star.png"));
 
 	private static final long serialVersionUID = 1L;
 	
