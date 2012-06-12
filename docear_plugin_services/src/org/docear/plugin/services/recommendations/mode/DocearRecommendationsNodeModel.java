@@ -3,23 +3,21 @@ package org.docear.plugin.services.recommendations.mode;
 import java.util.List;
 
 import org.docear.plugin.services.recommendations.RecommendationEntry;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class DocearRecommendationsNodeModel extends NodeModel {
-
-	private Object userObject;
 	private boolean isItem = true;
 	
 	public DocearRecommendationsNodeModel(RecommendationEntry recommendation, MapModel map) {
 		super(map);
-		this.userObject = recommendation;
+		setUserObject(recommendation);
 		
 	}
 
-	private DocearRecommendationsNodeModel(String name, MapModel map) {
+	private DocearRecommendationsNodeModel(MapModel map) {
 		super(map);
-		userObject = name;
 	}
 
 	@Override
@@ -29,11 +27,6 @@ public class DocearRecommendationsNodeModel extends NodeModel {
 		}
 		return super.getChildren();
 	}
-
-	@Override
-    public Object getUserObject() {
-        return userObject;
-    }
 
     @Override
 	public boolean hasChildren() {
@@ -51,6 +44,54 @@ public class DocearRecommendationsNodeModel extends NodeModel {
 	}
 
 	public static NodeModel getRecommendationContainer(String name, DocearRecommendationsMapModel mapModel) {
-		return new DocearRecommendationsNodeModel(name, mapModel);	
+		DocearRecommendationsNodeModel node = new DocearRecommendationsNodeModel(mapModel);
+		node.setUserObject(node.new RecommendationContainer(name));
+		return node;
+	}
+	
+	public static NodeModel getNoRecommendationsNode(DocearRecommendationsMapModel mapModel) {
+		DocearRecommendationsNodeModel node = new DocearRecommendationsNodeModel(mapModel);
+		node.setUserObject(node.new NoRecommendations());
+		return node;
+	}
+	
+	protected class NoRecommendations implements NodeModelItem {
+		
+		private final String text;
+
+		public NoRecommendations() {
+			this.text = TextUtils.getText("recommendations.error.no_recommendations");
+		}
+		
+		public String getText() {
+			return this.text;
+		}
+		
+		public String toString() {
+			return getText();
+		}
+		
+	}
+	
+	protected class RecommendationContainer implements NodeModelItem {
+		
+		private final String title;
+		
+		public RecommendationContainer(String title) {
+			this.title = title;
+		}
+		
+		public String getText() {
+			return title;
+		}
+		
+		public String toString() {
+			return getText();
+		}
+		
+	}
+	
+	interface NodeModelItem {
+		public String getText();
 	}
 }

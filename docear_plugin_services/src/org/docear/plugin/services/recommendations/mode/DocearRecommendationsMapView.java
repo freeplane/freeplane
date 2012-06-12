@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -19,6 +20,7 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.recommendations.dialog.RecommendationEntryComponent;
+import org.docear.plugin.services.recommendations.mode.DocearRecommendationsNodeModel.RecommendationContainer;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
@@ -128,8 +130,18 @@ public class DocearRecommendationsMapView extends MapView {
 				JComponent comp = getRecommendationComponent((RecommendationEntry) obj);
 				container.add(comp);
 			} else {
-				container = getNewRecommandationContainer(obj.toString());
-				this.add(container);
+				if(obj instanceof RecommendationContainer) {
+					container = getNewRecommandationContainer(obj.toString());
+					this.add(container);
+				}
+				else {
+					if(container == null) {
+						container = getNewRecommandationContainer("");
+						this.add(container);
+					}
+					container.add(new JLabel(obj.toString()));
+				}
+				
 
 			}
 			if (node.hasChildren()) {
@@ -170,7 +182,13 @@ public class DocearRecommendationsMapView extends MapView {
 	}
 
 	public void paint(Graphics g) {
-		super.paintInternal(g);
+		try {
+			super.paintInternal(g);
+		}
+		catch (Exception ex) {
+			//DOCEAR - maybe reset to mind map mode
+			//Controller.getCurrentController().selectMode(MModeController.MODENAME);
+		}
 	}
 	
 	public void paintChildren(Graphics g) {

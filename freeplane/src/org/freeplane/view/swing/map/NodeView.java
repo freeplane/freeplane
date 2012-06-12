@@ -1046,7 +1046,7 @@ public class NodeView extends JComponent implements INodeView {
 	private void paintDecoration(final Graphics2D g) {
 		final PaintingMode paintingMode = map.getPaintingMode();
 		if(! (getMainView() != null && 
-				( paintingMode.equals(PaintingMode.NODES) && !isSelected() || paintingMode.equals(PaintingMode.SELECTED_NODES) && isSelected()) 
+				( PaintingMode.NODES.equals(paintingMode) && !isSelected() || PaintingMode.SELECTED_NODES.equals(paintingMode) && isSelected()) 
 				&& isContentVisible()))
 			return;
 		final Graphics2D g2 = (Graphics2D) g;

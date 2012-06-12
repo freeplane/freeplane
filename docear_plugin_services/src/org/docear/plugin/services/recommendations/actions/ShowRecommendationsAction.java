@@ -1,30 +1,11 @@
 package org.docear.plugin.services.recommendations.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.features.DocearServiceResponse;
-import org.docear.plugin.communications.features.DocearServiceResponse.Status;
 import org.docear.plugin.services.ServiceController;
-import org.docear.plugin.services.recommendations.RecommendationEntry;
-import org.docear.plugin.services.recommendations.dialog.RecommendationsResultPanel;
-import org.docear.plugin.services.xml.DocearXmlBuilder;
-import org.docear.plugin.services.xml.DocearXmlElement;
-import org.docear.plugin.services.xml.DocearXmlRootElement;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.n3.nanoxml.IXMLParser;
-import org.freeplane.n3.nanoxml.IXMLReader;
-import org.freeplane.n3.nanoxml.StdXMLReader;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 
 @EnabledAction(checkOnPopup = true)
 public class ShowRecommendationsAction extends AFreeplaneAction {
@@ -36,7 +17,7 @@ public class ShowRecommendationsAction extends AFreeplaneAction {
 	}
 	
 	public void setEnabled() {
-		if(CommunicationsController.getController().getUserName() == null) {
+		if(CommunicationsController.getController().getUserName() == null || !ServiceController.getController().isRecommendationsAllowed()) {
 			setEnabled(false);
 		}
 		else {

@@ -9,6 +9,7 @@ import java.util.List;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceResponse;
 import org.docear.plugin.communications.features.DocearServiceResponse.Status;
+import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.xml.DocearXmlBuilder;
 import org.docear.plugin.services.xml.DocearXmlElement;
@@ -37,11 +38,14 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 
 	public MapModel newMap() {
-		final DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel(getRecommendations());
-		fireMapCreated(mapModel);
-		newMapView(mapModel);
-		// FIXME: setSaved(true) necessary? (it's removed from newMapView())
-		return mapModel;
+		if(ServiceController.getController().isRecommendationsAllowed()) {
+			final DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel(getRecommendations());
+			fireMapCreated(mapModel);
+			newMapView(mapModel);
+			// FIXME: setSaved(true) necessary? (it's removed from newMapView())
+			return mapModel;
+		}
+		return new DocearRecommendationsMapModel(null);
 	}
 
 	public NodeModel newNode(final Object userObject, final MapModel map) {

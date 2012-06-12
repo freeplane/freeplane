@@ -20,10 +20,19 @@ public class DocearRecommendationsMapModel extends MapModel {
 	}
 	
 	private void parseRecommendations(Collection<RecommendationEntry> recommendations) {		
-		setRoot(DocearRecommendationsNodeModel.getRecommendationContainer("documents",this));
-		for(RecommendationEntry entry : recommendations) {
-			getRootNode().insert(new DocearRecommendationsNodeModel(entry, this));
-		}		
+		if(recommendations == null) {
+			setRoot(DocearRecommendationsNodeModel.getNoRecommendationsNode(this));
+			return;
+		}
+		setRoot(DocearRecommendationsNodeModel.getRecommendationContainer(TextUtils.getText("recommendations.container.documents"),this));
+		if(recommendations.isEmpty()) {
+			getRootNode().insert(DocearRecommendationsNodeModel.getNoRecommendationsNode(this));
+		} 
+		else {
+			for(RecommendationEntry entry : recommendations) {
+				getRootNode().insert(new DocearRecommendationsNodeModel(entry, this));
+			}		
+		}
 	}
 
 	public String getTitle() {

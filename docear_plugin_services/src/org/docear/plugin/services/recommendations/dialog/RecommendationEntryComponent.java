@@ -88,8 +88,10 @@ public class RecommendationEntryComponent extends JPanel {
 			}
 			
 			public void mouseClicked(MouseEvent e) {
-				fireActionEvent(new ActionEvent(lblOpenButton, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
-				e.consume();
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					fireActionEvent(new ActionEvent(lblOpenButton, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
+					e.consume();
+				}
 			}			
 		});
 		add(lblImportButton, "2, 1");
