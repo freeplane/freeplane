@@ -10,7 +10,8 @@ public class NumberLiteralParser extends Parser {
 		try {
 			if (string == null || string.indexOf(' ') != -1)
 				return null;
-			return new FormattedNumber(Double.parseDouble(string));
+			final Double doubleValue = Double.valueOf(string);
+			return new FormattedNumber(doubleValue);
 		}
 		catch (Exception e) {
 			return null;

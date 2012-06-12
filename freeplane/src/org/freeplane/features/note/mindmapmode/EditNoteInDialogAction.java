@@ -37,6 +37,7 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
+import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.ui.ViewController;
 
@@ -75,7 +76,7 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 		if(text ==  null){
 			text = "";
 		}
-		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG("EditNoteInDialogAction.text", nodeModel, text, new EditNodeBase.IEditControl() {
+		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditDialog = null;
@@ -95,19 +96,12 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 			public EditedComponent getEditType() {
                 return EditedComponent.NOTE;
             }
-		}, false);
-		mCurrentEditDialog = editNodeWYSIWYG;
-		editNodeWYSIWYG.setBackground(Color.WHITE);
-		// set default font for notes:
-		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-		    NodeStyleController.class);
-		MapModel map = Controller.getCurrentModeController().getController().getMap();
-		if(map != null){
-		    final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
-		    editNodeWYSIWYG.setFont(defaultFont);
-		}
+		};
+		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
+		mCurrentEditDialog = textFieldCreator.createEditor(nodeModel, editControl, text, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
-		editNodeWYSIWYG.show(frame);
+		mCurrentEditDialog.show(frame);
+
     }
 
 

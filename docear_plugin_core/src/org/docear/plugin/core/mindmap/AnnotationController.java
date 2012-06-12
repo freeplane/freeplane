@@ -48,11 +48,12 @@ public class AnnotationController implements IExtension{
 		return (AnnotationController) modeController.getExtension(AnnotationController.class);
 	}
 	public static void install( final AnnotationController annotationController) {
+		ModeController modeController = Controller.getCurrentModeController();
 		Controller.getCurrentModeController().addExtension(AnnotationController.class, annotationController);
 	}
 	
 	public AnnotationController(final ModeController modeController){
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		AnnotationXmlBuilder builder = new AnnotationXmlBuilder();

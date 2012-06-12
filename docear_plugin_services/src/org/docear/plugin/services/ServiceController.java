@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
 
+import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.communications.CommunicationsController;
@@ -15,16 +16,22 @@ import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
+import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
+import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 public class ServiceController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
 	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
 
-	private final static ServiceController serviceController = new ServiceController();
+	private static ServiceController serviceController;
 	
 	private final ServiceRunner backupRunner = new ServiceRunner();
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
@@ -36,6 +43,7 @@ public class ServiceController {
 	public static final int ALLOW_RESEARCH = 1;
 	
 	private Application application;
+	private DocearRecommendationsModeController modeController;
 
 	private static FileFilter zipFilter = new FileFilter() {
 		public boolean accept(File f) {
@@ -43,31 +51,37 @@ public class ServiceController {
 		}		
 	};
 	
-	public ServiceController() {
+	private ServiceController(ModeController modeController) {
 		LogUtils.info("starting DocearBackupStarter()");
-		initListeners();
+		initListeners(modeController);
 		
-		new ServiceConfiguration();	    
-		new ServicePreferences();
+		new ServiceConfiguration(modeController);	    
+		new ServicePreferences(modeController);
 		
 		addPluginDefaults();
+		addMenuEntries(modeController);
 		Controller.getCurrentController().addAction(new DocearClearUserDataAction());
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
+		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
 	
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {				
 				backupRunner.run();
 				new UpdateCheck();
 			}		
-		});
-		
-				
+		});			
 	}
 	
-	public void initListeners() {
+	protected static void initialize(ModeController modeController) {
+		if(serviceController == null) {
+			serviceController = new ServiceController(modeController);
+		}
+	}
+	
+	private void initListeners(ModeController modeController) {
 		DocearController.getController().addDocearEventListener(new DocearEventListener());
-		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(mapLifeCycleListener);
+		modeController.getMapController().addMapLifeCycleListener(mapLifeCycleListener);
 	}
 	
 	public static ServiceController getController() {
@@ -82,7 +96,12 @@ public class ServiceController {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		Controller.getCurrentController().getResourceController().addDefaults(defaults);		
+		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+		this.modeController = (DocearRecommendationsModeController) Controller.getCurrentController().getModeController(DocearRecommendationsModeController.MODENAME);
+	}
+	
+	public DocearRecommendationsModeController getRecommenationMode() {
+		return this.modeController;
 	}
 	
 	public boolean isBackupEnabled() {
@@ -151,5 +170,17 @@ public class ServiceController {
 
 	public void setApplication(Application application) {
 		this.application = application;
+	}
+	
+	private void addMenuEntries(ModeController modeController) {
+
+		modeController.addMenuContributor(new IMenuContributor() {
+			public void updateMenus(ModeController modeController, MenuBuilder builder) { // /EditDetailsInDialogAction
+				builder.addMenuItem("/menu_bar/extras",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/menu_bar/recommendations", MenuBuilder.BEFORE);
+				builder.addAction("/menu_bar/recommendations", new ShowRecommendationsAction(),	MenuBuilder.AS_CHILD);				
+				builder.addMenuItem("/node_popup",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/node_popup/recommendations", MenuBuilder.PREPEND);
+				builder.addAction("/node_popup/recommendations", new ShowRecommendationsAction(), MenuBuilder.AS_CHILD);
+			}
+		});
 	}
 }

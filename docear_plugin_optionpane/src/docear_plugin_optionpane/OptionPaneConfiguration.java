@@ -23,10 +23,8 @@ public class OptionPaneConfiguration extends ALanguageController {
 		createOptionPane();
 	}
 
-	private void createOptionPane() {
-		ModeController modeController = Controller.getCurrentModeController();
-		
-		modeController.addMenuContributor(new IMenuContributor() {
+	private void createOptionPane() {		
+		this.modeController.addMenuContributor(new IMenuContributor() {
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 				createOptionPanel();
 			}

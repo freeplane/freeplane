@@ -183,7 +183,9 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		reader.addElementHandler("font", this);
 		registerAttributeHandlers(reader);
 		writer.addAttributeWriter(NodeBuilder.XML_NODE, this);
+		writer.addAttributeWriter(NodeBuilder.XML_STYLENODE, this);
 		writer.addElementWriter(NodeBuilder.XML_NODE, this);
+		writer.addElementWriter(NodeBuilder.XML_STYLENODE, this);
 		writer.addExtensionElementWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeSizeModel.class, this);

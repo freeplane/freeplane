@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -339,6 +340,14 @@ public class NodeUtils {
 		}
 		
 		Object value  = attributeModel.getValue(attributeModel.getAttributePosition(PdfUtilitiesController.MON_INCOMING_FOLDER));
+		if (value instanceof String) {
+			try {
+				value = new URI((String) value);
+			}
+			catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		if(value.toString().equals(CoreConfiguration.DOCUMENT_REPOSITORY_PATH)){
 			return CoreConfiguration.repositoryPathObserver.getUri();
@@ -450,7 +459,15 @@ public class NodeUtils {
 
 	public static boolean isAutoMonitorNode(NodeModel node) {
 		if(NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO) == null) return false;
-		int value = (Integer)NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO);
+		Object o = NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO);
+		Integer value = 0;
+		if (o instanceof Integer) {
+			value = (Integer) o;
+		}
+		else {
+			value = Integer.parseInt((String) o);
+		}
+		
 		switch(value){
 			
 			case 0:

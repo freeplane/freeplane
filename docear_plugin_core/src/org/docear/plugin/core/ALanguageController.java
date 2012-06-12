@@ -35,7 +35,7 @@ public abstract class ALanguageController {
 	}
 
 	public void setLanguage() {
-		ResourceBundles resBundle = ((ResourceBundles)Controller.getCurrentModeController().getController().getResourceController().getResources());
+		ResourceBundles resBundle = ((ResourceBundles)Controller.getCurrentController().getResourceController().getResources());
 		String lang = resBundle.getLanguageCode();
 		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
 			lang = DEFAULT_LANGUAGE;

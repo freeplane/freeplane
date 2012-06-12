@@ -23,6 +23,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
@@ -53,9 +54,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	public static final String PROPERTY_RESOURCE_URL_PROTOCOL = "property";
 	public static final String WORKSPACE_VERSION = "1.0";
 		
-	private static final WorkspaceController workspaceController = new WorkspaceController();
+	private static WorkspaceController workspaceController;
+	private static WorkspaceConfiguration configuration ;
 	private static final IOController workspaceIOController = new IOController();
-	private static final WorkspaceConfiguration configuration = new WorkspaceConfiguration();
+	
 	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(30000);
 
 	private final FilesystemManager fsReader;
@@ -86,10 +88,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 
-	protected WorkspaceController() {
+	private WorkspaceController(ModeController modeController) {
 		LogUtils.info("Initializing WorkspaceEnvironment");
 		registerToIMapLifeCycleListener();		
-		getPreferences();
+		preparePreferences(modeController);
 		initTree();
 		registerTreeModelEventListener();
 		this.fsReader = new FilesystemManager(getFileTypeManager());
@@ -97,7 +99,18 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	
 	/***********************************************************************************
 	 * METHODS
+	 * @return 
 	 **********************************************************************************/
+	
+	protected static WorkspaceController createController(ModeController modeController) {
+		if(workspaceController == null) {
+			workspaceController = new WorkspaceController(modeController);
+			configuration = new WorkspaceConfiguration();
+		}
+		return workspaceController;
+		
+	}	
+	
 	private void registerToIMapLifeCycleListener() {
 		Controller.getCurrentModeController().getMapController().addMapLifeCycleListener(this);
 	}
@@ -225,12 +238,15 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		return model;
 	}
 
-	public WorkspacePreferences getPreferences() {
+	private void preparePreferences(ModeController modeController) {
 		if (this.preferences == null) {
-			this.preferences = new WorkspacePreferences();
+			this.preferences = new WorkspacePreferences(modeController);
 			ResourceController resCtrl = Controller.getCurrentController().getResourceController();
 			resCtrl.addPropertyChangeListener(this);
 		}
+	}
+	
+	public WorkspacePreferences getPreferences() {
 		return this.preferences;
 	}
 
@@ -259,9 +275,8 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 		fireConfigurationBeforeLoading(new WorkspaceEvent(getConfiguration()));
 		if (getConfiguration().load()) {
 			fireConfigurationLoaded(new WorkspaceEvent(getConfiguration()));
-			showWorkspace(Controller.getCurrentController().getResourceController()
-					.getBooleanProperty(WorkspacePreferences.SHOW_WORKSPACE_PROPERTY_KEY));
-			UrlManager.getController().setLastCurrentDir(new File(preferences.getWorkspaceLocation()));			
+			showWorkspace(getPreferences().isWorkspaceVisible());
+			UrlManager.getController().setLastCurrentDir(new File(getPreferences().getWorkspaceLocation()));			
 			fireWorkspaceChanged(new WorkspaceEvent(getConfiguration()));
 		}
 		else {
@@ -489,5 +504,5 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 
 	public void onSaved(MapModel map) {
 		
-	}	
+	}
 }

@@ -1,5 +1,6 @@
 package org.docear.plugin.communications;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import org.docear.plugin.communications.components.dialog.ConnectionWaitDialog;
 import org.docear.plugin.communications.features.AccountRegisterer;
 import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
+import org.docear.plugin.communications.features.DocearServiceResponse;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
@@ -34,6 +36,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
@@ -46,7 +49,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class CommunicationsController extends ALanguageController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
-	private final static CommunicationsController communicationsController = new CommunicationsController();
+	private static CommunicationsController communicationsController;
 
 	private static final Client client;
 	static {
@@ -68,11 +71,11 @@ public class CommunicationsController extends ALanguageController implements Pro
 
 	private ConnectionWaitDialog waitDialog;
 
-	public CommunicationsController() {
+	public CommunicationsController(ModeController modeController) {
 		super();
 
 		addPluginDefaults();
-		addPropertiesToOptionPanel();
+		addPropertiesToOptionPanel(modeController);
 
 		Controller.getCurrentController().getOptionPanelController().addPropertyLoadListener(this);
 		Controller.getCurrentController().getResourceController().addPropertyChangeListener(this);
@@ -83,9 +86,17 @@ public class CommunicationsController extends ALanguageController implements Pro
 		propertyChanged(DOCEAR_CONNECTION_TOKEN_PROPERTY, getRegisteredAccessToken(), null);
 	}
 
+	protected static CommunicationsController initialize(ModeController modeController) {
+		if(communicationsController == null) {
+			communicationsController = new CommunicationsController(modeController);
+		}
+		return communicationsController;
+	}
+	
 	public static CommunicationsController getController() {
 		return communicationsController;
 	}
+	
 
 	public ConnectionWaitDialog getWaitDialog() {
 		if(waitDialog == null) {
@@ -216,6 +227,29 @@ public class CommunicationsController extends ALanguageController implements Pro
 		}
 		return false;
 	}
+	
+	public WebResource getServiceResource() {
+		try {
+			return client.resource(getServiceUri());
+		} catch (URISyntaxException e) {
+			return null;
+		}
+	}
+	
+	public DocearServiceResponse get(String path) {
+		try {
+			ClientResponse response = client.resource(getServiceUri()).path(path).get(ClientResponse.class);
+			Status status = response.getClientResponseStatus();
+			if (status != null && status.equals(Status.OK)) {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
+			} else {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, response.getEntityInputStream());
+			}
+		} catch (Exception e) {
+			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream("error".getBytes()));
+		} 
+		
+	}
 
 	private void addPluginDefaults() {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
@@ -224,14 +258,13 @@ public class CommunicationsController extends ALanguageController implements Pro
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 
-	private void addPropertiesToOptionPanel() {
+	private void addPropertiesToOptionPanel(ModeController modeController) {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller
-				.getCurrentModeController();
-
-		modeController.getOptionPanelBuilder().load(preferences);
+		if(modeController instanceof MModeController) {
+			((MModeController) modeController).getOptionPanelBuilder().load(preferences);
+		}
 	}
 
 	public File getCommunicationsQueuePath() {

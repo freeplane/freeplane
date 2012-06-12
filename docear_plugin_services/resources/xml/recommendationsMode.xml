@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu_structure>
+	<menu_category name="menu_bar">
+		<menu_submenu name="file" name_ref="file">
+			<menu_submenu menu_key="main_menu_most_recent_files"
+				name="last" name_ref="most_recent_files" />
+			<menu_action accelerator="control W" action="CloseAction" />
+			<menu_action accelerator="control Q" action="QuitAction"
+				menu_key="MB_QuitAction" />
+		</menu_submenu>
+		
+		<menu_submenu name="mindmaps" name_ref="mindmaps">
+			<menu_category menu_key="main_menu_modes" name="modes" />
+			<menu_category menu_key="main_menu_navigate_maps" name="navigate" />
+			<menu_category menu_key="main_menu_mindmaps" name="mindmaps" />
+		</menu_submenu>
+		
+		<menu_submenu name="help" name_ref="help">
+			<menu_category name="update">
+				<menu_action action="UpdateCheckAction" />
+			</menu_category>
+			<menu_category name="Web resources">
+				<menu_action action="OpenFreeplaneSiteAction" />
+				<menu_action action="AskForHelp" />
+				<menu_action action="ReportBugAction" />
+				<menu_action action="RequestFeatureAction" />
+			</menu_category>
+			<menu_category name="legacy">
+				<menu_action action="AboutAction" menu_key="MB_AboutAction" />
+			</menu_category>
+			<menu_action action="GettingStartedAction" />
+			<menu_action accelerator="F1" action="DocumentationAction" />
+		</menu_submenu>
+	</menu_category>
+	<menu_category name="map_popup">
+		<menu_category name="main">
+			<menu_action action="NavigationPreviousMapAction" />
+			<menu_action action="NavigationNextMapAction" />
+		</menu_category>
+		<menu_category name="open">
+			<menu_action action="CloseAction" />
+		</menu_category>
+	</menu_category>
+
+	<menu_category name="node_popup">
+	</menu_category>
+	<menu_category name="main_toolbar">
+		<menu_category menu_key="main_toolbar_update" name="update" />
+		<menu_category name="open">
+			<menu_action action="CloseAction" />
+		</menu_category>
+	</menu_category>
+</menu_structure>

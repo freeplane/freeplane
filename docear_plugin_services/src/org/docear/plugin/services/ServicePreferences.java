@@ -2,22 +2,22 @@ package org.docear.plugin.services;
 
 import java.net.URL;
 
-import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class ServicePreferences {
 	
-	ServicePreferences() {		
-		addPropertiesToOptionPanel();
+	ServicePreferences(ModeController modeController) {		
+		addPropertiesToOptionPanel(modeController);
 	}
 		
-	private void addPropertiesToOptionPanel() {
+	private void addPropertiesToOptionPanel(ModeController modeController) {
 		final URL preferences = this.getClass().getResource("preferences.xml");
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		
-		modeController.getOptionPanelBuilder().load(preferences);
+		if(modeController instanceof MModeController) {
+			((MModeController) modeController).getOptionPanelBuilder().load(preferences);
+		}
 	}
 	
 }

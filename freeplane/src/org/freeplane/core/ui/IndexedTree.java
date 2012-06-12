@@ -154,9 +154,9 @@ public class IndexedTree {
 				parent.insert(node, index + 1);
 				break;
 			}
-			case PREPEND: {
-				final int index = relativeNode.getChildCount()-1;
-				relativeNode.insert(node, index);
+			case PREPEND: { //DOCEAR - 
+//				final int index = relativeNode.getChildCount()-1;
+				relativeNode.insert(node, 0);
 				break;
 			}
 			case APPEND: {							

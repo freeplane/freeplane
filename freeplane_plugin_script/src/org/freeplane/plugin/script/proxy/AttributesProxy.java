@@ -250,4 +250,9 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	private NodeAttributeTableModel getNodeAttributeTableModel() {
 		return NodeAttributeTableModel.getModel(getDelegate());
 	}
+
+    /** make <code>if (node.attributes) println "has attributes"</code> work. */
+    public boolean asBoolean() {
+        return !isEmpty();
+    }
 }

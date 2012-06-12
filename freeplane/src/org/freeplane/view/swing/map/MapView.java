@@ -98,8 +98,6 @@ import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
 
-import org.freeplane.view.swing.map.PaintingMode.*;
-
 /**
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
@@ -1212,6 +1210,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
+	//DOCEAR - use default component paint instead of the mind map painting behavior
+	protected void paintInternal(Graphics g) {
+		super.paint(g);
+	}
+	
+	//DOCEAR - use default component paintChildren instead of the mind map painting behavior
+	protected void paintChildrenInternal(Graphics g) {
+		super.paintChildren(g);
+	}
+	
 	@Override
 	protected void paintChildren(final Graphics g) {
 	    final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
@@ -1232,6 +1240,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    if(presentationModeEnabled)
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
+		highlightEditor(g2);
     }
 
 	private void paintChildren(Graphics2D g2, final PaintingMode[] paintModes) {
@@ -1261,6 +1270,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		for (final NodeView selected : getSelection()) {
 			highlightSelected(g2, selected, paintModes);
 		}
+    }
+
+	private void highlightEditor(Graphics2D g2) {
+	    final Component editor = getComponent(0);
+		if(editor instanceof NodeView)
+	    	return;
+	    final java.awt.Shape oldClip = g2.getClip();
+	    try{
+	    	g2.setClip(editor.getX(), editor.getY(), editor.getWidth(), editor.getHeight());
+	    	super.paintChildren(g2);
+	    }
+	    finally{
+	    	g2.setClip(oldClip);
+	    }
 	    
     }
 
@@ -1379,14 +1402,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (selected.getMainView().isEdited()) {
 			return;
 		}
-		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 6, 15);
+		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 4, 15);
 		g.draw(roundRectClip);
 	}
 
 	private void highlightSelected(Graphics2D g, NodeView selected, PaintingMode[] paintedModes) {
 		final java.awt.Shape highlightClip;
 		if (MapView.standardDrawRectangleForSelection)
-			highlightClip = getRoundRectangleAround(selected, 6, 15);
+			highlightClip = getRoundRectangleAround(selected, 4, 15);
 		else
 			highlightClip = getRoundRectangleAround(selected, 4, 2);
 		final java.awt.Shape oldClip = g.getClip();

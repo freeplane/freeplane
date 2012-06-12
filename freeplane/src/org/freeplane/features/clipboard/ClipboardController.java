@@ -153,7 +153,7 @@ public class ClipboardController implements IExtension {
 		final StringWriter stringWriter = new StringWriter();
 		try {
 			Controller.getCurrentModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, Mode.CLIPBOARD,
-			    saveInvisible, true);
+			    saveInvisible, true, false);
 		}
 		catch (final IOException e) {
 			LogUtils.severe(e);
@@ -323,7 +323,7 @@ public class ClipboardController implements IExtension {
 			final StringWriter writer = new StringWriter();
 			ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapWriter()
-			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, withChildren);
+			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, withChildren, false);
 			final String result = writer.toString();
 			final NodeModel copy = modeController.getMapController().getMapReader().createNodeTreeFromXml(
 			    source.getMap(), new StringReader(result), Mode.CLIPBOARD);

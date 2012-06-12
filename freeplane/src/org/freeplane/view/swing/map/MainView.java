@@ -198,8 +198,8 @@ public abstract class MainView extends ZoomableLabel {
 	@Override
 	final public void paint(Graphics g){
 		final PaintingMode paintingMode = getMap().getPaintingMode();
-		if(!paintingMode.equals(PaintingMode.SELECTED_NODES)
-				&& !paintingMode.equals(PaintingMode.NODES))
+		if(!PaintingMode.SELECTED_NODES.equals(paintingMode)
+				&& !PaintingMode.NODES.equals(paintingMode))
 			return;
 		final NodeView nodeView = getNodeView();
 		final boolean selected = nodeView.isSelected();
@@ -451,12 +451,13 @@ public abstract class MainView extends ZoomableLabel {
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final TextController textController = TextController.getController(modeController);
 		isShortened = textController.isMinimized(nodeModel);
-		Object content = nodeModel.getUserObject();
+		final Object userObject = nodeModel.getUserObject();
+		Object content = userObject;
 		String text;
 		try {
 			if(isShortened && (content instanceof String))
 				content = HtmlUtils.htmlToPlain((String) content);
-			final Object obj = textController.getTransformedObject(content, nodeModel, content);
+			final Object obj = textController.getTransformedObject(content, nodeModel, userObject);
 			if(nodeView.isSelected()){
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(obj);
 			}
@@ -477,7 +478,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	private String convertTextToHtmlLink(String text, NodeModel node) {
 		URI link = NodeLinks.getLink(node);
-		if(link == null || ! LinkController.getController().formatNodeAsHyperlink(node))
+		if(link == null || "menuitem".equals(link.getScheme()) || ! LinkController.getController().formatNodeAsHyperlink(node))
 			return text;
 		if (HtmlUtils.isHtmlNode(text))
 			text = HtmlUtils.htmlToPlain(text);
@@ -698,7 +699,7 @@ public abstract class MainView extends ZoomableLabel {
 				y = 0;
 			}
 			height += zoomedFoldingSymbolHalfWidth;
-			final Rectangle foldingRectangle = new Rectangle(x-1, y-1, width+2, height+2);
+			final Rectangle foldingRectangle = new Rectangle(x-4, y-4, width+8, height+8);
 			final MapView map = nodeView.getMap();
 			UITools.convertRectangleToAncestor(this, foldingRectangle, map);
 			map.paintImmediately(foldingRectangle);

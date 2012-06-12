@@ -1,33 +1,37 @@
 package org.docear.plugin.services;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.docear.plugin.core.DocearService;
+import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator extends DocearService implements BundleActivator {
-
-//	public void start(BundleContext context) throws Exception {
-//		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
-//		props.put("mode", new String[] { MModeController.MODENAME });
-//		context.registerService(IModeControllerExtensionProvider.class.getName(),
-//		    new IModeControllerExtensionProvider() {
-//			    public void installExtension(ModeController modeController) {
-//			    	new BackupConfiguration();
-//				    new BackupStarter();
-//				    new BackupPreferences();
-//			    }
-//		    }, props);
-//	}
-	
+		
 	
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Goodbye World!!");
 	}
 
-
 	public void startService(BundleContext context, ModeController modeController) {
-		ServiceController.getController();	
+		ServiceController.initialize(modeController);
+	}
+
+	protected Collection<IControllerExtensionProvider> getControllerExtensions() {
+		List<IControllerExtensionProvider> controllerExtensions = new ArrayList<IControllerExtensionProvider>();
+		controllerExtensions.add(new IControllerExtensionProvider() {
+			
+			public void installExtension(Controller controller) {
+				DocearRecommendationsModeController.createController(controller);				
+			}
+		});
+		return controllerExtensions;
 	}
 
 }

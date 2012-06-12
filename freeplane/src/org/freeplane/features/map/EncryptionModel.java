@@ -136,7 +136,7 @@ public class EncryptionModel implements IExtension {
 		final StringWriter sWriter = new StringWriter();
 		for (final Iterator<NodeModel> i = node.getChildren().listIterator(); i.hasNext();) {
 			final NodeModel child = i.next();
-			mapController.getMapWriter().writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true);
+			mapController.getMapWriter().writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
 			if (i.hasNext()) {
 				sWriter.write(ClipboardController.NODESEPARATOR);
 			}

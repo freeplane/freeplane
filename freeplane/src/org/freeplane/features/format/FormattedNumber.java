@@ -63,7 +63,11 @@ public class FormattedNumber extends Number implements IFormattedObject, Compara
 	// implementation detail
 	private FormattedNumber(final Number number, final String pattern, final String formattedString,
 	                        final boolean isDefault) {
-		this.number = number;
+		final long longValue = number.longValue();
+		if(longValue == number.doubleValue())
+			this.number = longValue;
+		else
+			this.number = number;
 		this.pattern = pattern;
 		this.formattedString = formattedString;
 		this.isDefaultFormat = isDefault;

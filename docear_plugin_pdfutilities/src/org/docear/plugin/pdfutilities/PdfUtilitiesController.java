@@ -139,7 +139,7 @@ public class PdfUtilitiesController extends ALanguageController{
 		super();
 
 		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)"); //$NON-NLS-1$
-		this.modecontroller = modeController;		
+		this.modecontroller = modeController;
 		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.registerController();
@@ -550,7 +550,7 @@ public class PdfUtilitiesController extends ALanguageController{
 		final URL preferences = this.getClass().getResource("preferences.xml"); //$NON-NLS-1$
 		if (preferences == null)
 			throw new RuntimeException("cannot open docear.pdf_utilities plugin preferences"); //$NON-NLS-1$
-		MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		MModeController modeController = (MModeController) this.modecontroller;
 
 		modeController.getOptionPanelBuilder().load(preferences);
 		Controller.getCurrentController().addOptionValidator(new IValidator(){
