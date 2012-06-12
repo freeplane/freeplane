@@ -456,17 +456,30 @@ public class NodeUtils {
 		}
 		return null;
 	}
-
-	public static boolean isAutoMonitorNode(NodeModel node) {
-		if(NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO) == null) return false;
-		Object o = NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO);
+	
+	public static int getAttributeIntValue(NodeModel target, String attributeKey) {
+		Object o = NodeUtils.getAttributeValue(target, attributeKey);
 		Integer value = 0;
+		if(o == null){			
+			return value;
+		}		
 		if (o instanceof Integer) {
 			value = (Integer) o;
 		}
 		else {
-			value = Integer.parseInt((String) o);
+			try{
+				value = Integer.parseInt((String) o);
+			}
+			catch(NumberFormatException e){
+				LogUtils.severe("Could not read Attribute Key: " + attributeKey + " . Number expected.", e);
+			}
 		}
+		return value;
+	}
+
+	public static boolean isAutoMonitorNode(NodeModel node) {
+		if(NodeUtils.getAttributeValue(node, PdfUtilitiesController.MON_AUTO) == null) return false;
+		Integer value = NodeUtils.getAttributeIntValue(node, PdfUtilitiesController.MON_AUTO);	
 		
 		switch(value){
 			
