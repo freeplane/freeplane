@@ -134,6 +134,7 @@ public class PdfUtilitiesController extends ALanguageController{
 
 		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)"); //$NON-NLS-1$
 		this.modecontroller = modeController;
+		this.addPropertiesToOptionPanel();
 		this.addPluginDefaults();
 		this.registerController();
 		this.registerActions();
