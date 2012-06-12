@@ -221,6 +221,8 @@ public class PdfUtilitiesController extends ALanguageController{
 				if(preferredReaderSettings.containsKey("InstallLocation") && preferredReaderSettings.get("InstallLocation") != null){
 					File reader = new File(preferredReaderSettings.get("InstallLocation") + "\\" + readerExe);
 					if(reader.exists()){
+						Controller.getCurrentController().getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, false);
+						Controller.getCurrentController().getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
 						Controller.getCurrentController().getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, true);
 						Controller.getCurrentController().getResourceController().setProperty(OPEN_ON_PAGE_READER_PATH_KEY, reader.getAbsolutePath());
 						return true;
