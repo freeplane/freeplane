@@ -164,7 +164,6 @@ public class DocearRecommendationsMapView extends MapView {
 					}
 				}
 				else if(e.getID() == RecommendationEntryComponent.IMPORT_RECOMMENDATION) {
-					System.out.println("TODO: IMPORT_TO_LIBRARY");
 					DocearController.getController().dispatchDocearEvent(new DocearEvent(recommendation.getLink(), "IMPORT_TO_LIBRARY"));
 				}
 			}

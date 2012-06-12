@@ -19,6 +19,7 @@ import net.sf.jabref.JabRefPreferences;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
+import org.docear.plugin.bibtex.actions.AddRecommendedDocumentAction;
 import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
 import org.docear.plugin.bibtex.actions.ReferenceQuitAction;
 import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
@@ -163,7 +164,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 		this.modeController.getMapController().addMapChangeListener(changeListenerAdapter);
 		this.modeController.getMapController().addMapLifeCycleListener(changeListenerAdapter);
 		
-		DocearController.getController().addDocearEventListener(this);		
+		DocearController.getController().addDocearEventListener(this);
+		Controller.getCurrentController().addAction(new AddRecommendedDocumentAction());
 	}
 	
 	
