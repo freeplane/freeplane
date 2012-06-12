@@ -602,22 +602,14 @@ public class MMapController extends MapController {
 		}
 	}
 
-	public NodeModel addFreeNode(Point pt, boolean newNodeIsLeft) {
+	public NodeModel addFreeNode(final Point pt, final boolean newNodeIsLeft) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
 			((MTextController) textController).stopEditing();
+				modeController.forceNewTransaction();
 		}
 		final NodeModel target = getRootNode();
-		if (textController instanceof MTextController) {
-			modeController.startTransaction();
-			try {
-				((MTextController) TextController.getController()).stopEditing();
-			}
-			finally {
-				modeController.commit();
-			}
-		}
 		final NodeModel targetNode = target;
 		final boolean parentFolded = isFolded(targetNode);
 		if (parentFolded) {

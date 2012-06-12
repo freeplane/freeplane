@@ -811,7 +811,10 @@ public class MTextController extends TextController {
 			keyEventDispatcher.uninstall();
 		}
 		if (mCurrentEditDialog != null) {
+			// Ensure that setText from the edit and the next action 
+			// are parts of different transactions
 			mCurrentEditDialog.closeEdit();
+			modeController.forceNewTransaction();
 			mCurrentEditDialog = null;
 		}
 	}

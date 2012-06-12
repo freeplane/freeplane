@@ -287,6 +287,11 @@ public class UndoHandler implements IUndoHandler {
 		}
 	}
 
+	public void forceNewTransaction() {
+		timeOfLastAdd = 0;
+		actionFrameStarted = false;
+    }
+	
 	public void startTransaction() {
 		transactionList.addLast(actorList);
 		transactionIteratorList.addLast(actorIterator);
