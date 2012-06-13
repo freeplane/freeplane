@@ -4,9 +4,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TreeMap;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceResponse;
