@@ -85,7 +85,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 
 	public void handleAction(WorkspaceActionEvent event) {
 		if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {			
-			Controller.getCurrentController().selectMode("MindMap");
+			Controller.getCurrentController().selectMode(MModeController.MODENAME);
 			
 			File file = WorkspaceUtils.resolveURI(getLinkPath());
 			if(file != null) {

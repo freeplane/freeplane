@@ -283,7 +283,7 @@ public class FolderFileNode extends DefaultFileNode {
 	 **********************************************************************************/
 	public void handleAction(WorkspaceActionEvent event) {	
 		if(event.getType() == WorkspaceActionEvent.WSNODE_CHANGED) {
-			Controller.getCurrentController().selectMode("MindMap");
+			Controller.getCurrentController().selectMode(MModeController.MODENAME);
 			if(rename(event.getBaggage().toString())) {
 				setName(event.getBaggage().toString());
 				if(event.getSource() instanceof AWorkspaceTreeNode) {
