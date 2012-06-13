@@ -49,24 +49,18 @@ public class DocearRecommendationsMapController extends MapController {
 		return modeController;
 	}
 	
-	public MapModel newMap() {
-		final DocearRecommendationsMapModel mapModel;
+	public MapModel newMap() {		
+		DocearRecommendationsMapModel mapModel;
 		if(ServiceController.getController().isRecommendationsAllowed()) {
-			mapModel = new DocearRecommendationsMapModel(getRecommendations());
-			fireMapCreated(mapModel);
-			newMapView(mapModel);
-			// FIXME: setSaved(true) necessary? (it's removed from newMapView())
-			return mapModel;
+			mapModel = new DocearRecommendationsMapModel(getRecommendations());	
 		}
 		else {
-			RecommendationEntry entry = new RecommendationEntry("nothing found", null);
-			ArrayList<RecommendationEntry> entries = new ArrayList<RecommendationEntry>();
-			entries.add(entry);
-			mapModel = new DocearRecommendationsMapModel(entries);
-			fireMapCreated(mapModel);
-			newMapView(mapModel);
-			return mapModel;
+			mapModel = new DocearRecommendationsMapModel(null);
 		}
+		fireMapCreated(mapModel);
+		newMapView(mapModel);
+		// FIXME: setSaved(true) necessary? (it's removed from newMapView())
+		return mapModel;
 	}
 
 	public NodeModel newNode(final Object userObject, final MapModel map) {
