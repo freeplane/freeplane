@@ -6,6 +6,8 @@ import java.util.Collections;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.util.LogUtils;
@@ -47,13 +49,20 @@ public class DocearRecommendationsModeController extends ModeController {
 
 	@Override
 	public void startup() {
+		DocearController.getController().dispatchDocearEvent(new DocearEvent(this, "DOCEAR_MODE_STARTUP"));
 		final Controller controller = getController();
 		this.getUserInputListenerFactory().getMapPopup().setName(TextUtils.getText("recommendations.popup_title"));
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
 			((DocearRecommendationsMapController) getMapController()).newMap();
 		}
-		super.startup();
+		super.startup();		
+	}
+	
+	@Override
+	public void shutdown() {
+		super.shutdown();
+		DocearController.getController().dispatchDocearEvent(new DocearEvent(this, "DOCEAR_MODE_SHUTDOWN"));
 	}
 
 	public static DocearRecommendationsModeController createController() {
