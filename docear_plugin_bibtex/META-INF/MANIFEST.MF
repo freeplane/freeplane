@@ -16,3 +16,5 @@ Bundle-ClassPath: .,
  lib/JabRef-2.7.1.jar,
  lib/plugin.jar,
  lib/resources.jar
+Export-Package: org.docear.plugin.bibtex,
+ org.docear.plugin.bibtex.jabref

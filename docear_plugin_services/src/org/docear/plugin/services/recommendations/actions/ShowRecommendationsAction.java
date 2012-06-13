@@ -24,6 +24,8 @@ import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.StyleEditorPanel;
 import org.freeplane.features.ui.ViewController;
 
+import org.docear.plugin.bibtex.ReferencesController;
+
 @EnabledAction(checkOnPopup = true)
 public class ShowRecommendationsAction extends AFreeplaneAction {
 	public final static String TYPE = "ShowRecommendationsAction";
@@ -52,10 +54,12 @@ public class ShowRecommendationsAction extends AFreeplaneAction {
 			UITools.setScrollbarIncrement(styleScrollPane);
 			Box resisableTabs = Box.createHorizontalBox();
 			resisableTabs.add(new OneTouchCollapseResizer(Direction.RIGHT, CollapseDirection.COLLAPSE_RIGHT));
-			resisableTabs.add(new JTabbedPane());
-			modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);
+			resisableTabs.add(new JTabbedPane());			
+			modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);			
 			final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
-			tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
+			
+			tabs.add(TextUtils.getText("jabref"), ReferencesController.getController().getJabrefWrapper().getJabrefFramePanel());
+//			tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
 		}
 		catch (Exception ex) {
 			LogUtils.warn(ex);
