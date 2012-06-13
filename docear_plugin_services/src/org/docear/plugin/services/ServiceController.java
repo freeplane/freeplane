@@ -5,7 +5,6 @@ import java.io.FileFilter;
 import java.net.URL;
 import java.util.Enumeration;
 
-import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.communications.CommunicationsController;
@@ -24,8 +23,6 @@ import org.docear.plugin.services.recommendations.mode.DocearRecommendationsMode
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsNode;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -33,10 +30,12 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
+import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class ServiceController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
@@ -115,25 +114,24 @@ public class ServiceController {
 
 			private boolean workspacePrepared;
 
-			public void workspaceReady(WorkspaceEvent event) {
-			}
-
-			public void workspaceChanged(WorkspaceEvent event) {
-			}
-
-			public void toolBarChanged(WorkspaceEvent event) {
-			}
-
-			public void openWorkspace(WorkspaceEvent event) {
-			}
-
+			public void workspaceReady(WorkspaceEvent event) {}
+			
+			public void workspaceChanged(WorkspaceEvent event) {}
+			
+			public void toolBarChanged(WorkspaceEvent event) {}
+			
+			public void openWorkspace(WorkspaceEvent event) {}
+			
 			public void configurationLoaded(WorkspaceEvent event) {
-				addRecommendationsNodeIfNeeded();
+				AWorkspaceTreeNode node = WorkspaceUtils.getNodeForPath(((WorkspaceRoot) WorkspaceUtils.getModel().getRoot()).getName()+"/"+TextUtils.getText("recommendations.workspace.node"));
+				if(node == null) {
+					node = new ShowRecommendationsNode();
+					WorkspaceUtils.getModel().addNodeTo(node, (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot(), false);
+				}
 			}
-
-			public void closeWorkspace(WorkspaceEvent event) {
-			}
-
+			
+			public void closeWorkspace(WorkspaceEvent event) {}
+			
 			public void configurationBeforeLoading(WorkspaceEvent event) {
 				if (!workspacePrepared) {
 					WorkspaceController controller = WorkspaceController.getController();
@@ -160,7 +158,7 @@ public class ServiceController {
 		}
 		
 		String type = ShowRecommendationsAction.TYPE;
-		ShowRecommendationsNode node = new ShowRecommendationsNode(type);
+		ShowRecommendationsNode node = new ShowRecommendationsNode();
 		node.setName(TextUtils.getText("recommendations.workspace.node"));
 
 		

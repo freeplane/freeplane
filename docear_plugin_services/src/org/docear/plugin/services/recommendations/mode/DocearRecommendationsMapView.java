@@ -80,7 +80,7 @@ public class DocearRecommendationsMapView extends MapView {
 	public DocearRecommendationsMapView(final MapModel model, final ModeController modeController) {
 		super(model, modeController);
 		this.setLayout(new BorderLayout());
-		this.removeAll();
+		//this.removeAll();
 		layoutModel(model);
 
 	}
@@ -168,6 +168,6 @@ public class DocearRecommendationsMapView extends MapView {
 	}
 	
 	public void centerNode(final NodeView node, boolean slowScroll) {
-		
+		node.setLocation(-9999, -9999);
 	}
 }
