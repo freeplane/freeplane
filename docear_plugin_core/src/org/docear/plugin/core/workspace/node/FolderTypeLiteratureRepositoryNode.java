@@ -7,8 +7,11 @@ package org.docear.plugin.core.workspace.node;
 import java.io.File;
 import java.net.URI;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
@@ -29,6 +32,8 @@ public class FolderTypeLiteratureRepositoryNode extends FolderLinkNode implement
 	private static final long serialVersionUID = 1L;
 	private boolean locked;
 	private WorkspacePopupMenu popupMenu = null;
+	
+	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLiteratureRepositoryNode.class.getResource("/images/books.png"));
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -64,6 +69,13 @@ public class FolderTypeLiteratureRepositoryNode extends FolderLinkNode implement
 			createPathIfNeeded(uri);
 		}
 		locked = false;	
+	}
+	
+	public boolean setIcons(DefaultTreeCellRenderer renderer) {
+		renderer.setOpenIcon(DEFAULT_ICON);
+		renderer.setClosedIcon(DEFAULT_ICON);
+		renderer.setLeafIcon(DEFAULT_ICON);
+		return true;
 	}
 	
 	private void createPathIfNeeded(URI uri) {

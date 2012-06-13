@@ -41,8 +41,8 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 
 	public void actionPerformed(ActionEvent arg0) {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		Object value = NodeUtils.getAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
-		if(value == null || (Integer)value == 0){			
+		int value = NodeUtils.getAttributeIntValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
+		if(value == 0){			
 			boolean isFolded = selected.isFolded();
 			selected.setFolded(true);
 			SwingWorker<Void, Void> thread = getFlattenThread(selected);
@@ -203,8 +203,8 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 		else{
 			this.setEnabled(NodeUtils.isMonitoringNode(selected));
 		}
-		Object value = NodeUtils.getAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
-		if(value == null || (Integer)value == 0){			
+		int value = NodeUtils.getAttributeIntValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
+		if(value == 0){			
 			this.setSelected(false);
 		}
 		else{			

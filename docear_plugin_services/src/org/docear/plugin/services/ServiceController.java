@@ -18,6 +18,7 @@ import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
 import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
+import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
@@ -26,6 +27,10 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.workspace.WorkspaceConfiguration;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
+import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 
 public class ServiceController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
@@ -97,7 +102,36 @@ public class ServiceController {
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+		
 		this.modeController = (DocearRecommendationsModeController) Controller.getCurrentController().getModeController(DocearRecommendationsModeController.MODENAME);
+		
+		WorkspaceController.getController().addWorkspaceListener(new IWorkspaceEventListener() {
+			
+			private boolean workspacePrepared;
+
+			public void workspaceReady(WorkspaceEvent event) {}
+			
+			public void workspaceChanged(WorkspaceEvent event) {}
+			
+			public void toolBarChanged(WorkspaceEvent event) {}
+			
+			public void openWorkspace(WorkspaceEvent event) {}
+			
+			public void configurationLoaded(WorkspaceEvent event) {}
+			
+			public void closeWorkspace(WorkspaceEvent event) {}
+			
+			public void configurationBeforeLoading(WorkspaceEvent event) {
+				if(!workspacePrepared) {
+					WorkspaceController controller = WorkspaceController.getController();
+					controller.getConfiguration().registerTypeCreator(WorkspaceConfiguration.WSNODE_ACTION, ShowRecommendationsCreator.NODE_TYPE, new ShowRecommendationsCreator());
+					//modifyContextMenus();
+				}
+				workspacePrepared  = true;
+				
+			}		
+			
+		});
 	}
 	
 	public DocearRecommendationsModeController getRecommenationMode() {
@@ -174,13 +208,13 @@ public class ServiceController {
 	
 	private void addMenuEntries(ModeController modeController) {
 
-		modeController.addMenuContributor(new IMenuContributor() {
-			public void updateMenus(ModeController modeController, MenuBuilder builder) { // /EditDetailsInDialogAction
-				builder.addMenuItem("/menu_bar/extras",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/menu_bar/recommendations", MenuBuilder.BEFORE);
-				builder.addAction("/menu_bar/recommendations", new ShowRecommendationsAction(),	MenuBuilder.AS_CHILD);				
-				builder.addMenuItem("/node_popup",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/node_popup/recommendations", MenuBuilder.PREPEND);
-				builder.addAction("/node_popup/recommendations", new ShowRecommendationsAction(), MenuBuilder.AS_CHILD);
-			}
-		});
+//		modeController.addMenuContributor(new IMenuContributor() {
+//			public void updateMenus(ModeController modeController, MenuBuilder builder) { // /EditDetailsInDialogAction
+//				builder.addMenuItem("/menu_bar/extras",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/menu_bar/recommendations", MenuBuilder.BEFORE);
+//				builder.addAction("/menu_bar/recommendations", new ShowRecommendationsAction(),	MenuBuilder.AS_CHILD);				
+//				builder.addMenuItem("/node_popup",new JMenu(TextUtils.getText("docear.recommendations.menu")), "/node_popup/recommendations", MenuBuilder.PREPEND);
+//				builder.addAction("/node_popup/recommendations", new ShowRecommendationsAction(), MenuBuilder.AS_CHILD);
+//			}
+//		});
 	}
 }

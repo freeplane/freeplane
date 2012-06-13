@@ -42,5 +42,4 @@ public class DocearRecommendationsMapModel extends MapModel {
 		}
 		return TextUtils.getText("recommendations.map.label.anonymous");
 	}
-
 }

@@ -14,6 +14,7 @@ import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.xml.DocearXmlBuilder;
 import org.docear.plugin.services.xml.DocearXmlElement;
 import org.docear.plugin.services.xml.DocearXmlRootElement;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -27,16 +28,25 @@ import org.freeplane.view.swing.map.MapView;
 public class DocearRecommendationsMapController extends MapController {
 
 	private DocearRecommendationsModeController modeController;
+	private MapView currentMapView;
 
 	public DocearRecommendationsMapController(DocearRecommendationsModeController modeController) {
 		super(modeController);
 		this.modeController = modeController;
+		addMapLifeCycleListener(new IMapLifeCycleListener() {			
+			public void onSavedAs(MapModel map) {}			
+			public void onSaved(MapModel map) {}			
+			public void onRemove(MapModel map) {
+				currentMapView = null;			
+			}			
+			public void onCreate(MapModel map) {}
+		});
 	}
 
 	public DocearRecommendationsModeController getModeController() {
 		return modeController;
 	}
-
+	
 	public MapModel newMap() {
 		if(ServiceController.getController().isRecommendationsAllowed()) {
 			final DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel(getRecommendations());
@@ -59,8 +69,17 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 
 	public void newMapView(MapModel map) {
-		Controller.getCurrentController().getMapViewManager().changeToMapView(createMapView(map));
+		this.currentMapView = createMapView(map);
+		Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
 		Controller.getCurrentController().getMapViewManager().updateMapViewName();
+	}
+	
+	public void refreshRecommendations() {
+		if(this.currentMapView != null) {
+			Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
+			Controller.getCurrentController().getMapViewManager().close(false);
+		}
+		newMap();
 	}
 
 	private MapView createMapView(MapModel map) {

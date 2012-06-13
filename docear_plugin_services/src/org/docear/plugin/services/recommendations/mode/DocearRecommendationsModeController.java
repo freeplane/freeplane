@@ -29,6 +29,7 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
@@ -75,6 +76,7 @@ public class DocearRecommendationsModeController extends ModeController {
 
 		new DocearRecommendationsMapController(modeController);
 
+		UrlManager.install(new UrlManager());
 		MapIO.install(modeController);
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));

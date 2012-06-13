@@ -7,10 +7,13 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JMenu;
@@ -26,6 +29,8 @@ import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension.DocearMapType;
 import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MapConverter;
+import org.docear.plugin.core.util.CompareVersion;
+import org.docear.plugin.core.util.WinRegistry;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DeleteMonitoringFolderAction;
@@ -61,6 +66,7 @@ import org.freeplane.core.resources.components.RadioButtonProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -139,7 +145,94 @@ public class PdfUtilitiesController extends ALanguageController{
 		this.registerController();
 		this.registerActions();
 		this.registerListener();
-		this.addMenuEntries();		
+		this.addMenuEntries();
+		if(DocearController.getController().isDocearFirstStart()){
+			this.checkPdfReaderSettings();
+		}
+	}
+
+	private void checkPdfReaderSettings() {
+		if(!Compat.isWindowsOS()) return;
+		List<Map<String, String>> foxitSettings = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> acrobatSettings = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> adobeReaderSettings = new ArrayList<Map<String, String>>();
+		String win32Key = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+		String win64Key = "SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+		String nameKey = "DisplayName";
+		String foxitNameValue = "Foxit";
+		String acrobatNameValue = "Acrobat";
+		String adobeReaderNameValue = "Adobe Reader";
+		try {
+			List<String> uninstallKeys = new ArrayList<String>();			
+			List<String> win32Keys = WinRegistry.readStringSubKeys(WinRegistry.HKEY_LOCAL_MACHINE, win32Key);
+			if(win32Keys != null){
+				for(String subKey : win32Keys){
+					uninstallKeys.add(win32Key + "\\" + subKey);
+				}
+			}
+			List<String> win64Keys = WinRegistry.readStringSubKeys(WinRegistry.HKEY_LOCAL_MACHINE, win64Key);
+			if(win64Keys != null){
+				for(String subKey : win64Keys){
+					uninstallKeys.add(win64Key + "\\" + subKey);
+				}
+			}	
+			
+			for(String uninstallKey : uninstallKeys){
+				Map<String, String> keyMap = WinRegistry.readStringValues(WinRegistry.HKEY_LOCAL_MACHINE, uninstallKey);
+				if(keyMap == null || !keyMap.containsKey(nameKey) || keyMap.get(nameKey) == null) continue;
+				if(keyMap.get(nameKey).contains(foxitNameValue)){
+					foxitSettings.add(keyMap);
+					continue;
+				}
+				if(keyMap.get(nameKey).contains(acrobatNameValue)){
+					acrobatSettings.add(keyMap);
+					continue;
+				}
+				if(keyMap.get(nameKey).contains(adobeReaderNameValue)){
+					adobeReaderSettings.add(keyMap);
+					continue;
+				}
+			}
+			
+			if(setReaderPreferences(foxitSettings, "Foxit Reader.exe")) return;
+			if(setReaderPreferences(acrobatSettings, "Acrobat\\Acrobat.exe")) return;
+			if(setReaderPreferences(adobeReaderSettings, "AcroRd32.exe")) return;
+		} catch (IllegalArgumentException e) {
+			LogUtils.warn(e);
+		} catch (IllegalAccessException e) {
+			LogUtils.warn(e);
+		} catch (InvocationTargetException e) {
+			LogUtils.warn(e);
+		}		
+	}
+
+	private boolean setReaderPreferences(List<Map<String, String>> readerSettings, String readerExe) {
+		Map<String, String> preferredReaderSettings = new HashMap<String, String>();
+		if(!readerSettings.isEmpty()){
+			do{
+				for(Map<String, String> readerSetting : readerSettings){
+					if(preferredReaderSettings.isEmpty()){
+						preferredReaderSettings = readerSetting;
+					}
+					else if(CompareVersion.compareVersions(readerSetting.get("DisplayVersion"), preferredReaderSettings.get("DisplayVersion")) == CompareVersion.GREATER ){
+						preferredReaderSettings = readerSetting;
+					}
+				}
+				if(preferredReaderSettings.containsKey("InstallLocation") && preferredReaderSettings.get("InstallLocation") != null){
+					File reader = new File(preferredReaderSettings.get("InstallLocation") + "\\" + readerExe);
+					if(reader.exists()){
+						Controller.getCurrentController().getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, false);
+						Controller.getCurrentController().getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
+						Controller.getCurrentController().getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, true);
+						Controller.getCurrentController().getResourceController().setProperty(OPEN_ON_PAGE_READER_PATH_KEY, reader.getAbsolutePath());
+						return true;
+					}					
+				}
+				readerSettings.remove(preferredReaderSettings);
+				preferredReaderSettings = new HashMap<String, String>();
+			} while(!readerSettings.isEmpty());
+		}
+		return false;
 	}
 
 	private void registerController() {
