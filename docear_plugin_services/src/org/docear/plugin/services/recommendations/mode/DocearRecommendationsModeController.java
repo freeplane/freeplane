@@ -77,6 +77,8 @@ public class DocearRecommendationsModeController extends ModeController {
 		new DocearRecommendationsMapController(modeController);
 
 		UrlManager.install(new UrlManager());
+//		final MapIO mapIO = Controller.getCurrentController().getModeController(MModeController.MODENAME).getExtension(MapIO.class);
+//		modeController.addExtension(MapIO.class, mapIO);
 		MapIO.install(modeController);
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));

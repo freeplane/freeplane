@@ -38,7 +38,10 @@ public class DocearRecommendationsMapView extends MapView {
 		public Dimension preferredLayoutSize(Container parent) {
 			if(parent.getComponentCount() > 0) {
 				Dimension compPref = parent.getComponent(0).getPreferredSize();
-				Insets insets = new Insets(0, 0, parent.getHeight(), parent.getWidth()); 
+//				for(Component comp : parent.getComponents()) {
+//					
+//				}
+				Insets insets = new Insets(0, 0, 0, 0); 
 				if(parent instanceof JComponent) {
 					insets = ((JComponent) parent).getInsets();
 				}
@@ -100,15 +103,20 @@ public class DocearRecommendationsMapView extends MapView {
 				container.add(comp);
 			} else {
 				if(obj instanceof RecommendationContainer) {
-					container = getNewRecommandationContainer(obj.toString());
+					container = getNewRecommandationContainerComponent(obj.toString());
 					this.add(container);
 				}
 				else {
 					if(container == null) {
-						container = getNewRecommandationContainer("");
+						container = getNewEmptyContainerComponent();
 						this.add(container);
 					}
-					container.add(new JLabel(obj.toString()));
+					if(obj instanceof Component) {
+						container.add((Component) obj);
+					}
+					else {
+						container.add(new JLabel(obj.toString()));
+					}					
 				}
 				
 
@@ -141,10 +149,18 @@ public class DocearRecommendationsMapView extends MapView {
 		return comp;
 	}
 
-	private Container getNewRecommandationContainer(String title) {
+	private Container getNewRecommandationContainerComponent(String title) {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.white);
 		panel.setBorder(new TitledBorder(title));
+		panel.setLayout(new ListLayoutManager());
+		this.add(panel);
+		return panel;
+	}
+	
+	private Container getNewEmptyContainerComponent() {
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.white);
 		panel.setLayout(new ListLayoutManager());
 		this.add(panel);
 		return panel;

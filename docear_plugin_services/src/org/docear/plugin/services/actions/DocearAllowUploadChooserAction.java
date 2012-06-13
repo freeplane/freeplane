@@ -29,7 +29,7 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 		DocearAllowUploadChooserAction.showDialog(false);
 	}
 
-	public static void showDialog(boolean exitOnCancel) {
+	public static boolean showDialog(boolean exitOnCancel) {
 		final DocearIRChoiceDialogPanel chooser = new DocearIRChoiceDialogPanel(!exitOnCancel);
 		
 		ArrayList<JButton> buttonsList = new ArrayList<JButton>();
@@ -45,12 +45,14 @@ public class DocearAllowUploadChooserAction extends AFreeplaneAction {
 		if (result == 0) {			
 			ServiceController.getController().setBackupEnabled(chooser.allowBackup());
 			ServiceController.getController().setInformationRetrievalCode(chooser.getIrCode());
+			return true;
 		} 
 		else {
 			if(exitOnCancel) {
 				System.exit(0);
 			}
 		}
+		return false;
 		
 	}
 	
