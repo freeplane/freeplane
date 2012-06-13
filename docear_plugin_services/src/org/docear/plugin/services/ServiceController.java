@@ -145,25 +145,6 @@ public class ServiceController {
 
 		});
 	}
-	
-	private void addRecommendationsNodeIfNeeded() {
-		WorkspaceIndexedTreeModel model = WorkspaceController.getController().getWorkspaceModel();
-						
-		Enumeration<AWorkspaceTreeNode> nodes = ((AWorkspaceTreeNode) model.getRoot()).children();
-		while (nodes.hasMoreElements()) {
-			AWorkspaceTreeNode node = nodes.nextElement();
-			if (node instanceof ShowRecommendationsNode) {
-				return;
-			}
-		}
-		
-		String type = ShowRecommendationsAction.TYPE;
-		ShowRecommendationsNode node = new ShowRecommendationsNode();
-		node.setName(TextUtils.getText("recommendations.workspace.node"));
-
-		
-		model.addNodeTo(node, (AWorkspaceTreeNode) model.getRoot());
-	}
 
 	public DocearRecommendationsModeController getRecommenationMode() {
 		return this.modeController;
