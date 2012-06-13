@@ -29,6 +29,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
@@ -237,6 +238,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			}
 		}
 		else if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {
+			Controller.getCurrentController().selectMode(MModeController.MODENAME);
 			
 			if(getFile() != null) {
 				
