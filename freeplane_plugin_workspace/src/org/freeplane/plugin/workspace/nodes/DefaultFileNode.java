@@ -237,6 +237,7 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 			}
 		}
 		else if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {
+			Controller.getCurrentController().selectMode("MindMap");
 			
 			if(getFile() != null) {
 				

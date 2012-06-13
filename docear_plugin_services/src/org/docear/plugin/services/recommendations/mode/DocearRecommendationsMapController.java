@@ -4,7 +4,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceResponse;
@@ -48,14 +50,23 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 	
 	public MapModel newMap() {
+		final DocearRecommendationsMapModel mapModel;
 		if(ServiceController.getController().isRecommendationsAllowed()) {
-			final DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel(getRecommendations());
+			mapModel = new DocearRecommendationsMapModel(getRecommendations());
 			fireMapCreated(mapModel);
 			newMapView(mapModel);
 			// FIXME: setSaved(true) necessary? (it's removed from newMapView())
 			return mapModel;
 		}
-		return new DocearRecommendationsMapModel(null);
+		else {
+			RecommendationEntry entry = new RecommendationEntry("nothing found", null);
+			ArrayList<RecommendationEntry> entries = new ArrayList<RecommendationEntry>();
+			entries.add(entry);
+			mapModel = new DocearRecommendationsMapModel(entries);
+			fireMapCreated(mapModel);
+			newMapView(mapModel);
+			return mapModel;
+		}
 	}
 
 	public NodeModel newNode(final Object userObject, final MapModel map) {

@@ -21,6 +21,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.apache.commons.io.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
@@ -282,6 +283,7 @@ public class FolderFileNode extends DefaultFileNode {
 	 **********************************************************************************/
 	public void handleAction(WorkspaceActionEvent event) {	
 		if(event.getType() == WorkspaceActionEvent.WSNODE_CHANGED) {
+			Controller.getCurrentController().selectMode("MindMap");
 			if(rename(event.getBaggage().toString())) {
 				setName(event.getBaggage().toString());
 				if(event.getSource() instanceof AWorkspaceTreeNode) {

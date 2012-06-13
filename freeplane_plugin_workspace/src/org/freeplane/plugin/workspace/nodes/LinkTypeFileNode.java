@@ -84,7 +84,9 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 	}	
 
 	public void handleAction(WorkspaceActionEvent event) {
-		if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {
+		if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {			
+			Controller.getCurrentController().selectMode("MindMap");
+			
 			File file = WorkspaceUtils.resolveURI(getLinkPath());
 			if(file != null) {
 				if(!file.exists()) {
@@ -93,10 +95,10 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 				}
 				if(file.getName().toLowerCase().endsWith(".mm") || file.getName().toLowerCase().endsWith(".dcr")) {
 					try {
-						final URL mapUrl = Compat.fileToUrl(file);
+						final URL mapUrl = Compat.fileToUrl(file);						
+						
 						final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 						mapIO.newMap(mapUrl);
-//						Controller.getCurrentModeController().getMapController().newMap(mapUrl);
 					}
 					catch (final Exception e) {
 						LogUtils.severe(e);

@@ -104,8 +104,9 @@ public class WorkspaceUtils {
 			return false;
 		}
 		
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
-
+//		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+		final MMapIO mapIO = MModeController.getMModeController().getExtension(MMapIO.class);
+		
 		//FIXME - seems not to add the docear map model extension
 		//mapIO.newMapFromDefaultTemplate();
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
