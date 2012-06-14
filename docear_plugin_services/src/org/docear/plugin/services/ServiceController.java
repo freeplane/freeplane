@@ -3,14 +3,11 @@ package org.docear.plugin.services;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
-import java.util.Enumeration;
 
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.event.DocearEvent;
-import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.services.actions.DocearCheckForUpdatesAction;
 import org.docear.plugin.services.actions.DocearClearUserDataAction;
@@ -18,6 +15,8 @@ import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
+import org.docear.plugin.services.recommendations.actions.ModeShutdownAction;
+import org.docear.plugin.services.recommendations.actions.ModeStartupAction;
 import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
@@ -34,7 +33,6 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
-import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class ServiceController {
@@ -74,6 +72,9 @@ public class ServiceController {
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
+		
+		Controller.getCurrentController().addAction(new ModeStartupAction());
+		Controller.getCurrentController().addAction(new ModeShutdownAction());
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -141,7 +142,7 @@ public class ServiceController {
 				}
 				workspacePrepared = true;
 
-			}
+			} 
 
 		});
 	}
