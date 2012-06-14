@@ -43,6 +43,7 @@ import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
@@ -242,10 +243,23 @@ public class CommunicationsController extends ALanguageController implements Pro
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
-			} else {
+			} 
+			else if (status != null && status.equals(Status.NO_CONTENT)) {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.NO_CONTENT, response.getEntityInputStream());
+			}
+			else {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, response.getEntityInputStream());
 			}
-		} catch (Exception e) {
+		}
+		catch (ClientHandlerException e) {
+			if(e.getCause() instanceof UnknownHostException) {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream("error".getBytes()));
+			}
+			else {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream("error".getBytes()));
+			}
+		}
+		catch (Exception e) {
 			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream("error".getBytes()));
 		} 
 		

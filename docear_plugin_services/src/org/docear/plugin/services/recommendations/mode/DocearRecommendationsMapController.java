@@ -1,6 +1,8 @@
 package org.docear.plugin.services.recommendations.mode;
 
 import java.io.InputStreamReader;
+import java.net.UnknownHostException;
+import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceResponse;
 import org.docear.plugin.communications.features.DocearServiceResponse.Status;
+import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.xml.DocearXmlBuilder;
@@ -33,27 +36,45 @@ public class DocearRecommendationsMapController extends MapController {
 	public DocearRecommendationsMapController(DocearRecommendationsModeController modeController) {
 		super(modeController);
 		this.modeController = modeController;
-		addMapLifeCycleListener(new IMapLifeCycleListener() {			
-			public void onSavedAs(MapModel map) {}			
-			public void onSaved(MapModel map) {}			
+		addMapLifeCycleListener(new IMapLifeCycleListener() {
+			public void onSavedAs(MapModel map) {
+			}
+
+			public void onSaved(MapModel map) {
+			}
+
 			public void onRemove(MapModel map) {
-				currentMapView = null;			
-			}			
-			public void onCreate(MapModel map) {}
+				currentMapView = null;
+			}
+
+			public void onCreate(MapModel map) {
+			}
 		});
 	}
 
 	public DocearRecommendationsModeController getModeController() {
 		return modeController;
 	}
-	
-	public MapModel newMap() {		
-		DocearRecommendationsMapModel mapModel;
-		if(ServiceController.getController().isRecommendationsAllowed()) {
-			mapModel = new DocearRecommendationsMapModel(getRecommendations());	
+
+	public MapModel newMap() {
+		DocearRecommendationsMapModel mapModel = null;
+		
+		boolean exceptionOccured = false;
+		
+		Collection<RecommendationEntry> recommendations = null;
+		try {
+			recommendations = getRecommendations();
 		}
-		else {
-			mapModel = new DocearRecommendationsMapModel(null);
+		catch(Exception e) {
+			exceptionOccured = true;
+			mapModel = new DocearRecommendationsMapModel(e);
+		}
+		
+		if (!exceptionOccured && ServiceController.getController().isRecommendationsAllowed()) {
+			mapModel = new DocearRecommendationsMapModel(recommendations);
+		}
+		else if (!exceptionOccured) {
+			mapModel = new DocearRecommendationsMapModel();
 		}
 		fireMapCreated(mapModel);
 		newMapView(mapModel);
@@ -76,9 +97,9 @@ public class DocearRecommendationsMapController extends MapController {
 		Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
 		Controller.getCurrentController().getMapViewManager().updateMapViewName();
 	}
-	
+
 	public void refreshRecommendations() {
-		if(this.currentMapView != null) {
+		if (this.currentMapView != null) {
 			Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
 			Controller.getCurrentController().getMapViewManager().close(false);
 		}
@@ -90,9 +111,9 @@ public class DocearRecommendationsMapController extends MapController {
 		return mapView;
 	}
 
-	private Collection<RecommendationEntry> getRecommendations() {
+	private Collection<RecommendationEntry> getRecommendations() throws UnknownHostException, UnexpectedException {
 		String name = CommunicationsController.getController().getUserName();
-		if (name != null) {
+		if (!CoreUtils.isEmpty(name)) {
 			DocearServiceResponse response = CommunicationsController.getController().get("/user/" + name + "/recommendations/documents");
 			if (response.getStatus() == Status.OK) {
 				try {
@@ -112,13 +133,22 @@ public class DocearRecommendationsMapController extends MapController {
 					}
 
 					return recommandations;
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else {
-				System.out.println();
 			}
-		} else {
+			else if (response.getStatus() == Status.NO_CONTENT) {
+				return null;
+			}
+			else if (response.getStatus() == Status.UNKNOWN_HOST) {
+				throw new UnknownHostException();
+			}			
+			else {
+				throw new UnexpectedException("");
+			}
+		}
+		else {
 			System.out.println("no user set");
 		}
 		return Collections.emptyList();

@@ -17,5 +17,9 @@ public class CoreUtils {
 		String s = new BigInteger(length*8, random).toString(Character.MAX_RADIX);
 		return s;
 	}
+
+	public static boolean isEmpty(Object o) {
+		return o==null || o.toString().length()==0;		
+	}
 	
 }

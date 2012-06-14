@@ -7,7 +7,7 @@ import java.io.InputStream;
 public final class DocearServiceResponse {
 	
 	public enum Status {
-		OK, FAILURE
+		OK, FAILURE, UNKNOWN_HOST, NO_CONTENT
 	}
 	
 	

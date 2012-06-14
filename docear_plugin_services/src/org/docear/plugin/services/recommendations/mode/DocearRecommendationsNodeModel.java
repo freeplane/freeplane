@@ -62,9 +62,9 @@ public class DocearRecommendationsNodeModel extends NodeModel {
 		return node;
 	}
 	
-	public static NodeModel getNoRecommendationsNode(DocearRecommendationsMapModel mapModel) {
+	public static NodeModel getNoRecommendationsNode(DocearRecommendationsMapModel mapModel, String message) {
 		DocearRecommendationsNodeModel node = new DocearRecommendationsNodeModel(mapModel);
-		node.setUserObject(node.new NoRecommendations());
+		node.setUserObject(node.new NoRecommendations(message));
 		return node;
 	}
 	
@@ -78,8 +78,8 @@ public class DocearRecommendationsNodeModel extends NodeModel {
 		
 		private final String text;
 
-		public NoRecommendations() {
-			this.text = TextUtils.getText("recommendations.error.no_recommendations");
+		public NoRecommendations(String message) {
+			this.text = message;
 		}
 		
 		public String getText() {
