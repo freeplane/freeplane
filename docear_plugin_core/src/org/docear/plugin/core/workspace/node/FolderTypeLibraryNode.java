@@ -35,7 +35,6 @@ import org.docear.plugin.core.workspace.actions.DocearLibraryOpenLocation;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
@@ -48,8 +47,8 @@ import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
-import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventListener, IDocearLibrary, IWorkspaceNodeActionListener, IWorkspaceTransferableCreator, IDropAcceptor, TreeModelListener {
 	private static final Icon DEFAULT_ICON = new ImageIcon(FolderTypeLibraryNode.class.getResource("/images/folder-database.png"));
@@ -80,10 +79,10 @@ public class FolderTypeLibraryNode extends AFolderNode implements IDocearEventLi
 	
 	public void initializePopup() {
 		if (popupMenu  == null) {
-			ModeController modeController = Controller.getCurrentModeController();
-			modeController.addAction(new DocearLibraryNewMindmap());
-			modeController.removeAction(new DocearLibraryOpenLocation().getKey());
-			modeController.addAction(new DocearLibraryOpenLocation());
+			Controller controller = Controller.getCurrentController();
+			controller.addAction(new DocearLibraryNewMindmap());
+			controller.removeAction(new DocearLibraryOpenLocation().getKey());
+			controller.addAction(new DocearLibraryOpenLocation());
 			
 			
 			popupMenu = new WorkspacePopupMenu();

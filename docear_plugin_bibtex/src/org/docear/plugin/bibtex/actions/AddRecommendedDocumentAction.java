@@ -16,6 +16,7 @@ import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.io.ProgressInputStream;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -24,6 +25,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class AddRecommendedDocumentAction extends AFreeplaneAction implements IDocearEventListener {
 
+	private static final long serialVersionUID = 1L;
 	public static String key = "AddRecommendedDocumentAction";
 
 	public AddRecommendedDocumentAction() {
@@ -49,9 +51,6 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 				if (file == null || !file.exists()) {
 					return;
 				}
-				
-				addFileToLibrary(file);
-				CoreConfiguration.repositoryPathObserver.setUri(CoreConfiguration.repositoryPathObserver.getUri());
 			}
 			catch (Exception e) {
 				LogUtils.warn(e);
@@ -65,7 +64,7 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 		
 	}
 
-	public File getDestinationFile(URI uri, String defaultFileName) throws URISyntaxException, MalformedURLException {
+	public File getDestinationFile(final URI uri, String defaultFileName) throws URISyntaxException, MalformedURLException {
 		File defaultFile = new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), defaultFileName);
 
 		final JFileChooser fc = new JFileChooser();
@@ -80,17 +79,30 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					continue;
 				}
 			}
+			downloadFile(uri, fc);
 			break;
-		}
-		
-		try {
-			FileUtils.copyURLToFile(uri.toURL(), file);
-		}
-		catch (IOException e) {
-			LogUtils.warn(e);
-			JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.url_not_found"));
-		}
+		}		
 		return file;
+	}
+
+	private void downloadFile(final URI uri, final JFileChooser fc) {
+		new Thread(new Runnable() {
+			File destinationFile = fc.getSelectedFile();
+ 			
+			public void run() {
+				try {
+					FileUtils.copyInputStreamToFile(new ProgressInputStream(uri.toURL().openConnection()), destinationFile);					
+				}
+				catch (IOException e) {
+					LogUtils.warn(e);
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.url_not_found"));
+				}
+		
+				addFileToLibrary(destinationFile);
+				CoreConfiguration.repositoryPathObserver.setUri(CoreConfiguration.repositoryPathObserver.getUri());
+				
+			}
+		}).start();
 	}
 
 }

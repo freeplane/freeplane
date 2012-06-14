@@ -9,9 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +24,7 @@ import java.util.regex.Pattern;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.features.DocearProgressObserver;
 import org.docear.plugin.core.logger.DocearEventLogger;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -56,6 +62,14 @@ public class DocearController implements IDocearEventListener {
 	private final Set<String> workingThreads = new HashSet<String>();
 	private final boolean firstRun;
 	private boolean applicationShutdownAborted = false;
+	private Map<Class<?>, Set<DocearProgressObserver>> progressObservers = new TreeMap<Class<?>, Set<DocearProgressObserver>>(new Comparator<Class<?>>() {
+		public int compare(Class<?> c1, Class<?> c2) {
+			if(c1.equals(c2)) {
+				return 0;
+			}
+			return c1.getName().compareTo(c2.getName());
+		}
+	});
 	
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -239,6 +253,23 @@ public class DocearController implements IDocearEventListener {
 		return true;
 	}
 	
+	public void addProgressObserver(Class<?> clazz, DocearProgressObserver observer) {
+		Set<DocearProgressObserver> observers = progressObservers.get(clazz);
+		if(observers == null) {
+			observers = new HashSet<DocearProgressObserver>();
+			progressObservers.put(clazz, observers);
+		}
+		observers.add(observer);
+	}
+	
+	public Collection<DocearProgressObserver> getProgressObservers(Class<?> clazz) {
+		Collection<DocearProgressObserver> observers = progressObservers.get(clazz);
+		if(observers == null) {
+			observers = Collections.emptySet();
+		}
+		return observers;
+	}
+	
 	private boolean waitThreadsReady() {
 		while(hasWorkingThreads()) {
 			try {
@@ -314,6 +345,7 @@ public class DocearController implements IDocearEventListener {
 		} 
 			
 	}
+	
 	
 
 	
