@@ -32,7 +32,6 @@ import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
@@ -312,8 +311,8 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 
 	public void initializePopup() {
 		if (popupMenu == null) {
-			ModeController modeController = Controller.getCurrentModeController();
-			modeController.addAction(new DocearProjectEnableMonitoringAction());
+			Controller controller = Controller.getCurrentController();
+			controller.addAction(new DocearProjectEnableMonitoringAction());
 			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
