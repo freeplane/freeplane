@@ -165,6 +165,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static void performBackup(final File file, final File backupFile) {
 	    try {
 	        FileUtils.copyFile(file, backupFile);
+	        backupFile.setLastModified(file.lastModified());
         }
         catch (IOException e) {
         }
