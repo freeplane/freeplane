@@ -253,7 +253,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 			}
 		}
 		catch (ClientHandlerException e) {
-			if(e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException) {
+			if(e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException || e.getCause() instanceof SocketTimeoutException || e.getCause() instanceof ConnectException) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream("error".getBytes()));
 			}
 			else {
