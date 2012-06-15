@@ -33,6 +33,7 @@ public class ProgressInputStream extends InputStream {
 	@Override
 	public int read() throws IOException {
 		if(closed) {
+			fireProgessFinished();
 			throw new InterruptedIOException();
 		}
 		int read = this.stream.read();
@@ -42,7 +43,7 @@ public class ProgressInputStream extends InputStream {
 			fireProgessUpdated();
 		}
 		else {
-			fireProgessUpdated();
+			fireProgessFinished();
 		}
 		return read; 
 	}
@@ -51,6 +52,13 @@ public class ProgressInputStream extends InputStream {
 		Collection<DocearProgressObserver> observers = DocearController.getController().getProgressObservers(this.getClass());
 		for(DocearProgressObserver observer : observers) {
 			observer.update(this, this.progress, this.length, url.toString());
+		}
+	}
+	
+	private void fireProgessFinished() {
+		Collection<DocearProgressObserver> observers = DocearController.getController().getProgressObservers(this.getClass());
+		for(DocearProgressObserver observer : observers) {
+			observer.finished(this, url.toString());
 		}
 	}
 
