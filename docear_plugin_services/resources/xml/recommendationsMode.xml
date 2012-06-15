@@ -28,8 +28,7 @@
 			<menu_category name="legacy">
 				<menu_action action="AboutAction" menu_key="MB_AboutAction" />
 			</menu_category>
-			<menu_action action="GettingStartedAction" />
-			<menu_action accelerator="F1" action="DocumentationAction" />
+			<menu_action action="GettingStartedAction" />			
 		</menu_submenu>
 	</menu_category>
 	<menu_category name="map_popup">
