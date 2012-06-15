@@ -17,6 +17,7 @@ import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.xml.DocearXmlBuilder;
 import org.docear.plugin.services.xml.DocearXmlElement;
 import org.docear.plugin.services.xml.DocearXmlRootElement;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -57,28 +58,36 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 
 	public MapModel newMap() {
-		DocearRecommendationsMapModel mapModel = null;
-		
-		boolean exceptionOccured = false;
-		
+		DocearRecommendationsMapModel mapModel = null;		
 		Collection<RecommendationEntry> recommendations = null;
-		try {
-			recommendations = getRecommendations();
-		}
-		catch(Exception e) {
-			exceptionOccured = true;
-			mapModel = new DocearRecommendationsMapModel(e);
-		}
-		
-		if (!exceptionOccured && ServiceController.getController().isRecommendationsAllowed()) {
+		if (ServiceController.getController().isRecommendationsAllowed()) {
+			try {
+				recommendations = getRecommendations();
+				mapModel = new DocearRecommendationsMapModel(recommendations);
+			}
+			catch(Exception e) {
+				mapModel = getExceptionModel(e);
+			}		
+		} 
+		else {
 			mapModel = new DocearRecommendationsMapModel(recommendations);
-		}
-		else if (!exceptionOccured) {
-			mapModel = new DocearRecommendationsMapModel();
 		}
 		fireMapCreated(mapModel);
 		newMapView(mapModel);
-		// FIXME: setSaved(true) necessary? (it's removed from newMapView())
+		return mapModel;
+	}
+
+	private DocearRecommendationsMapModel getExceptionModel(Exception e) {
+		DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel();
+		String message = "";
+		if (e instanceof UnknownHostException) {
+			message = TextUtils.getText("recommendations.error.no_connection");
+		}
+		else {
+			message = TextUtils.getText("recommendations.error.unknown");
+		}
+		mapModel.setRoot(DocearRecommendationsNodeModel.getNoRecommendationsNode(mapModel, message));
+		mapModel.getRootNode().setFolded(false);
 		return mapModel;
 	}
 

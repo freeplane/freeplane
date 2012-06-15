@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
+import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -252,7 +253,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 			}
 		}
 		catch (ClientHandlerException e) {
-			if(e.getCause() instanceof UnknownHostException) {
+			if(e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream("error".getBytes()));
 			}
 			else {

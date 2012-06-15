@@ -1,6 +1,5 @@
 package org.docear.plugin.services.recommendations.mode;
 
-import java.net.UnknownHostException;
 import java.util.Collection;
 
 import org.docear.plugin.communications.CommunicationsController;
@@ -15,19 +14,6 @@ public class DocearRecommendationsMapModel extends MapModel {
 	public DocearRecommendationsMapModel(Collection<RecommendationEntry> recommendations) {
 		new DocearRecommendationsMapModel();
 		parseRecommendations(recommendations);
-		getRootNode().setFolded(false);
-	}
-	
-	public DocearRecommendationsMapModel(Exception e) {
-		new DocearRecommendationsMapModel();
-		String message = "";
-		if (e instanceof UnknownHostException) {
-			message = TextUtils.getText("recommendations.error.no_connection");
-		}
-		else {
-			message = TextUtils.getText("recommendations.error.unknown");
-		}
-		setRoot(DocearRecommendationsNodeModel.getNoRecommendationsNode(this, message));
 		getRootNode().setFolded(false);
 	}
 	
