@@ -2,7 +2,9 @@ package org.docear.plugin.bibtex.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -75,9 +77,12 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 			file = fc.getSelectedFile();
 			if (file.exists()) {
 				int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.replace_existing_file"));
+				if (answer == JOptionPane.CANCEL_OPTION) {
+					break;
+				}
 				if (answer != JOptionPane.OK_OPTION) {
 					continue;
-				}
+				}				
 			}
 			downloadFile(uri, fc);
 			break;
@@ -88,19 +93,37 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 	private void downloadFile(final URI uri, final JFileChooser fc) {
 		new Thread(new Runnable() {
 			File destinationFile = fc.getSelectedFile();
+			File partFile = new File(destinationFile.getAbsoluteFile()+".part");
  			
 			public void run() {
 				try {
-					FileUtils.copyInputStreamToFile(new ProgressInputStream(uri.toURL().openConnection()), destinationFile);					
+					FileUtils.copyInputStreamToFile(new ProgressInputStream(uri.toURL().openConnection()), partFile);
+					
+					if (destinationFile.exists()) {
+						destinationFile.delete();
+					}
+					try {
+						FileUtils.moveFile(partFile, destinationFile);
+					}
+					catch (IOException e) {
+						LogUtils.warn(e);
+					}
+			
+					addFileToLibrary(destinationFile);
+					CoreConfiguration.repositoryPathObserver.setUri(CoreConfiguration.repositoryPathObserver.getUri());
 				}
-				catch (IOException e) {
-					LogUtils.warn(e);
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.url_not_found"));
+				catch (FileNotFoundException e) {					
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.permission_denied"), TextUtils.getText("docear.recommendation.error.title"), JOptionPane.ERROR_MESSAGE);
 				}
-		
-				addFileToLibrary(destinationFile);
-				CoreConfiguration.repositoryPathObserver.setUri(CoreConfiguration.repositoryPathObserver.getUri());
-				
+				catch (InterruptedIOException e) {
+					LogUtils.info("Interrupted download");
+					partFile.delete();
+				}
+				catch (IOException e) {					
+					partFile.delete();
+					LogUtils.info(e.getMessage());
+					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.url_not_found"), TextUtils.getText("docear.recommendation.error.title"), JOptionPane.ERROR_MESSAGE);					
+				}			
 			}
 		}).start();
 	}

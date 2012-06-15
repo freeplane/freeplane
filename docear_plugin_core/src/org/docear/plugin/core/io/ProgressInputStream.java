@@ -2,6 +2,7 @@ package org.docear.plugin.core.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
@@ -15,6 +16,7 @@ public class ProgressInputStream extends InputStream {
 	private final URL url;
 	private int length = 0;
 	private int progress = 0;
+	private boolean closed = false;
 		
 	public ProgressInputStream(URLConnection connection) throws IOException {
 		this.length = connection.getContentLength();		
@@ -30,6 +32,9 @@ public class ProgressInputStream extends InputStream {
 
 	@Override
 	public int read() throws IOException {
+		if(closed) {
+			throw new InterruptedIOException();
+		}
 		int read = this.stream.read();
 		this.progress++;
 		if(read >= 0) {			
@@ -45,7 +50,7 @@ public class ProgressInputStream extends InputStream {
 	private void fireProgessUpdated() {
 		Collection<DocearProgressObserver> observers = DocearController.getController().getProgressObservers(this.getClass());
 		for(DocearProgressObserver observer : observers) {
-			observer.update(url, this.progress, this.length);
+			observer.update(this, this.progress, this.length, url.toString());
 		}
 	}
 
@@ -58,6 +63,11 @@ public class ProgressInputStream extends InputStream {
 		if(this.length < streamLength) {
 			this.length = streamLength+1;
 		}
+	}
+	
+	public void close() throws IOException {
+		this.stream.close();
+		closed = true;
 	}
 
 }
