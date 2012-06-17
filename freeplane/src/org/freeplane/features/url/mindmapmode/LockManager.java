@@ -28,16 +28,28 @@ import java.nio.channels.FileLock;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 
 public class LockManager extends TimerTask {
-	private File lockedSemaphoreFile = null;
-	private String lockingUserOfOldLock = null;
-	private final long lockSafetyPeriod = 5 * 60 * 1000;
-	private Timer lockTimer = null;
-	private final long lockUpdatePeriod = 4 * 60 * 1000;
+	static final String LOCK_EXPIRATION_TIME = "lock_expiration_time_in_minutes";
+	private File lockedSemaphoreFile;
+	private String lockingUserOfOldLock;
+	private final long lockSafetyPeriod;
+	private Timer lockTimer;
+	private final long lockUpdatePeriod;
+	
+	
+	public LockManager() {
+	    super();
+		lockedSemaphoreFile = null;
+		lockingUserOfOldLock = null;
+		lockTimer = null;
+		lockSafetyPeriod = ResourceController.getResourceController().getIntProperty(LOCK_EXPIRATION_TIME) * 60 * 1000;
+		lockUpdatePeriod = Math.round(lockSafetyPeriod * 0.8);
+    }
 
 	private File getSemaphoreFile(final File mapFile) {
 		return new File(mapFile.getParent() + System.getProperty("file.separator") + "$~" + mapFile.getName() + "~");
@@ -89,7 +101,7 @@ public class LockManager extends TimerTask {
 			final String lockingUser = semaphoreReader.readLine();
 			final long lockTime = new Long(semaphoreReader.readLine()).longValue();
 			final long timeDifference = System.currentTimeMillis() - lockTime;
-			if (timeDifference > lockSafetyPeriod) {
+			if (lockSafetyPeriod > 0 && timeDifference > lockSafetyPeriod) {
 				lockingUserOfOldLock = lockingUser;
 				semaphoreFile.delete();
 			}
@@ -105,7 +117,7 @@ public class LockManager extends TimerTask {
 			}
 		}
 		writeSemaphoreFile(semaphoreFile);
-		if (lockTimer == null) {
+		if (lockTimer == null && lockUpdatePeriod > 0) {
 			lockTimer = SysUtils.createTimer(getClass().getSimpleName());
 			lockTimer.schedule(this, lockUpdatePeriod, lockUpdatePeriod);
 		}
