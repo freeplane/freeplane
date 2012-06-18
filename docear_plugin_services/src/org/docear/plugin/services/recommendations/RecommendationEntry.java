@@ -9,7 +9,7 @@ public class RecommendationEntry {
 	
 	public RecommendationEntry(String title, String url) {
 		this.title = title;
-		this.link = URI.create(url);
+		this.link = (url==null ? null:URI.create(url));
 	}
 
 	public String getTitle() {

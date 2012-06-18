@@ -30,6 +30,7 @@ import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.plugin.workspace.config.IConfigurationInfo;
 import org.freeplane.plugin.workspace.controller.DefaultFileNodeIconHandler;
 import org.freeplane.plugin.workspace.controller.LinkTypeFileIconHandler;
+import org.freeplane.plugin.workspace.creator.ActionCreator;
 import org.freeplane.plugin.workspace.creator.FolderCreator;
 import org.freeplane.plugin.workspace.creator.FolderTypePhysicalCreator;
 import org.freeplane.plugin.workspace.creator.FolderTypeVirtualCreator;
@@ -49,7 +50,8 @@ public class WorkspaceConfiguration {
 
 	public final static int WSNODE_FOLDER = 1;
 	public final static int WSNODE_LINK = 2;
-
+	public final static int WSNODE_ACTION = 4;
+	
 	private final static String DEFAULT_CONFIG_FILE_NAME = "workspace_default.xml";
 	private URL DEFAULT_CONFIG_TEMPLATE_URL = WorkspaceConfiguration.class.getResource("/conf/"+DEFAULT_CONFIG_FILE_NAME);
 	//private final static String DEFAULT_CONFIG_FILE_NAME_DOCEAR = "workspace_default_docear.xml";
@@ -59,10 +61,11 @@ public class WorkspaceConfiguration {
 
 	private FolderCreator folderCreator = null;
 	private LinkCreator linkCreator = null;
+	private ActionCreator actionCreator = null;
 	private WorkspaceRootCreator workspaceRootCreator = null;
 	private IConfigurationInfo configurationInfo;
 
-	private ConfigurationWriter configWriter;
+	private ConfigurationWriter configWriter;	
 
 	public WorkspaceConfiguration() {
 		this.readManager = new ReadManager();
@@ -125,6 +128,7 @@ public class WorkspaceConfiguration {
 		readManager.addElementHandler("workspace", getWorkspaceRootCreator());
 		readManager.addElementHandler("folder", getFolderCreator());
 		readManager.addElementHandler("link", getLinkCreator());
+		readManager.addElementHandler("action", getActionCreator());
 
 		registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, "virtual", new FolderTypeVirtualCreator());
 		registerTypeCreator(WorkspaceConfiguration.WSNODE_FOLDER, "physical", new FolderTypePhysicalCreator());
@@ -141,11 +145,13 @@ public class WorkspaceConfiguration {
 
 		writeManager.addElementWriter("link", writer);
 		writeManager.addAttributeWriter("link", writer);
+		
+		writeManager.addElementWriter("action", writer);
+		writeManager.addAttributeWriter("action", writer);
 	}
 
 	private WorkspaceRootCreator getWorkspaceRootCreator() {
 		if (this.workspaceRootCreator == null) {
-			// LogUtils.info("WORKSPACE: get new WorkspaceRootCreator");
 			this.workspaceRootCreator = new WorkspaceRootCreator(this);
 		}
 		return this.workspaceRootCreator;
@@ -153,15 +159,20 @@ public class WorkspaceConfiguration {
 
 	private FolderCreator getFolderCreator() {
 		if (this.folderCreator == null) {
-			// LogUtils.info("WORKSPACE: get new FolderCreator");
 			this.folderCreator = new FolderCreator();
 		}
 		return this.folderCreator;
 	}
 
+	private ActionCreator getActionCreator() {
+		if (this.actionCreator == null) {
+			this.actionCreator = new ActionCreator();
+		}
+		return this.actionCreator;
+	}
+	
 	private LinkCreator getLinkCreator() {
 		if (this.linkCreator == null) {
-			// LogUtils.info("WORKSPACE: get new LinkCreator");
 			this.linkCreator = new LinkCreator();
 		}
 		return this.linkCreator;
@@ -179,9 +190,13 @@ public class WorkspaceConfiguration {
 			getLinkCreator().addTypeCreator(typeName, creator);
 			break;
 		}
+		case WSNODE_ACTION: {
+			getActionCreator().addTypeCreator(typeName, creator);
+			break;
+		}
 		default: {
 			throw new IllegalArgumentException(
-					"not allowed argument for nodeType. Use only WorkspaceConfiguration.WSNODE_FOLDER or WorkspaceConfiguration.WSNODE_LINK.");
+					"not allowed argument for nodeType. Use only WorkspaceConfiguration.WSNODE_ACTION, WorkspaceConfiguration.WSNODE_FOLDER or WorkspaceConfiguration.WSNODE_LINK.");
 		}
 		}
 

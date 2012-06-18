@@ -3,11 +3,17 @@ package org.docear.plugin.services.recommendations.mode;
 import java.net.URL;
 import java.util.Collections;
 
+import javax.swing.Box;
 import javax.swing.JPopupMenu;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer.CollapseDirection;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
@@ -29,14 +35,18 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
+
+import org.freeplane.core.ui.components.JResizer.Direction;
 
 public class DocearRecommendationsModeController extends ModeController {
 	static public final String MODENAME = "DcrRecommendations";
 
 	private DocearRecommendationsModeController(final Controller controller) {
 		super(controller);
+
 	}
 
 	@Override
@@ -46,6 +56,7 @@ public class DocearRecommendationsModeController extends ModeController {
 
 	@Override
 	public void startup() {
+		DocearController.getController().dispatchDocearEvent(new DocearEvent(this, "DOCEAR_MODE_STARTUP"));
 		final Controller controller = getController();
 		this.getUserInputListenerFactory().getMapPopup().setName(TextUtils.getText("recommendations.popup_title"));
 		controller.getMapViewManager().changeToMode(MODENAME);
@@ -53,6 +64,12 @@ public class DocearRecommendationsModeController extends ModeController {
 			((DocearRecommendationsMapController) getMapController()).newMap();
 		}
 		super.startup();
+	}
+
+	@Override
+	public void shutdown() {
+		super.shutdown();
+		DocearController.getController().dispatchDocearEvent(new DocearEvent(this, "DOCEAR_MODE_SHUTDOWN"));
 	}
 
 	public static DocearRecommendationsModeController createController() {
@@ -75,6 +92,10 @@ public class DocearRecommendationsModeController extends ModeController {
 
 		new DocearRecommendationsMapController(modeController);
 
+		UrlManager.install(new UrlManager());
+		// final MapIO mapIO =
+		// Controller.getCurrentController().getModeController(MModeController.MODENAME).getExtension(MapIO.class);
+		// modeController.addExtension(MapIO.class, mapIO);
 		MapIO.install(modeController);
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));
@@ -86,12 +107,11 @@ public class DocearRecommendationsModeController extends ModeController {
 		LocationController.install(new LocationController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		MapStyle.install(true);
-		NodeStyleController.getController().addShapeGetter(new Integer(0),
-		    new IPropertyHandler<String, NodeModel>() {
-			    public String getProperty(final NodeModel node, final String currentValue) {
-				    return "fork";
-			    }
-		    });
+		NodeStyleController.getController().addShapeGetter(new Integer(0), new IPropertyHandler<String, NodeModel>() {
+			public String getProperty(final NodeModel node, final String currentValue) {
+				return "fork";
+			}
+		});
 		modeController.addAction(new CenterAction());
 		modeController.addAction(new OpenPathAction());
 
@@ -103,7 +123,11 @@ public class DocearRecommendationsModeController extends ModeController {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController().getStatusBar());
 		NodeHistory.install(modeController);
 
-		
+		Box resisableTabs = Box.createHorizontalBox();
+		resisableTabs.add(new OneTouchCollapseResizer(Direction.RIGHT, CollapseDirection.COLLAPSE_RIGHT));
+		resisableTabs.add(new JTabbedPane());
+		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, resisableTabs);
+
 		modeController.updateMenus(userInputListenerFactory, modeController.getClass().getResource("/xml/recommendationsMode.xml"));
 
 		return modeController;
@@ -115,7 +139,8 @@ public class DocearRecommendationsModeController extends ModeController {
 		final boolean isUserDefined = resource.getProtocol().equalsIgnoreCase("file");
 		try {
 			menuBuilder.processMenuCategory(resource, Collections.<String> emptySet());
-		} catch (RuntimeException e) {
+		}
+		catch (RuntimeException e) {
 			if (isUserDefined) {
 				LogUtils.warn(e);
 			}

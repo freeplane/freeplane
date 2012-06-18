@@ -2,13 +2,12 @@ package org.docear.plugin.bibtex.actions;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.TextUtils;
-
 import net.sf.jabref.BasePanel;
-import net.sf.jabref.Globals;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.TextUtils;
 
 public class DocearHandleDuplicateWarning implements PostOpenAction {
 

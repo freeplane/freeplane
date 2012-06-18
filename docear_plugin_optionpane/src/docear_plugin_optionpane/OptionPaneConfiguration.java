@@ -36,7 +36,7 @@ public class OptionPaneConfiguration extends ALanguageController {
 		try {
 			final Box panel = new Box(BoxLayout.Y_AXIS);
 			System.out.println("OPTIONPANE: "+modeController);
-			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+			final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);			
 			final JScrollPane timeScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			UITools.setScrollbarIncrement(timeScrollPane);

@@ -102,29 +102,29 @@ public class WorkspaceRoot extends AFolderNode implements IConfigurationInfo, IW
 
 	public void initializePopup() {
 		if (popupMenu == null) {
-			ModeController modeController = Controller.getCurrentModeController();
-			modeController.addAction(new WorkspaceExpandAction());
-			modeController.addAction(new WorkspaceCollapseAction());
-			modeController.addAction(new WorkspaceChangeLocationAction());
-			modeController.addAction(new NodeRefreshAction());
-			modeController.addAction(new WorkspaceHideAction());
-			modeController.addAction(new NodeRemoveAction());
-			modeController.addAction(new NodeNewFolderAction());
-			modeController.addAction(new NodeNewLinkAction());
-			modeController.addAction(new NodeEnableMonitoringAction());
-			modeController.addAction(new NodeOpenLocationAction());
+			Controller controller = Controller.getCurrentController();
+			controller.addAction(new WorkspaceExpandAction());
+			controller.addAction(new WorkspaceCollapseAction());
+			controller.addAction(new WorkspaceChangeLocationAction());
+			controller.addAction(new NodeRefreshAction());
+			controller.addAction(new WorkspaceHideAction());
+			controller.addAction(new NodeRemoveAction());
+			controller.addAction(new NodeNewFolderAction());
+			controller.addAction(new NodeNewLinkAction());
+			controller.addAction(new NodeEnableMonitoringAction());
+			controller.addAction(new NodeOpenLocationAction());
 			
 			//FIXME: #332
-//			modeController.addAction(new NodeCutAction());
-			modeController.addAction(new NodeRenameAction());
-			modeController.addAction(new NodeCopyAction());
-			modeController.addAction(new NodePasteAction());
+//			controller.addAction(new NodeCutAction());
+			controller.addAction(new NodeRenameAction());
+			controller.addAction(new NodeCopyAction());
+			controller.addAction(new NodePasteAction());
 			
-			modeController.addAction(new FileNodeNewMindmapAction());
-			modeController.addAction(new FileNodeNewFileAction());
-			modeController.addAction(new FileNodeDeleteAction());
+			controller.addAction(new FileNodeNewMindmapAction());
+			controller.addAction(new FileNodeNewFileAction());
+			controller.addAction(new FileNodeDeleteAction());
 			
-			modeController.addAction(new PhysicalFolderSortOrderAction());
+			controller.addAction(new PhysicalFolderSortOrderAction());
 			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {

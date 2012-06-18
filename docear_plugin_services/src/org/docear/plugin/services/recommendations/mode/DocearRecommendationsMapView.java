@@ -22,13 +22,12 @@ import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.recommendations.dialog.RecommendationEntryComponent;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsNodeModel.RecommendationContainer;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 public class DocearRecommendationsMapView extends MapView {
 
@@ -39,7 +38,10 @@ public class DocearRecommendationsMapView extends MapView {
 		public Dimension preferredLayoutSize(Container parent) {
 			if(parent.getComponentCount() > 0) {
 				Dimension compPref = parent.getComponent(0).getPreferredSize();
-				Insets insets = new Insets(0, 0, parent.getHeight(), parent.getWidth()); 
+//				for(Component comp : parent.getComponents()) {
+//					
+//				}
+				Insets insets = new Insets(0, 0, 0, 0); 
 				if(parent instanceof JComponent) {
 					insets = ((JComponent) parent).getInsets();
 				}
@@ -80,38 +82,8 @@ public class DocearRecommendationsMapView extends MapView {
 
 	public DocearRecommendationsMapView(final MapModel model, final ModeController modeController) {
 		super(model, modeController);
-		model.addMapChangeListener(new IMapChangeListener() {
-			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void mapChanged(MapChangeEvent event) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 		this.setLayout(new BorderLayout());
+		//this.removeAll();
 		layoutModel(model);
 
 	}
@@ -131,15 +103,20 @@ public class DocearRecommendationsMapView extends MapView {
 				container.add(comp);
 			} else {
 				if(obj instanceof RecommendationContainer) {
-					container = getNewRecommandationContainer(obj.toString());
+					container = getNewRecommandationContainerComponent(obj.toString());
 					this.add(container);
 				}
 				else {
 					if(container == null) {
-						container = getNewRecommandationContainer("");
+						container = getNewEmptyContainerComponent();
 						this.add(container);
 					}
-					container.add(new JLabel(obj.toString()));
+					if(obj instanceof Component) {
+						container.add((Component) obj);
+					}
+					else {
+						container.add(new JLabel(obj.toString()));
+					}					
 				}
 				
 
@@ -164,7 +141,6 @@ public class DocearRecommendationsMapView extends MapView {
 					}
 				}
 				else if(e.getID() == RecommendationEntryComponent.IMPORT_RECOMMENDATION) {
-					System.out.println("TODO: IMPORT_TO_LIBRARY");
 					DocearController.getController().dispatchDocearEvent(new DocearEvent(recommendation.getLink(), "IMPORT_TO_LIBRARY"));
 				}
 			}
@@ -172,10 +148,18 @@ public class DocearRecommendationsMapView extends MapView {
 		return comp;
 	}
 
-	private Container getNewRecommandationContainer(String title) {
+	private Container getNewRecommandationContainerComponent(String title) {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.white);
 		panel.setBorder(new TitledBorder(title));
+		panel.setLayout(new ListLayoutManager());
+		this.add(panel);
+		return panel;
+	}
+	
+	private Container getNewEmptyContainerComponent() {
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.white);
 		panel.setLayout(new ListLayoutManager());
 		this.add(panel);
 		return panel;
@@ -197,5 +181,9 @@ public class DocearRecommendationsMapView extends MapView {
 
 	public Component add(Component comp, int index) {
 		return super.add(comp, index);
+	}
+	
+	public void centerNode(final NodeView node, boolean slowScroll) {
+		node.setLocation(-9999, -9999);
 	}
 }

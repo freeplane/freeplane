@@ -61,7 +61,7 @@ public class WorkspacePopupMenuBuilder {
 		assert actionKey != null;
 		assert popupMenu != null;
 		
-		AFreeplaneAction action = Controller.getCurrentModeController().getAction(actionKey);
+		AFreeplaneAction action = Controller.getCurrentController().getAction(actionKey);
 		
 		if(action == null) {
 			return;
@@ -108,7 +108,7 @@ public class WorkspacePopupMenuBuilder {
 				subMenuStack.pop();
 			}
 			else {
-				AFreeplaneAction action = Controller.getCurrentModeController().getAction(key);
+				AFreeplaneAction action = Controller.getCurrentController().getAction(key);
 				if(action == null) {
 					continue;
 				}

@@ -103,6 +103,11 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 		return this.jrf;
 	}
+	
+	public JPanel getJabrefFramePanel() {
+
+		return this.jrf;
+	}
 
 	private void registerListeners() {
 		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);

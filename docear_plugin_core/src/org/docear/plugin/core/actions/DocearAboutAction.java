@@ -65,12 +65,22 @@ public class DocearAboutAction extends AboutAction {
 		
 		Box box = Box.createVerticalBox();		
 		addMessage(box, aboutText);		
-		addUri(box, "http://docear.org", "http://docear.org");		
-		addMessage(box, "based on: ");
-		addUri(box, resourceController.getProperty("homepage_url"), "Freeplane "+FreeplaneVersion.getVersion().toString());		
+		addUri(box, "http://docear.org", "http://docear.org");
+		
+		addMessage(box, " "); //separator gap
+		addFormattedMessage(box, "docear.about.freeplane.text", "");
+		addUri(box, resourceController.getProperty("homepage_url"), "Freeplane "+FreeplaneVersion.getVersion().toString());
+		
+		addMessage(box, " "); //separator gap 
+		addFormattedMessage(box, "docear.about.jabref.text", "");
+		addUri(box, "http://jabref.sourceforge.net/", "JabRef");
+		
+		addMessage(box, " "); //separator gap
 		//addMessage(box, FreeplaneVersion.getVersion().getRevision());
 		addFormattedMessage(box, "java_version", Compat.JAVA_VERSION);
 		addFormattedMessage(box, "docear.main_resource_directory", ResourceController.getResourceController().getResourceBaseDir());
+		
+		addMessage(box, " "); //separator gap
 		addUri(box, resourceController.getProperty("license_url"), TextUtils.getText("license"));
 		addMessage(box, TextUtils.removeTranslateComment(TextUtils.getText("license_text")));
 		

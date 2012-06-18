@@ -1,6 +1,8 @@
 package org.docear.plugin.services.recommendations.mode;
 
 import java.io.InputStreamReader;
+import java.net.UnknownHostException;
+import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,11 +11,14 @@ import java.util.List;
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceResponse;
 import org.docear.plugin.communications.features.DocearServiceResponse.Status;
+import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.xml.DocearXmlBuilder;
 import org.docear.plugin.services.xml.DocearXmlElement;
 import org.docear.plugin.services.xml.DocearXmlRootElement;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -27,10 +32,25 @@ import org.freeplane.view.swing.map.MapView;
 public class DocearRecommendationsMapController extends MapController {
 
 	private DocearRecommendationsModeController modeController;
+	private MapView currentMapView;
 
 	public DocearRecommendationsMapController(DocearRecommendationsModeController modeController) {
 		super(modeController);
 		this.modeController = modeController;
+		addMapLifeCycleListener(new IMapLifeCycleListener() {
+			public void onSavedAs(MapModel map) {
+			}
+
+			public void onSaved(MapModel map) {
+			}
+
+			public void onRemove(MapModel map) {
+				currentMapView = null;
+			}
+
+			public void onCreate(MapModel map) {
+			}
+		});
 	}
 
 	public DocearRecommendationsModeController getModeController() {
@@ -38,14 +58,37 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 
 	public MapModel newMap() {
-		if(ServiceController.getController().isRecommendationsAllowed()) {
-			final DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel(getRecommendations());
-			fireMapCreated(mapModel);
-			newMapView(mapModel);
-			// FIXME: setSaved(true) necessary? (it's removed from newMapView())
-			return mapModel;
+		DocearRecommendationsMapModel mapModel = null;		
+		Collection<RecommendationEntry> recommendations = null;
+		if (ServiceController.getController().isRecommendationsAllowed()) {
+			try {
+				recommendations = getRecommendations();
+				mapModel = new DocearRecommendationsMapModel(recommendations);
+			}
+			catch(Exception e) {
+				mapModel = getExceptionModel(e);
+			}		
+		} 
+		else {
+			mapModel = new DocearRecommendationsMapModel(recommendations);
 		}
-		return new DocearRecommendationsMapModel(null);
+		fireMapCreated(mapModel);
+		newMapView(mapModel);
+		return mapModel;
+	}
+
+	private DocearRecommendationsMapModel getExceptionModel(Exception e) {
+		DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel();
+		String message = "";
+		if (e instanceof UnknownHostException) {
+			message = TextUtils.getText("recommendations.error.no_connection");
+		}
+		else {
+			message = TextUtils.getText("recommendations.error.unknown");
+		}
+		mapModel.setRoot(DocearRecommendationsNodeModel.getNoRecommendationsNode(mapModel, message));
+		mapModel.getRootNode().setFolded(false);
+		return mapModel;
 	}
 
 	public NodeModel newNode(final Object userObject, final MapModel map) {
@@ -59,8 +102,17 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 
 	public void newMapView(MapModel map) {
-		Controller.getCurrentController().getMapViewManager().changeToMapView(createMapView(map));
+		this.currentMapView = createMapView(map);
+		Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
 		Controller.getCurrentController().getMapViewManager().updateMapViewName();
+	}
+
+	public void refreshRecommendations() {
+		if (this.currentMapView != null) {
+			Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
+			Controller.getCurrentController().getMapViewManager().close(false);
+		}
+		newMap();
 	}
 
 	private MapView createMapView(MapModel map) {
@@ -68,9 +120,9 @@ public class DocearRecommendationsMapController extends MapController {
 		return mapView;
 	}
 
-	private Collection<RecommendationEntry> getRecommendations() {
+	private Collection<RecommendationEntry> getRecommendations() throws UnknownHostException, UnexpectedException {
 		String name = CommunicationsController.getController().getUserName();
-		if (name != null) {
+		if (!CoreUtils.isEmpty(name)) {
 			DocearServiceResponse response = CommunicationsController.getController().get("/user/" + name + "/recommendations/documents");
 			if (response.getStatus() == Status.OK) {
 				try {
@@ -90,13 +142,22 @@ public class DocearRecommendationsMapController extends MapController {
 					}
 
 					return recommandations;
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else {
-				System.out.println();
 			}
-		} else {
+			else if (response.getStatus() == Status.NO_CONTENT) {
+				return null;
+			}
+			else if (response.getStatus() == Status.UNKNOWN_HOST) {
+				throw new UnknownHostException();
+			}			
+			else {
+				throw new UnexpectedException("");
+			}
+		}
+		else {
 			System.out.println("no user set");
 		}
 		return Collections.emptyList();

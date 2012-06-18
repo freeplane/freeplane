@@ -22,6 +22,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
@@ -84,7 +85,9 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 	}	
 
 	public void handleAction(WorkspaceActionEvent event) {
-		if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {
+		if(event.getType() == WorkspaceActionEvent.WSNODE_OPEN_DOCUMENT) {			
+			Controller.getCurrentController().selectMode(MModeController.MODENAME);
+			
 			File file = WorkspaceUtils.resolveURI(getLinkPath());
 			if(file != null) {
 				if(!file.exists()) {
@@ -93,10 +96,10 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 				}
 				if(file.getName().toLowerCase().endsWith(".mm") || file.getName().toLowerCase().endsWith(".dcr")) {
 					try {
-						final URL mapUrl = Compat.fileToUrl(file);
+						final URL mapUrl = Compat.fileToUrl(file);						
+						
 						final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 						mapIO.newMap(mapUrl);
-//						Controller.getCurrentModeController().getMapController().newMap(mapUrl);
 					}
 					catch (final Exception e) {
 						LogUtils.severe(e);
