@@ -15,8 +15,6 @@ import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
-import org.docear.plugin.services.recommendations.actions.ModeShutdownAction;
-import org.docear.plugin.services.recommendations.actions.ModeStartupAction;
 import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
@@ -72,9 +70,6 @@ public class ServiceController {
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
-		
-		Controller.getCurrentController().addAction(new ModeStartupAction());
-		Controller.getCurrentController().addAction(new ModeShutdownAction());
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
