@@ -6,10 +6,12 @@ public class RecommendationEntry {
 
 	private final String title;
 	private final URI link;
+	private final URI clickUri;
 	
-	public RecommendationEntry(String title, String url) {
+	public RecommendationEntry(String title, String url, String clickUrl) {
 		this.title = title;
 		this.link = (url==null ? null:URI.create(url));
+		this.clickUri = (clickUrl==null ? null:URI.create(clickUrl));
 	}
 
 	public String getTitle() {
@@ -19,9 +21,9 @@ public class RecommendationEntry {
 	public URI getLink() {
 		return link;
 	}
-
-	public URI getLinkUrl() {
-		return null;
+	
+	public URI getClickUri() {
+		return clickUri;
 	}
 
 }

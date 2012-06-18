@@ -4,10 +4,8 @@
  */
 package org.docear.plugin.core;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,6 +23,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.features.DocearProgressObserver;
+import org.docear.plugin.core.io.IOTools;
 import org.docear.plugin.core.logger.DocearEventLogger;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -287,7 +286,7 @@ public class DocearController implements IDocearEventListener {
 	
 	public String getDataProcessingTerms() {
 		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_processing.txt"));
+			return IOTools.getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_processing.txt"),"UTF-8");
 		}
 		catch (IOException e) {
 			LogUtils.warn(e);
@@ -297,7 +296,7 @@ public class DocearController implements IDocearEventListener {
 	
 	public String getDataPrivacyTerms() {
 		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_privacy.txt"));
+			return IOTools.getStringFromStream(DocearController.class.getResourceAsStream("/Docear_data_privacy.txt"), "UTF-8");
 		}
 		catch (IOException e) {
 			LogUtils.warn(e);
@@ -307,7 +306,7 @@ public class DocearController implements IDocearEventListener {
 	
 	public String getTermsOfUse() {
 		try {
-			return getStringFromStream(DocearController.class.getResourceAsStream("/Docear_terms_of_use.txt"));
+			return IOTools.getStringFromStream(DocearController.class.getResourceAsStream("/Docear_terms_of_use.txt"),"UTF-8");
 		}
 		catch (IOException e) {
 			LogUtils.warn(e);
@@ -315,18 +314,7 @@ public class DocearController implements IDocearEventListener {
 		}
 	}
 	
-	private String getStringFromStream(InputStream is) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-		StringBuilder sb = new StringBuilder();
 	
-		String line;
-		while ((line = br.readLine()) != null) {
-			sb.append(line + System.getProperty("line.separator"));
-		}
-	
-		br.close();
-		return sb.toString();
-	}
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

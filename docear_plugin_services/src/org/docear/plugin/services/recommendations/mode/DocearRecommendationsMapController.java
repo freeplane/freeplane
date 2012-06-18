@@ -134,14 +134,15 @@ public class DocearRecommendationsMapController extends MapController {
 					parser.parse();
 					DocearXmlRootElement result = (DocearXmlRootElement) xmlBuilder.getRoot();
 					Collection<DocearXmlElement> documents = result.findAll("document");
-					List<RecommendationEntry> recommandations = new ArrayList<RecommendationEntry>();
+					List<RecommendationEntry> recommendations = new ArrayList<RecommendationEntry>();
 					for (DocearXmlElement document : documents) {
 						String title = document.find("title").getContent();
 						String url = document.find("sourceid").getContent();
-						recommandations.add(new RecommendationEntry(title, url));
+						String click = document.getParent().getAttributeValue("click_url");
+						recommendations.add(new RecommendationEntry(title, url, click));
 					}
 
-					return recommandations;
+					return recommendations;
 				}
 				catch (Exception e) {
 					e.printStackTrace();
