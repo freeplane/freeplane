@@ -110,9 +110,9 @@ public class CoreConfiguration extends ALanguageController {
 		// set up context menu for workspace
 		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);
 		
-		modeController.addAction(new WorkspaceChangeLocationsAction());
-		modeController.addAction(new DocearChangeLibraryPathAction());
-		modeController.addAction(new DocearRenameAction());
+		Controller.getCurrentController().addAction(new WorkspaceChangeLocationsAction());
+		Controller.getCurrentController().addAction(new DocearChangeLibraryPathAction());
+		Controller.getCurrentController().addAction(new DocearRenameAction());
 		
 		addPluginDefaults();
 		addMenus(modeController);

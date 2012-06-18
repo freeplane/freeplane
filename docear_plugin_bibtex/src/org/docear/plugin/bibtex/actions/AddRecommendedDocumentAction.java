@@ -73,7 +73,7 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 		fc.approveSelection();
 		fc.setSelectedFile(defaultFile);
 		File file = null;
-		while (fc.showOpenDialog(UITools.getFrame()) == JFileChooser.APPROVE_OPTION) {
+		while (fc.showSaveDialog(UITools.getFrame()) == JFileChooser.APPROVE_OPTION) {
 			file = fc.getSelectedFile();
 			if (file.exists()) {
 				int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.replace_existing_file"));
