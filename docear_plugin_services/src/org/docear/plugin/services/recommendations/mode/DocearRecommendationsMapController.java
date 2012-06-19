@@ -138,7 +138,7 @@ public class DocearRecommendationsMapController extends MapController {
 					for (DocearXmlElement document : documents) {
 						String title = document.find("title").getContent();
 						String url = document.find("sourceid").getContent();
-						String click = document.getParent().getAttributeValue("click_url");
+						String click = document.getParent().getAttributeValue("fulltext");
 						recommendations.add(new RecommendationEntry(title, url, click));
 					}
 
