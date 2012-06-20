@@ -65,7 +65,7 @@ public class DocearRecommendationsMapController extends MapController {
 
 	public MapModel newMap() {			
 		DocearRecommendationsMapModel mapModel = null;
-		final ProgressMonitor monitor = new ProgressMonitor(UITools.getFrame(), "Requesting recommendations ... ", null, 0, 100);
+		final ProgressMonitor monitor = new ProgressMonitor(UITools.getFrame(), TextUtils.getText("recommendations.request.wait.text"), null, 0, 100);
 		monitor.setMillisToDecideToPopup(0);
 		monitor.setMillisToPopup(0);
 		if (ServiceController.getController().isRecommendationsAllowed()) {
@@ -123,6 +123,7 @@ public class DocearRecommendationsMapController extends MapController {
 		return mapModel;
 	}
 	
+	@SuppressWarnings("unused")
 	private DocearRecommendationsMapModel getProgressModel() {
 		DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel();
 		mapModel.setRoot(DocearRecommendationsNodeModel.getProgressBarNode(mapModel, 0, -1));
@@ -155,6 +156,7 @@ public class DocearRecommendationsMapController extends MapController {
 		newMap();
 	}
 
+	@SuppressWarnings("unused")
 	private void closeMapView(MapView mapView) {
 		if (mapView != null) {
 			Controller.getCurrentController().getMapViewManager().changeToMapView(mapView);

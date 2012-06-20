@@ -1,6 +1,8 @@
 package org.docear.plugin.services.recommendations.mode;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.services.ServiceController;
@@ -39,6 +41,8 @@ public class DocearRecommendationsMapModel extends MapModel {
 			getRootNode().insert(DocearRecommendationsNodeModel.getNoRecommendationsNode(this, TextUtils.getText("recommendations.error.no_recommendations")));
 		} 
 		else {
+			//shuffle on server side
+			//Collections.shuffle((List<?>) recommendations);
 			for(RecommendationEntry entry : recommendations) {
 				getRootNode().insert(new DocearRecommendationsNodeModel(entry, this));
 			}		
