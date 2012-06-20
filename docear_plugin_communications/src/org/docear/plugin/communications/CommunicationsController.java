@@ -193,13 +193,13 @@ public class CommunicationsController extends ALanguageController implements Pro
 		return message.toString();
 	}
 	
-	private void startWaitDialog(final boolean silent) {
+	public void startWaitDialog(final boolean silent) {
 		if (!silent) {
 			getWaitDialog().start();
 		}
 	}
 
-	private void stopWaitDialog(final boolean silent) {
+	public void stopWaitDialog(final boolean silent) {
 		if (!silent) {
 			getWaitDialog().stop();
 		}

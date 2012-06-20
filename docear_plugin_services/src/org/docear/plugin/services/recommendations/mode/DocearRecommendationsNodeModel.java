@@ -1,5 +1,6 @@
 package org.docear.plugin.services.recommendations.mode;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
@@ -74,6 +76,12 @@ public class DocearRecommendationsNodeModel extends NodeModel {
 		return node;
 	}
 	
+	public static NodeModel getProgressBarNode(DocearRecommendationsMapModel mapModel, int min, int max) {
+		DocearRecommendationsNodeModel node = new DocearRecommendationsNodeModel(mapModel);
+		node.setUserObject(node.new ProgressBarComponent(min, max));
+		return node;
+	}
+	
 	protected class NoRecommendations implements NodeModelItem {
 		
 		private final String text;
@@ -88,6 +96,28 @@ public class DocearRecommendationsNodeModel extends NodeModel {
 		
 		public String toString() {
 			return getText();
+		}
+		
+	}
+	
+	protected class ProgressBarComponent extends JPanel implements NodeModelItem {
+		private static final long serialVersionUID = 1L;
+
+		public ProgressBarComponent(int min, int max) {
+			this.setLayout(new BorderLayout());
+			JProgressBar bar = new JProgressBar();
+			if(max < min) {
+				bar.setIndeterminate(true);
+			}
+			else {
+				bar.setMinimum(min);
+				bar.setMaximum(max);
+			}
+			this.add(bar, BorderLayout.CENTER);
+		}
+
+		public String getText() {
+			return "waiting ...";
 		}
 		
 	}

@@ -8,6 +8,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JProgressBar;
+import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
+
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceResponse;
 import org.docear.plugin.communications.features.DocearServiceResponse.Status;
@@ -17,12 +21,14 @@ import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.xml.DocearXmlBuilder;
 import org.docear.plugin.services.xml.DocearXmlElement;
 import org.docear.plugin.services.xml.DocearXmlRootElement;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -57,23 +63,49 @@ public class DocearRecommendationsMapController extends MapController {
 		return modeController;
 	}
 
-	public MapModel newMap() {
-		DocearRecommendationsMapModel mapModel = null;		
-		Collection<RecommendationEntry> recommendations = null;
+	public MapModel newMap() {			
+		DocearRecommendationsMapModel mapModel = null;
+		final ProgressMonitor monitor = new ProgressMonitor(UITools.getFrame(), "Requesting recommendations ... ", null, 0, 100);
+		monitor.setMillisToDecideToPopup(0);
+		monitor.setMillisToPopup(0);
 		if (ServiceController.getController().isRecommendationsAllowed()) {
-			try {
-				recommendations = getRecommendations();
-				mapModel = new DocearRecommendationsMapModel(recommendations);
-			}
-			catch(Exception e) {
-				mapModel = getExceptionModel(e);
-			}		
+			new Thread() {			
+				public void run() {
+					DocearRecommendationsMapModel mapModel = null;	
+					try {					
+						monitor.setProgress(1);
+						((JProgressBar)monitor.getAccessibleContext().getAccessibleChild(1)).setIndeterminate(true);
+						Collection<RecommendationEntry> recommendations = getRecommendations();
+						mapModel = new DocearRecommendationsMapModel(recommendations);
+					}
+					catch(Exception e) {
+						mapModel = getExceptionModel(e);
+					}
+					SwingUtilities.invokeLater(getNewMapRunnable(monitor, mapModel));									
+					
+				}
+
+				private Runnable getNewMapRunnable(final ProgressMonitor monitor, final DocearRecommendationsMapModel mapModel) {
+					return new Runnable() {
+						
+						public void run() {
+							fireMapCreated(mapModel);
+							newMapView(mapModel);
+							monitor.close();
+						}
+					};
+				}
+				
+			}.start();
+			//mapModel = getProgressModel();
 		} 
 		else {
-			mapModel = new DocearRecommendationsMapModel(recommendations);
+			mapModel = new DocearRecommendationsMapModel(null);
+			fireMapCreated(mapModel);
+			newMapView(mapModel);
 		}
-		fireMapCreated(mapModel);
-		newMapView(mapModel);
+		
+		
 		return mapModel;
 	}
 
@@ -90,6 +122,13 @@ public class DocearRecommendationsMapController extends MapController {
 		mapModel.getRootNode().setFolded(false);
 		return mapModel;
 	}
+	
+	private DocearRecommendationsMapModel getProgressModel() {
+		DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel();
+		mapModel.setRoot(DocearRecommendationsNodeModel.getProgressBarNode(mapModel, 0, -1));
+		mapModel.getRootNode().setFolded(false);
+		return mapModel;
+	}
 
 	public NodeModel newNode(final Object userObject, final MapModel map) {
 		throw new UnsupportedOperationException();
@@ -102,17 +141,33 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 
 	public void newMapView(MapModel map) {
+		//MapView oldView = this.currentMapView;
+		closeCurrentMapView();
 		this.currentMapView = createMapView(map);
-		Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
-		Controller.getCurrentController().getMapViewManager().updateMapViewName();
+		IMapViewManager manager = Controller.getCurrentController().getMapViewManager();
+		manager.changeToMapView(this.currentMapView);
+		manager.updateMapViewName();
+		//closeMapView(oldView);
 	}
 
 	public void refreshRecommendations() {
+		//closeCurrentView();
+		newMap();
+	}
+
+	private void closeMapView(MapView mapView) {
+		if (mapView != null) {
+			Controller.getCurrentController().getMapViewManager().changeToMapView(mapView);
+			Controller.getCurrentController().getMapViewManager().close(true);
+		}
+	}
+	
+	private void closeCurrentMapView() {
 		if (this.currentMapView != null) {
 			Controller.getCurrentController().getMapViewManager().changeToMapView(this.currentMapView);
-			Controller.getCurrentController().getMapViewManager().close(false);
+			Controller.getCurrentController().getMapViewManager().close(true);
+			this.currentMapView = null;
 		}
-		newMap();
 	}
 
 	private MapView createMapView(MapModel map) {
