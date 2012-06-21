@@ -20,12 +20,17 @@ Name Docear
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\orange-uninstall.ico"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
+
 # JRE Detection Definitions
 !define JRE_VERSION "1.6"
 !define JRE_URL_32 "http://javadl.sun.com/webapps/download/AutoDL?BundleId=58124"
 !define JRE_URL_64 "http://javadl.sun.com/webapps/download/AutoDL?BundleId=58126"
 !ifndef VERSION
     !define VERSION "1.0"
+!endif
+
+!ifndef BUILD
+    !define BUILD "1"
 !endif
 
 !define INI_FILE "docear-setup.ini"
@@ -39,6 +44,11 @@ Name Docear
 !include "InstallOptions.nsh"
 !include FileAssociation.nsh
 !include JRECheck.nsh
+
+Function FinishedInstall
+ExecShell "open" "http://www.docear.org/support/welcome/?version=build${BUILD}"
+#${OpenURL} "http://www.docear.org/support/welcome/?version=build72"
+FunctionEnd 
 
 # Variables
 Var StartMenuGroup
@@ -59,7 +69,8 @@ ReserveFile "docear-setup.ini"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuGroup
 Page Custom OptionPageNS OptionPageProcess
-!insertmacro MUI_PAGE_INSTFILES 
+!insertmacro MUI_PAGE_INSTFILES
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE FinishedInstall 
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -150,8 +161,7 @@ Section -post SEC0001
     ${IF} $R6 <= 0 
         WriteRegStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "Path" "$R9;$R7\bin"
         SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
-    ${EndIf} 
-    
+    ${EndIf}
 SectionEnd
 
 # Macro for selecting uninstaller sections
