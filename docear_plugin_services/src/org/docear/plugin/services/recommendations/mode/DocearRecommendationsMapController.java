@@ -75,7 +75,9 @@ public class DocearRecommendationsMapController extends MapController {
 					try {					
 						monitor.setProgress(1);
 						((JProgressBar)monitor.getAccessibleContext().getAccessibleChild(1)).setIndeterminate(true);
+						long l = System.currentTimeMillis();
 						Collection<RecommendationEntry> recommendations = getRecommendations();
+						System.out.println("exec time: "+(System.currentTimeMillis()-l));
 						mapModel = new DocearRecommendationsMapModel(recommendations);
 					}
 					catch(Exception e) {
@@ -177,7 +179,7 @@ public class DocearRecommendationsMapController extends MapController {
 		return mapView;
 	}
 
-	private Collection<RecommendationEntry> getRecommendations() throws UnknownHostException, UnexpectedException {
+	private Collection<RecommendationEntry> getRecommendations() throws UnknownHostException, UnexpectedException {		
 		String name = CommunicationsController.getController().getUserName();
 		if (!CoreUtils.isEmpty(name)) {
 			DocearServiceResponse response = CommunicationsController.getController().get("/user/" + name + "/recommendations/documents");
