@@ -141,22 +141,17 @@ public class DocearRecommendationsMapView extends MapView {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getID() == RecommendationEntryComponent.OPEN_RECOMMENDATION) {
 					try {
-						Controller.getCurrentController().getViewController().openDocument(recommendation.getClickUri());
+						Controller.getCurrentController().getViewController().openDocument(recommendation.getClickUrl());
 					} catch (Exception ex) {
 						LogUtils.warn("could not open link to (" + recommendation.getLink() + ")", ex);
 					}
 				}
 				else if(e.getID() == RecommendationEntryComponent.IMPORT_RECOMMENDATION) {
 					
-					URL page = null;
-					try {
-						page = new URL(recommendation.getLink().toString());
-					} catch (MalformedURLException ex) {
-						LogUtils.warn(ex);
-					}
+					URL page = recommendation.getLink();					
 					URLConnection connection;
 					try {
-						connection = recommendation.getClickUri().toURL().openConnection();
+						connection = recommendation.getClickUrl().openConnection();
 						if(connection instanceof HttpURLConnection) {
 							HttpURLConnection hconn = (HttpURLConnection) connection;							
 						    hconn.setInstanceFollowRedirects(false);

@@ -47,10 +47,7 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 		if ("IMPORT_TO_LIBRARY".equals(event.getEventObject())) {
 			try {
 				URL url = null;
-				if(event.getSource() instanceof URI) {
-					url = ((URI) event.getSource()).toURL();
-				}
-				else if(event.getSource() instanceof URL) {
+				if(event.getSource() instanceof URL) {
 					url = ((URL) event.getSource());
 				}
 				else {
