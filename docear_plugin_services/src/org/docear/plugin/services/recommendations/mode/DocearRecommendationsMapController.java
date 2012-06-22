@@ -28,6 +28,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -52,6 +53,14 @@ public class DocearRecommendationsMapController extends MapController {
 
 			public void onRemove(MapModel map) {
 				currentMapView = null;
+				if(Controller.getCurrentController().getMapViewManager().getMaps().size() <= 1) {
+					SwingUtilities.invokeLater(new Runnable() {
+						
+						public void run() {
+							Controller.getCurrentController().selectMode(MModeController.MODENAME);
+						}
+					});
+				}
 			}
 
 			public void onCreate(MapModel map) {
