@@ -427,7 +427,7 @@ public class NodeUtils {
 			}
 		}
 		catch (Exception e) {
-			LogUtils.warn(e);
+			LogUtils.warn(e.getMessage());
 		}
 		return false;	
 	}

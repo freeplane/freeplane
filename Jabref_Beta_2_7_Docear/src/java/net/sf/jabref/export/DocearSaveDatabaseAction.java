@@ -26,32 +26,46 @@ public class DocearSaveDatabaseAction extends SaveDatabaseAction {
 	
 	public void callListeners(Map<String, BibtexEntry> entryNodeTuples, boolean success) {
 		ActionEvent event;
+		TreeMap<BibtexEntry, String> invertedTuples = new TreeMap<BibtexEntry, String>();
 		for (Entry<String, BibtexEntry> tuple : entryNodeTuples.entrySet()) {
+			String nodeIds = invertedTuples.get(tuple.getValue());
+			if (nodeIds != null) {
+				nodeIds += "," + tuple.getKey();
+				invertedTuples.put(tuple.getValue(), nodeIds);
+			}
+			else {
+				invertedTuples.put(tuple.getValue(), tuple.getKey());
+			}
+		}
+		
+		for (Entry<BibtexEntry, String> tuple : invertedTuples.entrySet()) {
 			//addNodeID to entry for AddNewReferenceAction (deleted before saving the database
-			tuple.getValue().setField("docear_add_to_node", tuple.getKey());
+			tuple.getKey().setField("docear_add_to_node", tuple.getValue());
 			event = new ActionEvent(tuple.getValue(), 0, success ? JABREF_DATABASE_SAVE_SUCCESS : JABREF_DATABASE_SAVE_FAILED);			
 			for (ActionListener listener : actionListeners) {
 				listener.actionPerformed(event);
 			}
 			//delete nodeID before continuing --> same state as saved database and bibtex key would not be added again on next run
-			tuple.getValue().setField("docear_add_to_node", null);
+			tuple.getKey().setField("docear_add_to_node", null);
 		}
 	}
 
 	public void run() {		
 		DocearReferenceUpdateController.lock();
 		TreeMap<String, BibtexEntry> entryNodeTuples = new TreeMap<String, BibtexEntry>();
-		
-		String nodeId = null;
+				
 		for (BibtexEntry entry : this.panel.getDatabase().getEntries()) {
-			nodeId = entry.getField("docear_add_to_node");
-			if (nodeId != null) {						
-				if (entry.getCiteKey() == null) {
-					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), this.panel.getDatabase(), entry);
-				}
-				entryNodeTuples.put(nodeId, entry);				
+			if (entry.getCiteKey() == null) {
+				LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), this.panel.getDatabase(), entry);
 			}
-			entry.setField("docear_add_to_node", null);
+			String s = entry.getField("docear_add_to_node");			
+			if (s != null) {
+				String[] nodeIds = s.split(",");
+				for (String nodeId : nodeIds) {
+					entryNodeTuples.put(nodeId, entry);
+				}
+				entry.setField("docear_add_to_node", null);
+			}
 		}		
 		
 		//save Database

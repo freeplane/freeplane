@@ -51,13 +51,16 @@ public class MapViewListener implements MouseListener, INodeSelectionListener {
 		TreeMap<String, BibtexEntry> entryNodeTuples = new TreeMap<String, BibtexEntry>();
 				
 		for (BibtexEntry entry : database.getEntries()) {
-			String nodeId = entry.getField("docear_add_to_node");
-			if (nodeId != null) {						
-				entryNodeTuples.put(nodeId, entry);				
-			}
-			NodeModel node = mapModel.getNodeForID(nodeId);			
-			if (node != null) {
-				ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, node);
+			String s = entry.getField("docear_add_to_node");
+			if (s != null) {
+				String[] nodeIds = s.split(",");
+				for (String nodeId : nodeIds) {
+					entryNodeTuples.put(nodeId, entry);
+					NodeModel node = mapModel.getNodeForID(nodeId);
+					if (node != null) {
+						ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, node);
+					}					
+				}
 			}
 			entry.setField("docear_add_to_node", null);
 		}		
