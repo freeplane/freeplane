@@ -120,7 +120,8 @@ public class IconStoreFactory {
 	private static List<MindIcon> getUserIcons(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
-				return name.endsWith(".png") || new File(dir, name).isDirectory();
+				final int nameLength = name.length();
+				return nameLength > 4 && name.substring(nameLength - 4).equalsIgnoreCase(".png") || new File(dir, name).isDirectory();
 			}
 		});
 		if (userIconArray == null) {
