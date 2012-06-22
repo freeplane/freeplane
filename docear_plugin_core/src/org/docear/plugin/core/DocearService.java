@@ -23,7 +23,7 @@ public abstract class DocearService implements BundleActivator {
 	
 	protected abstract Collection<IControllerExtensionProvider> getControllerExtensions();
 	
-	public void start(BundleContext context) throws Exception {
+	public final void start(BundleContext context) throws Exception {
 		this.info = new DocearBundleInfo(context);
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("dependsOn", new String[] { DEPENDS_ON }); //$NON-NLS-1$
@@ -40,7 +40,7 @@ public abstract class DocearService implements BundleActivator {
 	
 	
 
-	public DocearBundleInfo getBundleInfo() {		
+	public final DocearBundleInfo getBundleInfo() {		
 		return info;
 	}
 }

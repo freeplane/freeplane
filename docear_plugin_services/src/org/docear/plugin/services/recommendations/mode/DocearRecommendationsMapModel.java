@@ -1,8 +1,6 @@
 package org.docear.plugin.services.recommendations.mode;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.services.ServiceController;
