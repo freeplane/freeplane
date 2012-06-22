@@ -1,4 +1,4 @@
-package org.docear.plugin.services.features.elements;
+package org.docear.plugin.core;
 
 import java.net.URL;
 import java.sql.Date;
@@ -11,10 +11,10 @@ public class Version implements Comparable<Version> {
 	private Integer buildNumber;
 	private String releaseNotes;
 	
-	int[] versionNumber = new int[5];
+	protected int[] versionNumber = new int[5];
 	
 	public enum VersionField {
-		MAJOR (0), MIDDLE(1), MINOR(2), STATUS(3), STATUS_NO(4);		
+		MAJOR (0), MIDDLE(1), MINOR(2), STATUS_NO(3), STATUS(4);		
 		public final int index;
 		
 		VersionField(int index) {
@@ -23,7 +23,7 @@ public class Version implements Comparable<Version> {
 	}
 	
 	public enum CompareCode {
-		LOWER(-1), EQUALS(0), DEVEL(1), BETA(2), MINOR(3), MIDDLE(4), MAJOR(5);		
+		LOWER(-1), EQUALS(0), DEVEL(1), BETA(2), RC(2), MINOR(3), MIDDLE(4), MAJOR(5);		
 		public final int code;
 		
 		CompareCode(int code) {
@@ -137,6 +137,12 @@ public class Version implements Comparable<Version> {
 	}
 	
 	public int compareTo(Version o) {
+//		this.setStatus("devel");
+//		this.setStatusNumber(4);
+//		o.setStatus("beta");
+//		o.setBuildNumber(82);
+		
+		
 		long me = this.getComputableVersionNumber();
 		long other = o.getComputableVersionNumber();
 		
@@ -147,18 +153,18 @@ public class Version implements Comparable<Version> {
 			if (this.getBuildNumber() < o.getBuildNumber()) {
 				return CompareCode.LOWER.code;
 			}
-			else if (this.getBuildNumber() > o.getBuildNumber()) {
-				return CompareCode.DEVEL.code;
+			else if (this.getBuildNumber() == o.getBuildNumber()) {
+				return CompareCode.EQUALS.code;
 			}
 			else {
-				return CompareCode.EQUALS.code;
+				return getCompareCode();				
 			}
 		}
 		
 		//ME > OTHER
 		int index = 0;
 		
-		for (int i=VersionField.STATUS_NO.index; i>=VersionField.MAJOR.index; i--) {
+		for (int i=VersionField.STATUS.index; i>=VersionField.MAJOR.index; i--) {
 			if((other%1000) < versionNumber[i]) {
 				index = i;
 			}
@@ -166,10 +172,10 @@ public class Version implements Comparable<Version> {
 		}
 		
 		if (index == VersionField.STATUS_NO.index) {
-			return CompareCode.BETA.code;
+			return getCompareCode();
 		}
 		else if (index == VersionField.STATUS.index) {
-			return CompareCode.MAJOR.code;
+			return getCompareCode();
 		}
 		else if (index == VersionField.MINOR.index) {
 			return CompareCode.MINOR.code;
@@ -180,17 +186,31 @@ public class Version implements Comparable<Version> {
 		
 		return CompareCode.MAJOR.code;
 	}
+
+	private int getCompareCode() {
+		if(StatusName.valueOf(getStatus()).code < StatusName.beta.code) {
+			return CompareCode.DEVEL.code;
+		}
+		else if(StatusName.valueOf(getStatus()).code <= StatusName.rc.code) {
+			return CompareCode.BETA.code;
+		}
+		else {
+			return CompareCode.MINOR.code;
+		}
+	}
 	
 	public String toString() {
 		String versionString = ""+getMajorVersion()+"."+getMiddleVersion()+"."+getMinorVersion();
+		
+		Integer statusNumber = getStatusNumber();
+		if (statusNumber != null && statusNumber > 0) {
+			versionString += "."+statusNumber;
+		}
+		
 		String status = getStatus();
 		if (status != null && status.length()>0) {
 			versionString += " "+status;
-		}
-		Integer statusNumber = getStatusNumber();
-		if (statusNumber != null && statusNumber > 0) {
-			versionString += statusNumber;
-		}
+		}		
 		versionString += " build";
 		Integer buildNumber = getBuildNumber();
 		if (buildNumber != null && buildNumber>0) {

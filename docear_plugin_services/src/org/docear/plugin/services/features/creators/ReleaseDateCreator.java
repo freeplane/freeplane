@@ -2,7 +2,7 @@ package org.docear.plugin.services.features.creators;
 
 import java.sql.Date;
 
-import org.docear.plugin.services.features.elements.Version;
+import org.docear.plugin.core.Version;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.n3.nanoxml.XMLElement;
 

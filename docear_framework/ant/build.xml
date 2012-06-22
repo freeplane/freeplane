@@ -59,18 +59,53 @@
 		</copy>
 	</target>
 
-   <target name="build_core">
-       <propertyfile file="../docear_plugin_core/resources/version.properties"> 
-           <entry  key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/> 
-        </propertyfile> 
-
+   <target name="prepareDevelVersion" if="${docear_devel}">
+        <propertyfile file="../docear_plugin_core/resources/version.properties"> 
+           <entry key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/>
+           <entry key="docear_version_status" value="devel" />
+        </propertyfile>
+   </target>
+	
+	<target name="prepareAlphaVersion" if="${docear_alpha}">
+	        <propertyfile file="../docear_plugin_core/resources/version.properties"> 
+	           <entry key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/>
+	           <entry key="docear_version_status" value="alpha" />
+	        </propertyfile>
+	   </target>
+	
+	<target name="prepareBetaVersion" if="${docear_beta}">
+	        <propertyfile file="../docear_plugin_core/resources/version.properties"> 
+	           <entry key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/>
+	           <entry key="docear_version_status_number" type="int" operation="+" value="1" />
+	           <entry key="docear_version_status" value="beta" />
+	        </propertyfile>
+	   </target>
+	
+	<target name="prepareRCVersion" if="${docear_rc}">
+	        <propertyfile file="../docear_plugin_core/resources/version.properties"> 
+	           <entry key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/>
+	           <entry key="docear_version_status" value="rc" />
+	        </propertyfile>
+	   </target>
+	
+	<target name="prepareStableVersion" if="${docear_stable}">
+	        <propertyfile file="../docear_plugin_core/resources/version.properties"> 
+	           <entry key="build_date" type="date" value="now" pattern="MM/dd/yyyy"/>
+	           <entry key="docear_version_status_number" type="int" operation="+" value="1" />
+	           <entry key="docear_version_status" value="stable" />
+	        </propertyfile>
+	   </target>
+	
+   <target name="prepareVersion" depends="prepareDevelVersion, prepareAlphaVersion, prepareBetaVersion, prepareRCVersion, prepareStableVersion">
         <buildnumber file="../docear_plugin_core/resources/build.number"/>
-        <property name="ver_docear" value="${docear_version}_${docear_version_status}${docear_version_status_number}_build${build.number}" />
-	    <condition property="ver" value="${ver_docear}" else="${ver_freeplane}">
+        <property name="ver_docear" value="${docear_version}.${docear_version_status_number}_${docear_version_status}_build${build.number}" />
+        <condition property="ver" value="${ver_docear}" else="${ver_freeplane}">
             <equals arg1="${ApplicationNameToLowerCase}" arg2="docear"/>
-	    </condition>
-        <echo>Docear Version = ${ver}.</echo>
-
+        </condition>
+        <echo>Docear Version = ${ver}.</echo>        
+   </target>
+	
+   <target name="build_core" depends="prepareVersion">
         <mkdir dir="${build}" />
         <copy todir="${build}">
             <fileset dir="${script}" />
@@ -564,7 +599,7 @@
 		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip" tofile="${dist}/script-api-${ver}.zip" failonerror="false"/>		
 	</target>
 	
-	<target name="docear-mac" depends="docear-bin, zip4mac, dmg4mac">
+	<target name="docear-mac" depends="docear-bin, zip4mac, dmg4mac" if="isMacOs">
 	</target>
 	
 	<target name="docear-nsis" depends="docear-bin">
