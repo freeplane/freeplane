@@ -84,8 +84,8 @@ class FoldingCircle extends DrawableEllipse{
 	
 }
 
-class DrawableTriangleDown extends DrawableShape{
-	public DrawableTriangleDown(Color fillColor) {
+class DrawableTriangle extends DrawableShape{
+	public DrawableTriangle(Color fillColor) {
 		super(fillColor);
 	}
 	Shape getShape(Rectangle r){
@@ -99,24 +99,9 @@ class DrawableTriangleDown extends DrawableShape{
 	}
 }
 
-class DrawableTriangleUp extends DrawableShape{
-	public DrawableTriangleUp(Color fillColor) {
-		super(fillColor);
-	}
-	Shape getShape(Rectangle r){
-		final Polygon polygon = new Polygon();
-		polygon.addPoint(r.x, r.y + r.height);
-		polygon.addPoint(r.x + r.width, r.y + r.height);
-		polygon.addPoint(r.x + (r.width + 1) / 2, r.y);
-		polygon.addPoint(r.x + r.width / 2, r.y);
-		polygon.addPoint(r.x, r.y + r.height);
-		return polygon;
-	}
-}
-
 public enum FoldingMark implements Drawable{
 	UNFOLDED(new DrawableNothing()), ITSELF_FOLDED(new DrawableEllipse(Color.WHITE)), UNVISIBLE_CHILDREN_FOLDED(new DrawableEllipse(Color.GRAY)), 
-	SHORTENED(new DrawableTriangleDown(Color.WHITE)), MAXIMIZED(new DrawableTriangleUp(Color.WHITE)),
+	SHORTENED(new DrawableTriangle(Color.WHITE)), 
 	FOLDING_CIRCLE_FOLDED(new FoldingCircle(Color.WHITE, true, false)), FOLDING_CIRCLE_UNFOLDED(new FoldingCircle(Color.WHITE, false, false)),
 	FOLDING_CIRCLE_HIDDEN_CHILD(new FoldingCircle(Color.WHITE, false, true));
 	final Drawable drawable;
