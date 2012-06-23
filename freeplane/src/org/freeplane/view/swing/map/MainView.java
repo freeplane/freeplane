@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
@@ -72,6 +74,7 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public abstract class MainView extends ZoomableLabel {
+	private static final BasicStroke SHORTENER_STROKE = new BasicStroke(1.5f);
 	private static final int FOLDING_CIRCLE_WIDTH = 16;
 	private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
@@ -256,15 +259,30 @@ public abstract class MainView extends ZoomableLabel {
 		drawModificationRect(g);
 		paintDragRectangle(g);
 		paintFoldingMark(nodeView, g);
-        if (isShortened()) {
-        	final int size = getZoomedFoldingSymbolHalfWidth();
-			int width = size * 7 / 3;
-            int x = nodeView.isLeft() ? getWidth() : 0 - width;
-            int height = size * 5 / 3;
-            int y = (getHeight() - height) / 2;
-            FoldingMark.SHORTENED.draw(g, nodeView, new Rectangle(x, y, width, height));
+        final boolean shortened = isShortened();
+		if (shortened || mouseArea.equals(MouseArea.SHORTENER)) {
+        	final Rectangle r = getShortenerRectangle(nodeView, 0);
+        	final Stroke stroke = g.getStroke();
+        	if (mouseArea.equals(MouseArea.SHORTENER))
+        		g.setStroke(SHORTENER_STROKE);
+			if(shortened)
+            	FoldingMark.SHORTENED.draw(g, nodeView, r);
+            else
+            	FoldingMark.MAXIMIZED.draw(g, nodeView, r);
+			if (mouseArea.equals(MouseArea.SHORTENER))
+				g.setStroke(stroke);
         }
 	}
+
+	public Rectangle getShortenerRectangle(final NodeView nodeView, final int delta) {
+	    final int size = getZoomedFoldingSymbolHalfWidth();
+	    final Rectangle r = new Rectangle();
+	    r.width = size * 7 / 3 + 2 * delta;
+	    r.x = (nodeView.isLeft() ? getWidth() - delta : 0 - r.width + delta);
+	    r.height = size * 5 / 3 + 2 * delta;
+	    r.y = (getHeight() - r.height) / 2;
+	    return r;
+    }
 
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {
 		if (! hasChildren())
@@ -639,6 +657,10 @@ public abstract class MainView extends ZoomableLabel {
         else
 			return false;
 	}
+	
+	public boolean isInShortenerRegion(Point p){
+		return 0 <= p.x && p.x < getWidth() && getHeight() - 2 <= p.y && p.y < getHeight();
+	}
 
 	private boolean hasChildren() {
 	    return getNodeView().getModel().hasChildren();
@@ -647,17 +669,6 @@ public abstract class MainView extends ZoomableLabel {
 	public MouseArea getMouseArea() {
 		return mouseArea;
 	}
-	public MouseArea whichMouseArea(Point point) {
-		final int x = point.x;
-		if(isInDragRegion(point))
-			return MouseArea.MOTION;
-		if(isInFoldingRegion(point))
-			return MouseArea.FOLDING;
-		if(isInFollowLinkRegion(x))
-			return MouseArea.LINK;
-		return MouseArea.DEFAULT;
-	}
-
 
 	public void setMouseArea(MouseArea mouseArea) {
 		if(mouseArea.equals(this.mouseArea))
@@ -671,12 +682,26 @@ public abstract class MainView extends ZoomableLabel {
 						|| mouseArea.equals(MouseArea.FOLDING)
 						|| this.mouseArea.equals(MouseArea.OUT)
 						|| this.mouseArea.equals(MouseArea.FOLDING));
+		final boolean repaintShortenerTriangle = isVisible()
+				&& (mouseArea.equals(MouseArea.SHORTENER) 
+						|| this.mouseArea.equals(MouseArea.SHORTENER)
+						);
 		this.mouseArea = mouseArea;
 		if(repaintDraggingRectangle)
 			paintDraggingRectangleImmediately();
 		if(repaintFoldingRectangle)
 			paintFoldingRectangleImmediately();
+		if(repaintShortenerTriangle)
+			paintShortenerRectangleImmediately();
 	}
+
+	private void paintShortenerRectangleImmediately() {
+		final NodeView nodeView = getNodeView();
+		final Rectangle shortenerRectangle = getShortenerRectangle(nodeView, 3);
+		final MapView map = nodeView.getMap();
+		UITools.convertRectangleToAncestor(this, shortenerRectangle, map);
+		map.paintImmediately(shortenerRectangle);
+    }
 
 	private void paintFoldingRectangleImmediately() {
 			final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();

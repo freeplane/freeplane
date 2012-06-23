@@ -30,6 +30,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.FoldingMark;
 import org.freeplane.view.swing.map.MainView;
@@ -130,6 +131,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		return ((MainView)e.getComponent()).isInFoldingRegion(e.getPoint());
 	}
 
+	protected boolean isInShortenerRegion(MouseEvent e) {
+		return ((MainView)e.getComponent()).isInShortenerRegion(e.getPoint());
+	}
+
 	protected boolean isInDragRegion(MouseEvent e) {
 		return ((MainView)e.getComponent()).isInDragRegion(e.getPoint());
 	}
@@ -147,8 +152,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				return;
 			}
 		}
-		final MainView component = (MainView) e.getComponent();
-		NodeView nodeView = component.getNodeView();
+		final MainView mainView = (MainView) e.getComponent();
+		NodeView nodeView = mainView.getNodeView();
 		if (nodeView == null)
 			return;
 
@@ -158,13 +163,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
 			if(plainEvent){
-				if (component.isInFollowLinkRegion(e.getX())) {
+				if (mainView.isInFollowLinkRegion(e.getX())) {
 					LinkController.getController(mc).loadURL(node, e);
 					e.consume();
 					return;
 				}
 
-				final String link = component.getLink(e.getPoint());
+				final String link = mainView.getLink(e.getPoint());
 				if (link != null) {
 					doubleClickTimer.start(new Runnable() {
 						public void run() {
@@ -175,8 +180,14 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					return;
 				}
 				
+				if(isInShortenerRegion(e) && e.getClickCount() == 1){
+					TextController.getController().toggleShortened(node);
+					e.consume();
+					return;
+				}
+				
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
+					final boolean fold = FoldingMark.UNFOLDED.equals(mainView.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 					if(!shouldSelectOnClick(e)){
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
@@ -198,7 +209,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion 
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
 				&& !shouldSelectOnClick(e)) {
-			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
+			boolean fold = FoldingMark.UNFOLDED.equals(mainView.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 			doubleClickTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();
@@ -272,6 +283,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
         else if (isInFoldingRegion(e)){
         	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         	node.setMouseArea(MouseArea.FOLDING);
+        }
+        else if (isInShortenerRegion(e)){
+        	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+        	node.setMouseArea(MouseArea.SHORTENER);
         }
         else{
         	requiredCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
