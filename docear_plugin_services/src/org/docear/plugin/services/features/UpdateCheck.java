@@ -3,6 +3,8 @@ package org.docear.plugin.services.features;
 import java.io.StringReader;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
@@ -76,8 +78,7 @@ public class UpdateCheck {
 			}
 			else {
 				minStatus = Version.StatusName.stable.name();
-			}			
-			
+			}				
 			xml = CommunicationsController.getController().getLatestVersionXml(minStatus);
 			load(xml);
 			application = getApplication();

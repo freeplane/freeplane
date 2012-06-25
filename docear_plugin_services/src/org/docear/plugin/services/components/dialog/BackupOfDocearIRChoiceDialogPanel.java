@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.URISyntaxException;
+import java.util.concurrent.CancellationException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -384,6 +385,9 @@ public class BackupOfDocearIRChoiceDialogPanel extends JPanel {
 					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.uploadchooser.warning.notregistered"), TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), JOptionPane.WARNING_MESSAGE);
 					LogUtils.warn(e1);
 				}
+				catch (CancellationException e1){
+					LogUtils.info("Connection cancelled by user.");
+				}
 			}
 		});
 		for(int i=1; i < buttons.length; i++) {
@@ -408,6 +412,7 @@ public class BackupOfDocearIRChoiceDialogPanel extends JPanel {
 		txtEmail.setText("");
 		pwdPassword.setText("");
 		pwdRetypepasswd.setText("");
+		enableButtonIfPossible(null);
 	}
 		
 	private void closeDialogManually() {
@@ -520,7 +525,7 @@ public class BackupOfDocearIRChoiceDialogPanel extends JPanel {
 		return code;
 	}
 	
-	private boolean checkAccountSettings() throws DocearServiceException, URISyntaxException {
+	private boolean checkAccountSettings() throws DocearServiceException, URISyntaxException, CancellationException {
 		if(!chckbxAllowIR.isSelected() && !chckbxAllowResearchContent.isSelected() && !chckbxAllowResearchUsage.isSelected() && !chckbxAllowbackup.isSelected() && !chckbxAllowRecommendations.isSelected()) {
 			return true;
 		}
