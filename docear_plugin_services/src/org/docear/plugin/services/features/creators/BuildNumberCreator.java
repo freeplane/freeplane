@@ -1,7 +1,7 @@
 package org.docear.plugin.services.features.creators;
 
 
-import org.docear.plugin.services.features.elements.Version;
+import org.docear.plugin.core.Version;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.XMLElement;

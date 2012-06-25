@@ -3,11 +3,10 @@ package org.docear.plugin.services.features;
 import java.io.StringReader;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.Version;
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.components.dialog.UpdateCheckerDialogPanel;
 import org.docear.plugin.services.features.creators.ApplicationCreator;
@@ -22,7 +21,6 @@ import org.docear.plugin.services.features.creators.StatusNumberCreator;
 import org.docear.plugin.services.features.creators.VersionCreator;
 import org.docear.plugin.services.features.creators.VersionsCreator;
 import org.docear.plugin.services.features.elements.Application;
-import org.docear.plugin.services.features.elements.Version;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -83,8 +81,9 @@ public class UpdateCheck {
 			load(xml);
 			application = getApplication();
 			
-			Version latestVersion = getLatestAvailableVersion();			
-			Version runningVersion = getRunningVersion();
+			Version latestVersion = getLatestAvailableVersion();
+			Version runningVersion = DocearController.getController().getVersion();
+			
 			if (latestVersion == null || runningVersion == null) {
 				return;
 			}
@@ -154,27 +153,6 @@ public class UpdateCheck {
 		readManager.addElementHandler("status", getStatusCreator());
 		readManager.addElementHandler("status_number", getStatusNumberCreator());
 		readManager.addElementHandler("release_notes", getReleaseNotesCreator());
-	}
-	
-	public Version getRunningVersion() {
-		try {
-			DocearController docearController = DocearController.getController();
-			Version version = new Version();		
-			String[] versionStrings = docearController.getApplicationVersion().split("\\.");
-			version.setMajorVersion(Integer.parseInt(versionStrings[0]));
-			version.setMiddleVersion(Integer.parseInt(versionStrings[1]));
-			version.setMinorVersion(Integer.parseInt(versionStrings[2]));
-			
-			version.setStatus(docearController.getApplicationStatus());
-			version.setStatusNumber(Integer.parseInt(docearController.getApplicationStatusVersion()));
-			version.setBuildNumber(docearController.getApplicationBuildNumber());
-			
-			return version;
-		}
-		catch(Exception e) {
-			LogUtils.warn(e);
-			return null;
-		}
 	}
 	
 	public Version getLatestAvailableVersion() {

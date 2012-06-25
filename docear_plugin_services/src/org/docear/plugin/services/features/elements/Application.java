@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.docear.plugin.core.Version;
+
 public class Application {
 	private final String id;
 	private final String name;
