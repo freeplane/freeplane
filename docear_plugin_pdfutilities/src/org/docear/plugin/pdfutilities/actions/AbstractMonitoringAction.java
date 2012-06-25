@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -505,7 +506,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			private boolean searchNewAndConflictedNodes() throws InterruptedException, InvocationTargetException {
 				fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.22")); //$NON-NLS-1$
-				int count = 0;
+				int count = 0;				
 				for(AnnotationID id : importedFiles.keySet()){
 					if(canceled()) return false;
 					fireProgressUpdate(100 * count / importedFiles.keySet().size());
@@ -579,10 +580,12 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			private void addAnnotationsToImportedFiles(AnnotationModel annotation, NodeModel target) throws InterruptedException {
 				if(canceled()) return;
-				AnnotationID id = annotation.getAnnotationID();
+				AnnotationID id = annotation.getAnnotationID();			
+				
 				if(!importedFiles.containsKey(id)){
 					importedFiles.put(id, annotation);
-				}				
+				}
+				
 				for(AnnotationModel child : annotation.getChildren()){
 					child.setParent(annotation);
 					addAnnotationsToImportedFiles(child, target);
@@ -602,7 +605,8 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			private void buildAnnotationNodeIndex(NodeModel node) throws InterruptedException {
 				if(canceled()) return;							
-				AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);				
+				AnnotationNodeModel annotation = AnnotationController.getAnnotationNodeModel(node);
+								
 				if(annotation != null && annotation.getAnnotationID() != null){
 					AnnotationID id = annotation.getAnnotationID();
 					if(!nodeIndex.containsKey(id)){
@@ -610,6 +614,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					}
 					nodeIndex.get(id).add(node);
 				}
+				
 				for(NodeModel child : node.getChildren()){
 					buildAnnotationNodeIndex(child);
 				}
