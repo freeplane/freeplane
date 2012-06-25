@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import org.docear.plugin.services.recommendations.RecommendationEntry;
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -38,7 +39,7 @@ public class RecommendationEntryComponent extends JPanel {
 		
 		final JLabel lblOpenButton = new JLabel(recommendation.getTitle());
 		lblOpenButton.setIcon(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/document-open-remote24x24.png")));
-		lblOpenButton.setToolTipText("open or download this document");
+		lblOpenButton.setToolTipText(TextUtils.getText("recommendation.preview.tooltip"));
 		lblOpenButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));
 		lblOpenButton.setMinimumSize(new Dimension(200, 50));
 		lblOpenButton.setPreferredSize(new Dimension(200, 50));
@@ -66,7 +67,7 @@ public class RecommendationEntryComponent extends JPanel {
 		add(lblOpenButton, "1, 1");
 		
 		JLabel lblImportButton = new JLabel("");
-		lblImportButton.setToolTipText("import into local library");
+		lblImportButton.setToolTipText(TextUtils.getText("recommendation.import.tooltip"));
 		lblImportButton.setHorizontalAlignment(SwingConstants.CENTER);
 		lblImportButton.setIcon(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/document-import24x24.png")));
 		lblImportButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));

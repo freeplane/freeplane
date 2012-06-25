@@ -1,30 +1,46 @@
 package org.docear.plugin.core;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.freeplane.plugin.workspace.WorkspaceDependentService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
 public class Activator extends WorkspaceDependentService {
+	CoreConfiguration config;
 	
-	public void startPlugin(BundleContext context, ModeController modeController) {
-		loadAndStoreVersion();	
-		new CoreConfiguration(modeController);		
+	public final void startPlugin(BundleContext context, ModeController modeController) {	
+		getConfig().initMode(modeController);		
 		startPluginServices(context, modeController);
+	}
+	
+	protected Collection<IControllerExtensionProvider> getControllerExtensions() {
+		List<IControllerExtensionProvider> controllerExtensions = new ArrayList<IControllerExtensionProvider>();
+		controllerExtensions.add(new IControllerExtensionProvider() {
+			public void installExtension(Controller controller) {			
+				getConfig().initController(controller);
+			}
+		});
+		return controllerExtensions;
+	}
+	
+	private CoreConfiguration getConfig() {
+		if(config == null) {
+			config = new CoreConfiguration();
+		}
+		return config;
 	}
 		
 	@SuppressWarnings("rawtypes")
-	protected void startPluginServices(BundleContext context, ModeController modeController) {		
+	protected final void startPluginServices(BundleContext context, ModeController modeController) {		
 		try {
 			final ServiceReference[] dependends = context.getServiceReferences(DocearService.class.getName(),
 					"(dependsOn="+DocearService.DEPENDS_ON+")");
@@ -119,37 +135,4 @@ public class Activator extends WorkspaceDependentService {
 
 	public void stop(BundleContext context) throws Exception {
 	}
-	
-	private void loadAndStoreVersion() {
-		//FIXME: has to be called before the splash is showing
-		final Properties versionProperties = new Properties();
-		InputStream in = null;
-		try {
-			in = Activator.this.getClass().getResource("/version.properties").openStream();
-			versionProperties.load(in);
-		}
-		catch (final IOException e) {
-			
-		}
-		
-		final Properties buildProperties = new Properties();
-		in = null;
-		try {
-			in = Activator.this.getClass().getResource("/build.number").openStream();
-			buildProperties.load(in);
-		}
-		catch (final IOException e) {
-			
-		}
-		final String versionNumber = versionProperties.getProperty("docear_version");
-		final String versionStatus = versionProperties.getProperty("docear_version_status");
-		final String versionStatusNumber = versionProperties.getProperty("docear_version_status_number");
-		final int versionBuild = Integer.parseInt(buildProperties.getProperty("build.number")) -1;
-		ResourceController.getResourceController().setProperty("docear_version", versionNumber);
-		ResourceController.getResourceController().setProperty("docear_status", versionStatus+" "+versionStatusNumber+" build "+versionBuild);
-		
-	}
-
-	
-
 }

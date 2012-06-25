@@ -219,13 +219,13 @@ public class CommunicationsController extends ALanguageController implements Pro
 		return message.toString();
 	}
 	
-	private void startWaitDialog(final boolean silent) {
+	public void startWaitDialog(final boolean silent) {
 		if (!silent) {
 			getWaitDialog().start();
 		}
 	}
 
-	private void stopWaitDialog(final boolean silent) {
+	public void stopWaitDialog(final boolean silent) {
 		if (!silent) {
 			getWaitDialog().stop();
 		}
@@ -266,7 +266,8 @@ public class CommunicationsController extends ALanguageController implements Pro
 	
 	public DocearServiceResponse get(String path) {
 		try {
-			ClientResponse response = client.resource(getServiceUri()).path(path).get(ClientResponse.class);
+			String accessToken = CommunicationsController.getController().getAccessToken();
+			ClientResponse response = client.resource(getServiceUri()).path(path).header("accessToken", accessToken).get(ClientResponse.class);
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());

@@ -8,12 +8,16 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 
 public class ServiceRunner {
+	final ServiceController backupCtrl;
+	
+	public ServiceRunner(ServiceController serviceController) {
+		backupCtrl = serviceController;
+	}
 
 	public void run() {
 		LogUtils.info("running Docear BackupRunner");
 
 		final ResourceController resourceCtrl = Controller.getCurrentController().getResourceController();
-		final ServiceController backupCtrl = ServiceController.getController();
 		Thread thread = new Thread() {
 			public void run() {
 				while (true) {

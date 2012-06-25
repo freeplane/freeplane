@@ -9,6 +9,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -58,6 +59,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -328,6 +330,33 @@ public class ReferencesController extends ALanguageController implements IDocear
 		} 
 		else if(event.getType() == DocearEventType.APPLICATION_CLOSING) {
 			new ReferenceQuitAction().actionPerformed(null);
+		}
+		else if ("DOCEAR_MODE_STARTUP".equals(event.getEventObject())) {
+			if (event.getSource() instanceof ModeController) {	
+				final JTabbedPane tabs = (JTabbedPane) MModeController.getMModeController().getUserInputListenerFactory().getToolBar("/format")
+	                    .getComponent(1);
+	            Dimension fixSize =  new Dimension(tabs.getComponent(0).getWidth(), 32000);
+
+    			try {
+    				ModeController modeController = (ModeController) event.getSource();							
+    				final JComponent comp = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+    				JPanel jabref = ReferencesController.getController().getJabrefWrapper().getJabrefFramePanel();
+    				comp.add(TextUtils.getText("jabref"), jabref);
+    				comp.setPreferredSize(fixSize);
+    			}
+    			catch (Exception ex) {
+    				LogUtils.warn(ex);
+    			}
+			}			
+		}
+		else if ("DOCEAR_MODE_SHUTDOWN".equals(event.getEventObject())) {
+			if (event.getSource() instanceof ModeController) {
+				ModeController modeController = MModeController.getMModeController();
+				final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+				JPanel jabref = ReferencesController.getController().getJabrefWrapper().getJabrefFramePanel();
+				tabs.add(TextUtils.getText("jabref"), jabref);
+				tabs.setSelectedComponent(jabref);
+			}
 		}
 	}
 

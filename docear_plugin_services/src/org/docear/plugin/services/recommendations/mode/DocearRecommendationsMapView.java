@@ -10,14 +10,21 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.io.IOTools;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.recommendations.dialog.RecommendationEntryComponent;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsNodeModel.RecommendationContainer;
@@ -133,16 +140,71 @@ public class DocearRecommendationsMapView extends MapView {
 		RecommendationEntryComponent comp = new RecommendationEntryComponent(recommendation);
 		comp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(e.getID() == RecommendationEntryComponent.OPEN_RECOMMENDATION) {
+				URL page = recommendation.getClickUrl();
+				try {
+					page = redirectRecommendationLink(recommendation, page);
+				} 
+				catch (Exception ex) {
+					//click didn't work
+					LogUtils.info(ex.getMessage());
+				}
+				
+				if(e.getID() == RecommendationEntryComponent.OPEN_RECOMMENDATION) {					
 					try {
-						Controller.getCurrentController().getViewController().openDocument(recommendation.getLink());
-					} catch (Exception ex) {
+						Controller.getCurrentController().getViewController().openDocument(page);
+					} 
+					catch (Exception ex) {
 						LogUtils.warn("could not open link to (" + recommendation.getLink() + ")", ex);
 					}
 				}
 				else if(e.getID() == RecommendationEntryComponent.IMPORT_RECOMMENDATION) {
-					DocearController.getController().dispatchDocearEvent(new DocearEvent(recommendation.getLink(), "IMPORT_TO_LIBRARY"));
+					DocearController.getController().dispatchDocearEvent(new DocearEvent(page, "IMPORT_TO_LIBRARY"));
 				}
+			}
+
+			private URL redirectRecommendationLink(final RecommendationEntry recommendation, URL page) throws IOException, MalformedURLException {
+				URLConnection connection;
+				connection = recommendation.getClickUrl().openConnection();
+				if(connection instanceof HttpURLConnection) {
+					HttpURLConnection hconn = (HttpURLConnection) connection;							
+				    hconn.setInstanceFollowRedirects(false);
+				    String accessToken = CommunicationsController.getController().getAccessToken();
+				    hconn.addRequestProperty("accessToken", accessToken);
+				    
+				    int response = hconn.getResponseCode();
+				    boolean redirect = (response >= 300 && response <= 399);
+				    
+
+				    /*
+				     * In the case of a redirect, we want to actually change the URL
+				     * that was input to the new, redirected URL
+				     */
+				    if (redirect) {
+						String loc = connection.getHeaderField("Location");
+						if (loc.startsWith("http", 0)) {
+						    page = new URL(loc);
+						} else {
+						    page = new URL(page, loc);
+						}
+					} 
+				    else {
+				    	if(response == 200) {
+					    	String content = IOTools.getStringFromStream(connection.getInputStream(), "UTF-8");
+					    	String searchPattern = "<meta http-equiv=\"REFRESH\" content=\"0;url=";
+							int pos = content.indexOf(searchPattern);
+					    	if(pos >= 0) {
+					    		String loc = content.substring(pos+searchPattern.length());
+					    		loc = loc.substring(0,loc.indexOf("\""));
+					    		if (loc.startsWith("http", 0)) {
+								    page = new URL(loc);
+								} else {
+								    page = new URL(page, loc);
+								}
+					    	}
+					    }
+				    }
+				}
+				return page;
 			}
 		});
 		return comp;

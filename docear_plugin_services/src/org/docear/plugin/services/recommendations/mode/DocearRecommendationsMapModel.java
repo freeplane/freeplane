@@ -39,6 +39,8 @@ public class DocearRecommendationsMapModel extends MapModel {
 			getRootNode().insert(DocearRecommendationsNodeModel.getNoRecommendationsNode(this, TextUtils.getText("recommendations.error.no_recommendations")));
 		} 
 		else {
+			//shuffle on server side
+			//Collections.shuffle((List<?>) recommendations);
 			for(RecommendationEntry entry : recommendations) {
 				getRootNode().insert(new DocearRecommendationsNodeModel(entry, this));
 			}		

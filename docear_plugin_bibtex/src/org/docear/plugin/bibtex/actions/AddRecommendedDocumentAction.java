@@ -8,6 +8,7 @@ import java.io.InterruptedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLDecoder;
 
 import javax.swing.JFileChooser;
@@ -45,11 +46,18 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 	public void handleEvent(DocearEvent event) {
 		if ("IMPORT_TO_LIBRARY".equals(event.getEventObject())) {
 			try {
-				URI uri = (URI) event.getSource();
+				URL url = null;
+				if(event.getSource() instanceof URL) {
+					url = ((URL) event.getSource());
+				}
+				else {
+					//maybe log warning
+					return;
+				}
 
-				String fileName = new File(uri.toURL().getFile()).getName();
+				String fileName = new File(url.getFile()).getName();
 				fileName = URLDecoder.decode(fileName, "UTF-8");
-				File file = getDestinationFile(uri, fileName);
+				File file = getDestinationFile(url.toURI(), fileName);
 				if (file == null || !file.exists()) {
 					return;
 				}
@@ -73,7 +81,7 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 		fc.approveSelection();
 		fc.setSelectedFile(defaultFile);
 		File file = null;
-		while (fc.showOpenDialog(UITools.getFrame()) == JFileChooser.APPROVE_OPTION) {
+		while (fc.showSaveDialog(UITools.getFrame()) == JFileChooser.APPROVE_OPTION) {
 			file = fc.getSelectedFile();
 			if (file.exists()) {
 				int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.replace_existing_file"));

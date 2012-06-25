@@ -9,10 +9,9 @@ import org.docear.plugin.services.recommendations.mode.DocearRecommendationsMode
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class Activator extends DocearService implements BundleActivator {
+public class Activator extends DocearService {
 		
 	
 	public void stop(BundleContext context) throws Exception {

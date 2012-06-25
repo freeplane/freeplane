@@ -15,8 +15,6 @@ import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
-import org.docear.plugin.services.recommendations.actions.ModeShutdownAction;
-import org.docear.plugin.services.recommendations.actions.ModeStartupAction;
 import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
@@ -41,7 +39,9 @@ public class ServiceController {
 
 	private static ServiceController serviceController;
 
-	private final static ServiceRunner backupRunner = new ServiceRunner();
+
+	private static ServiceRunner backupRunner;	
+
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
@@ -72,23 +72,13 @@ public class ServiceController {
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
-		
-		Controller.getCurrentController().addAction(new ModeStartupAction());
-		Controller.getCurrentController().addAction(new ModeShutdownAction());	
-		
-//		new Thread() {
-//			public void run() {
-//				try {
-//					sleep(500);
-//				} catch (InterruptedException e) {
-//				}
-//				
-//			}
-//		}.start();
+
+		backupRunner = new ServiceRunner(this);
 	}
 
 	protected static void initialize(ModeController modeController) {
 		if (serviceController == null) {
+
 			serviceController = new ServiceController(modeController);
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -96,7 +86,7 @@ public class ServiceController {
 					
 				}
 			});
-			new UpdateCheck();				
+			new UpdateCheck();
 		}
 	}
 

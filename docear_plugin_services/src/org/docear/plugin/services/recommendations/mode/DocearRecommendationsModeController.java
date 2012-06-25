@@ -12,6 +12,7 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.OneTouchCollapseResizer;
 import org.freeplane.core.ui.components.OneTouchCollapseResizer.CollapseDirection;
 import org.freeplane.core.util.LogUtils;
@@ -38,8 +39,6 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
-
-import org.freeplane.core.ui.components.JResizer.Direction;
 
 public class DocearRecommendationsModeController extends ModeController {
 	static public final String MODENAME = "DcrRecommendations";
@@ -147,7 +146,7 @@ public class DocearRecommendationsModeController extends ModeController {
 		}
 		final ViewController viewController = Controller.getCurrentController().getViewController();
 		viewController.updateMenus(menuBuilder);
-
+		
 	}
-
+	
 }
