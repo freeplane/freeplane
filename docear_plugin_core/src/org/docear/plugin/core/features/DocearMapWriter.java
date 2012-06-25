@@ -98,18 +98,17 @@ public class DocearMapWriter extends MapWriter {
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final MapModel map = (MapModel) userObject;
 		final DocearMapModelExtension modelExtension = DocearMapModelController.getModel(map);
-		writer.addAttribute("version", FreeplaneVersion.XML_VERSION);		
+		
 		if (modelExtension == null) {			
-			//writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
+			writer.addAttribute("version", FreeplaneVersion.XML_VERSION);		
 		}
 		else {			
 			final String version = modelExtension.getVersion();
 			if (version != null && version.length() > 0) {			
-				writer.addAttribute("dialect", "docear " + version);			
+				writer.addAttribute("version", "docear " + version);			
 			} else {
-				// FIXME: DOCEAR - dialect version not set, why and what to do?
-				//writer.addAttribute("dialect", FreeplaneVersion.DIALECT_VERSION);
-				LogUtils.warn("dialect version is null! This should not happen!");
+				// FIXME: DOCEAR - version not set, why and what to do?
+				LogUtils.warn("version is null! This should not happen!");
 			}
 			
 			final String mapId = modelExtension.getMapId();

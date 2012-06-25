@@ -23,6 +23,7 @@ import org.docear.plugin.core.actions.DocearShowTermsOfUseAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.listeners.MapLifeCycleAndViewListener;
@@ -47,12 +48,16 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.help.OnlineDocumentationAction;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.IMapConverter;
+import org.freeplane.features.url.mindmapmode.MapConversionException;
 import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
@@ -123,6 +128,15 @@ public class CoreConfiguration extends ALanguageController {
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
 		
 		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
+		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("docear", false, false, "Docear", "http://www.docear.org", null, new IMapConverter() {
+			public void convert(NodeModel root) throws MapConversionException {
+				final MapModel mapModel = root.getMap();				
+				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
+				if (docearMapModel == null) {
+					DocearMapModelController.setModelWithCurrentVersion(mapModel);
+				}		
+			}
+		}));
 		
 		// set up context menu for workspace
 		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);
