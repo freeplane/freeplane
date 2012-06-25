@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.border.EmptyBorder;
 
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
@@ -82,12 +83,18 @@ public class DocearRecommendationsNodeModel extends NodeModel {
 		return node;
 	}
 	
-	protected class NoRecommendations implements NodeModelItem {
+	protected class NoRecommendations extends JLabel implements NodeModelItem {
+		
+		private static final long serialVersionUID = 1L;
 		
 		private final String text;
 
 		public NoRecommendations(String message) {
 			this.text = message;
+			this.setText(this.getText());
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setBorder(new EmptyBorder(30, 10, 30, 10));
 		}
 		
 		public String getText() {

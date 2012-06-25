@@ -3,11 +3,14 @@ package org.docear.plugin.core;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
@@ -20,6 +23,7 @@ import org.docear.plugin.core.actions.DocearShowTermsOfUseAction;
 import org.docear.plugin.core.actions.SaveAction;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.DocearMapWriter;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.listeners.MapLifeCycleAndViewListener;
@@ -44,12 +48,16 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.help.OnlineDocumentationAction;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.IMapConverter;
+import org.freeplane.features.url.mindmapmode.MapConversionException;
 import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspacePreferences;
@@ -88,15 +96,29 @@ public class CoreConfiguration extends ALanguageController {
 	public static final NodeAttributeObserver repositoryPathObserver = new NodeAttributeObserver();
 	
 		
-	public CoreConfiguration(ModeController modeController) {			
+	public CoreConfiguration() {			
 		LogUtils.info("org.docear.plugin.core.CoreConfiguration() initializing...");
-		
-		init(modeController);
 	}
 	
+	protected void initController(Controller controller) {
+		loadAndStoreVersion(controller);
+		
+		adjustProperties(controller);
+		
+//		AFreeplaneAction previousAction = controller.getAction("QuitAction");
+//		if(previousAction != null) {
+//			controller.removeAction("QuitAction");
+//		}
+//		controller.addAction(new DocearQuitAction());
+		
+		AFreeplaneAction action = new DocearAboutAction();
+		replaceAction(action.getKey(), action);
+		
+		action = new DocearQuitAction();
+		replaceAction("QuitAction", action);
+	}
 	
-	
-	private void init(ModeController modeController) {
+	protected void initMode(ModeController modeController) {
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.APPLICATION_STARTED);
 		Toolkit.getDefaultToolkit();		
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_OPERATING_SYSTEM, System.getProperty("os.name"));
@@ -106,16 +128,24 @@ public class CoreConfiguration extends ALanguageController {
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
 		
 		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
+		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("docear", false, false, "Docear", "http://www.docear.org", null, new IMapConverter() {
+			public void convert(NodeModel root) throws MapConversionException {
+				final MapModel mapModel = root.getMap();				
+				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
+				if (docearMapModel == null) {
+					DocearMapModelController.setModelWithCurrentVersion(mapModel);
+				}		
+			}
+		}));
 		
 		// set up context menu for workspace
 		WorkspaceController.getController().addWorkspaceListener(WORKSPACE_CHANGE_LISTENER);
 		
-		Controller.getCurrentController().addAction(new WorkspaceChangeLocationsAction());
-		Controller.getCurrentController().addAction(new DocearChangeLibraryPathAction());
-		Controller.getCurrentController().addAction(new DocearRenameAction());
 		
-		addPluginDefaults();
+		
+		addPluginDefaults(Controller.getCurrentController());
 		addMenus(modeController);
+		
 		registerListeners(modeController);
 		//prepareWorkspace();
 		
@@ -128,7 +158,66 @@ public class CoreConfiguration extends ALanguageController {
 		URI uri = CoreConfiguration.projectPathObserver.getUri();
 		if (uri != null) {
 			UrlManager.getController().setLastCurrentDir(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()));
-		}		
+		}	
+	}
+	
+	private void loadAndStoreVersion(Controller controller) {
+		//FIXME: has to be called before the splash is showing
+		final Properties versionProperties = new Properties();
+		InputStream in = null;
+		try {
+			in = this.getClass().getResource("/version.properties").openStream();
+			versionProperties.load(in);
+		}
+		catch (final IOException e) {
+			
+		}
+		
+		final Properties buildProperties = new Properties();
+		in = null;
+		try {
+			in = this.getClass().getResource("/build.number").openStream();
+			buildProperties.load(in);
+		}
+		catch (final IOException e) {
+			
+		}
+		final String versionNumber = versionProperties.getProperty("docear_version");
+		final String versionStatus = versionProperties.getProperty("docear_version_status");
+		final String versionStatusNumber = versionProperties.getProperty("docear_version_status_number");
+		final int versionBuild = Integer.parseInt(buildProperties.getProperty("build.number")) -1;
+		controller.getResourceController().setProperty("docear_version", versionNumber);
+		controller.getResourceController().setProperty("docear_status", versionStatus+" "+versionStatusNumber+" build "+versionBuild);
+		
+	}
+	
+	private void adjustProperties(Controller controller) {
+		ResourceController resController = controller.getResourceController();
+		
+		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+		if (defaults == null)
+			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+		resController.addDefaults(defaults);
+		
+		resController.setProperty(WEB_FREEPLANE_LOCATION, resController.getProperty(WEB_DOCEAR_LOCATION));
+		resController.setProperty(BUG_TRACKER_LOCATION, resController.getProperty(DOCEAR_BUG_TRACKER_LOCATION));
+		resController.setProperty(HELP_FORUM_LOCATION, resController.getProperty("docear_helpForumLocation"));
+		resController.setProperty(FEATURE_TRACKER_LOCATION, resController.getProperty(DOCEAR_FEATURE_TRACKER_LOCATION));
+		resController.setProperty(WEB_DOCU_LOCATION, resController.getProperty(DOCEAR_WEB_DOCU_LOCATION));
+		resController.setProperty("docu-online", "http://www.docear.org/wp-content/uploads/2012/04/docear-welcome.mm");
+		
+		if (resController.getProperty("ApplicationName").equals("Docear")) {
+			resController.setProperty("first_start_map", "/doc/docear-welcome.mm");
+			resController.setProperty("tutorial_map", "/doc/docear-welcome.mm");
+		}
+		
+		
+		if (!resController.getProperty(APPLICATION_NAME, "").equals(DOCEAR)) {
+			return;
+		}
+
+		//replace if application name is docear
+		replaceResourceBundleStrings();
 	}
 		
 	private void addMenus(ModeController modeController) {
@@ -159,13 +248,11 @@ public class CoreConfiguration extends ALanguageController {
 	private void replaceFreeplaneStringsAndActions(ModeController modeController) {
 		disableAutoUpdater();
 		
-		ResourceController resourceController = ResourceController.getResourceController();		
-		
 		//replace this actions if docear_core is present
-		Controller.getCurrentModeController().removeAction("SaveAsAction");
-		Controller.getCurrentModeController().addAction(new SaveAsAction());
-		Controller.getCurrentModeController().removeAction("SaveAction");
-		Controller.getCurrentModeController().addAction(new SaveAction());
+		modeController.removeAction("SaveAsAction");
+		modeController.addAction(new SaveAsAction());
+		modeController.removeAction("SaveAction");
+		modeController.addAction(new SaveAction());
 		
 		
 		//remove sidepanel switcher
@@ -180,6 +267,8 @@ public class CoreConfiguration extends ALanguageController {
 													
 			}
 		});
+		
+		ResourceController resourceController = ResourceController.getResourceController();		
 		
 		if (!resourceController.getProperty(APPLICATION_NAME, "").equals(DOCEAR)) {
 			return;
@@ -204,13 +293,7 @@ public class CoreConfiguration extends ALanguageController {
 	private void replaceActions() {
 		
 		ResourceController resourceController = ResourceController.getResourceController();
-		AFreeplaneAction action;
-		resourceController.setProperty(WEB_FREEPLANE_LOCATION, resourceController.getProperty(WEB_DOCEAR_LOCATION));
-		resourceController.setProperty(BUG_TRACKER_LOCATION, resourceController.getProperty(DOCEAR_BUG_TRACKER_LOCATION));
-		resourceController.setProperty(HELP_FORUM_LOCATION, resourceController.getProperty("docear_helpForumLocation"));
-		resourceController.setProperty(FEATURE_TRACKER_LOCATION, resourceController.getProperty(DOCEAR_FEATURE_TRACKER_LOCATION));
-		resourceController.setProperty(WEB_DOCU_LOCATION, resourceController.getProperty(DOCEAR_WEB_DOCU_LOCATION));
-		resourceController.setProperty("docu-online", "http://www.docear.org/wp-content/uploads/2012/04/docear-welcome.mm");
+		
 		
 		replaceAction(REQUEST_FEATURE_ACTION, new DocearOpenUrlAction(REQUEST_FEATURE_ACTION, resourceController.getProperty(FEATURE_TRACKER_LOCATION)));
 		replaceAction(ASK_FOR_HELP, new DocearOpenUrlAction(ASK_FOR_HELP, resourceController.getProperty(HELP_FORUM_LOCATION)));
@@ -218,11 +301,7 @@ public class CoreConfiguration extends ALanguageController {
 		replaceAction(OPEN_FREEPLANE_SITE_ACTION, new DocearOpenUrlAction(OPEN_FREEPLANE_SITE_ACTION, resourceController.getProperty(WEB_FREEPLANE_LOCATION)));
 		replaceAction(DOCUMENTATION_ACTION, new DocearOpenUrlAction(DOCUMENTATION_ACTION, resourceController.getProperty(WEB_DOCU_LOCATION)));
 		replaceAction("GettingStartedAction", new GettingStartedAction());
-		replaceAction("OnlineReference", new OnlineDocumentationAction("OnlineReference", "docu-online"));
-		
-		action = new DocearAboutAction();
-		replaceAction(action.getKey(), action);
-		
+		replaceAction("OnlineReference", new OnlineDocumentationAction("OnlineReference", "docu-online"));		
 	}
 
 	private void replaceResourceBundleStrings() {
@@ -249,35 +328,26 @@ public class CoreConfiguration extends ALanguageController {
 
 	private void replaceAction(String actionKey, AFreeplaneAction action) {
 		Controller controller = Controller.getCurrentController();
-
-		controller.removeAction(actionKey);
+		AFreeplaneAction previousAction = controller.getAction(actionKey);
+		if(previousAction != null) {
+			controller.removeAction(actionKey);
+		}
 		controller.addAction(action);
 	}
 
-	private void addPluginDefaults() {
-		
-		ResourceController resController = Controller.getCurrentController().getResourceController();
-		if (resController.getProperty("ApplicationName").equals("Docear")) {
-			resController.setProperty("first_start_map", "/doc/docear-welcome.mm");
-			resController.setProperty("tutorial_map", "/doc/docear-welcome.mm");
-		}
-		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		if (defaults == null)
-			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+	private void addPluginDefaults(Controller controller) {		
+		ResourceController resController = controller.getResourceController();
 		if (resController.getProperty("ApplicationName").equals("Docear") && DocearController.getController().isDocearFirstStart()) {
-			Controller.getCurrentController().getResourceController().setProperty("selection_method", "selection_method_by_click");
-			Controller.getCurrentController().getResourceController().setProperty("links", "relative_to_workspace");
-			Controller.getCurrentController().getResourceController().setProperty("save_folding", "always_save_folding");
-			Controller.getCurrentController().getResourceController().setProperty("leftToolbarVisible", "false");			
-			Controller.getCurrentController().getResourceController().setProperty("styleScrollPaneVisible", "true");
-			Controller.getCurrentController().getResourceController().setProperty(DocearController.DOCEAR_FIRST_RUN_PROPERTY, true);			
+			resController.setProperty("selection_method", "selection_method_by_click");
+			resController.setProperty("links", "relative_to_workspace");
+			resController.setProperty("save_folding", "always_save_folding");
+			resController.setProperty("leftToolbarVisible", "false");			
+			resController.setProperty("styleScrollPaneVisible", "true");
+			resController.setProperty(DocearController.DOCEAR_FIRST_RUN_PROPERTY, true);			
 		}
-		AFreeplaneAction previousAction = Controller.getCurrentController().getAction("QuitAction");
-		if(previousAction != null) {
-			Controller.getCurrentController().removeAction("QuitAction");
-		}
-		Controller.getCurrentController().addAction(new DocearQuitAction());
+		controller.addAction(new WorkspaceChangeLocationsAction());
+		controller.addAction(new DocearChangeLibraryPathAction());
+		controller.addAction(new DocearRenameAction());
 	}
 	
 	private void registerListeners(ModeController modeController) {

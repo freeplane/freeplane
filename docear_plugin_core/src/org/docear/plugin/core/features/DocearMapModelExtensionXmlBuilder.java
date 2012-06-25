@@ -18,7 +18,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IExtensionAttributeWriter {
 	
 	private static final String DOCEAR_MAP_EXTENSION_XML_TAG = "map";
-	private static final String DOCEAR_MAP_EXTENSION_VERSION_XML_TAG = "dialect";
+	private static final String DOCEAR_MAP_EXTENSION_DIALECT_KEY = "dialect";
+	private static final String DOCEAR_MAP_EXTENSION_VERSION_KEY = "version";
 	private static final String DOCEAR_MAP_EXTENSION_TYPE_XML_TAG = "type";
 	
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
@@ -33,14 +34,34 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 	}
 	
 	private void registerAttributeHandlers(ReadManager reader) {
-		final IAttributeHandler freeplaneDialectHandler = reader.getAttributeHandlers().get(DOCEAR_MAP_EXTENSION_XML_TAG).get(DOCEAR_MAP_EXTENSION_VERSION_XML_TAG);
-		reader.removeAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, freeplaneDialectHandler);
 		
-		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_XML_TAG, new IAttributeHandler() {
-			
+		final IAttributeHandler freeplaneDialectHandler = reader.getAttributeHandlers().get(DOCEAR_MAP_EXTENSION_XML_TAG).get(DOCEAR_MAP_EXTENSION_DIALECT_KEY);
+		reader.removeAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_DIALECT_KEY, freeplaneDialectHandler);		
+		//DOCEAR - keep dialect handling for backwards compatibility
+		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_DIALECT_KEY, new IAttributeHandler() {			
 			public void setAttribute(Object node, String value) {
 				if (!value.startsWith("docear")) {
 					freeplaneDialectHandler.setAttribute(node, value);
+					return;
+				}
+				final MapModel mapModel = (MapModel) node;				
+				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
+				if (docearMapModel == null) {
+						docearMapModel = new DocearMapModelExtension();
+				}
+				value = value.replace("docear ", "");
+				docearMapModel.setVersion(value);
+				DocearMapModelController.setModel(mapModel, docearMapModel);
+			}
+			
+		});	
+		
+		final IAttributeHandler freeplaneVersionHandler = reader.getAttributeHandlers().get(DOCEAR_MAP_EXTENSION_XML_TAG).get(DOCEAR_MAP_EXTENSION_VERSION_KEY);
+		reader.removeAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_KEY, freeplaneDialectHandler);		
+		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DOCEAR_MAP_EXTENSION_VERSION_KEY, new IAttributeHandler() {			
+			public void setAttribute(Object node, String value) {
+				if (!value.startsWith("docear")) {
+					freeplaneVersionHandler.setAttribute(node, value);
 					return;
 				}
 				final MapModel mapModel = (MapModel) node;				

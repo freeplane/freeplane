@@ -185,8 +185,9 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 		}
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map));
 		
-		FileLocator locator = new FileLocator(file);
+		FileLocator locator = new FileLocator(file);		
 		PDDocument document = PDDocument.createFromLocator(locator);
+		locator = null;
 		return document;
 	}
 	

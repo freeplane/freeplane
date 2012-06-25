@@ -146,6 +146,27 @@ public class DocearController implements IDocearEventListener {
 		setApplicationBuildDate(versionProperties.getProperty("build_date"));
 		setApplicationBuildNumber(Integer.parseInt(buildProperties.getProperty("build.number")) -1);
 	}
+	
+	public Version getVersion() {
+		try {
+			DocearController docearController = DocearController.getController();
+			Version version = new Version();		
+			String[] versionStrings = docearController.getApplicationVersion().split("\\.");
+			version.setMajorVersion(Integer.parseInt(versionStrings[0]));
+			version.setMiddleVersion(Integer.parseInt(versionStrings[1]));
+			version.setMinorVersion(Integer.parseInt(versionStrings[2]));
+			
+			version.setStatus(docearController.getApplicationStatus());
+			version.setStatusNumber(Integer.parseInt(docearController.getApplicationStatusVersion()));
+			version.setBuildNumber(docearController.getApplicationBuildNumber());
+			
+			return version;
+		}
+		catch(Exception e) {
+			LogUtils.warn(e);
+			return null;
+		}
+	}
 		
 	public void addDocearEventListener(IDocearEventListener listener) {
 		if(this.docearListeners.contains(listener)) {
@@ -201,31 +222,31 @@ public class DocearController implements IDocearEventListener {
 	public String getApplicationVersion() {
 		return applicationVersion;
 	}
-	public void setApplicationVersion(String applicationVersion) {
+	private void setApplicationVersion(String applicationVersion) {
 		this.applicationVersion = applicationVersion;
 	}
 	public String getApplicationStatus() {
 		return applicationStatus;
 	}
-	public void setApplicationStatus(String applicationStatus) {
+	private void setApplicationStatus(String applicationStatus) {
 		this.applicationStatus = applicationStatus;
 	}
 	public String getApplicationStatusVersion() {
 		return applicationStatusVersion;
 	}
-	public void setApplicationStatusVersion(String applicationStatusVersion) {
+	private void setApplicationStatusVersion(String applicationStatusVersion) {
 		this.applicationStatusVersion = applicationStatusVersion;
 	}
 	public int getApplicationBuildNumber() {
 		return applicationBuildNumber;
 	}
-	public void setApplicationBuildNumber(int i) {
+	private void setApplicationBuildNumber(int i) {
 		this.applicationBuildNumber = i;
 	}
 	public String getApplicationBuildDate() {
 		return applicationBuildDate;
 	}
-	public void setApplicationBuildDate(String applicationBuildDate) {
+	private void setApplicationBuildDate(String applicationBuildDate) {
 		this.applicationBuildDate = applicationBuildDate;
 	}
 	

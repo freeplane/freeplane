@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
@@ -12,6 +13,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Collection;
+import java.util.concurrent.CancellationException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -42,6 +44,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceEvent;
+import org.jdesktop.swingworker.SwingWorker;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -108,36 +111,60 @@ public class CommunicationsController extends ALanguageController implements Pro
 	}
 	
 	
-	public void tryToConnect(final String username, final String password, final boolean registeredUser, final boolean silent) throws DocearServiceException, URISyntaxException {
+	public void tryToConnect(final String username, final String password, final boolean registeredUser, final boolean silent) throws DocearServiceException, URISyntaxException, CancellationException {
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
 		try {
-			startWaitDialog(silent);			
-			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
-			formParams.add("password", password);
 			
-			try {
-				WebResource webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
-		
-				ClientResponse response = webRes.post(ClientResponse.class, formParams);
-				Status status = response.getClientResponseStatus();
-				stopWaitDialog(silent);
-				processResponse(username, registeredUser, silent, response, status);
-			}
-			catch (URISyntaxException ex) {				
-				// DOCEAR: should not happen because the URI is hard coded for now
-				stopWaitDialog(silent);
-				throw(ex);
-			}
-			catch (Exception e) {				
-				stopWaitDialog(silent);
-				if(e instanceof DocearServiceException) {
-					throw ((DocearServiceException)e);
-				}
-				DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
-				throw(new DocearServiceException(TextUtils.getText("docear.no_connection"), DocearServiceExceptionType.NO_CONNECTION));				
-			}
+			SwingWorker<Boolean, Void> connectionWorker = new SwingWorker<Boolean, Void>() {
 
+				@Override
+				protected Boolean doInBackground() throws Exception {					
+					MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();					
+					formParams.add("password", password);
+					Status status = null;
+					try {
+						WebResource webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
+				
+						ClientResponse response = webRes.post(ClientResponse.class, formParams);
+						status = response.getClientResponseStatus();
+						boolean connectedSuccessfully = processResponse(username, registeredUser, silent, response, status);
+						stopWaitDialog(silent);
+						return connectedSuccessfully;
+					}					
+					catch (Exception e) {						
+						if(this.isCancelled()){
+							throw new CancellationException();
+						}
+						try{
+							stopWaitDialog(silent);
+						} catch(Exception e1){
+							LogUtils.warn(e1);
+						};
+						throw(e);									
+					}
+				}
+			};	
+			getWaitDialog().setWorker(connectionWorker);
+			connectionWorker.execute();
+			startWaitDialog(silent);
+			boolean connectedSuccessfully = connectionWorker.get();
+			if(connectedSuccessfully && !silent){
+				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username), TextUtils.getText("docear.service.connect.success.title"), JOptionPane.PLAIN_MESSAGE);							
+			}				
+		} catch (Exception e) {			
+			if(e instanceof CancellationException){
+				throw((CancellationException)e);
+			}			
+			if(e instanceof URISyntaxException){
+				// DOCEAR: should not happen because the URI is hard coded for now
+				throw((URISyntaxException)e);
+			}
+			if(e instanceof DocearServiceException) {
+				throw ((DocearServiceException)e);
+			}
+			DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
+			throw(new DocearServiceException(TextUtils.getText("docear.no_connection"), DocearServiceExceptionType.NO_CONNECTION));				
 		} finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
@@ -152,21 +179,20 @@ public class CommunicationsController extends ALanguageController implements Pro
 		return response.getEntity(String.class);
 	}
 
-	private void processResponse(final String username, final boolean registeredUser, final boolean silent, ClientResponse response, Status status) throws IOException, DocearServiceException {
+	private boolean processResponse(final String username, final boolean registeredUser, final boolean silent, ClientResponse response, Status status) throws IOException, DocearServiceException, InterruptedException, InvocationTargetException {
 		if (Status.OK.equals(status)) {
 			String token = response.getHeaders().getFirst("accessToken");
-			if (!silent) {
-				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username), TextUtils.getText("docear.service.connect.success.title"), JOptionPane.PLAIN_MESSAGE);
-			}
 			setConnectionProperties(registeredUser, username, token);
 			readResponseContent(response.getEntityInputStream());
+			return true;
 		}
 		else {
+			setConnectionProperties(registeredUser, "", "");
 			if (!silent) {						
 				throw new DocearServiceException(readResponseContent(response.getEntityInputStream()));
-			}
-			setConnectionProperties(registeredUser, "", "");
+			}			
 		}
+		return false;
 	}
 
 	private void setConnectionProperties(final boolean registeredUser, final String username,  String token) {

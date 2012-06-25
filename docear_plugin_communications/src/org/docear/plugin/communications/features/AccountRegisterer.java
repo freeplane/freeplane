@@ -2,6 +2,7 @@ package org.docear.plugin.communications.features;
 
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.concurrent.CancellationException;
 
 import javax.swing.plaf.TextUI;
 import javax.ws.rs.core.MultivaluedMap;
@@ -40,13 +41,13 @@ public class AccountRegisterer {
 
 	}
 
-	public void createAnonymousUser() throws DocearServiceException, URISyntaxException {
+	public void createAnonymousUser() throws DocearServiceException, URISyntaxException, CancellationException {
 		String name = createAnonymousUserName();
 		createUser(name, null, USER_TYPE_ANONYMOUS, null, null, false, null);
 		CommunicationsController.getController().tryToConnect(name, null, false, true);
 	}
 
-	public void createRegisteredUser(String name, String password, String email, Integer birthYear, Boolean newsLetter, Boolean isMale) throws DocearServiceException, URISyntaxException {
+	public void createRegisteredUser(String name, String password, String email, Integer birthYear, Boolean newsLetter, Boolean isMale) throws DocearServiceException, URISyntaxException, CancellationException {
 		createUser(name, password, USER_TYPE_REGISTERED, email, birthYear, newsLetter, isMale);
 		ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_USERNAME_PROPERTY, name);
 		CommunicationsController.getController().tryToConnect(name, password, true, true);
