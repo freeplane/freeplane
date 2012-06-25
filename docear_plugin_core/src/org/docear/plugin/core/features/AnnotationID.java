@@ -1,6 +1,7 @@
 package org.docear.plugin.core.features;
 
 import java.net.URI;
+import java.util.Locale;
 
 public class AnnotationID implements Comparable<AnnotationID>{
 	
@@ -13,7 +14,7 @@ public class AnnotationID implements Comparable<AnnotationID>{
 	}
 
 	public String getId() {
-		return id;
+		return id.toLowerCase(Locale.ENGLISH);
 	}
 
 	public void setId(URI absoluteUri, Integer objectNumber) throws IllegalArgumentException{
@@ -24,7 +25,7 @@ public class AnnotationID implements Comparable<AnnotationID>{
 			throw new IllegalArgumentException(this.getClass().getName() + ": Object number can not be null."); //$NON-NLS-1$
 		}
 		
-		String uri = absoluteUri.getPath();
+		String uri = absoluteUri.getPath().toLowerCase(Locale.ENGLISH);
 		uri = uri.trim();
 		this.id = uri + " " + objectNumber; //$NON-NLS-1$
 		this.objectNumber = objectNumber;
@@ -41,7 +42,7 @@ public class AnnotationID implements Comparable<AnnotationID>{
 	
 	public boolean equals(Object object){
 		if(object instanceof AnnotationID){
-			return this.getUri().equals(((AnnotationID) object).getUri()) && this.getObjectNumber().equals(((AnnotationID) object).getObjectNumber());
+			return this.getUri().getPath().toLowerCase(Locale.ENGLISH).equals(((AnnotationID) object).getUri().getPath().toLowerCase(Locale.ENGLISH)) && this.getObjectNumber().equals(((AnnotationID) object).getObjectNumber());
 		}
 		else{
 			return super.equals(object);
@@ -62,7 +63,7 @@ public class AnnotationID implements Comparable<AnnotationID>{
 	}
 	
 	public int hashCode(){		
-		return this.id.hashCode();
+		return this.getId().hashCode();
 		
 	}
 	
