@@ -528,6 +528,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		txtEmail.setText("");
 		pwdPassword.setText("");
 		pwdRetypepasswd.setText("");
+		enableButtonIfPossible(null);
 	}
 	
 	public void close() {
@@ -553,7 +554,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			}
 			else
 			if(chckbxAllowbackup.isSelected()) {
-				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 0 && !isEmpty(CommunicationsController.getController().getAccessToken())) {
+				if(rdbtnLogin.isSelected() && txtUsername.getText().trim().length() > 0 && !isEmpty(CommunicationsController.getController().getRegisteredAccessToken())) {
 					okButton.setEnabled(true);					
 					lblAdvice.setForeground(new Color(0x00000000, true));
 				}

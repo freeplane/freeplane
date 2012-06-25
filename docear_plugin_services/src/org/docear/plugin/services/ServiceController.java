@@ -39,7 +39,9 @@ public class ServiceController {
 
 	private static ServiceController serviceController;
 
-	private final ServiceRunner backupRunner;
+
+	private static ServiceRunner backupRunner;	
+
 	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
@@ -72,18 +74,19 @@ public class ServiceController {
 		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
 
 		backupRunner = new ServiceRunner(this);
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				backupRunner.run();
-				new UpdateCheck();
-			}
-		});
 	}
 
 	protected static void initialize(ModeController modeController) {
 		if (serviceController == null) {
-			serviceController = new ServiceController(modeController);			
+
+			serviceController = new ServiceController(modeController);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					backupRunner.run();	
+					
+				}
+			});
+			new UpdateCheck();
 		}
 	}
 

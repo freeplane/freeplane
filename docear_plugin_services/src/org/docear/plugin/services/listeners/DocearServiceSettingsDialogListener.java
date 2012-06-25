@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URISyntaxException;
+import java.util.concurrent.CancellationException;
 
 import javax.swing.JOptionPane;
 
@@ -58,10 +59,13 @@ public class DocearServiceSettingsDialogListener implements ActionListener {
 			JOptionPane.showMessageDialog(settings, TextUtils.getText("docear.uploadchooser.warning.notregistered"), TextUtils.getText("docear.uploadchooser.warning.notregistered.title"), JOptionPane.WARNING_MESSAGE);
 			LogUtils.warn(e1);
 		}
+		catch (CancellationException e){
+			LogUtils.info("Connection cancelled by user.");
+		}
 		
 	}
 
-	private boolean checkAccountSettings(DocearIRChoiceDialogPanel settings) throws DocearServiceException, URISyntaxException {
+	private boolean checkAccountSettings(DocearIRChoiceDialogPanel settings) throws DocearServiceException, URISyntaxException, CancellationException {
 		int code = settings.getIrCode();
 		if(code > 0 && !settings.allowBackup() && isEmpty(settings.getPassword())) {
 			return true;
