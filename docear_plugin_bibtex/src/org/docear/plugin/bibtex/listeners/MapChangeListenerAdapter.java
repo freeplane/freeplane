@@ -5,6 +5,7 @@ import java.net.URI;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
@@ -43,6 +44,9 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 	}
 
 	public void nodeChanged(NodeChangeEvent event) {
+		if (DocearReferenceUpdateController.isLocked()) {
+			return;
+		}
 		if (event.getProperty().equals(NodeModel.HYPERLINK_CHANGED)) {
 			URI newUri = (URI) event.getNewValue();
 			if (newUri != null) {

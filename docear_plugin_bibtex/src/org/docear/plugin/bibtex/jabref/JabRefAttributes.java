@@ -13,7 +13,12 @@ import javax.ws.rs.core.UriBuilder;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.GUIGlobals;
 import net.sf.jabref.Globals;
+import net.sf.jabref.gui.FileListEditor;
+import net.sf.jabref.gui.FileListEntry;
+import net.sf.jabref.gui.FileListEntryEditor;
+import net.sf.jabref.gui.FileListTableModel;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.bibtex.Reference;
@@ -33,6 +38,7 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import net.sf.jabref.export.DocearReferenceUpdateController;
 
 public class JabRefAttributes {
 
@@ -44,7 +50,7 @@ public class JabRefAttributes {
 	}
 
 	public void registerAttributes() {
-		this.keyAttribute = TextUtils.getText("bibtex_key");		
+		this.keyAttribute = TextUtils.getText("bibtex_key");
 
 		this.valueAttributes.put("authors", "author");
 		this.valueAttributes.put("title", "title");
@@ -65,8 +71,7 @@ public class JabRefAttributes {
 	}
 
 	public String getAttributeValue(NodeModel node, String attributeName) {
-		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node
-				.getExtension(NodeAttributeTableModel.class);
+		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		if (attributeTable == null) {
 			return null;
 		}
@@ -88,47 +93,45 @@ public class JabRefAttributes {
 		return false;
 	}
 
-	public void setReferenceToNode(BibtexEntry entry) {		
-		NodeModel node = Controller.getCurrentModeController()
-				.getMapController().getSelectedNode();
+	public void setReferenceToNode(BibtexEntry entry) {
+		NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		setReferenceToNode(new Reference(entry, node), node);
 	}
 
 	public void removeReferenceFromNode(NodeModel node) {
-		NodeAttributeTableModel attributeTable = AttributeController
-				.getController().createAttributeTableModel(node);
+		NodeAttributeTableModel attributeTable = AttributeController.getController().createAttributeTableModel(node);
 
 		if (attributeTable == null) {
 			return;
 		}
 
 		for (String attributeKey : attributeTable.getAttributeKeyList()) {
-			if (this.valueAttributes.containsKey(attributeKey)
-					|| this.keyAttribute.equals(attributeKey)) {
-				AttributeController.getController().performRemoveRow(
-						attributeTable,
-						attributeTable.getAttributePosition(attributeKey));
+			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
+				AttributeController.getController().performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
 			}
-		}		
-	}
-
-	public void updateReferenceOnPdf(URI uri, NodeModel node) {
-		BibtexEntry entry = findBibtexEntryForPDF(uri, node);
-		if (entry != null) {
-			setReferenceToNode(new Reference(entry, node), node);
 		}
 	}
 
+//	public void updateReferenceOnPdf(URI uri, NodeModel node) {
+//		BibtexEntry entry = findBibtexEntryForPDF(uri, node);
+//		if (entry != null) {
+//			setReferenceToNode(new Reference(entry, node), node);
+//		}
+//	}
+
 	public boolean updateReferenceToNode(Reference reference, NodeModel node) {
+		if (DocearReferenceUpdateController.isLocked()) {
+			return false;
+		}
+		DocearReferenceUpdateController.lock();
 		boolean changes = false;
-		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node
-				.getExtension(NodeAttributeTableModel.class);
+		NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 		if (attributeTable == null) {
+			DocearReferenceUpdateController.unlock();
 			return false;
 		}
 
-		AttributeController attributeController = AttributeController
-				.getController();
+		AttributeController attributeController = AttributeController.getController();
 		Vector<Attribute> attributes = attributeTable.getAttributes();
 		ArrayList<Item> inserts = new ArrayList<Item>();
 		for (Item item : reference.getAttributes()) {
@@ -140,9 +143,9 @@ public class JabRefAttributes {
 					if (item.getValue() == null) {
 						attributeController.performRemoveRow(attributeTable, i);
 						changes = true;
-					} else if (!attribute.getValue().equals(item.getValue())) {
-						attributeController.performSetValueAt(attributeTable,
-								item.getValue(), i, 1);
+					}
+					else if (!attribute.getValue().equals(item.getValue())) {
+						attributeController.performSetValueAt(attributeTable, item.getValue(), i, 1);
 						attribute.setValue(item.getValue());
 						changes = true;
 					}
@@ -155,23 +158,25 @@ public class JabRefAttributes {
 
 		for (Item item : inserts) {
 			changes = true;
-			AttributeController.getController().performInsertRow(
-					attributeTable, 0, item.getName(), item.getValue());
+			AttributeController.getController().performInsertRow(attributeTable, 0, item.getName(), item.getValue());
 		}
 
 		// do not overwrite existing links
 		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
 		if (nodeLinks != null && nodeLinks.getHyperLink() != null) {
-			return changes;
+			DocearReferenceUpdateController.unlock();
+			return changes;			
 		}
 
 		// do nothing if the reference does not have a link
-		if (reference.getUri() == null) {
+		if (reference.getUris().size() == 0) {
+			DocearReferenceUpdateController.unlock();
 			return changes;
 		}
 
 		// add link to node
-		((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, reference.getUri());
+		((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, reference.getUris().get(0));
+		DocearReferenceUpdateController.unlock();
 		return true;
 	}
 
@@ -183,15 +188,31 @@ public class JabRefAttributes {
 		return setReferenceToNode(new Reference(entry, node), node);
 	}
 
-	public boolean setReferenceToNode(Reference reference, NodeModel node) {		
-		NodeUtils.setAttributeValue(node, reference.getKey().getName(),
-				reference.getKey().getValue());
+	public boolean setReferenceToNode(Reference reference, NodeModel node) {
+		NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue());
 		return updateReferenceToNode(reference, node);
+	}
+
+	public void removePdfFromBibtexEntry(File file, BibtexEntry entry) {
+		String filename = file.getName();
+		FileListTableModel model = new FileListTableModel();
+		String oldVal = entry.getField(GUIGlobals.FILE_FIELD);
+		if (oldVal != null) model.setContent(oldVal);
+
+		for (int i = 0; i < model.getRowCount(); i++) {
+			FileListEntry fle = model.getEntry(i);
+			File f = new File(fle.getLink());
+			if (filename.equals(f.getName())) {
+				model.removeEntry(i);
+			}
+		}
+		entry.setField(GUIGlobals.FILE_FIELD, model.getStringRepresentation());
+		System.out.println(oldVal + " <--> " + model.getStringRepresentation());
 	}
 
 	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) {
 		List<BibtexEntry> entries = new ArrayList<BibtexEntry>();
-		
+
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (database == null) {
 			return null;
@@ -214,18 +235,18 @@ public class JabRefAttributes {
 				}
 			}
 		}
-		
+
 		if (entries.size() == 0) {
 			return null;
 		}
 		else if (entries.size() == 1) {
 			return entries.get(0);
 		}
-		
+
 		DuplicatePdfDialogPanel panel = new DuplicatePdfDialogPanel(entries, uri);
-		int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("docear.reference.duplicate_file.title"), 
+		int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("docear.reference.duplicate_file.title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-		  
+
 		if (answer == JOptionPane.OK_OPTION) {
 			return panel.getSingleValidEntry();
 		}
@@ -249,7 +270,8 @@ public class JabRefAttributes {
 		for (String s : paths) {
 			try {
 				fileNames.add(new File(removeEscapingCharacter(s)).getName());
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				continue;
 			}
 		}
@@ -262,28 +284,26 @@ public class JabRefAttributes {
 
 		for (String path : paths) {
 			if (path == null) {
-				LogUtils.warn("Could not extract path from: "
-						+ entry.getCiteKey());
+				LogUtils.warn("Could not extract path from: " + entry.getCiteKey());
 				continue;
 			}
 			path = removeEscapingCharacter(path);
 			if (isAbsolutePath(path) && (new File(path)).exists()) {
 				uris.add(new File(path).toURI());
-			} else {
+			}
+			else {
 				URI uri = CoreConfiguration.referencePathObserver.getUri();
 				URI absUri = WorkspaceUtils.absoluteURI(uri);
 
-				final ClassLoader contextClassLoader = Thread.currentThread()
-						.getContextClassLoader();
-				Thread.currentThread().setContextClassLoader(
-						this.getClass().getClassLoader());
+				final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+				Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 				URI pdfUri = absUri.resolve(UriBuilder.fromPath(path).build());
-				Thread.currentThread()
-						.setContextClassLoader(contextClassLoader);
+				Thread.currentThread().setContextClassLoader(contextClassLoader);
 				File file = null;
 				try {
 					file = new File(pdfUri);
-				} catch (IllegalArgumentException e) {
+				}
+				catch (IllegalArgumentException e) {
 					LogUtils.warn(e.getMessage() + " for: " + path);
 				}
 				if (file != null && file.exists()) {
@@ -311,8 +331,8 @@ public class JabRefAttributes {
 		// return null;
 
 		String[] array = path.split("(^:|(?<=[^\\\\]):)"); // splits the string
-															// at non escaped
-															// double points
+														   // at non escaped
+														   // double points
 		ArrayList<String> paths = new ArrayList<String>();
 
 		for (int i = 0; i < (array.length) / 2; i++) {
