@@ -60,7 +60,6 @@
 		<property name="docear.version.status" value="devel" />
 		<propertyfile file="docear.version.properties">
 			<entry key="docear.build.date" type="date" value="now" pattern="MM/dd/yyyy" />
-			<entry key="docear.build.status" operation="=" value="${docear.version.status}" />
 		</propertyfile>
 	</target>
 
@@ -68,7 +67,6 @@
 		<property name="docear.version.status" value="alpha" />
 		<propertyfile file="docear.version.properties">
 			<entry key="docear.build.date" type="date" value="now" pattern="MM/dd/yyyy" />
-			<entry key="docear.build.status" operation="=" value="${docear.version.status}" />
 		</propertyfile>
 	</target>
 
@@ -77,7 +75,6 @@
 		<propertyfile file="docear.version.properties">
 			<entry key="docear.build.date" type="date" value="now" pattern="MM/dd/yyyy" />
 			<entry key="docear.build.status.number" type="int" operation="+" value="1" />
-			<entry key="docear.build.status" operation="=" value="${docear.version.status}" />
 		</propertyfile>
 	</target>
 
@@ -85,7 +82,6 @@
 		<property name="docear.version.status" value="rc" />
 		<propertyfile file="docear.version.properties">
 			<entry key="docear.build.date" type="date" value="now" pattern="MM/dd/yyyy" />
-			<entry key="docear.build.status" operation="=" value="${docear.version.status}" />
 		</propertyfile>
 	</target>
 
@@ -95,7 +91,6 @@
 			<entry key="docear.build.date" type="date" value="now" pattern="MM/dd/yyyy" />
 			<entry key="docear.build.version.minor" type="int" operation="+" value="1" />
 			<entry key="docear.build.status.number" type="int" operation="=" value="0" />
-			<entry key="docear.build.status" operation="=" value="${docear.version.status}" />
 		</propertyfile>
 	</target>
 
@@ -106,7 +101,6 @@
 			<entry key="docear.build.version.minor" type="int" operation="=" value="0" />
 			<entry key="docear.build.version.middle" type="int" operation="+" value="1" />
 			<entry key="docear.build.status.number" type="int" operation="=" value="0" />
-			<entry key="docear.build.status" operation="=" value="${docear.version.status}" />
 		</propertyfile>
 	</target>
 
@@ -130,7 +124,7 @@
 
 		<propertyfile file="../docear_plugin_core/resources/version.properties">
 			<entry key="build_date" type="date" value="now" pattern="MM/dd/yyyy" />
-			<entry key="docear_version_status" operation="=" value="${docear.build.status}" />
+			<entry key="docear_version_status" operation="=" value="${docear.version.status}" />
 			<entry key="docear_version_status_number" type="int" operation="=" value="${docear.build.status.number}" />
 			<entry key="docear_version"  operation="=" value="${docear.version.string}" />
 		</propertyfile>

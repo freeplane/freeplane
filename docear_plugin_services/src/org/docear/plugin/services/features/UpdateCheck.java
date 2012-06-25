@@ -3,8 +3,6 @@ package org.docear.plugin.services.features;
 import java.io.StringReader;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
