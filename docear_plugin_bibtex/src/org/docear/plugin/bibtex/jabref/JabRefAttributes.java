@@ -4,8 +4,11 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.ws.rs.core.UriBuilder;
 
 import net.sf.jabref.BibtexDatabase;
@@ -14,10 +17,12 @@ import net.sf.jabref.Globals;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.bibtex.Reference;
-import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.Reference.Item;
+import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.dialogs.DuplicatePdfDialogPanel;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
@@ -39,13 +44,12 @@ public class JabRefAttributes {
 	}
 
 	public void registerAttributes() {
-		this.keyAttribute = TextUtils.getText("bibtex_key");
+		this.keyAttribute = TextUtils.getText("bibtex_key");		
 
-		this.valueAttributes.put(TextUtils.getText("jabref_author"), "author");
-		this.valueAttributes.put(TextUtils.getText("jabref_title"), "title");
-		this.valueAttributes.put(TextUtils.getText("jabref_year"), "year");
-		this.valueAttributes
-				.put(TextUtils.getText("jabref_journal"), "journal");
+		this.valueAttributes.put("authors", "author");
+		this.valueAttributes.put("title", "title");
+		this.valueAttributes.put("year", "year");
+		this.valueAttributes.put("journal", "journal");
 	}
 
 	public String getKeyAttribute() {
@@ -84,7 +88,7 @@ public class JabRefAttributes {
 		return false;
 	}
 
-	public void setReferenceToNode(BibtexEntry entry) {
+	public void setReferenceToNode(BibtexEntry entry) {		
 		NodeModel node = Controller.getCurrentModeController()
 				.getMapController().getSelectedNode();
 		setReferenceToNode(new Reference(entry, node), node);
@@ -167,8 +171,7 @@ public class JabRefAttributes {
 		}
 
 		// add link to node
-		((MLinkController) MLinkController.getController())
-				.setLinkTypeDependantLink(node, reference.getUri());
+		((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, reference.getUri());
 		return true;
 	}
 
@@ -180,15 +183,16 @@ public class JabRefAttributes {
 		return setReferenceToNode(new Reference(entry, node), node);
 	}
 
-	public boolean setReferenceToNode(Reference reference, NodeModel node) {
+	public boolean setReferenceToNode(Reference reference, NodeModel node) {		
 		NodeUtils.setAttributeValue(node, reference.getKey().getName(),
 				reference.getKey().getValue());
 		return updateReferenceToNode(reference, node);
 	}
 
 	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) {
-		BibtexDatabase database = ReferencesController.getController()
-				.getJabrefWrapper().getDatabase();
+		List<BibtexEntry> entries = new ArrayList<BibtexEntry>();
+		
+		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (database == null) {
 			return null;
 		}
@@ -205,13 +209,29 @@ public class JabRefAttributes {
 				// path linked in jabref
 				for (String jabrefFile : parsePathNames(entry, jabrefFiles)) {
 					if (jabrefFile.endsWith(nodeFileName)) {
-						return entry;
+						entries.add(entry);
 					}
 				}
 			}
 		}
-
-		return null;
+		
+		if (entries.size() == 0) {
+			return null;
+		}
+		else if (entries.size() == 1) {
+			return entries.get(0);
+		}
+		
+		DuplicatePdfDialogPanel panel = new DuplicatePdfDialogPanel(entries, uri);
+		int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("docear.reference.duplicate_file.title"), 
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+		  
+		if (answer == JOptionPane.OK_OPTION) {
+			return panel.getSingleValidEntry();
+		}
+		else {
+			return null;
+		}
 
 	}
 

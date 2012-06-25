@@ -16,10 +16,10 @@ public class SplmmAttributes extends JabRefAttributes {
 	
 	public SplmmAttributes() {
 		super();
-		splmmValueAttributes.put("splmm_refauthors", TextUtils.getText("jabref_author"));
-		splmmValueAttributes.put("splmm_reftitle", TextUtils.getText("jabref_title"));
-		splmmValueAttributes.put("splmm_refyear", TextUtils.getText("jabref_year"));
-		splmmValueAttributes.put("splmm_publishedin", TextUtils.getText("jabref_journal"));
+		splmmValueAttributes.put("splmm_refauthors", "authors");
+		splmmValueAttributes.put("splmm_reftitle", "title");
+		splmmValueAttributes.put("splmm_refyear", "year");
+		splmmValueAttributes.put("splmm_publishedin", "journal");
 	}
 	
 	public boolean translate(NodeModel node) {		

@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
+import net.sf.jabref.BibtexFields;
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRef;
 import net.sf.jabref.JabRefFrame;
@@ -107,6 +108,14 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	public JPanel getJabrefFramePanel() {
 
 		return this.jrf;
+	}
+	
+	public String getLocalizedColumnName(String s) {		
+		String disName = BibtexFields.getFieldDisplayName(s);
+        if (disName != null)
+            return disName;
+        else
+            return Util.nCase(s);
 	}
 
 	private void registerListeners() {

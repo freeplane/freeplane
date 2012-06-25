@@ -323,7 +323,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			attributeTable.setOptimalColumnWidths();
 		}
 		catch(Exception e) {
-			LogUtils.warn(e);
+			LogUtils.warn("race conditions: setOptimalColumnWidth: " + e.getMessage());
 		}
 	}
 

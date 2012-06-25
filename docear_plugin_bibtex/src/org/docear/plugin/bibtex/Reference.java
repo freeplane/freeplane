@@ -36,7 +36,7 @@ public class Reference {
 	private final ArrayList<Item> attributes;
 	private URI uri = null;
 	
-	public Reference(BibtexEntry entry, NodeModel node) {
+	public Reference(BibtexEntry entry, NodeModel node) {		
 		JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();		
 		
 		attributes = new ArrayList<Reference.Item>();
