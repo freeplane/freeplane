@@ -102,20 +102,17 @@ public class WorkspaceUtils {
 	public static boolean createNewMindmap(final File f, String name) {
 		if (!createFolderStructure(f)) {
 			return false;
-		}
+		}		
 		
-//		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
-		final MMapIO mapIO = MModeController.getMModeController().getExtension(MMapIO.class);
+		final MMapIO mapIO = (MMapIO) MModeController.getMModeController().getExtension(MapIO.class);
 		
-		//FIXME - seems not to add the docear map model extension
-		//mapIO.newMapFromDefaultTemplate();
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager.getController(modeController).newMapFromDefaultTemplate();
 		
 		MapModel map = Controller.getCurrentController().getMap();
 		map.getRootNode().setText(name);
 		
-		mapIO.save(Controller.getCurrentController().getMap(), f);
+		mapIO.save(map, f);
 		Controller.getCurrentController().close(false);
 
 		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
