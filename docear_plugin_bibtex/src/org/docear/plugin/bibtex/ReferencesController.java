@@ -16,6 +16,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.JabRefPreferences;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
@@ -71,6 +72,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private MapModel inChange = null;
 	//MapModel with reference which is currently added
 	private MapModel inAdd = null;
+	private BibtexEntry addedEntry = null;
 	
 	private final static JabRefChangeListener jabRefChangeListener = new JabRefChangeListener();	
 	
@@ -383,11 +385,17 @@ public class ReferencesController extends ALanguageController implements IDocear
 		return inAdd;
 	}
 
-
 	public void setInAdd(MapModel inAdd) {
 		this.inAdd = inAdd;
 	}
-
+	
+	public void setAddedEntry(BibtexEntry entry) {
+		this.addedEntry = entry;
+	}
+	
+	public BibtexEntry getAddedEntry() {
+		return this.addedEntry;
+	}
 	
 	private class KeyBindInterceptor implements IKeyStrokeInterceptor {
 		

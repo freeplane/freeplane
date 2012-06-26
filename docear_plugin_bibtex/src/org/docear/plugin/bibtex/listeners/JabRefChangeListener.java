@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 
 import javax.swing.SwingUtilities;
 
@@ -12,9 +13,11 @@ import net.sf.jabref.DatabaseChangeListener;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferenceUpdater;
+import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 public class JabRefChangeListener implements DatabaseChangeListener, PropertyChangeListener {
@@ -29,15 +32,20 @@ public class JabRefChangeListener implements DatabaseChangeListener, PropertyCha
 	}
 
 	public synchronized void databaseChanged(DatabaseChangeEvent e) {
-
 		if (DocearReferenceUpdateController.isLocked()) {
+			return;
+		}
+		
+		if (e.getType() == DatabaseChangeEvent.ADDED_ENTRY) {
+			ReferencesController.getController().setInAdd(Controller.getCurrentController().getMap());
+			ReferencesController.getController().setAddedEntry(e.getEntry());
 			return;
 		}
 
 		if (e.getEntry() == null || e.getEntry().getCiteKey() == null) {
 			return;
 		}
-
+		
 		SwingUtilities.invokeLater(new Runnable() {
 
 			public void run() {
