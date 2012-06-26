@@ -44,9 +44,6 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 	}
 
 	public void nodeChanged(NodeChangeEvent event) {
-		if (DocearReferenceUpdateController.isLocked()) {
-			return;
-		}
 		if (event.getProperty().equals(NodeModel.HYPERLINK_CHANGED)) {
 			URI newUri = (URI) event.getNewValue();
 			if (newUri != null) {
