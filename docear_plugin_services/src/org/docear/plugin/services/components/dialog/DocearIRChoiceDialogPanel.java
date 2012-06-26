@@ -524,8 +524,6 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 		
 	}
 	public void clearUserData() {
-		txtUsername.setText("");
-		txtEmail.setText("");
 		pwdPassword.setText("");
 		pwdRetypepasswd.setText("");
 		enableButtonIfPossible(null);
