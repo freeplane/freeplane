@@ -68,6 +68,7 @@ import org.freeplane.view.swing.map.NodeView;
 
 public class ReferencesController extends ALanguageController implements IDocearEventListener {
 
+	
 	//mapModel with reference which is currently changed
 	private MapModel inChange = null;
 	//MapModel with reference which is currently added

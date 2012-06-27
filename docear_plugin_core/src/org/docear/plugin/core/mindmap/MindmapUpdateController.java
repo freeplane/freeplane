@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -31,6 +32,8 @@ import org.jdesktop.swingworker.SwingWorker;
 
 public class MindmapUpdateController {
 	
+	final private HashMap<String, Object> session = new HashMap<String, Object>();
+	
 	private final ArrayList<AMindmapUpdater> updaters = new ArrayList<AMindmapUpdater>();
 	private boolean showDialog = true;
 	
@@ -42,6 +45,7 @@ public class MindmapUpdateController {
 
 	public void addMindmapUpdater(AMindmapUpdater updater) {
 		this.updaters.add(updater);
+		updater.setParent(this);
 	}
 
 	public List<AMindmapUpdater> getMindmapUpdaters() {
@@ -349,5 +353,13 @@ public class MindmapUpdateController {
 				return attributeViewType;
 			}
 		};
+	}
+
+	public Object getSessionObject(String key) {
+		return session.get(key);
+	}
+	
+	public void putSessionObject(String key, Object o) {
+		this.session.put(key, o);
 	}
 }

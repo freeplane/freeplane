@@ -8,11 +8,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,11 +23,9 @@ import net.sf.jabref.GUIGlobals;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabrefWrapper;
 import org.docear.plugin.core.ui.MultiLineActionLabel;
-import org.docear.plugin.core.util.CoreUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.swingplus.JHyperlink;
 
 public class DuplicatePdfDialogPanel extends JPanel {
 	/**
@@ -42,10 +38,10 @@ public class DuplicatePdfDialogPanel extends JPanel {
 	private File file;
 	
 	
-	public DuplicatePdfDialogPanel(final List<BibtexEntry> entries, URI uri) {
+	public DuplicatePdfDialogPanel(final List<BibtexEntry> entries, File file) {
 		this.entries = entries;
-		this.uri = uri;
-		this.file = CoreUtils.resolveURI(uri);
+		this.uri = file.toURI();
+		this.file = file;
 		init();
 	}
 	/**
@@ -163,20 +159,10 @@ public class DuplicatePdfDialogPanel extends JPanel {
 		}
 
 		return model;
-	}
+	}	
 	
-	public BibtexEntry getSingleValidEntry() {
+	public BibtexEntry getSelectedEntry() {
 		int index = table.getSelectedRow();
-		
-		Iterator<BibtexEntry> iter = entries.iterator();
-		for (int i=0; iter.hasNext(); i++) {
-			BibtexEntry entry = iter.next();			
-			if (i != index) {
-				ReferencesController.getController().getJabRefAttributes().removePdfFromBibtexEntry(this.file, entry);
-//				entry.clearField("file");
-			}			
-		}
-		ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
 		return entries.get(index);
 	}	
 

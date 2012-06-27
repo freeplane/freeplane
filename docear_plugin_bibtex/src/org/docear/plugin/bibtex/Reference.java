@@ -3,8 +3,9 @@ package org.docear.plugin.bibtex;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.GUIGlobals;
@@ -12,6 +13,7 @@ import net.sf.jabref.gui.FileListTableModel;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class Reference {
 	public class Item {
@@ -34,7 +36,7 @@ public class Reference {
 	
 	private final Item key;
 	private final ArrayList<Item> attributes;
-	private List<URI> uris = new ArrayList<URI>();
+	private Set<URI> uris = new HashSet<URI>();
 	
 	public Reference(BibtexEntry entry, NodeModel node) {		
 		JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();		
@@ -115,12 +117,21 @@ public class Reference {
 		return attributes;
 	}
 
-	public List<URI> getUris() {
+	public Set<URI> getUris() {
 		return uris;
 	}
 
 	public void addUri(URI uri) {
 		this.uris.add(uri);
+	}
+	
+	public boolean containsFileName(String name) {
+		for (URI uri : getUris()) {
+			if (name.equals(new File(uri).getName())) {
+				return true;
+			}			
+		}
+		return false;
 	}
 
 	

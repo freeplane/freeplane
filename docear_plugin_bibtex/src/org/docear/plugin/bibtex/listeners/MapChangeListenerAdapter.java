@@ -2,26 +2,29 @@ package org.docear.plugin.bibtex.listeners;
 
 import java.net.URI;
 
+import javax.swing.SwingUtilities;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.export.DocearReferenceUpdateController;
 
+import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
+import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.docear.plugin.core.features.AnnotationID;
 import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.mindmap.AnnotationController;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
-
 
 public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 
@@ -60,11 +63,28 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 				catch(Exception e){
 					LogUtils.warn(e);
 				}
-				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
-				BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode());
-
-				if (entry != null) {
-					jabRefAttributes.setReferenceToNode(entry, event.getNode());
+				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();				
+				try {
+					BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode());
+					if (entry != null) {
+						jabRefAttributes.setReferenceToNode(entry, event.getNode());
+						if (jabRefAttributes.isNodeDirty()) {
+							jabRefAttributes.setNodeDirty(false);
+    						SwingUtilities.invokeLater(new Runnable() {					
+    							@Override
+    							public void run() {
+    								MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(true);
+    								mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+    								mindmapUpdateController.updateCurrentMindmap(true);
+    							}
+    						});
+						}
+					}
+				}
+				catch (ResolveDuplicateEntryAbortedException e) {
+					System.out.println("MapChangeListenerAdapter.nodeChanged interrupted");
+					jabRefAttributes.removeLinkFromNode(event.getNode());
+					return;
 				}
 			}
 			if(newUri == null && AnnotationController.getModel(event.getNode(), false) != null){

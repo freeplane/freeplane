@@ -4,7 +4,7 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
+import java.io.File;
 
 import javax.swing.SwingUtilities;
 
@@ -14,10 +14,11 @@ import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 public class JabRefChangeListener implements DatabaseChangeListener, PropertyChangeListener {
@@ -32,7 +33,7 @@ public class JabRefChangeListener implements DatabaseChangeListener, PropertyCha
 	}
 
 	public synchronized void databaseChanged(DatabaseChangeEvent e) {
-		if (DocearReferenceUpdateController.isLocked()) {
+		if (DocearReferenceUpdateController.isLocked() || e.getType() == DatabaseChangeEvent.REMOVED_ENTRY) {
 			return;
 		}
 		
@@ -41,20 +42,24 @@ public class JabRefChangeListener implements DatabaseChangeListener, PropertyCha
 			ReferencesController.getController().setAddedEntry(e.getEntry());
 			return;
 		}
-
+		
 		if (e.getEntry() == null || e.getEntry().getCiteKey() == null) {
 			return;
 		}
-		
+		System.out.println("bla");
+
 		SwingUtilities.invokeLater(new Runnable() {
 
 			public void run() {
 				try {
+					if (DocearReferenceUpdateController.isLocked()) {
+						return;
+					}
+					DocearReferenceUpdateController.lock();
 
 					memorize = false;
 					focusTarget.requestFocus();
-
-					DocearReferenceUpdateController.lock();
+					
 					MapModel currentMap = Controller.getCurrentController().getMap();
 					if (currentMap == null) {
 						return;
@@ -63,9 +68,9 @@ public class JabRefChangeListener implements DatabaseChangeListener, PropertyCha
 					MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(false);
 					mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
 					mindmapUpdateController.updateCurrentMindmap(true);
-
+				}
+				finally {
 					DocearReferenceUpdateController.unlock();
-				} finally {
 					if (previousFocus != null) {
 						previousFocus.requestFocus();
 						memorize = true;

@@ -11,6 +11,8 @@ import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
+import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -31,16 +33,25 @@ public class MapViewListener implements MouseListener, INodeSelectionListener {
 				}
 
 				if (referencesController.getInAdd() != null) {
-
 					BibtexEntry addedEntry = ReferencesController.getController().getAddedEntry();
-					if (addedEntry != null) {
-						ReferencesController.getController().setAddedEntry(null);
-						generateKeyIfNeeded(addedEntry);
-					}
-					addToNodes(referencesController.getInAdd());
-					referencesController.setInAdd(null);
-					ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
+					try {
+						if (addedEntry != null) {
+							ReferencesController.getController().setAddedEntry(null);
+							generateKeyIfNeeded(addedEntry);
+							//JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 
+							//jabRefAttributes.resolveDuplicateLinks(addedEntry);
+						}
+						addToNodes(referencesController.getInAdd());
+					}
+//					catch (InterruptedException ex) {
+//						System.out.println("MApViewListener interrupted");
+//						return;
+//					}
+					finally {
+						referencesController.setInAdd(null);
+						ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
+					}
 				}
 
 				BibtexEntry[] selectedEntries = ReferencesController.getController().getJabrefWrapper().getBasePanel().getSelectedEntries();
@@ -63,28 +74,39 @@ public class MapViewListener implements MouseListener, INodeSelectionListener {
 	}
 
 	private void addToNodes(MapModel mapModel) {
+		if (DocearReferenceUpdateController.isLocked()) {
+			return;
+		}
+		
 		DocearReferenceUpdateController.lock();
+		try {
 
-		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+			BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 
-		TreeMap<String, BibtexEntry> entryNodeTuples = new TreeMap<String, BibtexEntry>();
+			TreeMap<String, BibtexEntry> entryNodeTuples = new TreeMap<String, BibtexEntry>();
 
-		for (BibtexEntry entry : database.getEntries()) {
-			String s = entry.getField("docear_add_to_node");
-			if (s != null) {
-				String[] nodeIds = s.split(",");
-				for (String nodeId : nodeIds) {
-					entryNodeTuples.put(nodeId, entry);
-					NodeModel node = mapModel.getNodeForID(nodeId);
-					if (node != null) {
-						ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, node);
+			for (BibtexEntry entry : database.getEntries()) {
+				String s = entry.getField("docear_add_to_node");
+				if (s != null) {
+					String[] nodeIds = s.split(",");
+					for (String nodeId : nodeIds) {
+						entryNodeTuples.put(nodeId, entry);
+						NodeModel node = mapModel.getNodeForID(nodeId);
+						if (node != null) {
+							try {
+								ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, node);
+							}
+							catch (ResolveDuplicateEntryAbortedException e) {
+							}
+						}
 					}
 				}
+				entry.setField("docear_add_to_node", null);
 			}
-			entry.setField("docear_add_to_node", null);
 		}
-
-		DocearReferenceUpdateController.unlock();
+		finally {
+			DocearReferenceUpdateController.unlock();
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {

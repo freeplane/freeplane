@@ -208,7 +208,7 @@ public class NodeUtils {
 	}
 	
 	public static NodeModel setLinkFrom(URI file, NodeModel node){		
-		((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
+		((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);		
 		
 		return node;
 	}

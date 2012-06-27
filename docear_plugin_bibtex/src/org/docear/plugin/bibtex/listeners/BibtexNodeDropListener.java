@@ -4,13 +4,19 @@ import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 
+import javax.swing.SwingUtilities;
+
 
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.groups.TransferableEntrySelection;
 
+import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabRefAttributes;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
@@ -37,7 +43,19 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 	            dtde.acceptDrop(dtde.getDropAction());
 	            TransferableEntrySelection selection = (TransferableEntrySelection)transferable.getTransferData(TransferableEntrySelection.flavorInternal);
 	            for(BibtexEntry entry : selection.selectedEntries){
-	            	ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, targetNode);
+	            	JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
+	            	jabRefAttributes.setReferenceToNode(entry, targetNode);
+	            	if (jabRefAttributes.isNodeDirty()) {
+	            		jabRefAttributes.setNodeDirty(false);
+	            		SwingUtilities.invokeLater(new Runnable() {					
+							@Override
+							public void run() {								
+								MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(false);
+								mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+								mindmapUpdateController.updateCurrentMindmap(true);
+							}
+						});
+	            	}	            	
 	            	break;
 	            }
 	            dtde.dropComplete(true);

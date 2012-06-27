@@ -235,7 +235,7 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 			refresh();
 		}
 		catch (Exception e) {
-			LogUtils.warn(e);
+			LogUtils.warn("DOCEAR@FolderLinkNode.processWorkspaceNodeDrop.1: "+e.getMessage());
 		}	
 	}
 	
@@ -376,14 +376,14 @@ public class FolderLinkNode extends AFolderNode implements IWorkspaceNodeActionL
 						uriList.add(URI.create(singleUri));
 					}
 					catch (Exception e) {
-						LogUtils.info("DOCEAR - "+ e.getMessage());
+						LogUtils.info("DOCEAR@FolderLinkNode.processDrop.1: "+ e.getMessage());
 					}
 				}
 				processUriListDrop(uriList, dropAction);	
 			}
 		}
 		catch (Exception e) {
-			LogUtils.warn(e);
+			LogUtils.warn("DOCEAR@FolderLinkNode.processDrop.2<: "+e.getMessage());
 		}
 		return true;
 	}

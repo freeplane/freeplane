@@ -23,6 +23,7 @@ import net.sf.jabref.SidePaneManager;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabrefWrapper;
+import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
@@ -76,7 +77,11 @@ public class ExistingReferencesDialog extends JDialog {
 					}
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
-					ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, node);
+					try {
+						ReferencesController.getController().getJabRefAttributes().setReferenceToNode(entry, node);
+					}
+					catch (ResolveDuplicateEntryAbortedException e) {
+					}
 				}
 			}
 		}
