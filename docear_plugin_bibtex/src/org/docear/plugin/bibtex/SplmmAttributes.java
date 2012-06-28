@@ -3,10 +3,10 @@ package org.docear.plugin.bibtex;
 import java.util.HashMap;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class SplmmAttributes extends JabRefAttributes {
 	private final HashMap<String, String> splmmValueAttributes = new HashMap<String, String>();
@@ -28,15 +28,15 @@ public class SplmmAttributes extends JabRefAttributes {
 			return false;
 		}
 		
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(node);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(node);
 		for (String splmmAttributeName : attributes.getAttributeKeyList()) {
 			String attributeName = splmmValueAttributes.get(splmmAttributeName.toLowerCase());
 			if (attributeName != null) {
-				AttributeController.getController().performSetValueAt(attributes, attributeName, attributes.getAttributePosition(splmmAttributeName), 0);
+				AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, attributeName, attributes.getAttributePosition(splmmAttributeName), 0);
 			}
 		}
 		
-		AttributeController.getController().performSetValueAt(attributes, this.getKeyAttribute(), attributes.getAttributePosition(SPLMM_KEY_ATTRIBUTE), 0);		
+		AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, this.getKeyAttribute(), attributes.getAttributePosition(SPLMM_KEY_ATTRIBUTE), 0);		
 		return true;
 	}
 	

@@ -20,6 +20,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
@@ -116,7 +117,9 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeAct
 					}
 				}
 				
-				final MapIO mapIO = (MapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+				Controller.getCurrentController().selectMode(MModeController.MODENAME);
+				final MapIO mapIO = (MapIO) MModeController.getMModeController().getExtension(MapIO.class);
+				
 				try {
 					if(mapIO.newMap(f.toURL())) {
 						MapModel map = Controller.getCurrentController().getMap();						

@@ -23,6 +23,7 @@ import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
@@ -223,17 +224,17 @@ public class Tools {
 	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value){
 		if(target == null || attributeKey == null || value == null) return false;
 		
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 		if(attributes != null){
 			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
 				//attributes.getAttribute(attributes.getAttributePosition(TextUtils.getText(attributeKey))).setValue(value);
-				AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+				AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
 				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
 	    		attributeView.setOptimalColumnWidths();
 				return true;
 			}
 			else{
-				AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(attributeKey), value); 
+				AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), TextUtils.getText(attributeKey), value); 
 				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
 	    		attributeView.setOptimalColumnWidths();
 				return true;
@@ -244,7 +245,7 @@ public class Tools {
 
 	public static Object getAttributeValue(NodeModel target, String attributeKey) {
 		if(target == null || attributeKey == null) return null;
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 		if(attributes != null){
 			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
 				return attributes.getAttribute(attributes.getAttributePosition(TextUtils.getText(attributeKey))).getValue();				
@@ -255,10 +256,10 @@ public class Tools {
 	
 	public static void removeAttributeValue(NodeModel target, String attributeKey) {
 		if(target == null || attributeKey == null) return;
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 		if(attributes != null){
 			if(attributes.getAttributeKeyList().contains(TextUtils.getText(attributeKey))){
-				AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+				AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
 				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
 	    		attributeView.setOptimalColumnWidths();		
 			}
@@ -267,7 +268,7 @@ public class Tools {
 	
 	public static List<String> getAllAttributeKeys(NodeModel target){
 		if(target == null) return new ArrayList<String>();
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 		if(attributes != null){
 			return attributes.getAttributeKeyList();
 		}

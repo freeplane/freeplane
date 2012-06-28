@@ -18,6 +18,7 @@ import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class MonitorungNodeUpdater extends AMindmapUpdater implements ISplmmMapsConvertListener {
@@ -59,7 +60,7 @@ public class MonitorungNodeUpdater extends AMindmapUpdater implements ISplmmMaps
 	private boolean updateNode(NodeModel node) {		
 		boolean isOldMinitoringNode = false;
 		
-		NodeAttributeTableModel attributeTable = AttributeController.getController().createAttributeTableModel(node);
+		NodeAttributeTableModel attributeTable = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(node);
 		if (attributeTable == null) {
 			return false;
 		}
@@ -69,7 +70,7 @@ public class MonitorungNodeUpdater extends AMindmapUpdater implements ISplmmMaps
 			
 			if (attribute.getName().equals(keyAttribute.getName())) {
 				isOldMinitoringNode = true;
-				AttributeController.getController().performSetValueAt(attributeTable, keyAttribute.getValue(), i, 0);
+				AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributeTable, keyAttribute.getValue(), i, 0);
 				try {
 					String path = (String) attribute.getValue();
 					URI uri = new File(path).toURI();
@@ -77,7 +78,7 @@ public class MonitorungNodeUpdater extends AMindmapUpdater implements ISplmmMaps
 						throw new Exception("absolut windows paths do not work in linux!"); //$NON-NLS-1$
 					}
 					uri = MLinkController.toLinkTypeDependantURI(node.getMap().getFile(), WorkspaceUtils.resolveURI(uri));
-					AttributeController.getController().performSetValueAt(attributeTable, uri, i, 1);
+					AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributeTable, uri, i, 1);
 				}
 				catch(Exception e) {					
 					LogUtils.warn(e);
@@ -88,14 +89,14 @@ public class MonitorungNodeUpdater extends AMindmapUpdater implements ISplmmMaps
 			if (newAttributeName != null) {
 				int value = Integer.parseInt((String) attribute.getValue());
 				isOldMinitoringNode = true;
-				AttributeController.getController().performSetValueAt(attributeTable, newAttributeName, i, 0);
-				AttributeController.getController().performSetValueAt(attributeTable, value, i, 1);
+				AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributeTable, newAttributeName, i, 0);
+				AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributeTable, value, i, 1);
 			}
 		}
 		
 		if (isOldMinitoringNode) {
 			for (Attribute attribute : newMonitoringAttributes) {
-				AttributeController.getController().performInsertRow(attributeTable, attributeTable.getRowCount(), attribute.getName(), attribute.getValue());				
+				AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributeTable, attributeTable.getRowCount(), attribute.getName(), attribute.getValue());				
 			}
 		}
 		

@@ -43,6 +43,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -382,23 +383,23 @@ public class NodeUtils {
 		if(attributeModel == null) return;
 		
 		if(attributeModel.getAttributeKeyList().contains(PdfUtilitiesController.MON_INCOMING_FOLDER)){
-			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_INCOMING_FOLDER));			
+			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_INCOMING_FOLDER));			
 		}
 		
 		if(attributeModel.getAttributeKeyList().contains(PdfUtilitiesController.MON_MINDMAP_FOLDER)){
-			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_MINDMAP_FOLDER));			
+			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_MINDMAP_FOLDER));			
 		}
 		
 		if(attributeModel.getAttributeKeyList().contains(PdfUtilitiesController.MON_AUTO)){
-			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_AUTO));			
+			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_AUTO));			
 		}
 		
 		if(attributeModel.getAttributeKeyList().contains(PdfUtilitiesController.MON_SUBDIRS)){
-			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_SUBDIRS));			
+			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_SUBDIRS));			
 		}
 		
 		if(attributeModel.getAttributeKeyList().contains(PdfUtilitiesController.MON_FLATTEN_DIRS)){
-			AttributeController.getController(Controller.getCurrentModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_FLATTEN_DIRS));			
+			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeModel, attributeModel.getAttributePosition(PdfUtilitiesController.MON_FLATTEN_DIRS));			
 		}
 	}	
 		
@@ -406,11 +407,11 @@ public class NodeUtils {
 		try {
 			if(target == null || attributeKey == null || value == null) return false;
 					
-			NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+			NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 			if(attributes != null){
 				if(attributes.getAttributeKeyList().contains(attributeKey)){
 					//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
-					AttributeController.getController().performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+					AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
 					for(INodeView view : target.getViewers()){
 						view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
 					}
@@ -419,7 +420,7 @@ public class NodeUtils {
 					return true;
 				}
 				else{
-					AttributeController.getController().performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
+					AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
 					AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
 		    		attributeView.setOptimalColumnWidths();
 					return true;
@@ -433,22 +434,22 @@ public class NodeUtils {
 	}
 		
 	public static void removeAttribute(NodeModel target, String attributeKey) {
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 		if(attributes != null && attributes.getAttributeKeyList().contains(attributeKey)) {
-			AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
 		}
 	}
 	
 	public static void removeAttributes(NodeModel target) {
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 		for (String attributeKey : attributes.getAttributeKeyList()) {		
-			AttributeController.getController().performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
 		}
 	}
 
 	public static Object getAttributeValue(NodeModel target, String attributeKey) {		
 		if(target == null || attributeKey == null) return null;
-		NodeAttributeTableModel attributes = AttributeController.getController().createAttributeTableModel(target);
+		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
 		if(attributes != null){
 			if(attributes.getAttributeKeyList().contains(attributeKey)){
 				return attributes.getAttribute(attributes.getAttributePosition(attributeKey)).getValue();				

@@ -19,6 +19,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
@@ -112,7 +113,10 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 						LogUtils.warn("could not create " + getLinkPath());
 					}
 				}
-				final MapIO mapIO = (MapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
+				
+				Controller.getCurrentController().selectMode(MModeController.MODENAME);
+				final MapIO mapIO = (MapIO) MModeController.getMModeController().getExtension(MapIO.class);
+				
 				try {
 					if(mapIO.newMap(f.toURL())) {
 						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_LITERATURE_ANNOTATIONS, Controller.getCurrentController().getMap());

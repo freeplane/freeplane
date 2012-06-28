@@ -40,6 +40,7 @@ import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class JabRefAttributes {
@@ -102,7 +103,7 @@ public class JabRefAttributes {
 	}
 
 	public void removeReferenceFromNode(NodeModel node) {
-		NodeAttributeTableModel attributeTable = AttributeController.getController().createAttributeTableModel(node);
+		NodeAttributeTableModel attributeTable = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(node);
 
 		if (attributeTable == null) {
 			return;
@@ -110,7 +111,7 @@ public class JabRefAttributes {
 
 		for (String attributeKey : attributeTable.getAttributeKeyList()) {
 			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
-				AttributeController.getController().performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
+				AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
 			}
 		}
 	}
@@ -150,7 +151,7 @@ public class JabRefAttributes {
 
 			
 
-			AttributeController attributeController = AttributeController.getController();
+			AttributeController attributeController = AttributeController.getController(MModeController.getMModeController());
 			Vector<Attribute> attributes = attributeTable.getAttributes();
 			ArrayList<Item> inserts = new ArrayList<Item>();
 			for (Item item : reference.getAttributes()) {
@@ -177,7 +178,7 @@ public class JabRefAttributes {
 
 			for (Item item : inserts) {
 				changes = true;
-				AttributeController.getController().performInsertRow(attributeTable, 0, item.getName(), item.getValue());
+				AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributeTable, 0, item.getName(), item.getValue());
 			}
 
 			// do not overwrite existing links

@@ -316,8 +316,9 @@ public class MMapController extends MapController {
 		fireNodeDeleted(oldParent, selectedNode, oldParent.getIndex(selectedNode));
 	}
 
+	//DOCEAR - more reliable when working with multiple modes
 	public MModeController getMModeController() {
-		return (MModeController) Controller.getCurrentModeController();
+		return (MModeController) Controller.getCurrentController().getModeController(MModeController.MODENAME);
 	}
 
 	public void insertNode(final NodeModel node, final NodeModel parent) {

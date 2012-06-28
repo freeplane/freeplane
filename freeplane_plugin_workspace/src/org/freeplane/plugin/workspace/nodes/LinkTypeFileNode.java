@@ -20,7 +20,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mapio.MapIO;
-import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -96,9 +95,11 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 				}
 				if(file.getName().toLowerCase().endsWith(".mm") || file.getName().toLowerCase().endsWith(".dcr")) {
 					try {
-						final URL mapUrl = Compat.fileToUrl(file);						
+						final URL mapUrl = Compat.fileToUrl(file);
 						
-						final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+						Controller.getCurrentController().selectMode(MModeController.MODENAME);
+						final MapIO mapIO = (MapIO) MModeController.getMModeController().getExtension(MapIO.class);		
+						
 						mapIO.newMap(mapUrl);
 					}
 					catch (final Exception e) {
