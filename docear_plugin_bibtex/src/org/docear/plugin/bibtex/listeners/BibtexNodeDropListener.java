@@ -3,9 +3,11 @@ package org.docear.plugin.bibtex.listeners;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
-
 
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.groups.TransferableEntrySelection;
@@ -18,6 +20,7 @@ import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -31,7 +34,13 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 		LogUtils.info("BibtexNodeDropListener Drop activated....");
 		final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 		final NodeView targetNodeView = mainView.getNodeView();
-		final NodeModel targetNode = targetNodeView.getModel();		
+		
+		Set<NodeModel> nodes = new HashSet<NodeModel>();
+		nodes.add(targetNodeView.getModel());
+		
+		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+			nodes.add(node);
+		}
 		
 		try{
 						
@@ -44,7 +53,12 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 	            TransferableEntrySelection selection = (TransferableEntrySelection)transferable.getTransferData(TransferableEntrySelection.flavorInternal);
 	            for(BibtexEntry entry : selection.selectedEntries){
 	            	JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
-	            	jabRefAttributes.setReferenceToNode(entry, targetNode);
+	            	
+	            	Iterator<NodeModel> iter = nodes.iterator();
+	            	while (iter.hasNext()) {
+	            		jabRefAttributes.setReferenceToNode(entry, iter.next());
+	            	}
+	            	
 	            	if (jabRefAttributes.isNodeDirty()) {
 	            		jabRefAttributes.setNodeDirty(false);
 	            		SwingUtilities.invokeLater(new Runnable() {					

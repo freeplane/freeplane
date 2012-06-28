@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -17,7 +16,6 @@ import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.core.util.Tools;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;
@@ -100,7 +98,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					if (!reference.containsFileName(f.getName())) {
 						break;
 					}
-				}				
+				}
 				// getNodeLink
 				// if(nodeLink isIn reference)
 
@@ -158,13 +156,16 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				file = WorkspaceUtils.resolveURI(uri, node.getMap());
 				if (file != null) {
 					String fileName = file.getName();
-					for (BibtexEntry entry : this.pdfReferences.get(fileName)) {
-						Set<NodeModel> nodes = referenceNodes.get(entry);
-						if (nodes == null) {
-							nodes = new HashSet<NodeModel>();
-							referenceNodes.put(entry, nodes);
+					Set<BibtexEntry> entries = this.pdfReferences.get(fileName);
+					if (entries != null) {
+						for (BibtexEntry entry : entries) {
+							Set<NodeModel> nodes = referenceNodes.get(entry);
+							if (nodes == null) {
+								nodes = new HashSet<NodeModel>();
+								referenceNodes.put(entry, nodes);
+							}
+							nodes.add(node);
 						}
-						nodes.add(node);
 					}
 				}
 			}

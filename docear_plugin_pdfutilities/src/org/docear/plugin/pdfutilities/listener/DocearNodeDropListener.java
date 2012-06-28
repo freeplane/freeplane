@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -52,7 +55,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 					
 		final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 		final NodeView targetNodeView = mainView.getNodeView();
-		final NodeModel targetNode = targetNodeView.getModel();		
+		
+		Set<NodeModel> nodes = new HashSet<NodeModel>();
+		nodes.add(targetNodeView.getModel());
+		
+		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+			nodes.add(node);
+		}
 		
 		try{
 			final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List"); //$NON-NLS-1$
@@ -79,9 +88,12 @@ public class DocearNodeDropListener extends MNodeDropListener {
 	    		else if(transferable.isDataFlavorSupported(uriListFlavor)){
 	    			dtde.acceptDrop(dtde.getDropAction());
 	    		    fileList = Tools.textURIListToFileList((String) transferable.getTransferData(uriListFlavor));
-	    		}	
+	    		}
 	            
-	            pasteFileList(fileList, targetNode, isLeft);
+	            Iterator<NodeModel> iter = nodes.iterator();
+            	while (iter.hasNext()) {
+            		pasteFileList(fileList, iter.next(), isLeft);
+            	}
 	            
 	            dtde.dropComplete(true);
 	            return;		

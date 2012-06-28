@@ -21,6 +21,7 @@ import net.sf.jabref.gui.FileListEntry;
 import net.sf.jabref.gui.FileListTableModel;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
+import org.apache.commons.io.FilenameUtils;
 import org.docear.plugin.bibtex.Reference;
 import org.docear.plugin.bibtex.Reference.Item;
 import org.docear.plugin.bibtex.ReferencesController;
@@ -38,6 +39,7 @@ import org.freeplane.features.link.LinkModel;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -134,7 +136,7 @@ public class JabRefAttributes {
 			for (URI uri : reference.getUris()) {
 				try {
 					resolveDuplicateLinks(WorkspaceUtils.resolveURI(uri));
-					reference = new Reference(findBibtexEntryForPDF(uri, node), node);
+					reference = new Reference(findBibtexEntryForPDF(uri, node.getMap()), node);
 				}
 				catch (NullPointerException e) {
 					LogUtils.warn(e.getMessage());
@@ -309,17 +311,18 @@ public class JabRefAttributes {
 		}
 	}
 
-	public BibtexEntry findBibtexEntryForPDF(URI uri, NodeModel node) throws ResolveDuplicateEntryAbortedException {
+	public BibtexEntry findBibtexEntryForPDF(URI uri, MapModel map) throws ResolveDuplicateEntryAbortedException {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (database == null) {
 			return null;
 		}
 		// file name linked in a node
-		File nodeFile = WorkspaceUtils.resolveURI(uri, node.getMap());
+		File nodeFile = WorkspaceUtils.resolveURI(uri, map);
 		if (nodeFile == null) {
 			return null;
 		}
 		String nodeFileName = nodeFile.getName();
+		String baseName = FilenameUtils.removeExtension(nodeFileName);
 
 		resolveDuplicateLinks(nodeFile);
 
@@ -332,10 +335,11 @@ public class JabRefAttributes {
 						return entry;
 					}
 				}
-			}
+			}			
 		}
-
-		return null;
+		
+		BibtexEntry entry = database.getEntryByKey(baseName);
+		return entry;
 	}
 
 	public ArrayList<String> parsePathNames(BibtexEntry entry, String path) {
