@@ -65,7 +65,7 @@ public class FiletransferClient {
 					String accessToken = CommunicationsController.getController().getAccessToken();
 					ClientResponse response = res.type(MediaType.MULTIPART_FORM_DATA_TYPE).header("accessToken", accessToken).post(ClientResponse.class, formDataMultiPart);					
 					if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {
-						System.out.println(response.getEntity(String.class));
+						//System.out.println(response.getEntity(String.class));
 						throw new IOException("file upload not accepted ("+ response+")");
 					}
 					else if (deleteIfTransferred) {
