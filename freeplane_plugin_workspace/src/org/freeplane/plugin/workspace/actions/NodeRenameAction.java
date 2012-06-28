@@ -34,7 +34,7 @@ public class NodeRenameAction extends AWorkspaceAction {
 			setEnabled(false);
 		}
 		else{
-			setEnabled(true);
+			setEnabled();
 		}
 	}
 

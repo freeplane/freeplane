@@ -38,6 +38,10 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 		setEnabled();
 	}
 
+	public void setEnabled() {
+		setEnabled(true);
+	}
+	
 	public void setSelectedFor(AWorkspaceTreeNode node) {
 		super.setSelected();
 	}

@@ -35,10 +35,10 @@ public class DocearRenameAction extends AWorkspaceAction {
 
 	public void setEnabledFor(AWorkspaceTreeNode node) {
 		if(node instanceof IMutableLinkNode) {
-			setEnabled();	
+			setEnabled(true);	
 		}
 		else{
-			setEnabled();
+			setEnabled(false);
 		}
 	}
 	
