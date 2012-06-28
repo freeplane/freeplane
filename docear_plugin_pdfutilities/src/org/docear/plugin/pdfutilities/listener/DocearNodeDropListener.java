@@ -57,9 +57,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		final NodeView targetNodeView = mainView.getNodeView();
 		
 		Set<NodeModel> nodes = new HashSet<NodeModel>();
-		nodes.add(targetNodeView.getModel());
-		
 		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+			nodes.add(node);
+		}
+		
+		NodeModel node = targetNodeView.getModel();		
+		if (!nodes.contains(node)) {
+			nodes.clear();
 			nodes.add(node);
 		}
 		

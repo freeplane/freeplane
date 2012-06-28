@@ -15,6 +15,7 @@ import net.sf.jabref.groups.TransferableEntrySelection;
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
+import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.freeplane.core.util.LogUtils;
@@ -36,9 +37,13 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 		final NodeView targetNodeView = mainView.getNodeView();
 		
 		Set<NodeModel> nodes = new HashSet<NodeModel>();
-		nodes.add(targetNodeView.getModel());
-		
 		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+			nodes.add(node);
+		}
+		
+		NodeModel node = targetNodeView.getModel();		
+		if (!nodes.contains(node)) {
+			nodes.clear();
 			nodes.add(node);
 		}
 		
@@ -56,7 +61,11 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 	            	
 	            	Iterator<NodeModel> iter = nodes.iterator();
 	            	while (iter.hasNext()) {
-	            		jabRefAttributes.setReferenceToNode(entry, iter.next());
+	            		try {
+	            			jabRefAttributes.setReferenceToNode(entry, iter.next());
+	            		}
+	            		catch(ResolveDuplicateEntryAbortedException e) {	            			
+	            		}
 	            	}
 	            	
 	            	if (jabRefAttributes.isNodeDirty()) {
