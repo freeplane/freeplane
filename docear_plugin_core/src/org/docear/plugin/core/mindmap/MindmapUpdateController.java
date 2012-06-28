@@ -197,8 +197,14 @@ public class MindmapUpdateController {
 						if (canceled())
 							return null;
 						for (MapItem mapItem : maps) {							
-							mapHasChanged = false;
-							MapModel map = mapItem.getModel();
+							mapHasChanged = false; 
+							MapModel map = null;
+							try {
+							 map = mapItem.getModel();
+							} 
+							catch (NullPointerException ex) {
+								LogUtils.warn("MindmapUpdateController$SwingWorker.doInBackground().1"+ex.getMessage()+" ("+mapItem.getIdentifierForDialog()+")");
+							}
 							if (map==null) {								
 								continue;
 							}
