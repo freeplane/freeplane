@@ -15,6 +15,9 @@ import net.sf.jabref.groups.TransferableEntrySelection;
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
+import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
+import org.docear.plugin.core.features.DocearMapModelExtension;
+import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.freeplane.core.util.LogUtils;
@@ -36,13 +39,20 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 		final NodeView targetNodeView = mainView.getNodeView();
 		
 		Set<NodeModel> nodes = new HashSet<NodeModel>();
-		nodes.add(targetNodeView.getModel());
-		
 		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
 			nodes.add(node);
 		}
 		
+		NodeModel node = targetNodeView.getModel();		
+		if (!nodes.contains(node)) {
+			nodes.clear();
+			nodes.add(node);
+		}
+		
+		DocearMapModelExtension modelExtension = node.getMap().getExtension(DocearMapModelExtension.class);
 		try{
+    		MapModificationSession session = new MapModificationSession();	
+    		modelExtension.setModificationSession(session);
 						
 			if (dtde.isLocalTransfer() && dtde.isDataFlavorSupported(TransferableEntrySelection.flavorInternal)) {
 				mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
@@ -51,12 +61,17 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 	            
 	            dtde.acceptDrop(dtde.getDropAction());
 	            TransferableEntrySelection selection = (TransferableEntrySelection)transferable.getTransferData(TransferableEntrySelection.flavorInternal);
+	            
 	            for(BibtexEntry entry : selection.selectedEntries){
 	            	JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 	            	
 	            	Iterator<NodeModel> iter = nodes.iterator();
 	            	while (iter.hasNext()) {
-	            		jabRefAttributes.setReferenceToNode(entry, iter.next());
+	            		try {
+	            			jabRefAttributes.setReferenceToNode(entry, iter.next());
+	            		}
+	            		catch(ResolveDuplicateEntryAbortedException e) {	            			
+	            		}
 	            	}
 	            	
 	            	if (jabRefAttributes.isNodeDirty()) {
@@ -76,10 +91,14 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 				return;
 			}
 			
-		} catch (final Exception e) {
+		} 
+		catch (final Exception e) {
 			LogUtils.severe("BibtexNodeDropListener Drop exception:", e);
 			dtde.dropComplete(false);
 			return;
+		}
+		finally {
+			modelExtension.resetModificationSession();
 		}
 		super.drop(dtde);
 	}

@@ -5,8 +5,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -27,6 +29,8 @@ import org.docear.plugin.bibtex.Reference.Item;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.dialogs.DuplicatePdfDialogPanel;
 import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.features.DocearMapModelExtension;
+import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -113,7 +117,8 @@ public class JabRefAttributes {
 
 		for (String attributeKey : attributeTable.getAttributeKeyList()) {
 			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
-				AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
+				AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable,
+						attributeTable.getAttributePosition(attributeKey));
 			}
 		}
 	}
@@ -125,33 +130,56 @@ public class JabRefAttributes {
 	// }
 	// }
 
+	@SuppressWarnings("unchecked")
 	public boolean updateReferenceToNode(Reference reference, NodeModel node) throws ResolveDuplicateEntryAbortedException {
 		if (DocearReferenceUpdateController.isLocked()) {
 			return false;
 		}
 
 		DocearReferenceUpdateController.lock();
+		boolean changes = false;
 		try {
-
+			MapModificationSession session = node.getMap().getExtension(DocearMapModelExtension.class).getMapModificationSession();
+			Set<String> ignores = null;
+			if (session != null) {
+				ignores = (Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST);
+				if (ignores == null) {
+					ignores = new HashSet<String>();
+					session.putSessionObject(MapModificationSession.FILE_IGNORE_LIST, ignores);
+				}
+			}
 			for (URI uri : reference.getUris()) {
+				File file = WorkspaceUtils.resolveURI(uri, node.getMap());
 				try {
+					if (ignores != null) {
+						if (file != null) {
+							if (ignores.contains(file.getName())) {
+								throw new ResolveDuplicateEntryAbortedException(file);
+							}
+						}
+					}
 					resolveDuplicateLinks(WorkspaceUtils.resolveURI(uri));
 					reference = new Reference(findBibtexEntryForPDF(uri, node.getMap()), node);
 				}
 				catch (NullPointerException e) {
 					LogUtils.warn(e.getMessage());
 				}
+				catch (ResolveDuplicateEntryAbortedException ex) {
+					if (ignores != null) {
+						if (file != null) {
+							ignores.add(file.getName());
+						}
+					}
+					throw ex;
+				}
 			}
 
-			boolean changes = false;
 			NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue());
-			
+
 			NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 			if (attributeTable == null) {
 				return false;
 			}
-
-			
 
 			AttributeController attributeController = AttributeController.getController(MModeController.getMModeController());
 			Vector<Attribute> attributes = attributeTable.getAttributes();
@@ -181,31 +209,23 @@ public class JabRefAttributes {
 			for (Item item : inserts) {
 				changes = true;
 				AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributeTable, 0, item.getName(), item.getValue());
-			}
-
-			// do not overwrite existing links
-			NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
-			if (nodeLinks != null && nodeLinks.getHyperLink() != null) {
-				return changes;
-			}
-
-			// do nothing if the reference does not have a link
-			if (reference.getUris().size() == 0) {
-				return changes;
-			}
-
-			// add link to node
-			if (reference.getUris().size() > 0) {
-				((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, reference.getUris().iterator().next());
-				return true;
-			}
-			
-			return changes;
-			
+			}			
 		}
 		finally {
+			// do not overwrite existing links
+			NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
+			if (nodeLinks == null || nodeLinks.getHyperLink() == null) {
+				// add link to node
+				if (reference.getUris().size() > 0) {
+					((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, reference.getUris().iterator().next());
+					changes = true;
+				}
+			}
+
 			DocearReferenceUpdateController.unlock();
 		}
+
+		return changes;
 	}
 
 	public boolean updateReferenceToNode(BibtexEntry entry, NodeModel node) throws ResolveDuplicateEntryAbortedException {
@@ -304,7 +324,7 @@ public class JabRefAttributes {
 		if (answer != JOptionPane.OK_OPTION) {
 			throw new ResolveDuplicateEntryAbortedException(file);
 		}
-		else {			
+		else {
 			removeDuplicateLinks(file, panel.getSelectedEntry());
 			ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
 			setNodeDirty(true);
@@ -323,21 +343,47 @@ public class JabRefAttributes {
 		}
 		String nodeFileName = nodeFile.getName();
 		String baseName = FilenameUtils.removeExtension(nodeFileName);
-
-		resolveDuplicateLinks(nodeFile);
-
-		for (BibtexEntry entry : database.getEntries()) {
-			String jabrefFiles = entry.getField(GUIGlobals.FILE_FIELD);
-			if (jabrefFiles != null) {
-				// path linked in jabref
-				for (String jabrefFile : parsePathNames(entry, jabrefFiles)) {
-					if (jabrefFile.endsWith(nodeFileName)) {
-						return entry;
+		
+		MapModificationSession session = map.getExtension(DocearMapModelExtension.class).getMapModificationSession();
+		Set<String> ignores = null;
+		if (session != null) {
+			ignores = (Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST);
+			if (ignores == null) {
+				ignores = new HashSet<String>();
+				session.putSessionObject(MapModificationSession.FILE_IGNORE_LIST, ignores);
+			}
+		}
+		try {
+			if (ignores != null) {
+				if (nodeFileName != null) {
+					if (ignores.contains(nodeFileName)) {
+						throw new ResolveDuplicateEntryAbortedException(nodeFile);
 					}
 				}
-			}			
+			}
+    		resolveDuplicateLinks(nodeFile);
+    
+    		for (BibtexEntry entry : database.getEntries()) {
+    			String jabrefFiles = entry.getField(GUIGlobals.FILE_FIELD);
+    			if (jabrefFiles != null) {
+    				// path linked in jabref
+    				for (String jabrefFile : parsePathNames(entry, jabrefFiles)) {
+    					if (jabrefFile.endsWith(nodeFileName)) {
+    						return entry;
+    					}
+    				}
+    			}
+    		}
 		}
-		
+		catch (ResolveDuplicateEntryAbortedException e) {
+			if (ignores != null) {
+				if (nodeFileName != null) {
+					ignores.add(nodeFileName);
+				}
+			}
+			throw e;
+		}
+
 		BibtexEntry entry = database.getEntryByKey(baseName);
 		return entry;
 	}
@@ -410,12 +456,12 @@ public class JabRefAttributes {
 
 	public static ArrayList<String> extractPaths(String fileField) {
 		ArrayList<String> paths = new ArrayList<String>();
-		
+
 		if (fileField != null) {
 			FileListTableModel model = new FileListTableModel();
 			model.setContent(fileField);
-			
-			for (int i=0; i<model.getRowCount(); i++) {
+
+			for (int i = 0; i < model.getRowCount(); i++) {
 				paths.add(model.getEntry(i).getLink());
 			}
 		}

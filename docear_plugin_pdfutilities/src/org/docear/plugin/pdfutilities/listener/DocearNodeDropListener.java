@@ -20,6 +20,8 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.DocearMapModelExtension;
+import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
@@ -57,14 +59,21 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		final NodeView targetNodeView = mainView.getNodeView();
 		
 		Set<NodeModel> nodes = new HashSet<NodeModel>();
-		nodes.add(targetNodeView.getModel());
-		
 		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
 			nodes.add(node);
 		}
 		
+		NodeModel node = targetNodeView.getModel();		
+		if (!nodes.contains(node)) {
+			nodes.clear();
+			nodes.add(node);
+		}
+		DocearMapModelExtension modelExtension = node.getMap().getExtension(DocearMapModelExtension.class);
 		try{
-			final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List"); //$NON-NLS-1$
+			MapModificationSession session = new MapModificationSession();	
+    		modelExtension.setModificationSession(session);
+
+    		final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List"); //$NON-NLS-1$
 			final DataFlavor uriListFlavor = new DataFlavor("text/uri-list; class=java.lang.String"); //$NON-NLS-1$
 			//TODO: DOCEAR - why restrict to !dtde.isLocalTransfer only?
 			if(dtde.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor) ) {
@@ -103,6 +112,9 @@ public class DocearNodeDropListener extends MNodeDropListener {
 			dtde.dropComplete(false);
 			return;
 		 }
+		finally {
+			modelExtension.resetModificationSession();
+		}
 		 super.drop(dtde);
 	}
 

@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -15,6 +14,7 @@ import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.MapItem;
+import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -31,9 +31,7 @@ import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
 public class MindmapUpdateController {
-	
-	final private HashMap<String, Object> session = new HashMap<String, Object>();
-	
+	private final MapModificationSession session = new MapModificationSession();
 	private final ArrayList<AMindmapUpdater> updaters = new ArrayList<AMindmapUpdater>();
 	private boolean showDialog = true;
 	
@@ -45,7 +43,7 @@ public class MindmapUpdateController {
 
 	public void addMindmapUpdater(AMindmapUpdater updater) {
 		this.updaters.add(updater);
-		updater.setParent(this);
+		updater.setSession(session);
 	}
 
 	public List<AMindmapUpdater> getMindmapUpdaters() {
@@ -360,12 +358,5 @@ public class MindmapUpdateController {
 			}
 		};
 	}
-
-	public Object getSessionObject(String key) {
-		return session.get(key);
-	}
 	
-	public void putSessionObject(String key, Object o) {
-		this.session.put(key, o);
-	}
 }

@@ -66,7 +66,7 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();				
 				try {
 					BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode().getMap());
-					if (entry != null) {
+					if (entry != null) {						
 						jabRefAttributes.setReferenceToNode(entry, event.getNode());
 						if (jabRefAttributes.isNodeDirty()) {
 							jabRefAttributes.setNodeDirty(false);
