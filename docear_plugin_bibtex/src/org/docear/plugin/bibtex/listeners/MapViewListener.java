@@ -11,7 +11,6 @@ import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;

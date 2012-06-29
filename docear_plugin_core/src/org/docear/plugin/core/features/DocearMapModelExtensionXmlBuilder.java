@@ -68,10 +68,10 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
 				if (docearMapModel == null) {
 						docearMapModel = new DocearMapModelExtension();
+						DocearMapModelController.setModel(mapModel, docearMapModel);
 				}
 				value = value.replace("docear ", "");
-				docearMapModel.setVersion(value);
-				DocearMapModelController.setModel(mapModel, docearMapModel);
+				docearMapModel.setVersion(value);				
 			}
 			
 		});	
