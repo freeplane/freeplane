@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 
 import javax.swing.SwingUtilities;
 
@@ -14,9 +13,7 @@ import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -46,7 +43,6 @@ public class JabRefChangeListener implements DatabaseChangeListener, PropertyCha
 		if (e.getEntry() == null || e.getEntry().getCiteKey() == null) {
 			return;
 		}
-		System.out.println("bla");
 
 		SwingUtilities.invokeLater(new Runnable() {
 
