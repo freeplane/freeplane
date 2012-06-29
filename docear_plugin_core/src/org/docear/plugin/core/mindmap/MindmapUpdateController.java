@@ -202,7 +202,7 @@ public class MindmapUpdateController {
 							try {
 							 map = mapItem.getModel();
 							} 
-							catch (NullPointerException ex) {
+							catch (Exception ex) {
 								LogUtils.warn("MindmapUpdateController$SwingWorker.doInBackground().1"+ex.getMessage()+" ("+mapItem.getIdentifierForDialog()+")");
 							}
 							if (map==null) {								
