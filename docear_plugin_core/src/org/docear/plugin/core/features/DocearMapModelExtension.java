@@ -9,6 +9,8 @@ public class DocearMapModelExtension implements IExtension {
 	public final static String MAP_ID_ATTRIBUTE = "dcr_id";
 	public final static String MAP_URI_ATTRIBUTE = "dcr_uri";
 	
+	private MapModificationSession session;
+	
 	String version;
 	DocearMapType type;
 	String mapId;
@@ -61,6 +63,19 @@ public class DocearMapModelExtension implements IExtension {
 	public void setUri(URI uri) {
 		this.uri = uri;
 	}
+
+	public void resetModificationSession() {
+		this.session = null;		
+	}
+
+	public void setModificationSession(MapModificationSession session) {
+		this.session = session;
+	}
+	
+	public MapModificationSession getMapModificationSession() {
+		return session;
+	}
+	
 	
 	
 	

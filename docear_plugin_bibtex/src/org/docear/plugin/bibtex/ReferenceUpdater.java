@@ -14,6 +14,7 @@ import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
+import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.core.util.Tools;
 import org.freeplane.core.util.LogUtils;
@@ -23,8 +24,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class ReferenceUpdater extends AMindmapUpdater {
-	final public static String PDF_IGNORE_LIST = "pdf_ignore_list";
-
+	
 	private final HashMap<BibtexEntry, Set<NodeModel>> referenceNodes;
 	private final HashMap<String, Set<BibtexEntry>> pdfReferences;
 
@@ -82,8 +82,8 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	private boolean updateReferenceNodes() {
-		if (getSessionObject(PDF_IGNORE_LIST) == null) {
-			putSessionObject(PDF_IGNORE_LIST, new HashSet<String>());
+		if (getSessionObject(MapModificationSession.FILE_IGNORE_LIST) == null) {
+			putSessionObject(MapModificationSession.FILE_IGNORE_LIST, new HashSet<String>());
 		}
 
 		boolean changes = false;
@@ -105,13 +105,13 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				if (reference.getUris().size() > 0) {
 					File file = WorkspaceUtils.resolveURI(reference.getUris().iterator().next(), node.getMap());
 					if (file != null) {
-						if (((Set<String>) getSessionObject(PDF_IGNORE_LIST)).contains(file.getName())) {
+						if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
 							continue;
 						}
 					}
 					file = WorkspaceUtils.resolveURI(Tools.getAbsoluteUri(node), node.getMap());
 					if (file != null) {
-						if (((Set<String>) getSessionObject(PDF_IGNORE_LIST)).contains(file.getName())) {
+						if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
 							continue;
 						}
 					}
@@ -128,7 +128,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					}
 				}
 				catch (ResolveDuplicateEntryAbortedException e) {
-					((Set<String>) getSessionObject(PDF_IGNORE_LIST)).add(e.getFile().getName());
+					((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
 				}
 
 			}

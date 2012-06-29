@@ -16,6 +16,8 @@ import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
+import org.docear.plugin.core.features.DocearMapModelExtension;
+import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.freeplane.core.util.LogUtils;
@@ -47,7 +49,10 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 			nodes.add(node);
 		}
 		
+		DocearMapModelExtension modelExtension = node.getMap().getExtension(DocearMapModelExtension.class);
 		try{
+    		MapModificationSession session = new MapModificationSession();	
+    		modelExtension.setModificationSession(session);
 						
 			if (dtde.isLocalTransfer() && dtde.isDataFlavorSupported(TransferableEntrySelection.flavorInternal)) {
 				mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
@@ -56,6 +61,7 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 	            
 	            dtde.acceptDrop(dtde.getDropAction());
 	            TransferableEntrySelection selection = (TransferableEntrySelection)transferable.getTransferData(TransferableEntrySelection.flavorInternal);
+	            
 	            for(BibtexEntry entry : selection.selectedEntries){
 	            	JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 	            	
@@ -85,10 +91,14 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 				return;
 			}
 			
-		} catch (final Exception e) {
+		} 
+		catch (final Exception e) {
 			LogUtils.severe("BibtexNodeDropListener Drop exception:", e);
 			dtde.dropComplete(false);
 			return;
+		}
+		finally {
+			modelExtension.resetModificationSession();
 		}
 		super.drop(dtde);
 	}
