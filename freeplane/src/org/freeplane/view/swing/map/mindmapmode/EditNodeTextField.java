@@ -497,7 +497,8 @@ public class EditNodeTextField extends EditNodeBase {
 		mapViewManager.removeMapViewChangeListener(mapViewChangeListener);
 		mapViewChangeListener = null;
 		parent.setPreferredSize(null);
-		nodeView.update();
+		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null)
+			nodeView.update();
 		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);
 		textfield.getParent().remove(textfield);
