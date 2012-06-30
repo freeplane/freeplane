@@ -1300,7 +1300,10 @@ public class NodeView extends JComponent implements INodeView {
 	public EdgeStyle getEdgeStyle() {
 		if(edgeStyle != null)
 			return edgeStyle;
-		return getParentView().getEdgeStyle();
+		final NodeView parentView = getParentView();
+		if(parentView != null)
+			return parentView.getEdgeStyle();
+		return EdgeStyle.values()[0];
     }
 
 	public int getEdgeWidth() {
@@ -1314,7 +1317,10 @@ public class NodeView extends JComponent implements INodeView {
 	public Color getEdgeColor() {
 		if(edgeColor != null)
 			return edgeColor;
-		return getParentView().getEdgeColor();
+		final NodeView parentView = getParentView();
+		if(parentView != null)
+			return parentView.getEdgeColor();
+		return Color.GRAY;
     }
 	
 	private void updateCloud() {
