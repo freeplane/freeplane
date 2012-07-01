@@ -384,17 +384,17 @@ public class ConnectorView extends AConnectorView{
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
 			if(! selfLink && isLine && endPoint != null)
-				paintArrow(g, startPoint, endPoint);
+				paintArrow(g, endPoint, startPoint);
 			else
-				paintArrow(g, startPoint, startPoint2);
+				paintArrow(g, startPoint2, startPoint);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
 			if (selfLink)
-				paintArrow(g, startPoint2, startPoint);
+				paintArrow(g, startPoint, startPoint2);
 			else if(isLine && startPoint != null)
-				paintArrow(g, endPoint, startPoint);
+				paintArrow(g, startPoint, endPoint);
 			else
-			paintArrow(g, endPoint, endPoint2);
+			paintArrow(g, endPoint2, endPoint);
 		}
 		if (connectorModel.getShowControlPointsFlag()) {
 			g.setColor(textColor);
@@ -423,8 +423,8 @@ public class ConnectorView extends AConnectorView{
 		g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
     }
 
-	private void paintArrow(final Graphics2D g, Point startPoint, Point endPoint) {
-	    paintArrow(startPoint, endPoint, g, getZoom() * 10);
+	private void paintArrow(final Graphics2D g, Point from, Point to) {
+	    paintArrow(from, to, g, getZoom() * 10);
     }
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
