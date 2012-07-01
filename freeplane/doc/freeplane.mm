@@ -132,24 +132,6 @@
   </body>
 </html>
 </richcontent>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1337169970931" HGAP="-27" VSHIFT="-167">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides.mm">Freeplane (video) guides</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-</node>
 <node LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1330618265586" HGAP="19" VSHIFT="-108" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneFunctions.mm"><richcontent TYPE="NODE">
 
 <html>
@@ -344,7 +326,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Recognizing content" STYLE_REF="UserGuide" ID="ID_1836270960" CREATED="1310900715782" MODIFIED="1313959373704" TEXT_SHORTENED="true">
+<node TEXT="Recognizing content" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1836270960" CREATED="1310900715782" MODIFIED="1313959373704" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
@@ -7376,11 +7358,11 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Reset node position" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1335988584511" TEXT_SHORTENED="true">
+<node TEXT="Reset node position" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1337369703990" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -7388,7 +7370,7 @@
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Returns the node to the position it had when it was first created. If you have moved nodes around and want to reformat your map, this command will do so. <i>Esc</i>&#160;followed by<i>&#160;Ctrl + A</i>&#160;will select all the nodes in a map.</span></font>
+      <font color="#000000" face="SansSerif, sans-serif">Returns the node to the position it had when it was first created. If you have moved nodes around and want to reformat your map, this command will do so. <i>Ctrl + A</i>&#160;will select all the nodes in a map.</font>
     </p>
   </body>
 </html>
@@ -12470,7 +12452,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Select All Descendants" STYLE_REF="Method" FOLDED="true" ID="ID_228451346" CREATED="1309424361071" MODIFIED="1311402755286" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Select All Descendants" STYLE_REF="Method" FOLDED="true" ID="ID_228451346" CREATED="1309424361071" MODIFIED="1337370032830" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -12485,7 +12467,7 @@ elements from the styles activated by conditions are copied.</pre>
         press <i>Alt + End </i>to&#160;&#160;unfold all hidden descendants
       </li>
       <li>
-        press <i>Als + Shift + A </i>to select all visible descendants
+        press <i>Ctrl&#160;+ Shift + A </i>to select all visible descendants
       </li>
     </ul>
     <p>

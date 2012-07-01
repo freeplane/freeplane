@@ -180,38 +180,7 @@
 </html>
 </richcontent>
 </node>
-<node STYLE_REF="Beginner" POSITION="right" ID="ID_1820104438" CREATED="1332872487760" MODIFIED="1337167623241" HGAP="0" VSHIFT="-136">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet_warning"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides_nl.mm">Video gidsen</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Deze gidsen bevatten een snelle maar onvolledige (video) introductie. Hiervoor is een Internetverbinding noodzakelijk. Deze gidsen zijn ook toegankelijk via <i>Help &gt; Online documentatie mindmaps.</i>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-</node>
-<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1335976646145" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Inleiding" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341132995368" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180" VSHIFT="-1">
 <node TEXT="Doel" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1336124917514">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -234,11 +203,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Leeswijzer" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1336124917514" MIN_WIDTH="1">
+<node TEXT="Leeswijzer" STYLE_REF="Beginner" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1336124917514" MIN_WIDTH="1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1335971639644" STYLE="fork" HGAP="-55" VSHIFT="233"><richcontent TYPE="NODE">
+<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1341133095195" STYLE="fork" HGAP="-55" VSHIFT="233"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -273,11 +242,12 @@
         Installeer de<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29#NL">&#160;language add-on NL</a>&#160;voor meer uitgebreide ondersteuning..
       </li>
       <li>
-        Raadpleeg zo mogelijk als inleiding de eerste drie <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides_nl.mm">Freeplane (video) gidsen.</a>
+        Ga naar Help &gt;Documentatie Online om na te gaan of er al videogidsen beschikbaar zijn.
       </li>
     </ul>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -319,7 +289,7 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_879868478" STARTINCLINATION="0;-16;" ENDINCLINATION="0;-16;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Achtergrond&#xa;contextmenu" FOLDED="true" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336132131246" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Achtergrond&#xa;contextmenu" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336132131246" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -337,10 +307,10 @@
 <font BOLD="true" ITALIC="true"/>
 <hook URI="Images/doc/BackgroundContextMenu_nl.png" SIZE="1.0" NAME="ExternalObject"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
-<node TEXT="Openen/sluiten&#xa;Opmaakpaneel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1335976061079" HGAP="56">
+<node TEXT="Openen/sluiten&#xa;Opmaakpaneel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1341132732079" HGAP="56">
 <edge STYLE="hide_edge"/>
 <font BOLD="true" ITALIC="true"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="107;-186;" ENDINCLINATION="107;-186;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="69;-181;" ENDINCLINATION="69;-181;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 </node>
 </node>
 </node>
@@ -437,7 +407,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1335976515073" HGAP="-204" VSHIFT="188"><richcontent TYPE="NODE">
+<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1337203791071" HGAP="-211" VSHIFT="196"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -445,13 +415,13 @@
   </head>
   <body>
     <p>
-      Je kunt een knoop open- en dichtvouwen door op de knoop te killken als een cirkel met een plus- of min-teken&#160;&#160;verschijnt als de cursor zich boven de knoopkern bevindt. <b>Openvouwen</b>&#160;&#160;(uitvouwen) toont verborgen kinderen en <b>dichtvouwen</b>&#160;(invouwen) verbergt kinderen. Als een knoop is dichtgevouwen verschijnt een cirketje aan de kindzijde van de knoop.
+      Je kunt een knoop open- en dichtvouwen door op de knoop te klikken als een cirkel met een plus- of min-teken&#160;&#160;verschijnt wanneer de cursor zich boven de knoopkern bevindt. <b>Openvouwen</b>&#160;&#160;(uitvouwen) toont verborgen kinderen en <b>dichtvouwen</b>&#160;(invouwen) verbergt kinderen. Als een knoop is dichtgevouwen verschijnt een cirketje aan de kindzijde van de knoop.
     </p>
     <p>
       
     </p>
     <p>
-      Als de knoop die je nu leest is opengevouwen, dan zie je aan de rechterkant vier pictogrammen. Deze pictogrammen zie je ook in de werkbalk bovenin het scherm. Door op deze pictogrammen in de werkbalk te klikken kun je knopen op verschillende manieren open- en dichtvouwen.
+      Als de knoop die je nu leest is opengevouwen, dan zie je aan de rechterkant vier pictogrammen. Deze pictogrammen zie je ook in de werkbalk bovenin het scherm. Door op deze pictogrammen in de werkbalk te klikken kun je knopen op verschillende manieren open- en dichtvouwen. Als je op het cirkeltje voor open/dichtvouwen klikt, verschijnen dezelfde pictrogram-knoppen.
     </p>
     <p>
       
@@ -467,7 +437,7 @@
         Als het vinkje achter <i>Extra &gt; open/dichtvouwen bij intern klikken</i>&#160;&#160;is gezet, dan hoef je niet op de cirkel met het +/- teken te klikken, maar kun je voor open/dichtvouwen op het hele gebied van de knoopkern klikken. Merk op dat dubbelklikken op de knoopkern dan niet de het bewerkingsvenster opent.
       </li>
       <li>
-        Als een&#160;knoop wordt dichtgevouwen die een verbindingslijn heeft met een van zijn kindknopen, dan blijft een gestippelde lijn (en een eventueel label) zichtbaar. Door hier op te klikken verschijnt de knoop waarmee de verbinding bestaat.
+        Als een&#160;knoop wordt dichtgevouwen die een verbindingslijn heeft met een van zijn kindknopen, dan blijft een lijn (en een eventueel label) zichtbaar. Door hier op te rechtsklikken verschijnt het contextmenu waarmee je naar de verbonden, verborgen knopen kunt springen.
       </li>
     </ul>
   </body>
@@ -476,6 +446,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Alle knopen openvouwen" ID="ID_1281616092" CREATED="1310134532679" MODIFIED="1323683248394" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -589,6 +560,9 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <edge STYLE="horizontal"/>
+</node>
+<node TEXT="Bewerkent &gt; Knoopgroep &gt; Altijd opengevouwen" STYLE_REF="Method" ID="ID_230150067" CREATED="1337203336236" MODIFIED="1337203697159">
+<font ITALIC="true"/>
 </node>
 </node>
 </node>
@@ -3004,7 +2978,7 @@
 </richcontent>
 <hook NAME="FreeNode"/>
 </node>
-<node TEXT="Publiceren en delen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1335976656503" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Publiceren en delen" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1341133002887" NUMBERED="true" MIN_WIDTH="180" VSHIFT="-3">
 <node TEXT="Afdrukken" STYLE_REF="Advanced" FOLDED="true" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1336125067212" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -3053,7 +3027,7 @@
 </node>
 </node>
 <node TEXT="Presenteren" STYLE_REF="Advanced" FOLDED="true" ID="ID_1747402695" CREATED="1335276169448" MODIFIED="1336125067212">
-<node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1336149776984" HGAP="-64" VSHIFT="89"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1337348213861" HGAP="-64" VSHIFT="96"><richcontent TYPE="NODE">
 
 <html>
   <head>
