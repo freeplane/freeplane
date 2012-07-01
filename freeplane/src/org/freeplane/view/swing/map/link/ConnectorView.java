@@ -52,7 +52,7 @@ public class ConnectorView extends AConnectorView{
 	private static final int NORMAL_LENGTH = 50;
 	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
-	private static final int LABEL_SHIFT = 4;
+	private static final int LABEL_GAP = 4;
 	private static final double PRECISION = 2;
 	private Shape arrowLinkCurve;
 	private Rectangle sourceTextRectangle;
@@ -118,28 +118,27 @@ public class ConnectorView extends AConnectorView{
 		final int textHeight = textPainter.getTextHeight();
 		final int x;
 		if (controlPoint.x > endPoint.x) {
-			x = endPoint.x - textWidth;
+			x = endPoint.x - textWidth - LABEL_GAP;
 		}
 		else {
-			x = endPoint.x;
+			x = endPoint.x  + LABEL_GAP;
 		}
 		final int y;
 		if (controlPoint.y > endPoint.y) {
-			y = endPoint.y  + LABEL_SHIFT;
+			y = endPoint.y  + LABEL_GAP;
 		}
 		else {
-			y = endPoint.y - textHeight - LABEL_SHIFT;
+			y = endPoint.y - textHeight - LABEL_GAP;
 		}
 		textPainter.draw(x, y, textColor, bgColor);
 		return new Rectangle(x, y, textWidth, textHeight);
 	}
 	
-	private Rectangle drawMiddleLabel(final Graphics2D g, final String text) {
+	private Rectangle drawMiddleLabel(final Graphics2D g, final String text, final Point centerPoint) {
 		if (text == null || text.equals("")) {
 			return null;
 		}
 		final TextPainter textPainter = new TextPainter(g, text);
-		final Point centerPoint = getCenterPoint();
 		final int textWidth = textPainter.getTextWidth();
 		final int x = centerPoint.x - textWidth / 2;
 		final int textHeight = textPainter.getTextHeight();
@@ -162,12 +161,6 @@ public class ConnectorView extends AConnectorView{
 		}
 		final double halfLength = getHalfLength();
 		final PathIterator pathIterator = arrowLinkCurve.getPathIterator(new AffineTransform(), PRECISION);
-		if(getTarget() == getSource()){
-			pathIterator.next();
-			final double nextCoords[] = new double[6];
-			pathIterator.currentSegment(nextCoords);
-			return new Point((int)nextCoords[0], (int)nextCoords[1]);
-		}
 		double lastCoords[] = new double[6];
 		pathIterator.currentSegment(lastCoords);
 		double length = 0;
@@ -383,7 +376,9 @@ public class ConnectorView extends AConnectorView{
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			if(! selfLink && isLine && endPoint != null)
+			if (selfLink)
+				paintArrow(g, startPoint2, startPoint);
+			else if(isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 				paintArrow(g, startPoint2, startPoint);
@@ -454,7 +449,14 @@ public class ConnectorView extends AConnectorView{
 			}
 		}
 		if (startPoint != null && endPoint != null) {
-			middleTextRectangle = drawMiddleLabel(g, middleLabel);
+			if(getTarget() == getSource()){
+				if( !connectorModel.getEndArrow().equals(ArrowType.NONE))
+					middleTextRectangle = drawEndPointText(g, middleLabel, startPoint2, startPoint);
+				else
+					middleTextRectangle = drawMiddleLabel(g, middleLabel, startPoint2);
+			}
+			else
+				middleTextRectangle = drawMiddleLabel(g, middleLabel, getCenterPoint());
 		}
 		g.setFont(oldFont);
     }
