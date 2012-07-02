@@ -695,7 +695,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	/**
 	 *
 	 */
-	public void setOptimalColumnWidths() {
+	public void setOptimalColumnWidths() {		
 		try {
 			Component comp = null;
 			int cellWidth = 0;
@@ -711,7 +711,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			}
 		}
 		catch (Exception e) {
-			LogUtils.warn(e);
+			//DOCEAR:
+			LogUtils.warn("race conditions: org.freeplane.view.swing.map.attribute.AttributeTable.setOptimalColumnWidth: "+e.getMessage());
 		}
 	}
 
