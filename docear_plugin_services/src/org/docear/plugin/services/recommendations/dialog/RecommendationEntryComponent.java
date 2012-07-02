@@ -30,7 +30,7 @@ public class RecommendationEntryComponent extends JPanel {
 	public static final int IMPORT_RECOMMENDATION = 2;
 	private Set<ActionListener> actionListeners = new HashSet<ActionListener>();
 
-	public RecommendationEntryComponent(RecommendationEntry recommendation) {
+	public RecommendationEntryComponent(final RecommendationEntry recommendation) {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("default:grow"),
 				ColumnSpec.decode("50px"),},
@@ -38,13 +38,17 @@ public class RecommendationEntryComponent extends JPanel {
 				RowSpec.decode("50px"),}));
 		
 		final JLabel lblOpenButton = new JLabel(recommendation.getTitle());
+//		final JTextField lblOpenButton = new JTextField(recommendation.getTitle());		
+//		lblOpenButton.setBorder( null );
+//		lblOpenButton.setOpaque( false );
+//		lblOpenButton.setEditable( false ); 
 		lblOpenButton.setIcon(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/document-open-remote24x24.png")));
 		lblOpenButton.setToolTipText(TextUtils.getText("recommendation.preview.tooltip"));
 		lblOpenButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));
 		lblOpenButton.setMinimumSize(new Dimension(200, 50));
 		lblOpenButton.setPreferredSize(new Dimension(200, 50));
 		lblOpenButton.addMouseListener(new MouseListener() {
-			
+						
 			public void mouseReleased(MouseEvent e) {}
 			
 			public void mousePressed(MouseEvent e) {}
@@ -89,7 +93,7 @@ public class RecommendationEntryComponent extends JPanel {
 			
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1) {
-					fireActionEvent(new ActionEvent(lblOpenButton, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
+					fireActionEvent(new ActionEvent(recommendation, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
 					e.consume();
 				}
 			}			

@@ -26,5 +26,9 @@ public class RecommendationEntry {
 	public URL getClickUrl() {
 		return clickUrl;
 	}
+	
+	public String toString() {
+		return title;
+	}
 
 }
