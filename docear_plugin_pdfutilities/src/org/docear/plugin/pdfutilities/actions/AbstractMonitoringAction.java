@@ -351,7 +351,9 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								tempTarget = equalChild;
 							}
 						}
-					}catch(Exception e){
+					}
+					catch (InterruptedException e) {}
+					catch(Exception e){						
 						LogUtils.warn(e);
 					}
 				}
