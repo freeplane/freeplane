@@ -77,8 +77,12 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	}
 	
 	public void addChildNode(AWorkspaceTreeNode node) {
+		insertChildNode(node, children.size());
+	}
+	
+	public void insertChildNode(AWorkspaceTreeNode node, int atPos) {
 		node.setParent(this);
-		children.add(node);
+		children.add(atPos, node);				
 	}
 	
 	@ExportAsAttribute(name="system")

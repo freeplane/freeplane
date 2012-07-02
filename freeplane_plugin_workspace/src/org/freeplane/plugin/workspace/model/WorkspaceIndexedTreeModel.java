@@ -423,6 +423,16 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	 * @return
 	 */
 	public boolean addNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode, boolean allowRenaming) {
+		return insertNodeTo(node, targetNode, targetNode.getChildCount(), allowRenaming);
+	}
+	
+	/**
+	 * @param node
+	 * @param targetNode
+	 * @param allowRenaming
+	 * @return
+	 */
+	public boolean insertNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode, int atPos, boolean allowRenaming) {
 		node.setParent(targetNode);
 		//DOCEAR - look for problems that may caused by this change!!!
 		if(allowRenaming) {
@@ -435,8 +445,8 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		if(this.containsNode(node.getKey())) {
 			return false;
 		}
-		targetNode.addChildNode(node);
-		nodesWereInserted(targetNode,new int[] {targetNode.getChildCount()-1});
+		targetNode.insertChildNode(node, atPos);
+		nodesWereInserted(targetNode,new int[] {atPos});
 		addToIndexRecursively(node, targetNode);
 		return true;
 	}
