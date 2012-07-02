@@ -5,6 +5,7 @@
 package org.docear.plugin.core.features;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -17,6 +18,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
@@ -108,14 +110,11 @@ public class DocearMapWriter extends MapWriter {
 				// FIXME: DOCEAR - version not set, why and what to do?
 				LogUtils.warn("version is null! This should not happen!");
 			}
-			
-//			final String mapId = modelExtension.getMapId();
-//			writer.addAttribute(DocearMapModelExtension.MAP_ID_ATTRIBUTE, (mapId != null ? mapId : ""));
-//			
-//			if (map.getFile() != null) {			
-//				URI mapUri = LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile());
-//				writer.addAttribute(DocearMapModelExtension.MAP_URI_ATTRIBUTE, (mapUri != null ? mapUri.toString() : ""));
-//			}
+
+			if (map.getFile() != null) {			
+				URI mapUri = LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile());
+				modelExtension.setUri(mapUri);
+			}
 		}
 		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 	}

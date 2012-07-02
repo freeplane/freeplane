@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -15,6 +16,7 @@ import org.docear.plugin.services.ServiceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class MapLifeCycleListener implements IMapLifeCycleListener {
 
@@ -39,20 +41,39 @@ public class MapLifeCycleListener implements IMapLifeCycleListener {
 	private Properties getMapProperties(MapModel map) {
 		ServiceController serviceController = ServiceController.getController();
 		DocearController docearController = DocearController.getController();
-		
+				
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
 		if (dmme == null) {
 			return null;
-		}		
+		}
+		
+		boolean isLibraryMap = false;
+		for (URI uri : DocearController.getController().getLibrary().getMindmaps()) { 
+			if (uri != null && map != null) {
+				String path = map.getFile().getAbsolutePath(); 
+				File f = WorkspaceUtils.resolveURI(uri);
+				
+				if (f != null && f.getAbsolutePath().equals(path)) {
+					isLibraryMap = true;
+				}
+			}
+		}
+		
+		String typeName = (dmme.getType() == null ? "" : dmme.getType().name());
+		
 		Properties properties = new Properties();
 		properties.put("mindmap_id", dmme.getMapId());
 		properties.put("timestamp", ""+System.currentTimeMillis());
+		properties.put("is_library_map", new Boolean(isLibraryMap).toString());
 		properties.put("backup", new Boolean(serviceController.isBackupAllowed()).toString());
 		properties.put("allow_content_research", new Boolean(serviceController.isResearchAllowed()).toString());
 		properties.put("allow_information_retrieval", new Boolean(serviceController.isInformationRetrievalSelected()).toString());		
 		properties.put("allow_usage_research", new Boolean(serviceController.isUsageMiningAllowed()).toString());
 		properties.put("allow_recommendations", new Boolean(serviceController.isRecommendationsAllowed()).toString());
 		
+		if (typeName != null && typeName.trim().length()>0) {
+			properties.put("map_type", typeName);
+		}		
 		properties.put("map_version", dmme.getVersion());
 		properties.put("application_name", docearController.getApplicationName());
 		properties.put("application_version", docearController.getApplicationVersion());

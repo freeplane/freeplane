@@ -83,9 +83,9 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
 				if (docearMapModel == null) {
 					docearMapModel = new DocearMapModelExtension();
+					DocearMapModelController.setModel(mapModel, docearMapModel);
 				}			
-				docearMapModel.setType(value);
-				DocearMapModelController.setModel(mapModel, docearMapModel);
+				docearMapModel.setType(value);				
 			}
 			
 		});
@@ -98,11 +98,10 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
 				if (docearMapModel == null) {
 					docearMapModel = new DocearMapModelExtension();
+					DocearMapModelController.setModel(mapModel, docearMapModel);
 				}			
 				docearMapModel.setMapId(value);
-				DocearMapModelController.setModel(mapModel, docearMapModel);
-			}
-			
+			}			
 		});
 		
 		reader.addAttributeHandler(DOCEAR_MAP_EXTENSION_XML_TAG, DocearMapModelExtension.MAP_URI_ATTRIBUTE, new IAttributeHandler() {
@@ -113,9 +112,9 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
 				if (docearMapModel == null) {
 					docearMapModel = new DocearMapModelExtension();
+					DocearMapModelController.setModel(mapModel, docearMapModel);
 				}			
 				docearMapModel.setUri(URI.create(value));
-				DocearMapModelController.setModel(mapModel, docearMapModel);
 			}
 			
 		});
