@@ -9,6 +9,7 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
@@ -134,12 +135,19 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 	/**
 	 * @param string
 	 */
-	private void createAndRenameMap(File file ,String name) {
+	private void createAndRenameMap(File file, String name) {
 		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 		try {
 			MapModel map = new MapModel();
 			mapIO.loadTree(map, file);
 			map.getRootNode().setText(name);
+			if(name.equals("trash") || name.equals("temp")) {
+    			DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
+    			if(dmme == null) {
+    				dmme = new DocearMapModelExtension();
+    			}
+    			dmme.setType(name);
+			}
 			mapIO.writeToFile(map, file);
 		}
 		catch (Exception e) {

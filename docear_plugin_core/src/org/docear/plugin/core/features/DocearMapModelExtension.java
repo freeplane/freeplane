@@ -33,7 +33,13 @@ public class DocearMapModelExtension implements IExtension {
 		}
 		else if(type.equalsIgnoreCase("literature_annotations")){
 			this.type = DocearMapType.literature_annotations;
-		}		
+		}
+		else if(type.equalsIgnoreCase("trash")){
+			this.type = DocearMapType.trash;
+		}
+		else if(type.equalsIgnoreCase("temp")){
+			this.type = DocearMapType.temp;
+		}
 	}
 
 	public String getVersion() {
@@ -45,7 +51,7 @@ public class DocearMapModelExtension implements IExtension {
 	}
 	
 	public enum DocearMapType{
-		incoming, my_publications, literature_annotations
+		incoming, my_publications, literature_annotations, trash, temp
 	}
 
 	public String getMapId() {

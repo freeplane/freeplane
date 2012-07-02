@@ -211,7 +211,7 @@ public class NodeStyleController implements IExtension {
 			}
 		}
 		catch (NullPointerException e) {
-			LogUtils.warn(e);
+			LogUtils.warn("org.freeplane.features.nodestyle.NodeStyleController.getStyleMinWidth: "+e.getMessage());
 		}
 		return 1;
 	}
@@ -400,7 +400,7 @@ public class NodeStyleController implements IExtension {
 			return maxTextWidth;
 		}
 		catch (Exception ex) {
-			LogUtils.warn(ex);
+			LogUtils.warn("org.freeplane.features.nodestyle.NodeStyleController.getMaxWidth: "+ex.getMessage());
 			return getDefaultMaxNodeWidth();
 		}
 	}

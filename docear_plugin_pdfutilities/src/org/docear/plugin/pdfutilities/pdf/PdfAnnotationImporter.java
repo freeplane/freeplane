@@ -90,9 +90,8 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 				//LogUtils.warn(e);
 				PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
 				annotations.addAll(this.importBookmarks(outline));
-			} catch(Exception ex){
-				LogUtils.warn(e.getMessage()+" -> " +uri);
-				//LogUtils.warn(ex);
+			} catch(Exception ex){				
+				LogUtils.warn("org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter.importAnnotations: " + ex.getMessage()+" -> " +uri);
 				return annotations;
 			}
 		} catch(Exception e){

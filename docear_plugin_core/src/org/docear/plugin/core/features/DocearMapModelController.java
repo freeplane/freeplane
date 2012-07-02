@@ -66,7 +66,8 @@ public class DocearMapModelController implements IExtension{
 		DocearMapModelExtension mapModelExtension = new DocearMapModelExtension();
 		ResourceController resourceController = ResourceController.getResourceController();
 		mapModelExtension.setVersion(resourceController.getProperty("docear_map_extension_version"));
-		mapModelExtension.setMapId(createMapId());		
+		mapModelExtension.setMapId(createMapId());	
+		
 		DocearMapModelController.setModel(map, mapModelExtension);
 	}
 			
