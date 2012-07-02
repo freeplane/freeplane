@@ -86,11 +86,13 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 			
 		} catch(ClassCastException e){
 			try{
-				LogUtils.warn(e);
+				//LogUtils.warn("first try: "+ e.getMessage()+" -> " +uri);
+				//LogUtils.warn(e);
 				PDOutlineItem outline = (PDOutlineItem)PDOutline.META.createFromCos(document.getCatalog().cosGetOutline());
 				annotations.addAll(this.importBookmarks(outline));
 			} catch(Exception ex){
-				LogUtils.warn(ex);
+				LogUtils.warn(e.getMessage()+" -> " +uri);
+				//LogUtils.warn(ex);
 				return annotations;
 			}
 		} catch(Exception e){
