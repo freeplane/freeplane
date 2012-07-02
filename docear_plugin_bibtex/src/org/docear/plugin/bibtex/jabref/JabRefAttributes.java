@@ -210,7 +210,7 @@ public class JabRefAttributes {
 			for (Item item : inserts) {
 				changes = true;
 				AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributeTable, 0, item.getName(), item.getValue());
-			}			
+			}
 		}
 		finally {
 			// do not overwrite existing links
@@ -311,6 +311,7 @@ public class JabRefAttributes {
 			for (String jabrefFile : retrieveFileLinksFromEntry(entry)) {
 				if (jabrefFile.endsWith(file.getName())) {
 					entries.add(entry);
+					break;
 				}
 			}
 		}
@@ -333,6 +334,10 @@ public class JabRefAttributes {
 	}
 
 	public BibtexEntry findBibtexEntryForPDF(URI uri, MapModel map) throws ResolveDuplicateEntryAbortedException {
+		return findBibtexEntryForPDF(uri, map, false);
+	}
+
+	public BibtexEntry findBibtexEntryForPDF(URI uri, MapModel map, boolean ignoreDuplicates) throws ResolveDuplicateEntryAbortedException {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (database == null) {
 			return null;
@@ -344,8 +349,9 @@ public class JabRefAttributes {
 		}
 		String nodeFileName = nodeFile.getName();
 		String baseName = FilenameUtils.removeExtension(nodeFileName);
-		
+
 		MapModificationSession session = map.getExtension(DocearMapModelExtension.class).getMapModificationSession();
+
 		Set<String> ignores = null;
 		if (session != null) {
 			ignores = (Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST);
@@ -354,6 +360,7 @@ public class JabRefAttributes {
 				session.putSessionObject(MapModificationSession.FILE_IGNORE_LIST, ignores);
 			}
 		}
+
 		try {
 			if (ignores != null) {
 				if (nodeFileName != null) {
@@ -362,19 +369,21 @@ public class JabRefAttributes {
 					}
 				}
 			}
-    		resolveDuplicateLinks(nodeFile);
-    
-    		for (BibtexEntry entry : database.getEntries()) {
-    			String jabrefFiles = entry.getField(GUIGlobals.FILE_FIELD);
-    			if (jabrefFiles != null) {
-    				// path linked in jabref
-    				for (String jabrefFile : parsePathNames(entry, jabrefFiles)) {
-    					if (jabrefFile.endsWith(nodeFileName)) {
-    						return entry;
-    					}
-    				}
-    			}
-    		}
+			if (!ignoreDuplicates) {
+				resolveDuplicateLinks(nodeFile);
+			}
+
+			for (BibtexEntry entry : database.getEntries()) {
+				String jabrefFiles = entry.getField(GUIGlobals.FILE_FIELD);
+				if (jabrefFiles != null) {
+					// path linked in jabref
+					for (String jabrefFile : parsePathNames(entry, jabrefFiles)) {
+						if (jabrefFile.endsWith(nodeFileName)) {
+							return entry;
+						}
+					}
+				}
+			}
 		}
 		catch (ResolveDuplicateEntryAbortedException e) {
 			if (ignores != null) {
@@ -402,12 +411,13 @@ public class JabRefAttributes {
 		}
 		for (String s : paths) {
 			try {
-				if(Compat.isWindowsOS()) {
+				if (Compat.isWindowsOS()) {
 					fileNames.add(new File(s).getPath());
-				} 
+				}
 				else {
-					//DOCEAR - maybe no escape removal -> could cause problems like in win os 
-					fileNames.add(new File(removeEscapingCharacter(s)).getPath());	
+					// DOCEAR - maybe no escape removal -> could cause problems
+					// like in win os
+					fileNames.add(new File(removeEscapingCharacter(s)).getPath());
 				}
 			}
 			catch (Exception e) {

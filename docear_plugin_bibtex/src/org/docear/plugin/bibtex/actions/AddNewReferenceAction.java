@@ -16,7 +16,6 @@ import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabrefWrapper;
-import org.docear.plugin.core.util.CoreUtils;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -61,7 +60,7 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 		for (NodeModel node : nodes) {
 			try {
 				URI tempLink = NodeLinks.getLink(node);
-				String tempName = CoreUtils.resolveURI(tempLink).getName();
+				String tempName = WorkspaceUtils.resolveURI(tempLink, node.getMap()).getName();
 
 				if (link == null) {
 					link = tempLink;
