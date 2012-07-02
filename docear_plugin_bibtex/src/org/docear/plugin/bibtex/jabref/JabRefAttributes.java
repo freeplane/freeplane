@@ -33,6 +33,7 @@ import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
@@ -401,7 +402,13 @@ public class JabRefAttributes {
 		}
 		for (String s : paths) {
 			try {
-				fileNames.add(new File(removeEscapingCharacter(s)).getName());
+				if(Compat.isWindowsOS()) {
+					fileNames.add(new File(s).getPath());
+				} 
+				else {
+					//DOCEAR - maybe no escape removal -> could cause problems like in win os 
+					fileNames.add(new File(removeEscapingCharacter(s)).getPath());	
+				}
 			}
 			catch (Exception e) {
 				continue;
