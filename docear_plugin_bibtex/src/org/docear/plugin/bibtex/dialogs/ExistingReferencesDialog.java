@@ -21,6 +21,7 @@ import net.sf.jabref.Globals;
 import net.sf.jabref.SearchManager2;
 import net.sf.jabref.SidePaneManager;
 
+import org.docear.plugin.bibtex.Reference;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.JabrefWrapper;
@@ -54,14 +55,19 @@ public class ExistingReferencesDialog extends JDialog {
 		if (entry != null) {
 			Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 			JabRefAttributes attributes = ReferencesController.getController().getJabRefAttributes();					
+						
+			BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getBasePanel();
+			int position = basePanel.getMainTable().findEntry(entry);
+			basePanel.selectSingleEntry(position);
+			
+			Reference reference = new Reference(entry, nodes.iterator().next());		
 			
 			//import pdf into jabref after adding a reference to a node linking to a pdf
 			int yesorno = JOptionPane.YES_OPTION;
-			if (link != null) {
-				if (link.getPath().toLowerCase().endsWith(".pdf")) {
-					BasePanel basePanel = ReferencesController.getController().getJabrefWrapper().getBasePanel();
-					int position = basePanel.getMainTable().findEntry(entry);
-					basePanel.selectSingleEntry(position);
+			
+			if (link != null && reference.getUris().size() == 0) {
+				if (link.getPath().toLowerCase().endsWith(".pdf")) {					
+					
 					JabrefWrapper jabrefWrapper = ReferencesController.getController().getJabrefWrapper();
 					try {
 						BibtexEntry foundEntry = attributes.findBibtexEntryForPDF(link, nodes.iterator().next().getMap(), true);
@@ -75,13 +81,13 @@ public class ExistingReferencesDialog extends JDialog {
 						LogUtils.warn(e);
 					}
 				}
-				else {
-					if (entry.getField("file") != null || entry.getField("url") != null) {
-						yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
-								TextUtils.getText("overwrite_existing_file_link"), TextUtils.getText("overwrite_existing_file_link_title"),
-								JOptionPane.YES_NO_OPTION);
-					}
-				}
+//				else {
+//					if (entry.getField("file") != null || entry.getField("url") != null) {
+//						yesorno = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getContentPane(),
+//								TextUtils.getText("overwrite_existing_file_link"), TextUtils.getText("overwrite_existing_file_link_title"),
+//								JOptionPane.YES_NO_OPTION);
+//					}
+//				}
 			}
 			
 			//set references to the selected nodes

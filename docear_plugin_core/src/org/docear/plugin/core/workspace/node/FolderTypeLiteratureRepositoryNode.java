@@ -9,6 +9,8 @@ import java.net.URI;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -153,7 +155,13 @@ public class FolderTypeLiteratureRepositoryNode extends FolderLinkNode implement
 				return;
 			}
 			this.setPath(uri);
-			this.refresh();
+			SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					refresh();					
+				}
+			});
 		}
 	}
 	

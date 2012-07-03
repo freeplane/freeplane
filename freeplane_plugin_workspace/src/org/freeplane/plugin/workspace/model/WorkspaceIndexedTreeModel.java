@@ -71,8 +71,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new TreeModelEvent(source, path, childIndices, children);
+				if (e == null) e = new TreeModelEvent(source, path, childIndices, children);
 				((TreeModelListener) listeners[i + 1]).treeNodesChanged(e);
 			}
 		}
@@ -102,8 +101,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new TreeModelEvent(source, path, childIndices, children);
+				if (e == null) e = new TreeModelEvent(source, path, childIndices, children);
 				((TreeModelListener) listeners[i + 1]).treeNodesInserted(e);
 			}
 		}
@@ -133,13 +131,12 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new TreeModelEvent(source, path, childIndices, children);
+				if (e == null) e = new TreeModelEvent(source, path, childIndices, children);
 				((TreeModelListener) listeners[i + 1]).treeNodesRemoved(e);
 			}
 		}
 	}
-	
+
 	/**
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the
@@ -164,8 +161,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.delete, from, to);
+				if (e == null) e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.delete, from, to);
 				((TreeModelListener) listeners[i + 1]).treeNodesRemoved(e);
 			}
 		}
@@ -195,8 +191,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new TreeModelEvent(source, path, childIndices, children);
+				if (e == null) e = new TreeModelEvent(source, path, childIndices, children);
 				((TreeModelListener) listeners[i + 1]).treeStructureChanged(e);
 			}
 		}
@@ -222,13 +217,12 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new TreeModelEvent(source, path);
+				if (e == null) e = new TreeModelEvent(source, path);
 				((TreeModelListener) listeners[i + 1]).treeStructureChanged(e);
 			}
 		}
 	}
-	
+
 	/**
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the
@@ -249,13 +243,12 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.move, from, to);
+				if (e == null) e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.move, from, to);
 				((TreeModelListener) listeners[i + 1]).treeStructureChanged(e);
 			}
 		}
 	}
-	
+
 	/**
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the
@@ -280,8 +273,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				// Lazily create the event:
-				if (e == null)
-					e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.rename, from, to);
+				if (e == null) e = new WorkspaceTreeModelEvent(source, path, WorkspaceTreeModelEventType.rename, from, to);
 				((TreeModelListener) listeners[i + 1]).treeNodesChanged(e);
 			}
 		}
@@ -325,7 +317,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			}
 		}
 	}
-	
+
 	public void nodeMoved(AWorkspaceTreeNode node, Object from, Object to) {
 		fireTreeStructureMoved(this, node.getTreePath(), from, to);
 	}
@@ -390,7 +382,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 			fireTreeStructureChanged(this, node.getTreePath(), null, null);
 		}
 	}
- 
+
 	/**
 	 * @param key
 	 * @return
@@ -398,7 +390,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public boolean containsNode(String key) {
 		return this.hashStringKeyIndex.containsKey(key);
 	}
-	
+
 	/**
 	 * @param key
 	 * @return
@@ -406,7 +398,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public AWorkspaceTreeNode getNode(String key) {
 		return this.hashStringKeyIndex.get(key);
 	}
-		
+
 	/**
 	 * @param node
 	 * @param targetNode
@@ -415,7 +407,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public boolean addNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
 		return addNodeTo(node, targetNode, true);
 	}
-	
+
 	/**
 	 * @param node
 	 * @param targetNode
@@ -425,7 +417,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public boolean addNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode, boolean allowRenaming) {
 		return insertNodeTo(node, targetNode, targetNode.getChildCount(), allowRenaming);
 	}
-	
+
 	/**
 	 * @param node
 	 * @param targetNode
@@ -434,52 +426,54 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	 */
 	public boolean insertNodeTo(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode, int atPos, boolean allowRenaming) {
 		node.setParent(targetNode);
-		//DOCEAR - look for problems that may caused by this change!!!
-		if(allowRenaming) {
+		// DOCEAR - look for problems that may caused by this change!!!
+		if (allowRenaming) {
 			String newNodeName = node.getName();
 			int nameCount = 0;
-			while(this.containsNode(node.getKey()) && nameCount++ < 100) {
-				node.setName(newNodeName+" ("+nameCount+")");
+			while (this.containsNode(node.getKey()) && nameCount++ < 100) {
+				node.setName(newNodeName + " (" + nameCount + ")");
 			}
 		}
-		if(this.containsNode(node.getKey())) {
+		if (this.containsNode(node.getKey())) {
 			return false;
 		}
+
 		targetNode.insertChildNode(node, atPos);
-		nodesWereInserted(targetNode,new int[] {atPos});
+		nodesWereInserted(targetNode, new int[] { atPos });
 		addToIndexRecursively(node, targetNode);
+
 		return true;
 	}
 
 	private void addToIndexRecursively(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
 		this.hashStringKeyIndex.put(node.getKey(), node);
-		if(node.getChildCount() > 0) {
+		if (node.getChildCount() > 0) {
 			int[] indices = new int[node.getChildCount()];
-			for(int i=0; i < node.getChildCount(); i++) {
+			for (int i = 0; i < node.getChildCount(); i++) {
 				AWorkspaceTreeNode childNode = node.getChildAt(i);
-				addToIndexRecursively(childNode, node);				
-				indices[i] = targetNode.getChildCount()-1; 
+				addToIndexRecursively(childNode, node);
+				indices[i] = targetNode.getChildCount() - 1;
 			}
 			nodesWereInserted(targetNode, indices);
 		}
 	}
-	
+
 	/**
 	 * @param node
 	 */
 	public void removeAllElements(AWorkspaceTreeNode node) {
 		Enumeration<AWorkspaceTreeNode> children = node.children();
 		AWorkspaceTreeNode child = null;
-		while(children.hasMoreElements()) {
+		while (children.hasMoreElements()) {
 			child = children.nextElement();
 			this.hashStringKeyIndex.remove(child.getKey());
 			child.disassociateReferences();
-			fireTreeNodesRemoved(this, node.getTreePath(), null, new Object[] {child});
+			fireTreeNodesRemoved(this, node.getTreePath(), null, new Object[] { child });
 		}
 		node.removeAllChildren();
-		
+
 	}
-	
+
 	/**
 	 * @param node
 	 */
@@ -488,91 +482,89 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		AWorkspaceTreeNode parent = node.getParent();
 		parent.removeChild(node);
 		node.disassociateReferences();
-		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] {node});
+		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] { node });
 	}
-	
+
 	/**
 	 * @param node
 	 */
 	public void cutNodeFromParent(AWorkspaceTreeNode node) {
 		AWorkspaceTreeNode parent = node.getParent();
 		removeFromIndexRecursively(node);
-		parent.removeChild(node);		
-		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] {node});
+		parent.removeChild(node);
+		fireTreeNodesRemoved(this, parent.getTreePath(), null, new Object[] { node });
 	}
-	
+
 	/**
 	 * @param node
 	 */
 	private void removeFromIndexRecursively(AWorkspaceTreeNode node) {
 		List<AWorkspaceTreeNode> removes = new ArrayList<AWorkspaceTreeNode>();
 		this.hashStringKeyIndex.remove(node.getKey());
-		if(node.getChildCount() > 0) {
+		if (node.getChildCount() > 0) {
 			int[] indices = new int[node.getChildCount()];
-			for(int i=0; i < node.getChildCount(); i++) {
+			for (int i = 0; i < node.getChildCount(); i++) {
 				AWorkspaceTreeNode childNode = node.getChildAt(i);
 				removeFromIndexRecursively(childNode);
 				removes.add(childNode);
 				indices[i] = i;
 			}
 			fireTreeNodesRemoved(this, node.getTreePath(), indices, removes.toArray());
-		}		
+		}
 	}
-	
+
 	public void changeNodeName(AWorkspaceTreeNode node, String newName) throws WorkspaceModelException {
 		String oldName = node.getName();
 		File oldFile = null;
-		if(node instanceof DefaultFileNode){
-			oldFile = new File(((DefaultFileNode)node).getFile().getParent(), oldName);
-		}			
-		node.setName(newName);
-		if(this.hashStringKeyIndex.containsKey(node.getKey())) {
-			node.setName(oldName);
-			throw new WorkspaceModelException("A Node with the name '"+newName+"' already exists.");
+		if (node instanceof DefaultFileNode) {
+			oldFile = new File(((DefaultFileNode) node).getFile().getParent(), oldName);
 		}
-		node.setName(oldName);		
+		node.setName(newName);
+		if (this.hashStringKeyIndex.containsKey(node.getKey())) {
+			node.setName(oldName);
+			throw new WorkspaceModelException("A Node with the name '" + newName + "' already exists.");
+		}
+		node.setName(oldName);
 		removeFromIndexRecursively(node);
 		node.setName(newName);
 		addToIndexRecursively(node, node.getParent());
-		if(node instanceof DefaultFileNode){
-			File newFile = ((DefaultFileNode)node).getFile();
+		if (node instanceof DefaultFileNode) {
+			File newFile = ((DefaultFileNode) node).getFile();
 			fireTreeNodeRenamed(this, node.getTreePath(), oldFile, newFile);
-		}		
-	}	
-		
+		}
+	}
+
 	/**
 	 * 
 	 */
 	public void resetIndex() {
-		this.hashStringKeyIndex.clear();		
+		this.hashStringKeyIndex.clear();
 	}
-	
+
 	public List<URI> getAllNodesFiltered(String filter) {
 		HashSet<URI> set = new HashSet<URI>();
-		for(AWorkspaceTreeNode node : hashStringKeyIndex.values()) {
-			
-			
-			if(node instanceof AFolderNode || node instanceof FolderFileNode) {
+		for (AWorkspaceTreeNode node : hashStringKeyIndex.values()) {
+
+			if (node instanceof AFolderNode || node instanceof FolderFileNode) {
 				continue;
 			}
-			
-			if(node instanceof DefaultFileNode) {
+
+			if (node instanceof DefaultFileNode) {
 				File file = ((DefaultFileNode) node).getFile();
-				if(file.getName().endsWith(filter)) {
+				if (file.getName().endsWith(filter)) {
 					set.add(file.toURI());
 				}
-			} 
-			else 
-			if(node instanceof ALinkNode) {
+			}
+			else if (node instanceof ALinkNode) {
 				URI uri = ((ALinkNode) node).getLinkPath();
-				if(uri.getPath().endsWith(filter)) {
+				if (uri.getPath().endsWith(filter)) {
 					set.add(WorkspaceUtils.absoluteURI(uri));
 				}
-			}			
-		}		
-		return Arrays.asList(set.toArray(new URI[]{}));
-	}	
-	
+			}
+		}
+		return Arrays.asList(set.toArray(new URI[] {}));
+	}
+
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
@@ -580,7 +572,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public Object getRoot() {
 		return root;
 	}
-	
+
 	public void setRoot(AWorkspaceTreeNode object) {
 		this.root = object;
 	}
@@ -600,8 +592,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	public void valueForPathChanged(TreePath path, Object newValue) {
 		AWorkspaceTreeNode node = (AWorkspaceTreeNode) path.getLastPathComponent();
 		if (node instanceof IWorkspaceNodeActionListener) {
-			((IWorkspaceNodeActionListener) node).handleAction(new WorkspaceActionEvent(node, WorkspaceActionEvent.WSNODE_CHANGED,
-					newValue));
+			((IWorkspaceNodeActionListener) node).handleAction(new WorkspaceActionEvent(node, WorkspaceActionEvent.WSNODE_CHANGED, newValue));
 			nodeChanged(node);
 		}
 		else {
@@ -621,5 +612,4 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 		listenerList.remove(TreeModelListener.class, l);
 	}
 
-	
 }

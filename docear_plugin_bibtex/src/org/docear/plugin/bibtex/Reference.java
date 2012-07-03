@@ -13,7 +13,6 @@ import net.sf.jabref.gui.FileListTableModel;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class Reference {
 	public class Item {
@@ -61,52 +60,6 @@ public class Reference {
 				uris.add(new File(model.getEntry(i).getLink()).toURI());
 			}
 		}
-		
-//		boolean isFile = true;
-//		String url = entry.getField("file");
-//		if (url != null) {
-//			ArrayList<URI> uris = jabRefAttributes.parsePaths(entry, url.toString());
-//			if (uris.size() > 0) {
-//				uri = jabRefAttributes.parsePaths(entry, url.toString()).get(0);
-//				if (uri != null) {
-//					url = WorkspaceUtils.resolveURI(uri, node.getMap()).getPath();
-//				}
-//				else {
-//					url = null;
-//				}
-//			}
-//		}
-//		
-//		if (url == null) {
-//			isFile = false;
-//			url = entry.getField("url");
-//			if (url != null) {
-//				url = url.trim();
-//			}
-//			if (url != null && url.length()>0) {
-//				url = url.split(" ")[0];
-//			}
-//		}
-//		
-//		if (isFile) {
-//			uri = new File(url.trim()).toURI();
-//		}
-//		else {
-//			if (url != null) {
-//				try {
-//					try {
-//						uri = new URL(url).toURI();
-//					}			
-//					catch (MalformedURLException e) {				
-//						uri = new URL("http://"+url).toURI();
-//					}
-//				}
-//				catch(Exception e) {
-//					e.printStackTrace();
-//				}
-//			}			
-//		}
-		
 	}
 
 	public Item getKey() {
