@@ -92,7 +92,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			// if (bibtexEntry != null) {
 			BibtexEntry bibtexEntry = entry.getKey();
 			for (NodeModel node : entry.getValue()) {
-				Reference reference = new Reference(bibtexEntry, node);
+				Reference reference = new Reference(bibtexEntry);
 				File f = WorkspaceUtils.resolveURI(Tools.getAbsoluteUri(node), node.getMap());
 				if (f != null) {
 					if (!reference.containsFileName(f.getName())) {

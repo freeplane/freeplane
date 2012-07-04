@@ -60,7 +60,7 @@ public class ExistingReferencesDialog extends JDialog {
 			int position = basePanel.getMainTable().findEntry(entry);
 			basePanel.selectSingleEntry(position);
 			
-			Reference reference = new Reference(entry, nodes.iterator().next());		
+			Reference reference = new Reference(entry);		
 			
 			//import pdf into jabref after adding a reference to a node linking to a pdf
 			int yesorno = JOptionPane.YES_OPTION;

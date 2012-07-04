@@ -106,7 +106,7 @@ public class JabRefAttributes {
 
 	public void setReferenceToNode(BibtexEntry entry) throws ResolveDuplicateEntryAbortedException {
 		NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		setReferenceToNode(new Reference(entry, node), node);
+		setReferenceToNode(new Reference(entry), node);
 	}
 
 	public void removeReferenceFromNode(NodeModel node) {
@@ -160,7 +160,7 @@ public class JabRefAttributes {
 						}
 					}
 					resolveDuplicateLinks(WorkspaceUtils.resolveURI(uri));
-					reference = new Reference(findBibtexEntryForPDF(uri, node.getMap()), node);
+					reference = new Reference(findBibtexEntryForPDF(uri, node.getMap()));
 				}
 				catch (NullPointerException e) {
 					LogUtils.warn(e.getMessage());
@@ -230,11 +230,11 @@ public class JabRefAttributes {
 	}
 
 	public boolean updateReferenceToNode(BibtexEntry entry, NodeModel node) throws ResolveDuplicateEntryAbortedException {
-		return updateReferenceToNode(new Reference(entry, node), node);
+		return updateReferenceToNode(new Reference(entry), node);
 	}
 
 	public boolean setReferenceToNode(BibtexEntry entry, NodeModel node) throws ResolveDuplicateEntryAbortedException {
-		return setReferenceToNode(new Reference(entry, node), node);
+		return setReferenceToNode(new Reference(entry), node);
 	}
 
 	public boolean setReferenceToNode(Reference reference, NodeModel node) throws ResolveDuplicateEntryAbortedException {
@@ -307,9 +307,11 @@ public class JabRefAttributes {
 
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 
-		for (BibtexEntry entry : database.getEntries()) {
-			for (String jabrefFile : retrieveFileLinksFromEntry(entry)) {
-				if (jabrefFile.endsWith(file.getName())) {
+		for (BibtexEntry entry : database.getEntries()) {			
+			for (String jabrefPath : retrieveFileLinksFromEntry(entry)) {
+				File jabrefFile = new File(jabrefPath);
+				
+				if (jabrefFile!=null && jabrefFile.getName().equals(file.getName())) {
 					entries.add(entry);
 					break;
 				}

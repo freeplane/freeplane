@@ -12,7 +12,6 @@ import net.sf.jabref.GUIGlobals;
 import net.sf.jabref.gui.FileListTableModel;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
-import org.freeplane.features.map.NodeModel;
 
 public class Reference {
 	public class Item {
@@ -37,7 +36,7 @@ public class Reference {
 	private final ArrayList<Item> attributes;
 	private Set<URI> uris = new HashSet<URI>();
 	
-	public Reference(BibtexEntry entry, NodeModel node) {		
+	public Reference(BibtexEntry entry) {		
 		JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();		
 		
 		attributes = new ArrayList<Reference.Item>();
