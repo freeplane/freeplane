@@ -119,16 +119,16 @@
 	<target name="prepareVersion" depends="prepareDevelVersion, prepareAlphaVersion, prepareBetaVersion, prepareRCVersion, prepareMinorVersion, prepareMiddleVersion, prepareMajorVersion">
 
 		<property name="docear.version.string" value="${docear.build.version.major}.${docear.build.version.middle}.${docear.build.version.minor}" />
-		        
+
 		<buildnumber file="../docear_plugin_core/resources/build.number" />
 
 		<propertyfile file="../docear_plugin_core/resources/version.properties">
 			<entry key="build_date" type="date" value="now" pattern="MM/dd/yyyy" />
 			<entry key="docear_version_status" operation="=" value="${docear.version.status}" />
 			<entry key="docear_version_status_number" type="int" operation="=" value="${docear.build.status.number}" />
-			<entry key="docear_version"  operation="=" value="${docear.version.string}" />
+			<entry key="docear_version" operation="=" value="${docear.version.string}" />
 		</propertyfile>
-				
+
 		<property name="ver_docear" value="${docear.version.string}.${docear.build.status.number}_${docear.version.status}_build${build.number}" />
 		<condition property="ver" value="${ver_docear}" else="${ver_freeplane}">
 			<equals arg1="${ApplicationNameToLowerCase}" arg2="docear" />
@@ -558,15 +558,13 @@
     -->
 		<echo message="Adding WorkingDirectory to Info.plist" />
 		<replace file="${macappfullpath}/Contents/Info.plist">
-			<replacetoken>
-				<![CDATA[<string>org.knopflerfish.framework.Main</string>]]></replacetoken>
-		<replacevalue>
-			<![CDATA[<string>org.knopflerfish.framework.Main</string>
-		<key>WorkingDirectory</key>
-		<string>$JAVAROOT</string>]]></replacevalue>
-</replace>
+		    <replacetoken><![CDATA[<string>org.knopflerfish.framework.Main</string>]]></replacetoken>
+		    <replacevalue><![CDATA[<string>org.knopflerfish.framework.Main</string>
+<key>WorkingDirectory</key>
+	<string>$JAVAROOT</string>]]></replacevalue>
+		</replace>
 
-<!-- Copy the entire build/ tree except WIndows-related stuff
+		<!-- Copy the entire build/ tree except WIndows-related stuff
           Also exclude the OSGI framework.jar which is copied by the jarbundler task
           Doing this separately to allow specifying jar=framework.jar in the jarbundler task
             jarbundler allows either jar= or jarfileset but not both
@@ -576,100 +574,100 @@
             !! TODO: Test restoring the jarfileset inside jarbundler
                        Comment out this copy task, and delete it if jarfileset works
     -->
-<property name="macjavafullpath" value="${macappfullpath}/Contents/Resources/Java" />
-<copy todir="${macjavafullpath}">
-	<fileset dir="${build}">
-		<exclude name="**/*.bat" />
-		<exclude name="**/*.exe" />
-		<exclude name="**/framework.jar" />
-	</fileset >
-</copy>
+		<property name="macjavafullpath" value="${macappfullpath}/Contents/Resources/Java" />
+		<copy todir="${macjavafullpath}">
+			<fileset dir="${build}">
+				<exclude name="**/*.bat" />
+				<exclude name="**/*.exe" />
+				<exclude name="**/framework.jar" />
+			</fileset >
+		</copy>
 
-<!-- Restore the eXecutable permission flags on the Unix script -->
-<echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/freeplane.sh" />
-<chmod file="${macappfullpath}/Contents/Resources/Java/freeplane.sh" perm="ugo+rx" />
-</target>
+		<!-- Restore the eXecutable permission flags on the Unix script -->
+		<echo message="Setting eXecutable permissions on ${macappfullpath}/Contents/Resources/Java/docear.sh" />
+		<chmod file="${macappfullpath}/Contents/Resources/Java/docear.sh" perm="ugo+rx" />
+	</target>
 
-<target name="zip4mac" depends="bzr_version_info, macosxapp">
-<zip destfile="${dist}/${ApplicationNameToLowerCase}_macos.zip" compress="true">
-	<zipfileset dir="${build4mac}" prefix="${ApplicationNameToLowerCase}-${ver}">
-		<exclude name="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" />
-	</zipfileset>
-	<zipfileset file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" filemode="775" prefix="${ApplicationNameToLowerCase}-${ver}/${ApplicationName}.app/Contents/MacOS" />
-</zip>
-</target>
-<target name="dmg4mac" depends="bzr_version_info, macosxapp" if="isMacOs">
-<exec executable="hdiutil">
-	<arg line="create -srcfolder ${macappfullpath} ${dist}/docear.dmg" />
-</exec>
-</target>
+	<target name="zip4mac" depends="bzr_version_info, macosxapp">
+		<zip destfile="${dist}/${ApplicationNameToLowerCase}_macos.zip" compress="true">
+			<zipfileset dir="${build4mac}" prefix="${ApplicationNameToLowerCase}-${ver}">
+				<exclude name="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" />
+			</zipfileset>
+			<zipfileset file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" filemode="775" prefix="${ApplicationNameToLowerCase}-${ver}/${ApplicationName}.app/Contents/MacOS" />
+		</zip>
+	</target>
+	<target name="dmg4mac" depends="bzr_version_info, macosxapp" if="isMacOs">
+		<exec executable="hdiutil">
+			<arg line="create -srcfolder ${macappfullpath} ${dist}/docear.dmg" />
+		</exec>
+	</target>
 
-<target name="dist" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac, javadoc">
-<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
-<copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo-${ver}.txt" failonerror="false" />
-<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip" tofile="${dist}/script-api-${ver}.zip" failonerror="false" />
-</target>
+	<target name="dist" depends="bzr_version_info, binzip, srczip, installer, portableinstaller, zip4mac, dmg4mac, javadoc">
+		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
+		<copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo-${ver}.txt" failonerror="false" />
+		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip" tofile="${dist}/script-api-${ver}.zip" failonerror="false" />
+	</target>
 
-<target name="docear-mac" depends="docear-bin, zip4mac, dmg4mac" if="isMacOs">
-</target>
+	<target name="docear-mac" depends="docear-bin, zip4mac, dmg4mac" if="isMacOs">
+	</target>
 
-<target name="docear-nsis" depends="docear-bin">
-<nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
-	<define name="VERSION" value="${ver_docear}" />
-	<define name="BUILD" value="${build.number}" />
-	<define name="DOCEAR_OUT_FILE" value="docear.exe" />
-</nsis>
-</target>
+	<target name="docear-nsis" depends="docear-bin">
+		<nsis script="${root}/windows-installer/docear_windows_installer.nsi" verbosity="4" out="${root}/dist/nsis-build.log" noconfig="yes">
+			<define name="VERSION" value="${ver_docear}" />
+			<define name="BUILD" value="${build.number}" />
+			<define name="DOCEAR_OUT_FILE" value="docear.exe" />
+		</nsis>
+	</target>
 
-<target name="docear-bin" depends="clean, bzr_version_info, binzip, srczip, javadoc">
-<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
-<copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo-${ver}.txt" failonerror="false" />
-<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip" tofile="${dist}/script-api-${ver}.zip" failonerror="false" />
-</target>
+	<target name="docear-bin" depends="clean, bzr_version_info, binzip, srczip, javadoc">
+		<copy file="${workspace}/freeplane/doc/history_en.txt" todir="${dist}" />
+		<copy file="${build}/bzrinfo.txt" tofile="${dist}/bzrinfo-${ver}.txt" failonerror="false" />
+		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip" tofile="${dist}/script-api-${ver}.zip" failonerror="false" />
+	</target>
 
-<target name="cleandist" depends="clean,dist">
-</target>
+	<target name="cleandist" depends="clean,dist">
+	</target>
 
-<target name="check-translation">
-<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
-</target>
-<target name="format-translation">
-<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" />
-</target>
-<target name="format-translation-force">
-<ant antfile="ant/build.xml" target="format-translation-force" dir="${workspace}/freeplane" />
-</target>
-<target name="create-plugin">
-<create-plugin />
-</target>
-<target name="test">
-<ant antfile="build.xml" target="test" dir="${workspace}/freeplane_ant" inheritall="false" />
-<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
-<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_uitest" inheritall="false" />
-</target>
+	<target name="check-translation">
+		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
+	</target>
+	<target name="format-translation">
+		<ant antfile="ant/build.xml" target="format-translation" dir="${workspace}/freeplane" />
+	</target>
+	<target name="format-translation-force">
+		<ant antfile="ant/build.xml" target="format-translation-force" dir="${workspace}/freeplane" />
+	</target>
+	<target name="create-plugin">
+		<create-plugin />
+	</target>
+	<target name="test">
+		<ant antfile="build.xml" target="test" dir="${workspace}/freeplane_ant" inheritall="false" />
+		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
+		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_uitest" inheritall="false" />
+	</target>
 
-<target name="clean">
-<delete quiet="true" includeemptydirs="true">
-	<fileset dir="${build}" />
-	<fileset dir="${build4mac}" />
-	<fileset dir="${dist}" />
-</delete>
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_help" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_svg" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_latex" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_script" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_formula" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_bugreport" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_account_manager" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_workspace" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_core" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_communications" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_pdfutilities" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_bibtex" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_services" />
-<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_optionpane" />
-</target>
+	<target name="clean">
+		<delete quiet="true" includeemptydirs="true">
+			<fileset dir="${build}" />
+			<fileset dir="${build4mac}" />
+			<fileset dir="${dist}" />
+		</delete>
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_help" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_svg" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_latex" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_script" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_formula" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_bugreport" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_account_manager" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/freeplane_plugin_workspace" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_core" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_communications" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_pdfutilities" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_bibtex" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_services" />
+		<ant antfile="ant/build.xml" target="clean" inheritall="false" dir="${workspace}/docear_plugin_optionpane" />
+	</target>
 
 </project>
 
