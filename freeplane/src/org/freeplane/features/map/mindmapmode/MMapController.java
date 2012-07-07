@@ -643,11 +643,11 @@ public class MMapController extends MapController {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+	public boolean newUntitledMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
         try {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
         	final MapModel newModel = new MMapModel();
-        	UrlManager.getController().loadCatchExceptions(url, newModel);
+        	UrlManager.getController().load(url, newModel);
         	newModel.setURL(null);
         	fireMapCreated(newModel);
         	newMapView(newModel);

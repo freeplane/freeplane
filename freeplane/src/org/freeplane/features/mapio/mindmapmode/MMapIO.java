@@ -103,8 +103,8 @@ public class MMapIO extends MapIO{
 	public MapModel newMapFromDefaultTemplate() {
 		return fileManager.newMapFromDefaultTemplate();
     }
-	public boolean newUntitledMap(URL url) throws FileNotFoundException, XMLParseException, IOException,
-            URISyntaxException {
+	public boolean newUntitledMap(URL url) throws FileNotFoundException, IOException,
+            URISyntaxException, XMLException {
 	    return mapController.newUntitledMap(url);
     }
 	public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
