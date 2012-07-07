@@ -165,13 +165,13 @@ public class PrintController implements IExtension {
 			if(mapView instanceof MapView)
 				((MapView)mapView).preparePrinting();
 			try{
-			final PrinterJob printerJob = getPrinterJob();
-			if (mapView instanceof Component){
-				final String name = ((Component)mapView).getName();
-				if(name != null)
-					printerJob.setJobName(name);
-			}
-			printerJob.print();
+				final PrinterJob printerJob = getPrinterJob();
+				if (mapView instanceof Component){
+					final String name = ((Component)mapView).getName();
+					if(name != null)
+						printerJob.setJobName(name);
+				}
+				printerJob.print();
 			}
 			catch(PrinterException ex){
 				LogUtils.warn(ex);	
