@@ -45,6 +45,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -369,7 +370,25 @@ public class MNoteController extends NoteController {
 	public void startupController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (shouldUseSplitPane()) {
-			showNotesPanel(false);
+			SwingUtilities.invokeLater(new Runnable() {
+				int count = 10;
+				public void run() {
+					if(count == 0){
+						showNotesPanel(false);
+						final IMapSelection selection = Controller.getCurrentController().getSelection();
+						if(selection != null){
+							final NodeModel selected = selection.getSelected();
+							if(selected != null){
+								selection.centerNode(selected);
+							}
+						}
+					}
+					else{
+						count--;
+						SwingUtilities.invokeLater(this);
+					}
+				}
+			});
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();
