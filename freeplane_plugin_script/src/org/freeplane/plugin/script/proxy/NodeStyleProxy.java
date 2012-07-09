@@ -70,6 +70,10 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return ColorUtils.colorToString(getTextColor());
 	}
 
+    public boolean isFloating() {
+        return hasStyle(getDelegate(), StyleNamedObject.toKeyString(MapStyleModel.FLOATING_STYLE));
+    }
+
 	private MLogicalStyleController getLogicalStyleController() {
 		return (MLogicalStyleController) LogicalStyleController.getController();
 	}
@@ -133,6 +137,10 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	public void setTextColorCode(final String rgbString) {
 		setTextColor(ColorUtils.stringToColor(rgbString));
 	}
+
+    public void setFloating(boolean floating) {
+        setStyle(MapStyleModel.FLOATING_STYLE);
+    }
 
 	public static boolean hasStyle(NodeModel nodeModel, String styleName) {
 		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(nodeModel);

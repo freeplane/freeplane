@@ -2,12 +2,14 @@
 1.2.16 rc
 ===============================
 Bug fixes
+Support for free nodes in the scripting API
+
 ===============================
 1.2.15 beta
 ===============================
 Approximative search in rich text editor
 Add and remove reminders via scripting api
-rich text editor: add "Paste plain text" context menu item and "default paste mode" preference option
+Rich text editor: add "Paste plain text" context menu item and "default paste mode" preference option
 
 ===============================
 1.2.14 beta

@@ -1223,6 +1223,9 @@ public interface Proxy {
 		Color getTextColor();
 
 		String getTextColorCode();
+
+        /** @since 1.2 treue if the floating style is set for the node (aka "free node"). */
+        boolean isFloating();
 	}
 
 	/** Node's style: <code>node.style</code> - read-write. */
@@ -1254,6 +1257,11 @@ public interface Proxy {
 		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
 		 *  @since 1.2 */
 		void setTextColorCode(String rgbString);
+
+        /** @param sets the floating style for the node (aka "free node"). Should normally only applied to direct
+         *  children of the root node.
+         *  @since 1.2 */
+        void setFloating(boolean floating);
 	}
 
 	/** Reminder: <code>node.reminder</code> - read-only.
