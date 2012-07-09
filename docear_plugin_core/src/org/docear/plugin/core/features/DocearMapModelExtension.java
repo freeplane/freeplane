@@ -11,10 +11,19 @@ public class DocearMapModelExtension implements IExtension {
 	
 	private MapModificationSession session;
 	
-	String version;
-	DocearMapType type;
-	String mapId;
-	URI uri;
+	private String version = "1.0";
+	private DocearMapType type;
+	private String mapId;
+	private URI uri;
+	
+	
+	public DocearMapModelExtension() {
+		setVersion("1.0");
+	}
+	
+	public DocearMapModelExtension(String version) {
+		setVersion(version);
+	}
 	
 	public DocearMapType getType() {
 		return type;
@@ -47,6 +56,9 @@ public class DocearMapModelExtension implements IExtension {
 	}
 
 	public void setVersion(String mapExtensionVersion) {
+		if(mapExtensionVersion == null) {
+			throw new IllegalArgumentException("mapExtensionVersion cannot be NULL");
+		}
 		this.version = mapExtensionVersion;
 	}
 	

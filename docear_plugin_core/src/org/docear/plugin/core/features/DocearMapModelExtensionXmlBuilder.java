@@ -44,14 +44,15 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 					freeplaneDialectHandler.setAttribute(node, value);
 					return;
 				}
+				value = value.replace("docear ", "");
 				final MapModel mapModel = (MapModel) node;				
 				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
 				if (docearMapModel == null) {
-						docearMapModel = new DocearMapModelExtension();
-				}
-				value = value.replace("docear ", "");
+						docearMapModel = new DocearMapModelExtension(value);
+						DocearMapModelController.setModel(mapModel, docearMapModel);
+				}				
 				docearMapModel.setVersion(value);
-				DocearMapModelController.setModel(mapModel, docearMapModel);
+				
 			}
 			
 		});	
@@ -64,14 +65,15 @@ public class DocearMapModelExtensionXmlBuilder implements IElementDOMHandler, IE
 					freeplaneVersionHandler.setAttribute(node, value);
 					return;
 				}
+				value = value.replace("docear ", "");				
 				final MapModel mapModel = (MapModel) node;				
 				DocearMapModelExtension docearMapModel = mapModel.getExtension(DocearMapModelExtension.class);
 				if (docearMapModel == null) {
-						docearMapModel = new DocearMapModelExtension();
+						docearMapModel = new DocearMapModelExtension(value);
 						DocearMapModelController.setModel(mapModel, docearMapModel);
 				}
-				value = value.replace("docear ", "");
-				docearMapModel.setVersion(value);				
+				docearMapModel.setVersion(value);
+								
 			}
 			
 		});	
