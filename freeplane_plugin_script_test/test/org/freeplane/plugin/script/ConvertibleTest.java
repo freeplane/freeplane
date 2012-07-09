@@ -295,20 +295,26 @@ public class ConvertibleTest {
 		assertEquals(text, convertible(text).getText());
 	}
 
-	@Test
-	public void testGetProperty() throws ConversionException, ExecuteScriptException {
-		assertEquals(null, convertible(null).getProperty("string"));
-		assertEquals(null, convertible(null).getProperty("num"));
-		assertEquals("12", convertible("12").getProperty("string"));
-		assertEquals("12", convertible("12").getProperty("text"));
-		assertEquals("12", convertible("12").getProperty("plain"));
-		assertEquals(new Long(12), convertible("12").getProperty("num"));
-		// "bytes" is a virtual property of class String (byte[] getBytes())
-		assertEquals("12", new String((byte[]) convertible("12").getProperty("bytes")));
-		assertEquals(date("2010-08-16 22:31"), convertible("2010-08-16T22:31").getProperty("date"));
-		assertEquals(calendar("2010-08-16 22:31"), convertible("2010-08-16T22:31").getProperty("calendar"));
-		assertEquals(uri(FREEPLANE_URI), convertible(FREEPLANE_URI).getProperty("uri"));
-	}
+    @Test
+    public void testGetProperty() throws ConversionException, ExecuteScriptException {
+        assertEquals(null, convertible(null).getProperty("string"));
+        assertEquals(null, convertible(null).getProperty("num"));
+        assertEquals("12", convertible("12").getProperty("string"));
+        assertEquals("12", convertible("12").getProperty("text"));
+        assertEquals("12", convertible("12").getProperty("plain"));
+        assertEquals(new Long(12), convertible("12").getProperty("num"));
+        // "bytes" is a virtual property of class String (byte[] getBytes())
+        assertEquals("12", new String((byte[]) convertible("12").getProperty("bytes")));
+        assertEquals(date("2010-08-16 22:31"), convertible("2010-08-16T22:31").getProperty("date"));
+        assertEquals(calendar("2010-08-16 22:31"), convertible("2010-08-16T22:31").getProperty("calendar"));
+        assertEquals(uri(FREEPLANE_URI), convertible(FREEPLANE_URI).getProperty("uri"));
+    }
+
+    @Test
+    public void testNullObject() {
+        assertEquals(convertible(null), null);
+        assertEquals(convertible(null), convertible(null));
+    }
 
     @Test
 	public void testInvokeMethod() throws ConversionException, ExecuteScriptException {
