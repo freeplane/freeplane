@@ -31,6 +31,9 @@ public class RecommendationDownloadObserver implements DocearProgressObserver {
 			return;
 		}
 		String note = (label != null && label.length > 0) ? label[0] : null;
+		if (note!= null && note.length()>50) {
+			note = note.substring(0, 50) + "...";
+		}
 		monitor.setNote(note);
 		monitor.setMaximum(length);
 		monitor.setProgress(progress);
