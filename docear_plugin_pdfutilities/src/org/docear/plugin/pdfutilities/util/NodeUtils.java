@@ -428,7 +428,7 @@ public class NodeUtils {
 			}
 		}
 		catch (Exception e) {
-			LogUtils.warn(e.getMessage());
+			LogUtils.warn("org.docear.plugin.pdfutilities.util.NodeUtils.setAttributeValue: "+e.getMessage());
 		}
 		return false;	
 	}

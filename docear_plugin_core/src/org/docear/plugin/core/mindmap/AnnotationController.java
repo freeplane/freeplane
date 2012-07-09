@@ -193,7 +193,7 @@ public class AnnotationController implements IExtension{
 				importer.searchAnnotation(uri, node);
 			
 			} catch (Exception e) {			
-				LogUtils.warn(e.getMessage());
+				LogUtils.warn("org.docear.plugin.core.mindmap.AnnotationController.setModel: "+e.getMessage());
 			}
 		}		
 	}

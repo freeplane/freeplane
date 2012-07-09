@@ -105,7 +105,7 @@ public class UpdateCheck {
 			}
 			
 		} catch (Exception e) {
-			LogUtils.warn(e.getMessage());
+			LogUtils.warn("org.docear.plugin.services.features.UpdateCheck.UpdateCheck(): "+e.getMessage());
 		}		
 	}
 	
@@ -136,7 +136,7 @@ public class UpdateCheck {
 			reader.load(new StringReader(xml));			
 		}
 		catch (final Exception e) {
-			LogUtils.warn(e.getMessage());
+			LogUtils.warn("org.docear.plugin.services.features.UpdateCheck.load: "+e.getMessage());
 		}		
 	}
 	
