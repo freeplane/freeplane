@@ -372,7 +372,7 @@ public class UITools {
 		infoPane.setColumns(60);
 		JScrollPane scrollPane = new JScrollPane(infoPane);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
-		JOptionPane.showMessageDialog(getFrame(), scrollPane, "Freeplane", messageType);
+		JOptionPane.showMessageDialog(getFrame(), scrollPane, ResourceController.getResourceController().getProperty("ApplicationName"), messageType);
 	}
 	public static int showConfirmDialog(final NodeModel node, final Object message, final String title,
 	                                    final int optionType, final int messageType) {
