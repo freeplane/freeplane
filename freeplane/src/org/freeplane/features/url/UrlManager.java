@@ -404,6 +404,8 @@ public class UrlManager implements IExtension {
 		} catch (URISyntaxException ex) {
 			LogUtils.warn(ex);
 			return null;
+		} catch (IllegalArgumentException ex) {
+			resolvedURI = uri;
 		}
 		
 		if (resolvedURI.isAbsolute()) {
