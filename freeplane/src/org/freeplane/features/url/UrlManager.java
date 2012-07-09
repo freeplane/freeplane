@@ -394,10 +394,22 @@ public class UrlManager implements IExtension {
 	}
 
 	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
-		if (uri.isAbsolute()) {
-			return uri;
+		//DOCEAR - fix workspace relative uri resolution
+		URI resolvedURI;
+		try {
+			resolvedURI = uri.toURL().openConnection().getURL().toURI();
+		} catch (IOException ex) {
+			LogUtils.warn(ex);
+			return null;
+		} catch (URISyntaxException ex) {
+			LogUtils.warn(ex);
+			return null;
 		}
-		final String path = uri.getPath();
+		
+		if (resolvedURI.isAbsolute()) {
+			return resolvedURI;
+		}
+		final String path = resolvedURI.getPath();
 		try {
 			URL context = map.getURL();
 			if(context == null)
