@@ -9,7 +9,9 @@ import java.util.Set;
 
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.IStyle;
@@ -71,7 +73,8 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
     public boolean isFloating() {
-        return hasStyle(getDelegate(), StyleNamedObject.toKeyString(MapStyleModel.FLOATING_STYLE));
+    	final FreeNode freeNode = Controller.getCurrentModeController().getExtension(FreeNode.class);
+        return freeNode.isActive(getDelegate());
     }
 
 	private MLogicalStyleController getLogicalStyleController() {
@@ -139,7 +142,17 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
     public void setFloating(boolean floating) {
-        setStyle(MapStyleModel.FLOATING_STYLE);
+    	final FreeNode freeNode = Controller.getCurrentModeController().getExtension(FreeNode.class);
+    	if(floating){
+    		setStyle(MapStyleModel.FLOATING_STYLE);
+    		
+    	}
+    	else{
+    		if(MapStyleModel.FLOATING_STYLE.equals(getStyle()))
+    			setStyle(null);
+    	}
+    	if(floating != freeNode.isActive(getDelegate()))
+    		freeNode.undoableToggleHook(getDelegate());
     }
 
 	public static boolean hasStyle(NodeModel nodeModel, String styleName) {
