@@ -160,10 +160,13 @@ public class JabRefAttributes {
 						}
 					}
 					resolveDuplicateLinks(WorkspaceUtils.resolveURI(uri));
-					reference = new Reference(findBibtexEntryForPDF(uri, node.getMap()));
+					BibtexEntry entry = findBibtexEntryForPDF(uri, node.getMap());
+					if (entry != null) {
+						reference = new Reference(entry);
+					}
 				}
 				catch (NullPointerException e) {
-					LogUtils.warn(e.getMessage());
+					LogUtils.warn("org.docear.plugin.bibtex.jabrefe.JabRefAttributes.updateReferenceToNode: "+e.getMessage());
 				}
 				catch (ResolveDuplicateEntryAbortedException ex) {
 					if (ignores != null) {
@@ -289,7 +292,7 @@ public class JabRefAttributes {
 				resolveDuplicateLinks(new File(s));
 			}
 			catch (Exception ex) {
-				LogUtils.warn(ex.getMessage());
+				LogUtils.warn("org.docear.plugin.bibtex.jabref.JabRefAttributes.resolveDuplicateLinks: "+ex.getMessage());
 			}
 		}
 	}
