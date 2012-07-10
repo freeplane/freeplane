@@ -63,13 +63,10 @@ public class MapViewListener implements MouseListener, INodeSelectionListener {
 	}
 
 	private void generateKeyIfNeeded(BibtexEntry entry) {
-		if (entry.getCiteKey() != null && entry.getCiteKey().length() > 0) {
+		if (entry.getCiteKey() != null && entry.getCiteKey().trim().length() > 0) {
 			return;
-		}
-		String author = entry.getField("author");
-		if (author != null && author.length() > 0) {
-			ReferencesController.getController().getJabRefAttributes().generateBibtexEntry(entry);
-		}
+		}		
+		ReferencesController.getController().getJabRefAttributes().generateBibtexEntry(entry);		
 	}
 
 	private void addToNodes(MapModel mapModel) {

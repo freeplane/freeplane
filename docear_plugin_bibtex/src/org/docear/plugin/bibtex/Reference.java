@@ -41,7 +41,7 @@ public class Reference {
 		
 		attributes = new ArrayList<Reference.Item>();
 		
-		if (entry.getCiteKey() == null) {
+		if (entry.getCiteKey() == null || entry.getCiteKey().trim().length() == 0) {
 			jabRefAttributes.generateBibtexEntry(entry);			
 		}
 		
