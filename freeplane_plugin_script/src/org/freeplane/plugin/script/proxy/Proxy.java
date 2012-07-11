@@ -930,6 +930,10 @@ public interface Proxy {
 
 		boolean isFolded();
 
+		/** returns true if this node is freely positionable.
+		 * @since 1.2 */
+		public boolean isFree();
+
 		boolean isLeaf();
 
 		boolean isLeft();
@@ -1027,8 +1031,16 @@ public interface Proxy {
 		void setHideDetails(boolean hide);
 
 		void setFolded(boolean folded);
-		
-		void setMinimized(boolean shortened);
+
+		/** set to true if this node should be freely positionable:
+		 * <pre>
+		 *   node.free = true
+		 *   node.style.floating = true
+		 * </pre>
+         * @since 1.2 */
+        void setFree(boolean free);
+
+        void setMinimized(boolean shortened);
 
 		/**
 		 * Set the note text:

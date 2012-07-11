@@ -382,6 +382,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public boolean isFolded() {
 		return getDelegate().isFolded();
 	}
+	
+    // NodeRO: R
+    public boolean isFree() {
+        final FreeNode freeNode = Controller.getCurrentModeController().getExtension(FreeNode.class);
+        return freeNode.isActive(getDelegate());
+    }
 
 	// NodeRO: R
 	public boolean isLeaf() {
@@ -433,6 +439,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		mapController.setFolded(getDelegate(), folded);
 	}
+
+    // Node: R/W
+    public void setFree(boolean free) {
+        final FreeNode freeNode = Controller.getCurrentModeController().getExtension(FreeNode.class);
+        if (free != freeNode.isActive(getDelegate()))
+            freeNode.undoableToggleHook(getDelegate());
+    }
 	
 	// Node: R/W
 	public void setMinimized(boolean shortened){
