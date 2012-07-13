@@ -116,8 +116,12 @@ public class ScriptingEngine {
 				}
 			}
 			final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
-			String scriptContent = null;
-			if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(scriptContent, pOutStream)) {
+			final String scriptContent;
+			if(script instanceof String)
+				scriptContent = (String) script;
+			else
+				scriptContent = null;
+			if (executeSignedScripts && scriptContent != null && new SignedScriptHandler().isScriptSigned(scriptContent, pOutStream)) {
 	            scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
             }
             else
