@@ -3,6 +3,7 @@
 ===============================
 Bug fixes
 Support for free nodes in the scripting API
+Support for debugging of external groovy script files
 
 ===============================
 1.2.15 beta
