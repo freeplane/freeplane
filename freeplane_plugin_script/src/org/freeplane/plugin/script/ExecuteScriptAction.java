@@ -20,6 +20,7 @@
 package org.freeplane.plugin.script;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,18 +53,15 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		ON_SELECTED_NODE_RECURSIVELY
 	}
 
-	private final String script;
+	private final File script;
 	private final ExecutionMode mode;
-	private final boolean cacheContent;
 	private ScriptingPermissions permissions;
-	private String content;
 
 	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String script,
 	                           final ExecutionMode mode, final boolean cacheContent, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
-		this.script = script;
+		this.script = new File(script);
 		this.mode = mode;
-		this.cacheContent = cacheContent;
 		this.permissions = permissions;
 	}
 
@@ -74,10 +72,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
-			String scriptContent = getContentIfCached();
-			if (scriptContent == null) {
-				scriptContent = FileUtils.slurpFile(script);
-			}
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE) {
 				nodes.add(Controller.getCurrentController().getSelection().getSelected());
@@ -93,10 +87,10 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						// TODO: ensure that a script is invoked only once on every node?
 						// (might be a problem with recursive actions if parent and child
 						// are selected.)
-						ScriptingEngine.executeScriptRecursive(node, scriptContent, permissions);
+						ScriptingEngine.executeScriptRecursive(node, script, permissions);
 					}
 					else {
-						ScriptingEngine.executeScript(node, scriptContent, permissions);
+						ScriptingEngine.executeScript(node, script, permissions);
 					}
                 }
 				catch (ExecuteScriptException ex) {
@@ -115,23 +109,8 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			}
 			modeController.delayedCommit();
 		}
-		catch (final IOException ex) {
-			LogUtils.warn("error reading " + script, ex);
-			UITools.errorMessage(TextUtils.getText("ReadScriptError.text"));
-		}
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
-	}
-
-	private String getContentIfCached() throws IOException {
-		if (cacheContent && content == null) {
-			content = FileUtils.slurpFile(script);
-			// oops, logtool seems to be inoperable right now
-			LogUtils.info("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
-			System.out
-			    .println("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
-		}
-		return content;
 	}
 }
