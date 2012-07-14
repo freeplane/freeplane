@@ -149,6 +149,8 @@ public class MMapController extends MapController {
 	
 	private void startEditingAfterSelect(final NodeModel newNode) {
 		final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
+		if(component == null)
+			return;
 		component.addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {
 			}
