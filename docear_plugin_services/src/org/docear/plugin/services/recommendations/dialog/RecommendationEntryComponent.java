@@ -42,7 +42,7 @@ public class RecommendationEntryComponent extends JPanel {
 //		lblOpenButton.setBorder( null );
 //		lblOpenButton.setOpaque( false );
 //		lblOpenButton.setEditable( false ); 
-		lblOpenButton.setIcon(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/document-open-remote24x24.png")));
+		lblOpenButton.setIcon(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/document-open-remote_32x32.png")));
 		lblOpenButton.setToolTipText(TextUtils.getText("recommendation.preview.tooltip"));
 		lblOpenButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));
 		lblOpenButton.setMinimumSize(new Dimension(200, 50));
@@ -73,7 +73,7 @@ public class RecommendationEntryComponent extends JPanel {
 		JLabel lblImportButton = new JLabel("");
 		lblImportButton.setToolTipText(TextUtils.getText("recommendation.import.tooltip"));
 		lblImportButton.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImportButton.setIcon(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/document-import24x24.png")));
+		lblImportButton.setIcon(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/document-import_32x32.png")));
 		lblImportButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));
 		lblImportButton.setMinimumSize(new Dimension(50, 50));
 		lblImportButton.setPreferredSize(new Dimension(50, 50));
