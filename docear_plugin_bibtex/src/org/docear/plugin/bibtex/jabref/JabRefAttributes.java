@@ -1,7 +1,10 @@
 package org.docear.plugin.bibtex.jabref;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -166,7 +169,7 @@ public class JabRefAttributes {
 					}
 				}
 				catch (NullPointerException e) {
-					LogUtils.warn("org.docear.plugin.bibtex.jabrefe.JabRefAttributes.updateReferenceToNode: "+e.getMessage());
+					LogUtils.warn("org.docear.plugin.bibtex.jabrefe.JabRefAttributes.updateReferenceToNode: " + e.getMessage());
 				}
 				catch (ResolveDuplicateEntryAbortedException ex) {
 					if (ignores != null) {
@@ -292,7 +295,7 @@ public class JabRefAttributes {
 				resolveDuplicateLinks(new File(s));
 			}
 			catch (Exception ex) {
-				LogUtils.warn("org.docear.plugin.bibtex.jabref.JabRefAttributes.resolveDuplicateLinks: "+ex.getMessage());
+				LogUtils.warn("org.docear.plugin.bibtex.jabref.JabRefAttributes.resolveDuplicateLinks: " + ex.getMessage());
 			}
 		}
 	}
@@ -310,11 +313,11 @@ public class JabRefAttributes {
 
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 
-		for (BibtexEntry entry : database.getEntries()) {			
+		for (BibtexEntry entry : database.getEntries()) {
 			for (String jabrefPath : retrieveFileLinksFromEntry(entry)) {
 				File jabrefFile = new File(jabrefPath);
-				
-				if (jabrefFile!=null && jabrefFile.getName().equals(file.getName())) {
+
+				if (jabrefFile != null && jabrefFile.getName().equals(file.getName())) {
 					entries.add(entry);
 					break;
 				}
@@ -336,6 +339,42 @@ public class JabRefAttributes {
 			ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
 			setNodeDirty(true);
 		}
+	}
+
+	//FIXME: not used yet --> implement functionality into findBibtexEntryForPDF
+	public BibtexEntry findBibtexEntryForURL(URI nodeUri, NodeModel node) {
+		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+		if (database == null || nodeUri == null) {
+			return null;
+		}
+
+		for (BibtexEntry entry : database.getEntries()) {
+			String entryUrlField = entry.getField("url");
+			if (entryUrlField != null) {
+				URI entryUri = URI.create(entryUrlField);
+				String entryScheme = entryUri.getScheme();
+				String nodeScheme = nodeUri.getScheme();
+
+				if (entryScheme != null && nodeScheme != null && !entryScheme.equals(nodeScheme)) {
+					continue;
+				}
+
+				String entryUriString = entryUri.toString();
+				if (entryScheme != null) {
+					entryUriString = entryUriString.substring(entryScheme.length() + 3);
+				}
+
+				String nodeUriString = nodeUri.toString();
+				if (nodeScheme != null) {
+					nodeUriString = nodeUriString.substring(nodeScheme.length() + 3);
+				}
+
+				if (entryUriString.equals(nodeUriString)) {
+					return entry;
+				}
+			}
+		}
+		return null;
 	}
 
 	public BibtexEntry findBibtexEntryForPDF(URI uri, MapModel map) throws ResolveDuplicateEntryAbortedException {
