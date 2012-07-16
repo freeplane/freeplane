@@ -18,12 +18,10 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
@@ -70,16 +68,12 @@ public class FileNodeNewMindmapAction extends AWorkspaceAction {
 		}
     }
 	
-	@SuppressWarnings("deprecation")
 	private boolean createNewMindmap(final File f) throws FileNotFoundException, XMLParseException, MalformedURLException, IOException, URISyntaxException {
+		WorkspaceUtils.createNewMindmap(f, FilenameUtils.getBaseName(f.getName()));
 		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
-		MFileManager.getController(modeController).newMapFromDefaultTemplate();
-		Controller.getCurrentController().getMap().getRootNode().setText(FilenameUtils.getBaseName(f.getName()));
-		mapIO.save(Controller.getCurrentController().getMap(), f);
-		Controller.getCurrentController().close(true);
+		
 		try {
-			mapIO.newMap(f.toURL());
+			mapIO.newMap(f.toURI().toURL());
 		} catch (XMLException e) {
 			LogUtils.severe(e);
 		}

@@ -12,19 +12,14 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
 import org.docear.plugin.core.IDocearLibrary;
-import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.actions.AWorkspaceAction;
@@ -98,26 +93,16 @@ private static final long serialVersionUID = 1L;
 		}
     }
 	
-	@SuppressWarnings("deprecation")
+	
 	private boolean createNewMindmap(final File f) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);		
-		
-		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
-		MFileManager.getController(modeController).newMapFromDefaultTemplate();
-		
-				
-		MapModel map = Controller.getCurrentController().getMap();
-		DocearMapModelController.setModelWithCurrentVersion(map);
-		map.getRootNode().setText(FilenameUtils.getBaseName(f.getName()));
-		mapIO.save(Controller.getCurrentController().getMap(), f);
-		Controller.getCurrentController().close(false);
+		WorkspaceUtils.createNewMindmap(f, FilenameUtils.getBaseName(f.getName()));
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 		try {
-			mapIO.newMap(f.toURL());
-		}
-		catch (Exception e) {
+			mapIO.newMap(f.toURI().toURL());
+		} catch (Exception e) {
 			LogUtils.severe(e);
 			return false;
-		}
+		} 		
 		return true;
 	}
 	

@@ -11,7 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
@@ -28,10 +27,8 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.components.dialog.WorkspaceChooserDialogPanel;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
@@ -98,25 +95,24 @@ public class WorkspaceUtils {
 		}	
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static boolean createNewMindmap(final File f, String name) {
 		if (!createFolderStructure(f)) {
 			return false;
 		}		
-		
+		Controller.getCurrentController().selectMode(MModeController.MODENAME);
 		final MMapIO mapIO = (MMapIO) MModeController.getMModeController().getExtension(MapIO.class);
 		
-		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
-		MFileManager.getController(modeController).newMapFromDefaultTemplate();
-		
-		MapModel map = Controller.getCurrentController().getMap();
+		MapModel map = mapIO.newMapFromDefaultTemplate();
+		if(map == null) {
+			return false;
+		}
 		map.getRootNode().setText(name);
 		
 		mapIO.save(map, f);
 		Controller.getCurrentController().close(false);
 
 		LogUtils.info("New Mindmap Created: " + f.getAbsolutePath());
-		return false;
+		return true;
 	}
 	
 	private static boolean createFolderStructure(final File f) {
