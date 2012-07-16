@@ -15,9 +15,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.io.ProgressInputStream;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -44,7 +46,7 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 
 	@Override
 	public void handleEvent(DocearEvent event) {
-		if ("IMPORT_TO_LIBRARY".equals(event.getEventObject())) {
+		if (DocearEventType.IMPORT_TO_LIBRARY.equals(event.getType())) {
 			try {
 				URL url = null;
 				if(event.getSource() instanceof URL) {
@@ -57,7 +59,8 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 
 				String fileName = new File(url.getFile()).getName();
 				fileName = URLDecoder.decode(fileName, "UTF-8");
-				File file = getDestinationFile(url.toURI(), fileName);
+				String ext = FilenameUtils.getExtension(fileName);
+				File file = getDestinationFile(url.toURI(), event.getEventObject()+"."+ext);
 				if (file == null || !file.exists()) {
 					return;
 				}
