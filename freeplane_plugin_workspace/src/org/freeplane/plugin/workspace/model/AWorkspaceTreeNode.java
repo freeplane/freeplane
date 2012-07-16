@@ -166,6 +166,10 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		children.remove(child);
 	}
 	
+	public int getChildIndex(AWorkspaceTreeNode child) {
+		return children.indexOf(child);
+	}
+	
 	public void refresh() {
 		//override in child class, if needed
 		WorkspaceUtils.getModel().reload(this);

@@ -124,10 +124,22 @@ public class ServiceController {
 			public void openWorkspace(WorkspaceEvent event) {}
 			
 			public void configurationLoaded(WorkspaceEvent event) {
-				AWorkspaceTreeNode node = WorkspaceUtils.getNodeForPath(((WorkspaceRoot) WorkspaceUtils.getModel().getRoot()).getName()+"/"+TextUtils.getText("recommendations.workspace.node"));
+				AWorkspaceTreeNode parent = (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot();
+				AWorkspaceTreeNode node = WorkspaceUtils.getNodeForPath(((WorkspaceRoot) parent).getName()+"/"+TextUtils.getText("recommendations.workspace.node"));
 				if(node == null) {
 					node = new ShowRecommendationsNode();
-					WorkspaceUtils.getModel().addNodeTo(node, (AWorkspaceTreeNode) WorkspaceUtils.getModel().getRoot(), false);
+					WorkspaceUtils.getModel().insertNodeTo(node, parent, 0, false);
+				}
+				else {					
+					int index = parent.getChildIndex(node);
+					if(index != 0) {
+						if(index > 0) { 
+							WorkspaceUtils.getModel().removeNodeFromParent(node);
+						}
+						WorkspaceUtils.getModel().insertNodeTo(node, parent, 0, false);
+						parent.refresh();
+					}
+					
 				}
 			}
 			
