@@ -372,7 +372,7 @@ public class CoreConfiguration extends ALanguageController {
 			final String languageCode = resourceController.getLanguageCode();
 			final File file = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, Controller.getCurrentController().getResourceController().getProperty("tutorial_map"), languageCode);
 			try {
-				final URL endUrl = file.toURL();
+				final URL endUrl = file.toURI().toURL();
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						try {

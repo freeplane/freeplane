@@ -48,7 +48,6 @@ public class AnnotationController implements IExtension{
 		return (AnnotationController) modeController.getExtension(AnnotationController.class);
 	}
 	public static void install( final AnnotationController annotationController) {
-		ModeController modeController = Controller.getCurrentModeController();
 		Controller.getCurrentModeController().addExtension(AnnotationController.class, annotationController);
 	}
 	

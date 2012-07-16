@@ -121,7 +121,7 @@ public class LinkTypeMyPublicationsNode extends ALinkNode implements IWorkspaceN
 				final MapIO mapIO = (MapIO) MModeController.getMModeController().getExtension(MapIO.class);
 				
 				try {
-					if(mapIO.newMap(f.toURL())) {
+					if(mapIO.newMap(f.toURI().toURL())) {
 						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_MY_PUBLICATIONS, Controller.getCurrentController().getMap());
 						DocearController.getController().dispatchDocearEvent(evnt);
 					}

@@ -118,7 +118,7 @@ public class LinkTypeLiteratureAnnotationsNode extends ALinkNode implements IWor
 				final MapIO mapIO = (MapIO) MModeController.getMModeController().getExtension(MapIO.class);
 				
 				try {
-					if(mapIO.newMap(f.toURL())) {
+					if(mapIO.newMap(f.toURI().toURL())) {
 						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_LITERATURE_ANNOTATIONS, Controller.getCurrentController().getMap());
 						DocearController.getController().dispatchDocearEvent(evnt);
 					}

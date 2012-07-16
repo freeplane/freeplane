@@ -10,6 +10,8 @@ import javax.swing.SwingConstants;
 
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.services.recommendations.actions.RecommendationsRefreshAction;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JResizer.Direction;
@@ -45,7 +47,7 @@ public class DocearRecommendationsModeController extends ModeController {
 
 	private DocearRecommendationsModeController(final Controller controller) {
 		super(controller);
-
+		setLanguage();
 	}
 
 	@Override
@@ -88,13 +90,13 @@ public class DocearRecommendationsModeController extends ModeController {
 
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
+		
+
+		controller.addAction(new RecommendationsRefreshAction());
 
 		new DocearRecommendationsMapController(modeController);
 
 		UrlManager.install(new UrlManager());
-		// final MapIO mapIO =
-		// Controller.getCurrentController().getModeController(MModeController.MODENAME).getExtension(MapIO.class);
-		// modeController.addExtension(MapIO.class, mapIO);
 		MapIO.install(modeController);
 		IconController.install(new IconController(modeController));
 		NodeStyleController.install(new NodeStyleController(modeController));
@@ -147,6 +149,27 @@ public class DocearRecommendationsModeController extends ModeController {
 		final ViewController viewController = Controller.getCurrentController().getViewController();
 		viewController.updateMenus(menuBuilder);
 		
+	}
+	
+	public void setLanguage() {
+		final String DEFAULT_LANGUAGE = "en";
+		ResourceBundles resBundle = ((ResourceBundles)Controller.getCurrentController().getResourceController().getResources());
+		String lang = resBundle.getLanguageCode();
+		if (lang == null || lang.equals(ResourceBundles.LANGUAGE_AUTOMATIC)) {
+			lang = DEFAULT_LANGUAGE;
+		}
+		
+		URL res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		if (res == null) {
+			lang = DEFAULT_LANGUAGE;
+			res = this.getClass().getResource("/translations/Resources_"+lang+".properties");
+		}
+		
+		if (res == null) {
+			return;
+		}
+				
+		resBundle.addResources(resBundle.getLanguageCode(), res);
 	}
 	
 }

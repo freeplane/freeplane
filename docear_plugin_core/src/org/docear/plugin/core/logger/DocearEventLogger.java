@@ -2,8 +2,6 @@ package org.docear.plugin.core.logger;
 
 import java.io.File;
 
-import org.freeplane.core.util.LogUtils;
-
 public class DocearEventLogger {
 	
 	public DocearEventLogger() {		

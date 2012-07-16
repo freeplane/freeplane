@@ -121,7 +121,7 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeAct
 				final MapIO mapIO = (MapIO) MModeController.getMModeController().getExtension(MapIO.class);
 				
 				try {
-					if(mapIO.newMap(f.toURL())) {
+					if(mapIO.newMap(f.toURI().toURL())) {
 						MapModel map = Controller.getCurrentController().getMap();						
 						DocearEvent evnt = new DocearEvent(this, DocearEventType.NEW_INCOMING, map);
 						DocearController.getController().dispatchDocearEvent(evnt);

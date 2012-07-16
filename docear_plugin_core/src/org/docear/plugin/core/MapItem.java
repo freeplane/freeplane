@@ -33,7 +33,7 @@ public class MapItem {
 			URL url;
 			String mapExtensionKey;
 			try {
-				url = WorkspaceUtils.resolveURI(uri).toURL();
+				url = WorkspaceUtils.resolveURI(uri).toURI().toURL();
 				mapExtensionKey = Controller.getCurrentController()
 						.getMapViewManager().checkIfFileIsAlreadyOpened(url);
 			} catch (MalformedURLException e) {

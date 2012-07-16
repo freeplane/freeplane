@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -16,19 +17,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.io.IOTools;
+import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.recommendations.dialog.RecommendationEntryComponent;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsNodeModel.RecommendationContainer;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -215,10 +221,67 @@ public class DocearRecommendationsMapView extends MapView {
 		panel.setBackground(Color.white);
 		panel.setBorder(new TitledBorder(title));
 		panel.setLayout(new ListLayoutManager());
-		this.add(panel);
+		this.add(getNewRefeshButton(), BorderLayout.NORTH);
+		this.add(panel, BorderLayout.CENTER);
 		return panel;
 	}
 	
+	private Component getNewRefeshButton() {
+		JPanel panel = new JPanel(new LayoutManager() {
+			
+			public void removeLayoutComponent(Component comp) {				
+			}
+			
+			public Dimension preferredLayoutSize(Container parent) {
+				for(Component comp : parent.getComponents()) {
+					Dimension comDim = comp.getPreferredSize();
+					if(comDim != null) {
+						return new Dimension(parent.getInsets().left+parent.getInsets().right+comDim.width, parent.getInsets().top+parent.getInsets().bottom+comDim.height);
+					}
+				}
+				return null;
+			}
+			
+			public Dimension minimumLayoutSize(Container parent) {
+				for(Component comp : parent.getComponents()) {
+					Dimension comDim = comp.getMinimumSize();
+					if(comDim != null) {
+						return new Dimension(parent.getInsets().left+parent.getInsets().right+comDim.width, parent.getInsets().top+parent.getInsets().bottom+comDim.height);
+					}
+				}
+				return null;
+			}
+			
+			public void layoutContainer(Container parent) {
+				int right = parent.getWidth()-parent.getInsets().right;
+				int top = parent.getInsets().top;
+				for(Component comp : parent.getComponents()) {
+					int x = right-comp.getWidth();
+					comp.setLocation(x,top);
+					comp.setSize(comp.getPreferredSize());
+				}
+			}
+			
+			public void addLayoutComponent(String name, Component comp) {
+				
+			}
+		});
+		panel.setBackground(Color.white);
+		panel.setBorder(new EmptyBorder(5, 5, 0, 5));
+		JButton refreshButton = new JButton(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/view-refresh-7_32x32.png")));
+		refreshButton.setMinimumSize(new Dimension(50, 50));
+		refreshButton.setPreferredSize(new Dimension(50, 50));
+		refreshButton.addActionListener(new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				ServiceController.getController().getRecommenationMode().getMapController().refreshRecommendations();
+			}
+		});
+		refreshButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		refreshButton.setToolTipText(TextUtils.getText("recommendations.refresh.title"));
+		panel.add(refreshButton);
+		return panel;
+	}
+
 	private Container getNewEmptyContainerComponent() {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.white);
