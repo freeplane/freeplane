@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
 
+import org.docear.plugin.bibtex.Reference;
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
@@ -18,6 +19,7 @@ import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
+import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
@@ -64,9 +66,9 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 					LogUtils.warn(e);
 				}
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();				
-				try {
-					BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode().getMap());
-					if (entry != null) {						
+				try {					
+					BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode().getMap());					
+					if (entry != null) {					
 						jabRefAttributes.setReferenceToNode(entry, event.getNode());
 						if (jabRefAttributes.isNodeDirty()) {
 							jabRefAttributes.setNodeDirty(false);
