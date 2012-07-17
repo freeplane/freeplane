@@ -58,6 +58,7 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
@@ -243,6 +244,11 @@ public abstract class MainView extends ZoomableLabel {
 	public FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
 		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
 			return FoldingMark.ITSELF_FOLDED;
+		}
+		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			if (child.isVisible() && child.containsExtension(HideChildSubtree.class)) {
+				return FoldingMark.ITSELF_FOLDED;
+			}
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
 			if (!child.isVisible() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
