@@ -10,7 +10,6 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class OptionPaneConfiguration extends ALanguageController {

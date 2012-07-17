@@ -1,10 +1,8 @@
 package org.docear.plugin.communications.features;
 
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.util.concurrent.CancellationException;
 
-import javax.swing.plaf.TextUI;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.docear.plugin.communications.CommunicationsController;

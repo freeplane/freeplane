@@ -42,10 +42,9 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.UrlManager;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -65,7 +64,9 @@ public class NodeUtils {
 		
 	public static boolean saveMap(MapModel map){		
 		try {
-			((MFileManager) UrlManager.getController()).writeToFile(map, map.getFile());
+			Controller.getCurrentController().selectMode(MModeController.MODENAME);
+			MMapIO mapIO = (MMapIO)MModeController.getMModeController().getExtension(MapIO.class);
+			mapIO.writeToFile(map, map.getFile());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return false;
@@ -121,7 +122,7 @@ public class NodeUtils {
 		try {						
 			MapModel map = new MMapModel();			
 			AttributeRegistry.getRegistry(map);
-			URL url = Tools.getFilefromUri(uri).toURL();
+			URL url = Tools.getFilefromUri(uri).toURI().toURL();
 			final MapIO mapIO = (MapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
 			mapIO.load(url, map);			
 			return map;

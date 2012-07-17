@@ -8,7 +8,8 @@ public class DocearEventLogger {
 		
 	}
 
-	private String getString(Object eventdata) {
+	@SuppressWarnings("unused")
+	private String getString(final Object eventdata) {
 		if (eventdata == null) {
 			return "";
 		}

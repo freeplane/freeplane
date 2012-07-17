@@ -10,8 +10,10 @@ import org.docear.plugin.core.features.DocearMapModelController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 
@@ -53,7 +55,9 @@ public class MapItem {
 			try {
 				File f = WorkspaceUtils.resolveURI(uri);
 				if (f.exists()) {
-					UrlManager.getController().load(url, map);
+					Controller.getCurrentController().selectMode(MModeController.MODENAME);
+					MMapIO mapIO = (MMapIO) MModeController.getMModeController().getExtension(MapIO.class);
+					mapIO.load(url, map);
 					// do not work on non-docear-mindmaps
 					if (DocearMapModelController.getModel(map) == null) {
 						return null;
