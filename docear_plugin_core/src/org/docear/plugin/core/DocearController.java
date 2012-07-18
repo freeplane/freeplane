@@ -263,6 +263,7 @@ public class DocearController implements IDocearEventListener {
 			return false;
 		}
 		if(Controller.getCurrentController().getViewController().quit()) {
+			dispatchDocearEvent(new DocearEvent(this, DocearEventType.FINISH_THREADS));
 			if(!waitThreadsReady()){
 				return false;
 			}

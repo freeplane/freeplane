@@ -30,7 +30,7 @@ public class ServiceRunner {
 					try {
 						if (backupCtrl.isBackupAllowed() || backupCtrl.isInformationRetrievalAllowed()) {
 							LogUtils.info("Docear BackupRunner: synchronizing backups with server");
-							File[] files = backupCtrl.getBackupQueue();
+							File[] files = backupCtrl.getUploadPackages();
 							if (files != null && files.length>0) {
 								boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", true, files);
 								if (success) {
