@@ -47,7 +47,7 @@ public abstract class UploadController {
 		}
 	};
 	
-	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, 60); 
+	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, (60*3)); 
 	
 	
 	/**
