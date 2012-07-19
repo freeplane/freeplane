@@ -667,7 +667,7 @@ public class MTextController extends TextController {
 	    }
 
 	    public boolean dispatchKeyEvent(KeyEvent e) {
-	    	if(e.getID() == KeyEvent.KEY_RELEASED)
+	    	if(e.getID() == KeyEvent.KEY_RELEASED || e.getID() == KeyEvent.KEY_TYPED)
 	    		return false;
 	    	switch(e.getKeyCode()){
 	    		case KeyEvent.VK_SHIFT:
