@@ -244,10 +244,10 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 	}
 
 	private AnnotationType getAnnotationType(PDOutlineItem bookmark) {
-		if(bookmark != null && (bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
-			return AnnotationType.BOOKMARK_WITHOUT_DESTINATION;
-		}
-		if(bookmark != null && !(bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
+//		if(bookmark != null && (bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
+//			return AnnotationType.BOOKMARK_WITHOUT_DESTINATION;
+//		}
+		if(bookmark != null && !(bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){			
 			COSDictionary cosDictionary = (COSDictionary)bookmark.cosGetField(PDOutlineItem.DK_A);
 			if(!(cosDictionary.get(COSName.create("URI")) instanceof COSNull)){ //$NON-NLS-1$
 				return AnnotationType.BOOKMARK_WITH_URI;

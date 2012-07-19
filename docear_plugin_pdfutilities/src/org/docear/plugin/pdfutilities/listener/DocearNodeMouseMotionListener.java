@@ -354,27 +354,14 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
 		String command = new String();
-		if (readerFilter.isAdobe(new File(readerPath)) && file != null) {
+		if ((readerFilter.isAdobe(new File(readerPath)) && file != null) || (readerFilter.isPdfXChange(new File(readerPath)) && file != null)) {
 			command = readerPath + " /A " + "page=" + page + " \"" + file.getAbsolutePath() + "\"";
-//			command[1] = "/A";
-//			command[2] = "page=" + page;
-//			command[3] = file.getAbsolutePath();
 			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (readerFilter.isFoxit(new File(readerPath)) && file != null) {
 			command = readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + page;
-//			command[1] = file.getAbsolutePath();
-//			command[2] = "/A";
-//			command[3] = "page=" + page;
 			return command; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		if (readerFilter.isPdfXChange(new File(readerPath)) && file != null) {
-			command = readerPath + " /A " + "page=" + page + " \"" + file.getAbsolutePath() + "\"";
-//			command[1] = "/A";
-//			command[2] = "page=" + page;
-//			command[3] = file.getAbsolutePath();
-			return command; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
+		}		
 		return null;
 	}
 
@@ -384,42 +371,68 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		String command = new String();
 		if (readerFilter.isAdobe(new File(readerPath)) && file != null) {
 			command = readerPath + " /A " + "page=" + annotation.getPage() + " \"" + file.getAbsolutePath() + "\"";
-//			command[1] = "/A";
-//			command[2] = "page=" + annotation.getPage();
-//			command[3] = file.getAbsolutePath();
 			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (readerFilter.isFoxit(new File(readerPath)) && file != null) {
 			command = readerPath + " \"" + file.getAbsolutePath() + "\" /A page=" + annotation.getPage();
-//			command[1] = file.getAbsolutePath();
-//			command[2] = "/A";
-//			command[3] = "page=" + annotation.getPage();
 			return command; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (readerFilter.isPdfXChange(new File(readerPath)) && file != null) {
 			command = readerPath + " /A " + "page=" + annotation.getPage() + "&nameddest=" + annotation.getTitle() + " \"" + file.getAbsolutePath() + "\"";
-//			command[1] = "/A";
-//			command[2] = "page=" + annotation.getPage() + "&nameddest=" + annotation.getTitle();
-//			command[3] = file.getAbsolutePath();
 			return command;
 		}
 		return null;
 	}	
 
-	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, IAnnotation annotation) {
-		return getExecCommandWine(readerPathWine, uriToFile, annotation.getPage());
-	}
-
 	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, int page) {
 		String wineFile = Tools.getFilefromUri(uriToFile).getAbsolutePath();
 		wineFile = "Z:" + wineFile.replace("/", "\\") + "";
-
+		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		String[] command = new String[5];
-		command[0] = "wine";
-		command[1] = readerPathWine;
-		command[2] = wineFile;
-		command[3] = "/A";
-		command[4] = "page=" + page;
+		if (readerFilter.isFoxit(new File(readerPathWine)) && wineFile != null) {    		
+    		command[0] = "wine";
+    		command[1] = readerPathWine;
+    		command[2] = wineFile;
+    		command[3] = "/A";
+    		command[4] = "page=" + page;
+		}
+		else if ((readerFilter.isPdfXChange(new File(readerPathWine)) && wineFile != null) || (readerFilter.isAdobe(new File(readerPathWine)) && wineFile != null)) {
+    		command[0] = "wine";
+    		command[1] = readerPathWine;
+    		command[2] = "/A";
+    		command[3] = "page=" + page;
+    		command[4] = wineFile;    		
+		}		
+
+		return command;
+	}
+	
+	private String[] getExecCommandWine(String readerPathWine, URI uriToFile, IAnnotation annotation) {
+		String wineFile = Tools.getFilefromUri(uriToFile).getAbsolutePath();
+		wineFile = "Z:" + wineFile.replace("/", "\\") + "";
+		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
+		String[] command = new String[5];
+		if (readerFilter.isFoxit(new File(readerPathWine)) && wineFile != null) {    		
+    		command[0] = "wine";
+    		command[1] = readerPathWine;
+    		command[2] = wineFile;
+    		command[3] = "/A";
+    		command[4] = "page=" + annotation.getPage();
+		}
+		else if (readerFilter.isPdfXChange(new File(readerPathWine)) && wineFile != null) {
+    		command[0] = "wine";
+    		command[1] = readerPathWine;
+    		command[2] = "/A";
+    		command[3] = "page=" + annotation.getPage() + "&nameddest=" + annotation.getTitle();
+    		command[4] = wineFile;    		
+		}
+		else if (readerFilter.isAdobe(new File(readerPathWine)) && wineFile != null) {
+			command[0] = "wine";
+    		command[1] = readerPathWine;
+    		command[2] = "/A";
+    		command[3] = "page=" + annotation.getPage();
+    		command[4] = wineFile;
+		}
 
 		return command;
 	}
