@@ -326,8 +326,10 @@ public class CommunicationsController extends ALanguageController implements Pro
 	}
 
 	public URI getServiceUri() throws URISyntaxException {
+		if (System.getProperty("org.docear.localhost", "false").equals("true")) {
+            return new URI("http://127.0.0.1:8080/");
+        }
 		return new URI("https://api.docear.org/");
-		//return new URI("http://127.0.0.1:8080/");
 	}
 
 	public String getRegisteredUserName() {

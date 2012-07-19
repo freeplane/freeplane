@@ -237,6 +237,8 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 					pr = OpenDatabaseAction.loadDataBase(fileToLoad, encoding, source);
 				}
 				catch (Exception ex) {
+					//__DOCEAR_
+					ex.printStackTrace();
 					pr = null;
 				}
 				if ((pr == null) || (pr == ParserResult.INVALID_FORMAT)) {
