@@ -18,7 +18,6 @@ import org.docear.plugin.services.recommendations.mode.DocearRecommendationsMode
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsNode;
 import org.docear.plugin.services.upload.UploadController;
-import org.docear.plugin.services.upload.UploadThread;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -47,7 +46,7 @@ public class ServiceController extends UploadController {
 
 	private Application application;
 	private DocearRecommendationsModeController modeController;
-	private final UploadThread uploadThread;
+	
 
 	
 
@@ -64,8 +63,6 @@ public class ServiceController extends UploadController {
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
-
-		uploadThread = new UploadThread(this);
 	}
 
 	protected static void initialize(ModeController modeController) {
@@ -74,8 +71,8 @@ public class ServiceController extends UploadController {
 			serviceController = new ServiceController(modeController);
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					serviceController.uploadThread.start();
-					serviceController.getUploadPacker().start();
+					serviceController.getUploader().start();
+					serviceController.getPacker().start();
 				}
 			});
 			new UpdateCheck();

@@ -10,7 +10,10 @@ import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 public class DocearEventListener implements IDocearEventListener {
 
 	public void handleEvent(DocearEvent event) {
-		if (event.getType() == DocearEventType.FINISH_THREADS) {
+		if (event.getType() == DocearEventType.APPLICATION_CLOSING) {
+			ServiceController.getController().shutdown();
+		}
+		else if (event.getType() == DocearEventType.FINISH_THREADS) {
 			ServiceController.getController().finishThreads();
 		}
 		else if (event.getType() == DocearEventType.SHOW_LICENSES) {

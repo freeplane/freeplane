@@ -40,14 +40,13 @@ public abstract class UploadController {
 	
 	private final Runnable packerRunner = new Runnable() {
 		public void run() {
-			String runnerID = Integer.toHexString(this.hashCode());
-			DocearController.getController().addWorkingThreadHandle(runnerID);
 			createPackages();
-			DocearController.getController().removeWorkingThreadHandle(runnerID);
 		}
 	};
 	
-	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, (60*3)); 
+	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, (60)); 
+	
+	private final UploadThread uploadThread = new UploadThread(this);
 	
 	
 	/**
@@ -124,8 +123,15 @@ public abstract class UploadController {
 	/**
 	 * @return
 	 */
-	protected Thread getUploadPacker() {
+	protected Thread getPacker() {
 		return this.packerThread;
+	}
+	
+	/**
+	 * @return
+	 */
+	protected Thread getUploader() {
+		return this.uploadThread;
 	}
 	
 	/**
@@ -142,6 +148,9 @@ public abstract class UploadController {
 		}		
 	}
 	
+	/**
+	 * @param file
+	 */
 	protected final void fireFileCreated(File file) {
 		synchronized (observers) {
 			for(DirectoryObserver observer : observers) {
@@ -163,9 +172,8 @@ public abstract class UploadController {
 			return;
 		}
 		
-//		Thread thread = new Thread() {
-//			public void run() {
-//				DocearController.getController().addWorkingThreadHandle(this.getName());
+		Thread thread = new Thread() {
+			public void run() {
 				try {					
 					File backupFile = new File(getUploadDirectory().getAbsolutePath(), System.currentTimeMillis() + "_" + map.getFile().getName() + ".zip");
 					
@@ -201,17 +209,17 @@ public abstract class UploadController {
 						out.close();
 						fout.close();
 						
-						//DocearController.getController().removeWorkingThreadHandle(this.getName());
+						DocearController.getController().removeWorkingThreadHandle(this.getName());
 					}					
 				}
 				catch (Exception e) {
 					DocearLogger.warn("org.docear.plugin.services.upload.UploadController.createMapPackage(): "+e.getMessage());
 				}				
-//			}
-//			
-//		};
-//		
-//		thread.start();
+			}
+			
+		};
+		DocearController.getController().addWorkingThreadHandle(thread.getName());
+		thread.start();
 	}
 	
 	/**
@@ -268,11 +276,18 @@ public abstract class UploadController {
 		return properties;
 	}
 	
-	public void finishThreads() {
-		this.packerThread.terminate();
+	/**
+	 * 
+	 */
+	public void finishThreads() {		
 		String runnerID = Integer.toHexString(this.hashCode());
 		DocearController.getController().addWorkingThreadHandle(runnerID);
 		packerRunner.run();
 		DocearController.getController().removeWorkingThreadHandle(runnerID);
+	}
+	
+	public void shutdown() {
+		this.packerThread.terminate();
+		this.uploadThread.terminate();
 	}
 }

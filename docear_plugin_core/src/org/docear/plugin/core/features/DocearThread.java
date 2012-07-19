@@ -1,5 +1,6 @@
 package org.docear.plugin.core.features;
 
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.logging.DocearLogger;
 
 public abstract class DocearThread extends Thread {
@@ -12,9 +13,15 @@ public abstract class DocearThread extends Thread {
 	
 	public final void run() {
 		DocearLogger.info(this.toString()+" starting...");
+		String threadID = Integer.toHexString(this.hashCode())+toString();
 		try {
+			DocearController.getController().addWorkingThreadHandle(threadID);
 			this.execute();
-		} catch (InterruptedException e) {
+		} 
+		catch (InterruptedException e) {
+		}
+		finally {
+			DocearController.getController().removeWorkingThreadHandle(threadID);
 		}
 	}
 	
@@ -23,7 +30,8 @@ public abstract class DocearThread extends Thread {
 	}
 	
 	public final void terminate() {
-		this.terminated  = true; 
+		this.terminated  = true;
+		this.interrupt();
 	}
 	
 	public final boolean isTerminated() {

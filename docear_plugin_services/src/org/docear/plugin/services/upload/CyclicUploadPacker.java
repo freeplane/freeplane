@@ -21,7 +21,9 @@ public class CyclicUploadPacker extends DocearThread {
 		if(target != null) {
 			while(!isTerminated()) {
 				target.run();
-				sleep(interval);
+				if(!isInterrupted()) {
+					sleep(interval);
+				}
 			}
 		}			
 	}

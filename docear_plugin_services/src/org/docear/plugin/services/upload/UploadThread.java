@@ -57,8 +57,10 @@ public class UploadThread extends DocearThread implements DirectoryObserver {
 				DocearLogger.warn("org.docear.plugin.services.upload.UploadThread.execute(): "+e.getMessage());
 			}
 			try {
-				sleep(60000 * backupMinutes);
-			} catch (InterruptedException e) {						
+				if(!isInterrupted()) {
+					sleep(60000 * backupMinutes);
+				}
+			} catch (InterruptedException e) {
 			}
 		}
 
