@@ -1,7 +1,5 @@
 package org.docear.plugin.services;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.net.URL;
 
 import javax.swing.SwingUtilities;
@@ -19,6 +17,7 @@ import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAct
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsNode;
+import org.docear.plugin.services.upload.UploadController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -33,16 +32,11 @@ import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
-public class ServiceController {
+public class ServiceController extends UploadController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
 	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
 
 	private static ServiceController serviceController;
-
-
-	private static ServiceRunner backupRunner;	
-
-	private final File backupFolder = new File(CommunicationsController.getController().getCommunicationsQueuePath(), "mindmaps");
 
 	private final IMapLifeCycleListener mapLifeCycleListener = new MapLifeCycleListener();
 	public static final int ALLOW_RECOMMENDATIONS = 8;
@@ -52,12 +46,9 @@ public class ServiceController {
 
 	private Application application;
 	private DocearRecommendationsModeController modeController;
+	
 
-	private static FileFilter zipFilter = new FileFilter() {
-		public boolean accept(File f) {
-			return (f != null && f.getName().toLowerCase().endsWith(".zip"));
-		}
-	};
+	
 
 	private ServiceController(ModeController modeController) {
 		LogUtils.info("starting DocearBackupStarter()");
@@ -72,8 +63,6 @@ public class ServiceController {
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
-
-		backupRunner = new ServiceRunner(this);
 	}
 
 	protected static void initialize(ModeController modeController) {
@@ -82,8 +71,8 @@ public class ServiceController {
 			serviceController = new ServiceController(modeController);
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					backupRunner.run();	
-					
+					serviceController.getUploader().start();
+					serviceController.getPacker().start();
 				}
 			});
 			new UpdateCheck();
@@ -99,9 +88,9 @@ public class ServiceController {
 		return serviceController;
 	}
 
-	public ServiceRunner getBackupRunner() {
-		return backupRunner;
-	}
+//	public ServiceRunner getBackupRunner() {
+//		return backupRunner;
+//	}
 
 	private void addPluginDefaults() {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
@@ -157,6 +146,8 @@ public class ServiceController {
 			} 
 
 		});
+		
+		
 	}
 
 	public DocearRecommendationsModeController getRecommenationMode() {
@@ -195,16 +186,7 @@ public class ServiceController {
 		ResourceController.getResourceController().setProperty(DOCEAR_INFORMATION_RETRIEVAL, "" + code);
 	}
 
-	public File getBackupDirectory() {
-		if (!backupFolder.exists()) {
-			backupFolder.mkdirs();
-		}
-		return backupFolder;
-	}
-
-	public File[] getBackupQueue() {
-		return getBackupDirectory().listFiles(zipFilter);
-	}
+	
 
 	public boolean isBackupAllowed() {
 		CommunicationsController commCtrl = CommunicationsController.getController();
@@ -247,5 +229,15 @@ public class ServiceController {
 		// ShowRecommendationsAction(), MenuBuilder.AS_CHILD);
 		// }
 		// });
+	}
+
+	@Override
+	public int getUploadInterval() {
+		final ResourceController resourceCtrl = Controller.getCurrentController().getResourceController();
+		int backupMinutes = resourceCtrl.getIntProperty("save_backup_automcatically", 0);
+		if (backupMinutes <= 0) {
+			backupMinutes = 30;
+		}
+		return backupMinutes;
 	}
 }

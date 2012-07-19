@@ -29,7 +29,6 @@ import net.sf.jabref.imports.CheckForNewEntryTypesAction;
 import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
-import net.sf.jabref.label.HandleDuplicateWarnings;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.actions.DocearHandleDuplicateWarning;

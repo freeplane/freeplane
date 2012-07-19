@@ -50,7 +50,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.help.OnlineDocumentationAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -378,7 +379,8 @@ public class CoreConfiguration extends ALanguageController {
 						try {
 							if (endUrl.getFile().endsWith(".mm")) {
 								 Controller.getCurrentController().selectMode(MModeController.MODENAME);
-								 ((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(endUrl);
+								 MMapIO mapIO = (MMapIO) MModeController.getMModeController().getExtension(MapIO.class);
+								 mapIO.newDocumentationMap(endUrl);
 							}
 							else {
 								Controller.getCurrentController().getViewController().openDocument(endUrl);

@@ -102,18 +102,22 @@ public class DocearController implements IDocearEventListener {
 		return docearController;
 	}
 	
-	public synchronized void addWorkingThreadHandle(String handleId) {
+	public void addWorkingThreadHandle(String handleId) {
 		if(handleId == null) {
 			return;
 		}
-		workingThreads.add(handleId);		
+		synchronized (workingThreads) {
+			workingThreads.add(handleId);	
+		}
 	}
 	
-	public synchronized void removeWorkingThreadHandle(String handleId) {
+	public void removeWorkingThreadHandle(String handleId) {
 		if(handleId == null) {
 			return;
 		}
-		workingThreads.remove(handleId);		
+		synchronized (workingThreads) {
+			workingThreads.remove(handleId);
+		}
 	}
 	
 
@@ -250,8 +254,11 @@ public class DocearController implements IDocearEventListener {
 		this.applicationBuildDate = applicationBuildDate;
 	}
 	
-	private synchronized boolean hasWorkingThreads() {
-		return !workingThreads.isEmpty();
+	private boolean hasWorkingThreads() {
+		synchronized (workingThreads) {
+			return !workingThreads.isEmpty();
+		}
+		
 	}
 	
 	public boolean shutdown() {	
@@ -263,6 +270,7 @@ public class DocearController implements IDocearEventListener {
 			return false;
 		}
 		if(Controller.getCurrentController().getViewController().quit()) {
+			dispatchDocearEvent(new DocearEvent(this, DocearEventType.FINISH_THREADS));
 			if(!waitThreadsReady()){
 				return false;
 			}
