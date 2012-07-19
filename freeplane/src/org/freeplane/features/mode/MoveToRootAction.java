@@ -35,6 +35,12 @@ class MoveToRootAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		Controller.getCurrentController().getSelection().selectRoot();
+		//DOCEAR - catch occasionally happening NPE
+		try {
+			Controller.getCurrentController().getSelection().selectRoot();
+		}
+		catch (NullPointerException ex) {
+			//ignore
+		}
 	}
 }
