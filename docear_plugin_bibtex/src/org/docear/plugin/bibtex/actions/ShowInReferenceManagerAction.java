@@ -62,7 +62,7 @@ public class ShowInReferenceManagerAction extends AFreeplaneAction {
 			BibtexEntry referenceEntry = ReferencesController.getController().getJabrefWrapper().getDatabase().getEntryByKey(bibtexKey);
 			MainTable table = ReferencesController.getController().getJabrefWrapper().getBasePanel().getMainTable();
 			
-			List<BibtexEntry> list = table.getSortedForTable();
+			List<BibtexEntry> list = table.getTableRows();
 			int viewHeight = table.getPane().getHeight()-table.getTableHeader().getHeight();
 			Rectangle viewRect = new Rectangle(0,((JViewport)table.getParent()).getViewPosition().y, 4, viewHeight);
 			int pos = 0;
