@@ -37,6 +37,8 @@ import org.docear.plugin.bibtex.actions.HandleDuplicateKeys;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.logger.DocearLogEvent;
+import org.docear.plugin.core.logging.DocearLogger;
+import org.docear.plugin.core.util.WinRegistry;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -171,8 +173,21 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 			getJabrefFrame().closeCurrentTab();
 		}
 		openIt(file, raisePanel);
-		
+		updateWindowsRegistry(file);
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.RM_BIBTEX_FILE_CHANGE, new Object[] {file, this.getDatabase().getEntries().size()});
+	}
+
+	private void updateWindowsRegistry(File file) {
+		if(Compat.isWindowsOS()) {
+			try {
+				WinRegistry.createKey(WinRegistry.HKEY_CURRENT_USER, "SOFTWARE\\docear4Word");
+				WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "SOFTWARE\\Docear4Word", "BibTexDatabase", file.getAbsolutePath());
+				WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "ENVIRONMENT", "docear_bibtex_current", file.getAbsolutePath());
+			} 
+			catch (Exception e) {
+				DocearLogger.warn("org.docear.plugin.bibtex.jabref.JabrefWrapper.updateWindowsRegistry(): "+e.getMessage());
+			}
+		}
 	}
 
 	public void openIt(File file, boolean raisePanel) {
