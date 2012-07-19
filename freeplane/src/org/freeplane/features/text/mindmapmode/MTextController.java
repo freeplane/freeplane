@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +57,9 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
+import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.IndexedTree.Node;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
@@ -645,7 +649,7 @@ public class MTextController extends TextController {
 	}
 
 	private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener{
-		private boolean editLong;
+		private final boolean editLong;
 	    private final boolean parentFolded;
 	    private final boolean isNewNode;
 	    private final NodeModel prevSelectedModel;
@@ -673,31 +677,22 @@ public class MTextController extends TextController {
 	    		case KeyEvent.VK_ALT_GRAPH:
 	    			return false;
 	    	}
-	    	if (isEditLongSwitchEvent(e)){
-				editLong = true;
-	    		return false;
-	    	}
 	    	
 	    	uninstall();
+	    	if (isMenuEvent(e)){
+	    		return false;
+	    	}
 	    	eventQueue.activate(e);
 	    	edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 	    	return true;
 	    }
 
-		private boolean isEditLongSwitchEvent(KeyEvent e) {
-	        if(! editLong){
-	    		final String editLongKeyStrokeProperty = ResourceController.getResourceController().getProperty("acceleratorForMindMap/$EditLongAction$0", null);
-	    		if(editLongKeyStrokeProperty != null){
-	    			final KeyStroke editLongKeyStroke = UITools.getKeyStroke(editLongKeyStrokeProperty);
-	    			if(editLongKeyStroke != null){
-	    				final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
-	    				if(editLongKeyStroke.equals(keyStroke)){
-	    					return true;
-	    				}
-	    			}
-	    		}
-	    	}
-	        return false;
+		private boolean isMenuEvent(KeyEvent e) {
+			final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
+			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
+			final Map<KeyStroke, Node> acceleratorMap = menuBuilder.getAcceleratorMap();
+			return acceleratorMap.containsKey(keyStroke);
         }
 
 		public void uninstall() {
