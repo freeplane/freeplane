@@ -45,6 +45,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -644,7 +645,7 @@ public class MTextController extends TextController {
 	}
 
 	private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener{
-		private final boolean editLong;
+		private boolean editLong;
 	    private final boolean parentFolded;
 	    private final boolean isNewNode;
 	    private final NodeModel prevSelectedModel;
@@ -672,11 +673,32 @@ public class MTextController extends TextController {
 	    		case KeyEvent.VK_ALT_GRAPH:
 	    			return false;
 	    	}
+	    	if (isEditLongSwitchEvent(e)){
+				editLong = true;
+	    		return false;
+	    	}
+	    	
 	    	uninstall();
 	    	eventQueue.activate(e);
 	    	edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 	    	return true;
 	    }
+
+		private boolean isEditLongSwitchEvent(KeyEvent e) {
+	        if(! editLong){
+	    		final String editLongKeyStrokeProperty = ResourceController.getResourceController().getProperty("acceleratorForMindMap/$EditLongAction$0", null);
+	    		if(editLongKeyStrokeProperty != null){
+	    			final KeyStroke editLongKeyStroke = UITools.getKeyStroke(editLongKeyStrokeProperty);
+	    			if(editLongKeyStroke != null){
+	    				final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+	    				if(editLongKeyStroke.equals(keyStroke)){
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    	}
+	        return false;
+        }
 
 		public void uninstall() {
 	        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
