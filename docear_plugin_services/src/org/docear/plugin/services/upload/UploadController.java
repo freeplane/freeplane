@@ -44,7 +44,7 @@ public abstract class UploadController {
 		}
 	};
 	
-	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, (60)); 
+	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, (180)); //every 3 minutes 
 	
 	private final UploadThread uploadThread = new UploadThread(this);
 	
