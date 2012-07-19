@@ -180,7 +180,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private void updateWindowsRegistry(File file) {
 		if(Compat.isWindowsOS()) {
 			try {
-				WinRegistry.createKey(WinRegistry.HKEY_CURRENT_USER, "SOFTWARE\\docear4Word");
+				WinRegistry.createKey(WinRegistry.HKEY_CURRENT_USER, "SOFTWARE\\Docear4Word");
 				WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "SOFTWARE\\Docear4Word", "BibTexDatabase", file.getAbsolutePath());
 				WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "ENVIRONMENT", "docear_bibtex_current", file.getAbsolutePath());
 			} 
