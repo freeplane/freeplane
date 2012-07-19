@@ -688,11 +688,19 @@ public class MTextController extends TextController {
 	    }
 
 		private boolean isMenuEvent(KeyEvent e) {
-			final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
-			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
-			final Map<KeyStroke, Node> acceleratorMap = menuBuilder.getAcceleratorMap();
-			return acceleratorMap.containsKey(keyStroke);
+	        if(! editLong){
+	    		final String editLongKeyStrokeProperty = ResourceController.getResourceController().getProperty("acceleratorForMindMap/$EditLongAction$0", null);
+	    		if(editLongKeyStrokeProperty != null){
+	    			final KeyStroke editLongKeyStroke = UITools.getKeyStroke(editLongKeyStrokeProperty);
+	    			if(editLongKeyStroke != null){
+	    				final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+	    				if(editLongKeyStroke.equals(keyStroke)){
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    	}
+	        return false;
         }
 
 		public void uninstall() {
