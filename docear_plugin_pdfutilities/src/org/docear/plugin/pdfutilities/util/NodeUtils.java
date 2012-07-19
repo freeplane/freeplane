@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.AnnotationID;
@@ -53,9 +54,17 @@ import org.freeplane.view.swing.map.attribute.AttributeView;
 public class NodeUtils {
 	
 	public static boolean isMapCurrentlyOpened(MapModel map){
+		if(map == null) {
+			throw new NullArgumentException("map");
+		}
 		Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
 		for(Entry<String, MapModel> entry : maps.entrySet()){
-			if(entry.getValue().getFile().equals(map.getFile())){
+			if(entry.getValue().getFile() == null) {
+				if(entry.getValue().equals(map)) {
+					return true;
+				}
+			} 
+			else if(entry.getValue().getFile().equals(map.getFile())) {
 				return true;
 			}
 		}
