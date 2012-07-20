@@ -385,5 +385,11 @@ public class WinRegistry {
 	    result[str.length()] = 0;
 	    return result;
 	  }
+	  
+	  /** 
+	     * Java wrapper for Windows registry API RegSetValueEx()
+	     */
+//	    private static native int DocearRegSetValueEx(int hKey, int valueType, byte[] valueName, 
+//	                                                         byte[] value);
 
 }

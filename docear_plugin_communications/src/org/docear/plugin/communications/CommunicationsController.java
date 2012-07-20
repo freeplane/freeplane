@@ -257,11 +257,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 	}
 	
 	public WebResource getServiceResource() {
-		try {
-			return client.resource(getServiceUri());
-		} catch (URISyntaxException e) {
-			return null;
-		}
+		return client.resource(getServiceUri());		
 	}
 	
 	public DocearServiceResponse get(String path) {
@@ -317,19 +313,37 @@ public class CommunicationsController extends ALanguageController implements Pro
 		Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY).setEnabled(false);
 	}
 
-	public boolean postFileToDocearService(String restPath, boolean deleteIfTransferred, File... files) {
-		if (!allowTransmission || files.length == 0 || isEmpty(getUserName()) || isEmpty(getAccessToken())) {
+//	public boolean postFileToDocearService(String restPath, File file, boolean deleteIfTransferred) {
+//		if (!allowTransmission || file == null || isEmpty(getUserName()) || isEmpty(getAccessToken())) {
+//			return false;
+//		}
+//		try {
+//			return getFileTransferClient(restPath).sendFile(file, deleteIfTransferred);
+//		} catch (DocearServiceException e) {
+//			return false;
+//		}
+//	}
+	
+	public boolean transmissionPrepared() {
+		if (!allowTransmission || isEmpty(getUserName()) || isEmpty(getAccessToken())) {
 			return false;
 		}
-		FiletransferClient client = new FiletransferClient(restPath, files);
-		return client.send(deleteIfTransferred);
+		return true;
+	}
+	
+	public FiletransferClient getFileTransferClient(String restPath) {
+		return new FiletransferClient(restPath);
+//		if(this.fileTransferClient == null) {
+//			this.fileTransferClient = new FiletransferClient(restPath);
+//		}
+//		return this.fileTransferClient;
 	}
 
-	public URI getServiceUri() throws URISyntaxException {
+	public URI getServiceUri() {
 		if (System.getProperty("org.docear.localhost", "false").equals("true")) {
-            return new URI("http://127.0.0.1:8080/");
+            return URI.create("http://127.0.0.1:8080/");
         }
-		return new URI("https://api.docear.org/");
+		return URI.create("https://api.docear.org/");
 	}
 
 	public String getRegisteredUserName() {
@@ -432,13 +446,26 @@ public class CommunicationsController extends ALanguageController implements Pro
 		}
 		if (event.getSource().equals(FiletransferClient.class)) {
 			if (FiletransferClient.START_UPLOAD.equals(event.getEventObject())) {
-				connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);						
+					}
+				});
+				
 			}
 			else if (FiletransferClient.STOP_UPLOAD.equals(event.getEventObject())) {
-				adjustInfoBarConnectionState();
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						adjustInfoBarConnectionState();
+					}
+				});
 			}
 			else if (FiletransferClient.NO_CONNECTION.equals(event.getEventObject())) {
-				connectionBar.setConnectionState(CONNECTION_STATE.DISCONNECTED);
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						connectionBar.setConnectionState(CONNECTION_STATE.DISCONNECTED);
+					}
+				});
 			}
 			return;
 		}

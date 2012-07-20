@@ -158,6 +158,17 @@ public abstract class UploadController {
 			}
 		}
 	}
+	
+	/**
+	 * @param file
+	 */
+	protected final void fireFileRemoved(File file) {
+		synchronized (observers) {
+			for(DirectoryObserver observer : observers) {
+				observer.fileRemoved(file);
+			}
+		}
+	}
 
 	/**
 	 * @param map

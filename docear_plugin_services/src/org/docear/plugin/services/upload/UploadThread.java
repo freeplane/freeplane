@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.communications.FiletransferClient;
 import org.docear.plugin.core.features.DocearThread;
 import org.docear.plugin.core.io.DirectoryObserver;
 import org.docear.plugin.core.logging.DocearLogger;
@@ -41,12 +42,21 @@ public class UploadThread extends DocearThread implements DirectoryObserver {
 					DocearLogger.info(this.toString()+": uploading packages to the server ...");
 					File[] files = uploadFiles.toArray(new File[]{}); //uploadCtrl.getUploadPackages();
 					if (files != null && files.length>0) {
-						boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", true, files);
-						if (success) {
-							DocearLogger.info(this.toString()+": synchronizing successfull");
-						}
-						else {
-							DocearLogger.info(this.toString()+": synchronizing failed");
+						FiletransferClient client = CommunicationsController.getController().getFileTransferClient("mindmaps");
+						for(File file : files) {
+							//boolean success = CommunicationsController.getController().postFileToDocearService("mindmaps", file, true);
+							if(!file.exists()) {
+								fileRemoved(file);
+								continue;
+							}
+							boolean success = client.sendFile(file, true);
+							if (success) {
+								DocearLogger.info(this.toString()+": synchronizing '"+file+"' successfull");
+								fileRemoved(file);
+							}
+							else {
+								DocearLogger.info(this.toString()+": synchronizing '"+file+"' failed");
+							}
 						}
 					}
 					else {
