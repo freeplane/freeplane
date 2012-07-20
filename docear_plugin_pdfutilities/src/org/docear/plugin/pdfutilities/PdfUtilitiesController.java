@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -569,7 +572,7 @@ public class PdfUtilitiesController extends ALanguageController{
 						return result;
 					}
 					File readerFile = new File(readerPath); 
-//					if(readerPath != null && !readerPath.isEmpty()){ 
+					if(readerPath != null && !readerPath.isEmpty()){ 
 						if(!readerFilter.accept(readerFile)){
 							if(exeFilter.accept(readerFile)){
 								result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
@@ -578,22 +581,85 @@ public class PdfUtilitiesController extends ALanguageController{
 								result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
 							}
 						}
-//						else {
-//							if(readerFilter.isPdfXChange(readerFile)) {
-//								try {
-//									WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "Software\\Tracker Software\\PDFViewer\\Documents","SaveMethod",new String(new byte[]{0,0,2}));
-//								} 
-//								catch (Exception e) {
-//									e.printStackTrace();
-//								}
-//							}
-//						}
-//					}
+						else {
+							if(readerFilter.isPdfXChange(readerFile)) {
+								//Probe for xchange settings
+								if(!hasCompatibleSettings()) {
+									System.out.println("Settings must be adjusted!!!");
+								}
+								else {
+									System.out.println("Settings are compatible.");
+								}
+							}
+						}
+					}
 				}
 				return result;
 			}
 			
 		});
+	}
+	
+	public boolean hasCompatibleSettings() {
+		if(Compat.isMacOsX()) {
+			return true;
+		}
+		File exportFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),"exported.reg");
+		String[] command1;
+		String[] command2;
+		if(Compat.isWindowsOS()) {
+			command1 = new String[] {"regedit", "/a", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Documents"};
+			command2 = new String[] {"regedit", "/a", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Commenting"};
+		} 
+		else {
+			//Linux/Unix
+			command1 = new String[] {"wine", "regedit", "/a", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Documents"};
+			command2 = new String[] {"wine", "regedit", "/a", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Commenting"}; 
+		}
+		try {
+			boolean ret = false;
+			String line; 
+			Runtime.getRuntime().exec(command1);
+			BufferedReader reader = new BufferedReader(new FileReader(exportFile));			
+			try {
+				while((line = reader.readLine()) != null) {
+					if("\"SaveMethod\"=dword:00000002".equals(line.trim())) {
+						ret = true;
+						break;
+					}
+				}
+			}
+			finally {
+				reader.close();
+			}
+			
+			if(ret) {
+				Runtime.getRuntime().exec(command2);
+				reader = new BufferedReader(new FileReader(exportFile));
+				int found = 0;
+				try {
+					while((line = reader.readLine()) != null) {
+						if("\"CopySelTextToDrawingPopup\"=dword:00000001".equals(line.trim())) {
+							found++;
+						}
+						else if("\"CopySelTextToHilightPopup\"=dword:00000001".equals(line.trim())) {
+							found++;
+						}
+						if(found == 2) {
+							return true;
+						}
+					}
+				}
+				finally {
+					reader.close();
+				}
+			}
+		} catch (IOException e) {
+			//DOCEAR - problem to check registry for settings
+			return true;
+		}
+					
+		return false;
 	}
 
 }
