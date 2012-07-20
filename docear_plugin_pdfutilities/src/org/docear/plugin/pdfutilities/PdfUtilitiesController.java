@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -557,6 +560,8 @@ public class PdfUtilitiesController extends ALanguageController{
 		modeController.getOptionPanelBuilder().load(preferences);
 		Controller.getCurrentController().addOptionValidator(new IValidator(){
 
+			private PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
+			private ExeFileFilter exeFilter = new ExeFileFilter();
 			public ValidationResult validate(Properties properties) {
 				ValidationResult result = new ValidationResult();
 				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
@@ -566,13 +571,30 @@ public class PdfUtilitiesController extends ALanguageController{
 						result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
 						return result;
 					}
+					File readerFile = new File(readerPath); 
 					if(readerPath != null && !readerPath.isEmpty()){ 
-						if(!(new PdfReaderFileFilter().accept(new File(readerPath)))){
-							if(new ExeFileFilter().accept(new File(readerPath))){
+						if(!readerFilter.accept(readerFile)){
+							if(exeFilter.accept(readerFile)){
 								result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
 							}
 							else{
 								result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
+							}
+						}
+						else {
+							if(readerFilter.isPdfXChange(readerFile)) {
+								//Probe for xchange settings
+								try {
+									if(!hasCompatibleSettings()) {
+										System.out.println("Settings must be adjusted!!!");
+									}
+									else {
+										System.out.println("Settings are compatible.");
+									}
+								}
+								catch (IOException e) {
+									result.addError(TextUtils.getText("docear.validate_pdf_xchange.error"));
+								}
 							}
 						}
 					}
@@ -581,6 +603,82 @@ public class PdfUtilitiesController extends ALanguageController{
 			}
 			
 		});
+	}
+	
+	public boolean hasCompatibleSettings() throws IOException {
+		if(Compat.isMacOsX()) {
+			return true;
+		}
+		File exportFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),"exported.reg");
+		String[] command1;
+		String[] command2;
+		if(Compat.isWindowsOS()) {
+			command1 = new String[] {"regedit", "/e", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Documents"};
+			command2 = new String[] {"regedit", "/e", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Commenting"};
+		} 
+		else {
+			//Linux/Unix
+			command1 = new String[] {"wine", "regedit", "/e", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Documents"};
+			command2 = new String[] {"wine", "regedit", "/e", exportFile.getAbsolutePath(), "HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Commenting"}; 
+		}
+		try {
+			boolean ret = false;
+			String line; 
+			try {
+				if (Runtime.getRuntime().exec(command1).waitFor() != 0) {					
+					throw new IOException("Could not retrieve document settings!");
+				}
+			}
+			catch (InterruptedException e) {
+			}
+			BufferedReader reader = new BufferedReader(new FileReader(exportFile));			
+			try {
+				while((line = reader.readLine()) != null) {
+					if("\"SaveMethod\"=dword:00000002".equals(line.trim())) {
+						ret = true;
+						break;
+					}
+				}
+			}
+			finally {
+				reader.close();
+			}
+			
+			if(ret) {
+				try {
+					if (Runtime.getRuntime().exec(command2).waitFor() != 0) {					
+						throw new IOException("Could not retrieve commenting settings!");
+					}
+				}
+				catch (InterruptedException e) {
+				}
+				
+				reader = new BufferedReader(new FileReader(exportFile));
+				int found = 0;
+				try {
+					while((line = reader.readLine()) != null) {
+						if("\"CopySelTextToDrawingPopup\"=dword:00000001".equals(line.trim())) {
+							found++;
+						}
+						else if("\"CopySelTextToHilightPopup\"=dword:00000001".equals(line.trim())) {
+							found++;
+						}
+						if(found == 2) {
+							return true;
+						}
+					}
+					System.out.println("bla");
+				}
+				finally {
+					reader.close();
+				}
+			}
+		} catch (IOException e) {
+			LogUtils.warn("org.docear.plugin.pdfutilities.PdfUtilitiesController.hasCompatibleSettings(): "+e.getMessage());
+			throw new IOException("Could not validate PDF-X-Change Viewer settings!");
+		}
+					
+		return false;
 	}
 
 }

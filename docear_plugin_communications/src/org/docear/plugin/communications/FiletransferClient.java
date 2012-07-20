@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import javax.ws.rs.core.MediaType;
 
+import org.docear.plugin.communications.features.DocearServiceException;
+import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.util.LogUtils;
@@ -14,6 +16,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
 public class FiletransferClient {
@@ -31,71 +34,75 @@ public class FiletransferClient {
 //		this.client.setConnectTimeout(CommunicationsConfiguration.CONNECTION_TIMEOUT);		
 		Thread.currentThread().setContextClassLoader(contextClassLoader); 
 	}
+
+	private WebResource serviceResource;
 	
-	private final File[] files;
-	private final String restFulPath;
-	
-	public FiletransferClient(String restPath, File... files) {
-		assert(files != null && files.length > 0);
-		
-		this.files = files;
-		this.restFulPath = restPath;
+	public FiletransferClient(String restPath) {
+		serviceResource = client.resource(CommunicationsController.getController().getServiceUri());
+		serviceResource = serviceResource.path("/user/" + CommunicationsController.getController().getUserName() + "/" + restPath);
 	}
 	
-	
-	public boolean send(boolean deleteIfTransferred) {
+	public boolean sendFile(File file, boolean deleteIfTransferred) throws DocearServiceException {
+		if (!CommunicationsController.getController().transmissionPrepared() || file == null) {
+			return false;
+		}
 		DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), START_UPLOAD));
-		FormDataMultiPart formDataMultiPart;
 		FileInputStream inStream = null;
-		byte[] data;
+		try {
+			inStream = new FileInputStream(file);
+			int size = inStream.available();
+			byte[] data = new byte[size];
+			if(inStream.read(data) == size) {
+				FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
+				formDataMultiPart.field("file", data, MediaType.APPLICATION_OCTET_STREAM_TYPE);					
+				
+				String accessToken = CommunicationsController.getController().getAccessToken();
+				Builder requestBuilder = serviceResource.type(MediaType.MULTIPART_FORM_DATA_TYPE).header("accessToken", accessToken);
+				
+				ClientResponse response = requestBuilder.post(ClientResponse.class, formDataMultiPart);					
+				if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {
+					//System.out.println(response.getEntity(String.class));
+					throw new IOException("file upload not accepted ("+ response+")");
+				}
+				else if (deleteIfTransferred) {
+					inStream.close();
+					System.gc();
+					file.delete();
+				}
+			}
+			else {
+				throw new IOException("incomplete read ("+file.getPath()+")");
+			}
+		}
+		catch(ClientHandlerException ex) {
+			DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), NO_CONNECTION));
+			throw new DocearServiceException("no connection to the server", DocearServiceExceptionType.NO_CONNECTION);
+		}
+		catch (Exception ex) {
+			LogUtils.warn("Could not upload "+ file.getPath(), ex);
+			DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), STOP_UPLOAD));
+			return false;
+		}
+		finally {
+			try {
+				inStream.close();
+			} 
+			catch (Exception e) {				
+			}
+		}
+		DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), STOP_UPLOAD));
+		return true;
+	}
+	
+	public boolean sendFiles(File[] files, boolean deleteIfTransferred) throws DocearServiceException {
 		for(File file : files) {
 			if(!CommunicationsController.getController().allowTransmission()) {
 				break;
 			}
-			try {
-				formDataMultiPart = new FormDataMultiPart();
-				inStream = new FileInputStream(file);
-				int size = inStream.available();
-				data = new byte[size];
-				if(inStream.read(data) == size) { 
-					formDataMultiPart.field("file", data, MediaType.APPLICATION_OCTET_STREAM_TYPE);
-					
-					WebResource res = client.resource(CommunicationsController.getController().getServiceUri());
-					res = res.path("/user/" + CommunicationsController.getController().getUserName() + "/" + this.restFulPath);
-					String accessToken = CommunicationsController.getController().getAccessToken();
-					ClientResponse response = res.type(MediaType.MULTIPART_FORM_DATA_TYPE).header("accessToken", accessToken).post(ClientResponse.class, formDataMultiPart);					
-					if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {
-						//System.out.println(response.getEntity(String.class));
-						throw new IOException("file upload not accepted ("+ response+")");
-					}
-					else if (deleteIfTransferred) {
-						inStream.close();
-						System.gc();
-						file.delete();
-					}
-				}
-				else {
-					throw new IOException("incomplete read ("+file.getPath()+")");
-				}
-			}
-			catch(ClientHandlerException ex) {
-				DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), NO_CONNECTION));
+			if(!sendFile(file, deleteIfTransferred)) {
 				return false;
 			}
-			catch (Exception ex) {
-				LogUtils.warn("Could not upload "+ file.getPath(), ex);
-				DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), STOP_UPLOAD));
-				return false;
-			}
-			finally {
-				try {
-					inStream.close();
-				} 
-				catch (Exception e) {				
-				}
-			}
-		}
-		DocearController.getController().dispatchDocearEvent(new DocearEvent(this.getClass(), STOP_UPLOAD));
+		}		
 		return true;		
 	}
 }

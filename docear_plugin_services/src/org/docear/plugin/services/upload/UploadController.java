@@ -44,7 +44,7 @@ public abstract class UploadController {
 		}
 	};
 	
-	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, (60)); 
+	private final CyclicUploadPacker packerThread = new CyclicUploadPacker(packerRunner, (180)); //every 3 minutes 
 	
 	private final UploadThread uploadThread = new UploadThread(this);
 	
@@ -155,6 +155,17 @@ public abstract class UploadController {
 		synchronized (observers) {
 			for(DirectoryObserver observer : observers) {
 				observer.fileCreated(file);
+			}
+		}
+	}
+	
+	/**
+	 * @param file
+	 */
+	protected final void fireFileRemoved(File file) {
+		synchronized (observers) {
+			for(DirectoryObserver observer : observers) {
+				observer.fileRemoved(file);
 			}
 		}
 	}

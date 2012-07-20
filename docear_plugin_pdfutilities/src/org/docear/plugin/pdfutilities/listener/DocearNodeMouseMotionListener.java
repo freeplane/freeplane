@@ -334,7 +334,10 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 
 	private void writeToLog(NodeModel node) {
 		URI uri = Tools.getAbsoluteUri(node);
-		if (uri.getScheme().equals("file")) {
+		if(uri == null) {
+			return;
+		}
+		if ("file".equals(uri.getScheme())) {
 			File f = WorkspaceUtils.resolveURI(uri);
 			//if map file is opened, then there is a MapLifeCycleListener Event
 			if (f != null && !f.getName().endsWith(".mm")) {
