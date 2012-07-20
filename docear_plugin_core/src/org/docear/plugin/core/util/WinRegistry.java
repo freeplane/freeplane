@@ -10,11 +10,19 @@ import java.util.prefs.Preferences;
 
 public class WinRegistry {
 	
+	public static final int HKEY_CLASSES_ROOT = 0x80000000;
 	public static final int HKEY_CURRENT_USER = 0x80000001;
 	  public static final int HKEY_LOCAL_MACHINE = 0x80000002;
+	  public static final int HKEY_USERS = 0x80000003;
+	  
 	  public static final int REG_SUCCESS = 0;
 	  public static final int REG_NOTFOUND = 2;
 	  public static final int REG_ACCESSDENIED = 5;
+	  
+	  public static final int REG_SZ = 1;
+	  public static final int REG_DWORD = 4;
+
+			   
 
 	  private static final int KEY_ALL_ACCESS = 0xf003f;
 	  private static final int KEY_READ = 0x20019;

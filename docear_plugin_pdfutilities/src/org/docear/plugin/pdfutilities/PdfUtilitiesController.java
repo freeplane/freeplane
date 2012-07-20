@@ -557,6 +557,8 @@ public class PdfUtilitiesController extends ALanguageController{
 		modeController.getOptionPanelBuilder().load(preferences);
 		Controller.getCurrentController().addOptionValidator(new IValidator(){
 
+			private PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
+			private ExeFileFilter exeFilter = new ExeFileFilter();
 			public ValidationResult validate(Properties properties) {
 				ValidationResult result = new ValidationResult();
 				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
@@ -566,16 +568,27 @@ public class PdfUtilitiesController extends ALanguageController{
 						result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
 						return result;
 					}
-					if(readerPath != null && !readerPath.isEmpty()){ 
-						if(!(new PdfReaderFileFilter().accept(new File(readerPath)))){
-							if(new ExeFileFilter().accept(new File(readerPath))){
+					File readerFile = new File(readerPath); 
+//					if(readerPath != null && !readerPath.isEmpty()){ 
+						if(!readerFilter.accept(readerFile)){
+							if(exeFilter.accept(readerFile)){
 								result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
 							}
 							else{
 								result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
 							}
 						}
-					}
+//						else {
+//							if(readerFilter.isPdfXChange(readerFile)) {
+//								try {
+//									WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "Software\\Tracker Software\\PDFViewer\\Documents","SaveMethod",new String(new byte[]{0,0,2}));
+//								} 
+//								catch (Exception e) {
+//									e.printStackTrace();
+//								}
+//							}
+//						}
+//					}
 				}
 				return result;
 			}
