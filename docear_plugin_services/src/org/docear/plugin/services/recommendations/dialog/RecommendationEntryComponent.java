@@ -1,5 +1,6 @@
 package org.docear.plugin.services.recommendations.dialog;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.SystemColor;
@@ -47,6 +48,9 @@ public class RecommendationEntryComponent extends JPanel {
 		lblOpenButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));
 		lblOpenButton.setMinimumSize(new Dimension(200, 50));
 		lblOpenButton.setPreferredSize(new Dimension(200, 50));
+		//javax.swing.plaf.ColorUIResource[r=10,g=36,b=106]
+		final Color background = lblOpenButton.getBackground();
+		final Color selectionBackground = new Color(140, 180, 240);
 		lblOpenButton.addMouseListener(new MouseListener() {
 						
 			public void mouseReleased(MouseEvent e) {}
@@ -54,11 +58,13 @@ public class RecommendationEntryComponent extends JPanel {
 			public void mousePressed(MouseEvent e) {}
 			
 			public void mouseExited(MouseEvent e) {
-				setCursor(Cursor.getDefaultCursor());	
+				setCursor(Cursor.getDefaultCursor());
+				setBackground(background);
 			}
 			
 			public void mouseEntered(MouseEvent e) {
 				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				setBackground(selectionBackground);
 			}
 			
 			public void mouseClicked(MouseEvent e) {

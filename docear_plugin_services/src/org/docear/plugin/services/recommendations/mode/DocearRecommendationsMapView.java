@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -222,22 +223,23 @@ public class DocearRecommendationsMapView extends MapView {
 		panel.setBackground(Color.white);
 		panel.setBorder(new TitledBorder(title));
 		panel.setLayout(new ListLayoutManager());
-		this.add(getNewRefeshButton(), BorderLayout.NORTH);
+		this.add(getNewButtonBar(), BorderLayout.NORTH);
 		this.add(panel, BorderLayout.CENTER);
 		return panel;
 	}
 	
-	private Component getNewRefeshButton() {
+	private Component getNewButtonBar() {
 		JPanel panel = new JPanel(new LayoutManager() {
 			
 			public void removeLayoutComponent(Component comp) {				
 			}
 			
 			public Dimension preferredLayoutSize(Container parent) {
+				int count = parent.getComponentCount();
 				for(Component comp : parent.getComponents()) {
 					Dimension comDim = comp.getPreferredSize();
 					if(comDim != null) {
-						return new Dimension(parent.getInsets().left+parent.getInsets().right+comDim.width, parent.getInsets().top+parent.getInsets().bottom+comDim.height);
+						return new Dimension((parent.getInsets().left+parent.getInsets().right+comDim.width)*count, parent.getInsets().top+parent.getInsets().bottom+comDim.height);
 					}
 				}
 				return null;
@@ -245,9 +247,10 @@ public class DocearRecommendationsMapView extends MapView {
 			
 			public Dimension minimumLayoutSize(Container parent) {
 				for(Component comp : parent.getComponents()) {
+					int count = parent.getComponentCount();
 					Dimension comDim = comp.getMinimumSize();
 					if(comDim != null) {
-						return new Dimension(parent.getInsets().left+parent.getInsets().right+comDim.width, parent.getInsets().top+parent.getInsets().bottom+comDim.height);
+						return new Dimension((parent.getInsets().left+parent.getInsets().right+comDim.width)*count, parent.getInsets().top+parent.getInsets().bottom+comDim.height);
 					}
 				}
 				return null;
@@ -256,10 +259,12 @@ public class DocearRecommendationsMapView extends MapView {
 			public void layoutContainer(Container parent) {
 				int right = parent.getWidth()-parent.getInsets().right;
 				int top = parent.getInsets().top;
+				int count = parent.getComponentCount();
 				for(Component comp : parent.getComponents()) {
-					int x = right-comp.getWidth();
+					int x = right-comp.getWidth()*count;
 					comp.setLocation(x,top);
 					comp.setSize(comp.getPreferredSize());
+					count--;
 				}
 			}
 			
@@ -280,6 +285,21 @@ public class DocearRecommendationsMapView extends MapView {
 		refreshButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		refreshButton.setToolTipText(TextUtils.getText("recommendations.refresh.title"));
 		panel.add(refreshButton);
+		JButton closeButton = new JButton(new ImageIcon(RecommendationEntryComponent.class.getResource("/icons/window-close-2_32x32.png")));
+		closeButton.setMinimumSize(new Dimension(50, 50));
+		closeButton.setPreferredSize(new Dimension(50, 50));
+		closeButton.addActionListener(new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(new  Runnable() {
+					public void run() {
+						Controller.getCurrentController().close(true);	
+					}
+				});
+			}
+		});
+		closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		closeButton.setToolTipText(TextUtils.getText("recommendations.close.title"));
+		panel.add(closeButton);
 		return panel;
 	}
 
