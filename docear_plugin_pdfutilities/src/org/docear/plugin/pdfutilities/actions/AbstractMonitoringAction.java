@@ -658,7 +658,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							mindmapFiles.add(uri);
 						}
 					}
-					if(!mindmapFiles.contains(target.getMap().getFile().toURI())){
+					if(target.getMap().getFile() != null && !mindmapFiles.contains(target.getMap().getFile().toURI())){
 						mindmapFiles.add(target.getMap().getFile().toURI());
 					}
 				

@@ -91,10 +91,12 @@ public class RecommendationEntryComponent extends JPanel {
 			
 			public void mouseExited(MouseEvent e) {
 				setCursor(Cursor.getDefaultCursor());	
+				setBackground(background);
 			}
 			
 			public void mouseEntered(MouseEvent e) {
 				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				setBackground(selectionBackground);
 			}
 			
 			public void mouseClicked(MouseEvent e) {

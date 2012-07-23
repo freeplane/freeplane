@@ -101,7 +101,12 @@ public class AnnotationConflictDropdownBoxPanel extends JPanel {
 	private String getFileName(IAnnotation selected) {
 		if(selected instanceof AnnotationNodeModel){
 			NodeModel node = ((AnnotationNodeModel) selected).getNode();
-			return node.getMap().getFile().getName();
+			if(node.getMap().getFile() == null) {
+				return node.getMap().getTitle();
+			}
+			else {
+				return node.getMap().getFile().getName();
+			}
 		}
 		else{
 			return Tools.getFilefromUri(selected.getUri()).getName();
