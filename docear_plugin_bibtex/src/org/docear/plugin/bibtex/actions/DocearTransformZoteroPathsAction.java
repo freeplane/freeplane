@@ -13,8 +13,8 @@ public class DocearTransformZoteroPathsAction implements PostOpenAction  {
 	@Override
 	public boolean isActionNecessary(ParserResult pr) {
 		// e.g.: ":C:\" instead of JabRef-Style: ":C\:\\"
-		Pattern zotero = Pattern.compile(":[a-zA-Z]:\\");
-		Pattern jabref = Pattern.compile(":[A-Za-z]\\:\\\\");
+		Pattern zotero = Pattern.compile(":[a-zA-Z]:\\\\");
+		Pattern jabref = Pattern.compile(":[A-Za-z]\\\\:\\\\\\\\");
 		
 		for (BibtexEntry entry : pr.getDatabase().getEntries()) {
 			String fileField = entry.getField(GUIGlobals.FILE_FIELD); 
@@ -35,7 +35,11 @@ public class DocearTransformZoteroPathsAction implements PostOpenAction  {
 	public void performAction(BasePanel panel, ParserResult pr) {
 		for (BibtexEntry entry : pr.getDatabase().getEntries()) {
 			String fileField = entry.getField(GUIGlobals.FILE_FIELD);
-			fileField.replaceAll(":([a-zA-Z]):\\", ":$1\\:\\\\");
+			if (fileField != null && fileField.trim().length() > 0) {
+				fileField = fileField.replaceAll("\\\\", "\\\\\\\\");
+				fileField = fileField.replaceAll(":([a-zA-Z]):", ":$1\\\\:");
+				entry.setField(GUIGlobals.FILE_FIELD, fileField);
+			}
 		}
 	}
 	

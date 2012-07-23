@@ -32,6 +32,7 @@ import net.sf.jabref.imports.PostOpenAction;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.actions.DocearHandleDuplicateWarning;
+import org.docear.plugin.bibtex.actions.DocearTransformZoteroPathsAction;
 import org.docear.plugin.bibtex.actions.FilePathValidatorAction;
 import org.docear.plugin.bibtex.actions.HandleDuplicateKeys;
 import org.docear.plugin.bibtex.listeners.MapViewListener;
@@ -55,6 +56,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	private static ArrayList<PostOpenAction> postOpenActions = new ArrayList<PostOpenAction>();
 
 	static {
+		postOpenActions.add(new DocearTransformZoteroPathsAction());
 		// bibtex files exported by mendeley do not contain leading "/" for
 		// absolute paths so we do not know if
 		// the file contaions relative paths or absolute paths
@@ -74,6 +76,7 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		else {
 		    postOpenActions.add(new DocearHandleDuplicateWarning());
 		}
+		
 	}
 
 	private static final MapViewListener mapViewListener = new MapViewListener();
