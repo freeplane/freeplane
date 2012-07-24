@@ -5,13 +5,13 @@ import java.io.File;
 public class PDFReaderHandle {
 
 	private final String name;
-	private final File execFile;
+	private final String execFile;
 	
 	/**
 	 * @param Name
 	 * @param file
 	 */
-	public PDFReaderHandle(String name, File execFile) {
+	public PDFReaderHandle(String name, String execFile) {
 		this.name = name;
 		this.execFile = execFile;
 	}	
@@ -27,7 +27,7 @@ public class PDFReaderHandle {
 		return this.getName();
 	}
 
-	public File getExecFile() {
+	public String getExecFile() {
 		return execFile;
 	}
 }
