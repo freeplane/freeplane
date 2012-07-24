@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -16,10 +15,10 @@ import javax.swing.SwingConstants;
 
 import org.docear.plugin.core.ui.MultiLineActionLabel;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle;
+import org.docear.plugin.pdfutilities.features.PDFReaderHandle.RegistryBranch;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.swingplus.JHyperlink;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -117,7 +116,7 @@ public class InstalledPdfReadersDialog extends JPanel {
 			readerChoice = new JComboBox();
 			
 			readerChoice.setModel(new DefaultComboBoxModel(readerHandles));
-			readerChoice.addItem(new PDFReaderHandle(TextUtils.getText("docear.default_reader"), ""));
+			readerChoice.addItem(new PDFReaderHandle(TextUtils.getText("docear.default_reader"), "", RegistryBranch.DEFAULT));
 		} 
 		return readerChoice;
 	}

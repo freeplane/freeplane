@@ -11,9 +11,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
+import org.apache.commons.io.FilenameUtils;
 import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
@@ -50,6 +52,7 @@ import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.ShowInstalledPdfReadersDialogAction;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle;
+import org.docear.plugin.pdfutilities.features.PDFReaderHandle.RegistryBranch;
 import org.docear.plugin.pdfutilities.listener.DocearAutoMonitoringListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
@@ -71,7 +74,6 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.resources.components.PathProperty;
 import org.freeplane.core.resources.components.RadioButtonProperty;
-import org.freeplane.core.resources.components.StringProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
@@ -186,7 +188,12 @@ public class PdfUtilitiesController extends ALanguageController {
 
 				if (readerFilter.isPdfXChange(new File(reader.getExecFile()))) {
 					try {
-						importRegistrySettings(getClass().getResource("/conf/PdfXChangeViewerSettings.reg"));
+						if(reader.getRegistryBranch().equals(RegistryBranch.WOW6432NODE)) {
+							importRegistrySettings(getClass().getResource("/conf/PdfXChangeViewerSettingsWow6432Node.reg"));
+						}
+						else {
+							importRegistrySettings(getClass().getResource("/conf/PdfXChangeViewerSettings.reg"));
+						}
 					}
 					catch (IOException e) {
 						LogUtils.severe(e.getMessage());
@@ -198,44 +205,45 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 	}
 
-	private void parseExportedRegistryFile(Map<String, List<String>> viewers, File file) throws NumberFormatException, IOException {
+	private void parseExportedRegistryFile(Map<String, PDFReaderHandle> viewers, File file, RegistryBranch branch) throws NumberFormatException, IOException {
 		String line;
-		String currentViewer = null;
+		PDFReaderHandle handle = new PDFReaderHandle(branch);
 
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		try {
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("[")) {
-					currentViewer = null;
+					handle = new PDFReaderHandle(branch);
+					continue;
 				}
 				else if (line.startsWith("\"DisplayName\"")) {
 					String s = line.substring(15);
 					if (s.startsWith("PDF-Viewer")) {
-						currentViewer = "PDF-Viewer";
+						handle.setName("PDF-Viewer");
 					}
 					else if (s.startsWith("Foxit Reader")) {
-						currentViewer = "Foxit Reader";
+						handle.setName("Foxit Reader");
 					}
 					else if (s.startsWith("Acrobat")) {
-						currentViewer = "Acrobat";
+						handle.setName("Acrobat");
 					}
 					else if (s.startsWith("Adobe Reader")) {
-						currentViewer = "Adobe Reader";
+						handle.setName("Adobe Reader");
 					}
 				}
-				else if (line.startsWith("\"DisplayVersion") && currentViewer != null) {
+				else if (line.startsWith("\"DisplayVersion")) {
 					String version = line.substring(18, line.length() - 1);
-
-					if (CompareVersion.compareVersions(version, viewers.get(currentViewer).get(0)) == CompareVersion.GREATER) {
-						viewers.get(currentViewer).set(0, version);
-					}
-					else {
-						currentViewer = null;
-					}
+					handle.setVersion(version);					
 				}
-				else if (line.startsWith("\"InstallLocation") && currentViewer != null) {
+				else if (line.startsWith("\"InstallLocation")) {
 					String installPath = line.substring(19, line.length() - 1);
-					viewers.get(currentViewer).set(1, installPath);
+					handle.setExecFile(installPath);
+				}
+				
+				if(handle.isComplete()) {
+					if (handle.compare(viewers.get(handle.getName())) == CompareVersion.GREATER) {
+						viewers.put(handle.getName(),handle);
+					}
 				}
 			}
 		}
@@ -248,39 +256,43 @@ public class PdfUtilitiesController extends ALanguageController {
 		List<PDFReaderHandle> handles = new ArrayList<PDFReaderHandle>();
 
 		// Map<Name, List<String>{Version, InstallDir>
-		Map<String, List<String>> viewers = new HashMap<String, List<String>>();
-		viewers.put("PDF-Viewer", Arrays.asList(new String[] { "0", null }));
-		viewers.put("Foxit Reader", Arrays.asList(new String[] { "0", null }));
-		viewers.put("Adobe Reader", Arrays.asList(new String[] { "0", null }));
-		viewers.put("Acrobat", Arrays.asList(new String[] { "0", null }));
+		Map<String, PDFReaderHandle> viewers = new HashMap<String, PDFReaderHandle>();		
 
-		File win32File = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win32_uninstall.reg");
+		File winFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_uninstall.reg");
 		try {
-			exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", win32File);
-			parseExportedRegistryFile(viewers, win32File);
+			exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winFile);
+			parseExportedRegistryFile(viewers, winFile, RegistryBranch.DEFAULT);
 		}
 		catch (IOException e1) {
 		}
 
-		File win64File = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win64_uninstall.reg");
+		File winWOW6432NODEFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_wow64_uninstall.reg");
 		try {
-			exportRegistryKey("SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", win64File);
-			parseExportedRegistryFile(viewers, win32File);
+			exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winWOW6432NODEFile);
+			parseExportedRegistryFile(viewers, winWOW6432NODEFile, RegistryBranch.WOW6432NODE);
 		}
 		catch (IOException e1) {
 		}
-
-		if (viewers.get("PDF-Viewer").get(1) != null) {
-			handles.add(new PDFReaderHandle("PDF X-Change Viewer", convertPath(viewers.get("PDF-Viewer").get(1) + "PDF Viewer\\PDFXCview.exe")));
+		PDFReaderHandle handle;
+		if ((handle = viewers.get("PDF-Viewer")) != null) {
+			handle.setName("PDF-XChange Viewer");
+			handle.setExecFile(convertPath(handle.getExecFile() + "PDF Viewer\\PDFXCview.exe"));
+			handles.add(handle);
 		}
-		if (viewers.get("Foxit Reader").get(1) != null) {
-			handles.add(new PDFReaderHandle("Foxit Reader", convertPath(viewers.get("Foxit Reader").get(1) + "Foxit Reader.exe")));
+		if ((handle = viewers.get("Foxit Reader")) != null) {
+			handle.setName("Foxit Reader");
+			handle.setExecFile(convertPath(handle.getExecFile() + "Foxit Reader.exe"));
+			handles.add(handle);
 		}
-		if (viewers.get("Adobe Reader").get(1) != null) {
-			handles.add(new PDFReaderHandle("Adobe Reader", convertPath(viewers.get("Adobe Reader").get(1) + "AcroRd32.exe")));
+		if ((handle = viewers.get("Adobe Reader")) != null) {
+			handle.setName("Adobe Reader");
+			handle.setExecFile(convertPath(handle.getExecFile() + "AcroRd32.exe"));
+			handles.add(handle);
 		}
-		if (viewers.get("Acrobat").get(1) != null) {
-			handles.add(new PDFReaderHandle("Acrobat", convertPath(viewers.get("Acrobat").get(1) + "Acrobat\\Acrobat.exe")));
+		if ((handle = viewers.get("Acrobat")) != null) {
+			handle.setName("Acrobat");
+			handle.setExecFile(convertPath(handle.getExecFile() + "Acrobat\\Acrobat.exe"));
+			handles.add(handle);
 		}
 
 		return handles;
@@ -379,14 +391,15 @@ public class PdfUtilitiesController extends ALanguageController {
 	//
 
 	private String convertPath(String path) {
-		if (Compat.isWindowsOS()) {
-			path = path.replaceAll("(\\\\)+", File.separator);
-		}
-		else if (!Compat.isMacOsX()) {
-			path = (System.getProperty("user.home") + "\\.wine\\drive_c\\" + path.substring(2)).replaceAll("(\\\\)+", File.separator);
+//		if (Compat.isWindowsOS()) {
+//			path = path.replaceAll("(\\\\)+", File.separator);
+//		}
+//		else 
+		if (!Compat.isMacOsX() && !Compat.isWindowsOS()) {
+			path = (System.getProperty("user.home") + "\\.wine\\drive_c\\" + path.substring(2));
 		}
 
-		return path;
+		return FilenameUtils.separatorsToSystem(FilenameUtils.normalize(path));
 	}
 
 	private void setReaderPreferences(String executablePath) {
@@ -829,7 +842,15 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 
 		File importFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "import.reg");
-		FileUtils.copyStream(regResource.openStream(), new FileOutputStream(importFile));
+		OutputStream os = new FileOutputStream(importFile);
+		InputStream is = regResource.openStream();
+		try {
+			FileUtils.copyStream(is, os);
+		}
+		finally {
+			os.close();
+			is.close();
+		}
 
 		String[] command;
 		if (Compat.isWindowsOS()) {
@@ -841,8 +862,9 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 
 		try {
+			System.out.println(command);
 			if (Runtime.getRuntime().exec(command).waitFor() != 0) {
-				throw new IOException("Could not retrieve document settings!");
+				throw new IOException("Could not import document settings!");
 			}
 		}
 		catch (InterruptedException e) {
@@ -856,7 +878,7 @@ public class PdfUtilitiesController extends ALanguageController {
 
 		String[] command;
 		if (Compat.isWindowsOS()) {
-			command = new String[] { "regedit", "/e", exportFile.getAbsolutePath(), key };
+			command = new String[] { "regedit", "/a", exportFile.getAbsolutePath(), key };
 		}
 		else {
 			// Linux/Unix

@@ -16,7 +16,7 @@ public class FileUtilities {
 	}
 
 
-	public static String getCleanFileName(String path) {
+	public static String getCleanFileName(String fileName) {
 		CharSequenceFilter filter = new ReplaceLigaturesFilter();
 		
 		filter = new GeneralPunctuationFilter(filter);
@@ -24,7 +24,7 @@ public class FileUtilities {
 		filter = new DocearFileNameFilter(filter);
 		
 		try {
-			return filter.filter(path);
+			return filter.filter(fileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

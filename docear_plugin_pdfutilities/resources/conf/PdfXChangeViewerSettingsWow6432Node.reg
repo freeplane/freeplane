@@ -1,0 +1,9 @@
+REGEDIT4
+
+[HKEY_CURRENT_USER\Software\Tracker Software\PDFViewer\Documents]
+"SaveMethod"=dword:00000002
+
+[HKEY_CURRENT_USER\Software\Tracker Software\PDFViewer\Commenting]
+"CopySelTextToDrawingPopup"=dword:00000001
+"CopySelTextToHilightPopup"=dword:00000001
+
