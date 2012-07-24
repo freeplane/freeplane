@@ -22,6 +22,7 @@ import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.io.ProgressInputStream;
+import org.docear.plugin.core.util.FileUtilities;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -60,7 +61,11 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 				String fileName = new File(url.getFile()).getName();
 				fileName = URLDecoder.decode(fileName, "UTF-8");
 				String ext = FilenameUtils.getExtension(fileName);
-				File file = getDestinationFile(url.toURI(), event.getEventObject()+"."+ext);
+				fileName = FileUtilities.getCleanFileName((String)event.getEventObject());
+				if(fileName == null || fileName.isEmpty()) {
+					fileName = (String) event.getEventObject();
+				}
+				File file = getDestinationFile(url.toURI(), fileName.trim()+"."+ext);
 				if (file == null || !file.exists()) {
 					return;
 				}
