@@ -30,6 +30,7 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 
+import sun.net.www.ParseUtil;
 import sun.net.www.protocol.file.FileURLConnection;
 
 public class Tools {
@@ -148,8 +149,9 @@ public class Tools {
 		try {
 			URLConnection conn = uri.toURL().openConnection();
 			if(conn instanceof FileURLConnection) {
-				File file = new File(conn.getURL().getFile());
-				if(file.exists() && file.length() > 0) {
+				File file = new File(ParseUtil.decode(conn.getURL().getFile()));
+				if(file.exists() 
+						&& file.length() > 0) {
 					return true;
 				}
 			} else {
