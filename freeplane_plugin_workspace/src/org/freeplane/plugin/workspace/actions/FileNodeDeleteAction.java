@@ -1,6 +1,7 @@
 package org.freeplane.plugin.workspace.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import javax.swing.JOptionPane;
 
@@ -11,6 +12,7 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
 @EnabledAction(checkOnPopup = true)
 public class FileNodeDeleteAction extends AWorkspaceAction {
@@ -29,7 +31,7 @@ public class FileNodeDeleteAction extends AWorkspaceAction {
 	 **********************************************************************************/
 	
 	public void setEnabledFor(AWorkspaceTreeNode node) {
-		if(node.isSystem()|| !node.isTransferable() || !(node instanceof DefaultFileNode)) {
+		if(node.isSystem()|| !node.isTransferable() || (!(node instanceof DefaultFileNode) && !(node instanceof LinkTypeFileNode))) {
 			setEnabled(false);
 		}
 		else{
@@ -56,6 +58,14 @@ public class FileNodeDeleteAction extends AWorkspaceAction {
 	private void deleteFile(final AWorkspaceTreeNode node) {
 		if (node instanceof DefaultFileNode) {
 			((DefaultFileNode) node).delete();
+		} 
+		else if (node instanceof LinkTypeFileNode) {
+			File file = WorkspaceUtils.resolveURI(((LinkTypeFileNode) node).getLinkPath());
+			if(file != null) {
+				if(!file.delete()) {
+					//show message?
+				}
+			}			
 		}
 		WorkspaceUtils.getModel().removeNodeFromParent(node);
 		WorkspaceController.getController().refreshWorkspace();
