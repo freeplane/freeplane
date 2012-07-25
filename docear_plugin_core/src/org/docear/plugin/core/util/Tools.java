@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +29,8 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
+
+import sun.net.www.protocol.file.FileURLConnection;
 
 public class Tools {
 	
@@ -143,8 +146,16 @@ public class Tools {
 	public static boolean exists(URI uri, MapModel map) {
 		uri = Tools.getAbsoluteUri(uri, map);
 		try {
-			if(uri.toURL().openConnection().getContentLength() > 0) {
-				return true;
+			URLConnection conn = uri.toURL().openConnection();
+			if(conn instanceof FileURLConnection) {
+				File file = new File(conn.getURL().getFile());
+				if(file.exists() && file.length() > 0) {
+					return true;
+				}
+			} else {
+				if(conn.getContentLength() > 0) {
+					return true;
+				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
