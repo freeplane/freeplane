@@ -121,7 +121,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			LogUtils.warn("===================================="); //$NON-NLS-1$
 			LogUtils.warn(e.getCause());			
 		}
-		System.gc();
+		//System.gc();
 	}
 	
 	public static SwingWorker<Map<AnnotationID, Collection<IAnnotation>>, AnnotationModel[]> getMonitoringThread(final List<NodeModel> targets){

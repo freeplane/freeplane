@@ -42,7 +42,7 @@ public class ImportAllChildAnnotationsAction extends ImportAnnotationsAction {
 			URI uri = Tools.getAbsoluteUri(selected);
 			try {
 				AnnotationModel annotation = importer.searchAnnotation(uri, selected);		
-				System.gc();
+				//System.gc();
                 NodeUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
 			} catch (Exception e) {
 				LogUtils.severe("ImportAllChildAnnotationsAction Exception at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
