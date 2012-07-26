@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JProgressBar;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.communications.features.DocearServiceResponse;
@@ -35,6 +36,8 @@ import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.view.swing.map.MapView;
+
+import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
 public class DocearRecommendationsMapController extends MapController {
 
@@ -85,7 +88,7 @@ public class DocearRecommendationsMapController extends MapController {
 						monitor.setProgress(1);
 						((JProgressBar)monitor.getAccessibleContext().getAccessibleChild(1)).setIndeterminate(true);
 						long l = System.currentTimeMillis();
-						Collection<RecommendationEntry> recommendations = getRecommendations();
+						Collection<RecommendationEntry> recommendations = getNewRecommendations(true);
 						System.out.println("exec time: "+(System.currentTimeMillis()-l));
 						mapModel = new DocearRecommendationsMapModel(recommendations);
 					}
@@ -119,6 +122,15 @@ public class DocearRecommendationsMapController extends MapController {
 		
 		return mapModel;
 	}
+	
+	public MapModel newMap(Collection<RecommendationEntry> recommendations) {			
+		DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel(recommendations);
+		
+		fireMapCreated(mapModel);
+		newMapView(mapModel);
+		
+		return mapModel;
+	}
 
 	private DocearRecommendationsMapModel getExceptionModel(Exception e) {
 		DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel();
@@ -134,14 +146,6 @@ public class DocearRecommendationsMapController extends MapController {
 		return mapModel;
 	}
 	
-	@SuppressWarnings("unused")
-	private DocearRecommendationsMapModel getProgressModel() {
-		DocearRecommendationsMapModel mapModel = new DocearRecommendationsMapModel();
-		mapModel.setRoot(DocearRecommendationsNodeModel.getProgressBarNode(mapModel, 0, -1));
-		mapModel.getRootNode().setFolded(false);
-		return mapModel;
-	}
-
 	public NodeModel newNode(final Object userObject, final MapModel map) {
 		throw new UnsupportedOperationException();
 	}
@@ -153,26 +157,15 @@ public class DocearRecommendationsMapController extends MapController {
 	}
 
 	public void newMapView(MapModel map) {
-		//MapView oldView = this.currentMapView;
 		closeCurrentMapView();
 		this.currentMapView = createMapView(map);
 		IMapViewManager manager = Controller.getCurrentController().getMapViewManager();
 		manager.changeToMapView(this.currentMapView);
 		manager.updateMapViewName();
-		//closeMapView(oldView);
 	}
 
 	public void refreshRecommendations() {
-		//closeCurrentView();
 		newMap();
-	}
-
-	@SuppressWarnings("unused")
-	private void closeMapView(MapView mapView) {
-		if (mapView != null) {
-			Controller.getCurrentController().getMapViewManager().changeToMapView(mapView);
-			Controller.getCurrentController().getMapViewManager().close(true);
-		}
 	}
 	
 	private void closeCurrentMapView() {
@@ -188,10 +181,14 @@ public class DocearRecommendationsMapController extends MapController {
 		return mapView;
 	}
 
-	private Collection<RecommendationEntry> getRecommendations() throws UnknownHostException, UnexpectedException {		
+	public static Collection<RecommendationEntry> getNewRecommendations(boolean userRequest) throws UnknownHostException, UnexpectedException {		
 		String name = CommunicationsController.getController().getUserName();
 		if (!CoreUtils.isEmpty(name)) {
-			DocearServiceResponse response = CommunicationsController.getController().get("/user/" + name + "/recommendations/documents");
+			MultivaluedMap<String,String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+			if(userRequest) {
+				params.add("auto", "true");
+			}
+			DocearServiceResponse response = CommunicationsController.getController().get("/user/" + name + "/recommendations/documents", params);
 			if (response.getStatus() == Status.OK) {
 				try {
 					DocearXmlBuilder xmlBuilder = new DocearXmlBuilder();
@@ -220,14 +217,14 @@ public class DocearRecommendationsMapController extends MapController {
 				return null;
 			}
 			else if (response.getStatus() == Status.UNKNOWN_HOST) {
-				throw new UnknownHostException();
+				throw new UnknownHostException("no connection");
 			}			
 			else {
-				throw new UnexpectedException("");
+				throw new UnexpectedException("unkown");
 			}
 		}
 		else {
-			System.out.println("no user set");
+			throw new IllegalStateException("no username set");
 		}
 		return Collections.emptyList();
 	}
