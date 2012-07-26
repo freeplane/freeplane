@@ -138,14 +138,14 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	private void buildIndex(NodeModel parent) {
-		getReference(parent);
+		addNodeToReferenceIndex(parent);
 
 		for (NodeModel child : parent.getChildren()) {
 			buildIndex(child);
 		}
 	}
 
-	private void getReference(NodeModel node) {
+	private void addNodeToReferenceIndex(NodeModel node) {
 		try {
 			String key = jabRefAttributes.getBibtexKey(node);
 
@@ -159,30 +159,33 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					Set<BibtexEntry> entries = this.pdfReferences.get(fileName);
 					if (entries != null) {
 						for (BibtexEntry entry : entries) {
-							Set<NodeModel> nodes = referenceNodes.get(entry);
-							if (nodes == null) {
-								nodes = new HashSet<NodeModel>();
-								referenceNodes.put(entry, nodes);
-							}
-							nodes.add(node);
+							addReferenceToIndex(node, entry);
 						}
 					}
+				}
+				else {
+					BibtexEntry bibtexEntry = database.getEntryByKey(key);
+					addReferenceToIndex(node, bibtexEntry);
 				}
 			}
 			else if (key != null) {
 				BibtexEntry bibtexEntry = database.getEntryByKey(key);
-				Set<NodeModel> nodes = referenceNodes.get(bibtexEntry);
-				if (nodes == null) {
-					nodes = new HashSet<NodeModel>();
-					referenceNodes.put(bibtexEntry, nodes);
-				}
-				nodes.add(node);
+				addReferenceToIndex(node, bibtexEntry);
 			}
 		}
 		catch (Exception e) {
 			LogUtils.warn("referenceupdater uri: " + NodeLinks.getLink(node));
 			LogUtils.warn(e);
 		}
+	}
+
+	private void addReferenceToIndex(NodeModel node, BibtexEntry entry) {
+		Set<NodeModel> nodes = referenceNodes.get(entry);
+		if (nodes == null) {
+			nodes = new HashSet<NodeModel>();
+			referenceNodes.put(entry, nodes);
+		}
+		nodes.add(node);
 	}
 
 }

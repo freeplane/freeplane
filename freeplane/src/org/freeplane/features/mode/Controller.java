@@ -34,11 +34,16 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
+
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.WinBase;
+import com.sun.jna.platform.win32.WinDef;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -181,14 +186,70 @@ public class Controller extends AController {
 		return true;
 	}
 
-	public static Process exec(final String string) throws IOException {
-		LogUtils.info("execute " + string);
-		return Runtime.getRuntime().exec(string);
+	public static void exec(final String command) throws IOException {
+		exec(command, false);
 	}
+	
+	public static void exec(final String command, boolean waitFor) throws IOException {
+		if (Compat.isWindowsOS()) {
+			LogUtils.info("using jna to execute " + command);
+			windowsNativeExec(command, waitFor);
+		}
+		else {
+			LogUtils.info("execute " + command);
+			Runtime.getRuntime().exec(command);
+		}
+	}
+	
+	public static void exec(final String[] command) throws IOException {
+		exec(command, false);
+	}
+	
+	public static void exec(final String[] command, boolean waitFor) throws IOException {
+		if (Compat.isWindowsOS()) {
+			String commandString = command[0];
+			for (int i=1; i<command.length; i++) {
+				commandString += " " + command[i];
+			}
+			LogUtils.info("using jna to execute " + command);
+			windowsNativeExec(commandString, waitFor);
+		}
+		else {
+			LogUtils.info("execute " + Arrays.toString(command));
+			Runtime.getRuntime().exec(command);
+		}
+	}
+	
+	private static void windowsNativeExec(String command, boolean waitFor) throws IllegalStateException {
+		WinBase.PROCESS_INFORMATION.ByReference processInfo = new WinBase.PROCESS_INFORMATION.ByReference();
+		WinBase.STARTUPINFO startupInfo = new WinBase.STARTUPINFO();
 
-	public static Process exec(final String[] command) throws IOException {
-		LogUtils.info("execute " + Arrays.toString(command));
-		return Runtime.getRuntime().exec(command);
+		try {
+    		if (!Kernel32.INSTANCE.CreateProcess(
+    		    null,           // Application name, not needed if supplied in command line
+    		    command,        // Command line
+    		    null,           // Process security attributes
+    		    null,           // Thread security attributes
+    		    true,           // Inherit handles
+    		    new WinDef.DWORD(0) ,              // Creation flags
+    		    null,           // Environment
+    		    null,           // Directory
+    		    startupInfo,
+    		    processInfo)) {
+    		    throw new IllegalStateException("Error creating process. Last error: " +
+    		        Kernel32.INSTANCE.GetLastError());
+    		}
+    
+    		if (waitFor) {
+    			Kernel32.INSTANCE.WaitForSingleObject(processInfo.hProcess, Kernel32.INFINITE);
+    		}
+		}
+		finally {
+    		// The CreateProcess documentation indicates that it is very important to 
+    		// close the returned handles
+    		Kernel32.INSTANCE.CloseHandle(processInfo.hThread);
+    		Kernel32.INSTANCE.CloseHandle(processInfo.hProcess);
+		}
 	}
 
 	private static ThreadLocal<Controller> threadController = new ThreadLocal<Controller>();

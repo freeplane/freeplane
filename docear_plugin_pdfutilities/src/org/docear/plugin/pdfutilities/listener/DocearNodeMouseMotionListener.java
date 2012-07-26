@@ -38,10 +38,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MainView;
 
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef;
-
 import de.intarsys.pdf.parser.COSLoadException;
 
 public class DocearNodeMouseMotionListener implements IMouseListener {
@@ -289,11 +285,11 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			 */
 
 			try {
-				nativeExec(command);
+				Controller.exec(command);
 				//Controller.exec(command);
 				return;
 			}
-			catch (final IllegalStateException x) {
+			catch (final Exception x) {
 				UITools.errorMessage("Could not invoke Pdf Reader.\n\nDocear excecuted the following statement on a command line:\n\"" + command + "\"."); //$NON-NLS-1$ //$NON-NLS-2$
 				System.err.println("Caught: " + x); //$NON-NLS-1$
 			}
@@ -305,32 +301,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		}
 	}
 	
-	private void nativeExec(String command) throws IllegalStateException{
-		WinBase.PROCESS_INFORMATION.ByReference processInfo = new WinBase.PROCESS_INFORMATION.ByReference();
-		WinBase.STARTUPINFO startupInfo = new WinBase.STARTUPINFO();
-			
-
-		if (!Kernel32.INSTANCE.CreateProcess(
-		    null,           // Application name, not needed if supplied in command line
-		    command,        // Command line
-		    null,           // Process security attributes
-		    null,           // Thread security attributes
-		    true,           // Inherit handles
-		    new WinDef.DWORD(0) ,              // Creation flags
-		    null,           // Environment
-		    null,           // Directory
-		    startupInfo,
-		    processInfo))
-		{
-		    throw new IllegalStateException("Error creating process. Last error: " +
-		        Kernel32.INSTANCE.GetLastError());
-		}
-
-		// The CreateProcess documentation indicates that it is very important to 
-		// close the returned handles
-		Kernel32.INSTANCE.CloseHandle(processInfo.hThread);
-		Kernel32.INSTANCE.CloseHandle(processInfo.hProcess);		
-	}
+	
 
 	private void writeToLog(NodeModel node) {
 		URI uri = Tools.getAbsoluteUri(node);

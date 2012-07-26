@@ -7,8 +7,6 @@
 	<classpathentry kind="lib" path="lib/jpod/isrt.jar" sourcepath="C:/Users/Anwender/Downloads/jPod.5.3.20100629.zip"/>
 	<classpathentry kind="lib" path="lib/jpod/jbig2.jar"/>
 	<classpathentry kind="lib" path="lib/jpod/jPod.jar" sourcepath="C:/Users/Anwender/Downloads/jPod.5.3.20100629.zip"/>
-	<classpathentry kind="lib" path="lib/jna/jna.jar"/>
-	<classpathentry kind="lib" path="lib/jna/platform.jar"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
