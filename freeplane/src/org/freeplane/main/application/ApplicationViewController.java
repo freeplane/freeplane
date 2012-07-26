@@ -222,11 +222,7 @@ class ApplicationViewController extends ViewController {
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
 		}
 		else {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					mSplitPane.setDividerLocation(0.5);
-				}
-			});
+			mSplitPane.setDividerLocation(0.5);
 		}
 	}
 

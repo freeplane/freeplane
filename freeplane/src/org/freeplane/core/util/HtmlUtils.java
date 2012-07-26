@@ -81,7 +81,7 @@ public class HtmlUtils {
 	}
 
 	private static final Pattern FIND_TAGS_PATTERN = Pattern.compile("([^<]*)(<[^>]+>)");
-	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html.*?>.*", Pattern.CASE_INSENSITIVE);
+	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html[^>]*>.*", Pattern.CASE_INSENSITIVE);
 	private static Pattern[] PATTERNS;
 	private static HtmlUtils sInstance = new HtmlUtils();
 	private static final Pattern SLASHED_TAGS_PATTERN = Pattern.compile("<((" + "br|area|base|basefont|"
@@ -117,15 +117,15 @@ public class HtmlUtils {
 			PATTERNS = new Pattern[] { 
 					Pattern.compile("(?ims)>[\n\t]+"), 
 					Pattern.compile("(?ims)[\n\t ]+"), 
-			        Pattern.compile("(?ims)<br.*?>"), 
-			        Pattern.compile("(?ims)<p.*?>\\s+"),
-			        Pattern.compile("(?ims)<div.*?>\\s+"), 
-			        Pattern.compile("(?ims)<tr.*?>\\s+"),
-			        Pattern.compile("(?ims)<dt.*?>"), 
-			        Pattern.compile("(?ims)<dd.*?>"),
-			        Pattern.compile("(?ims)<td.*?>"), 
-			        Pattern.compile("(?ims)<[uo]l.*?>"),
-			        Pattern.compile("(?ims)<li.*?>"), 
+			        Pattern.compile("(?ims)<br[^>]*>"), 
+			        Pattern.compile("(?ims)<p[^>]*>\\s+"),
+			        Pattern.compile("(?ims)<div[^>]*>\\s+"), 
+			        Pattern.compile("(?ims)<tr[^>]*>\\s+"),
+			        Pattern.compile("(?ims)<dt[^>]*>"), 
+			        Pattern.compile("(?ims)<dd[^>]*>"),
+			        Pattern.compile("(?ims)<td[^>]*>"), 
+			        Pattern.compile("(?ims)<[uo]l[^>]*>"),
+			        Pattern.compile("(?ims)<li[^>]*>"), 
 			        Pattern.compile("(?ims) *</[^>]*>"),
 			        Pattern.compile("(?ims)<[^/][^>]*> *"), 
 			        Pattern.compile("^\n+"), 

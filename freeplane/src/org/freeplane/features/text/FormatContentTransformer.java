@@ -78,9 +78,9 @@ class FormatContentTransformer extends AbstractContentTransformer {
     }
 
 	private void getPathToRoot(StringBuilder builder, NodeModel node) {
-		if(node.isRoot())
-			return;
 		final NodeModel parentNode = node.getParentNode();
+		if(parentNode == null)
+			return;
 		if( textController.getNodeNumbering(parentNode)){
 			getPathToRoot(builder, parentNode);
 			if (builder.length() > 0)

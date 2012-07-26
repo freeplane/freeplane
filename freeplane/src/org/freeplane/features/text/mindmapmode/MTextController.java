@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +46,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -55,6 +57,9 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
+import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.IndexedTree.Node;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
@@ -662,7 +667,7 @@ public class MTextController extends TextController {
 	    }
 
 	    public boolean dispatchKeyEvent(KeyEvent e) {
-	    	if(e.getID() == KeyEvent.KEY_RELEASED)
+	    	if(e.getID() == KeyEvent.KEY_RELEASED || e.getID() == KeyEvent.KEY_TYPED)
 	    		return false;
 	    	switch(e.getKeyCode()){
 	    		case KeyEvent.VK_SHIFT:
@@ -672,11 +677,31 @@ public class MTextController extends TextController {
 	    		case KeyEvent.VK_ALT_GRAPH:
 	    			return false;
 	    	}
+	    	
 	    	uninstall();
+	    	if (isMenuEvent(e)){
+	    		return false;
+	    	}
 	    	eventQueue.activate(e);
 	    	edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 	    	return true;
 	    }
+
+		private boolean isMenuEvent(KeyEvent e) {
+	        if(! editLong){
+	    		final String editLongKeyStrokeProperty = ResourceController.getResourceController().getProperty("acceleratorForMindMap/$EditLongAction$0", null);
+	    		if(editLongKeyStrokeProperty != null){
+	    			final KeyStroke editLongKeyStroke = UITools.getKeyStroke(editLongKeyStrokeProperty);
+	    			if(editLongKeyStroke != null){
+	    				final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+	    				if(editLongKeyStroke.equals(keyStroke)){
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    	}
+	        return false;
+        }
 
 		public void uninstall() {
 	        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
@@ -811,7 +836,10 @@ public class MTextController extends TextController {
 			keyEventDispatcher.uninstall();
 		}
 		if (mCurrentEditDialog != null) {
+			// Ensure that setText from the edit and the next action 
+			// are parts of different transactions
 			mCurrentEditDialog.closeEdit();
+			modeController.forceNewTransaction();
 			mCurrentEditDialog = null;
 		}
 	}

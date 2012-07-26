@@ -32,9 +32,13 @@ import java.util.Locale;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
+
+import sun.util.logging.resources.logging;
 
 /**
  * @author Dimitry Polivaev
@@ -160,15 +164,22 @@ public class PrintController implements IExtension {
 		if(! showDlg || printDialog()){
 			if(mapView instanceof MapView)
 				((MapView)mapView).preparePrinting();
-			final PrinterJob printerJob = getPrinterJob();
-			if (mapView instanceof Component){
-				final String name = ((Component)mapView).getName();
-				if(name != null)
-					printerJob.setJobName(name);
+			try{
+				final PrinterJob printerJob = getPrinterJob();
+				if (mapView instanceof Component){
+					final String name = ((Component)mapView).getName();
+					if(name != null)
+						printerJob.setJobName(name);
+				}
+				printerJob.print();
 			}
-			printerJob.print();
-			if(mapView instanceof MapView)
-				((MapView)mapView).endPrinting();
+			catch(PrinterException ex){
+				LogUtils.warn(ex);	
+			}
+			finally{
+				if(mapView instanceof MapView)
+					((MapView)mapView).endPrinting();
+			}
 		}
 	}
 }

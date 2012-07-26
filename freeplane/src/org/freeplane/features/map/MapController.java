@@ -297,7 +297,7 @@ public class MapController extends SelectionController implements IExtension{
 		if (node.getChildCount() == 0) 
 			return;
 		final boolean unfold = ! folded;
-		final boolean childShown = makeAllChildrenVisible(node);
+		final boolean childShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
 	    if (unfold && unfoldInvisibleChildren(node, true))
 	        mapChanged = true;
@@ -365,7 +365,7 @@ public class MapController extends SelectionController implements IExtension{
     }
 
 
-	private boolean makeAllChildrenVisible(NodeModel node) {
+	private boolean unfoldHiddenChildren(NodeModel node) {
 		final List<NodeModel> children = childrenFolded(node);
 		boolean changed = false;
 		for (NodeModel child : children){

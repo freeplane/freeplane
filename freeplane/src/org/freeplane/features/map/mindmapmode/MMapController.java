@@ -149,6 +149,8 @@ public class MMapController extends MapController {
 	
 	private void startEditingAfterSelect(final NodeModel newNode) {
 		final Component component = Controller.getCurrentController().getViewController().getComponent(newNode);
+		if(component == null)
+			return;
 		component.addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {
 			}
@@ -603,22 +605,14 @@ public class MMapController extends MapController {
 		}
 	}
 
-	public NodeModel addFreeNode(Point pt, boolean newNodeIsLeft) {
+	public NodeModel addFreeNode(final Point pt, final boolean newNodeIsLeft) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
 			((MTextController) textController).stopEditing();
+				modeController.forceNewTransaction();
 		}
 		final NodeModel target = getRootNode();
-		if (textController instanceof MTextController) {
-			modeController.startTransaction();
-			try {
-				((MTextController) TextController.getController()).stopEditing();
-			}
-			finally {
-				modeController.commit();
-			}
-		}
 		final NodeModel targetNode = target;
 		final boolean parentFolded = isFolded(targetNode);
 		if (parentFolded) {
@@ -652,11 +646,11 @@ public class MMapController extends MapController {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public boolean newUntitledMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException{
+	public boolean newUntitledMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
         try {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
         	final MapModel newModel = new MMapModel();
-        	UrlManager.getController().loadCatchExceptions(url, newModel);
+        	UrlManager.getController().load(url, newModel);
         	newModel.setURL(null);
         	fireMapCreated(newModel);
         	newMapView(newModel);

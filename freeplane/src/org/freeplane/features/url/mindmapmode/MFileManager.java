@@ -165,6 +165,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static void performBackup(final File file, final File backupFile) {
 	    try {
 	        FileUtils.copyFile(file, backupFile);
+	        backupFile.setLastModified(file.lastModified());
         }
         catch (IOException e) {
         }
@@ -768,8 +769,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * of temporary (internal) files.
 	 */
 	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
-		if (!isInternal && map.isReadOnly()) {
-			LogUtils.severe("Attempt to save read-only map.");
+		if (file.exists() && !file.canWrite()) {
+			LogUtils.severe("Attempt to write in read-only file.");
 			return false;
 		}
 		try {

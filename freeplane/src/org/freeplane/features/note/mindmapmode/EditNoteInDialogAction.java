@@ -29,6 +29,7 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -108,7 +109,11 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 	private void setHtmlText(final NodeModel node, final String newText) {
 		final String body = EditNoteInDialogAction.HTML_HEAD.matcher(newText).replaceFirst("");
 		final MNoteController noteController = (MNoteController) MNoteController.getController();
-		noteController.setNoteText(node, body.replaceFirst("\\s+$", ""));
+		final String trimmed = body.replaceFirst("\\s+$", "");
+		if(HtmlUtils.isEmpty(trimmed))
+			noteController.setNoteText(node, null);
+		else
+			noteController.setNoteText(node, trimmed);
 	}
 
 	private void stopEditing() {

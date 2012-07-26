@@ -43,6 +43,16 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements Property
 		setModel(new ActionToggleButtonModel(a));
 		setAction(a);
 	}
+	
+	
+
+	@Override
+    protected void configurePropertiesFromAction(Action a) {
+	    super.configurePropertiesFromAction(a);
+	    setSelected(((IFreeplaneAction)a).isSelected());
+    }
+
+
 
 	@Override
 	protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {

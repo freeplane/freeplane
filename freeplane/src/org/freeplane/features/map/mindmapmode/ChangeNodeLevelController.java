@@ -172,21 +172,21 @@ public class ChangeNodeLevelController {
 			for(position = childCount - 1; 
 				position >= 0 && ((NodeModel)selectedParent.getChildAt(position)).isLeft() != leftSide;
 				position--);
-			if(position != childCount - 1 )
-				position++;
 		}
 		else {
 			final NodeModel grandParent = selectedParent.getParentNode();
-			position = grandParent.getChildPosition(selectedParent) + 1;
+			position = grandParent.getChildPosition(selectedParent);
 			selectedParent = grandParent;
 			changeSide = false;
 		}
+		boolean increasePosition = !changeSide;
 		for (final NodeModel node : selectedNodes) {
 			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
-			mapController.moveNode(node, selectedParent, position, leftSide, changeSide);
-			if (!changeSide) {
+			increasePosition = increasePosition || selectedParent.getIndex(node) > position;
+			if (increasePosition) {
 				position++;
 			}
+			mapController.moveNode(node, selectedParent, position, leftSide, changeSide);
 		}
 		mapController.selectMultipleNodes(selectedNode, selectedNodes);
 	}

@@ -930,6 +930,10 @@ public interface Proxy {
 
 		boolean isFolded();
 
+		/** returns true if this node is freely positionable.
+		 * @since 1.2 */
+		public boolean isFree();
+
 		boolean isLeaf();
 
 		boolean isLeft();
@@ -1027,8 +1031,16 @@ public interface Proxy {
 		void setHideDetails(boolean hide);
 
 		void setFolded(boolean folded);
-		
-		void setMinimized(boolean shortened);
+
+		/** set to true if this node should be freely positionable:
+		 * <pre>
+		 *   node.free = true
+		 *   node.style.floating = true
+		 * </pre>
+         * @since 1.2 */
+        void setFree(boolean free);
+
+        void setMinimized(boolean shortened);
 
 		/**
 		 * Set the note text:
@@ -1223,6 +1235,9 @@ public interface Proxy {
 		Color getTextColor();
 
 		String getTextColorCode();
+
+        /** @since 1.2 treue if the floating style is set for the node (aka "free node"). */
+        boolean isFloating();
 	}
 
 	/** Node's style: <code>node.style</code> - read-write. */
@@ -1254,6 +1269,11 @@ public interface Proxy {
 		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
 		 *  @since 1.2 */
 		void setTextColorCode(String rgbString);
+
+        /** @param sets the floating style for the node (aka "free node"). Should normally only applied to direct
+         *  children of the root node.
+         *  @since 1.2 */
+        void setFloating(boolean floating);
 	}
 
 	/** Reminder: <code>node.reminder</code> - read-only.

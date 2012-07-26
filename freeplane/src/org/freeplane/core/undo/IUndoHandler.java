@@ -54,6 +54,8 @@ public interface IUndoHandler extends IExtension {
 
 	void startTransaction();
 
+	void forceNewTransaction();
+
 	void undo();
 
 	void deactivate();
@@ -63,4 +65,5 @@ public interface IUndoHandler extends IExtension {
 	public void delayedRollback();
 	
 	public int getTransactionLevel();
+
 }

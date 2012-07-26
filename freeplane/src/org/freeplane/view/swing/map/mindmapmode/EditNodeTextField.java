@@ -89,6 +89,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
@@ -492,10 +493,11 @@ public class EditNodeTextField extends EditNodeBase {
 			return;
 		}
 		textfield.getDocument().removeDocumentListener(documentListener);
-		Controller.getCurrentController().getMapViewManager().removeMapViewChangeListener(mapViewChangeListener);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		mapViewManager.removeMapViewChangeListener(mapViewChangeListener);
 		mapViewChangeListener = null;
 		parent.setPreferredSize(null);
-		if(nodeView.isDisplayable())
+		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null)
 			nodeView.update();
 		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);

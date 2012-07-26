@@ -176,39 +176,7 @@
 </html>
 </richcontent>
 </node>
-<node STYLE_REF="Beginner" POSITION="right" ID="ID_1820104438" CREATED="1332872487760" MODIFIED="1337168595789" HGAP="-121" VSHIFT="-55">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides.mm">Video guides</a>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      These guides give a quick introduction to Freeplane.
-    </p>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="hide_edge"/>
-</node>
-<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1337158970424" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200" HGAP="22">
+<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200" HGAP="22" VSHIFT="16">
 <hook NAME="FirstGroupNode"/>
 <node TEXT="Goal" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1335300198070">
 <hook NAME="NodeConditionalStyles">
@@ -239,7 +207,7 @@
 </node>
 </node>
 <node TEXT="Reading guide" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1335300198085" MIN_WIDTH="1">
-<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1335090085604" STYLE="fork" HGAP="-73" VSHIFT="215"><richcontent TYPE="NODE">
+<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1341133410954" STYLE="fork" HGAP="-81" VSHIFT="207"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -270,16 +238,14 @@
       <b><font color="#ff0000">IMPORTANT</font></b><font color="#ff0000">&#160;</font>
     </p>
     <p>
-      <font color="#ff0000">Check <a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language.</font>
+      <font color="#ff0000">Check <a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language. </font>
     </p>
     <p>
-      
-    </p>
-    <p>
-      View the first three&#160; <a href="http://freeplane.sourceforge.net/TutorialExtensions/IndexFreeplaneGuides">Freeplane (video) guides</a><font color="#ff0000">&#160;</font><font color="#000000">to get a quick introduction to the basics.</font>
+      <font color="#ff0000">Check <i>Help &gt; Documentation Maps Online</i>&#160;if video guides are available.</font>
     </p>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -287,11 +253,7 @@
 </node>
 </node>
 <node TEXT="Main menu&apos;s" STYLE_REF="Beginner" FOLDED="true" ID="ID_767122736" CREATED="1333268936129" MODIFIED="1335300198085">
-<node TEXT="Getting Started" ID="ID_1060111837" CREATED="1337157328532" MODIFIED="1337157673276" HGAP="31" VSHIFT="342">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-</node>
-<node TEXT="" ID="ID_1720964325" CREATED="1333220288493" MODIFIED="1337157459299" HGAP="-83" VSHIFT="3" STYLE="fork">
+<node TEXT="" ID="ID_1720964325" CREATED="1333220288493" MODIFIED="1341130811645" HGAP="64" VSHIFT="30" STYLE="fork">
 <edge STYLE="hide_edge"/>
 <hook URI="Images/doc/MenusPropertiesPanel.png" SIZE="0.43956044" NAME="ExternalObject"/>
 <node TEXT="Menu bar" ID="ID_745779360" CREATED="1333220342855" MODIFIED="1333266989761" HGAP="-712" VSHIFT="17">
@@ -325,7 +287,7 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_303482588" STARTINCLINATION="20;-28;" ENDINCLINATION="20;-28;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="Background&#xa;context menu" FOLDED="true" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336131961095" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Background&#xa;context menu" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336131961095" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -343,14 +305,14 @@
 <font BOLD="true" ITALIC="true"/>
 <hook URI="Images/doc/BackgroundContextMenu.png" SIZE="1.0" NAME="ExternalObject"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
-<node TEXT="Open/close&#xa;Properties panel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1333278233097" HGAP="56">
+<node TEXT="Open/close&#xa;Properties panel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1341130818119" HGAP="56">
 <edge STYLE="hide_edge"/>
 <font BOLD="true" ITALIC="true"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="122;-181;" ENDINCLINATION="122;-181;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="97;-188;" ENDINCLINATION="97;-188;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 </node>
 </node>
 </node>
-<node TEXT="Help &gt; Key reference" FOLDED="true" ID="ID_291675950" CREATED="1333224017380" MODIFIED="1333278200067" HGAP="39" VSHIFT="-217" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Help &gt; Key reference" ID="ID_291675950" CREATED="1333224017380" MODIFIED="1333278200067" HGAP="39" VSHIFT="-217" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -363,7 +325,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Hot keystable" ID="ID_1337797684" CREATED="1333278113064" MODIFIED="1336132025414">
+<node TEXT="Hot keys table" ID="ID_1337797684" CREATED="1333278113064" MODIFIED="1341130885855" HGAP="-76" VSHIFT="190">
 <hook URI="Images/doc/HotKeysTable.png" SIZE="0.8633093" NAME="ExternalObject"/>
 </node>
 </node>
@@ -452,7 +414,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1335091116966" HGAP="-73" VSHIFT="178"><richcontent TYPE="NODE">
+<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1337203470615" HGAP="-77" VSHIFT="206"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -460,10 +422,13 @@
   </head>
   <body>
     <p>
-      Genrally, you can <b>fold</b>&#160;and <b>unfold</b>&#160;a node by clicking the node when the circle with plus or minus sign is showing. This circle appears when the cursor is above the node core. Unfolding will reveal hidden children. Folding will hide possible children. If a node is folded, it shows a small <b>circle</b>&#160;at its <b>child side</b>.&#160;
+      Genrally, you can <b>fold</b>&#160;and <b>unfold</b>&#160;a node by clicking the node when the circle with plus or minus sign is showing. This circle appears when the cursor is above the node core.&#160;&#160;Folding will hide possible children. If a node is folded, it shows a small <b>circle</b>&#160;at its <b>child side</b>.&#160;Unfolding will reveal hidden children.
     </p>
     <p>
-      If you have me unfolded, to my right you see 4 icons wich also are displayed in the toolbar at the top of the screen. These are icon-buttons with which you can fold/unfold the descendants of a selected node.<br/><br/>Now click on node <i>Introduction</i>&#160;&#160;to hide its children &#160;and notice the circle!&#160;&#160;And thereafter, click again to continue reading the following node.
+      
+    </p>
+    <p>
+      If you have me unfolded, to my right you see 4 icons wich also are displayed in the toolbar at the top of the screen. These are icon-buttons with which you can fold/unfold the descendants of a selected node. Right-clicking the folding circle will reveal a context menu with the same icon-buttons for fast access.<br/><br/>Now click on node <i>Introduction</i>&#160;&#160;to hide its children &#160;and notice the circle!&#160;&#160;And thereafter, click again to continue reading the following node.
     </p>
     <p>
       
@@ -474,14 +439,14 @@
     <ul>
       <li>
         <p>
-          Clicking the circle with +/- folds/unfolds immediatelu; clicking elsewhere in the node core folds with a short delay.
+          Clicking the circle with +/- folds/unfolds immediately; clicking elsewhere in the node core folds with a short delay.
         </p>
       </li>
       <li>
-        It is possible to keep a node from folding by setting <i>Edit &gt; Node Group &gt; Always unfolded node (set/unset)</i>. This can be useful in cloud groups.
+        It is possible to keep a node from folding by setting&#160;<i>Edit &gt; Node Group &gt; Always unfolded node (set/unset)</i>. This can be useful in cloud groups.
       </li>
       <li>
-        If a node being folded has a connector to one of its hidden children. a dotted line (and possibly a label) is visible which can be clicked to make the connected node visible.
+        If a node being folded has a connector to one of its hidden children. a line (and possibly a label) is visible which can be right-clicked to open the context menu and jump to the connected node..
       </li>
     </ul>
   </body>
@@ -490,6 +455,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
+<hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Unfold one level" STYLE_REF="ConsumerTopic" ID="ID_321295556" CREATED="1310134532663" MODIFIED="1323465426246" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../unfold_one_level"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -604,6 +570,7 @@
 </hook>
 <edge STYLE="horizontal"/>
 </node>
+<node TEXT="Edit &gt; Node group &gt; Always unfolded" STYLE_REF="Method" ID="ID_64183058" CREATED="1337203492981" MODIFIED="1337203523932"/>
 </node>
 </node>
 <node TEXT="Open map on Internet" STYLE_REF="Advanced" FOLDED="true" ID="ID_794559549" CREATED="1329413644062" MODIFIED="1335300198085">
@@ -672,24 +639,7 @@
 </html>
 </richcontent>
 <edge STYLE="bezier"/>
-<node ID="ID_318435221" CREATED="1337157328532" MODIFIED="1337157994959" HGAP="16" VSHIFT="139">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="video/Guide/EditingBeginner/EditingGuide-Beginner.mm#ID_639675210">Video</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1337157796587" HGAP="-100" VSHIFT="-2" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1341131023466" HGAP="-95" VSHIFT="150" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -911,24 +861,7 @@
   </body>
 </html>
 </richcontent>
-<node ID="ID_1800844060" CREATED="1337157328532" MODIFIED="1337158126038" HGAP="17" VSHIFT="105">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="video/Guide/EditingBeginner/EditingGuide-Beginner.mm#ID_710192757">Video</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1337158068022" HGAP="-103" VSHIFT="-4" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1341131039869" HGAP="-100" VSHIFT="114" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1053,7 +986,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Free nodes" STYLE_REF="Advanced" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1335300258068" MIN_WIDTH="80">
+<node TEXT="Free nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1335300258068" MIN_WIDTH="80">
 <node TEXT="Post-it nodes: free positionable, free floating" STYLE_REF="Advanced" FOLDED="true" ID="ID_630972811" CREATED="1323076049931" MODIFIED="1323806244665" HGAP="18" VSHIFT="227" STYLE="combined">
 <node ID="ID_830664496" CREATED="1323434577171" MODIFIED="1335094977002" HGAP="-268" VSHIFT="77" STYLE="fork"><richcontent TYPE="NODE">
 
@@ -1596,24 +1529,6 @@
 <node TEXT="To select all nodes, first select the root (press Escape) and next press CTrl + A." STYLE_REF="TitlesContent" ID="ID_1214336373" CREATED="1329770999440" MODIFIED="1335095203971" HGAP="-91" VSHIFT="25"/>
 </node>
 </node>
-<node ID="ID_1801157892" CREATED="1337157328532" MODIFIED="1337158464830" HGAP="16" VSHIFT="8">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="video/Guide/EditingBeginner/EditingGuide-Beginner.mm#ID_594788969">Video</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="SummaryNode"/>
-</node>
 <node TEXT="Moving" STYLE_REF="Beginner" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1335300393571" MAX_WIDTH="600" MIN_WIDTH="60">
 <node TEXT="Moving a node in the hierarchy" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1335300393587" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
@@ -1636,11 +1551,6 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="video illustration" ID="ID_760768670" CREATED="1322820636797" MODIFIED="1323510912080" LINK="https://www.youtube.com/watch?v=0xkUzsd4naA" HGAP="30" VSHIFT="10" MIN_WIDTH="1">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-</node>
 </node>
 </node>
 <node TEXT="Moving a connected node in space" STYLE_REF="Beginner" FOLDED="true" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1335300393587" MAX_WIDTH="550" STYLE="combined">
@@ -1690,24 +1600,6 @@
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
 </node>
-</node>
-<node ID="ID_1561397135" CREATED="1337157328532" MODIFIED="1337158585389" HGAP="16" VSHIFT="8">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="video/Guide/EditingBeginner/EditingGuide-Beginner.mm#ID_380057632">Video</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="SummaryNode"/>
 </node>
 <node TEXT="Moving a group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1335300393587" MAX_WIDTH="600" MIN_WIDTH="1" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
@@ -1982,7 +1874,7 @@
 </node>
 </node>
 <node TEXT="Linking nodes with anchor" STYLE_REF="Beginner" FOLDED="true" ID="ID_1524719322" CREATED="1336298056719" MODIFIED="1336299477442">
-<node STYLE_REF="TitlesContent" ID="ID_1594135890" CREATED="1336298585173" MODIFIED="1336299349102" HGAP="-66" VSHIFT="117"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1594135890" CREATED="1336298585173" MODIFIED="1337500686337" HGAP="-158" VSHIFT="136"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2012,6 +1904,9 @@
       </li>
       <li>
         See below for a different procedure if nodes are more close to each other.
+      </li>
+      <li>
+        See attributes how to set&#160;&#160;a link in an attribute value. There is an easy way to link to other nodes as well.
       </li>
     </ul>
   </body>
@@ -2602,7 +2497,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_406943626" CREATED="1323767710004" MODIFIED="1335095575866" HGAP="-87" VSHIFT="50" LINK="#ID_1394424447"><richcontent TYPE="NODE">
+<node ID="ID_406943626" CREATED="1323767710004" MODIFIED="1341131531190" HGAP="-65" VSHIFT="50"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2970,7 +2865,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Other" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90">
+<node TEXT="Other" STYLE_REF="Advanced" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
@@ -3119,7 +3014,7 @@
 </node>
 </node>
 <node TEXT="Presenting" STYLE_REF="Advanced" FOLDED="true" ID="ID_1747402695" CREATED="1335276169448" MODIFIED="1335515369728">
-<node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1335279324412" HGAP="-54" VSHIFT="45"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1269602804" CREATED="1335276178553" MODIFIED="1337347953181" HGAP="-54" VSHIFT="45"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3127,7 +3022,7 @@
   </head>
   <body>
     <p>
-      When giving a presentation a map may be greyed except for the nodes having the focus. For this select <i>View &gt; Presentation mode. </i>The nodes can be visisted one by one by pressing <i>Shift + Space</i>&#160;or <i>Shift + clicking</i>&#160;folding circle.
+      When giving a presentation a map may be greyed except for the nodes having the focus. For this select <i>View &gt; Presentation mode. </i>The nodes can be visisted one by one by pressing <i>Ctrl</i>&#160;+<i>Shift + Space</i>&#160;or <i>Shift + clicking</i>&#160;folding circle.
     </p>
   </body>
 </html>
@@ -3528,7 +3423,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Attributes (node extension)" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1335301078849" MIN_WIDTH="1">
+<node TEXT="Attributes (node extension)" STYLE_REF="Professional" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1335301078849" MIN_WIDTH="1">
 <node TEXT="Attributes in node extensions" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1335096051051" HGAP="-160" VSHIFT="84" MAX_WIDTH="550">
 <attribute_layout NAME_WIDTH="34" VALUE_WIDTH="92"/>
 <attribute NAME="Name" VALUE="John"/>
@@ -3595,7 +3490,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Professional editing of attrtibutes" STYLE_REF="Professional" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1323090892099" HGAP="-550" VSHIFT="100" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
+<node TEXT="Professional editing of attrtibutes" STYLE_REF="Professional" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1337500610099" HGAP="-551" VSHIFT="123" MAX_WIDTH="550"><richcontent TYPE="DETAILS">
 
 <html>
   <head>

@@ -183,6 +183,13 @@ public class MModeController extends ModeController {
 		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
 		undoHandler.startTransaction();
 	}
+	
+	@Override
+	public void forceNewTransaction() {
+		final MapModel map = getController().getMap();
+		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		undoHandler.forceNewTransaction();
+    }
 
 	/**
 	 * This method is called after and before a change of the map mapView. Use

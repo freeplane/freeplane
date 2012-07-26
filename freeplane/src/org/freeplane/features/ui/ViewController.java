@@ -366,7 +366,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private float getCurrentZoomIndex() {
 		final int selectedIndex = zoomModel.getIndexOf(zoomModel.getSelectedItem());
 		final int itemCount = zoomModel.getSize();
-		if (selectedIndex != itemCount - 1) {
+		if (selectedIndex != - 1) {
 			return selectedIndex;
 		}
 		final float userZoom = mapViewManager.getZoom();
@@ -375,7 +375,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				return i - 0.5f;
 			}
 		}
-		return selectedIndex - 0.5f;
+		return itemCount  - 1.5f;
 	}
 
 	public Font getFont(final NodeModel node) {
@@ -744,14 +744,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private void setZoomComboBox(final float f) {
 		setZoomComboBoxRun = true;
 		try {
-		final String toBeFound = getItemForZoom(f);
-		for (int i = 0; i < zoomModel.getSize(); ++i) {
-			if (toBeFound.equals(zoomModel.getElementAt(i))) {
-				zoomModel.setSelectedItem(toBeFound);
-				return;
-			}
-		}
-		zoomModel.setSelectedItem(userDefinedZoom);
+			final String toBeFound = getItemForZoom(f);
+			zoomModel.setSelectedItem(toBeFound);
 		}
 		finally {
 			setZoomComboBoxRun = false;

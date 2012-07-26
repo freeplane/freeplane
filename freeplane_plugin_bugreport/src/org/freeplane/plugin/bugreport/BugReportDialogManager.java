@@ -11,9 +11,9 @@ import javax.swing.JTextArea;
 import org.freeplane.core.ui.components.UITools;
 
 class BugReportDialogManager {
-	static String ALLOWED = "org.freeplane.plugin.bugreport.allowed";
-	static String ASK = "org.freeplane.plugin.bugreport.ask";
-	static String DENIED = "org.freeplane.plugin.bugreport.denied";
+	static final String ALLOWED = "org.freeplane.plugin.bugreport.allowed";
+	static final String ASK = "org.freeplane.plugin.bugreport.ask";
+	static final String DENIED = "org.freeplane.plugin.bugreport.denied";
 
 	static int showBugReportDialog(final String title, final String question, final int messageType,
 	                               final Object[] options, final Object firstChoice, final String reportName,

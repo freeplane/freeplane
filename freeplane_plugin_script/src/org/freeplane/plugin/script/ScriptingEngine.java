@@ -71,7 +71,22 @@ public class ScriptingEngine {
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
-	static Object executeScript(final NodeModel node, final String script, final IErrorHandler pErrorHandler,
+    static Object executeScript(final NodeModel node, final String script, final IErrorHandler pErrorHandler,
+                                final PrintStream pOutStream, final ScriptContext scriptContext,
+                                ScriptingPermissions permissions) {
+    	return executeScript(node, (Object)script, pErrorHandler,
+    		pOutStream, scriptContext,
+    		permissions);
+
+    }
+    static Object executeScript(final NodeModel node, final File script, final IErrorHandler pErrorHandler,
+                                final PrintStream pOutStream, final ScriptContext scriptContext,
+                                ScriptingPermissions permissions) {
+    	return executeScript(node, (Object)script, pErrorHandler,
+    		pOutStream, scriptContext,
+    		permissions);
+    }
+	static private Object executeScript(final NodeModel node, final Object script, final IErrorHandler pErrorHandler,
 	                            final PrintStream pOutStream, final ScriptContext scriptContext,
 	                            ScriptingPermissions permissions) {
 		final Binding binding = new Binding();
@@ -101,9 +116,15 @@ public class ScriptingEngine {
 				}
 			}
 			final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
-			if (executeSignedScripts && new SignedScriptHandler().isScriptSigned(script, pOutStream))
-				scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
+			final String scriptContent;
+			if(script instanceof String)
+				scriptContent = (String) script;
 			else
+				scriptContent = null;
+			if (executeSignedScripts && scriptContent != null && new SignedScriptHandler().isScriptSigned(scriptContent, pOutStream)) {
+	            scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
+            }
+            else
 				scriptingSecurityManager = permissions.getScriptingSecurityManager();
 		}
 		else {
@@ -142,7 +163,11 @@ public class ScriptingEngine {
 					}
 				}
 			};
-			return shell.evaluate(script);
+			if(script instanceof String)
+				return shell.evaluate((String)script);
+			if(script instanceof File)
+				return shell.evaluate((File)script);
+			throw new IllegalArgumentException();
 		}
 		catch (final GroovyRuntimeException e) {
 			/*
@@ -205,11 +230,14 @@ public class ScriptingEngine {
 		return ScriptingEngine.executeScript(node, script, null, null);
 	}
 
-	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, System.out, null,
-		    permissions);
+	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, System.out, null, permissions);
 	}
 
+	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, System.out, null, permissions);
+	}
+	
 	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
 		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, printStream, null, null);
 	}
@@ -219,7 +247,7 @@ public class ScriptingEngine {
 		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, permissions);
 	}
 
-	static Object executeScriptRecursive(final NodeModel node, final String script,
+	static Object executeScriptRecursive(final NodeModel node, final File script,
 	                                     final ScriptingPermissions permissions) {
 		ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node)
