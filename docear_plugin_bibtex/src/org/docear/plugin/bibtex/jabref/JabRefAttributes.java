@@ -1,7 +1,9 @@
 package org.docear.plugin.bibtex.jabref;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.docear.plugin.bibtex.Reference;
 import org.docear.plugin.bibtex.Reference.Item;
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.bibtex.dialogs.DuplicatePdfDialogPanel;
+import org.docear.plugin.bibtex.dialogs.DuplicateLinkDialogPanel;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.MapModificationSession;
@@ -49,6 +51,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.sciplore.beans.Url;
 
 public class JabRefAttributes {
 	private boolean nodeDirty = false;
@@ -161,9 +164,14 @@ public class JabRefAttributes {
 					}
 					resolveDuplicateLinks(WorkspaceUtils.resolveURI(uri));
 					BibtexEntry entry = findBibtexEntryForPDF(uri, node.getMap());
+					if (entry == null) {
+						entry = findBibtexEntryForURL(uri);
+					}
+					
 					if (entry != null) {
 						reference = new Reference(entry);
 					}
+					
 				}
 				catch (NullPointerException e) {
 					LogUtils.warn("org.docear.plugin.bibtex.jabrefe.JabRefAttributes.updateReferenceToNode: " + e.getMessage());
@@ -264,9 +272,13 @@ public class JabRefAttributes {
 		entry.setField(GUIGlobals.FILE_FIELD, model.getStringRepresentation());
 
 	}
+	
+	public void removeUrlFromBibtexEntry(URL url, BibtexEntry entry) {
+		entry.setField("url", null);
+	}
 
 	public List<String> retrieveFileLinksFromEntry(BibtexEntry entry) {
-		String jabrefFiles = entry.getField("file");
+		String jabrefFiles = entry.getField(GUIGlobals.FILE_FIELD);
 		if (jabrefFiles != null) {
 			// path linked in jabref
 			return parsePathNames(entry, jabrefFiles);
@@ -286,16 +298,28 @@ public class JabRefAttributes {
 		}
 	}
 
-	public void resolveDuplicateLinks(BibtexEntry entry) throws InterruptedException {
-		for (String s : retrieveFileLinksFromEntry(entry)) {
-			try {
-				resolveDuplicateLinks(new File(s));
-			}
-			catch (Exception ex) {
-				LogUtils.warn("org.docear.plugin.bibtex.jabref.JabRefAttributes.resolveDuplicateLinks: " + ex.getMessage());
+	private void removeDuplicateLinks(URL url, BibtexEntry entry) {
+		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+
+		Iterator<BibtexEntry> iter = database.getEntries().iterator();
+		while (iter.hasNext()) {
+			BibtexEntry item = iter.next();
+			if (item != entry) {
+				ReferencesController.getController().getJabRefAttributes().removeUrlFromBibtexEntry(url, item);
 			}
 		}
 	}
+	
+//	public void resolveDuplicateLinks(BibtexEntry entry) throws InterruptedException {
+//		for (String s : retrieveFileLinksFromEntry(entry)) {
+//			try {
+//				resolveDuplicateLinks(new File(s));
+//			}
+//			catch (Exception ex) {
+//				LogUtils.warn("org.docear.plugin.bibtex.jabref.JabRefAttributes.resolveDuplicateLinks: " + ex.getMessage());
+//			}
+//		}
+//	}
 
 	public void removeLinkFromNode(NodeModel node) {
 		for (LinkModel linkModel : NodeLinks.getLinkExtension(node).getLinks()) {
@@ -305,7 +329,7 @@ public class JabRefAttributes {
 		}
 	}
 
-	public void resolveDuplicateLinks(File file) throws NullPointerException, ResolveDuplicateEntryAbortedException {
+	public void resolveDuplicateLinks(File file) throws ResolveDuplicateEntryAbortedException {
 		List<BibtexEntry> entries = new ArrayList<BibtexEntry>();
 
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
@@ -324,7 +348,7 @@ public class JabRefAttributes {
 		if (entries.size() <= 1) {
 			return;
 		}
-		DuplicatePdfDialogPanel panel = new DuplicatePdfDialogPanel(entries, file);
+		DuplicateLinkDialogPanel panel = new DuplicateLinkDialogPanel(entries, file);
 		int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("docear.reference.duplicate_file.title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
@@ -337,9 +361,44 @@ public class JabRefAttributes {
 			setNodeDirty(true);
 		}
 	}
+	
+	public void resolveDuplicateLinks(URL url) throws ResolveDuplicateEntryAbortedException {
+		List<BibtexEntry> entries = new ArrayList<BibtexEntry>();
 
+		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+
+		for (BibtexEntry entry : database.getEntries()) {
+			URL entryUrl = null;
+			try {
+				entryUrl = new URL(entry.getField("url"));
+			}
+			catch (MalformedURLException e) {
+				LogUtils.warn(e);
+			}
+			if (url.equals(entryUrl)) {
+				entries.add(entry);
+			}
+		}
+		
+		if (entries.size() <= 1) {
+			return;
+		}
+		DuplicateLinkDialogPanel panel = new DuplicateLinkDialogPanel(entries, url);
+		int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("docear.reference.duplicate_url.title"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+		if (answer != JOptionPane.OK_OPTION) {
+			throw new ResolveDuplicateEntryAbortedException(url);
+		}
+		else {
+			removeDuplicateLinks(url, panel.getSelectedEntry());
+			ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
+			setNodeDirty(true);
+		}
+	}
+		
 	//FIXME: not used yet --> implement functionality into findBibtexEntryForPDF
-	public BibtexEntry findBibtexEntryForURL(URI nodeUri, NodeModel node) {
+	public BibtexEntry findBibtexEntryForURL(URI nodeUri) {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (database == null || nodeUri == null) {
 			return null;

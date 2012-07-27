@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,7 +29,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
-public class DuplicatePdfDialogPanel extends JPanel {
+public class DuplicateLinkDialogPanel extends JPanel {
 	/**
 	 * 
 	 */
@@ -36,9 +38,21 @@ public class DuplicatePdfDialogPanel extends JPanel {
 	private JTable table;
 	private URI uri;	
 	private File file;
+	private URL url;
 	
+	public DuplicateLinkDialogPanel(final List<BibtexEntry> entries, URL url) {
+		this.entries = entries;
+		try {
+			this.uri = url.toURI();
+		}
+		catch (URISyntaxException e) {
+			LogUtils.warn(e);
+		}
+		this.url = url;
+		init();
+	}
 	
-	public DuplicatePdfDialogPanel(final List<BibtexEntry> entries, File file) {
+	public DuplicateLinkDialogPanel(final List<BibtexEntry> entries, File file) {
 		this.entries = entries;
 		this.uri = file.toURI();
 		this.file = file;
@@ -63,17 +77,24 @@ public class DuplicatePdfDialogPanel extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(800, 300));		
 		setLayout(new BorderLayout());
 		 
-		Component message = new MultiLineActionLabel(TextUtils.format("docear.reference.duplicate_file.message", file.getName()));
+		Component message = null;
+		if (this.file != null) {
+			message = new MultiLineActionLabel(TextUtils.format("docear.reference.duplicate_file.message", file.getName()));
+		}
+		else {
+			message = new MultiLineActionLabel(TextUtils.format("docear.reference.duplicate_url.message", url.toExternalForm()));
+		}
+		
 		((MultiLineActionLabel) message).addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if("open_pdf".equals(e.getActionCommand())) {
+				if("open_uri".equals(e.getActionCommand())) {
 					try {
 						Controller.getCurrentController().getViewController().openDocument(uri);
 					}
 					catch (IOException ex) {
 						LogUtils.warn(ex.getMessage());
 					}
-				}
+				}				
 			}
 		});
 		Component mail = new MultiLineActionLabel(TextUtils.getText("docear.reference.duplicate_file.mail"));
@@ -164,6 +185,6 @@ public class DuplicatePdfDialogPanel extends JPanel {
 	public BibtexEntry getSelectedEntry() {
 		int index = table.getSelectedRow();
 		return entries.get(index);
-	}	
+	}
 
 }

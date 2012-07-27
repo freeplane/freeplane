@@ -1,7 +1,9 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -9,6 +11,7 @@ import java.util.Set;
 
 import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.GUIGlobals;
 import net.sf.jabref.Globals;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
@@ -24,9 +27,10 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class ReferenceUpdater extends AMindmapUpdater {
-	
+
 	private final HashMap<BibtexEntry, Set<NodeModel>> referenceNodes;
-	private final HashMap<String, Set<BibtexEntry>> pdfReferences;
+	private final HashMap<String, BibtexEntry> pdfReferences;
+	private final HashMap<String, BibtexEntry> urlReferences;
 
 	private JabRefAttributes jabRefAttributes;
 	private BibtexDatabase database;
@@ -34,7 +38,8 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	public ReferenceUpdater(String title) {
 		super(title);
 		referenceNodes = new HashMap<BibtexEntry, Set<NodeModel>>();
-		pdfReferences = new HashMap<String, Set<BibtexEntry>>();
+		pdfReferences = new HashMap<String, BibtexEntry>();
+		urlReferences = new HashMap<String, BibtexEntry>();
 
 	}
 
@@ -45,7 +50,15 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			return false;
 		}
 		if (this.pdfReferences.size() == 0) {
-			buildPdfIndex();
+			try {
+				buildPdfIndex();
+			}
+			catch (ResolveDuplicateEntryAbortedException e) {
+				LogUtils.info("mindmap update aborted because of aborted pdf duplicate resolver for: " + e.getFile());
+			}
+		}
+		if (this.urlReferences.size() == 0) {
+			buildUrlIndex();
 		}
 		return updateMap(map);
 	}
@@ -57,26 +70,54 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		return updateReferenceNodes();
 	}
 
-	private void buildPdfIndex() {
+	private void buildPdfIndex() throws ResolveDuplicateEntryAbortedException {
 		for (BibtexEntry entry : database.getEntries()) {
-			String paths = entry.getField("file");
-			if (paths == null || paths.length() == 0) {
+			String paths = entry.getField(GUIGlobals.FILE_FIELD);
+			if (paths == null || paths.trim().length() == 0) {
 				continue;
 			}
 
-			// TODO
 			for (String path : jabRefAttributes.parsePathNames(entry, paths)) {
 				String name = new File(path).getName();
 
 				if (entry.getCiteKey() == null) {
 					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
 				}
-				Set<BibtexEntry> entries = this.pdfReferences.get(name);
-				if (entries == null) {
-					entries = new HashSet<BibtexEntry>();
-					this.pdfReferences.put(name, entries);
+
+				if (this.pdfReferences.get(name) == null) {
+					this.pdfReferences.put(name, entry);
 				}
-				entries.add(entry);
+				else {
+					jabRefAttributes.resolveDuplicateLinks(new File(path));
+				}
+			}
+		}
+	}
+
+	private void buildUrlIndex() {
+		for (BibtexEntry entry : database.getEntries()) {
+			String url = entry.getField("url");
+			if (url == null || url.trim().length() == 0) {
+				continue;
+			}
+
+			if (entry.getCiteKey() == null) {
+				LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
+			}
+			;
+			if (this.urlReferences.get(url) == null) {
+				this.urlReferences.put(url, entry);
+			}
+			else {
+				try {
+					jabRefAttributes.resolveDuplicateLinks(new URL(url));
+				}
+				catch (MalformedURLException e) {
+					LogUtils.warn(e);
+				}
+				catch (ResolveDuplicateEntryAbortedException e) {
+					LogUtils.info("mindmap update aborted because of aborted url duplicate resolver for: " + e.getFile());
+				}
 			}
 		}
 	}
@@ -156,21 +197,24 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				file = WorkspaceUtils.resolveURI(uri, node.getMap());
 				if (file != null) {
 					String fileName = file.getName();
-					Set<BibtexEntry> entries = this.pdfReferences.get(fileName);
-					if (entries != null) {
-						for (BibtexEntry entry : entries) {
-							addReferenceToIndex(node, entry);
-						}
+					BibtexEntry entry = this.pdfReferences.get(fileName);
+					if (entry != null) {
+						addReferenceToIndex(node, entry);
+						return;
 					}
 				}
-				else {
-					BibtexEntry bibtexEntry = database.getEntryByKey(key);
-					addReferenceToIndex(node, bibtexEntry);
+
+				BibtexEntry entry = this.urlReferences.get(uri.toURL().toExternalForm());
+				if (entry != null) {
+					addReferenceToIndex(node, entry);
+					return;
 				}
 			}
-			else if (key != null) {
+
+			if (key != null) {
 				BibtexEntry bibtexEntry = database.getEntryByKey(key);
 				addReferenceToIndex(node, bibtexEntry);
+				return;
 			}
 		}
 		catch (Exception e) {
