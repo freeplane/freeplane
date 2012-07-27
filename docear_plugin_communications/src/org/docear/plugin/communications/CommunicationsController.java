@@ -52,6 +52,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
 public class CommunicationsController extends ALanguageController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
 	private static CommunicationsController communicationsController;
@@ -261,9 +262,16 @@ public class CommunicationsController extends ALanguageController implements Pro
 	}
 	
 	public DocearServiceResponse get(String path) {
+		return get(path, null);
+	}
+	
+	public DocearServiceResponse get(String path, MultivaluedMap<String, String> params) {
 		try {
+			if(params == null) {
+				params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+			}
 			String accessToken = CommunicationsController.getController().getAccessToken();
-			ClientResponse response = client.resource(getServiceUri()).path(path).header("accessToken", accessToken).get(ClientResponse.class);
+			ClientResponse response = client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken).get(ClientResponse.class);
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());

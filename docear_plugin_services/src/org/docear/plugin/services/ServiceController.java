@@ -1,11 +1,13 @@
 package org.docear.plugin.services;
 
 import java.net.URL;
+import java.util.Collection;
 
 import javax.swing.SwingUtilities;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.logging.DocearLogger;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.services.actions.DocearCheckForUpdatesAction;
 import org.docear.plugin.services.actions.DocearClearUserDataAction;
@@ -13,12 +15,16 @@ import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;
 import org.docear.plugin.services.listeners.MapLifeCycleListener;
+import org.docear.plugin.services.listeners.ServiceWindowListener;
+import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
+import org.docear.plugin.services.recommendations.mode.DocearRecommendationsMapController;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsCreator;
 import org.docear.plugin.services.recommendations.workspace.ShowRecommendationsNode;
 import org.docear.plugin.services.upload.UploadController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -35,6 +41,7 @@ import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 public class ServiceController extends UploadController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
 	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
+	public static final long RECOMMENDATIONS_AUTOSHOW_INTERVAL = 1000*60*60*24*5; // every 5 days in milliseconds
 
 	private static ServiceController serviceController;
 
@@ -43,9 +50,12 @@ public class ServiceController extends UploadController {
 	public static final int ALLOW_USAGE_MINING = 4;
 	public static final int ALLOW_INFORMATION_RETRIEVAL = 2;
 	public static final int ALLOW_RESEARCH = 1;
+	
 
 	private Application application;
 	private DocearRecommendationsModeController modeController;
+	private Collection<RecommendationEntry> autoRecommendations;
+	private Boolean AUTO_RECOMMENDATIONS_LOCK = false;
 	
 
 	
@@ -63,6 +73,8 @@ public class ServiceController extends UploadController {
 		Controller.getCurrentController().addAction(new DocearAllowUploadChooserAction());
 		Controller.getCurrentController().addAction(new DocearCheckForUpdatesAction());
 		Controller.getCurrentController().addAction(new ShowRecommendationsAction());
+		
+		startRecommendationsMode();
 	}
 
 	protected static void initialize(ModeController modeController) {
@@ -240,4 +252,67 @@ public class ServiceController extends UploadController {
 		}
 		return backupMinutes;
 	}
+	
+	private void startRecommendationsMode() {
+		long lastShowTime = Controller.getCurrentController().getResourceController().getLongProperty("docear.recommendations.last_auto_show", 0);
+		
+		if(((System.currentTimeMillis()-lastShowTime) > RECOMMENDATIONS_AUTOSHOW_INTERVAL) 
+				&& isRecommendationsAllowed()
+				&& !isEmpty(CommunicationsController.getController().getUserName())) {
+			LogUtils.info("automatically requesting recommendations");
+			UITools.getFrame().addWindowListener(new ServiceWindowListener());
+			
+			synchronized (AUTO_RECOMMENDATIONS_LOCK) {
+				AUTO_RECOMMENDATIONS_LOCK = true;
+			}
+			new Thread() {
+				public void run() {	
+					try {
+						Collection<RecommendationEntry> recommendations = DocearRecommendationsMapController.getNewRecommendations(false);	
+						if(recommendations.isEmpty()) {
+							setAutoRecommendations(null);
+						}
+						else {
+							setAutoRecommendations(recommendations);
+						}						
+						Controller.getCurrentController().getResourceController().setProperty("docear.recommendations.last_auto_show", Long.toString(System.currentTimeMillis()));
+					
+					} 
+					catch (Exception e) {				
+						DocearLogger.warn("org.docear.plugin.services.ServiceController.startRecommendationsMode(): " + e.getMessage());
+						setAutoRecommendations(null);
+					}
+					synchronized (AUTO_RECOMMENDATIONS_LOCK) {
+						AUTO_RECOMMENDATIONS_LOCK = false;
+					}					
+				}
+			}.start();
+		} 
+		else {
+			setAutoRecommendations(null);
+		}
+	}
+	
+	public void setAutoRecommendations(Collection<RecommendationEntry> autoRecommendations) {
+		this.autoRecommendations = autoRecommendations;
+	}
+
+	public Collection<RecommendationEntry> getAutoRecommendations() {		
+			while(isLocked()) {
+				try {
+					Thread.sleep(100);
+					Thread.yield();
+				} catch (InterruptedException e) {
+				}
+			}		
+			return autoRecommendations;
+	}
+
+	private boolean isLocked() {
+		synchronized (AUTO_RECOMMENDATIONS_LOCK ) {
+			return AUTO_RECOMMENDATIONS_LOCK;
+		}
+	}
+
+	
 }
