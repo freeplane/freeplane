@@ -38,8 +38,6 @@ import java.util.ListIterator;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.TreeNode;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;

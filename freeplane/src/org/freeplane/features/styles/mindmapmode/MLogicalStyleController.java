@@ -28,7 +28,6 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IExtensionCopier;

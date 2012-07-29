@@ -32,13 +32,10 @@ import java.util.Locale;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
-
-import sun.util.logging.resources.logging;
 
 /**
  * @author Dimitry Polivaev

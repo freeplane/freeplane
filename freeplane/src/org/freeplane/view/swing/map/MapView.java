@@ -98,8 +98,6 @@ import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
 
-import org.freeplane.view.swing.map.PaintingMode.*;
-
 /**
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
