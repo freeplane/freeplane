@@ -24,11 +24,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.WordUtils;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -92,16 +89,9 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 					}
                 }
 				catch (ExecuteScriptException ex) {
-					LogUtils.warn("error executing script " + script + " - giving up", ex);
-					modeController.delayedRollback();
-					if (ex.getCause() instanceof SecurityException) {
-						final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);
-						UITools.errorMessage(TextUtils.format("ExecuteScriptSecurityError.text", message));
-					}
-					else {
-						final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
-						UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
-					}
+				    LogUtils.warn("error executing script " + script + " - giving up", ex);
+				    modeController.delayedRollback();
+					ScriptingEngine.showScriptExceptionErrorMessage(ex);
                 	return;
                 }
 			}

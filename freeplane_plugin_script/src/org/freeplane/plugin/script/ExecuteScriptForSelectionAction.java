@@ -3,6 +3,7 @@ package org.freeplane.plugin.script;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -34,8 +35,10 @@ public class ExecuteScriptForSelectionAction extends AMultipleNodeAction {
 		try {
 	        ScriptingEngine.performScriptOperation(node);
         }
-        catch (ExecuteScriptException e1) {
-    		success = false;
+        catch (ExecuteScriptException ex) {
+			LogUtils.warn(ex);
+			ScriptingEngine.showScriptExceptionErrorMessage(ex);
+			success = false;
         }
 	}
 }
