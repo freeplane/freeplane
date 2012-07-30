@@ -36,15 +36,27 @@ public class PdfReaderFileFilter implements FileFilter {
 	}
 	
 	public boolean isAdobe(File file){
-		return file.getName().matches("[Aa][Cc][Rr][Oo].*[.][Ee][Xx][Ee]"); //$NON-NLS-1$
+		return isAdobe(file.getName());
 	}
 	
 	public boolean isFoxit(File file){
-		return file.getName().matches("[Ff][Oo][Xx].*[.][Ee][Xx][Ee]"); //$NON-NLS-1$
+		return isFoxit(file.getName());
 	}
 	
 	public boolean isPdfXChange(File file){
-		return file.getName().matches("[Pp][Dd][Ff][Xx][Cc].*[.][Ee][Xx][Ee]"); //$NON-NLS-1$
+		return isPdfXChange(file.getName());
+	}
+	
+	public boolean isAdobe(String readerCommand) {
+		return readerCommand.toLowerCase().matches("^.*acro.*.exe.*$]"); //$NON-NLS-1$
+	}
+	
+	public boolean isFoxit(String readerCommand) {
+		return readerCommand.toLowerCase().matches("^.*fox.*.exe.*$]"); //$NON-NLS-1$
+	}
+	
+	public boolean isPdfXChange(String readerCommand){
+		return readerCommand.toLowerCase().matches("^.*pdfxcv.*.exe.*$]"); //$NON-NLS-1$
 	}
 
 }

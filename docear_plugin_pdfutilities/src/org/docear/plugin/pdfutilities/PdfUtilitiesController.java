@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,9 +35,11 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension.DocearMapType;
+import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CompareVersion;
+import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DeleteMonitoringFolderAction;
@@ -50,6 +53,7 @@ import org.docear.plugin.pdfutilities.actions.MonitoringFlattenSubfoldersAction;
 import org.docear.plugin.pdfutilities.actions.MonitoringGroupRadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.ShowInstalledPdfReadersDialogAction;
+import org.docear.plugin.pdfutilities.actions.ShowPdfReaderDefinitionDialogAction;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle.RegistryBranch;
@@ -71,9 +75,7 @@ import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IValidator;
-import org.freeplane.core.resources.components.PathProperty;
 import org.freeplane.core.resources.components.RadioButtonProperty;
-import org.freeplane.core.resources.components.StringProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
@@ -104,8 +106,7 @@ public class PdfUtilitiesController extends ALanguageController {
 	public static final String MON_FLATTEN_DIRS = "mon_flatten_dirs"; //$NON-NLS-1$
 	public static final String MON_MINDMAP_FOLDER = "mon_mindmap_folder"; //$NON-NLS-1$
 	public static final String MON_INCOMING_FOLDER = "mon_incoming_folder"; //$NON-NLS-1$
-	public static final String SETTINGS_MENU = "/Settings"; //$NON-NLS-1$
-	public static final String OPEN_ON_PAGE_READER_PATH_KEY = "docear_open_on_page_reader_path"; //$NON-NLS-1$	
+	public static final String SETTINGS_MENU = "/Settings"; //$NON-NLS-1$	
 	public static final String OPEN_ON_PAGE_READER_COMMAND_KEY = "docear_open_on_page_reader_command";
 	public static final String OPEN_PDF_VIEWER_ON_PAGE_KEY = "docear_open_on_page"; //$NON-NLS-1$	
 	public static final String OPEN_INTERNAL_PDF_VIEWER_KEY = "docear_open_internal"; //$NON-NLS-1$
@@ -154,6 +155,7 @@ public class PdfUtilitiesController extends ALanguageController {
 
 	public PdfUtilitiesController(ModeController modeController) {
 		super();
+		controller = this;
 
 		LogUtils.info("starting DocearPdfUtilitiesStarter(ModeController)"); //$NON-NLS-1$
 		this.modecontroller = modeController;
@@ -164,9 +166,6 @@ public class PdfUtilitiesController extends ALanguageController {
 		this.registerListener();
 		this.addMenuEntries();
 		showViewerSelectionIfNecessary();
-
-		controller = this;
-
 	}
 
 	public static PdfUtilitiesController getController() {
@@ -201,6 +200,9 @@ public class PdfUtilitiesController extends ALanguageController {
 						showViewerSelectionIfNecessary();
 					}
 				}
+			}
+			else {
+				PdfUtilitiesController.getController().setToStandardPdfViewer();
 			}
 
 		}
@@ -310,8 +312,8 @@ public class PdfUtilitiesController extends ALanguageController {
 			return true;
 		}
 
-		String viewerPath = Controller.getCurrentController().getResourceController().getProperty(OPEN_ON_PAGE_READER_PATH_KEY);
-		if (readerFilter.isPdfXChange(new File(viewerPath))) {
+		String viewerCommand = Controller.getCurrentController().getResourceController().getProperty(OPEN_ON_PAGE_READER_COMMAND_KEY);
+		if (viewerCommand != null && readerFilter.isPdfXChange(viewerCommand)) {
 			try {
 				if (!hasCompatibleSettings()) {
 					return false;
@@ -338,42 +340,33 @@ public class PdfUtilitiesController extends ALanguageController {
 
 		File reader = new File(executablePath);		
 
+		String readerCommand = "";
+		
 		if (!executablePath.isEmpty() && reader != null && reader.exists()) {
 			try {
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
-				((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);
-				((PathProperty) opc.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setValue(executablePath);
-				setReaderCommand(executablePath);
-//				((StringProperty) opc.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setValue(reader.getPath());
-				opc.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY).setEnabled(true);
-				opc.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY).setEnabled(true);
+				((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);				
+				readerCommand = buildCommandString(reader);
 			}
 			catch (NullPointerException e) {
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, false);
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, true);
-				Controller.getCurrentController().getResourceController().setProperty(OPEN_ON_PAGE_READER_PATH_KEY, executablePath);
-				setReaderCommand(executablePath);
-//				Controller.getCurrentController().getResourceController().setProperty(OPEN_ON_PAGE_READER_COMMAND_KEY, "");
+				readerCommand = buildCommandString(reader);
 			}
+			ResourceController.getResourceController().setProperty(OPEN_ON_PAGE_READER_COMMAND_KEY, readerCommand);
 		}
 		else {
 			try {
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(true);
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);
-				((PathProperty) opc.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setValue("");
-				((StringProperty) opc.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setValue("");
-				opc.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY).setEnabled(false);
-				opc.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY).setEnabled(false);
 			}
 			catch (NullPointerException e) {
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, true);
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);
-				Controller.getCurrentController().getResourceController().setProperty(OPEN_ON_PAGE_READER_PATH_KEY, "");
-				Controller.getCurrentController().getResourceController().setProperty(OPEN_ON_PAGE_READER_COMMAND_KEY, "");
 			}			
 		}
 	}
@@ -403,6 +396,7 @@ public class PdfUtilitiesController extends ALanguageController {
 		this.modecontroller.getMapController().addListenerForAction(monitoringFlattenSubfoldersAction);
 
 		Controller.getCurrentController().addAction(new ShowInstalledPdfReadersDialogAction());
+		Controller.getCurrentController().addAction(new ShowPdfReaderDefinitionDialogAction());
 
 		this.modecontroller.removeAction("PasteAction"); //$NON-NLS-1$
 		this.modecontroller.addAction(new DocearPasteAction());
@@ -578,66 +572,66 @@ public class PdfUtilitiesController extends ALanguageController {
 
 		});
 
-		final OptionPanelController optionController = Controller.getCurrentController().getOptionPanelController();
-		optionController.addButtonListener(new ActionListener() {
+		final OptionPanelController opc = Controller.getCurrentController().getOptionPanelController();
+		opc.addButtonListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent event) {
 				Object source = event.getSource();
 				if (source != null && source instanceof JRadioButton) {
 					JRadioButton radioButton = (JRadioButton) event.getSource();
 					if (radioButton.getName().equals(OPEN_STANDARD_PDF_VIEWER_KEY)) {
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(true);
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);
-						((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
-						((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setEnabled(false);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(true);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);						
+						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 					}
 					if (radioButton.getName().equals(OPEN_INTERNAL_PDF_VIEWER_KEY)) {
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(true);
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);
-						((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
-						((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setEnabled(false);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(true);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);						
+						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 					}
 					if (radioButton.getName().equals(OPEN_PDF_VIEWER_ON_PAGE_KEY)) {
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
-						((RadioButtonProperty) optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);
-						((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(true);
-						((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setEnabled(true);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);						
+						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(true);
+						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(true);
 					}
 				}
 			}
 		});
 
-		optionController.addPropertyLoadListener(new PropertyLoadListener() {
+		opc.addPropertyLoadListener(new PropertyLoadListener() {
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
-				((RadioButtonProperty) optionController.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY))
+				((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
 								if (evt.getNewValue().equals("true")) { //$NON-NLS-1$
-									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
-									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setEnabled(false);
+									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 								}
 							}
 						});
 
-				((RadioButtonProperty) optionController.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY))
+				((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
-								if (evt.getNewValue().equals(true)) {
-									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(false);
-									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setEnabled(false);
+								if (evt.getNewValue().equals(true)) {									
+									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 								}
 							}
 						});
 
-				((RadioButtonProperty) optionController.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY))
+				((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
 								if (evt.getNewValue().equals(true)) {
-									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_PATH_KEY)).setEnabled(true);
-									((IPropertyControl) optionController.getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setEnabled(true);
+									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(true);
+									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(true);
 								}
 							}
 						});
@@ -680,12 +674,7 @@ public class PdfUtilitiesController extends ALanguageController {
 			}
 		});
 
-		this.modecontroller.getMapController().addNodeChangeListener(new DocearRenameAnnotationListener());
-
-		// DocearMapConverterListener mapConverterListener = new
-		// DocearMapConverterListener();
-		// this.modecontroller.getController().getMapViewManager().addMapSelectionListener(mapConverterListener);
-		// Controller.getCurrentController().getViewController().getJFrame().addWindowFocusListener(mapConverterListener);
+		this.modecontroller.getMapController().addNodeChangeListener(new DocearRenameAnnotationListener());		
 
 		DocearAutoMonitoringListener autoMonitoringListener = new DocearAutoMonitoringListener();
 		this.modecontroller.getMapController().addMapLifeCycleListener(autoMonitoringListener);
@@ -698,39 +687,28 @@ public class PdfUtilitiesController extends ALanguageController {
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 	
-	private void setReaderCommand(final String readerPath) {
-		File readerFile = new File(readerPath);
-		
+	public String buildCommandString(File reader) {
 		String readerCommand = "";
-		if (readerFilter.isPdfXChange(readerFile)) {
-			if (!Compat.isWindowsOS() && !Compat.isMacOsX() && readerPath.toLowerCase().endsWith(".exe")) {
-				readerCommand = "wine#";
-			}
-			readerCommand += readerPath + "#/A#page=$PAGE&nameddest=$TITLE#$FILE"; 
+		if (!Compat.isWindowsOS() && !Compat.isMacOsX() && reader.getName().toLowerCase().endsWith(".exe")) {
+			readerCommand = "wine*";
 		}
-		else if (readerFilter.isFoxit(readerFile)) {
-			if (!Compat.isWindowsOS() && !Compat.isMacOsX() && readerPath.toLowerCase().endsWith(".exe")) {
-				readerCommand = "wine#";
-			}
-			readerCommand += readerPath + "#$FILE#/A#$PAGE";
+		
+		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
+		if (readerFilter.isPdfXChange(reader)) {
+			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE&nameddest=$TITLE*$FILE"; 
 		}
-		else if (readerFilter.isAdobe(readerFile)) {
-			if (!Compat.isWindowsOS() && !Compat.isMacOsX() && readerPath.toLowerCase().endsWith(".exe")) {
-				readerCommand = "wine#";
-			}
-			readerCommand += readerPath + "#/A#$PAGE#$FILE";
+		else if (readerFilter.isFoxit(reader)) {
+			readerCommand += reader.getAbsolutePath() + "*$FILE*/A page=$PAGE";
+		}
+		else if (readerFilter.isAdobe(reader)) {
+			readerCommand += reader.getAbsolutePath() + "*/A $PAGE*$FILE";
 		}
 		else {
-			if (!Compat.isWindowsOS() && !Compat.isMacOsX() && readerPath.toLowerCase().endsWith(".exe")) {
-				readerCommand = "wine#";
-			}
-			readerCommand += readerPath + "#$FILE";
+			readerCommand += reader.getAbsolutePath() + "*$FILE";
 		}
 		
-		if (readerCommand.trim().length() > 0) {			
-			((StringProperty) Controller.getCurrentController().getOptionPanelController().getPropertyControl(OPEN_ON_PAGE_READER_COMMAND_KEY)).setValue(readerCommand);
-		}
-	}
+		return readerCommand;
+	}	
 
 	private void addPropertiesToOptionPanel() {
 		final URL preferences = this.getClass().getResource("preferences.xml"); //$NON-NLS-1$
@@ -738,30 +716,28 @@ public class PdfUtilitiesController extends ALanguageController {
 		MModeController modeController = (MModeController) this.modecontroller;
 
 		modeController.getOptionPanelBuilder().load(preferences);
-		Controller.getCurrentController().addOptionValidator(new IValidator() {
-			
-			public ValidationResult validate(Properties properties) {
-				ValidationResult result = new ValidationResult();
-				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
-				if (openOnPageActivated) {
-					String readerPath = properties.getProperty(OPEN_ON_PAGE_READER_PATH_KEY, "").trim(); //$NON-NLS-1$
-					String readerCommand = properties.getProperty(OPEN_ON_PAGE_READER_COMMAND_KEY, "").trim(); //$NON-NLS-1$
-					if (readerPath != null && !readerPath.isEmpty() && (readerCommand == null || readerCommand.trim().length() == 0)) {
-						setReaderCommand(readerPath);
-						File readerFile = new File(readerPath);
-						if (!readerFilter.isPdfXChange(readerFile) && !readerFilter.isFoxit(readerFile) && !readerFilter.isAdobe(readerFile)) {
-							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
-						}
-					}
-					else if (readerCommand == null || readerCommand.trim().length() == 0) {
-						result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));
-						return result;
-					}					
-				}
-				return result;
-			}
-
-		});
+		//TODO: Does not work, because the properties are set in an extra dialog with the validator still using the old values
+//		Controller.getCurrentController().addOptionValidator(new IValidator() {
+//			
+//			public ValidationResult validate(Properties properties) {
+//				ValidationResult result = new ValidationResult();
+//				boolean openOnPageActivated = Boolean.parseBoolean(properties.getProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY));
+//				if (openOnPageActivated) {					
+//					String readerCommand = properties.getProperty(OPEN_ON_PAGE_READER_COMMAND_KEY, "").trim(); //$NON-NLS-1$
+//					if (readerCommand != null && !readerCommand.isEmpty()) {						
+//						if (!readerFilter.isPdfXChange(readerCommand) && !readerFilter.isFoxit(readerCommand) && !readerFilter.isAdobe(readerCommand)) {
+//							result.addWarning(TextUtils.getText(OPEN_ON_PAGE_WARNING_KEY));
+//						}
+//					}
+//					else if (readerCommand == null || readerCommand.trim().length() == 0) {
+//						result.addError(TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY));						
+//						return result;
+//					}					
+//				}
+//				return result;
+//			}
+//
+//		});
 	}
 
 	public void importRegistrySettings(URL regResource) throws IOException {
@@ -873,6 +849,78 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 
 		return false;
+	}
+	
+	public String[] getPdfReaderExecCommand(URI uriToFile, int page, String title) {
+		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
+		if (file == null) {
+			return null;
+		}
+		
+		String readerCommandProperty = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_COMMAND_KEY);
+		if (readerCommandProperty == null || readerCommandProperty.isEmpty()) {
+			setToStandardPdfViewer();
+			JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText(OPEN_ON_PAGE_ERROR_KEY), TextUtils.getText("warning"), JOptionPane.WARNING_MESSAGE);
+			return null;
+		}
+				
+		ArrayList<String> commandList = new ArrayList<String>(); 
+		for (String s : readerCommandProperty.trim().split("\\*")) {
+			commandList.add(s.replace("*", ""));
+		}		
+		
+		String fileString = file.getAbsolutePath();
+		if (!Compat.isWindowsOS() && !Compat.isMacOsX()) {
+			if (commandList.get(0).endsWith("wine")) {
+				fileString = "Z:" + fileString.replace("/", "\\") + "";
+			}
+		}
+		
+		if (title == null) {
+			title = "";
+		}
+		for (int i=0; i<commandList.size(); i++) {
+			commandList.set(i, commandList.get(i).replace("$PAGE", ""+page).replace("$TITLE", title).replace("$FILE", fileString));
+		}
+		
+		return commandList.toArray(new String[]{});
+	}
+
+	public String[] getPdfReaderExecCommand(URI uriToFile, int page) {
+		return getPdfReaderExecCommand(uriToFile, page, null);
+	}
+	
+	public String[] getPdfReaderExecCommand(URI uriToFile, IAnnotation annotation) {
+		int page = annotation.getPage() != null ? annotation.getPage() : 1;
+		return getPdfReaderExecCommand(uriToFile, page, annotation.getTitle());
+	}
+	
+	public void openPdfOnPage(URI uriToFile, IAnnotation annotation) {
+		int page = annotation.getPage() != null ? annotation.getPage() : 1;
+		openPdfOnPage(uriToFile, page, annotation.getTitle());
+	}
+	
+	public void openPdfOnPage(URI uriToFile, int page) {
+		openPdfOnPage(uriToFile, page, null);
+	}
+	
+	public void openPdfOnPage(URI uriToFile, int page, String title) {
+		String[] readerCommand = getPdfReaderExecCommand(uriToFile, page, title);
+		
+		if (readerCommand != null) {
+			try {
+				Controller.exec(readerCommand);
+			}
+			catch (IOException e) {
+				LogUtils.warn(e);
+			}
+		}
+	}
+	
+	public void setToStandardPdfViewer() {
+		ResourceController.getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, true);
+		ResourceController.getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
+		ResourceController.getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);
 	}
 
 }
