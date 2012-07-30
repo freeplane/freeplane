@@ -40,7 +40,7 @@ public class PdfReaderDefinitionDialog extends JPanel {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(250dlu;default):grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
+				ColumnSpec.decode("min:grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
@@ -96,10 +96,6 @@ public class PdfReaderDefinitionDialog extends JPanel {
 		JLabel lblNewLabel_3 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help4"));
 		add(lblNewLabel_3, "2, 10, 3, 1");
 		
-		String samples = "<HTML><p><tt>C:\\Program Files\\Tracker Software\\PDF Viewer\\PDFXCview.exe*/A*page=$PAGE&nameddest=$TITLE*$FILE</p>";
-		samples += "<p>wine*/home/stefan/.wine/drive_c/Program Files/Tracker Software/PDF Viewer/PDFXCview.exe*/A*page=$PAGE&nameddest=$TITLE*$FILE</p>";
-		samples += "<p>evince*-i*$PAGE*$FILE</tt></p></HTML>";
-		
 		JSeparator separator = new JSeparator();
 		separator.setToolTipText("Samples");
 		add(separator, "2, 12");
@@ -114,11 +110,24 @@ public class PdfReaderDefinitionDialog extends JPanel {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),}));
-		JLabel textArea = new JLabel();
-		panel.add(textArea, "1, 1, 3, 1, fill, fill");
-		textArea.setFont(font);
-		textArea.setText(samples);
+		JLabel sampleLabel1 = new JLabel("C:\\Program Files\\Tracker Software\\PDF Viewer\\PDFXCview.exe*/A*page=$PAGE&nameddest=$TITLE*$FILE");
+		panel.add(sampleLabel1, "1, 1, 3, 1, fill, fill");
+		sampleLabel1.setFont(font);
+		
+		JLabel sampleLabel2 = new JLabel("wine*/home/stefan/.wine/drive_c/Program Files/Tracker Software/PDF Viewer/PDFXCview.exe*/A*page=$PAGE&nameddest=$TITLE*$FILE");
+		panel.add(sampleLabel2, "1, 3, 3, 1, fill, fill");
+		sampleLabel2.setFont(font);
+		
+		JLabel sampleLabel3 = new JLabel("evince*-i*$PAGE*$FILE");
+		panel.add(sampleLabel3, "1, 5, 3, 1, fill, fill");
+		sampleLabel3.setFont(font);
 	}
 
 	public String getReaderCommand() {
