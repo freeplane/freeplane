@@ -31,9 +31,9 @@ public class InstalledPdfReadersDialog extends JPanel {
 	private JComboBox readerChoice;
 	private final PDFReaderHandle[] readerHandles;
 	
-	public InstalledPdfReadersDialog(PDFReaderHandle[] handles) {
-		this(handles, null);
-	}
+//	public InstalledPdfReadersDialog(PDFReaderHandle[] handles) {
+//		this(handles, null);
+//	}
 
 	public InstalledPdfReadersDialog(PDFReaderHandle[] handles, Boolean newReader) {
 		readerHandles = handles;

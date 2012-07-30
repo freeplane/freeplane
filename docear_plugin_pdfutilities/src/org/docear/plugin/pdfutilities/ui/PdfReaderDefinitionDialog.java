@@ -1,5 +1,6 @@
 package org.docear.plugin.pdfutilities.ui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,27 +44,43 @@ public class PdfReaderDefinitionDialog extends JPanel {
 				ColumnSpec.decode("min:grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("max(90dlu;pref)"),
+				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+				
+		JPanel pnlDialogInfo = new JPanel();
+		pnlDialogInfo.setBackground(Color.WHITE);
+		add(pnlDialogInfo, "1, 1, 4, 2, fill, fill");
+		pnlDialogInfo.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),}));
+				RowSpec.decode("fill:default:grow"),}));
+		
+		JLabel lblHeadline = new JLabel(TextUtils.getText("docear.pdf_reader_definition.headline"));
+		lblHeadline.setFont(new Font("Tahoma", Font.BOLD, 11));
+		pnlDialogInfo.add(lblHeadline, "2, 2");
+		
+		JLabel lblHelp1 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help1"));
+		pnlDialogInfo.add(lblHelp1, "2, 4");
+		
+		JLabel lblHelp2 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help2"));
+		pnlDialogInfo.add(lblHelp2, "2, 6");		
 		
 		txtPath = new JTextField();		
 		txtPath.setText(ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_COMMAND_KEY));
-		add(txtPath, "2, 2, fill, default");
+		add(txtPath, "2, 4, fill, default");
 		txtPath.setColumns(10);
 		
 		JButton btnFilechooser = new JButton(TextUtils.getText("browse"));
-		add(btnFilechooser, "4, 2");
+		add(btnFilechooser, "4, 4");
 		
 		btnFilechooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
@@ -84,27 +101,11 @@ public class PdfReaderDefinitionDialog extends JPanel {
 			}
 		});
 		
-		JLabel lblNewLabel = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help1"));
-		add(lblNewLabel, "2, 4, 3, 1");
-		
-		JLabel lblNewLabel_1 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help2"));
-		add(lblNewLabel_1, "2, 6, 3, 1");
-		
-		JLabel lblNewLabel_2 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help3"));
-		add(lblNewLabel_2, "2, 8, 3, 1");
-		
-		JLabel lblNewLabel_3 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help4"));
-		add(lblNewLabel_3, "2, 10, 3, 1");
-		
-		JSeparator separator = new JSeparator();
-		separator.setToolTipText("Samples");
-		add(separator, "2, 12");
-		
 		Font font = new Font("Dialog", Font.PLAIN, 12);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, TextUtils.getText("docear.pdf_reader_definition.samples"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel, "2, 14, 3, 1, fill, fill");
+		add(panel, "2, 6, 3, 1, fill, fill");
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("max(250dlu;default):grow"),
 				FormFactory.RELATED_GAP_COLSPEC,

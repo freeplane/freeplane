@@ -184,7 +184,7 @@ public class PdfUtilitiesController extends ALanguageController {
 		if (showReaderDialog != null || force) {
 			InstalledPdfReadersDialog dialog = new InstalledPdfReadersDialog(readers.toArray(new PDFReaderHandle[] {}), showReaderDialog);
 
-			if (JOptionPane.showConfirmDialog(UITools.getFrame(), dialog) == JOptionPane.OK_OPTION) {
+			if (JOptionPane.showConfirmDialog(UITools.getFrame(), dialog, TextUtils.getText("docear.validate_pdf_xchange.headline"), JOptionPane.OK_CANCEL_OPTION)  == JOptionPane.OK_OPTION) {
 				PDFReaderHandle reader = (PDFReaderHandle) dialog.getReaderChoiceBox().getSelectedItem();
 				setReaderPreferences(reader.getExecFile());
 
@@ -724,22 +724,28 @@ public class PdfUtilitiesController extends ALanguageController {
 	
 	public String buildCommandString(File reader) {
 		String readerCommand = "";
+		
 		if (!Compat.isWindowsOS() && !Compat.isMacOsX() && reader.getName().toLowerCase().endsWith(".exe")) {
 			readerCommand = "wine*";
+		}
+				
+		String fileFunctor = "$FILE";
+		if (Compat.isWindowsOS()) {
+			fileFunctor = "\"$FILE\"";
 		}
 		
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 		if (readerFilter.isPdfXChange(reader)) {
-			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE&nameddest=$TITLE*$FILE"; 
+			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE&nameddest=$TITLE*"+fileFunctor; 
 		}
 		else if (readerFilter.isFoxit(reader)) {
-			readerCommand += reader.getAbsolutePath() + "*$FILE*/A page=$PAGE";
+			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor+"*/A*page=$PAGE";
 		}
 		else if (readerFilter.isAdobe(reader)) {
-			readerCommand += reader.getAbsolutePath() + "*/A $PAGE*$FILE";
+			readerCommand += reader.getAbsolutePath() + "*/A $PAGE*"+fileFunctor;
 		}
 		else {
-			readerCommand += reader.getAbsolutePath() + "*$FILE";
+			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor;
 		}
 		
 		return readerCommand;

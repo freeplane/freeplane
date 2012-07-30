@@ -2,6 +2,7 @@ package org.docear.plugin.pdfutilities.pdf;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.regex.Pattern;
 
 import org.freeplane.core.util.Compat;
 
@@ -48,15 +49,18 @@ public class PdfReaderFileFilter implements FileFilter {
 	}
 	
 	public boolean isAdobe(String readerCommand) {
-		return readerCommand.toLowerCase().matches("^.*acro.*.exe.*$]"); //$NON-NLS-1$
+		Pattern regex = Pattern.compile("acro.*.exe");
+		return regex.matcher(readerCommand.trim().toLowerCase()).find();
 	}
 	
 	public boolean isFoxit(String readerCommand) {
-		return readerCommand.toLowerCase().matches("^.*fox.*.exe.*$]"); //$NON-NLS-1$
+		Pattern regex = Pattern.compile("foxit.*.exe");
+		return regex.matcher(readerCommand.trim().toLowerCase()).find();
 	}
 	
-	public boolean isPdfXChange(String readerCommand){
-		return readerCommand.toLowerCase().matches("^.*pdfxcv.*.exe.*$]"); //$NON-NLS-1$
+	public boolean isPdfXChange(String readerCommand){		
+		Pattern regex = Pattern.compile("pdfxcv.*.exe");		
+		return regex.matcher(readerCommand.trim().toLowerCase()).find();
 	}
 
 }

@@ -24,7 +24,7 @@ public class ShowPdfReaderDefinitionDialogAction extends AFreeplaneAction {
 	
 	public void actionPerformed(ActionEvent e) {
 		PdfReaderDefinitionDialog dialog = new PdfReaderDefinitionDialog();
-		int option = JOptionPane.showConfirmDialog(UITools.getFrame(), dialog);
+		int option = JOptionPane.showConfirmDialog(UITools.getFrame(), dialog, TextUtils.getText("docear.pdf_reader_definition.headline"), JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
 			String readerCommand = dialog.getReaderCommand();
 			if (readerCommand != null && readerCommand.trim().length() > 0) {
