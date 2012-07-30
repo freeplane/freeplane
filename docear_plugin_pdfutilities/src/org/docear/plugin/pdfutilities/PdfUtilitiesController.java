@@ -25,6 +25,7 @@ import java.util.Properties;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.io.FilenameUtils;
 import org.docear.plugin.core.ALanguageController;
@@ -91,7 +92,9 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
+import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
 import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 import org.freeplane.view.swing.map.NodeView;
@@ -165,7 +168,6 @@ public class PdfUtilitiesController extends ALanguageController {
 		this.registerActions();
 		this.registerListener();
 		this.addMenuEntries();
-		showViewerSelectionIfNecessary();
 	}
 
 	public static PdfUtilitiesController getController() {
@@ -671,6 +673,39 @@ public class PdfUtilitiesController extends ALanguageController {
 					MapModel map = (MapModel) event.getEventObject();
 					DocearMapModelController.getModel(map).setType(DocearMapType.literature_annotations);
 				}
+			}
+		});
+		
+		WorkspaceController.getController().addWorkspaceListener(new IWorkspaceEventListener() {
+			
+			public void workspaceReady(WorkspaceEvent event) {
+				showViewerSelectionIfNecessary();
+				
+				final IWorkspaceEventListener self = this;
+				SwingUtilities.invokeLater(new Runnable() {
+					
+					public void run() {
+						WorkspaceController.getController().removeWorkspaceListener(self);
+					}
+				});
+			}
+			
+			public void workspaceChanged(WorkspaceEvent event) {
+			}
+			
+			public void toolBarChanged(WorkspaceEvent event) {
+			}
+			
+			public void openWorkspace(WorkspaceEvent event) {
+			}
+			
+			public void configurationLoaded(WorkspaceEvent event) {
+			}
+			
+			public void configurationBeforeLoading(WorkspaceEvent event) {
+			}
+			
+			public void closeWorkspace(WorkspaceEvent event) {
 			}
 		});
 
