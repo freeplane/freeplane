@@ -35,7 +35,6 @@ public class NodeAttributeListener implements TableModelListener {
 					key = (String) table.getValue(pos);
 					
 					if (key != null) {
-						LogUtils.info("debug changed for [" + key + "]: " + attribute.getName() + " --> " + attribute.getValue());
 						updateBibtexEntry(key, attribute);
 					}
 				}

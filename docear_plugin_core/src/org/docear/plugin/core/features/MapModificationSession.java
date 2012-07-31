@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class MapModificationSession {
 	public static final String FILE_IGNORE_LIST = "file_ignore_list";
+	public static final String URL_IGNORE_LIST = "url_ignore_list";
 	
 	final private HashMap<String, Object> session = new HashMap<String, Object>();
 	

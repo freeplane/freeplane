@@ -20,7 +20,6 @@ import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.GUIGlobals;
 import net.sf.jabref.Globals;
-import net.sf.jabref.export.DocearReferenceUpdateController;
 import net.sf.jabref.gui.FileListEntry;
 import net.sf.jabref.gui.FileListTableModel;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
@@ -51,9 +50,10 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.sciplore.beans.Url;
 
 public class JabRefAttributes {
+	private static Boolean updateNodeLock = false;
+
 	private boolean nodeDirty = false;
 
 	private HashMap<String, String> valueAttributes = new HashMap<String, String>();
@@ -136,50 +136,81 @@ public class JabRefAttributes {
 
 	@SuppressWarnings("unchecked")
 	public boolean updateReferenceToNode(Reference reference, NodeModel node) throws ResolveDuplicateEntryAbortedException {
-		if (DocearReferenceUpdateController.isLocked()) {
-			return false;
+		synchronized (updateNodeLock) {
+			if (updateNodeLock) {
+				return false;
+			}
+			updateNodeLock = true;
 		}
-
-		DocearReferenceUpdateController.lock();
 		boolean changes = false;
 		try {
 			MapModificationSession session = node.getMap().getExtension(DocearMapModelExtension.class).getMapModificationSession();
-			Set<String> ignores = null;
+			Set<String> ignoresPdf = null;
 			if (session != null) {
-				ignores = (Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST);
-				if (ignores == null) {
-					ignores = new HashSet<String>();
-					session.putSessionObject(MapModificationSession.FILE_IGNORE_LIST, ignores);
+				ignoresPdf = (Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST);
+				if (ignoresPdf == null) {
+					ignoresPdf = new HashSet<String>();
+					session.putSessionObject(MapModificationSession.FILE_IGNORE_LIST, ignoresPdf);
+				}
+			}
+			Set<String> ignoresUrl = null;
+			if (session != null) {
+				ignoresUrl = (Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST);
+				if (ignoresUrl == null) {
+					ignoresUrl = new HashSet<String>();
+					session.putSessionObject(MapModificationSession.URL_IGNORE_LIST, ignoresUrl);
 				}
 			}
 			for (URI uri : reference.getUris()) {
 				File file = WorkspaceUtils.resolveURI(uri, node.getMap());
+				URL url = null;
+				if (file == null) {
+					try {
+						url = uri.toURL();
+					}
+					catch (MalformedURLException e) {
+						LogUtils.warn(e);
+					}
+				}
 				try {
-					if (ignores != null) {
+					if (ignoresPdf != null) {
 						if (file != null) {
-							if (ignores.contains(file.getName())) {
+							if (ignoresPdf.contains(file.getName())) {
 								throw new ResolveDuplicateEntryAbortedException(file);
 							}
 						}
 					}
-					resolveDuplicateLinks(WorkspaceUtils.resolveURI(uri));
+					else if (ignoresUrl != null) {
+						if (url != null) {
+							if (ignoresUrl.contains(url.toExternalForm())) {
+								throw new ResolveDuplicateEntryAbortedException(url);
+							}
+						}
+					}
+
+					if (file != null) {
+						resolveDuplicateLinks(file);
+					}
+					else {
+						resolveDuplicateLinks(url);
+					}
 					BibtexEntry entry = findBibtexEntryForPDF(uri, node.getMap());
 					if (entry == null) {
-						entry = findBibtexEntryForURL(uri);
+						entry = findBibtexEntryForURL(uri, node.getMap(), false);
 					}
-					
+
 					if (entry != null) {
 						reference = new Reference(entry);
 					}
-					
+
 				}
 				catch (NullPointerException e) {
 					LogUtils.warn("org.docear.plugin.bibtex.jabrefe.JabRefAttributes.updateReferenceToNode: " + e.getMessage());
 				}
 				catch (ResolveDuplicateEntryAbortedException ex) {
-					if (ignores != null) {
+					if (ignoresPdf != null) {
 						if (file != null) {
-							ignores.add(file.getName());
+							ignoresPdf.add(file.getName());
 						}
 					}
 					throw ex;
@@ -232,16 +263,22 @@ public class JabRefAttributes {
 					((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, reference.getUris().iterator().next());
 					changes = true;
 				}
+				else {
+					URL url = reference.getUrl();
+					if (url != null) {						
+						((MLinkController) MLinkController.getController()).setLinkTypeDependantLink(node, URI.create(url.toExternalForm()));
+
+						changes = true;
+					}
+				}
 			}
 
-			DocearReferenceUpdateController.unlock();
+			synchronized (updateNodeLock) {
+				updateNodeLock = false;
+			}
 		}
 
 		return changes;
-	}
-
-	public boolean updateReferenceToNode(BibtexEntry entry, NodeModel node) throws ResolveDuplicateEntryAbortedException {
-		return updateReferenceToNode(new Reference(entry), node);
 	}
 
 	public boolean setReferenceToNode(BibtexEntry entry, NodeModel node) throws ResolveDuplicateEntryAbortedException {
@@ -272,7 +309,7 @@ public class JabRefAttributes {
 		entry.setField(GUIGlobals.FILE_FIELD, model.getStringRepresentation());
 
 	}
-	
+
 	public void removeUrlFromBibtexEntry(URL url, BibtexEntry entry) {
 		entry.setField("url", null);
 	}
@@ -309,17 +346,19 @@ public class JabRefAttributes {
 			}
 		}
 	}
-	
-//	public void resolveDuplicateLinks(BibtexEntry entry) throws InterruptedException {
-//		for (String s : retrieveFileLinksFromEntry(entry)) {
-//			try {
-//				resolveDuplicateLinks(new File(s));
-//			}
-//			catch (Exception ex) {
-//				LogUtils.warn("org.docear.plugin.bibtex.jabref.JabRefAttributes.resolveDuplicateLinks: " + ex.getMessage());
-//			}
-//		}
-//	}
+
+	// public void resolveDuplicateLinks(BibtexEntry entry) throws
+	// InterruptedException {
+	// for (String s : retrieveFileLinksFromEntry(entry)) {
+	// try {
+	// resolveDuplicateLinks(new File(s));
+	// }
+	// catch (Exception ex) {
+	// LogUtils.warn("org.docear.plugin.bibtex.jabref.JabRefAttributes.resolveDuplicateLinks: "
+	// + ex.getMessage());
+	// }
+	// }
+	// }
 
 	public void removeLinkFromNode(NodeModel node) {
 		for (LinkModel linkModel : NodeLinks.getLinkExtension(node).getLinks()) {
@@ -329,7 +368,7 @@ public class JabRefAttributes {
 		}
 	}
 
-	public void resolveDuplicateLinks(File file) throws ResolveDuplicateEntryAbortedException {
+	public BibtexEntry resolveDuplicateLinks(File file) throws ResolveDuplicateEntryAbortedException {
 		List<BibtexEntry> entries = new ArrayList<BibtexEntry>();
 
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
@@ -345,8 +384,11 @@ public class JabRefAttributes {
 			}
 		}
 
-		if (entries.size() <= 1) {
-			return;
+		if (entries.size() == 1) {
+			return entries.get(0);
+		}
+		else if (entries.size() == 0) {
+			return null;
 		}
 		DuplicateLinkDialogPanel panel = new DuplicateLinkDialogPanel(entries, file);
 		int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("docear.reference.duplicate_file.title"),
@@ -356,13 +398,15 @@ public class JabRefAttributes {
 			throw new ResolveDuplicateEntryAbortedException(file);
 		}
 		else {
-			removeDuplicateLinks(file, panel.getSelectedEntry());
+			BibtexEntry entry = panel.getSelectedEntry();
+			removeDuplicateLinks(file, entry);
 			ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
 			setNodeDirty(true);
+			return entry;
 		}
 	}
-	
-	public void resolveDuplicateLinks(URL url) throws ResolveDuplicateEntryAbortedException {
+
+	public BibtexEntry resolveDuplicateLinks(URL url) throws ResolveDuplicateEntryAbortedException {
 		List<BibtexEntry> entries = new ArrayList<BibtexEntry>();
 
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
@@ -370,19 +414,26 @@ public class JabRefAttributes {
 		for (BibtexEntry entry : database.getEntries()) {
 			URL entryUrl = null;
 			try {
-				entryUrl = new URL(entry.getField("url"));
+				String urlString = entry.getField("url");
+				if (urlString != null) {
+					entryUrl = new URL(urlString);
+				}
 			}
 			catch (MalformedURLException e) {
-				LogUtils.warn(e);
+				LogUtils.info(urlString + ": " + e.getMessage);
 			}
 			if (url.equals(entryUrl)) {
 				entries.add(entry);
 			}
 		}
-		
-		if (entries.size() <= 1) {
-			return;
+
+		if (entries.size() == 1) {
+			return entries.get(0);
 		}
+		else if (entries.size() == 0) {
+			return null;
+		}
+
 		DuplicateLinkDialogPanel panel = new DuplicateLinkDialogPanel(entries, url);
 		int answer = JOptionPane.showConfirmDialog(UITools.getFrame(), panel, TextUtils.getText("docear.reference.duplicate_url.title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -391,44 +442,86 @@ public class JabRefAttributes {
 			throw new ResolveDuplicateEntryAbortedException(url);
 		}
 		else {
-			removeDuplicateLinks(url, panel.getSelectedEntry());
+			BibtexEntry entry = panel.getSelectedEntry();
+			removeDuplicateLinks(url, entry);
 			ReferencesController.getController().getJabrefWrapper().getBasePanel().runCommand("save");
 			setNodeDirty(true);
+			return entry;
 		}
 	}
-		
-	//FIXME: not used yet --> implement functionality into findBibtexEntryForPDF
-	public BibtexEntry findBibtexEntryForURL(URI nodeUri) {
+
+	// FIXME: not used yet --> implement functionality into
+	// findBibtexEntryForPDF
+	public BibtexEntry findBibtexEntryForURL(URI nodeUri, MapModel map, boolean ignoreDuplicates) throws ResolveDuplicateEntryAbortedException {
 		BibtexDatabase database = ReferencesController.getController().getJabrefWrapper().getDatabase();
 		if (database == null || nodeUri == null) {
 			return null;
 		}
 
-		for (BibtexEntry entry : database.getEntries()) {
-			String entryUrlField = entry.getField("url");
-			if (entryUrlField != null) {
-				URI entryUri = URI.create(entryUrlField);
-				String entryScheme = entryUri.getScheme();
-				String nodeScheme = nodeUri.getScheme();
+		MapModificationSession session = map.getExtension(DocearMapModelExtension.class).getMapModificationSession();
 
-				if (entryScheme != null && nodeScheme != null && !entryScheme.equals(nodeScheme)) {
-					continue;
-				}
+		Set<String> ignores = null;
+		if (session != null) {
+			ignores = (Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST);
+			if (ignores == null) {
+				ignores = new HashSet<String>();
+				session.putSessionObject(MapModificationSession.URL_IGNORE_LIST, ignores);
+			}
+		}
 
-				String entryUriString = entryUri.toString();
-				if (entryScheme != null) {
-					entryUriString = entryUriString.substring(entryScheme.length() + 3);
-				}
-
-				String nodeUriString = nodeUri.toString();
-				if (nodeScheme != null) {
-					nodeUriString = nodeUriString.substring(nodeScheme.length() + 3);
-				}
-
-				if (entryUriString.equals(nodeUriString)) {
-					return entry;
+		URL nodeUrl = null;
+		try {
+			nodeUrl = nodeUri.toURL();
+		}
+		catch (MalformedURLException e1) {
+			LogUtils.warn(e1);
+		}
+		try {
+			if (ignores != null) {
+				if (nodeUrl != null) {
+					if (ignores.contains(nodeUrl.toExternalForm())) {
+						throw new ResolveDuplicateEntryAbortedException(nodeUrl);
+					}
 				}
 			}
+			if (!ignoreDuplicates) {
+				resolveDuplicateLinks(nodeUrl);
+			}
+
+			for (BibtexEntry entry : database.getEntries()) {
+				String entryUrlField = entry.getField("url");
+				if (entryUrlField != null) {
+					URI entryUri = URI.create(entryUrlField);
+					String entryScheme = entryUri.getScheme();
+					String nodeScheme = nodeUri.getScheme();
+
+					if (entryScheme != null && nodeScheme != null && !entryScheme.equals(nodeScheme)) {
+						continue;
+					}
+
+					String entryUriString = entryUri.toString();
+					if (entryScheme != null) {
+						entryUriString = entryUriString.substring(entryScheme.length() + 3);
+					}
+
+					String nodeUriString = nodeUri.toString();
+					if (nodeScheme != null) {
+						nodeUriString = nodeUriString.substring(nodeScheme.length() + 3);
+					}
+
+					if (entryUriString.equals(nodeUriString)) {
+						return entry;
+					}
+				}
+			}
+		}
+		catch (ResolveDuplicateEntryAbortedException e) {
+			if (ignores != null) {
+				if (nodeUrl != null) {
+					ignores.add(nodeUrl.toExternalForm());
+				}
+			}
+			throw e;
 		}
 		return null;
 	}

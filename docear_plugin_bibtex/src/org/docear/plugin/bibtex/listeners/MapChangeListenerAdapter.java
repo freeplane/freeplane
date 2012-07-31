@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
+import net.sf.jabref.export.DocearReferenceUpdateController;
 
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
@@ -67,7 +68,7 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 				try {					
 					BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode().getMap());
 					if (entry == null) {
-						entry = jabRefAttributes.findBibtexEntryForURL(newUri);
+						entry = jabRefAttributes.findBibtexEntryForURL(newUri, event.getNode().getMap(), false);
 					}
 					if (entry != null) {					
 						jabRefAttributes.setReferenceToNode(entry, event.getNode());
@@ -76,9 +77,18 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
     						SwingUtilities.invokeLater(new Runnable() {					
     							@Override
     							public void run() {
-    								MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(true);
-    								mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
-    								mindmapUpdateController.updateCurrentMindmap(true);
+    								if (DocearReferenceUpdateController.isLocked()) {
+    									return;
+    								}
+    								DocearReferenceUpdateController.lock();
+    								try {
+    									MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(true);
+    									mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+    									mindmapUpdateController.updateCurrentMindmap(true);
+    								}
+    								finally {
+    									DocearReferenceUpdateController.unlock();
+    								}
     							}
     						});
 						}

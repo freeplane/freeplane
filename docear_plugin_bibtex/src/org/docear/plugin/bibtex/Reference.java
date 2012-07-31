@@ -1,7 +1,9 @@
 package org.docear.plugin.bibtex;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -12,6 +14,8 @@ import net.sf.jabref.GUIGlobals;
 import net.sf.jabref.gui.FileListTableModel;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class Reference {
 	public class Item {
@@ -35,6 +39,7 @@ public class Reference {
 	private final Item key;
 	private final ArrayList<Item> attributes;
 	private Set<URI> uris = new HashSet<URI>();
+	private URL url = null;
 	
 	public Reference(BibtexEntry entry) {		
 		JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();		
@@ -59,6 +64,14 @@ public class Reference {
 				uris.add(new File(model.getEntry(i).getLink()).toURI());
 			}
 		}
+		
+		try {
+			this.url = new URL(entry.getField("url"));
+		}
+		catch (MalformedURLException e) {
+			LogUtils.warn("org.docear.plugin.bibtex.Reference(): "+e.getMessage());
+			
+		}
 	}
 
 	public Item getKey() {
@@ -77,12 +90,32 @@ public class Reference {
 		this.uris.add(uri);
 	}
 	
-	public boolean containsFileName(String name) {
-		for (URI uri : getUris()) {
-			if (name.equals(new File(uri).getName())) {
-				return true;
-			}			
+	public URL getUrl() {
+		return this.url;
+	}
+	
+	public boolean containsLink(URI nodeLink) {
+		File file = WorkspaceUtils.resolveURI(nodeLink);
+		
+		if (file != null) {
+			String name = file.getName();
+    		for (URI uri : getUris()) {
+    			if (name.equals(new File(uri).getName())) {
+    				return true;
+    			}			
+    		}
 		}
+		else {		
+    		try {
+				if (this.url.toExternalForm().equals(nodeLink.toURL().toExternalForm())) {
+					return true;
+				}
+			}
+			catch (MalformedURLException e) {
+				LogUtils.info(e.getMessage());
+			}
+		}
+		
 		return false;
 	}
 

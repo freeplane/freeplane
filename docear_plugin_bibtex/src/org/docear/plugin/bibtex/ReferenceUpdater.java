@@ -13,6 +13,7 @@ import net.sf.jabref.BibtexDatabase;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.GUIGlobals;
 import net.sf.jabref.Globals;
+import net.sf.jabref.export.DocearReferenceUpdateController;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
@@ -40,27 +41,31 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		referenceNodes = new HashMap<BibtexEntry, Set<NodeModel>>();
 		pdfReferences = new HashMap<String, BibtexEntry>();
 		urlReferences = new HashMap<String, BibtexEntry>();
-
 	}
 
 	public boolean updateMindmap(MapModel map) {
-		jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
-		database = ReferencesController.getController().getJabrefWrapper().getDatabase();
-		if (database == null) {
+		if(DocearReferenceUpdateController.isLocked()) {
 			return false;
 		}
-		if (this.pdfReferences.size() == 0) {
-			try {
-				buildPdfIndex();
-			}
-			catch (ResolveDuplicateEntryAbortedException e) {
-				LogUtils.info("mindmap update aborted because of aborted pdf duplicate resolver for: " + e.getFile());
-			}
+		try {
+    		DocearReferenceUpdateController.lock();
+    		
+    		jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
+    		database = ReferencesController.getController().getJabrefWrapper().getDatabase();
+    		if (database == null) {
+    			return false;
+    		}
+    		if (this.pdfReferences.size() == 0) {
+    			buildPdfIndex();
+    		}
+    		if (this.urlReferences.size() == 0) {
+    			buildUrlIndex();
+    		}
+    		return updateMap(map);
 		}
-		if (this.urlReferences.size() == 0) {
-			buildUrlIndex();
+		finally {
+			DocearReferenceUpdateController.unlock();
 		}
-		return updateMap(map);
 	}
 
 	private boolean updateMap(MapModel map) {
@@ -70,7 +75,10 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		return updateReferenceNodes();
 	}
 
-	private void buildPdfIndex() throws ResolveDuplicateEntryAbortedException {
+	private void buildPdfIndex() {
+		if (getSessionObject(MapModificationSession.FILE_IGNORE_LIST) == null) {
+			putSessionObject(MapModificationSession.FILE_IGNORE_LIST, new HashSet<String>());
+		}
 		for (BibtexEntry entry : database.getEntries()) {
 			String paths = entry.getField(GUIGlobals.FILE_FIELD);
 			if (paths == null || paths.trim().length() == 0) {
@@ -88,13 +96,24 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					this.pdfReferences.put(name, entry);
 				}
 				else {
-					jabRefAttributes.resolveDuplicateLinks(new File(path));
+					try {
+						BibtexEntry singleEntry = jabRefAttributes.resolveDuplicateLinks(new File(path));
+						this.pdfReferences.put(name, singleEntry);
+					}
+					catch (ResolveDuplicateEntryAbortedException e) {
+						this.pdfReferences.remove(name);
+						((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
+						LogUtils.info("ignore pdf on mindmap update: " + e.getFile());
+					}
 				}
 			}
 		}
 	}
 
 	private void buildUrlIndex() {
+		if (getSessionObject(MapModificationSession.URL_IGNORE_LIST) == null) {
+			putSessionObject(MapModificationSession.URL_IGNORE_LIST, new HashSet<String>());
+		}
 		for (BibtexEntry entry : database.getEntries()) {
 			String url = entry.getField("url");
 			if (url == null || url.trim().length() == 0) {
@@ -104,58 +123,88 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			if (entry.getCiteKey() == null) {
 				LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
 			}
-			;
+
 			if (this.urlReferences.get(url) == null) {
 				this.urlReferences.put(url, entry);
 			}
 			else {
 				try {
-					jabRefAttributes.resolveDuplicateLinks(new URL(url));
+					BibtexEntry singleEntry = jabRefAttributes.resolveDuplicateLinks(new URL(url));
+					this.urlReferences.put(url, singleEntry);
 				}
 				catch (MalformedURLException e) {
 					LogUtils.warn(e);
 				}
 				catch (ResolveDuplicateEntryAbortedException e) {
-					LogUtils.info("mindmap update aborted because of aborted url duplicate resolver for: " + e.getFile());
+					this.urlReferences.remove(url);
+					((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).add(e.getUrl().toExternalForm());
+					LogUtils.info("ignore url on mindmap update: " + e.getUrl());
 				}
+
 			}
 		}
 	}
-
-	private boolean updateReferenceNodes() {
-		if (getSessionObject(MapModificationSession.FILE_IGNORE_LIST) == null) {
-			putSessionObject(MapModificationSession.FILE_IGNORE_LIST, new HashSet<String>());
+	
+	private boolean isIgnored(Reference reference, NodeModel node) {
+		if (reference.getUris().size() > 0) {
+			File file = WorkspaceUtils.resolveURI(reference.getUris().iterator().next(), node.getMap());
+			if (file != null) {
+				if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
+					return true;
+				}
+			}
 		}
+		
+		URL u = reference.getUrl();
+		if (u != null) {
+			if (((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(u.toExternalForm())) {
+				return true;
+			}
+		}
+		
+		URI uri = Tools.getAbsoluteUri(node);
+		if (uri != null) {
+    		File file = WorkspaceUtils.resolveURI(uri, node.getMap());				
+    		if (file != null) {
+    			if (!reference.containsLink(uri)) {
+    				return true;
+    			}
+    			
+    			if (file != null) {
+    				if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
+    					return true;
+    				}
+    			}
+    		}
+    		else {
+    			u = null;
+    			try {
+    				u = uri.toURL();
+    			}
+    			catch (MalformedURLException e) {
+    				LogUtils.warn(e.getMessage());
+    			}
+    			if (u != null) {
+    				if (((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(u.toExternalForm())) {
+    					return true;
+    				}
+    			}
+    		}
+		}
+		
+		return false;
+	}
 
+	private boolean updateReferenceNodes() {		
 		boolean changes = false;
 		for (Entry<BibtexEntry, Set<NodeModel>> entry : referenceNodes.entrySet()) {
 			// BibtexEntry bibtexEntry = database.getEntryByKey(entry.getKey());
 			// if (bibtexEntry != null) {
 			BibtexEntry bibtexEntry = entry.getKey();
+			Reference reference = new Reference(bibtexEntry);
 			for (NodeModel node : entry.getValue()) {
-				Reference reference = new Reference(bibtexEntry);
-				File f = WorkspaceUtils.resolveURI(Tools.getAbsoluteUri(node), node.getMap());
-				if (f != null) {
-					if (!reference.containsFileName(f.getName())) {
-						break;
-					}
-				}
-				// getNodeLink
-				// if(nodeLink isIn reference)
-
-				if (reference.getUris().size() > 0) {
-					File file = WorkspaceUtils.resolveURI(reference.getUris().iterator().next(), node.getMap());
-					if (file != null) {
-						if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
-							continue;
-						}
-					}
-					file = WorkspaceUtils.resolveURI(Tools.getAbsoluteUri(node), node.getMap());
-					if (file != null) {
-						if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
-							continue;
-						}
-					}
+				if (isIgnored(reference, node)) {
+					continue;
 				}
 
 				String key = jabRefAttributes.getBibtexKey(node);
@@ -169,11 +218,15 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					}
 				}
 				catch (ResolveDuplicateEntryAbortedException e) {
-					((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
+					if (e.getFile() != null) {
+						((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
+					}
+					else {
+						((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).add(e.getUrl().toExternalForm());
+					}
 				}
 
 			}
-			// }
 		}
 		return changes;
 	}

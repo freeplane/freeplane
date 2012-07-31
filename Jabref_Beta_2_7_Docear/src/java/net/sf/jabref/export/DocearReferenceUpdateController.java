@@ -1,17 +1,17 @@
 package net.sf.jabref.export;
 
 public class DocearReferenceUpdateController {
-	private static boolean locked = false;
+	private static Boolean locked = false;
 
-	public static boolean isLocked() {
+	public static synchronized boolean isLocked() {
 		return locked;
 	}
 
-	public static void lock() {
+	public static synchronized void lock() {
 		locked = true;
 	}
 	
-	public static void unlock() {
+	public static synchronized void unlock() {
 		locked = false;
 	}
 	

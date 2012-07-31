@@ -69,6 +69,7 @@ public class PdfReaderDefinitionDialog extends JPanel {
 		pnlDialogInfo.add(lblHeadline, "2, 2");
 		
 		JLabel lblHelp1 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help1"));
+		lblHelp1.setFont(new Font("Tahoma", Font.ITALIC, 12));
 		pnlDialogInfo.add(lblHelp1, "2, 4");
 		
 		JLabel lblHelp2 = new JLabel(TextUtils.getText("docear.pdf_reader_definition.help2"));

@@ -22,7 +22,7 @@ public class ResolveDuplicateEntryAbortedException extends Exception {
 		this.url = null;
 	}
 
-	public URL getURl() {
+	public URL getUrl() {
 		return this.url;
 	}
 

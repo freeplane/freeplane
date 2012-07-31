@@ -188,6 +188,8 @@ public class MindmapUpdateController {
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
 					int count = 0;
 					fireProgressUpdate(100 * count / totalCount);
+					
+					
 
 					for (AMindmapUpdater updater : getMindmapUpdaters()) {
 						count++;

@@ -30,10 +30,6 @@ public class InstalledPdfReadersDialog extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JComboBox readerChoice;
 	private final PDFReaderHandle[] readerHandles;
-	
-//	public InstalledPdfReadersDialog(PDFReaderHandle[] handles) {
-//		this(handles, null);
-//	}
 
 	public InstalledPdfReadersDialog(PDFReaderHandle[] handles, Boolean newReader) {
 		readerHandles = handles;
