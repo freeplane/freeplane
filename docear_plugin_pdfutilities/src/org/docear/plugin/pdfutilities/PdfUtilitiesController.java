@@ -8,6 +8,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -153,7 +154,15 @@ public class PdfUtilitiesController extends ALanguageController {
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
 	private MonitoringFlattenSubfoldersAction monitoringFlattenSubfoldersAction;
 	private PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
-
+	private FileFilter appFilter = new FileFilter() {
+		public boolean accept(File file) {
+			if(file.getName().endsWith(".app")) {
+				return true;
+			}
+			return false;
+		}
+	};
+	
 	private static PdfUtilitiesController controller;
 
 	public PdfUtilitiesController(ModeController modeController) {
@@ -263,20 +272,25 @@ public class PdfUtilitiesController extends ALanguageController {
 		// Map<Name, List<String>{Version, InstallDir>
 		Map<String, PDFReaderHandle> viewers = new HashMap<String, PDFReaderHandle>();		
 
-		File winFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_uninstall.reg");
-		try {
-			exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winFile);
-			parseExportedRegistryFile(viewers, winFile, RegistryBranch.DEFAULT);
+		if(Compat.isMacOsX()) {
+			lookForReadersMacOs(viewers);
 		}
-		catch (IOException e1) {
-		}
-
-		File winWOW6432NODEFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_wow64_uninstall.reg");
-		try {
-			exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winWOW6432NODEFile);
-			parseExportedRegistryFile(viewers, winWOW6432NODEFile, RegistryBranch.WOW6432NODE);
-		}
-		catch (IOException e1) {
+		else {
+			File winFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_uninstall.reg");
+			try {
+				exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winFile);
+				parseExportedRegistryFile(viewers, winFile, RegistryBranch.DEFAULT);
+			}
+			catch (IOException e1) {
+			}
+	
+			File winWOW6432NODEFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_wow64_uninstall.reg");
+			try {
+				exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winWOW6432NODEFile);
+				parseExportedRegistryFile(viewers, winWOW6432NODEFile, RegistryBranch.WOW6432NODE);
+			}
+			catch (IOException e1) {
+			}
 		}
 		PDFReaderHandle handle;
 		if ((handle = viewers.get("PDF-Viewer")) != null) {
@@ -299,8 +313,32 @@ public class PdfUtilitiesController extends ALanguageController {
 			handle.setExecFile(convertPath(handle.getExecFile() + "Acrobat\\Acrobat.exe"));
 			handles.add(handle);
 		}
+		if ((handle = viewers.get("Adobe Reader.app")) != null) {
+			handles.add(handle);
+		}
+		if ((handle = viewers.get("Skim.app")) != null) {
+			handles.add(handle);
+		}
+		if ((handle = viewers.get("Preview.app")) != null) {
+			handles.add(handle);
+		}
 
 		return handles;
+	}
+
+	private void lookForReadersMacOs(Map<String, PDFReaderHandle> viewers) {
+		File appDirectory = new File("/Applications");
+		for (File app : appDirectory.listFiles(appFilter)) {
+			if(app.getName().startsWith("Adobe Reader")) {
+				viewers.put("Adobe Reader.app", new PDFReaderHandle("Adobe Reader", app.getAbsolutePath(), null));
+			}
+			else if(app.getName().startsWith("Skim")) {
+				viewers.put("Skim.app", new PDFReaderHandle("Skim", app.getAbsolutePath(), null));
+			}
+			else if(app.getName().startsWith("Preview")) {
+				viewers.put("Preview.app", new PDFReaderHandle("Preview", app.getAbsolutePath(), null));
+			}
+		}
 	}
 
 	private Boolean showReaderDialogNewPdfReader(List<PDFReaderHandle> readers) {
@@ -735,7 +773,10 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 		
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
-		if (readerFilter.isPdfXChange(reader)) {
+		if(Compat.isMacOsX()) {
+			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor+"*$PAGE";
+		}
+		else if (readerFilter.isPdfXChange(reader)) {
 			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE&nameddest=$TITLE*"+fileFunctor; 
 		}
 		else if (readerFilter.isFoxit(reader)) {
