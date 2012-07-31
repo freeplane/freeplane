@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
@@ -76,7 +75,6 @@ import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.resources.components.RadioButtonProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
@@ -623,21 +621,26 @@ public class PdfUtilitiesController extends ALanguageController {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(true);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);						
-						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+						opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 					}
 					if (radioButton.getName().equals(OPEN_INTERNAL_PDF_VIEWER_KEY)) {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(true);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);						
-						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+						opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 					}
 					if (radioButton.getName().equals(OPEN_PDF_VIEWER_ON_PAGE_KEY)) {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
-						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);						
-						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(true);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);
+						if(Compat.isMacOsX()) {
+							opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
+						}
+						else {
+							opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(true);
+						}
 						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(true);
 					}
 				}
@@ -646,11 +649,14 @@ public class PdfUtilitiesController extends ALanguageController {
 
 		opc.addPropertyLoadListener(new PropertyLoadListener() {
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
+				if(Compat.isMacOsX()) {
+					opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
+				}
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
 								if (evt.getNewValue().equals("true")) { //$NON-NLS-1$
-									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+									opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 								}
 							}
@@ -659,8 +665,8 @@ public class PdfUtilitiesController extends ALanguageController {
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
-								if (evt.getNewValue().equals(true)) {									
-									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+								if (evt.getNewValue().equals("true")) {									
+									opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 								}
 							}
@@ -669,8 +675,14 @@ public class PdfUtilitiesController extends ALanguageController {
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
-								if (evt.getNewValue().equals(true)) {
-									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(true);
+								if (evt.getNewValue().equals("true")) {
+									if(Compat.isMacOsX()) {
+										opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
+									}
+									else {
+										opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(true);
+									}
+									
 									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(true);
 								}
 							}
