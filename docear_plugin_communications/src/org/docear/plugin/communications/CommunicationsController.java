@@ -14,21 +14,24 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar;
 import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar.CONNECTION_STATE;
 import org.docear.plugin.communications.components.dialog.ConnectionWaitDialog;
+import org.docear.plugin.communications.components.dialog.ProxyAuthenticationDialog;
 import org.docear.plugin.communications.features.AccountRegisterer;
 import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.communications.features.DocearServiceResponse;
-import org.docear.plugin.core.ALanguageController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
@@ -46,23 +49,38 @@ import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.jdesktop.swingworker.SwingWorker;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.client.apache.ApacheHttpClient;
+import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
+import com.sun.jersey.multipart.impl.MultiPartWriter;
 
-public class CommunicationsController extends ALanguageController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
+
+public class CommunicationsController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
 	private static CommunicationsController communicationsController;
+	private static Boolean PROXY_CREDENTIALS_CANCELED = false;
+	
+	public static final String DOCEAR_PROXY_PORT = "docear.proxy_port";
+	public static final String DOCEAR_PROXY_HOST = "docear.proxy_host";
+	public static final String DOCEAR_USE_PROXY = "docear.use_proxy";
+	public static final String DOCEAR_PROXY_USERNAME = "docear.proxy_username";
+	
+	private static char[] password = null;
+	
+	
+	private boolean proxyDialogOkSelected = false;	
+	private ReentrantLock webResourceLock = new ReentrantLock();
 
-	private static final Client client;
+	private static ApacheHttpClient client;
+
+	
 	static {
-		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(CommunicationsController.class.getClassLoader());
-		client = Client.create();
-		Thread.currentThread().setContextClassLoader(contextClassLoader);
+		createClient();
 	}
 
 	private final WorkspaceDocearServiceConnectionBar connectionBar = new WorkspaceDocearServiceConnectionBar();
@@ -72,6 +90,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY = "docear.service.connect.anonyous.username";
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY = "docear.service.connect.anonymous.token";
 	public static final String CONNECTION_BAR_CLICKED = "CONNECTION_BAR_CLICKED";
+
 
 	private boolean allowTransmission = true;
 
@@ -103,6 +122,181 @@ public class CommunicationsController extends ALanguageController implements Pro
 		return communicationsController;
 	}
 	
+	public static void createClient(){		
+		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(CommunicationsController.class.getClassLoader());
+
+		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();   
+		if(ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
+			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
+			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");			
+			cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI,"http://"+host+":"+port+"/");			
+		}
+		cc.getClasses().add(MultiPartWriter.class);
+		
+		client = ApacheHttpClient.create(cc);		
+		
+		Thread.currentThread().setContextClassLoader(contextClassLoader);
+	}
+	
+	public static void setProxyCredentials(){
+		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();   
+		if(ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
+			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
+			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
+			String username = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_USERNAME, "");
+			
+			cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI,"http://"+host+":"+port+"/");	
+			
+			if(username != null && username.length() > 0 && password != null){
+				try{
+					cc.getState().setProxyCredentials(AuthScope.ANY_REALM, host, Integer.parseInt(port), username, new String(password));
+				}catch(NumberFormatException e){
+					LogUtils.severe(e);
+					//UITools.showMessage(TextUtils.getText("docear.proxy.connect.portNumberFormatError.msg"), JOptionPane.ERROR_MESSAGE);
+				}
+				if(client != null){
+					client.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_HTTP_STATE, cc.getState());					
+				}
+			}
+		}
+	}
+	
+	public ClientResponse get(Builder builder) throws Exception{
+		if(SwingUtilities.isEventDispatchThread()){
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		try{
+			webResourceLock.lock();
+			return builder.get(ClientResponse.class);
+		}catch(Exception e){
+			LogUtils.info(e.getCause().toString());
+			if(raiseProxyCredentialsDialog(e)){				
+				if(proxyDialogOkSelected){			
+					return get(builder);
+				}
+				else{
+					throw(e);
+				}
+			}
+			else{
+				throw(e);
+			}
+		}
+		finally{
+			webResourceLock.unlock();
+		}
+	}
+	
+	public ClientResponse get(WebResource webResource) throws Exception{
+		if(SwingUtilities.isEventDispatchThread()){
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		try{
+			webResourceLock.lock();
+			return webResource.get(ClientResponse.class);
+		}catch(Exception e){
+			LogUtils.info(e.getCause().toString());
+			if(raiseProxyCredentialsDialog(e)){				
+				if(proxyDialogOkSelected){
+					return get(webResource);
+				}
+				else{
+					throw(e);
+				}
+			}
+			else{
+				throw(e);
+			}
+		}
+		finally{
+			webResourceLock.unlock();
+		}
+	}
+	
+	public ClientResponse post(WebResource webResource, Object requestEntity) throws Exception{
+		if(SwingUtilities.isEventDispatchThread()){
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		try{
+			webResourceLock.lock();
+			return webResource.post(ClientResponse.class, requestEntity);			
+		}catch(Exception e){
+			LogUtils.info(e.getCause().toString());
+			if(raiseProxyCredentialsDialog(e)){				
+				if(proxyDialogOkSelected){
+					return post(webResource, requestEntity);
+				}
+				else{
+					throw(e);
+				}
+			}
+			else{
+				throw(e);
+			}
+		}
+		finally{
+			webResourceLock.unlock();
+		}
+	}
+	
+	public ClientResponse post(Builder builder, Object requestEntity) throws Exception{	
+		if(SwingUtilities.isEventDispatchThread()){
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		try{		
+			webResourceLock.lock();
+			return builder.post(ClientResponse.class, requestEntity);			
+		}catch(Exception e){
+			LogUtils.info(e.getMessage());
+			if(raiseProxyCredentialsDialog(e)){				
+				if(proxyDialogOkSelected){
+					return post(builder, requestEntity);
+				}
+				else{
+					throw(e);
+				}
+			}
+			else{
+				throw(e);
+			}
+		}
+		finally{
+			webResourceLock.unlock();
+		}
+	}
+	
+	public WebResource getWebResource(URI uri){
+		return client.resource(uri);
+		
+	}
+	
+	
+
+	private boolean raiseProxyCredentialsDialog(Exception e) {		
+		if(e instanceof ClientHandlerException && e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof IOException && ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
+			proxyDialogOkSelected = false;
+			try {
+				final ProxyAuthenticationDialog dialog =  new ProxyAuthenticationDialog();
+				DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.SHOW_DIALOG, dialog));
+				SwingUtilities.invokeAndWait(new Runnable() {					
+					public void run() {
+						dialog.showDialog();
+						proxyDialogOkSelected = dialog.isOKselected();
+						DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.CLOSE_DIALOG, dialog));
+					}
+				});
+			}
+			catch (InterruptedException e1) {
+				LogUtils.warn(e1);
+			}
+			catch (InvocationTargetException e1) {
+				LogUtils.warn(e1);
+			}			
+			return true;
+		}
+		return false;
+	}
 
 	public ConnectionWaitDialog getWaitDialog() {
 		if(waitDialog == null) {
@@ -127,7 +321,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 					try {
 						WebResource webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
 				
-						ClientResponse response = webRes.post(ClientResponse.class, formParams);
+						ClientResponse response = post(webRes, formParams);
 						status = response.getClientResponseStatus();
 						boolean connectedSuccessfully = processResponse(username, registeredUser, silent, response, status);
 						stopWaitDialog(silent);
@@ -142,6 +336,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 						} catch(Exception e1){
 							LogUtils.warn(e1);
 						};
+						LogUtils.warn(e);
 						throw(e);									
 					}
 				}
@@ -176,7 +371,7 @@ public class CommunicationsController extends ALanguageController implements Pro
 			return null;
 		}
 		
-		ClientResponse response = client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus).get(ClientResponse.class);
+		ClientResponse response = get(client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus));
 		return response.getEntity(String.class);
 	}
 
@@ -238,12 +433,12 @@ public class CommunicationsController extends ALanguageController implements Pro
 		try {
 			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 			formParams.add("password", "");
-			ClientResponse response = client.resource(getServiceUri()).path("/authenticate/anonymous").post(ClientResponse.class, formParams);
+			ClientResponse response = post(client.resource(getServiceUri()).path("/authenticate/anonymous"), formParams);
 			Status status = response.getClientResponseStatus();
 			if (status != null) {
 				return true;
 			}
-		} catch (Exception e) {
+		} catch (Exception e) {			
 			if ((e.getCause() instanceof SocketTimeoutException)	// no connection to server
 				|| (e.getCause() instanceof ConnectException) // connection refused (no server running
 				|| (e.getCause() instanceof UnknownHostException)) // maybe no connection 
@@ -259,19 +454,21 @@ public class CommunicationsController extends ALanguageController implements Pro
 	
 	public WebResource getServiceResource() {
 		return client.resource(getServiceUri());		
-	}
-	
+	}	
+
 	public DocearServiceResponse get(String path) {
 		return get(path, null);
 	}
 	
 	public DocearServiceResponse get(String path, MultivaluedMap<String, String> params) {
+
 		try {
 			if(params == null) {
 				params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
 			}
 			String accessToken = CommunicationsController.getController().getAccessToken();
-			ClientResponse response = client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken).get(ClientResponse.class);
+
+			ClientResponse response = get(client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken));
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
@@ -490,11 +687,11 @@ public class CommunicationsController extends ALanguageController implements Pro
 
 	public void workspaceChanged(WorkspaceEvent event) {
 		WorkspaceController.getController().addToolBar(connectionBar);
-		SwingUtilities.invokeLater(new Runnable() {			
+		new Thread() {		
 			public void run() {
 				checkConnection();
 			}
-		});
+		}.start();
 	}
 
 	public void openWorkspace(WorkspaceEvent event) {
@@ -513,6 +710,22 @@ public class CommunicationsController extends ALanguageController implements Pro
 	}
 
 	public void configurationBeforeLoading(WorkspaceEvent event) {
+	}	
+
+	public static void setPassword(char[] password) {
+		CommunicationsController.password = password;
+	}
+
+	public static void setProxyCanceled(boolean b) {
+		synchronized (PROXY_CREDENTIALS_CANCELED) {
+			PROXY_CREDENTIALS_CANCELED = b;	
+		}		
+	}
+	
+	public static boolean isProxyCanceled() {
+		synchronized (PROXY_CREDENTIALS_CANCELED) {
+			return PROXY_CREDENTIALS_CANCELED;	
+		}
 	}
 
 	

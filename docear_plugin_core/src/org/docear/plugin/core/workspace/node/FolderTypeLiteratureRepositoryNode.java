@@ -156,7 +156,6 @@ public class FolderTypeLiteratureRepositoryNode extends FolderLinkNode implement
 			this.setPath(uri);
 			SwingUtilities.invokeLater(new Runnable() {
 				
-				@Override
 				public void run() {
 					refresh();					
 				}

@@ -15,7 +15,8 @@ import org.jdesktop.swingworker.SwingWorker;
 public class ConnectionWaitDialog {
 	private final DocearServiceConnectionWaitPanel waitPanel = new DocearServiceConnectionWaitPanel();
 	private final JButton[] dialogButtons;
-	private SwingWorker< ?, ?> worker;	
+	private SwingWorker< ?, ?> worker;
+	private Boolean started = false;	
 	
 	public ConnectionWaitDialog() {		
 		dialogButtons = new JButton[] { new JButton(TextUtils.getOptionalText("docear.service.connect.dialog.button.cancel")) };
@@ -30,13 +31,25 @@ public class ConnectionWaitDialog {
 			}
 		});
 	}
-	public void start() {		
-		JOptionPane.showOptionDialog(UITools.getFrame(), waitPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, dialogButtons[0]);		
+	
+	public void start() {
+		synchronized (started ) {
+			if(!started) {
+				started = true;
+				JOptionPane.showOptionDialog(UITools.getFrame(), waitPanel, TextUtils.getOptionalText("docear.service.connect.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, dialogButtons, dialogButtons[0]);
+			}
+		}
+		
 	}
 	
-	public void stop() {		
-		Container cont = waitPanel.getParent();
-		closeDialogManually(cont);
+	public void stop() {
+		synchronized (started) {
+			if(started) {
+				Container cont = waitPanel.getParent();
+				closeDialogManually(cont);
+				started = false;
+			}
+		}
 	}
 	
 	public void setWorker(SwingWorker<?, ?> worker) {

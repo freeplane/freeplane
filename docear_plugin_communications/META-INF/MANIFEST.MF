@@ -9,13 +9,17 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
  org.docear.plugin.core;bundle-version="1.0.0",
  org.freeplane.plugin.workspace;bundle-version="1.0.0"
-Bundle-ClassPath: lib/jsr311-api-1.1.1.jar,
- lib/jersey-core-1.1.5.1.jar,
- lib/jersey-multipart-1.1.5.1.jar,
- lib/mimepull-1.3.jar,
- lib/jersey-client-1.1.5.1.jar,
+Bundle-ClassPath: lib/mimepull-1.3.jar,
+ lib/jersey-client-1.12.jar,
+ lib/jersey-core-1.12.jar,
+ lib/commons-httpclient-3.1.jar,
+ lib/jersey-apache-client-1.12.jar,
+ lib/commons-logging-1.1.1.jar,
+ lib/commons-codec-1.6.jar,
+ lib/jersey-multipart-1.12.jar,
  lib/plugin.jar
-Export-Package: com.sun.jersey.core.util,
+Export-Package: com.sun.jersey.api.client,
+ com.sun.jersey.core.util,
  javax.ws.rs.core,
  org.docear.plugin.communications;uses:="org.freeplane.plugin.accountmanager,org.osgi.framework",
  org.docear.plugin.communications.features
