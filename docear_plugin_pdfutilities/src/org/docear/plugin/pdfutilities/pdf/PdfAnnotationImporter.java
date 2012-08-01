@@ -197,7 +197,7 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 		
 		if(!this.importAll && !ResourceController.getResourceController().getBooleanProperty(PdfUtilitiesController.IMPORT_BOOKMARKS_KEY)){
 			return annotations;
-		}
+		}	
 		if(parent == null) return annotations;
 		@SuppressWarnings("unchecked")
 		List<PDOutlineItem> children = parent.getChildren();
@@ -244,9 +244,17 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 	}
 
 	private AnnotationType getAnnotationType(PDOutlineItem bookmark) {
-//		if(bookmark != null && (bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){
-//			return AnnotationType.BOOKMARK_WITHOUT_DESTINATION;
-//		}
+		if(bookmark != null && (bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){			
+			Integer page = null;
+			try {
+				 page = getAnnotationDestinationPage(bookmark);
+			}
+			catch (Exception e) {				
+			}
+			if (page == null) {			
+				return AnnotationType.BOOKMARK_WITHOUT_DESTINATION;
+			}			
+		}
 		if(bookmark != null && !(bookmark.cosGetField(PDOutlineItem.DK_A) instanceof COSNull)){			
 			COSDictionary cosDictionary = (COSDictionary)bookmark.cosGetField(PDOutlineItem.DK_A);
 			if(!(cosDictionary.get(COSName.create("URI")) instanceof COSNull)){ //$NON-NLS-1$

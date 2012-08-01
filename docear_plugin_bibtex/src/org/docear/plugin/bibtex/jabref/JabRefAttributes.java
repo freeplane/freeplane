@@ -413,14 +413,14 @@ public class JabRefAttributes {
 
 		for (BibtexEntry entry : database.getEntries()) {
 			URL entryUrl = null;
+			String urlString = entry.getField("url");
 			try {
-				String urlString = entry.getField("url");
 				if (urlString != null) {
 					entryUrl = new URL(urlString);
 				}
 			}
 			catch (MalformedURLException e) {
-				LogUtils.info(urlString + ": " + e.getMessage);
+				LogUtils.info(urlString + ": " + e.getMessage());
 			}
 			if (url.equals(entryUrl)) {
 				entries.add(entry);
