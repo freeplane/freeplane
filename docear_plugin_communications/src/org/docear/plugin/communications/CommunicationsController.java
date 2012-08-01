@@ -135,7 +135,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		cc.getClasses().add(MultiPartWriter.class);
 		
 		client = ApacheHttpClient.create(cc);		
-		
+		client.setConnectTimeout(3000);
+		client.setReadTimeout(3000);
 		Thread.currentThread().setContextClassLoader(contextClassLoader);
 	}
 	
@@ -162,18 +163,18 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		}
 	}
 	
-	public ClientResponse get(Builder builder) throws Exception{
+	public <T> T get(Builder builder, Class<T> c) throws Exception{
 		if(SwingUtilities.isEventDispatchThread()){
 			throw new Exception("Never call the webservice from the event dispatch thread.");
 		}
 		try{
 			webResourceLock.lock();
-			return builder.get(ClientResponse.class);
+			return builder.get(c);
 		}catch(Exception e){
 			LogUtils.info(e.getCause().toString());
 			if(raiseProxyCredentialsDialog(e)){				
 				if(proxyDialogOkSelected){			
-					return get(builder);
+					return get(builder, c);
 				}
 				else{
 					throw(e);
@@ -188,18 +189,18 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		}
 	}
 	
-	public ClientResponse get(WebResource webResource) throws Exception{
+	public <T> T get(WebResource webResource, Class<T> c) throws Exception{
 		if(SwingUtilities.isEventDispatchThread()){
 			throw new Exception("Never call the webservice from the event dispatch thread.");
 		}
 		try{
 			webResourceLock.lock();
-			return webResource.get(ClientResponse.class);
+			return webResource.get(c);
 		}catch(Exception e){
 			LogUtils.info(e.getCause().toString());
 			if(raiseProxyCredentialsDialog(e)){				
 				if(proxyDialogOkSelected){
-					return get(webResource);
+					return get(webResource, c);
 				}
 				else{
 					throw(e);
@@ -371,7 +372,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			return null;
 		}
 		
-		ClientResponse response = get(client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus));
+		ClientResponse response = get(client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus), ClientResponse.class);		
 		return response.getEntity(String.class);
 	}
 
@@ -428,8 +429,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	public boolean checkConnection() {
-		client.setConnectTimeout(1000);
-		client.setReadTimeout(1000);
+		//client.setConnectTimeout(1000);
+		//client.setReadTimeout(1000);
 		try {
 			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 			formParams.add("password", "");
@@ -446,8 +447,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
 			}
 		} finally {
-			client.setConnectTimeout(5000);
-			client.setReadTimeout(10000);
+			//client.setConnectTimeout(5000);
+			//client.setReadTimeout(10000);
 		}
 		return false;
 	}
@@ -468,7 +469,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			}
 			String accessToken = CommunicationsController.getController().getAccessToken();
 
-			ClientResponse response = get(client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken));
+			ClientResponse response = get(client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken), ClientResponse.class);
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
