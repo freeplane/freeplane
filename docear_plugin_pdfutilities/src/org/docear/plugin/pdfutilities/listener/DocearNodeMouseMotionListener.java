@@ -107,8 +107,30 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
     		builder.append("set pdfReaderPath to null\n\n");
     	}
     	
-    	URL url = PdfUtilitiesController.class.getResource("OpenOnPageScript.txt");
-    	if (url != null) {    		
+    	URL url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageHead.appleScript");
+    	appendResourceContent(builder, url);
+    	if(readerPath.endsWith("Skim.app")) {
+    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageSkim.appleScript");
+        	appendResourceContent(builder, url);
+    	}
+    	else {
+    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageDefault.appleScript");
+        	appendResourceContent(builder, url);
+    	}
+    	
+    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(null);
+       
+        ScriptEngineManager mgr = new ScriptEngineManager();
+    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
+    	
+        Thread.currentThread().setContextClassLoader(contextClassLoader);    	
+		engine.eval(builder.toString());		
+		LogUtils.info("Successfully ran apple script");
+	}
+
+	private void appendResourceContent(StringBuilder builder, URL url) throws IOException {
+		if (url != null) {    		
             InputStream input = url.openStream();
     		try{	    		
 	            BufferedReader inStream = new BufferedReader(new InputStreamReader(input));
@@ -125,15 +147,6 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
     	else{
     		throw new IOException("Could not read applescript file.");
     	}
-    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(null);
-       
-        ScriptEngineManager mgr = new ScriptEngineManager();
-    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
-    	
-        Thread.currentThread().setContextClassLoader(contextClassLoader);    	
-		engine.eval(builder.toString());		
-		LogUtils.info("Successfully ran apple script");
 	}
 
 	public void mouseClicked(MouseEvent e) {		
