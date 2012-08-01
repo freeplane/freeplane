@@ -25,5 +25,6 @@ public enum DocearEventType {
 	, FINISH_THREADS
 	, SHOW_LICENSES
 	, IMPORT_TO_LIBRARY
+	, UPDATE_MAP
 
 }

@@ -50,6 +50,7 @@ public class DocearController implements IDocearEventListener {
 	private int applicationBuildNumber;
 	private String applicationBuildDate;
 	
+	private final SemaphoreController semaphoreController = new SemaphoreController();
 	
 	private final DocearEventLogger docearEventLogger = new DocearEventLogger();
 	
@@ -361,6 +362,9 @@ public class DocearController implements IDocearEventListener {
 			LogUtils.info("DOCEAR: new DocearLibrary set");
 		} 
 			
+	}
+	public SemaphoreController getSemaphoreController() {
+		return semaphoreController;
 	}
 	
 	

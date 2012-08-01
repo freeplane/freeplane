@@ -18,6 +18,7 @@ import net.sf.jabref.labelPattern.LabelPatternUtil;
 
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.core.util.Tools;
@@ -44,6 +45,9 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	public boolean updateMindmap(MapModel map) {
+		if (DocearController.getController().getSemaphoreController().isLocked("MindmapUpdate")) {
+			return false;
+		}
 		if(DocearReferenceUpdateController.isLocked()) {
 			return false;
 		}

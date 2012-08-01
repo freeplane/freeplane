@@ -12,6 +12,7 @@ import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.AnnotationID;
 import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
@@ -48,6 +49,9 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 	}
 
 	public void nodeChanged(NodeChangeEvent event) {
+		if (DocearController.getController().getSemaphoreController().isLocked("MindmapUpdate")) {
+			return;
+		}
 		if (event.getProperty().equals(NodeModel.HYPERLINK_CHANGED)) {
 			URI newUri = (URI) event.getNewValue();
 			if (newUri != null) {

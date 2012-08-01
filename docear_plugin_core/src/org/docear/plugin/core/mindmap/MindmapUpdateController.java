@@ -14,6 +14,8 @@ import javax.swing.SwingUtilities;
 
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.MapItem;
+import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
@@ -272,7 +274,7 @@ public class MindmapUpdateController {
 						nodeView.updateAll();*/
 					}
 				}
-
+				
 				if (this.isCancelled() || Thread.currentThread().isInterrupted()) {
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("update_canceled"));
 				}

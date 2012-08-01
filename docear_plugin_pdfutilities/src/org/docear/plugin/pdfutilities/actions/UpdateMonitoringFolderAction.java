@@ -9,8 +9,8 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-@EnabledAction( checkOnPopup = true )
-public class UpdateMonitoringFolderAction extends AbstractMonitoringAction{
+@EnabledAction(checkOnPopup = true)
+public class UpdateMonitoringFolderAction extends AbstractMonitoringAction {
 
 	/**
 	 * 
@@ -18,28 +18,28 @@ public class UpdateMonitoringFolderAction extends AbstractMonitoringAction{
 	private static final long serialVersionUID = 1L;
 
 	public UpdateMonitoringFolderAction(String key) {
-		super(key);		
+		super(key);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-	    for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {	    
-		List<NodeModel> list = new ArrayList<NodeModel>();
-		list.add(node);
-		UpdateMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
-	    }
+		for (NodeModel node : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+			List<NodeModel> list = new ArrayList<NodeModel>();
+			list.add(node);
+			UpdateMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
+		}
 	}
 
 	@Override
 	public void setEnabled() {
-		if(Controller.getCurrentController().getSelection() == null) {
+		if (Controller.getCurrentController().getSelection() == null) {
 			this.setEnabled(false);
 			return;
 		}
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		if(selected == null){
+		if (selected == null) {
 			this.setEnabled(false);
 		}
-		else{
+		else {
 			this.setEnabled(NodeUtils.isMonitoringNode(selected));
 		}
 	}

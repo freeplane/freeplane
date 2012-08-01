@@ -69,8 +69,7 @@ public class Reference {
 			this.url = new URL(entry.getField("url"));
 		}
 		catch (MalformedURLException e) {
-			LogUtils.warn("org.docear.plugin.bibtex.Reference(): "+e.getMessage());
-			
+			LogUtils.info("org.docear.plugin.bibtex.Reference(): "+e.getMessage());
 		}
 	}
 

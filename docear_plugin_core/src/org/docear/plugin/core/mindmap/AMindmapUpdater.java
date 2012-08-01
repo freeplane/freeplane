@@ -22,6 +22,9 @@ public abstract class AMindmapUpdater {
 	}
 	
 	protected Object getSessionObject(String key) {
+		if(session == null) {
+			session = new MapModificationSession();
+		}
 		return session.getSessionObject(key);
 	}
 	
