@@ -279,56 +279,83 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 		
 		String lastString = ""; //$NON-NLS-1$
 		
-		@SuppressWarnings("unchecked")
-		List<PDAnnotation> pdAnnotations = document.getAnnotations();
-		for(PDAnnotation annotation : pdAnnotations){
-			// Avoid empty entries			
-            if(annotation.getContents().equals("")/* && !annotation.isMarkupAnnotation()*/) continue; //$NON-NLS-1$
-            // Avoid double entries (Foxit Reader)
-            if(annotation.getContents().equals(lastString)/* && !annotation.isMarkupAnnotation()*/) continue;
-            lastString = annotation.getContents();
-            // Sometimes page = NULL though this is a proper annotation
-            if(annotation.getPage() != null)
-            {
-                // Avoid entries outside the page
-                if(annotation.getPage().getMediaBox() == null || annotation.getRectangle() == null) continue;
-                CDSRectangle page_rec = annotation.getPage().getMediaBox();
-                CDSRectangle anno_rec = annotation.getRectangle();
-                if(anno_rec.getLowerLeftX() > page_rec.getUpperRightX() ||
-                   anno_rec.getLowerLeftY() > page_rec.getUpperRightY() ||
-                   anno_rec.getUpperRightX() < page_rec.getLowerLeftX() ||
-                   anno_rec.getUpperRightY() < page_rec.getLowerLeftY())  continue;
-            }
-            if((annotation.getClass() == PDAnyAnnotation.class || annotation.getClass() == PDTextAnnotation.class) && importComments){
-            	Integer objectNumber = annotation.cosGetObject().getIndirectObject().getObjectNumber();
-    			AnnotationModel pdfAnnotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));            	
-            	pdfAnnotation.setTitle(annotation.getContents()); 
-            	if(this.setPDObject()){
-            		pdfAnnotation.setAnnotationObject(annotation);
-            	}
-            	pdfAnnotation.setAnnotationType(AnnotationType.COMMENT);            	
-            	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
-            	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
-    			annotations.add(pdfAnnotation);
-            }
-            if((annotation.getClass() == PDTextMarkupAnnotation.class || annotation.getClass() == PDHighlightAnnotation.class) && importHighlightedTexts){
-            	Integer objectNumber = annotation.cosGetObject().getIndirectObject().getObjectNumber();
-    			AnnotationModel pdfAnnotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));           	
-            	if(annotation.getContents() != null && annotation.getContents().length() > 0){
-            		pdfAnnotation.setTitle(annotation.getContents()); 
-            	}
-            	/*else{
-            		String test = ((PDMarkupAnnotation)annotation).getRichContent();
-            		System.out.println(test);
-            	}  */ 
-            	if(this.setPDObject()){
-            		pdfAnnotation.setAnnotationObject(annotation);
-            	}
-            	pdfAnnotation.setAnnotationType(AnnotationType.HIGHLIGHTED_TEXT);             	
-            	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
-            	pdfAnnotation.setPage(this.getAnnotationDestination(annotation));
-    			annotations.add(pdfAnnotation);
-            }
+		// Process page at a time pages always have a page number annotations dont have to record the page
+		for (PDPage pdPage = document.getPageTree().getFirstPage(); pdPage != null; pdPage = pdPage.getNextPage() )
+		{
+			//@SuppressWarnings("unchecked")
+			List<PDAnnotation> pdAnnotations = pdPage.getAnnotations();
+			// if there are annotation on this page
+			if (pdAnnotations != null) {
+				for(PDAnnotation annotation : pdAnnotations){
+					// Avoid empty entries
+					// support repligo highlights
+					if (annotation.getClass() == PDHighlightAnnotation.class) {
+						// ignore Highlight if Subject is "Highlight" and Contents is ""
+						if (((PDHighlightAnnotation) annotation).getSubject() != null &&
+								((PDHighlightAnnotation) annotation).getSubject().length() > 0 &&
+								((PDHighlightAnnotation) annotation).getSubject().equals("Highlight") &&
+								annotation.getContents().equals("") )
+							continue;
+					} else {
+						// ignore annotations with Contents is ""
+						if (annotation.getContents().equals("")
+						/* && !annotation.isMarkupAnnotation() */
+						)
+							continue;
+						//$NON-NLS-1$
+		
+						// Avoid double entries (Foxit Reader)
+						if (annotation.getContents().equals(lastString)/*
+																		 * &&
+																		 * !annotation.
+																		 * isMarkupAnnotation
+																		 * ()
+																		 */)
+							continue;
+						lastString = annotation.getContents();
+					}
+		            if((annotation.getClass() == PDAnyAnnotation.class ||annotation.getClass() == PDTextAnnotation.class) &&
+		            		importComments){
+		            	Integer objectNumber = annotation.cosGetObject().getIndirectObject().getObjectNumber();
+		    			AnnotationModel pdfAnnotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));            	
+		            	pdfAnnotation.setTitle(annotation.getContents()); 
+		            	if(this.setPDObject()){
+		            		pdfAnnotation.setAnnotationObject(annotation);
+		            	}
+		            	pdfAnnotation.setAnnotationType(AnnotationType.COMMENT);            	
+		            	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
+		            	pdfAnnotation.setPage(pdPage.getNodeIndex()+1);
+		    			annotations.add(pdfAnnotation);
+		            }
+		            if((annotation.getClass() == PDTextMarkupAnnotation.class || annotation.getClass() == PDHighlightAnnotation.class) && importHighlightedTexts){
+		            	Integer objectNumber = annotation.cosGetObject().getIndirectObject().getObjectNumber();
+		    			AnnotationModel pdfAnnotation = new AnnotationModel(new AnnotationID(this.currentFile, objectNumber));
+		    			// prefer Title from Contents (So updates work)
+						if (annotation.getContents() != null &&
+								annotation.getContents().length() > 0) {
+							pdfAnnotation.setTitle(annotation.getContents());
+						} else {
+			    			// support repligo highlights
+							// set Title to Subject per repligo
+							if (annotation.getClass() == PDHighlightAnnotation.class) {
+								if (((PDHighlightAnnotation) annotation).getSubject() != null &&
+										((PDHighlightAnnotation) annotation).getSubject().length() > 0) {
+									if (!((PDHighlightAnnotation) annotation).getSubject().equals("Highlight"))
+										pdfAnnotation.setTitle(((PDHighlightAnnotation) annotation).getSubject());
+								}
+							}
+						}
+						
+		            	if(this.setPDObject()){
+		            		pdfAnnotation.setAnnotationObject(annotation);
+		            	}
+		            	pdfAnnotation.setAnnotationType(AnnotationType.HIGHLIGHTED_TEXT);             	
+		            	pdfAnnotation.setGenerationNumber(annotation.cosGetObject().getIndirectObject().getGenerationNumber());
+		            	pdfAnnotation.setPage(pdPage.getNodeIndex()+1);
+		    			annotations.add(pdfAnnotation);
+		            }
+				}
+			}
 		}
 		
 		return annotations;
