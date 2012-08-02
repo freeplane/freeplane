@@ -10,6 +10,7 @@ import java.util.Collection;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearProgressObserver;
 
+
 public class ProgressInputStream extends InputStream {
 	
 	private final InputStream stream;
@@ -27,6 +28,12 @@ public class ProgressInputStream extends InputStream {
 	public ProgressInputStream(InputStream stream, URL url) throws IOException {
 		this.stream = stream;
 		this.length = stream.available();
+		this.url = url;
+	}
+
+	public ProgressInputStream(InputStream stream, URL url, int length) {
+		this.stream = stream;
+		this.length = length;
 		this.url = url;
 	}
 

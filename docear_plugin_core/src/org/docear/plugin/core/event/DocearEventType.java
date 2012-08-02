@@ -9,6 +9,8 @@ package org.docear.plugin.core.event;
  */
 public enum DocearEventType {
 	NULL
+	, SHOW_DIALOG
+	, CLOSE_DIALOG
 	, NEW_LIBRARY
 	, LIBRARY_NEW_MINDMAP_INDEXING_REQUEST
 	, LIBRARY_NEW_PROJECT_INDEXING_REQUEST

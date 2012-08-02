@@ -1,11 +1,8 @@
 package org.docear.plugin.pdfutilities;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.docear.plugin.core.DocearService;
-import org.docear.plugin.pdfutilities.actions.ShowInstalledPdfReadersDialogAction;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;

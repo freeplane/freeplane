@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.script.ScriptEngine;
@@ -20,7 +19,6 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.logger.DocearLogEvent;
-import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
@@ -56,64 +54,83 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		this.mouseListener.mouseMoved(e);
 	}
 
-	public void openPageMacOs(MouseEvent e, NodeModel node) {
-		final String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_COMMAND_KEY);
+	public void openPageMacOs(MouseEvent e, String[] command) {
+		/*final String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_COMMAND_KEY);
 		if (readerPath == null || readerPath.length() == 0) {
 			this.mouseListener.mouseClicked(e);
 			return;
-		}
-		
-		URI uri = Tools.getAbsoluteUri(node);
-		if (!CoreUtils.resolveURI(uri).getName().toLowerCase().endsWith(".pdf")) {
+		}*/
+			
+		if (!command[1].toLowerCase().endsWith(".pdf")) {
 			this.mouseListener.mouseClicked(e);
 			return;
 		}
 		
 
-		IAnnotation annotation = null;
+		//IAnnotation annotation = null;
 		try {
-			annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
+			//annotation = new PdfAnnotationImporter().searchAnnotation(uri, command);
 			//System.gc();
-			if (annotation == null || annotation.getPage() == null) {
+			//if (annotation == null || annotation.getPage() == null) {
 				//Controller.exec(getExecCommandMacOs(readerPath, uri, 1));
-				runAppleScript(readerPath, uri, 1);
-				return;
-			}
+				//runAppleScript(readerPath, uri, 1);
+				//return;
+			/*}
 			else {
 				runAppleScript(readerPath, uri, annotation.getPage());
 				//Controller.exec(getExecCommandMacOs(readerPath, uri, annotation));
 				return;
-			}
-
+			}//*/
+			runAppleScript(command[0], command[1], Integer.parseInt(command[2]));
 		}		
-		catch (COSLoadException x) {
+		/*catch (COSLoadException x) {
 			UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
 			System.err.println("Caught: " + x); //$NON-NLS-1$
-		}
+		}//*/
 		catch (Exception x) {
 			LogUtils.warn(x);
 			this.mouseListener.mouseClicked(e);
-			return;
 		}
 		
 	}
 
-	private void runAppleScript(String readerPath, URI fileUri, int page) throws ScriptException, URISyntaxException, IOException {	    	    	
-    	File reader = new File(readerPath);
+	private void runAppleScript(String readerPath, String filePath, int page) throws ScriptException, IOException {
     	StringBuilder builder = new StringBuilder();
     	builder.append("global pdfPath\n");
     	builder.append("global page\n");
-    	builder.append("set pdfPath to POSIX file \""+Tools.getFilefromUri(fileUri).getAbsolutePath()+"\"\n");
+    	builder.append("set pdfPath to POSIX file \""+filePath+"\"\n");
     	builder.append("set page to "+ page +" as text\n");
-    	if(reader.exists() && reader.getAbsolutePath().endsWith(".app")){
-    		builder.append("set pdfReaderPath to \""+reader.getAbsolutePath()+"\"\n\n");
+    	if(readerPath.endsWith(".app")) {
+    		builder.append("set pdfReaderPath to \""+readerPath+"\"\n\n");
     	}
     	else{
     		builder.append("set pdfReaderPath to null\n\n");
     	}
     	
-    	URL url = PdfUtilitiesController.class.getResource("OpenOnPageScript.txt");
-    	if (url != null) {    		
+    	URL url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageHead.appleScript");
+    	appendResourceContent(builder, url);
+    	if(readerPath.endsWith("Skim.app")) {
+    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageSkim.appleScript");
+        	appendResourceContent(builder, url);
+    	}
+    	else {
+    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageDefault.appleScript");
+        	appendResourceContent(builder, url);
+    	}
+    	
+    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(null);
+       
+        ScriptEngineManager mgr = new ScriptEngineManager();
+    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
+    	
+        Thread.currentThread().setContextClassLoader(contextClassLoader);    	
+		engine.eval(builder.toString());		
+		LogUtils.info("Successfully ran apple script");
+	}
+
+	private void appendResourceContent(StringBuilder builder, URL url) throws IOException {
+		if (url != null) {    		
             InputStream input = url.openStream();
     		try{	    		
 	            BufferedReader inStream = new BufferedReader(new InputStreamReader(input));
@@ -130,15 +147,6 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
     	else{
     		throw new IOException("Could not read applescript file.");
     	}
-    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(null);
-       
-        ScriptEngineManager mgr = new ScriptEngineManager();
-    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
-    	
-        Thread.currentThread().setContextClassLoader(contextClassLoader);    	
-		engine.eval(builder.toString());		
-		LogUtils.info("Successfully ran apple script");
 	}
 
 	public void mouseClicked(MouseEvent e) {		
@@ -172,10 +180,6 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				return;
 			}
 			
-			if (openOnPage && Compat.isMacOsX()) {
-				openPageMacOs(e, node);
-				return;
-			}
 			
 //			if (!Compat.isWindowsOS()) {
 //				this.mouseListener.mouseClicked(e);
@@ -188,7 +192,6 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 
 			IAnnotation annotation = null;
 			try {
-				if(openOnPage){
 					annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
 					//System.gc();
 					if (annotation == null) {
@@ -212,7 +215,6 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 								command = PdfUtilitiesController.getController().getPdfReaderExecCommand(uri, 1);								
 						}							
 					}					
-				}				
 			}						
 			catch (COSLoadException x) {
 				UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -233,6 +235,11 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			 */
 
 			try {
+				if (Compat.isMacOsX()) {
+					openPageMacOs(e, command);
+					return;
+				}
+				
 				Controller.exec(command);
 				//Controller.exec(command);
 				return;

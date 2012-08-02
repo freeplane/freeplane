@@ -8,6 +8,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,7 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
@@ -75,7 +75,6 @@ import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.resources.components.RadioButtonProperty;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
@@ -153,7 +152,15 @@ public class PdfUtilitiesController extends ALanguageController {
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
 	private MonitoringFlattenSubfoldersAction monitoringFlattenSubfoldersAction;
 	private PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
-
+	private FileFilter appFilter = new FileFilter() {
+		public boolean accept(File file) {
+			if(file.getName().endsWith(".app")) {
+				return true;
+			}
+			return false;
+		}
+	};
+	
 	private static PdfUtilitiesController controller;
 
 	public PdfUtilitiesController(ModeController modeController) {
@@ -263,20 +270,25 @@ public class PdfUtilitiesController extends ALanguageController {
 		// Map<Name, List<String>{Version, InstallDir>
 		Map<String, PDFReaderHandle> viewers = new HashMap<String, PDFReaderHandle>();		
 
-		File winFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_uninstall.reg");
-		try {
-			exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winFile);
-			parseExportedRegistryFile(viewers, winFile, RegistryBranch.DEFAULT);
+		if(Compat.isMacOsX()) {
+			lookForReadersMacOs(viewers);
 		}
-		catch (IOException e1) {
-		}
-
-		File winWOW6432NODEFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_wow64_uninstall.reg");
-		try {
-			exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winWOW6432NODEFile);
-			parseExportedRegistryFile(viewers, winWOW6432NODEFile, RegistryBranch.WOW6432NODE);
-		}
-		catch (IOException e1) {
+		else {
+			File winFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_uninstall.reg");
+			try {
+				exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winFile);
+				parseExportedRegistryFile(viewers, winFile, RegistryBranch.DEFAULT);
+			}
+			catch (IOException e1) {
+			}
+	
+			File winWOW6432NODEFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_wow64_uninstall.reg");
+			try {
+				exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", winWOW6432NODEFile);
+				parseExportedRegistryFile(viewers, winWOW6432NODEFile, RegistryBranch.WOW6432NODE);
+			}
+			catch (IOException e1) {
+			}
 		}
 		PDFReaderHandle handle;
 		if ((handle = viewers.get("PDF-Viewer")) != null) {
@@ -299,8 +311,32 @@ public class PdfUtilitiesController extends ALanguageController {
 			handle.setExecFile(convertPath(handle.getExecFile() + "Acrobat\\Acrobat.exe"));
 			handles.add(handle);
 		}
+		if ((handle = viewers.get("Adobe Reader.app")) != null) {
+			handles.add(handle);
+		}
+		if ((handle = viewers.get("Skim.app")) != null) {
+			handles.add(handle);
+		}
+		if ((handle = viewers.get("Preview.app")) != null) {
+			handles.add(handle);
+		}
 
 		return handles;
+	}
+
+	private void lookForReadersMacOs(Map<String, PDFReaderHandle> viewers) {
+		File appDirectory = new File("/Applications");
+		for (File app : appDirectory.listFiles(appFilter)) {
+			if(app.getName().startsWith("Adobe Reader")) {
+				viewers.put("Adobe Reader.app", new PDFReaderHandle("Adobe Reader", app.getAbsolutePath(), null));
+			}
+			else if(app.getName().startsWith("Skim")) {
+				viewers.put("Skim.app", new PDFReaderHandle("Skim", app.getAbsolutePath(), null));
+			}
+			else if(app.getName().startsWith("Preview")) {
+				viewers.put("Preview.app", new PDFReaderHandle("Preview", app.getAbsolutePath(), null));
+			}
+		}
 	}
 
 	private Boolean showReaderDialogNewPdfReader(List<PDFReaderHandle> readers) {
@@ -585,21 +621,26 @@ public class PdfUtilitiesController extends ALanguageController {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(true);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);						
-						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+						opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 					}
 					if (radioButton.getName().equals(OPEN_INTERNAL_PDF_VIEWER_KEY)) {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(true);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);						
-						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+						opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 					}
 					if (radioButton.getName().equals(OPEN_PDF_VIEWER_ON_PAGE_KEY)) {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(false);
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY)).setValue(false);
-						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);						
-						opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(true);
+						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(true);
+						if(Compat.isMacOsX()) {
+							opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
+						}
+						else {
+							opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(true);
+						}
 						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(true);
 					}
 				}
@@ -608,11 +649,14 @@ public class PdfUtilitiesController extends ALanguageController {
 
 		opc.addPropertyLoadListener(new PropertyLoadListener() {
 			public void propertiesLoaded(Collection<IPropertyControl> properties) {
+				if(Compat.isMacOsX()) {
+					opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
+				}
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_STANDARD_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
 								if (evt.getNewValue().equals("true")) { //$NON-NLS-1$
-									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+									opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 								}
 							}
@@ -621,8 +665,8 @@ public class PdfUtilitiesController extends ALanguageController {
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
-								if (evt.getNewValue().equals(true)) {									
-									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(false);
+								if (evt.getNewValue().equals("true")) {									
+									opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
 								}
 							}
@@ -631,8 +675,14 @@ public class PdfUtilitiesController extends ALanguageController {
 				((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY))
 						.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent evt) {
-								if (evt.getNewValue().equals(true)) {
-									opc.getPropertyControl("docear.show_pdf_reader_definition").setEnabled(true);
+								if (evt.getNewValue().equals("true")) {
+									if(Compat.isMacOsX()) {
+										opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
+									}
+									else {
+										opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(true);
+									}
+									
 									opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(true);
 								}
 							}
@@ -735,7 +785,10 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 		
 		PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
-		if (readerFilter.isPdfXChange(reader)) {
+		if(Compat.isMacOsX()) {
+			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor+"*$PAGE";
+		}
+		else if (readerFilter.isPdfXChange(reader)) {
 			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE&nameddest=$TITLE*"+fileFunctor; 
 		}
 		else if (readerFilter.isFoxit(reader)) {

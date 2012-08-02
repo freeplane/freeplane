@@ -6,14 +6,12 @@ import java.util.concurrent.CancellationException;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.FiletransferClient;
 import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.util.CoreUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
@@ -23,17 +21,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class AccountRegisterer {
 	private static final int USER_TYPE_REGISTERED = 2;
 	private static final int USER_TYPE_ANONYMOUS = 3;
-
-	private final static Client client;
-
-	static {
-		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(FiletransferClient.class.getClassLoader());
-		client = Client.create();
-		// this.client.setReadTimeout(CommunicationsConfiguration.READ_TIMEOUT);
-		// this.client.setConnectTimeout(CommunicationsConfiguration.CONNECTION_TIMEOUT);
-		Thread.currentThread().setContextClassLoader(contextClassLoader);
-	}
+	
 
 	public AccountRegisterer() {
 
@@ -69,8 +57,8 @@ public class AccountRegisterer {
 			queryParams.add("generalNewsLetter", newsLetter == null ? null : newsLetter.toString());
 			queryParams.add("isMale", isMale == null ? null : isMale.toString());
 	
-			WebResource res = client.resource(CommunicationsController.getController().getServiceUri()).path("/user/" + name);
-			ClientResponse response = res.post(ClientResponse.class, queryParams);
+			WebResource res = CommunicationsController.getController().getWebResource(CommunicationsController.getController().getServiceUri()).path("/user/" + name);
+			ClientResponse response = CommunicationsController.getController().post(res, queryParams);
 			
 			if (response.getClientResponseStatus() != Status.OK) {
 				throw new DocearServiceException(response.getEntity(String.class));

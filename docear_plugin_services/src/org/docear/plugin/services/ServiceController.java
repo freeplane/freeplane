@@ -40,8 +40,10 @@ import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
 public class ServiceController extends UploadController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
+
 	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
 	public static final long RECOMMENDATIONS_AUTOSHOW_INTERVAL = 1000*60*60*24*5; // every 5 days in milliseconds
+
 
 	private static ServiceController serviceController;
 
@@ -261,6 +263,7 @@ public class ServiceController extends UploadController {
 				&& !isEmpty(CommunicationsController.getController().getUserName())) {
 			LogUtils.info("automatically requesting recommendations");
 			UITools.getFrame().addWindowListener(new ServiceWindowListener());
+						
 			
 			synchronized (AUTO_RECOMMENDATIONS_LOCK) {
 				AUTO_RECOMMENDATIONS_LOCK = true;
@@ -301,7 +304,6 @@ public class ServiceController extends UploadController {
 			while(isLocked()) {
 				try {
 					Thread.sleep(100);
-					Thread.yield();
 				} catch (InterruptedException e) {
 				}
 			}		
@@ -309,6 +311,12 @@ public class ServiceController extends UploadController {
 	}
 
 	private boolean isLocked() {
+		synchronized (AUTO_RECOMMENDATIONS_LOCK ) {
+			return AUTO_RECOMMENDATIONS_LOCK;
+		}
+	}
+
+	public boolean isAutoRecommending() {
 		synchronized (AUTO_RECOMMENDATIONS_LOCK ) {
 			return AUTO_RECOMMENDATIONS_LOCK;
 		}

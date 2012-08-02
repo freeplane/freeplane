@@ -12,33 +12,25 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.freeplane.core.util.LogUtils;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
+
 public class FiletransferClient {
-	private final static Client client;
+	//private final static Client client;
 	public static final String START_UPLOAD = "docear.service.upload.start";
 	public static final String STOP_UPLOAD = "docear.service.upload.stop";
 	public static final String NO_CONNECTION = "docear.service.connection.problem";
 	
-	
-	static {
-		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(FiletransferClient.class.getClassLoader());
-		client = Client.create();
-//		this.client.setReadTimeout(CommunicationsConfiguration.READ_TIMEOUT);
-//		this.client.setConnectTimeout(CommunicationsConfiguration.CONNECTION_TIMEOUT);		
-		Thread.currentThread().setContextClassLoader(contextClassLoader); 
-	}
+		
 
 	private WebResource serviceResource;
 	
 	public FiletransferClient(String restPath) {
-		serviceResource = client.resource(CommunicationsController.getController().getServiceUri());
+		serviceResource = CommunicationsController.getController().getWebResource(CommunicationsController.getController().getServiceUri());
 		serviceResource = serviceResource.path("/user/" + CommunicationsController.getController().getUserName() + "/" + restPath);
 	}
 	

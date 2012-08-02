@@ -39,6 +39,8 @@ import org.freeplane.view.swing.map.MapView;
 
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
+
+
 public class DocearRecommendationsMapController extends MapController {
 
 	private DocearRecommendationsModeController modeController;
@@ -189,6 +191,7 @@ public class DocearRecommendationsMapController extends MapController {
 				params.add("auto", "true");
 			}
 			DocearServiceResponse response = CommunicationsController.getController().get("/user/" + name + "/recommendations/documents", params);
+
 			if (response.getStatus() == Status.OK) {
 				try {
 					DocearXmlBuilder xmlBuilder = new DocearXmlBuilder();

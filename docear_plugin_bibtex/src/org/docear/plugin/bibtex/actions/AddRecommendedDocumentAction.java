@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
@@ -28,6 +29,9 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 public class AddRecommendedDocumentAction extends AFreeplaneAction implements IDocearEventListener {
 
@@ -113,7 +117,11 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
  			
 			public void run() {
 				try {
-					FileUtils.copyInputStreamToFile(new ProgressInputStream(uri.toURL().openConnection()), partFile);
+					CommunicationsController commController =CommunicationsController.getController();
+					WebResource webResource = commController.getWebResource(uri);
+					ClientResponse response = commController.get(webResource, ClientResponse.class);
+					
+					FileUtils.copyInputStreamToFile(new ProgressInputStream(response.getEntityInputStream(), uri.toURL(), response.getLength()), partFile);
 					
 					if (destinationFile.exists()) {
 						destinationFile.delete();
@@ -139,6 +147,10 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					partFile.delete();
 					LogUtils.info(e.getMessage());
 					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.url_not_found"), TextUtils.getText("docear.recommendation.error.title"), JOptionPane.ERROR_MESSAGE);					
+				}
+				catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}			
 			}
 		}).start();
