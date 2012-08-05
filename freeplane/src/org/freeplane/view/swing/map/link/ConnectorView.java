@@ -49,6 +49,7 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
+        private static final int LOOP_INCLINE_OFFSET = 45;
 	private static final int NORMAL_LENGTH = 50;
 	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
@@ -281,6 +282,7 @@ public class ConnectorView extends AConnectorView{
 	 * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
 	 */
 	public void paint(final Graphics graphics) {
+                final boolean selfLink = getSource() == getTarget();
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
 		}
@@ -310,6 +312,9 @@ public class ConnectorView extends AConnectorView{
 			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
 				final Point incl = calcInclination(target, dellength);
 				incl.y = -incl.y;
+                                if (selfLink) {
+                                    fixInclineIfLoopNode(incl);
+                                }
 				connectorModel.setEndInclination(incl);
 				endPoint = target.getLinkPoint(connectorModel.getEndInclination());
 			}
@@ -362,13 +367,18 @@ public class ConnectorView extends AConnectorView{
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
 		if (startPoint != null && endPoint != null) {
 			if(selfLink)
+			if(isLine)
+                            if (selfLink) {
 				arrowLinkCurve = createLine(startPoint, startPoint2);
-			else if(isLine)
+                            }
+                            else {
 				arrowLinkCurve = createLine(startPoint, endPoint);
-			else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
-				arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
-			else
-				arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
+                            }
+                }
+                else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
+                    arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
+                else
+                    arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
 		}
 		else
 			arrowLinkCurve = null;
@@ -495,7 +505,15 @@ public class ConnectorView extends AConnectorView{
 
 	private void increaseBounds(Rectangle innerBounds, Rectangle rect) {
 	    if (rect != null)
-	    	innerBounds.add(rect);
-	    
-    }
+                innerBounds.add(rect);
+        }
+
+        private void fixInclineIfLoopNode(Point endIncline) {
+            if (endIncline.y < 0) {
+                endIncline.y -= LOOP_INCLINE_OFFSET;
+            }
+            else {
+                endIncline.y += LOOP_INCLINE_OFFSET;
+            }
+        }
 }
