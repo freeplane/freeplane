@@ -2,31 +2,19 @@ package org.docear.plugin.pdfutilities.listener;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.IAnnotation;
-import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.util.NodeUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
@@ -34,8 +22,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MainView;
-
-import de.intarsys.pdf.parser.COSLoadException;
 
 public class DocearNodeMouseMotionListener implements IMouseListener {
 
@@ -54,101 +40,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 		this.mouseListener.mouseMoved(e);
 	}
 
-	public void openPageMacOs(MouseEvent e, String[] command) {
-		/*final String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_COMMAND_KEY);
-		if (readerPath == null || readerPath.length() == 0) {
-			this.mouseListener.mouseClicked(e);
-			return;
-		}*/
-			
-		if (!command[1].toLowerCase().endsWith(".pdf")) {
-			this.mouseListener.mouseClicked(e);
-			return;
-		}
-		
-
-		//IAnnotation annotation = null;
-		try {
-			//annotation = new PdfAnnotationImporter().searchAnnotation(uri, command);
-			//System.gc();
-			//if (annotation == null || annotation.getPage() == null) {
-				//Controller.exec(getExecCommandMacOs(readerPath, uri, 1));
-				//runAppleScript(readerPath, uri, 1);
-				//return;
-			/*}
-			else {
-				runAppleScript(readerPath, uri, annotation.getPage());
-				//Controller.exec(getExecCommandMacOs(readerPath, uri, annotation));
-				return;
-			}//*/
-			runAppleScript(command[0], command[1], Integer.parseInt(command[2]));
-		}		
-		/*catch (COSLoadException x) {
-			UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
-			System.err.println("Caught: " + x); //$NON-NLS-1$
-		}//*/
-		catch (Exception x) {
-			LogUtils.warn(x);
-			this.mouseListener.mouseClicked(e);
-		}
-		
-	}
-
-	private void runAppleScript(String readerPath, String filePath, int page) throws ScriptException, IOException {
-    	StringBuilder builder = new StringBuilder();
-    	builder.append("global pdfPath\n");
-    	builder.append("global page\n");
-    	builder.append("set pdfPath to POSIX file \""+filePath+"\"\n");
-    	builder.append("set page to "+ page +" as text\n");
-    	if(readerPath.endsWith(".app")) {
-    		builder.append("set pdfReaderPath to \""+readerPath+"\"\n\n");
-    	}
-    	else{
-    		builder.append("set pdfReaderPath to null\n\n");
-    	}
-    	
-    	URL url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageHead.appleScript");
-    	appendResourceContent(builder, url);
-    	if(readerPath.endsWith("Skim.app")) {
-    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageSkim.appleScript");
-        	appendResourceContent(builder, url);
-    	}
-    	else {
-    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageDefault.appleScript");
-        	appendResourceContent(builder, url);
-    	}
-    	
-    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(null);
-       
-        ScriptEngineManager mgr = new ScriptEngineManager();
-    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
-    	
-        Thread.currentThread().setContextClassLoader(contextClassLoader);    	
-		engine.eval(builder.toString());		
-		LogUtils.info("Successfully ran apple script");
-	}
-
-	private void appendResourceContent(StringBuilder builder, URL url) throws IOException {
-		if (url != null) {    		
-            InputStream input = url.openStream();
-    		try{	    		
-	            BufferedReader inStream = new BufferedReader(new InputStreamReader(input));
-	            String inputLine;
 	
-	            while ((inputLine = inStream.readLine()) != null) {
-	            	builder.append(inputLine + "\n");
-	            }
-    		}
-    		finally{
-    			input.close();
-    		}
-        }
-    	else{
-    		throw new IOException("Could not read applescript file.");
-    	}
-	}
-
 	public void mouseClicked(MouseEvent e) {		
 		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(
 				PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);		
@@ -180,52 +72,70 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 				return;
 			}
 			
+			URI uri = Tools.getAbsoluteUri(node);
+			if(uri == null) { 
+				this.mouseListener.mouseClicked(e);
+				return;
+			}
 			
-//			if (!Compat.isWindowsOS()) {
+			IAnnotation annotation = null;
+			try {
+				annotation = node.getExtension(AnnotationModel.class);
+			}
+			catch(Exception ex) {				
+			}
+			
+			LinkController.getController().onDeselect(node);
+			if (!PdfUtilitiesController.getController().openPdfOnPage(uri, annotation)) {
+				this.mouseListener.mouseClicked(e);
+				return;
+			}
+			LinkController.getController().onSelect(node);
+			
+			
+		}
+		else {
+			this.mouseListener.mouseClicked(e);
+		}
+
+			
+
+//			IAnnotation annotation = null;
+//			try {
+//					annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
+//					//System.gc();
+//					if (annotation == null) {
+//						if(uri == null) { 
+//							this.mouseListener.mouseClicked(e);
+//							return;
+//						}
+//						else {
+//							command = PdfUtilitiesController.getController().getPdfReaderExecCommand(uri, 1);
+//						}
+//					}
+//					else {
+//						if (annotation.getAnnotationType() == AnnotationType.BOOKMARK
+//								|| annotation.getAnnotationType() == AnnotationType.COMMENT
+//								|| annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT) {		
+//															
+//							command = PdfUtilitiesController.getController().getPdfReaderExecCommand(uri, annotation);
+//						}		
+//						if (annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION
+//								|| annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI) {							
+//								command = PdfUtilitiesController.getController().getPdfReaderExecCommand(uri, 1);								
+//						}							
+//					}					
+//			}						
+//			catch (COSLoadException x) {
+//				UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
+//				System.err.println("Caught: " + x); //$NON-NLS-1$
+//			}
+//			catch (Exception x) {
 //				this.mouseListener.mouseClicked(e);
 //				return;
 //			}
 
-			URI uri = Tools.getAbsoluteUri(node);
-
-			String[] command = null;
-
-			IAnnotation annotation = null;
-			try {
-					annotation = new PdfAnnotationImporter().searchAnnotation(uri, node);
-					//System.gc();
-					if (annotation == null) {
-						if(uri == null) { 
-							this.mouseListener.mouseClicked(e);
-							return;
-						}
-						else {
-							command = PdfUtilitiesController.getController().getPdfReaderExecCommand(uri, 1);
-						}
-					}
-					else {
-						if (annotation.getAnnotationType() == AnnotationType.BOOKMARK
-								|| annotation.getAnnotationType() == AnnotationType.COMMENT
-								|| annotation.getAnnotationType() == AnnotationType.HIGHLIGHTED_TEXT) {		
-															
-							command = PdfUtilitiesController.getController().getPdfReaderExecCommand(uri, annotation);
-						}		
-						if (annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITHOUT_DESTINATION
-								|| annotation.getAnnotationType() == AnnotationType.BOOKMARK_WITH_URI) {							
-								command = PdfUtilitiesController.getController().getPdfReaderExecCommand(uri, 1);								
-						}							
-					}					
-			}						
-			catch (COSLoadException x) {
-				UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
-				System.err.println("Caught: " + x); //$NON-NLS-1$
-			}
-			catch (Exception x) {
-				this.mouseListener.mouseClicked(e);
-				return;
-			}
-
-			LinkController.getController().onDeselect(node);
+//			LinkController.getController().onDeselect(node);
 
 			// TODO: DOCEAR Are all URI's working ??
 			/*
@@ -234,26 +144,26 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			 * "file://" + uriString.substring(UNC_PREFIX.length()); }
 			 */
 
-			try {
-				if (Compat.isMacOsX()) {
-					openPageMacOs(e, command);
-					return;
-				}
-				
-				Controller.exec(command);
-				//Controller.exec(command);
-				return;
-			}
-			catch (final Exception x) {
-				UITools.errorMessage("Could not invoke Pdf Reader.\n\nDocear excecuted the following statement on a command line:\n\"" + command + "\"."); //$NON-NLS-1$ //$NON-NLS-2$
-				System.err.println("Caught: " + x); //$NON-NLS-1$
-			}
-
-			LinkController.getController().onSelect(node);
-		}
-		else {
-			this.mouseListener.mouseClicked(e);
-		}
+//			try {
+//				if (Compat.isMacOsX()) {
+//					openPageMacOs(e, command);
+//					return;
+//				}
+//				
+//				PdfUtilitiesController.getController().openP
+//				Controller.exec(command);
+//				return;
+//			}
+//			catch (final Exception x) {
+//				UITools.errorMessage("Could not invoke Pdf Reader.\n\nDocear excecuted the following statement on a command line:\n\"" + command + "\"."); //$NON-NLS-1$ //$NON-NLS-2$
+//				System.err.println("Caught: " + x); //$NON-NLS-1$
+//			}
+//
+//			LinkController.getController().onSelect(node);
+//		}
+//		else {
+//			this.mouseListener.mouseClicked(e);
+//		}
 	}
 	
 	

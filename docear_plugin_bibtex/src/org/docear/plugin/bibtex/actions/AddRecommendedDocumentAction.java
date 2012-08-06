@@ -13,6 +13,7 @@ import java.net.URLDecoder;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -54,22 +55,22 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 		if (DocearEventType.IMPORT_TO_LIBRARY.equals(event.getType())) {
 			try {
 				URL url = null;
-				if(event.getSource() instanceof URL) {
+				if (event.getSource() instanceof URL) {
 					url = ((URL) event.getSource());
 				}
 				else {
-					//maybe log warning
+					// maybe log warning
 					return;
 				}
 
 				String fileName = new File(url.getFile()).getName();
 				fileName = URLDecoder.decode(fileName, "UTF-8");
 				String ext = FilenameUtils.getExtension(fileName);
-				fileName = FileUtilities.getCleanFileName((String)event.getEventObject());
-				if(fileName == null || fileName.isEmpty()) {
+				fileName = FileUtilities.getCleanFileName((String) event.getEventObject());
+				if (fileName == null || fileName.isEmpty()) {
 					fileName = (String) event.getEventObject();
 				}
-				File file = getDestinationFile(url.toURI(), fileName.trim()+"."+ext);
+				File file = getDestinationFile(url.toURI(), fileName.trim() + "." + ext);
 				if (file == null || !file.exists()) {
 					return;
 				}
@@ -82,8 +83,7 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 	}
 
 	private void addFileToLibrary(File file) {
-		
-		
+
 	}
 
 	public File getDestinationFile(final URI uri, String defaultFileName) throws URISyntaxException, MalformedURLException {
@@ -102,27 +102,27 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 				}
 				if (answer != JOptionPane.OK_OPTION) {
 					continue;
-				}				
+				}
 			}
 			downloadFile(uri, fc);
 			break;
-		}		
+		}
 		return file;
 	}
 
 	private void downloadFile(final URI uri, final JFileChooser fc) {
 		new Thread(new Runnable() {
 			File destinationFile = fc.getSelectedFile();
-			File partFile = new File(destinationFile.getAbsoluteFile()+".part");
- 			
+			File partFile = new File(destinationFile.getAbsoluteFile() + ".part");
+
 			public void run() {
 				try {
-					CommunicationsController commController =CommunicationsController.getController();
+					CommunicationsController commController = CommunicationsController.getController();
 					WebResource webResource = commController.getWebResource(uri);
+
 					ClientResponse response = commController.get(webResource, ClientResponse.class);
-					
 					FileUtils.copyInputStreamToFile(new ProgressInputStream(response.getEntityInputStream(), uri.toURL(), response.getLength()), partFile);
-					
+
 					if (destinationFile.exists()) {
 						destinationFile.delete();
 					}
@@ -132,26 +132,41 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					catch (IOException e) {
 						LogUtils.warn(e);
 					}
-			
-					addFileToLibrary(destinationFile);
-					CoreConfiguration.repositoryPathObserver.setUri(CoreConfiguration.repositoryPathObserver.getUri());
+
+					SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+							addFileToLibrary(destinationFile);
+							CoreConfiguration.repositoryPathObserver.setUri(CoreConfiguration.repositoryPathObserver.getUri());
+						}
+					});
 				}
-				catch (FileNotFoundException e) {					
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.permission_denied"), TextUtils.getText("docear.recommendation.error.title"), JOptionPane.ERROR_MESSAGE);
+				catch (FileNotFoundException e) {
+					SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.permission_denied"),
+									TextUtils.getText("docear.recommendation.error.title"), JOptionPane.ERROR_MESSAGE);
+						}
+					});
+					
 				}
 				catch (InterruptedIOException e) {
 					LogUtils.info("Interrupted download");
 					partFile.delete();
 				}
-				catch (IOException e) {					
+				catch (Exception e) {
 					partFile.delete();
 					LogUtils.info(e.getMessage());
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.url_not_found"), TextUtils.getText("docear.recommendation.error.title"), JOptionPane.ERROR_MESSAGE);					
+					SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+							JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.recommendation.url_not_found"),
+									TextUtils.getText("docear.recommendation.error.title"), JOptionPane.ERROR_MESSAGE);
+						}
+					});
+					
 				}
-				catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}			
 			}
 		}).start();
 	}

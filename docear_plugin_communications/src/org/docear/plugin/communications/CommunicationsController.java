@@ -14,7 +14,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -60,27 +59,25 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 import com.sun.jersey.multipart.impl.MultiPartWriter;
 
-
 public class CommunicationsController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
 	private static CommunicationsController communicationsController;
 	private static Boolean PROXY_CREDENTIALS_CANCELED = false;
-	
+
 	public static final String DOCEAR_PROXY_PORT = "docear.proxy_port";
 	public static final String DOCEAR_PROXY_HOST = "docear.proxy_host";
 	public static final String DOCEAR_USE_PROXY = "docear.use_proxy";
 	public static final String DOCEAR_PROXY_USERNAME = "docear.proxy_username";
-	
+
 	private static char[] password = null;
-	
-	
-	private boolean proxyDialogOkSelected = false;	
-	private ReentrantLock webResourceLock = new ReentrantLock();
 
-	private static ApacheHttpClient client;
+	private boolean proxyDialogOkSelected = false;
 
-	
+	private ProxyAuthenticationDialog dialog = new ProxyAuthenticationDialog();
+
+	private static ApacheHttpClient client = ApacheHttpClient.create();
+
 	static {
-		createClient();
+		updateClientConfiguration(true);
 	}
 
 	private final WorkspaceDocearServiceConnectionBar connectionBar = new WorkspaceDocearServiceConnectionBar();
@@ -90,7 +87,6 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY = "docear.service.connect.anonyous.username";
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY = "docear.service.connect.anonymous.token";
 	public static final String CONNECTION_BAR_CLICKED = "CONNECTION_BAR_CLICKED";
-
 
 	private boolean allowTransmission = true;
 
@@ -112,175 +108,170 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	protected static CommunicationsController initialize(ModeController modeController) {
-		if(communicationsController == null) {
+		if (communicationsController == null) {
 			communicationsController = new CommunicationsController(modeController);
 		}
 		return communicationsController;
 	}
-	
+
 	public static CommunicationsController getController() {
 		return communicationsController;
 	}
-	
-	public static void createClient(){		
+
+	public static void updateClientConfiguration(boolean prefChanged) {
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(CommunicationsController.class.getClassLoader());
+		try {
+    		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();
+    		if (ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)) {
+    			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
+    			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
+    			String username = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_USERNAME, "");
+    
+    			cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI, "http://" + host + ":" + port + "/");
+    
+    			if (username != null && username.length() > 0 && password != null) {
+    				try {
+    					cc.getState().setProxyCredentials(AuthScope.ANY_REALM, host, Integer.parseInt(port), username, new String(password));
+    				}
+    				catch (NumberFormatException e) {
+    					LogUtils.severe(e);
+    					// UITools.showMessage(TextUtils.getText("docear.proxy.connect.portNumberFormatError.msg"),
+    					// JOptionPane.ERROR_MESSAGE);
+    				}
+    			}
+    		}
+    		synchronized (client) {
+        		if(prefChanged) {
+            		cc.getClasses().add(MultiPartWriter.class);
+        			client = ApacheHttpClient.create(cc);
+        			client.setConnectTimeout(3000);
+        			client.setReadTimeout(3000);
+        		}
+        		else {
+        			client.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_HTTP_STATE, cc.getState());
+        		}
+    		}
+		}
+		finally {
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
+		}
+	}
 
-		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();   
-		if(ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
-			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
-			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");			
-			cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI,"http://"+host+":"+port+"/");			
-		}
-		cc.getClasses().add(MultiPartWriter.class);
-		
-		client = ApacheHttpClient.create(cc);		
-		client.setConnectTimeout(3000);
-		client.setReadTimeout(3000);
-		Thread.currentThread().setContextClassLoader(contextClassLoader);
-	}
-	
-	public static void setProxyCredentials(){
-		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();   
-		if(ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
-			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
-			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
-			String username = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_USERNAME, "");
-			
-			cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI,"http://"+host+":"+port+"/");	
-			
-			if(username != null && username.length() > 0 && password != null){
-				try{
-					cc.getState().setProxyCredentials(AuthScope.ANY_REALM, host, Integer.parseInt(port), username, new String(password));
-				}catch(NumberFormatException e){
-					LogUtils.severe(e);
-					//UITools.showMessage(TextUtils.getText("docear.proxy.connect.portNumberFormatError.msg"), JOptionPane.ERROR_MESSAGE);
-				}
-				if(client != null){
-					client.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_HTTP_STATE, cc.getState());					
-				}
-			}
-		}
-	}
-	
-	public <T> T get(Builder builder, Class<T> c) throws Exception{
-		if(SwingUtilities.isEventDispatchThread()){
+	public <T> T get(Builder builder, Class<T> c) throws Exception {
+		if (SwingUtilities.isEventDispatchThread()) {
 			throw new Exception("Never call the webservice from the event dispatch thread.");
 		}
-		try{
-			webResourceLock.lock();
-			return builder.get(c);
-		}catch(Exception e){
-			LogUtils.info(e.getCause().toString());
-			if(raiseProxyCredentialsDialog(e)){				
-				if(proxyDialogOkSelected){			
-					return get(builder, c);
+		synchronized (dialog) {
+			try {
+				return builder.get(c);
+			}
+			catch (Exception e) {
+				LogUtils.info(e.getCause().toString());
+				if (raiseProxyCredentialsDialog(e)) {
+					if (proxyDialogOkSelected) {
+						return get(builder, c);
+					}
+					else {
+						throw (e);
+					}
 				}
-				else{
-					throw(e);
+				else {
+					throw (e);
 				}
 			}
-			else{
-				throw(e);
-			}
-		}
-		finally{
-			webResourceLock.unlock();
 		}
 	}
-	
-	public <T> T get(WebResource webResource, Class<T> c) throws Exception{
-		if(SwingUtilities.isEventDispatchThread()){
-			throw new Exception("Never call the webservice from the event dispatch thread.");
-		}
-		try{
-			webResourceLock.lock();
-			return webResource.get(c);
-		}catch(Exception e){
-			LogUtils.info(e.getCause().toString());
-			if(raiseProxyCredentialsDialog(e)){				
-				if(proxyDialogOkSelected){
-					return get(webResource, c);
-				}
-				else{
-					throw(e);
-				}
-			}
-			else{
-				throw(e);
-			}
-		}
-		finally{
-			webResourceLock.unlock();
-		}
-	}
-	
-	public ClientResponse post(WebResource webResource, Object requestEntity) throws Exception{
-		if(SwingUtilities.isEventDispatchThread()){
-			throw new Exception("Never call the webservice from the event dispatch thread.");
-		}
-		try{
-			webResourceLock.lock();
-			return webResource.post(ClientResponse.class, requestEntity);			
-		}catch(Exception e){
-			LogUtils.info(e.getCause().toString());
-			if(raiseProxyCredentialsDialog(e)){				
-				if(proxyDialogOkSelected){
-					return post(webResource, requestEntity);
-				}
-				else{
-					throw(e);
-				}
-			}
-			else{
-				throw(e);
-			}
-		}
-		finally{
-			webResourceLock.unlock();
-		}
-	}
-	
-	public ClientResponse post(Builder builder, Object requestEntity) throws Exception{	
-		if(SwingUtilities.isEventDispatchThread()){
-			throw new Exception("Never call the webservice from the event dispatch thread.");
-		}
-		try{		
-			webResourceLock.lock();
-			return builder.post(ClientResponse.class, requestEntity);			
-		}catch(Exception e){
-			LogUtils.info(e.getMessage());
-			if(raiseProxyCredentialsDialog(e)){				
-				if(proxyDialogOkSelected){
-					return post(builder, requestEntity);
-				}
-				else{
-					throw(e);
-				}
-			}
-			else{
-				throw(e);
-			}
-		}
-		finally{
-			webResourceLock.unlock();
-		}
-	}
-	
-	public WebResource getWebResource(URI uri){
-		return client.resource(uri);
-		
-	}
-	
-	
 
-	private boolean raiseProxyCredentialsDialog(Exception e) {		
-		if(e instanceof ClientHandlerException && e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof IOException && ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
+	public <T> T get(WebResource webResource, Class<T> c) throws Exception {
+		if (SwingUtilities.isEventDispatchThread()) {
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		synchronized (dialog) {
+			try {
+				return webResource.get(c);
+			}
+			catch (Exception e) {
+				LogUtils.info(e.getCause().toString());
+				if (raiseProxyCredentialsDialog(e)) {
+					if (proxyDialogOkSelected) {
+						return get(webResource, c);
+					}
+					else {
+						throw (e);
+					}
+				}
+				else {
+					throw (e);
+				}
+			}
+		}
+	}
+
+	public ClientResponse post(WebResource webResource, Object requestEntity) throws Exception {
+		if (SwingUtilities.isEventDispatchThread()) {
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		synchronized (dialog) {
+			try {
+				return webResource.post(ClientResponse.class, requestEntity);
+			}
+			catch (Exception e) {
+				LogUtils.info(e.getCause().toString());
+				if (raiseProxyCredentialsDialog(e)) {
+					if (proxyDialogOkSelected) {
+						return post(webResource, requestEntity);
+					}
+					else {
+						throw (e);
+					}
+				}
+				else {
+					throw (e);
+				}
+			}
+		}
+	}
+
+	public ClientResponse post(Builder builder, Object requestEntity) throws Exception {
+		if (SwingUtilities.isEventDispatchThread()) {
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		synchronized (dialog) {
+			try {
+				return builder.post(ClientResponse.class, requestEntity);
+			}
+			catch (Exception e) {
+				LogUtils.info(e.getMessage());
+				if (raiseProxyCredentialsDialog(e)) {
+					if (proxyDialogOkSelected) {
+						return post(builder, requestEntity);
+					}
+					else {
+						throw (e);
+					}
+				}
+				else {
+					throw (e);
+				}
+			}
+		}
+	}
+
+	public WebResource getWebResource(URI uri) {
+		synchronized (client) {
+			return client.resource(uri);
+		}
+
+	}
+
+	private boolean raiseProxyCredentialsDialog(Exception e) {
+		if (e instanceof ClientHandlerException && e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof IOException
+				&& ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)) {
 			proxyDialogOkSelected = false;
 			try {
-				final ProxyAuthenticationDialog dialog =  new ProxyAuthenticationDialog();
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.SHOW_DIALOG, dialog));
-				SwingUtilities.invokeAndWait(new Runnable() {					
+				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
 						dialog.showDialog();
 						proxyDialogOkSelected = dialog.isOKselected();
@@ -288,95 +279,100 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 					}
 				});
 			}
-			catch (InterruptedException e1) {
+			catch (Exception e1) {
 				LogUtils.warn(e1);
 			}
-			catch (InvocationTargetException e1) {
-				LogUtils.warn(e1);
-			}			
 			return true;
 		}
 		return false;
 	}
 
 	public ConnectionWaitDialog getWaitDialog() {
-		if(waitDialog == null) {
+		if (waitDialog == null) {
 			waitDialog = new ConnectionWaitDialog();
 		}
 		return waitDialog;
 	}
-	
-	
-	public void tryToConnect(final String username, final String password, final boolean registeredUser, final boolean silent) throws DocearServiceException, URISyntaxException, CancellationException {
+
+	public void tryToConnect(final String username, final String password, final boolean registeredUser, final boolean silent) throws DocearServiceException,
+			URISyntaxException, CancellationException {
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
 		try {
-			
+
 			SwingWorker<Boolean, Void> connectionWorker = new SwingWorker<Boolean, Void>() {
 
 				@Override
-				protected Boolean doInBackground() throws Exception {					
-					MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();					
+				protected Boolean doInBackground() throws Exception {
+					MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 					formParams.add("password", password);
 					Status status = null;
 					try {
 						WebResource webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
-				
+
 						ClientResponse response = post(webRes, formParams);
 						status = response.getClientResponseStatus();
 						boolean connectedSuccessfully = processResponse(username, registeredUser, silent, response, status);
 						stopWaitDialog(silent);
 						return connectedSuccessfully;
-					}					
-					catch (Exception e) {						
-						if(this.isCancelled()){
+					}
+					catch (Exception e) {
+						if (this.isCancelled()) {
 							throw new CancellationException();
 						}
-						try{
+						try {
 							stopWaitDialog(silent);
-						} catch(Exception e1){
+						}
+						catch (Exception e1) {
 							LogUtils.warn(e1);
-						};
+						}
+						;
 						LogUtils.warn(e);
-						throw(e);									
+						throw (e);
 					}
 				}
-			};	
+			};
 			getWaitDialog().setWorker(connectionWorker);
 			connectionWorker.execute();
 			startWaitDialog(silent);
 			boolean connectedSuccessfully = connectionWorker.get();
-			if(connectedSuccessfully && !silent){
-				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username), TextUtils.getText("docear.service.connect.success.title"), JOptionPane.PLAIN_MESSAGE);							
-			}				
-		} catch (Exception e) {			
-			if(e instanceof CancellationException){
-				throw((CancellationException)e);
-			}			
-			if(e instanceof URISyntaxException){
-				// DOCEAR: should not happen because the URI is hard coded for now
-				throw((URISyntaxException)e);
+			if (connectedSuccessfully && !silent) {
+				JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.format("docear.service.connect.success", username),
+						TextUtils.getText("docear.service.connect.success.title"), JOptionPane.PLAIN_MESSAGE);
 			}
-			if(e instanceof DocearServiceException) {
-				throw ((DocearServiceException)e);
+		}
+		catch (Exception e) {
+			if (e instanceof CancellationException) {
+				throw ((CancellationException) e);
+			}
+			if (e instanceof URISyntaxException) {
+				// DOCEAR: should not happen because the URI is hard coded for
+				// now
+				throw ((URISyntaxException) e);
+			}
+			if (e instanceof DocearServiceException) {
+				throw ((DocearServiceException) e);
 			}
 			DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
-			throw(new DocearServiceException(TextUtils.getText("docear.no_connection"), DocearServiceExceptionType.NO_CONNECTION));				
-		} finally {
+			throw (new DocearServiceException(TextUtils.getText("docear.no_connection"), DocearServiceExceptionType.NO_CONNECTION));
+		}
+		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
-	}	
-	
+	}
+
 	public String getLatestVersionXml(String minStatus) throws Exception {
 		if (minStatus == null) {
 			return null;
 		}
-		
-		ClientResponse response = get(client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus), ClientResponse.class);		
+
+		ClientResponse response = get(client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus),
+				ClientResponse.class);
 		return response.getEntity(String.class);
 	}
 
-	private boolean processResponse(final String username, final boolean registeredUser, final boolean silent, ClientResponse response, Status status) throws IOException, DocearServiceException, InterruptedException, InvocationTargetException {
+	private boolean processResponse(final String username, final boolean registeredUser, final boolean silent, ClientResponse response, Status status)
+			throws IOException, DocearServiceException, InterruptedException, InvocationTargetException {
 		if (Status.OK.equals(status)) {
 			String token = response.getHeaders().getFirst("accessToken");
 			setConnectionProperties(registeredUser, username, token);
@@ -385,27 +381,27 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		}
 		else {
 			setConnectionProperties(registeredUser, "", "");
-			if (!silent) {						
+			if (!silent) {
 				throw new DocearServiceException(readResponseContent(response.getEntityInputStream()));
-			}			
+			}
 		}
 		return false;
 	}
 
-	private void setConnectionProperties(final boolean registeredUser, final String username,  String token) {
+	private void setConnectionProperties(final boolean registeredUser, final String username, String token) {
 		final String propertyUserName = registeredUser ? DOCEAR_CONNECTION_USERNAME_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY;
 		final String propertyAccessToken = registeredUser ? DOCEAR_CONNECTION_TOKEN_PROPERTY : DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY;
-		
+
 		ResourceController.getResourceController().setProperty(propertyUserName, username);
 		if (registeredUser) {
 			IPropertyControl ctrl = Controller.getCurrentController().getOptionPanelController().getPropertyControl(propertyUserName);
-			if(ctrl != null) {
+			if (ctrl != null) {
 				((StringProperty) ctrl).setValue(username);
 			}
 		}
 		ResourceController.getResourceController().setProperty(propertyAccessToken, token);
 	}
-	
+
 	private String readResponseContent(InputStream is) throws IOException {
 		int chr;
 		StringBuilder message = new StringBuilder();
@@ -415,7 +411,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		is.close();
 		return message.toString();
 	}
-	
+
 	public void startWaitDialog(final boolean silent) {
 		if (!silent) {
 			getWaitDialog().start();
@@ -429,8 +425,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	public boolean checkConnection() {
-		//client.setConnectTimeout(1000);
-		//client.setReadTimeout(1000);
+		// client.setConnectTimeout(1000);
+		// client.setReadTimeout(1000);
 		try {
 			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 			formParams.add("password", "");
@@ -439,74 +435,88 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			if (status != null) {
 				return true;
 			}
-		} catch (Exception e) {			
-			if ((e.getCause() instanceof SocketTimeoutException)	// no connection to server
-				|| (e.getCause() instanceof ConnectException) // connection refused (no server running
-				|| (e.getCause() instanceof UnknownHostException)) // maybe no connection 
+		}
+		catch (Exception e) {
+			if ((e.getCause() instanceof SocketTimeoutException) // no
+																 // connection
+																 // to server
+					|| (e.getCause() instanceof ConnectException) // connection
+																  // refused (no
+																  // server
+																  // running
+					|| (e.getCause() instanceof UnknownHostException)) // maybe
+																	   // no
+																	   // connection
 			{
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(FiletransferClient.class, FiletransferClient.NO_CONNECTION));
 			}
-		} finally {
-			//client.setConnectTimeout(5000);
-			//client.setReadTimeout(10000);
+		}
+		finally {
+			// client.setConnectTimeout(5000);
+			// client.setReadTimeout(10000);
 		}
 		return false;
 	}
-	
+
 	public WebResource getServiceResource() {
-		return client.resource(getServiceUri());		
-	}	
+		return client.resource(getServiceUri());
+	}
 
 	public DocearServiceResponse get(String path) {
 		return get(path, null);
 	}
-	
+
 	public DocearServiceResponse get(String path, MultivaluedMap<String, String> params) {
 
 		try {
-			if(params == null) {
+			if (params == null) {
 				params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
 			}
 			String accessToken = CommunicationsController.getController().getAccessToken();
 
-			ClientResponse response = get(client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken), ClientResponse.class);
+			ClientResponse response = get(client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken),
+					ClientResponse.class);
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
 				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
-			} 
+			}
 			else if (status != null && status.equals(Status.NO_CONTENT)) {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.NO_CONTENT, response.getEntityInputStream());
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.NO_CONTENT,
+						response.getEntityInputStream());
 			}
 			else {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, response.getEntityInputStream());
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE,
+						response.getEntityInputStream());
 			}
 		}
 		catch (ClientHandlerException e) {
-			if(e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException || e.getCause() instanceof SocketTimeoutException || e.getCause() instanceof ConnectException) {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream("error".getBytes()));
+			if (e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException
+					|| e.getCause() instanceof SocketTimeoutException || e.getCause() instanceof ConnectException) {
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream(
+						"error".getBytes()));
 			}
 			else {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream("error".getBytes()));
+				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
+						"error".getBytes()));
 			}
 		}
 		catch (Exception e) {
-			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream("error".getBytes()));
-		} 
-		
+			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
+					"error".getBytes()));
+		}
+
 	}
 
 	private void addPluginDefaults() {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		if (defaults == null)
-			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+		if (defaults == null) throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 
 	private void addPropertiesToOptionPanel(ModeController modeController) {
 		final URL preferences = this.getClass().getResource("preferences.xml");
-		if (preferences == null)
-			throw new RuntimeException("cannot open preferences");
-		if(modeController instanceof MModeController) {
+		if (preferences == null) throw new RuntimeException("cannot open preferences");
+		if (modeController instanceof MModeController) {
 			((MModeController) modeController).getOptionPanelBuilder().load(preferences);
 		}
 	}
@@ -519,36 +529,39 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		Controller.getCurrentController().getOptionPanelController().getPropertyControl(DOCEAR_CONNECTION_USERNAME_PROPERTY).setEnabled(false);
 	}
 
-//	public boolean postFileToDocearService(String restPath, File file, boolean deleteIfTransferred) {
-//		if (!allowTransmission || file == null || isEmpty(getUserName()) || isEmpty(getAccessToken())) {
-//			return false;
-//		}
-//		try {
-//			return getFileTransferClient(restPath).sendFile(file, deleteIfTransferred);
-//		} catch (DocearServiceException e) {
-//			return false;
-//		}
-//	}
-	
+	// public boolean postFileToDocearService(String restPath, File file,
+	// boolean deleteIfTransferred) {
+	// if (!allowTransmission || file == null || isEmpty(getUserName()) ||
+	// isEmpty(getAccessToken())) {
+	// return false;
+	// }
+	// try {
+	// return getFileTransferClient(restPath).sendFile(file,
+	// deleteIfTransferred);
+	// } catch (DocearServiceException e) {
+	// return false;
+	// }
+	// }
+
 	public boolean transmissionPrepared() {
-		if (!allowTransmission || isEmpty(getUserName()) || isEmpty(getAccessToken())) {
-			return false;
+		if (allowTransmission && !isEmpty(getUserName()) && !isEmpty(getAccessToken())) {
+			return true;
 		}
-		return true;
+		return false;
 	}
-	
+
 	public FiletransferClient getFileTransferClient(String restPath) {
 		return new FiletransferClient(restPath);
-//		if(this.fileTransferClient == null) {
-//			this.fileTransferClient = new FiletransferClient(restPath);
-//		}
-//		return this.fileTransferClient;
+		// if(this.fileTransferClient == null) {
+		// this.fileTransferClient = new FiletransferClient(restPath);
+		// }
+		// return this.fileTransferClient;
 	}
 
 	public URI getServiceUri() {
 		if (System.getProperty("org.docear.localhost", "false").equals("true")) {
-            return URI.create("http://127.0.0.1:8080/");
-        }
+			return URI.create("http://127.0.0.1:8080/");
+		}
 		return URI.create("https://api.docear.org/");
 	}
 
@@ -572,7 +585,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			try {
 				ar.createAnonymousUser();
 			}
-			catch(Exception e) {
+			catch (Exception e) {
 				LogUtils.warn(e);
 			}
 			userName = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
@@ -593,9 +606,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			return getRegisteredAccessToken();
 		}
 	}
-	
+
 	public void resetRegisteredUser() {
-		setConnectionProperties(true, "", "");		
+		setConnectionProperties(true, "", "");
 	}
 
 	private String getAnonymousAccessToken() {
@@ -605,7 +618,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			try {
 				ar.createAnonymousUser();
 			}
-			catch(Exception e) {
+			catch (Exception e) {
 				LogUtils.warn(e);
 			}
 			accessToken = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
@@ -620,6 +633,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		else if (DOCEAR_CONNECTION_TOKEN_PROPERTY.equals(propertyName)) {
 			adjustInfoBarConnectionState();
 
+		}
+		else if (DOCEAR_USE_PROXY.equals(propertyName)) {
+			updateClientConfiguration(true);
 		}
 
 	}
@@ -643,8 +659,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	public void handleEvent(DocearEvent event) {
-		if (event.getSource().equals(connectionBar) &&
-				WorkspaceDocearServiceConnectionBar.ACTION_COMMAND_TOGGLE_CONNECTION_STATE.equals(event.getEventObject())) {
+		if (event.getSource().equals(connectionBar)
+				&& WorkspaceDocearServiceConnectionBar.ACTION_COMMAND_TOGGLE_CONNECTION_STATE.equals(event.getEventObject())) {
 			allowTransmission = !allowTransmission;
 			connectionBar.allowTransmission(allowTransmission);
 			adjustInfoBarConnectionState();
@@ -654,10 +670,10 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			if (FiletransferClient.START_UPLOAD.equals(event.getEventObject())) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);						
+						connectionBar.setConnectionState(CONNECTION_STATE.UPLOADING);
 					}
 				});
-				
+
 			}
 			else if (FiletransferClient.STOP_UPLOAD.equals(event.getEventObject())) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -688,7 +704,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 
 	public void workspaceChanged(WorkspaceEvent event) {
 		WorkspaceController.getController().addToolBar(connectionBar);
-		new Thread() {		
+		new Thread() {
 			public void run() {
 				checkConnection();
 			}
@@ -698,7 +714,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	public void openWorkspace(WorkspaceEvent event) {
 	}
 
-	public void closeWorkspace(WorkspaceEvent event) {							
+	public void closeWorkspace(WorkspaceEvent event) {
 	}
 
 	public void workspaceReady(WorkspaceEvent event) {
@@ -711,7 +727,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	public void configurationBeforeLoading(WorkspaceEvent event) {
-	}	
+	}
 
 	public static void setPassword(char[] password) {
 		CommunicationsController.password = password;
@@ -719,15 +735,14 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 
 	public static void setProxyCanceled(boolean b) {
 		synchronized (PROXY_CREDENTIALS_CANCELED) {
-			PROXY_CREDENTIALS_CANCELED = b;	
-		}		
-	}
-	
-	public static boolean isProxyCanceled() {
-		synchronized (PROXY_CREDENTIALS_CANCELED) {
-			return PROXY_CREDENTIALS_CANCELED;	
+			PROXY_CREDENTIALS_CANCELED = b;
 		}
 	}
 
-	
+	public static boolean isProxyCanceled() {
+		synchronized (PROXY_CREDENTIALS_CANCELED) {
+			return PROXY_CREDENTIALS_CANCELED;
+		}
+	}
+
 }

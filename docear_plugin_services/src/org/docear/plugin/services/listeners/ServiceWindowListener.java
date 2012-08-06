@@ -18,6 +18,10 @@ public class ServiceWindowListener implements WindowListener {
 		final WindowListener wl = this;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				if(ServiceController.getController().isAutoRecommending()) {
+					SwingUtilities.invokeLater(this);
+					return;
+				}
 				getRecommendations(wl);
 			}
 		});
@@ -44,6 +48,7 @@ public class ServiceWindowListener implements WindowListener {
 	}
 
 	private void getRecommendations(final WindowListener wl) {
+		
 		if (ServiceController.getController().getAutoRecommendations() != null) {
 			UITools.getFrame().removeWindowListener(wl);
 			ModeController modeController = Controller.getCurrentController().getModeController(DocearRecommendationsModeController.MODENAME);
