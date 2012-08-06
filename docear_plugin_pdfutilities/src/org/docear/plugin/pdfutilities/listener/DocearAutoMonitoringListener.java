@@ -62,52 +62,53 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 			return 0;
 		}
 	};
-	
-	private WatchService watcher = FileSystems.getDefault().newWatchService();
+	//TODO: enable automatic file monitoring
+	//private WatchService watcher = FileSystems.getDefault().newWatchService();
 	private Map<MapModel, List<WatchKey>> mapKeysMap = new HashMap<MapModel, List<WatchKey>>();
 	private Map<WatchKey, MapModel> keyMapMap = new TreeMap<WatchKey, MapModel>(watchKeyComparator);
 	private Map<WatchKey, String> watchables = new TreeMap<WatchKey, String>(watchKeyComparator);
 	
 	
 	public DocearAutoMonitoringListener() {
-		new Thread() {
-			public void run() {
-				try {
-					WatchKey key = null;
-					while((key = watcher.take()) != null) {
-						Path watchPath = null;
-						if(key instanceof PathWatchKey) {
-							watchPath = (Path) ((PathWatchKey) key).watchable();
-						}
-						for(WatchEvent<?> event : key.pollEvents()) {
-							Object obj = event.context();
-							File file = new File(watchPath.toString(), obj.toString());
-							if(StandardWatchEventKind.ENTRY_CREATE.equals(event.kind())) {
-								onCreateFile(file, key);
-							}
-							else if(StandardWatchEventKind.ENTRY_DELETE.equals(event.kind())) {
-								onDeleteFile(file, key);								
-							}
-							else if(StandardWatchEventKind.ENTRY_MODIFY.equals(event.kind())) {
-								onModifyFile(file, key);
-							}
-							else {
-								LogUtils.info("DirectoryWatcher: unknown event kind"+ event.kind());
-							}
-						}
-						key.reset();
-					}
-				} catch (InterruptedException e) {
-				}
-				finally {
-					LogUtils.info("closing directory watcher...");
-					try {
-						watcher.close();
-					} catch (IOException e) {
-					}
-				}				
-			}
-		}.start();
+		//TODO: enable automatic file monitoring
+//		new Thread() {
+//			public void run() {
+//				try {
+//					WatchKey key = null;
+//					while((key = watcher.take()) != null) {
+//						Path watchPath = null;
+//						if(key instanceof PathWatchKey) {
+//							watchPath = (Path) ((PathWatchKey) key).watchable();
+//						}
+//						for(WatchEvent<?> event : key.pollEvents()) {
+//							Object obj = event.context();
+//							File file = new File(watchPath.toString(), obj.toString());
+//							if(StandardWatchEventKind.ENTRY_CREATE.equals(event.kind())) {
+//								onCreateFile(file, key);
+//							}
+//							else if(StandardWatchEventKind.ENTRY_DELETE.equals(event.kind())) {
+//								onDeleteFile(file, key);								
+//							}
+//							else if(StandardWatchEventKind.ENTRY_MODIFY.equals(event.kind())) {
+//								onModifyFile(file, key);
+//							}
+//							else {
+//								LogUtils.info("DirectoryWatcher: unknown event kind"+ event.kind());
+//							}
+//						}
+//						key.reset();
+//					}
+//				} catch (InterruptedException e) {
+//				}
+//				finally {
+//					LogUtils.info("closing directory watcher...");
+//					try {
+//						watcher.close();
+//					} catch (IOException e) {
+//					}
+//				}				
+//			}
+//		}.start();
 	}
 	
 	
@@ -115,7 +116,8 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 		if(map == null || map.getFile() == null) return;
 		List<? extends NodeModel> monitoringNodes = (List<? extends NodeModel>) getAutoMonitorNodes(map.getRootNode());
 		autoMonitorNodes.addAll(monitoringNodes);
-		registerMonitoredDirectories(map, monitoringNodes);
+		//TODO: enable automatic file monitoring
+//		registerMonitoredDirectories(map, monitoringNodes);
 		
 		if(!startup){
 			SwingUtilities.invokeLater(new Thread() {
@@ -190,21 +192,22 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 
 
 	private void addMonitoringDirectory(MapModel map, File dir) {
-		if(dir != null && dir.exists() && dir.isDirectory()) {
-			try {
-				WatchKey key = Paths.get(dir.getPath()).register(watcher, StandardWatchEventKind.ENTRY_CREATE, StandardWatchEventKind.ENTRY_DELETE, StandardWatchEventKind.ENTRY_MODIFY);
-				mapKeysMap.get(map).add(key);
-				watchables.put(key, dir.getPath());
-				keyMapMap.put(key, map);
-			} catch (IOException e) {
-				LogUtils.warn(e);
-				return;
-			}			
-			File[] subDirs = dir.listFiles(directoryFilter );
-			for (File file : subDirs) {
-				addMonitoringDirectory(map, file);
-			}
-		}
+		//TODO: enable automatic file monitoring
+//		if(dir != null && dir.exists() && dir.isDirectory()) {
+//			try {
+//				WatchKey key = Paths.get(dir.getPath()).register(watcher, StandardWatchEventKind.ENTRY_CREATE, StandardWatchEventKind.ENTRY_DELETE, StandardWatchEventKind.ENTRY_MODIFY);
+//				mapKeysMap.get(map).add(key);
+//				watchables.put(key, dir.getPath());
+//				keyMapMap.put(key, map);
+//			} catch (IOException e) {
+//				LogUtils.warn(e);
+//				return;
+//			}			
+//			File[] subDirs = dir.listFiles(directoryFilter );
+//			for (File file : subDirs) {
+//				addMonitoringDirectory(map, file);
+//			}
+//		}
 	}
 	
 	private void cleanUpWatchKey(WatchKey watchKey) {
