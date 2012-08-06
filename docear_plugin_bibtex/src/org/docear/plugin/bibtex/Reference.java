@@ -66,7 +66,10 @@ public class Reference {
 		}
 		
 		try {
-			this.url = new URL(entry.getField("url"));
+			String url = entry.getField("url");
+			if(url != null && url.trim().length() > 0) {
+				this.url = new URL(url);
+			}
 		}
 		catch (MalformedURLException e) {
 			LogUtils.info("org.docear.plugin.bibtex.Reference(): "+e.getMessage());
