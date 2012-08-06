@@ -491,7 +491,13 @@ public class JabRefAttributes {
 			for (BibtexEntry entry : database.getEntries()) {
 				String entryUrlField = entry.getField("url");
 				if (entryUrlField != null) {
-					URI entryUri = URI.create(entryUrlField);
+					URI entryUri = null;
+					try {
+						entryUri = URI.create(entryUrlField);
+					}
+					catch (Exception e) {
+						LogUtils.info("org.docear.plugin.bibtex.jabref.JabRefAttributes.findBibtexEntryForURL: " + e.getMessage());
+					}
 					String entryScheme = entryUri.getScheme();
 					String nodeScheme = nodeUri.getScheme();
 
@@ -522,6 +528,7 @@ public class JabRefAttributes {
 				}
 			}
 			throw e;
+
 		}
 		return null;
 	}
