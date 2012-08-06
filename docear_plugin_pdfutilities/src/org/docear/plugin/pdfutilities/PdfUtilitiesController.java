@@ -13,15 +13,20 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -789,7 +794,7 @@ public class PdfUtilitiesController extends ALanguageController {
 			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor+"*$PAGE";
 		}
 		else if (readerFilter.isPdfXChange(reader)) {
-			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE&nameddest=$TITLE*"+fileFunctor; 
+			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE*"+fileFunctor; 
 		}
 		else if (readerFilter.isFoxit(reader)) {
 			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor+"*/A*page=$PAGE";
@@ -985,36 +990,146 @@ public class PdfUtilitiesController extends ALanguageController {
 	}
 	
 	public String[] getPdfReaderExecCommand(URI uriToFile, IAnnotation annotation) {
-		int page = annotation.getPage() != null ? annotation.getPage() : 1;
+		int page = 1;
+		if (annotation != null) {
+			page = annotation.getPage() != null ? annotation.getPage() : 1;
+		}
+		
 		return getPdfReaderExecCommand(uriToFile, page, annotation.getTitle());
 	}
 	
-	public void openPdfOnPage(URI uriToFile, IAnnotation annotation) {
-		int page = annotation.getPage() != null ? annotation.getPage() : 1;
-		openPdfOnPage(uriToFile, page, annotation.getTitle());
+	public boolean openPdfOnPage(URI uriToFile, IAnnotation annotation) {
+		int page = 1;
+		if (annotation != null) {
+			page = annotation.getPage() != null ? annotation.getPage() : 1;
+		}
+		
+		return openPdfOnPage(uriToFile, page, annotation.getTitle());
 	}
 	
-	public void openPdfOnPage(URI uriToFile, int page) {
-		openPdfOnPage(uriToFile, page, null);
+	public boolean openPdfOnPage(URI uriToFile, int page) {
+		return openPdfOnPage(uriToFile, page, null);
 	}
 	
-	public void openPdfOnPage(URI uriToFile, int page, String title) {
+	public boolean openPdfOnPage(URI uriToFile, int page, String title) {
 		String[] readerCommand = getPdfReaderExecCommand(uriToFile, page, title);
 		
 		if (readerCommand != null) {
 			try {
-				Controller.exec(readerCommand);
-			}
-			catch (IOException e) {
-				LogUtils.warn(e);
+				if (Compat.isMacOsX()) {
+					return openPageMacOs(readerCommand);
+				}
+				else {
+					Controller.exec(readerCommand);
+				}
+			}			
+			catch (final Exception x) {
+				UITools.errorMessage("Could not invoke Pdf Reader.\n\nDocear excecuted the following statement on a command line:\n\"" + Arrays.toString(readerCommand) + "\"."); //$NON-NLS-1$ //$NON-NLS-2$				
 			}
 		}
+		
+		return true;
 	}
 	
 	public void setToStandardPdfViewer() {
 		ResourceController.getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, true);
 		ResourceController.getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
 		ResourceController.getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);
+	}
+	
+	public boolean openPageMacOs(String[] command) {
+		/*final String readerPath = ResourceController.getResourceController().getProperty(PdfUtilitiesController.OPEN_ON_PAGE_READER_COMMAND_KEY);
+		if (readerPath == null || readerPath.length() == 0) {
+			this.mouseListener.mouseClicked(e);
+			return;
+		}*/
+			
+		if (!command[1].toLowerCase().endsWith(".pdf")) {			
+			return false;
+		}
+		
+
+		//IAnnotation annotation = null;
+		try {
+			//annotation = new PdfAnnotationImporter().searchAnnotation(uri, command);
+			//System.gc();
+			//if (annotation == null || annotation.getPage() == null) {
+				//Controller.exec(getExecCommandMacOs(readerPath, uri, 1));
+				//runAppleScript(readerPath, uri, 1);
+				//return;
+			/*}
+			else {
+				runAppleScript(readerPath, uri, annotation.getPage());
+				//Controller.exec(getExecCommandMacOs(readerPath, uri, annotation));
+				return;
+			}//*/
+			runAppleScript(command[0], command[1], Integer.parseInt(command[2]));
+		}		
+		/*catch (COSLoadException x) {
+			UITools.errorMessage("Could not find page because the document\n" + uri.toString() + "\nthrew a COSLoadExcpetion.\nTry to open file with standard options."); //$NON-NLS-1$ //$NON-NLS-2$
+			System.err.println("Caught: " + x); //$NON-NLS-1$
+		}//*/
+		catch (Exception x) {
+			LogUtils.warn(x);
+			return false;
+		}
+		
+		return true;
+	}
+
+	private void runAppleScript(String readerPath, String filePath, int page) throws ScriptException, IOException {
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("global pdfPath\n");
+    	builder.append("global page\n");
+    	builder.append("set pdfPath to POSIX file \""+filePath+"\"\n");
+    	builder.append("set page to "+ page +" as text\n");
+    	if(readerPath.endsWith(".app")) {
+    		builder.append("set pdfReaderPath to \""+readerPath+"\"\n\n");
+    	}
+    	else{
+    		builder.append("set pdfReaderPath to null\n\n");
+    	}
+    	
+    	URL url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageHead.appleScript");
+    	appendResourceContent(builder, url);
+    	if(readerPath.endsWith("Skim.app")) {
+    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageSkim.appleScript");
+        	appendResourceContent(builder, url);
+    	}
+    	else {
+    		url = PdfUtilitiesController.class.getResource("/mac_os/OpenOnPageDefault.appleScript");
+        	appendResourceContent(builder, url);
+    	}
+    	
+    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(null);
+       
+        ScriptEngineManager mgr = new ScriptEngineManager();
+    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
+    	
+        Thread.currentThread().setContextClassLoader(contextClassLoader);    	
+		engine.eval(builder.toString());		
+		LogUtils.info("Successfully ran apple script");
+	}
+
+	private void appendResourceContent(StringBuilder builder, URL url) throws IOException {
+		if (url != null) {    		
+            InputStream input = url.openStream();
+    		try{	    		
+	            BufferedReader inStream = new BufferedReader(new InputStreamReader(input));
+	            String inputLine;
+	
+	            while ((inputLine = inStream.readLine()) != null) {
+	            	builder.append(inputLine + "\n");
+	            }
+    		}
+    		finally{
+    			input.close();
+    		}
+        }
+    	else{
+    		throw new IOException("Could not read applescript file.");
+    	}
 	}
 
 }

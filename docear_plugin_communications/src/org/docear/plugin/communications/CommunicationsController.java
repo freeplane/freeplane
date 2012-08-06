@@ -129,7 +129,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();   
 		if(ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
 			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
-			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");			
+			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
 			cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI,"http://"+host+":"+port+"/");			
 		}
 		cc.getClasses().add(MultiPartWriter.class);
