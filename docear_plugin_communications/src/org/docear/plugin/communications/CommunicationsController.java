@@ -140,7 +140,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		Thread.currentThread().setContextClassLoader(contextClassLoader);
 	}
 	
-	public static void setProxyCredentials(){
+	public static void updateClientConfiguration(){
+		createClient();
 		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();   
 		if(ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)){
 			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
@@ -531,10 +532,10 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 //	}
 	
 	public boolean transmissionPrepared() {
-		if (!allowTransmission || isEmpty(getUserName()) || isEmpty(getAccessToken())) {
-			return false;
+		if (allowTransmission && !isEmpty(getUserName()) && !isEmpty(getAccessToken())) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public FiletransferClient getFileTransferClient(String restPath) {
@@ -556,7 +557,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		return ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_USERNAME_PROPERTY);
 	}
 
-	public String getUserName() {
+	public String getUserName() {		
 		if (isEmpty(getRegisteredUserName()) || isEmpty(getRegisteredAccessToken())) {
 			return getAnonymousUserName();
 		}
@@ -620,6 +621,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		else if (DOCEAR_CONNECTION_TOKEN_PROPERTY.equals(propertyName)) {
 			adjustInfoBarConnectionState();
 
+		}
+		else if(DOCEAR_USE_PROXY.equals(propertyName)) {
+			updateClientConfiguration();
 		}
 
 	}

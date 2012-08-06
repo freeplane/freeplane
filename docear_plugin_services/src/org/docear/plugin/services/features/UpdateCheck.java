@@ -3,6 +3,7 @@ package org.docear.plugin.services.features;
 import java.io.StringReader;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
@@ -81,8 +82,8 @@ public class UpdateCheck {
 			load(xml);
 			application = getApplication();
 			
-			Version latestVersion = getLatestAvailableVersion();
-			Version runningVersion = DocearController.getController().getVersion();
+			final Version latestVersion = getLatestAvailableVersion();
+			final Version runningVersion = DocearController.getController().getVersion();
 			
 			if (latestVersion == null || runningVersion == null) {
 				return;
@@ -93,15 +94,19 @@ public class UpdateCheck {
 			if (showUpdateCheckerDialog(compCode, choice)) {
 				// don't show Dialog again if latestVersionFromServer was already announced to the user
 				String lastLatestVersionString = ResourceController.getResourceController().getProperty("docer.update_checker.savedLatestVersion", "");
-				String latestVersionString = latestVersion.toString();
+				final String latestVersionString = latestVersion.toString();
 				if (lastLatestVersionString.equals(latestVersionString)) {
 					return;
 				}
 				ResourceController.getResourceController().setProperty("docer.update_checker.savedLatestVersion", latestVersionString);
 				
-				UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", runningVersion.toString(), latestVersionString);
-				JOptionPane.showMessageDialog(UITools.getFrame(), dialogPanel, TextUtils.getText("docear.new_version_available.title"), JOptionPane.INFORMATION_MESSAGE);
-				ResourceController.getResourceController().setProperty("docear.update_checker.options", dialogPanel.getChoice());
+				SwingUtilities.invokeLater(new Runnable() {					
+					public void run() {
+						UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", runningVersion.toString(), latestVersionString);				
+						JOptionPane.showMessageDialog(UITools.getFrame(), dialogPanel, TextUtils.getText("docear.new_version_available.title"), JOptionPane.INFORMATION_MESSAGE);
+						ResourceController.getResourceController().setProperty("docear.update_checker.options", dialogPanel.getChoice());
+					}
+				});
 			}
 			
 		} catch (Exception e) {

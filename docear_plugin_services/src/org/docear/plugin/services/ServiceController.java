@@ -89,7 +89,11 @@ public class ServiceController extends UploadController {
 					serviceController.getPacker().start();
 				}
 			});
-			new UpdateCheck();
+			new Thread() {
+				public void run() {
+					new UpdateCheck();
+				}
+			}.start();
 		}
 	}
 

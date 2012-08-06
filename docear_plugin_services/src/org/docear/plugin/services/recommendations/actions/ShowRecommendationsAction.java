@@ -21,11 +21,11 @@ public class ShowRecommendationsAction extends AFreeplaneAction {
 	}
 
 	public void setEnabled() {
-		if (CommunicationsController.getController().getUserName() == null || !ServiceController.getController().isRecommendationsAllowed()) {
-			setEnabled(false);
+		if (ServiceController.getController().isRecommendationsAllowed() && CommunicationsController.getController().getUserName() != null ) {
+			setEnabled(true);
 		}
 		else {
-			setEnabled(true);
+			setEnabled(false);
 		}
 	}
 

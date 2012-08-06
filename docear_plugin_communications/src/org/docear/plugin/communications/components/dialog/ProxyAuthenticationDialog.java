@@ -27,7 +27,7 @@ public class ProxyAuthenticationDialog {
 				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_PROXY_PORT, panel.getPortField().getText());
 				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_PROXY_USERNAME, panel.getUsernameField().getText());
 				CommunicationsController.setPassword(panel.getPasswordField().getPassword());
-				CommunicationsController.setProxyCredentials();
+				CommunicationsController.updateClientConfiguration();
 				okSelected = true;
 				CommunicationsController.setProxyCanceled(false);
 				return;
