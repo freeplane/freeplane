@@ -51,7 +51,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.sciplore.beans.Url;
 
 public class JabRefAttributes {
 	private boolean nodeDirty = false;
@@ -404,10 +403,17 @@ public class JabRefAttributes {
 			return null;
 		}
 
-		for (BibtexEntry entry : database.getEntries()) {
+		for (BibtexEntry entry : database.getEntries()) {			
 			String entryUrlField = entry.getField("url");
 			if (entryUrlField != null) {
-				URI entryUri = URI.create(entryUrlField);
+				URI entryUri = null;
+				try {
+					entryUri = URI.create(entryUrlField);
+				}
+				catch (Exception ex) {
+					LogUtils.warn("Invalid URI string: "+entryUrlField);
+					continue;
+				}
 				String entryScheme = entryUri.getScheme();
 				String nodeScheme = nodeUri.getScheme();
 
@@ -428,7 +434,7 @@ public class JabRefAttributes {
 				if (entryUriString.equals(nodeUriString)) {
 					return entry;
 				}
-			}
+			}			
 		}
 		return null;
 	}
