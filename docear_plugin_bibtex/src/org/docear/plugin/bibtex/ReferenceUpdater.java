@@ -257,8 +257,8 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					BibtexEntry entry = this.pdfReferences.get(fileName);
 					if (entry != null) {
 						addReferenceToIndex(node, entry);
-						return;
 					}
+					return;
 				}
 
 				BibtexEntry entry = this.urlReferences.get(uri.toURL().toExternalForm());
