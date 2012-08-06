@@ -211,11 +211,15 @@ public class Controller extends AController {
 			for (int i=1; i<command.length; i++) {
 				commandString += " " + command[i];
 			}
-			LogUtils.info("using jna to execute " + command);
-			windowsNativeExec(commandString, waitFor);
+			LogUtils.info("using jna to execute: " + commandString);
+			try {
+				windowsNativeExec(commandString, waitFor);
+			} catch (Exception e) {
+				throw new IOException(e.getMessage()+" for command: "+commandString);
+			}
 		}
 		else {
-			LogUtils.info("execute " + Arrays.toString(command));
+			LogUtils.info("execute: " + Arrays.toString(command));
 			Runtime.getRuntime().exec(command);
 		}
 	}
