@@ -20,6 +20,7 @@ public class ProxyAuthenticationDialog {
 	public void showDialog(boolean forced){
 		if(!CommunicationsController.isProxyCanceled() || forced) {
 			ProxyAuthenticationPanel panel = new ProxyAuthenticationPanel();
+			boolean wasSelected = panel.getChckbxUseProxy().isSelected();
 			int result = JOptionPane.showConfirmDialog(null, panel, TextUtils.getText("docear.proxy.connect.dialog.title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if(result == JOptionPane.OK_OPTION){
 				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_USE_PROXY, panel.getChckbxUseProxy().isSelected());
@@ -27,7 +28,7 @@ public class ProxyAuthenticationDialog {
 				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_PROXY_PORT, panel.getPortField().getText());
 				ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_PROXY_USERNAME, panel.getUsernameField().getText());
 				CommunicationsController.setPassword(panel.getPasswordField().getPassword());
-				CommunicationsController.updateClientConfiguration();
+				CommunicationsController.updateClientConfiguration(wasSelected!=panel.getChckbxUseProxy().isSelected());
 				okSelected = true;
 				CommunicationsController.setProxyCanceled(false);
 				return;
