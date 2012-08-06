@@ -91,6 +91,9 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 			for (String path : jabRefAttributes.parsePathNames(entry, paths)) {
 				String name = new File(path).getName();
+				if(((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(name)) {
+					continue;
+				}
 
 				if (entry.getCiteKey() == null) {
 					LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
@@ -120,7 +123,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		}
 		for (BibtexEntry entry : database.getEntries()) {
 			String url = entry.getField("url");
-			if (url == null || url.trim().length() == 0) {
+			if (url == null || url.trim().length() == 0 || ((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(url)) {
 				continue;
 			}
 
@@ -128,7 +131,8 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), database, entry);
 			}
 
-			if (this.urlReferences.get(url) == null) {
+			
+			if (this.urlReferences.get(url) == null) {			
 				this.urlReferences.put(url, entry);
 			}
 			else {
