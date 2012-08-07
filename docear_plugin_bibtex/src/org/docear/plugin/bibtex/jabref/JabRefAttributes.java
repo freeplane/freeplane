@@ -136,10 +136,10 @@ public class JabRefAttributes {
 
 	@SuppressWarnings("unchecked")
 	public boolean updateReferenceToNode(Reference reference, NodeModel node) throws ResolveDuplicateEntryAbortedException {
-		synchronized (updateNodeLock) {
-			if (updateNodeLock) {
-				return false;
-			}
+		if (updateNodeLock) {
+			return false;
+		}
+		synchronized (updateNodeLock) {	
 			updateNodeLock = true;
 		}
 		boolean changes = false;
@@ -188,20 +188,20 @@ public class JabRefAttributes {
 						}
 					}
 
-					if (file != null) {
-						resolveDuplicateLinks(file);
-					}
-					else {
-						resolveDuplicateLinks(url);
-					}
-					BibtexEntry entry = findBibtexEntryForPDF(uri, node.getMap());
-					if (entry == null) {
-						entry = findBibtexEntryForURL(uri, node.getMap(), false);
-					}
-
-					if (entry != null) {
-						reference = new Reference(entry);
-					}
+//					if (file != null) {
+//						resolveDuplicateLinks(file);
+//					}
+//					else {
+//						resolveDuplicateLinks(url);
+//					}
+//					BibtexEntry entry = findBibtexEntryForPDF(uri, node.getMap());
+//					if (entry == null) {
+//						entry = findBibtexEntryForURL(uri, node.getMap(), false);
+//					}
+//
+//					if (entry != null) {
+//						reference = new Reference(entry);
+//					}
 
 				}
 				catch (NullPointerException e) {

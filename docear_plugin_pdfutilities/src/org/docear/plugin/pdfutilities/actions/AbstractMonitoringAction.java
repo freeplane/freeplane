@@ -49,13 +49,18 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
+import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.SaveAll;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
 import de.intarsys.pdf.cos.COSRuntimeException;
@@ -148,6 +153,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {
 				DocearController.getController().getSemaphoreController().lock("MindmapUpdate");
+				NodeView.setModifyModelWithoutRepaint(true);
 
 				// Controller.getCurrentController().getViewController().getMapView().setVisible(false);
 				for (final NodeModel target : targets) {
@@ -278,9 +284,6 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			@Override
 			protected void done() {
 				DocearController.getController().getSemaphoreController().unlock("MindmapUpdate");
-				if (currentTarget != null) {
-					DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.UPDATE_MAP, currentTarget.getMap()));
-				}
 				
 				if (this.isCancelled() || Thread.currentThread().isInterrupted()) {
 					if (newAnnotations.size() > 100 && canceledDuringPasting) {
@@ -288,10 +291,29 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							currentTarget.setFolded(isfolded);
 						}
 					}
+					NodeView.setModifyModelWithoutRepaint(false);
 					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.15")); //$NON-NLS-1$
 				}
 				else {
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.16")); //$NON-NLS-1$
+					if (currentTarget != null) {
+						DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.UPDATE_MAP, currentTarget.getMap()));
+					}
+					NodeView.setModifyModelWithoutRepaint(false);
+					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.16")); //$NON-NLS-1$					
+				}
+				if (currentTarget!= null) {
+					MapModel map = currentTarget.getMap();
+					LogUtils.info("updating view for map: " + map.getTitle());
+					String savedAttributeLayout = getAttributeViewType(map);
+					setAttributeViewType(map, AttributeTableLayoutModel.HIDE_ALL);
+					if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_ALL)){
+						setAttributeViewType(map, AttributeTableLayoutModel.SHOW_ALL);
+					}
+					if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_SELECTED)){
+						setAttributeViewType(map, AttributeTableLayoutModel.SHOW_SELECTED);
+					}
+					/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
+					nodeView.updateAll();*/
 				}
 
 				// Controller.getCurrentController().getViewController().getMapView().setVisible(true);				
@@ -299,6 +321,33 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				time = System.currentTimeMillis() - time;
 				System.out.println("execution time: " + (time / 1000));
 
+			}
+			
+			protected void setAttributeViewType(final MapModel map, final String type) {
+				final String attributeViewType = getAttributeViewType(map);
+				if (attributeViewType != null && attributeViewType != type) {
+					final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+					attributes.setAttributeViewType(type);
+					final MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, ModelessAttributeController.ATTRIBUTE_VIEW_TYPE, attributeViewType, type);
+					try{
+						Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
+					}
+					catch(Exception e){
+						LogUtils.warn(e);
+					}
+				}
+			}
+			
+			protected String getAttributeViewType(final MapModel map) {
+				if (map == null) {
+					return null;
+				}
+				final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+				if (attributes == null) {
+					return null;
+				}
+				final String attributeViewType = attributes.getAttributeViewType();
+				return attributeViewType;
 			}
 
 			private boolean canceled() throws InterruptedException {

@@ -45,6 +45,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	public boolean updateMindmap(MapModel map) {
+		System.out.println("REferenceupdater");
 		if (DocearController.getController().getSemaphoreController().isLocked("MindmapUpdate")) {
 			return false;
 		}
@@ -52,7 +53,9 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			return false;
 		}
 		try {
-    		DocearReferenceUpdateController.lock();
+			System.out.println("start REferenceupdater");
+    		DocearReferenceUpdateController.lock();    		
+    		DocearController.getController().getSemaphoreController().lock("MindmapUpdate");
     		
     		jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
     		database = ReferencesController.getController().getJabrefWrapper().getDatabase();
@@ -64,12 +67,15 @@ public class ReferenceUpdater extends AMindmapUpdater {
     		}
     		if (this.urlReferences.size() == 0) {
     			buildUrlIndex();
-    		}
+    		}    		
     		return updateMap(map);
 		}
 		finally {
+			DocearController.getController().getSemaphoreController().unlock("MindmapUpdate");
 			DocearReferenceUpdateController.unlock();
+			System.out.println("fertsch REferenceupdater");
 		}
+		
 	}
 
 	private boolean updateMap(MapModel map) {
