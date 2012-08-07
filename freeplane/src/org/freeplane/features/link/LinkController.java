@@ -465,15 +465,15 @@ public class LinkController extends SelectionController implements IExtension {
 			int differencePos;
 			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
 			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
-			int lastCommonSeparatorPos = 0;
-			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
+			int lastCommonSeparatorPos = -1;
+			for (differencePos = 0; differencePos <= lastIndexOfSeparatorInMapPath
 					&& differencePos <= lastIndexOfSeparatorInFilePath
 					&& filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
 				if (filePathAsString.charAt(differencePos) == '/') {
 					lastCommonSeparatorPos = differencePos;
 				}
 			}
-			if (lastCommonSeparatorPos == 0) {
+			if (lastCommonSeparatorPos < 0) {
 				return fileUri;
 			}
 			final StringBuilder relativePath = new StringBuilder();
