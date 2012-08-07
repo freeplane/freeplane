@@ -307,7 +307,9 @@ public class DocearRecommendationsMapView extends MapView {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.white);
 		panel.setLayout(new ListLayoutManager());
-		this.add(panel);
+		this.add(getNewButtonBar(), BorderLayout.NORTH);
+		this.add(panel, BorderLayout.CENTER);
+		//this.add(panel);
 		return panel;
 	}
 
