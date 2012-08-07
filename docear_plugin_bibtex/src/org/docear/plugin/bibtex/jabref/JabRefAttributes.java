@@ -473,8 +473,9 @@ public class JabRefAttributes {
 		try {
 			nodeUrl = nodeUri.toURL();
 		}
-		catch (MalformedURLException e1) {
-			LogUtils.warn(e1);
+		catch (Exception e1) {
+			LogUtils.info(e1.getMessage());
+			return null;
 		}
 		try {
 			if (ignores != null) {
