@@ -36,9 +36,12 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 	private JabRefAttributes jabRefAttributes;
 	private BibtexDatabase database;
+	
+	private long time = 0;
 
 	public ReferenceUpdater(String title) {
-		super(title);
+		super(title);		
+		time = System.currentTimeMillis();
 		referenceNodes = new HashMap<BibtexEntry, Set<NodeModel>>();
 		pdfReferences = new HashMap<String, BibtexEntry>();
 		urlReferences = new HashMap<String, BibtexEntry>();
@@ -73,7 +76,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		finally {
 			DocearController.getController().getSemaphoreController().unlock("MindmapUpdate");
 			DocearReferenceUpdateController.unlock();
-			System.out.println("fertsch REferenceupdater");
+			System.out.println("Referenceupdater: done: "+(System.currentTimeMillis()-time));
 		}
 		
 	}
@@ -81,6 +84,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	private boolean updateMap(MapModel map) {
 		referenceNodes.clear();
 		buildIndex(map.getRootNode());
+		System.out.println("ReferenceUpdater: buildIndex for nodes: "+(System.currentTimeMillis()-time));
 
 		return updateReferenceNodes();
 	}
@@ -121,6 +125,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				}
 			}
 		}
+		System.out.println("ReferenceUpdater: buildPdfIndex: "+(System.currentTimeMillis()-time));
 	}
 
 	private void buildUrlIndex() {
@@ -157,6 +162,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 			}
 		}
+		System.out.println("ReferenceUpdater: buildUrlIndex: "+(System.currentTimeMillis()-time));
 	}
 	
 	private boolean isIgnored(Reference reference, NodeModel node) {

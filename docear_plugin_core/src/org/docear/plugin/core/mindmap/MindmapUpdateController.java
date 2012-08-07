@@ -263,6 +263,7 @@ public class MindmapUpdateController {
 					if (item.isMapOpen()) {
 						LogUtils.info("updating view for map: " + item.getIdentifierForDialog());
 						String savedAttributeLayout = getAttributeViewType(item.getModel());
+						long l = System.currentTimeMillis();
 						setAttributeViewType(item.getModel(), AttributeTableLayoutModel.HIDE_ALL);
 						if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_ALL)){
 							setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_ALL);
@@ -270,6 +271,7 @@ public class MindmapUpdateController {
 						if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_SELECTED)){
 							setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_SELECTED);
 						}
+						System.out.println("resetting folding complete: "+(System.currentTimeMillis()-l));
 						/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 						nodeView.updateAll();*/
 					}
