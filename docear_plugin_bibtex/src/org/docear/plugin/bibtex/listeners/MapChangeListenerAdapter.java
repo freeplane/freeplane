@@ -1,6 +1,8 @@
 package org.docear.plugin.bibtex.listeners;
 
+import java.io.File;
 import java.net.URI;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -15,7 +17,9 @@ import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.AnnotationID;
 import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
+import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.core.util.Tools;
@@ -27,6 +31,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 
@@ -68,8 +73,25 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 				catch(Exception e){
 					LogUtils.warn(e);
 				}
-				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();				
-				try {					
+				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
+				MapModificationSession session = event.getNode().getMap().getExtension(DocearMapModelExtension.class).getMapModificationSession();
+
+				Set<String> ignores = null;
+				String nodeFileName = null;
+				if (session != null) {
+					File nodeFile = WorkspaceUtils.resolveURI(newUri, event.getNode().getMap());
+					if (nodeFile != null) {
+						nodeFileName = nodeFile.getName();
+						ignores = (Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST);
+					}
+					else {
+						ignores = (Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST);
+					}
+					 
+					
+				}
+				try {
+					
 					BibtexEntry entry = jabRefAttributes.findBibtexEntryForPDF(newUri, event.getNode().getMap());
 					if (entry == null) {
 						entry = jabRefAttributes.findBibtexEntryForURL(newUri, event.getNode().getMap(), false);
@@ -100,7 +122,14 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 				}
 				catch (ResolveDuplicateEntryAbortedException e) {
 					System.out.println("MapChangeListenerAdapter.nodeChanged interrupted");
-					jabRefAttributes.removeLinkFromNode(event.getNode());
+					if(ignores != null) {
+						if(nodeFileName != null) {
+							ignores.add(nodeFileName);
+						}
+						else {
+							ignores.add(newUri.toString());
+						}
+					}
 					return;
 				}
 			}

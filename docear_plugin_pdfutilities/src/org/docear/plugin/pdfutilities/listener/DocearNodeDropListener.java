@@ -71,7 +71,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 		DocearMapModelExtension modelExtension = node.getMap().getExtension(DocearMapModelExtension.class);
 		try{
 			MapModificationSession session = new MapModificationSession();	
-    		modelExtension.setModificationSession(session);
+    		modelExtension.setMapModificationSession(session);
 
     		final DataFlavor fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List"); //$NON-NLS-1$
 			final DataFlavor uriListFlavor = new DataFlavor("text/uri-list; class=java.lang.String"); //$NON-NLS-1$
@@ -128,6 +128,13 @@ public class DocearNodeDropListener extends MNodeDropListener {
 			protected Void doInBackground() throws Exception {
 				int count = 0;
 				firePropertyChange(SwingWorkerDialog.SET_PROGRESS_BAR_DETERMINATE, null, null);
+				MapModificationSession session = targetNode.getMap().getExtension(DocearMapModelExtension.class).getMapModificationSession();
+				if (session == null) {
+					session = new MapModificationSession();
+					targetNode.getMap().getExtension(DocearMapModelExtension.class).setMapModificationSession(session);
+				}
+				session.putSessionObject(MapModificationSession.FILE_IGNORE_LIST , new HashSet<String>());
+				
 				for(final File file : fileList){	
 					if(Thread.currentThread().isInterrupted()) return null;
 					firePropertyChange(SwingWorkerDialog.NEW_FILE, null, file.getName());

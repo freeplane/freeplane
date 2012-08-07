@@ -19,6 +19,7 @@ import net.sf.jabref.labelPattern.LabelPatternUtil;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.docear.plugin.core.DocearController;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.core.util.Tools;
@@ -36,6 +37,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 	private JabRefAttributes jabRefAttributes;
 	private BibtexDatabase database;
+	private MapModificationSession session;
 
 	public ReferenceUpdater(String title) {
 		super(title);
@@ -45,7 +47,11 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	public boolean updateMindmap(MapModel map) {
-		System.out.println("REferenceupdater");
+		session = map.getExtension(DocearMapModelExtension.class).getMapModificationSession();
+		if(session == null) {
+			session = new MapModificationSession();
+			map.getExtension(DocearMapModelExtension.class).setMapModificationSession(session);
+		}
 		if (DocearController.getController().getSemaphoreController().isLocked("MindmapUpdate")) {
 			return false;
 		}
@@ -86,8 +92,8 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	private void buildPdfIndex() {
-		if (getSessionObject(MapModificationSession.FILE_IGNORE_LIST) == null) {
-			putSessionObject(MapModificationSession.FILE_IGNORE_LIST, new HashSet<String>());
+		if (session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST) == null) {
+			session.putSessionObject(MapModificationSession.FILE_IGNORE_LIST, new HashSet<String>());
 		}
 		for (BibtexEntry entry : database.getEntries()) {
 			String paths = entry.getField(GUIGlobals.FILE_FIELD);
@@ -97,7 +103,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 
 			for (String path : jabRefAttributes.parsePathNames(entry, paths)) {
 				String name = new File(path).getName();
-				if(((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(name)) {
+				if(((Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(name)) {
 					continue;
 				}
 
@@ -115,7 +121,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 					}
 					catch (ResolveDuplicateEntryAbortedException e) {
 						this.pdfReferences.remove(name);
-						((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
+						((Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
 						LogUtils.info("ignore pdf on mindmap update: " + e.getFile());
 					}
 				}
@@ -124,12 +130,12 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	}
 
 	private void buildUrlIndex() {
-		if (getSessionObject(MapModificationSession.URL_IGNORE_LIST) == null) {
-			putSessionObject(MapModificationSession.URL_IGNORE_LIST, new HashSet<String>());
+		if (session.getSessionObject(MapModificationSession.URL_IGNORE_LIST) == null) {
+			session.putSessionObject(MapModificationSession.URL_IGNORE_LIST, new HashSet<String>());
 		}
 		for (BibtexEntry entry : database.getEntries()) {
 			String url = entry.getField("url");
-			if (url == null || url.trim().length() == 0 || ((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(url)) {
+			if (url == null || url.trim().length() == 0 || ((Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(url)) {
 				continue;
 			}
 
@@ -151,7 +157,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				}
 				catch (ResolveDuplicateEntryAbortedException e) {
 					this.urlReferences.remove(url);
-					((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).add(e.getUrl().toExternalForm());
+					((Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST)).add(e.getUrl().toExternalForm());
 					LogUtils.info("ignore url on mindmap update: " + e.getUrl());
 				}
 
@@ -163,7 +169,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		if (reference.getUris().size() > 0) {
 			File file = WorkspaceUtils.resolveURI(reference.getUris().iterator().next(), node.getMap());
 			if (file != null) {
-				if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
+				if (((Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
 					return true;
 				}
 			}
@@ -171,7 +177,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		
 		URL u = reference.getUrl();
 		if (u != null) {
-			if (((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(u.toExternalForm())) {
+			if (((Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(u.toExternalForm())) {
 				return true;
 			}
 		}
@@ -185,7 +191,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
     			}
     			
     			if (file != null) {
-    				if (((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
+    				if (((Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).contains(file.getName())) {
     					return true;
     				}
     			}
@@ -199,7 +205,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
     				LogUtils.warn(e.getMessage());
     			}
     			if (u != null) {
-    				if (((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(u.toExternalForm())) {
+    				if (((Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST)).contains(u.toExternalForm())) {
     					return true;
     				}
     			}
@@ -233,10 +239,10 @@ public class ReferenceUpdater extends AMindmapUpdater {
 				}
 				catch (ResolveDuplicateEntryAbortedException e) {
 					if (e.getFile() != null) {
-						((Set<String>) getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
+						((Set<String>) session.getSessionObject(MapModificationSession.FILE_IGNORE_LIST)).add(e.getFile().getName());
 					}
 					else {
-						((Set<String>) getSessionObject(MapModificationSession.URL_IGNORE_LIST)).add(e.getUrl().toExternalForm());
+						((Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST)).add(e.getUrl().toExternalForm());
 					}
 				}
 

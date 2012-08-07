@@ -1,13 +1,10 @@
 package org.docear.plugin.core.mindmap;
 
-import org.docear.plugin.core.features.MapModificationSession;
 import org.freeplane.features.map.MapModel;
 
 public abstract class AMindmapUpdater {
 		
-	private final String title;
-	private MapModificationSession session;
-	
+	private final String title;	
 	
 	public AMindmapUpdater(String title) {	
 		this.title = title;
@@ -17,20 +14,6 @@ public abstract class AMindmapUpdater {
 		return title;
 	}	
 	
-	protected void setSession(MapModificationSession session) {
-		this.session = session;		
-	}
-	
-	protected Object getSessionObject(String key) {
-		if(session == null) {
-			session = new MapModificationSession();
-		}
-		return session.getSessionObject(key);
-	}
-	
-	protected void putSessionObject(String key, Object o) {
-		session.putSessionObject(key, o);
-	}
 	/**
 	 * update a node (e.g. references)
 	 * @param node to be updated by this method

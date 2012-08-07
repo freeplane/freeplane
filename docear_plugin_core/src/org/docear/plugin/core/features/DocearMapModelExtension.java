@@ -86,7 +86,7 @@ public class DocearMapModelExtension implements IExtension {
 		this.session = null;		
 	}
 
-	public void setModificationSession(MapModificationSession session) {
+	public void setMapModificationSession(MapModificationSession session) {
 		this.session = session;
 	}
 	

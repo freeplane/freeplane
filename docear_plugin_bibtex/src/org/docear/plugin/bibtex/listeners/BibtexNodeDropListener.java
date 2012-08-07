@@ -52,7 +52,7 @@ public class BibtexNodeDropListener extends DocearNodeDropListener {
 		DocearMapModelExtension modelExtension = node.getMap().getExtension(DocearMapModelExtension.class);
 		try{
     		MapModificationSession session = new MapModificationSession();	
-    		modelExtension.setModificationSession(session);
+    		modelExtension.setMapModificationSession(session);
 						
 			if (dtde.isLocalTransfer() && dtde.isDataFlavorSupported(TransferableEntrySelection.flavorInternal)) {
 				mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
