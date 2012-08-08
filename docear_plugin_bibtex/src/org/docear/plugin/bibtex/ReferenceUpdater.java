@@ -38,6 +38,7 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	private JabRefAttributes jabRefAttributes;
 	private BibtexDatabase database;
 	private MapModificationSession session;
+	
 
 	public ReferenceUpdater(String title) {
 		super(title);
@@ -79,7 +80,6 @@ public class ReferenceUpdater extends AMindmapUpdater {
 		finally {
 			DocearController.getController().getSemaphoreController().unlock("MindmapUpdate");
 			DocearReferenceUpdateController.unlock();
-			System.out.println("fertsch REferenceupdater");
 		}
 		
 	}
