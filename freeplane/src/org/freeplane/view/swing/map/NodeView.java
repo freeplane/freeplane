@@ -1150,6 +1150,10 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public boolean requestFocusInWindow() {
+		//DOCEAR: update the nodemodel without repainting, to greatly enhance speed when inserting references
+		if (NodeView.modifyModelWithoutRepaint) {
+			return false;
+		}
 		if (mainView == null) {
 			return false;
 		}
@@ -1160,6 +1164,10 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void requestFocus() {
+		//DOCEAR: update the nodemodel without repainting, to greatly enhance speed when inserting references
+		if (NodeView.modifyModelWithoutRepaint) {
+			return;
+		}
 		if (mainView == null) {
 			return;
 		}
