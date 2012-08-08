@@ -366,19 +366,18 @@ public class ConnectorView extends AConnectorView{
 		final boolean selfLink = getSource() == getTarget();
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
 		if (startPoint != null && endPoint != null) {
-			if(selfLink)
-			if(isLine)
+			if(isLine) {
                             if (selfLink) {
 				arrowLinkCurve = createLine(startPoint, startPoint2);
                             }
                             else {
 				arrowLinkCurve = createLine(startPoint, endPoint);
                             }
-                }
-                else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
-                    arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
-                else
-                    arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
+                        }
+                        else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
+                            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
+                        else
+                            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
 		}
 		else
 			arrowLinkCurve = null;
@@ -386,18 +385,18 @@ public class ConnectorView extends AConnectorView{
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			if (selfLink)
-				paintArrow(g, startPoint2, startPoint);
-			else if(isLine && endPoint != null)
+			if(!selfLink && isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 				paintArrow(g, startPoint2, startPoint);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
-			if (selfLink)
+			if(isLine && startPoint != null) {
+                            if (selfLink)
 				paintArrow(g, startPoint, startPoint2);
-			else if(isLine && startPoint != null)
+                            else
 				paintArrow(g, startPoint, endPoint);
+                        }
 			else
 			paintArrow(g, endPoint2, endPoint);
 		}
@@ -458,15 +457,8 @@ public class ConnectorView extends AConnectorView{
 				middleTextRectangle = drawEndPointText(g, middleLabel, endPoint2, endPoint);
 			}
 		}
-		if (startPoint != null && endPoint != null) {
-			if(getTarget() == getSource()){
-				if( !connectorModel.getEndArrow().equals(ArrowType.NONE))
-					middleTextRectangle = drawEndPointText(g, middleLabel, startPoint2, startPoint);
-				else
-					middleTextRectangle = drawMiddleLabel(g, middleLabel, startPoint2);
-			}
-			else
-				middleTextRectangle = drawMiddleLabel(g, middleLabel, getCenterPoint());
+                if (startPoint != null && endPoint != null) {
+                    middleTextRectangle = drawMiddleLabel(g, middleLabel, getCenterPoint());
 		}
 		g.setFont(oldFont);
     }
