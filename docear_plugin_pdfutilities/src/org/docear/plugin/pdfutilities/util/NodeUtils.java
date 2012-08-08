@@ -419,17 +419,17 @@ public class NodeUtils {
 			if(attributes != null){
 				if(attributes.getAttributeKeyList().contains(attributeKey)){
 					//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
-					AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);	    		
+					AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+//					for(INodeView view : target.getViewers()){
+//							view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
+//					}		    		
 				}
 				else{
 					AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
 				}
 				
 				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-				
-				attributeView.getNodeView().getContent().invalidate();				
-				attributeView.getNodeView().doLayout();
-				
+				attributeView.update();
 				return true;
 			}
 		}
