@@ -87,8 +87,14 @@ public class ReferenceUpdater extends AMindmapUpdater {
 	private boolean updateMap(MapModel map) {
 		referenceNodes.clear();
 		buildIndex(map.getRootNode());
-
-		return updateReferenceNodes();
+		LogUtils.info("Updating references on map with "+nodeNum+" nodes ...");
+		long snap = System.currentTimeMillis();
+		try {
+			return updateReferenceNodes();
+		}
+		finally {
+			LogUtils.info("Updated references on map in "+(System.currentTimeMillis()-snap)/1000+"sec");
+		}
 	}
 
 	private void buildPdfIndex() {
@@ -245,13 +251,18 @@ public class ReferenceUpdater extends AMindmapUpdater {
 						((Set<String>) session.getSessionObject(MapModificationSession.URL_IGNORE_LIST)).add(e.getUrl().toExternalForm());
 					}
 				}
-
+				
+				if(Thread.currentThread().isInterrupted()) {
+					return changes;
+				}
 			}
 		}
 		return changes;
 	}
 
+	int nodeNum = 0;
 	private void buildIndex(NodeModel parent) {
+		nodeNum++;
 		addNodeToReferenceIndex(parent);
 
 		for (NodeModel child : parent.getChildren()) {

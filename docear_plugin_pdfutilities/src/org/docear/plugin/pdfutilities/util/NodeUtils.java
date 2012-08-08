@@ -36,9 +36,7 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -422,23 +420,21 @@ public class NodeUtils {
 				if(attributes.getAttributeKeyList().contains(attributeKey)){
 					//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
 					AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
-					for(INodeView view : target.getViewers()){
-						view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
-					}
-					AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-		    		attributeView.setOptimalColumnWidths();
-					return true;
+//					for(INodeView view : target.getViewers()){
+//							view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
+//					}		    		
 				}
 				else{
 					AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
-					AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-		    		attributeView.setOptimalColumnWidths();
-					return true;
 				}
+				
+				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+				attributeView.update();
+				return true;
 			}
 		}
 		catch (Exception e) {
-			LogUtils.warn("org.docear.plugin.pdfutilities.util.NodeUtils.setAttributeValue: "+e.getMessage());
+			LogUtils.warn("org.docear.plugin.pdfutilities.util.NodeUtils.setAttributeValue(1): "+e.getMessage());
 		}
 		return false;	
 	}

@@ -72,7 +72,7 @@ public class Reference {
 			}
 		}
 		catch (MalformedURLException e) {
-			LogUtils.info("org.docear.plugin.bibtex.Reference(): "+e.getMessage());
+			//LogUtils.info("org.docear.plugin.bibtex.Reference(): "+e.getMessage());
 		}
 	}
 
