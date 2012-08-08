@@ -262,7 +262,7 @@ public class MindmapUpdateController {
 						long l = System.currentTimeMillis();
 						for(INodeView nodeView : item.getModel().getRootNode().getViewers()) {
 							if(nodeView instanceof NodeView) {
-								((NodeView) nodeView).revalidate();
+								//((NodeView) nodeView).revalidate();
 								((NodeView) nodeView).updateAll();
 							}
 						}

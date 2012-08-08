@@ -426,9 +426,10 @@ public class NodeUtils {
 				}
 				
 				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-								
+				
+				attributeView.getNodeView().getContent().invalidate();				
 				attributeView.getNodeView().doLayout();
-				attributeView.getNodeView().getContent().invalidate();
+				
 				return true;
 			}
 		}
