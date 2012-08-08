@@ -60,7 +60,6 @@ public class ReferenceUpdater extends AMindmapUpdater {
 			return false;
 		}
 		try {
-			System.out.println("start REferenceupdater");
     		DocearReferenceUpdateController.lock();    		
     		DocearController.getController().getSemaphoreController().lock("MindmapUpdate");
     		
