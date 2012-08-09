@@ -18,6 +18,7 @@ import java.util.prefs.Preferences;
 
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.WinReg;
+import com.sun.jna.platform.win32.WinReg.HKEY;
 
 public class WinRegistry {
 	
@@ -258,10 +259,27 @@ public class WinRegistry {
 	  
 	  private static void printSubKey(int hkey, String key, PrintStream printer) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		  printer.println("["+key+"]");
-		  Set<Entry<String, String>> entries = WinRegistry.readStringValues(hkey, key).entrySet();
-		  for(Entry<String, String> entry : entries) {
-			  printer.println("\""+entry.getKey()+"\"=\""+entry.getValue()+"\"");
+		  Set<Entry<String, Object>> entries;
+		try {
+			entries = Advapi32Util.registryGetValues(getHKey(hkey), key).entrySet();
+		  
+		  for(Entry<String, Object> entry : entries) {
+			  if(entry.getValue() instanceof Integer) {
+				  String value = Integer.toHexString(((Integer)entry.getValue()));
+				  while(value.length() < 8) {
+					  value = "0"+value;
+				  }
+				  printer.println("\""+entry.getKey()+"\"=dword:"+value+"");
+			  }
+			  else {
+				  printer.println("\""+entry.getKey()+"\"=\""+entry.getValue()+"\"");
+			  }
 		  }
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  
 		  printer.println("");
 		  for(String subKey : WinRegistry.readStringSubKeys(hkey, key)) {
 			  printSubKey(hkey, key+"\\"+subKey, printer);
@@ -448,36 +466,22 @@ public class WinRegistry {
 	}
 	
 	public static void writeIntValue(int hkey, String key, String name, int value) throws IOException {
-		try {
-			switch(hkey) {
-				case HKEY_CURRENT_USER: {
-					Advapi32Util.registrySetIntValue(WinReg.HKEY_CURRENT_USER, key, name, value);
-					break;
-				}
+		
+		Advapi32Util.registrySetIntValue(getHKey(hkey), key, name, value);
+			
+	}
 	
-				case HKEY_CLASSES_ROOT: {
-					Advapi32Util.registrySetIntValue(WinReg.HKEY_CLASSES_ROOT, key, name, value);
-					break;
-				}
-	
-				case HKEY_LOCAL_MACHINE: {
-					Advapi32Util.registrySetIntValue(WinReg.HKEY_LOCAL_MACHINE, key, name, value);
-					break;
-				}
-	
-				case HKEY_USERS: {
-					Advapi32Util.registrySetIntValue(WinReg.HKEY_USERS, key, name, value);
-					break;
-				}
-				default: {
-					throw new IOException("invalid hive key");
-				}
+	private static HKEY getHKey(int hkey) throws IOException {
+		switch(hkey) {
+			case HKEY_CURRENT_USER: return WinReg.HKEY_CURRENT_USER;
+			case HKEY_CLASSES_ROOT: return WinReg.HKEY_CLASSES_ROOT;
+			case HKEY_LOCAL_MACHINE: return WinReg.HKEY_LOCAL_MACHINE;
+			case HKEY_USERS: return WinReg.HKEY_USERS;
+			
+			default: {
+				throw new IOException("invalid hive key");
 			}
 		}
-		catch (Exception e) {
-			throw new IOException(e);
-		}
-			
 	}
 
 	public static void importFile(String fileName) throws IOException {
