@@ -4,7 +4,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -16,18 +15,11 @@ import java.util.TreeMap;
 
 import javax.swing.SwingUtilities;
 
-import name.pachler.nio.file.FileSystems;
-import name.pachler.nio.file.Path;
-import name.pachler.nio.file.Paths;
-import name.pachler.nio.file.StandardWatchEventKind;
-import name.pachler.nio.file.WatchEvent;
 import name.pachler.nio.file.WatchKey;
-import name.pachler.nio.file.WatchService;
-import name.pachler.nio.file.impl.PathWatchKey;
 
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
@@ -154,7 +146,7 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 	
 	private List<? extends NodeModel> getAutoMonitorNodes(NodeModel node) {
 		List<NodeModel> result = new ArrayList<NodeModel>();
-		if(NodeUtils.isAutoMonitorNode(node)){
+		if(MonitoringUtils.isAutoMonitorNode(node)){
 			result.add(node);
 		}
 		for(NodeModel child : node.getChildren()){
@@ -185,7 +177,7 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 			mapKeysMap.put(map, keys);
 		}
 		for(NodeModel model : monitoringNodes) {
-			File dir = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(model), map);
+			File dir = WorkspaceUtils.resolveURI(MonitoringUtils.getPdfDirFromMonitoringNode(model), map);
 			addMonitoringDirectory(map, dir);
 		}
 	}

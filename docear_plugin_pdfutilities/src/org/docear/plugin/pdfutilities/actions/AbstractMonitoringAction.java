@@ -35,6 +35,7 @@ import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.util.HtmlUtils;
+import org.docear.plugin.core.util.NodeUtilities;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
@@ -42,7 +43,7 @@ import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
 import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
 import org.docear.plugin.pdfutilities.util.CustomFileFilter;
 import org.docear.plugin.pdfutilities.util.CustomFileListFilter;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
@@ -50,7 +51,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
-import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapChangeEvent;
@@ -158,7 +158,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				// Controller.getCurrentController().getViewController().getMapView().setVisible(false);
 				for (final NodeModel target : targets) {
 					currentTarget = target;
-					URI uri = NodeUtils.getPdfDirFromMonitoringNode(target);
+					URI uri = MonitoringUtils.getPdfDirFromMonitoringNode(target);
 					if (uri != null) {
 						DocearController.getController().getDocearEventLogger()
 								.appendToLog(this, DocearLogEvent.MONITORING_FOLDER_READ, WorkspaceUtils.resolveURI(uri));
@@ -245,7 +245,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 								continue;
 							}
 							else if (file != null) {
-								File monitoringDirectory = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap());
+								File monitoringDirectory = WorkspaceUtils.resolveURI(MonitoringUtils.getPdfDirFromMonitoringNode(target), target.getMap());
 								if (file.getPath().startsWith(monitoringDirectory.getPath())) {
 									AnnotationModel annoation = new PdfAnnotationImporter().searchAnnotation(Tools.getAbsoluteUri(node), node);
 									if (annoation == null) {
@@ -304,14 +304,16 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 				if (currentTarget!= null) {
 					MapModel map = currentTarget.getMap();
 					LogUtils.info("updating view for map: " + map.getTitle());
-					String savedAttributeLayout = getAttributeViewType(map);
-					setAttributeViewType(map, AttributeTableLayoutModel.HIDE_ALL);
-					if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_ALL)){
-						setAttributeViewType(map, AttributeTableLayoutModel.SHOW_ALL);
-					}
-					if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_SELECTED)){
-						setAttributeViewType(map, AttributeTableLayoutModel.SHOW_SELECTED);
-					}
+					Controller.getCurrentController().getViewController().zoomIn();
+					Controller.getCurrentController().getViewController().zoomOut();
+//					String savedAttributeLayout = getAttributeViewType(map);
+//					setAttributeViewType(map, AttributeTableLayoutModel.HIDE_ALL);
+//					if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_ALL)){
+//						setAttributeViewType(map, AttributeTableLayoutModel.SHOW_ALL);
+//					}
+//					if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_SELECTED)){
+//						setAttributeViewType(map, AttributeTableLayoutModel.SHOW_SELECTED);
+//					}
 					/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
 					nodeView.updateAll();*/
 				}
@@ -541,13 +543,13 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(tempAnnotation.getTitle(),
 							target.getMap());
 					AnnotationController.setModel(node, tempAnnotation);
-					NodeUtils.setLinkFrom(tempAnnotation.getUri(), node);
+					NodeUtilities.setLinkFrom(tempAnnotation.getUri(), node);
 					result.push(node);
 					tempAnnotation.setInserted(true);
 					tempAnnotation = tempAnnotation.getParent();
 				} while (tempAnnotation != null);
 				if (!isFlattenSubfolders(target)) {
-					File pdfDirFile = WorkspaceUtils.resolveURI(NodeUtils.getPdfDirFromMonitoringNode(target));
+					File pdfDirFile = WorkspaceUtils.resolveURI(MonitoringUtils.getPdfDirFromMonitoringNode(target));
 					File annoFile = WorkspaceUtils.resolveURI(annotation.getUri());
 					if (annoFile != null) {
 						File parent = annoFile.getParentFile();
@@ -556,7 +558,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 							NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).newNode(parent.getName(),
 									target.getMap());
 							DocearNodeModelExtensionController.setEntry(node, DocearExtensionKey.MONITOR_PATH, null);
-							NodeUtils.setLinkFrom(WorkspaceUtils.getURI(parent), node);
+							NodeUtilities.setLinkFrom(WorkspaceUtils.getURI(parent), node);
 							result.push(node);
 							parent = parent.getParentFile();
 						}
@@ -702,7 +704,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.28")); //$NON-NLS-1$
 				if (canceled()) return false;
-				URI monitoringDirectory = Tools.getAbsoluteUri(NodeUtils.getPdfDirFromMonitoringNode(target), target.getMap());
+				URI monitoringDirectory = Tools.getAbsoluteUri(MonitoringUtils.getPdfDirFromMonitoringNode(target), target.getMap());
 				if (monitoringDirectory == null || Tools.getFilefromUri(monitoringDirectory) == null || !Tools.getFilefromUri(monitoringDirectory).exists()) {
 					UITools.informationMessage(TextUtils.getText("AbstractMonitoringAction.29")); //$NON-NLS-1$
 					return false;
@@ -713,7 +715,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.31")); //$NON-NLS-1$
 				if (canceled()) return false;
-				List<URI> mindmapDirectories = NodeUtils.getMindmapDirFromMonitoringNode(target);
+				List<URI> mindmapDirectories = MonitoringUtils.getMindmapDirFromMonitoringNode(target);
 				Collection<URI> mindmapFiles = new ArrayList<URI>();
 				for (URI uri : mindmapDirectories) {
 					uri = Tools.getAbsoluteUri(uri, target.getMap());
@@ -731,9 +733,9 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 
 				fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("AbstractMonitoringAction.33")); //$NON-NLS-1$
 				if (canceled()) return false;
-				monitoredMindmaps = NodeUtils.getMapsFromUris(mindmapFiles);
+				monitoredMindmaps = NodeUtilities.getMapsFromUris(mindmapFiles);
 				if (updateMindmaps(monitoredMindmaps)) {
-					monitoredMindmaps = NodeUtils.getMapsFromUris(mindmapFiles);
+					monitoredMindmaps = NodeUtilities.getMapsFromUris(mindmapFiles);
 				}
 
 				return true;
@@ -767,7 +769,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}
 
 			private boolean isFlattenSubfolders(NodeModel target) {
-				int value = NodeUtils.getAttributeIntValue(target, PdfUtilitiesController.MON_FLATTEN_DIRS);
+				int value = NodeUtilities.getAttributeIntValue(target, PdfUtilitiesController.MON_FLATTEN_DIRS);
 				switch (value) {
 				default:
 					return false;
@@ -777,7 +779,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			}
 
 			private boolean isMonitorSubDirectories(NodeModel target) {
-				int value = NodeUtils.getAttributeIntValue(target, PdfUtilitiesController.MON_SUBDIRS);
+				int value = NodeUtilities.getAttributeIntValue(target, PdfUtilitiesController.MON_SUBDIRS);
 				switch (value) {
 
 				default:

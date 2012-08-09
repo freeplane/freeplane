@@ -17,9 +17,10 @@ import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionK
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.docear.plugin.core.ui.SwingWorkerDialogLite;
+import org.docear.plugin.core.util.NodeUtilities;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -41,7 +42,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 
 	public void actionPerformed(ActionEvent arg0) {
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		int value = NodeUtils.getAttributeIntValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
+		int value = NodeUtilities.getAttributeIntValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
 		if(value == 0){			
 			boolean isFolded = selected.isFolded();
 			selected.setFolded(true);
@@ -49,7 +50,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
 			dialog.setHeadlineText(TextUtils.getText("MonitoringFlattenSubfoldersAction.0")); //$NON-NLS-1$
 			dialog.showDialog(thread);
-			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);				
+			NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);				
 			selected.setFolded(isFolded);
 		}
 		else{			
@@ -59,7 +60,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			SwingWorkerDialogLite dialog = new SwingWorkerDialogLite(Controller.getCurrentController().getViewController().getFrame());
 			dialog.setHeadlineText(TextUtils.getText("MonitoringFlattenSubfoldersAction.1")); //$NON-NLS-1$
 			dialog.showDialog(thread);
-			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+			NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
 			selected.setFolded(isFolded);			
 		}		
 	}
@@ -102,7 +103,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 					if(uri == null || Tools.getFilefromUri(uri) == null || !Tools.getFilefromUri(uri).exists() || !Tools.getFilefromUri(uri).isFile()){
 						continue;
 					}
-					Stack<File> folderStack = NodeUtils.getFolderStructureStack(selected, uri);				
+					Stack<File> folderStack = MonitoringUtils.getFolderStructureStack(selected, uri);				
 					if(!folderStack.isEmpty()){
 						result.put(node, folderStack);
 					}					
@@ -111,7 +112,7 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 					SwingUtilities.invokeAndWait(
 					        new Runnable() {
 					            public void run(){					            	
-					            	NodeModel target = NodeUtils.createFolderStructurePath(selected, entry.getValue());
+					            	NodeModel target = NodeUtilities.createFolderStructurePath(selected, entry.getValue());
 									((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(entry.getKey(), target, target.getChildCount());															
 					            }
 					        }
@@ -201,9 +202,9 @@ public class MonitoringFlattenSubfoldersAction extends DocearAction {
 			this.setEnabled(false);
 		}
 		else{
-			this.setEnabled(NodeUtils.isMonitoringNode(selected));
+			this.setEnabled(MonitoringUtils.isMonitoringNode(selected));
 		}
-		int value = NodeUtils.getAttributeIntValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
+		int value = NodeUtilities.getAttributeIntValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS);
 		if(value == 0){			
 			this.setSelected(false);
 		}

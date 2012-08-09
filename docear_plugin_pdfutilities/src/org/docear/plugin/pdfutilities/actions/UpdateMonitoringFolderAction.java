@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -40,7 +40,7 @@ public class UpdateMonitoringFolderAction extends AbstractMonitoringAction {
 			this.setEnabled(false);
 		}
 		else {
-			this.setEnabled(NodeUtils.isMonitoringNode(selected));
+			this.setEnabled(MonitoringUtils.isMonitoringNode(selected));
 		}
 	}
 

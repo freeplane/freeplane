@@ -10,9 +10,10 @@ import javax.swing.JFileChooser;
 
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.logger.DocearLogEvent;
+import org.docear.plugin.core.util.NodeUtilities;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -33,7 +34,7 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
 
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fileChooser;
-		Object value = NodeUtils.getPdfDirFromMonitoringNode((Controller.getCurrentController().getSelection().getSelected()));
+		Object value = MonitoringUtils.getPdfDirFromMonitoringNode((Controller.getCurrentController().getSelection().getSelected()));
 		if(value != null){
 			fileChooser = new JFileChooser(Tools.getFilefromUri(Tools.getAbsoluteUri((URI)value)));
 		}
@@ -51,8 +52,8 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
         	if(result == JFileChooser.APPROVE_OPTION){
         		URI mindmapDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), fileChooser.getSelectedFile());
         		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_INCOMING_FOLDER, pdfDir);
-        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_MINDMAP_FOLDER, mindmapDir);
+        		NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_INCOMING_FOLDER, pdfDir);
+        		NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_MINDMAP_FOLDER, mindmapDir);
         		List<NodeModel> list = new ArrayList<NodeModel>();
         		list.add(Controller.getCurrentController().getSelection().getSelected());
         		
@@ -69,7 +70,7 @@ public class EditMonitoringFolderAction extends AbstractMonitoringAction {
 			this.setEnabled(false);
 		}
 		else{
-			this.setEnabled(NodeUtils.isMonitoringNode(selected));
+			this.setEnabled(MonitoringUtils.isMonitoringNode(selected));
 		}
 	}
 

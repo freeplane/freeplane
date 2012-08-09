@@ -16,7 +16,7 @@ import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
@@ -50,7 +50,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
             try {
             	PdfAnnotationImporter importer = new PdfAnnotationImporter();            	
 				Collection<AnnotationModel> annotations = importer.importAnnotations(uri);				
-				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = NodeUtils.getOldAnnotationsFromCurrentMap();				
+				Map<AnnotationID, Collection<AnnotationNodeModel>> oldAnnotations = MonitoringUtils.getOldAnnotationsFromCurrentMap();				
 				annotations = AnnotationController.markNewAnnotations(annotations, oldAnnotations);
 				Map<AnnotationID, Collection<IAnnotation>> conflicts = AnnotationController.getConflictedAnnotations(annotations, oldAnnotations);
 				if(conflicts.size() > 0){
@@ -58,7 +58,7 @@ public class ImportNewAnnotationsAction extends ImportAnnotationsAction {
 					dialog.showDialog();
 				}
 				//System.gc();
-                NodeUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
+                MonitoringUtils.insertNewChildNodesFrom(annotations, selected.isLeft(), selected, selected);
 			} catch (IOException e) {
 				LogUtils.severe("ImportAllAnnotationsAction IOException at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (COSLoadException e) {
