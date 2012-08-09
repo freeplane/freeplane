@@ -46,6 +46,7 @@ import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CompareVersion;
 import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.core.util.WinRegistry;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DeleteMonitoringFolderAction;
@@ -857,7 +858,13 @@ public class PdfUtilitiesController extends ALanguageController {
 
 		String[] command;
 		if (Compat.isWindowsOS()) {
-			command = new String[] { "regedit", "/s", importFile.getAbsolutePath() };
+			try {
+				WinRegistry.importFile(importFile.getAbsolutePath());
+				return;
+			}
+			catch (Exception e) {
+				command = new String[] { "regedit", "/s", importFile.getAbsolutePath() };
+			}
 		}
 		else {
 			// Linux/Unix
@@ -878,10 +885,12 @@ public class PdfUtilitiesController extends ALanguageController {
 		if (Compat.isMacOsX()) {
 			return;
 		}
-
+		//HKEY_CURRENT_USER\Software\Tracker Software\PDFViewer\Documents
 		String[] command;
 		if (Compat.isWindowsOS()) {
-			command = new String[] { "regedit", "/a", exportFile.getAbsolutePath(), key };
+			Object[] keyTokens = WinRegistry.parseKey(key);
+			WinRegistry.exportKey((Integer)keyTokens[0], keyTokens[1].toString(), exportFile.getAbsolutePath()); 
+			return;  //command = new String[] { "regedit", "/a", exportFile.getAbsolutePath(), key };
 		}
 		else {
 			// Linux/Unix
