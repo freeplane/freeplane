@@ -39,7 +39,7 @@ public class PDFReaderHandle {
 		return execFile;
 	}
 	
-	public int compare(PDFReaderHandle handle) {
+	public int compare(PDFReaderHandle handle) {		
 		return CompareVersion.compareVersions(this.version, (handle == null ? null : handle.version));
 	}
 
