@@ -191,7 +191,7 @@ public class PdfUtilitiesController extends ALanguageController {
 	}
 
 	public void showViewerSelectionIfNecessary(boolean force) {
-		List<PDFReaderHandle> readers = getPdfViewers();
+		List<PDFReaderHandle> readers = getPdfViewers();		
 		Boolean showReaderDialog = showReaderDialogNewPdfReader(readers);
 		if (showReaderDialog != null || force) {
 			InstalledPdfReadersDialog dialog = new InstalledPdfReadersDialog(readers.toArray(new PDFReaderHandle[] {}), showReaderDialog);
@@ -345,6 +345,9 @@ public class PdfUtilitiesController extends ALanguageController {
 	}
 
 	private Boolean showReaderDialogNewPdfReader(List<PDFReaderHandle> readers) {
+		if (readers == null || readers.size() == 0) {
+			return null;
+		}
 		String s = "";
 		for (PDFReaderHandle reader : readers) {
 			s += reader.getExecFile() + "|";
