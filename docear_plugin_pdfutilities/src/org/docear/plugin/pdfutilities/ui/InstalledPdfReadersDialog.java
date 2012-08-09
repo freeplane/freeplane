@@ -38,7 +38,7 @@ public class InstalledPdfReadersDialog extends JPanel {
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(40dlu;min)"),
+				RowSpec.decode("max(75dlu;min)"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:default:grow"),}));
 		
