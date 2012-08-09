@@ -145,8 +145,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
         		if(prefChanged) {
             		cc.getClasses().add(MultiPartWriter.class);
         			client = ApacheHttpClient.create(cc);
-        			client.setConnectTimeout(3000);
-        			client.setReadTimeout(3000);
+        			client.setConnectTimeout(10000);
+        			client.setReadTimeout(10000);
         		}
         		else {
         			client.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_HTTP_STATE, cc.getState());
