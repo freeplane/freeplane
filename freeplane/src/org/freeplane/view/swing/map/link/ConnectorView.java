@@ -282,7 +282,7 @@ public class ConnectorView extends AConnectorView{
 	 * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
 	 */
 	public void paint(final Graphics graphics) {
-                final boolean selfLink = getSource() == getTarget();
+        final boolean selfLink = getSource() == getTarget();
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
 		}
@@ -312,9 +312,9 @@ public class ConnectorView extends AConnectorView{
 			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
 				final Point incl = calcInclination(target, dellength);
 				incl.y = -incl.y;
-                                if (selfLink) {
-                                    fixInclineIfLoopNode(incl);
-                                }
+				if (selfLink) {
+					fixInclineIfLoopNode(incl);
+				}
 				connectorModel.setEndInclination(incl);
 				endPoint = target.getLinkPoint(connectorModel.getEndInclination());
 			}
