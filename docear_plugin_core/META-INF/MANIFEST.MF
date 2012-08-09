@@ -34,4 +34,6 @@ Export-Package: name.pachler.nio.file,
 Bundle-ClassPath: lib/plugin.jar,
  lib/JHyperlink.jar,
  lib/swingworker-backport.jar,
- lib/jpathwatch.jar
+ lib/jpathwatch.jar,
+ lib/jna.jar,
+ lib/platform.jar

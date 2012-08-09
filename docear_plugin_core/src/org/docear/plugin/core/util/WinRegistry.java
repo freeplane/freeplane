@@ -1,12 +1,23 @@
 package org.docear.plugin.core.util;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.prefs.Preferences;
+
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
 
 public class WinRegistry {
 	
@@ -230,6 +241,32 @@ public class WinRegistry {
 	      throw new IllegalArgumentException("rc=" + rc + "  key=" + key);
 	    }
 	  }
+	  
+	  public static void exportKey(int hkey, String key, String file) throws IOException {		  
+		 exportKey(hkey, key, new FileOutputStream(file)); 
+	  }
+	  
+	  public static void exportKey(int hkey, String key, OutputStream stream) throws IOException {
+		  try {
+			  PrintStream printer = new PrintStream(stream);
+			  printSubKey(hkey, key, printer);
+			  printer.flush();		 
+		  } catch (Exception e) {
+			  throw new IOException(e);
+		  }
+	  }
+	  
+	  private static void printSubKey(int hkey, String key, PrintStream printer) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		  printer.println("["+key+"]");
+		  Set<Entry<String, String>> entries = WinRegistry.readStringValues(hkey, key).entrySet();
+		  for(Entry<String, String> entry : entries) {
+			  printer.println("\""+entry.getKey()+"\"=\""+entry.getValue()+"\"");
+		  }
+		  printer.println("");
+		  for(String subKey : WinRegistry.readStringSubKeys(hkey, key)) {
+			  printSubKey(hkey, key+"\\"+subKey, printer);
+		  }
+	  }
 
 	  /**
 	   * delete a value from a given key/value name
@@ -385,6 +422,92 @@ public class WinRegistry {
 	    result[str.length()] = 0;
 	    return result;
 	  }
+
+	public static Object[] parseKey(String key) throws IOException {
+		Object[] result = new Object[2];
+		if(key.toUpperCase().startsWith("HKEY_LOCAL_MACHINE\\")) {
+			result[0] = new Integer(HKEY_LOCAL_MACHINE);
+			result[1] = key.substring("HKEY_LOCAL_MACHINE\\".length());
+		} 
+		else if(key.toUpperCase().startsWith("HKEY_CURRENT_USER\\")) {
+			result[0] = new Integer(HKEY_CURRENT_USER);
+			result[1] = key.substring("HKEY_CURRENT_USER\\".length());
+		} 
+		else if(key.toUpperCase().startsWith("HKEY_CLASSES_ROOT\\")) {
+			result[0] = new Integer(HKEY_CLASSES_ROOT);
+			result[1] = key.substring("HKEY_CLASSES_ROOT\\".length());
+		} 
+		else if(key.toUpperCase().startsWith("HKEY_USERS\\")) {
+			result[0] = new Integer(HKEY_USERS);
+			result[1] = key.substring("HKEY_USERS\\".length());
+		} 
+		else {
+			throw new IOException("missing hive key");
+		}
+		return result;
+	}
+	
+	public static void writeIntValue(int hkey, String key, String name, int value) throws IOException {
+		try {
+			switch(hkey) {
+				case HKEY_CURRENT_USER: {
+					Advapi32Util.registrySetIntValue(WinReg.HKEY_CURRENT_USER, key, name, value);
+					break;
+				}
+	
+				case HKEY_CLASSES_ROOT: {
+					Advapi32Util.registrySetIntValue(WinReg.HKEY_CLASSES_ROOT, key, name, value);
+					break;
+				}
+	
+				case HKEY_LOCAL_MACHINE: {
+					Advapi32Util.registrySetIntValue(WinReg.HKEY_LOCAL_MACHINE, key, name, value);
+					break;
+				}
+	
+				case HKEY_USERS: {
+					Advapi32Util.registrySetIntValue(WinReg.HKEY_USERS, key, name, value);
+					break;
+				}
+				default: {
+					throw new IOException("invalid hive key");
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new IOException(e);
+		}
+			
+	}
+
+	public static void importFile(String fileName) throws IOException {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			String line = null;
+			Object[] key = null;
+			while( (line = reader.readLine()) != null) {
+				if(line.startsWith("[")) {
+					key = parseKey(line.substring(1, line.length()-1));
+					continue;
+				}
+				int idx = line.indexOf("=");
+				if((line.trim().length() > 0) && (idx > -1)) {
+					String name = line.substring(1,idx-1);
+					String value = line.substring(idx+1);
+					if(value.startsWith("dword:")) {
+						writeIntValue((Integer)key[0], key[1].toString(), name, Integer.parseInt(value.substring("dword:".length())));
+					}
+					else if(value.startsWith("\"")) {
+						writeStringValue((Integer)key[0], key[1].toString(), name, value.substring(1,value.length()-1));
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new IOException(e);
+		}
+				
+	}
 	  
 	  /** 
 	     * Java wrapper for Windows registry API RegSetValueEx()

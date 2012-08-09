@@ -7,5 +7,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/swingworker-backport.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/JHyperlink.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jpathwatch.jar"/>
+	<classpathentry kind="lib" path="lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/platform.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

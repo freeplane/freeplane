@@ -20,7 +20,6 @@ import javax.swing.JTree;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -62,7 +61,7 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	private static final FileSystemAlterationMonitor monitor = new FileSystemAlterationMonitor(30000);
 
 	private final FilesystemManager fsReader;
-	private final Vector<IWorkspaceEventListener> workspaceListener = new Vector<IWorkspaceEventListener>();
+	private final Vector<IWorkspaceEventListener> workspaceListeners = new Vector<IWorkspaceEventListener>();
 
 	private TreeView view;
 	private Container oldContentPane;
@@ -198,15 +197,22 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	public void removeWorkspaceListener(IWorkspaceEventListener listener) {
-		workspaceListener.remove(listener);
+		synchronized (workspaceListeners) {
+			workspaceListeners.remove(listener);
+		}
+		
 	}
 
 	public void addWorkspaceListener(IWorkspaceEventListener listener) {
-		this.workspaceListener.add(listener);
+		synchronized (workspaceListeners) {
+			this.workspaceListeners.add(listener);
+		}
 	}
 
 	public void removeAllListeners() {
-		this.workspaceListener.removeAllElements();
+		synchronized (workspaceListeners) {
+			this.workspaceListeners.removeAllElements();
+		}
 	}
 
 	private boolean loadInProcess = false;
@@ -416,46 +422,60 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 //	}
 	
 	protected void fireOpenWorkspace(WorkspaceEvent event) {
-		for (IWorkspaceEventListener listener : workspaceListener) {
-			listener.openWorkspace(event);
-			//listener.processEvent(event);
+		synchronized (workspaceListeners) {
+			for (IWorkspaceEventListener listener : workspaceListeners) {
+				listener.openWorkspace(event);
+				//listener.processEvent(event);
+			}
 		}
 	}
 	
 	protected void fireCloseWorkspace(WorkspaceEvent event) {
-		for (IWorkspaceEventListener listener : workspaceListener) {
-			listener.closeWorkspace(event);
+		synchronized (workspaceListeners) {
+			for (IWorkspaceEventListener listener : workspaceListeners) {
+				listener.closeWorkspace(event);
+			}
 		}
 	}
 	
 	protected void fireWorkspaceChanged(WorkspaceEvent event) {
-		for (IWorkspaceEventListener listener : workspaceListener) {
-			listener.workspaceChanged(event);
-			//listener.processEvent(event);
+		synchronized (workspaceListeners) {
+			for (IWorkspaceEventListener listener : workspaceListeners) {
+				listener.workspaceChanged(event);
+				//listener.processEvent(event);
+			}
 		}
 	}
 	
 	protected void fireWorkspaceReady(WorkspaceEvent event) {
-		for (IWorkspaceEventListener listener : workspaceListener) {
-			listener.workspaceReady(event);
+		synchronized (workspaceListeners) {
+			for (IWorkspaceEventListener listener : workspaceListeners) {
+				listener.workspaceReady(event);
+			}
 		}
 	}
 	
 	protected void fireConfigurationLoaded(WorkspaceEvent event) {
-		for (IWorkspaceEventListener listener : workspaceListener) {
-			listener.configurationLoaded(event);
+		synchronized (workspaceListeners) {
+			for (IWorkspaceEventListener listener : workspaceListeners) {
+				listener.configurationLoaded(event);
+			}
 		}
 	}
 	
 	protected void fireConfigurationBeforeLoading(WorkspaceEvent event) {
-		for (IWorkspaceEventListener listener : workspaceListener) {
-			listener.configurationBeforeLoading(event);
+		synchronized (workspaceListeners) {
+			for (IWorkspaceEventListener listener : workspaceListeners) {
+				listener.configurationBeforeLoading(event);
+			}
 		}
 	}
 	
 	protected void fireToolBarChanged(WorkspaceEvent event) {
-		for (IWorkspaceEventListener listener : workspaceListener) {
-			listener.toolBarChanged(event);
+		synchronized (workspaceListeners) {
+			for (IWorkspaceEventListener listener : workspaceListeners) {
+				listener.toolBarChanged(event);
+			}
 		}
 	}
 
