@@ -2,7 +2,8 @@ package org.docear.plugin.pdfutilities.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.core.util.NodeUtilities;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -29,8 +30,8 @@ public class MonitoringGroupRadioButtonAction extends GroupRadioButtonAction imp
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
 		NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		if(NodeUtils.isMonitoringNode(selected)){
-			NodeUtils.setAttributeValue(selected, this.attributeKey, this.value);
+		if(MonitoringUtils.isMonitoringNode(selected)){
+			NodeUtilities.setAttributeValue(selected, this.attributeKey, this.value);
 		}
 	}
 
@@ -38,8 +39,8 @@ public class MonitoringGroupRadioButtonAction extends GroupRadioButtonAction imp
 	}
 
 	public void onSelect(NodeModel node) {
-		if(NodeUtils.isMonitoringNode(node)){
-			Object value = NodeUtils.getAttributeValue(node, this.attributeKey);
+		if(MonitoringUtils.isMonitoringNode(node)){
+			Object value = NodeUtilities.getAttributeValue(node, this.attributeKey);
 			if(value != null && value.equals(this.value)){
 				this.setSelected(true);
 			}

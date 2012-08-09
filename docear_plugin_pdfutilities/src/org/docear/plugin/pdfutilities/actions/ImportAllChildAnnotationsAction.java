@@ -8,7 +8,7 @@ import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
@@ -43,7 +43,7 @@ public class ImportAllChildAnnotationsAction extends ImportAnnotationsAction {
 			try {
 				AnnotationModel annotation = importer.searchAnnotation(uri, selected);		
 				//System.gc();
-                NodeUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
+                MonitoringUtils.insertChildNodesFrom(annotation.getChildren(), selected.isLeft(), selected);
 			} catch (Exception e) {
 				LogUtils.severe("ImportAllChildAnnotationsAction Exception at URI("+uri+"): ", e); //$NON-NLS-1$ //$NON-NLS-2$
 			}

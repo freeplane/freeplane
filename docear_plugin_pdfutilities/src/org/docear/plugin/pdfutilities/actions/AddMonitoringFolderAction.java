@@ -13,8 +13,9 @@ import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.actions.SaveAsAction;
 import org.docear.plugin.core.logger.DocearLogEvent;
+import org.docear.plugin.core.util.NodeUtilities;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
@@ -65,15 +66,15 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
         	//if(result == JFileChooser.APPROVE_OPTION){
         		//URI mindmapDir = MLinkController.toLinkTypeDependantURI(Controller.getCurrentController().getMap().getFile(), fileChooser.getSelectedFile());
         		
-        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_INCOMING_FOLDER, pdfDir);
-        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
-        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_AUTO, 2);
-        		NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_SUBDIRS, 2);
+        		NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_INCOMING_FOLDER, pdfDir);
+        		NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
+        		NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_AUTO, 2);
+        		NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_SUBDIRS, 2);
         		if(ResourceController.getResourceController().getBooleanProperty("docear_flatten_subdir")){
-        			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);
+        			NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 1);
         		}
         		else{
-        			NodeUtils.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+        			NodeUtilities.setAttributeValue(selected, PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
         		}
         		List<NodeModel> list = new ArrayList<NodeModel>();
         		list.add(Controller.getCurrentController().getSelection().getSelected());	
@@ -95,7 +96,7 @@ public class AddMonitoringFolderAction extends AbstractMonitoringAction {
 			this.setEnabled(false);
 		}
 		else{
-			this.setEnabled(!NodeUtils.isMonitoringNode(selected));
+			this.setEnabled(!MonitoringUtils.isMonitoringNode(selected));
 		}
 	}
 

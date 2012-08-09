@@ -12,7 +12,7 @@ import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.LogUtils;
@@ -67,7 +67,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			if (component.isInFollowLinkRegion(e.getX())) {
 				writeToLog(node);
 			}
-			if (!component.isInFollowLinkRegion(e.getX()) || !NodeUtils.isPdfLinkedNode(node)) {				
+			if (!component.isInFollowLinkRegion(e.getX()) || !MonitoringUtils.isPdfLinkedNode(node)) {				
 				this.mouseListener.mouseClicked(e);
 				return;
 			}

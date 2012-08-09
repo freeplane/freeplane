@@ -32,7 +32,7 @@ import org.docear.plugin.bibtex.dialogs.DuplicateLinkDialogPanel;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.MapModificationSession;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.core.util.NodeUtilities;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -45,11 +45,13 @@ import org.freeplane.features.link.LinkModel;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.view.swing.map.NodeView;
 
 public class JabRefAttributes {
 	private static Boolean updateNodeLock = false;
@@ -123,6 +125,16 @@ public class JabRefAttributes {
 			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
 				AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable,
 						attributeTable.getAttributePosition(attributeKey));
+			}
+		}
+		if(attributeTable.getRowCount() <= 0) {
+			node.removeExtension(NodeAttributeTableModel.class);
+			for(INodeView nodeView : node.getViewers()) {
+				if(nodeView instanceof NodeView) {
+					((NodeView) nodeView).getAttributeView().viewRemoved();
+					((NodeView) nodeView).getContent().remove(3);
+					((NodeView) nodeView).update();
+				}
 			}
 		}
 	}
@@ -217,7 +229,7 @@ public class JabRefAttributes {
 				}
 			}
 
-			NodeUtils.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue());
+			NodeUtilities.setAttributeValue(node, reference.getKey().getName(), reference.getKey().getValue());
 
 			NodeAttributeTableModel attributeTable = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
 			if (attributeTable == null) {

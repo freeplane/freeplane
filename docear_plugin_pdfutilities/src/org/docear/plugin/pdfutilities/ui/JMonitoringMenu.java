@@ -2,7 +2,7 @@ package org.docear.plugin.pdfutilities.ui;
 
 import javax.swing.JMenu;
 
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeChangeEvent;
@@ -29,11 +29,11 @@ public class JMonitoringMenu extends JMenu implements INodeSelectionListener, IN
 	}
 
 	public void onSelect(NodeModel node) {
-		this.setEnabled(NodeUtils.isMonitoringNode(node));		
+		this.setEnabled(MonitoringUtils.isMonitoringNode(node));		
 	}
 
 	public void nodeChanged(NodeChangeEvent event) {
-		this.setEnabled(NodeUtils.isMonitoringNode(event.getNode()));		
+		this.setEnabled(MonitoringUtils.isMonitoringNode(event.getNode()));		
 	}
 
 }

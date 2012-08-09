@@ -27,7 +27,7 @@ import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -164,7 +164,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 						            public void run(){
 						            	try {
 							            	URI uri = file.toURI();
-							            	NodeModel newNode = NodeUtils.insertChildNodesFromPdf(uri, finalAnnotations, isLeft, targetNode);	            
+							            	NodeModel newNode = MonitoringUtils.insertChildNodesFromPdf(uri, finalAnnotations, isLeft, targetNode);	            
 							            	for(AnnotationModel annotation : getInsertedNodes(finalAnnotations)){
 												firePropertyChange(SwingWorkerDialog.DETAILS_LOG_TEXT, null, TextUtils.getText("DocearNodeDropListener.4") + annotation.getTitle() +TextUtils.getText("DocearNodeDropListener.5"));												 //$NON-NLS-1$ //$NON-NLS-2$
 											}	
@@ -185,7 +185,7 @@ public class DocearNodeDropListener extends MNodeDropListener {
 						        new Runnable() {
 						            public void run(){
 						            	if(!viewerController.paste(file, targetNode, isLeft)){							        				
-					        				NodeUtils.insertChildNodeFrom(file.toURI(), isLeft, targetNode, null);
+						            		MonitoringUtils.insertChildNodeFrom(file.toURI(), isLeft, targetNode, null);
 					        			}							
 						            }
 						        }

@@ -45,6 +45,7 @@ import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CompareVersion;
+import org.docear.plugin.core.util.NodeUtilities;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.core.util.WinRegistry;
 import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
@@ -76,7 +77,7 @@ import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.ui.InstalledPdfReadersDialog;
 import org.docear.plugin.pdfutilities.ui.JDocearInvisibleMenu;
 import org.docear.plugin.pdfutilities.ui.JMonitoringMenu;
-import org.docear.plugin.pdfutilities.util.NodeUtils;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
@@ -703,16 +704,16 @@ public class PdfUtilitiesController extends ALanguageController {
 			public void handleEvent(DocearEvent event) {
 				if (DocearEventType.NEW_INCOMING.equals(event.getType())) {
 					MapModel map = (MapModel) event.getEventObject();
-					boolean isMonitoringNode = NodeUtils.isMonitoringNode(map.getRootNode());
-					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_INCOMING_FOLDER, CoreConfiguration.DOCUMENT_REPOSITORY_PATH);
-					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
-					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
-					NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
+					boolean isMonitoringNode = MonitoringUtils.isMonitoringNode(map.getRootNode());
+					NodeUtilities.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_INCOMING_FOLDER, CoreConfiguration.DOCUMENT_REPOSITORY_PATH);
+					NodeUtilities.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_MINDMAP_FOLDER, CoreConfiguration.LIBRARY_PATH);
+					NodeUtilities.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_AUTO, 2);
+					NodeUtilities.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_SUBDIRS, 2);
 					if (ResourceController.getResourceController().getBooleanProperty("docear_flatten_subdir")) {
-						NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 1);
+						NodeUtilities.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 1);
 					}
 					else {
-						NodeUtils.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
+						NodeUtilities.setAttributeValue(map.getRootNode(), PdfUtilitiesController.MON_FLATTEN_DIRS, 0);
 					}
 					DocearMapModelController.getModel(map).setType(DocearMapType.incoming);
 					if (!isMonitoringNode) {
