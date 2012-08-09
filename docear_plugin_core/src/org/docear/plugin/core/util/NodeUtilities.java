@@ -17,11 +17,13 @@ import org.apache.commons.lang.NullArgumentException;
 import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -32,6 +34,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 
 
@@ -149,23 +152,26 @@ public class NodeUtilities {
 	public static boolean setAttributeValue(NodeModel target, String attributeKey, Object value){
 		try {
 			if(target == null || attributeKey == null || value == null) return false;
-					
-			NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
-			if(attributes != null){
-				if(attributes.getAttributeKeyList().contains(attributeKey)){
-					//attributes.getAttribute(attributes.getAttributePosition(attributeKey)).setValue(value);
-					AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
-//					for(INodeView view : target.getViewers()){
-//							view.nodeChanged(new NodeChangeEvent(target, NodeModel.UNKNOWN_PROPERTY, null, null));
-//					}		    		
+			for(INodeView nodeView : target.getViewers()) {
+				if(nodeView instanceof NodeView) {		
+					NodeAttributeTableModel attributes = ((NodeView) nodeView).getAttributeView().getAttributes();
+					if(attributes != null){
+						if(attributes.getAttributeKeyList().contains(attributeKey)) {
+							int pos = attributes.getAttributePosition(attributeKey);
+							//AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+							attributes.setValue(pos,value);
+							attributes.fireTableRowsUpdated(pos, pos);
+						}
+						else{
+							//AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
+							attributes.addRowNoUndo(new Attribute(attributeKey, value));
+						}
+						
+						AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+						attributeView.update();
+						return true;
+					}
 				}
-				else{
-					AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
-				}
-				
-				AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
-				attributeView.update();
-				return true;
 			}
 		}
 		catch (Exception e) {
@@ -175,17 +181,35 @@ public class NodeUtilities {
 	}
 		
 	public static void removeAttribute(NodeModel target, String attributeKey) {
-		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
-		if(attributes != null && attributes.getAttributeKeyList().contains(attributeKey)) {
-			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+		if(target == null || attributeKey == null) {
+			return;
 		}
+		for(INodeView nodeView : target.getViewers()) {
+			if(nodeView instanceof NodeView) {		
+				NodeAttributeTableModel attributes = ((NodeView) nodeView).getAttributeView().getAttributes();
+				if(attributes != null && attributes.getAttributeKeyList().contains(attributeKey)) {
+					AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+				}
+			}
+		}
+//		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
+//		if(attributes != null && attributes.getAttributeKeyList().contains(attributeKey)) {
+//			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+//		}
 	}
 	
 	public static void removeAttributes(NodeModel target) {
-		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
-		for (String attributeKey : attributes.getAttributeKeyList()) {		
-			AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+		if(target == null) {
+			return;
 		}
+		for(INodeView nodeView : target.getViewers()) {
+			if(nodeView instanceof NodeView) {		
+				NodeAttributeTableModel attributes = ((NodeView) nodeView).getAttributeView().getAttributes();
+				for (String attributeKey : attributes.getAttributeKeyList()) {		
+					AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+				}
+			}
+		}		
 	}
 
 	public static Object getAttributeValue(NodeModel target, String attributeKey) {		

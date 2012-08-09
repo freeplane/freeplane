@@ -115,28 +115,31 @@ public class JabRefAttributes {
 	}
 
 	public void removeReferenceFromNode(NodeModel node) {
-		NodeAttributeTableModel attributeTable = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(node);
-
-		if (attributeTable == null) {
-			return;
-		}
-
-		for (String attributeKey : attributeTable.getAttributeKeyList()) {
-			if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
-				AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable,
-						attributeTable.getAttributePosition(attributeKey));
-			}
-		}
-		if(attributeTable.getRowCount() <= 0) {
-			node.removeExtension(NodeAttributeTableModel.class);
-			for(INodeView nodeView : node.getViewers()) {
-				if(nodeView instanceof NodeView) {
-					((NodeView) nodeView).getAttributeView().viewRemoved();
-					((NodeView) nodeView).getContent().remove(3);
-					((NodeView) nodeView).update();
+		for(INodeView nodeView : node.getViewers()) {
+			if(nodeView instanceof NodeView) {
+				NodeAttributeTableModel attributeTable = ((NodeView) nodeView).getAttributeView().getAttributes();
+				if (attributeTable == null) {
+					continue;
+				}
+				for (String attributeKey : attributeTable.getAttributeKeyList()) {
+					if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
+						AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
+					}
 				}
 			}
 		}
+		
+		
+//		if(attributeTable.getRowCount() <= 0) {
+//			node.removeExtension(NodeAttributeTableModel.class);
+//			for(INodeView nodeView : node.getViewers()) {
+//				if(nodeView instanceof NodeView) {
+//					((NodeView) nodeView).getAttributeView().viewRemoved();
+//					((NodeView) nodeView).getContent().remove(3);
+//					((NodeView) nodeView).update();
+//				}
+//			}
+//		}
 	}
 
 	// public void updateReferenceOnPdf(URI uri, NodeModel node) {
