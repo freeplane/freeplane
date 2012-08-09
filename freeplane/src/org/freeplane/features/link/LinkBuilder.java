@@ -226,8 +226,13 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		else if(color == null){
 			arrowLink.setAlpha(linkController.getStandardConnectorAlpha());	
 		}
+		fixSelfLoopedConnectorShape(arrowLink);
 	}
 
+	private void fixSelfLoopedConnectorShape(ConnectorModel connector) {
+		if(connector.isSelfLink() && Shape.CUBIC_CURVE.equals(connector.getShape()))
+			connector.setShape(Shape.LINE);
+	}
 
 	/**
 	 */
