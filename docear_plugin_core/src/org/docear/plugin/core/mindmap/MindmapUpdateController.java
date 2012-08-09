@@ -19,8 +19,6 @@ import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.ui.SwingWorkerDialog;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.attribute.AttributeRegistry;
-import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
@@ -28,7 +26,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -262,28 +259,13 @@ public class MindmapUpdateController {
 				for (MapItem item : maps) {
 					if (item.isMapOpen()) {
 						LogUtils.info("updating view for map: " + item.getIdentifierForDialog());
-						//String savedAttributeLayout = getAttributeViewType(item.getModel());
 						long l = System.currentTimeMillis();
 						for(INodeView nodeView : item.getModel().getRootNode().getViewers()) {
 							if(nodeView instanceof NodeView) {
-								MapView view = ((NodeView) nodeView).getMap();
-								float zoom = view.getZoom();
-								view.setZoom(zoom-1);
-								view.setZoom(zoom);
+								((NodeView) nodeView).updateAll();
 							}
 						}
-//						setAttributeViewType(item.getModel(), AttributeTableLayoutModel.HIDE_ALL);
-//						if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_ALL)){
-//							setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_ALL);
-//						}
-//						if(savedAttributeLayout.equals(AttributeTableLayoutModel.SHOW_SELECTED)){
-//							setAttributeViewType(item.getModel(), AttributeTableLayoutModel.SHOW_SELECTED);
-//						}
 						System.out.println("resetting folding complete: "+(System.currentTimeMillis()-l));
-						/*NodeView nodeView = view.getNodeView(view.getModel().getRootNode());
-						nodeView.updateAll();*/
-						
-						
 					}
 				}
 				
@@ -332,7 +314,6 @@ public class MindmapUpdateController {
 					}
 				});
 			}
-
 			
 
 			private void saveMap(MapModel map) throws InterruptedException, InvocationTargetException {
@@ -345,33 +326,7 @@ public class MindmapUpdateController {
 				map.setSaved(false);
 				((MFileManager) UrlManager.getController()).save(map, false);
 			}
-			
-			protected void setAttributeViewType(final MapModel map, final String type) {
-				final String attributeViewType = getAttributeViewType(map);
-				if (attributeViewType != null && attributeViewType != type) {
-					final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-					attributes.setAttributeViewType(type);
-					final MapChangeEvent mapChangeEvent = new MapChangeEvent(this, map, ModelessAttributeController.ATTRIBUTE_VIEW_TYPE, attributeViewType, type);
-					try{
-						Controller.getCurrentModeController().getMapController().fireMapChanged(mapChangeEvent);
-					}
-					catch(Exception e){
-						LogUtils.warn(e);
-					}
-				}
-			}
-			
-			protected String getAttributeViewType(final MapModel map) {
-				if (map == null) {
-					return null;
-				}
-				final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-				if (attributes == null) {
-					return null;
-				}
-				final String attributeViewType = attributes.getAttributeViewType();
-				return attributeViewType;
-			}
+		
 		};
 	}
 	

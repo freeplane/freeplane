@@ -126,6 +126,9 @@ public class JabRefAttributes {
 						AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
 					}
 				}
+				if(attributeTable.getRowCount() <= 0) {
+					((NodeView) nodeView).getAttributeView().viewRemoved();
+				}
 			}
 		}
 		
@@ -264,9 +267,11 @@ public class JabRefAttributes {
 				}
 			}
 
+			int i = attributes.size();
 			for (Item item : inserts) {
 				changes = true;
-				AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributeTable, 0, item.getName(), item.getValue());
+				AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributeTable, i, item.getName(), item.getValue());
+				i++;
 			}
 		}
 		finally {

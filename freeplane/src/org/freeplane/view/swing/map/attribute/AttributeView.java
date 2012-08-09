@@ -306,7 +306,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		}
 	}
 
-	JComponent getContainer() {
+	public JComponent getContainer() {
 		if(attributeViewScrollPane == null){
 			provideAttributeTable();
 		}

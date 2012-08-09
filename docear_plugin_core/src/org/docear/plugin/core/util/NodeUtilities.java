@@ -17,7 +17,6 @@ import org.apache.commons.lang.NullArgumentException;
 import org.docear.plugin.core.features.DocearNodeModelExtension.DocearExtensionKey;
 import org.docear.plugin.core.features.DocearNodeModelExtensionController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -157,17 +156,18 @@ public class NodeUtilities {
 					NodeAttributeTableModel attributes = ((NodeView) nodeView).getAttributeView().getAttributes();
 					if(attributes != null){
 						if(attributes.getAttributeKeyList().contains(attributeKey)) {
-							int pos = attributes.getAttributePosition(attributeKey);
-							//AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
-							attributes.setValue(pos,value);
-							attributes.fireTableRowsUpdated(pos, pos);
+							//int pos = attributes.getAttributePosition(attributeKey);
+							AttributeController.getController(MModeController.getMModeController()).performSetValueAt(attributes, value, attributes.getAttributePosition(attributeKey), 1);
+//							attributes.setValue(pos,value);
+//							attributes.fireTableRowsUpdated(pos, pos);
 						}
 						else{
-							//AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
-							attributes.addRowNoUndo(new Attribute(attributeKey, value));
+							AttributeController.getController(MModeController.getMModeController()).performInsertRow(attributes, attributes.getRowCount(), attributeKey, value);
+							//attributes.addRowNoUndo(new Attribute(attributeKey, value));
 						}
 						
 						AttributeView attributeView = (((MapView) Controller.getCurrentController().getViewController().getMapView()).getSelected()).getAttributeView();
+						attributeView.getContainer().invalidate();
 						attributeView.update();
 						return true;
 					}
@@ -190,6 +190,9 @@ public class NodeUtilities {
 				if(attributes != null && attributes.getAttributeKeyList().contains(attributeKey)) {
 					AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
 				}
+				if(attributes.getRowCount() <= 0) {
+					((NodeView) nodeView).getAttributeView().viewRemoved();
+				}
 			}
 		}
 //		NodeAttributeTableModel attributes = AttributeController.getController(MModeController.getMModeController()).createAttributeTableModel(target);
@@ -207,6 +210,9 @@ public class NodeUtilities {
 				NodeAttributeTableModel attributes = ((NodeView) nodeView).getAttributeView().getAttributes();
 				for (String attributeKey : attributes.getAttributeKeyList()) {		
 					AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributes, attributes.getAttributePosition(attributeKey));
+				}
+				if(attributes.getRowCount() <= 0) {
+					((NodeView) nodeView).getAttributeView().viewRemoved();
 				}
 			}
 		}		
