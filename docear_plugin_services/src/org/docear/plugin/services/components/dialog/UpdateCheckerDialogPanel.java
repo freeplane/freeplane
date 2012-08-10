@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.docear.plugin.core.Version;
 import org.docear.plugin.services.features.UpdateCheck;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -49,7 +50,7 @@ public class UpdateCheckerDialogPanel extends JPanel {
 	/**
 	 * Create the dialog.
 	 */
-	public UpdateCheckerDialogPanel(String selectedOption, String runningVersionString, String latestVersionString) {
+	public UpdateCheckerDialogPanel(String selectedOption, String runningVersionString, String latestVersionString, String status) {
 		setBounds(100, 100, 620, 266);
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.DEFAULT_COLSPEC,
@@ -73,7 +74,14 @@ public class UpdateCheckerDialogPanel extends JPanel {
 		try {
 			JLabel lblYouCanDownload = new JLabel(TextUtils.getText("docear.update_checker.you_can_download"));
 			add(lblYouCanDownload, "1, 3");
-			JHyperlink hyperlink = new JHyperlink("http://www.docear.org/software/download/", new URI("http://www.docear.org/software/download/"));
+			String uri = null;
+			if (status.equals(Version.StatusName.devel.name())) {
+				uri = "https://sourceforge.net/apps/phpbb/docear/viewforum.php?f=5";
+			}
+			else {
+				uri = "http://www.docear.org/software/download/";
+			}
+			JHyperlink hyperlink = new JHyperlink(uri, new URI(uri));
 			add(hyperlink, "3, 3");
 		} catch (URISyntaxException e) {
 			LogUtils.warn(e);

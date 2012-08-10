@@ -88,7 +88,7 @@ public class UpdateCheck {
 			if (latestVersion == null || runningVersion == null) {
 				return;
 			}
-						
+
 			int compCode = latestVersion.compareTo(runningVersion);
 			
 			if (showUpdateCheckerDialog(compCode, choice)) {
@@ -99,10 +99,11 @@ public class UpdateCheck {
 					return;
 				}
 				ResourceController.getResourceController().setProperty("docer.update_checker.savedLatestVersion", latestVersionString);
-				
+				System.out.println(latestVersion.getStatus());
+				System.out.println(latestVersion.getStatusNumber());
 				SwingUtilities.invokeLater(new Runnable() {					
 					public void run() {
-						UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", runningVersion.toString(), latestVersionString);				
+						UpdateCheckerDialogPanel dialogPanel = new UpdateCheckerDialogPanel("", runningVersion.toString(), latestVersionString, latestVersion.getStatus());				
 						JOptionPane.showMessageDialog(UITools.getFrame(), dialogPanel, TextUtils.getText("docear.new_version_available.title"), JOptionPane.INFORMATION_MESSAGE);
 						ResourceController.getResourceController().setProperty("docear.update_checker.options", dialogPanel.getChoice());
 					}
