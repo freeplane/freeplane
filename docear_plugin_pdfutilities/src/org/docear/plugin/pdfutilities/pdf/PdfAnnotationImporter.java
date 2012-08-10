@@ -338,10 +338,13 @@ public class PdfAnnotationImporter implements IAnnotationImporter {
 			    			// support repligo highlights
 							// set Title to Subject per repligo
 							if (annotation.getClass() == PDHighlightAnnotation.class) {
-								if (((PDHighlightAnnotation) annotation).getSubject() != null &&
-										((PDHighlightAnnotation) annotation).getSubject().length() > 0) {
-									if (!((PDHighlightAnnotation) annotation).getSubject().equals("Highlight"))
+								String subject = ((PDHighlightAnnotation) annotation).getSubject(); 
+								if (subject != null && subject.length() > 0) {
+									
+									if (!subject.equalsIgnoreCase("Highlight") && !subject.equalsIgnoreCase("Hervorheben"))
 										pdfAnnotation.setTitle(((PDHighlightAnnotation) annotation).getSubject());
+									else
+										continue;
 								}
 							}
 						}
