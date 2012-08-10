@@ -16,6 +16,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
+import org.freeplane.core.util.LogUtils;
+
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.WinReg;
 import com.sun.jna.platform.win32.WinReg.HKEY;
@@ -250,18 +252,21 @@ public class WinRegistry {
 	  public static void exportKey(int hkey, String key, OutputStream stream) throws IOException {
 		  try {
 			  PrintStream printer = new PrintStream(stream);
+			  keycount = 0;
 			  printSubKey(hkey, key, printer);
-			  printer.flush();		 
+			  printer.flush();
+			  LogUtils.info("exported "+ keycount+" registry keys");
 		  } catch (Exception e) {
 			  throw new IOException(e);
 		  }
 	  }
-	  
-	  private static void printSubKey(int hkey, String key, PrintStream printer) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		  printer.println("["+key+"]");
+	  static int keycount;
+	  private static void printSubKey(int hkey, String key, PrintStream printer) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException {
+		  printer.println("["+getHKeyName(hkey)+"\\"+key+"]");
+		  keycount++;
 		  Set<Entry<String, Object>> entries;
-		try {
-			entries = Advapi32Util.registryGetValues(getHKey(hkey), key).entrySet();
+		
+		  entries = Advapi32Util.registryGetValues(getHKey(hkey), key).entrySet();
 		  
 		  for(Entry<String, Object> entry : entries) {
 			  if(entry.getValue() instanceof Integer) {
@@ -274,11 +279,7 @@ public class WinRegistry {
 			  else {
 				  printer.println("\""+entry.getKey()+"\"=\""+entry.getValue()+"\"");
 			  }
-		  }
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		  }		
 		  
 		  printer.println("");
 		  for(String subKey : WinRegistry.readStringSubKeys(hkey, key)) {
@@ -286,7 +287,9 @@ public class WinRegistry {
 		  }
 	  }
 
-	  /**
+	  
+
+	/**
 	   * delete a value from a given key/value name
 	   * @param hkey
 	   * @param key
@@ -477,6 +480,19 @@ public class WinRegistry {
 			case HKEY_CLASSES_ROOT: return WinReg.HKEY_CLASSES_ROOT;
 			case HKEY_LOCAL_MACHINE: return WinReg.HKEY_LOCAL_MACHINE;
 			case HKEY_USERS: return WinReg.HKEY_USERS;
+			
+			default: {
+				throw new IOException("invalid hive key");
+			}
+		}
+	}
+	
+	private static String getHKeyName(int hkey) throws IOException {
+		switch(hkey) {
+			case HKEY_CURRENT_USER: return "HKEY_CURRENT_USER";
+			case HKEY_CLASSES_ROOT: return "HKEY_CLASSES_ROOT";
+			case HKEY_LOCAL_MACHINE: return "HKEY_LOCAL_MACHINE";
+			case HKEY_USERS: return "HKEY_USERS";
 			
 			default: {
 				throw new IOException("invalid hive key");

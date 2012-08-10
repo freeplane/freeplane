@@ -287,6 +287,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				parseExportedRegistryFile(viewers, winFile, RegistryBranch.DEFAULT);
 			}
 			catch (IOException e1) {
+				LogUtils.info("Read registry (default): "+ e1.toString());
 			}
 	
 			File winWOW6432NODEFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "win_wow64_uninstall.reg");
@@ -295,6 +296,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				parseExportedRegistryFile(viewers, winWOW6432NODEFile, RegistryBranch.WOW6432NODE);
 			}
 			catch (IOException e1) {
+				LogUtils.info("Read registry (wow6432): "+ e1.toString());
 			}
 		}
 		PDFReaderHandle handle;
