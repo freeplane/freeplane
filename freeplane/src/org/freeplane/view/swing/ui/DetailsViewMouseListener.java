@@ -54,7 +54,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 	private boolean canEdit(TextController controller) {
 		try {
 			return controller instanceof MTextController;
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			return false;
 		}
 	}
