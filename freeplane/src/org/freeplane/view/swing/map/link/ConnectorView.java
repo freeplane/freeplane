@@ -412,7 +412,7 @@ public class ConnectorView extends AConnectorView{
 			    	arrowLinkCurve = createLine(startPoint, startPoint2);
 				}
 			}
-			if (endPoint != null) {
+			if (endPoint != null && !(selfLink && isLine)) {
 				g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
 				drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
 			    if (arrowLinkCurve == null) {
