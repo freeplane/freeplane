@@ -37,7 +37,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         if (!(obj instanceof String)) {
             return obj;
         }
-        if (PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
+        if (textController.isTextFormattingDisabled(node))
             return obj;
         final String text = obj.toString();
         if (!FormulaUtils.containsFormulaCheckHTML(text)) {
