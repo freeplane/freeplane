@@ -45,11 +45,19 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();
     	if(e.getX() < component.getIconWidth())
     		controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-    	else if(controller instanceof MTextController && isEditingStartEventt(e)){
+    	else if(canEdit(controller) && isEditingStartEventt(e)){
     		((MTextController) controller).editDetails(model, e, e.isAltDown());
     	}
     	else super.mouseClicked(e);
     }
+
+	private boolean canEdit(TextController controller) {
+		try {
+			return controller instanceof MTextController;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 	private boolean isEditingStartEventt(MouseEvent e) {
 		return e.getClickCount() == 2;
