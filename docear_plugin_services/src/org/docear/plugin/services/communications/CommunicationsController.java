@@ -30,8 +30,8 @@ import org.docear.plugin.services.communications.components.dialog.ConnectionWai
 import org.docear.plugin.services.communications.components.dialog.ProxyAuthenticationDialog;
 import org.docear.plugin.services.communications.features.AccountRegisterer;
 import org.docear.plugin.services.communications.features.DocearServiceException;
-import org.docear.plugin.services.communications.features.DocearServiceResponse;
 import org.docear.plugin.services.communications.features.DocearServiceException.DocearServiceExceptionType;
+import org.docear.plugin.services.communications.features.DocearServiceResponse;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
@@ -122,36 +122,36 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(CommunicationsController.class.getClassLoader());
 		try {
-    		DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();
-    		if (ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)) {
-    			String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
-    			String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
-    			String username = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_USERNAME, "");
-    
-    			cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI, "http://" + host + ":" + port + "/");
-    
-    			if (username != null && username.length() > 0 && password != null) {
-    				try {
-    					cc.getState().setProxyCredentials(AuthScope.ANY_REALM, host, Integer.parseInt(port), username, new String(password));
-    				}
-    				catch (NumberFormatException e) {
-    					LogUtils.severe(e);
-    					// UITools.showMessage(TextUtils.getText("docear.proxy.connect.portNumberFormatError.msg"),
-    					// JOptionPane.ERROR_MESSAGE);
-    				}
-    			}
-    		}
-    		synchronized (client) {
-        		if(prefChanged) {
-            		cc.getClasses().add(MultiPartWriter.class);
-        			client = ApacheHttpClient.create(cc);
-        			client.setConnectTimeout(10000);
-        			client.setReadTimeout(10000);
-        		}
-        		else {
-        			client.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_HTTP_STATE, cc.getState());
-        		}
-    		}
+			DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();
+			if (ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)) {
+				String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
+				String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
+				String username = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_USERNAME, "");
+
+				cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI, "http://" + host + ":" + port + "/");
+
+				if (username != null && username.length() > 0 && password != null) {
+					try {
+						cc.getState().setProxyCredentials(AuthScope.ANY_REALM, host, Integer.parseInt(port), username, new String(password));
+					}
+					catch (NumberFormatException e) {
+						LogUtils.severe(e);
+						// UITools.showMessage(TextUtils.getText("docear.proxy.connect.portNumberFormatError.msg"),
+						// JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+			synchronized (client) {
+				if (prefChanged) {
+					cc.getClasses().add(MultiPartWriter.class);
+					client = ApacheHttpClient.create(cc);
+					client.setConnectTimeout(10000);
+					client.setReadTimeout(10000);
+				}
+				else {
+					client.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_HTTP_STATE, cc.getState());
+				}
+			}
 		}
 		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
@@ -164,6 +164,10 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		}
 		synchronized (dialog) {
 			try {
+				String accessToken = getAccessToken();				
+				if (accessToken != null) {
+					builder = builder.header("accessToken", accessToken);
+				}
 				return builder.get(c);
 			}
 			catch (Exception e) {
@@ -184,53 +188,11 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	public <T> T get(WebResource webResource, Class<T> c) throws Exception {
-		if (SwingUtilities.isEventDispatchThread()) {
-			throw new Exception("Never call the webservice from the event dispatch thread.");
-		}
-		synchronized (dialog) {
-			try {
-				return webResource.get(c);
-			}
-			catch (Exception e) {
-				LogUtils.info(e.getCause().toString());
-				if (raiseProxyCredentialsDialog(e)) {
-					if (proxyDialogOkSelected) {
-						return get(webResource, c);
-					}
-					else {
-						throw (e);
-					}
-				}
-				else {
-					throw (e);
-				}
-			}
-		}
+		return get(webResource.getRequestBuilder(), c);
 	}
 
 	public ClientResponse post(WebResource webResource, Object requestEntity) throws Exception {
-		if (SwingUtilities.isEventDispatchThread()) {
-			throw new Exception("Never call the webservice from the event dispatch thread.");
-		}
-		synchronized (dialog) {
-			try {
-				return webResource.post(ClientResponse.class, requestEntity);
-			}
-			catch (Exception e) {
-				LogUtils.info(e.getCause().toString());
-				if (raiseProxyCredentialsDialog(e)) {
-					if (proxyDialogOkSelected) {
-						return post(webResource, requestEntity);
-					}
-					else {
-						throw (e);
-					}
-				}
-				else {
-					throw (e);
-				}
-			}
-		}
+		return post(webResource.getRequestBuilder(), requestEntity);
 	}
 
 	public ClientResponse post(Builder builder, Object requestEntity) throws Exception {
@@ -239,6 +201,10 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		}
 		synchronized (dialog) {
 			try {
+				String accessToken = getAccessToken();				
+				if (accessToken != null) {
+					builder = builder.header("accessToken", accessToken);
+				}
 				return builder.post(ClientResponse.class, requestEntity);
 			}
 			catch (Exception e) {
@@ -260,7 +226,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 
 	public WebResource getWebResource(URI uri) {
 		synchronized (client) {
-			return client.resource(uri);
+			WebResource resource = client.resource(uri);			
+			return resource;
 		}
 
 	}
@@ -308,7 +275,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 					formParams.add("password", password);
 					Status status = null;
 					try {
-						WebResource webRes = client.resource(getServiceUri()).path("/authenticate/" + username);
+						WebResource webRes = getServiceResource().path("/authenticate/" + username);
 
 						ClientResponse response = post(webRes, formParams);
 						status = response.getClientResponseStatus();
@@ -366,7 +333,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			return null;
 		}
 
-		ClientResponse response = get(client.resource(getServiceUri()).path("/applications/docear/versions/latest").queryParam("minStatus", minStatus),
+		ClientResponse response = get(getServiceResource().path("/applications/docear/versions/latest").queryParam("minStatus", minStatus).header("test", "test"),
 				ClientResponse.class);
 		return response.getEntity(String.class);
 	}
@@ -430,7 +397,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		try {
 			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 			formParams.add("password", "");
-			ClientResponse response = post(client.resource(getServiceUri()).path("/authenticate/anonymous"), formParams);
+			ClientResponse response = post(getServiceResource().path("/authenticate/anonymous"), formParams);
 			Status status = response.getClientResponseStatus();
 			if (status != null) {
 				return true;
@@ -458,8 +425,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		return false;
 	}
 
-	public WebResource getServiceResource() {
-		return client.resource(getServiceUri());
+	public WebResource getServiceResource() {		
+		WebResource resource = client.resource(getServiceUri());		
+		return resource;
 	}
 
 	public DocearServiceResponse get(String path) {
@@ -472,13 +440,12 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			if (params == null) {
 				params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
 			}
-			String accessToken = CommunicationsController.getController().getAccessToken();
-
-			ClientResponse response = get(client.resource(getServiceUri()).path(path).queryParams(params).header("accessToken", accessToken),
-					ClientResponse.class);
+			
+			ClientResponse response = get(getServiceResource().path(path).queryParams(params), ClientResponse.class);
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
-				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.OK,
+						response.getEntityInputStream());
 			}
 			else if (status != null && status.equals(Status.NO_CONTENT)) {
 				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.NO_CONTENT,
@@ -492,12 +459,12 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		catch (ClientHandlerException e) {
 			if (e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException
 					|| e.getCause() instanceof SocketTimeoutException || e.getCause() instanceof ConnectException) {
-				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream(
-						"error".getBytes()));
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST,
+						new ByteArrayInputStream("error".getBytes()));
 			}
 			else {
-				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
-						"error".getBytes()));
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE,
+						new ByteArrayInputStream("error".getBytes()));
 			}
 		}
 		catch (Exception e) {

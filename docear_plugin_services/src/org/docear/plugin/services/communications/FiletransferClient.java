@@ -30,7 +30,7 @@ public class FiletransferClient {
 	private WebResource serviceResource;
 	
 	public FiletransferClient(String restPath) {
-		serviceResource = CommunicationsController.getController().getWebResource(CommunicationsController.getController().getServiceUri());
+		serviceResource = CommunicationsController.getController().getServiceResource();
 		serviceResource = serviceResource.path("/user/" + CommunicationsController.getController().getUserName() + "/" + restPath);
 	}
 	
@@ -48,8 +48,7 @@ public class FiletransferClient {
 				FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
 				formDataMultiPart.field("file", data, MediaType.APPLICATION_OCTET_STREAM_TYPE);					
 				
-				String accessToken = CommunicationsController.getController().getAccessToken();
-				Builder requestBuilder = serviceResource.type(MediaType.MULTIPART_FORM_DATA_TYPE).header("accessToken", accessToken);
+				Builder requestBuilder = serviceResource.type(MediaType.MULTIPART_FORM_DATA_TYPE);
 				
 				ClientResponse response = requestBuilder.post(ClientResponse.class, formDataMultiPart);					
 				if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {

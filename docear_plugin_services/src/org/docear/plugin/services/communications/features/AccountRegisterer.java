@@ -5,6 +5,7 @@ import java.util.concurrent.CancellationException;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.util.CoreUtils;
@@ -21,26 +22,29 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class AccountRegisterer {
 	private static final int USER_TYPE_REGISTERED = 2;
 	private static final int USER_TYPE_ANONYMOUS = 3;
-	
 
 	public AccountRegisterer() {
 
 	}
 
 	public void createAnonymousUser() throws DocearServiceException, URISyntaxException, CancellationException {
-		String name = createAnonymousUserName();
-		createUser(name, null, USER_TYPE_ANONYMOUS, null, null, false, null);
-		CommunicationsController.getController().tryToConnect(name, null, false, true);
+		if (ServiceController.getController().getInformationRetrievalCode() > 0) {
+			String name = createAnonymousUserName();
+			createUser(name, null, USER_TYPE_ANONYMOUS, null, null, false, null);
+			CommunicationsController.getController().tryToConnect(name, null, false, true);
+		}
 	}
 
-	public void createRegisteredUser(String name, String password, String email, Integer birthYear, Boolean newsLetter, Boolean isMale) throws DocearServiceException, URISyntaxException, CancellationException {
+	public void createRegisteredUser(String name, String password, String email, Integer birthYear, Boolean newsLetter, Boolean isMale)
+			throws DocearServiceException, URISyntaxException, CancellationException {
 		createUser(name, password, USER_TYPE_REGISTERED, email, birthYear, newsLetter, isMale);
 		ResourceController.getResourceController().setProperty(CommunicationsController.DOCEAR_CONNECTION_USERNAME_PROPERTY, name);
 		CommunicationsController.getController().tryToConnect(name, password, true, true);
 
 	}
 
-	private void createUser(String name, String password, Integer type, String email, Integer birthYear, Boolean newsLetter, Boolean isMale) throws DocearServiceException, URISyntaxException {
+	private void createUser(String name, String password, Integer type, String email, Integer birthYear, Boolean newsLetter, Boolean isMale)
+			throws DocearServiceException, URISyntaxException {
 		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
 			Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
@@ -56,27 +60,27 @@ public class AccountRegisterer {
 			queryParams.add("birthYear", birthYear == null ? null : birthYear.toString());
 			queryParams.add("generalNewsLetter", newsLetter == null ? null : newsLetter.toString());
 			queryParams.add("isMale", isMale == null ? null : isMale.toString());
-	
-			WebResource res = CommunicationsController.getController().getWebResource(CommunicationsController.getController().getServiceUri()).path("/user/" + name);
+
+			WebResource res = CommunicationsController.getController().getServiceResource().path("/user/" + name);
 			ClientResponse response = CommunicationsController.getController().post(res, queryParams);
-			
+
 			if (response.getClientResponseStatus() != Status.OK) {
 				throw new DocearServiceException(response.getEntity(String.class));
 			}
 		}
-		catch(DocearServiceException e) {
-		    LogUtils.warn(e);
-		    throw e;
+		catch (DocearServiceException e) {
+			LogUtils.warn(e);
+			throw e;
 		}
-		catch(ClientHandlerException e) {
-		    LogUtils.warn(e);
-		    throw new DocearServiceException(TextUtils.getText("docear.service.connect.no_connection"), DocearServiceExceptionType.NO_CONNECTION);
+		catch (ClientHandlerException e) {
+			LogUtils.warn(e);
+			throw new DocearServiceException(TextUtils.getText("docear.service.connect.no_connection"), DocearServiceExceptionType.NO_CONNECTION);
 		}
-		catch(Exception e) {
-		    LogUtils.warn(e);
-		    throw new DocearServiceException(TextUtils.getText("docear.service.connect.unknown_error"));
+		catch (Exception e) {
+			LogUtils.warn(e);
+			throw new DocearServiceException(TextUtils.getText("docear.service.connect.unknown_error"));
 		}
- 		finally{
+		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
 
