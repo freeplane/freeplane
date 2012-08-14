@@ -21,6 +21,7 @@ import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -116,7 +117,7 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 				public void run() {
 					
 					LogUtils.info("Monitoring started"); //$NON-NLS-1$
-					startMonitoring();
+					//startMonitoring();
 			
 				} //run()
 			}); // Thread
@@ -136,7 +137,7 @@ public class DocearAutoMonitoringListener implements IMapLifeCycleListener,  Win
 	public void windowGainedFocus(WindowEvent e) {
 		if(startup && !MapConverter.currentlyConverting){
 			startup = false;
-			startMonitoring();			
+			//startMonitoring();			
 		}
 	}
 

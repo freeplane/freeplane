@@ -27,9 +27,12 @@ import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.io.FilenameUtils;
@@ -91,6 +94,9 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IStateIconProvider;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -167,8 +173,10 @@ public class PdfUtilitiesController extends ALanguageController {
 			return false;
 		}
 	};
+	private UIIcon refreshMonitoringIcon ;
 	
 	private static PdfUtilitiesController controller;
+	public static final Icon REFRESH_MONITORING_ICON = new ImageIcon(PdfUtilitiesController.class.getResource("/icons/view-refresh-3.png"));
 
 	public PdfUtilitiesController(ModeController modeController) {
 		super();
@@ -423,6 +431,37 @@ public class PdfUtilitiesController extends ALanguageController {
 
 	private void registerController() {
 		AnnotationController.install(new AnnotationController(modecontroller));
+		IconController.getController(modecontroller).addStateIconProvider(new IStateIconProvider() {			
+			public UIIcon getStateIcon(NodeModel node) {
+				if(MonitoringUtils.isMonitoringNode(node)) {
+					if (refreshMonitoringIcon  == null) {
+						refreshMonitoringIcon = new UIIcon(TextUtils.getText("docear.monitoring.reload.name"), "/icons/view-refresh-3.png", TextUtils.getText("docear.monitoring.reload.desc")) {	
+							public Icon getIcon() {
+								return REFRESH_MONITORING_ICON;
+							}
+
+							public KeyStroke getKeyStroke() {
+								return null;
+							}
+
+							public String getImagePath() {
+								return "/icons";
+							}
+
+							public URL getUrl() {
+								return PdfUtilitiesController.class.getResource(getFileName());
+							}
+
+							public String getPath() {
+								return getUrl().toExternalForm();
+							}
+						};
+					}
+					return refreshMonitoringIcon;
+				}
+				return null;
+			}
+		});	
 	}
 
 	private void registerActions() {
