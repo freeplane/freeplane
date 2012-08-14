@@ -16,14 +16,15 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 @EnabledAction(checkOnPopup = true)
-public class CopyBibtexToClipboard extends AFreeplaneAction{
-	private static final String KEY = "menu_copy_bibtex";
+public class CopyCiteKeyToClipboard extends AFreeplaneAction{
+
+	public final static String KEY = "CopyCiteKeyToClipboardAction";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CopyBibtexToClipboard() {
+	public CopyCiteKeyToClipboard() {
 		super(KEY);
 	}
 
@@ -39,7 +40,7 @@ public class CopyBibtexToClipboard extends AFreeplaneAction{
 				strBuffer += bibKey;
 			}
 		}
-		final String bibtexKeys = strBuffer;
+		final String citeKeys = "\\cite{"+strBuffer+"}";
 		Transferable content = new Transferable() {
 			public boolean isDataFlavorSupported(DataFlavor flavor) {
 				return DataFlavor.stringFlavor.equals(flavor);
@@ -51,7 +52,7 @@ public class CopyBibtexToClipboard extends AFreeplaneAction{
 			
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 				if(DataFlavor.stringFlavor.equals(flavor)) {
-					return bibtexKeys;
+					return citeKeys;
 				}
 				throw new UnsupportedFlavorException(flavor);
 			}

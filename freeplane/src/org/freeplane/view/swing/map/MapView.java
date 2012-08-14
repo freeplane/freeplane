@@ -425,6 +425,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean slowScroll;
 	private static boolean presentationModeEnabled;
 	private static int transparency;
+	private static boolean preventPainting = false;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -1188,6 +1189,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	public void paint(final Graphics g) {
+		if(preventPainting) {
+			return;
+		}
 		if(isPrinting == false && isPreparedForPrinting == true){
 			isPreparedForPrinting = false;
 			EventQueue.invokeLater(new Runnable() {
@@ -1215,16 +1219,25 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	//DOCEAR - use default component paint instead of the mind map painting behavior
 	protected void paintInternal(Graphics g) {
+		if(preventPainting) {
+			return;
+		}
 		super.paint(g);
 	}
 	
 	//DOCEAR - use default component paintChildren instead of the mind map painting behavior
 	protected void paintChildrenInternal(Graphics g) {
+		if(preventPainting) {
+			return;
+		}
 		super.paintChildren(g);
 	}
 	
 	@Override
 	protected void paintChildren(final Graphics g) {
+		if(preventPainting) {
+			return;
+		}
 	    final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
 	    	    "paint_connectors_behind");
 	    final PaintingMode paintModes[];
@@ -1247,6 +1260,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	private void paintChildren(Graphics2D g2, final PaintingMode[] paintModes) {
+		
 	    for(PaintingMode paintingMode : paintModes){
 	    	this.paintingMode = paintingMode;
 			switch(paintingMode){
@@ -1925,5 +1939,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean isAncorPositionSet() {
 	    return anchorContentLocation.getX() != 0 || anchorContentLocation.getY() != 0;
     }
+
+	//DOCEAR - used to prevent paint events during NodeModel modifications
+	public static void setNoRepaint(boolean b) {
+		preventPainting  = b;		
+	}
     
 }

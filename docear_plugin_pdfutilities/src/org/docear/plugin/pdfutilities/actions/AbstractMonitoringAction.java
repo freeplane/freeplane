@@ -58,6 +58,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.mindmapmode.SaveAll;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -126,7 +127,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 		catch (Exception e) {
 			LogUtils.warn(e);
 			LogUtils.warn("===================================="); //$NON-NLS-1$
-			LogUtils.warn(e.getCause());
+			LogUtils.warn(e.getCause());			
 		}
 		// System.gc();
 	}
@@ -152,6 +153,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			protected Map<AnnotationID, Collection<IAnnotation>> doInBackground() throws Exception {
 				DocearController.getController().getSemaphoreController().lock("MindmapUpdate");
 				NodeView.setModifyModelWithoutRepaint(true);
+				MapView.setNoRepaint(true);
 
 				// Controller.getCurrentController().getViewController().getMapView().setVisible(false);
 				for (final NodeModel target : targets) {
@@ -282,22 +284,25 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 			@Override
 			protected void done() {
 				DocearController.getController().getSemaphoreController().unlock("MindmapUpdate");
-				
-				if (this.isCancelled() || Thread.currentThread().isInterrupted()) {
-					if (newAnnotations.size() > 100 && canceledDuringPasting) {
+				try {
+					if (this.isCancelled() || Thread.currentThread().isInterrupted()) {
+						if (newAnnotations.size() > 100 && canceledDuringPasting) {
+							if (currentTarget != null) {
+								currentTarget.setFolded(isfolded);
+							}
+						}					
+						this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.15")); //$NON-NLS-1$
+					}
+					else {
 						if (currentTarget != null) {
-							currentTarget.setFolded(isfolded);
+							DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.UPDATE_MAP, currentTarget.getMap()));
 						}
+						this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.16")); //$NON-NLS-1$					
 					}
-					NodeView.setModifyModelWithoutRepaint(false);
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.15")); //$NON-NLS-1$
 				}
-				else {
-					if (currentTarget != null) {
-						DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.UPDATE_MAP, currentTarget.getMap()));
-					}
+				finally {
 					NodeView.setModifyModelWithoutRepaint(false);
-					this.firePropertyChange(SwingWorkerDialog.IS_DONE, null, TextUtils.getText("AbstractMonitoringAction.16")); //$NON-NLS-1$					
+					MapView.setNoRepaint(false);
 				}
 				if (currentTarget!= null) {
 					MapModel map = currentTarget.getMap();

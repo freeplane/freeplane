@@ -26,6 +26,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.jdesktop.swingworker.SwingWorker;
 
@@ -178,6 +179,7 @@ public class MindmapUpdateController {
 						return null;
 					}
 					NodeView.setModifyModelWithoutRepaint(true);
+					MapView.setNoRepaint(true);
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 					fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null, TextUtils.getText("computing_node_count"));
 					totalCount = maps.size()*getMindmapUpdaters().size();
@@ -255,14 +257,15 @@ public class MindmapUpdateController {
 			}
 
 			protected void done() {
-				NodeView.setModifyModelWithoutRepaint(false);				
+				NodeView.setModifyModelWithoutRepaint(false);
+				MapView.setNoRepaint(false);
 				for (MapItem item : maps) {
 					if (item.isMapOpen()) {
 						LogUtils.info("updating view for map: " + item.getIdentifierForDialog());
 						long l = System.currentTimeMillis();
 						for(INodeView nodeView : item.getModel().getRootNode().getViewers()) {
 							if(nodeView instanceof NodeView) {
-								((NodeView) nodeView).updateAll();
+								((NodeView) nodeView).updateAll();								
 							}
 						}
 						System.out.println("resetting folding complete: "+(System.currentTimeMillis()-l));

@@ -98,22 +98,24 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 					}
 					if (entry != null) {					
 						jabRefAttributes.setReferenceToNode(entry, event.getNode());
-						if (jabRefAttributes.isNodeDirty()) {
+						if (!DocearController.getController().getSemaphoreController().isLocked("waitingReferenceUpdater") || jabRefAttributes.isNodeDirty()) {
 							jabRefAttributes.setNodeDirty(false);
+							DocearController.getController().getSemaphoreController().lock("waitingReferenceUpdater");
     						SwingUtilities.invokeLater(new Runnable() {					
     							@Override
     							public void run() {
-    								if (DocearReferenceUpdateController.isLocked()) {
+    								if (DocearReferenceUpdateController.isLocked() || DocearController.getController().getSemaphoreController().isLocked("workingReferenceUpdater")) {
     									return;
     								}
-    								DocearReferenceUpdateController.lock();
+    								
     								try {
     									MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(true);
     									mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
     									mindmapUpdateController.updateCurrentMindmap(true);
     								}
     								finally {
-    									DocearReferenceUpdateController.unlock();
+    									DocearController.getController().getSemaphoreController().unlock("waitingReferenceUpdater");
+    									DocearController.getController().getSemaphoreController().unlock("workingReferenceUpdater");
     								}
     							}
     						});
