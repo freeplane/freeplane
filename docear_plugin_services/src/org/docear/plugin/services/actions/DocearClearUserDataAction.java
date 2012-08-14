@@ -2,7 +2,7 @@ package org.docear.plugin.services.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 public class DocearClearUserDataAction extends AFreeplaneAction {

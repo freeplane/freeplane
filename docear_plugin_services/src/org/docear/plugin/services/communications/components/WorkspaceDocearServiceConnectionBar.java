@@ -1,4 +1,4 @@
-package org.docear.plugin.communications.components;
+package org.docear.plugin.services.communications.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,9 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.util.TextUtils;
 
 public class WorkspaceDocearServiceConnectionBar extends JToolBar {
@@ -38,8 +38,8 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
 	protected static Insets marginInsets = new Insets(2, 2, 2, 2);
 	
-	private static Icon onIcon = new ImageIcon(WorkspaceDocearServiceConnectionBar.class.getResource("/images/arrow-refresh-on.png"));
-	private static Icon offIcon = new ImageIcon(WorkspaceDocearServiceConnectionBar.class.getResource("/images/arrow-refresh-off.png"));
+	private static Icon onIcon = new ImageIcon(WorkspaceDocearServiceConnectionBar.class.getResource("/icons/arrow-refresh-on.png"));
+	private static Icon offIcon = new ImageIcon(WorkspaceDocearServiceConnectionBar.class.getResource("/icons/arrow-refresh-off.png"));
 	
 	
 	
@@ -73,7 +73,7 @@ public class WorkspaceDocearServiceConnectionBar extends JToolBar {
 			}
 		});
 		configureComponent(button);
-		button.setDisabledIcon(new ImageIcon(this.getClass().getResource("/images/arrow-refresh-disabled.png")));
+		button.setDisabledIcon(new ImageIcon(this.getClass().getResource("/icons/arrow-refresh-disabled.png")));
 		
 		lblUsername = new JLabel("username");
 		lblUsername.setBorder(new EmptyBorder(marginInsets));	

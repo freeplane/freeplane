@@ -1,11 +1,11 @@
 package org.docear.plugin.services.listeners;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
+import org.docear.plugin.services.communications.CommunicationsController;
 
 public class DocearEventListener implements IDocearEventListener {
 

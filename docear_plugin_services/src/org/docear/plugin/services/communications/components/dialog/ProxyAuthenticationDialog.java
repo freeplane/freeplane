@@ -1,8 +1,8 @@
-package org.docear.plugin.communications.components.dialog;
+package org.docear.plugin.services.communications.components.dialog;
 
 import javax.swing.JOptionPane;
 
-import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 

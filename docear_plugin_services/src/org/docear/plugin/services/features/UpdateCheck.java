@@ -5,10 +5,10 @@ import java.io.StringReader;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.Version;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.components.dialog.UpdateCheckerDialogPanel;
 import org.docear.plugin.services.features.creators.ApplicationCreator;
 import org.docear.plugin.services.features.creators.BuildNumberCreator;

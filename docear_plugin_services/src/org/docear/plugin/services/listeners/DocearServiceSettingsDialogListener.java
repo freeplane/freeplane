@@ -8,11 +8,11 @@ import java.util.concurrent.CancellationException;
 
 import javax.swing.JOptionPane;
 
-import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.features.AccountRegisterer;
-import org.docear.plugin.communications.features.DocearServiceException;
-import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
+import org.docear.plugin.services.communications.features.AccountRegisterer;
+import org.docear.plugin.services.communications.features.DocearServiceException;
+import org.docear.plugin.services.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.services.components.dialog.DocearIRChoiceDialogPanel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;

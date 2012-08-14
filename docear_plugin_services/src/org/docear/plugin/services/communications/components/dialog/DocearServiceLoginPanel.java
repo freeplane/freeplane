@@ -1,4 +1,4 @@
-package org.docear.plugin.communications.components.dialog;
+package org.docear.plugin.services.communications.components.dialog;
 
 import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;

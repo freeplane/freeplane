@@ -1,12 +1,12 @@
-package org.docear.plugin.communications.features;
+package org.docear.plugin.services.communications.features;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.CancellationException;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
+import org.docear.plugin.services.communications.CommunicationsController;
+import org.docear.plugin.services.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.util.CoreUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;

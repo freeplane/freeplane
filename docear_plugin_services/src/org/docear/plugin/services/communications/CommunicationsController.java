@@ -1,4 +1,4 @@
-package org.docear.plugin.communications;
+package org.docear.plugin.services.communications;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -20,18 +20,18 @@ import javax.swing.SwingUtilities;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.httpclient.auth.AuthScope;
-import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar;
-import org.docear.plugin.communications.components.WorkspaceDocearServiceConnectionBar.CONNECTION_STATE;
-import org.docear.plugin.communications.components.dialog.ConnectionWaitDialog;
-import org.docear.plugin.communications.components.dialog.ProxyAuthenticationDialog;
-import org.docear.plugin.communications.features.AccountRegisterer;
-import org.docear.plugin.communications.features.DocearServiceException;
-import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
-import org.docear.plugin.communications.features.DocearServiceResponse;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.services.communications.components.WorkspaceDocearServiceConnectionBar;
+import org.docear.plugin.services.communications.components.WorkspaceDocearServiceConnectionBar.CONNECTION_STATE;
+import org.docear.plugin.services.communications.components.dialog.ConnectionWaitDialog;
+import org.docear.plugin.services.communications.components.dialog.ProxyAuthenticationDialog;
+import org.docear.plugin.services.communications.features.AccountRegisterer;
+import org.docear.plugin.services.communications.features.DocearServiceException;
+import org.docear.plugin.services.communications.features.DocearServiceResponse;
+import org.docear.plugin.services.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
@@ -107,7 +107,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		propertyChanged(DOCEAR_CONNECTION_TOKEN_PROPERTY, getRegisteredAccessToken(), null);
 	}
 
-	protected static CommunicationsController initialize(ModeController modeController) {
+	public static CommunicationsController initialize(ModeController modeController) {
 		if (communicationsController == null) {
 			communicationsController = new CommunicationsController(modeController);
 		}
@@ -478,30 +478,30 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 					ClientResponse.class);
 			Status status = response.getClientResponseStatus();
 			if (status != null && status.equals(Status.OK)) {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.OK, response.getEntityInputStream());
 			}
 			else if (status != null && status.equals(Status.NO_CONTENT)) {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.NO_CONTENT,
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.NO_CONTENT,
 						response.getEntityInputStream());
 			}
 			else {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE,
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE,
 						response.getEntityInputStream());
 			}
 		}
 		catch (ClientHandlerException e) {
 			if (e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException
 					|| e.getCause() instanceof SocketTimeoutException || e.getCause() instanceof ConnectException) {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream(
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST, new ByteArrayInputStream(
 						"error".getBytes()));
 			}
 			else {
-				return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
 						"error".getBytes()));
 			}
 		}
 		catch (Exception e) {
-			return new DocearServiceResponse(org.docear.plugin.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
+			return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
 					"error".getBytes()));
 		}
 

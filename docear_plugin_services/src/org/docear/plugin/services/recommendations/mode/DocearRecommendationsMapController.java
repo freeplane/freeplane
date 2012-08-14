@@ -13,11 +13,11 @@ import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.features.DocearServiceResponse;
-import org.docear.plugin.communications.features.DocearServiceResponse.Status;
 import org.docear.plugin.core.util.CoreUtils;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
+import org.docear.plugin.services.communications.features.DocearServiceResponse;
+import org.docear.plugin.services.communications.features.DocearServiceResponse.Status;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.xml.DocearXmlBuilder;
 import org.docear.plugin.services.xml.DocearXmlElement;

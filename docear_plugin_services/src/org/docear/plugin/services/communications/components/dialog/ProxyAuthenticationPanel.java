@@ -1,4 +1,4 @@
-package org.docear.plugin.communications.components.dialog;
+package org.docear.plugin.services.communications.components.dialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
-import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import javax.swing.JCheckBox;

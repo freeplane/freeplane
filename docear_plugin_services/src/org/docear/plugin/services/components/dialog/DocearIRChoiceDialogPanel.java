@@ -28,12 +28,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.features.DocearServiceException;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.ui.MultiLineActionLabel;
 import org.docear.plugin.core.ui.components.DocearLicensePanel;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
+import org.docear.plugin.services.communications.features.DocearServiceException;
 import org.docear.plugin.services.components.OverlayPasswordField;
 import org.docear.plugin.services.components.OverlayTextField;
 import org.freeplane.core.resources.ResourceController;

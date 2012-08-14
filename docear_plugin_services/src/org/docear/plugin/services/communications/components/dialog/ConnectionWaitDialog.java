@@ -1,4 +1,4 @@
-package org.docear.plugin.communications.components.dialog;
+package org.docear.plugin.services.communications.components.dialog;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import org.docear.plugin.services.communications.components.dialog.DocearServiceConnectionWaitPanel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.jdesktop.swingworker.SwingWorker;

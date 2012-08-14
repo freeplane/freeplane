@@ -1,4 +1,4 @@
-package org.docear.plugin.communications.components.dialog;
+package org.docear.plugin.services.communications.components.dialog;
 
 import javax.swing.JPanel;
 import com.jgoodies.forms.layout.FormLayout;

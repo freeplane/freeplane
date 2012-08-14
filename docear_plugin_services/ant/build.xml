@@ -7,7 +7,7 @@
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
-	<property name="external.jars" value="${jersey-client.jar}:${jersey-core.jar}:${jersey-multipart.jar}:${jsr311-api.jar}:${mimepull.jar}" />
+	<property name="external.jars" value="${apache.jars}" />
 	<property name="build" value="${root}/build" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
@@ -17,7 +17,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-    <property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jhall.jar}:${communications.jar}:${swingworker.jar}:${accountmanager.jar}:${core.jar}:${workspace.jar}:${bibtex.jar}:${jhyperlink.jar}:${jgoodies.jar}:${jabref.jar}"/>
+    <property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jhall.jar}:${swingworker.jar}:${core.jar}:${workspace.jar}:${bibtex.jar}:${jhyperlink.jar}:${jgoodies.jar}:${jabref.jar}"/>
 
 	<target name="build">
 		<mkdir dir="${build}" />

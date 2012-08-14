@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;

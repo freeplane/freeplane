@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.docear.plugin.communications.CommunicationsController;
-import org.docear.plugin.communications.FiletransferClient;
 import org.docear.plugin.core.features.DocearThread;
 import org.docear.plugin.core.io.DirectoryObserver;
 import org.docear.plugin.core.logging.DocearLogger;
+import org.docear.plugin.services.communications.CommunicationsController;
+import org.docear.plugin.services.communications.FiletransferClient;
 
 public class UploadThread extends DocearThread implements DirectoryObserver {
 	

@@ -2,8 +2,8 @@ package org.docear.plugin.services.recommendations.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;

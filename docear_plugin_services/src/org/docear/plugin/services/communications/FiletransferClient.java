@@ -1,4 +1,4 @@
-package org.docear.plugin.communications;
+package org.docear.plugin.services.communications;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,10 +6,10 @@ import java.io.IOException;
 
 import javax.ws.rs.core.MediaType;
 
-import org.docear.plugin.communications.features.DocearServiceException;
-import org.docear.plugin.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
+import org.docear.plugin.services.communications.features.DocearServiceException;
+import org.docear.plugin.services.communications.features.DocearServiceException.DocearServiceExceptionType;
 import org.freeplane.core.util.LogUtils;
 
 import com.sun.jersey.api.client.ClientHandlerException;

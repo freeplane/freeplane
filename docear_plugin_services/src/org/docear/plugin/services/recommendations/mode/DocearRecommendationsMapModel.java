@@ -2,8 +2,8 @@ package org.docear.plugin.services.recommendations.mode;
 
 import java.util.Collection;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;

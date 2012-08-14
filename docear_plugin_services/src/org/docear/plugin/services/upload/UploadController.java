@@ -16,12 +16,12 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.io.DirectoryObserver;
 import org.docear.plugin.core.logging.DocearLogger;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 

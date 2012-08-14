@@ -26,12 +26,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.io.IOTools;
 import org.docear.plugin.services.ServiceController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.docear.plugin.services.recommendations.dialog.RecommendationEntryComponent;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsNodeModel.RecommendationContainer;

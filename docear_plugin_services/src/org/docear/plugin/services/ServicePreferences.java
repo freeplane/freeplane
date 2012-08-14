@@ -5,7 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.Collection;
 
-import org.docear.plugin.communications.CommunicationsController;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.components.BooleanProperty;

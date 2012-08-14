@@ -5,12 +5,12 @@ import java.util.Collection;
 
 import javax.swing.SwingUtilities;
 
-import org.docear.plugin.communications.CommunicationsController;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.logging.DocearLogger;
 import org.docear.plugin.services.actions.DocearAllowUploadChooserAction;
 import org.docear.plugin.services.actions.DocearCheckForUpdatesAction;
 import org.docear.plugin.services.actions.DocearClearUserDataAction;
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.features.UpdateCheck;
 import org.docear.plugin.services.features.elements.Application;
 import org.docear.plugin.services.listeners.DocearEventListener;

@@ -1,12 +1,12 @@
-package org.docear.plugin.communications;
+package org.docear.plugin.services.communications;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.docear.plugin.communications.components.dialog.ProxyAuthenticationDialog;
 import org.docear.plugin.core.DocearService;
+import org.docear.plugin.services.communications.components.dialog.ProxyAuthenticationDialog;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceBundles;

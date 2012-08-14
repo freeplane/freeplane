@@ -8,8 +8,20 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
- org.docear.plugin.communications;bundle-version="1.0.0",
  org.docear.plugin.core;bundle-version="1.0.0",
  org.freeplane.plugin.workspace;bundle-version="1.0.0"
-Export-Package: org.docear.plugin.services
-Bundle-ClassPath: lib/plugin.jar
+Export-Package: com.sun.jersey.api.client,
+ com.sun.jersey.core.util,
+ javax.ws.rs.core,
+ org.docear.plugin.services
+Bundle-ClassPath: lib/plugin.jar,
+ lib/commons-codec-1.6.jar,
+ lib/commons-httpclient-3.1.jar,
+ lib/commons-logging-1.1.1.jar,
+ lib/jersey-apache-client-1.12.jar,
+ lib/jersey-client-1.12.jar,
+ lib/jersey-core-1.12.jar,
+ lib/jersey-multipart-1.12.jar,
+ lib/mimepull-1.3.jar
+Provide-Package: org.docear.plugin.services,
+ org.docear.plugin.services.communications
