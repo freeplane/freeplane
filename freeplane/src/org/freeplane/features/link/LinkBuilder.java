@@ -42,10 +42,12 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter {
+	private static final int FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS = 3;
 	private static final String FORMAT_AS_HYPERLINK = "FORMAT_AS_HYPERLINK";
 	private static final String LINK = "LINK";
 	final private HashSet<NodeLinkModel> arrowLinks;
@@ -230,8 +232,11 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	}
 
 	private void fixSelfLoopedConnectorShape(ConnectorModel connector) {
-		if(connector.isSelfLink() && Shape.CUBIC_CURVE.equals(connector.getShape()))
-			connector.setShape(Shape.LINE);
+		if(connector.isSelfLink() && Shape.CUBIC_CURVE.equals(connector.getShape())){
+			MapVersionInterpreter versionInterpreter = connector.getSource().getMap().getExtension(MapVersionInterpreter.class);
+			if(versionInterpreter.version < FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS)
+				connector.setShape(Shape.LINE);
+		}
 	}
 
 	/**

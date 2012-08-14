@@ -472,6 +472,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
 		MapVersionInterpreter versionInterpreter = MapVersionInterpreter.getVersionInterpreter(mapStart);
+		map.addExtension(versionInterpreter);
 		if(versionInterpreter.anotherDialect){
 			String message = versionInterpreter.getDialectInfo(f.getAbsolutePath());
 			UITools.showMessage(message, JOptionPane.WARNING_MESSAGE);

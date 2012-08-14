@@ -4,6 +4,8 @@ import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -11,7 +13,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class MapVersionInterpreter{
+public class MapVersionInterpreter implements IExtension{
 /*	
 	FREEPLANE1_2_0("freeplane 1.2.0", false, false, "Freeplane", "freeplane.url"),
 	FREEPLANE1_1("0.9.0", false, false, "Freeplane", "freeplane.url"),
@@ -19,14 +21,18 @@ public class MapVersionInterpreter{
 	DOCEAR("docear ", false, true, "Docear", "docear.url"),
 	
 */	
-	static final public MapVersionInterpreter DEFAULT = new MapVersionInterpreter("", false, true, null, null);
+	static final public MapVersionInterpreter DEFAULT = new MapVersionInterpreter("", 0, "", false, true, null, null);
 	final public String mapBegin;
+	final public String name;
+	final public int version;
 	final public boolean needsConversion;
 	final public boolean anotherDialect;
 	final public String appName;
 	final public String url;
-	MapVersionInterpreter(String versionBegin, boolean needsConversion, boolean anotherDialect,
+	MapVersionInterpreter(String name, int version, String versionBegin, boolean needsConversion, boolean anotherDialect,
 			String appName, String url) {
+		this.name = name;
+		this.version = version;
 		this.mapBegin = "<map version=\"" + versionBegin;
 		this.needsConversion = needsConversion;
 		this.anotherDialect = anotherDialect;
@@ -59,9 +65,11 @@ public class MapVersionInterpreter{
 					String versionBegin = dialectElement.getAttribute("versionBegin");
 					boolean needsConversion = Boolean.parseBoolean(dialectElement.getAttribute("needsConversion"));
 					boolean anotherDialect = Boolean.parseBoolean(dialectElement.getAttribute("anotherDialect"));
+					String name = dialectElement.getAttribute("name");
 					String appName = dialectElement.getAttribute("appName");
 					String url = dialectElement.getAttribute("url");
-					values[i] = new MapVersionInterpreter(versionBegin, needsConversion, anotherDialect, appName, url);
+					int version = Integer.parseInt(dialectElement.getAttribute("version"));
+					values[i] = new MapVersionInterpreter(name, version, versionBegin, needsConversion, anotherDialect, appName, url);
 				}
 				resource.close();
 			} catch (Exception e) {
