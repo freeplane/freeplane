@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -98,9 +99,11 @@ public class Compat {
 	 * slightly differently.
 	 */
 	private static String urlGetFile(final URL url) {
+		
 		if( !url.getProtocol().equals("file"))
 			return null;
-		String fileName = url.toString().replaceFirst("^file:", "");
+		//DOCEAR - decode url before use it as a string
+		String fileName = URLDecoder.decode(url.toString()).replaceFirst("^file:", "");
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
 			fileName = fileName.replace('/', File.separatorChar);
