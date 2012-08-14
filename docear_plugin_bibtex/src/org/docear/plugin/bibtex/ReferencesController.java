@@ -23,6 +23,7 @@ import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.AddRecommendedDocumentAction;
 import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
+import org.docear.plugin.bibtex.actions.CopyCiteKeyToClipboard;
 import org.docear.plugin.bibtex.actions.ReferenceQuitAction;
 import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
 import org.docear.plugin.bibtex.actions.ShowInReferenceManagerAction;
@@ -102,7 +103,6 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private static final String UPDATE_REFERENCES_ALL_OPEN_MAPS_LANG_KEY = "menu_update_references_all_open_maps";
 	private static final String UPDATE_REFERENCES_CURRENT_MAP_LANG_KEY = "menu_update_references_current_map";
 //	private static final String CONVERT_SPLMM_REFERENCES_LANG_KEY = "menu_update_splmm_references_current_map";
-	private static final String COPY_BIBTEX_LANG_KEY = "menu_copy_bibtex";
 	
 
 	private ModeController modeController;
@@ -116,7 +116,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 	private AFreeplaneAction AddExistingReference = new AddExistingReferenceAction(ADD_EXISTING_REFERENCES_LANG_KEY);
 	private AFreeplaneAction RemoveReference = new RemoveReferenceAction(REMOVE_REFERENCE_LANG_KEY);
 	private AFreeplaneAction AddNewReference = new AddNewReferenceAction(ADD_NEW_REFERENCE_LANG_KEY);
-	private AFreeplaneAction CopyBibtex = new CopyBibtexToClipboard(COPY_BIBTEX_LANG_KEY);
+	private AFreeplaneAction CopyBibtex = new CopyBibtexToClipboard();
+	private AFreeplaneAction CopyCiteKey = new CopyCiteKeyToClipboard();
 	
 	//private AFreeplaneAction ShowJabrefPreferences = new ShowJabrefPreferencesAction("show_jabref_preferences");
 	
@@ -268,6 +269,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, new ShowInReferenceManagerAction(),	MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, CopyBibtex,	MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, CopyCiteKey,	MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
@@ -293,6 +295,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 				builder.addSeparator(referencesCategory + REFERENCE_MANAGEMENT_MENU, MenuBuilder.AFTER);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, new ShowInReferenceManagerAction(), MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, CopyBibtex, MenuBuilder.AS_CHILD);
+				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, CopyCiteKey, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
