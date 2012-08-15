@@ -25,7 +25,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -51,12 +50,12 @@ public class Tools {
 	
 	public static URI getAbsoluteUri(NodeModel node){
 		URI uri = NodeLinks.getValidLink(node);		
-		return Tools.getAbsoluteUri(uri, node.getMap());
+		return WorkspaceUtils.absoluteURI(uri, node.getMap());
 	}
 	
 	public static URI getAbsoluteUri(NodeModel node, MapModel map){
 		URI uri = NodeLinks.getValidLink(node);
-		return Tools.getAbsoluteUri(uri, map);
+		return WorkspaceUtils.absoluteURI(uri, map);
 	}
 	
 	public static URI getAbsoluteUri(URI uri){
@@ -64,32 +63,7 @@ public class Tools {
 	}
 	
 	public static URI getAbsoluteUri(URI uri, MapModel map){
-		if(uri == null) return null;
-		try{
-			// uri with scheme is always "absolute" ( so are workspace relative links)
-			if(!uri.isAbsolute()){
-				final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
-				//MapModel map = Controller.getCurrentController().getMap();
-				if(map == null || urlManager == null) return null;
-				if(uri.getScheme() == null ||uri.getScheme().equals("")) {
-					uri = urlManager.getAbsoluteUri(map, uri);
-				}
-			}
-			if("file".equals(uri.getScheme())) return uri;
-			return uri.toURL().openConnection().getURL().toURI();
-		} 
-		catch(IllegalArgumentException e){
-			return null;
-		} 
-		catch (MalformedURLException e) {
-			return null;
-		}
-		catch (URISyntaxException e) {
-			return null;
-		}
-		catch (IOException e) {
-			return null;
-		}
+		return WorkspaceUtils.absoluteURI(uri, map);
 	}
 	
 	

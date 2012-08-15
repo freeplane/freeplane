@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -13,9 +15,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.io.FileUtils;
 import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -25,6 +29,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.border.TitledBorder;
 
 public class LocationDialog extends JPanel {
 
@@ -44,62 +49,67 @@ public class LocationDialog extends JPanel {
 	private static String PROJECTS_PATH_INIT;
 
 	private JCheckBox chckbxUseDefaults;
+	private boolean useDemo = false;
 
 	/**
 	 * Create the dialog.
 	 */
 
 	public static void showWorkspaceChooserDialog() {
-		showWorkspaceChooserDialog(true);
+		showWorkspaceChooserDialog(true, true);
 	}
 
-	public static void showWorkspaceChooserDialog(boolean useDefaults) {
-		LocationDialog dialog = new LocationDialog(useDefaults);
+	public static void showWorkspaceChooserDialog(boolean useDefaults, boolean showDemoSelector) {
+		LocationDialog dialog = new LocationDialog(useDefaults, showDemoSelector);
 
-		JOptionPane.showMessageDialog(UITools.getFrame(), dialog,
-				TextUtils.getRawText("docear_initialization"),
-				JOptionPane.PLAIN_MESSAGE);
-
-		dialog.onOkButton();
+		if(useDefaults) {
+			JOptionPane.showMessageDialog(UITools.getFrame(), dialog, TextUtils.getRawText("docear_initialization"), JOptionPane.PLAIN_MESSAGE);
+			dialog.onOkButton();
+		}
+		else {
+			if(JOptionPane.showOptionDialog(UITools.getFrame(), dialog, TextUtils.getRawText("docear_initialization"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
+				dialog.onOkButton();
+			}
+		}
 	}
 
 	public static boolean allVariablesSet() {
 		boolean variablesSet = true;
-		variablesSet = variablesSet
-				&& CoreConfiguration.repositoryPathObserver.getUri() != null;
-		variablesSet = variablesSet
-				&& CoreConfiguration.referencePathObserver.getUri() != null;
-		variablesSet = variablesSet
-				&& CoreConfiguration.projectPathObserver.getUri() != null;
+		variablesSet = variablesSet && CoreConfiguration.repositoryPathObserver.getUri() != null;
+		variablesSet = variablesSet && CoreConfiguration.referencePathObserver.getUri() != null;
+		variablesSet = variablesSet && CoreConfiguration.projectPathObserver.getUri() != null;
 
 		return variablesSet;
 	}
 
 	private void onOkButton() {
+		String bibPath = "";
 		if (chckbxUseDefaults.isSelected()) {
-			setLiteratureLocation(WorkspaceUtils.resolveURI(
-					URI.create(LITERATURE_REPOSITORY_INIT_PATH)).getPath());
-			setBibtexLocation(WorkspaceUtils.resolveURI(
-					URI.create(BIBTEX_PATH_INIT)).getPath());
-			setProjectsLocation(WorkspaceUtils.resolveURI(
-					URI.create(PROJECTS_PATH_INIT)).getPath());
+			setLiteratureLocation(WorkspaceUtils.resolveURI(URI.create(LITERATURE_REPOSITORY_INIT_PATH)).getPath());
+			setProjectsLocation(WorkspaceUtils.resolveURI(URI.create(PROJECTS_PATH_INIT)).getPath());
+			bibPath = WorkspaceUtils.resolveURI(URI.create(BIBTEX_PATH_INIT)).getPath();
 		} else {
 			setLiteratureLocation(literatureLocation.getText());
-			setBibtexLocation(bibtexLocation.getText());
-			setProjectsLocation(projectsLocation.getText());
+			setProjectsLocation(projectsLocation.getText());			
+			bibPath = (bibtexLocation.getText());
 		}
+		
+		if(demoEnabled()) {
+			copyDemoFiles();
+			bibPath = new File(WorkspaceUtils.getProfileBaseFile(),"docear_example.bib").getPath();
+		}
+		
+		setBibtexLocation(bibPath);
+		
 		WorkspaceController.getController().refreshWorkspace();
 		// TODO: DOCEAR: create Docear-Workspace
 
 	}
 
-	public LocationDialog(boolean useDefaults) {
-		WorkspaceController workspaceController = WorkspaceController
-				.getController();
+	public LocationDialog(boolean useDefaults, boolean showDemoSelector) {
+		WorkspaceController workspaceController = WorkspaceController.getController();
 
-		BIBTEX_PATH_INIT = "workspace:/"
-				+ workspaceController.getPreferences()
-						.getWorkspaceProfileHome() + "/docear.bib";
+		BIBTEX_PATH_INIT = "workspace:/" + workspaceController.getPreferences().getWorkspaceProfileHome() + "/docear.bib";
 		PROJECTS_PATH_INIT = "workspace:/projects";
 
 		this.setLayout(new BorderLayout());
@@ -112,69 +122,27 @@ public class LocationDialog extends JPanel {
 					FormFactory.RELATED_GAP_COLSPEC,
 					FormFactory.PREF_COLSPEC,
 					FormFactory.RELATED_GAP_COLSPEC,
-					FormFactory.PREF_COLSPEC,},
+					ColumnSpec.decode("pref:grow"),},
 				new RowSpec[] {
-					RowSpec.decode("fill:4dlu"),
+					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,
 					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,
-					RowSpec.decode("fill:2dlu"),
+					FormFactory.RELATED_GAP_ROWSPEC,
+					RowSpec.decode("default:grow"),
+					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.LINE_GAP_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,}));
 
 			{
-				JLabel lblLiteraturelocation = new JLabel(
-						TextUtils.getText("literature_location"));
-				mainPanel.add(lblLiteraturelocation, "2, 4, fill, fill");
-			}
-			{
-				{
-					literatureLocation = new LocationDialogPanel(
-							getLiteratureLocation(), true);
-					mainPanel.add(literatureLocation, "4, 4, fill, center");
-				}
-				{
-					JLabel lblBibtexFile = new JLabel(
-							TextUtils.getText("bibtex_location"));
-					mainPanel.add(lblBibtexFile, "2, 6, fill, fill");
-				}
-				{
-					FileFilter bibFilter = new FileFilter() {
-						public String getDescription() {
-							return "*.bib ("
-									+ TextUtils
-											.getText("locationdialog.filefilter.bib")
-									+ ")";
-						}
-
-						public boolean accept(File f) {
-							return (f.isDirectory() || f.getName().endsWith(
-									".bib"));
-						}
-					};
-					bibtexLocation = new LocationDialogPanel(
-							getBibtexLocation(), false, bibFilter);
-					bibtexLocation.setExplanation(new JHyperlink(TextUtils
-							.getText("bibtex_mendeley_help"), TextUtils
-							.getText("bibtex_mendeley_help_uri")));
-					mainPanel.add(bibtexLocation, "4, 6, fill, center");
-				}
-				{
-					JLabel lblProjectsLocation = new JLabel(
-							TextUtils.getText("projects_location"));
-					mainPanel.add(lblProjectsLocation, "2, 8, fill, fill");
-				}
-				{
-					projectsLocation = new LocationDialogPanel(
-							getProjectsLocation(), true);
-					mainPanel.add(projectsLocation, "4, 8, fill, center");
-				}
-			}
-			{
-				chckbxUseDefaults = new JCheckBox(
-						TextUtils.getText("library_path_use_defaults"),
-						useDefaults);
+				JPanel chkcbxPanel = new JPanel();
+				chkcbxPanel.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC },
+						new RowSpec[] { FormFactory.DEFAULT_ROWSPEC, }));			
+				
+				chckbxUseDefaults = new JCheckBox(TextUtils.getText("library_path_use_defaults"), useDefaults);
 				chckbxUseDefaults.addActionListener(new ActionListener() {
 
 					public void actionPerformed(ActionEvent e) {
@@ -183,27 +151,91 @@ public class LocationDialog extends JPanel {
 						} else {
 							setPathsEnabled(true);
 						}
-
 					}
-				});				
-				JPanel chkcbxPanel = new JPanel();
-				chkcbxPanel.setLayout(new FormLayout(new ColumnSpec[] {
-						FormFactory.RELATED_GAP_COLSPEC,
-						FormFactory.DEFAULT_COLSPEC}, new RowSpec[] {						
-						FormFactory.DEFAULT_ROWSPEC,
-						}));
+				});
+				mainPanel.add(chckbxUseDefaults, "2, 2, fill, center");
 				
 				JHyperlink hyperlink = new JHyperlink(TextUtils.getText("library_paths_help"), TextUtils.getText("library_paths_help_uri"));
-				chkcbxPanel.add(hyperlink, "2, 1, fill, center");
-				mainPanel.add(chckbxUseDefaults, "2, 2, fill, center");
+				chkcbxPanel.add(hyperlink, "2, 1, fill, center");				
 				mainPanel.add(chkcbxPanel, "4, 2, fill, center");
-
-				if (useDefaults) {
-					setPathsEnabled(false);
+			}
+			{
+				JPanel borderedPanel = new JPanel();
+				borderedPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				mainPanel.add(borderedPanel, "2, 4, 3, 1, fill, fill");
+				borderedPanel.setLayout(new FormLayout(new ColumnSpec[] {
+						FormFactory.RELATED_GAP_COLSPEC,
+						FormFactory.PREF_COLSPEC,
+						FormFactory.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("pref:grow"),},
+					new RowSpec[] {
+						RowSpec.decode("top:default"),
+						RowSpec.decode("top:default"),
+						RowSpec.decode("top:default"),
+						FormFactory.DEFAULT_ROWSPEC,}));
+				{
+					JLabel lblLiteraturelocation = new JLabel(TextUtils.getText("literature_location"));
+					borderedPanel.add(lblLiteraturelocation, "2, 1, fill, fill");
+				
+					literatureLocation = new LocationDialogPanel(getLiteratureLocation(), true);
+					borderedPanel.add(literatureLocation, "4, 1, fill, center");
+				}
+				{
+					JLabel lblBibtexFile = new JLabel(TextUtils.getText("bibtex_location"));
+					borderedPanel.add(lblBibtexFile, "2, 3, fill, fill");
+				
+					FileFilter bibFilter = new FileFilter() {
+						public String getDescription() {
+							return "*.bib (" + TextUtils.getText("locationdialog.filefilter.bib") + ")";
+						}
+	
+						public boolean accept(File f) {
+							return (f.isDirectory() || f.getName().endsWith(".bib"));
+						}
+					};
+					bibtexLocation = new LocationDialogPanel(getBibtexLocation(), false, bibFilter);
+					bibtexLocation.setExplanation(new JHyperlink(TextUtils.getText("bibtex_mendeley_help"), TextUtils.getText("bibtex_mendeley_help_uri")));
+					borderedPanel.add(bibtexLocation, "4, 3, fill, center");
+				}
+				{
+					JLabel lblProjectsLocation = new JLabel(TextUtils.getText("projects_location"));
+					borderedPanel.add(lblProjectsLocation, "2, 4, fill, fill");
+				
+					projectsLocation = new LocationDialogPanel(getProjectsLocation(), true);
+					borderedPanel.add(projectsLocation, "4, 4, fill, center");
+				}
+			
+				{				
+					if (showDemoSelector) {
+						setDemoEnabled(useDefaults);
+						final JCheckBox chkBoxUseDemo = new JCheckBox(TextUtils.getText("library.paths.demo"), demoEnabled());
+						chkBoxUseDemo.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								if (chkBoxUseDemo.isSelected()) {
+									setDemoEnabled(false);
+								} else {
+									setDemoEnabled(true);
+								}
+							}
+						});
+						mainPanel.add(chkBoxUseDemo, "2, 6, 3, 1, fill, center");
+					}
+	
+					if (useDefaults) {
+						setPathsEnabled(false);
+					}
 				}
 			}
 		}
 
+	}
+
+	private void setDemoEnabled(boolean enabled) {
+		this.useDemo = enabled;
+	}
+
+	public boolean demoEnabled() {
+		return this.useDemo;
 	}
 
 	private void setPathsEnabled(boolean b) {
@@ -213,8 +245,7 @@ public class LocationDialog extends JPanel {
 	}
 
 	private URI getLiteratureLocation() {
-		return getPropertyLocation(CoreConfiguration.repositoryPathObserver,
-				LITERATURE_REPOSITORY_INIT_PATH);
+		return getPropertyLocation(CoreConfiguration.repositoryPathObserver, LITERATURE_REPOSITORY_INIT_PATH);
 	}
 
 	private void setLiteratureLocation(String location) {
@@ -223,8 +254,7 @@ public class LocationDialog extends JPanel {
 	}
 
 	private URI getBibtexLocation() {
-		return getPropertyLocation(CoreConfiguration.referencePathObserver,
-				BIBTEX_PATH_INIT);
+		return getPropertyLocation(CoreConfiguration.referencePathObserver, BIBTEX_PATH_INIT);
 	}
 
 	private void setBibtexLocation(String location) {
@@ -233,8 +263,7 @@ public class LocationDialog extends JPanel {
 	}
 
 	private URI getProjectsLocation() {
-		return getPropertyLocation(CoreConfiguration.projectPathObserver,
-				PROJECTS_PATH_INIT);
+		return getPropertyLocation(CoreConfiguration.projectPathObserver, PROJECTS_PATH_INIT);
 	}
 
 	private void setProjectsLocation(String location) {
@@ -242,8 +271,7 @@ public class LocationDialog extends JPanel {
 		CoreConfiguration.projectPathObserver.setUri(uri);
 	}
 
-	private URI getPropertyLocation(
-			NodeAttributeObserver nodeAttributeObserver, String init) {
+	private URI getPropertyLocation(NodeAttributeObserver nodeAttributeObserver, String init) {
 		URI uri = nodeAttributeObserver.getUri();
 		if (uri == null) {
 			try {
@@ -254,7 +282,48 @@ public class LocationDialog extends JPanel {
 		}
 
 		return uri;
+	}
+	
+	private void copyDemoFiles() {
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm");
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/literature_and_annotations.mm"), "/demo/template_litandan.mm");
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/trash.mm"), "/demo/template_trash.mm");
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"docear_example.bib"), "/demo/docear example.bib");
+		
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()), "docear_example_project/My New Paper.mm"), "/demo/docear_example_project/My New Paper.mm");
+		
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf"), "/demo/docear_example_pdfs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Academic search engine spam and Google Scholars resilience against it.pdf"), "/demo/docear_example_pdfs/Academic search engine spam and Google Scholars resilience against it.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/An Exploratory Analysis of Mind Maps.pdf"), "/demo/docear_example_pdfs/An Exploratory Analysis of Mind Maps.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Docear -- An Academic Literature Suite.pdf"), "/demo/docear_example_pdfs/Docear -- An Academic Literature Suite.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Google Scholar's Ranking Algorithm -- An Introductory Overview.pdf"), "/demo/docear_example_pdfs/Google Scholar's Ranking Algorithm -- An Introductory Overview.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Google Scholar's Ranking Algorithm -- The Impact of Citation Counts.pdf"), "/demo/docear_example_pdfs/Google Scholar's Ranking Algorithm -- The Impact of Citation Counts.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Information Retrieval on Mind Maps -- What could it be good for.pdf"), "/demo/docear_example_pdfs/Information Retrieval on Mind Maps -- What could it be good for.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Mr. DLib -- A Machine Readable Digital Library.pdf"), "/demo/docear_example_pdfs/Mr. DLib -- A Machine Readable Digital Library.pdf");
+	}
+	
+	private void createAndCopy(File file, String resourcePath) {
+		try {
+			if(!file.exists()) {
+				createFile(file);
+				InputStream is = CoreConfiguration.class.getResourceAsStream(resourcePath);
+				FileUtils.copyInputStreamToFile(is, file);
+			}
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
+		}	
+	}
 
+	/**
+	 * @param file
+	 * @throws IOException
+	 */
+	private void createFile(File file) throws IOException {
+		if(!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+			return;
+		}
+		file.createNewFile();
 	}
 
 }

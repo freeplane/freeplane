@@ -764,9 +764,9 @@ public class PdfUtilitiesController extends ALanguageController {
 					}
 					DocearMapModelController.getModel(map).setType(DocearMapType.incoming);
 					if (!isMonitoringNode) {
-						List<NodeModel> list = new ArrayList<NodeModel>();
-						list.add(map.getRootNode());
-						AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
+//						List<NodeModel> list = new ArrayList<NodeModel>();
+//						list.add(map.getRootNode());
+//						AddMonitoringFolderAction.updateNodesAgainstMonitoringDir(list, true);
 					}
 				}
 				if (DocearEventType.NEW_MY_PUBLICATIONS.equals(event.getType())) {
