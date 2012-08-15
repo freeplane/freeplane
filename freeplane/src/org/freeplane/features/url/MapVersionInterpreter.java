@@ -1,4 +1,4 @@
-package org.freeplane.features.url.mindmapmode;
+package org.freeplane.features.url;
 
 import java.io.InputStream;
 
@@ -41,7 +41,7 @@ public class MapVersionInterpreter implements IExtension{
 		this.url = url;
 	}
 	
-	static MapVersionInterpreter getVersionInterpreter(String mapBegin){
+	public static MapVersionInterpreter getVersionInterpreter(String mapBegin){
 		for (MapVersionInterpreter interpreter : MapVersionInterpreter.values()){
 			if(interpreter.knows(mapBegin))
 				return interpreter;
@@ -85,7 +85,7 @@ public class MapVersionInterpreter implements IExtension{
 		return mapBegin.startsWith(this.mapBegin);
 	}
 	
-	String getDialectInfo(String path){
+	public String getDialectInfo(String path){
 		final String appInfo;
 		if(appName != null)
 			appInfo = TextUtils.format("dialect_info.app", path, appName);

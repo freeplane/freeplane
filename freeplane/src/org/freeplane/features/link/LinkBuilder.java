@@ -42,7 +42,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
+import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
