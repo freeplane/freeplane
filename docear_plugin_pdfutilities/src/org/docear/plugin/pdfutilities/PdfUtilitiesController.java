@@ -81,6 +81,7 @@ import org.docear.plugin.pdfutilities.ui.InstalledPdfReadersDialog;
 import org.docear.plugin.pdfutilities.ui.JDocearInvisibleMenu;
 import org.docear.plugin.pdfutilities.ui.JMonitoringMenu;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;
+import org.docear.plugin.pdfutilities.workspace.action.IncomingReReadMonitoringAction;
 import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.OptionPanelController.PropertyLoadListener;
 import org.freeplane.core.resources.ResourceController;
@@ -160,6 +161,7 @@ public class PdfUtilitiesController extends ALanguageController {
 	private AbstractMonitoringAction addMonitoringFolderAction;
 	private EditMonitoringFolderAction editMonitoringFolderAction;
 	private UpdateMonitoringFolderAction updateMonitoringFolderAction;
+	private IncomingReReadMonitoringAction incomingReReadAction;
 	private DeleteMonitoringFolderAction deleteMonitoringFolderAction;
 	private ImportAllChildAnnotationsAction importAllChildAnnotationsAction;
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
@@ -471,7 +473,7 @@ public class PdfUtilitiesController extends ALanguageController {
 		this.modecontroller.getMapController().addListenerForAction(importNewAnnotationsAction);
 		this.addMonitoringFolderAction = new AddMonitoringFolderAction(ADD_MONITORING_FOLDER_LANG_KEY);
 		this.modecontroller.getMapController().addListenerForAction(addMonitoringFolderAction);
-		this.updateMonitoringFolderAction = new UpdateMonitoringFolderAction(UPDATE_MONITORING_FOLDER_LANG_KEY);
+		this.updateMonitoringFolderAction = new UpdateMonitoringFolderAction(UPDATE_MONITORING_FOLDER_LANG_KEY);		
 		this.modecontroller.getMapController().addListenerForAction(updateMonitoringFolderAction);
 		this.importAllChildAnnotationsAction = new ImportAllChildAnnotationsAction(IMPORT_ALL_CHILD_ANNOTATIONS_LANG_KEY);
 		this.modecontroller.getMapController().addListenerForAction(importAllChildAnnotationsAction);
@@ -486,6 +488,7 @@ public class PdfUtilitiesController extends ALanguageController {
 
 		Controller.getCurrentController().addAction(new ShowInstalledPdfReadersDialogAction());
 		Controller.getCurrentController().addAction(new ShowPdfReaderDefinitionDialogAction());
+		Controller.getCurrentController().addAction(new IncomingReReadMonitoringAction());
 
 		this.modecontroller.removeAction("PasteAction"); //$NON-NLS-1$
 		this.modecontroller.addAction(new DocearPasteAction());
@@ -517,7 +520,7 @@ public class PdfUtilitiesController extends ALanguageController {
 
 				builder.addMenuItem(MENU_BAR + PDF_MANAGEMENT_MENU, new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), MENU_BAR + MONITORING_MENU,
 						MenuBuilder.AFTER);
-				builder.addAction(MENU_BAR + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_BAR + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);				
 				builder.addSeparator(MENU_BAR + MONITORING_MENU, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);
@@ -527,7 +530,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				builder.addMenuItem(monitoringCategory, new JMenu(TextUtils.getText(MONITORING_MENU_LANG_KEY)), monitoringCategory + MONITORING_MENU,
 						MenuBuilder.AS_CHILD);
 				builder.addSeparator(monitoringCategory + MONITORING_MENU, MenuBuilder.AFTER);
-				builder.addAction(monitoringCategory + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);
+				builder.addAction(monitoringCategory + MONITORING_MENU, updateMonitoringFolderAction, MenuBuilder.AS_CHILD);				
 				builder.addSeparator(monitoringCategory + MONITORING_MENU, MenuBuilder.AS_CHILD);
 				builder.addAction(monitoringCategory + MONITORING_MENU, addMonitoringFolderAction, MenuBuilder.AS_CHILD);
 				builder.addAction(monitoringCategory + MONITORING_MENU, deleteMonitoringFolderAction, MenuBuilder.AS_CHILD);

@@ -89,7 +89,7 @@ public class LinkTypeIncomingNode extends ALinkNode implements IWorkspaceNodeAct
 					"workspace.action.node.remove",
 					"workspace.action.file.delete",
 					WorkspacePopupMenuBuilder.SEPARATOR,
-					"workspace.action.node.refresh"
+					"workspace.action.docear.incoming.reread_monitored"
 			});
 		}
 		
