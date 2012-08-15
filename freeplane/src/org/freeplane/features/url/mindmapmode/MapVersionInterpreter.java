@@ -9,6 +9,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -97,5 +98,10 @@ public class MapVersionInterpreter implements IExtension{
 		else
 			urlInfo = TextUtils.getText("dialect_info.unknownURL");
 		return appInfo +" "+ warning +" "+ urlInfo;
+	}
+	
+	static public boolean isOlderThan(MapModel map, int version){
+		MapVersionInterpreter versionInterpreter = map.getExtension(MapVersionInterpreter.class);
+		return versionInterpreter != null  && versionInterpreter.version < version;
 	}
 }

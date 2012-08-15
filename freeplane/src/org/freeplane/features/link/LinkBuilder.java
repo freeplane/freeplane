@@ -232,11 +232,10 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	}
 
 	private void fixSelfLoopedConnectorShape(ConnectorModel connector) {
-		if(connector.isSelfLink() && Shape.CUBIC_CURVE.equals(connector.getShape())){
-			MapVersionInterpreter versionInterpreter = connector.getSource().getMap().getExtension(MapVersionInterpreter.class);
-			if(versionInterpreter.version < FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS)
-				connector.setShape(Shape.LINE);
-		}
+		if (connector.isSelfLink() 
+				&& Shape.CUBIC_CURVE.equals(connector.getShape()) 
+				&& MapVersionInterpreter.isOlderThan(connector.getSource().getMap(), FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS))
+			connector.setShape(Shape.LINE);
 	}
 
 	/**
