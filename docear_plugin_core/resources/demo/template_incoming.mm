@@ -52,6 +52,11 @@
 </map_styles>
 </hook>
 <hook NAME="AutomaticEdgeColor" COUNTER="7"/>
+<attribute NAME="mon_incoming_folder" VALUE="@@literature_repository@@"/>
+<attribute NAME="mon_mindmap_folder" VALUE="@@library_mindmaps@@"/>
+<attribute NAME="mon_auto" VALUE="2" OBJECT="java.lang.Integer|2"/>
+<attribute NAME="mon_subdirs" VALUE="2" OBJECT="java.lang.Integer|2"/>
+<attribute NAME="mon_flatten_dirs" VALUE="0" OBJECT="java.lang.Integer|0"/>
 <node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_989309610" CREATED="1344498811808" MODIFIED="1344510347094" HGAP="-254" VSHIFT="-20"><richcontent TYPE="NODE">
 
 <html>

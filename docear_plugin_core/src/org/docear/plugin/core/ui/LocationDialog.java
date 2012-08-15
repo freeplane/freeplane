@@ -50,6 +50,7 @@ public class LocationDialog extends JPanel {
 
 	private JCheckBox chckbxUseDefaults;
 	private boolean useDemo = false;
+	private JCheckBox chkBoxUseDemo;
 
 	/**
 	 * Create the dialog.
@@ -208,13 +209,13 @@ public class LocationDialog extends JPanel {
 				{				
 					if (showDemoSelector) {
 						setDemoEnabled(useDefaults);
-						final JCheckBox chkBoxUseDemo = new JCheckBox(TextUtils.getText("library.paths.demo"), demoEnabled());
+						chkBoxUseDemo = new JCheckBox(TextUtils.getText("library.paths.demo"), demoEnabled());
 						chkBoxUseDemo.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								if (chkBoxUseDemo.isSelected()) {
-									setDemoEnabled(false);
-								} else {
 									setDemoEnabled(true);
+								} else {
+									setDemoEnabled(false);
 								}
 							}
 						});
@@ -235,13 +236,14 @@ public class LocationDialog extends JPanel {
 	}
 
 	public boolean demoEnabled() {
-		return this.useDemo;
+		return chckbxUseDefaults.isSelected() && this.useDemo;
 	}
 
 	private void setPathsEnabled(boolean b) {
 		literatureLocation.setEnabled(b);
 		bibtexLocation.setEnabled(b);
 		projectsLocation.setEnabled(b);
+		chkBoxUseDemo.setEnabled(!b);
 	}
 
 	private URI getLiteratureLocation() {
@@ -288,7 +290,7 @@ public class LocationDialog extends JPanel {
 		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm");
 		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/literature_and_annotations.mm"), "/demo/template_litandan.mm");
 		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/trash.mm"), "/demo/template_trash.mm");
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"docear_example.bib"), "/demo/docear example.bib");
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"docear_example.bib"), "/demo/docear_example.bib");
 		
 		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()), "docear_example_project/My New Paper.mm"), "/demo/docear_example_project/My New Paper.mm");
 		
