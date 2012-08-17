@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -264,9 +265,11 @@ public class WinRegistry {
 	  private static void printSubKey(int hkey, String key, PrintStream printer) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException {
 		  printer.println("["+getHKeyName(hkey)+"\\"+key+"]");
 		  keycount++;
-		  Set<Entry<String, Object>> entries;
-		
-		  entries = Advapi32Util.registryGetValues(getHKey(hkey), key).entrySet();
+		  Set<Entry<String, Object>> entries = new HashSet<Entry<String, Object>>();
+		  try{
+			  entries = Advapi32Util.registryGetValues(getHKey(hkey), key).entrySet();
+		  } 
+		  catch(IllegalArgumentException e){}
 		  
 		  for(Entry<String, Object> entry : entries) {
 			  if(entry.getValue() instanceof Integer) {

@@ -226,6 +226,16 @@ public class PdfUtilitiesController extends ALanguageController {
 						showViewerSelectionIfNecessary();
 					}
 				}
+				
+				if(readerFilter.isAcrobat(new File(reader.getExecFile()))){
+					try {
+						importRegistrySettings(getClass().getResource("/conf/AdobeAcrobatSettings.reg"));
+					}
+					catch (IOException e) {
+						LogUtils.severe(e.getMessage());
+						showViewerSelectionIfNecessary();
+					}
+				}
 			}
 			else {
 				PdfUtilitiesController.getController().setToStandardPdfViewer();
@@ -247,13 +257,13 @@ public class PdfUtilitiesController extends ALanguageController {
 				}
 				else if (line.startsWith("\"DisplayName\"")) {
 					String s = line.substring(15);
-					if (s.startsWith("PDF-Viewer")) {
+					if (s.startsWith("PDF-Viewer") || s.startsWith("PDF-XChange Viewer")) {
 						handle.setName("PDF-Viewer");
 					}
 					else if (s.startsWith("Foxit Reader")) {
 						handle.setName("Foxit Reader");
 					}
-					else if (s.startsWith("Acrobat")) {
+					else if (s.startsWith("Adobe Acrobat")) {
 						handle.setName("Acrobat");
 					}
 					else if (s.startsWith("Adobe Reader")) {
@@ -268,7 +278,12 @@ public class PdfUtilitiesController extends ALanguageController {
 					String installPath = line.substring(19, line.length() - 1);
 					handle.setExecFile(installPath);
 				}
-				
+				else if (!viewers.containsKey("PDF-Viewer") && line.contains("PDFXCview.exe")){
+					String installPath = line.substring(5, line.length() - 2);
+					handle.setName("PDF-Viewer");
+					handle.setExecFile(installPath);
+					handle.setVersion("0");
+				}
 				if(handle.isComplete()) {
 					if (handle.compare(viewers.get(handle.getName())) == CompareVersion.GREATER) {
 						viewers.put(handle.getName(),handle);
@@ -307,6 +322,17 @@ public class PdfUtilitiesController extends ALanguageController {
 			}
 			catch (IOException e1) {
 				LogUtils.info("Read registry (wow6432): "+ e1.toString());
+			}
+			if(!viewers.containsKey("PDF-Viewer")){
+				File currentUserClassesFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "current_user_classes.reg");
+				try {
+					exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\CLSID", currentUserClassesFile);
+					parseExportedRegistryFile(viewers, currentUserClassesFile, RegistryBranch.DEFAULT);
+				}
+				catch (IOException e1) {
+					LogUtils.info("Read registry (default): "+ e1.toString());
+					LogUtils.warn(e1);
+				}
 			}
 		}
 		PDFReaderHandle handle;
@@ -373,9 +399,9 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 
 		String viewerCommand = Controller.getCurrentController().getResourceController().getProperty(OPEN_ON_PAGE_READER_COMMAND_KEY);
-		if (viewerCommand != null && readerFilter.isPdfXChange(viewerCommand)) {
+		if (viewerCommand != null) {
 			try {
-				if (!hasCompatibleSettings()) {
+				if (!hasCompatibleSettings(viewerCommand)) {
 					return false;
 				}
 			}
@@ -849,7 +875,7 @@ public class PdfUtilitiesController extends ALanguageController {
 			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor+"*/A*page=$PAGE";
 		}
 		else if (readerFilter.isAdobe(reader)) {
-			readerCommand += reader.getAbsolutePath() + "*/A $PAGE*"+fileFunctor;
+			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE*"+fileFunctor;
 		}
 		else {
 			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor;
@@ -954,42 +980,59 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 	}
 
-	public boolean hasCompatibleSettings() throws IOException {
-		if (Compat.isMacOsX()) {
+	public boolean hasCompatibleSettings(String readerCommand) throws IOException {
+		PdfReaderFileFilter filter = new PdfReaderFileFilter();
+		if (Compat.isMacOsX() || (!filter.isPdfXChange(readerCommand) && !filter.isAcrobat(readerCommand))) {
 			return true;
-		}
+		}		
 		File exportFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "exported.reg");
 		try {
-			boolean ret = false;
+			
 			String line;
-
-			exportRegistryKey("HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Documents", exportFile);
-			BufferedReader reader = new BufferedReader(new FileReader(exportFile));
-			try {
-				while ((line = reader.readLine()) != null) {
-					if ("\"SaveMethod\"=dword:00000002".equals(line.trim())) {
-						ret = true;
-						break;
+			if(filter.isPdfXChange(readerCommand)){
+				boolean ret = false;
+				exportRegistryKey("HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Documents", exportFile);
+				BufferedReader reader = new BufferedReader(new FileReader(exportFile));
+				try {
+					while ((line = reader.readLine()) != null) {
+						if ("\"SaveMethod\"=dword:00000002".equals(line.trim())) {
+							ret = true;
+							break;
+						}
+					}
+				}
+				finally {
+					reader.close();
+				}
+	
+				if (ret) {
+					exportRegistryKey("HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Commenting", exportFile);
+					reader = new BufferedReader(new FileReader(exportFile));
+					int found = 0;
+					try {
+						while ((line = reader.readLine()) != null) {
+							if ("\"CopySelTextToDrawingPopup\"=dword:00000001".equals(line.trim())) {
+								found++;
+							}
+							else if ("\"CopySelTextToHilightPopup\"=dword:00000001".equals(line.trim())) {
+								found++;
+							}
+							if (found == 2) {
+								return true;
+							}
+						}
+					}
+					finally {
+						reader.close();
 					}
 				}
 			}
-			finally {
-				reader.close();
-			}
-
-			if (ret) {
-				exportRegistryKey("HKEY_CURRENT_USER\\Software\\Tracker Software\\PDFViewer\\Commenting", exportFile);
-				reader = new BufferedReader(new FileReader(exportFile));
-				int found = 0;
+			if(filter.isAcrobat(readerCommand)){
+				exportRegistryKey("HKEY_CURRENT_USER\\Software\\Adobe\\Adobe Acrobat\\10.0\\Annots\\cPrefs", exportFile);
+				BufferedReader reader = new BufferedReader(new FileReader(exportFile));
 				try {
 					while ((line = reader.readLine()) != null) {
-						if ("\"CopySelTextToDrawingPopup\"=dword:00000001".equals(line.trim())) {
-							found++;
-						}
-						else if ("\"CopySelTextToHilightPopup\"=dword:00000001".equals(line.trim())) {
-							found++;
-						}
-						if (found == 2) {
+						if ("\"bcopyTextToMarkupAnnot\"=dword:00000001".equals(line.trim())) {
 							return true;
 						}
 					}
@@ -1005,7 +1048,8 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 
 		return false;
-	}
+	}	
+	
 	
 	public String[] getPdfReaderExecCommand(URI uriToFile, int page, String title) {
 		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uriToFile, Controller.getCurrentController().getMap()));
