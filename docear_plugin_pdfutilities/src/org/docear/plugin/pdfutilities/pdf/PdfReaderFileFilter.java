@@ -40,6 +40,10 @@ public class PdfReaderFileFilter implements FileFilter {
 		return isAdobe(file.getName());
 	}
 	
+	public boolean isAcrobat(File file){
+		return isAcrobat(file.getName());
+	}
+	
 	public boolean isFoxit(File file){
 		return isFoxit(file.getName());
 	}
@@ -49,7 +53,12 @@ public class PdfReaderFileFilter implements FileFilter {
 	}
 	
 	public boolean isAdobe(String readerCommand) {
-		Pattern regex = Pattern.compile("acro.*.exe");
+		Pattern regex = Pattern.compile("acroRd.*.exe");
+		return regex.matcher(readerCommand.trim().toLowerCase()).find();
+	}
+	
+	public boolean isAcrobat(String readerCommand) {
+		Pattern regex = Pattern.compile("acrob.*.exe");
 		return regex.matcher(readerCommand.trim().toLowerCase()).find();
 	}
 	

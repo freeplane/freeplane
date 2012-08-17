@@ -34,7 +34,7 @@ public class InstalledPdfReadersDialog extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JComboBox readerChoice;
 	private final PDFReaderHandle[] readerHandles;
-	private JLabel pdfxcvWarning;
+	private JLabel readerSettingsWarning;
 
 	public InstalledPdfReadersDialog(PDFReaderHandle[] handles, Boolean newReader) {
 		readerHandles = handles;
@@ -113,9 +113,9 @@ public class InstalledPdfReadersDialog extends JPanel {
 				}
 			}
 		});	
-		pdfxcvWarning = new JLabel(TextUtils.getText("docear.help.pdf_xchange_viewer.warning"));
-		pdfxcvWarning.setForeground(Color.red);
-		pdfxcvWarning.setVisible(false);		
+		readerSettingsWarning = new JLabel(TextUtils.getText("docear.help.pdf_xchange_viewer.warning"));
+		readerSettingsWarning.setForeground(Color.red);
+		readerSettingsWarning.setVisible(false);		
 		showWarningIfNecessary();
 		
 		MultiLineActionLabel helpLink = new MultiLineActionLabel(TextUtils.getText("docear.help.compatible_pdf_readers"));
@@ -133,7 +133,7 @@ public class InstalledPdfReadersDialog extends JPanel {
 		});			
 		
 		pnlForm.add(pdfxcvLink, "2, 4, 3, 1");
-		pnlForm.add(pdfxcvWarning, "2, 6, 3, 1");
+		pnlForm.add(readerSettingsWarning, "2, 6, 3, 1");
 		pnlForm.add(helpLink, "2, 8, 3, 1");		
 	}
 
@@ -155,21 +155,24 @@ public class InstalledPdfReadersDialog extends JPanel {
 	private void showWarningIfNecessary() {
 		String execFile = ((PDFReaderHandle) readerChoice.getSelectedItem()).getExecFile();
 		boolean compatible = true;
-		if (execFile != null) {
-			PdfReaderFileFilter filter = new PdfReaderFileFilter();
-			if (filter.isPdfXChange(execFile)) {							
-				try {
-					compatible = PdfUtilitiesController.getController().hasCompatibleSettings();
-				}
-				catch (IOException e1) {
-				}
+		if (execFile != null) {										
+			try {
+				compatible = PdfUtilitiesController.getController().hasCompatibleSettings(execFile);
 			}
+			catch (IOException e1) {
+			}			
 		}
-		if (!compatible) {
-			pdfxcvWarning.setVisible(true);
+		PdfReaderFileFilter filter = new PdfReaderFileFilter();
+		if (!compatible && filter.isPdfXChange(execFile)) {
+			readerSettingsWarning.setText(TextUtils.getText("docear.help.pdf_xchange_viewer.warning"));
+			readerSettingsWarning.setVisible(true);
 		}
-		else {
-			pdfxcvWarning.setVisible(false);
+		if (!compatible && filter.isAcrobat(execFile)) {
+			readerSettingsWarning.setText(TextUtils.getText("docear.help.acrobat.warning"));
+			readerSettingsWarning.setVisible(true);
+		}
+		if (compatible) {
+			readerSettingsWarning.setVisible(false);
 		}
 	}
 }
