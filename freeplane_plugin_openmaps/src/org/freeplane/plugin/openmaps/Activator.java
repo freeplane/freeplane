@@ -1,4 +1,4 @@
-package freeplane_plugin_openmaps;
+package org.freeplane.plugin.openmaps;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
