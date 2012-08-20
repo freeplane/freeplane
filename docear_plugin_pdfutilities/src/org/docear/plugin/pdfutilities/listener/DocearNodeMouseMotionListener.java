@@ -10,11 +10,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -28,9 +37,14 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.logger.DocearLogEvent;
+import org.docear.plugin.core.util.CharSequenceFilter;
+import org.docear.plugin.core.util.ReplaceLigaturesFilter;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
+import org.docear.plugin.pdfutilities.pdf.CSFormatedTextExtractor;
+import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
+import org.docear.plugin.pdfutilities.pdf.PdfTextEntity;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
@@ -38,12 +52,23 @@ import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
+
+import de.intarsys.pdf.content.CSDeviceBasedInterpreter;
+import de.intarsys.pdf.cos.COSInfoDict;
+import de.intarsys.pdf.cos.COSRuntimeException;
+import de.intarsys.pdf.parser.COSLoadError;
+import de.intarsys.pdf.parser.COSLoadException;
+import de.intarsys.pdf.pd.PDDocument;
+import de.intarsys.pdf.pd.PDPage;
+import de.intarsys.pdf.tools.kernel.PDFGeometryTools;
+import de.intarsys.tools.locator.FileLocator;
 
 public class DocearNodeMouseMotionListener implements IMouseListener {
 
@@ -129,6 +154,12 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 						}
 					}
 				}
+//				StringBuilder b = new StringBuilder();
+//				long time = System.currentTimeMillis();
+//				pdfHeaderExtraction(e, b);
+//				System.out.println("time: "+(System.currentTimeMillis()-time));
+//				System.out.println(b);
+//				return;
 			}
 		}
 		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(
@@ -189,6 +220,155 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 	}
 	
 	
+
+	private void pdfHeaderExtraction(MouseEvent e, StringBuilder sb) {
+		NodeModel mmNode = ((MainView) e.getSource()).getNodeView().getModel();
+		URI uri = Tools.getAbsoluteUri(mmNode);
+		if(uri == null) {
+			return;
+		}
+		try {
+			File csvFile = new File("C:\\Header_Extraction\\result.csv");
+			if(!csvFile.exists()) {
+				csvFile.getParentFile().mkdirs();	
+				csvFile.createNewFile();				
+			}
+			PrintStream printer = new PrintStream(new FileOutputStream(csvFile), true);
+			
+			try {
+				File[] fileList = new File("C:\\Header_Extraction\\testpdfs").listFiles(new FileFilter() {
+					public boolean accept(File pathname) {
+						return pathname.getName().toLowerCase().endsWith(".pdf");
+					}
+				});
+				Arrays.sort(fileList, new Comparator<File>() {
+					public int compare(File self, File other) {
+						int f1 = extractNumber(self.getName());
+						int f2 = extractNumber(other.getName());
+						if(f1 > f2) {
+							return 1;
+						}
+						if(f1 < f2) {
+							return -1;
+						}
+						return 0;
+					}
+
+					private int extractNumber(String name) {
+						String token = name.toLowerCase().replace("(", "");
+						token = token.replace(").pdf", "");
+						try {
+							return Integer.parseInt(token);
+						}
+						catch (Exception e) {
+						}
+						return 100;
+					}
+				});
+				for (File file : fileList) {
+					String title = null;
+					try {	
+						PDDocument document = getPDDocument(file.toURI());
+						if(document == null){
+							return;
+						}
+						title = extractTitle(document);
+					}
+					catch (COSLoadError er) {
+					}
+					catch (Exception ex) {
+						LogUtils.warn(ex);
+					}
+					printer.println(file.getName()+";"+(title == null ? "NULL" : title));
+					System.out.println(file.getName()+";"+(title == null ? "NULL" : title));
+				}
+			}
+			finally {
+				printer.flush();
+				printer.close();
+			}
+		} catch (IOException ex) {
+			LogUtils.warn(ex);
+		}
+	}
+	CharSequenceFilter filter = new ReplaceLigaturesFilter();
+	private String extractTitle(PDDocument document) throws IOException {
+		int TITLE_MIN_LENGTH = 2;
+		String title = null;
+		try {
+			PDPage pdPage = document.getPageTree().getFirstPage();
+			
+			if (pdPage.isPage()) {
+				try {
+					CSFormatedTextExtractor extractor = new CSFormatedTextExtractor();
+					PDPage page = (PDPage) pdPage;
+					if(!page.cosGetContents().basicIterator().hasNext()) {
+						page = page.getNextPage();
+					}
+					AffineTransform pageTx = new AffineTransform();
+					PDFGeometryTools.adjustTransform(pageTx, page);
+					extractor.setDeviceTransform(pageTx);
+					CSDeviceBasedInterpreter interpreter = new CSDeviceBasedInterpreter(null, extractor);
+					interpreter.process(page.getContentStream(), page.getResources());
+					TreeMap<PdfTextEntity, StringBuilder> map = extractor.getMap();
+					Entry<PdfTextEntity, StringBuilder> entry = map.firstEntry();
+					if(entry == null) {
+						COSInfoDict info = document.getInfoDict();
+						title = info.getTitle();
+					}
+					else {
+						title = entry.getValue().toString().trim();
+						while(title.trim().length() < TITLE_MIN_LENGTH || isNumber(title)) {
+							entry = map.higherEntry(entry.getKey());
+							if(entry == null) {
+								break;
+							}
+							title = entry.getValue().toString().trim();
+						}
+					}
+					//System.out.println(map);
+				}
+				catch (Exception ex) {
+					COSInfoDict info = document.getInfoDict();
+					title = info.getTitle();
+				}
+				
+			}				
+		}
+		finally {
+			document.close();
+		}
+		if(title != null) {
+			try {
+				title = filter.filter(title);
+			} catch (IOException e) {
+			}
+		}
+		return title;
+	}
+	
+	private boolean isNumber(String title) {
+		try {
+			Double.parseDouble(title.trim());
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	private PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
+		MapModel map = Controller.getCurrentController().getMap();
+		if(uri == null || Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map)) == null || !Tools.exists(uri, map) || !new PdfFileFilter().accept(uri)){
+			return null;
+		}
+		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map));
+		
+		FileLocator locator = new FileLocator(file);		
+		PDDocument document = PDDocument.createFromLocator(locator);
+		locator = null;
+		return document;
+	}
 
 	private void writeToLog(NodeModel node) {
 		URI uri = Tools.getAbsoluteUri(node);

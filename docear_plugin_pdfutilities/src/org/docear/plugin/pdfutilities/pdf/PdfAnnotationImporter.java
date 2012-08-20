@@ -27,7 +27,6 @@ import org.freeplane.features.mode.Controller;
 
 import de.intarsys.pdf.cds.CDSNameTreeEntry;
 import de.intarsys.pdf.cds.CDSNameTreeNode;
-import de.intarsys.pdf.cds.CDSRectangle;
 import de.intarsys.pdf.cos.COSArray;
 import de.intarsys.pdf.cos.COSCatalog;
 import de.intarsys.pdf.cos.COSDictionary;
