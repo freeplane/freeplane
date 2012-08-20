@@ -275,8 +275,8 @@ public class WorkspaceUtils {
 				urlConnection = (new File(uri)).toURL().openConnection();
 			} 
 			else if(uri.getScheme() == null && !uri.getPath().startsWith(File.separator)) {
-				if(map != null) {
-					urlConnection = (new File(uri)).toURL().openConnection();
+				if(map == null) {
+					urlConnection = uri.toURL().openConnection();
 				} 
 				else {
 					urlConnection = UrlManager.getController().getAbsoluteUri(map, uri).toURL().openConnection();

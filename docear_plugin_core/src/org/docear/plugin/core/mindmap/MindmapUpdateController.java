@@ -201,14 +201,15 @@ public class MindmapUpdateController {
 							MapModel map = null;
 							try {
 							 map = mapItem.getModel();
+							 if (map==null || map.isReadOnly()) {								
+								 continue;
+							 }
 							 map.getExtension(DocearMapModelExtension.class).setMapModificationSession(session);
 							} 
 							catch (Exception ex) {
-								LogUtils.warn("MindmapUpdateController$SwingWorker.doInBackground().1"+ex.getMessage()+" ("+mapItem.getIdentifierForDialog()+")");
+								LogUtils.warn("MindmapUpdateController$SwingWorker.doInBackground().1 "+ex.getMessage()+" ("+mapItem.getIdentifierForDialog()+")");
 							}
-							if (map==null) {								
-								continue;
-							}
+							
 							fireStatusUpdate(SwingWorkerDialog.DETAILS_LOG_TEXT, null,
 									updater.getTitle()+": " + mapItem.getIdentifierForDialog());
 							fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null, TextUtils.getText("updating_against_p1")
