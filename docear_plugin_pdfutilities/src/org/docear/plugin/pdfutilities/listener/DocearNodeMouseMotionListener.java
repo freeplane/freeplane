@@ -1,6 +1,7 @@
 package org.docear.plugin.pdfutilities.listener;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
@@ -94,10 +95,12 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			final MainView view = (MainView) e.getSource();
 			Rectangle bounds = ((ZoomableLabelUI)view.getUI()).getIconR(view);
 			Point p = e.getPoint();
+			view.setCursor(Cursor.getDefaultCursor());
 			if(bounds.contains(p)) {
 				if(view.getIcon() instanceof MultipleImage) {
 					Rectangle iconR = ((MultipleImage)view.getIcon()).getIconR(PdfUtilitiesController.REFRESH_MONITORING_ICON);
 					if(iconR != null) {
+						view.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						float zoom = Controller.getCurrentController().getViewController().getZoom();
 						iconR.setLocation((int) (iconR.x*zoom), iconR.y);
 						iconR.setSize((int)(iconR.width*zoom), (int)(iconR.height*zoom));
