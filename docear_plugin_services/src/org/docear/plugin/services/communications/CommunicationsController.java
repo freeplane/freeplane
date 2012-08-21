@@ -87,6 +87,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY = "docear.service.connect.anonyous.username";
 	public final static String DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY = "docear.service.connect.anonymous.token";
 	public static final String CONNECTION_BAR_CLICKED = "CONNECTION_BAR_CLICKED";
+	public static final String CREATING_USER = "__DOCEAR_TRYING_TO_CREATE_ACCOUNT__";
 
 	private boolean allowTransmission = true;
 
@@ -537,6 +538,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	public String getUserName() {
+		if(DocearController.getController().getSemaphoreController().isLocked(CREATING_USER)) {
+			return null;
+		}
 		if (isEmpty(getRegisteredUserName()) || isEmpty(getRegisteredAccessToken())) {
 			return getAnonymousUserName();
 		}
@@ -548,6 +552,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	private String getAnonymousUserName() {
 		String userName = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
 		if (isEmpty(userName)) {
+			DocearController.getController().getSemaphoreController().lock(CREATING_USER);
 			AccountRegisterer ar = new AccountRegisterer();
 			try {
 				ar.createAnonymousUser();
@@ -556,6 +561,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				LogUtils.warn(e);
 			}
 			userName = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
+			DocearController.getController().getSemaphoreController().unlock(CREATING_USER);
 		}
 
 		return userName;
@@ -566,6 +572,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	}
 
 	public String getAccessToken() {
+		if(DocearController.getController().getSemaphoreController().isLocked(CREATING_USER)) {
+			return null;
+		}
 		if (isEmpty(getRegisteredUserName()) || isEmpty(getRegisteredAccessToken())) {
 			return getAnonymousAccessToken();
 		}
@@ -581,6 +590,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	private String getAnonymousAccessToken() {
 		String accessToken = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_TOKEN_PROPERTY);
 		if (isEmpty(accessToken)) {
+			DocearController.getController().getSemaphoreController().lock(CREATING_USER);
 			AccountRegisterer ar = new AccountRegisterer();
 			try {
 				ar.createAnonymousUser();
@@ -589,6 +599,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				LogUtils.warn(e);
 			}
 			accessToken = ResourceController.getResourceController().getProperty(DOCEAR_CONNECTION_ANONYMOUS_USERNAME_PROPERTY);
+			DocearController.getController().getSemaphoreController().unlock(CREATING_USER);
 		}
 		return accessToken;
 	}

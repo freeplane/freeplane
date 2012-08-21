@@ -8,6 +8,7 @@ import java.util.concurrent.CancellationException;
 
 import javax.swing.JOptionPane;
 
+import org.docear.plugin.core.DocearController;
 import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.communications.features.AccountRegisterer;
@@ -80,7 +81,13 @@ public class DocearServiceSettingsDialogListener implements ActionListener {
 				throw new DocearServiceException(TextUtils.getText("docear.uploadchooser.warning.enterall"));
 			}
 			else {
-				accountRegisterer.createRegisteredUser(settings.getUserName(), settings.getPassword(), settings.getEmail(), settings.getBirthYear(), settings.wantsNewsletter(), settings.isMale());
+				try {
+					DocearController.getController().getSemaphoreController().lock(CommunicationsController.CREATING_USER);
+					accountRegisterer.createRegisteredUser(settings.getUserName(), settings.getPassword(), settings.getEmail(), settings.getBirthYear(), settings.wantsNewsletter(), settings.isMale());
+				}
+				finally {
+					DocearController.getController().getSemaphoreController().unlock(CommunicationsController.CREATING_USER);
+				}
 			}
 		}
 		else {		
