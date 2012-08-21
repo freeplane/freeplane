@@ -339,7 +339,7 @@ public class PdfUtilitiesController extends ALanguageController {
 								PDFReaderHandle handle = new PDFReaderHandle(RegistryBranch.DEFAULT);
 								handle.setName("PDF-Viewer");
 								String installPath = line.substring(15, line.length() - 1);
-								handle.setExecFile(installPath);
+								handle.setExecFile(installPath+"PDFXCview.exe");
 								handle.setVersion("0");
 								viewers.put(handle.getName(),handle);
 								break;
