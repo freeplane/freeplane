@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -339,7 +338,7 @@ public class PdfUtilitiesController extends ALanguageController {
 								PDFReaderHandle handle = new PDFReaderHandle(RegistryBranch.DEFAULT);
 								handle.setName("PDF-Viewer");
 								String installPath = line.substring(15, line.length() - 1);
-								handle.setExecFile(installPath+"PDFXCview.exe");
+								handle.setExecFile(installPath);
 								handle.setVersion("0");
 								viewers.put(handle.getName(),handle);
 								break;
@@ -377,7 +376,13 @@ public class PdfUtilitiesController extends ALanguageController {
 		PDFReaderHandle handle;
 		if ((handle = viewers.get("PDF-Viewer")) != null) {
 			handle.setName("PDF-XChange Viewer");
-			handle.setExecFile(convertPath(handle.getExecFile() + "PDF Viewer\\PDFXCview.exe"));
+			if(!handle.getExecFile().endsWith("PDFXCview.exe")) {
+				if(!(handle.getExecFile().endsWith("PDF Viewer") || handle.getExecFile().endsWith("PDF Viewer\\"))) {
+					handle.setExecFile(handle.getExecFile()+"\\PDF Viewer\\");
+				}
+				handle.setExecFile(handle.getExecFile()+"PDFXCview.exe");
+			}
+			handle.setExecFile(convertPath(handle.getExecFile()));
 			handles.add(handle);
 		}
 		if ((handle = viewers.get("Foxit Reader")) != null) {

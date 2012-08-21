@@ -60,6 +60,7 @@ import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 import com.sun.jersey.multipart.impl.MultiPartWriter;
 
 public class CommunicationsController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
+	private static final int CONNECTION_TIMEOUT = 10000;
 	private static CommunicationsController communicationsController;
 	private static Boolean PROXY_CREDENTIALS_CANCELED = false;
 
@@ -146,8 +147,8 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				if (prefChanged) {
 					cc.getClasses().add(MultiPartWriter.class);
 					client = ApacheHttpClient.create(cc);
-					client.setConnectTimeout(10000);
-					client.setReadTimeout(10000);
+					client.setConnectTimeout(CONNECTION_TIMEOUT);
+					client.setReadTimeout(CONNECTION_TIMEOUT);
 				}
 				else {
 					client.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_HTTP_STATE, cc.getState());

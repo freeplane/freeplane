@@ -336,7 +336,7 @@ public class FolderTypeProjectsNode extends AFolderNode implements IWorkspaceNod
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.physical.sort",
 					WorkspacePopupMenuBuilder.SEPARATOR,					
-					"workspace.action.docear.project.enable.monitoring",
+					//"workspace.action.docear.project.enable.monitoring",
 					"workspace.action.node.refresh"	
 			});
 		}
