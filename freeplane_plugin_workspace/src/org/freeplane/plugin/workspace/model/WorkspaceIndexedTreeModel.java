@@ -8,10 +8,13 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
@@ -33,7 +36,7 @@ import org.freeplane.plugin.workspace.nodes.FolderFileNode;
 public class WorkspaceIndexedTreeModel implements TreeModel {
 
 	private AWorkspaceTreeNode root = null;
-	private final HashMap<String, AWorkspaceTreeNode> hashStringKeyIndex = new HashMap<String, AWorkspaceTreeNode>();
+	private final Map<String, AWorkspaceTreeNode> hashStringKeyIndex = new HashMap<String, AWorkspaceTreeNode>();
 	protected EventListenerList listenerList = new EventListenerList();
 
 	/***********************************************************************************
@@ -446,7 +449,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	}
 
 	private void addToIndexRecursively(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
-		this.hashStringKeyIndex.put(node.getKey(), node);
+		AWorkspaceTreeNode oldNode = this.hashStringKeyIndex.put(node.getKey(), node);
 		if (node.getChildCount() > 0) {
 			int[] indices = new int[node.getChildCount()];
 			for (int i = 0; i < node.getChildCount(); i++) {
@@ -543,7 +546,8 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 
 	public List<URI> getAllNodesFiltered(String filter) {
 		HashSet<URI> set = new HashSet<URI>();
-		for (AWorkspaceTreeNode node : hashStringKeyIndex.values()) {
+		Collection<AWorkspaceTreeNode> values = hashStringKeyIndex.values();
+		for (AWorkspaceTreeNode node : values) {
 
 			if (node instanceof AFolderNode || node instanceof FolderFileNode) {
 				continue;

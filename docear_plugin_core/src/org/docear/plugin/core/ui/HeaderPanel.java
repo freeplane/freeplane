@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import java.awt.Dimension;
 
 public class HeaderPanel extends JPanel {
 
@@ -50,6 +51,8 @@ public class HeaderPanel extends JPanel {
 				RowSpec.decode("fill:default:grow"),}));
 		
 		lblSubHeadline = new JLabel("Subheadline");
+		lblSubHeadline.setMinimumSize(new Dimension(380, 14));
+		lblSubHeadline.setMaximumSize(new Dimension(380, 14));
 		lblSubHeadline.setFont(new Font("Dialog", Font.PLAIN, 13));
 		subTitlePanel.add(lblSubHeadline, "2, 1");		
 
