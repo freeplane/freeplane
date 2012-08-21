@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -324,16 +327,52 @@ public class PdfUtilitiesController extends ALanguageController {
 				LogUtils.info("Read registry (wow6432): "+ e1.toString());
 			}
 			if(!viewers.containsKey("PDF-Viewer")){
-				File currentUserClassesFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "current_user_classes.reg");
-				try {
-					exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\CLSID", currentUserClassesFile);
-					parseExportedRegistryFile(viewers, currentUserClassesFile, RegistryBranch.DEFAULT);
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				try {					
+					WinRegistry.exportKey(WinRegistry.HKEY_CURRENT_USER, "Software\\Tracker Software\\PDFViewer", outputStream);
+					String trackerSettings = outputStream.toString();
+					BufferedReader reader = new BufferedReader(new StringReader(trackerSettings));
+					String line;
+					try{
+						while ((line = reader.readLine()) != null) {
+							if (line.startsWith("\"InstallPath")) {
+								PDFReaderHandle handle = new PDFReaderHandle(RegistryBranch.DEFAULT);
+								handle.setName("PDF-Viewer");
+								String installPath = line.substring(15, line.length() - 1);
+								handle.setExecFile(installPath);
+								handle.setVersion("0");
+								viewers.put(handle.getName(),handle);
+								break;
+							}
+						}
+					}
+					finally{
+						reader.close();
+					}
+					if(!viewers.containsKey("PDF-Viewer")){
+						File currentUserClassesFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "current_user_classes.reg");
+						try {
+							exportRegistryKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\CLSID", currentUserClassesFile);
+							parseExportedRegistryFile(viewers, currentUserClassesFile, RegistryBranch.DEFAULT);
+						}
+						catch (IOException e1) {
+							LogUtils.info("Read registry (default): "+ e1.toString());
+							LogUtils.warn(e1);
+						}
+					}
 				}
-				catch (IOException e1) {
-					LogUtils.info("Read registry (default): "+ e1.toString());
-					LogUtils.warn(e1);
+				catch (IOException e) {
+					LogUtils.info("Could not read PDF X-Change Viewer settings.");
 				}
-			}
+				finally{
+					try {
+						outputStream.close();
+					}
+					catch (IOException e) {
+						LogUtils.info("Could not close Tracker Software settings stream.");
+					}
+				}
+			}			
 		}
 		PDFReaderHandle handle;
 		if ((handle = viewers.get("PDF-Viewer")) != null) {
