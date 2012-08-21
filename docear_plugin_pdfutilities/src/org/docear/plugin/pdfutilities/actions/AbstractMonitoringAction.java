@@ -165,8 +165,9 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					}
 
 					if (canceled()) return conflicts;
+					String textWithoutHTML = HtmlUtils.extractText(target.getText());
 					fireStatusUpdate(SwingWorkerDialog.SET_SUB_HEADLINE, null,
-							TextUtils.getText("AbstractMonitoringAction.6") + target.getText() + TextUtils.getText("AbstractMonitoringAction.7")); //$NON-NLS-1$ //$NON-NLS-2$
+							TextUtils.getText("AbstractMonitoringAction.6") + textWithoutHTML + TextUtils.getText("AbstractMonitoringAction.7")); //$NON-NLS-1$ //$NON-NLS-2$
 					fireStatusUpdate(SwingWorkerDialog.SET_PROGRESS_BAR_INDETERMINATE, null, null);
 
 					if (!cleanUpCollections()) continue;
