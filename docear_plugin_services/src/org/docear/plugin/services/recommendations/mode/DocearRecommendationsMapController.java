@@ -187,7 +187,7 @@ public class DocearRecommendationsMapController extends MapController {
 		String name = CommunicationsController.getController().getUserName();
 		if (!CoreUtils.isEmpty(name)) {
 			MultivaluedMap<String,String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
-			if(userRequest) {
+			if(!userRequest) {
 				params.add("auto", "true");
 			}
 			DocearServiceResponse response = CommunicationsController.getController().get("/user/" + name + "/recommendations/documents", params);
