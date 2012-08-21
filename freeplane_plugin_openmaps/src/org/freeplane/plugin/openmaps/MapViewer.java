@@ -7,18 +7,23 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
+
 /**
  * @author Blair Archibald
  */
 public class MapViewer extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JMapViewer mapArea;
-	private final int WIDTH = 800; 
-	private final int HEIGHT = 600;
-	private static String title = "OpenMaps";
+	private final MapController mapController;
+	
+	private static final int WIDTH = 800; 
+	private static final int HEIGHT = 600;
+	private static final String title = "OpenMaps";
 	
 	public MapViewer() {
 		mapArea = new JMapViewer();
+		mapController = new MapController(mapArea);
+		
 		configureDialog();
 		this.add(mapArea);
 		this.setVisible(true);
@@ -28,6 +33,10 @@ public class MapViewer extends JDialog {
 		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setTitle(title);
 		this.setLayout(new BorderLayout());
+	}
+	
+	public MapController getController() {
+		return mapController;
 	}
 	
 }
