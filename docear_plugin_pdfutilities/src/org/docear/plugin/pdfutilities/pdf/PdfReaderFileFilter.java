@@ -53,7 +53,7 @@ public class PdfReaderFileFilter implements FileFilter {
 	}
 	
 	public boolean isAdobe(String readerCommand) {
-		Pattern regex = Pattern.compile("acroRd.*.exe");
+		Pattern regex = Pattern.compile("acrord.*.exe");
 		return regex.matcher(readerCommand.trim().toLowerCase()).find();
 	}
 	

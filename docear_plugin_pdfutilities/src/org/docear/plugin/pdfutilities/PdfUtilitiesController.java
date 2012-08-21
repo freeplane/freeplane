@@ -877,6 +877,9 @@ public class PdfUtilitiesController extends ALanguageController {
 		else if (readerFilter.isAdobe(reader)) {
 			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE*"+fileFunctor;
 		}
+		else if (readerFilter.isAcrobat(reader)) {
+			readerCommand += reader.getAbsolutePath() + "*/A*page=$PAGE*"+fileFunctor;
+		}
 		else {
 			readerCommand += reader.getAbsolutePath() + "*"+fileFunctor;
 		}
