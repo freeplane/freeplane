@@ -15,7 +15,6 @@ import org.freeplane.core.util.LogUtils;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
 
@@ -48,12 +47,10 @@ public class FiletransferClient {
 				FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
 				formDataMultiPart.field("file", data, MediaType.APPLICATION_OCTET_STREAM_TYPE);					
 				
-				Builder requestBuilder = serviceResource.type(MediaType.MULTIPART_FORM_DATA_TYPE);
-				
-				ClientResponse response = requestBuilder.post(ClientResponse.class, formDataMultiPart);					
+				ClientResponse response = CommunicationsController.getController().post(serviceResource.type(MediaType.MULTIPART_FORM_DATA_TYPE), formDataMultiPart);					
 				if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {
 					//System.out.println(response.getEntity(String.class));
-					throw new IOException("file upload not accepted ("+ response+")");
+					throw new IOException("file upload not accepted ("+ response+"):"+response.getEntity(String.class));
 				}
 				else if (deleteIfTransferred) {
 					inStream.close();

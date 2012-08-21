@@ -463,7 +463,7 @@ public class PdfUtilitiesController extends ALanguageController {
 			public UIIcon getStateIcon(NodeModel node) {
 				if(MonitoringUtils.isMonitoringNode(node)) {
 					if (refreshMonitoringIcon  == null) {
-						refreshMonitoringIcon = new UIIcon(TextUtils.getText("docear.monitoring.reload.name"), "/icons/view-refresh-3.png", TextUtils.getText("docear.monitoring.reload.desc")) {	
+						refreshMonitoringIcon = new UIIcon(TextUtils.getText("docear.monitoring.reload.name"), "/icons/refresh icon.png", TextUtils.getText("docear.monitoring.reload.desc")) {	
 							public Icon getIcon() {
 								return REFRESH_MONITORING_ICON;
 							}

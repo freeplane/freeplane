@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -31,21 +32,20 @@ public class MapItem {
 	}
 
 	public MapModel getModel() {
+		Controller.getCurrentController().selectMode(MModeController.MODENAME);
 		if (this.map == null) {
 			URL url;
 			String mapExtensionKey;
 			try {
 				url = WorkspaceUtils.resolveURI(uri).toURI().toURL();
-				mapExtensionKey = Controller.getCurrentController()
-						.getMapViewManager().checkIfFileIsAlreadyOpened(url);
+				mapExtensionKey = Controller.getCurrentController().getMapViewManager().checkIfFileIsAlreadyOpened(url);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				return null;
 			}
 
 			if (mapExtensionKey != null) {
-				map = Controller.getCurrentController().getViewController()
-						.getMapViewManager().getMaps().get(mapExtensionKey);
+				map = Controller.getCurrentController().getViewController().getMapViewManager().getMaps().get(mapExtensionKey);
 				if (map != null) {
 					return map;
 				}
@@ -60,15 +60,16 @@ public class MapItem {
 					mapIO.load(url, map);
 					// do not work on non-docear-mindmaps
 					if (DocearMapModelController.getModel(map) == null) {
-						return null;
+						throw new Exception("no DocearMapModel");
 					}
 					map.setURL(url);
 					map.setSaved(true);
 				} else {
-					return null;
+					map = null;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LogUtils.warn("org.docear.plugin.core.MapItem.getModel(): "+ e.getMessage());
+				map = null;
 			}
 		}
 

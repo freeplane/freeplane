@@ -119,6 +119,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	public String getId() {
 		return Integer.toHexString(getName() == null ? "".hashCode() : getName().hashCode()).toUpperCase();
 		//return Integer.toHexString(super.toString().hashCode()).toUpperCase();
+		//return (getName() == null ? "NULL" : getName());
 	}
 	
 	public final String getKey() {
