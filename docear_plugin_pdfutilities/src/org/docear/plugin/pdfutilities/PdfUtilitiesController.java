@@ -163,7 +163,6 @@ public class PdfUtilitiesController extends ALanguageController {
 	private AbstractMonitoringAction addMonitoringFolderAction;
 	private EditMonitoringFolderAction editMonitoringFolderAction;
 	private UpdateMonitoringFolderAction updateMonitoringFolderAction;
-	private IncomingReReadMonitoringAction incomingReReadAction;
 	private DeleteMonitoringFolderAction deleteMonitoringFolderAction;
 	private ImportAllChildAnnotationsAction importAllChildAnnotationsAction;
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;

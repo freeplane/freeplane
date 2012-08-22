@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
@@ -449,7 +448,7 @@ public class WorkspaceIndexedTreeModel implements TreeModel {
 	}
 
 	private void addToIndexRecursively(AWorkspaceTreeNode node, AWorkspaceTreeNode targetNode) {
-		AWorkspaceTreeNode oldNode = this.hashStringKeyIndex.put(node.getKey(), node);
+		this.hashStringKeyIndex.put(node.getKey(), node);
 		if (node.getChildCount() > 0) {
 			int[] indices = new int[node.getChildCount()];
 			for (int i = 0; i < node.getChildCount(); i++) {

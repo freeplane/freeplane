@@ -40,6 +40,9 @@ public class DefaultWorkspaceMouseHandler implements MouseListener, MouseMotionL
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	public void mouseClicked(MouseEvent e) {
+		if(e.isConsumed()) {
+			return;
+		}
 		TreePath path = ((JTree) e.getSource()).getPathForLocation(e.getX(), e.getY());
 		
 		WorkspaceController.getController().getWorkspaceViewTree().addSelectionPath(path);
