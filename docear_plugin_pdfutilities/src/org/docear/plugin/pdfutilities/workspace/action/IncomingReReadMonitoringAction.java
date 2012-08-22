@@ -60,8 +60,8 @@ public class IncomingReReadMonitoringAction extends AWorkspaceAction {
     		MapModel incoming = null;
     		
     		Map<String, MapModel> openMaps = Controller.getCurrentController().getMapViewManager().getMaps();
-    		for (MapModel map : openMaps.values()) {
-    			if (path.equals(map.getFile().getAbsolutePath())) {
+    		for (MapModel map : openMaps.values()) {    			
+    			if (map.getFile() != null && path.equals(map.getFile().getAbsolutePath())) {
     				incoming = map;
     				break;
     			}
