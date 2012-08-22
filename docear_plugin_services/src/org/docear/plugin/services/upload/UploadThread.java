@@ -3,12 +3,14 @@ package org.docear.plugin.services.upload;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.ZipFile;
 
 import org.docear.plugin.core.features.DocearThread;
 import org.docear.plugin.core.io.DirectoryObserver;
 import org.docear.plugin.core.logging.DocearLogger;
 import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.communications.FiletransferClient;
+import org.freeplane.core.util.LogUtils;
 
 public class UploadThread extends DocearThread implements DirectoryObserver {
 	
@@ -49,7 +51,13 @@ public class UploadThread extends DocearThread implements DirectoryObserver {
 								fileRemoved(file);
 								continue;
 							}
-							boolean success = client.sendFile(file, true);
+							boolean success = false;
+							try {
+								success = client.sendFile(file, true);
+							}
+							catch(Exception e) {
+								DocearLogger.warn("org.docear.plugin.services.upload.UploadThread.execute() -> sendFile: "+e.getMessage());
+							}
 							if (success) {
 								DocearLogger.info(this.toString()+": synchronizing '"+file+"' successfull");
 								fileRemoved(file);
@@ -78,7 +86,14 @@ public class UploadThread extends DocearThread implements DirectoryObserver {
 
 	public void fileCreated(File file) {
 		synchronized (uploadFiles) {
-			uploadFiles.add(file);
+			try {
+				new ZipFile(file);
+				uploadFiles.add(file);
+			}
+			catch(Exception e) {
+				LogUtils.warn("org.docear.plugin.services.upload.fileCreated -> corrupted ZipFile: "+file.getAbsolutePath());
+				file.delete();				
+			}			
 		}
 	}
 
