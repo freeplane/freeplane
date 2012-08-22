@@ -338,7 +338,7 @@ public class CoreConfiguration extends ALanguageController {
 
 	private void addPluginDefaults(Controller controller) {		
 		ResourceController resController = controller.getResourceController();
-		if (resController.getProperty("ApplicationName").equals("Docear") && DocearController.getController().isDocearFirstStart()) {
+		if (resController.getProperty("ApplicationName").equals("Docear") && DocearController.getController().isDocearFirstStart()) {			
 			resController.setProperty("selection_method", "selection_method_by_click");
 			resController.setProperty("links", "relative_to_workspace");
 			resController.setProperty("save_folding", "always_save_folding");

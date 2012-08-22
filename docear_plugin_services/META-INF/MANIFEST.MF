@@ -13,7 +13,8 @@ Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
 Export-Package: com.sun.jersey.api.client,
  com.sun.jersey.core.util,
  javax.ws.rs.core,
- org.docear.plugin.services
+ org.docear.plugin.services,
+ org.docear.plugin.services.communications
 Bundle-ClassPath: lib/plugin.jar,
  lib/commons-codec-1.6.jar,
  lib/commons-httpclient-3.1.jar,
