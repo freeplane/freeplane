@@ -3,6 +3,7 @@ package org.docear.plugin.services.upload;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.ZipFile;
 
 import org.docear.plugin.core.features.DocearThread;
 import org.docear.plugin.core.io.DirectoryObserver;
@@ -85,7 +86,14 @@ public class UploadThread extends DocearThread implements DirectoryObserver {
 
 	public void fileCreated(File file) {
 		synchronized (uploadFiles) {
-			uploadFiles.add(file);
+			try {
+				new ZipFile(file);
+				uploadFiles.add(file);
+			}
+			catch(Exception e) {
+				LogUtils.warn("org.docear.plugin.services.upload.fileCreated -> corrupted ZipFile: "+file.getAbsolutePath());
+				file.delete();				
+			}			
 		}
 	}
 
