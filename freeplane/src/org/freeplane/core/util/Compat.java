@@ -103,7 +103,7 @@ public class Compat {
 		if( !url.getProtocol().equals("file"))
 			return null;
 		//DOCEAR - decode url before use it as a string
-		String fileName = URLDecoder.decode(url.toString()).replaceFirst("^file:", "");
+		String fileName = sun.net.www.ParseUtil.decode(url.toString()).replaceFirst("^file:", "");
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
 			fileName = fileName.replace('/', File.separatorChar);

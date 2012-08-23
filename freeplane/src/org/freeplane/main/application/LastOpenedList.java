@@ -20,9 +20,7 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Window;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -207,7 +205,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
 				Controller.getCurrentController().selectMode(mode);
-				String fileName = token.nextToken("").substring(1);
+				//DOCEAR - decode url string
+				String fileName = sun.net.www.ParseUtil.decode(token.nextToken("").substring(1));
 				if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
 					fileName = USER_DRIVE + fileName.substring(1);
 				}
@@ -220,7 +219,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		final boolean loadLastMap = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAP);
 		final String lastMap;
 		if (loadLastMap && !lastOpenedList.isEmpty()) {
-			lastMap = lastOpenedList.get(0);
+			//DOCEAR - decode url string
+			lastMap = sun.net.www.ParseUtil.decode(lastOpenedList.get(0));
 		}
 		else {
 			lastMap = null;
@@ -241,7 +241,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private void remove(final String restoreable) {
-		lastOpenedList.remove(restoreable);
+		//DOCEAR - decode url string
+		lastOpenedList.remove(sun.net.www.ParseUtil.decode(restoreable));
 		updateMenus();
 	}
 
@@ -290,11 +291,13 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if(map.containsExtension(DocuMapAttribute.class))
 			return;
 		if (restoreString != null) {
-			if (lastOpenedList.contains(restoreString)) {
-				lastOpenedList.remove(restoreString);
+			//DOCEAR - decode url string
+			String str = sun.net.www.ParseUtil.decode(restoreString);
+			if (lastOpenedList.contains(str)) {
+				lastOpenedList.remove(str);
 			}
-			lastOpenedList.add(0, restoreString);
-			mRestorableToMapName.put(restoreString, map.getTitle());
+			lastOpenedList.add(0, str);
+			mRestorableToMapName.put(str, map.getTitle());
 		}
 		updateMenus();
 	}
@@ -319,7 +322,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, this);
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
 			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
-			String text = createOpenMapItemName(key);
+			//DOCEAR - decode url string
+			String text = createOpenMapItemName(sun.net.www.ParseUtil.decode(key));
 			item.setText(createOpenMapItemName(text));
 			item.setMnemonic(0);
 			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(),
@@ -332,7 +336,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if(separatorIndex == -1)
 			return restorable;
 		String key = restorable.substring(0, separatorIndex);
-		return TextUtils.getText("open_as" + key, key) + restorable.substring(separatorIndex);
+		//DOCEAR - decode url string
+		return TextUtils.getText("open_as" + key, key) + sun.net.www.ParseUtil.decode(restorable.substring(separatorIndex));
 		
     }
 
