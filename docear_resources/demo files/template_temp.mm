@@ -1,7 +1,7 @@
-<map version="docear 1.0" dcr_id="1344498772270_ijfdw2px4r3sr7qpnsew1o9m" dcr_uri="workspace:/../Docear_Bzr/docear_resources/demo%20files/template_trash.mm">
+<map version="docear 1.0" dcr_id="1345646077056_dyagpzuaykl7n38pswzpej5tc" dcr_uri="workspace:/../Docear_Bzr/docear_resources/demo%20files/template_temp.mm">
 <!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <attribute_registry SHOW_ATTRIBUTES="hide"/>
-<node TEXT="Trash" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1345719418769"><hook NAME="MapStyle">
+<node TEXT="Temp" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1345646693948"><hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" show_note_icons="true"/>
 
 <map_styles>
@@ -51,8 +51,8 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="4"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_989309610" CREATED="1344498811808" MODIFIED="1345720837542" HGAP="-284" VSHIFT="-160"><richcontent TYPE="NODE">
+<hook NAME="AutomaticEdgeColor" COUNTER="2"/>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_989309610" CREATED="1344498811808" MODIFIED="1345646937216" HGAP="-377" VSHIFT="-147"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -60,7 +60,7 @@
   </head>
   <body>
     <p>
-      Sometimes, you might have a PDF or an annotation that you do not want to delete permanentely but you also don't want it to show up in your normal mind maps. Move these PDFs and annotations to this Trash Map and they won't annoy you in your other mind maps (and won't show up in your Incoming Map). In addition, PDFs and annotations in the Trash Map are not used for generating recommendations.
+      Copy PDFs and annotations you don't want to sort directly to the Literature &amp; Annotations map into this temporary map.
     </p>
     <p>
       
@@ -70,8 +70,8 @@
     </p>
   </body>
 </html>
+
 </richcontent>
-<hook NAME="FreeNode"/>
 </node>
 </node>
 </map>
