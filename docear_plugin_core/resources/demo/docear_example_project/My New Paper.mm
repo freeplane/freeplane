@@ -1,4 +1,4 @@
-<map version="docear 1.0" dcr_id="1344510149013_9rx7dojfqpew4hdwvelj1vws8" dcr_uri="workspace:/Projects/Docear%20Example%20Project/My%20New%20Paper.mm">
+<map version="docear 1.0">
 <!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <attribute_registry SHOW_ATTRIBUTES="hide"/>
 <node TEXT="My New Paper" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1283093380553"><hook NAME="MapStyle">

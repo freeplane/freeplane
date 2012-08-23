@@ -1,7 +1,23 @@
-<map version="docear 1.0" dcr_id="1344498702532_epwrzmlm3x39wbeij28lv9h3u" dcr_uri="workspace:/_data/profiles/joeran/library/template_incoming.mm">
+<map version="docear 1.0">
 <!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
 <attribute_registry SHOW_ATTRIBUTES="hide"/>
-<node TEXT="Incoming Template" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1344498707117"><hook NAME="MapStyle">
+<node FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1345708716792"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      Incoming
+    </p>
+    <p style="text-align: center">
+      <font size="1">(Press icon to refresh)</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="MapStyle" zoom="1.112">
     <properties show_icon_for_attributes="true" show_note_icons="true"/>
 
 <map_styles>
@@ -51,13 +67,8 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="7"/>
-<attribute NAME="mon_incoming_folder" VALUE="@@literature_repository@@"/>
-<attribute NAME="mon_mindmap_folder" VALUE="@@library_mindmaps@@"/>
-<attribute NAME="mon_auto" VALUE="2" OBJECT="java.lang.Integer|2"/>
-<attribute NAME="mon_subdirs" VALUE="2" OBJECT="java.lang.Integer|2"/>
-<attribute NAME="mon_flatten_dirs" VALUE="0" OBJECT="java.lang.Integer|0"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_989309610" CREATED="1344498811808" MODIFIED="1344510347094" HGAP="-254" VSHIFT="-20"><richcontent TYPE="NODE">
+<hook NAME="AutomaticEdgeColor" COUNTER="8"/>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_989309610" CREATED="1344498811808" MODIFIED="1345720865038" HGAP="-134" VSHIFT="-59"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -65,7 +76,13 @@
   </head>
   <body>
     <p>
-      Whenever you save a new PDF to your literature repository, or create an annotation in one of your PDFs in the literature repository, the new PDF or annotation will be listed here. The Incoming Map is updated each time it is opened (press CTRL+W to close it), or you can select <font face="Courier New">Monitoring -&gt; Re-read monitoring folder</font>&#160;from the menu. You should not use this map for organizing your PDFs and annotations but move entries from this map to the Literature &amp; Annotations Map (again, this map is only intended for displaying new PDFs and annotations).
+      Whenever you store a new PDF in your Literature Repository, or create an annotation in one of your existing PDFs, the new PDF or annotation will be listed here in the Incoming Map. The Incoming Map is updated when you click the refresh-icon on the root-node or select <font face="Courier New">Monitoring -&gt; Re-read monitoring folder</font>&#160;from the menu. On a refresh, any PDF and any annotation that is not listed in at least one of the other mind maps contained in the Library will be listed here in the Incoming map.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      You should not use this map for organizing your PDFs and annotations but move entries from this map to the Literature &amp; Annotations Map (again, the Incoming Map is only intended for displaying <i>new</i>&#160;PDFs and annotations).
     </p>
     <p>
       
@@ -75,7 +92,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node POSITION="right" ID="ID_1842977434" CREATED="1344501206478" MODIFIED="1344504253928"><richcontent TYPE="NODE">
@@ -96,74 +112,80 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#00ff00" WIDTH="3"/>
-<node TEXT="Docear -- An Academic&#xa;Literature Suite.pdf" ID="ID_595967394" CREATED="1344508031758" MODIFIED="1344508765180" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<node TEXT="Docear -- An Academic&#xa;Literature Suite.pdf" ID="ID_1133327934" CREATED="1345719244799" MODIFIED="1345719321171" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
 <pdf_annotation type="PDF_FILE"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
 <attribute NAME="key" VALUE="Beel2011c"/>
-<node TEXT="components&#xa;of Docear" ID="ID_1725975724" CREATED="1344508031769" MODIFIED="1344508768619" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
-<pdf_annotation type="BOOKMARK" page="1" object_number="254" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
 <attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
-<attribute NAME="key" VALUE="Beel2011c"/>
-<node TEXT="digital&#xa;library" ID="ID_1831184413" CREATED="1344508031775" MODIFIED="1344508831007" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
-<pdf_annotation type="BOOKMARK" page="1" object_number="257" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
 <attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="year" VALUE="2011"/>
+<node TEXT="Components&#xa;of Docear" ID="ID_1088249400" CREATED="1345719244815" MODIFIED="1345719324793" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<pdf_annotation type="BOOKMARK" page="1" object_number="260" generation_number="0"/>
 <attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
+<node TEXT="Digital Libreary" ID="ID_1644946250" CREATED="1345719244819" MODIFIED="1345719310537" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<pdf_annotation type="BOOKMARK" page="1" object_number="263" generation_number="0"/>
+<attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="research&#xa;module" ID="ID_1754876876" CREATED="1344508031780" MODIFIED="1344508778902" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
-<pdf_annotation type="BOOKMARK" page="1" object_number="260" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
-<attribute NAME="key" VALUE="Beel2011c"/>
-</node>
-<node TEXT="pdf viewer" ID="ID_1325411313" CREATED="1344508031786" MODIFIED="1344508031786" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
-<pdf_annotation type="BOOKMARK" page="1" object_number="263" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
-<attribute NAME="key" VALUE="Beel2011c"/>
-</node>
-<node TEXT="mind&#xa;mapping" ID="ID_1840149468" CREATED="1344508031791" MODIFIED="1344508785036" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<node TEXT="Research Module" ID="ID_1677163355" CREATED="1345719244824" MODIFIED="1345719244824" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
 <pdf_annotation type="BOOKMARK" page="1" object_number="266" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
 <attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
 </node>
-<node TEXT="word&#xa;processing" ID="ID_186410250" CREATED="1344508031796" MODIFIED="1344508787477" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<node TEXT="PDF Viewer" ID="ID_1343576812" CREATED="1345719244828" MODIFIED="1345719244828" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
 <pdf_annotation type="BOOKMARK" page="1" object_number="269" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
 <attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
 </node>
-<node TEXT="reference&#xa;manager" ID="ID_1657203154" CREATED="1344508031802" MODIFIED="1344508790505" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<node TEXT="Mind Mapping" ID="ID_1384418042" CREATED="1345719244833" MODIFIED="1345719244833" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
 <pdf_annotation type="BOOKMARK" page="1" object_number="272" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
 <attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
 </node>
-<node TEXT="import/export&#xa;filter" ID="ID_1022550548" CREATED="1344508031807" MODIFIED="1344508794387" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<node TEXT="Word Processor" ID="ID_1530515638" CREATED="1345719244837" MODIFIED="1345719244837" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
 <pdf_annotation type="BOOKMARK" page="1" object_number="275" generation_number="0"/>
-<attribute NAME="year" VALUE="2011"/>
-<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
-<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
 <attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
 </node>
-<node TEXT="these PDF bookmarks are not&#xa;yet in any other mind map.&#xa;You could move them now to the&#xa;Literature &amp; Annotations Map" ID="ID_203569811" CREATED="1344508831004" MODIFIED="1344510327156">
+<node TEXT="Reference Manager" ID="ID_878641558" CREATED="1345719244841" MODIFIED="1345719244842" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<pdf_annotation type="BOOKMARK" page="1" object_number="278" generation_number="0"/>
+<attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
+</node>
+<node TEXT="Import/Export Filter" ID="ID_639641377" CREATED="1345719244846" MODIFIED="1345719244846" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<pdf_annotation type="BOOKMARK" page="1" object_number="281" generation_number="0"/>
+<attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
+</node>
+<node TEXT="these PDF bookmarks are not&#xa;yet in any other mind map.&#xa;You could move them now to the&#xa;Literature &amp; Annotations Map" ID="ID_900629802" CREATED="1345719310533" MODIFIED="1345719312235">
 <hook NAME="SummaryNode"/>
 </node>
+</node>
+<node TEXT="Description of Docear&apos;s&#xa;general concept" ID="ID_1859668322" CREATED="1345719244850" MODIFIED="1345719330569" LINK="workspace:/literature_repository/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<pdf_annotation type="BOOKMARK" page="2" object_number="322" generation_number="0"/>
+<attribute NAME="key" VALUE="Beel2011c"/>
+<attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
+<attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
+<attribute NAME="year" VALUE="2011"/>
 </node>
 </node>
 </node>

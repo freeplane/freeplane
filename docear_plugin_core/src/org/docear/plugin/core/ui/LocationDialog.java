@@ -287,9 +287,11 @@ public class LocationDialog extends JPanel {
 	}
 	
 	private void copyDemoFiles() {
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm");
+		boolean created = createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm");
 		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/literature_and_annotations.mm"), "/demo/template_litandan.mm");
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/trash.mm"), "/demo/template_trash.mm");
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/my_publications.mm"), "/demo/template_mypubs.mm");
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/temp.mm"), "/demo/template_temp.mm", created);
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/trash.mm"), "/demo/template_trash.mm", created);
 		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"docear_example.bib"), "/demo/docear_example.bib");
 		
 		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()), "docear_example_project/My New Paper.mm"), "/demo/docear_example_project/My New Paper.mm");
@@ -304,17 +306,23 @@ public class LocationDialog extends JPanel {
 		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Mr. DLib -- A Machine Readable Digital Library.pdf"), "/demo/docear_example_pdfs/Mr. DLib -- A Machine Readable Digital Library.pdf");
 	}
 	
-	private void createAndCopy(File file, String resourcePath) {
+	private boolean createAndCopy(File file, String resourcePath) {
+		return createAndCopy(file, resourcePath, false);
+	}
+	
+	private boolean createAndCopy(File file, String resourcePath, boolean force) {
 		try {
-			if(!file.exists()) {
+			if(!file.exists() || force) {
 				createFile(file);
 				InputStream is = CoreConfiguration.class.getResourceAsStream(resourcePath);
 				FileUtils.copyInputStreamToFile(is, file);
-			}
+				return true;
+			}			
 		}
 		catch (Exception e) {
 			LogUtils.warn(e);
 		}	
+		return false;
 	}
 
 	/**

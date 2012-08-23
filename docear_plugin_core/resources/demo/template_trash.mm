@@ -1,6 +1,8 @@
-<map version="docear 1.0" dcr_id="1344498772270_ijfdw2px4r3sr7qpnsew1o9m" dcr_uri="workspace:/_data/profiles/joeran/library/template_trash.mm">
+<map version="docear 1.0">
 <!--To view this file, download Docear - The Academic Literature Suite from http://www.docear.org -->
-<node TEXT="Trash Template" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1344498784244"><hook NAME="MapStyle">
+<attribute_registry SHOW_ATTRIBUTES="hide"/>
+<node TEXT="Trash" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1345719418769"><hook NAME="MapStyle">
+    <properties show_icon_for_attributes="true" show_note_icons="true"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -49,8 +51,8 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="0"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_989309610" CREATED="1344498811808" MODIFIED="1344499298769" HGAP="-254" VSHIFT="-160"><richcontent TYPE="NODE">
+<hook NAME="AutomaticEdgeColor" COUNTER="4"/>
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_989309610" CREATED="1344498811808" MODIFIED="1345720837542" HGAP="-284" VSHIFT="-160"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -58,7 +60,7 @@
   </head>
   <body>
     <p>
-      Sometimes, you might have a PDF or an annotation that you do not want to permanentely delete but also don't want to show up in your normal mind maps. Move these PDFs and annotations to this Trash Map and they won't annoy you in your other mind maps (and won't show up in your Incoming Map). In addition, PDFs and annotations in the Trash Map are not used for generating recommendations.
+      Sometimes, you might have a PDF or an annotation that you do not want to delete permanentely but you also don't want it to show up in your normal mind maps. Move these PDFs and annotations to this Trash Map and they won't annoy you in your other mind maps (and won't show up in your Incoming Map). In addition, PDFs and annotations in the Trash Map are not used for generating recommendations.
     </p>
     <p>
       
@@ -68,7 +70,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 </node>
