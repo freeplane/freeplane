@@ -1,4 +1,4 @@
-package org.freeplane.plugin.openmaps;
+package org.freeplane.plugin.openmaps.mapElements;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

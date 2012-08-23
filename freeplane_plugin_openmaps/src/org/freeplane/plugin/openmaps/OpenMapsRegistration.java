@@ -1,6 +1,7 @@
 package org.freeplane.plugin.openmaps;
 
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.openmaps.actions.InsertOpenMapsAction;
 
 /**
  * @author Blair Archibald 
