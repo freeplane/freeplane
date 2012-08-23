@@ -124,37 +124,39 @@ public class WorkspaceUtils {
 	}
 	
 	public static void saveCurrentConfiguration() {
-		String profile = WorkspaceController.getController().getPreferences().getWorkspaceProfileHome();
-
-		URI uri;
-		File temp, config;
+		File temp = null, config;
 		try {
-			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/" + profile + "/tmp_"
-					+ WorkspaceConfiguration.CONFIG_FILE_NAME);
-			temp = WorkspaceUtils.resolveURI(uri);
-			uri = new URI(WorkspaceController.WORKSPACE_RESOURCE_URL_PROTOCOL + ":/" + profile + "/"
-					+ WorkspaceConfiguration.CONFIG_FILE_NAME);
-			config = WorkspaceUtils.resolveURI(uri);
-		}
-		catch (URISyntaxException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		try {
-			WorkspaceController.getController().saveConfigurationAsXML(new FileWriter(temp));
-
+			temp = new File(getProfileBaseFile(), System.currentTimeMillis() + "_" + WorkspaceConfiguration.CONFIG_FILE_NAME);
+			config = new File(getProfileBaseFile(), WorkspaceConfiguration.CONFIG_FILE_NAME);
+				
+			final FileWriter writer = new FileWriter(temp);
+			try {
+				WorkspaceController.getController().saveConfigurationAsXML(writer);
+			}
+			finally {
+				writer.close();
+			}
+			
+			
 			FileChannel from = new FileInputStream(temp).getChannel();
 			FileChannel to = new FileOutputStream(config).getChannel();
 
-			to.transferFrom(from, 0, from.size());
-			to.close();
-			from.close();
+			try {
+				to.transferFrom(from, 0, from.size());
+			}
+			finally {
+				to.close();
+				from.close();
+			}
 		}
-		catch (IOException e1) {
-			LogUtils.severe(e1);
+		catch (IOException e) {
+			LogUtils.warn("org.freeplane.plugin.workspace.WorkspaceUtils.saveCurrentConfiguration(): "+ e.getMessage());
 		}
-		temp.delete();
+		finally {
+			if(temp != null) {
+				temp.delete();
+			}
+		}
 	}
 
 	public static FolderLinkNode createPhysicalFolderNode(final File path, final AWorkspaceTreeNode parent) {
