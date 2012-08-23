@@ -1138,20 +1138,24 @@ public class PdfUtilitiesController extends ALanguageController {
 	
 	public String[] getPdfReaderExecCommand(URI uriToFile, IAnnotation annotation) {
 		int page = 1;
+		String title = null;
 		if (annotation != null) {
 			page = annotation.getPage() != null ? annotation.getPage() : 1;
+			title = annotation.getTitle();
 		}
 		
-		return getPdfReaderExecCommand(uriToFile, page, annotation.getTitle());
+		return getPdfReaderExecCommand(uriToFile, page, title);
 	}
 	
 	public boolean openPdfOnPage(URI uriToFile, IAnnotation annotation) {
 		int page = 1;
+		String title = null;
 		if (annotation != null) {
 			page = annotation.getPage() != null ? annotation.getPage() : 1;
+			title = annotation.getTitle();
 		}
 		
-		return openPdfOnPage(uriToFile, page, annotation.getTitle());
+		return openPdfOnPage(uriToFile, page, title);
 	}
 	
 	public boolean openPdfOnPage(URI uriToFile, int page) {
