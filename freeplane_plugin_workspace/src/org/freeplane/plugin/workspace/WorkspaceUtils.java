@@ -228,7 +228,11 @@ public class WorkspaceUtils {
 	public static URI getProfileBaseURI() {
 		URI base = getWorkspaceBaseFile().toURI();
 		try {
-			return normalize((new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), base.getPath() + "/" 
+			 String basePath = base.getPath();
+			 if (basePath.startsWith("//")) {
+				 basePath = "//" + basePath;
+			 }
+			return normalize((new URI(base.getScheme(), base.getUserInfo(), base.getHost(), base.getPort(), basePath + "/" 
 					+ WorkspaceController.getController().getPreferences().getWorkspaceProfileHome()+"/", base.getQuery(),
 					base.getFragment())));
 		}
