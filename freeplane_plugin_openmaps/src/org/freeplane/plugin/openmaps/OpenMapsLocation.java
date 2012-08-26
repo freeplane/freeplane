@@ -1,8 +1,8 @@
 package org.freeplane.plugin.openmaps;
 
 public class OpenMapsLocation {
-	public final float location_x;
-	public final float location_y;
+	private final float location_x;
+	private final float location_y;
 
 	public OpenMapsLocation(float x, float y) {
 		location_x = x;

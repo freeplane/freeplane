@@ -13,6 +13,7 @@ public class MapController {
 	
 	public OpenMapsLocation getSelectedLocation() {
 		return new OpenMapsLocation (100,100);
+		//return null; //Causes issues obviously
 	}
 
 }

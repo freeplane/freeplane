@@ -2,6 +2,8 @@ package org.freeplane.plugin.openmaps.actions;
 
 import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.plugin.openmaps.OpenMapsNodeHook;
 import org.freeplane.plugin.openmaps.mapElements.MapViewer;
 
 public class InsertOpenMapsAction extends AFreeplaneAction {
@@ -14,13 +16,8 @@ public class InsertOpenMapsAction extends AFreeplaneAction {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		final MapViewer map = new MapViewer();
-		/* Point locationChoosen = null;
-		//While loop needs to be replaced with a listener
-		while (locationChoosen == null) {
-			locationChoosen = map.getController().getSelectedLocation();
-		}
-		//addChoosenLocationToSelectedNode(locationChoosen); */
+		final OpenMapsNodeHook nodeHook = new OpenMapsNodeHook();
+		nodeHook.chooseLocation();
 	}
 
 

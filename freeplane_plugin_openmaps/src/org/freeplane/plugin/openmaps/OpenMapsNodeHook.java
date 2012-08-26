@@ -7,6 +7,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.plugin.openmaps.mapElements.MapViewer;
 
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook {
@@ -15,12 +16,32 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 		super();
 	}
 	
+	public void chooseLocation() {
+		final MapViewer map = new MapViewer();
+		OpenMapsLocation locationChoosen = null;
+		//While loop needs to be replaced with a listener of some kind - This breaks things
+		while (locationChoosen == null) {
+			locationChoosen = map.getController().getSelectedLocation();
+		}
+		addChoosenLocationToSelectedNode(locationChoosen); 
+	}
+	
+	@Override
+    protected HookAction createHookAction() {
+	    return null;
+    }
+	
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final OpenMapsExtension extension = new OpenMapsExtension();
 		loadLocationFromXML(element, extension);
 		refreshNode(node);
 		return (IExtension) extension;
+	}
+	
+	@Override
+	protected Class<OpenMapsExtension> getExtensionClass() {
+		return OpenMapsExtension.class;
 	}
 
 	private void loadLocationFromXML(final XMLElement element, final OpenMapsExtension extension) {
@@ -33,8 +54,9 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	
 	private void addChoosenLocationToSelectedNode(OpenMapsLocation locationChoosen) {
 		final NodeModel node = getCurrentlySelectedNode();
-		//Check for extension 
+		//Check for extension? 
 		node.addIcon(new MindIcon("internet"));
+		node.setText((Float.toString(locationChoosen.getXLocation()))); //Testing
 		refreshNode(node);
 	}
 
