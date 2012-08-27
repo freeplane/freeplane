@@ -23,6 +23,7 @@ import org.docear.plugin.core.CoreConfiguration;
 import org.docear.plugin.core.io.ReplacingInputStream;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -293,7 +294,12 @@ public class LocationDialog extends JPanel {
 		Map<String, String> replaceMapping = new HashMap<String, String>();
 		replaceMapping.put("@LITERATURE_REPO_DEMO@", CoreConfiguration.repositoryPathObserver.getUri().toString()+"/Example%20PDFs");
 		URI relativeBibURI = LinkController.toLinkTypeDependantURI(WorkspaceUtils.getProfileBaseFile(), WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), LinkController.LINK_RELATIVE_TO_MINDMAP);
-		replaceMapping.put("@LITERATURE_BIB_DEMO@", relativeBibURI.toString()+"/Example PDFs");
+		if(Compat.isWindowsOS() && relativeBibURI.getPath().startsWith("//")) {
+			replaceMapping.put("@LITERATURE_BIB_DEMO@", (new File(relativeBibURI).getPath().replace(File.separator, File.separator+File.separator)+File.separator+File.separator+"Example PDFs"));
+		}
+		else {
+			replaceMapping.put("@LITERATURE_BIB_DEMO@", relativeBibURI.toString()+"/Example PDFs");
+		}
 		
 		boolean created = createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm", replaceMapping);
 		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/literature_and_annotations.mm"), "/demo/template_litandan.mm", replaceMapping);
