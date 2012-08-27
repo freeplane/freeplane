@@ -84,6 +84,8 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 
+import sun.net.www.ParseUtil;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -446,12 +448,7 @@ public class LinkController extends SelectionController implements IExtension {
 		if (linkType == LINK_ABSOLUTE) {
 			return null;
 		}
-		try {
-			final URI fileUri = input.getAbsoluteFile().toURI();
-			if(fileUri.getPath().startsWith("//")) {
-				return fileUri;
-			}
-			
+		try {			
 			URI mapUri = null;
 			if (map != null) {
 				mapUri = map.getAbsoluteFile().toURI();
@@ -462,6 +459,11 @@ public class LinkController extends SelectionController implements IExtension {
 				workspaceLocation = new File(ResourceController.getResourceController().getProperty("workspace_location")
 						+ File.separator).getAbsoluteFile().toURI();				
 				mapUri = workspaceLocation;
+			}
+			
+			final URI fileUri = input.getAbsoluteFile().toURI();
+			if(!(fileUri.getPath().startsWith("//") && mapUri.getPath().startsWith("//"))) {
+				return fileUri;
 			}
 			final String filePathAsString = fileUri.getRawPath();
 			final String mapPathAsString = mapUri.getRawPath();
@@ -558,7 +560,7 @@ public class LinkController extends SelectionController implements IExtension {
 				final Matcher mat = patURI.matcher(inputValue);
 				if (mat.matches()) {
 					final String scheme = mat.group(1);
-					final String ssp = mat.group(2).replace('\\', '/');
+					final String ssp = ParseUtil.decode(mat.group(2).replace('\\', '/'));
 					final String fragment = mat.group(3);
 					return new URI(scheme, ssp, fragment);
 				}
