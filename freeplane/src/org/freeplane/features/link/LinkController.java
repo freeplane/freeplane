@@ -529,7 +529,7 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = "smb";
 					final String ssp = "//" + mat.group(1) + "/" + mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					return new URI(scheme, ssp, fragment);
+					return new URI(scheme, ParseUtil.decode(ssp), fragment);
 				}
 			}
 			{
@@ -550,7 +550,7 @@ public class LinkController extends SelectionController implements IExtension {
 					else if (!ssp.startsWith("/")) {
 						ssp = "/" + ssp;
 					}
-					return new URI(scheme, null, ssp, fragment);
+					return new URI(scheme, null, ParseUtil.decode(ssp), fragment);
 				}
 			}
 			// if this doesn't work out, we try to
