@@ -11,6 +11,7 @@ public class PDFReaderHandle {
 	private String name;
 	private String execFile;
 	private String version;
+	private boolean isDefault;	
 	private final RegistryBranch branch;
 	
 	/**
@@ -62,4 +63,13 @@ public class PDFReaderHandle {
 	public RegistryBranch getRegistryBranch() {
 		return branch;
 	}
+	
+	public boolean isDefault() {
+		return isDefault;
+	}
+
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+
 }
