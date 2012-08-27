@@ -121,8 +121,13 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					WebResource webResource = commController.getWebResource(uri);
 
 					ClientResponse response = commController.get(webResource, ClientResponse.class);
-					FileUtils.copyInputStreamToFile(new ProgressInputStream(response.getEntityInputStream(), uri.toURL(), response.getLength()), partFile);
-
+					try {
+						FileUtils.copyInputStreamToFile(new ProgressInputStream(response.getEntityInputStream(), uri.toURL(), response.getLength()), partFile);
+					}
+					finally {
+						response.close();
+					}
+					
 					if (destinationFile.exists()) {
 						destinationFile.delete();
 					}
