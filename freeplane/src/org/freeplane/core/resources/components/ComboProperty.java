@@ -97,7 +97,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 			mComboBox.setSelectedItem(value);
 		}
 		else{
-			LogUtils.severe("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
+			LogUtils.info("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
 			if (mComboBox.getModel().getSize() > 0) {
 				mComboBox.setSelectedIndex(0);
 			}
