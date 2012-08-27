@@ -8,19 +8,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.commons.io.FileUtils;
 import org.docear.plugin.core.CoreConfiguration;
+import org.docear.plugin.core.io.ReplacingInputStream;
 import org.docear.plugin.core.workspace.node.config.NodeAttributeObserver;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.swingplus.JHyperlink;
@@ -29,7 +34,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.border.TitledBorder;
 
 public class LocationDialog extends JPanel {
 
@@ -96,8 +100,7 @@ public class LocationDialog extends JPanel {
 		}
 		
 		if(demoEnabled()) {
-			copyDemoFiles();
-			bibPath = new File(WorkspaceUtils.getProfileBaseFile(),"docear_example.bib").getPath();
+			copyDemoFiles(new File(bibPath));
 		}
 		
 		setBibtexLocation(bibPath);
@@ -236,14 +239,14 @@ public class LocationDialog extends JPanel {
 	}
 
 	public boolean demoEnabled() {
-		return chckbxUseDefaults.isSelected() && this.useDemo;
+		return /*chckbxUseDefaults.isSelected() &&*/ this.useDemo;
 	}
 
 	private void setPathsEnabled(boolean b) {
 		literatureLocation.setEnabled(b);
 		bibtexLocation.setEnabled(b);
 		projectsLocation.setEnabled(b);
-		chkBoxUseDemo.setEnabled(!b);
+		//chkBoxUseDemo.setEnabled(!b);
 	}
 
 	private URI getLiteratureLocation() {
@@ -286,36 +289,52 @@ public class LocationDialog extends JPanel {
 		return uri;
 	}
 	
-	private void copyDemoFiles() {
-		boolean created = createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm");
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/literature_and_annotations.mm"), "/demo/template_litandan.mm");
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/my_publications.mm"), "/demo/template_mypubs.mm");
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/temp.mm"), "/demo/template_temp.mm", created);
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/trash.mm"), "/demo/template_trash.mm", created);
-		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"docear_example.bib"), "/demo/docear_example.bib");
+	private void copyDemoFiles(File bibPath) {
+		Map<String, String> replaceMapping = new HashMap<String, String>();
+		replaceMapping.put("@LITERATURE_REPO_DEMO@", CoreConfiguration.repositoryPathObserver.getUri().toString()+"/Example%20PDFs");
+		URI relativeBibURI = LinkController.toLinkTypeDependantURI(WorkspaceUtils.getProfileBaseFile(), WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), LinkController.LINK_RELATIVE_TO_MINDMAP);
+		replaceMapping.put("@LITERATURE_BIB_DEMO@", relativeBibURI.toString()+"/Example PDFs");
 		
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()), "docear_example_project/My New Paper.mm"), "/demo/docear_example_project/My New Paper.mm");
+		boolean created = createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm", replaceMapping);
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/literature_and_annotations.mm"), "/demo/template_litandan.mm", replaceMapping);
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/my_publications.mm"), "/demo/template_mypubs.mm", replaceMapping);
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/temp.mm"), "/demo/template_temp.mm", created, replaceMapping);
+		createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/trash.mm"), "/demo/template_trash.mm", created, replaceMapping);
+		if(!bibPath.exists()) {
+			createAndCopy(bibPath, "/demo/docear_example.bib", replaceMapping);
+		}
 		
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf"), "/demo/docear_example_pdfs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf");
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Academic search engine spam and Google Scholars resilience against it.pdf"), "/demo/docear_example_pdfs/Academic search engine spam and Google Scholars resilience against it.pdf");
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/An Exploratory Analysis of Mind Maps.pdf"), "/demo/docear_example_pdfs/An Exploratory Analysis of Mind Maps.pdf");
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Docear -- An Academic Literature Suite.pdf"), "/demo/docear_example_pdfs/Docear -- An Academic Literature Suite.pdf");
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Google Scholar's Ranking Algorithm -- An Introductory Overview.pdf"), "/demo/docear_example_pdfs/Google Scholar's Ranking Algorithm -- An Introductory Overview.pdf");
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Google Scholar's Ranking Algorithm -- The Impact of Citation Counts.pdf"), "/demo/docear_example_pdfs/Google Scholar's Ranking Algorithm -- The Impact of Citation Counts.pdf");
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Information Retrieval on Mind Maps -- What could it be good for.pdf"), "/demo/docear_example_pdfs/Information Retrieval on Mind Maps -- What could it be good for.pdf");
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "docear_example_pdfs/Mr. DLib -- A Machine Readable Digital Library.pdf"), "/demo/docear_example_pdfs/Mr. DLib -- A Machine Readable Digital Library.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()), "Example Project/My New Paper.mm"), "/demo/docear_example_project/My New Paper.mm",replaceMapping);
+		
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf"), "/demo/docear_example_pdfs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Academic search engine spam and Google Scholars resilience against it.pdf"), "/demo/docear_example_pdfs/Academic search engine spam and Google Scholars resilience against it.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/An Exploratory Analysis of Mind Maps.pdf"), "/demo/docear_example_pdfs/An Exploratory Analysis of Mind Maps.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Docear -- An Academic Literature Suite.pdf"), "/demo/docear_example_pdfs/Docear -- An Academic Literature Suite.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Google Scholar's Ranking Algorithm -- An Introductory Overview.pdf"), "/demo/docear_example_pdfs/Google Scholar's Ranking Algorithm -- An Introductory Overview.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Google Scholar's Ranking Algorithm -- The Impact of Citation Counts.pdf"), "/demo/docear_example_pdfs/Google Scholar's Ranking Algorithm -- The Impact of Citation Counts.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Information Retrieval on Mind Maps -- What could it be good for.pdf"), "/demo/docear_example_pdfs/Information Retrieval on Mind Maps -- What could it be good for.pdf");
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Mr. DLib -- A Machine Readable Digital Library.pdf"), "/demo/docear_example_pdfs/Mr. DLib -- A Machine Readable Digital Library.pdf");
 	}
 	
 	private boolean createAndCopy(File file, String resourcePath) {
-		return createAndCopy(file, resourcePath, false);
+		return createAndCopy(file, resourcePath, false, null);
 	}
 	
-	private boolean createAndCopy(File file, String resourcePath, boolean force) {
+	private boolean createAndCopy(File file, String resourcePath,final Map<String, String> replaceMap) {
+		return createAndCopy(file, resourcePath, false, replaceMap);
+	}
+	
+	private boolean createAndCopy(File file, String resourcePath, boolean force,final Map<String, String> replaceMap) {
 		try {
 			if(!file.exists() || force) {
 				createFile(file);
 				InputStream is = CoreConfiguration.class.getResourceAsStream(resourcePath);
-				FileUtils.copyInputStreamToFile(is, file);
+				if(replaceMap == null) {
+					FileUtils.copyInputStreamToFile(is, file);
+				}
+				else {
+					FileUtils.copyInputStreamToFile(new ReplacingInputStream(replaceMap, is), file);
+				}
 				return true;
 			}			
 		}
