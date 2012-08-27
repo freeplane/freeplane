@@ -324,7 +324,7 @@ public class PdfUtilitiesController extends ALanguageController {
 			catch (IOException e1) {
 				LogUtils.info("Read registry (wow6432): "+ e1.toString());
 			}
-			if(!viewers.containsKey("PDF-Viewer")){
+			if(!viewers.containsKey("PDF-Viewer") && Compat.isWindowsOS()){
 				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 				try {					
 					WinRegistry.exportKey(WinRegistry.HKEY_CURRENT_USER, "Software\\Tracker Software\\PDFViewer", outputStream);
