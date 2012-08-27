@@ -420,13 +420,17 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 		if ((handle = viewers.get("Preview.app")) != null) {
 			handles.add(handle);
-		}
+		}		
 		checkForDefaultReader(handles);
 		this.pdfViewerList = handles;
 		return handles;
 	}
 
 	private void checkForDefaultReader(List<PDFReaderHandle> handles) {
+		if (!Compat.isWindowsOS()) {
+			return;
+		}
+		
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		BufferedReader reader = new BufferedReader(new StringReader(""));
 		try {					
