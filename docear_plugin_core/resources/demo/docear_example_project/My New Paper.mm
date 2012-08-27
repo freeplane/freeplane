@@ -60,13 +60,13 @@
 <node TEXT="Google Scholar Website" ID="ID_1123671529" CREATED="1344508702545" MODIFIED="1344510949721" LINK="http://scholar.google.com/"/>
 </node>
 <node TEXT="Mr. DLib" ID="ID_1314800443" CREATED="1344510910275" MODIFIED="1344510915283">
-<node TEXT="Original paper of Mr. DLib" ID="ID_1013913135" CREATED="1344508031837" MODIFIED="1344510849127" LINK="workspace:/literature_repository/docear_example_pdfs/Mr.%20DLib%20--%20A%20Machine%20Readable%20Digital%20Library.pdf">
+<node TEXT="Original paper of Mr. DLib" ID="ID_1013913135" CREATED="1344508031837" MODIFIED="1344510849127" LINK="@LITERATURE_BIB_DEMO@/Mr.%20DLib%20--%20A%20Machine%20Readable%20Digital%20Library.pdf">
 <pdf_annotation type="COMMENT" page="1" object_number="228" generation_number="0"/>
 </node>
 </node>
 </node>
 <node TEXT="Recently, some researchers provided&#xa;guidelines on optimizing academic&#xa;papers for academic search engines&#xa;(they called this &quot;Academic Search&#xa;Engine Optimization (ASEO)&quot;)" ID="ID_577115243" CREATED="1344510985951" MODIFIED="1344511114647">
-<node TEXT="ASEO, original paper" ID="ID_797443631" CREATED="1344508031885" MODIFIED="1344512599047" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20Search%20Engine%20Optimization%20(ASEO)%20--%20Optimizing%20Scholarly%20Literature%20for%20Google%20Scholar%20and%20Co.pdf">
+<node TEXT="ASEO, original paper" ID="ID_797443631" CREATED="1344508031885" MODIFIED="1344512599047" LINK="@LITERATURE_BIB_DEMO@/Academic%20Search%20Engine%20Optimization%20(ASEO)%20--%20Optimizing%20Scholarly%20Literature%20for%20Google%20Scholar%20and%20Co.pdf">
 <pdf_annotation type="COMMENT" page="1" object_number="523" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic {S}earch {E}ngine {O}ptimization ({ASEO}): {O}ptimizing {S}cholarly {L}iterature for {G}oogle {S}cholar and {C}o."/>
@@ -76,7 +76,7 @@
 </node>
 </node>
 <node TEXT="The same authors discovered that&#xa;Google Scholar is prone to spam" ID="ID_1481327252" CREATED="1344511159033" MODIFIED="1344511191184">
-<node TEXT="(First?) paper about spam on&#xa;Google Scholar (authors did&#xa;various experiments)" ID="ID_422948839" CREATED="1344508032008" MODIFIED="1344512599048" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
+<node TEXT="(First?) paper about spam on&#xa;Google Scholar (authors did&#xa;various experiments)" ID="ID_422948839" CREATED="1344508032008" MODIFIED="1344512599048" LINK="@LITERATURE_BIB_DEMO@/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
 <pdf_annotation type="COMMENT" page="1" object_number="656" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic search engine spam and {G}oogle {S}cholar&apos;s resilience against it"/>
@@ -91,7 +91,7 @@
 <node TEXT="Related Work" POSITION="right" ID="ID_1098134891" CREATED="1344508140609" MODIFIED="1344510296844">
 <edge COLOR="#0000ff" WIDTH="3"/>
 <node TEXT="The idea of &quot;optimizing&quot; papers&#xa;for academic search engines&#xa;evolved in 2010" ID="ID_512165507" CREATED="1344511282609" MODIFIED="1344511366924">
-<node TEXT="ASEO, original paper" ID="ID_1200714877" CREATED="1344508031885" MODIFIED="1344512599044" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20Search%20Engine%20Optimization%20(ASEO)%20--%20Optimizing%20Scholarly%20Literature%20for%20Google%20Scholar%20and%20Co.pdf">
+<node TEXT="ASEO, original paper" ID="ID_1200714877" CREATED="1344508031885" MODIFIED="1344512599044" LINK="@LITERATURE_BIB_DEMO@/Academic%20Search%20Engine%20Optimization%20(ASEO)%20--%20Optimizing%20Scholarly%20Literature%20for%20Google%20Scholar%20and%20Co.pdf">
 <pdf_annotation type="COMMENT" page="1" object_number="523" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic {S}earch {E}ngine {O}ptimization ({ASEO}): {O}ptimizing {S}cholarly {L}iterature for {G}oogle {S}cholar and {C}o."/>
@@ -102,7 +102,7 @@
 </node>
 <node TEXT="Feedback in the academic&#xa;community was diverse" ID="ID_972169939" CREATED="1344511369742" MODIFIED="1344511412081">
 <node TEXT="Pro" FOLDED="true" ID="ID_1392476056" CREATED="1344509155557" MODIFIED="1344509156561">
-<node TEXT="&#x201c;In my opinion, being interested in how (academic) &#xd;&#xa;search engines function and how scientific papers are &#xd;&#xa;indexed and, of course, responding to these&#x2026; well&#x2026; &#xd;&#xa;circumstances of the scientific citing business is just &#xd;&#xa;natural.&#x201d;" ID="ID_414399340" CREATED="1344508403924" MODIFIED="1344508403924" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
+<node TEXT="&#x201c;In my opinion, being interested in how (academic) &#xd;&#xa;search engines function and how scientific papers are &#xd;&#xa;indexed and, of course, responding to these&#x2026; well&#x2026; &#xd;&#xa;circumstances of the scientific citing business is just &#xd;&#xa;natural.&#x201d;" ID="ID_414399340" CREATED="1344508403924" MODIFIED="1344508403924" LINK="@LITERATURE_BIB_DEMO@/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
 <pdf_annotation type="HIGHLIGHTED_TEXT" page="3" object_number="746" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic search engine spam and {G}oogle {S}cholar&apos;s resilience against it"/>
@@ -110,7 +110,7 @@
 <attribute NAME="journal" VALUE="Journal of Electronic Publishing"/>
 <attribute NAME="key" VALUE="Beel2010"/>
 </node>
-<node TEXT="&#x201c;ASEO sounds good to me. I think it&#x2019;s a good idea.&#x201d; " ID="ID_366012179" CREATED="1344508403935" MODIFIED="1344508403935" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
+<node TEXT="&#x201c;ASEO sounds good to me. I think it&#x2019;s a good idea.&#x201d; " ID="ID_366012179" CREATED="1344508403935" MODIFIED="1344508403935" LINK="@LITERATURE_BIB_DEMO@/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
 <pdf_annotation type="HIGHLIGHTED_TEXT" page="3" object_number="750" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic search engine spam and {G}oogle {S}cholar&apos;s resilience against it"/>
@@ -118,7 +118,7 @@
 <attribute NAME="journal" VALUE="Journal of Electronic Publishing"/>
 <attribute NAME="key" VALUE="Beel2010"/>
 </node>
-<node TEXT="&#x201c;Search engine optimization (SEO) has a golden age in &#xd;&#xa;this internet era, but to use it in academic research, it &#xd;&#xa;sounds quite strange for me. After reading this &#xd;&#xa;publication [&#x2026;] my opinion changed.&#x201d;" ID="ID_389971830" CREATED="1344508403945" MODIFIED="1344508403945" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
+<node TEXT="&#x201c;Search engine optimization (SEO) has a golden age in &#xd;&#xa;this internet era, but to use it in academic research, it &#xd;&#xa;sounds quite strange for me. After reading this &#xd;&#xa;publication [&#x2026;] my opinion changed.&#x201d;" ID="ID_389971830" CREATED="1344508403945" MODIFIED="1344508403945" LINK="@LITERATURE_BIB_DEMO@/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
 <pdf_annotation type="HIGHLIGHTED_TEXT" page="3" object_number="762" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic search engine spam and {G}oogle {S}cholar&apos;s resilience against it"/>
@@ -128,7 +128,7 @@
 </node>
 </node>
 <node TEXT="Con" ID="ID_1940856338" CREATED="1344509156803" MODIFIED="1344509160524">
-<node TEXT="&#x201c;I&#x2019;m not a big fan of this area of research [&#x2026;]. I know &#xd;&#xa;it&#x2019;s in the call for papers, but I think that&#x2019;s a mistake.&#x201d; " ID="ID_56949802" CREATED="1344508032014" MODIFIED="1344512599041" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
+<node TEXT="&#x201c;I&#x2019;m not a big fan of this area of research [&#x2026;]. I know &#xd;&#xa;it&#x2019;s in the call for papers, but I think that&#x2019;s a mistake.&#x201d; " ID="ID_56949802" CREATED="1344508032014" MODIFIED="1344512599041" LINK="@LITERATURE_BIB_DEMO@/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
 <pdf_annotation type="HIGHLIGHTED_TEXT" page="3" object_number="662" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic search engine spam and {G}oogle {S}cholar&apos;s resilience against it"/>
@@ -136,7 +136,7 @@
 <attribute NAME="journal" VALUE="Journal of Electronic Publishing"/>
 <attribute NAME="key" VALUE="Beel2010"/>
 </node>
-<node TEXT="&#x201c;[This] paper seems to encourage scientific paper &#xd;&#xa;authors to learn Google scholar&#x2019;s ranking method and &#xd;&#xa;write papers accordingly to boost ranking [which is not] &#xd;&#xa;acceptable to scientific communities which are supposed &#xd;&#xa;to advocate true technical quality/impact instead of &#xd;&#xa;ranking.&#x201d; " ID="ID_40512105" CREATED="1344508032022" MODIFIED="1344512599039" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
+<node TEXT="&#x201c;[This] paper seems to encourage scientific paper &#xd;&#xa;authors to learn Google scholar&#x2019;s ranking method and &#xd;&#xa;write papers accordingly to boost ranking [which is not] &#xd;&#xa;acceptable to scientific communities which are supposed &#xd;&#xa;to advocate true technical quality/impact instead of &#xd;&#xa;ranking.&#x201d; " ID="ID_40512105" CREATED="1344508032022" MODIFIED="1344512599039" LINK="@LITERATURE_BIB_DEMO@/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
 <pdf_annotation type="HIGHLIGHTED_TEXT" page="3" object_number="666" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic search engine spam and {G}oogle {S}cholar&apos;s resilience against it"/>
@@ -144,7 +144,7 @@
 <attribute NAME="journal" VALUE="Journal of Electronic Publishing"/>
 <attribute NAME="key" VALUE="Beel2010"/>
 </node>
-<node TEXT="&#x201c;[&#x2026;] on first impressions [Academic Search Engine &#xd;&#xa;Optimization] sounds like the stupidest idea I&#x2019;ve ever &#xd;&#xa;heard.&#x201d;" ID="ID_1773171427" CREATED="1344508032030" MODIFIED="1344512599037" LINK="workspace:/literature_repository/docear_example_pdfs/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
+<node TEXT="&#x201c;[&#x2026;] on first impressions [Academic Search Engine &#xd;&#xa;Optimization] sounds like the stupidest idea I&#x2019;ve ever &#xd;&#xa;heard.&#x201d;" ID="ID_1773171427" CREATED="1344508032030" MODIFIED="1344512599037" LINK="@LITERATURE_BIB_DEMO@/Academic%20search%20engine%20spam%20and%20Google%20Scholars%20resilience%20against%20it.pdf">
 <pdf_annotation type="HIGHLIGHTED_TEXT" page="4" object_number="670" generation_number="0"/>
 <attribute NAME="year" VALUE="2010"/>
 <attribute NAME="title" VALUE="{A}cademic search engine spam and {G}oogle {S}cholar&apos;s resilience against it"/>

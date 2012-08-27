@@ -507,7 +507,7 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 	
 	
 	private void fireActionEvent(Object source, int id, String command) {
-		ActionEvent event = new ActionEvent(this, id, command);
+		final ActionEvent event = new ActionEvent(this, id, command);
 		if(listeners.size() <= 0 ) {
 			Container cont = getParent();
 			while(!(cont instanceof JOptionPane)) {
@@ -517,9 +517,13 @@ public class DocearIRChoiceDialogPanel extends JPanel {
 			close();
 		}
 		else {
-			for(ActionListener listener : listeners) {
-				listener.actionPerformed(event);
-			}
+			new Thread() {
+				public void run() {
+					for(ActionListener listener : listeners) {
+						listener.actionPerformed(event);
+					}
+				}
+			}.start();
 		}
 		
 	}

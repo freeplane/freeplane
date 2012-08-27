@@ -63,7 +63,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	private static final int CONNECTION_TIMEOUT = 5000;
 	private static CommunicationsController communicationsController;
 	private static Boolean PROXY_CREDENTIALS_CANCELED = false;
-
+	
 	public static final String DOCEAR_PROXY_PORT = "docear.proxy_port";
 	public static final String DOCEAR_PROXY_HOST = "docear.proxy_host";
 	public static final String DOCEAR_USE_PROXY = "docear.use_proxy";
@@ -131,7 +131,6 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				String username = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_USERNAME, "");
 
 				cc.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI, "http://" + host + ":" + port + "/");
-
 				if (username != null && username.length() > 0 && password != null) {
 					try {
 						cc.getState().setProxyCredentials(AuthScope.ANY_REALM, host, Integer.parseInt(port), username, new String(password));
@@ -186,6 +185,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 					throw (e);
 				}
 			}
+			finally {
+				client.getClientHandler().getHttpClient().getHttpConnectionManager().closeIdleConnections(100);
+			}
 		}
 	}
 
@@ -222,6 +224,9 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				else {
 					throw (e);
 				}
+			}
+			finally {
+				client.getClientHandler().getHttpClient().getHttpConnectionManager().closeIdleConnections(200);
 			}
 		}
 	}
@@ -280,10 +285,16 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 						WebResource webRes = getServiceResource().path("/authenticate/" + username);
 
 						ClientResponse response = post(webRes, formParams);
-						status = response.getClientResponseStatus();
-						boolean connectedSuccessfully = processResponse(username, registeredUser, silent, response, status);
-						stopWaitDialog(silent);
-						return connectedSuccessfully;
+						try {
+							status = response.getClientResponseStatus();
+						
+							boolean connectedSuccessfully = processResponse(username, registeredUser, silent, response, status);
+							stopWaitDialog(silent);
+							return connectedSuccessfully;
+						} 
+						finally {
+							response.close();
+						}
 					}
 					catch (Exception e) {
 						if (this.isCancelled()) {
@@ -400,9 +411,14 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			MultivaluedMap<String, String> formParams = new MultivaluedMapImpl();
 			formParams.add("password", "");
 			ClientResponse response = post(getServiceResource().path("/authenticate/anonymous"), formParams);
-			Status status = response.getClientResponseStatus();
-			if (status != null) {
-				return true;
+			try {
+				Status status = response.getClientResponseStatus();
+				if (status != null) {
+					return true;
+				}
+			}
+			finally {
+				response.close();
 			}
 		}
 		catch (Exception e) {
@@ -444,18 +460,23 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			}
 			
 			ClientResponse response = get(getServiceResource().path(path).queryParams(params), ClientResponse.class);
-			Status status = response.getClientResponseStatus();
-			if (status != null && status.equals(Status.OK)) {
-				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.OK,
-						response.getEntityInputStream());
+			try {
+				Status status = response.getClientResponseStatus();
+				if (status != null && status.equals(Status.OK)) {
+					return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.OK,
+							response.getEntityInputStream());
+				}
+				else if (status != null && status.equals(Status.NO_CONTENT)) {
+					return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.NO_CONTENT,
+							response.getEntityInputStream());
+				}
+				else {
+					return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE,
+							response.getEntityInputStream());
+				}
 			}
-			else if (status != null && status.equals(Status.NO_CONTENT)) {
-				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.NO_CONTENT,
-						response.getEntityInputStream());
-			}
-			else {
-				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE,
-						response.getEntityInputStream());
+			finally {
+				response.close();
 			}
 		}
 		catch (ClientHandlerException e) {

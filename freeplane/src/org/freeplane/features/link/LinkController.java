@@ -448,6 +448,9 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		try {
 			final URI fileUri = input.getAbsoluteFile().toURI();
+			if(fileUri.getPath().startsWith("//")) {
+				return fileUri;
+			}
 			
 			URI mapUri = null;
 			if (map != null) {

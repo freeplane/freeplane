@@ -62,10 +62,15 @@ public class AccountRegisterer {
 			queryParams.add("isMale", isMale == null ? null : isMale.toString());
 
 			WebResource res = CommunicationsController.getController().getServiceResource().path("/user/" + name);
+			
 			ClientResponse response = CommunicationsController.getController().post(res, queryParams);
-
-			if (response.getClientResponseStatus() != Status.OK) {
-				throw new DocearServiceException(response.getEntity(String.class));
+			try {
+				if (response.getClientResponseStatus() != Status.OK) {
+					throw new DocearServiceException(response.getEntity(String.class));
+				}
+			}
+			finally {
+				response.close();
 			}
 		}
 		catch (DocearServiceException e) {

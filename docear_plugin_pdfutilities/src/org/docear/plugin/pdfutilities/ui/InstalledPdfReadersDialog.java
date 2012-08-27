@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -152,6 +153,14 @@ public class InstalledPdfReadersDialog extends JPanel {
 	
 	private void showWarningIfNecessary() {
 		String execFile = ((PDFReaderHandle) readerChoice.getSelectedItem()).getExecFile();
+		if(((PDFReaderHandle)readerChoice.getSelectedItem()).getName().equals(TextUtils.getText("docear.default_reader"))){			
+			for(PDFReaderHandle reader : readerHandles){
+				if(reader.isDefault()){					
+					execFile = reader.getExecFile();
+					break;
+				}
+			}			
+		}
 		boolean compatible = true;
 		if (execFile != null) {										
 			try {
