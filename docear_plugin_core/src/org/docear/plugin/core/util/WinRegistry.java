@@ -165,6 +165,9 @@ public class WinRegistry {
 	    else if (hkey == HKEY_CURRENT_USER) {
 	      return readStringSubKeys(userRoot, hkey, key);
 	    }
+	    else if (hkey == HKEY_CLASSES_ROOT){
+	    	return readStringSubKeys(systemRoot, hkey, key);
+	    }
 	    else {
 	      throw new IllegalArgumentException("hkey=" + hkey);
 	    }

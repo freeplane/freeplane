@@ -167,6 +167,7 @@ public class PdfUtilitiesController extends ALanguageController {
 	private ImportAllChildAnnotationsAction importAllChildAnnotationsAction;
 	private ImportNewChildAnnotationsAction importNewChildAnnotationsAction;
 	private MonitoringFlattenSubfoldersAction monitoringFlattenSubfoldersAction;
+	private List<PDFReaderHandle> pdfViewerList = null;
 	private PdfReaderFileFilter readerFilter = new PdfReaderFileFilter();
 	private FileFilter appFilter = new FileFilter() {
 		public boolean accept(File file) {
@@ -212,7 +213,16 @@ public class PdfUtilitiesController extends ALanguageController {
 			if (JOptionPane.showConfirmDialog(UITools.getFrame(), dialog, TextUtils.getText("docear.validate_pdf_xchange.headline"), JOptionPane.OK_CANCEL_OPTION)  == JOptionPane.OK_OPTION) {
 				PDFReaderHandle reader = (PDFReaderHandle) dialog.getReaderChoiceBox().getSelectedItem();
 				setReaderPreferences(reader.getExecFile());
-
+				
+				if(reader.getName().equals(TextUtils.getText("docear.default_reader"))){
+					PdfUtilitiesController.getController().setToStandardPdfViewer();
+					for(PDFReaderHandle handle : readers){
+						if(handle.isDefault()){					
+							reader = handle;
+							break;
+						}
+					}			
+				}
 				if (readerFilter.isPdfXChange(new File(reader.getExecFile()))) {
 					try {
 						if(reader.getRegistryBranch().equals(RegistryBranch.WOW6432NODE)) {
@@ -297,7 +307,10 @@ public class PdfUtilitiesController extends ALanguageController {
 		}
 	}
 
-	private List<PDFReaderHandle> getPdfViewers() {
+	public List<PDFReaderHandle> getPdfViewers() {
+		if(this.pdfViewerList != null){
+			return this.pdfViewerList;
+		}
 		List<PDFReaderHandle> handles = new ArrayList<PDFReaderHandle>();
 
 		// Map<Name, List<String>{Version, InstallDir>
@@ -408,8 +421,58 @@ public class PdfUtilitiesController extends ALanguageController {
 		if ((handle = viewers.get("Preview.app")) != null) {
 			handles.add(handle);
 		}
-
+		checkForDefaultReader(handles);
+		this.pdfViewerList = handles;
 		return handles;
+	}
+
+	private void checkForDefaultReader(List<PDFReaderHandle> handles) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		BufferedReader reader = new BufferedReader(new StringReader(""));
+		try {					
+			WinRegistry.exportKey(WinRegistry.HKEY_CLASSES_ROOT, ".pdf", outputStream);
+			String pdfDefaultSettings = outputStream.toString();
+			reader = new BufferedReader(new StringReader(pdfDefaultSettings));
+			String defaultReaderKey = null;
+			String line;			
+			while ((line = reader.readLine()) != null) {
+				if (line.startsWith("\"\"")) {
+					defaultReaderKey = line.substring(4, line.length() - 1);
+					break;
+				}
+			}
+			if(defaultReaderKey != null && defaultReaderKey.length() > 0){
+				outputStream.reset();
+				WinRegistry.exportKey(WinRegistry.HKEY_CLASSES_ROOT, defaultReaderKey+"\\shell\\open\\command", outputStream);
+				String defaultReaderOpenCommand = outputStream.toString();
+				reader = new BufferedReader(new StringReader(defaultReaderOpenCommand));
+				line = null;			
+				while ((line = reader.readLine()) != null) {
+					if (line.startsWith("\"\"")) {
+						String openCommand = line.substring(4, line.length() - 1);
+						for(PDFReaderHandle handle : handles){
+							if(openCommand.contains(handle.getExecFile())){
+								handle.setDefault(true);
+								break;
+							}
+						}
+						break;
+					}
+				}
+			}
+			
+		}catch (IOException e) {
+			LogUtils.info("Could not read default pdf reader settings.");
+		}
+		finally{
+			try {
+				outputStream.close();
+				reader.close();
+			}
+			catch (IOException e) {
+				LogUtils.info("Could not close default pdf reader settings stream and reader.");
+			}
+		}
 	}
 
 	private void lookForReadersMacOs(Map<String, PDFReaderHandle> viewers) {
@@ -746,6 +809,32 @@ public class PdfUtilitiesController extends ALanguageController {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_PDF_VIEWER_ON_PAGE_KEY)).setValue(false);						
 						opc.getPropertyControl(ShowPdfReaderDefinitionDialogAction.KEY).setEnabled(false);
 						opc.getPropertyControl("docear.show_install_pdf_readers").setEnabled(false);
+						List<PDFReaderHandle> readers = getPdfViewers();
+						PDFReaderHandle pdfxc = null;
+						for(PDFReaderHandle reader : readers){
+							if(reader.getName().equals("PDF-XChange Viewer")){
+								pdfxc = reader;
+								break;
+							}
+						}
+						if(pdfxc != null){							
+							try {
+								if(pdfxc != null && pdfxc.isDefault() && !hasCompatibleSettings(pdfxc.getExecFile())){
+									int result = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getJFrame(), TextUtils.getText("docear.help.pdf_xchange_viewer.warning2"), TextUtils.getText("docear.help.pdf_xchange_viewer.warning.title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+									if(result == JOptionPane.OK_OPTION){
+										if(pdfxc.getRegistryBranch().equals(RegistryBranch.WOW6432NODE)) {
+											importRegistrySettings(getClass().getResource("/conf/PdfXChangeViewerSettingsWow6432Node.reg"));
+										}
+										else {
+											importRegistrySettings(getClass().getResource("/conf/PdfXChangeViewerSettings.reg"));
+										}
+									}
+								}
+							}
+							catch (IOException e) {
+								LogUtils.severe(e);
+							}
+						}
 					}
 					if (radioButton.getName().equals(OPEN_INTERNAL_PDF_VIEWER_KEY)) {
 						((RadioButtonProperty) opc.getPropertyControl(OPEN_INTERNAL_PDF_VIEWER_KEY)).setValue(true);
@@ -1185,7 +1274,7 @@ public class PdfUtilitiesController extends ALanguageController {
 	public void setToStandardPdfViewer() {
 		ResourceController.getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, true);
 		ResourceController.getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
-		ResourceController.getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);
+		ResourceController.getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);		
 	}
 	
 	public boolean openPageMacOs(String[] command) {
