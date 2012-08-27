@@ -47,15 +47,20 @@ public class FiletransferClient {
 				FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
 				formDataMultiPart.field("file", data, MediaType.APPLICATION_OCTET_STREAM_TYPE);					
 				
-				ClientResponse response = CommunicationsController.getController().post(serviceResource.type(MediaType.MULTIPART_FORM_DATA_TYPE), formDataMultiPart);					
-				if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {
-					//System.out.println(response.getEntity(String.class));
-					throw new IOException("file upload not accepted ("+ response+"):"+response.getEntity(String.class));
+				ClientResponse response = CommunicationsController.getController().post(serviceResource.type(MediaType.MULTIPART_FORM_DATA_TYPE), formDataMultiPart);
+				try {
+					if(response==null || !response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {
+						//System.out.println(response.getEntity(String.class));
+						throw new IOException("file upload not accepted ("+ response+"):"+response.getEntity(String.class));
+					}
+					else if (deleteIfTransferred) {
+						inStream.close();
+						System.gc();
+						file.delete();
+					}
 				}
-				else if (deleteIfTransferred) {
-					inStream.close();
-					System.gc();
-					file.delete();
+				finally {
+					response.close();
 				}
 			}
 			else {
