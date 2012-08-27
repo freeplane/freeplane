@@ -30,7 +30,7 @@ public class NodeAttributeListener implements TableModelListener {
 			}
 			else if (jabRefAttributes.getValueAttributes().containsKey(attribute.getName())) {				
 				int pos = table.getAttributePosition(jabRefAttributes.getKeyAttribute());
-				if (pos > 0) {
+				if (pos >= 0) {
 					key = (String) table.getValue(pos);
 					
 					if (key != null) {
