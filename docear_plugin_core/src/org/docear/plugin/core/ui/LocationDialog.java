@@ -293,12 +293,12 @@ public class LocationDialog extends JPanel {
 	private void copyDemoFiles(File bibPath) {
 		Map<String, String> replaceMapping = new HashMap<String, String>();
 		replaceMapping.put("@LITERATURE_REPO_DEMO@", CoreConfiguration.repositoryPathObserver.getUri().toString()+"/Example%20PDFs");
-		URI relativeBibURI = LinkController.toLinkTypeDependantURI(WorkspaceUtils.getProfileBaseFile(), WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), LinkController.LINK_RELATIVE_TO_MINDMAP);
+		URI relativeBibURI = LinkController.toLinkTypeDependantURI(bibPath, WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), LinkController.LINK_RELATIVE_TO_MINDMAP);
 		if(Compat.isWindowsOS() && relativeBibURI.getPath().startsWith("//")) {
 			replaceMapping.put("@LITERATURE_BIB_DEMO@", (new File(relativeBibURI).getPath().replace(File.separator, File.separator+File.separator)+File.separator+File.separator+"Example PDFs"));
 		}
 		else {
-			replaceMapping.put("@LITERATURE_BIB_DEMO@", relativeBibURI.toString()+"/Example PDFs");
+			replaceMapping.put("@LITERATURE_BIB_DEMO@", relativeBibURI.getPath().replace(":", "\\:")+"/Example PDFs");
 		}
 		
 		boolean created = createAndCopy(new File(WorkspaceUtils.getProfileBaseFile(),"library/incoming.mm"), "/demo/template_incoming.mm", replaceMapping);
@@ -310,7 +310,7 @@ public class LocationDialog extends JPanel {
 			createAndCopy(bibPath, "/demo/docear_example.bib", replaceMapping);
 		}
 		
-		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()), "Example Project/My New Paper.mm"), "/demo/docear_example_project/My New Paper.mm",replaceMapping);
+		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.projectPathObserver.getUri()), "Example Project/My New Paper.mm"), "/demo/docear_example_project/My New Paper.mm", replaceMapping);
 		
 		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf"), "/demo/docear_example_pdfs/Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf");
 		createAndCopy(new File(WorkspaceUtils.resolveURI(CoreConfiguration.repositoryPathObserver.getUri()), "Example PDFs/Academic search engine spam and Google Scholars resilience against it.pdf"), "/demo/docear_example_pdfs/Academic search engine spam and Google Scholars resilience against it.pdf");
