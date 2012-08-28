@@ -126,7 +126,7 @@
 <attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
 <attribute NAME="title" VALUE="{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing and {C}reating {A}cademic {L}iterature"/>
 <attribute NAME="year" VALUE="2011"/>
-<node TEXT="Digital Libreary" ID="ID_1644946250" CREATED="1345719244819" MODIFIED="1345719310537" LINK="workspace:/../Docear_Bzr/docear_resources/demo%20files/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
+<node TEXT="Digital Library" ID="ID_1644946250" CREATED="1345719244819" MODIFIED="1345719310537" LINK="workspace:/../Docear_Bzr/docear_resources/demo%20files/docear_example_pdfs/Docear%20--%20An%20Academic%20Literature%20Suite.pdf">
 <pdf_annotation type="BOOKMARK" page="1" object_number="263" generation_number="0"/>
 <attribute NAME="key" VALUE="Beel2011c"/>
 <attribute NAME="authors" VALUE="{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr, {M}arcel"/>
