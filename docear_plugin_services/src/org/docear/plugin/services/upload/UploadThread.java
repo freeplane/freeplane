@@ -91,7 +91,7 @@ public class UploadThread extends DocearThread implements DirectoryObserver {
 				uploadFiles.add(file);
 			}
 			catch(Exception e) {
-				LogUtils.warn("org.docear.plugin.services.upload.fileCreated -> corrupted ZipFile: "+file.getAbsolutePath());
+				LogUtils.warn("org.docear.plugin.services.upload.UploadThread.fileCreated -> corrupted ZipFile: "+file.getAbsolutePath());
 				file.delete();				
 			}			
 		}

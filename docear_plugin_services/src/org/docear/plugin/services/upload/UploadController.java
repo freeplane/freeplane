@@ -212,13 +212,12 @@ public abstract class UploadController {
 							out.write(data);
 						}
 						out.flush();
-						
-						fireFileCreated(backupFile);
 					} 
 					finally {	
 						in.close();
 						out.close();
 						fout.close();
+						fireFileCreated(backupFile);
 						
 						DocearController.getController().removeWorkingThreadHandle(this.getName());
 					}					
@@ -297,7 +296,7 @@ public abstract class UploadController {
 		DocearController.getController().removeWorkingThreadHandle(runnerID);
 	}
 	
-	public void shutdown() {
+	public void shutdown() {		
 		this.packerThread.terminate();
 		this.uploadThread.terminate();
 	}
