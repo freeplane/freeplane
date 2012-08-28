@@ -32,8 +32,8 @@ public class CopyCiteKeyToClipboard extends AFreeplaneAction{
 		Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		String strBuffer = "";
 		for(NodeModel node : nodes) {
-			String bibKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);
-			if(strBuffer.indexOf(bibKey) == -1) {
+			String bibKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);			
+			if(bibKey != null && strBuffer.indexOf(bibKey) == -1) {
 				if(!"".equals(strBuffer)) {
 					strBuffer += ",";
 				}

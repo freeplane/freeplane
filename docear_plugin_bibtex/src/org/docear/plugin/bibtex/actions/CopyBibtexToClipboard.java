@@ -32,7 +32,7 @@ public class CopyBibtexToClipboard extends AFreeplaneAction{
 		String strBuffer = "";
 		for(NodeModel node : nodes) {
 			String bibKey = ReferencesController.getController().getJabRefAttributes().getBibtexKey(node);
-			if(strBuffer.indexOf(bibKey) == -1) {
+			if(bibKey != null && strBuffer.indexOf(bibKey) == -1) {
 				if(!"".equals(strBuffer)) {
 					strBuffer += ",";
 				}
