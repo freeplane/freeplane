@@ -464,7 +464,7 @@ public class LinkController extends SelectionController implements IExtension {
 			final URI fileUri = input.getAbsoluteFile().toURI();
 			boolean isUNCinput = fileUri.getPath().startsWith("//");
 			boolean isUNCmap = mapUri.getPath().startsWith("//");
-			if((isUNCinput && !isUNCmap) || (!isUNCinput && isUNCmap)) {
+			if((isUNCinput != isUNCmap)) {
 				return fileUri;
 			}
 			final String filePathAsString = fileUri.getRawPath();
