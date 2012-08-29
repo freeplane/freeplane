@@ -284,6 +284,19 @@
 				<include name="*.paf.exe" />
 			</fileset>
 		</move>
+		
+		<mkdir dir="${workingdir}/App/Freeplane/resources/images" />
+		<copy file="${root}/portableApps/Splash.png"  
+			tofile="${workingdir}/App/Freeplane/resources/images/Freeplane_splash.png"/>
+		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
+			<arg line="${workingdir.path}" />
+		</exec>
+		<move todir="${dist}">
+			<mapper type="glob" from="*.paf.exe" to="*-Test.paf.exe"/>
+			<fileset dir="${workingdir}/..">
+				<include name="*.paf.exe" />
+			</fileset>
+		</move>
 
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="${workingdir}/.." />
