@@ -108,7 +108,7 @@ public class MapLifeCycleAndViewListener implements IMapLifeCycleListener, IMapV
 		
 		DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);		
 		if (dmme == null) {
-			DocearMapModelController.setModelWithCurrentVersion(map);			
+			dmme = DocearMapModelController.setModelWithCurrentVersion(map);			
 		}
 		else if (dmme.getMapId() == null || dmme.getMapId().trim().length()==0) {
 			dmme.setMapId(DocearMapModelController.createMapId());
