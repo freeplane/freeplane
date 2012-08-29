@@ -3,6 +3,7 @@ package org.freeplane.plugin.script;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -20,6 +21,8 @@ public class ExecuteScriptForAllNodes extends AFreeplaneAction {
 			ScriptingEngine.performScriptOperationRecursive(node);
 		}
         catch (ExecuteScriptException ex) {
+			 LogUtils.warn(ex);
+             ScriptingEngine.showScriptExceptionErrorMessage(ex);
         }
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);

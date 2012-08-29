@@ -37,8 +37,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.TreeNode;
-
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -49,7 +47,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
-import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;

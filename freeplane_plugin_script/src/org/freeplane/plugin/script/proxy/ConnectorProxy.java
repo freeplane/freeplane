@@ -31,7 +31,6 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		return getDelegate();
 	}
 
-	@Override
     public boolean hasEndArrow() {
         return getConnector().getEndArrow() == ArrowType.DEFAULT;
     }
@@ -57,7 +56,6 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		return getConnector().getSourceLabel();
 	}
 
-    @Override
     public boolean hasStartArrow() {
         return getConnector().getStartArrow() == ArrowType.DEFAULT;
     }

@@ -30,8 +30,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import org.freeplane.core.util.LogUtils;
-
 /**
  * @author Dimitry Polivaev
  * Aug 23, 2011

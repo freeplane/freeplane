@@ -21,7 +21,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -169,9 +168,9 @@
 </richcontent>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="&#x306f;&#x3058;&#x3081;&#x306b;" STYLE_REF="Beginner" POSITION="right" ID="ID_86446891" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200" HGAP="22">
+<node TEXT="&#x306f;&#x3058;&#x3081;&#x306b;" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200" HGAP="22">
 <hook NAME="FirstGroupNode"/>
-<node TEXT="&#x76ee;&#x7684;" STYLE_REF="Beginner" ID="ID_1074607965">
+<node TEXT="&#x76ee;&#x7684;" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -199,7 +198,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x8aad;&#x307f;&#x65b9;&#x30ac;&#x30a4;&#x30c9;" STYLE_REF="Beginner" ID="ID_195004053" MIN_WIDTH="1">
+<node TEXT="&#x8aad;&#x307f;&#x65b9;&#x30ac;&#x30a4;&#x30c9;" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" MIN_WIDTH="1">
 <node ID="ID_525900700" STYLE="fork" HGAP="-69" VSHIFT="151"><richcontent TYPE="NODE">
 
 <html>
@@ -247,26 +246,25 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="&#x30e1;&#x30a4;&#x30f3;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" STYLE_REF="Beginner" ID="ID_767122736">
+<node TEXT="&#x30e1;&#x30a4;&#x30f3;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" STYLE_REF="Beginner" FOLDED="true" ID="ID_767122736">
 <node TEXT="&#x3055;&#x3042;&#x3001;&#x59cb;&#x3081;&#x3088;&#x3046;" ID="ID_1060111837" HGAP="31" VSHIFT="342">
 <icon BUILTIN="video"/>
 <icon BUILTIN="internet"/>
 </node>
-<node TEXT="" ID="ID_1720964325" HGAP="-83" VSHIFT="3" STYLE="fork">
+<node TEXT="" FOLDED="true" ID="ID_1720964325" HGAP="-83" VSHIFT="3" STYLE="fork">
 <edge STYLE="hide_edge"/>
 <hook URI="Images/doc/MenusPropertiesPanel.png" SIZE="0.43956044" NAME="ExternalObject"/>
 <node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x30d0;&#x30fc;" ID="ID_745779360" HGAP="-712" VSHIFT="17">
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_745779360" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0000ff" WIDTH="1" TRANSPARENCY="90" FONT_SIZE="10" FONT_FAMILY="SansSerif" DESTINATION="ID_745779360" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_745779360" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="&#x30c4;&#x30fc;&#x30eb;&#x30d0;&#x30fc;" ID="ID_1924639373" HGAP="-703" VSHIFT="-1">
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
@@ -294,7 +292,7 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_303482588" STARTINCLINATION="20;-28;" ENDINCLINATION="20;-28;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="&#x80cc;&#x666f;&#x306e;&#xa;&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_1471702513" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x80cc;&#x666f;&#x306e;&#xa;&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" FOLDED="true" ID="ID_1471702513" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -319,7 +317,7 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30d8;&#x30eb;&#x30d7; &gt; &#x30ad;&#x30fc;&#x4e00;&#x89a7;" ID="ID_291675950" HGAP="39" VSHIFT="-217" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="&#x30d8;&#x30eb;&#x30d7; &gt; &#x30ad;&#x30fc;&#x4e00;&#x89a7;" FOLDED="true" ID="ID_291675950" HGAP="39" VSHIFT="-217" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -337,7 +335,7 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Beginner" ID="ID_1368882439" MIN_WIDTH="1">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;" STYLE_REF="Beginner" FOLDED="true" ID="ID_1368882439" MIN_WIDTH="1">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -365,7 +363,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x5bb6;&#x65cf;&#x95a2;&#x4fc2;&#x8868;&#x793a;" STYLE_REF="Beginner" ID="ID_1971514033" TEXT_SHORTENED="true">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x5bb6;&#x65cf;&#x95a2;&#x4fc2;&#x8868;&#x793a;" STYLE_REF="Beginner" FOLDED="true" ID="ID_1971514033" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -2390,7 +2388,7 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x66f8;&#x5f0f;&#x3068;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Advanced" POSITION="right" ID="ID_1778719162" NUMBERED="true" MIN_WIDTH="200" TEXT_SHORTENED="true">
+<node TEXT="&#x66f8;&#x5f0f;&#x3068;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1778719162" NUMBERED="true" MIN_WIDTH="200" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
@@ -2662,7 +2660,7 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Advanced" ID="ID_1838680824" NUMBERED="true" MIN_WIDTH="90">
+<node TEXT="&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Advanced" FOLDED="true" ID="ID_1838680824" NUMBERED="true" MIN_WIDTH="90">
 <node TEXT="&#x306a;&#x305c;&#x3001;&#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x304b;?" FOLDED="true" ID="ID_539515158" HGAP="30" VSHIFT="138" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
@@ -2833,7 +2831,7 @@
 <node TEXT="es" ID="ID_170106264"/>
 </node>
 </node>
-<node TEXT="&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Professional" ID="ID_1632551821" HGAP="31" VSHIFT="-1" MAX_WIDTH="550" STYLE="combined">
+<node TEXT="&#x6761;&#x4ef6;&#x5bfe;&#x5fdc;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" HGAP="31" VSHIFT="-1" MAX_WIDTH="550" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -3753,10 +3751,11 @@
   </head>
   <body>
     <p style="text-align: center">
-      <b><a href="freeplaneFunctions_j&#x3042;.mm"><font size="3">&#27231;&#33021;&#21029;&#12452;&#12531;&#12487;&#12483;&#12463;&#12473;</font></a></b>
+      <font size="3"><b><a href="freeplaneFunctions_ja.mm">&#27231;&#33021;&#21029;&#12452;&#12531;&#12487;&#12483;&#12463;&#12473;</a></b></font>
     </p>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS">
@@ -3794,10 +3793,11 @@
   </head>
   <body>
     <p>
-      <a href="freeplane.mm#ID_1040911735">&#65318;&#65313;&#65329;</a>
+      <a href="freeplane_ja.mm#ID_1040911735">&#65318;&#65313;&#65329;</a>
     </p>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS">
@@ -3894,7 +3894,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1158360877" HGAP="-114" VSHIFT="98" MAX_WIDTH="400" MIN_WIDTH="400"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1158360877" HGAP="-114" VSHIFT="98" MAX_WIDTH="400" MIN_WIDTH="400"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4860,7 +4860,7 @@
 </node>
 </node>
 <node TEXT="&#x30de;&#x30c3;&#x30d7;&#x3084;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x4fdd;&#x8b77;" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1232153769" NUMBERED="true" MIN_WIDTH="180">
-<node TEXT="&#x30d1;&#x30b9;&#x30ef;&#x30fc;&#x30c9;&#x3067;&#x5b50;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x4fdd;&#x8b77;" STYLE_REF="Professional" ID="ID_1433157907" STYLE="combined">
+<node TEXT="&#x30d1;&#x30b9;&#x30ef;&#x30fc;&#x30c9;&#x3067;&#x5b50;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x4fdd;&#x8b77;" STYLE_REF="Professional" FOLDED="true" ID="ID_1433157907" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -4896,7 +4896,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x4fdd;&#x8b77;&#xff08;&#x6697;&#x8a3c;&#xff09;&#x4ed8;&#x304d;&#x65b0;&#x898f;&#x30de;&#x30c3;&#x30d7;" STYLE_REF="Professional" ID="ID_1064538299" STYLE="combined">
+<node TEXT="&#x4fdd;&#x8b77;&#xff08;&#x6697;&#x8a3c;&#xff09;&#x4ed8;&#x304d;&#x65b0;&#x898f;&#x30de;&#x30c3;&#x30d7;" STYLE_REF="Professional" FOLDED="true" ID="ID_1064538299" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -5076,7 +5076,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="&#x74b0;&#x5883;" ID="ID_908072469" HGAP="-89" VSHIFT="27" MAX_WIDTH="550" MIN_WIDTH="550" STYLE="fork" TEXT_SHORTENED="true">
+<node TEXT="&#x74b0;&#x5883;" FOLDED="true" ID="ID_908072469" HGAP="-89" VSHIFT="27" MAX_WIDTH="550" MIN_WIDTH="550" STYLE="fork" TEXT_SHORTENED="true">
 <font BOLD="true"/>
 <richcontent TYPE="DETAILS">
 
@@ -5114,7 +5114,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&#x753b;&#x9762;&#x8868;&#x793a;" STYLE_REF="Introduction" ID="ID_1541392544" HGAP="-554" VSHIFT="33" MAX_WIDTH="600" MIN_WIDTH="550" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="&#x753b;&#x9762;&#x8868;&#x793a;" STYLE_REF="Introduction" FOLDED="true" ID="ID_1541392544" HGAP="-554" VSHIFT="33" MAX_WIDTH="600" MIN_WIDTH="550" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5167,7 +5167,7 @@
 </html>
 </richcontent>
 <font BOLD="true"/>
-<node TEXT="&#x52d5;&#x4f5c;&#x8a2d;&#x5b9a;" STYLE_REF="Introduction" ID="ID_1578508847" HGAP="-551" VSHIFT="157" MAX_WIDTH="550" MIN_WIDTH="550" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="&#x52d5;&#x4f5c;&#x8a2d;&#x5b9a;" STYLE_REF="Introduction" FOLDED="true" ID="ID_1578508847" HGAP="-551" VSHIFT="157" MAX_WIDTH="550" MIN_WIDTH="550" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5222,7 +5222,7 @@
 </html>
 </richcontent>
 <font BOLD="true"/>
-<node TEXT="&#xff28;&#xff34;&#xff2d;&#xff2c;" STYLE_REF="Introduction" ID="ID_1185446743" HGAP="-550" VSHIFT="157" MAX_WIDTH="550" MIN_WIDTH="550" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="&#xff28;&#xff34;&#xff2d;&#xff2c;" STYLE_REF="Introduction" FOLDED="true" ID="ID_1185446743" HGAP="-550" VSHIFT="157" MAX_WIDTH="550" MIN_WIDTH="550" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5458,7 +5458,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Freeplane &#x5229;&#x7528;&#x306e;&#x30b3;&#x30c4;" STYLE_REF="Beginner" POSITION="left" ID="ID_722085722" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180">
+<node TEXT="Freeplane &#x5229;&#x7528;&#x306e;&#x30b3;&#x30c4;" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180">
 <node STYLE_REF="Beginner" ID="ID_163805859"><richcontent TYPE="NODE">
 
 <html>
@@ -5474,7 +5474,7 @@
 </richcontent>
 </node>
 <node TEXT="&#x3053;&#x306e;&#x30de;&#x30a4;&#x30f3;&#x30c9;&#x30de;&#x30c3;&#x30d7;&#x306e;&#x6210;&#x308a;&#x7acb;&#x3061;" STYLE_REF="Advanced" FOLDED="true" ID="ID_1394424447">
-<node TEXT="&#x756a;&#x53f7;&#x4ed8;&#x304d;&#x306e;&#x5927;&#x898b;&#x51fa;&#x3057;" ID="ID_1866200606" NUMBERED="true" MIN_WIDTH="180"><richcontent TYPE="DETAILS">
+<node TEXT="&#x756a;&#x53f7;&#x4ed8;&#x304d;&#x306e;&#x5927;&#x898b;&#x51fa;&#x3057;" FOLDED="true" ID="ID_1866200606" NUMBERED="true" MIN_WIDTH="180"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5498,7 +5498,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&#x898b;&#x51fa;&#x3057;" ID="ID_1129463861" VSHIFT="28"><richcontent TYPE="DETAILS">
+<node TEXT="&#x898b;&#x51fa;&#x3057;" FOLDED="true" ID="ID_1129463861" VSHIFT="28"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -5554,7 +5554,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x5b9a;&#x7fa9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" ID="ID_1542766589">
+<node TEXT="&#x30e6;&#x30fc;&#x30b6;&#x5b9a;&#x7fa9;&#x30b9;&#x30bf;&#x30a4;&#x30eb;" FOLDED="true" ID="ID_1542766589">
 <node TEXT="Beginner" STYLE_REF="Beginner" ID="ID_1530366440"><richcontent TYPE="DETAILS">
 
 <html>

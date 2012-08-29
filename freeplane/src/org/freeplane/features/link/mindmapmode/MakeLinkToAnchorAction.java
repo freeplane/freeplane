@@ -21,7 +21,6 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.link.LinkController;

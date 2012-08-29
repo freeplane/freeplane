@@ -33,7 +33,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.IAttributeTableModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
 

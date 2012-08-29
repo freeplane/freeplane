@@ -1,7 +1,6 @@
 package org.freeplane.features.text;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 
 public interface IContentTransformer extends Comparable<IContentTransformer> {
 

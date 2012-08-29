@@ -11,7 +11,7 @@
       <b><i>Freeplane &#12391; </i></b>
     </p>
     <p style="text-align: center">
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD"><font size="4"><b>G</b></font>etting<font size="3">&#160;</font><font size="4"><b>T</b></font>hings <font size="4"><b>D</b></font>one</a>
+      <b><font size="4"><a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD">G</a></font></b><a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD">etting<font size="3">&#160;</font><b><font size="4">T</font></b>hings <b><font size="4">D</font></b>one</a>
     </p>
   </body>
 </html>
@@ -75,7 +75,7 @@
 <edge STYLE="hide_edge" COLOR="#007c00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1129302195" STARTINCLINATION="132;0;" ENDINCLINATION="132;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" HGAP="-414" VSHIFT="208" LINK="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" HGAP="-414" VSHIFT="208" LINK="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo" TEXT_SHORTENED="true">
 <icon BUILTIN="video"/>
 <richcontent TYPE="NODE">
 
@@ -92,13 +92,12 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <cloud COLOR="#ffffff" SHAPE="ARC"/>
 <hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
 <edge COLOR="#33cc00"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -113,7 +112,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node POSITION="right" ID="ID_470539907" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
@@ -126,7 +124,6 @@
     <img src="freeplaneApplications.png"/>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="FreeNode"/>
@@ -150,11 +147,10 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="16" FONT_FAMILY="Script MT Bold" DESTINATION="ID_1380673058" MIDDLE_LABEL="&#x8003;&#x3048;&#x308b;&#xff01;" STARTINCLINATION="254;12;" ENDINCLINATION="116;-53;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
-<node TEXT="&#x4e2d;&#x5fc3;&#x30c8;&#x30d4;&#x30c3;&#x30af;" FOLDED="true" ID="ID_1607807952">
+<node TEXT="&#x4e2d;&#x5fc3;&#x30c8;&#x30d4;&#x30c3;&#x30af;" ID="ID_1607807952">
 <edge STYLE="linear"/>
 <node TEXT="&#x4ed8;&#x304d;" ID="ID_1232722180"/>
 <node TEXT="&#x30b5;&#x30d6;" ID="ID_431013725"/>
@@ -180,7 +176,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -198,7 +193,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#007c00" WIDTH="3"/>
 </node>
@@ -216,7 +210,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -234,7 +227,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#00007c" WIDTH="3"/>
 </node>
@@ -252,7 +244,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -267,7 +258,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#0000ff" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1839755402" STARTINCLINATION="37;-27;" ENDINCLINATION="37;-27;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
@@ -286,7 +276,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#ff0000" WIDTH="3"/>
 </node>
@@ -310,7 +299,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#00ff00" WIDTH="3"/>
@@ -324,11 +312,10 @@
   </head>
   <body>
     <p>
-      <a href="freeplaneTutorial.mm#ID_887149959">&#12501;&#12451;&#12523;&#12479;</a>
+      <a href="freeplaneTutorial_ja.mm#ID_887149959">&#12501;&#12451;&#12523;&#12479;</a>
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#7c007c" WIDTH="3"/>
@@ -343,11 +330,10 @@
   </head>
   <body>
     <p>
-      <a href="freeplaneTutorial.mm#ID_1047570728">&#20633;&#12288;&#24536;</a>
+      <a href="freeplaneTutorial_ja.mm#ID_1047570728">&#20633;&#12288;&#24536;</a>
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#00ffff" WIDTH="3"/>
@@ -407,7 +393,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -428,7 +413,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#ff00ff" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0000ff" WIDTH="3" TRANSPARENCY="255" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1100351552" STARTINCLINATION="-217;-41;" ENDINCLINATION="-189;0;" STARTARROW="NONE" ENDARROW="NONE"/>
@@ -446,7 +430,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node ID="ID_1404449457">
@@ -463,7 +446,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -481,7 +463,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -498,7 +479,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#007c7c" WIDTH="3"/>
@@ -512,11 +492,10 @@
   </head>
   <body>
     <p>
-      <a href="freeplaneTutorial.mm">&#25991;&#26360;&#20316;&#25104;</a>
+      <a href="freeplaneTutorial_ja.mm">&#25991;&#26360;&#20316;&#25104;</a>
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -533,21 +512,17 @@
       &#27096;&#12293;&#12394;&#25903;&#25588;&#12434;&#34892;&#12394;&#12356;&#12414;&#12377;&#12290;
     </p>
     <p>
-      Freeplane <a href="freeplaneTutorial.mm">Tutorial</a>&#160;&#12364;&#22909;&#12356;&#35211;
-    </p>
-    <p>
-      &#26412;&#12391;&#12377;&#12290;
+      Freeplane <a href="freeplaneTutorial_ja.mm">&#12481;&#12517;&#12540;&#12488;&#12522;&#12450;&#12523;</a><br/>&#160;&#12364;&#22909;&#12356;&#35211;&#26412;&#12391;&#12377;&#12290;
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#7c7c00" WIDTH="3"/>
 </node>
 <node TEXT="&#x8aac;&#x3000;&#x660e;" LOCALIZED_STYLE_REF="default" POSITION="right" ID="ID_836908062" HGAP="-325" VSHIFT="174">
 <icon BUILTIN="video"/>
 <hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -582,7 +557,6 @@
     </ol>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#808080"/>
 </node>
@@ -594,11 +568,10 @@
   </head>
   <body>
     <p>
-      <a href="freeplaneTutorial.mm#ID_1838680824">&#12473;&#12479;&#12452;&#12523;&#35519;&#25972;</a>
+      <a href="freeplaneTutorial_ja.mm#ID_1838680824">&#12473;&#12479;&#12452;&#12523;&#35519;&#25972;</a>
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge COLOR="#0000ff" WIDTH="3"/>
@@ -618,7 +591,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -636,10 +608,9 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge COLOR="#ffff00" WIDTH="3"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1583240168" STARTINCLINATION="-9;57;" ENDINCLINATION="-9;57;" STARTARROW="NONE" ENDARROW="NONE"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1583240168" STARTINCLINATION="-13;55;" ENDINCLINATION="-13;55;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
 <node TEXT="&#x30d7;&#x30ec;&#x30bc;&#x30f3;&#x30c6;&#x30fc;&#x30b7;&#x30e7;&#x30f3;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_501841034" HGAP="194" VSHIFT="217">
 <hook NAME="FreeNode"/>

@@ -59,19 +59,19 @@ public class ScriptingPermissions {
 	}
 	
 	public ScriptingPermissions(Properties properties) {
-		// by default nothing is allowed
-		this();
 		for (String permissionName : PERMISSION_NAMES) {
 			final Object value = properties.get(permissionName);
 			if (value != null) {
-				set(permissionName, Boolean.parseBoolean(value.toString()));
+				final String valueString = value.toString();
+				if(! "".equals(valueString))
+					set(permissionName, Boolean.parseBoolean(valueString));
 			}
 		}
 	}
 
 	public boolean get(String permissionName) {
-		// there must never be nulls in the map
-		return permissions.get(permissionName).booleanValue();
+		final Boolean savedValue = permissions.get(permissionName);
+		return savedValue != null && savedValue.booleanValue();
 	}
 	
 	private void set(String permissionName, boolean value) {
@@ -85,7 +85,11 @@ public class ScriptingPermissions {
 	}
 
 	private void restore(final String permissionName) {
-		ResourceController.getResourceController().setProperty(permissionName, permissions.get(permissionName));
+		final Boolean savedValue = permissions.get(permissionName);
+		if (savedValue != null) 
+			ResourceController.getResourceController().setProperty(permissionName, savedValue);
+		else
+			ResourceController.getResourceController().setProperty(permissionName, "");
 	}
 
 	ScriptingSecurityManager getScriptingSecurityManager() {

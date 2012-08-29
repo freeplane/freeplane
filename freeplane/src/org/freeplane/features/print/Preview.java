@@ -25,7 +25,6 @@ import java.awt.print.PrinterException;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.view.swing.map.MapView;
 

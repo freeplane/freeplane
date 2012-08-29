@@ -13,8 +13,6 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
