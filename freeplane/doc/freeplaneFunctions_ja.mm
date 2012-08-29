@@ -154,7 +154,7 @@
   </head>
   <body>
     <p>
-      <b>&#12494;&#12540;&#12489;&#12467;&#12450;&#20869;</b>
+      <b>&#12494;&#12540;&#12489;&#12467;&#12450;&#12398;&#27231;&#33021;</b>
     </p>
   </body>
 </html>
@@ -190,14 +190,12 @@
     
   </head>
   <body>
-    <p style="text-align: center">
-      <b>&#12486;&#12461;&#12473;&#12488;&#160;- </b>&#160;<a href="http://www.freeplane.org">&#12452;&#12531;&#12521;&#12452;&#12531;</a>&#160;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;
-    </p>
-    <p style="text-align: center">
-      &#65288;&#35079;&#25968;&#21487;&#65289;&#20184;&#21152;&#21487;&#33021;&#12289;&#21450;&#12403;
+    <p style="text-align: left">
+      &#160;<a href="http://www.freeplane.org">&#12452;&#12531;&#12521;&#12452;&#12531;</a>&#160;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;&#27231;&#33021;&#20184;&#12365;(&#35079;&#25968;&#21487;)&#12486;&#12461;&#12473;&#12488;&#12289;&#21450;&#12403;
     </p>
   </body>
 </html>
+
 </richcontent>
 <richcontent TYPE="NOTE">
 
@@ -532,10 +530,13 @@
   </head>
   <body>
     <p>
-      <i>&#12494;&#12540;&#12489;&#12467;&#12450;&#12398;&#19979;&#26041;</i>&#65306;
+      <b>&#12494;&#12540;&#12489;&#25313;&#24373;&#24773;&#22577; </b>
     </p>
     <p>
-      <b>&#12494;&#12540;&#12489;&#25313;&#24373;&#24773;&#22577;</b>
+      &#12288;(&#12494;&#12540;&#12489;&#12467;&#12450;&#12398;&#19979;)
+    </p>
+    <p>
+      <b>&#12288;&#12398;&#27231;&#33021;</b>
     </p>
   </body>
 </html>
@@ -561,7 +562,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="sharp_bezier" COLOR="#cc0000" WIDTH="2"/>
 <node TEXT="&#x7dda;&#xff08;&#x30a8;&#x30c3;&#x30b8;&#xff09;" STYLE_REF="Reference" ID="ID_1944496966" HGAP="-60" VSHIFT="-111"><richcontent TYPE="NOTE">
@@ -584,12 +584,11 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="118;73;" ENDINCLINATION="118;73;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-69;103;" ENDINCLINATION="-69;103;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-134;18;" ENDINCLINATION="-134;18;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-75;115;" ENDINCLINATION="-75;115;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-174;45;" ENDINCLINATION="-174;45;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="102;73;" ENDINCLINATION="102;73;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="&#x7dda;&#x306e;&#x66f8;&#x5f0f;" ID="ID_1601648824" HGAP="26" VSHIFT="-152">
 <edge STYLE="bezier"/>
 <node TEXT="&#x7dda;&#x306e;&#x592a;&#x3055;" ID="ID_241458321" VSHIFT="7">
@@ -624,14 +623,31 @@
 </node>
 </node>
 </node>
-<node TEXT="&#x3053;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x306e;&#x4e0b;&#x65b9;&#x3092;&#x53c2;&#x7167;&#xff1a;" ID="ID_1010722858" STYLE="bubble" VGAP="0" VSHIFT="-9">
+<node TEXT="&#x3053;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x306e;&#x4e0b;&#x65b9;&#x3092;&#x53c2;&#x7167;&#xff1a;" ID="ID_1010722858" STYLE="bubble" VGAP="0" HGAP="16" VSHIFT="-1">
 <font ITALIC="false"/>
 <attribute NAME="a1" VALUE="value1"/>
 <attribute NAME="a2" VALUE="value2"/>
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
 <edge STYLE="bezier" WIDTH="thin"/>
 <hook URI="Images/doc/freeplaneApplications.png" SIZE="0.4148148" NAME="ExternalObject"/>
-<node STYLE_REF="Reference" ID="ID_965583686" HGAP="240" VSHIFT="-1"><richcontent TYPE="NODE">
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://www.freeplane.org">&#12452;&#12531;&#12521;&#12452;&#12531;</a>&#160;&#12495;&#12452;&#12497;&#12540;&#12522;&#12531;&#12463;
+    </p>
+    <p>
+      &#27231;&#33021;&#20184;&#12365;(&#35079;&#25968;&#21487;)<b>&#12486;&#12461;&#12473;&#12488;</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<node STYLE_REF="Reference" ID="ID_965583686" HGAP="238" VSHIFT="-1"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -664,13 +680,12 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <font BOLD="false"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_965583686" STARTINCLINATION="-65;17;" ENDINCLINATION="-65;17;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_965583686" STARTINCLINATION="-105;17;" ENDINCLINATION="-105;17;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node ID="ID_242844262" HGAP="370" VSHIFT="29" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_242844262" HGAP="350" VSHIFT="49" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
 <richcontent TYPE="NODE">
 
@@ -716,10 +731,9 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
-<node TEXT="&#x5c5e;&#x3000;&#x6027;" STYLE_REF="Reference" ID="ID_1546010515" HGAP="240" VSHIFT="59">
+<node TEXT="&#x5c5e;&#x3000;&#x6027;" STYLE_REF="Reference" ID="ID_1546010515" HGAP="240" VSHIFT="67">
 <hook NAME="FreeNode"/>
 <richcontent TYPE="NOTE">
 
@@ -744,11 +758,10 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1546010515" STARTINCLINATION="-84;-9;" ENDINCLINATION="-84;-9;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node STYLE_REF="Reference" ID="ID_1064212525" HGAP="240" VSHIFT="119"><richcontent TYPE="NODE">
+<node STYLE_REF="Reference" ID="ID_1064212525" HGAP="244" VSHIFT="127"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -781,11 +794,10 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <font BOLD="false"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1064212525" STARTINCLINATION="-123;-37;" ENDINCLINATION="-123;-37;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1064212525" STARTINCLINATION="-117;-24;" ENDINCLINATION="-117;-24;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node STYLE_REF="Reference" ID="ID_1639134686" HGAP="40" VSHIFT="90"><richcontent TYPE="NODE">
 
@@ -821,11 +833,10 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1639134686" STARTINCLINATION="-134;-30;" ENDINCLINATION="-134;-30;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1639134686" STARTINCLINATION="-134;-34;" ENDINCLINATION="-134;-34;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node ID="ID_1802101455" HGAP="138" VSHIFT="192" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_1802101455" HGAP="142" VSHIFT="220" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
 <richcontent TYPE="NODE">
 
@@ -857,10 +868,10 @@
   </head>
   <body>
     <p>
-      <i>&#12494;&#12540;&#12489;&#25313;&#24373;&#24773;&#22577;&#12398;&#19979;&#26041;&#12289;&#21448;&#12399;&#12289; </i>
+      <b>&#12494;&#12540;&#12488;</b>(&#25313;&#24373;&#24773;&#22577;&#12398;&#19979;&#26041;&#12289;&#21448;&#12399;
     </p>
     <p>
-      <i>&#29420;&#31435;&#12398;&#12454;&#12451;&#12531;&#12489;&#12454;</i>&#65306;<b>&#12494;&#12540;&#12488;</b>
+      &#29420;&#31435;&#12454;&#12451;&#12531;&#12489;&#12454;&#34920;&#31034;)<b>&#12398;&#27231;&#33021;</b>
     </p>
   </body>
 </html>
@@ -908,7 +919,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1697684606" STARTINCLINATION="-79;67;" ENDINCLINATION="-79;67;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
@@ -934,7 +944,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="&#x30c8;&#x30b2;&#x30c8;&#x30b2;" ID="ID_1434127019">
@@ -959,7 +968,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -1066,7 +1074,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <font BOLD="false"/>
@@ -1092,7 +1099,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1560136360" STARTINCLINATION="-4;-35;" ENDINCLINATION="-4;-35;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
@@ -1124,7 +1130,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-71;-52;" ENDINCLINATION="-71;-52;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
@@ -1155,7 +1160,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x306e;&#x66f8;&#x5f0f;&#x8a2d;&#x5b9a;" POSITION="left" ID="ID_1983670807" HGAP="10" VSHIFT="49" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
+<node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x306e;&#x66f8;&#x5f0f;&#x8a2d;&#x5b9a;" FOLDED="true" POSITION="left" ID="ID_1983670807" HGAP="10" VSHIFT="49" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
 
 <html>
   <head>
