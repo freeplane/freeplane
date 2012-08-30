@@ -1,6 +1,7 @@
 package org.docear.plugin.core.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -76,7 +77,8 @@ public class DocearAboutAction extends AboutAction {
 		addMessage(box, " "); //separator gap
 		//addMessage(box, FreeplaneVersion.getVersion().getRevision());
 		addFormattedMessage(box, "java_version", Compat.JAVA_VERSION);
-		addFormattedMessage(box, "docear.main_resource_directory", ResourceController.getResourceController().getResourceBaseDir());
+		String installDir = new File(ResourceController.getResourceController().getResourceBaseDir()).getParentFile().getAbsolutePath();
+		addFormattedMessage(box, "docear.main_resource_directory", installDir);
 		
 		addMessage(box, " "); //separator gap
 		addUri(box, resourceController.getProperty("license_url"), TextUtils.getText("license"));

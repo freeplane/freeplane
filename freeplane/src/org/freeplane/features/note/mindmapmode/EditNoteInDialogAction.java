@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.regex.Pattern;
 
@@ -30,14 +28,10 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
-import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.ui.ViewController;

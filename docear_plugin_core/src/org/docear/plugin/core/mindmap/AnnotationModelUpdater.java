@@ -65,7 +65,7 @@ public class AnnotationModelUpdater extends AMindmapUpdater {
 
 	@Override
 	public boolean updateMindmap(MapModel map) {
-		return updateNodesRecursive(map.getRootNode());
+		return updateNodesRecursive(map.getRootNode());		
 	}
 	
 	/**

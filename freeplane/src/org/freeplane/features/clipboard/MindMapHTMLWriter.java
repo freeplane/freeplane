@@ -35,7 +35,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;

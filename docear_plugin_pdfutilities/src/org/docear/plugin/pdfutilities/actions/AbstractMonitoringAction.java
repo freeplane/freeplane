@@ -721,7 +721,7 @@ public abstract class AbstractMonitoringAction extends AFreeplaneAction {
 					if (result == JOptionPane.OK_OPTION) {
 						fireStatusUpdate(SwingWorkerDialog.PROGRESS_BAR_TEXT, null,
 								TextUtils.getText("AbstractMonitoringAction.34") + mapsToUpdate.size() + TextUtils.getText("AbstractMonitoringAction.35")); //$NON-NLS-1$ //$NON-NLS-2$
-						if (!MapConverter.convert(mapsToUpdate)) {
+						if (!/*new MapConverter().showConversionDialog(mapsToUpdate)*/MapConverter.convert(mapsToUpdate)) {
 							fireStatusUpdate(SwingWorkerDialog.IS_CANCELED, null, TextUtils.getText("AbstractMonitoringAction.36")); //$NON-NLS-1$
 						}
 					}

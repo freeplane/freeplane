@@ -33,6 +33,7 @@ import java.util.regex.Matcher;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.WordUtils;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilationFailedException;
@@ -40,6 +41,7 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -102,11 +104,10 @@ public class ScriptingEngine {
 		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 		// get preferences (and store them again after the script execution,
 		// such that the scripts are not able to change them).
-		final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
-		    .getResourceController().getProperties());
 		if (needsSecurityManager) {
-			permissions = (permissions != null) ? permissions //
-			        : originalScriptingPermissions;
+			if (permissions == null){
+				permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
+			}
 			if (!permissions.executeScriptsWithoutAsking()) {
 				final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
 				    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
@@ -134,6 +135,7 @@ public class ScriptingEngine {
 		//
 		// == execute ==
 		//
+		ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
 		try {
 			System.setOut(pOutStream);
 			final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
@@ -196,8 +198,6 @@ public class ScriptingEngine {
 		catch (final Throwable e) {
 			if (Controller.getCurrentController().getSelection() != null)
 				Controller.getCurrentModeController().getMapController().select(node);
-			// LogUtils.warn(e);
-			// pOutStream.print(e.getMessage());
 			throw new ExecuteScriptException(e.getMessage(), e);
 		}
 		finally {
@@ -301,5 +301,15 @@ public class ScriptingEngine {
 	public static File getUserScriptDir() {
         final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
     	return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
+    }
+	static void showScriptExceptionErrorMessage(ExecuteScriptException ex) {
+        if (ex.getCause() instanceof SecurityException) {
+        	final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);
+        	UITools.errorMessage(TextUtils.format("ExecuteScriptSecurityError.text", message));
+        }
+        else {
+        	final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
+        	UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
+        }
     }
 }

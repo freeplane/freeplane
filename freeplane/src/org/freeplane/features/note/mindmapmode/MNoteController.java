@@ -45,7 +45,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;

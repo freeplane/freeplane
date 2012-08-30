@@ -196,6 +196,10 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	public boolean isNewerThan(FreeplaneVersion freeplaneVersion) {
 		return compareTo(freeplaneVersion) > 0;
 	}
+	
+	public boolean isFinal(){
+		return "".equals(mType);
+	}
 
 	private static String loadRevision() {
 		final URL bzrInfo = ResourceController.getResourceController().getResource("/bzrinfo.properties");

@@ -34,11 +34,9 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,13 +51,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
-import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.IndexedTree.Node;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
@@ -104,7 +98,6 @@ import org.freeplane.features.url.UrlManager;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
-import com.lightdev.app.shtm.SHTMLPrefsChangeListener;
 import com.lightdev.app.shtm.TextResources;
 
 

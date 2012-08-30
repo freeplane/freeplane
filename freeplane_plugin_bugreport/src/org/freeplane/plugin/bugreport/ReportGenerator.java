@@ -330,6 +330,8 @@ public class ReportGenerator extends StreamHandler {
 	private String showBugReportDialog() {
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
+			if(FreeplaneVersion.getVersion().isFinal())
+				return BugReportDialogManager.DENIED;
 			String question = TextUtils.getText("org.freeplane.plugin.bugreport.question");
 			if (!question.startsWith("<html>")) {
 				question = HtmlUtils.plainToHTML(question);
