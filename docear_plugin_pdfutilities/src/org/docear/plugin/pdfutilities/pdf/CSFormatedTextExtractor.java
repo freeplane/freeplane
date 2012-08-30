@@ -19,6 +19,7 @@ public class CSFormatedTextExtractor extends CSCharacterParser {
 	private double maxDY = 5;
 	private int line = 0;
 
+	
 	public CSFormatedTextExtractor() {
 		super();
 	}
