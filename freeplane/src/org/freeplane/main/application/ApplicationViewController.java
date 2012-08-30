@@ -57,6 +57,8 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
+import sun.net.www.ParseUtil;
+
 class ApplicationViewController extends ViewController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
@@ -234,7 +236,7 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-		String uriString = uri.toString();
+		String uriString = ParseUtil.decode(uri.toString());
 		final String UNC_PREFIX = "file:////";
 		if (uriString.startsWith(UNC_PREFIX)) {
 			uriString = "file://" + uriString.substring(UNC_PREFIX.length());
