@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.docear.plugin.core.features.DocearMapModelController;
+import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;
 import org.docear.plugin.core.listeners.SplmmMapsConvertEvent;
 import org.freeplane.core.ui.components.UITools;
@@ -24,7 +25,7 @@ public class MapConverter implements IMapConverter {
 	private final static HashSet<ISplmmMapsConvertListener> mapsConvertedListener = new HashSet<ISplmmMapsConvertListener>();
 	private final static HashSet<MapModel> mapsQuestionedInCurrentSession = new HashSet<MapModel>();
 	
-	
+		
 	public static void addMapsConvertedListener(ISplmmMapsConvertListener listener) {
 		mapsConvertedListener.add(listener);
 	}
@@ -49,18 +50,21 @@ public class MapConverter implements IMapConverter {
 			mindmapUpdateController.addMindmapUpdater(new AnnotationModelUpdater(TextUtils.getText("MapConverter.0"))); //$NON-NLS-1$		
 			fireConvertMapsEvent(mindmapUpdateController);
 			//mindmapUpdateController.addMindmapUpdater(new MindmapLinkTypeUpdater("Converting hyperlinks...."));
-			if(mindmapUpdateController.updateMindmapsInList(maps)){
-				for(MapModel map : maps){				
-					DocearMapModelController.setModelWithCurrentVersion(map);				
-					map.setSaved(false);
-					map.setReadOnly(false);
-					((MFileManager) UrlManager.getController()).save(map, false);
-				}
+			if(!mindmapUpdateController.updateMindmapsInList(maps)){				
+				for(MapModel map : maps){
+					DocearMapModelExtension docearMapModel = DocearMapModelController.getModel(map);
+					if(docearMapModel != null){
+						docearMapModel.setIncompatible(true);
+					}
+					else{
+						DocearMapModelController.setModelWithCurrentVersion(map).setIncompatible(true);
+					}
+				}				
 				currentlyConverting = false;
-				return true;
+				return false;
 			}
 			currentlyConverting = false;
-			return false;
+			return true;
 		}
 		catch(Exception e){
 			LogUtils.warn(e);
@@ -78,17 +82,37 @@ public class MapConverter implements IMapConverter {
 		ArrayList<MapModel> maps = new ArrayList<MapModel>();
 		if(isAlreadyQuestioned(root.getMap())) {
 			return;
-		}
+		}		
 		maps.add(root.getMap());
 		showConversionDialog(maps);
 	}
 	
-	private void showConversionDialog(final List<MapModel> maps) {
-		int result = UITools.showConfirmDialog(null, getMessage(maps), getTitle(maps), JOptionPane.OK_CANCEL_OPTION);
+	public boolean showConversionDialog(final List<MapModel> maps) {
+		boolean converted = false;		
+		for(MapModel map : maps){
+			DocearMapModelExtension docearMapModel = DocearMapModelController.getModel(map);
+			if(docearMapModel == null){
+				DocearMapModelController.setModelWithCurrentVersion(map);
+			}			
+		}
+		
+		int result = UITools.showConfirmDialog(null, getMessage(maps), getTitle(maps), JOptionPane.OK_CANCEL_OPTION);		
 		if(result == JOptionPane.OK_OPTION){
-			convert(maps);
+			converted = convert(maps);			
+		}
+		else{			
+			for(MapModel map : maps){
+				DocearMapModelExtension docearMapModel = DocearMapModelController.getModel(map);
+				if(docearMapModel != null){
+					docearMapModel.setIncompatible(true);
+				}
+				else{
+					DocearMapModelController.setModelWithCurrentVersion(map).setIncompatible(true);
+				}
+			}			
 		}
 		mapsQuestionedInCurrentSession.addAll(maps);
+		return converted;
 	}
 	
 	private String getMessage(final List<MapModel> mapsToConvert){

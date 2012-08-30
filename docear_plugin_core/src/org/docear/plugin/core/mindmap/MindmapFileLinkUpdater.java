@@ -26,7 +26,7 @@ public class MindmapFileLinkUpdater extends AMindmapUpdater {
 
 	@Override
 	public boolean updateMindmap(MapModel map) {
-		if(map == null) return false;
+		if(map == null) return false;		
 		return updateLinks(map.getRootNode());
 	}
 
