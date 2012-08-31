@@ -82,6 +82,7 @@ import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.ui.InstalledPdfReadersDialog;
 import org.docear.plugin.pdfutilities.ui.JDocearInvisibleMenu;
 import org.docear.plugin.pdfutilities.ui.JMonitoringMenu;
+import org.docear.plugin.pdfutilities.ui.ViewerSettingsChangeErrorDialog;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.docear.plugin.pdfutilities.workspace.action.IncomingReReadMonitoringAction;
 import org.freeplane.core.resources.OptionPanelController;
@@ -235,10 +236,9 @@ public class PdfUtilitiesController extends ALanguageController {
 					catch (IOException e) {
 						LogUtils.severe(e.getMessage());
 						showViewerSelectionIfNecessary();
-					}
-				}
-				
-				if(readerFilter.isAcrobat(new File(reader.getExecFile()))){
+					}					
+				}				
+				else if(readerFilter.isAcrobat(new File(reader.getExecFile()))){
 					try {
 						importRegistrySettings(getClass().getResource("/conf/AdobeAcrobatSettings.reg"));
 					}
@@ -247,9 +247,18 @@ public class PdfUtilitiesController extends ALanguageController {
 						showViewerSelectionIfNecessary();
 					}
 				}
+				
+				try {
+					if (!hasCompatibleSettings(reader.getExecFile())) {					
+						JOptionPane.showMessageDialog(UITools.getFrame(), new ViewerSettingsChangeErrorDialog(reader.getExecFile()), TextUtils.getText("docear.validate_pdf_xchange.settings_change_error.title"), JOptionPane.WARNING_MESSAGE);
+					}
+				}
+				catch (IOException e) {
+					JOptionPane.showMessageDialog(UITools.getFrame(), new ViewerSettingsChangeErrorDialog(reader.getExecFile()), TextUtils.getText("docear.validate_pdf_xchange.headline"), JOptionPane.WARNING_MESSAGE);
+				}		
 			}
 			else {
-				PdfUtilitiesController.getController().setToStandardPdfViewer();
+				PdfUtilitiesController.getController().setToStandardPdfViewer();				
 			}
 
 		}
@@ -564,7 +573,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
 				Controller.getCurrentController().getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);
 			}			
-		}
+		}		
 	}
 
 	private void registerController() {
@@ -945,7 +954,7 @@ public class PdfUtilitiesController extends ALanguageController {
 		WorkspaceController.getController().addWorkspaceListener(new IWorkspaceEventListener() {
 			
 			public void workspaceReady(WorkspaceEvent event) {
-				showViewerSelectionIfNecessary();
+				showViewerSelectionIfNecessary();				
 				
 				final IWorkspaceEventListener self = this;
 				SwingUtilities.invokeLater(new Runnable() {
