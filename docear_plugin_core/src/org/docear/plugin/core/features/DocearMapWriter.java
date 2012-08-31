@@ -102,21 +102,30 @@ public class DocearMapWriter extends MapWriter {
 		if (modelExtension == null) {			
 			writer.addAttribute("version", FreeplaneVersion.XML_VERSION);		
 		}
-		else {			
-			final String version = modelExtension.getVersion();
-			if (version != null && version.length() > 0) {			
-				writer.addAttribute("version", "docear " + version);			
-			} else {
-				// FIXME: DOCEAR - version not set, why and what to do?
-				LogUtils.warn("version is null! This should not happen!");
+		else {	
+			if(modelExtension.isIncompatible()){
+				map.removeExtension(DocearMapModelExtension.class);	
+				writer.addAttribute("version", "0.9.0");	
 			}
+			else{
+				final String version = modelExtension.getVersion();
+				if (version != null && version.length() > 0) {			
+					writer.addAttribute("version", "docear " + version);			
+				} else {
+					// FIXME: DOCEAR - version not set, why and what to do?
+					LogUtils.warn("version is null! This should not happen!");
+				}
 
-			if (map.getFile() != null) {			
-				URI mapUri = LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile(), LinkController.LINK_RELATIVE_TO_WORKSPACE);
-				modelExtension.setUri(mapUri);
-			}
+				if (map.getFile() != null) {			
+					URI mapUri = LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile(), LinkController.LINK_RELATIVE_TO_WORKSPACE);
+					modelExtension.setUri(mapUri);
+				}
+			}			
 		}
 		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
+		if(modelExtension.isIncompatible()){
+			map.addExtension(modelExtension);
+		}
 	}
 
 	/***********************************************************************************

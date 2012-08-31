@@ -308,6 +308,8 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 					if(!page.cosGetContents().basicIterator().hasNext()) {
 						page = page.getNextPage();
 					}
+					//tesseract.exe test.tif test.txt
+					
 					AffineTransform pageTx = new AffineTransform();
 					PDFGeometryTools.adjustTransform(pageTx, page);
 					extractor.setDeviceTransform(pageTx);

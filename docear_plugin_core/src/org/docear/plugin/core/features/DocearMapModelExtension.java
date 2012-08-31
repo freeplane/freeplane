@@ -15,8 +15,8 @@ public class DocearMapModelExtension implements IExtension {
 	private DocearMapType type;
 	private String mapId;
 	private URI uri;
-	
-	
+	private boolean incompatible;	
+
 	public DocearMapModelExtension() {
 		setVersion("1.0");
 	}
@@ -94,7 +94,13 @@ public class DocearMapModelExtension implements IExtension {
 		return session;
 	}
 	
-	
+	public boolean isIncompatible() {
+		return incompatible;
+	}
+
+	public void setIncompatible(boolean incompatible) {
+		this.incompatible = incompatible;
+	}
 	
 	
 }

@@ -24,7 +24,10 @@ import org.sciplore.deserialize.reader.XmlResourceReader;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.impl.MultiPartWriter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,7 +44,9 @@ public class SplWebClient {
     static{
     	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
     	Thread.currentThread().setContextClassLoader(SplWebClient.class.getClassLoader());
-    	CLIENT = Client.create();
+    	ClientConfig cc = new DefaultClientConfig();
+    	cc.getClasses().add(MultiPartWriter.class);
+    	CLIENT = Client.create(cc);
         CLIENT.setConnectTimeout(1000);
         CLIENT.setReadTimeout(70000);
         
