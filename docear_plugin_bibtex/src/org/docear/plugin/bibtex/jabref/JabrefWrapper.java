@@ -22,6 +22,7 @@ import net.sf.jabref.BibtexFields;
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRef;
 import net.sf.jabref.JabRefFrame;
+import net.sf.jabref.JabRefPreferences;
 import net.sf.jabref.Util;
 import net.sf.jabref.export.SaveSession;
 import net.sf.jabref.external.FileLinksUpgradeWarning;
@@ -96,12 +97,14 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 	 */
 	public JabrefWrapper(JFrame frame, File file) {
 		// super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
-		super(frame);
+		super(frame);		
 		registerListeners();
 		if(file != null ) {
 			openIt(file, true);
 		}
-
+		
+		this.jrf.getPreferences().put("generateKeysBeforeSaving", "true");
+		this.jrf.getPreferences().put("avoidOverwritingKey", "true");
 	}
 
 	public JabRefFrame getJabrefFrame() {
