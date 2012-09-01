@@ -43,6 +43,14 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	protected Class<OpenMapsExtension> getExtensionClass() {
 		return OpenMapsExtension.class;
 	}
+	
+	@Override
+	protected void saveExtension(final IExtension extension, final XMLElement element) {
+		final OpenMapsExtension openMapsExtension = (OpenMapsExtension) extension;
+		element.setAttribute("LOCATION_X", Float.toString(openMapsExtension.getLocation().getXLocation()));
+		element.setAttribute("LOCATION_Y", Float.toString(openMapsExtension.getLocation().getYLocation()));
+		super.saveExtension(extension, element);
+	}
 
 	private void loadLocationFromXML(final XMLElement element, final OpenMapsExtension extension) {
 		if (element != null) {
@@ -54,11 +62,17 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	
 	private void addChoosenLocationToSelectedNode(OpenMapsLocation locationChoosen) {
 		final NodeModel node = getCurrentlySelectedNode();
-		//Check for extension? 
-		node.addIcon(new MindIcon("internet"));
-		node.setText((Float.toString(locationChoosen.getXLocation()))); //Testing
-		refreshNode(node);
+		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
+		
+		if (openMapsExtension == null) {
+			openMapsExtension  = new OpenMapsExtension();
+			add (node, openMapsExtension);
+			node.addIcon(new MindIcon("internet"));
+			refreshNode(node);
+		}
+		
 	}
+	
 
 	private void refreshNode(NodeModel node) {
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);	
