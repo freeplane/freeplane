@@ -1,7 +1,7 @@
 [Project]
 FileName=freeplaneConsole.dev
 Name=freeplaneConsole
-UnitCount=1
+UnitCount=3
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -66,4 +66,24 @@ SupportXPThemes=0
 CompilerSet=0
 CompilerType=0
 ImagesOutput=Images\
+
+[Unit2]
+FileName=jreSearch.c
+CompileCpp=1
+Folder=freeplaneConsole
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
+FileName=jreSearch.h
+CompileCpp=1
+Folder=freeplaneConsole
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 

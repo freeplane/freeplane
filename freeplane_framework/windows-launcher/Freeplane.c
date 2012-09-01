@@ -8,6 +8,8 @@
 #include <errno.h>
 #include <sys/stat.h>
 
+#include "jreSearch.h"
+
 char * getcwd ()
      {
        size_t size = 300;
@@ -80,9 +82,9 @@ int main(int argc, char *argv[])  {
    }
 
 
+      char*  java_path = 0;
 #ifdef PORTABLE_APP
       char * pathToPortableApp = path_to_launcher_without_file;
-      char*  javaw_path;
       {
          const char *argv[] = {pathToPortableApp, "App\\Freeplane\\", 0};
          pathToPortableApp = path_to_launcher_without_file;
@@ -107,25 +109,32 @@ int main(int argc, char *argv[])  {
          }
          {
             const char *argv[] = {pathToPortableJava, "CommonFiles\\Java\\bin\\javaw.exe", 0};
-            javaw_path = concat(argv);
+            java_path = concat(argv);
+            if(isPathOk(java_path) == FALSE)
+                java_path = 0;
          }
       }   
       no_of_passed_arguments+=2;
-#else 
+#endif
+      if(java_path == 0)
+      {
 #ifdef CONSOLE_APP 
-      char * javaw_path = "java.exe";
+          char * java_exe = "java.exe";
 #else  
-      char * javaw_path = "javaw.exe";
+          char * java_exe = "javaw.exe";
 #endif
-#endif
+          char java_home[_MAX_PATH]; 
+          if (FALSE == findJavaHome(java_home))
+              return -1;
+          {
+             const char *argv[] = {java_home, "\\bin\\", java_exe, 0};
+             java_path = concat(argv);
+          }
+       }
 
    char** arguments = (char **) malloc(no_of_passed_arguments * sizeof(char*));
    int argumentNumber = 0;
-   #ifdef PORTABLE_APP
-   arguments[argumentNumber++] = surround_by_quote(javaw_path);
-   #else
-   arguments[argumentNumber++] = javaw_path;
-   #endif
+   arguments[argumentNumber++] = surround_by_quote(java_path);
    
    const char* freeplaneMaxHeapSizeEnv = getenv("FREEPLANE_MAX_HEAP_SIZE");
    char* argument_allowing_more_memory;
@@ -210,11 +219,7 @@ int main(int argc, char *argv[])  {
 #endif
    // Replace current process by a new one running our application
 
-#ifdef PORTABLE_APP
-   _execv(javaw_path, arguments);
-   arguments[0] = "javaw.exe";
-#endif
-   _execvp(arguments[0], arguments);
+   _execv(java_path, arguments);
    // the following patch seems useful for vista but needs additional testing.
    // https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2350483&group_id=7118
    // Submitted By: Mario Valle (mvalle58)
