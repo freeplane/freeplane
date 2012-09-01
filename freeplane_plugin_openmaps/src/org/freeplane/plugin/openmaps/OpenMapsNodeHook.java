@@ -1,13 +1,15 @@
 package org.freeplane.plugin.openmaps;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.openmaps.mapElements.MapViewer;
+import org.freeplane.plugin.openmaps.mapelements.OpenMapsViewer;
 
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook {
@@ -17,9 +19,10 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	}
 	
 	public void chooseLocation() {
-		final MapViewer map = new MapViewer();
+		final OpenMapsViewer map = new OpenMapsViewer();
 		OpenMapsLocation locationChoosen = null;
 		//While loop needs to be replaced with a listener of some kind - This breaks things
+		//FIXME
 		while (locationChoosen == null) {
 			locationChoosen = map.getController().getSelectedLocation();
 		}
@@ -35,7 +38,6 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final OpenMapsExtension extension = new OpenMapsExtension();
 		loadLocationFromXML(element, extension);
-		refreshNode(node);
 		return (IExtension) extension;
 	}
 	
@@ -65,7 +67,8 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension == null) {
-			openMapsExtension  = new OpenMapsExtension();
+			openMapsExtension = new OpenMapsExtension();
+			openMapsExtension.updateLocation(locationChoosen);
 			add (node, openMapsExtension);
 			node.addIcon(new MindIcon("internet"));
 			refreshNode(node);
@@ -73,6 +76,33 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 		
 	}
 	
+	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final OpenMapsLocation newLocation) {
+		final OpenMapsLocation currentLocation = extension.getLocation();
+	
+		if (!currentLocation.equals(newLocation)) {
+			
+		final IActor actor = new IActor() {
+			private final OpenMapsLocation oldLocation = currentLocation;
+
+			public void act() {
+				extension.updateLocation(newLocation);
+				final MapModel map = Controller.getCurrentModeController().getController().getMap();
+				Controller.getCurrentModeController().getMapController().setSaved(map, false);
+			}
+
+			public String getDescription() {
+				return "setOpenMapsLocationChoiceUndoable";
+			}
+
+			public void undo() {
+				extension.updateLocation(oldLocation);
+			}
+		};
+		
+		Controller.getCurrentModeController().execute(actor,
+		    Controller.getCurrentModeController().getController().getMap());
+		}
+	}
 
 	private void refreshNode(NodeModel node) {
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);	

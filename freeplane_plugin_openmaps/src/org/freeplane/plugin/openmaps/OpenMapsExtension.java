@@ -21,4 +21,8 @@ public class OpenMapsExtension implements IExtension {
 		location = new OpenMapsLocation(location_x, location_y);
 	}
 
+	public void updateLocation(OpenMapsLocation newLocation) {
+		location = newLocation;
+	}
+
 }

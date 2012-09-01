@@ -1,4 +1,4 @@
-package org.freeplane.plugin.openmaps.mapElements;
+package org.freeplane.plugin.openmaps.mapelements;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,18 +11,18 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 /**
  * @author Blair Archibald
  */
-public class MapViewer extends JDialog {
+public class OpenMapsViewer extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JMapViewer mapArea;
-	private final MapController mapController;
+	private final OpenMapsController mapController;
 	
 	private static final int WIDTH = 800; 
 	private static final int HEIGHT = 600;
 	private static final String title = "OpenMaps";
 	
-	public MapViewer() {
+	public OpenMapsViewer() {
 		mapArea = new JMapViewer();
-		mapController = new MapController(mapArea);
+		mapController = new OpenMapsController(mapArea);
 		
 		configureDialog();
 		this.add(mapArea);
@@ -35,7 +35,7 @@ public class MapViewer extends JDialog {
 		this.setLayout(new BorderLayout());
 	}
 	
-	public MapController getController() {
+	public OpenMapsController getController() {
 		return mapController;
 	}
 	

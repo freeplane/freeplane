@@ -1,13 +1,13 @@
-package org.freeplane.plugin.openmaps.mapElements;
+package org.freeplane.plugin.openmaps.mapelements;
 
 import org.freeplane.plugin.openmaps.OpenMapsLocation;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 
-public class MapController {
+public class OpenMapsController {
 	
 	private final JMapViewer map;
 	
-	public MapController(JMapViewer map){
+	public OpenMapsController(JMapViewer map){
 		this.map = map;
 	}
 	
