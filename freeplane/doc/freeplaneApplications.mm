@@ -4,7 +4,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -77,7 +77,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -91,20 +91,19 @@
 </richcontent>
 <hook NAME="FreeNode"/>
 <cloud COLOR="#ffffff" SHAPE="ARC"/>
-<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
 <edge COLOR="#33cc00"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Click arrow.
     </p>
     <p>
-      
+
     </p>
     <p>
       Needs&#160;Internet connection.
@@ -117,7 +116,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <img src="Images/doc/freeplaneApplications.png"/>
@@ -136,7 +135,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -168,7 +167,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -182,7 +181,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -205,7 +204,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -219,7 +218,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -236,7 +235,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -250,7 +249,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -268,7 +267,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -291,7 +290,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -308,7 +307,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -326,7 +325,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -385,7 +384,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -399,7 +398,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -422,7 +421,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -438,7 +437,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -455,7 +454,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -468,7 +467,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -488,7 +487,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -502,7 +501,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -522,7 +521,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -536,7 +535,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -568,7 +567,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -587,7 +586,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -601,7 +600,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
