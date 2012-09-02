@@ -366,13 +366,14 @@
                 http://sourceforge.net/tracker/index.php?func=detail&aid=1651148&group_id=82798&atid=567241
                 The downloadable example code has problems but inspired the solution
     -->
-    <echo message="Adding WorkingDirectory to Info.plist" />
-    <replace file="${macappfullpath}/Contents/Info.plist">
-      <replacetoken><![CDATA[<string>org.knopflerfish.framework.Main</string>]]></replacetoken>
-      <replacevalue><![CDATA[<string>org.knopflerfish.framework.Main</string>
-<key>WorkingDirectory</key>
-  <string>$JAVAROOT</string>]]></replacevalue>
-    </replace>
+        <echo message="Adding WorkingDirectory to Info.plist" />
+		<property name="dist_macos_info" location="${macappfullpath}/Contents/Info.plist"/>
+		<xslt style="${mac-jarbundler}/mac_info_plist.xslt"
+			in ="${dist_macos_info}"
+			out="${dist_macos_info}2"/>
+		<move file="${dist_macos_info}2"
+			  tofile="${dist_macos_info}"/>
+		<!-- Done. -->
 
     <!-- Copy the entire build/ tree except WIndows-related stuff
           Also exclude the OSGI framework.jar which is copied by the jarbundler task
