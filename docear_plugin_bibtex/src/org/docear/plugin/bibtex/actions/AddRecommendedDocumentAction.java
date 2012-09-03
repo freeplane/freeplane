@@ -132,25 +132,7 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					URL url = uri.toURL();
 					InputStream inStream = null;
 					int length = 0;
-					if("ftp".equals(url.getProtocol())) {
-						Authenticator.setDefault(new Authenticator() {
-					    	protected PasswordAuthentication getPasswordAuthentication() {
-					        	return new PasswordAuthentication("mag", "05m06g79".toCharArray());
-					    	}
-						});
-						
-						FtpURLConnection conn = (FtpURLConnection) url.openConnection(new Proxy(Type.SOCKS, new InetSocketAddress("141.44.129.59", 1080)));
-						conn.setAllowUserInteraction(true);
-						
-						try {
-							inStream = conn.getInputStream();
-							length = inStream.available();
-						}
-						catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					else {
+					 {
 						WebResource webResource = commController.getWebResource(uri);
 						ClientResponse response = commController.get(webResource, ClientResponse.class);
 						inStream = response.getEntityInputStream();
