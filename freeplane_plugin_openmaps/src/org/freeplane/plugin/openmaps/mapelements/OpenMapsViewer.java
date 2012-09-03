@@ -2,10 +2,10 @@ package org.freeplane.plugin.openmaps.mapelements;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 
 /**
@@ -38,5 +38,6 @@ public class OpenMapsViewer extends JDialog {
 	public OpenMapsController getController() {
 		return mapController;
 	}
+	
 	
 }

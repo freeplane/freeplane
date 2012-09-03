@@ -74,6 +74,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 			refreshNode(node);
 		}
 		
+		setLocationChoiceUndoable(openMapsExtension, locationChoosen);
 	}
 	
 	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final OpenMapsLocation newLocation) {
@@ -96,6 +97,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 
 			public void undo() {
 				extension.updateLocation(oldLocation);
+				//FIXME Remove the icon?
 			}
 		};
 		
