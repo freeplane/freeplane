@@ -4,11 +4,18 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InterruptedIOException;
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 
 import javax.swing.JFileChooser;
@@ -30,6 +37,8 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+
+import sun.net.www.protocol.ftp.FtpURLConnection;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -62,11 +71,13 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					// maybe log warning
 					return;
 				}
+				url = new URL("ftp://ftp.cordis.lu/pub/improving/docs/ser_citizen_wiener.pdf");
 
 				String fileName = new File(url.getFile()).getName();
 				fileName = URLDecoder.decode(fileName, "UTF-8");
 				String ext = FilenameUtils.getExtension(fileName);
 				fileName = FileUtilities.getCleanFileName((String) event.getEventObject());
+				
 				if (fileName == null || fileName.isEmpty()) {
 					fileName = (String) event.getEventObject();
 				}
@@ -118,16 +129,37 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 			public void run() {
 				try {
 					CommunicationsController commController = CommunicationsController.getController();
-					WebResource webResource = commController.getWebResource(uri);
-
-					ClientResponse response = commController.get(webResource, ClientResponse.class);
-					try {
-						FileUtils.copyInputStreamToFile(new ProgressInputStream(response.getEntityInputStream(), uri.toURL(), response.getLength()), partFile);
+					URL url = uri.toURL();
+					InputStream inStream = null;
+					int length = 0;
+					if("ftp".equals(url.getProtocol())) {
+						Authenticator.setDefault(new Authenticator() {
+					    	protected PasswordAuthentication getPasswordAuthentication() {
+					        	return new PasswordAuthentication("mag", "05m06g79".toCharArray());
+					    	}
+						});
+						
+						FtpURLConnection conn = (FtpURLConnection) url.openConnection(new Proxy(Type.SOCKS, new InetSocketAddress("141.44.129.59", 1080)));
+						conn.setAllowUserInteraction(true);
+						
+						try {
+							inStream = conn.getInputStream();
+							length = inStream.available();
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
-					finally {
-						response.close();
+					else {
+						WebResource webResource = commController.getWebResource(uri);
+						ClientResponse response = commController.get(webResource, ClientResponse.class);
+						inStream = response.getEntityInputStream();
+						length = response.getLength();
 					}
+						
 					
+					FileUtils.copyInputStreamToFile(new ProgressInputStream(inStream, uri.toURL(), length), partFile);
+										
 					if (destinationFile.exists()) {
 						destinationFile.delete();
 					}

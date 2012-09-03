@@ -2549,4 +2549,8 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(this, message);
 	}
+	
+	public JabRefPreferences getPreferences() {
+		return this.prefs;
+	}
 }

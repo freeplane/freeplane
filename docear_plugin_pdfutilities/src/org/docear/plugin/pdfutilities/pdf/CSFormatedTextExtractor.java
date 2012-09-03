@@ -1,15 +1,24 @@
 package org.docear.plugin.pdfutilities.pdf;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
+import java.io.File;
 import java.util.TreeMap;
 
+import javax.imageio.ImageIO;
+
+import de.intarsys.pdf.content.CSException;
 import de.intarsys.pdf.content.ICSInterpreter;
 import de.intarsys.pdf.content.text.CSCharacterParser;
 import de.intarsys.pdf.cos.COSName;
 import de.intarsys.pdf.font.PDFont;
 import de.intarsys.pdf.font.PDFontType3;
 import de.intarsys.pdf.font.PDGlyphs;
+import de.intarsys.pdf.pd.PDImage;
 
 public class CSFormatedTextExtractor extends CSCharacterParser {
 	TreeMap<PdfTextEntity, StringBuilder> map = new TreeMap<PdfTextEntity, StringBuilder>();
@@ -60,6 +69,58 @@ public class CSFormatedTextExtractor extends CSCharacterParser {
 
 	public TreeMap<PdfTextEntity, StringBuilder> getMap() {
 		return map;
+	}
+	
+	@Override
+	protected void doImage(COSName name, PDImage image) throws CSException {
+		try {
+			byte[] buffer = image.getBytes();
+			int width = image.cosGetDict().get(COSName.constant("Width")).asInteger().intValue();
+			int height = image.cosGetDict().get(COSName.constant("Height")).asInteger().intValue();
+			IndexColorModel model = new IndexColorModel(1, 2, new byte[]{0, (byte)255}, new byte[]{0, (byte)255}, new byte[]{0, (byte)255});
+			BufferedImage bImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY, model);
+			Graphics2D g2 = bImage.createGraphics();
+			int idx = 0;
+			int h = height-1;
+			int w = 0;
+			int bit = 0;
+			int lastBit = 7;
+			int unit = 0;
+			while(idx < buffer.length && h >= 0) {
+					if(bit <= 0) {
+						unit = buffer[idx++];
+						bit = 7;
+						if(lastBit > 0) {
+							bit = lastBit;
+						}
+						
+					}
+					for(; bit >= 0; bit--) {
+						int shift = unit>>bit;
+						if((shift&1) > 0) {
+							g2.setColor(Color.BLACK);
+						}
+						else {
+							g2.setColor(Color.WHITE);
+						}
+						g2.drawLine(w, h, w, h);
+						w++;
+						if(w >= width) {
+							w = 0;
+							h--;
+						}
+					}
+					lastBit = bit;
+					
+				
+			}
+			File file = new File("c:\\tmp\\image_"+System.currentTimeMillis()+".jpg");
+		    int l = buffer.length;
+			ImageIO.write(bImage, "jpg", file);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		System.out.println("holla");
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -61,12 +62,17 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
 
+import de.intarsys.pdf.content.CSContent;
 import de.intarsys.pdf.content.CSDeviceBasedInterpreter;
+import de.intarsys.pdf.cos.COSBasedObject;
+import de.intarsys.pdf.cos.COSDocumentElement;
 import de.intarsys.pdf.cos.COSInfoDict;
+import de.intarsys.pdf.cos.COSObject;
 import de.intarsys.pdf.cos.COSRuntimeException;
 import de.intarsys.pdf.parser.COSLoadError;
 import de.intarsys.pdf.parser.COSLoadException;
 import de.intarsys.pdf.pd.PDDocument;
+import de.intarsys.pdf.pd.PDImage;
 import de.intarsys.pdf.pd.PDPage;
 import de.intarsys.pdf.tools.kernel.PDFGeometryTools;
 import de.intarsys.tools.locator.FileLocator;
@@ -241,6 +247,9 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			try {
 				File[] fileList = new File("C:\\Header_Extraction\\testpdfs").listFiles(new FileFilter() {
 					public boolean accept(File pathname) {
+						if(!"(22).pdf".equals(pathname.getName())) {
+							return false;
+						}
 						return pathname.getName().toLowerCase().endsWith(".pdf");
 					}
 				});
@@ -308,6 +317,21 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 					if(!page.cosGetContents().basicIterator().hasNext()) {
 						page = page.getNextPage();
 					}
+//					Iterator<COSDocumentElement> iter = page.cosGetContents().basicIterator();
+//					while(iter.hasNext()) {
+//						COSObject obj = page.cosGetContents().basicIterator().next().dereference();
+//						try {
+//							PDImage image = (PDImage) PDImage.META.createFromCos(obj);
+//							byte[] buffer = image.getBytes();
+//							obj.getClass();
+//						}
+//						catch (Throwable t) {
+//							LogUtils.info(t.getMessage());
+//						}
+//						
+//					}
+					CSContent content = page.getContentStream();
+					content.size();
 					//tesseract.exe test.tif test.txt
 					
 					AffineTransform pageTx = new AffineTransform();
