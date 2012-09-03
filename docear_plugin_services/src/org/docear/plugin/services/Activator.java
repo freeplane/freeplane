@@ -1,5 +1,6 @@
 package org.docear.plugin.services;
 
+import java.net.Authenticator;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import org.docear.plugin.core.DocearService;
 import org.docear.plugin.services.communications.CommunicationsController;
+import org.docear.plugin.services.communications.DocearAuthenticator;
 import org.docear.plugin.services.communications.components.dialog.ProxyAuthenticationDialog;
 import org.docear.plugin.services.recommendations.mode.DocearRecommendationsModeController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -55,6 +57,9 @@ public class Activator extends DocearService {
 						}
 					}
 				});
+				
+				//proxy server handling
+				Authenticator.setDefault(new DocearAuthenticator());
 				if(Boolean.parseBoolean(controller.getResourceController().getProperty(CommunicationsController.DOCEAR_USE_PROXY, "false"))) {
 					ProxyAuthenticationDialog dialog =  new ProxyAuthenticationDialog();
 					dialog.showDialog();

@@ -6,16 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
-import java.net.Authenticator;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.Proxy.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 
 import javax.swing.JFileChooser;
@@ -29,7 +23,6 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
-import org.docear.plugin.core.io.ProgressInputStream;
 import org.docear.plugin.core.util.FileUtilities;
 import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -37,11 +30,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-
-import sun.net.www.protocol.ftp.FtpURLConnection;
-
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 
 public class AddRecommendedDocumentAction extends AFreeplaneAction implements IDocearEventListener {
 
@@ -71,7 +59,6 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					// maybe log warning
 					return;
 				}
-				url = new URL("ftp://ftp.cordis.lu/pub/improving/docs/ser_citizen_wiener.pdf");
 
 				String fileName = new File(url.getFile()).getName();
 				fileName = URLDecoder.decode(fileName, "UTF-8");
@@ -129,18 +116,8 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 			public void run() {
 				try {
 					CommunicationsController commController = CommunicationsController.getController();
-					URL url = uri.toURL();
-					InputStream inStream = null;
-					int length = 0;
-					 {
-						WebResource webResource = commController.getWebResource(uri);
-						ClientResponse response = commController.get(webResource, ClientResponse.class);
-						inStream = response.getEntityInputStream();
-						length = response.getLength();
-					}
-						
-					
-					FileUtils.copyInputStreamToFile(new ProgressInputStream(inStream, uri.toURL(), length), partFile);
+					InputStream inStream = commController.getDownloadStream(uri);					
+					FileUtils.copyInputStreamToFile(inStream, partFile);
 										
 					if (destinationFile.exists()) {
 						destinationFile.delete();
