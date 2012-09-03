@@ -123,7 +123,7 @@ public class DocearMapWriter extends MapWriter {
 			}			
 		}
 		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
-		if(modelExtension.isIncompatible()){
+		if(modelExtension != null && modelExtension.isIncompatible()){
 			map.addExtension(modelExtension);
 		}
 	}
