@@ -477,16 +477,22 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	public void setText(final Object value) {
-		setObject(value);
+		if (value instanceof String) {
+			final MTextController textController = (MTextController) TextController.getController();
+			textController.setNodeText(getDelegate(), (String) value);
+		}
+		else {
+			setObject(value);
+		}
 	}
 	
 	// Node: R/W
 	public void setObject(final Object object) {
-	    final MTextController textController = (MTextController) TextController.getController();
+		final MTextController textController = (MTextController) TextController.getController();
 		textController.setNodeObject(getDelegate(), ProxyUtils.transformObject(object, null));
 	}
 
-    // Node: R/W
+	// Node: R/W
 	public void setDateTime(final Date date) {
 		final MTextController textController = (MTextController) TextController.getController();
 		textController.setNodeObject(getDelegate(), ProxyUtils.createDefaultFormattedDateTime(date));
