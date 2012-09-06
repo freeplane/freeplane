@@ -57,6 +57,7 @@ import org.docear.plugin.pdfutilities.actions.AbstractMonitoringAction;
 import org.docear.plugin.pdfutilities.actions.AddMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DeleteMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.DocearPasteAction;
+import org.docear.plugin.pdfutilities.actions.DocearSendPdfxcRegistryAction;
 import org.docear.plugin.pdfutilities.actions.EditMonitoringFolderAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllAnnotationsAction;
 import org.docear.plugin.pdfutilities.actions.ImportAllChildAnnotationsAction;
@@ -650,7 +651,11 @@ public class PdfUtilitiesController extends ALanguageController {
 
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 				ResourceController resourceController = ResourceController.getResourceController();
-
+				
+				if(Compat.isWindowsOS()){
+					builder.addAction("/menu_bar/help/Web resources", new DocearSendPdfxcRegistryAction("DocearSendPdfxcRegistryAction"), MenuBuilder.AS_CHILD);
+				}
+				
 				String monitoringCategory = PdfUtilitiesController.getParentCategory(builder, MONITORING_CATEGORY);
 
 				builder.addMenuItem(MENU_BAR + TOOLS_MENU, new JMenu(TextUtils.getText(PDF_MANAGEMENT_MENU_LANG_KEY)), MENU_BAR + PDF_MANAGEMENT_MENU,
