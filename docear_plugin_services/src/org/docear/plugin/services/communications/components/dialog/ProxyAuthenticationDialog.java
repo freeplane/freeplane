@@ -1,5 +1,7 @@
 package org.docear.plugin.services.communications.components.dialog;
 
+import java.awt.EventQueue;
+
 import javax.swing.JOptionPane;
 
 import org.docear.plugin.services.communications.CommunicationsController;
@@ -18,6 +20,9 @@ public class ProxyAuthenticationDialog {
 		showDialog(false);
 	}
 	public void showDialog(boolean forced){
+		if(EventQueue.isDispatchThread()) {
+			return;
+		}
 		if(!CommunicationsController.isProxyCanceled() || forced) {
 			ProxyAuthenticationPanel panel = new ProxyAuthenticationPanel();
 			boolean wasSelected = panel.getChckbxUseProxy().isSelected();

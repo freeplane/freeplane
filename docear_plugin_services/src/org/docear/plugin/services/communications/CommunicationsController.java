@@ -6,11 +6,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.concurrent.CancellationException;
@@ -24,6 +28,7 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
+import org.docear.plugin.core.io.ProgressInputStream;
 import org.docear.plugin.services.communications.components.WorkspaceDocearServiceConnectionBar;
 import org.docear.plugin.services.communications.components.WorkspaceDocearServiceConnectionBar.CONNECTION_STATE;
 import org.docear.plugin.services.communications.components.dialog.ConnectionWaitDialog;
@@ -69,7 +74,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 	public static final String DOCEAR_USE_PROXY = "docear.use_proxy";
 	public static final String DOCEAR_PROXY_USERNAME = "docear.proxy_username";
 
-	private static char[] password = null;
+	static char[] password = null;
 
 	private boolean proxyDialogOkSelected = false;
 
@@ -125,7 +130,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		Thread.currentThread().setContextClassLoader(CommunicationsController.class.getClassLoader());
 		try {
 			DefaultApacheHttpClientConfig cc = new DefaultApacheHttpClientConfig();
-			if (ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)) {
+			if (useProxyServer()) {
 				String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
 				String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
 				String username = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_USERNAME, "");
@@ -157,6 +162,40 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
+	}
+	
+	public InputStream getDownloadStream(URI uri ) throws Exception {
+		URL url = uri.toURL();
+		InputStream inStream = null;
+		int length = 0;
+		if("ftp".equals(url.getProtocol())) {
+			URLConnection conn;
+			if(CommunicationsController.useProxyServer()) {
+				String host = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_HOST, "");
+				String port = ResourceController.getResourceController().getProperty(DOCEAR_PROXY_PORT, "");
+				if(port == null) {
+					port = "1080"; //SOCKS DEFAULT
+				}
+				conn = url.openConnection(new Proxy(Type.HTTP, new InetSocketAddress(host, Integer.parseInt(port))));
+			}
+			else {
+				conn = url.openConnection();
+			}
+			inStream = conn.getInputStream();
+			length = inStream.available()-1;
+		}
+		else 
+		{
+			WebResource webResource = getWebResource(uri);
+			ClientResponse response = get(webResource, ClientResponse.class);
+			inStream = response.getEntityInputStream();
+			length = response.getLength();
+		}
+		return new ProgressInputStream(inStream, uri.toURL(), length);
+	}
+
+	public static boolean useProxyServer() {
+		return ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY);
 	}
 
 	public <T> T get(Builder builder, Class<T> c) throws Exception {
@@ -241,7 +280,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 
 	private boolean raiseProxyCredentialsDialog(Exception e) {
 		if (e instanceof ClientHandlerException && e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof IOException
-				&& ResourceController.getResourceController().getBooleanProperty(DOCEAR_USE_PROXY)) {
+				&& useProxyServer()) {
 			proxyDialogOkSelected = false;
 			try {
 				DocearController.getController().dispatchDocearEvent(new DocearEvent(this, DocearEventType.SHOW_DIALOG, dialog));

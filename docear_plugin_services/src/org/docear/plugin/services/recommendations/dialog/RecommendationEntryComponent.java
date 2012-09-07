@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+import org.docear.plugin.services.communications.CommunicationsController;
 import org.docear.plugin.services.recommendations.RecommendationEntry;
 import org.freeplane.core.util.TextUtils;
 
@@ -83,29 +84,36 @@ public class RecommendationEntryComponent extends JPanel {
 		lblImportButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));
 		lblImportButton.setMinimumSize(new Dimension(50, 50));
 		lblImportButton.setPreferredSize(new Dimension(50, 50));
-		lblImportButton.addMouseListener(new MouseListener() {
-			
-			public void mouseReleased(MouseEvent e) {}
-			
-			public void mousePressed(MouseEvent e) {}
-			
-			public void mouseExited(MouseEvent e) {
-				setCursor(Cursor.getDefaultCursor());	
-				setBackground(background);
+		if("ftp".equals(recommendation.getLink().getProtocol().toLowerCase())) {
+			if(!CommunicationsController.useProxyServer()) {		
+				lblImportButton.addMouseListener(new MouseListener() {
+				
+					public void mouseReleased(MouseEvent e) {}
+					
+					public void mousePressed(MouseEvent e) {}
+					
+					public void mouseExited(MouseEvent e) {
+						setCursor(Cursor.getDefaultCursor());	
+						setBackground(background);
+					}
+					
+					public void mouseEntered(MouseEvent e) {
+						setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+						setBackground(selectionBackground);
+					}
+					
+					public void mouseClicked(MouseEvent e) {
+						if(e.getButton() == MouseEvent.BUTTON1) {
+							fireActionEvent(new ActionEvent(recommendation, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
+							e.consume();
+						}
+					}			
+				});
 			}
-			
-			public void mouseEntered(MouseEvent e) {
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				setBackground(selectionBackground);
-			}
-			
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON1) {
-					fireActionEvent(new ActionEvent(recommendation, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
-					e.consume();
-				}
+			else {
+				lblImportButton.setEnabled(false);
 			}			
-		});
+		}		
 		add(lblImportButton, "2, 1");
 	}
 
