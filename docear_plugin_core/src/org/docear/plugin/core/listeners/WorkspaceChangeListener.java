@@ -2,6 +2,10 @@ package org.docear.plugin.core.listeners;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
 import org.docear.plugin.core.CoreConfiguration;
@@ -9,7 +13,6 @@ import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.IDocearLibrary;
 import org.docear.plugin.core.event.DocearEvent;
 import org.docear.plugin.core.event.DocearEventType;
-import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.workspace.creator.FolderTypeLibraryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeLiteratureRepositoryCreator;
 import org.docear.plugin.core.workspace.creator.FolderTypeProjectsCreator;
@@ -18,11 +21,8 @@ import org.docear.plugin.core.workspace.creator.LinkTypeLiteratureAnnotationsCre
 import org.docear.plugin.core.workspace.creator.LinkTypeMyPublicationsCreator;
 import org.docear.plugin.core.workspace.creator.LinkTypeReferencesCreator;
 import org.docear.plugin.core.workspace.node.FolderTypeLibraryNode;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mapio.MapIO;
-import org.freeplane.features.mapio.mindmapmode.MMapIO;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceConfiguration;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
@@ -30,6 +30,7 @@ import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.nodes.ALinkNode;
 import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
@@ -51,7 +52,35 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 	public void toolBarChanged(WorkspaceEvent event) {}
 
 	public void workspaceReady(WorkspaceEvent event) {
-		WorkspaceController.getController().getWorkspaceModel().addTreeModelListener(new DocearWorkspaceTreeModelListener());
+		WorkspaceController.getController().getWorkspaceModel().addTreeModelListener(new DocearWorkspaceTreeModelListener());	
+		setSystemNodes();
+	}
+
+	private void setSystemNodes() {
+		try{
+			File libPath = WorkspaceUtils.resolveURI(DocearController.getController().getLibraryPath());		
+			URI _tempFile = Compat.fileToUrl(new File(libPath, "temp.mm")).toURI();	
+			URI _trashFile = Compat.fileToUrl(new File(libPath, "trash.mm")).toURI();
+			
+			AWorkspaceTreeNode parent = WorkspaceUtils.getNodeForPath(((WorkspaceRoot) WorkspaceUtils.getModel().getRoot()).getName()+"/Library");
+			for(AWorkspaceTreeNode node : Collections.list(parent.children())){
+				if(node.getType().equals(LinkTypeIncomingCreator.LINK_TYPE_INCOMING) || node.getType().equals(LinkTypeLiteratureAnnotationsCreator.LINK_TYPE_LITERATUREANNOTATIONS) || node.getType().equals(LinkTypeMyPublicationsCreator.LINK_TYPE_MYPUBLICATIONS)){
+					node.setSystem(true);
+				}
+				if(node.getType().equals(ALinkNode.LINK_TYPE_FILE)){
+					URI linkPath = WorkspaceUtils.absoluteURI(((ALinkNode)node).getLinkPath());
+					if(linkPath.equals(_trashFile) || linkPath.equals(_tempFile)){
+						node.setSystem(true);
+					}
+				}
+			}
+		}		
+		catch (MalformedURLException e) {
+			LogUtils.warn(e);
+		}
+		catch (URISyntaxException e) {
+			LogUtils.warn(e);
+		}
 	}
 
 	public void configurationLoaded(WorkspaceEvent event) {
@@ -114,45 +143,6 @@ public class WorkspaceChangeListener implements IWorkspaceEventListener {
 		if(!_docearLogo.exists()) {
 			createAndCopy(_docearLogo, "/images/docear_logo.png");			
 		}
-		
-		
-		File libPath = WorkspaceUtils.resolveURI(DocearController.getController().getLibraryPath());
-		
-		File _tempFile = new File(libPath, "temp.mm");			
-		if(!_tempFile.exists()) {
-			createAndCopy(_tempFile, "/conf/simple_mindmap.template");
-			createAndRenameMap(_tempFile, "temp");
-		}
-		
-		File _trashFile = new File(libPath, "trash.mm");
-		if(!_trashFile.exists()) {
-			createAndCopy(_trashFile, "/conf/simple_mindmap.template");
-			createAndRenameMap(_trashFile, "trash");
-			
-		}		
-	}
-
-	/**
-	 * @param string
-	 */
-	private void createAndRenameMap(File file, String name) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		try {
-			MapModel map = new MapModel();
-			mapIO.loadTree(map, file);
-			map.getRootNode().setText(name);
-			if(name.equals("trash") || name.equals("temp")) {
-    			DocearMapModelExtension dmme = map.getExtension(DocearMapModelExtension.class);
-    			if(dmme == null) {
-    				dmme = new DocearMapModelExtension();
-    			}
-    			dmme.setType(name);
-			}
-			mapIO.writeToFile(map, file);
-		}
-		catch (Exception e) {
-			LogUtils.severe("Could not create '"+name+"' map.",e);
-		}		
 	}
 
 	/**
