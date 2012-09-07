@@ -67,10 +67,11 @@ public class ImportDialog extends JDialog {
         radioButtonMrDlib = new JRadioButton(Globals.lang("Create_entry_based_on_data_fetched_from"));
         radioButtononlyAttachPDF = new JRadioButton(Globals.lang("Only_attach_PDF"));
         radioButtonUpdateEmptyFields = new JRadioButton(Globals.lang("Update_empty_fields_with_data_fetched_from"));
-        labelMrDlib1 = new JLabel("Mr._dLib");
+        //DOCEAR
+        labelMrDlib1 = new JLabel("Docear services");
         labelMrDlib1.setFont(new Font(labelMrDlib1.getFont().getName(), Font.BOLD, 13));
         labelMrDlib1.setForeground(new Color(-16776961));
-        labelMrDlib2 = new JLabel("Mr._dLib");
+        labelMrDlib2 = new JLabel("docear services");
         labelMrDlib2.setFont(new Font(labelMrDlib1.getFont().getName(), Font.BOLD, 13));
         labelMrDlib2.setForeground(new Color(-16776961));
         buttonOK = new JButton(Globals.lang("Ok"));

@@ -71,7 +71,6 @@ public class AddRecommendedDocumentAction extends AFreeplaneAction implements ID
 					// maybe log warning
 					return;
 				}
-				url = new URL("ftp://ftp.cordis.lu/pub/improving/docs/ser_citizen_wiener.pdf");
 
 				String fileName = new File(url.getFile()).getName();
 				fileName = URLDecoder.decode(fileName, "UTF-8");

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -46,6 +47,7 @@ import org.freeplane.plugin.workspace.io.AFileNodeCreator;
 import org.freeplane.plugin.workspace.io.FileReadManager;
 import org.freeplane.plugin.workspace.io.FileSystemAlterationMonitor;
 import org.freeplane.plugin.workspace.io.FilesystemManager;
+import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceIndexedTreeModel;
 import org.freeplane.plugin.workspace.nodes.WorkspaceRoot;
 
@@ -235,7 +237,10 @@ public class WorkspaceController implements IFreeplanePropertyListener, IMapLife
 	}
 
 	public void refreshWorkspace() {
-		getWorkspaceModel().reload();
+		Enumeration<AWorkspaceTreeNode> children = ((WorkspaceRoot) getWorkspaceModel().getRoot()).children();
+		while(children.hasMoreElements()) {
+			children.nextElement().refresh();			
+		}
 	}
 	
 	public WorkspaceIndexedTreeModel getWorkspaceModel() {
