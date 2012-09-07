@@ -17,7 +17,8 @@ public class AnnotationModel implements IAnnotation{
 	private boolean isNew;
 	private Integer objectNumber;
 	private URI uri;
-	private Object annotationObject; 
+	private Object annotationObject;
+	private String documentHash;
 	
 	
 	private boolean isConflicted;
@@ -36,7 +37,10 @@ public class AnnotationModel implements IAnnotation{
 		this.annotationType = type;
 	}
 	
-	public AnnotationID getAnnotationID() {		
+	public AnnotationID getAnnotationID() {	
+		if(id == null && uri != null && objectNumber != null){
+			id = new AnnotationID(uri, objectNumber);
+		}
 		return id;
 	}
 
@@ -165,6 +169,20 @@ public class AnnotationModel implements IAnnotation{
 
 	public void setAnnotationObject(Object annotationObject) {
 		this.annotationObject = annotationObject;
+	}
+
+	public String getDocumentHash() {
+		if(documentHash == null || documentHash.length() < 1){
+			if(id != null && id.getUri() != null){
+				documentHash = "" + id.getUri().toString().hashCode();
+				return "" + id.getUri().toString().hashCode();
+			}
+		}
+		return documentHash;
+	}
+
+	public void setDocumentHash(String documentHash) {
+		this.documentHash = documentHash;
 	}
 
 	public AnnotationModel getParent() {

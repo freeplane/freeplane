@@ -89,7 +89,12 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 			
 			File file = WorkspaceUtils.resolveURI(getLinkPath());
 			if(file != null) {
-				if(!file.exists()) {
+				if(!file.exists() && this.isSystem()){
+					if(!WorkspaceUtils.createNewMindmap(WorkspaceUtils.resolveURI(getLinkPath()), getName())) {
+						LogUtils.warn("could not create " + getLinkPath());
+					}
+				}
+				if(!file.exists() && !this.isSystem()) {
 					WorkspaceUtils.showFileNotFoundMessage(file);
 					return;
 				}
@@ -171,7 +176,7 @@ public class LinkTypeFileNode extends ALinkNode implements IWorkspaceNodeActionL
 	
 	public boolean setIcons(DefaultTreeCellRenderer renderer) {
 		File file = WorkspaceUtils.resolveURI(getLinkPath());
-		if(file == null || !file.exists()) {
+		if((file == null || !file.exists()) && !isSystem()) {
 			renderer.setLeafIcon(NOT_EXISTING);
 			renderer.setOpenIcon(NOT_EXISTING);
 			renderer.setClosedIcon(NOT_EXISTING);
