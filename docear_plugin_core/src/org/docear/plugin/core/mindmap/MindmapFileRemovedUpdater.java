@@ -1,5 +1,6 @@
 package org.docear.plugin.core.mindmap;
 
+import java.io.File;
 import java.util.Set;
 
 import org.freeplane.features.link.NodeLinks;
@@ -9,9 +10,9 @@ import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class MindmapFileRemovedUpdater extends AMindmapUpdater {
 	
-	private Set<String> deletedFiles = null;
+	private Set<File> deletedFiles = null;
 
-	public MindmapFileRemovedUpdater(String title, Set<String> deletedFiles) {
+	public MindmapFileRemovedUpdater(String title, Set<File> deletedFiles) {
 		super(title);		
 		this.deletedFiles = deletedFiles;
 	}
@@ -29,15 +30,15 @@ public class MindmapFileRemovedUpdater extends AMindmapUpdater {
 		
 		NodeLinks links = NodeLinks.getLinkExtension(parent);		
 		if (links != null) {
-			String path;
+			File link;
 			try {
-				path = WorkspaceUtils.resolveURI(links.getHyperLink(), parent.getMap()).getAbsolutePath();				
+				link = WorkspaceUtils.resolveURI(links.getHyperLink(), parent.getMap());			
 			}
 			catch(Exception e) {
-				path = null;
+				link = null;
 			}
 			
-			if (path != null && deletedFiles.contains(path)) {
+			if (link != null && deletedFiles.contains(link)) {
 				links.setHyperLink(null);
 			}
 			
