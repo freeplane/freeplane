@@ -6,9 +6,12 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.docear.plugin.core.mindmap.MindmapFileRemovedUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -34,7 +37,7 @@ public class DeleteFileAction extends DocearAction {
 			return;
 		}
 		
-		Set<String> deletedFiles = new HashSet<String>();
+		Set<File> deletedFiles = new HashSet<File>();
 		for (NodeModel node : selection) {
 			URI uri = Tools.getAbsoluteUri(node);
 			if (uri == null) {
@@ -42,9 +45,11 @@ public class DeleteFileAction extends DocearAction {
 			}
 			
 			File file = WorkspaceUtils.resolveURI(uri, node.getMap());
-			file.delete();
-			
-			deletedFiles.add(file.getAbsolutePath());			
+			if(!file.delete()){
+				JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getJFrame(), TextUtils.getText("DeleteFileAction.DeleteFailed.Message"), TextUtils.getText("DeleteFileAction.DeleteFailed.Title"), JOptionPane.WARNING_MESSAGE);
+				return;
+			}			
+			deletedFiles.add(file);			
 		}
 				
 		MindmapUpdateController ctrl = new MindmapUpdateController();
@@ -58,6 +63,27 @@ public class DeleteFileAction extends DocearAction {
 		//TODO: only show action in menu, if the node links to a pdf file
 		
 
+	}
+	
+	@Override
+	public void setEnabled(){
+		if(Controller.getCurrentController().getSelection() == null) {
+			this.setEnabled(false);
+			return;
+		}
+		Set<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
+		if(selection == null){
+			this.setEnabled(false);			
+		}
+		else{
+			for(NodeModel selected : selection){
+				if(MonitoringUtils.isPdfLinkedNode(selected)){
+					this.setEnabled(true);
+					return;
+				}
+			}
+			this.setEnabled(false);
+		}
 	}
 
 }
