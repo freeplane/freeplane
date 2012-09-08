@@ -1,43 +1,14 @@
 package org.freeplane.plugin.openmaps.mapelements;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.JDialog;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
+import org.openstreetmap.gui.jmapviewer.MemoryTileCache;
 
-/**
- * @author Blair Archibald
- */
-public class OpenMapsViewer extends JDialog {
-	private static final long serialVersionUID = 1L;
-	private final JMapViewer mapArea;
-	private final OpenMapsController mapController;
+/** Wrapper class around JMapViewer - stops adding default controller in constructor */
+
+public class OpenMapsViewer extends JMapViewer {
 	
-	private static final int WIDTH = 800; 
-	private static final int HEIGHT = 600;
-	private static final String title = "OpenMaps";
-	
-	public OpenMapsViewer() {
-		mapArea = new JMapViewer();
-		mapController = new OpenMapsController(mapArea);
-		
-		configureDialog();
-		this.add(mapArea);
-		this.setVisible(true);
+	public OpenMapsViewer () {
+		 super(new MemoryTileCache(), 4);
 	}
 
-	private void configureDialog() {
-		this.setSize(new Dimension(WIDTH,HEIGHT));
-		this.setTitle(title);
-		this.setLayout(new BorderLayout());
-	}
-	
-	public OpenMapsController getController() {
-		return mapController;
-	}
-	
-	
 }

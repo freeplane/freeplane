@@ -9,7 +9,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.openmaps.mapelements.OpenMapsViewer;
+import org.freeplane.plugin.openmaps.mapelements.OpenMapsDialog;
+import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook {
@@ -19,12 +20,12 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	}
 	
 	public void chooseLocation() {
-		final OpenMapsViewer map = new OpenMapsViewer();
-		OpenMapsLocation locationChoosen = null;
+		final OpenMapsDialog map = new OpenMapsDialog();
+		Coordinate locationChoosen = null;
 		//While loop needs to be replaced with a listener of some kind - This breaks things
 		//FIXME
 		while (locationChoosen == null) {
-			locationChoosen = map.getController().getSelectedLocation();
+			locationChoosen = map.getController().getSelectedLocation(null);
 		}
 		addChoosenLocationToSelectedNode(locationChoosen); 
 	}
@@ -49,20 +50,20 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		final OpenMapsExtension openMapsExtension = (OpenMapsExtension) extension;
-		element.setAttribute("LOCATION_X", Float.toString(openMapsExtension.getLocation().getXLocation()));
-		element.setAttribute("LOCATION_Y", Float.toString(openMapsExtension.getLocation().getYLocation()));
+		element.setAttribute("LAT", Double.toString(openMapsExtension.getLocation().getLat()));
+		element.setAttribute("LON", Double.toString(openMapsExtension.getLocation().getLon()));
 		super.saveExtension(extension, element);
 	}
 
 	private void loadLocationFromXML(final XMLElement element, final OpenMapsExtension extension) {
 		if (element != null) {
-			final float location_x = Float.parseFloat(element.getAttribute("LOCATION_X", null));
-			final float location_y = Float.parseFloat(element.getAttribute("LOCATION_Y", null));
+			final double location_x = Double.parseDouble(element.getAttribute("LAT", null));
+			final double location_y = Double.parseDouble(element.getAttribute("LON", null));
 			extension.updateLocation(location_x, location_y);
 		}
 	}
 	
-	private void addChoosenLocationToSelectedNode(OpenMapsLocation locationChoosen) {
+	private void addChoosenLocationToSelectedNode(Coordinate locationChoosen) {
 		final NodeModel node = getCurrentlySelectedNode();
 		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
 		
@@ -77,16 +78,16 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 		setLocationChoiceUndoable(openMapsExtension, locationChoosen);
 	}
 	
-	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final OpenMapsLocation newLocation) {
-		final OpenMapsLocation currentLocation = extension.getLocation();
+	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen) {
+		final Coordinate currentLocation = extension.getLocation();
 	
-		if (!currentLocation.equals(newLocation)) {
+		if (!currentLocation.equals(locationChoosen)) {
 			
 		final IActor actor = new IActor() {
-			private final OpenMapsLocation oldLocation = currentLocation;
+			private final Coordinate oldLocation = currentLocation;
 
 			public void act() {
-				extension.updateLocation(newLocation);
+				extension.updateLocation(locationChoosen);
 				final MapModel map = Controller.getCurrentModeController().getController().getMap();
 				Controller.getCurrentModeController().getMapController().setSaved(map, false);
 			}
