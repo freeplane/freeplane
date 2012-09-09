@@ -11,6 +11,7 @@ import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.openmaps.mapelements.OpenMapsDialog;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.freeplane.plugin.openmaps.LocationChoosenListener;
 
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoosenListener {
@@ -24,6 +25,26 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		map.getController().addLocationChoosenListener(this);
 	}
 	
+	public void removeLocationFromCurrentlySelectedNode() {
+		final NodeModel node = getCurrentlySelectedNode();
+		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
+		
+		if (openMapsExtension != null) {
+			remove (node, openMapsExtension);
+			//FIXME remove Icon
+			refreshNode(node);
+		}
+		//FIXME add undo?
+		final MapModel map = Controller.getCurrentModeController().getController().getMap();
+		Controller.getCurrentModeController().getMapController().setSaved(map, false);
+	}
+	
+
+	@Override
+	public void locationChoosenAction(Coordinate locationChoosen) {
+		addChoosenLocationToSelectedNode(locationChoosen); 		
+	}
+
 	@Override
     protected HookAction createHookAction() {
 	    return null;
@@ -68,7 +89,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 			node.addIcon(new MindIcon("internet"));
 			refreshNode(node);
 		}
-		
+
 		setLocationChoiceUndoable(openMapsExtension, locationChoosen);
 	}
 	
@@ -107,11 +128,6 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 
 	private NodeModel getCurrentlySelectedNode() {
 		return Controller.getCurrentModeController().getMapController().getSelectedNode();
-	}
-
-	@Override
-	public void locationChoosenAction(Coordinate locationChoosen) {
-		addChoosenLocationToSelectedNode(locationChoosen); 	
 	}
 
 }

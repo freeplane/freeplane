@@ -131,6 +131,7 @@
 				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 				<menu_separator/>
 				<menu_action action="OpenMapsAddInformation" plugin="org.freeplane.plugin.openmaps"/>
+				<menu_action action="OpenMapsRemoveInformation" plugin="org.freeplane.plugin.openmaps"/>
 			</menu_submenu>			
 			<menu_submenu name="notes" name_ref="menu_notes">
 				<menu_action action="EditNoteInDialogAction" />

@@ -24,10 +24,9 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//FIXME this makes no sense?
 		 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
 			final Coordinate locationChoosen = getSelectedLocation(e.getPoint());
-			sendLocation(locationChoosen);
+			sendLocation(locationChoosen);	
 		}
 	}
 	
