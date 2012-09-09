@@ -13,7 +13,7 @@ import org.freeplane.plugin.openmaps.mapelements.OpenMapsDialog;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
-public class OpenMapsNodeHook extends PersistentNodeHook {
+public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoosenListener {
 	
 	public OpenMapsNodeHook() {
 		super();
@@ -21,13 +21,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 	
 	public void chooseLocation() {
 		final OpenMapsDialog map = new OpenMapsDialog();
-		Coordinate locationChoosen = null;
-		//While loop needs to be replaced with a listener of some kind - This breaks things
-		//FIXME
-		while (locationChoosen == null) {
-			locationChoosen = map.getController().getSelectedLocation(null);
-		}
-		addChoosenLocationToSelectedNode(locationChoosen); 
+		map.getController().addLocationChoosenListener(this);
 	}
 	
 	@Override
@@ -113,6 +107,11 @@ public class OpenMapsNodeHook extends PersistentNodeHook {
 
 	private NodeModel getCurrentlySelectedNode() {
 		return Controller.getCurrentModeController().getMapController().getSelectedNode();
+	}
+
+	@Override
+	public void locationChoosenAction(Coordinate locationChoosen) {
+		addChoosenLocationToSelectedNode(locationChoosen); 	
 	}
 
 }
