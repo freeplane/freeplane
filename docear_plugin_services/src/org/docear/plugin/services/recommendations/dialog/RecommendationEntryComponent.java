@@ -84,36 +84,40 @@ public class RecommendationEntryComponent extends JPanel {
 		lblImportButton.setBorder(new BevelBorder(BevelBorder.RAISED, SystemColor.control, null, null, null));
 		lblImportButton.setMinimumSize(new Dimension(50, 50));
 		lblImportButton.setPreferredSize(new Dimension(50, 50));
+		MouseListener downloadMouseListener = new MouseListener() {
+			
+			public void mouseReleased(MouseEvent e) {}
+			
+			public void mousePressed(MouseEvent e) {}
+			
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());	
+				setBackground(background);
+			}
+			
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				setBackground(selectionBackground);
+			}
+			
+			public void mouseClicked(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON1) {
+					fireActionEvent(new ActionEvent(recommendation, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
+					e.consume();
+				}
+			}			
+		};
 		if("ftp".equals(recommendation.getLink().getProtocol().toLowerCase())) {
 			if(!CommunicationsController.useProxyServer()) {		
-				lblImportButton.addMouseListener(new MouseListener() {
-				
-					public void mouseReleased(MouseEvent e) {}
-					
-					public void mousePressed(MouseEvent e) {}
-					
-					public void mouseExited(MouseEvent e) {
-						setCursor(Cursor.getDefaultCursor());	
-						setBackground(background);
-					}
-					
-					public void mouseEntered(MouseEvent e) {
-						setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-						setBackground(selectionBackground);
-					}
-					
-					public void mouseClicked(MouseEvent e) {
-						if(e.getButton() == MouseEvent.BUTTON1) {
-							fireActionEvent(new ActionEvent(recommendation, RecommendationEntryComponent.IMPORT_RECOMMENDATION, "IMPORT_RECOMMENDATION"));
-							e.consume();
-						}
-					}			
-				});
+				lblImportButton.addMouseListener(downloadMouseListener);
 			}
 			else {
 				lblImportButton.setEnabled(false);
 			}			
-		}		
+		}
+		else {
+			lblImportButton.addMouseListener(downloadMouseListener);
+		}
 		add(lblImportButton, "2, 1");
 	}
 
