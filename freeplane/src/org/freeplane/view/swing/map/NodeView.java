@@ -28,11 +28,15 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.Window;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -236,6 +240,8 @@ public class NodeView extends JComponent implements INodeView {
 
 	private Container getContentPane() {
 		if (contentPane == null) {
+			Window windowAncestor = SwingUtilities.getWindowAncestor(mainView);
+			boolean hasFocus = windowAncestor != null && windowAncestor.getMostRecentFocusOwner() == mainView;
 			contentPane = NodeViewFactory.getInstance().newContentPane(this);
 			final int index = getComponentCount() - 1;
 			remove(index);
@@ -244,8 +250,26 @@ public class NodeView extends JComponent implements INodeView {
 			if(! mainView.isVisible())
 				mainView.setVisible(true);
 			add(contentPane, index);
+			if(hasFocus)
+				restoreFocusToMainView();
 		}
 		return contentPane;
+	}
+
+	private void restoreFocusToMainView() {
+		final Window windowAncestor = SwingUtilities.getWindowAncestor(mainView);
+		if(windowAncestor.isFocused())
+			mainView.requestFocusInWindow();
+		else
+			windowAncestor.addWindowFocusListener(new WindowFocusListener() {
+				public void windowLostFocus(WindowEvent e) {
+				}
+
+				public void windowGainedFocus(WindowEvent e) {
+					mainView.requestFocusInWindow();
+					windowAncestor.removeWindowFocusListener(this);
+				}
+			});
 	}
 
 	/**
