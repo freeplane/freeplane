@@ -13,7 +13,6 @@ public class InsertOpenMapsAction extends AFreeplaneAction {
 		super(actionIdentifier);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent event) {
 		final OpenMapsNodeHook nodeHook = new OpenMapsNodeHook();
 		nodeHook.chooseLocation();

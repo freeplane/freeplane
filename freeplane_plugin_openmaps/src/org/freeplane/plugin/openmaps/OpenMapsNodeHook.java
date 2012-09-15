@@ -44,7 +44,6 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	
 
 	//Called when a location is choosen in the OpenMapsDialog - Only one location may be choosen
-	@Override
 	public void locationChoosenAction(Coordinate locationChoosen) {
 		addChoosenLocationToSelectedNode(locationChoosen); 
 		map.getController().removeLocationChoosenListener(this);

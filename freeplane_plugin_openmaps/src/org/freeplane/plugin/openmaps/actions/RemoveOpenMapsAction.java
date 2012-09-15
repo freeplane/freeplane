@@ -13,7 +13,6 @@ public class RemoveOpenMapsAction extends AFreeplaneAction {
 		super(actionIdentifier);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent event) {
 		final OpenMapsNodeHook nodeHook = new OpenMapsNodeHook();
 		nodeHook.removeLocationFromCurrentlySelectedNode();

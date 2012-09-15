@@ -13,7 +13,6 @@ public class ViewOpenMapsAction extends AFreeplaneAction {
 		super(actionIdentifier);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent event) {
 		final OpenMapsNodeHook nodeHook = new OpenMapsNodeHook();
 		nodeHook.viewCurrentlySelectedLocation();

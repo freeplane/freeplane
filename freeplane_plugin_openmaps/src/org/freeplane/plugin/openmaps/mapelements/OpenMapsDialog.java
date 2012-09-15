@@ -50,7 +50,6 @@ public class OpenMapsDialog extends JDialog implements ActionListener {
 		return mapController;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.dispose();
 	}
