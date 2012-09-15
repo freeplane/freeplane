@@ -1,0 +1,104 @@
+% This file was created with JabRef 2.7.1.
+% Encoding: UTF8
+
+@STRING{dke = {Data \& Knowledge Engineering}}
+
+@STRING{joop = {Journal of Object-Oriented Programming}}
+
+@STRING{lnai = {Lecture Notes in Artificial Intelligence}}
+
+@STRING{lncs = {Lecture Notes in Computer Science}}
+
+@STRING{mibi = {Medizinische Informatik und Bioinformatik}}
+
+@STRING{tkde = {IEEE Transactions on Knowledge and Data Engineering}}
+
+@STRING{tods = {ACM Transactions on Database Systems}}
+
+@STRING{tois = {ACM Transactions on Information Systems}}
+
+@ARTICLE{Beel2010,
+  author = {{J}oeran {B}eel and {B}ela {G}ipp},
+  title = {{A}cademic search engine spam and {G}oogle {S}cholar's resilience
+	against it},
+  journal = {Journal of Electronic Publishing},
+  year = {2010},
+  volume = {13},
+  number = {3},
+  month = dec,
+  note = {Available at http://docear.org},
+  doi = {10.3998/3336451.0013.305},
+  file = {:C\:\\Docear_Bzr\\docear_resources\\demo files\\docear_example_pdfs\\Academic search engine spam and Google Scholars resilience against it.pdf:PDF},
+  owner = {Docear},
+  timestamp = {2012-08-20}
+}
+
+@INPROCEEDINGS{Beel2011c,
+  author = {{B}eel, {J}oeran and {G}ipp, {B}ela and {L}anger, {S}tefan and {G}enzmehr,
+	{M}arcel},
+  title = {{D}ocear: {A}n {A}cademic {L}iterature {S}uite for {S}earching, {O}rganizing
+	and {C}reating {A}cademic {L}iterature},
+  booktitle = {{P}roceedings of the 11th annual international {ACM}/{IEEE} joint
+	conference on {D}igital libraries},
+  year = {2011},
+  series = {{JCDL} '11},
+  pages = {465--466},
+  publisher = {{ACM}},
+  note = {Available at http://docear.org},
+  doi = {10.1145/1998076.1998188},
+  file = {:C\:\\Docear_Bzr\\docear_resources\\demo files\\docear_example_pdfs\\Docear -- An Academic Literature Suite.pdf:PDF},
+  owner = {Docear},
+  timestamp = {2012-08-20}
+}
+
+@INPROCEEDINGS{Beel2011b,
+  author = {{J}oeran {B}eel and {B}ela {G}ipp and {S}tefan {L}anger and {M}arcel
+	{G}enzmehr and {E}rik {W}ilde and {A}ndreas {N}ürnberger and {J}im
+	{P}itman},
+  title = {{I}ntroducing {M}r. {DL}ib, a {M}achine-readable {D}igital {L}ibrary},
+  booktitle = {{P}roceedings of the 11th {ACM}/{IEEE} {J}oint {C}onference on {D}igital
+	{L}ibraries ({JCDL}`11)},
+  year = {2011},
+  note = {Available at http://docear.org},
+  file = {:C\:\\Docear_Bzr\\docear_resources\\demo files\\docear_example_pdfs\\Mr. DLib -- A Machine Readable Digital Library.pdf:PDF},
+  owner = {Docear},
+  timestamp = {2012-08-20}
+}
+
+@ARTICLE{Beel10,
+  author = {{J}oeran {B}eel and {B}ela {G}ipp and {E}rik {W}ilde},
+  title = {{A}cademic {S}earch {E}ngine {O}ptimization ({ASEO}): {O}ptimizing
+	{S}cholarly {L}iterature for {G}oogle {S}cholar and {C}o.},
+  journal = {Journal of Scholarly Publishing},
+  year = {2010},
+  volume = {41},
+  pages = {176-190},
+  number = {2},
+  month = jan,
+  note = {University of Toronto Press. Available at http://docear.org},
+  doi = {10.3138/jsp.41.2.176},
+  file = {:C\:\\Docear_Bzr\\docear_resources\\demo files\\docear_example_pdfs\\Academic Search Engine Optimization (ASEO) -- Optimizing Scholarly Literature for Google Scholar and Co.pdf:PDF},
+  owner = {Docear},
+  timestamp = {2012-08-20}
+}
+
+@comment{jabref-meta: selector_publisher:}
+
+@comment{jabref-meta: selector_author:}
+
+@comment{jabref-meta: selector_journal:}
+
+@comment{jabref-meta: selector_keywords:}
+
+@comment{jabref-meta: groupsversion:3;}
+
+@comment{jabref-meta: groupstree:
+0 AllEntriesGroup:;
+1 ExplicitGroup:link spam\;0\;;
+1 ExplicitGroup:content spam\;0\;;
+1 ExplicitGroup:competiror click fraud\;0\;;
+1 KeywordGroup:Norman\;0\;owner\;Norman\;1\;0\;;
+1 ExplicitGroup:ourpublications\;0\;Beel10\;Beel2010\;;
+1 ExplicitGroup:test\;0\;Beel2010\;;
+}
+
