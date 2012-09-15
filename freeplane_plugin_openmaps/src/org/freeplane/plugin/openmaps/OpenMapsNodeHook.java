@@ -16,6 +16,8 @@ import org.freeplane.plugin.openmaps.LocationChoosenListener;
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoosenListener {
 	
+	private static final String ICON_NAME = "internet";
+
 	public OpenMapsNodeHook() {
 		super();
 	}
@@ -30,8 +32,8 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension != null) {
-			remove (node, openMapsExtension);
-			//FIXME remove Icon
+			this.remove(node, openMapsExtension);
+			node.removeIcon();
 			refreshNode(node);
 		}
 		//FIXME add undo?
@@ -40,6 +42,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	}
 	
 
+	//Called when a location is choosen in the OpenMapsDialog
 	@Override
 	public void locationChoosenAction(Coordinate locationChoosen) {
 		addChoosenLocationToSelectedNode(locationChoosen); 		
@@ -85,26 +88,42 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		if (openMapsExtension == null) {
 			openMapsExtension = new OpenMapsExtension();
 			openMapsExtension.updateLocation(locationChoosen);
-			add (node, openMapsExtension);
-			node.addIcon(new MindIcon("internet"));
+			this.add(node, openMapsExtension);
+			node.addIcon(new MindIcon(ICON_NAME));
 			refreshNode(node);
+		} else {
+			openMapsExtension.updateLocation(locationChoosen);
 		}
 
-		setLocationChoiceUndoable(openMapsExtension, locationChoosen);
+		setLocationChoiceUndoable(openMapsExtension, locationChoosen, node);
 	}
 	
-	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen) {
+	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen, final NodeModel node) {
 		final Coordinate currentLocation = extension.getLocation();
-	
+
 		if (!currentLocation.equals(locationChoosen)) {
+			final IActor actor = createUndoActor(extension, locationChoosen,
+					node, currentLocation);
 			
-		final IActor actor = new IActor() {
+			Controller.getCurrentModeController().execute(actor,
+					Controller.getCurrentModeController().getController()
+							.getMap());
+		}
+	}
+
+	private IActor createUndoActor(final OpenMapsExtension extension,final Coordinate locationChoosen, 
+			final NodeModel node,final Coordinate currentLocation) {
+		
+		return new IActor() {
 			private final Coordinate oldLocation = currentLocation;
+			private final NodeModel selectedNode = node;
 
 			public void act() {
 				extension.updateLocation(locationChoosen);
-				final MapModel map = Controller.getCurrentModeController().getController().getMap();
-				Controller.getCurrentModeController().getMapController().setSaved(map, false);
+				final MapModel map = Controller.getCurrentModeController()
+						.getController().getMap();
+				Controller.getCurrentModeController().getMapController()
+						.setSaved(map, false);
 			}
 
 			public String getDescription() {
@@ -113,13 +132,10 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 
 			public void undo() {
 				extension.updateLocation(oldLocation);
-				//FIXME Remove the icon?
+				selectedNode.removeIcon();
+				refreshNode(selectedNode);
 			}
 		};
-		
-		Controller.getCurrentModeController().execute(actor,
-		    Controller.getCurrentModeController().getController().getMap());
-		}
 	}
 
 	private void refreshNode(NodeModel node) {
