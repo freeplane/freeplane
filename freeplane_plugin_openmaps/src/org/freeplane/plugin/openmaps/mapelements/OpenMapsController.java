@@ -35,7 +35,7 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 		 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
 			final Coordinate locationChoosen = getSelectedLocation(e.getPoint());
 			if (locationCount < 1) {
-				addMarkerToChoosenLocation(locationChoosen);
+				addMarkerToLocation(locationChoosen);
 				locationCount++;
 			}
 			sendLocation(locationChoosen);	
@@ -60,8 +60,16 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 		return map.getPosition(clickedLocation); 
 	}
 
-	private void addMarkerToChoosenLocation(final Coordinate locationChoosen) {
+	private void addMarkerToLocation(final Coordinate locationChoosen) {
 		map.addMapMarker(new MapMarkerDot(locationChoosen.getLat(), locationChoosen.getLon()));
+	}
+
+	public void zoomToLocation(Coordinate location) {
+		if(locationCount == 0) {
+			addMarkerToLocation(location);
+			locationCount++;
+		} 
+		map.setDisplayToFitMapRectangle();
 	}
 
 }

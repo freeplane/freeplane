@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
+import org.openstreetmap.gui.jmapviewer.Coordinate;
+
 /**
  * @author Blair Archibald
  */
@@ -51,6 +53,10 @@ public class OpenMapsDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.dispose();
+	}
+
+	public void showZoomToLocation(Coordinate location) {
+		mapController.zoomToLocation(location);
 	}
 	
 	

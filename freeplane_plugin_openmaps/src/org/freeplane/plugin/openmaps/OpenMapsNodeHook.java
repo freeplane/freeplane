@@ -148,4 +148,15 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		return Controller.getCurrentModeController().getMapController().getSelectedNode();
 	}
 
+	public void viewCurrentlySelectedLocation() {
+		final NodeModel node = getCurrentlySelectedNode();
+		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
+		
+		if (openMapsExtension != null) {
+			map = new OpenMapsDialog();
+			map.showZoomToLocation(openMapsExtension.getLocation());
+		}
+		
+	}
+
 }

@@ -7,7 +7,7 @@ import org.freeplane.plugin.openmaps.OpenMapsNodeHook;
 
 public class RemoveOpenMapsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
-	private static final String actionIdentifier = "OpenMapsRemoveInformation";
+	private static final String actionIdentifier = "OpenMapsRemoveLocation";
 	
 	public RemoveOpenMapsAction() {
 		super(actionIdentifier);
