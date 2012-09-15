@@ -15,17 +15,29 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 public class OpenMapsController extends DefaultMapController implements MouseListener {
 
 	private Set<LocationChoosenListener> Listeners;
+	private int locationCount;
 	
 	public OpenMapsController(JMapViewer map) {
 		super(map);
+		configureButtons();
+		
 		Listeners = new HashSet<LocationChoosenListener>();
+		locationCount = 0;
+	}
+
+	private void configureButtons() {
 		this.setDoubleClickZoomEnabled(false);
+		this.setMovementMouseButton(1);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
 			final Coordinate locationChoosen = getSelectedLocation(e.getPoint());
+			if (locationCount < 1) {
+				addMarkerToChoosenLocation(locationChoosen);
+				locationCount++;
+			}
 			sendLocation(locationChoosen);	
 		}
 	}
@@ -33,18 +45,23 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 	public void addLocationChoosenListener(LocationChoosenListener listener) {
 		Listeners.add(listener);
 	}
+	
+	public void removeLocationChoosenListener(LocationChoosenListener listener) {
+		Listeners.remove(listener);
+	}
 
 	private void sendLocation(Coordinate locationChoosen) {
 		for (LocationChoosenListener l : Listeners) {
 			l.locationChoosenAction(locationChoosen);
 		}
-		
 	}
 
 	public Coordinate getSelectedLocation(Point clickedLocation) {
-		final Coordinate locationChoosen = map.getPosition(clickedLocation); 
+		return map.getPosition(clickedLocation); 
+	}
+
+	private void addMarkerToChoosenLocation(final Coordinate locationChoosen) {
 		map.addMapMarker(new MapMarkerDot(locationChoosen.getLat(), locationChoosen.getLon()));
-		return locationChoosen;
 	}
 
 }

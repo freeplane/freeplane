@@ -1,39 +1,56 @@
 package org.freeplane.plugin.openmaps.mapelements;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 
 /**
  * @author Blair Archibald
  */
-public class OpenMapsDialog extends JDialog {
+public class OpenMapsDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
+	
 	private final OpenMapsViewer mapArea;
 	private final OpenMapsController mapController;
+	private final JButton done;
 	
-	private static final int WIDTH = 800; 
-	private static final int HEIGHT = 600;
-	private static final String title = "OpenMaps";
+	private static final String TITLE = "OpenMaps";
 	
 	public OpenMapsDialog() {
 		mapArea = new OpenMapsViewer();
 		mapController = new OpenMapsController(mapArea);
 		
+		done = new JButton("Done");
+		done.addActionListener(this);
+		
 		configureDialog();
-		this.add(mapArea);
+		addComponents();
+		
+		this.pack();
 		this.setVisible(true);
 	}
 
+	private void addComponents() {
+		this.add(mapArea, BorderLayout.NORTH);
+		this.add(done, BorderLayout.SOUTH);
+	}
+
 	private void configureDialog() {
-		this.setSize(new Dimension(WIDTH,HEIGHT));
-		this.setTitle(title);
+		this.setTitle(TITLE);
 		this.setLayout(new BorderLayout());
+		this.setResizable(false);
 	}
 	
 	public OpenMapsController getController() {
 		return mapController;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		this.dispose();
 	}
 	
 	

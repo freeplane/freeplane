@@ -17,13 +17,14 @@ import org.freeplane.plugin.openmaps.LocationChoosenListener;
 public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoosenListener {
 	
 	private static final String ICON_NAME = "internet";
+	private OpenMapsDialog map;
 
 	public OpenMapsNodeHook() {
 		super();
 	}
 	
 	public void chooseLocation() {
-		final OpenMapsDialog map = new OpenMapsDialog();
+		map = new OpenMapsDialog();
 		map.getController().addLocationChoosenListener(this);
 	}
 	
@@ -42,10 +43,11 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	}
 	
 
-	//Called when a location is choosen in the OpenMapsDialog
+	//Called when a location is choosen in the OpenMapsDialog - Only one location may be choosen
 	@Override
 	public void locationChoosenAction(Coordinate locationChoosen) {
-		addChoosenLocationToSelectedNode(locationChoosen); 		
+		addChoosenLocationToSelectedNode(locationChoosen); 
+		map.getController().removeLocationChoosenListener(this);
 	}
 
 	@Override
