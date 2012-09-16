@@ -5,7 +5,6 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 /**
  * @author Blair Archibald
- * Class stores the Point on the map to extend the node with. Simple Wrapper.
  */
 public class OpenMapsExtension implements IExtension {
 	private Coordinate location;

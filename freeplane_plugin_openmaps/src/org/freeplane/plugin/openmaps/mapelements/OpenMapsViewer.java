@@ -5,8 +5,9 @@ import java.awt.Dimension;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MemoryTileCache;
 
-/** Wrapper class around JMapViewer - stops adding default controller in constructor */
-
+/**
+ * @author Blair Archibald
+ */
 public class OpenMapsViewer extends JMapViewer {
 	private static final long serialVersionUID = 1L;
 	private static final int HEIGHT = 500;

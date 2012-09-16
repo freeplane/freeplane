@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.plugin.openmaps.OpenMapsNodeHook;
 
+/**
+ * @author Blair Archibald
+ */
 public class RemoveOpenMapsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private static final String actionIdentifier = "OpenMapsRemoveLocation";

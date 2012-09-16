@@ -13,6 +13,9 @@ import org.freeplane.plugin.openmaps.mapelements.OpenMapsDialog;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.freeplane.plugin.openmaps.LocationChoosenListener;
 
+/**
+ * @author Blair Archibald
+ */
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoosenListener {
 	

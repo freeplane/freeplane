@@ -12,6 +12,9 @@ import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 
+/**
+ * @author Blair Archibald
+ */
 public class OpenMapsController extends DefaultMapController implements MouseListener {
 
 	private Set<LocationChoosenListener> Listeners;

@@ -1,5 +1,8 @@
 package org.freeplane.plugin.openmaps;
 
+/**
+ * @author Blair Archibald
+ */
 public class OpenMapsLocation {
 	private final float location_x;
 	private final float location_y;
