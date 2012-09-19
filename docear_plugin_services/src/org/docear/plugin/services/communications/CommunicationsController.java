@@ -65,7 +65,7 @@ import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 import com.sun.jersey.multipart.impl.MultiPartWriter;
 
 public class CommunicationsController implements PropertyLoadListener, IWorkspaceEventListener, IFreeplanePropertyListener, IDocearEventListener {
-	private static final int CONNECTION_TIMEOUT = 5000;
+	private static final int CONNECTION_TIMEOUT = 20000;
 	private static CommunicationsController communicationsController;
 	private static Boolean PROXY_CREDENTIALS_CANCELED = false;
 	

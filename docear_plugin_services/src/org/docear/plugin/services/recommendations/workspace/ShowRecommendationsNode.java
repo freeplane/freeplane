@@ -31,8 +31,8 @@ public class ShowRecommendationsNode extends AActionNode {
 	public void initializePopup() {
 		if (popupMenu == null) {						
 			popupMenu  = new WorkspacePopupMenu();
-			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					"workspace.action.node.refresh"
+			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {					
+					"RecommendationsRefreshAction"
 			});
 		}
 		
@@ -53,9 +53,8 @@ public class ShowRecommendationsNode extends AActionNode {
 		return true;
 	}
 	
-	public void refresh() {
-		//Controller.getCurrentController().selectMode(DocearRecommendationsModeController.MODENAME);
-		ServiceController.getController().getRecommenationMode().getMapController().refreshRecommendations();
+	public void refresh() {		
+		//ServiceController.getController().getRecommenationMode().getMapController().refreshRecommendations();
 	}
 	
 	protected AWorkspaceTreeNode clone(ShowRecommendationsNode node) {

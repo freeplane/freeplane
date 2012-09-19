@@ -3,8 +3,11 @@ package org.docear.plugin.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -76,17 +79,25 @@ public class Activator extends WorkspaceDependentService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private List<DocearService> sortOnDependencies(ServiceReference[] dependends, BundleContext context) {
 		ArrayList<DocearService> list = new ArrayList<DocearService>();
-		HashMap<String, DocearService> requiredFor = new HashMap<String, DocearService>();
+		HashMap<String, Set<DocearService>> requiredFor = new HashMap<String, Set<DocearService>>();
 		
 		for(ServiceReference serviceReference : dependends) {
 			final DocearService service = (DocearService) context.getService(serviceReference); 
 			for(DocearBundleInfo info : service.getBundleInfo().getRequiredBundles()) {
 				if(info.getBundleName().startsWith("org.docear") && !info.getBundleName().equals("org.docear.plugin.core") && !inList(info, list)) {
-					requiredFor.put(info.getBundleName(), service);
+					Set<DocearService> services = requiredFor.get(info.getBundleName());
+					if (services == null) {
+						services = new HashSet<DocearService>();
+						requiredFor.put(info.getBundleName(), services);
+					}					
+					services.add(service);
+					
 				}
 			}			
 			if(!requiredFor.containsValue(service)) {
-				list.add(service);
+				if(!list.contains(service)) {
+					list.add(service);
+				}
 				continue;
 			}
 			
@@ -103,20 +114,38 @@ public class Activator extends WorkspaceDependentService {
 	 * @param list
 	 * @param requiredFor
 	 */
-	private void resolveDependencies(List<DocearService> list, Map<String, DocearService> map) {
+	private void resolveDependencies(List<DocearService> list, Map<String, Set<DocearService>> map) {
 		ArrayList<DocearService> buffer = new ArrayList<DocearService>();
 		for(DocearService plugin : list) {
 			if(map.containsKey(plugin.getBundleInfo().getBundleName())) {
-				DocearService inDept = map.get(plugin.getBundleInfo().getBundleName());
-				map.remove(plugin.getBundleInfo().getBundleName());
-				if(!map.containsValue(inDept)) {
-					buffer.add(inDept);
-				}				
+				Set<DocearService> services = map.get(plugin.getBundleInfo().getBundleName());
+				if (services != null) {
+					Iterator<DocearService> iter = services.iterator();
+					map.remove(plugin.getBundleInfo().getBundleName());
+    				while (iter.hasNext()) {
+    					DocearService inDept = iter.next();
+    					iter.remove();
+    					if(!hasMoreDepencies(map, inDept)) {
+        					buffer.add(inDept);
+        				}    					
+    				}
+				}
 			}
 		}
 		for(DocearService plugin : buffer) {
-			list.add(plugin);
+			if(!list.contains(plugin)) {
+				list.add(plugin);
+			}
 		}
+	}
+
+	private boolean hasMoreDepencies(Map<String, Set<DocearService>> map, DocearService inDept) {
+		for(Set<DocearService> services : map.values()) {
+			if(services.contains(inDept)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
