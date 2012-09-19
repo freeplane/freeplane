@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
@@ -22,10 +21,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -35,18 +31,14 @@ import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import org.docear.pdf.PdfDataExtractor;
 import org.docear.plugin.core.DocearController;
 import org.docear.plugin.core.features.AnnotationModel;
 import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.logger.DocearLogEvent;
-import org.docear.plugin.core.util.CharSequenceFilter;
-import org.docear.plugin.core.util.ReplaceLigaturesFilter;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
-import org.docear.plugin.pdfutilities.pdf.CSFormatedTextExtractor;
-import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
-import org.docear.plugin.pdfutilities.pdf.PdfTextEntity;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
@@ -54,28 +46,12 @@ import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
-
-import de.intarsys.pdf.content.CSContent;
-import de.intarsys.pdf.content.CSDeviceBasedInterpreter;
-import de.intarsys.pdf.cos.COSBasedObject;
-import de.intarsys.pdf.cos.COSDocumentElement;
-import de.intarsys.pdf.cos.COSInfoDict;
-import de.intarsys.pdf.cos.COSObject;
-import de.intarsys.pdf.cos.COSRuntimeException;
-import de.intarsys.pdf.parser.COSLoadError;
-import de.intarsys.pdf.parser.COSLoadException;
-import de.intarsys.pdf.pd.PDDocument;
-import de.intarsys.pdf.pd.PDImage;
-import de.intarsys.pdf.pd.PDPage;
-import de.intarsys.pdf.tools.kernel.PDFGeometryTools;
-import de.intarsys.tools.locator.FileLocator;
 
 public class DocearNodeMouseMotionListener implements IMouseListener {
 
@@ -163,12 +139,6 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 						}
 					}
 				}
-//				StringBuilder b = new StringBuilder();
-//				long time = System.currentTimeMillis();
-//				pdfHeaderExtraction(e, b);
-//				System.out.println("time: "+(System.currentTimeMillis()-time));
-//				System.out.println(b);
-//				return;
 			}
 		}
 		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(
@@ -229,7 +199,6 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 	}
 	
 	
-
 	private void pdfHeaderExtraction(MouseEvent e, StringBuilder sb) {
 		NodeModel mmNode = ((MainView) e.getSource()).getNodeView().getModel();
 		URI uri = Tools.getAbsoluteUri(mmNode);
@@ -247,9 +216,9 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			try {
 				File[] fileList = new File("C:\\Header_Extraction\\testpdfs").listFiles(new FileFilter() {
 					public boolean accept(File pathname) {
-						if(!"(22).pdf".equals(pathname.getName())) {
-							return false;
-						}
+//						if(!"(164).pdf".equals(pathname.getName())) {
+//							return false;
+//						}
 						return pathname.getName().toLowerCase().endsWith(".pdf");
 					}
 				});
@@ -277,23 +246,38 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 						return 100;
 					}
 				});
+				int failCount = 0;
+				int hashCount = 0;
+				int pdfFails = 0;
+				float avgSum = 0;
 				for (File file : fileList) {
 					String title = null;
-					try {	
-						PDDocument document = getPDDocument(file.toURI());
-						if(document == null){
-							return;
-						}
-						title = extractTitle(document);
-					}
-					catch (COSLoadError er) {
+					String hash = null;
+					try {
+						long time = System.currentTimeMillis();
+						PdfDataExtractor pdfData = new PdfDataExtractor(file);
+						title = pdfData.extractTitle();
+						hash = pdfData.getUniqueHashCode();
+						avgSum += (System.currentTimeMillis()-time);
 					}
 					catch (Exception ex) {
-						LogUtils.warn(ex);
+						pdfFails++;
+						LogUtils.warn(file.getName()+": "+ex.getMessage());
 					}
-					printer.println(file.getName()+";"+(title == null ? "NULL" : title));
-					System.out.println(file.getName()+";"+(title == null ? "NULL" : title));
+					if(title == null) {
+						failCount++;
+					}
+					if(hash == null) {
+						hashCount++;
+					}
+					//printer.println(file.getName()+";"+(title == null ? "NULL" : title));
+					System.out.println(file.getName()+";"+(hash == null ? "NULL" : hash)+";"+(title == null ? "NULL" : title));
 				}
+				
+				System.out.println("avg. item: "+(avgSum/fileList.length));
+				System.out.println("title fails: "+ failCount+"/"+fileList.length);
+				System.out.println("hash fails: "+ hashCount+"/"+fileList.length);
+				System.out.println("pdf read fails: "+ pdfFails+"/"+fileList.length);
 			}
 			finally {
 				printer.flush();
@@ -303,101 +287,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 			LogUtils.warn(ex);
 		}
 	}
-	CharSequenceFilter filter = new ReplaceLigaturesFilter();
-	private String extractTitle(PDDocument document) throws IOException {
-		int TITLE_MIN_LENGTH = 2;
-		String title = null;
-		try {
-			PDPage pdPage = document.getPageTree().getFirstPage();
-			
-			if (pdPage.isPage()) {
-				try {
-					CSFormatedTextExtractor extractor = new CSFormatedTextExtractor();
-					PDPage page = (PDPage) pdPage;
-					if(!page.cosGetContents().basicIterator().hasNext()) {
-						page = page.getNextPage();
-					}
-//					Iterator<COSDocumentElement> iter = page.cosGetContents().basicIterator();
-//					while(iter.hasNext()) {
-//						COSObject obj = page.cosGetContents().basicIterator().next().dereference();
-//						try {
-//							PDImage image = (PDImage) PDImage.META.createFromCos(obj);
-//							byte[] buffer = image.getBytes();
-//							obj.getClass();
-//						}
-//						catch (Throwable t) {
-//							LogUtils.info(t.getMessage());
-//						}
-//						
-//					}
-					CSContent content = page.getContentStream();
-					content.size();
-					//tesseract.exe test.tif test.txt
-					
-					AffineTransform pageTx = new AffineTransform();
-					PDFGeometryTools.adjustTransform(pageTx, page);
-					extractor.setDeviceTransform(pageTx);
-					CSDeviceBasedInterpreter interpreter = new CSDeviceBasedInterpreter(null, extractor);
-					interpreter.process(page.getContentStream(), page.getResources());
-					TreeMap<PdfTextEntity, StringBuilder> map = extractor.getMap();
-					Entry<PdfTextEntity, StringBuilder> entry = map.firstEntry();
-					if(entry == null) {
-						COSInfoDict info = document.getInfoDict();
-						title = info.getTitle();
-					}
-					else {
-						title = entry.getValue().toString().trim();
-						while(title.trim().length() < TITLE_MIN_LENGTH || isNumber(title)) {
-							entry = map.higherEntry(entry.getKey());
-							if(entry == null) {
-								break;
-							}
-							title = entry.getValue().toString().trim();
-						}
-					}
-					//System.out.println(map);
-				}
-				catch (Exception ex) {
-					COSInfoDict info = document.getInfoDict();
-					title = info.getTitle();
-				}
-				
-			}				
-		}
-		finally {
-			document.close();
-		}
-		if(title != null) {
-			try {
-				title = filter.filter(title);
-			} catch (IOException e) {
-			}
-		}
-		return title;
-	}
 	
-	private boolean isNumber(String title) {
-		try {
-			Double.parseDouble(title.trim());
-		}
-		catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
-
-	private PDDocument getPDDocument(URI uri) throws IOException,	COSLoadException, COSRuntimeException {
-		MapModel map = Controller.getCurrentController().getMap();
-		if(uri == null || Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map)) == null || !Tools.exists(uri, map) || !new PdfFileFilter().accept(uri)){
-			return null;
-		}
-		File file = Tools.getFilefromUri(Tools.getAbsoluteUri(uri, map));
-		
-		FileLocator locator = new FileLocator(file);		
-		PDDocument document = PDDocument.createFromLocator(locator);
-		locator = null;
-		return document;
-	}
 
 	private void writeToLog(NodeModel node) {
 		URI uri = Tools.getAbsoluteUri(node);

@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/jpod/jbig2.jar"/>
 	<classpathentry kind="lib" path="lib/jpod/jPod.jar" sourcepath="C:/java_lib/jPod.5.5.1.20120711/distribution/src"/>
 	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="lib" path="lib/docear-pdf-utilities.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
