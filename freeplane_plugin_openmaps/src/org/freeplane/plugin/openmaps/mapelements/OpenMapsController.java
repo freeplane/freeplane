@@ -41,7 +41,7 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 				addMarkerToLocation(locationChoosen);
 				locationCount++;
 			}
-			sendLocation(locationChoosen);	
+			sendLocation(locationChoosen, getCurrentZoomLevel());	
 		}
 	}
 	
@@ -53,26 +53,30 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 		Listeners.remove(listener);
 	}
 
-	private void sendLocation(Coordinate locationChoosen) {
+	private void sendLocation(Coordinate locationChoosen, int zoom) {
 		for (LocationChoosenListener l : Listeners) {
-			l.locationChoosenAction(locationChoosen);
+			l.locationChoosenAction(locationChoosen, zoom);
 		}
 	}
 
 	public Coordinate getSelectedLocation(Point clickedLocation) {
 		return map.getPosition(clickedLocation); 
 	}
+	
+	public int getCurrentZoomLevel() {
+		return map.getZoom();
+	}
 
 	private void addMarkerToLocation(final Coordinate locationChoosen) {
 		map.addMapMarker(new MapMarkerDot(locationChoosen.getLat(), locationChoosen.getLon()));
 	}
 
-	public void zoomToLocation(Coordinate location) {
+	public void zoomToLocation(Coordinate location, int zoom) {
 		if(locationCount == 0) {
 			addMarkerToLocation(location);
 			locationCount++;
 		} 
-		map.setDisplayToFitMapRectangle();
+		map.setDisplayPositionByLatLon(new Point(map.getWidth() / 2, map.getHeight() / 2), location.getLat(), location.getLon(), zoom);
 	}
 
 }

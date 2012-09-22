@@ -6,5 +6,5 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
  * @author Blair Archibald 
  */
 public interface LocationChoosenListener {
-	public void locationChoosenAction(Coordinate locationChoosen);
+	public void locationChoosenAction(Coordinate locationChoosen, int zoom);
 }

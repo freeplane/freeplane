@@ -8,13 +8,23 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
  */
 public class OpenMapsExtension implements IExtension {
 	private Coordinate location;
+	private int zoom;
 
 	public OpenMapsExtension() {
 		location = new Coordinate(0,0);
+		zoom = 0;
 	}
 	
 	public Coordinate getLocation() {
 		return location;
+	}
+	
+	public int getZoom() {
+		return zoom;
+	}
+	
+	public void updateZoom(int newZoom) {
+		zoom = newZoom;
 	}
 
 	public void updateLocation(double location_x, double location_y) {

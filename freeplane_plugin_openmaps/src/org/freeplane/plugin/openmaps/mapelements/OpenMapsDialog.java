@@ -54,8 +54,8 @@ public class OpenMapsDialog extends JDialog implements ActionListener {
 		this.dispose();
 	}
 
-	public void showZoomToLocation(Coordinate location) {
-		mapController.zoomToLocation(location);
+	public void showZoomToLocation(Coordinate location, int zoom) {
+		mapController.zoomToLocation(location, zoom);
 	}
 	
 	

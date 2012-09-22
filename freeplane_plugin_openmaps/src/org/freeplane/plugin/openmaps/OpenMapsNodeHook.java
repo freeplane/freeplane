@@ -55,9 +55,9 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	}
 	
 
-	//Called when a location is chosen in the OpenMapsDialog - Only one location may be chosen
-	public void locationChoosenAction(Coordinate locationChoosen) {
-		addChoosenLocationToSelectedNode(locationChoosen); 
+	//Called when a location is chosen in the OpenMapsDialog - Only one location may be chosen at a time
+	public void locationChoosenAction(Coordinate locationChoosen, int zoom) {
+		addChoosenLocationToSelectedNode(locationChoosen, zoom); 
 		map.getController().removeLocationChoosenListener(this);
 	}
 	
@@ -67,7 +67,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		
 		if (openMapsExtension != null) {
 			map = new OpenMapsDialog();
-			map.showZoomToLocation(openMapsExtension.getLocation());
+			map.showZoomToLocation(openMapsExtension.getLocation(), openMapsExtension.getZoom());
 		}
 		
 	}
@@ -94,6 +94,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		final OpenMapsExtension openMapsExtension = (OpenMapsExtension) extension;
 		element.setAttribute("LAT", Double.toString(openMapsExtension.getLocation().getLat()));
 		element.setAttribute("LON", Double.toString(openMapsExtension.getLocation().getLon()));
+		element.setAttribute("ZOOM", Integer.toString(openMapsExtension.getZoom()));
 		super.saveExtension(extension, element);
 	}
 
@@ -101,17 +102,20 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		if (element != null) {
 			final double location_x = Double.parseDouble(element.getAttribute("LAT", null));
 			final double location_y = Double.parseDouble(element.getAttribute("LON", null));
+			final int zoom = Integer.parseInt(element.getAttribute("ZOOM",null));
 			extension.updateLocation(location_x, location_y);
+			extension.updateZoom(zoom);
 		}
 	}
 	
-	private void addChoosenLocationToSelectedNode(Coordinate locationChoosen) {
+	private void addChoosenLocationToSelectedNode(Coordinate locationChoosen, int zoom) {
 		final NodeModel node = getCurrentlySelectedNode();
 		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension == null) {
 			openMapsExtension = new OpenMapsExtension();
 			openMapsExtension.updateLocation(locationChoosen);
+			openMapsExtension.updateZoom(zoom);
 			addWorldIcon(node);
 			this.add(node, openMapsExtension);
 		} else {
