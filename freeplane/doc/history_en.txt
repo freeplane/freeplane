@@ -1,4 +1,11 @@
 ===============================
+1.2.19
+===============================
+copy user icons from freeplane 1.1.x on the first start
+build test dist version for PortableApps.com
+do not draw text on spash if the splash comes from a file
+
+===============================
 1.2.18
 ===============================
 Java 5 compatibility fixes

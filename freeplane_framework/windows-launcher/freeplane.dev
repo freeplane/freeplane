@@ -1,7 +1,7 @@
 [Project]
 FileName=freeplane.dev
 Name=freeplane
-UnitCount=2
+UnitCount=4
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -47,6 +47,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNrOnRebuild=0
 AutoIncBuildNrOnCompile=0
+UnitCount=4
 
 [Profile1]
 ProfileName=Mingw gcc 3.4.5
@@ -75,4 +76,24 @@ SupportXPThemes=0
 CompilerSet=0
 CompilerType=0
 ImagesOutput=Images\
+
+[Unit3]
+FileName=jreSearch.c
+CompileCpp=1
+Folder=freeplane
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=jreSearch.h
+CompileCpp=1
+Folder=freeplane
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 

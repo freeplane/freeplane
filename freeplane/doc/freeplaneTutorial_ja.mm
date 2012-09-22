@@ -168,7 +168,7 @@
 </richcontent>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="&#x306f;&#x3058;&#x3081;&#x306b;" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200" HGAP="22">
+<node TEXT="&#x306f;&#x3058;&#x3081;&#x306b;" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200" HGAP="22" TEXT_SHORTENED="true">
 <hook NAME="FirstGroupNode"/>
 <node TEXT="&#x76ee;&#x7684;" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965">
 <hook NAME="NodeConditionalStyles">
@@ -257,7 +257,7 @@
 <icon BUILTIN="video"/>
 <icon BUILTIN="internet"/>
 </node>
-<node TEXT="" FOLDED="true" ID="ID_1720964325" HGAP="-83" VSHIFT="3" STYLE="fork">
+<node TEXT="" ID="ID_1720964325" HGAP="141" VSHIFT="11" STYLE="fork">
 <edge STYLE="hide_edge"/>
 <hook URI="Images/doc/MenusPropertiesPanel.png" SIZE="0.43956044" NAME="ExternalObject"/>
 <node TEXT="&#x30e1;&#x30cb;&#x30e5;&#x30fc;&#x30d0;&#x30fc;" ID="ID_745779360" HGAP="-712" VSHIFT="17">
@@ -292,7 +292,7 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_303482588" STARTINCLINATION="20;-28;" ENDINCLINATION="20;-28;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
-<node TEXT="&#x80cc;&#x666f;&#x306e;&#xa;&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" FOLDED="true" ID="ID_1471702513" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="&#x80cc;&#x666f;&#x306e;&#xa;&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_1471702513" HGAP="34" VSHIFT="-6"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -300,24 +300,24 @@
   </head>
   <body>
     <p>
-      Right-click in free place of background
+      &#30011;&#38754;&#12398;&#20309;&#12418;&#34920;&#31034;&#12373;&#12428;&#12390;&#12356;&#12394;&#12356;&#37096;&#20998;&#12398;&#12393;&#12371;&#12363;&#12391;&#12289;&#21491;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
     </p>
   </body>
 </html>
 </richcontent>
 <hook URI="Images/mouse/mouse_RB.png" SIZE="1.0" NAME="ExternalObject"/>
-<node TEXT="&#x80cc;&#x666f;&#x306e;&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" FOLDED="true" ID="ID_1485150857" VSHIFT="180" STYLE="fork">
+<node TEXT="&#x80cc;&#x666f;&#x306e;&#x30b3;&#x30f3;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x30e1;&#x30cb;&#x30e5;&#x30fc;" ID="ID_1485150857" VSHIFT="180" STYLE="fork">
 <font BOLD="true" ITALIC="true"/>
 <hook URI="Images/doc/BackgroundContextMenu.png" SIZE="1.0" NAME="ExternalObject"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
-<node TEXT="Open/close&#xa;Properties panel" ID="ID_724121688" HGAP="56">
+<node TEXT="&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x30d1;&#x30cd;&#x30eb;&#xa;&#x3092;&#x958b;&#x304f;&#xff0f;&#x9589;&#x3058;&#x308b;" ID="ID_724121688" HGAP="56">
 <edge STYLE="hide_edge"/>
 <font BOLD="true" ITALIC="true"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="122;-181;" ENDINCLINATION="122;-181;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="137;-192;" ENDINCLINATION="137;-192;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 </node>
 </node>
 </node>
-<node TEXT="&#x30d8;&#x30eb;&#x30d7; &gt; &#x30ad;&#x30fc;&#x4e00;&#x89a7;" FOLDED="true" ID="ID_291675950" HGAP="39" VSHIFT="-217" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="&#x30d8;&#x30eb;&#x30d7; &gt; &#x30db;&#x30c3;&#x30c8;&#x30ad;&#x30fc;&#x4e00;&#x89a7;" ID="ID_291675950" HGAP="39" VSHIFT="-217" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -431,7 +431,7 @@
         &#12300;&#32232;&#38598; &gt; &#12494;&#12540;&#12489;&#12464;&#12523;&#12540;&#12503; &gt; &#24120;&#12395;&#12494;&#12540;&#12489;&#12434;&#23637;&#38283;&#65288;&#12458;&#12531;&#65295;&#12458;&#12501;&#65289;&#12301;&#12398;&#35373;&#23450;&#12395;&#12424;&#12426;&#12289;&#35442;&#24403;&#12494;&#12540;&#12489;&#12434;&#25240;&#12426;&#30067;&#12414;&#12394;&#12356;&#12424;&#12358;&#12395;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#12371;&#12428;&#12399;&#12289;&#38642;&#12395;&#12424;&#12427;&#12464;&#12523;&#12540;&#12503;&#21270;&#26178;&#12395;&#24441;&#31435;&#12385;&#12414;&#12377;&#12290;
       </li>
       <li>
-        <font color="#0000ff">&#25240;&#12426;&#30067;&#12415;&#20013;&#12398;&#12494;&#12540;&#12489;&#12395;&#12289;&#38750;&#34920;&#31034;&#12398;&#23376;&#12494;&#12540;&#12489;&#21521;&#12369;&#12467;&#12493;&#12463;&#12479;&#12364;&#20184;&#12373;&#12428;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#28857;&#32218;&#65288;&#21450;&#12403;&#12521;&#12505;&#12523;&#65289;&#12364;&#34920;&#31034;&#12373;&#12428;&#12289;&#12371;&#12428;&#12434;&#12463;&#12522;&#12483;&#12463;&#12377;&#12427;&#12392;&#12289;&#32080;&#12403;&#20184;&#12369;&#12425;&#12428;&#12383;&#12494;&#12540;&#12489;&#12434;&#34920;&#31034;&#12373;&#12379;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;&#65311;&#65311;&#65311;</font>
+        &#25240;&#12426;&#30067;&#12415;&#20013;&#12398;&#12494;&#12540;&#12489;&#12395;&#12289;&#38750;&#34920;&#31034;&#12398;&#23376;&#12494;&#12540;&#12489;&#21521;&#12369;&#12467;&#12493;&#12463;&#12479;&#12364;&#20184;&#12373;&#12428;&#12390;&#12356;&#12427;&#22580;&#21512;&#12289;&#28857;&#32218;&#65288;&#21450;&#12403;&#12521;&#12505;&#12523;&#65289;&#12364;&#34920;&#31034;&#12373;&#12428;&#12414;&#12377;&#12290;&#12371;&#12428;&#12434;&#21491;&#12463;&#12522;&#12483;&#12463;&#12375;&#12390;&#12467;&#12531;&#12486;&#12461;&#12473;&#12488;&#12513;&#12491;&#12517;&#12540;&#12364;&#34920;&#31034;&#12373;&#12379;&#12383;&#12426;&#12289;&#36899;&#32080;&#20808;&#12398;&#12494;&#12540;&#12489;&#12395;&#12472;&#12515;&#12531;&#12503;&#12377;&#12427;&#12371;&#12392;&#12364;&#12391;&#12365;&#12414;&#12377;&#12290;
       </li>
     </ul>
   </body>
@@ -3755,7 +3755,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS">
@@ -3797,10 +3796,9 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS">
+<richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>

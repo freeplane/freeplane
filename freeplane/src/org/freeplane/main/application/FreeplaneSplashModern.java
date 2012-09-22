@@ -30,6 +30,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -57,8 +58,8 @@ public class FreeplaneSplashModern extends JWindow {
 
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
-		splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
-		    "/images/Freeplane_splash.png"));
+		splashResource = ResourceController.getResourceController().getResource("/images/Freeplane_splash.png");
+		splashImage = new ImageIcon(splashResource);
 		getRootPane().setOpaque(false);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
@@ -86,11 +87,14 @@ public class FreeplaneSplashModern extends JWindow {
 
 	private final ImageIcon splashImage;
 	private Integer mWidth3;
+	private URL splashResource;
 
 	@Override
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
 		splashImage.paintIcon(this, g2, 0, 0);
+		if(splashResource.getProtocol().equals("file"))
+			return;
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		final FreeplaneVersion version = FreeplaneVersion.getVersion();
 		final String freeplaneNumber = version.numberToString();
