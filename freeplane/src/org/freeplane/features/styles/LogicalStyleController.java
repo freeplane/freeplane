@@ -85,7 +85,7 @@ public class LogicalStyleController implements IExtension {
 				}
 				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 				Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
-				cachedNode = null;
+				clearCache();
 				addAll(node, styleModel, currentValue, condStyles);
 				return currentValue;
 			}
@@ -357,7 +357,7 @@ public class LogicalStyleController implements IExtension {
 	public Collection<IStyle>  getConditionalMapStyles(final NodeModel node) {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 		Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
-		cachedNode = null;
+		clearCache();
 		return getResursively(node, condStyles);
 	}
 
@@ -371,7 +371,7 @@ public class LogicalStyleController implements IExtension {
 		final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
 		if(conditionalStyleModel != null) {
 			Collection<IStyle> styles = conditionalStyleModel.getStyles(node);
-			cachedNode = null;
+			clearCache();
 			condStyles.addAll(styles);
 		}
 		final Collection<IStyle> all = getResursively(node, condStyles);
