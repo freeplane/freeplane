@@ -85,6 +85,7 @@ public class LogicalStyleController implements IExtension {
 				}
 				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 				Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
+				cachedNode = null;
 				addAll(node, styleModel, currentValue, condStyles);
 				return currentValue;
 			}
@@ -143,7 +144,9 @@ public class LogicalStyleController implements IExtension {
 			final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) styleNode.getExtension(ConditionalStyleModel.class);
 			if(conditionalStyleModel == null)
 				return;
-			addAll(node, styleModel, currentValue, conditionalStyleModel.getStyles(node));
+			Collection<IStyle> styles = conditionalStyleModel.getStyles(node);
+			cachedNode = null;
+			addAll(node, styleModel, currentValue, styles);
     }
 
 	private void registerChangeListener() {
@@ -294,6 +297,7 @@ public class LogicalStyleController implements IExtension {
 		if(cachedNode != null && node.equals(cachedNode.get())){
 			return cachedStyle;
 		}
+		cachedStyle = null;
 		cachedStyle = styleHandlers.getProperty(node, new LinkedHashSet<IStyle>());
 		cachedNode = new WeakReference<NodeModel>(node);
 		return cachedStyle;
@@ -353,6 +357,7 @@ public class LogicalStyleController implements IExtension {
 	public Collection<IStyle>  getConditionalMapStyles(final NodeModel node) {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 		Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
+		cachedNode = null;
 		return getResursively(node, condStyles);
 	}
 
@@ -364,8 +369,11 @@ public class LogicalStyleController implements IExtension {
 		}
 		
 		final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
-		if(conditionalStyleModel != null)
-			condStyles.addAll(conditionalStyleModel.getStyles(node));
+		if(conditionalStyleModel != null) {
+			Collection<IStyle> styles = conditionalStyleModel.getStyles(node);
+			cachedNode = null;
+			condStyles.addAll(styles);
+		}
 		final Collection<IStyle> all = getResursively(node, condStyles);
 		if(style != null){
 			all.remove(style);
