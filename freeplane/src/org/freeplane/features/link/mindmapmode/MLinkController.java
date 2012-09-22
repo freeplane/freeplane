@@ -465,16 +465,24 @@ public class MLinkController extends LinkController {
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
 		
         final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
+        AFreeplaneAction[] shapeActions;
         if(twoNodesConnector){
-            AFreeplaneAction[] shapeActions = new AFreeplaneAction[] {
+            shapeActions = new AFreeplaneAction[] {
                     new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
                     new ChangeConnectorShapeAction(this, link, Shape.LINE),
                     new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH),
                     new ChangeConnectorShapeAction(this, link, Shape.EDGE_LIKE) 
             };
+        }
+        else {
+            shapeActions = new AFreeplaneAction[] {
+                    new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
+                    new ChangeConnectorShapeAction(this, link, Shape.LINE),
+                    new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH)
+            };
+        }
             final JComboBox connectorShapes = createActionBox(shapeActions);
             addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
-        }
 
         AFreeplaneAction[] dashActions = new AFreeplaneAction[] {
                 new ChangeConnectorDashAction(this, link, null), 
@@ -541,23 +549,14 @@ public class MLinkController extends LinkController {
 			});
 		}
 		final JTextArea sourceLabelEditor;
-        if(twoNodesConnector){
             sourceLabelEditor = new JTextArea(link.getSourceLabel());
             addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
-        }
-        else
-            sourceLabelEditor = null;
 
 		final JTextArea middleLabelEditor = new JTextArea(link.getMiddleLabel());
-        addTextEditor(arrowLinkPopup, twoNodesConnector ? "edit_middle_label" : "edit_end_label", middleLabelEditor);
+        addTextEditor(arrowLinkPopup, "edit_middle_label"  ,middleLabelEditor);
 
         final JTextArea targetLabelEditor ; 
-        if(twoNodesConnector){
             targetLabelEditor = new JTextArea(link.getTargetLabel());
-        }
-        else{
-            targetLabelEditor = new JTextArea(link.getSourceLabel());
-        }
         addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
 
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
@@ -589,13 +588,8 @@ public class MLinkController extends LinkController {
                 final IMapSelection selection = Controller.getCurrentController().getSelection();
 				if (selection == null || selection.getSelected() == null)
                     return;
-                if(twoNodesConnector){
                     setSourceLabel(link, sourceLabelEditor.getText());
                     setTargetLabel(link, targetLabelEditor.getText());
-                }
-                else{
-                    setSourceLabel(link, targetLabelEditor.getText());
-                }
                 setMiddleLabel(link, middleLabelEditor.getText());
                 setAlpha(link, transparencySlider.getValue());
                 setWidth(link, widthModel.getNumber().intValue());
