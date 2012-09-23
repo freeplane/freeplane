@@ -21,19 +21,12 @@ import org.freeplane.plugin.openmaps.LocationChoosenListener;
  */
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoosenListener {
-
-	private static final IStateIconProvider worldStateIconProvider = new IStateIconProvider () {
-		private static final String ICON_NAME = "internet";
-		
-		public UIIcon getStateIcon(NodeModel node) {
-			return IconStoreFactory.create().getUIIcon(ICON_NAME);
-		}
-	};
 	
 	private OpenMapsDialog map;
 
 	public OpenMapsNodeHook() {
 		super();
+		registerStateIconProvider();
 	}
 	
 	public void chooseLocation() {
@@ -47,7 +40,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		
 		if (openMapsExtension != null) {
 			this.remove(node, openMapsExtension);
-			removeWorldIcon(node);
+			refreshNode(node);
 		}
 		//FIXME add undo?
 		final MapModel map = Controller.getCurrentModeController().getController().getMap();
@@ -116,11 +109,11 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 			openMapsExtension = new OpenMapsExtension();
 			openMapsExtension.updateLocation(locationChoosen);
 			openMapsExtension.updateZoom(zoom);
-			addWorldIcon(node);
 			this.add(node, openMapsExtension);
-		} else {
+			refreshNode(node);
+		} /*else {
 			openMapsExtension.updateLocation(locationChoosen);
-		}
+		}*/
 
 		setLocationChoiceUndoable(openMapsExtension, locationChoosen, node);
 	}
@@ -143,7 +136,6 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		
 		return new IActor() {
 			private final Coordinate oldLocation = currentLocation;
-			private final NodeModel selectedNode = node;
 
 			public void act() {
 				extension.updateLocation(locationChoosen);
@@ -158,8 +150,11 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 			}
 
 			public void undo() {
-				extension.updateLocation(oldLocation);
-				removeWorldIcon(selectedNode);
+				if (oldLocation != null)
+					extension.updateLocation(oldLocation);
+				else
+					removeLocationFromCurrentlySelectedNode();
+				refreshNode(getCurrentlySelectedNode());
 			}
 
 		};
@@ -173,16 +168,17 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		return Controller.getCurrentModeController().getMapController().getSelectedNode();
 	}
 	
-	private void addWorldIcon(NodeModel node) {
-		IconController iconController = Controller.getCurrentModeController().getExtension(IconController.class);
-		iconController.addStateIconProvider(worldStateIconProvider);
-		refreshNode(node);
+	private void registerStateIconProvider() {
+		Controller.getCurrentModeController().getExtension(IconController.class).addStateIconProvider
+		(new IStateIconProvider () {
+			private static final String ICON_NAME = "internet";
+			
+			public UIIcon getStateIcon(NodeModel node) {
+				if (node.getExtension(OpenMapsExtension.class) != null)
+					return IconStoreFactory.create().getUIIcon(ICON_NAME);
+				else 
+					return null;
+			}	
+		});
 	}
-	
-	private void removeWorldIcon(NodeModel node) {
-		IconController iconController = Controller.getCurrentModeController().getExtension(IconController.class);
-		iconController.removeStateIconProvider(worldStateIconProvider);
-		refreshNode(node);
-	}
-
 }
