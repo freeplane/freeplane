@@ -12,12 +12,14 @@ public class ViewOpenMapsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private static final String actionIdentifier = "OpenMapsViewLocation";
 	
-	public ViewOpenMapsAction() {
+	final OpenMapsNodeHook nodeHookReference;
+	
+	public ViewOpenMapsAction(OpenMapsNodeHook nodeHook) {
 		super(actionIdentifier);
+		nodeHookReference = nodeHook;
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		final OpenMapsNodeHook nodeHook = new OpenMapsNodeHook();
-		nodeHook.viewCurrentlySelectedLocation();
+		nodeHookReference.viewCurrentlySelectedLocation();
 	}
 }

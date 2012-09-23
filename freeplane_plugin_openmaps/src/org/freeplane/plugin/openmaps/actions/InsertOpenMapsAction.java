@@ -11,12 +11,14 @@ public class InsertOpenMapsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private static final String actionIdentifier = "OpenMapsAddLocation";
 	
-	public InsertOpenMapsAction() {
+	final OpenMapsNodeHook nodeHookReference;
+	
+	public InsertOpenMapsAction(OpenMapsNodeHook nodeHook) {
 		super(actionIdentifier);
+		nodeHookReference = nodeHook;
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		final OpenMapsNodeHook nodeHook = new OpenMapsNodeHook();
-		nodeHook.chooseLocation();
+		nodeHookReference.chooseLocation();
 	}
 }

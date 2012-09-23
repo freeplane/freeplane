@@ -136,6 +136,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 
 			public void act() {
 				extension.updateLocation(newlyChoosenLocation);
+				extension.updateZoom(currentlyStoredZoom);
 				final MapModel map = Controller.getCurrentModeController()
 						.getController().getMap();
 				Controller.getCurrentModeController().getMapController()

@@ -11,10 +11,11 @@ import org.freeplane.plugin.openmaps.actions.ViewOpenMapsAction;
 public class OpenMapsRegistration {
 	
 	public OpenMapsRegistration(ModeController modeController) { 
+		final OpenMapsNodeHook nodeHook = new OpenMapsNodeHook();
 		if (modeController.getModeName() == "MindMap") {
-			modeController.addAction(new InsertOpenMapsAction());
-			modeController.addAction(new RemoveOpenMapsAction());
-			modeController.addAction(new ViewOpenMapsAction());
+			modeController.addAction(new InsertOpenMapsAction(nodeHook));
+			modeController.addAction(new RemoveOpenMapsAction(nodeHook));
+			modeController.addAction(new ViewOpenMapsAction(nodeHook));
 		}
 	}
 
