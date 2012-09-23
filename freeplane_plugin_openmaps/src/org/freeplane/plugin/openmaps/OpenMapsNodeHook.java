@@ -107,23 +107,19 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		
 		if (openMapsExtension == null) {
 			openMapsExtension = new OpenMapsExtension();
-			openMapsExtension.updateLocation(locationChoosen);
-			openMapsExtension.updateZoom(zoom);
 			this.add(node, openMapsExtension);
-			refreshNode(node);
-		} /*else {
-			openMapsExtension.updateLocation(locationChoosen);
-		}*/
-
-		setLocationChoiceUndoable(openMapsExtension, locationChoosen, node);
+		}
+		setLocationChoiceUndoable(openMapsExtension, locationChoosen, zoom);
+		refreshNode(node);
 	}
 	
-	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen, final NodeModel node) {
+	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen, int zoom) {
 		final Coordinate currentLocation = extension.getLocation();
+		final int currentZoom = extension.getZoom();
 
 		if (!currentLocation.equals(locationChoosen)) {
 			final IActor actor = createUndoActor(extension, locationChoosen,
-					node, currentLocation);
+					currentLocation, currentZoom);
 			
 			Controller.getCurrentModeController().execute(actor,
 					Controller.getCurrentModeController().getController()
@@ -131,14 +127,15 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		}
 	}
 
-	private IActor createUndoActor(final OpenMapsExtension extension,final Coordinate locationChoosen, 
-			final NodeModel node, final Coordinate currentLocation) {
+	private IActor createUndoActor(final OpenMapsExtension extension, final Coordinate newlyChoosenLocation, 
+			final Coordinate currentlyStoredLocation, final int currentlyStoredZoom) {
 		
 		return new IActor() {
-			private final Coordinate oldLocation = currentLocation;
+			private final Coordinate oldLocation = currentlyStoredLocation;
+			private final int oldZoom = currentlyStoredZoom;
 
 			public void act() {
-				extension.updateLocation(locationChoosen);
+				extension.updateLocation(newlyChoosenLocation);
 				final MapModel map = Controller.getCurrentModeController()
 						.getController().getMap();
 				Controller.getCurrentModeController().getMapController()
@@ -150,10 +147,8 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 			}
 
 			public void undo() {
-				if (oldLocation != null)
-					extension.updateLocation(oldLocation);
-				else
-					removeLocationFromCurrentlySelectedNode();
+				extension.updateLocation(oldLocation);
+				extension.updateZoom(oldZoom);
 				refreshNode(getCurrentlySelectedNode());
 			}
 
