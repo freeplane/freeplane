@@ -283,7 +283,6 @@
 		<mkdir dir="${workingdir}/App/Freeplane" />
 		<copy todir="${workingdir}">
 			<fileset dir="${root}/windows-portable" />
-			<!--fileset file="windows-launcher/freeplanePortable.exe" /-->
 		</copy>
 		<mkdir dir="${workingdir}/Other/Source" />
 		<copy tofile="${workingdir}/Other/Source/EULA.txt">
@@ -295,11 +294,17 @@
 
 		<copy todir="${workingdir}/App/Freeplane">
 			<fileset dir="${build}">
-				<exclude name="*.exe" />
 				<exclude name="*.bat" />
+				<exclude name="*.ini" />
 				<exclude name="*.sh" />
 			</fileset>
 		</copy>
+		<copy file="${root}/portableApps/portable.ini"  
+			tofile="${workingdir}/App/Freeplane/freeplane.l4j.ini"/>
+
+		<copy file="${root}/portableApps/portable.ini"  
+			tofile="${workingdir}/App/Freeplane/freeplaneConsole.l4j.ini"/>
+
 		<dirname property="workingdir.path" file="${workingdir}/file" />
 		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="${workingdir.path}" />
