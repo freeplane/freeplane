@@ -1,4 +1,4 @@
-package org.docear.plugin.core.listeners;
+package org.docear.plugin.pdfutilities.features;
 
 public class SplmmMapsConvertEvent {
 

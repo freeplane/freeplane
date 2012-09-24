@@ -46,9 +46,6 @@ import org.docear.plugin.core.event.DocearEventType;
 import org.docear.plugin.core.event.IDocearEventListener;
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension.DocearMapType;
-import org.docear.plugin.core.features.IAnnotation;
-import org.docear.plugin.core.mindmap.AnnotationController;
-import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.util.CompareVersion;
 import org.docear.plugin.core.util.NodeUtilities;
 import org.docear.plugin.core.util.Tools;
@@ -70,8 +67,10 @@ import org.docear.plugin.pdfutilities.actions.RadioButtonAction;
 import org.docear.plugin.pdfutilities.actions.ShowInstalledPdfReadersDialogAction;
 import org.docear.plugin.pdfutilities.actions.ShowPdfReaderDefinitionDialogAction;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle.RegistryBranch;
+import org.docear.plugin.pdfutilities.listener.DefaultWorkspaceEventListener;
 import org.docear.plugin.pdfutilities.listener.DocearAutoMonitoringListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
@@ -79,6 +78,8 @@ import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
 import org.docear.plugin.pdfutilities.listener.DocearRenameAnnotationListener;
 import org.docear.plugin.pdfutilities.listener.MonitorungNodeUpdater;
 import org.docear.plugin.pdfutilities.listener.WorkspaceNodeOpenDocumentListener;
+import org.docear.plugin.pdfutilities.map.AnnotationController;
+import org.docear.plugin.pdfutilities.map.MapConverter;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.docear.plugin.pdfutilities.ui.InstalledPdfReadersDialog;
@@ -109,6 +110,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
+import org.freeplane.features.url.mindmapmode.MapVersionInterpreter;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
@@ -199,6 +201,9 @@ public class PdfUtilitiesController extends ALanguageController {
 		this.registerActions();
 		this.registerListener();
 		this.addMenuEntries();
+		
+		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
+		
 	}
 
 	public static PdfUtilitiesController getController() {
@@ -965,7 +970,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				}
 			}
 		});
-		
+		WorkspaceController.getController().addWorkspaceListener(new DefaultWorkspaceEventListener());
 		WorkspaceController.getController().addWorkspaceListener(new IWorkspaceEventListener() {
 			
 			public void workspaceReady(WorkspaceEvent event) {

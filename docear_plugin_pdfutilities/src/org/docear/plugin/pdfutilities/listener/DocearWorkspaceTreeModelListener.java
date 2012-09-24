@@ -1,4 +1,4 @@
-package org.docear.plugin.core.listeners;
+package org.docear.plugin.pdfutilities.listener;
 
 import java.io.File;
 import java.util.Collection;
@@ -9,8 +9,8 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
 import org.apache.commons.io.FileUtils;
-import org.docear.plugin.core.mindmap.MindmapFileLinkUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
+import org.docear.plugin.pdfutilities.map.MindmapFileLinkUpdater;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.model.WorkspaceTreeModelEvent;
 import org.freeplane.plugin.workspace.model.WorkspaceTreeModelEvent.WorkspaceTreeModelEventType;

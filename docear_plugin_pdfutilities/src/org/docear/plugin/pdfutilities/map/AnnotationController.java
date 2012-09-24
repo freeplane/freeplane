@@ -1,4 +1,4 @@
-package org.docear.plugin.core.mindmap;
+package org.docear.plugin.pdfutilities.map;
 
 import java.io.File;
 import java.net.URI;
@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.docear.plugin.core.features.AnnotationID;
-import org.docear.plugin.core.features.AnnotationModel;
-import org.docear.plugin.core.features.AnnotationNodeModel;
-import org.docear.plugin.core.features.AnnotationXmlBuilder;
-import org.docear.plugin.core.features.IAnnotation;
-import org.docear.plugin.core.features.IAnnotation.AnnotationType;
 import org.docear.plugin.core.util.HtmlUtils;
 import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
+import org.docear.plugin.pdfutilities.features.AnnotationXmlBuilder;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;

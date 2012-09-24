@@ -3,9 +3,9 @@ package org.docear.plugin.bibtex.listeners;
 
 import org.docear.plugin.bibtex.ReferenceUpdater;
 import org.docear.plugin.bibtex.SplmmReferenceUpdater;
-import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;
-import org.docear.plugin.core.listeners.SplmmMapsConvertEvent;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
+import org.docear.plugin.pdfutilities.features.ISplmmMapsConvertListener;
+import org.docear.plugin.pdfutilities.features.SplmmMapsConvertEvent;
 import org.freeplane.core.util.TextUtils;
 
 public class SplmmMapsConvertListener implements ISplmmMapsConvertListener {

@@ -8,12 +8,12 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.docear.plugin.core.features.AnnotationID;
-import org.docear.plugin.core.features.AnnotationModel;
-import org.docear.plugin.core.features.AnnotationNodeModel;
-import org.docear.plugin.core.features.IAnnotation;
-import org.docear.plugin.core.features.IAnnotation.AnnotationType;
-import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.AnnotationNodeModel;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
+import org.docear.plugin.pdfutilities.map.AnnotationController;
 import org.docear.plugin.pdfutilities.pdf.PdfAnnotationImporter;
 import org.docear.plugin.pdfutilities.ui.conflict.ImportConflictDialog;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;

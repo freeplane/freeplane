@@ -33,12 +33,12 @@ import javax.swing.Timer;
 
 import org.docear.pdf.PdfDataExtractor;
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.features.AnnotationModel;
-import org.docear.plugin.core.features.IAnnotation;
 import org.docear.plugin.core.logger.DocearLogEvent;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;

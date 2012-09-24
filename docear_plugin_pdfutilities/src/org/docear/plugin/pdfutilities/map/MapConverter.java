@@ -1,4 +1,4 @@
-package org.docear.plugin.core.mindmap;
+package org.docear.plugin.pdfutilities.map;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,16 +8,15 @@ import javax.swing.JOptionPane;
 
 import org.docear.plugin.core.features.DocearMapModelController;
 import org.docear.plugin.core.features.DocearMapModelExtension;
-import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;
-import org.docear.plugin.core.listeners.SplmmMapsConvertEvent;
+import org.docear.plugin.core.mindmap.MindmapUpdateController;
+import org.docear.plugin.pdfutilities.features.ISplmmMapsConvertListener;
+import org.docear.plugin.pdfutilities.features.SplmmMapsConvertEvent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.IMapConverter;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MapConversionException;
 
 public class MapConverter implements IMapConverter {

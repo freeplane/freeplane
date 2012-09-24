@@ -1,7 +1,8 @@
-package org.docear.plugin.core.features;
+package org.docear.plugin.pdfutilities.features;
 
 import java.net.URI;
 
+import org.docear.plugin.core.features.AnnotationID;
 import org.freeplane.core.extension.IExtension;
 
 public interface IAnnotation extends IExtension{

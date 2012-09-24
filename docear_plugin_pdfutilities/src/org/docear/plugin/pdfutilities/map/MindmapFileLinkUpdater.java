@@ -1,11 +1,12 @@
-package org.docear.plugin.core.mindmap;
+package org.docear.plugin.pdfutilities.map;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.docear.plugin.core.features.IAnnotation;
+import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.pdfutilities.features.IAnnotation;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;

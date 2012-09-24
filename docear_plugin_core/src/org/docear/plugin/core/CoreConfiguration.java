@@ -32,7 +32,6 @@ import org.docear.plugin.core.listeners.PropertyLoadListener;
 import org.docear.plugin.core.listeners.WorkspaceChangeListener;
 import org.docear.plugin.core.listeners.WorkspaceOpenDocumentListener;
 import org.docear.plugin.core.logger.DocearLogEvent;
-import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.core.ui.NotificationBar;
 import org.docear.plugin.core.workspace.actions.DocearChangeLibraryPathAction;
 import org.docear.plugin.core.workspace.actions.DocearRenameAction;
@@ -128,7 +127,6 @@ public class CoreConfiguration extends ALanguageController {
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_TIME_ZONE, System.getProperty("user.timezone"));
 		DocearController.getController().getDocearEventLogger().appendToLog(this, DocearLogEvent.OS_SCREEN_RESOLUTION, Toolkit.getDefaultToolkit().getScreenSize().toString());
 		
-		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("0.9.0\" software_name=\"SciPlore_", false, false, "SciploreMM", "http://sciplore.org", null, new MapConverter()));
 		MapVersionInterpreter.addMapVersionInterpreter(new MapVersionInterpreter("docear", false, false, "Docear", "http://www.docear.org", null, new IMapConverter() {
 			public void convert(NodeModel root) throws MapConversionException {
 				final MapModel mapModel = root.getMap();				

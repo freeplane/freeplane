@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.docear.plugin.core.CoreConfiguration;
-import org.docear.plugin.core.listeners.ISplmmMapsConvertListener;
-import org.docear.plugin.core.listeners.SplmmMapsConvertEvent;
 import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
 import org.docear.plugin.pdfutilities.PdfUtilitiesController;
+import org.docear.plugin.pdfutilities.features.ISplmmMapsConvertListener;
+import org.docear.plugin.pdfutilities.features.SplmmMapsConvertEvent;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;

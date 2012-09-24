@@ -1,9 +1,11 @@
-package org.docear.plugin.core.features;
+package org.docear.plugin.pdfutilities.features;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.docear.plugin.core.features.AnnotationID;
 
 
 public class AnnotationModel implements IAnnotation{

@@ -17,8 +17,8 @@ import javax.swing.SwingUtilities;
 
 import name.pachler.nio.file.WatchKey;
 
-import org.docear.plugin.core.mindmap.MapConverter;
 import org.docear.plugin.pdfutilities.actions.UpdateMonitoringFolderAction;
+import org.docear.plugin.pdfutilities.map.MapConverter;
 import org.docear.plugin.pdfutilities.util.MonitoringUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.icon.IconController;

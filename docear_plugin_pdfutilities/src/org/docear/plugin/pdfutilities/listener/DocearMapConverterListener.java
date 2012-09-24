@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.docear.plugin.core.features.DocearMapModelController;
-import org.docear.plugin.core.mindmap.MapConverter;
+import org.docear.plugin.pdfutilities.map.MapConverter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;

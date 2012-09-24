@@ -1,4 +1,4 @@
-package org.docear.plugin.core.mindmap;
+package org.docear.plugin.pdfutilities.map;
 
 import java.io.File;
 import java.net.URI;
@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.core.mindmap.AMindmapUpdater;
 import org.docear.plugin.core.util.HtmlUtils;
 import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;

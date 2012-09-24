@@ -1,12 +1,10 @@
-package org.docear.plugin.core.features;
+package org.docear.plugin.pdfutilities.features;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
-import org.docear.plugin.core.features.IAnnotation.AnnotationType;
-import org.docear.plugin.core.mindmap.AnnotationController;
 import org.docear.plugin.core.util.Tools;
+import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
+import org.docear.plugin.pdfutilities.map.AnnotationController;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -17,7 +15,6 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.workspace.WorkspaceUtils;
 
 public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	

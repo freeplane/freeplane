@@ -1,8 +1,8 @@
-package org.docear.plugin.core.mindmap;
+package org.docear.plugin.pdfutilities.map;
 
 import java.net.URI;
 
-import org.docear.plugin.core.features.AnnotationModel;
+import org.docear.plugin.pdfutilities.features.AnnotationModel;
 import org.freeplane.features.map.NodeModel;
 
 
