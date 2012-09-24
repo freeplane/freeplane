@@ -75,7 +75,7 @@ import org.docear.plugin.pdfutilities.listener.DocearAutoMonitoringListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeDropListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeMouseMotionListener;
 import org.docear.plugin.pdfutilities.listener.DocearNodeSelectionListener;
-import org.docear.plugin.pdfutilities.listener.DocearRenameAnnotationListener;
+import org.docear.plugin.pdfutilities.listener.PdfNodeChangeListener;
 import org.docear.plugin.pdfutilities.listener.MonitorungNodeUpdater;
 import org.docear.plugin.pdfutilities.listener.WorkspaceNodeOpenDocumentListener;
 import org.docear.plugin.pdfutilities.map.AnnotationController;
@@ -1004,7 +1004,7 @@ public class PdfUtilitiesController extends ALanguageController {
 			}
 		});
 
-		this.modecontroller.getMapController().addNodeChangeListener(new DocearRenameAnnotationListener());		
+		this.modecontroller.getMapController().addNodeChangeListener(new PdfNodeChangeListener());		
 
 		DocearAutoMonitoringListener autoMonitoringListener = new DocearAutoMonitoringListener();
 		this.modecontroller.getMapController().addMapLifeCycleListener(autoMonitoringListener);

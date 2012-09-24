@@ -15,16 +15,9 @@ import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.jabref.JabRefAttributes;
 import org.docear.plugin.bibtex.jabref.ResolveDuplicateEntryAbortedException;
 import org.docear.plugin.core.DocearController;
-import org.docear.plugin.core.features.AnnotationID;
 import org.docear.plugin.core.features.DocearMapModelExtension;
 import org.docear.plugin.core.features.MapModificationSession;
 import org.docear.plugin.core.mindmap.MindmapUpdateController;
-import org.docear.plugin.core.util.Tools;
-import org.docear.plugin.pdfutilities.features.AnnotationModel;
-import org.docear.plugin.pdfutilities.features.IAnnotation.AnnotationType;
-import org.docear.plugin.pdfutilities.map.AnnotationController;
-import org.docear.plugin.pdfutilities.pdf.PdfFileFilter;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.MapChangeEvent;
@@ -60,19 +53,20 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 		if (event.getProperty().equals(NodeModel.HYPERLINK_CHANGED)) {
 			URI newUri = (URI) event.getNewValue();
 			if (newUri != null) {
-				try{
-					if(new PdfFileFilter().accept(Tools.getFilefromUri(Tools.getAbsoluteUri(newUri)))){
-						if(AnnotationController.getModel(event.getNode(), false) == null){
-							AnnotationModel model = new AnnotationModel();
-							model.setAnnotationID(new AnnotationID(newUri, 0));
-							model.setAnnotationType(AnnotationType.PDF_FILE);
-							AnnotationController.setModel(event.getNode(), model);
-						}
-					}
-				}
-				catch(Exception e){
-					LogUtils.warn(e);
-				}
+				//extracted to pdf-utilities 
+//				try{
+//					if(new PdfFileFilter().accept(Tools.getFilefromUri(Tools.getAbsoluteUri(newUri)))){
+//						if(AnnotationController.getModel(event.getNode(), false) == null){
+//							AnnotationModel model = new AnnotationModel();
+//							model.setAnnotationID(new AnnotationID(newUri, 0));
+//							model.setAnnotationType(AnnotationType.PDF_FILE);
+//							AnnotationController.setModel(event.getNode(), model);
+//						}
+//					}
+//				}
+//				catch(Exception e){
+//					LogUtils.warn(e);
+//				}
 				JabRefAttributes jabRefAttributes = ReferencesController.getController().getJabRefAttributes();
 				MapModificationSession session = event.getNode().getMap().getExtension(DocearMapModelExtension.class).getMapModificationSession();
 
@@ -135,9 +129,10 @@ public class MapChangeListenerAdapter extends AMapChangeListenerAdapter {
 					return;
 				}
 			}
-			if(newUri == null && AnnotationController.getModel(event.getNode(), false) != null){
-				AnnotationController.setModel(event.getNode(), null);
-			}
+			//moved to pdf-utilities
+//			if(newUri == null && AnnotationController.getModel(event.getNode(), false) != null){
+//				AnnotationController.setModel(event.getNode(), null);
+//			}
 		}
 	}
 

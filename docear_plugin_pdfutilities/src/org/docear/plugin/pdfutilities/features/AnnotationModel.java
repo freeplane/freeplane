@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.docear.pdf.PdfDataExtractor;
 import org.docear.plugin.core.features.AnnotationID;
 
 
@@ -175,7 +176,7 @@ public class AnnotationModel implements IAnnotation{
 
 	public String getDocumentHash() {
 		if(documentHash == null || documentHash.length() < 1){
-			if(id != null && id.getUri() != null){
+			if(id != null && id.getUri() != null) {
 				documentHash = "" + id.getUri().toString().hashCode();
 				return "" + id.getUri().toString().hashCode();
 			}

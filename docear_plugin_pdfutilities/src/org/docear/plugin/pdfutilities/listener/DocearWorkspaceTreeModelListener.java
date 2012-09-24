@@ -69,6 +69,6 @@ public class DocearWorkspaceTreeModelListener implements TreeModelListener {
 	private void updateMaps(WorkspaceTreeModelEvent event,	Map<File, File> fileMap) {
 		MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(false);
 		mindmapUpdateController.addMindmapUpdater(new MindmapFileLinkUpdater(TextUtils.getText("updating_links"), event, fileMap));
-		mindmapUpdateController.updateAllMindmapsInWorkspace();
+		mindmapUpdateController.updateCurrentMindmap();//updateAllMindmapsInWorkspace();
 	}
 }
