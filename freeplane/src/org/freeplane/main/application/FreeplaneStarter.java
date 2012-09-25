@@ -89,7 +89,7 @@ public class FreeplaneStarter {
 		info.append("; freeplane_xml_version = ");
 		info.append(FreeplaneVersion.XML_VERSION);
 		if(! revision.equals("")){
-			info.append("\nbzr revision = ");
+			info.append("\ngit revision = ");
 			info.append(revision);
 		}
 		info.append("\njava_version = ");

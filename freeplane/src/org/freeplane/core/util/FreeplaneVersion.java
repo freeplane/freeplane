@@ -202,16 +202,16 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	}
 
 	private static String loadRevision() {
-		final URL bzrInfo = ResourceController.getResourceController().getResource("/bzrinfo.properties");
+		final URL gitInfo = ResourceController.getResourceController().getResource("/gitinfo.properties");
 		final String revision;
-		if(bzrInfo != null){
-			Properties bzrProps = new Properties();
+		if(gitInfo != null){
+			Properties gitProps = new Properties();
 			try {
-		        bzrProps.load(bzrInfo.openStream());
+		        gitProps.load(gitInfo.openStream());
 		    }
 		    catch (IOException e) {
 		    }
-			revision = bzrProps.getProperty("bzr-revision-id", "");
+			revision = gitProps.getProperty("git-revision", "");
 		}
 		else{
 			revision = "";
