@@ -113,13 +113,13 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		refreshNode(node);
 	}
 	
-	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen, int zoom) {
+	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen, final int zoomChoosen) {
 		final Coordinate currentLocation = extension.getLocation();
 		final int currentZoom = extension.getZoom();
 
 		if (!currentLocation.equals(locationChoosen)) {
 			final IActor actor = createUndoActor(extension, locationChoosen,
-					currentLocation, currentZoom);
+					currentLocation, zoomChoosen, currentZoom);
 			
 			Controller.getCurrentModeController().execute(actor,
 					Controller.getCurrentModeController().getController()
@@ -128,7 +128,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	}
 
 	private IActor createUndoActor(final OpenMapsExtension extension, final Coordinate newlyChoosenLocation, 
-			final Coordinate currentlyStoredLocation, final int currentlyStoredZoom) {
+			final Coordinate currentlyStoredLocation, final int newlyChoosenZoom , final int currentlyStoredZoom) {
 		
 		return new IActor() {
 			private final Coordinate oldLocation = currentlyStoredLocation;
@@ -136,7 +136,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 
 			public void act() {
 				extension.updateLocation(newlyChoosenLocation);
-				extension.updateZoom(currentlyStoredZoom);
+				extension.updateZoom(newlyChoosenZoom);
 				final MapModel map = Controller.getCurrentModeController()
 						.getController().getMap();
 				Controller.getCurrentModeController().getMapController()
