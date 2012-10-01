@@ -99,9 +99,8 @@ public class LockManager extends TimerTask {
 		try {
 			semaphoreReader = new BufferedReader(new FileReader(semaphoreFile));
 			final String lockingUser = semaphoreReader.readLine();
-			final long lockTime = new Long(semaphoreReader.readLine()).longValue();
-			final long timeDifference = System.currentTimeMillis() - lockTime;
-			if (lockSafetyPeriod > 0 && timeDifference > lockSafetyPeriod) {
+			final String lockTime = semaphoreReader.readLine();
+			if (isLockExpired(lockTime)) {
 				lockingUserOfOldLock = lockingUser;
 				semaphoreFile.delete();
 			}
@@ -110,6 +109,8 @@ public class LockManager extends TimerTask {
 			}
 		}
 		catch (final FileNotFoundException e) {
+		}
+		catch (final NumberFormatException e) {
 		}
 		finally {
 			if (semaphoreReader != null) {
@@ -125,6 +126,12 @@ public class LockManager extends TimerTask {
 		lockedSemaphoreFile = semaphoreFile;
 		return null;
 	}
+
+	private boolean isLockExpired(final String lockTimeString) {
+	    final long lockTime = new Long(lockTimeString).longValue();
+        final long timeDifference = System.currentTimeMillis() - lockTime;
+		return lockTimeString == null || lockSafetyPeriod > 0 && timeDifference > lockSafetyPeriod;
+    }
 
 	private void writeSemaphoreFile(final File inSemaphoreFile) throws Exception {
 		FileOutputStream semaphoreOutputStream;
