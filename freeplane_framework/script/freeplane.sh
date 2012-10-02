@@ -65,9 +65,9 @@ findjava() {
 		if (! "${JAVACMD}" -version 2>&1 | grep -qe 'Java(TM)' -e OpenJDK)
 		then
 			_error "Your Java is not a derivative from Sun's code," \
-			       "=======================================" \
-			       "FREEMIND WILL MOST PROBABLY *NOT* WORK," \
-			       "=======================================" \
+			       "========================================" \
+			       "FREEPLANE WILL MOST PROBABLY *NOT* WORK," \
+			       "========================================" \
 			       "define JAVACMD, JAVA_BINDIR, JAVA_HOME or PATH" \
 			       "in order to point to such a VM." \
 			       "See the manpage of freeplane(1) for details."
