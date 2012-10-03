@@ -1,10 +1,17 @@
 ===============================
+1.2.20
+===============================
+Install as 64 bit program on 64 bit windows
+Do not check for java in windows installer
+===============================
 1.2.19
 ===============================
+Use launch4j as windows launcher
+Use standard portable app launcher
 copy user icons from freeplane 1.1.x on the first start
 build test dist version for PortableApps.com
 do not draw text on spash if the splash comes from a file
-
+Bug fixes
 ===============================
 1.2.18
 ===============================
