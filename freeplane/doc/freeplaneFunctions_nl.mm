@@ -220,7 +220,6 @@
     <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <edge STYLE="hide_edge"/>
@@ -732,9 +731,9 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-28;99;" ENDINCLINATION="-28;99;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-121;31;" ENDINCLINATION="-121;31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-28;99;" ENDINCLINATION="-28;99;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="Opmaken tak" ID="ID_1601648824" CREATED="1319796287461" MODIFIED="1321037919116" HGAP="30" VSHIFT="-172">
 <edge STYLE="bezier"/>
 <node TEXT="dikte tak" ID="ID_241458321" CREATED="1288541466835" MODIFIED="1288646970331" VSHIFT="7">
@@ -1069,35 +1068,6 @@
 </html>
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-46;-50;" ENDINCLINATION="-46;-50;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" CREATED="1320076533702" MODIFIED="1336118927905" HGAP="542" VSHIFT="271"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo_nl">Demonstratie</a><br/>maken mindmap
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<cloud COLOR="#ffff00" SHAPE="ARC"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Hierdoor is Internet nodig
-    </p>
-  </body>
-</html>
-</richcontent>
 </node>
 <node TEXT="Opmaken knoopkern" FOLDED="true" POSITION="left" ID="ID_1983670807" CREATED="1319795759589" MODIFIED="1321035141763" HGAP="10" VSHIFT="49" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
 
