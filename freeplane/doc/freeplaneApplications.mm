@@ -71,47 +71,6 @@
 <edge STYLE="hide_edge" COLOR="#007c00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1129302195" STARTINCLINATION="132;0;" ENDINCLINATION="132;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" CREATED="1319315217232" MODIFIED="1332447320921" HGAP="-414" VSHIFT="208" LINK="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo">
-<icon BUILTIN="video"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo">Demonstration </a>
-    </p>
-    <p>
-      <a href="http://www.kioo.nl/freeplane/CoreMeeting">creating a map</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<cloud COLOR="#ffffff" SHAPE="ARC"/>
-<edge COLOR="#33cc00"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      Click arrow.
-    </p>
-    <p>
-
-    </p>
-    <p>
-      Needs&#160;Internet connection.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
 <node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1336132515904" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
 
 <html>
@@ -122,7 +81,6 @@
     <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="FreeNode"/>
@@ -514,54 +472,6 @@
 </html>
 </richcontent>
 <edge COLOR="#7c7c00" WIDTH="3"/>
-</node>
-<node LOCALIZED_STYLE_REF="default" POSITION="right" ID="ID_836908062" CREATED="1318513239698" MODIFIED="1332872793860" HGAP="-325" VSHIFT="174">
-<icon BUILTIN="video"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      <b>Caption</b>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      Click <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/ViewingGuide">here</a>&#160;to learn how to
-    </p>
-    <p>
-      display hidden information by
-    </p>
-    <ol>
-      <li>
-        unfolding a node
-      </li>
-      <li>
-        unfolding a node's text
-      </li>
-      <li>
-        displaying the node's tool tip
-      </li>
-      <li>
-        following a hyperlink
-      </li>
-    </ol>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="hide_edge" COLOR="#808080"/>
 </node>
 <node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1875337895" CREATED="1317967170441" MODIFIED="1320247625439" HGAP="324" VSHIFT="187"><richcontent TYPE="NODE">
 

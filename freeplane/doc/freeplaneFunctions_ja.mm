@@ -195,7 +195,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="NOTE">
 
@@ -645,7 +644,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node STYLE_REF="Reference" ID="ID_965583686" HGAP="238" VSHIFT="-1"><richcontent TYPE="NODE">
 
@@ -1132,33 +1130,6 @@
 </html>
 </richcontent>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-71;-52;" ENDINCLINATION="-71;-52;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-</node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_654977787" HGAP="538" VSHIFT="263" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    &#12510;&#12483;&#12503;&#20316;&#25104;&#12398; <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo">&#23455;&#28436;</a>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<cloud COLOR="#ffff00" SHAPE="ARC"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      &#12452;&#12531;&#12479;&#12540;&#12493;&#12483;&#12488;&#25509;&#32154;&#12364;&#24517;&#35201;&#12391;&#12377;&#12290;
-    </p>
-  </body>
-</html>
-</richcontent>
 </node>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x30b3;&#x30a2;&#x306e;&#x66f8;&#x5f0f;&#x8a2d;&#x5b9a;" FOLDED="true" POSITION="left" ID="ID_1983670807" HGAP="10" VSHIFT="49" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
 
