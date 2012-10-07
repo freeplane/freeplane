@@ -3,6 +3,7 @@
 ===============================
 Install as 64 bit program on 64 bit windows
 Do not check for java in windows installer
+Do not change edge width or style when AutomaticEdgeColorHook is executed
 ===============================
 1.2.19
 ===============================
