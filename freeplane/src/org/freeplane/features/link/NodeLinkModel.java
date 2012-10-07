@@ -42,7 +42,7 @@ public class NodeLinkModel extends LinkModel {
 	}
 	
 	public boolean isSelfLink() {
-		return getSource().getID().equals(getTargetID());
+		return getSource().createID().equals(getTargetID());
 	}
 
 }
