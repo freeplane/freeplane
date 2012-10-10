@@ -17,7 +17,6 @@ import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.services.communications.CommunicationsController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -37,7 +36,7 @@ public class DocearSendPdfxcRegistryAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if(!Compat.isWindowsOS()) return;
+		if(Compat.isMacOsX()) return;
 		int result = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getJFrame(), TextUtils.getText("docear.pdfxcv.settings.warning.text"), TextUtils.getText("docear.pdfxcv.settings.warning.title"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 		if(result != JOptionPane.OK_OPTION){
 			return;

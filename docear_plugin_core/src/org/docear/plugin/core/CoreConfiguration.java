@@ -111,8 +111,6 @@ public class CoreConfiguration extends ALanguageController {
 //		}
 //		controller.addAction(new DocearQuitAction());
 		
-		//Commit Test
-		
 		AFreeplaneAction action = new DocearAboutAction();
 		replaceAction(action.getKey(), action);
 		
