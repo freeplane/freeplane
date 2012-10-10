@@ -6,7 +6,6 @@ import java.net.URI;
 
 import javax.swing.JOptionPane;
 
-import org.docear.pdf.PdfDataExtractor;
 import org.docear.plugin.core.features.AnnotationID;
 import org.docear.plugin.core.util.Tools;
 import org.docear.plugin.pdfutilities.features.AnnotationModel;
@@ -31,23 +30,15 @@ public class PdfNodeChangeListener implements INodeChangeListener {
 			URI newUri = (URI) event.getNewValue();
 			if (newUri != null) {
 				try{
-					//DOCEAR -this seems not right -> what if the uri is relative to the map?
-					File file = Tools.getFilefromUri(Tools.getAbsoluteUri(newUri));
+					URI newAbsoluteUri = Tools.getAbsoluteUri(newUri, event.getNode().getMap());
+					File file = Tools.getFilefromUri(newAbsoluteUri);
 					if(new PdfFileFilter().accept(file)) {
 						AnnotationModel model = AnnotationController.getModel(event.getNode(), false);
 						if(model == null){
 							model = new AnnotationModel();
-							model.setAnnotationID(new AnnotationID(newUri, 0));
+							model.setAnnotationID(new AnnotationID(newAbsoluteUri, null));
 							model.setAnnotationType(AnnotationType.PDF_FILE);							
 							AnnotationController.setModel(event.getNode(), model);
-						}
-						try {
-							PdfDataExtractor extractor = new PdfDataExtractor(Tools.getAbsoluteUri(event.getNode()));
-							String hash = extractor.getUniqueHashCode();
-							model.setDocumentHash(hash);
-						}
-						catch (Exception e) {
-							LogUtils.info("could not get unique file hash: "+ e.getMessage());
 						}
 					}
 				}

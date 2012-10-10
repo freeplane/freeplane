@@ -42,7 +42,10 @@ public class UploadThread extends DocearThread implements DirectoryObserver {
 			try {
 				if (uploadCtrl.isBackupAllowed() || uploadCtrl.isInformationRetrievalAllowed()) {
 					DocearLogger.info(this.toString()+": uploading packages to the server ...");
-					File[] files = uploadFiles.toArray(new File[]{}); //uploadCtrl.getUploadPackages();
+					File[] files;
+					synchronized (uploadFiles) {
+						files = uploadFiles.toArray(new File[]{}); //uploadCtrl.getUploadPackages();
+					}
 					if (files != null && files.length>0) {
 						FiletransferClient client = CommunicationsController.getController().getFileTransferClient("mindmaps");
 						for(File file : files) {

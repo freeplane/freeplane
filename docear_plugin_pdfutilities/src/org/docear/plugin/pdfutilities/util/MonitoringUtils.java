@@ -245,8 +245,9 @@ public abstract class MonitoringUtils {
 		
 		
 		if(type != null){
-			IAnnotation model = new AnnotationModel();
+			AnnotationModel model = new AnnotationModel();//new AnnotationID(file, -1), type);
 			model.setAnnotationType(type);
+			model.setUri(file);
 			AnnotationController.setModel(node, model);
 		}
 		NodeUtilities.setLinkFrom(file, node);
