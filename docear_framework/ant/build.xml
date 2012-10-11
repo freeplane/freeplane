@@ -55,12 +55,16 @@
 			<fileset dir="${workspace}/${plugindir}/dist/${pluginname}" />
 		</copy>
 	</target>
-
-	<target name="prepareDevelVersion" if="${docear_devel}">
+    
+    <target name="prepareDefaultVersion" unless="docear.version.status">
 		<property name="docear.version.status" value="devel" />
 		<propertyfile file="docear.version.properties">
 			<entry key="docear.build.date" type="date" value="now" pattern="MM/dd/yyyy" />
 		</propertyfile>
+    </target>
+
+	<target name="prepareDevelVersion" if="${docear_devel}">
+        <antcall target="prepareDefaultVersion" />
 	</target>
 
 	<target name="prepareAlphaVersion" if="${docear_alpha}">
@@ -116,8 +120,7 @@
 		</propertyfile>
 	</target>
 
-	<target name="prepareVersion" depends="prepareDevelVersion, prepareAlphaVersion, prepareBetaVersion, prepareRCVersion, prepareMinorVersion, prepareMiddleVersion, prepareMajorVersion">
-
+	<target name="prepareVersion" depends="prepareDevelVersion, prepareAlphaVersion, prepareBetaVersion, prepareRCVersion, prepareMinorVersion, prepareMiddleVersion, prepareMajorVersion, prepareDefaultVersion">
 		<property name="docear.version.string" value="${docear.build.version.major}.${docear.build.version.middle}.${docear.build.version.minor}" />
 
 		<buildnumber file="../docear_plugin_core/resources/build.number" />
