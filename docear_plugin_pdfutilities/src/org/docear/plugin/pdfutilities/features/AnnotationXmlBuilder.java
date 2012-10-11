@@ -88,7 +88,8 @@ public class AnnotationXmlBuilder implements IElementDOMHandler, IExtensionEleme
 			
 			public void setAttribute(Object node, String value) {
 				final AnnotationModel annotation = (AnnotationModel) node;				
-				annotation.setDocumentHash(value);				
+				//annotation.setDocumentHash(value);
+				AnnotationController.registerDocumentHash(annotation.getUri(), value);
 			}
 			
 		});

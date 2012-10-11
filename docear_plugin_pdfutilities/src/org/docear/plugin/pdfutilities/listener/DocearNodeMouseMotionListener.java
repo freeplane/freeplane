@@ -140,6 +140,8 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 					}
 				}
 			}
+//			StringBuilder sb = new StringBuilder();
+//			pdfHeaderExtraction(e, sb);
 		}
 		boolean openOnPage = ResourceController.getResourceController().getBooleanProperty(
 				PdfUtilitiesController.OPEN_PDF_VIEWER_ON_PAGE_KEY);		
@@ -270,7 +272,7 @@ public class DocearNodeMouseMotionListener implements IMouseListener {
 					if(hash == null) {
 						hashCount++;
 					}
-					//printer.println(file.getName()+";"+(title == null ? "NULL" : title));
+					printer.println(file.getName()+";"+(title == null ? "NULL" : title));
 					System.out.println(file.getName()+";"+(hash == null ? "NULL" : hash)+";"+(title == null ? "NULL" : title));
 				}
 				

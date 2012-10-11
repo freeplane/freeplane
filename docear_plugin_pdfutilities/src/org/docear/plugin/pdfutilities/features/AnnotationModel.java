@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.docear.pdf.PdfDataExtractor;
 import org.docear.plugin.core.features.AnnotationID;
+import org.docear.plugin.pdfutilities.map.AnnotationController;
 
 
 public class AnnotationModel implements IAnnotation{
@@ -20,9 +20,7 @@ public class AnnotationModel implements IAnnotation{
 	private boolean isNew;
 	private Integer objectNumber;
 	private URI uri;
-	private Object annotationObject;
-	private String documentHash;
-	
+	private Object annotationObject;	
 	
 	private boolean isConflicted;
 	private List<AnnotationModel> children = new ArrayList<AnnotationModel>();
@@ -175,17 +173,7 @@ public class AnnotationModel implements IAnnotation{
 	}
 
 	public String getDocumentHash() {
-		if(documentHash == null || documentHash.length() < 1){
-			if(id != null && id.getUri() != null) {
-				documentHash = "" + id.getUri().toString().hashCode();
-				return "" + id.getUri().toString().hashCode();
-			}
-		}
-		return documentHash;
-	}
-
-	public void setDocumentHash(String documentHash) {
-		this.documentHash = documentHash;
+		return AnnotationController.getDocumentHash(getUri());
 	}
 
 	public AnnotationModel getParent() {

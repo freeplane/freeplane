@@ -663,7 +663,7 @@ public class PdfUtilitiesController extends ALanguageController {
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 				ResourceController resourceController = ResourceController.getResourceController();
 				
-				if(Compat.isWindowsOS()){
+				if(!Compat.isMacOsX()){
 					builder.addAction("/menu_bar/help/Web resources", new DocearSendPdfxcRegistryAction("DocearSendPdfxcRegistryAction"), MenuBuilder.AS_CHILD);
 				}
 				
