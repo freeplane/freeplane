@@ -11,8 +11,10 @@ public class OpenMapsExtension implements IExtension {
 	private int zoom;
 
 	public OpenMapsExtension() {
-		location = new Coordinate(0,0);
-		zoom = 0;
+                //Initialing Coodinate to values not included in lat/lon
+                //measures - This allows undo to work.
+                location = new Coordinate(500,500);
+                zoom = 0;
 	}
 	
 	public Coordinate getLocation() {

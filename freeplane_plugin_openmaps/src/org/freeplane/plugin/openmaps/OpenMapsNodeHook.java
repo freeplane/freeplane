@@ -39,10 +39,10 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension != null) {
-			this.remove(node, openMapsExtension);
+			super.undoableToggleHook(node, openMapsExtension);
 			refreshNode(node);
 		}
-		//FIXME add undo?
+		
 		final MapModel map = Controller.getCurrentModeController().getController().getMap();
 		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
@@ -65,10 +65,10 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		
 	}
 
-	@Override
-    protected HookAction createHookAction() {
-	    return null;
-    }
+        @Override
+        protected HookAction createHookAction() {
+            return null;
+        }
 	
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
@@ -148,14 +148,21 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 			}
 
 			public void undo() {
-				extension.updateLocation(oldLocation);
-				extension.updateZoom(oldZoom);
-				refreshNode(getCurrentlySelectedNode());
+                            if (oldLocation.getLat() == 500 && oldLocation.getLon() == 500)
+                            {
+                                removeLocationFromCurrentlySelectedNode();
+                            }
+                            else
+                            {
+                                extension.updateLocation(oldLocation);
+                                extension.updateZoom(oldZoom);
+                            }
+                            refreshNode(getCurrentlySelectedNode());
 			}
 
 		};
 	}
-
+	
 	private void refreshNode(NodeModel node) {
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);	
 	}
