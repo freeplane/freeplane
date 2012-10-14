@@ -1244,8 +1244,14 @@ public interface Proxy {
 
 		String getTextColorCode();
 
-        /** @since 1.2 treue if the floating style is set for the node (aka "free node"). */
+        /** @since 1.2 true if the floating style is set for the node (aka "free node"). */
         boolean isFloating();
+
+        /** @since 1.2.20 */
+        int getMinNodeWidth();
+        
+        /** @since 1.2.20 */
+        int getMaxNodeWidth();
 	}
 
 	/** Node's style: <code>node.style</code> - read-write. */
@@ -1282,6 +1288,12 @@ public interface Proxy {
          *  children of the root node.
          *  @since 1.2 */
         void setFloating(boolean floating);
+
+        /** @since 1.2.20 */
+        void setMinNodeWidth(int width);
+        
+        /** @since 1.2.20 */
+        void setMaxNodeWidth(int width);
 	}
 
 	/** Reminder: <code>node.reminder</code> - read-only.
