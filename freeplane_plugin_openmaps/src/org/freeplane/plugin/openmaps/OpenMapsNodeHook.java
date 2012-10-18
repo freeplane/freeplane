@@ -107,7 +107,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		
 		if (openMapsExtension == null) {
 			openMapsExtension = new OpenMapsExtension();
-			this.add(node, openMapsExtension);
+                        undoableActivateHook(node, openMapsExtension);
 		}
 		setLocationChoiceUndoable(openMapsExtension, locationChoosen, zoom);
 		refreshNode(node);
