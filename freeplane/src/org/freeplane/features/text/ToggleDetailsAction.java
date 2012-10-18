@@ -21,18 +21,18 @@ package org.freeplane.features.text;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-@SelectableAction(checkOnPopup=true)
 class ToggleDetailsAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private boolean foundDetails;
 	private boolean isHidden;
 
 	public ToggleDetailsAction() {
@@ -41,8 +41,8 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		setSelected();
-		if(! isEnabled())
+		checkDetailsEnabled();
+		if(! foundDetails)
 			return;
 		isHidden = !isHidden;
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
@@ -60,15 +60,9 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 		controller.setDetailsHidden(node, isHidden);
     }
 
-    @Override
-    public void setSelected() {
-        setEnabled();
-        setSelected(isHidden);
-    }
     
-    @Override
-    public void setEnabled() {
-        boolean foundDetails = false;
+    private void checkDetailsEnabled() {
+        foundDetails = false;
         isHidden = false;
         final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
         for (final NodeModel node : nodes) {
@@ -79,7 +73,6 @@ class ToggleDetailsAction extends AMultipleNodeAction {
                 break;
             }
         }
-        setEnabled(foundDetails);
     }
 
 }

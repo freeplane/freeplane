@@ -10,7 +10,7 @@
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl></supportUrl>
   <customProcName>false</customProcName>
-  <stayAlive>false</stayAlive>
+  <stayAlive>true</stayAlive>
   <manifest></manifest>
   <icon>Freeplane_app.ico</icon>
   <jre>
