@@ -196,7 +196,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 		if (!"".equals(equation.trim())) {
 			if (latexExtension == null) {
 				latexExtension = new LatexExtension();
-				add(node, latexExtension);
+				undoableActivateHook(node, latexExtension);
 			}
 			setEquationUndoable(latexExtension, equation);
 		}
