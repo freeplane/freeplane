@@ -1,18 +1,33 @@
 package spl.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.KeyStroke;
+import javax.swing.border.TitledBorder;
+
+import net.sf.jabref.Globals;
+import spl.localization.LocalizationSupport;
+
 import com.jgoodies.forms.builder.ButtonBarBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
-import net.sf.jabref.Globals;
-import spl.listener.LabelLinkListener;
-import spl.localization.LocalizationSupport;
-
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.util.ResourceBundle;
 
 public class ImportDialog extends JDialog {
     private JPanel contentPane;
@@ -71,7 +86,7 @@ public class ImportDialog extends JDialog {
         labelMrDlib1 = new JLabel("Docear services");
         labelMrDlib1.setFont(new Font(labelMrDlib1.getFont().getName(), Font.BOLD, 13));
         labelMrDlib1.setForeground(new Color(-16776961));
-        labelMrDlib2 = new JLabel("docear services");
+        labelMrDlib2 = new JLabel("Docear services");
         labelMrDlib2.setFont(new Font(labelMrDlib1.getFont().getName(), Font.BOLD, 13));
         labelMrDlib2.setForeground(new Color(-16776961));
         buttonOK = new JButton(Globals.lang("Ok"));
@@ -116,8 +131,8 @@ public class ImportDialog extends JDialog {
         } else {
             this.labelFileName.setText(new File(this.fileName).getName().substring(0, 33) + "...");
         }
-        this.labelMrDlib1.addMouseListener(new LabelLinkListener(this.labelMrDlib1, "www.mr-dlib.org/docs/pdf_metadata_extraction.php"));
-        this.labelMrDlib2.addMouseListener(new LabelLinkListener(this.labelMrDlib2, "www.mr-dlib.org/docs/pdf_metadata_extraction.php"));
+        //this.labelMrDlib1.addMouseListener(new LabelLinkListener(this.labelMrDlib1, "www.mr-dlib.org/docs/pdf_metadata_extraction.php"));
+        //this.labelMrDlib2.addMouseListener(new LabelLinkListener(this.labelMrDlib2, "www.mr-dlib.org/docs/pdf_metadata_extraction.php"));
         this.setTitle(LocalizationSupport.message("Import_Metadata_From_PDF"));
 
         setModal(true);

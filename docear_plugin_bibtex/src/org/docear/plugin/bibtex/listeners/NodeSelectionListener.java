@@ -2,7 +2,7 @@ package org.docear.plugin.bibtex.listeners;
 
 
 import org.docear.plugin.bibtex.ReferencesController;
-import org.docear.plugin.bibtex.actions.ShowInReferenceManagerAction;
+import org.docear.plugin.bibtex.jabref.JabRefCommons;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -30,7 +30,7 @@ public class NodeSelectionListener implements INodeSelectionListener {
 		if(ReferencesController.getController().getJabrefWrapper().getBasePanel().getSelectedEntries().length < 1) {
 			if(attributes.getAttributeKeyList().contains(TextUtils.getText("bibtex_key"))) {
 				String bibKey = (String)attributes.getAttribute(attributes.getAttributePosition(TextUtils.getText("bibtex_key"))).getValue();
-				ShowInReferenceManagerAction.showInReferenceManager(bibKey);
+				JabRefCommons.showInReferenceManager(bibKey);
 			}			
 		}
 	}

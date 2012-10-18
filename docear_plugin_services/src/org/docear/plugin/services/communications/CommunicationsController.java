@@ -269,6 +269,42 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			}
 		}
 	}
+	
+	public <T> T put(Builder builder, Class<T> c) throws Exception {
+		if (SwingUtilities.isEventDispatchThread()) {
+			throw new Exception("Never call the webservice from the event dispatch thread.");
+		}
+		synchronized (dialog) {
+			try {
+				String accessToken = getAccessToken();				
+				if (accessToken != null) {
+					builder = builder.header("accessToken", accessToken);
+				}
+				return builder.put(c);
+			}
+			catch (Exception e) {
+				LogUtils.info(e.getCause().toString());
+				if (raiseProxyCredentialsDialog(e)) {
+					if (proxyDialogOkSelected) {
+						return get(builder, c);
+					}
+					else {
+						throw (e);
+					}
+				}
+				else {
+					throw (e);
+				}
+			}
+			finally {
+				client.getClientHandler().getHttpClient().getHttpConnectionManager().closeIdleConnections(100);
+			}
+		}
+	}
+
+	public <T> T put(WebResource webResource, Class<T> c) throws Exception {
+		return put(webResource.getRequestBuilder(), c);
+	}
 
 	public WebResource getWebResource(URI uri) {
 		synchronized (client) {
@@ -522,16 +558,65 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 			if (e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException
 					|| e.getCause() instanceof SocketTimeoutException || e.getCause() instanceof ConnectException) {
 				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST,
-						new ByteArrayInputStream("error".getBytes()));
+						new ByteArrayInputStream(e.getMessage().getBytes()));
 			}
 			else {
 				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE,
-						new ByteArrayInputStream("error".getBytes()));
+						new ByteArrayInputStream(e.getMessage().getBytes()));
 			}
 		}
 		catch (Exception e) {
 			return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
-					"error".getBytes()));
+					e.getMessage().getBytes()));
+		}
+
+	}
+	
+	public DocearServiceResponse put(String path) {
+		return put(path, null);
+	}
+
+	public DocearServiceResponse put(String path, MultivaluedMap<String, String> params) {
+
+		try {
+			if (params == null) {
+				params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+			}
+			
+			ClientResponse response = put(getServiceResource().path(path).queryParams(params), ClientResponse.class);
+			try {
+				Status status = response.getClientResponseStatus();
+				if (status != null && status.equals(Status.OK)) {
+					return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.OK,
+							response.getEntityInputStream());
+				}
+				else if (status != null && status.equals(Status.NO_CONTENT)) {
+					return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.NO_CONTENT,
+							response.getEntityInputStream());
+				}
+				else {
+					return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE,
+							response.getEntityInputStream());
+				}
+			}
+			finally {
+				response.close();
+			}
+		}
+		catch (ClientHandlerException e) {
+			if (e.getCause() instanceof UnknownHostException || e.getCause() instanceof NoRouteToHostException
+					|| e.getCause() instanceof SocketTimeoutException || e.getCause() instanceof ConnectException) {
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.UNKNOWN_HOST,
+						new ByteArrayInputStream(e.getMessage().getBytes()));
+			}
+			else {
+				return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE,
+						new ByteArrayInputStream(e.getMessage().getBytes()));
+			}
+		}
+		catch (Exception e) {
+			return new DocearServiceResponse(org.docear.plugin.services.communications.features.DocearServiceResponse.Status.FAILURE, new ByteArrayInputStream(
+					e.getMessage().getBytes()));
 		}
 
 	}

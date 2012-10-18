@@ -27,7 +27,17 @@
 
 package net.sf.jabref;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -47,16 +57,49 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sf.jabref.export.*;
+import net.sf.jabref.export.AutoSaveManager;
+import net.sf.jabref.export.ExportCustomizationDialog;
+import net.sf.jabref.export.ExportFormats;
+import net.sf.jabref.export.SaveAllAction;
+import net.sf.jabref.export.SaveDatabaseAction;
 import net.sf.jabref.external.ExternalFileTypeEditor;
 import net.sf.jabref.external.PushToApplicationButton;
 import net.sf.jabref.groups.EntryTableTransferHandler;
 import net.sf.jabref.groups.GroupSelector;
-import net.sf.jabref.gui.*;
+import net.sf.jabref.gui.DatabasePropertiesDialog;
+import net.sf.jabref.gui.EntryCustomizationDialog2;
+import net.sf.jabref.gui.GenFieldsCustomizer;
+import net.sf.jabref.gui.ImportInspectionDialog;
+import net.sf.jabref.gui.SortTabsAction;
+import net.sf.jabref.gui.WaitForSaveOperation;
 import net.sf.jabref.imports.CiteSeerFetcher;
 import net.sf.jabref.imports.EntryFetcher;
 import net.sf.jabref.imports.GeneralFetcher;
@@ -82,6 +125,9 @@ import net.sf.jabref.undo.UndoableRemoveEntry;
 import net.sf.jabref.util.MassSetFieldAction;
 import net.sf.jabref.wizard.auximport.gui.FromAuxDialog;
 import net.sf.jabref.wizard.integrity.gui.IntegrityWizard;
+import spl.JabRefEvent;
+import spl.JabRefEventListener;
+import spl.JabrefEventMulticaster;
 
 import com.jgoodies.looks.HeaderStyle;
 import com.jgoodies.looks.Options;
@@ -94,6 +140,9 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 	
 	private boolean isTopLevel = true;
 	private static BasePanel basePanel;
+	
+	//DOCEAR
+	private JabRefEventListener jabrefEventListener = null;
 
 	JFrame frame = new JFrame();
     
@@ -2552,5 +2601,23 @@ public class JabRefFrame extends JPanel implements OutputPrinter {
 	
 	public JabRefPreferences getPreferences() {
 		return this.prefs;
+	}
+	
+	//DOCEAR - 
+	public synchronized void addJabRefEventListener(JabRefEventListener listener) {
+		this.jabrefEventListener = JabrefEventMulticaster.add(listener, jabrefEventListener);
+	}
+	
+	//DOCEAR
+	public synchronized void removeJabRefEventListener(JabRefEventListener listener) {
+		this.jabrefEventListener = JabrefEventMulticaster.remove(jabrefEventListener, listener);
+	}
+	
+	//DOCEAR
+	public void dispatchJabRefEvent(JabRefEvent event) {
+		if(event.consumed()) return;
+		if(this.jabrefEventListener != null) {
+			jabrefEventListener.processEvent(event);
+		}
 	}
 }

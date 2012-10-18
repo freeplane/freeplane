@@ -22,7 +22,10 @@
 
 package net.sf.jabref.groups;
 
-import java.awt.datatransfer.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -52,8 +55,8 @@ import net.sf.jabref.imports.ImportMenuItem;
 import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.net.URLDownload;
-import spl.PdfImporter;
-import spl.Tools;
+import spl.JabRefDraggedFilesEvent;
+import spl.listener.PdfImportListener;
 
 public class EntryTableTransferHandler extends TransferHandler {
 
@@ -66,6 +69,8 @@ public class EntryTableTransferHandler extends TransferHandler {
 	protected DataFlavor urlFlavor;
 
 	protected DataFlavor stringFlavor;
+	
+	private static final PdfImportListener pdfImportListener = new PdfImportListener();
 
 	protected static boolean DROP_ALLOWED = true;
 
@@ -83,6 +88,7 @@ public class EntryTableTransferHandler extends TransferHandler {
 	 * @param panel
 	 *            The BasePanel this transferhandler works for.
 	 */
+	
 	public EntryTableTransferHandler(MainTable entryTable, JabRefFrame frame, BasePanel panel) {
 		this.entryTable = entryTable;
 		this.frame = frame;
@@ -94,6 +100,9 @@ public class EntryTableTransferHandler extends TransferHandler {
 			Globals.logger("Unable to configure drag and drop for main table");
 			e.printStackTrace();
 		}
+		//DOCEAR - add default spl pdfImportListener
+		// frame.removeJabRefEventListener(pdfImportListener);
+		frame.addJabRefEventListener(pdfImportListener);
 	}
 
 	/**
@@ -145,49 +154,7 @@ public class EntryTableTransferHandler extends TransferHandler {
 				@SuppressWarnings("unchecked")
 				List<File> l = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
 				return handleDraggedFiles(l, dropRow);
-			}
-            // Done by MrDlib
-            /*if(t.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor)){
-                String xml = (String)t.getTransferData(MindMapNodesSelection.mindMapNodesFlavor);
-                URL mindmapURL = null;
-                if(t.isDataFlavorSupported(MindMapNodesSelection.mindmapUrlFlavor)){
-                    mindmapURL = (URL)t.getTransferData(MindMapNodesSelection.mindmapUrlFlavor);
-                }
-                List<File> files = new ArrayList<File>();
-                String[] xmlNodes = xml.split("<nodeseparator>");
-                for(String xmlNode : xmlNodes){
-                    XMLElement element = new XMLElement();
-                    element.parseString(xmlNode);
-                    String link = element.getStringAttribute("Link");
-                    String absoluteLink = Tools.getLink(link, mindmapURL);
-                    if(absoluteLink == null) continue;
-                    File file = new File(absoluteLink);
-                    if(file.exists()){
-                        files.add(file);
-                    }
-                    else{
-                        try {
-                            URL url = new URL(absoluteLink);
-                            file = new File(url.toURI());
-                            if(file.exists()){
-                                files.add(file);
-                            }
-                        } catch (URISyntaxException e) {
-                            // Todo logging
-                        } catch(IllegalArgumentException e){
-                            // Todo logging
-                        } catch(MalformedURLException e){
-                            // Todo logging
-                        }
-                    }
-                }
-                if(files.size() > 0){
-                    return handleDraggedFiles(files, dropRow);
-                }
-                else{
-                    return false;
-                }
-            }*/
+			}            
             // Done by MrDlib
 			if (t.isDataFlavorSupported(urlFlavor)) {
 				URL dropLink = (URL) t.getTransferData(urlFlavor);
@@ -380,24 +347,31 @@ public class EntryTableTransferHandler extends TransferHandler {
 			fileNames[i] = file.getAbsolutePath();
 			i++;
 		}
-		// Try to load bib files normally, and import the rest into the current
-		// database.
+		// Try to load bib files normally, and import the rest into the current database.
 		// This process must be spun off into a background thread:
-		new Thread(new Runnable() {
-			public void run() {
-				// Done by MrDlib
-                final String[] newfileNames = new PdfImporter(frame, panel, entryTable, dropRow).importPdfFiles(fileNames);
-                if(newfileNames.length > 0){
-                    loadOrImportFiles(newfileNames, dropRow);
-                }
-                //loadOrImportFiles(fileNames, dropRow);
-                // Done by MrDlib
-			}
-		}).start();
-
+//		new Thread(new Runnable() {
+//			public void run() {
+//				// Done by MrDlib
+//                final String[] newfileNames = new PdfImporter(frame, panel, entryTable, dropRow).importPdfFiles(fileNames);
+//                if(newfileNames.length > 0){
+//                    loadOrImportFiles(newfileNames, dropRow);
+//                }
+//                //loadOrImportFiles(fileNames, dropRow);
+//                // Done by MrDlib
+//			}
+//		}).start();
+		JabRefDraggedFilesEvent event = new JabRefDraggedFilesEvent(frame, panel, entryTable, dropRow, fileNames, this);
+		frame.dispatchJabRefEvent(event);
+		
+		if(event.consumed()) {
+			return true;
+		}
+		
+		loadOrImportFiles(fileNames, dropRow);
 		return true;
 	}
-
+	
+	//DOCEAR - changed visibility
 	/**
 	 * Take a set of filenames. Those with names indicating bib files are opened
 	 * as such if possible. All other files we will attempt to import into the
@@ -407,7 +381,7 @@ public class EntryTableTransferHandler extends TransferHandler {
 	 *            The names of the files to open.
 	 * @param dropRow success status for the operation
 	 */
-	private void loadOrImportFiles(String[] fileNames, int dropRow) {
+	public void loadOrImportFiles(String[] fileNames, int dropRow) {
 
 		OpenDatabaseAction openAction = new OpenDatabaseAction(frame, false);
 		ArrayList<String> notBibFiles = new ArrayList<String>();

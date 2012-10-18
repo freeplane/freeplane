@@ -161,8 +161,20 @@ public class DroppedFileHandler {
 
     // Done by MrDlib
     public void linkPdfToEntry(String fileName, MainTable entryTable, int dropRow){
-        BibtexEntry entry = entryTable.getEntryAt(dropRow);
+        BibtexEntry entry = entryTable.getEntryAt(dropRow);        
         linkPdfToEntry(fileName, entryTable, entry);
+    }
+    
+    //DOCEAR - skip the dialog, because we are adding files only anyway 
+    public void linkPdfToEntry(String fileName, BibtexEntry entry) {
+    	ExternalFileType fileType = Globals.prefs.getExternalFileTypeByExt("pdf");
+        NamedCompound edits = new NamedCompound(Globals.lang("Drop %0", fileType.extension));
+        
+        doLink(entry, fileType, fileName, true, edits);
+        panel.markBaseChanged();
+        
+        edits.end();
+        panel.undoManager.addEdit(edits);
     }
 
     public void linkPdfToEntry(String fileName, MainTable entryTable, BibtexEntry entry){

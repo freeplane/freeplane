@@ -62,7 +62,7 @@ public class JabRefChangeListener implements DatabaseChangeListener, PropertyCha
 					}
 
 					MindmapUpdateController mindmapUpdateController = new MindmapUpdateController(false);
-					mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_open_mindmaps")));
+					mindmapUpdateController.addMindmapUpdater(new ReferenceUpdater(TextUtils.getText("update_references_current_mindmap")));
 					mindmapUpdateController.updateCurrentMindmap(true);
 				}
 				finally {

@@ -1418,7 +1418,12 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	protected void validateTree() {
-		super.validateTree();
+		//DOCEAR - (repaint errors) catch every exception and ignore it 
+		try {
+			super.validateTree();
+		} 
+		catch (Exception e) {
+		}
 	}
 
 	public void addContent(JComponent component, int pos) {

@@ -196,6 +196,4 @@ public class AnnotationModel implements IAnnotation{
 		return this.children.indexOf(child);
 	}
 	
-	
-	
 }

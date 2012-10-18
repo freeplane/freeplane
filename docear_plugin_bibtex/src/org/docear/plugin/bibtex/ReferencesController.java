@@ -24,7 +24,6 @@ import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
 import org.docear.plugin.bibtex.actions.AddRecommendedDocumentAction;
 import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
 import org.docear.plugin.bibtex.actions.CopyCiteKeyToClipboard;
-import org.docear.plugin.bibtex.actions.ImportMetadateForNodeLink;
 import org.docear.plugin.bibtex.actions.ReferenceQuitAction;
 import org.docear.plugin.bibtex.actions.RemoveReferenceAction;
 import org.docear.plugin.bibtex.actions.ShowInReferenceManagerAction;
@@ -273,6 +272,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, CopyBibtex,	MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, CopyCiteKey,	MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
+//				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, new ImportMetadateForNodeLink(), MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
 				builder.addAction(MENU_BAR + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
 
@@ -296,10 +296,10 @@ public class ReferencesController extends ALanguageController implements IDocear
 								+ REFERENCE_MANAGEMENT_MENU, MenuBuilder.AS_CHILD);
 				builder.addSeparator(referencesCategory + REFERENCE_MANAGEMENT_MENU, MenuBuilder.AFTER);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, new ShowInReferenceManagerAction(), MenuBuilder.AS_CHILD);
-				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, new ImportMetadateForNodeLink(), MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, CopyBibtex, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, CopyCiteKey, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddNewReference, MenuBuilder.AS_CHILD);
+//				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, new ImportMetadateForNodeLink(), MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, AddExistingReference, MenuBuilder.AS_CHILD);
 				builder.addAction(referencesCategory + REFERENCE_MANAGEMENT_MENU, RemoveReference, MenuBuilder.AS_CHILD);
 				builder.addMenuItem(referencesCategory + REFERENCE_MANAGEMENT_MENU,

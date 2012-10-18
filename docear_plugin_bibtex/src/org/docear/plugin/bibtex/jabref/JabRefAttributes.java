@@ -121,9 +121,22 @@ public class JabRefAttributes {
 				if (attributeTable == null) {
 					continue;
 				}
-				for (String attributeKey : attributeTable.getAttributeKeyList()) {
+				List<String> keys = attributeTable.getAttributeKeyList();
+				for (String attributeKey : keys) {
 					if (this.valueAttributes.containsKey(attributeKey) || this.keyAttribute.equals(attributeKey)) {
-						AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable, attributeTable.getAttributePosition(attributeKey));
+						int pos = attributeTable.getAttributePosition(attributeKey);
+						if(pos > -1) {
+							try {
+								AttributeController.getController(MModeController.getMModeController()).performRemoveRow(attributeTable, pos);
+							}
+							catch (Exception e) {
+								//DOCEAR - ignore for now 
+								//the whole attribute removing is completely messed up
+								
+								//LogUtils.info("not found ("+attributeKey+"): "+pos);
+								//LogUtils.warn(e);
+							}
+						}
 					}
 				}
 				if(attributeTable.getRowCount() <= 0) {
@@ -248,6 +261,7 @@ public class JabRefAttributes {
 			for (Item item : reference.getAttributes()) {
 				boolean found = false;
 				for (int i = 0; i < attributes.size() && !found; i++) {
+					try {
 					Attribute attribute = attributes.get(i);
 					if (attribute.getName().equals(item.getName())) {
 						found = true;
@@ -260,6 +274,10 @@ public class JabRefAttributes {
 							attribute.setValue(item.getValue());
 							changes = true;
 						}
+					}
+					}
+					catch (Exception e) {
+						LogUtils.warn("Exception in org.docear.plugin.bibtex.jabref.JabRefAttributes.updateReferenceToNode(): ", e);
 					}
 				}
 				if (!found && item.getValue() != null) {
@@ -317,13 +335,13 @@ public class JabRefAttributes {
 			return;
 		}
 		model.setContent(oldVal);
-
 		for (int i = 0; i < model.getRowCount(); i++) {
 			FileListEntry fle = model.getEntry(i);
 			File f = new File(fle.getLink());
 			if (filename.equals(f.getName())) {
 				model.removeEntry(i);
 				System.out.println(oldVal + " <--> " + model.getStringRepresentation());
+				i--;
 			}
 		}
 		entry.setField(GUIGlobals.FILE_FIELD, model.getStringRepresentation());

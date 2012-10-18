@@ -120,6 +120,16 @@ public class Reference {
 		
 		return false;
 	}
-
 	
+	public boolean containsFile(File file) {	
+		if (file != null) {
+			String name = file.getName();
+    		for (URI uri : getUris()) {
+    			if (name.equals(new File(uri).getName())) {
+    				return true;
+    			}			
+    		}
+		}		
+		return false;
+	}	
 }

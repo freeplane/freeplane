@@ -269,7 +269,7 @@ public class MindmapUpdateController {
 								((NodeView) nodeView).updateAll();								
 							}
 						}
-						System.out.println("resetting folding complete: "+(System.currentTimeMillis()-l));
+						LogUtils.info("resetting folding complete: "+(System.currentTimeMillis()-l));
 					}
 				}
 				

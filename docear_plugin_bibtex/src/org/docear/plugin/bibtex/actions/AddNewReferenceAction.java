@@ -15,6 +15,7 @@ import net.sf.jabref.EntryTypeDialog;
 import net.sf.jabref.export.DocearSaveDatabaseAction;
 
 import org.docear.plugin.bibtex.ReferencesController;
+import org.docear.plugin.bibtex.jabref.JabRefCommons;
 import org.docear.plugin.bibtex.jabref.JabrefWrapper;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -24,8 +25,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
-
-import spl.PdfImporter;
 
 public class AddNewReferenceAction extends AFreeplaneAction {
 
@@ -54,7 +53,7 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 	}
 
 	private void createNewReference(Collection<NodeModel> nodes) {
-		BibtexEntry entry;
+		BibtexEntry entry = null;
 		URI link = null;
 		String name = null;
 		for (NodeModel node : nodes) {
@@ -82,9 +81,11 @@ public class AddNewReferenceAction extends AFreeplaneAction {
 		MapModel map = Controller.getCurrentController().getMap();
 		if (link != null && link.getPath().toLowerCase().endsWith(".pdf")) {				
 			String path = WorkspaceUtils.resolveURI(link, map).getAbsolutePath();
-			PdfImporter pdfImporter = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame().basePanel(), null, 0);
-			pdfImporter.importPdfFiles(new String[] { path }, Controller.getCurrentController().getViewController().getFrame(), true);
-			entry = pdfImporter.getNewEntry();
+			JabRefCommons.addNewRefenceEntry(new String[] { path }, jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame().basePanel());
+//			PdfImporter pdfImporter = new PdfImporter(jabrefWrapper.getJabrefFrame(), jabrefWrapper.getJabrefFrame().basePanel(), null, 0);
+//			pdfImporter.importPdfFiles(new String[] { path }, Controller.getCurrentController().getViewController().getFrame(), true);
+			
+//			entry = pdfImporter.getNewEntry();
 		}
 		else {
 			BasePanel basePanel = jabrefWrapper.getBasePanel();

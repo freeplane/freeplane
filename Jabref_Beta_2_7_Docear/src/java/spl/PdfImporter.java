@@ -37,6 +37,7 @@ import spl.gui.MetaDataListDialog;
  * Time: 14:49:08
  * To change this template use File | Settings | File Templates.
  */
+@Deprecated
 public class PdfImporter {
 
     private JabRefFrame frame;

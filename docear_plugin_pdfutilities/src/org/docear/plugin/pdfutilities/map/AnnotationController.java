@@ -8,10 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import org.docear.pdf.PdfDataExtractor;
 import org.docear.plugin.core.features.AnnotationID;
@@ -298,6 +294,23 @@ public class AnnotationController implements IExtension{
 			hash = hashItem.getHashCode();
 		}
 		return hash; 
+	}
+	
+	public static String getDocumentTitle(URI uri) {
+		if(uri == null) {
+			return null;
+		}
+		
+		File file = new File(uri);
+		try {
+			PdfDataExtractor extractor = new PdfDataExtractor(file);
+			String title = extractor.extractTitle();
+			return title;
+		}
+		catch (Exception e) {
+			LogUtils.info("could not extract title from document: "+ e.getMessage());
+		}
+		return null;
 	}
 	
 	private static String updateDocumentHashCache(final File file, final long lastModified) {
