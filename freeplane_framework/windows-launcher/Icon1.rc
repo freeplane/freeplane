@@ -1,4 +1,0 @@
-#include <windows.h>
-
-101 ICON "Freeplane_app.ico"
-102 ICON "Freeplane_doc.ico"

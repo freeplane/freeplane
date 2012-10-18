@@ -32,7 +32,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
-	public static final String XML_VERSION = "freeplane 1.2.0";
+	public static final String XML_VERSION = "freeplane 1.3.0";
 	/** major version, the 1 in "1.0.38 rc" */
 	private final int mMaj;
 	/** mid version, the 0 in "1.0.38 rc" */
@@ -196,18 +196,22 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	public boolean isNewerThan(FreeplaneVersion freeplaneVersion) {
 		return compareTo(freeplaneVersion) > 0;
 	}
+	
+	public boolean isFinal(){
+		return "".equals(mType);
+	}
 
 	private static String loadRevision() {
-		final URL bzrInfo = ResourceController.getResourceController().getResource("/bzrinfo.properties");
+		final URL gitInfo = ResourceController.getResourceController().getResource("/gitinfo.properties");
 		final String revision;
-		if(bzrInfo != null){
-			Properties bzrProps = new Properties();
+		if(gitInfo != null){
+			Properties gitProps = new Properties();
 			try {
-		        bzrProps.load(bzrInfo.openStream());
+		        gitProps.load(gitInfo.openStream());
 		    }
 		    catch (IOException e) {
 		    }
-			revision = bzrProps.getProperty("bzr-revision-id", "");
+			revision = gitProps.getProperty("git-revision", "");
 		}
 		else{
 			revision = "";

@@ -29,10 +29,10 @@ class FormatContentTransformer extends AbstractContentTransformer {
 			return obj;
 		}
 		// - if html: strip html header
-		// - if number or date format: Convertible.toObject(text)
+		// - if number or date format: Scanner.scan
 		// - format/expand
 		// - if error: use original text
-		// - if nodeNumbering add 
+		// - if nodeNumbering add numbering
 		// - if html: enclose in html tag
 		final boolean isHtml = (obj instanceof String) && HtmlUtils.isHtmlNode((String)obj);
 		if (isHtml) {

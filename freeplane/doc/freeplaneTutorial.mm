@@ -10,7 +10,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -95,7 +95,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -141,7 +141,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -155,14 +155,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -186,14 +186,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
-      Freeplane is meant to facilitate thinking, sharing information and getting things done at work, in school and at home. The software supports creating, sharing and using <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#What_is_mind_mapping">mind maps</a>, which are a kind of&#160;<a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">information maps</a>. The&#160;<a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a>&#160;contains concrete examples of&#160; <a href="freeplaneApplications.mm">application areas.</a>&#160;&#160;A quick start to using Freeplane is contained in the <a href="http://freeplane.sourceforge.net/TutorialExtensions/IndexFreeplaneGuides">Freeplane (video) guides.</a>
+      Freeplane is meant to facilitate thinking, sharing information and getting things done at work, in school and at home. The software supports creating, sharing and using <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#What_is_mind_mapping">mind maps</a>, which are a kind of&#160;<a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">information maps</a>. The&#160;<a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a>&#160;contains concrete examples of&#160; <a href="freeplaneApplications.mm">application areas.</a>
     </p>
     <p>
-      
+
     </p>
     <p>
       The goal of this Tutorial&#160;is to describe the most used functions of Freeplane in a simple and systematic way. For more and more detailed information, see the documentation at <a href="freeplane.mm">Help &gt; Documentation</a>.
@@ -211,14 +211,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       It is a general practice that people don't like reading manuals. Therefore you only need to read the introduction of this<i>&#160;Tutorial</i>&#160;to be ready to start mind mapping using the Freeplan main menu bar. The main editing functions are to be found in <i>menu Edit</i>. And some very special functions are to be found in <i>menu Tools</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       The chapters after the Introduction are worth reading for the following reason. In Freeplane the same result can be achieved in a number of ways. Using the Freeplane menu generally is not the fastest and most effcient way. The different chapters cover all of the functionality and show what is the most efficient way of doing using socalled context menus. You do not need to read the chapters in order, but can pick the things you are needing at the moment. To help you pick the sections are color coded, with the following meaning:<br/>
@@ -291,7 +291,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -316,7 +316,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -338,14 +338,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A mind map is a plane consisting of so called <b>nodes</b>&#160;which can display information. In a sense, a node is comparable to a <b>paragraph</b>&#160;of a book which can display text, images and other types of information. The difference being that nodes can be moved around and be hidden more easily. This makes maps more versatile in situations where information is being developed or information must be displayed selectively, depending on the users need.
     </p>
     <p>
-      
+
     </p>
     <p>
       The text you are reading right now is in a node. The text above, &quot;<i>Nodes</i>&quot; is a node. Also the text to the left, &quot;<i>Introduction</i>&quot; is a node. The big oval to the left is a special node called <b>root</b>.
@@ -366,7 +366,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -385,7 +385,7 @@
       Nodes which ar at the same level, but not mutually connected, are called&#160; <b>siblings</b>.
     </p>
     <p>
-      
+
     </p>
     <p>
       As a rule a node's position is rescricted by its position in the family tree. The exception
@@ -418,20 +418,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Genrally, you can <b>fold</b>&#160;and <b>unfold</b>&#160;a node by clicking the node when the circle with plus or minus sign is showing. This circle appears when the cursor is above the node core.&#160;&#160;Folding will hide possible children. If a node is folded, it shows a small <b>circle</b>&#160;at its <b>child side</b>.&#160;Unfolding will reveal hidden children.
     </p>
     <p>
-      
+
     </p>
     <p>
       If you have me unfolded, to my right you see 4 icons wich also are displayed in the toolbar at the top of the screen. These are icon-buttons with which you can fold/unfold the descendants of a selected node. Right-clicking the folding circle will reveal a context menu with the same icon-buttons for fast access.<br/><br/>Now click on node <i>Introduction</i>&#160;&#160;to hide its children &#160;and notice the circle!&#160;&#160;And thereafter, click again to continue reading the following node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Exceptions</b>
@@ -462,7 +462,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -482,7 +482,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -502,14 +502,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Unfolds (makes visible) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Hot key</b>
@@ -539,14 +539,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Folds (hides) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Hot key</b>
@@ -578,7 +578,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -599,20 +599,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The information of a node is displayed in two major area's. One area is called <b>node&#160;core</b>&#160;because it is situated in the inner area of the node and can have a bubble around it. The text you are reading now is in a node core. The colored area just above the one you are reading now is in the core of another node.
     </p>
     <p>
-      
+
     </p>
     <p>
       The text in the core can be short like a title, or multi line and can contain different basic display components like images and icons. It can also contain hyperlinks, formulas and components for time mangement and password protection.
     </p>
     <p>
-      
+
     </p>
     <p>
       Besides in the node core, text can be entered in <b>node details</b>, in <b>notes</b>&#160; and in <b>attributes</b>. These fields are described later.
@@ -629,7 +629,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -643,14 +643,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       When Freeplane first opens you will be greeted by a blank map. It contains one, elliptical form, the root node. The root node contains a text such as &quot;New map&quot;. This text is highligted, meaning you can replace it by typing your own text. Simply type your title and press <i>Enter</i>. The <i>Insert</i>&#160;&#160;key will add a child node - again just type and press <i>Enter</i>. A second <i>Enter</i>&#160;&#160;will add a sibling. That's really all there is to it. If you want to edit an existing node, left-click the node text while keeping <i>Control</i>&#160;pressed (META omn MAC OS). It is that simple. You can now easily create a simple map.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b><br/>
@@ -683,7 +683,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -704,7 +704,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -725,7 +725,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -745,7 +745,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -766,7 +766,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -786,7 +786,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -806,14 +806,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Creates a new node as a child of&#160;&#160;the currently-selected node. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><b>Same effect: </b></font>
@@ -852,7 +852,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -865,14 +865,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A second way to edit a node is in a separate dialog. Right-click on the node. This opens the context menu of the node. (This context menu is different from the context menu for editing text !) In this context menu choose&#160;<b><i>Edit core in dialog</i>.</b>&#160;You can now type the text and use the shown options to format the text. When you close the dialog by pressing OK, the text will appear in the node. This dialog has more extensive options for formatting text than available wen performing in-line editing.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -909,7 +909,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -929,7 +929,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -949,7 +949,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -970,7 +970,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -992,7 +992,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1008,7 +1008,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1031,26 +1031,26 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A free node is a node which is freely positionable, independently of the position of the other nodes of the mind map. A free node can be recognized by this behaviour and because the oval handle for moving the node is blue and filled in stead of red and open.&#160;&#160;
     </p>
     <p>
-      
+
     </p>
     <p>
       A new, free node can be generated by keeping <i>Control</i>&#160;pressed and clicking a free place of the mind map. The newly generated free node will have the system&#160;&#160;style <i>Free floating node</i>, wih proerties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge. It is invisibly connected to the root.
     </p>
     <p>
-      
+
     </p>
     <p>
       An existing node can be turned into a free node by selecting it and choosing &#160;<i>Edit-&gt;Free positioned node (set/reset).</i>&#160;In this case the properties of the node (edge, cloud, folding)&#160;&#160;stay as they are. You can set the properties for cloud and hidden edge in the usual way . The freed node initially appears near the node it is invisibly connected to and can be moved from there to any desired position by dragging its (blue) oval handle. Moving a free floating node onto another parent / sibling by usual drag and drop cancels its free positioned status.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1074,7 +1074,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1093,7 +1093,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1114,7 +1114,7 @@
       To add an icon to a node, select the node, then select the icon. To delete an icon, select the icon-remove first/last icon. These icons have a red cross
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1142,14 +1142,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Each node core can contain one image which has a fixed &quot;real size&quot;.&#160;&#160;(If you need a different size, use a drawing program to resize the original image.) To add an image, select the node and choose menu <i>Edit &gt; Node core &gt; Image by choice </i>or <i>link</i>. This same menu can be used to convert the textual hyperlink address of an image to the image itself.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1174,14 +1174,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       An image in a node takes visual space which is scarce.&#160;&#160;A hyperlink does not have this disadvantage, while you can still view the image if you press the hyperlink. To add a hyperlink to an image, copy the image source and paste it into the node (this is unlike drag and drop !). If you paste at the upper part of the node, a hyperlink to the image will be added in the node itself. If you paste at the child side of the node a child node will be created with the hyperlink. This hyperlink appears as a red arrow. After pasting, also the textual path to the image will appear. You can safely erase it or replace it with your own text.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1192,7 +1192,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1219,7 +1219,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1245,7 +1245,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1269,14 +1269,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To ad a large progress indicator, select <i>Edit &gt; Core &gt;Progress &gt; Extended progress.</i>&#160;Then to increase the amount of progress %, double click. To decrease: Ctrl-double click.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1306,14 +1306,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The text of different node cores can be combined by selecting the nodes and choosing menu <i>Edit &gt; Node core &gt; Join nodes. </i>Child nodes of the joind nodes become childs of the new joined node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1343,14 +1343,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       There are two different actions for splitting nodes. One is called from the main menu, the other from the editor.
     </p>
     <p>
-      
+
     </p>
     <ol>
       <li>
@@ -1361,7 +1361,7 @@
       </li>
     </ol>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1390,14 +1390,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A core text can, like a spreadsheet cell, contain a formula which starts with &quot;=&quot;.&#160;&#160;If this is the case,&#160;&#160;the formula is calculated and only the result is displayed.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1431,7 +1431,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1464,7 +1464,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1488,7 +1488,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1510,7 +1510,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1539,7 +1539,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1572,7 +1572,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1609,7 +1609,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1636,7 +1636,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1656,7 +1656,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1680,7 +1680,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1703,20 +1703,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       It is possible to connect any two nodes with a line called (bilateral) <b>connector</b>: &#160;right-click a node and drag to the node you want to connect.
     </p>
     <p>
-      
+
     </p>
     <p>
       The <b>curving</b>&#160;of the connector can be changed by left-clicking and dragging the connector. Drag the dotten handle-lines to change the arrow orientation. The <b>style</b>&#160;of the connector can be changed and <b>labels</b>&#160;can be added to the connector: Right-click the connector and select the options in the context menu that opens.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1762,14 +1762,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A group of siblings can be connected to a so called <b>summary node.</b>. This node connects the siblings with an accolade. Select the group of siblings and right-click one of the selected nodes while keeping <i>Ctrl</i>&#160; pressed. Choose <i>New summary node (selected nodes) </i>in the node contextmenu.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1803,7 +1803,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1831,7 +1831,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1844,7 +1844,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1878,7 +1878,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1923,32 +1923,32 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A hyperlink to an address outside the map can be created by right-clicking a node and selecting <i>Link</i>. However, the easiest way to add a hyperlink or group of hyperlinks to external objects, is by drag and drop. Dropping a copy of a directory, file, or web address will generate a child node of the selected node containing a hyperlink. The target address of the hyperlink is contained in the title. This text may be removed or changed without changing the dynamics of the hyperlink itself.
     </p>
     <p>
-      
+
     </p>
     <p>
       Dropping a group of hyperlinks will generate a group of child nodes, each containing one of the hyperlinks.
     </p>
     <p>
-      
+
     </p>
     <p>
       To edit the target address of the hyperlink, right-click the node containing the link and choose <i>Links &gt;&#160;Add or modify hyperlink (type)...</i>&#160;In the dialog that opens you can&#160;edit the address. With <i>Ctrl + V</i>&#160;a copied address can be pasted in the entry field.
     </p>
     <p>
-      
+
     </p>
     <p>
       To link to a node in a different mind map, see<a href="#ID_1418102707">&#160;Link from outside to a particular node</a>.
     </p>
     <p>
-      
+
     </p>
     <p>
       To remove a hyperlink (arrow-link) or e-mail address, right-click the node and:
@@ -1989,14 +1989,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A hyperlink from one node to another node (local hyperlink) can be created by selecting two nodes, then right-clicking one of them while keeping <i>Ctrl</i>&#160;pressed, and finally choosing menu <i>Links &gt; Local hyperlink. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       To remove a hyperlink (arrow-link) or e-mail address, right-click the node and:
@@ -2026,14 +2026,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The simplest way to create an e-mail link which automatically opens your email program is to copy and paste the email address into a node. This will generate a<b>&#160;child node</b>&#160;of the selected node with the link. The text of the child node will consist of the e-mail address. You may replace this address by e.g. only the name.
     </p>
     <p>
-      
+
     </p>
     <p>
       If you want to add the e-mail link to a particular node (and not to its newly generated child), right-click the node and choose<i>&#160;Add or modify hyperlink (type)...</i>&#160;Then enter in the text field:
@@ -2066,7 +2066,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2082,14 +2082,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To define an underlined hyperlink (HTML-link), first open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example link: <font color="#ff0000"><i><a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">This</a></i></font><a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">&#160;link</a>&#160;brings you to the Freeplane Open Forum.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2148,14 +2148,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       You can also connect the menu item to a node, so that clicking the node will activate the menu item. To connect a node directly to a menu item, right-click the node and choose <i>Link&#160;&#160;&gt; Add hyperlink to menu item... </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       To remove a hyperlink (arrow-link) or e-mail address, right-click the node and:
@@ -2184,7 +2184,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2206,14 +2206,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To jump from another program or source mind map to a particular node in a target mindmap, the address field of the hyperlink should contain the path to the target mind map and the nodeID, seperated by #. If source and target mind map are in the same directory, the address can be defined &#160;as destination.mm#NodeID, e.g. &#160;as WhatIsMindmapping.mm#ID_930373151.&#160;&#160;This has the advantage that if the containing direcory is moved as a whole, the link keeps correct. In the other case the absolute path should be provided. To get the full pathname of a node, right-click the node and select <i>Copy node URI. </i>Next you can paste the address with<i>&#160;&#160;Cntrl + V&#160; </i>in the edit field for the link address.&#160;
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2246,14 +2246,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Freeplane has many possibilities to to set or change properties which apply to a whole node or all nodes. You can think of the basic color of a node, enclosing a node in a bubble, the size of the text, the width of the node core and much more. The most versatile method to edit properties is in the <b>Properties panel</b>. To open or close the Properties panel, right-click in an empty space of the background and select <i>Properties panel</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2282,20 +2282,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The <i>Properties panel</i>&#160;shows the properties of the node which has the focus. Only the properties of the selected node can be changed. (Generally you select one node, but with some properties it is possible to select and change more than one node at a time.) While the panel is showing, you can select a different node to give it the focus. To change a property, change the value of the property. This will also set a check indicating the changed value applies. Uncheck if you want to return to the default behaviour. Also uncheck if you want conditional styles affect (set) the property.
     </p>
     <p>
-      
+
     </p>
     <p>
       As a first example, find the properties group named <i>Node Shape</i>&#160;and click on <i>Node style</i>. A menu drops down with options like <i>Bubble</i>, <i>Fork</i>&#160;&#160;and <i>As parent</i>. Try these options and see what happens. For the node you are reading now option <i>Bubble</i>&#160;was chosen. As you may notice, this option only applies to the core.
     </p>
     <p>
-      
+
     </p>
     <p>
       As a second example, find node group <i>Edges&#160;</i>and check the box for <i>Edge style</i>. Clicking next to <i>Edge style</i>&#160;will drop down a menu with possible styles like <i>Linear</i>, <i>Smoothly curved</i>, <i>Hidden</i>,&#160;and others. Try these to know which styles are possible. Or cselect me to see a few examples of changed properties in the <i>Properties panel.</i>
@@ -2328,7 +2328,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2350,7 +2350,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2373,7 +2373,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2392,7 +2392,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2411,7 +2411,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2433,7 +2433,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -2459,14 +2459,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Some of the properties in the<i>&#160;Properties panel</i>&#160;are also available as <b>icons</b>&#160;in the <b>tool bar</b>&#160;which is below the main menu bar.&#160;Examples are <i>italic</i>&#160;and <b>bold</b>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Important</b>
@@ -2501,7 +2501,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2523,14 +2523,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Freeplane comes with a number of system styles which you can extend with your own styles. The list of styles is displayed in the workmenu bar at the top of the screen&#160;in the field next to the cloud-icon.&#160;&#160;You can apply a style to the selected node by clicking a style in the list. For the node you are reading now, style <i>TitlesContent</i>&#160;was applied. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><b>Note</b>&#160;</font>
@@ -2562,7 +2562,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2581,14 +2581,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       You can define a new style by selecting a node and choosing menu <i>Format&#160;&gt;&#160;Manage style &gt; New style from selection. </i>You will be asked for a unique name for the style and the properties of the selected node will be copied to this style. Alternatively you can open a special style dialog with menu <i>&#160;Format&#160;&gt;&#160;Manage styles &gt; Edit style. </i>You can add a style by right-clicking one of the styles en selecting <i>New style from selection</i>. Once you have defined a style you can modify the style in the special style dialog with the menus available and the properties panel
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2615,7 +2615,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2639,7 +2639,7 @@
       After this you will see that your node has both styles applied.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2664,14 +2664,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       In the node above multiple styles are applied unconditionally. Styles can also be applied conditionally,&#160;&#160;if a certain condition is true which is specified in a filter rule. In the following example a conditional style is used to signal if a node is modified after a particular revision date.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Example: Revisions</b>
@@ -2680,13 +2680,13 @@
       First a style <i>Revision </i>was defined&#160;with a special revision R-icon (see the styles list). Then in the<i>&#160;Properties panel</i>&#160;&#160;I clicked below<i>&#160;Conditional map styles </i>to open its dialog<i>.</i>&#160;I pressed <i>New</i>&#160;to add a filter. I clicked the new rule and defined a filter (Modified after, date). I selected this filter rule and pressed <i>OK</i>.&#160;&#160;
     </p>
     <p>
-      
+
     </p>
     <p>
       If you are in the conditional styles dialog, you see the rule I defined to be unchecked. I did so because normally you do not want to see the R-icons. Check one of the rules and you will see some revision R-icons appear. To see all revions you have to unfold the nodes.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2710,14 +2710,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       One possible application of conditional node styles is to give each node level a different appearance automatically. Say you need five node levels. Then you define 5 styles, one for each level. Next you define 5 conditional style rules. To make it easy Freeplane has predefined this case for you. In <i>Properties panel</i>&#160;you can check&#160; <b>Apply level styles </b>in the properties group Node Style. If checked each&#160;node level will get a different appearance automatically. The style for the root node is called style Title. The styles for the other levels are called Header 1, Header 2, Header 3 and Header 4.
     </p>
     <p>
-      
+
     </p>
     <p>
       If you do not like the styles used for the levels, you can modify them as follows:
@@ -2737,13 +2737,13 @@
       If you want more than 5 different level styles, simply add them in&#160;<i>Styles &gt; Edit style</i>&#160;behind<i>&#160;Apply level styles</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       If you want to apply less than 5 level styles, remove styles in&#160; <i>Styles &gt; Edit style</i>&#160;behind<i>&#160;Apply level styles</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2767,7 +2767,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2787,7 +2787,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2800,7 +2800,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2844,7 +2844,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2877,7 +2877,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2899,7 +2899,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2935,7 +2935,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2957,14 +2957,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       If you select menu <i>Edit &gt; Paste</i>&#160;different paste options will be shown, like pasting text without format (plain text).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2996,7 +2996,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3018,7 +3018,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3047,7 +3047,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3057,7 +3057,7 @@
       To publish your mind map on Internet using a Java Applet, export your mindmap with <i>File &gt; Export</i>&#160;and choose for the file format <i>Java Applet</i>. After the export you will have a file <i>yourmap.html</i>&#160;and a directory <i>yourmap.Html_files</i>.&#160;&#160;If you use images in your map, make sure when developing yourmap.mm these images are in the same directory where yourmap.mm resides. After the export, copy the images to yourmap.html_files. You can now move both yourmap.html and directory yourmap.Html_files to the internet server and start the mindmap by calling yourmap.html. Your mind map will open in a browser for reading, but cannot be modified. You can use the same method to share your map with other user's&#160;&#160;who don't have Freeplane installed. Move the file and the directory to their computer in stead of to the Internet server.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3076,7 +3076,7 @@
         It is possible to set in <i>Tools &gt; Preferences</i>&#160;that the folding state must be saved, such that the map opens each time with the same folding.
       </li>
       <li>
-        Freeplanre developers can also publish on http://freeplane.sourceforge.net/mapsOnline. Documents published here, can be opened without Java Applet if they are linked through the map opened by <i>Help &gt; Documentation Maps Online.</i><b>&#160;In that case .svg images can be published</b><i>.</i>
+        Freeplane developers can also publish on http://freeplane.sourceforge.net/mapsOnline. Documents published here, can be opened without Java Applet if they are linked through the map opened by <i>Help &gt; Documentation Maps Online.</i><b>&#160;In that case .svg images can be published</b><i>.</i>
       </li>
     </ul>
   </body>
@@ -3096,14 +3096,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       You can also publish a mind map directly on the Internet or Intranet. In that case Freeplane is needed to view the map. Use&#160; <i>File &gt; Open map from URL</i>.to open the map and enter the full URL-address of the map.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3139,7 +3139,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -3152,14 +3152,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Click the link to open a mind map with the main applications of Freeplane. An Internet connection is needed to follow the links in the index.<i>&#160;</i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -3179,20 +3179,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The node you see now consistst of a <b>node core</b>&#160;with the title<i>&#160; &quot;Edit text in node details&quot;. </i>The text below the node core is called <b>node details</b>. This field contains the text you are reading now.&#160;&#160;A discriminatig characteristic of this area is that it can be hidden or shown based on a user's need. One way to hide or show this area is to<b><font color="#ff0000">&#160;press the small triangle</font></b>&#160;next to the text (try it !).
     </p>
     <p>
-      
+
     </p>
     <p>
       To create a node like the present one, first create a node as you learned before. Then type the title in the core as you know too. Finally open a dialog window by right-clicking the node and choose&#160;<i>Edit details in dialog</i>. Now type the text you want to appear under the title and press OK. Your node will now appear just like the one you are reading,
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3217,20 +3217,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Node content can be hidden permanently, only showing when you are&#160;&#160;hovering with the cursor over the node. This has the advantage that the space taken by the node keeps at a minimum.
     </p>
     <p>
-      
+
     </p>
     <p>
       To prepare a node for hovering,&#160;right-click the node and choose<i>&#160; Minimize node </i>to hide all information except the first part of the node core text. To restore the non-hidden state, click<i>&#160;Minimize node&#160;</i>again<i>. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -3257,7 +3257,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3282,7 +3282,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3300,14 +3300,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To add an image to a particular node, drag and drop the image on the upper part of the node. If you drop it on the child side of the node, the image is added to an automatically created new child. In both cases the image can be resized by dragging its lower-right corner.
     </p>
     <p>
-      
+
     </p>
     <p>
       Alternatives for adding an image are:
@@ -3321,7 +3321,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3362,14 +3362,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       An image from an external source like Internet can be added by copy and paste. Likewise, an image&#160;&#160;made with PrintScreen, can be added by pasting it. In both cases the image is added to a newly created child node of the node selected when you pressed paste.&#160;The pasted image can be resized by dragging its lower-right corner.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3411,7 +3411,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3432,7 +3432,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3445,20 +3445,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To create the above example, right-click a node and select Edit attribute in-line. Enter <i>name</i>&#160;&#160;in the left field and <i>John</i>. in the right one. To add the second attribute, right-click on the name or the value to open the attribute's context menu and select <i>New</i>&#160;<i>attribute</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       When you followed the example, you will find that the width of the displayed attributes does not fit the length of the text. You can solve this in two ways. First you can right-click the attribute and select <i>Optimal width</i>.&#160;Second you could experiment with moving&#160;&#160;the slim bar just above the table.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>&#160;
@@ -3481,7 +3481,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3494,7 +3494,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3509,7 +3509,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3532,14 +3532,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       If you want to display a scientific formula in a node, this is possible. Use <i>Edit &gt;&#160;&#160;Node core &gt; Edit LaTeX </i>to do so.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3561,7 +3561,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="margin-top: 0">
@@ -3597,14 +3597,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The Time manager allows you to set dates, times (<b>reminders</b>) and tasks (reminder texts) in the core of selected nodes. A clock icon signals that a reminder is set.&#160;&#160;This icon appears both in the node and its predecessors, except nodes which are within a Summary node group. A flashing clock icon signals that a reminder time has been reached.
     </p>
     <p>
-      
+
     </p>
     <p>
       There are two locations where these functions can be set or edited.
@@ -3631,14 +3631,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a dialog to set or change a date (text) or a reminder which has been attached to the selected node. The node and its predecessors show a clock icon. This icon flashes at the reminder time. Also a red exclamation mark flashes in the root node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3680,7 +3680,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3707,7 +3707,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">The entries can be searched, and changed with search and replace. </font>
@@ -3729,14 +3729,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Remove the reminder of the selected node. For alternatives:
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -3771,7 +3771,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3801,7 +3801,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3825,19 +3825,19 @@
       If you have set/entered these elements, you can click icon <b>Quick filter</b>&#160; to do the filtering.&#160;&#160;(See to the left which is icon Quick filter). Or you can click icon <b>Find</b>&#160;to just find one instance at a time.
     </p>
     <p>
-      
+
     </p>
     <p>
       The result of Quick filter may be modified by setting one or more so called filter options, see below. To exit filtering, click icon <b><i>No filtering</i></b>. (When using Find, it is not necessary to stop this action.)
     </p>
     <p>
-      
+
     </p>
     <p>
       The Freeplane documentation contains a full description and examples.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3857,7 +3857,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3879,14 +3879,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To filter for all nodes modified after a certain date, set a filter rule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -3911,7 +3911,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3927,14 +3927,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node and all its descendant nodes. And if not found, search further in other branches. This is called depth first search.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><b>Note</b></font>
@@ -3964,7 +3964,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3982,7 +3982,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4002,7 +4002,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4021,7 +4021,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4040,14 +4040,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Hides all visible nodes which do not fit the filter rules and options. Icon keeps unset..
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -4083,14 +4083,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To filter for all nodes modified after a certain date, set a filter rule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -4111,14 +4111,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Display only the currently-selected node(s) and, optionally, their ancestors and/or descendants. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -4145,7 +4145,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4164,7 +4164,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4183,20 +4183,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Opens the Filter Composer dialog to create and edit filter rules / manage filters. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">The first row contains three entries to define a filter rule, filled with (Node text, Contains, empty filed). and a check box for indicating if the Case of letters is relevant (<i>Match case</i>). The box below these editable fields contains the list of predefined rules. Initially it is empty. Two or more of these rules can be combined to form a more complex rule with AND and OR operators using the buttons to the right. A rule can be named with buttond Set Name. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font face="SansSerif, sans-serif" color="#000000">Do</font></b>
@@ -4256,7 +4256,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4276,14 +4276,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Expand all nodes in a map that match the filter. This is not a toggle switch: once the nodes are expanded, they can only be collapsed using other commands (such as Filter &gt; Undo, which may be used immediately after this command). </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -4312,14 +4312,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Toggles Display all ancestor nodes of nodes which match the filter when filtering is in effect (Applies to Filtered Nodes is set) </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -4342,14 +4342,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Togles Display all descendant nodes of nodes which match the filter when filtering is in effect (Applies to Filtered Nodes is set)</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -4378,14 +4378,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node. The searching direction is opposite to Find Next. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
@@ -4415,14 +4415,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node and all its descendant nodes. And if not found, search further in other branches. This is called depth first search.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
@@ -4460,14 +4460,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Filters can be defined and kept for reuse on a later moment. Open <i>menu Filter &gt; Filtercomposer </i>and define the filterrules you need. In doing so, you can also combine simple rules with AND and OR operators into more complex rules. And once you have defined a rule you can give it a label. After you have created all the rules you need, you can save the whole set. The set can than be shared with other people who can load it into the Filter composer.
     </p>
     <p>
-      
+
     </p>
     <p>
       The rules you defined with<i>&#160;Filter composer</i>&#160;are available in the filter menu bar. To activate a rule, click next to the field showing <i>&quot;No filtering (remove)&quot;</i>&#160;which drops down a list of all available rules. Click the rule you want and it will be executed. When you are finished, select <i>&quot;No filtering (remove)&quot;</i>&#160;again or click the icon-button <b><i>No filter</i></b>.
@@ -4488,7 +4488,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4510,14 +4510,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see only the information at the first level of experience (Beginner):
     </p>
     <p>
-      
+
     </p>
     <ol>
       <li>
@@ -4550,7 +4550,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4577,7 +4577,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ol>
@@ -4609,14 +4609,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       It is possible to protect your whole map, or a part of the map, with a password. If you define a password for a node, then all descendants of the node will keep hidden until the right password has been entered. Within the same map you can apply different passwords for different nodes and create layers of protection. To define a password for the children of the selected node, right-click the node and select <i>Password protection</i>.&#160;&#160;
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4645,7 +4645,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4665,7 +4665,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4679,7 +4679,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
   </body>
@@ -4692,7 +4692,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4709,7 +4709,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4742,14 +4742,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       In menu <i>View</i>&#160;you can set characteristics for node core, like width, selection border, border marking for formulas and the background color of revisions. You can set if and how node details should be displayed, with or without tool tip (hover text) and modification times.&#160;&#160;You can set if and which attributes are displayed. Also you can set if and how notes are displayed and with which type of window. Finally it is possible to set some characteristics of icons. Open menu <i>View</i>&#160;and select all options one by one to know which options are available. In the preferences much more can be set.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4775,7 +4775,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4800,7 +4800,7 @@
       <span lang="EN-US">Docear is the successor of SciPlore MindMapping and funded by the European Union and German Federal Ministry of Economics and Technology.</span>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Click the red arrow</b>
@@ -4823,7 +4823,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4859,7 +4859,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4884,14 +4884,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The keystrokes preferences let you set hot keys used for predefined icons.
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -4901,7 +4901,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4956,14 +4956,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Browswer settings and settings for HTML export/import.
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -4973,14 +4973,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Settings for using formula's and scripts.
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -5001,14 +5001,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The vertical spacing between nodes can be set for all nodes of a branch, existing and new ones. Keep Ctrl pressed, select a nodes handle (oval)&#160;&#160;and move the cursor up/down to change the vertical space for all nodes.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -5032,14 +5032,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Freeplane has a very powerful scripting possibility based on Groovy. In this way you can provide for specialised functions which might be lacking.
     </p>
     <p>
-      
+
     </p>
     <p>
       There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts. Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
@@ -5060,7 +5060,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5090,7 +5090,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -5126,7 +5126,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5145,7 +5145,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5166,7 +5166,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5180,7 +5180,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5195,7 +5195,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5210,7 +5210,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5234,7 +5234,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5247,7 +5247,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5271,7 +5271,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -5291,7 +5291,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5311,7 +5311,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5331,7 +5331,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5351,7 +5351,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5368,7 +5368,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5382,7 +5382,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5399,7 +5399,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5422,7 +5422,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -5444,7 +5444,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -5469,7 +5469,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5486,7 +5486,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5502,7 +5502,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5516,12 +5516,6 @@
         execute a script an leave
       </li>
     </ul>
-    <p>
-      
-    </p>
-    <p>
-      Read how to at <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job">http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job</a>s
-    </p>
   </body>
 </html>
 </richcontent>

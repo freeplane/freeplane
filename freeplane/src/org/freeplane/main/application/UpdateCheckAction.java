@@ -103,9 +103,10 @@ class UpdateCheckAction extends AFreeplaneAction {
 	}
 
 	private void addUpdateButton(final FreeplaneVersion lastVersion) {
-		final Set<String> modes = Controller.getCurrentController().getModes();
+		Controller controller = Controller.getCurrentController();
+		final Set<String> modes = controller.getModes();
 		for (final String mode : modes) {
-			final MenuBuilder menuBuilder = Controller.getCurrentController().getModeController(mode).getUserInputListenerFactory()
+			final MenuBuilder menuBuilder = controller.getModeController(mode).getUserInputListenerFactory()
 			    .getMenuBuilder();
 			if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
 				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
@@ -116,6 +117,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			}
 			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
 			final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
+			controller.getViewController().out(updateAvailable);
 			putValue(SHORT_DESCRIPTION, updateAvailable);
 			putValue(LONG_DESCRIPTION, updateAvailable);
 			if (menuBuilder.get(UPDATE_BUTTON_PATH) == null) {

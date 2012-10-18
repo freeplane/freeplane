@@ -51,6 +51,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
@@ -106,7 +107,8 @@ import com.lightdev.app.shtm.TextResources;
  */
 public class MTextController extends TextController {
 	
-	public static final String NODE_TEXT = "NodeText";
+	private static final String PARSE_DATA_PROPERTY = "parse_data";
+    public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase mCurrentEditDialog = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
@@ -121,6 +123,15 @@ public class MTextController extends TextController {
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+            public void propertyChanged(String propertyName, String newValue, String oldValue) {
+                if (PARSE_DATA_PROPERTY.equals(propertyName)) {
+                    parseData = null;
+                    @SuppressWarnings("unused")
+                    boolean dummy = parseData();
+                }
+            }
+        });
 	}
 
 	private void createActions() {
@@ -338,6 +349,7 @@ public class MTextController extends TextController {
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditEventDispatcher keyEventDispatcher;
+    private Boolean parseData;
 
     public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
@@ -352,7 +364,7 @@ public class MTextController extends TextController {
 	}
 
     public Object guessObject(final Object text, final String oldFormat) {
-        if (ResourceController.getResourceController().getBooleanProperty("parse_data") && text instanceof String) {
+        if (parseData() && text instanceof String) {
             if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
                 return text;
             final Object parseResult = ScannerController.getController().parse((String) text);
@@ -363,6 +375,12 @@ public class MTextController extends TextController {
             return parseResult;
         }
         return text;
+    }
+
+    public boolean parseData() {
+        if (parseData == null)
+            parseData = ResourceController.getResourceController().getBooleanProperty(PARSE_DATA_PROPERTY);
+        return parseData;
     }
 	
 	/** converts strings to date, number or URI if possible. All other data types are left unchanged. */

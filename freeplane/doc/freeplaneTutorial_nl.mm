@@ -10,7 +10,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -99,7 +99,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -145,7 +145,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -159,14 +159,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Klik op de koppeling om een mindmap te openen met de belangrijkste functies van Freeplane. Beweeg met de muiscursor over de teksten bij de functies om de koppeling naar de beschrijving van deze functie te laten verschijnen, in de handleiding en in de documentatie.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking </b>
@@ -189,7 +189,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -211,14 +211,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       De meeste mensen houden er niet van om een handleiding te lezen. Daarom is deze handleiding zo opgezet dat je alleen de inleiding hoeft te lezen. Daarna kun je direkt beginnen met het maken van mindmaps met behulp van de menu's van Freeplane. Menu <i>Bewerken</i>&#160;bevat de belangrijkste mogelijkheden om informartie te bewerken en menu <i>Extra</i>&#160;bevat een aantal belangrijke hulpmiddelen. De andere menu's spreken voor zich.
     </p>
     <p>
-      
+
     </p>
     <p>
       Het is niettemin de moeite waard om ook de andere hoofdstukken te lezen, en wel om de volgende reden. In Freeplane kun je de dingen op heel veel verschillende manieren doen. Het gebruik van de menu's is daarbij niet altijd even handig en snel. De volgende hoofdstukken geven een overzicht over wat er mogelijk is en hoe je dit op de snelste en eenvoudigste manier kunt doen, meestal door gebruik te maken van zogenaamde contextmenus. Je hoeft hierbij niet alle hoofdtukken &#233;&#233;n voor &#233;&#233;n en na elkaar te lezen, maar je kunt die dingen er uit pikken waar je mee bezig bent. Als hulp hierbij is de informatie met een kleur gecodeerd, waarbij de kleuren vier gebruikersniveaus aangeven:
@@ -293,7 +293,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -318,7 +318,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -340,14 +340,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een mindmap is een vlak met informatie in zogenaamde <b>knopen</b>. Een knoop is te vergelijken met een paragraaf in een boek. Het verschil is dat je een knoop en zijn informatie eenvoudig kunt verplaatsen en verbergen. Hierdoor kan een mindmap goed worden gebruikt bij het ontwikkelen van nieuwe informatie en bij het aanpassen van getoonde infromatie aan de behoefte van een gebruiker.
     </p>
     <p>
-      
+
     </p>
     <p>
       De tekst die je nu leest bevindt zich in een knoop. De tekst hierboven, &quot;<i>Knopen</i>&quot; is een knoop.&#160;&#160;En de grote ovaal links is een speciale knoop, de stamvaderknoop of <b>stamknoop</b>.,
@@ -368,7 +368,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -384,7 +384,7 @@
       van dezelfde ouder zijn (broers en) <b>zussen. </b>
     </p>
     <p>
-      
+
     </p>
     <p>
       Knopen worden standaard in hun bewegingsruimte beperkt door hun familierelaties. Een uitzondering op deze regel vormt de<b>&#160;vrije knoop</b>. Deze knoop kan onafhankelijk van alle andere knopen worden verplaatst.
@@ -411,20 +411,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Je kunt een knoop open- en dichtvouwen door op de knoop te klikken als een cirkel met een plus- of min-teken&#160;&#160;verschijnt wanneer de cursor zich boven de knoopkern bevindt. <b>Openvouwen</b>&#160;&#160;(uitvouwen) toont verborgen kinderen en <b>dichtvouwen</b>&#160;(invouwen) verbergt kinderen. Als een knoop is dichtgevouwen verschijnt een cirketje aan de kindzijde van de knoop.
     </p>
     <p>
-      
+
     </p>
     <p>
       Als de knoop die je nu leest is opengevouwen, dan zie je aan de rechterkant vier pictogrammen. Deze pictogrammen zie je ook in de werkbalk bovenin het scherm. Door op deze pictogrammen in de werkbalk te klikken kun je knopen op verschillende manieren open- en dichtvouwen. Als je op het cirkeltje voor open/dichtvouwen klikt, verschijnen dezelfde pictrogram-knoppen.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Uitzondering </b>
@@ -453,14 +453,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Openvouwen toont alle afstammelingen van de geselecteerde knoop </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Sneltoets</b>
@@ -490,14 +490,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Verbergt alle afstammelingen van de geselecteerde knoop. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Sneltoets</b>
@@ -527,7 +527,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -547,7 +547,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -574,7 +574,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -595,20 +595,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       De informatie in een knoop is zichtbaar via twee gebieden. Het ene gebied bevindt zich in het midden van de knoop, in de <b>kern</b>&#160;en dit veld kan worden omgeven door een kader. De tekst die je nu&#160;&#160;leest bevindt zich in de kern. Het gekleurde gebied net boven de tekst die je nu leest bevindt zich ook in een knoopkern (van een andere knoop).
     </p>
     <p>
-      
+
     </p>
     <p>
       De tekst in de knoopkern kan kort zijn zoals bij een titel, maar kan ook meerdere regels omvatten. Verder kan de tekst verschillende presentatiecomponenten bevatten zoals plaatjes en pictogrammen. De knoopkern kan ook hyperlinks, een formule en componenten voor tijdmanagement en bescherming met een wachtwoord bevatten.
     </p>
     <p>
-      
+
     </p>
     <p>
       Naast de knoopkern kan tekst voorkomen in velden voor <b>knoopdetails</b>, <b>notities</b>&#160; en <b>attributen</b>. Deze worden op een andere plaats beschreven.
@@ -627,14 +627,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Na het starten van Freeplane is een leeg werkblad zichtbaar. Op het werkblad bevindt zich een elliptische vorm, de stamknoop, met een tekst zoals <i>Nieuwe mindmap</i>. Deze tekst is geaccentueerd. Dit betekent dat je de tekst kunt vervangen door je eigen tekst te typen. Type eenvoudig een titel en sluit af met <i>Enter</i>.&#160;&#160;Als je vervolgens op de <i>Insert-</i>toets drukt verschijnt een nieuwe kindknoop. Herhaal deze procedure zo vaak je wilt. Je krijgt zo een keten van knopen. Als je geen kindknoop wilt maar een knoop onder de huidige, klik dan niet &#233;&#233;nmaal maar twee maal op <i>Enter</i>. Je kunt zo net zoveel vertakkingen maken als je wilt. Als je een bestaande knoop wilt bewerken, houdt dan <i>Control</i>&#160;ingedrukt terwijl je op de knoop linksklikt (META bij MAC OS). Dit is alles wat je moet weten om een mindmap te maken.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b><br/>
@@ -660,7 +660,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -681,7 +681,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -702,7 +702,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -722,7 +722,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -743,7 +743,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -763,7 +763,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -783,14 +783,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Maakt ee nieuwe knoop die een kind is van de geselecteerde knoop. . </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Zelfde effect: </font></b>
@@ -830,14 +830,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een tweede manier om een knoop te bewerken is in een afzonderlijk venster welke eigen menuknoppen heeft. Rechtslklik op de knoop en kies in het contextmenu <i>Bewerken knooptitel in venster</i>. Je kunt nu de tekst in het venster typen en de menu's van het venster gebruiken om de tekst te bewerken en op te maken. Druk op <i>OK</i>&#160;als je klaar bent. De tekst wordt dan opgenomen in de knoop. Merk op dat de menu's van het venster meer mogelijkheden bieden voor het opmaken van tekst dan <i>Bewerken knooptitel (snel)</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -870,7 +870,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -886,7 +886,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -906,7 +906,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -927,7 +927,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -949,7 +949,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -965,7 +965,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -985,26 +985,26 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een vrije knoop is een knoop die vrij positioneerbaar is, onafhankelijk van de posities van de andere knopen. Een vrije knoop kan worden herkend aan dit gedrag, en aan het blauwe, rood gevulde ovaaltje (handle) waarmee de knoop kan worden verplaatst.
     </p>
     <p>
-      
+
     </p>
     <p>
       Een nieuwe vrije knoop kan worden gemaakt door <i>Ctrl</i>&#160;ingedrukt te houden en te linksklikken op een vrije plek in de achtergrond van de mindmap. Deze knoop krijgt stijl <i>Zwevende knoop,</i>&#160;met als eigenschappen<i>&#160;rechthoekige wolk, </i>en<i>&#160;verborgen tak. </i>Deze kenmerken kunnen op de gebruikelijke wijze worden veranderd met het opmaakvenster.
     </p>
     <p>
-      
+
     </p>
     <p>
       Een gewone knoop kan in een vrije knoop worden veranderd door de knoop te selecteren en <i>Bewerken &gt; Vrije knoop</i>&#160;te kiezen. In dat geval blijft de knoop zijn oorspronkelijke stijl houden. Een wolk en het verbergen van de tak kun je in het opmaakvenster instellen - of je kunt stijl <i>Zwevende knoop</i>&#160;kiezen. De vrije knoop verplaats automatisch nabij de knoop waarmee de knoop is verbonden, en kan vervolgens naar de gewenste positie worden verplaatst. Door de vrije knoop op een andere knoop te plaatsen wordt de knoop weer een gewone knoop.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1028,7 +1028,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1047,7 +1047,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1068,13 +1068,13 @@
       Om een pictogram toe te voegen, ga naar een van de menu's en klik op het pictogram.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een pictogram te verwijderen, klik in de menu's op een pictogram met een rood kruis.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1099,14 +1099,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       In en knoopkern kan een plaatje worden opgenomen. Kies<i>&#160;Bewerken &gt; Knoopkern &gt; Toevoegen afbeelding of converteren koppeling.</i>&#160;Dit plaatje heeft een vaste grootte welke niet kan worden veranderd.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1134,14 +1134,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Plaatjes nemen veel ruimte in, ook als je de knoop niet aan het bekijken bent. Een koppeling naar een plaatje heeft dit nadeel niet: het plaatje is alleen zichtbaar nadat je op de koppeling hebt geklikt. Je kunt een koppeling naar een plaatje in een knoop opnemen met kopi&#235;ren en plakken. Als je het gekopieerde plaatje op de bovenzijde van een knoop plakt dan komt het plaatje in de knoop zelf. Als je het plaatje aan de kindzijde plakt dan wordt een kindknoop gemaakt met de koppeling. Het adres van de koppeling verschijnt in de knooptitel. Dit adres mag je wissen of vervangen door een eigen tekst. De koppeling (het pijltje) blijft daarbij staan.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1152,7 +1152,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>Zie ook</b>
@@ -1196,7 +1196,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1220,14 +1220,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een grote schijf is een extern plaatje. Bij een grote schijf kan worden gekozen uit 10% of 25% stappen. Om een externe schijf voor 10% stappen toe te voegen, kies <i>Bewerken &gt; Knoopkern &gt;&#160;&#160;%Schijf &gt; Schijf met 10% punt.</i>&#160;&#160;Om het perccentage met 10% te vergroten dubbelklik op de schijf. Om het percentage met 10% te verkleinen, houdt <i>Ctrl</i>&#160;in gedrukt en dubbelklik op het plaatje.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1257,14 +1257,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Om de teksten van de verschillende knopen samen te voegen in &#233;&#233;n knoop, selecteer de knopen en kies menu <i>Bewerken &gt; Knoopkern &gt; Samenvoegen knoopkernen. </i>In het in-line bewerkingsvenster heeft Ctrl + J hetzelfde effect.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1291,14 +1291,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Er zijn twee verschillende manieren om een knoopkerntekst te verdelen over meerdere knopen, respectievelijk via een actie in het hoofdmenu en via een actie in het bewerkingsvenster.
     </p>
     <p>
-      
+
     </p>
     <ol>
       <li>
@@ -1309,7 +1309,7 @@
       </li>
     </ol>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1338,14 +1338,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een knoopkern kan net als een spreadsheet cel een formule bevatten die begint met &quot;=&quot;. Deze formule wordt automatisch uitgevoerd en het resultaat wordt getoond.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -1382,7 +1382,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1413,7 +1413,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1436,7 +1436,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1457,7 +1457,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1506,7 +1506,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1542,7 +1542,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1569,7 +1569,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1589,7 +1589,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1624,20 +1624,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een verbindingslijn is een lijn tussen twee willekeurige knopen welke geen afstammingslijn is. Om een verbindingslijn te maken, selecteer twee knopen, rechtklik op &#233;&#233;n van beide en kies<i>Toevoegen verbindingslijn.</i>
     </p>
     <p>
-      
+
     </p>
     <p>
       De buiging van een verbindingslijn kan worden veranderd door op de lijn te klikken en de lijn te slepen. Het slepen kan aan de lijn zelf of aan twee hulplijnen die aan de uiteinden verschijnen. De opmaak van een verbindingslijn kan worden aangepast door op de lijn te rechtsklikken. Er verschijnt dan een <b>contextmenu</b>&#160;waarin ook <b>tekstlabels</b>&#160; kunnen worden ingevoerd die in het midden of aan de uiteinden van de verdingslijn verschijnen.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1675,17 +1675,17 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een groep zusknopen kan door een accolade worden verbonden. De knoop achter de accolade wordt groepsknoop genoemd. Selecteer de zussen van de groep, rechtsklik op een van de geselecteerde knopen en kies vervolgens <i>Knoopgroep met accollade toevoegen.</i>
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1719,14 +1719,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       De samenhang van een ouderknoop en zijn kindknopen kan worden geaccentueerd door een gemeenschappelijke achtergrondkleur, een <b>wolk</b>. Rechtsklik de ouderknoop en kies <i>Toevoegen wolk. </i>De eigenschappen van een wolk kunnen worden ingesteld in het opmaakpaneel, zie onder.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -1757,7 +1757,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1770,7 +1770,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1792,7 +1792,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1807,14 +1807,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Op de volgende manier kun je gemakkelijk een link leggen tussen twee knopen die verder uit elkaar liggen of die zich in verschillende mindmaps bevinden:
     </p>
     <p>
-      
+
     </p>
     <ul>
       <li>
@@ -1852,32 +1852,32 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een pijl-hyperlink kan worden gemaakt door te rechtsklikken op een knoop en <i>Koppeling</i>&#160;te kiezen. Het is echter makkelijker om een pijl-link als volgt te maken: Klik op een een bestand, map, webadres of e-mail en sleep deze vervolgens naar een knoop (drag en drop). Als je de muis-toets loslaat dan wordt een kindknoop gemaakt met daarin de hyperlink naar de bestemming. In de knoop is het adres van de bestemming ook als tekst opgenomen. Deze tekst mag je weghalen of vervangen door een andere. Het pijltje blijft daarbij staan.
     </p>
     <p>
-      
+
     </p>
     <p>
       Je kunt ook meerdere bestemmingen tegelijk selecteren en slepen. Er worden dan meerdere kindknopen gevormd met in elke kindknoop &#233;&#233;n pijl-hyperlink.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een bestemmingsadres te <b>wijzigen</b>, rechtsklik op de knoop met de koppeling en kies<i>&#160;Koppeling &gt; Typen of wijzigen koppeling</i>. Wijzig vervolgens het adres. Zo nodig kan met <i>Ctrl-V</i>&#160;kan een gekopieerd adres in het tekstveld worden geplakt.
     </p>
     <p>
-      
+
     </p>
     <p>
       Het is mogelijk via een hyperlink een andere mindmap te openen en een bepaalde knoop te selecteren. <a href="#ID_1418102707">Zie Koppeling van buiten naar een bepaalde knoop.</a>
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een koppeling te verwijderen:
@@ -1914,14 +1914,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een koppeling&#160;&#160;tussen twee knopen is als een groen pijltje zichtbaar in &#233;&#233;n van beide knopen, de bronknoop. Als op het pijltje wordt geklikt verschuift de focus naar de andere knoop. Deze koppeling kan worden ingesteld door met <i>Ctrl</i>&#160;ingedrukt eerst de bronknoop te selecteren en dan de bestemmingsknooprechtsklikken. Kies vervolgens<i>&#160;Koppeling &gt; Snelkoppeling naar andere knoop</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een koppeling te verwijderen:
@@ -1950,26 +1950,26 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een e-mail koppeling opent automatisch je email programma maakt een email met het email-adres uit de koppeling.
     </p>
     <p>
-      
+
     </p>
     <p>
       De eenvoudigste manier om een email-koppeling te maken is door een e-mail adres (tekst) in een knoop te plakken. Er wordt dan een kindknoop gemaakt met de email koppeling.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een email-koppeling in een bepaalde knoop te maken, rechtsklik de knoop en kies <i>Koppeling &gt; Typen of wijzigen koppeling. </i>Type in het tekstveld:
     </p>
     <p>
-      
+
     </p>
     <ul>
       <li>
@@ -1977,7 +1977,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       Om een koppeling te verwijderen:
@@ -2002,7 +2002,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2018,14 +2018,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       In de knoopkern, knoopdetails en in een Notitie kun je een koppeling naar een interne of externe bestemming maken zolas je dit in bijvoorbeeld Word doet. Je opent de knoop in een venster, selecteert een tekstdeel en kiest in het menu van het bewerkingsvenster <i>Bewerken &gt; Kiezen koppeling</i>&#160;of <i>&#160;Bewerken.&gt; Koppeling typen of wijzigen.</i>&#160; In het venster dat opent kun je het adres van de koppeling typen of een gekopieerd adres te plakken door op <i>Ctrl + V </i>te drukken. voorbeeld van een koppeling: <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1"><font color="#ff0000"><i>Deze</i></font>&#160;koppeling</a>&#160;brengt je naar het Freeplane Open Forum.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -2066,7 +2066,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2102,20 +2102,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Sneltoetsen zijn toetscombinaties of F-toetsen. Door op een sneltoets te drukken wordt een keten van acties uitgevoerd waarmee een specifiek menu wordt gekozen. Een sneltoets kan worden gedefinieer met <i>Extra &gt; Toewijzen sneltoets. </i>Direkt nadat een menu aan een sneltoets is gekoppeld, is deze te gebruiken.
     </p>
     <p>
-      
+
     </p>
     <p>
       Soms is het handig voor specifieke situaties een aparte sneltoetsenset te definieren die je eenvoudig kunt activeren. Het bewaren van de gedefineerde sneltoetsen als een set kan met <i>Extra &gt; Sneltoetsenset &gt; Bewaren set met sneltoetsen. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een bewaarde set later te hergebruiken, kies<i>&#160;Extra &gt; Sneltoetsenset </i>en kies de naam waaronder je de set eerder hebt bewaard.&#160;
@@ -2136,7 +2136,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2190,14 +2190,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Freeplane heeft meerdere mogelijkheden om de eigenschappen van een knoop of alle knopen in te stellen of te veranderen. Denk aan eigenschappen zoals het omlijnen van een knoop, de kleur enz. Het opmaakpaneel is een venster waarin bijna alle mogelijkheden bij elkaar staan. Om het opmaakpaneel te openen of te sluiten, kies <i>Beeld &gt; Opmaakpaneel.</i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -2226,20 +2226,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Als het opmaakpaneel open is, toont het de eigenschappen die zijn ingesteld voor de geselecteerde knoop. Als je een andere knoop met andere eigenschappen selecteert, zie je direct de inhoud van het opmaakpaneel veranderen. Om een eigenschap te veranderen, zet eerst een vinkje v&#243;&#243;r het element dat je wilt veranderen en verander daarna de instelling.
     </p>
     <p>
-      
+
     </p>
     <p>
       Als eerste voorbeeld, zoek in het paneel de groep met eigenschappen met de naam <i>Vorm knoop</i>.&#160;Zet vervolgens een vinkje voor <i>Omlijning</i>&#160; en klik op de knop achter <i>Omlijning</i>. Er verschijnt nu een lijst met omlijningstypen, zoals knoopomlijning, geen omlijning, enz.. Kies <i>knoopomlijning</i>&#160; en zie wat er gebeurt.
     </p>
     <p>
-      
+
     </p>
     <p>
       Als tweede voorbeeld, zoek groep <i>Opmaak tak</i>&#160;en zet een vinkje voor <i>Vorm tak</i>. Klik op de knop achter vorm tak. Hierdoor verschijnt een lijst met vormen zoals Ronde bocht, verborgen, rechte bocht en andere. Kies een vorm en zie wat er gebeurt.
@@ -2272,7 +2272,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2294,7 +2294,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2323,7 +2323,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2342,7 +2342,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2364,7 +2364,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -2390,14 +2390,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Sommige eigenschappen zijn ook toegankelijk via pictogram-knoppen in het werkmenu boven in het scherm. Voorbeelden zijn schuin (<i>italic)</i>&#160;en vet (<b>bold)</b>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Belangrijk</b>
@@ -2429,7 +2429,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2451,14 +2451,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Freeplane heeft een aantal standaardstijlen en je kunt je eigen stijlen hieraan toevoegen. De stijl die op een knoop van toepassing is, wordt weergegeven in het opmaakpaneel in de groep Opmaakstijl, achter Stijlnaam. Meestal is dit de standaard stijl. (Als er meerdere stijlen van toepassing zijn dan kun je dit zien onder <i>Conditionele stijl voor knoop.</i></font>) Voor de knoop die je nu leest is de stijlnaam<font color="#000000" face="SansSerif, sans-serif"><i>&#160; Gevorderde </i></font>zichtbaar.
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><b>Opmerking</b>&#160;</font>
@@ -2490,7 +2490,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2509,14 +2509,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Er is een apart venster waarin alle stijlen kunnen worden bewerkt en nieuwe stijlen kunnen worden gemaakt. Je opent dit venster via<i>&#160;Stijlen &gt; Bewerken knoopstijlen</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om in dit venster een nieuwe stijl te maken:
@@ -2558,14 +2558,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een stijl kan worden gebruikt om aan te geven dat een knoop bepaalde informatie bevat. Zo worden in de Freeplane handleiding verschillende stijlen gebruikt voor definites, procedures, voorbeelden enz. Het komt voor dat een knoop een combinatie van deze inhoud bevat. Als voorbeeld, de ouderknoop van de knoop die je nu leest (Meerdere stijlen toepassen op dezelfde knoop)&#160;&#160;is gemaakt met twee stijlen. E&#233;n stijl <i>Advanced</i>&#160; zorgt onder andere voor de gele kleur en&#160;&#160;stijl <i>Example</i>&#160; zorgt dat de knoop het oog-pictogram krijgt.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om deze twee stijlen op dezelfde knoop toe te passen open je eerst het <i>opmaakpaneel</i>. Klik vervolgens in het opmaakpaneel onder <i>Conditionele stijl voor knoop</i>. In het venster dat opent:
@@ -2588,7 +2588,7 @@
       Het resultaat is dat je knoop dezelfde vormgeving heeft als de knoop die je nu ziet.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -2612,14 +2612,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       In het voorbeeld hierboven wordt een stijl altijd, onvoorwaardelijk toegepast. Het is mogelijk om een stijl niet altijd, maar alleen in bepaalde gevallen toe te passen. Een voorbeeld is dat de stijl alleen wordt toegepast als de knoop is gewijzigd (revisie).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Voorbeeld: Revisies</b>
@@ -2651,7 +2651,7 @@
       Als er veranderingen zijn geweest na de door jou aangegeven datum, dan zie je die nu door het verschijnen van het i-pictogram.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -2680,20 +2680,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een andere toepassing van conditionele stijlen is om knopen op eenzelfde knoopniveau dezelfde, en knopen op verschillende niveau's een andere stijl te geven. Freeplane maakt dit makkelijk omdat deze situatie voor 5 knoopniveau's al is gedefineerd.&#160;&#160;Open het opmaakpaneel en zet een vinkje voor <i>Knoopniveau stijle</i>n. Elk knoopniveau krijgt nu een eigen opmaak.
     </p>
     <p>
-      
+
     </p>
     <p>
       Als je de standaard opmaak wilt veranderen dan kan dit ook. Ga hiervoor naar<i>&#160;Opmaken &gt; Beheren stijlen&#160;&gt; Bewerken stijlen</i>. En bewerk elke knoopniveau stijl op de wijze zoals hierboven werd besproken. De stijl voor de stamknoop heet stijl Stamknoop. De lagere niveaus heten Nivea1 t/m Niveau 6.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -2722,14 +2722,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Als je een nieuwe mindmap maakt kopieert Freeplane de inhoud van de mindmap <i>default.mm</i>. Op deze wijze worden alle standaardinstellingen van<i>&#160;default.mm</i>&#160;overgenomen. Het gaat daarbij om eigenschappen zoals <i>Automatische takkleur, </i>knoopstijlen en sneltoetsen. Als je deze eigenschappen in <i>default.mm</i>&#160;verandert, gelden ze in het vervolg voor elke nieuwe mindmap. De mindmap default.mm bevindt zich in<i>&#160; Tools &gt; Open userdirectory &gt; templates.</i>
     </p>
     <p>
-      
+
     </p>
     <p>
       Een andere manier om hetzelfde effect te bereiken is door een nieuwe mindmap te openen met <i>Bestand &gt; Nieuwe mindmap met stijl..</i>. Je kunt dan de mindmap opgeven die je als sjabloon voor de nieuwe mindmap wilt gebruiken.
@@ -2748,7 +2748,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2761,7 +2761,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2805,7 +2805,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2838,7 +2838,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2860,7 +2860,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2875,7 +2875,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       N.B. In de knoop die je nu leest is de minimum = maximum knoopbreedte 300 pixels.
@@ -2896,7 +2896,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2918,14 +2918,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Zie <i>Bewerken &gt; Plakken als</i>&#160;voor andere opties, zoals plakken zonder opmaak.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -2954,7 +2954,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2967,7 +2967,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2987,7 +2987,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3009,14 +3009,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Het uitwisselen van mindmaps met andere gebruikers van Freeplane is eenvoudig: je geeft de andere gebruiker eenvoudig je bestand<i>&#160;jouwmap.mm</i>. Als je mindmap plaatjes bevat, dan moet je deze apart meegeven, want in de mindmap zelf bevinden zich geen plaatjes maar alleen links naar plaatjes. Let er op dat op de nieuwe lokatie de plaatjes op dezelfde (relatieve) plaats staan als in jouw computer. Het eenvoudigste is het om bij het maken je mindmap en de plaatjes in dezelfde map (directory) te plaatsen.
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -3031,14 +3031,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Als je een presentatie wilt geven met een mindmap, kunnen de knopen die niet de aandacht hebben grijs worden gemaakt. Selecteer hiervoor <i>Beeld &gt; Beeldinstellingen &gt; Presentatiemode</i>. De knopen kunnen &#233;&#233;n voor &#233;&#233;n worden getoond door <i>Navigeren &gt; Volgend</i>&#160;kind te kiezen, of Shift + klikken in cirkel voor open/dichtvouwen.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -3061,14 +3061,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een Java Applet is een klein programmaatje waarmee je een mindmap kunt bekijken zonder dat je Freeplane op je computer hebt. Hiertoe kies je <i>Bestand &gt; Exporteren</i>&#160;en kies je<i>&#160;Java Applet</i>&#160;als bestandstype. Na het exporteren heb je een bestand <i>jouwmindmap.html</i>&#160;en een mapje <i>jouwmindmap.Html_files</i>. Als je plaatjes in je mindmap gebruikt, dan moet je deze naar<i>&#160;jouwmindmap.Html_files</i>&#160;kopi&#235;ren. Kopieer nu jouwmap.html en het mapje jouwmindmap.Html_files naar de server van Intranet of Internet. Je kunt nu de mindmap in alleen-lezen mode openen door jouwmindmap.html te openen.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -3104,14 +3104,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Het is mogelijk een mindmap direkt op het Intranet op Internet te publiceren. Freeplane moet dan op je computer geinstalleerd zijn om de mind map te bekijken. Kies&#160; <i>Bestand &gt; Open mindmap via URL&#160; </i>en<i>&#160; v</i>oeg achter URL het adres toe van de mindmap op Internet.&#160;
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -3147,7 +3147,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -3160,14 +3160,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Klik op de koppeling om een mindmap te openen met de belangrijkste toepassingen van Freeplane. Hiervoor is verbinding met Internet noodzakelijk.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking </b>
@@ -3187,20 +3187,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       De knop die je nu ziet bestaat uit een <b>knoopkern</b>&#160;met de titel &quot;<i>Bewerken knoopdetails</i>&quot;. Hieronder bevindt zich de tekst die je nu leest, in het veld <b>knoopdetails</b>. Het veld knoopdetails heeft links een <b><i>driehoekje</i></b>&#160; waarmee je de tekst kunt verbergen of tonen; de tekst van de knoopkern blijft hierbij gewoon zichtbaar.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een knoop zoals deze te maken, maak je eerst een nieuwe knoop zoals je boven hebt geleerd. Vervolgens type je de titel van de knoop in de knoopkern, zoals je ook al weet. Je maakt de titel op in een vorm zoals je die wilt. Dan rechtsklik je op de knoop (niet in bewerken modus) en kies je <i>Bewerken knoopdetails (in venster).</i>&#160;In het venster dat opent type je de tekst die onder de knoopkern moet komen. Je sluit af door op <i>OK</i>&#160;&#160;te drukken. Je tekst is nu zichtbaar onder de knooptitel.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -3225,20 +3225,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Knoopdetails kunnen worden&#160;verborgen&#160;&#160;tot het moment dat je met de cursor boven de knoop zweeft; dan wordt de verborgen informatie in een pop-up venster (tooltip) getoond.&#160;&#160;Dit heeft als voordeel dat de tekst geen ruimte op het scherm inneemt zolang je niet in de knoop bent ge&#239;nteresseerd. Bij de knoop hiernaast is dit het geval.
     </p>
     <p>
-      
+
     </p>
     <p>
       Om een knoop zoals hiernaast te maken, maak eerst een knoop met knoopinhoud. Rechtsklik op de knoop en kies<i>&#160;Minimaliseren knoop</i>. Om de tekst weer permanent te zien, kies nogmaals <i>Knoop &gt; Minimaliseren knoop</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking </b>
@@ -3265,7 +3265,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3290,7 +3290,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3308,14 +3308,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Er zijn verschillende manieren waarop met afbeeldingen kan worden gewerkt. Een makkelijke manier is om een plaatje in een knoop te slepen. Als je het plaatje op de bovenzijde van de knoop &quot;laat vallen&quot; (de bovenzijde licht op), komt het plaatje in de knoop zelf. Als je het plaatje op de kindzijde laat vallen (de kindzijde van de knoop licht op), wordt een kindknoop gemaakt en komt het plaatje in de kindknoop. De grootte van het plaatje kan worden veranderd door de hoek rechtsonder te slepen.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -3350,14 +3350,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een plaatje van een externe bron zoals Internet kan worden toegevoegd via kopieren en plakken.Op dezelfde wijze kan een schermafbeelding, gemaakt met PrintScreen, worden toegevoegd door plakken te kiezen. In beide gevallen wordt het plaatje in een automatisch gemaakte kindknoop toegevoegd. De grootte van het plaatje kan worden veranderd door de hoek rechtsonder te slepen.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -3398,7 +3398,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3411,20 +3411,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Er zijn verschillende manieren om een attribuut toe te voegen. Maak eerst een knoop. Rechtsklik op de knoop en kies <i>Toevoegen en bewerken attribuut.</i>
     </p>
     <p>
-      
+
     </p>
     <p>
       Als je al een attribuut hebt, rechtsklik dan op het attribuut voor meer opties. Zo kun je&#160; <i>Optimale breedte</i>&#160;kiezen om de tabel aan te passen aan de tekst. (Beide kolommen hebben een ander contextmenu !)
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>&#160;
@@ -3447,7 +3447,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3455,7 +3455,7 @@
     </p>
     <p>
       <br/>
-      
+
     </p>
     <p>
       Getallen en datums kunnen automatisch worden geformatteerd. Klik in het opmaakpaneel (Agenda en attributen) op het veld boven het attribuutveld. Er wordt dan een lijst met mogelijke formatteringen getoond. Zie de handleiding voor een toelichting.
@@ -3467,7 +3467,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3482,7 +3482,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3505,14 +3505,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Om een wetenschappelijke formule te tonen kan gebruik worden gemaakt van LaTeX, zie <i>Bewerken &gt; Knoopuitbreiding &gt; LaTeX</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -3534,7 +3534,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="margin-top: 0">
@@ -3567,7 +3567,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3606,7 +3606,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3631,7 +3631,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3677,14 +3677,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Verwijder de herinnering van de geselecteerde knoop.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Zie ook:</b>
@@ -3719,7 +3719,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3749,14 +3749,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Voor dat je kunt filteren moet je in de filterwerkbalk een filterregel maken. De filterwerkbalk bevindt zich boven het werkgebied voor de mindmap. Een filterregel bestaat uit de volgende elementen: </font>
     </p>
     <p>
-      
+
     </p>
     <ul>
       <li>
@@ -3776,13 +3776,13 @@
       Vervolgens kun je op pictogram-knop <b>Filteren mindmap</b>&#160;drukken om het filteren uit te voeren. Zie in de volgende knoop welk pictogram dit is. Om het filteren te eindigen, druk op <b>Stoppen&#160;filteren</b>.
     </p>
     <p>
-      
+
     </p>
     <p>
       Het filterresultaat kan worden aangepast door het instellen van onderstaande filteropties, zie onder.
     </p>
     <p>
-      
+
     </p>
     <p>
       Nadat je een filterregel hebt ingesteld kun je ook <i>Zoeken</i>&#160;kiezen om de eerstvolgende knoop te vinden die voldoet aan de filtercondities.
@@ -3820,7 +3820,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3838,7 +3838,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3859,7 +3859,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3879,7 +3879,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3899,14 +3899,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Verbergt alle zichtbare knopen die niet aan de filterregel voldoen.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Zie ook</b>
@@ -3941,14 +3941,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To filter for all nodes modified after a certain date, ser a filterrrule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -3969,14 +3969,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Toon alleen de geselecteerde knopen, en optioneel de voorouders en/of afstammelingen.&#160; </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font face="SansSerif, sans-serif" color="#000000">Zie ook</font></b><font face="SansSerif, sans-serif" color="#000000">&#160;</font>
@@ -4004,7 +4004,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4024,7 +4024,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4044,20 +4044,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Opent venster om filterregels te maken en bewerken. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">De eerste regel toont drie velden om een filterregel te maken, initieel gevuld met (&quot;Kern, details of notitie&quot;, &quot;Bevat&quot;, leeg veld). en een vink-veldje voor Hoofdlettergevoeligheid. Het veld onder deze in te vullen velden bevat een lijst van reeds gedefinieerde filters, initeel is de lijst leeg. Twee regels uit deze lijst kunnen met EN en OF worden gecombineerd tot een nieuwe regel. Me<i>t Naam toekennen</i>&#160;kan aan de geselecteerde regel een naamlabel worden toegevoegd.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Acties</b>
@@ -4115,7 +4115,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4136,14 +4136,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Zet AAN om ook voorouders van gefilterde knopen te tonen. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -4167,7 +4167,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4193,14 +4193,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Zoek eerstvolgende knoop die aan de ingestelde filterregel voldoet (zoek eerst in diepte, dan in breedte).</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Opmerking</font></b>
@@ -4227,14 +4227,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Zoek vorige knoop die aan de ingestelde filterregel voldoet.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Opmerking</font></b>
@@ -4270,20 +4270,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Filterregels kun je maken en bewaren voor gebruik op een later moment of op een andere computer. Je kunt filterregels combineren met EN en OF operatoren en je kunt filterregels een maamlabel geven.
     </p>
     <p>
-      
+
     </p>
     <p>
       Open menu<i>&#160;Filteren &gt; Componeren filter</i>&#160;(of klik op het pictogram in de filterbalk)&#160;en maak de filterregels die je nodig hebt. Voorzie de filterregels die je wilt hergebruiken van een naamlabel om ze herkenbaar te maken. Kies dan <i>Bewaren</i>&#160;voor het bewaren van de set. Op het moment dat je de set nodig hebt kies je (in het venster voor het componeren) <i>Laden</i>&#160;voor het opnieuw installeren van de set.
     </p>
     <p>
-      
+
     </p>
     <p>
       De filterregels zijn beschikbaar in de filter menubalk. Om een regel te kiezen, klik op het venster naast &quot;<i>Niet filteren (verwijderen)</i>&quot;. &#160;Je ziet dan de eerder gedefinieerde filters. Klik op de regel naar keuze. Na het filteren klik op pictogram &#160;<i><b>Stop&#160;filter</b></i>.
@@ -4304,7 +4304,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4326,14 +4326,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see only the information at the first level of experience (Beginner):
     </p>
     <p>
-      
+
     </p>
     <ol>
       <li>
@@ -4366,7 +4366,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4393,7 +4393,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ol>
@@ -4426,14 +4426,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       De inhoud van de kinderen van een knoop (tak) kan met een wachtwoord worden beveiligd. Selecteer hiervoor de ouderknoop en kies Extra<i>&#160;&gt; Knoobeveiliging &gt; Opgeven wachtwword. </i>Het is mogelijk binnen de beveiligde tak elke knoop een ander wachtwoord te geven.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -4468,7 +4468,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4489,7 +4489,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4507,14 +4507,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Een nieuwe knoop krijgt stijl Standaardstijl. Deze stijl kan worden vernaderd : <i>Opmaken &gt; Beheren stijlen &gt; Bewerken stijlen. </i>Als je <i>omlijning</i>&#160;instelt krijgen alle nieuwe knopen een omlijning of kader.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -4543,14 +4543,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       In menu Beeld kun je verschillende eigenschappen van de knoopkern instellen zoals de breedte van de tekst, of een selectierand moet worden getoond, of formules met een rand moeten worden omgeven en welke achtergrondkleur voor een revisie moet worden toegepast. Je kunt verder instellen hoe knoopdetails moeten worden getoond, met of zonder zweeftekst en revisies (tijdstippen). Je kunt verder aangeven welke attributen moeten moeten worden getoond of verborgen. En je kunt aangeven of knoopnotities in een apart venster moeten worden getoond dat op het scherm blijft staan, en op welke positie van het scherm.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking</b>
@@ -4576,7 +4576,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4601,7 +4601,7 @@
       <span lang="EN-US">Docear is the successor of SciPlore MindMapping and funded by the European Union and German Federal Ministry of Economics and Technology.</span>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Click the red arrow</b>
@@ -4624,7 +4624,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4654,7 +4654,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4679,14 +4679,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       De sneltoetsen die worden gebruikt voor bepaalde pictogrammen
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -4696,7 +4696,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4751,7 +4751,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4765,7 +4765,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4790,14 +4790,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       De vertikale afstand tussen knopen kan als volgt worden veranderd: selecteer een knoop, houdt Ctrl ingedrukt en sleep de blauwe handle van de knoop naar boven of benededen; of gebruik het rolletje op de muis.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Opmerking </b>
@@ -4826,14 +4826,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Freeplane heeft een mogelijkheid om zelf ontbrekende functies toe te voegen met de scripttaal Groovy. Er is een verzameling kant en klare scripts die je kunt gebruiken zonder dat je hoeft te kunnen programmeren.
     </p>
     <p>
-      
+
     </p>
     <p>
       Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
@@ -4854,7 +4854,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4884,7 +4884,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4920,7 +4920,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4939,7 +4939,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4959,7 +4959,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4974,7 +4974,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4998,7 +4998,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5016,7 +5016,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5040,7 +5040,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -5060,7 +5060,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5080,7 +5080,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5100,7 +5100,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5120,7 +5120,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5137,7 +5137,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5151,7 +5151,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5168,7 +5168,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5191,7 +5191,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -5213,7 +5213,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -5238,7 +5238,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5255,7 +5255,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5271,7 +5271,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5286,13 +5286,7 @@
       </li>
     </ul>
     <p>
-      
-    </p>
-    <p>
-      Read how to at <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job">http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job</a>s
-    </p>
-    <p>
-      
+
     </p>
   </body>
 </html>
@@ -5304,7 +5298,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>

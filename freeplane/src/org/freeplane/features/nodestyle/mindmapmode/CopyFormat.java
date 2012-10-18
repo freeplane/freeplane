@@ -60,10 +60,6 @@ class CopyFormat extends AFreeplaneAction {
 	}
 }
 
-/**
- * @author foltin
- */
-@EnabledAction(checkOnPopup = true)
 class PasteFormat extends AMultipleNodeAction {
 	/**
 	 * 
@@ -88,12 +84,9 @@ class PasteFormat extends AMultipleNodeAction {
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, node);
+		Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
 		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
 	}
-
-	@Override
-    public void setEnabled() {
-		setEnabled(CopyFormat.getPattern() != null);
-    }
 }

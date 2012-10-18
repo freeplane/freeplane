@@ -331,11 +331,15 @@ public class TextController implements IExtension {
 			if (format != null) {
 				return format;
 			}
-		}
-		return PatternFormat.STANDARD_FORMAT_PATTERN;
+        }
+        return parseData() ? PatternFormat.STANDARD_FORMAT_PATTERN : PatternFormat.IDENTITY_PATTERN;
     }
 
-	public boolean getNodeNumbering(NodeModel node) {
+	public boolean parseData() {
+        return false;
+    }
+
+    public boolean getNodeNumbering(NodeModel node) {
 		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
 		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 		for(IStyle styleKey : collection){

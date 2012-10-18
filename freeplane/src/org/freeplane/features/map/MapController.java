@@ -551,13 +551,8 @@ public class MapController extends SelectionController implements IExtension{
 		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
 	}
 
-	private boolean getFoldingState(final Collection<NodeModel> list) {
-		/*
-		 * Retrieve the information whether or not all nodes have the same
-		 * folding state.
-		 */
+	private Boolean getCommonFoldingState(final Collection<NodeModel> list) {
 		Boolean state = null;
-		boolean allNodeHaveSameFoldedStatus = true;
 		for(final NodeModel node : list){
 			if (node.getChildCount() == 0) {
 				continue;
@@ -567,17 +562,12 @@ public class MapController extends SelectionController implements IExtension{
 			}
 			else {
 				if (hasHiddenChildren(node) != state) {
-					allNodeHaveSameFoldedStatus = false;
-					break;
+					// no common state
+					return null;
 				}
 			}
 		}
-		/* if the folding state is ambiguous, the nodes are folded. */
-		boolean fold = true;
-		if (allNodeHaveSameFoldedStatus && state != null) {
-			fold = !state;
-		}
-		return fold;
+		return state;
 	}
 
 	public MapReader getMapReader() {
@@ -944,10 +934,11 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void toggleFolded(final Collection<NodeModel> collection) {
-		final boolean fold = getFoldingState(collection);
+		Boolean isFolded = getCommonFoldingState(collection);
+		final boolean shouldBeFolded = isFolded != null ?  ! isFolded : true;
 		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
 		for (final NodeModel node:nodes) {
-			setFolded(node, fold);
+			setFolded(node, shouldBeFolded);
 		}
 	}
 

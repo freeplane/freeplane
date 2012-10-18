@@ -89,7 +89,7 @@ public class FreeplaneStarter {
 		info.append("; freeplane_xml_version = ");
 		info.append(FreeplaneVersion.XML_VERSION);
 		if(! revision.equals("")){
-			info.append("\nbzr revision = ");
+			info.append("\ngit revision = ");
 			info.append(revision);
 		}
 		info.append("\njava_version = ");
@@ -254,8 +254,9 @@ public class FreeplaneStarter {
 		if(firstRun && ! dontLoadLastMaps){
 			final File baseDir = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			final String map = ResourceController.getResourceController().getProperty("first_start_map");
-			final File absolutFile = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, map, Locale.getDefault().getLanguage()); 
-			loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});
+			final File absolutFile = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, map, Locale.getDefault().getLanguage());
+			if(absolutFile != null)
+				loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});
 		}
 		if (null != controller.getMap()) {
 			return;

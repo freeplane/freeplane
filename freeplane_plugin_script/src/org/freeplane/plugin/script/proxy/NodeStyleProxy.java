@@ -74,6 +74,14 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
         return hasStyle(getDelegate(), StyleNamedObject.toKeyString(MapStyleModel.FLOATING_STYLE));
     }
 
+    public int getMinNodeWidth() {
+        return getStyleController().getMinWidth(getDelegate());
+    }
+
+    public int getMaxNodeWidth() {
+        return getStyleController().getMaxWidth(getDelegate());
+    }
+
 	private MLogicalStyleController getLogicalStyleController() {
 		return (MLogicalStyleController) LogicalStyleController.getController();
 	}
@@ -154,5 +162,13 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 				return true;
 		}
 		return false;
+    }
+
+    public void setMinNodeWidth(int width) {
+        getStyleController().setMinNodeWidth(getDelegate(), width);
+    }
+
+    public void setMaxNodeWidth(int width) {
+        getStyleController().setMaxNodeWidth(getDelegate(), width);
     }
 }
