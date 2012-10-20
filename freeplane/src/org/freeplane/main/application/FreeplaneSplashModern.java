@@ -29,6 +29,7 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -53,8 +54,6 @@ public class FreeplaneSplashModern extends JWindow {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Font versionTextFont = null;
-	private final String description = ResourceController.getResourceController().getProperty("freeplane_description");
-	private final String copyright = ResourceController.getResourceController().getProperty("freeplane_copyright");
 
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
@@ -73,7 +72,7 @@ public class FreeplaneSplashModern extends JWindow {
 		}
 	    InputStream fontInputStream = null;
 		try {
-			fontInputStream = ResourceController.getResourceController().getResource("/fonts/BPreplay.ttf")
+			fontInputStream = ResourceController.getResourceController().getResource("/fonts/pecita-subset.ttf")
 			    .openStream();
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
 		}
@@ -86,7 +85,6 @@ public class FreeplaneSplashModern extends JWindow {
     }
 
 	private final ImageIcon splashImage;
-	private Integer mWidth3;
 	private URL splashResource;
 
 	@Override
@@ -97,32 +95,28 @@ public class FreeplaneSplashModern extends JWindow {
 			return;
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		final FreeplaneVersion version = FreeplaneVersion.getVersion();
-		final String freeplaneNumber = version.numberToString();
-		final String status = version.getType().toUpperCase();
-		{
-			g2.setColor(Color.WHITE);
-			final int xCoordinate = 260;
-			final int yCoordinate = 212;
-			createVersionTextFont();
-			final float versionFontSize;
-			if(! status.equals(""))
-				versionFontSize = 18;
-			else
-				versionFontSize = 24;
-			g2.setFont(versionTextFont.deriveFont(versionFontSize));
-			g2.drawString(freeplaneNumber + " " + status, xCoordinate, yCoordinate);
-		}
-		g2.setFont(versionTextFont.deriveFont(10f));
-		g2.setColor(Color.WHITE);
-		int xCoordinate = 10;
-		final int yCoordinate = getSize().height - 10;
-		g2.drawString(description, xCoordinate, yCoordinate);
-		if (mWidth3 == null) {
-			mWidth3 = new Integer(g2.getFontMetrics().stringWidth(copyright));
-		}
-		xCoordinate = getSize().width - mWidth3.intValue() - 10;
-		g2.drawString(copyright, xCoordinate, yCoordinate);
+		final String versionString = getVersionText(version);
+		g2.setColor(Color.BLACK);
+		final int xCoordinate = 240;
+		final int yCoordinate = 240;
+		createVersionTextFont();
+		final float versionFontSize;
+		versionFontSize = 20;
+		g2.setFont(versionTextFont.deriveFont(versionFontSize));
+		final int stringWidth = g2.getFontMetrics().stringWidth(versionString);
+		g2.drawString(versionString, xCoordinate - stringWidth, yCoordinate);
 	}
+
+	private String getVersionText(final FreeplaneVersion version) {
+	    final String freeplaneNumber = version.numberToString();
+		final String status = version.getType().toUpperCase();
+		if("".equals(status))
+			return freeplaneNumber;
+		else{
+			final String versionString = freeplaneNumber + " " + status;
+			return versionString;
+		}
+    }
 
 	@Override
 	public void setVisible(final boolean b) {
