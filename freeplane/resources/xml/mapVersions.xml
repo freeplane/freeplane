@@ -2,6 +2,7 @@
 <MapVersions>
 	<dialect name="FREEPLANE1_2_0" versionBegin="freeplane 1.2.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
 	<dialect name="FREEPLANE1_1"  versionBegin="0.9.0"   needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
+	<dialect name="FREEPLANE_NEWER"   versionBegin="freeplane"  needsConversion="false" anotherDialect="true" appName="Freeplane" url="http://freeplane.sourceforge.net" />
 	<dialect name="FREEMIND"  versionBegin="0.8"   needsConversion="false" anotherDialect="false" appName="FreeMind" url="http://freemind.sourceforge.net" />
 	<dialect name="FREEMIND_1"   versionBegin="1."  needsConversion="false" anotherDialect="true" appName="FreeMind" url="http://freemind.sourceforge.net" />
 	<dialect name="DOCEAR" versionBegin="docear "   needsConversion="false" anotherDialect="true" appName="Docear" url="http://www.doc-ear.com" />
