@@ -26,14 +26,18 @@ import javax.ws.rs.core.MultivaluedMap;
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexEntry;
 import net.sf.jabref.BibtexEntryType;
+import net.sf.jabref.EntryTypeDialog;
+import net.sf.jabref.FocusRequester;
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRefFrame;
+import net.sf.jabref.KeyCollisionException;
 import net.sf.jabref.Util;
 import net.sf.jabref.export.DocearReferenceUpdateController;
 import net.sf.jabref.external.DroppedFileHandler;
 import net.sf.jabref.gui.MainTable;
 import net.sf.jabref.imports.ImportMenuItem;
 import net.sf.jabref.labelPattern.LabelPatternUtil;
+import net.sf.jabref.undo.UndoableInsertEntry;
 import net.sf.jabref.util.XMPUtil;
 
 import org.docear.plugin.bibtex.Reference;
@@ -239,7 +243,7 @@ public abstract class JabRefCommons {
 						} else {
 							
 							if (importDialog.getRadioButtonNoMeta().isSelected()) {
-								BibtexEntry newEntry = JabrefWrapper.createNewEntry(jabRefFrame, basePanel);
+								BibtexEntry newEntry = JabRefCommons.createNewEntry(jabRefFrame, basePanel);
 								if (newEntry != null) {
 									DroppedFileHandler dfh = new DroppedFileHandler(jabRefFrame, basePanel);
 									dfh.linkPdfToEntry(fileName, newEntry);
@@ -574,6 +578,49 @@ public abstract class JabRefCommons {
 	public static void addNewRefenceEntry(String[] fileNames, JabRefFrame jabRefFrame, BasePanel basePanel) {
 		addOrUpdateRefenceEntry(fileNames, -1, jabRefFrame, basePanel, null, true);
 		
+	}
+
+	public static BibtexEntry createNewEntry(JabRefFrame frame, BasePanel panel) {		
+	    // Find out what type is wanted.
+	    EntryTypeDialog etd = new EntryTypeDialog(frame);
+	    // We want to center the dialog, to make it look nicer.
+	    Util.placeDialog(etd, UITools.getFrame());
+	    etd.setVisible(true);
+	    BibtexEntryType type = etd.getChoice();
+	
+	    if (type != null) { // Only if the dialog was not cancelled.
+	        String id = Util.createNeutralId();
+	        final BibtexEntry be = new BibtexEntry(id, type);
+	        try {
+	            panel.database().insertEntry(be);
+	
+	            // Set owner/timestamp if options are enabled:
+	            ArrayList<BibtexEntry> list = new ArrayList<BibtexEntry>();
+	            list.add(be);
+	            Util.setAutomaticFields(list, true, true, false);
+	
+	            // Create an UndoableInsertEntry object.
+	            panel.undoManager.addEdit(new UndoableInsertEntry(panel.database(), be, panel));
+	            panel.output(Globals.lang("Added new")+" '"+type.getName().toLowerCase()+"' "
+	                   +Globals.lang("entry")+".");
+	
+	            // We are going to select the new entry. Before that, make sure that we are in
+	            // show-entry mode. If we aren't already in that mode, enter the WILL_SHOW_EDITOR
+	            // mode which makes sure the selection will trigger display of the entry editor
+	            // and adjustment of the splitter.
+	            if (panel.getMode() != BasePanel.SHOWING_EDITOR) {
+	            	panel.setMode(BasePanel.WILL_SHOW_EDITOR);
+	            }
+	
+	            panel.showEntry(be);
+	            panel.markBaseChanged(); // The database just changed.
+	            new FocusRequester(panel.getEntryEditor(be));
+	            return be;
+	        } catch (KeyCollisionException ex) {
+	            LogUtils.warn("Exception in org.docear.plugin.bibtex.jabref.JabrefWrapper.createNewEntry(): "+ex.getMessage());
+	        }
+	    }
+	    return null;
 	}
 
 //	private static void insertFields(String[] fields, BibtexEntry entry, BibtexEntry newData) {

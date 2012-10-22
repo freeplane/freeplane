@@ -18,15 +18,10 @@ import javax.swing.SwingUtilities;
 
 import net.sf.jabref.BasePanel;
 import net.sf.jabref.BibtexDatabase;
-import net.sf.jabref.BibtexEntry;
-import net.sf.jabref.BibtexEntryType;
 import net.sf.jabref.BibtexFields;
-import net.sf.jabref.EntryTypeDialog;
-import net.sf.jabref.FocusRequester;
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRef;
 import net.sf.jabref.JabRefFrame;
-import net.sf.jabref.KeyCollisionException;
 import net.sf.jabref.Util;
 import net.sf.jabref.export.SaveSession;
 import net.sf.jabref.external.FileLinksUpgradeWarning;
@@ -34,7 +29,6 @@ import net.sf.jabref.imports.CheckForNewEntryTypesAction;
 import net.sf.jabref.imports.OpenDatabaseAction;
 import net.sf.jabref.imports.ParserResult;
 import net.sf.jabref.imports.PostOpenAction;
-import net.sf.jabref.undo.UndoableInsertEntry;
 
 import org.docear.plugin.bibtex.ReferencesController;
 import org.docear.plugin.bibtex.actions.DocearHandleDuplicateWarning;
@@ -437,48 +431,4 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 
 	public void beforeViewChange(Component oldView, Component newView) {
 	}
-
-	public static BibtexEntry createNewEntry(JabRefFrame frame, BasePanel panel) {		
-	    // Find out what type is wanted.
-	    EntryTypeDialog etd = new EntryTypeDialog(frame);
-	    // We want to center the dialog, to make it look nicer.
-	    Util.placeDialog(etd, UITools.getFrame());
-	    etd.setVisible(true);
-	    BibtexEntryType type = etd.getChoice();
-	
-	    if (type != null) { // Only if the dialog was not cancelled.
-	        String id = Util.createNeutralId();
-	        final BibtexEntry be = new BibtexEntry(id, type);
-	        try {
-	            panel.database().insertEntry(be);
-	
-	            // Set owner/timestamp if options are enabled:
-	            ArrayList<BibtexEntry> list = new ArrayList<BibtexEntry>();
-	            list.add(be);
-	            Util.setAutomaticFields(list, true, true, false);
-	
-	            // Create an UndoableInsertEntry object.
-	            panel.undoManager.addEdit(new UndoableInsertEntry(panel.database(), be, panel));
-	            panel.output(Globals.lang("Added new")+" '"+type.getName().toLowerCase()+"' "
-	                   +Globals.lang("entry")+".");
-	
-	            // We are going to select the new entry. Before that, make sure that we are in
-	            // show-entry mode. If we aren't already in that mode, enter the WILL_SHOW_EDITOR
-	            // mode which makes sure the selection will trigger display of the entry editor
-	            // and adjustment of the splitter.
-	            if (panel.getMode() != panel.SHOWING_EDITOR) {
-	            	panel.setMode(panel.WILL_SHOW_EDITOR);
-	            }
-	
-	            panel.showEntry(be);
-	            panel.markBaseChanged(); // The database just changed.
-	            new FocusRequester(panel.getEntryEditor(be));
-	            return be;
-	        } catch (KeyCollisionException ex) {
-	            LogUtils.warn("Exception in org.docear.plugin.bibtex.jabref.JabrefChangeEventListener.createNewEntry(): "+ex.getMessage());
-	        }
-	    }
-	    return null;
-	}
-
 }
