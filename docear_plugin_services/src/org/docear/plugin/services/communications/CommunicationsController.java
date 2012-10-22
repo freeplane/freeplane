@@ -207,6 +207,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				String accessToken = getAccessToken();				
 				if (accessToken != null) {
 					builder = builder.header("accessToken", accessToken);
+					builder = builder.header("version", DocearController.getController().getApplicationBuildNumber());
 				}
 				return builder.get(c);
 			}
@@ -247,6 +248,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				String accessToken = getAccessToken();				
 				if (accessToken != null) {
 					builder = builder.header("accessToken", accessToken);
+					builder = builder.header("version", DocearController.getController().getApplicationBuildNumber());
 				}
 				return builder.post(ClientResponse.class, requestEntity);
 			}
@@ -279,6 +281,7 @@ public class CommunicationsController implements PropertyLoadListener, IWorkspac
 				String accessToken = getAccessToken();				
 				if (accessToken != null) {
 					builder = builder.header("accessToken", accessToken);
+					builder = builder.header("version", DocearController.getController().getApplicationBuildNumber());
 				}
 				return builder.put(c);
 			}
