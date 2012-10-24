@@ -137,7 +137,6 @@ public class FreeplaneStarter {
 			    .getProperty("lookandfeel"));
 			ViewController.setLookAndFeel(lookandfeel);
 			final JFrame frame = new JFrame("Freeplane");
-			Compat.macAppFullScreen(frame);
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {

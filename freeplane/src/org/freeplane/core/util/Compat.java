@@ -1,6 +1,5 @@
 package org.freeplane.core.util;
 
-import java.awt.Window;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -16,8 +15,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
-
-import javax.swing.JFrame;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
@@ -238,21 +235,6 @@ public class Compat {
         final int modifiers = getModifiers(e);
         return modifiers == InputEvent.SHIFT_DOWN_MASK;
     }
-
-	public static void macAppFullScreen(JFrame frame) {
-		if (!isMacOsX())
-			return;
-		try {
-			Class<?> util = Class.forName("com.apple.eawt.FullScreenUtilities");
-			Class<?> params[] = new Class[]{Window.class, Boolean.TYPE};
-			Method method = util.getMethod("setWindowCanFullScreen", params);
-			method.invoke(util, frame, true);
-		} catch (ClassNotFoundException e1) {
-			LogUtils.warn("OS X Fullscreen FAIL - class not found", e1);
-		} catch (Exception e) {
-			LogUtils.warn("OS X Fullscreen FAIL", e);
-		}
-	}
 
 
 }
