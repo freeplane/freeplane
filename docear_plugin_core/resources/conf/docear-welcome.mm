@@ -496,7 +496,7 @@
 <node TEXT="Mouse Actions" FOLDED="true" ID="ID_156487929" CREATED="1322910158642" MODIFIED="1323262060434">
 <font BOLD="true"/>
 <node TEXT="You can move nodes very quick with the mouse in various ways" ID="ID_1710120997" CREATED="1323262075512" MODIFIED="1323262092440"/>
-<node TEXT="Drag&amp;Drop the left corner of a node" ID="ID_1620693421" CREATED="1323262118533" MODIFIED="1323262129325">
+<node TEXT="Drag&amp;Drop the inner corner of a node" ID="ID_1620693421" CREATED="1323262118533" MODIFIED="1323262129325">
 <node TEXT="This will move the node to a free postion" ID="ID_1932019998" CREATED="1323262132244" MODIFIED="1323262141379"/>
 </node>
 <node TEXT="Drag&amp;Drop the center of a node" ID="ID_448465592" CREATED="1323262143077" MODIFIED="1323263781732">
