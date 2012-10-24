@@ -21,6 +21,7 @@ import net.sf.jabref.JabRefPreferences;
 
 import org.docear.plugin.bibtex.actions.AddExistingReferenceAction;
 import org.docear.plugin.bibtex.actions.AddNewReferenceAction;
+import org.docear.plugin.bibtex.actions.AddOrUpdateReferenceEntryWorkspaceAction;
 import org.docear.plugin.bibtex.actions.AddRecommendedDocumentAction;
 import org.docear.plugin.bibtex.actions.CopyBibtexToClipboard;
 import org.docear.plugin.bibtex.actions.CopyCiteKeyToClipboard;
@@ -65,6 +66,12 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.WorkspaceUtils;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
+import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
+import org.freeplane.plugin.workspace.event.IWorkspaceEventListener;
+import org.freeplane.plugin.workspace.event.WorkspaceEvent;
+import org.freeplane.plugin.workspace.nodes.DefaultFileNode;
+import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 import org.freeplane.view.swing.map.NodeView;
 
 public class ReferencesController extends ALanguageController implements IDocearEventListener {
@@ -201,6 +208,30 @@ public class ReferencesController extends ALanguageController implements IDocear
 		if(WorkspaceController.getController().isInitialized() && !isRunning) {
 			this.jabRefAttributes = new JabRefAttributes();
 			this.splmmAttributes = new SplmmAttributes();
+			WorkspaceController.getController().addWorkspaceListener(new IWorkspaceEventListener() {				
+				public void workspaceReady(WorkspaceEvent event) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							removeSelf();
+							WorkspacePopupMenu popupMenu = new DefaultFileNode("temp", new File("temp.tmp")).getContextMenu();
+							WorkspacePopupMenuBuilder.insertAction(popupMenu, "workspace.action.addOrUpdateReferenceEntry", 0);
+							WorkspacePopupMenuBuilder.insertAction(popupMenu, WorkspacePopupMenuBuilder.SEPARATOR, 1);
+							popupMenu = new LinkTypeFileNode().getContextMenu();
+							WorkspacePopupMenuBuilder.insertAction(popupMenu, "workspace.action.addOrUpdateReferenceEntry", 0);
+							WorkspacePopupMenuBuilder.insertAction(popupMenu, WorkspacePopupMenuBuilder.SEPARATOR, 1);
+						}
+					});
+				}
+				private void removeSelf() {
+					WorkspaceController.getController().removeWorkspaceListener(this);
+				}
+				public void workspaceChanged(WorkspaceEvent event) {}
+				public void toolBarChanged(WorkspaceEvent event) {}
+				public void openWorkspace(WorkspaceEvent event) {}
+				public void configurationLoaded(WorkspaceEvent event) {}
+				public void configurationBeforeLoading(WorkspaceEvent event) {}
+				public void closeWorkspace(WorkspaceEvent event) {}
+			});			
 			
 			NodeSelectionListener nodeSelectionListener = new NodeSelectionListener();
 			nodeSelectionListener.init();
@@ -224,6 +255,8 @@ public class ReferencesController extends ALanguageController implements IDocear
 						} 
 						modeController.getUserInputListenerFactory().getMenuBar().addKeyStrokeInterceptor(new KeyBindInterceptor());
 						createOptionPanel(jabrefWrapper.getJabrefFrame());
+						
+						
 					}
 				});
 			}
@@ -258,6 +291,7 @@ public class ReferencesController extends ALanguageController implements IDocear
 	}
 	
 	private void addMenuEntries() {
+		Controller.getCurrentController().addAction(new AddOrUpdateReferenceEntryWorkspaceAction());
 
 		this.modeController.addMenuContributor(new IMenuContributor() {
 

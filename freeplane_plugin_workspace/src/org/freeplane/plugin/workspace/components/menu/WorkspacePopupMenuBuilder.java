@@ -5,6 +5,7 @@ import java.util.Stack;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -60,22 +61,26 @@ public class WorkspacePopupMenuBuilder {
 	public static void insertAction(final WorkspacePopupMenu popupMenu, String actionKey, int index) {
 		assert actionKey != null;
 		assert popupMenu != null;
-		
-		AFreeplaneAction action = Controller.getCurrentController().getAction(actionKey);
-		
-		if(action == null) {
-			return;
-		}
-		
-		final JMenuItem item;
-		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
-			item = new JAutoCheckBoxMenuItem(action);
-		}
+		if(actionKey.equals(SEPARATOR)) {
+			popupMenu.add(new JPopupMenu.Separator(), index);		
+		} 
 		else {
-			item = new JFreeplaneMenuItem(action);
+			AFreeplaneAction action = Controller.getCurrentController().getAction(actionKey);
+			
+			if(action == null) {
+				return;
+			}
+			
+			final JMenuItem item;
+			if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+				item = new JAutoCheckBoxMenuItem(action);
+			}
+			else {
+				item = new JFreeplaneMenuItem(action);
+			}
+			popupMenu.add(item, index);
+			addListeners(popupMenu, action);
 		}
-		popupMenu.add(item, index);
-		addListeners(popupMenu, action);
 		return;
 	}
 	

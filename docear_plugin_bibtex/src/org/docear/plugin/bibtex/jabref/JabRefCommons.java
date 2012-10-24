@@ -204,22 +204,32 @@ public abstract class JabRefCommons {
 					URI fileUri = new File(fileName).toURI();
 					
 					ImportDialog importDialog = new ImportDialog(dropRow, fileName, (chooseFirst ? (dropRow < 0) : null));
+					Tools.centerRelativeToWindow(importDialog, UITools.getFrame());
+					
+					String hash = AnnotationController.getDocumentHash(fileUri);
+					if(hash == null) {
+						importDialog.getRadioButtonMrDlib().setEnabled(false);
+						importDialog.getRadioButtonUpdateEmptyFields().setEnabled(false);
+						importDialog.getRadioButtonMrDlib().setSelected(false);
+						importDialog.getRadioButtonNoMeta().setSelected(true);
+					}
+					
 					List<BibtexEntry> xmpEntriesInFile = readXmpEntries(fileName);
 					if ((xmpEntriesInFile == null) || (xmpEntriesInFile.size() == 0)) {
 						importDialog.getRadioButtonXmp().setEnabled(false);
 					}
-					Tools.centerRelativeToWindow(importDialog, UITools.getFrame());
+					
 					if(chooseFirst) {
 						importDialog.showDialog();						
 					}
-					else if (dropRow == -1) { // dropped on a new area
+					else if (dropRow == -1 && hash != null) { // dropped on a new area
 						// create new entry (with metadata? empty entry?
 						try {
 							showMetadataDialog(fileUri);
 						} catch (Exception e) {
 							LogUtils.warn("Exception in org.docear.plugin.bibtex.jabref.JabrefChangeEventListener.processEvent(0): " + e.getMessage());
 						}
-						continue;
+						continue;						
 					} 
 					
 					// dropped on an existing entry

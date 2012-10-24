@@ -98,8 +98,13 @@ public class JabrefWrapper extends JabRef implements IMapViewChangeListener {
 		// super(frame, new String[]{"true", "-i", "\""+file.toString()+"\""});
 		super(frame);		
 		registerListeners();
-		if(file != null ) {
-			openIt(file, true);
+		try {
+			if(file != null ) {
+				openIt(file, true);
+			}
+		}
+		catch (Exception e) {
+			LogUtils.warn("Exception in org.docear.plugin.bibtex.jabref.JabrefWrapper.constructor(): "+ e.getMessage());
 		}
 		
 		this.jrf.getPreferences().put("generateKeysBeforeSaving", "true");
