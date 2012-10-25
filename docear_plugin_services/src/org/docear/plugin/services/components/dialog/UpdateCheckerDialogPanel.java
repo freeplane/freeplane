@@ -76,7 +76,7 @@ public class UpdateCheckerDialogPanel extends JPanel {
 			add(lblYouCanDownload, "1, 3");
 			String uri = null;
 			if (status.equals(Version.StatusName.devel.name())) {
-				uri = "https://sourceforge.net/apps/phpbb/docear/viewforum.php?f=5";
+				uri = "http://www.docear.org/support/forums/docear-support-forums-group3/experimental-releases-forum8/";
 			}
 			else {
 				uri = "http://www.docear.org/software/download/";
