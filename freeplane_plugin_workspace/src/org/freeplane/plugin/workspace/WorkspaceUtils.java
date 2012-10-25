@@ -270,21 +270,25 @@ public class WorkspaceUtils {
 
 	}
 	
-	public static URI absoluteURI(final URI uri, MapModel map) {
+	public static URI absoluteURI(URI uri, MapModel map) {
 		if(uri == null) {
 			return null;
 		}
 		try {
 			URLConnection urlConnection;
 			// windows drive letters are interpreted as uri schemes -> make a file from the scheme-less uri string and use this to resolve the path
+			
 			if(Compat.isWindowsOS() && (uri.getScheme() != null && uri.getScheme().length() == 1)) { 
 				urlConnection = (new File(uri)).toURL().openConnection();
 			} 
-			else if(uri.getScheme() == null && !uri.getPath().startsWith(File.separator)) {
+			else if(uri.getScheme() == null) {
 				if(map == null) {
 					urlConnection = uri.toURL().openConnection();
 				} 
 				else {
+					if (uri.getPath().startsWith(File.separator)) {
+						uri = URI.create("file://"+uri.toString());
+					}
 					urlConnection = UrlManager.getController().getAbsoluteUri(map, uri).toURL().openConnection();
 				}
 			}
