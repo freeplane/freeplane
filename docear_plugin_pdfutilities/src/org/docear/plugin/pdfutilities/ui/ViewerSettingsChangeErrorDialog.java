@@ -13,6 +13,7 @@ import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.swingplus.JHyperlink;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -37,6 +38,8 @@ public class ViewerSettingsChangeErrorDialog extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 
@@ -45,6 +48,18 @@ public class ViewerSettingsChangeErrorDialog extends JPanel {
 		
 		MultiLineActionLabel link = new MultiLineActionLabel(TextUtils.getText("docear.validate_pdf_xchange.settings_change_error.link"));
 		add(link, "2, 4");
+				 
+		MultiLineActionLabel lbl = new MultiLineActionLabel("<action cmd=\"perform_action\">"+TextUtils.getText("DocearSendPdfxcRegistryAction.text")+"</action>");
+		lbl.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if ("perform_action".equals(e.getActionCommand())) {
+					Controller.getCurrentController().getAction("DocearSendPdfxcRegistryAction").actionPerformed(e);
+				}
+			}
+		});
+		
+		add(lbl, "2, 6");
 		link.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {

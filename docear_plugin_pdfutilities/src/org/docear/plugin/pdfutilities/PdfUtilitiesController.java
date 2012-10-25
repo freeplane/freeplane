@@ -258,7 +258,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				}
 				
 				try {
-					if (!hasCompatibleSettings(reader.getExecFile())) {					
+					if (hasCompatibleSettings(reader.getExecFile())) {					
 						JOptionPane.showMessageDialog(UITools.getFrame(), new ViewerSettingsChangeErrorDialog(reader.getExecFile()), TextUtils.getText("docear.validate_pdf_xchange.settings_change_error.title"), JOptionPane.WARNING_MESSAGE);
 					}
 				}
@@ -646,6 +646,7 @@ public class PdfUtilitiesController extends ALanguageController {
 		Controller.getCurrentController().addAction(new ShowInstalledPdfReadersDialogAction());
 		Controller.getCurrentController().addAction(new ShowPdfReaderDefinitionDialogAction());
 		Controller.getCurrentController().addAction(new IncomingReReadMonitoringAction());
+		Controller.getCurrentController().addAction(new DocearSendPdfxcRegistryAction());
 
 		this.modecontroller.removeAction("PasteAction"); //$NON-NLS-1$
 		this.modecontroller.addAction(new DocearPasteAction());
@@ -664,7 +665,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				ResourceController resourceController = ResourceController.getResourceController();
 				
 				if(!Compat.isMacOsX()){
-					builder.addAction("/menu_bar/help/Web resources", new DocearSendPdfxcRegistryAction("DocearSendPdfxcRegistryAction"), MenuBuilder.AS_CHILD);
+					builder.addAction("/menu_bar/help/Web resources", Controller.getCurrentController().getAction(DocearSendPdfxcRegistryAction.KEY), MenuBuilder.AS_CHILD);
 				}
 				
 				String monitoringCategory = PdfUtilitiesController.getParentCategory(builder, MONITORING_CATEGORY);

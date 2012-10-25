@@ -26,13 +26,14 @@ import sun.net.www.ParseUtil;
 
 public class DocearSendPdfxcRegistryAction extends AFreeplaneAction {
 
+	public static final String KEY = "DocearSendPdfxcRegistryAction";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DocearSendPdfxcRegistryAction(String key) {
-		super(key);		
+	public DocearSendPdfxcRegistryAction() {
+		super(KEY);		
 	}
 
 	public void actionPerformed(ActionEvent e) {
