@@ -503,12 +503,12 @@ public class PdfUtilitiesController extends ALanguageController {
 			if(app.getName().startsWith("Adobe Reader")) {
 				viewers.put("Adobe Reader.app", new PDFReaderHandle("Adobe Reader", app.getAbsolutePath(), null));
 			}
-			else if(app.getName().startsWith("Skim")) {
+			/*else if(app.getName().startsWith("Skim")) {
 				viewers.put("Skim.app", new PDFReaderHandle("Skim", app.getAbsolutePath(), null));
 			}
 			else if(app.getName().startsWith("Preview")) {
 				viewers.put("Preview.app", new PDFReaderHandle("Preview", app.getAbsolutePath(), null));
-			}
+			}*/
 		}
 	}
 

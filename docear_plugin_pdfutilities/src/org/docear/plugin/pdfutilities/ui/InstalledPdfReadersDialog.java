@@ -19,6 +19,7 @@ import org.docear.plugin.pdfutilities.PdfUtilitiesController;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle;
 import org.docear.plugin.pdfutilities.features.PDFReaderHandle.RegistryBranch;
 import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -130,8 +131,9 @@ public class InstalledPdfReadersDialog extends JPanel {
 				}
 			}
 		});			
-		
-		pnlForm.add(pdfxcvLink, "2, 4, 3, 1");
+		if(!Compat.isMacOsX()){
+			pnlForm.add(pdfxcvLink, "2, 4, 3, 1");
+		}
 		pnlForm.add(readerSettingsWarning, "2, 6, 3, 1");
 		pnlForm.add(helpLink, "2, 8, 3, 1");		
 	}
@@ -152,34 +154,45 @@ public class InstalledPdfReadersDialog extends JPanel {
 	}
 	
 	private void showWarningIfNecessary() {
-		String execFile = ((PDFReaderHandle) readerChoice.getSelectedItem()).getExecFile();
-		if(((PDFReaderHandle)readerChoice.getSelectedItem()).getName().equals(TextUtils.getText("docear.default_reader"))){			
-			for(PDFReaderHandle reader : readerHandles){
-				if(reader.isDefault()){					
-					execFile = reader.getExecFile();
-					break;
-				}
-			}			
-		}
-		boolean compatible = true;
-		if (execFile != null) {										
-			try {
-				compatible = PdfUtilitiesController.getController().hasCompatibleSettings(execFile);
+		if(!Compat.isMacOsX()){
+			String execFile = ((PDFReaderHandle) readerChoice.getSelectedItem()).getExecFile();
+			if(((PDFReaderHandle)readerChoice.getSelectedItem()).getName().equals(TextUtils.getText("docear.default_reader"))){			
+				for(PDFReaderHandle reader : readerHandles){
+					if(reader.isDefault()){					
+						execFile = reader.getExecFile();
+						break;
+					}
+				}			
 			}
-			catch (IOException e1) {
-			}			
+			boolean compatible = true;
+			if (execFile != null) {										
+				try {
+					compatible = PdfUtilitiesController.getController().hasCompatibleSettings(execFile);
+				}
+				catch (IOException e1) {
+				}			
+			}
+			PdfReaderFileFilter filter = new PdfReaderFileFilter();
+			if (!compatible && filter.isPdfXChange(execFile)) {
+				readerSettingsWarning.setText(TextUtils.getText("docear.help.pdf_xchange_viewer.warning"));
+				readerSettingsWarning.setVisible(true);
+			}
+			if (!compatible && filter.isAcrobat(execFile)) {
+				readerSettingsWarning.setText(TextUtils.getText("docear.help.acrobat.warning"));
+				readerSettingsWarning.setVisible(true);
+			}
+			if (compatible) {
+				readerSettingsWarning.setVisible(false);
+			}
 		}
-		PdfReaderFileFilter filter = new PdfReaderFileFilter();
-		if (!compatible && filter.isPdfXChange(execFile)) {
-			readerSettingsWarning.setText(TextUtils.getText("docear.help.pdf_xchange_viewer.warning"));
-			readerSettingsWarning.setVisible(true);
-		}
-		if (!compatible && filter.isAcrobat(execFile)) {
-			readerSettingsWarning.setText(TextUtils.getText("docear.help.acrobat.warning"));
-			readerSettingsWarning.setVisible(true);
-		}
-		if (compatible) {
-			readerSettingsWarning.setVisible(false);
+		else{
+			if(readerHandles.length == 0){
+				readerSettingsWarning.setText(TextUtils.getText("docear.help.adobe_reader"));
+				readerSettingsWarning.setVisible(true);
+			}
+			else{
+				readerSettingsWarning.setVisible(false);
+			}
 		}
 	}
 }
