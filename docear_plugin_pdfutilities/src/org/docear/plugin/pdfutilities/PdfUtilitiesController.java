@@ -258,7 +258,7 @@ public class PdfUtilitiesController extends ALanguageController {
 				}
 				
 				try {
-					if (hasCompatibleSettings(reader.getExecFile())) {					
+					if (!hasCompatibleSettings(reader.getExecFile())) {					
 						JOptionPane.showMessageDialog(UITools.getFrame(), new ViewerSettingsChangeErrorDialog(reader.getExecFile()), TextUtils.getText("docear.validate_pdf_xchange.settings_change_error.title"), JOptionPane.WARNING_MESSAGE);
 					}
 				}
