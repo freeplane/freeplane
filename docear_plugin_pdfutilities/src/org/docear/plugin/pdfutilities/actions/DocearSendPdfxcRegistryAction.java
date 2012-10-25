@@ -57,12 +57,16 @@ public class DocearSendPdfxcRegistryAction extends AFreeplaneAction {
 				if(pdfxcSettingsZipFile.exists()){
 					try {
 						URI mailtoUri;
+						StringBuilder uriString = new StringBuilder();
+						uriString.append("mailto:help@docear.org?subject=PDFXCV Settings Problem&body=");
 						if(CommunicationsController.getController().getUserName() != null){
-							mailtoUri = URI.create(ParseUtil.encodePath(TextUtils.getRawText("docear.pdfxcv.settings.mail.text")+CommunicationsController.getController().getUserName()+TextUtils.getText("docear.pdfxcv.settings.mail.text2")));
-						}
-						else{
-							mailtoUri = URI.create(ParseUtil.encodePath(TextUtils.getRawText("docear.pdfxcv.settings.mail.text3")));
-						}
+							uriString.append("Username:");
+							uriString.append(CommunicationsController.getController().getUserName());
+						}						
+						uriString.append("%0D%0A%0D%0A");
+						uriString.append(TextUtils.getRawText("docear.pdfxcv.settings.mail.text"));
+					
+						mailtoUri = URI.create(ParseUtil.encodePath(uriString.toString()));
 						Controller.getCurrentController().getViewController().openDocument(mailtoUri);
 						Controller.getCurrentController().getViewController().openDocument(Compat.fileToUrl(pdfxcSettingsZipFile.getParentFile()).toURI());
 					}			
