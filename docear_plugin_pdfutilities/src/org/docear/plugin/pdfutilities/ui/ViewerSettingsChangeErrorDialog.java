@@ -13,7 +13,6 @@ import org.docear.plugin.pdfutilities.pdf.PdfReaderFileFilter;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.swingplus.JHyperlink;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
