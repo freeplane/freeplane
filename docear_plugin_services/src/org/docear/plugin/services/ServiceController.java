@@ -42,7 +42,7 @@ public class ServiceController extends UploadController {
 	public static final String DOCEAR_INFORMATION_RETRIEVAL = "docear_information_retrieval";
 
 	public static final String DOCEAR_SAVE_BACKUP = "docear_save_backup";
-	public static final long RECOMMENDATIONS_AUTOSHOW_INTERVAL = 1000*60*60*24*5; // every 5 days in milliseconds
+	public static final long RECOMMENDATIONS_AUTOSHOW_INTERVAL = 1000*60*60*24*7; // every 7 days in milliseconds
 
 
 	private static ServiceController serviceController;

@@ -327,7 +327,7 @@ public abstract class JabRefCommons {
 			if (response == JOptionPane.OK_OPTION) {
 				Util.setAutomaticFields(metadata.getEntries(), true, true, false);
 				BibtexEntry selected = metadata.getSelectedEntry();
-				selected.setField("dcr_hash", hash);
+				selected.setField("dcr_pdf_hash", hash);
 				addOrUpdateEntryToDatabase(file, selected);
 				if (metadata.hasRemoteBib()) {
 					commit(selected.getField("dcr_bibtex_id"), hash, userName);
@@ -371,7 +371,7 @@ public abstract class JabRefCommons {
 		if(metadata.wasSuccessful()) {
 			if (response == JOptionPane.OK_OPTION) {
 				BibtexEntry selected = metadata.getSelectedEntry();
-				selected.setField("dcr_hash", hash);
+				selected.setField("dcr_pdf_hash", hash);
 				updateEntryInDatabase(file, selected, oldEntry);
 				if (metadata.hasRemoteBib()) {
 					commit(selected.getField("dcr_bibtex_id"), hash, userName);

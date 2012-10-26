@@ -4,7 +4,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.docear.plugin.services.ServiceController;
 import org.docear.plugin.services.recommendations.actions.ShowRecommendationsAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
