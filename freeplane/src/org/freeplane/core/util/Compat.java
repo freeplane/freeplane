@@ -10,7 +10,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -247,7 +246,10 @@ public class Compat {
 			Class<?> params[] = new Class[]{Window.class, Boolean.TYPE};
 			Method method = util.getMethod("setWindowCanFullScreen", params);
 			method.invoke(util, frame, true);
-		} catch (Exception e) {
+		}
+		catch(ClassNotFoundException e) {
+		}
+		catch (Exception e) {
 			LogUtils.warn("OS X Fullscreen FAIL", e);
 		}
 	}
