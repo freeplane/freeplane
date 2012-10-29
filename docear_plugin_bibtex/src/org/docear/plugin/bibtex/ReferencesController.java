@@ -204,23 +204,28 @@ public class ReferencesController extends ALanguageController implements IDocear
 		}
 	}
 
+	private boolean alreadyInserted = false;
 	private void initJabref() {		
 		if(WorkspaceController.getController().isInitialized() && !isRunning) {
 			this.jabRefAttributes = new JabRefAttributes();
 			this.splmmAttributes = new SplmmAttributes();
 			WorkspaceController.getController().addWorkspaceListener(new IWorkspaceEventListener() {				
 				public void workspaceReady(WorkspaceEvent event) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							removeSelf();
-							WorkspacePopupMenu popupMenu = new DefaultFileNode("temp", new File("temp.tmp")).getContextMenu();
-							WorkspacePopupMenuBuilder.insertAction(popupMenu, "workspace.action.addOrUpdateReferenceEntry", 0);
-							WorkspacePopupMenuBuilder.insertAction(popupMenu, WorkspacePopupMenuBuilder.SEPARATOR, 1);
-							popupMenu = new LinkTypeFileNode().getContextMenu();
-							WorkspacePopupMenuBuilder.insertAction(popupMenu, "workspace.action.addOrUpdateReferenceEntry", 0);
-							WorkspacePopupMenuBuilder.insertAction(popupMenu, WorkspacePopupMenuBuilder.SEPARATOR, 1);
-						}
-					});
+					if(!alreadyInserted) {
+						alreadyInserted = true;
+					
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								//removeSelf();
+								WorkspacePopupMenu popupMenu = new DefaultFileNode("temp", new File("temp.tmp")).getContextMenu();
+								WorkspacePopupMenuBuilder.insertAction(popupMenu, "workspace.action.addOrUpdateReferenceEntry", 0);
+								WorkspacePopupMenuBuilder.insertAction(popupMenu, WorkspacePopupMenuBuilder.SEPARATOR, 1);
+								popupMenu = new LinkTypeFileNode().getContextMenu();
+								WorkspacePopupMenuBuilder.insertAction(popupMenu, "workspace.action.addOrUpdateReferenceEntry", 0);
+								WorkspacePopupMenuBuilder.insertAction(popupMenu, WorkspacePopupMenuBuilder.SEPARATOR, 1);
+							}
+						});
+					}
 				}
 				private void removeSelf() {
 					WorkspaceController.getController().removeWorkspaceListener(this);
