@@ -1306,9 +1306,25 @@ public class PdfUtilitiesController extends ALanguageController {
 	}
 	
 	public void setToStandardPdfViewer() {
-		ResourceController.getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, true);
-		ResourceController.getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
-		ResourceController.getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);		
+		if(Compat.isMacOsX()) {
+			try {
+				String filePath = detectDefaultPdfReader();
+				if(filePath != null) {
+					setReaderPreferences(filePath);
+				}
+			} catch (ScriptException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			ResourceController.getResourceController().setProperty(OPEN_STANDARD_PDF_VIEWER_KEY, true);
+			ResourceController.getResourceController().setProperty(OPEN_INTERNAL_PDF_VIEWER_KEY, false);
+			ResourceController.getResourceController().setProperty(OPEN_PDF_VIEWER_ON_PAGE_KEY, false);
+		}		
 	}
 	
 	public boolean openPageMacOs(String[] command) {
@@ -1385,6 +1401,26 @@ public class PdfUtilitiesController extends ALanguageController {
 		engine.eval(builder.toString());		
 		LogUtils.info("Successfully ran apple script");
 	}
+	
+	private String detectDefaultPdfReader() throws ScriptException, IOException {
+    	StringBuilder builder = new StringBuilder();
+    	File file = new File("tmp/pdffile.pdf");
+    	org.apache.commons.io.FileUtils.copyURLToFile(PdfUtilitiesController.class.getResource("/mac_os/temp.pdf"), file);
+    	builder.append("set FileToExamine to POSIX file \""+file.getPath()+"\"\n");
+    	URL url = PdfUtilitiesController.class.getResource("/mac_os/DetectDefaultPdfReader.appleScript");
+    	appendResourceContent(builder, url);
+    	    	
+    	final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(null);
+       
+        ScriptEngineManager mgr = new ScriptEngineManager();
+    	ScriptEngine engine = mgr.getEngineByName("AppleScript");
+    	
+        Thread.currentThread().setContextClassLoader(contextClassLoader);   
+		return (String) engine.eval(builder.toString());
+	}
+	
+	
 
 	private void appendResourceContent(StringBuilder builder, URL url) throws IOException {
 		if (url != null) {    		
