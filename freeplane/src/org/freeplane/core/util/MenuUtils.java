@@ -158,10 +158,6 @@ public class MenuUtils {
 		return null;
 	}
 
-	/**
-	 * Same as {@link #createMenuEntryTree(String, Controller)} but all MenuEntries without associated accelerator
-	 * and (then) empty submenus are removed from the result.
-	 */
 	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(final String menuRootKey,
 	                                                                      final MenuBuilder menuBuilder) {
 		final DefaultMutableTreeNode menuEntryTreeNode = MenuUtils.createMenuEntryTree(menuRootKey, menuBuilder);
