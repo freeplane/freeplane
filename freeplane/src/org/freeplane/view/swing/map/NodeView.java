@@ -41,6 +41,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.cloud.CloudController;
@@ -1422,7 +1423,8 @@ public class NodeView extends JComponent implements INodeView {
 		try {
 			super.validateTree();
 		} 
-		catch (Exception e) {
+		catch (Throwable e) {
+			LogUtils.info("Error in org.freeplane.view.swing.map.NodeView.validateTree(): "+ e.getMessage());
 		}
 	}
 
