@@ -28,7 +28,32 @@ public class TeXText
     	return createTeXIcon(style, size, TeXConstants.ALIGN_LEFT);
     }
 
-    public TeXIcon createTeXIcon(int style, int size, int align)
+	public TeXIcon createTeXIcon(int style, int size, int align, int maxWidth) {
+        rawText = rawText.replace("\\begin{align}", "\n\n$\\quad ");
+        rawText = rawText.replace("\\end{align}", "$\n\n");
+
+        rawText = rawText.replace("\\begin{align*}", "\n\n$\\quad ");
+        rawText = rawText.replace("\\end{align*}", "$\n\n");
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("\\raisebox{0}{ \\begin{array}{l} ");
+
+        String[] lines = rawText.split("\n");
+        for (int i = 0; i < lines.length; i++)
+        {
+            sb.append("\\text{");
+            sb.append(lines[i]);
+            sb.append("}\\\\ ");
+        }
+
+        sb.append("\\end{array} }");
+
+        TeXFormula tf = new TeXFormula(sb.toString());
+
+        return tf.createTeXIcon(style, size, TeXConstants.UNIT_PIXEL, maxWidth, align, TeXConstants.UNIT_PIXEL, 20f);
+    }
+
+   public TeXIcon createTeXIcon(int style, int size, int align)
     {
         rawText = rawText.replace("\\begin{align}", "\n\n$\\quad ");
         rawText = rawText.replace("\\end{align}", "$\n\n");

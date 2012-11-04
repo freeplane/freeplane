@@ -364,4 +364,8 @@ public class TextController implements IExtension {
 		}
 		return false;
     }
+	public ModeController getModeController() {
+    	return modeController;
+    }
+
 }

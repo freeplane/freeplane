@@ -4,6 +4,7 @@ import javax.swing.Icon;
 
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
@@ -44,6 +45,8 @@ public class LatexRenderer extends AbstractContentTransformer {
 				return null;
 
 			try {
+				final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
+				final int maxWidth = ncs.getMaxWidth(node);
 				TeXText teXt = new TeXText(latext);
 				TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE);
 				return icon;
