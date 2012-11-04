@@ -48,7 +48,7 @@ public class LatexRenderer extends AbstractContentTransformer {
 				final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
 				final int maxWidth = ncs.getMaxWidth(node);
 				TeXText teXt = new TeXText(latext);
-				TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE);
+				TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE, TeXConstants.ALIGN_LEFT, maxWidth);
 				return icon;
 			}
 			catch (final Exception e) {
