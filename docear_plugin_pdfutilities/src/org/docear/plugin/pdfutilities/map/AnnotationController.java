@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.docear.pdf.PdfDataExtractor;
 import org.docear.plugin.core.features.AnnotationID;
@@ -34,6 +36,8 @@ public class AnnotationController implements IExtension{
 	
 	private final static Set<IAnnotationImporter> annotationImporters = new HashSet<IAnnotationImporter>();
 	private final static Map<String, CachedHashItem> documentHashMap = new HashMap<String, CachedHashItem>();
+	private static final String NO_HASH_AVAILABLE = "";
+	private static Executor executor = Executors.newFixedThreadPool(2);
 	
 	public static void addAnnotationImporter(IAnnotationImporter annotationImporter) {
 		annotationImporters.add(annotationImporter);
@@ -237,7 +241,7 @@ public class AnnotationController implements IExtension{
 		}
 	}
 	
-	public static void registerDocumentHash(final URI uri, final String hash) {	
+	public static void registerDocumentHash(final URI uri, final String hash) {
 		if(uri == null || hash == null) {
 			return;
 		}
@@ -254,27 +258,19 @@ public class AnnotationController implements IExtension{
 				documentHashMap.put(file.toString(), new CachedHashItem(hashItem.getHashCode(), System.currentTimeMillis()));
 				executeHashConfirmation(file, lastModified);
 			}			
-		}		 
+		}		
 	}
 
 	private static void executeHashConfirmation(final File file, final long lastModified) {
-		new Thread() {
+		executor.execute(new Runnable() {
 			public void run() {
 				updateDocumentHashCache(file, lastModified);
 			}
-		}.start();
-//		ExecutorService executor = Executors.newSingleThreadExecutor();
-//		Future<?> future = executor.submit(new Runnable() {				
-//			public void run() {				
-//				updateDocumentHashCache(file, lastModified);					
-//			}
-//		});
-//		try {
-//			future.get(10, TimeUnit.SECONDS);
-//		} catch (Exception e) {
-//			//DOCEAR - log some info
-//		}			    
-//		executor.shutdown();
+			
+			public String toString() {
+				return ""+file;
+			}
+		});
 	}
 	
 	public static String getDocumentHash(URI uri) {
@@ -284,8 +280,13 @@ public class AnnotationController implements IExtension{
 		String hash = null;
 		
 		File file = new File(uri);
-		long lastModified = file.lastModified();
 		
+		if(!file.getName().toLowerCase().endsWith(".pdf")) {
+			return null;
+		}
+		
+		long lastModified = file.lastModified();
+				
 		CachedHashItem hashItem = documentHashMap.get(file.toString());		
 		if(hashItem == null || (hashItem.getLastUpdate() < lastModified)) {
 			hash = updateDocumentHashCache(file, lastModified);
@@ -293,6 +294,11 @@ public class AnnotationController implements IExtension{
 		else {
 			hash = hashItem.getHashCode();
 		}
+		
+		if(NO_HASH_AVAILABLE.equals(hash)) {
+			hash = null;
+		}
+		
 		return hash; 
 	}
 	
@@ -314,19 +320,24 @@ public class AnnotationController implements IExtension{
 	}
 	
 	private static String updateDocumentHashCache(final File file, final long lastModified) {
+		String hashCode = null;
 		try {
 			PdfDataExtractor extractor = new PdfDataExtractor(file);
-			String hashCode = extractor.getUniqueHashCode();
-			if(hashCode != null ) {
-				CachedHashItem newItem = new CachedHashItem(hashCode, lastModified);
+			hashCode = extractor.getUniqueHashCode();
+			if(hashCode == null ) {
+				hashCode = NO_HASH_AVAILABLE;
+			}
+			CachedHashItem newItem = new CachedHashItem(hashCode, lastModified);
+			synchronized (documentHashMap) {
 				documentHashMap.put(file.toString(), newItem);
 			}
-			return hashCode;
 		}
 		catch (Exception e) {
-			LogUtils.info("could not extract unique file hash: "+ e.getMessage());
+			hashCode = NO_HASH_AVAILABLE;
+			LogUtils.info("could not extract unique file hash: "+file+"\n"+ e.getMessage());			
 		}
-		return null;
+		
+		return hashCode;
 	}
 
 }
