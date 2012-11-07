@@ -236,13 +236,15 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-		String uriString = ParseUtil.decode(uri.toString());
-		final String UNC_PREFIX = "file:////";
-		if (uriString.startsWith(UNC_PREFIX)) {
-			uriString = "file://" + uriString.substring(UNC_PREFIX.length());
-		}
+		String uriString = uri.toString();
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
+			uriString = ParseUtil.decode(uriString);
+			final String UNC_PREFIX = "file:////";
+			if (uriString.startsWith(UNC_PREFIX)) {
+				uriString = "file://" + uriString.substring(UNC_PREFIX.length());
+			}
+			
 			String propertyString = "default_browser_command_windows";
 			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
 				propertyString += "_9x";
@@ -304,7 +306,7 @@ class ApplicationViewController extends ViewController {
 		}
 		else {
 			String browserCommand = null;
-			try {
+			try {				
 				final Object[] messageArguments = { uriString, uriString };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_other_os"));
