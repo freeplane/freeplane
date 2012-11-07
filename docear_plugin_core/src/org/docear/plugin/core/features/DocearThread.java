@@ -9,6 +9,7 @@ public abstract class DocearThread extends Thread {
 	
 	public DocearThread(String name) {	
 		this.name = name;
+		setName(name);
 	}
 	
 	public final void run() {
