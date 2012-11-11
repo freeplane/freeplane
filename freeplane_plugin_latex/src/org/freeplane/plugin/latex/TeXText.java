@@ -6,6 +6,7 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.freeplane.core.util.LogUtils;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -18,16 +19,6 @@ public class TeXText
         rawText = t;
     }
 
-    public TeXIcon createTeXIcon(int size)
-    {
-    	return createTeXIcon(TeXConstants.STYLE_DISPLAY, size, TeXConstants.ALIGN_LEFT);
-    }
-
-    public TeXIcon createTeXIcon(int style, int size)
-    {
-    	return createTeXIcon(style, size, TeXConstants.ALIGN_LEFT);
-    }
-
 	public TeXIcon createTeXIcon(int style, int size, int align, int maxWidth) {
         rawText = rawText.replace("\\begin{align}", "\n\n$\\quad ");
         rawText = rawText.replace("\\end{align}", "$\n\n");
@@ -36,47 +27,28 @@ public class TeXText
         rawText = rawText.replace("\\end{align*}", "$\n\n");
 
         StringBuffer sb = new StringBuffer();
-        sb.append("\\raisebox{0}{ \\begin{array}{l} ");
-
         String[] lines = rawText.split("\n");
-        for (int i = 0; i < lines.length; i++)
+        if (lines.length == 1)
         {
-            sb.append("\\text{");
-            sb.append(lines[i]);
-            sb.append("}\\\\ ");
+        	sb.append("\\text{" + lines[0] + "}");
         }
-
-        sb.append("\\end{array} }");
+        else
+        {
+        	sb.append("\\raisebox{0}{ \\begin{array}{l} ");
+        	for (int i = 0; i < lines.length; i++)
+        	{
+        		sb.append("\\text{");
+        		sb.append(lines[i]);
+        		sb.append("}\\\\ ");
+        	}
+        	sb.append("\\end{array} }");
+        }
 
         TeXFormula tf = new TeXFormula(sb.toString());
 
         return tf.createTeXIcon(style, size, TeXConstants.UNIT_PIXEL, maxWidth, align, TeXConstants.UNIT_PIXEL, 20f);
     }
 
-   public TeXIcon createTeXIcon(int style, int size, int align)
-    {
-        rawText = rawText.replace("\\begin{align}", "\n\n$\\quad ");
-        rawText = rawText.replace("\\end{align}", "$\n\n");
-
-        rawText = rawText.replace("\\begin{align*}", "\n\n$\\quad ");
-        rawText = rawText.replace("\\end{align*}", "$\n\n");
-
-        StringBuffer sb = new StringBuffer();
-        sb.append("\\raisebox{0}{ \\begin{array}{l} ");
-
-        String[] lines = rawText.split("\n");
-        for (int i = 0; i < lines.length; i++)
-        {
-            sb.append("\\text{");
-            sb.append(lines[i]);
-            sb.append("}\\\\ ");
-        }
-
-        sb.append("\\end{array} }");
-
-        TeXFormula tf = new TeXFormula(sb.toString());
-        return tf.createTeXIcon(style, size, align);
-    }
 
     public static void main(String[] argv)
     {
@@ -87,12 +59,14 @@ public class TeXText
         latex.append("f(\\lambda u) = \\lambda f(u) = 0.");
         latex.append("\\end{align}");
 
-        TeXText tf = new TeXText(latex.toString());
+        //TeXText tf = new TeXText(latex.toString());
+        TeXText tf = new TeXText("my formula: $x_2=3$hello world hello world hello world hello world hello world hello world hello world hello world hello world ");
 
         JFrame jf = new JFrame();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel jl = new JLabel();
-        jl.setIcon(tf.createTeXIcon(12, TeXConstants.ALIGN_CENTER));
+//        jl.setIcon(tf.createTeXIcon(12, TeXConstants.ALIGN_CENTER));
+        jl.setIcon(tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, 16, TeXConstants.ALIGN_CENTER, 100));
 
         Container cp = jf.getContentPane();
         cp.setLayout(new BorderLayout());
@@ -101,8 +75,6 @@ public class TeXText
         jf.pack();
         jf.setVisible(true);
         jf.setBounds(0, 0, 400, 300);
-
-        System.err.println("aaa");
     }
 
 }

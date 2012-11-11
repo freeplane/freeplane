@@ -9,4 +9,4 @@ Import-Package: org.freeplane.plugin.script,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1"
 Bundle-ClassPath: lib/plugin.jar,
- lib/jlatexmath-0.9.7.jar
+ lib/jlatexmath-1.0.1.jar
