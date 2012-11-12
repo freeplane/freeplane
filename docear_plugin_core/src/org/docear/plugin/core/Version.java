@@ -153,7 +153,7 @@ public class Version implements Comparable<Version> {
 			if (this.getBuildNumber() < o.getBuildNumber()) {
 				return CompareCode.LOWER.code;
 			}
-			else if (this.getBuildNumber() == o.getBuildNumber()) {
+			else if (this.getBuildNumber().equals(o.getBuildNumber())) {
 				return CompareCode.EQUALS.code;
 			}
 			else {
