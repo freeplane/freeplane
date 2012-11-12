@@ -142,9 +142,9 @@ private static final long serialVersionUID = -627410651667772600L;
 						MetadataCallableResult ret = JabRefCommons.requestBibTeX(hash, params);					
 
 						if (ret.hasError()) {
+							hasError = true;
 							//Replace with local presentation
 							JOptionPane.showMessageDialog(UITools.getFrame(), ret.getError(), TextUtils.getText("docear.metadata.import.error"), JOptionPane.ERROR_MESSAGE);
-							hasError = true;
 						}					
 					
 						String bib = ret.getResult();

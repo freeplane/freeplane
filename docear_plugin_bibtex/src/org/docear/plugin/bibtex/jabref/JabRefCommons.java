@@ -296,12 +296,14 @@ public abstract class JabRefCommons {
 	
 	public static void showMetadataDialog(URI uri) throws InterruptedException, ExecutionException, IOException {
 		String userName = CommunicationsController.getController().getUserName();
-		if (userName == null) {
-			return;
-		}
+//		if (userName == null) {
+//			JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.metadata.import.requirement_failed"));
+//			return;
+//		}
 
 		final String hash = AnnotationController.getDocumentHash(uri);
 		if (hash == null) {
+			JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.metadata.import.no_hash"));
 			return;
 		}
 
@@ -313,7 +315,9 @@ public abstract class JabRefCommons {
 
 		File file = new File(uri);
 		final MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
-		params.add("username", userName);
+		if (userName != null) {
+			params.add("username", userName);
+		}
 		if (title != null) {
 			params.add("title", title);
 		}
@@ -342,12 +346,14 @@ public abstract class JabRefCommons {
 	
 	public static void showMetadataUpdateDialog(URI uri, BibtexEntry oldEntry) throws InterruptedException, ExecutionException, IOException {
 		String userName = CommunicationsController.getController().getUserName();
-		if (userName == null) {
-			return;
-		}
+//		if (userName == null) {
+//			JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.metadata.import.requirement_failed"));
+//			return;
+//		}
 
 		final String hash = AnnotationController.getDocumentHash(uri);
 		if (hash == null) {
+			JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils.getText("docear.metadata.import.no_hash"));
 			return;
 		}
 
