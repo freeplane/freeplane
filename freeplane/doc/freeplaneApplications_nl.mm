@@ -4,7 +4,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -71,59 +71,16 @@
 <edge STYLE="hide_edge" COLOR="#007c00" WIDTH="3"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1129302195" STARTINCLINATION="132;0;" ENDINCLINATION="132;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1413405922" CREATED="1319315217232" MODIFIED="1336121299635" HGAP="-432" VSHIFT="247" LINK="http://www.kioo.nl/freeplane/CoreMeeting">
-<icon BUILTIN="video"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/HOWTO_FreeplaneVideo_nl">Demonstratie</a>
-    </p>
-    <p>
-      <a href="http://www.kioo.nl/freeplane/CoreMeeting">mindmap maken</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<cloud COLOR="#ffffff" SHAPE="ARC"/>
-<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
-<edge COLOR="#33cc00"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Click arrow.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Needs&#160;Internet connection.
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
 <node POSITION="right" ID="ID_470539907" CREATED="1317967796222" MODIFIED="1336132579445" HGAP="21" VSHIFT="-195"><richcontent TYPE="NODE">
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <img src="Images/doc/freeplaneApplications.png"/>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge" COLOR="#ff00ff" WIDTH="3"/>
 <hook NAME="FreeNode"/>
@@ -133,7 +90,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -147,7 +104,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -171,7 +128,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -205,7 +162,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -219,7 +176,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -236,7 +193,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -250,7 +207,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -268,7 +225,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -291,7 +248,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -308,7 +265,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -326,7 +283,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -341,7 +298,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -357,7 +314,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -370,7 +327,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -436,7 +393,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -450,7 +407,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -473,7 +430,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -491,7 +448,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -505,7 +462,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -519,56 +476,11 @@
 </richcontent>
 <edge COLOR="#7c7c00" WIDTH="3"/>
 </node>
-<node LOCALIZED_STYLE_REF="default" POSITION="right" ID="ID_836908062" CREATED="1318513239698" MODIFIED="1332874080962" HGAP="-325" VSHIFT="174">
-<icon BUILTIN="video"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Legenda</b>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Klik <a href="http://freeplane.sourceforge.net/doc/1.2.x/Instruction/ViewingGuide_nl">hier</a>&#160;voor voorbeelden om
-    </p>
-    <p>
-      verborgen informatie te tonen
-    </p>
-    <ol>
-      <li>
-        een knoop openvouwen
-      </li>
-      <li>
-        verborgen tekst tonen
-      </li>
-      <li>
-        een hyperlink openen
-      </li>
-    </ol>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="hide_edge" COLOR="#808080"/>
-</node>
 <node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1875337895" CREATED="1317967170441" MODIFIED="1336121070282" HGAP="425" VSHIFT="185"><richcontent TYPE="NODE">
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -587,7 +499,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -601,7 +513,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>

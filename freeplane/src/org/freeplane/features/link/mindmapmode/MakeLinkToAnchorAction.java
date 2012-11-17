@@ -21,18 +21,14 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-@EnabledAction(checkOnPopup=true)
+@EnabledAction
 public class MakeLinkToAnchorAction extends AFreeplaneAction {
 
 	private static final long serialVersionUID = 1L;

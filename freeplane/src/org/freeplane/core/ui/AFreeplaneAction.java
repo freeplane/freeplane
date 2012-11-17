@@ -145,6 +145,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 			if (!super.isEnabled()) {
 				setEnabled(true);
 			}
+			setEnabled();
 		}
 	}
 
@@ -169,7 +170,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	public void setEnabled() {
-		setEnabled(true);
 	}
 	
 	

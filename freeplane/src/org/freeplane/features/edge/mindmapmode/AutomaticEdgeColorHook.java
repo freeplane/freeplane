@@ -58,17 +58,12 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 					final MEdgeController controller = (MEdgeController) EdgeController.getController();
 					final AutomaticEdgeColor model = (AutomaticEdgeColor) getMapHook();
 					controller.setColor(child, model.nextColor());
-					controller.setWidth(child, 3);
 				}
 			}
 			else{
 				final MEdgeController controller = (MEdgeController) EdgeController.getController();
 				controller.setColor(child, null);
-				controller.setWidth(child, EdgeModel.DEFAULT_WIDTH);
-				controller.setStyle(child, null);
-				final boolean edgeStylesEquals = controller.getColor(child).equals(controller.getColor(parent))
-				&& controller.getStyle(child).equals(controller.getStyle(parent))
-				&& controller.getWidth(child) == controller.getWidth(parent);
+				final boolean edgeStylesEquals = controller.getColor(child).equals(controller.getColor(parent));
 				if(! edgeStylesEquals){
 					OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", "confirmation",
 					    "ignore_edge_format_by_style", OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_SHOWN);

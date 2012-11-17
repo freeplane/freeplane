@@ -57,6 +57,7 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.mindmapmode.SetBooleanMapPropertyAction;
+import org.freeplane.features.text.mindmapmode.FreeplaneToSHTMLPropertyChangeAdapter;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
 
@@ -150,6 +151,11 @@ public class MNoteController extends NoteController {
 			return htmlEditorPanel;
 		}
 		htmlEditorPanel = MTextController.getController().createSHTMLPanel(NoteModel.EDITING_PURPOSE);
+		
+		// make sure that SHTML gets notified of relevant config changes!
+	   	ResourceController.getResourceController().addPropertyChangeListener(
+    			new FreeplaneToSHTMLPropertyChangeAdapter(htmlEditorPanel));
+
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
 
@@ -363,7 +369,25 @@ public class MNoteController extends NoteController {
 	public void startupController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (shouldUseSplitPane()) {
-			showNotesPanel(false);
+			SwingUtilities.invokeLater(new Runnable() {
+				int count = 10;
+				public void run() {
+					if(count == 0){
+						showNotesPanel(false);
+						final IMapSelection selection = Controller.getCurrentController().getSelection();
+						if(selection != null){
+							final NodeModel selected = selection.getSelected();
+							if(selected != null){
+								selection.centerNode(selected);
+							}
+						}
+					}
+					else{
+						count--;
+						SwingUtilities.invokeLater(this);
+					}
+				}
+			});
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();

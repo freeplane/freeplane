@@ -130,6 +130,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                 }
 				public void endElement(final Object parent, final String tag, final Object userObject,
 				                       final XMLElement attributes, final String content) {
+					// bugfix
+					if(isContentEmpty(content))
+						return;
 					final NodeModel node = (NodeModel) userObject;
 					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
 					if (mapStyleModel == null) {
@@ -138,6 +141,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 					final MapModel map = node.getMap();
 					mapStyleModel.createStyleMap(map, mapStyleModel, content);
 					map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
+				}
+				private boolean isContentEmpty(final String content) {
+					return content.indexOf('<') == -1;
 				}
 
 			}
@@ -164,8 +170,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			sw.append("<map_styles>");
 			sw.append(el);
 			final NodeModel rootNode = styleMap.getRootNode();
+			final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 			try {
-				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true);
+				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true, forceFormatting);
 			}
 			catch (final IOException e) {
 				e.printStackTrace();

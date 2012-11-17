@@ -28,18 +28,20 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.Window;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.TreeNode;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -238,6 +240,8 @@ public class NodeView extends JComponent implements INodeView {
 
 	private Container getContentPane() {
 		if (contentPane == null) {
+			Window windowAncestor = SwingUtilities.getWindowAncestor(mainView);
+			boolean hasFocus = windowAncestor != null && windowAncestor.getMostRecentFocusOwner() == mainView;
 			contentPane = NodeViewFactory.getInstance().newContentPane(this);
 			final int index = getComponentCount() - 1;
 			remove(index);
@@ -246,8 +250,26 @@ public class NodeView extends JComponent implements INodeView {
 			if(! mainView.isVisible())
 				mainView.setVisible(true);
 			add(contentPane, index);
+			if(hasFocus)
+				restoreFocusToMainView();
 		}
 		return contentPane;
+	}
+
+	private void restoreFocusToMainView() {
+		final Window windowAncestor = SwingUtilities.getWindowAncestor(mainView);
+		if(windowAncestor.isFocused())
+			mainView.requestFocusInWindow();
+		else
+			windowAncestor.addWindowFocusListener(new WindowFocusListener() {
+				public void windowLostFocus(WindowEvent e) {
+				}
+
+				public void windowGainedFocus(WindowEvent e) {
+					mainView.requestFocusInWindow();
+					windowAncestor.removeWindowFocusListener(this);
+				}
+			});
 	}
 
 	/**
@@ -572,11 +594,11 @@ public class NodeView extends JComponent implements INodeView {
 			if (getUpper) {
 				return childView;
 			}
-			final JComponent content = childView.getContent();
-			if(content == null)
+			final JComponent childContent = childView.getContent();
+			if(childContent == null)
 				continue;
-			final Point childPoint = new Point(left ? content.getWidth() : 0, childView.getContent().getHeight() / 2);
-			UITools.convertPointToAncestor(childView.getContent(), childPoint, baseComponent);
+			final Point childPoint = new Point(left ? childContent.getWidth() : 0, childContent.getHeight() / 2);
+			UITools.convertPointToAncestor(childContent, childPoint, baseComponent);
 			final int dy = childPoint.y - ownY;
 			final int dx = childPoint.x - ownX;
 			final int gapToChild = dy*dy + dx*dx;
@@ -1300,7 +1322,10 @@ public class NodeView extends JComponent implements INodeView {
 	public EdgeStyle getEdgeStyle() {
 		if(edgeStyle != null)
 			return edgeStyle;
-		return getParentView().getEdgeStyle();
+		final NodeView parentView = getParentView();
+		if(parentView != null)
+			return parentView.getEdgeStyle();
+		return EdgeStyle.values()[0];
     }
 
 	public int getEdgeWidth() {
@@ -1314,7 +1339,10 @@ public class NodeView extends JComponent implements INodeView {
 	public Color getEdgeColor() {
 		if(edgeColor != null)
 			return edgeColor;
-		return getParentView().getEdgeColor();
+		final NodeView parentView = getParentView();
+		if(parentView != null)
+			return parentView.getEdgeColor();
+		return Color.GRAY;
     }
 	
 	private void updateCloud() {

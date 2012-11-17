@@ -359,6 +359,8 @@ public class ModeController extends AController {
 
 	public void startTransaction() {
 	}
+	public void forceNewTransaction() {
+    }
 
 	/**
 	 * This method is called after and before a change of the map mapView. Use

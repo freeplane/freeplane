@@ -74,7 +74,6 @@ public class ScriptConditionController implements IElementaryConditionController
 		return true;
 	}
 
-	@Override
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {

@@ -191,15 +191,15 @@ public abstract class PatternFormat /*extends Format*/ {
     }
 
 	public boolean acceptsDate() {
-	    return getType().equals(IFormattedObject.TYPE_DATE);
+	    return getType().equals(IFormattedObject.TYPE_DATE) || getPattern().equals(STANDARD_FORMAT_PATTERN);
     }
 	
 	public boolean acceptsNumber() {
-		return getType().equals(IFormattedObject.TYPE_NUMBER);
+		return getType().equals(IFormattedObject.TYPE_NUMBER) || getPattern().equals(STANDARD_FORMAT_PATTERN);
 	}
 	
 	public boolean acceptsString() {
-		return getType().equals(IFormattedObject.TYPE_STRING);
+		return getType().equals(IFormattedObject.TYPE_STRING) || getPattern().equals(STANDARD_FORMAT_PATTERN);
 	}
 
 	abstract public Object formatObject(Object toFormat);

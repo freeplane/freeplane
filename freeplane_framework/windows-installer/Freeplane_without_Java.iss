@@ -11,9 +11,8 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.2.15 beta"
+#define MyVersion "1.3.1 alpha"
 #define MyAppName "Freeplane"
-#define MyAppVerName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
 #define MyAppExeName "freeplane.exe"
@@ -24,13 +23,13 @@
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
 AppCopyright=Copyright © 2000-2012 Freeplane team and others
 AppName={#MyAppName}
-AppVerName={#MyAppVerName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
+ArchitecturesInstallIn64BitMode=x64 ia64
 OutputDir=..\dist
 OutputBaseFilename=Freeplane-Setup-{#MyVersion}
 SetupIconFile=Setup.ico
@@ -82,52 +81,24 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 ;".myp" is the extension we're associating. "MyProgramFile" is the internal name for the file type as stored in the registry. Make sure you use a unique name for this so you don't inadvertently overwrite another application's registry key.
 ;"My Program File" above is the name for the file type as shown in Explorer.
 ;"DefaultIcon" is the registry key that specifies the filename containing the icon to associate with the file type. ",0" tells Explorer to use the first icon from MYPROG.EXE. (",1" would mean the second icon.)
-Root: HKLM; Subkey: Software\JavaSoft\Prefs
-Root: HKCR; Subkey: Applications\freeplane.exe; Flags: deletekey; Tasks: associate
-Root: HKCR; Subkey: .mm; Flags: deletekey; Tasks: associate
-Root: HKLM; Subkey: SOFTWARE\Classes\.mm; Flags: deletekey; Tasks: associate
-Root: HKCU; Subkey: Software\Classes\Applications\freeplane.exe; Flags: deletekey; Tasks: associate
-Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mm; Flags: deletekey; Tasks: associate
-Root: HKCR; SubKey: .mm; ValueType: string; ValueData: Freeplane; Flags: uninsdeletekey; Tasks: associate
-Root: HKCR; SubKey: Freeplane; ValueType: string; ValueData: Freeplane mind map; Flags: uninsdeletekey; Tasks: associate
-Root: HKCR; SubKey: Freeplane\Shell\Open\Command; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
-Root: HKCR; Subkey: Freeplane\DefaultIcon; ValueType: string; ValueData: {app}\freeplane.exe,1; Flags: uninsdeletevalue; Tasks: associate
+Root: "HKLM"; Subkey: "Software\JavaSoft\Prefs"
+Root: "HKCR"; Subkey: "Applications\freeplane.exe"; Flags: deletekey; Tasks: associate
+Root: "HKCR"; Subkey: ".mm"; Flags: deletekey; Tasks: associate
+Root: "HKLM"; Subkey: "SOFTWARE\Classes\.mm"; Flags: deletekey; Tasks: associate
+Root: "HKCU"; Subkey: "Software\Classes\Applications\freeplane.exe"; Flags: deletekey; Tasks: associate
+Root: "HKCU"; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mm"; Flags: deletekey; Tasks: associate
+Root: "HKCR"; Subkey: ".mm"; ValueType: string; ValueData: "Freeplane"; Flags: uninsdeletekey; Tasks: associate
+Root: "HKCR"; Subkey: "Freeplane"; ValueType: string; ValueData: "Freeplane mind map"; Flags: uninsdeletekey; Tasks: associate
+Root: "HKCR"; Subkey: "Freeplane\Shell\Open\Command"; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
+Root: "HKCR"; Subkey: "Freeplane\DefaultIcon"; ValueType: string; ValueData: "{app}\freeplaneIcons.dll,0"; Flags: uninsdeletevalue; Tasks: associate
+
 [InstallDelete]
 Name: {app}\core; Type: filesandordirs
 Name: {app}\plugins; Type: filesandordirs; Tasks: ; Languages: 
 
 
-
 [UninstallDelete]
 
-[Code]
-function SearchForJavaVersion: Boolean;
-var
-  AVersion: String;
-begin
-  Result := False;
-  if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\JavaSoft\Java Runtime Environment', 'CurrentVersion', AVersion) then
-  begin
-	if (AVersion = '1.5') or (AVersion = '1.6') or (AVersion = '1.7') then
-		Result := True;
-  end;
-end;
-
-function CheckJavaVersion: Boolean;
-begin
-  Result := SearchForJavaVersion;
-  if Result = False then	// Java not found/detected
-  begin
-	if MsgBox( ExpandConstant('{cm:JavaNotFound}'), mbError, MB_YESNO) = MRYES then
-		Result := True
-	else
-		Result := False;
-  end;
-end;
-
-function InitializeSetup(): Boolean;
-begin
-	Result := CheckJavaVersion;
-end;
 [Dirs]
 Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages: 
+

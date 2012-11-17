@@ -169,7 +169,7 @@ class ScriptEditor extends AFreeplaneAction {
 		for (int position = 0; position < NodeAttributeTableModel.getModel(node).getAttributeTableLength(); position++) {
 			final Attribute attribute = NodeAttributeTableModel.getModel(node).getAttribute(position);
 			if (attribute.getName().startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				scripts.add(new AttributeHolder(attribute, position));
+				scripts.add(new AttributeHolder(new Attribute(attribute), position));
 			}
 		}
 		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts, node);

@@ -37,7 +37,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         if (!(obj instanceof String)) {
             return obj;
         }
-        if (PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
+        if (textController.isTextFormattingDisabled(node))
             return obj;
         final String text = obj.toString();
         if (!FormulaUtils.containsFormulaCheckHTML(text)) {
@@ -55,7 +55,10 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 
 	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
 	                                 String text, final boolean editLong) {
-		final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent(); 
+		MTextController textController = MTextController.getController();
+		if (textController.isTextFormattingDisabled(node))
+			return null;
+		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent(); 
 		if(firstKeyEvent != null){
 			if (firstKeyEvent.getKeyChar() == '='){
 				text = "=";

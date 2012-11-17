@@ -28,6 +28,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.map.MapWriter;
+import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -71,8 +72,8 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler("icon", this);
 		registerAttributeHandlers(reader);
-		writer.addElementWriter("node", this);
-		writer.addElementWriter("stylenode", this);
+		writer.addElementWriter(NodeBuilder.XML_NODE, this);
+		writer.addElementWriter(NodeBuilder.XML_STYLENODE, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {

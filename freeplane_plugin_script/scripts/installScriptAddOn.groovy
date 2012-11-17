@@ -283,27 +283,29 @@ def parseScripts(Map childNodeMap) {
 }
 
 void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
-	// check key syntax
-	KeyStroke keyStroke = ui.getKeyStroke(script.keyboardShortcut)
-	mapStructureAssert(keyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', script.keyboardShortcut))
-	String newShortcut = ui.keyStrokeToString(keyStroke)
+	def newShortcut = script.keyboardShortcut
+    // check key syntax
+	KeyStroke newKeyStroke = ui.getKeyStroke(newShortcut)
+	mapStructureAssert(newKeyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', newShortcut))
 	// check if key is used (see AccelerateableAction.newAccelerator())
 	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
 	String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey)
 	String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
-	if (oldShortcut && !oldShortcut.equals(newShortcut)
-			&& !askForRemoveShortcutViaDialog(script.name, oldShortcut, newShortcut)) {
-		// script had been installed before
-		return
+	if (oldShortcut) {
+	    // script had been installed before
+        if (oldShortcut.equals(newShortcut) || !askIfNewFunctionWasAssignedToAnotherShortcut(oldShortcut))
+            return
+        // FIXME: improved message would be:
+        //    insertInlineImage.groovy currently is assigned the shortcut xy\nReplace this assignment by yz?
 	}
 	else {
 	    MenuBuilder menuBuilder = Controller.currentModeController.userInputListenerFactory.menuBuilder
 		// it's a long way to the menu item title
 		DefaultMutableTreeNode menubarNode = menuBuilder.getMenuBar(menuBuilder.get("main_menu_scripting"));
 		assert menubarNode != null : "can't find menubar"
-		def priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, keyStroke);
-		if (priorAssigned != null) {
-			if (askForReplaceShortcutViaDialog(((JMenuItem) priorAssigned.getUserObject()).getText())) {
+		def priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, newKeyStroke);
+		if (priorAssigned != null && !priorAssigned.getKey().equals(menuItemKey)) {
+			if (askIfNewShortcutWasAssignedToAnotherFunction(((JMenuItem) priorAssigned.getUserObject()).getText())) {
 				String priorShortcutKey = menuBuilder.getShortcutKey(priorAssigned.getKey().toString());
 				if (priorShortcutKey)
 					ResourceController.getResourceController().setProperty(priorShortcutKey, "")
@@ -317,18 +319,22 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
 }
 
-private boolean askForRemoveShortcutViaDialog(String scriptName, String oldShortcut, String newShortcut) {
+String keyStrokeToString(KeyStroke keyStroke) {
+    return keyStroke.toString().replaceFirst("pressed ", "");
+}
+
+private boolean askIfNewShortcutWasAssignedToAnotherFunction(String currentAssignee) {
 	int replace = JOptionPane.showConfirmDialog(ui.frame,
-		TextUtils.format("remove_shortcut_question", scriptName, oldShortcut, newShortcut),
-		TextUtils.format("remove_shortcut_title"), JOptionPane.YES_NO_OPTION);
+		TextUtils.format("replace_shortcut_question", currentAssignee),
+		TextUtils.getText("replace_shortcut_title"), JOptionPane.YES_NO_OPTION);
 	return replace == JOptionPane.YES_OPTION;
 }
 
-private boolean askForReplaceShortcutViaDialog(String oldMenuItemTitle) {
-	int replace = JOptionPane.showConfirmDialog(ui.frame,
-		TextUtils.format("replace_shortcut_question", oldMenuItemTitle),
-		TextUtils.format("replace_shortcut_title"), JOptionPane.YES_NO_OPTION);
-	return replace == JOptionPane.YES_OPTION;
+private boolean askIfNewFunctionWasAssignedToAnotherShortcut(String oldShortcut) {
+    // this is a irritating dialog but we can't change it before the 1.2 release
+    int replace = JOptionPane.showConfirmDialog(ui.frame, oldShortcut,
+        TextUtils.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
+    return replace == JOptionPane.YES_OPTION;
 }
 
 ScriptingPermissions parsePermissions(Proxy.Node propertyNode, String scriptName) {

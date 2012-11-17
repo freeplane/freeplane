@@ -25,7 +25,8 @@ class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
 	}
 
 	List<LinkModel> getConnectorSet() {
-		final Set<LinkModel> links = MapLinks.getLinks(node.getMap()).get(node.getID());
+		final MapLinks allLinks = MapLinks.getLinks(node.getMap());
+        final Set<LinkModel> links = allLinks == null ? null : allLinks.get(node.getID());
 		return links == null ? Collections.<LinkModel> emptyList() : Collections
 		    .unmodifiableList(new ArrayList<LinkModel>(links));
 	}

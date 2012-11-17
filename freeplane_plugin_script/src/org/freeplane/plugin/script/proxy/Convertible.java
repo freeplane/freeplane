@@ -251,8 +251,8 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		if (this == obj)
 			return true;
 		if (obj == null)
-			return false;
-		if (obj.getClass() == String.class)
+			return text == null;
+		if (obj.getClass() == String.class && text != null)
 			return text.equals(obj);
 		if (!(obj instanceof Convertible))
 			return false;

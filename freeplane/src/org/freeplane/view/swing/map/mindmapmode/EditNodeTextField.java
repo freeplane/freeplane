@@ -88,6 +88,8 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
@@ -250,7 +252,7 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		else SPLIT_KEY_CODE = -1;
 	}
-	class TextFieldListener implements KeyListener, FocusListener, MouseListener {
+	private class TextFieldListener implements KeyListener, FocusListener, MouseListener {
 		final int CANCEL = 2;
 		final int EDIT = 1;
 		Integer eventSource = EDIT;
@@ -388,7 +390,24 @@ public class EditNodeTextField extends EditNodeBase {
 			conditionallyShowPopup(e);
 		}
 	}
+	
+	private class MapViewChangeListener implements IMapViewChangeListener{
+		public void afterViewChange(Component oldView, Component newView) {
+        }
 
+		public void afterViewClose(Component oldView) {
+        }
+
+		public void afterViewCreated(Component mapView) {
+        }
+
+		public void beforeViewChange(Component oldView, Component newView) {
+			final String output = getNewText();
+			hideMe();
+			getEditControl().ok(output);
+        }
+	}
+	
 	private JEditorPane textfield;
 	private final DocumentListener documentListener;
 	private int maxWidth;
@@ -474,8 +493,11 @@ public class EditNodeTextField extends EditNodeBase {
 			return;
 		}
 		textfield.getDocument().removeDocumentListener(documentListener);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		mapViewManager.removeMapViewChangeListener(mapViewChangeListener);
+		mapViewChangeListener = null;
 		parent.setPreferredSize(null);
-		if(nodeView.isDisplayable())
+		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null)
 			nodeView.update();
 		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);
@@ -501,6 +523,7 @@ public class EditNodeTextField extends EditNodeBase {
 	private StyledTextAction removeFormattingAction;
 	private int horizontalSpace;
 	private int verticalSpace;
+	private MapViewChangeListener mapViewChangeListener;
 
 	@Override
     protected JPopupMenu createPopupMenu(Component component) {
@@ -623,6 +646,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
+		mapViewChangeListener = new MapViewChangeListener();
+		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(mapViewChangeListener);
 		SpellCheckerController.getController().enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
 		assert( parent.isValid());

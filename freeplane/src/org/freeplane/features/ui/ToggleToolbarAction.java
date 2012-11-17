@@ -75,4 +75,8 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 		final boolean isVisible = Controller.getCurrentController().getViewController().isToolbarVisible(toolBar);
 		return isVisible;
 	}
+	
+	@Override
+	public void afterMapChange(final Object newMap) {
+	}
 }

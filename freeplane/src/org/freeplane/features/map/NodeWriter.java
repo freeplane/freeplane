@@ -30,9 +30,9 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
-	private EncryptionModel encryptionModel;
+	private boolean mayWriteChildren;
 	final private MapController mapController;
-	final private boolean writeChildren;
+	final private boolean shouldWriteChildren;
 	private final boolean writeFolded;
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
@@ -41,7 +41,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	public NodeWriter(final MapController mapController, final String nodeTag, final boolean writeChildren,
 	                  final boolean writeInvisible) {
 		this.mapController = mapController;
-		this.writeChildren = writeChildren;
+		this.shouldWriteChildren = writeChildren;
+		this.mayWriteChildren = true;
 		this.writeInvisible = writeInvisible;
 		this.nodeTag = nodeTag;
 		final String saveFolding = ResourceController.getResourceController().getProperty(
@@ -78,13 +79,17 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	private void writeAttributesGenerateContent(final ITreeWriter writer, final NodeModel node) {
 		/** fc, 12.6.2005: XML must not contain any zero characters. */
 		xmlNode = new XMLElement();
-		encryptionModel = EncryptionModel.getModel(node);
+		EncryptionModel encryptionModel = EncryptionModel.getModel(node);
+		mayWriteChildren = true;
 		final Object mode = writer.getHint(Hint.MODE);
-		if (!(encryptionModel == null || encryptionModel.isAccessible() && Mode.EXPORT.equals(mode))) {
-			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
-			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
-		}
-		else if (writeFolded || !writer.getHint(Hint.MODE).equals(Mode.FILE)) {
+		if (encryptionModel != null && !(encryptionModel.isAccessible() && Mode.EXPORT.equals(mode))) {
+        	final String enctyptedContent = encryptionModel.getEncryptedContent(mapController);
+        	if(enctyptedContent != null){
+        		writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, enctyptedContent);
+        		mayWriteChildren = false;
+        	}
+        }
+		if (mayWriteChildren && (writeFolded || !writer.getHint(Hint.MODE).equals(Mode.FILE))) {
 			if(mapController.isFolded(node)){
 				writer.addAttribute("FOLDED", "true");
 			}
@@ -119,8 +124,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}
-		if ((encryptionModel == null || encryptionModel.isAccessible() && Mode.EXPORT.equals(writer.getHint(Hint.MODE)))
-		        && writeChildren && mapController.childrenUnfolded(node).size()>0) {
+		if (mayWriteChildren && shouldWriteChildren && mapController.childrenUnfolded(node).size()>0) {
 			saveChildren(writer, node);
 		}
 		return;

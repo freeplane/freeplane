@@ -21,6 +21,7 @@ package org.freeplane.features.encrypt;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
@@ -32,9 +33,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IEncrypter;
 
 /**
@@ -64,7 +63,7 @@ public class DesEncrypter implements IEncrypter {
 	final private String mAlgorithm;
 	byte[] mSalt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3,
 	        (byte) 0x03 };
-	final private char[] passPhrase;
+	private char[] passPhrase;
 
 	public DesEncrypter(final StringBuilder pPassPhrase, final String pAlgorithm) {
 		passPhrase = new char[pPassPhrase.length()];
@@ -105,16 +104,12 @@ public class DesEncrypter implements IEncrypter {
 
 	public String encrypt(final String str) {
 		try {
-			final byte[] utf8 = str.getBytes("UTF8");
-			final byte[] newSalt = new byte[DesEncrypter.SALT_LENGTH];
-			for (int i = 0; i < newSalt.length; i++) {
-				newSalt[i] = (byte) (Math.random() * 256l - 128l);
-			}
-			init(newSalt);
+			initWithNewSalt();
 			if(ecipher == null)
 				return null;
+			final byte[] utf8 = str.getBytes("UTF8");
 			final byte[] enc = ecipher.doFinal(utf8);
-			return DesEncrypter.toBase64(newSalt) + DesEncrypter.SALT_PRESENT_INDICATOR + DesEncrypter.toBase64(enc);
+			return DesEncrypter.toBase64(mSalt) + DesEncrypter.SALT_PRESENT_INDICATOR + DesEncrypter.toBase64(enc);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 		}
@@ -124,6 +119,14 @@ public class DesEncrypter implements IEncrypter {
 		}
 		return null;
 	}
+
+	public void initWithNewSalt() {
+	    final byte[] newSalt = new byte[DesEncrypter.SALT_LENGTH];
+	    for (int i = 0; i < newSalt.length; i++) {
+	    	newSalt[i] = (byte) (Math.random() * 256l - 128l);
+	    }
+	    init(newSalt);
+    }
 
 	/**
 	 */
@@ -137,8 +140,21 @@ public class DesEncrypter implements IEncrypter {
 		}
 		if (ecipher == null) {
 			try {
-				final KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, iterationCount);
-				final SecretKey key = SecretKeyFactory.getInstance(mAlgorithm).generateSecret(keySpec);
+				SecretKey key;
+				try{
+					KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, iterationCount);
+					key = SecretKeyFactory.getInstance(mAlgorithm).generateSecret(keySpec);
+				}
+				catch (final java.security.spec.InvalidKeySpecException e) {
+					try {
+	                    passPhrase = URLEncoder.encode(new String(passPhrase),  "UTF-8").toCharArray();
+                    }
+                    catch (UnsupportedEncodingException e1) {
+                    	throw e;
+                    }
+					KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, iterationCount);
+					key = SecretKeyFactory.getInstance(mAlgorithm).generateSecret(keySpec);
+				}
 				ecipher = Cipher.getInstance(mAlgorithm);
 				dcipher = Cipher.getInstance(mAlgorithm);
 				final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(mSalt, iterationCount);
@@ -149,7 +165,7 @@ public class DesEncrypter implements IEncrypter {
 				LogUtils.severe(e);
 			}
 			catch (final java.security.spec.InvalidKeySpecException e) {
-				UITools.errorMessage(TextUtils.getText("password_is_not_ascii"));
+				LogUtils.severe(e);
 			}
 			catch (final javax.crypto.NoSuchPaddingException e) {
 				LogUtils.severe(e);

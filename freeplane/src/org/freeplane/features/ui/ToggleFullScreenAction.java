@@ -50,4 +50,8 @@ public class ToggleFullScreenAction extends AFreeplaneAction {
 		final ViewController viewController = Controller.getCurrentController().getViewController();
 		setSelected(viewController.isFullScreenEnabled());
 	}
+	
+	@Override
+	public void afterMapChange(final Object newMap) {
+	}
 }

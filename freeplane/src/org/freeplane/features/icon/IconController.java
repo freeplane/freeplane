@@ -38,6 +38,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleNode;
 
 /**
  * @author Dimitry Polivaev
@@ -89,7 +90,7 @@ public class IconController implements IExtension {
 				final Collection<IStyle> styleKeys = LogicalStyleController.getController(modeController).getStyles(node);
 				for(IStyle styleKey : styleKeys){
 					final NodeModel styleNode = model.getStyleNode(styleKey);
-					if (styleNode == null) {
+					if (styleNode == null || node == styleNode && !(styleKey instanceof StyleNode)) {
 						continue;
 					}
 					final List<MindIcon> styleIcons;

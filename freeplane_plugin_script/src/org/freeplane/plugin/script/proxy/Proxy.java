@@ -930,6 +930,10 @@ public interface Proxy {
 
 		boolean isFolded();
 
+		/** returns true if this node is freely positionable.
+		 * @since 1.2 */
+		public boolean isFree();
+
 		boolean isLeaf();
 
 		boolean isLeft();
@@ -1027,8 +1031,16 @@ public interface Proxy {
 		void setHideDetails(boolean hide);
 
 		void setFolded(boolean folded);
-		
-		void setMinimized(boolean shortened);
+
+		/** set to true if this node should be freely positionable:
+		 * <pre>
+		 *   node.free = true
+		 *   node.style.floating = true
+		 * </pre>
+         * @since 1.2 */
+        void setFree(boolean free);
+
+        void setMinimized(boolean shortened);
 
 		/**
 		 * Set the note text:
@@ -1070,9 +1082,17 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #setNote(Object)} instead. */
 		void setNoteText(String text);
 
-		/** An alias for {@link #setObject(Object)}.
+		/** If <code>value</code> is a String the node object is set to it verbatim. For all other argument types it's
+		 * an alias for {@link #setObject(Object)}.
+		 * <pre>
+		 * node.text = '006'
+		 * assert node.object.class.simpleName == "String"
+		 * node.object = '006'
+		 * assert node.text == '6'
+		 * assert node.object.class.simpleName == "Long"
+		 * </pre>
 		 * @see #setObject(Object)
-		 * @since 1.2 */
+		 * @since 1.2, semantics changed for Strings with 1.2.17, see Mantis #1787 */
 		void setText(Object value);
 		
 		/**
@@ -1223,6 +1243,15 @@ public interface Proxy {
 		Color getTextColor();
 
 		String getTextColorCode();
+
+        /** @since 1.2 true if the floating style is set for the node (aka "free node"). */
+        boolean isFloating();
+
+        /** @since 1.2.20 */
+        int getMinNodeWidth();
+        
+        /** @since 1.2.20 */
+        int getMaxNodeWidth();
 	}
 
 	/** Node's style: <code>node.style</code> - read-write. */
@@ -1254,6 +1283,17 @@ public interface Proxy {
 		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
 		 *  @since 1.2 */
 		void setTextColorCode(String rgbString);
+
+        /** @param sets the floating style for the node (aka "free node"). Should normally only applied to direct
+         *  children of the root node.
+         *  @since 1.2 */
+        void setFloating(boolean floating);
+
+        /** @since 1.2.20 */
+        void setMinNodeWidth(int width);
+        
+        /** @since 1.2.20 */
+        void setMaxNodeWidth(int width);
 	}
 
 	/** Reminder: <code>node.reminder</code> - read-only.

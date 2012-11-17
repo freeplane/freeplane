@@ -35,7 +35,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
@@ -148,10 +147,10 @@ class MindMapHTMLWriter {
 			final String fontFamily = font.getFamily();
 			if (defaultFont == null || ! fontFamily.equals(defaultFont.getFamily()))
 				fontStyle.append("font-family: ").append(fontFamily).append( ", sans-serif; ");
-			if (defaultFont == null || font.isItalic() && ! defaultFont.isItalic()) {
+			if ((defaultFont == null || ! defaultFont.isItalic()) && font.isItalic()) {
 				fontStyle.append("font-style: italic; ");
 			}
-			if (defaultFont == null || font.isBold() && ! defaultFont.isBold()) {
+			if ((defaultFont == null || ! defaultFont.isBold()) && font.isBold()) {
 				fontStyle.append("font-weight: bold; ");
 			}
 		}
@@ -194,6 +193,10 @@ class MindMapHTMLWriter {
 		fileout.write("</body>" + MindMapHTMLWriter.el);
 		fileout.write("</html>" + MindMapHTMLWriter.el);
 		fileout.close();
+		resetDefaults();
+	}
+
+	private void resetDefaults() {
 		defaultFont = null;
 		defaultColor = null;
 	}
@@ -206,6 +209,7 @@ class MindMapHTMLWriter {
     }
 
 	void writeHTML(final NodeModel rootNodeOfBranch) throws IOException {
+		setDefaultsFrom(rootNodeOfBranch.getMap());
 		final String htmlExportFoldingOption = getProperty("html_export_folding");
 		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && mapController
 		    .hasFoldedStrictDescendant(rootNodeOfBranch))
@@ -235,16 +239,20 @@ class MindMapHTMLWriter {
 		fileout.write("</body>" + MindMapHTMLWriter.el);
 		fileout.write("</html>" + MindMapHTMLWriter.el);
 		fileout.close();
+		resetDefaults();
 	}
 
 	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,
 	                      final boolean treatAsParagraph, final int depth) throws IOException {
-		boolean createFolding = mapController.isFolded(model);
-		if (getProperty("html_export_folding").equals("html_export_fold_all")) {
-			createFolding = mapController.hasChildren(model);
-		}
-		if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings || isRoot) {
-			createFolding = false;
+		boolean createFolding = false;
+		if(writeFoldingCode){
+			createFolding = mapController.isFolded(model);
+			if (getProperty("html_export_folding").equals("html_export_fold_all")) {
+				createFolding = mapController.hasChildren(model);
+			}
+			if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings || isRoot) {
+				createFolding = false;
+			}
 		}
 		final TextController textController = TextController.getController();
 		final Object userObject = model.getUserObject();

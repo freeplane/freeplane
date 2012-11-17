@@ -99,18 +99,18 @@ public class EdgeLinkView extends AConnectorView {
 			Point p1 = edgeView.getStart();
 			Point p2 = new Point(p1);
 			p2.translate(5, 0);
-			paintArrow(graphics, p1, p2);
+			paintArrow(graphics, p2, p1);
 		}
 		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
 			Point p1 = edgeView.getEnd();
 			Point p2 = new Point(p1);
 			p2.translate(5, 0);
-			paintArrow(graphics, p1, p2);
+			paintArrow(graphics, p2, p1);
 		}
 		
 	}
 
-	private void paintArrow(final Graphics graphics, Point p1, Point p2) {
-	    paintArrow(p1, p2, (Graphics2D)graphics, getZoom() * 10);
+	private void paintArrow(final Graphics graphics, Point from, Point to) {
+	    paintArrow(from, to, (Graphics2D)graphics, getZoom() * 10);
     }
 }

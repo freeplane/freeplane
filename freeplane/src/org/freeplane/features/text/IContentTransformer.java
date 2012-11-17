@@ -3,7 +3,6 @@ package org.freeplane.features.text;
 import javax.swing.Icon;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 
 public interface IContentTransformer extends Comparable<IContentTransformer> {
 

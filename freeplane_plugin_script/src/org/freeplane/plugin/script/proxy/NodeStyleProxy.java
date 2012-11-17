@@ -70,6 +70,18 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return ColorUtils.colorToString(getTextColor());
 	}
 
+    public boolean isFloating() {
+        return hasStyle(getDelegate(), StyleNamedObject.toKeyString(MapStyleModel.FLOATING_STYLE));
+    }
+
+    public int getMinNodeWidth() {
+        return getStyleController().getMinWidth(getDelegate());
+    }
+
+    public int getMaxNodeWidth() {
+        return getStyleController().getMaxWidth(getDelegate());
+    }
+
 	private MLogicalStyleController getLogicalStyleController() {
 		return (MLogicalStyleController) LogicalStyleController.getController();
 	}
@@ -134,6 +146,15 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		setTextColor(ColorUtils.stringToColor(rgbString));
 	}
 
+    public void setFloating(boolean floating) {
+        if (floating) {
+            setStyle(MapStyleModel.FLOATING_STYLE);
+        }
+        else if (MapStyleModel.FLOATING_STYLE.equals(getStyle())) {
+            setStyle(null);
+        }
+    }
+
 	public static boolean hasStyle(NodeModel nodeModel, String styleName) {
 		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(nodeModel);
 		for (IStyle style : styles) {
@@ -141,5 +162,13 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 				return true;
 		}
 		return false;
+    }
+
+    public void setMinNodeWidth(int width) {
+        getStyleController().setMinNodeWidth(getDelegate(), width);
+    }
+
+    public void setMaxNodeWidth(int width) {
+        getStyleController().setMaxNodeWidth(getDelegate(), width);
     }
 }

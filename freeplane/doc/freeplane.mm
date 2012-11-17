@@ -123,7 +123,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -132,29 +132,11 @@
   </body>
 </html>
 </richcontent>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1850641724" CREATED="1330636587339" MODIFIED="1337169970931" HGAP="-27" VSHIFT="-167">
-<icon BUILTIN="video"/>
-<icon BUILTIN="internet"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="http://freeplane.sourceforge.net/mapsOnline/?map=IndexFreeplaneGuides.mm">Freeplane (video) guides</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-</node>
 <node LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1330618265586" HGAP="19" VSHIFT="-108" STYLE="fork" TEXT_SHORTENED="true" LINK="freeplaneFunctions.mm"><richcontent TYPE="NODE">
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -167,14 +149,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -192,7 +174,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -205,14 +187,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Click the link to open a mind map with the main applications of Freeplane. An Internet connection is needed to follow the links in the index.<i>&#160;</i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -234,7 +216,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -257,7 +239,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -298,7 +280,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -311,32 +293,32 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       This documentation is additional to the<a href="freeplaneTutorial.mm">&#160;Quick reference&#160;</a>of Freeplane, see Freeplane's main menu <i>&#160;Help &gt; Getting started</i>. Click the red arrow for an introduction to mind mapping and a tutorial Freeplane on Internet.
     </p>
     <p>
-      
+
     </p>
     <p>
       This documentation is unlike a classical linear presentation of information. It is set up as a source of information which can be used in a way wich is most appropriate for a particular user and situation.
     </p>
     <p>
-      
+
     </p>
     <p>
       The right hand side of this mind map (node <i>Reference</i>) describes the Freeplane menu's and functionality. You could navigate the <i>Reference</i>&#160;&#160;to find your information by clicking and hovering nodes.&#160;&#160;This is easy, you are doing this right now. You can also use finding or filtering to get information. This is more powerful but supposes some experience.
     </p>
     <p>
-      
+
     </p>
     <p>
       If you are prepared to use filtering, node <i>Chapter</i>&#160;contains a number of node collections which may help you to digest the huge amount of information of the <i>Reference</i>.&#160;You can go through the information displayed by each chapter in your own way and order. The chapters are numbered and organized from simple to more advanced.
     </p>
     <p>
-      
+
     </p>
     <p>
       Node <i>Install</i>&#160;describes loading and installing Freeplane and tuning it&#160;&#160;to your wishes. Node Macintosh describes how to use FP on a Macinitosh, because Macintosh uses a slightly different user interface. Node <i>This</i>&#160;<i>documentation</i>&#160;describes the principles and techniques underlying this mind map , it gives you an example of&#160;&#160;how to design and build a complex mind map like this one. It may also help you to still better find information.&#160;Node FAQ contains some&#160;&#160;frequently asked questions. More answers are to be found in the reference. It also contains some known bugs which may bother you.
@@ -344,7 +326,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Recognizing content" STYLE_REF="UserGuide" ID="ID_1836270960" CREATED="1310900715782" MODIFIED="1313959373704" TEXT_SHORTENED="true">
+<node TEXT="Recognizing content" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1836270960" CREATED="1310900715782" MODIFIED="1313959373704" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
@@ -353,7 +335,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -371,14 +353,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       All definitions can be regognised by this style.
     </p>
     <p>
-      
+
     </p>
     <p>
       Note
@@ -398,7 +380,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -414,7 +396,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -444,7 +426,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -460,7 +442,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -476,7 +458,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -492,7 +474,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -508,7 +490,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -524,14 +506,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To indicate that a node has been modified.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -551,7 +533,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -565,7 +547,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -582,7 +564,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -604,7 +586,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -630,7 +612,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -649,7 +631,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -667,7 +649,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -685,7 +667,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -705,7 +687,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -724,7 +706,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -740,14 +722,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       An <b>edge</b>&#160;is the visual representation of the tree structure.&#160;&#160;It is the line you see underneath and between the nodes, This line can be hidden.
     </p>
     <p>
-      
+
     </p>
     <p>
       Characteristics of an egde are:
@@ -774,14 +756,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A <b>branch</b>&#160;isa group of nodes consisting of a node and all its descendents. A main branch is a branch which starts at the child of the root node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>To branch</b>&#160;means to tear off the nodes of a branch and export it to another map.
@@ -798,7 +780,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -815,7 +797,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -833,7 +815,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -855,14 +837,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Node features</b>&#160;are additional features that can be added to a basic node.
     </p>
     <p>
-      
+
     </p>
     <p>
       &#160;Examples are notes, attributes, hyperlinks and images.
@@ -879,14 +861,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Node properties</b>&#160;are (mostly visible) aspects of nodes, relations and node features. Examples are the color and size of text.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also:</b>
@@ -905,14 +887,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Guide for learning the Freeplane menu&#180;s </b>
     </p>
     <p>
-      
+
     </p>
     <p>
       To view the following chapters, apply&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<b>&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;filter rule&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; </b>
@@ -961,7 +943,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -985,14 +967,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Use filtering to show all nodes for getting started. For this, define and filter (Chapter,Contains,1):
     </p>
     <p>
-      
+
     </p>
     <p>
       1. &#160;In the first thee fields of the filter menu bar select/enter:
@@ -1023,34 +1005,34 @@
       3. Press <i>Esc</i>&#160;followed by <i>Alt + Enter&#160;</i>to&#160;make visible all nodes
     </p>
     <p>
-      
+
     </p>
     <p>
       4. Select short cut icon <i>Quick filter</i>&#160;to make appear all nodes of Chapter 1
     </p>
     <p>
-      
+
     </p>
     <p>
       5 Move the cursor in turn over every node to make it show its content. Read the content.
     </p>
     <p>
-      
+
     </p>
     <p>
       When finished:
     </p>
     <p>
-      
+
     </p>
     <p>
       6. Select short cut icon <i>No Filtering </i>
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p style="text-align: left">
       <b>See the nodes to the left for the complete procedure and the icon-buttons that can be used.</b>
@@ -1070,7 +1052,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1157,14 +1139,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Use filtering to show all nodes. For this, define and filter (Chapter,Contains,2):
     </p>
     <p>
-      
+
     </p>
     <p>
       1. &#160;In the first thee fields of the filter menu bar select/enter:
@@ -1192,14 +1174,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see the nodes of this chapter,&#160;&#160;filter (Chapter,Contains,3).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1218,14 +1200,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see the nodes of this chapter, filter (Chapter,Contains,4).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1244,14 +1226,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see the nodes of this chapter, filter (Chapter,Contains,5).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1270,14 +1252,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see the nodes of this chapter, filter (Chapter,Contains,6).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1296,14 +1278,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see the nodes of this chapter, filter (Chapter,Contains,7).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1322,14 +1304,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see the nodes of this chapter, filter (Chapter,Contains,8).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1350,14 +1332,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To see the nodes of this chapter, filter (Chapter,Contains,9).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -1376,14 +1358,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Example </b>
     </p>
     <p>
-      
+
     </p>
     <p>
       To show all and only all definitions:
@@ -1411,7 +1393,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1471,20 +1453,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Example</b>
     </p>
     <p>
-      
+
     </p>
     <p>
       To view all nodes concerning filtering, define and apply a filter in the following way:
     </p>
     <p>
-      
+
     </p>
     <p>
       1 Set the filter rule by selecting in the Filter Tool bar:
@@ -1504,13 +1486,13 @@
       &#160;2. Select <i>Esc</i>&#160;followed by <i>Alt + End</i>&#160;and press <i>Quick filter. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       Now all nodes are showing which are related to filtering. Also <i>No Filter</i>&#160;is unset.
     </p>
     <p>
-      
+
     </p>
     <p>
       3. When you are finished reading the nodes
@@ -1536,7 +1518,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1599,7 +1581,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1615,7 +1597,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1633,7 +1615,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1651,7 +1633,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1669,7 +1651,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1684,7 +1666,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1699,7 +1681,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1715,7 +1697,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1733,7 +1715,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1766,7 +1748,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1779,7 +1761,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1794,26 +1776,26 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Freeplane creates a subfolder named .backup in each folder which contains edited maps. Old map versions are saved there, along with automatically-saved copies of edited maps. These copies are named with the file extension &quot;<i>.autosave</i>&quot;. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">By default, an automatic save happens every minute, and the last 10 autosave files are kept as protection against accidental termination of Freeplane, e.g. on computer shutdown. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">To restore an automatically-saved file, you must manually rename it to remove the &quot;.autosave&quot; extension and the preceding sequence number. By default, sequence numbers range from 1 to 10. For instance, to restore &quot;freeplane.mm&quot; from the most recent autosave file, rename (or copy) &quot;.backup\freeplane.mm.10.autosave&quot; to &quot;freeplane.mm&quot;. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Automatic save and backup can be adjusted to your needs via Tools &gt; Preferences &gt; Environment &gt; Automatic Save.</font>
@@ -1826,7 +1808,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1856,7 +1838,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       Note
@@ -1874,14 +1856,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       All system icons can be replaced by personalized items.
     </p>
     <p>
-      
+
     </p>
     <p>
       In de freeplane directory,
@@ -1915,7 +1897,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       Resart Freeplane. The new system icon should be shown in stead of the old.
@@ -1930,7 +1912,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2016,7 +1998,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: centre">
@@ -2032,7 +2014,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -2052,7 +2034,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2082,7 +2064,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p class="MsoNormal">
@@ -2122,7 +2104,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -2138,7 +2120,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -2154,7 +2136,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -2174,7 +2156,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2188,7 +2170,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2202,7 +2184,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2216,7 +2198,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2230,7 +2212,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2258,7 +2240,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2273,7 +2255,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2317,7 +2299,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2352,7 +2334,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2461,7 +2443,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <ul>
@@ -2489,7 +2471,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2543,7 +2525,7 @@
       An alternative is to check all components (basic text and optional icons, formula's, hyperlinks, Details, Attributes, Images, formulas <b>AND</b>&#160; Groovy scripts) and make the changes necessary.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2571,7 +2553,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2612,14 +2594,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Frequently asked questions.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2646,14 +2628,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A new node gets style <i>Default, </i>new Details<i>&#160;</i>get style<i>&#160;Details</i>&#160;and a new note gets style <i>Note</i>. Style Default can be edited to have a larger font, different edge, bubble, different width, etc, <a href="#ID_1277682010">see.</a>&#160;Style Note and style Details can be edited to have a different font, font size color etc.; but not edge, bubble etc. that are connected to the node core.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -2671,7 +2653,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2689,7 +2671,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2703,7 +2685,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2717,7 +2699,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2739,7 +2721,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2753,7 +2735,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2767,7 +2749,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2784,7 +2766,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2798,14 +2780,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Change the font size of system style <i>Default</i>&#160;for node core or style &quot;<i>Note</i>&quot; for notes. This will overrule the font number shown in the dialog - until you press the font number.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See</b>
@@ -2823,7 +2805,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2837,7 +2819,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2851,20 +2833,6 @@
         execute a script an leave
       </li>
     </ul>
-    <p>
-      
-    </p>
-    <p>
-      ,Read how to at <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job">http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Batch_Job</a>s
-    </p>
-    <p>
-      
-    </p>
-    <ul>
-      <li>
-        
-      </li>
-    </ul>
   </body>
 </html>
 </richcontent>
@@ -2873,7 +2841,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2894,7 +2862,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -2908,7 +2876,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2926,14 +2894,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Freeplane has a main menu bar which gives access to most of its functionality. It has menu's with entries to methods (actions) and to dialog boxes or panels which are sets of related methods.&#160;&#160;To create oversight, related entries are connected with an accolade and group label. The items (nodes) below are the main menu's. This menu structure is taken as the framework for describing methods and dialog boxes. To enforce a particular result, methods are called upon in a particular order, a so-called a procedure. Essential procedures are described and connected to the actions they rely on. In this way they are easy to find. Methods and procedures have a different appearance (style), hence they are easily to be discriminated. In applying methods and procedures, there may be exceptions. In order to understand the procedures examples may be helpful. Exceptions, examples and other information to note are shown in the vicinity of the methods and procedures they apply to. They are discriminated by their different appearances (styles) and icons.
     </p>
     <p>
-      
+
     </p>
     <p>
       Click on the green arrow to see the different styles being applied for
@@ -2972,7 +2940,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -2987,7 +2955,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3008,7 +2976,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3028,14 +2996,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Prompts to enter a password required to open the map and creates a new map. This funcion is similar to password protecting a node. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><b>Note</b>&#160;</font>
@@ -3064,7 +3032,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3095,14 +3063,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Save a map that has alrerady been created. If you are saving the map for the first time, you will be presented with the Save dialog box. If the map has already been saved once, it is automatically overwritten with the most recent Save. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Note</span></font></b>
@@ -3113,7 +3081,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">See also</span></font></b>
@@ -3137,7 +3105,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3155,7 +3123,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3172,14 +3140,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Allows you to reverts the map to a previously saved state.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -3223,7 +3191,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3246,7 +3214,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3269,7 +3237,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3283,7 +3251,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3318,7 +3286,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3336,7 +3304,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3352,7 +3320,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3367,7 +3335,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3382,7 +3350,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3397,7 +3365,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3412,7 +3380,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3427,7 +3395,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3442,7 +3410,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3465,7 +3433,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3483,7 +3451,7 @@
       Now you can move the file <i>myFile.html</i>&#160;and the subdirectory <i>myFile.html_files</i>&#160; to the location (directory) where you want to it be it accessible. You may rename&#160; <i>myFile.html</i>&#160;&#160;to a name you want, e.g. <i>myName.mm</i>. &#160;The subdirectory should not be renamed. You van then open the mind map with<i>&#160;myName.mm. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -3506,7 +3474,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3521,7 +3489,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3536,7 +3504,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3551,7 +3519,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3602,7 +3570,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3617,7 +3585,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3638,14 +3606,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Images are not part of Freeplane, except system icons. Hence images are not exported automatically.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -3669,7 +3637,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3686,7 +3654,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3735,7 +3703,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3763,7 +3731,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3830,14 +3798,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Presents a view of how the printed map will appear based on the Page Setup settings. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">See also</span></font></b>
@@ -3861,7 +3829,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3894,7 +3862,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3914,7 +3882,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3937,7 +3905,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -3956,14 +3924,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Creates a new node as a child of&#160;&#160;the currently-selected node. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><b>Same effect: </b></font>
@@ -3989,14 +3957,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000">Creates a new node below the currently selected node, at the same hierarchical level. </font></span>
     </p>
     <p>
-      
+
     </p>
     <p>
       <span style="color: #000000; font-family: SansSerif, sans-serif"><font face="SansSerif, sans-serif" color="#000000"><b>Same effect:</b> </font></span>
@@ -4020,14 +3988,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Creates a new node <b>above</b>&#160;the node that is currently selected, at the same hierarchical level.
     </p>
     <p>
-      
+
     </p>
     <p>
       Same effect:
@@ -4050,14 +4018,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Creates a new node between the current node and its parent node. The new node is a child of the original parent node.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       Same effect:
@@ -4082,7 +4050,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4096,14 +4064,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Creates a new <i>Summary node</i>&#160;which connects the range of selected siblings by an accolade.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4117,7 +4085,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -4145,7 +4113,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4168,7 +4136,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4185,14 +4153,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Technically the summary node is a sibling of the node group, below the bottom node of the group.&#160;&#160;This position becomes apparent if you choose <i>Nodes &gt; Sum node</i>&#160;for a particular summary node<i>&#160; </i>Selecting <i>Nodes &gt; Summary node </i>again will restore its original position.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4242,14 +4210,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Shows if the selected node is marked as first node of a Summary node group. Toggles the selected node as first node of a Summary node group.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4291,14 +4259,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A <b>node group</b>&#160;is a group of neighboring siblings (same hierarchical level, same parent)&#160;&#160;which are within the range of a defined <i>Summary node</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4323,14 +4291,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Converts the selected node into a (active) summary node or turns a Summary node back into a sibling node (inactive Summary node).
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4367,7 +4335,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4383,14 +4351,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Places a cloud around all of the selected nodes. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">This is useful for highlighting certain nodes. The cloud covers the node selected and all of its child nodes. Multiple clouds can be created at the same time by holding the Ctrl key (for selecting discreet nodes), or the Shift key for selecting all the nodes between the first node selected and the last. SEE ALSO: Format &gt; Cloud Color...</span></font>
@@ -4410,20 +4378,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Creates a connector between two selected nodes. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       The connector can be formatted by opening its context window (right-click on the connector). <font color="#000000" face="SansSerif, sans-serif">&#160;A label can be attached at the binning, middle end the end of the connector. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font face="SansSerif, sans-serif" color="#000000">See also</font></b>
@@ -4434,7 +4402,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4479,7 +4447,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4500,19 +4468,19 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       Each node core can have exactly one arrow-link and/or multiple underlined links. Node details only can have (multiple) underlined links. Underlined links are created in the edit text dialog (in menu Edit). The arrow-links are created with the items of the current menu.
     </p>
     <p>
-      
+
     </p>
     <p>
       Drag and drop of an image which exists as a file on your computer results in a scalable image. If the image is dropped on the upper part of the node the image is added to this node. If it is dropped at the child side of the node a new child is made with the image. If a copied image is pasted, then a hyperlink is pasted in its child node.
     </p>
     <p>
-      
+
     </p>
     <p>
       The easiest way to enter a hyperlink to an external object is by drag and drop. The
@@ -4533,14 +4501,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a dialog to navigate to a directory or file. A hyperlink to the selected directory or file is put into the selected node. The hyperlink appears as a red arrow and can be clicked to open the file or directory.
     </p>
     <p>
-      
+
     </p>
     <p>
       To remove the hyperlink:
@@ -4571,14 +4539,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a dialog to enter a hyperlink as text, or enter an e-mail address.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4602,7 +4570,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4619,7 +4587,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4639,14 +4607,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Creates a link between two nodes in the current map. The two nodes must be selected before this command is invoked: The first selected node is the target of the link, which is added to the second node, and represented there as a small green arrow. </span></font>
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -4660,7 +4628,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4677,7 +4645,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4696,7 +4664,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4710,14 +4678,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Creates a link in the anchor node to the currently selected node. The anchor node will show a red or geen arrow.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4733,14 +4701,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Makes a link in the currently selected node to the the anchor node. The current node will display a red or green arrow link.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4756,7 +4724,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4779,14 +4747,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A hyperlink is an electronic connection from a source node to a destination object. The destination can be a directory, file, web page, application, e-mail etc. The connection is click-able and appears as a red arrow (external hyperlink) or green arrow (internal hyperlink).
     </p>
     <p>
-      
+
     </p>
     <p>
       A hyperlink can be contained in
@@ -4814,7 +4782,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4824,13 +4792,13 @@
       Dropping a copy of a directory, file, file address or webaddress will generate a child node of the selected node which contains a hyperlink to the address of it.
     </p>
     <p>
-      
+
     </p>
     <p>
       Dropping a group of hyperlinks will genareate a group of child nodes, each containing one of the hyperlinks.
     </p>
     <p>
-      
+
     </p>
     <p>
       The text of the respective nodes will initially be the address of the hyperlink. This text may be removed, edited or replaced. This will not change the hyperlink itself (red arrow). To edit the hyperlink itself, select <i>Node features &gt; Links &gt; Hyperlink (Text Field)...</i>&#160;and edit the address.
@@ -4848,14 +4816,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The simplest way to make an e-mail link is to copy and paste its address into a selected node. This will generate a<b>&#160;child node</b>&#160;of the selected node with the link. The text of the child node will consist of the e-mail address. You may replace this by e.g. only the name.
     </p>
     <p>
-      
+
     </p>
     <p>
       If you want to add the e-mail link to a particular node (and not to its newly generated child), select <i>Node features &gt; Links &gt; Hyperlink (Text Field)...</i>&#160;and enter:
@@ -4882,7 +4850,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -4920,14 +4888,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       For the following procedure there exists a script. Clik the hyperlink for this.
     </p>
     <p>
-      
+
     </p>
     <p>
       To link a source node SN in a map SM to a target node TN in map TM:
@@ -4950,20 +4918,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       It is possible to have multiple in-line links in Node core, Node details, or Note. First open the text dialog for&#160;&#160;Node core, Node details or Note. Then type and select the piece of text to which the link applies. And finally select&#160;&#160;in the Edit menu of the dialog window <i>Add hyperlink (choose)...</i>&#160;or <i>Add or modify hyperlink (type)</i>. In the latter case you can&#160;&#160;type the address of the hyperlink or you can paste a copied address by pressing Ctr + V. Example: Press <a href="https://sourceforge.net/apps/phpbb/freeplane/viewforum.php?f=1">Ctrl-click this link</a>&#160;to go to the Freeplane Open Forum.
     </p>
     <p>
-      
+
     </p>
     <p>
       The hyperlink is not displayed by a green or red arrow, but by an underlining.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -4992,14 +4960,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Deletes the node and all of its children. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000"><b>See also</b> </span></font>
@@ -5026,14 +4994,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Puts a node in Edit Mode. </font>Opens an inline editor for fast entering and modifying text. Standard modus when making a new node (<i>Ins</i>) or when double-clicking on the node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Context menu</b>. To open the context menu, right-click on the text which is being edited. This menu contains:
@@ -5097,7 +5065,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5118,7 +5086,7 @@
       <b>Context menu</b>. To open the context menu, click-right in the text area of the dialog.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -5143,7 +5111,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -5159,7 +5127,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5178,20 +5146,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Splits and distributes the basic text of a node over two or more nodes. Split inserts a new node for the splitted text. The split will take place at all line breaks or HTML components.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">The Split Node command may be used on any plain node which contains one or more line breaks, which can be inserted using Shift Enter. Split Node also works on any Rich Formatted (Long or HTML) node which contains multiple paragraphs. In either case the node gets split at the line and/or paragraph breaks. For HTML nodes you can apply the split repeatedly if there are nested elements. A plain node may be split at any point by first converting it using Format &gt; Use Rich Formatting. Then click on the node to open the Edit Long Node window. In that window, place the cursor where you want to split the node, then click the &quot;Split&quot; button at the bottom of the dialog. The part of the node to the right of the cursor will appear below the node from which it was split. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font face="SansSerif, sans-serif" color="#000000">Note</font></b>
@@ -5212,14 +5180,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles between visibility marking of revisions.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -5257,14 +5225,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To remove a revision, for each node uncheck the checkbox for background color.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -5285,7 +5253,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5363,17 +5331,17 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Attach a fixed&#160;&#160;image to the inner area of the selected node, within the bubble area and replacing the basic node text. If the node already contains a hyperlink to an image, the image will replace the hyperlink. Otherwise the file chooser can be used to select an image file.
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -5417,14 +5385,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a table from which an icon can be chosen by clicking it.
     </p>
     <p>
-      
+
     </p>
     <p>
       Note
@@ -5445,7 +5413,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5465,7 +5433,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5483,14 +5451,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Progress is an indicator in which a percentage can be visualized in steps of 10% or 25%.
     </p>
     <p>
-      
+
     </p>
     <p>
       Note
@@ -5516,7 +5484,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5535,7 +5503,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5554,7 +5522,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5583,7 +5551,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5614,7 +5582,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5640,7 +5608,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5667,7 +5635,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5687,7 +5655,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5707,7 +5675,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5737,7 +5705,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5763,7 +5731,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5782,14 +5750,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens in line editor for editing Details. This editor is similar to the inline editor for basic node text. The text can be hidden, unless selected.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -5822,14 +5790,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens editor for node details in a separate dialog. Similar to the dialog for basic node text.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -5847,14 +5815,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To copy into the selected node the&#160;&#160;<i>Details</i>&#160;and <i>Attributes</i>&#160; of the styles connected to the node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -5883,7 +5851,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -5903,14 +5871,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Content text (details)</b>&#160;is an optional text field directly under the basic node text, outside the node area (bubble area). It is the text you are currently reading.&#160;&#160;It is generally used to extend and describe in detail the basic node text of Title.
     </p>
     <p>
-      
+
     </p>
     <p>
       Content can be hidden in two ways:
@@ -5927,10 +5895,10 @@
       Hidden content is shown when the cursor is above the node.
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -5954,20 +5922,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Add sizeable image to the selected node, below the basic node text, outside the bubble area.
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -6011,7 +5979,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -6040,7 +6008,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6069,7 +6037,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6090,7 +6058,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       To add a hyperlink, <b>copy and paste </b>(also from Internet);
@@ -6132,7 +6100,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6156,7 +6124,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6170,7 +6138,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6234,7 +6202,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6269,14 +6237,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens dialog to edit names and values of attributes of selected nodes.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -6301,14 +6269,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a table structure below the basic node text with two columns in which a name and value can be entered or selected.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -6351,7 +6319,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6370,7 +6338,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6405,7 +6373,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6419,14 +6387,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Copies attributes from the selected node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -6448,14 +6416,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Pastes attributes in the selected node that before have been copied form another node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -6485,14 +6453,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Copies (imports) attributes from the style of a selected node to the node.
     </p>
     <p>
-      
+
     </p>
     <p>
       Note
@@ -6537,7 +6505,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6547,7 +6515,7 @@
       To hide only a restricted set of values of an attribute, check and define the set.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -6570,7 +6538,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6591,7 +6559,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6609,7 +6577,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6619,7 +6587,7 @@
       Open <i>Attribute manager</i>&#160;to see that attribute a2 is checked visible and a1 is not, hence is hidden.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -6637,7 +6605,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6651,7 +6619,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6669,20 +6637,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       This node contains 2 attributes, a1 and a2 AND<i>&#160;Node &gt; Shortened node content </i>is ON.
     </p>
     <p>
-      
+
     </p>
     <p>
       Result: text of Details is hidden, and checked attributes stay visible.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -6705,14 +6673,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       An <b>attribute</b>&#160;is an entity with a name and a value, meaning name = value. Attributes are shown in a table with two columns, which appears in the external area of the node,&#160;&#160;under Details.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -6744,14 +6712,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opent het bewerkingsvenster&#160;&#160;voor de LaTeX opmaak.
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -6779,7 +6747,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6810,7 +6778,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6855,7 +6823,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6875,7 +6843,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6893,7 +6861,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6924,7 +6892,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -6951,14 +6919,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Reverse previous changes or edits. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><b>Note</b> </font>
@@ -6989,7 +6957,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7008,7 +6976,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7029,7 +6997,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7048,7 +7016,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7065,20 +7033,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Gets the internal Node ID of the currently selected node and stores it in the system Clipboard. This advanced feature has, for most purposes, been replaced by the menu command Insert &gt; Add Local Hyperlink. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">&#160;It is useful for linking to an node in a different mindmap. In that case the nodeID must be preceded by the (path to) the mindmap and the character &quot;#&quot;, e.g. mymap.mm#particularId. To get the full absolute path and nodeID, see Copi node URI. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -7097,14 +7065,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Copy the full, absolute address (pathname/filename.mm#nodeID) of the node. This address can be pasted in a hyperlink in a (different) mindmap or other program to open the mindmap and select the node. To make the address relative in stead of absolute, remove the first part of the pathname, leaving at least the #nodeID (internal node) or mindmapName.mm#nodeID external node in different map in same directory.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -7123,7 +7091,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7163,14 +7131,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by moving it down through the sibling hierarchy. If already at the bottom, the node is moved to the top. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
@@ -7193,14 +7161,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by moving it up through the sibling hierarchy. If already at the top, the node is moved to the bottom. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
@@ -7220,7 +7188,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7243,17 +7211,17 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by making it a sibling of its parent. It is placed below the parent to which it was originally a child. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
@@ -7276,17 +7244,17 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Changes the position of the node by making it a child of the node directly above it. If there are other child nodes it becomes the sibling of those children, and is placed last among them. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Hot key</font></b>
@@ -7318,14 +7286,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       If set, the movement of a node (and its children) are independent of the movements of all other nodes. The node can be recognized by a full blue oval handle for moving the node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -7334,19 +7302,19 @@
       A free node is a node which is freely positionable, independently of the position of the other nodes of the mind map. A free node can be recognized by this behaviour and because the oval handle for moving the node is blue and filled in stead of red and open.&#160;&#160;
     </p>
     <p>
-      
+
     </p>
     <p>
       A new, free node can be generated by double-clicking a free place of the mind map. The newly generated free node will have the default properties <i>rectangular cloud</i>&#160;and <i>hidden edge</i>. These properties can be changed in the usual way to e.g. no-cloud and visible edge.
     </p>
     <p>
-      
+
     </p>
     <p>
       An existing node can be turned into a free node by selecting it and choosing &#160;<i>Edit-&gt;Free positioned node (set/reset).</i>&#160;In this case the properties of the node (edge, cloud)&#160;&#160;stay as they are. You can set the properties for cloud and hidden edge in the usual way . The freed node initially appears near the root node and can be moved from there to any desired position by dragging its (blue) oval handle. Moving a free positioned node onto another parent / sibling by usual drag and drop cancels its free positioned status.
     </p>
     <p>
-      
+
     </p>
     <p>
       A free node made by clicking a free space of the mind map is connected to the root node, also if the connecting edge is invisible. This explains why a child node of this free node, if moved onto the upper half of its parent free node, shifts towards the root node.
@@ -7359,14 +7327,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       1. The floating nodes with hidden edges are intended for adding meta information to maps like legends, titles, summaries, authors etc. If such informations relates to a whole map, such nodes should have a root node as their parent so that are always visible and their position does not depend on anything else. Sometimes such information is relevant only for a part of a map. In this case a floating node with hidden edge can be attached to a non root node. For understanding of the context (which I find important) its parent edge is usually displayed as a dashed line if a node is selected unless its color was set to the map background color.
     </p>
     <p>
-      
+
     </p>
     <p>
       2. The free nodes do not require that you hide their edges. The second use case for them is a better use of map space. The automatic layout algorithm does not allow any map branches to overlap. If you want to create more compact maps you can convert some nodes to free nodes. This way they can be placed flexible. And their logical position relative to other sibling nodes now depends on their coordinates. You can see it too if you change to outline view which always reflect logical node positions.
@@ -7376,19 +7344,19 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Reset node position" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1335988584511" TEXT_SHORTENED="true">
+<node TEXT="Reset node position" ID="ID_1003048503" CREATED="1306060582988" MODIFIED="1337369703990" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS" HIDDEN="true">
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
-      <font face="SansSerif, sans-serif" color="#000000"><span style="font-family: SansSerif, sans-serif; color: #000000">Returns the node to the position it had when it was first created. If you have moved nodes around and want to reformat your map, this command will do so. <i>Esc</i>&#160;followed by<i>&#160;Ctrl + A</i>&#160;will select all the nodes in a map.</span></font>
+      <font color="#000000" face="SansSerif, sans-serif">Returns the node to the position it had when it was first created. If you have moved nodes around and want to reformat your map, this command will do so. <i>Ctrl + A</i>&#160;will select all the nodes in a map.</font>
     </p>
   </body>
 </html>
@@ -7401,14 +7369,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens the Find dialog box. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
@@ -7433,14 +7401,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Searches for the next instance of the string entered in the Find dialog box. (A string is any combination of letters and numbers.) </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
@@ -7464,14 +7432,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens a dialog box that lists all of the nodes in a map. When matches are found for the string entered in the Find field, you have the option to apply the value of the Replace field or skip to the next instance of the Find string. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
@@ -7498,14 +7466,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To find the list of nodes last modified, click on top of the table Modified to sort the rows top down or bottom up. Next you can see which nodes have been last modified.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -7534,14 +7502,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Same as Find and Replace... but applied to all open maps. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
@@ -7577,7 +7545,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7590,7 +7558,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7607,23 +7575,23 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Methods are accessible through the main menu-bar as menu-items, the Toolbar and Filter toolbar as icon-buttons, as short-cut keys (F-keys and key combinations) and as context menu's which are connected to objects such as nodes and connectors. It is your own choice which of these possibilities you want to use.
     </p>
     <p>
-      
+
     </p>
     <p>
       A menu-bar which is not needed, can be hidden to save screen space. If all bars are hidden, right-click on the screen to display the context menu with which cou can make them visible again.
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -7636,14 +7604,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Toggles the main toolbar on and off. This is the bar with the menu's for File, Edit, View, Nodes, etc. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
@@ -7673,14 +7641,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">The<b>&#160;main menu-bar</b>&#160;is the bar with the main textual menu's of Freeplane at the top of the screen. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><b>Note</b> </font>
@@ -7702,7 +7670,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7735,14 +7703,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The <b>main toolbar</b>&#160;is the bar with icon-buttons for most used map handling, e.g.Previous map, Following map, etc.
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -7753,14 +7721,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles the visibility of the toolbar with filter methods.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -7786,7 +7754,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7801,14 +7769,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Toggles the Function Key (F-Key) toolbar on and off. This is the bar with F1, F2, F3, etc. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
@@ -7822,7 +7790,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b>
@@ -7844,14 +7812,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Toggles the visibility of the Secondary Toolbar [Icon bar] on and off. This is the bar containing all kinds of icons the user can add to a node and located vertically at the left of the screen (most of the time).</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b>
@@ -7878,7 +7846,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7899,14 +7867,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       &#160;Context menus are powerful alternative to using menu-bars.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -7928,7 +7896,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7944,7 +7912,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7967,7 +7935,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -7980,7 +7948,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8008,7 +7976,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8048,7 +8016,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8060,7 +8028,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -8078,7 +8046,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8105,7 +8073,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8134,7 +8102,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8163,7 +8131,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8193,7 +8161,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8215,7 +8183,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8233,14 +8201,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Minimum node width in pixels.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -8258,14 +8226,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Maximum width of the node in pixels.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -8291,7 +8259,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8310,7 +8278,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8330,7 +8298,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8350,7 +8318,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8369,7 +8337,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8391,20 +8359,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Cloud color</b>&#160;is the<b>&#160;</b>background color of cloud.
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -8426,7 +8394,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8448,7 +8416,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8467,14 +8435,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Not all properties can be set in Properties Panel.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -8495,7 +8463,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8518,7 +8486,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8536,7 +8504,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8569,7 +8537,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8599,7 +8567,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8618,7 +8586,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8634,14 +8602,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens dialog to enter a script which will be executed at the time of the reminder, if the mind map is open at this time.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -8661,14 +8629,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       This example contains a script that will add the ok-icon to the present node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Do</b>
@@ -8713,14 +8681,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To set a reminder at the date and time set.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -8729,7 +8697,7 @@
       The reminder wil also trigger the script, if defined AND the mindmap is open. It is not necessary that the map is visible.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -8747,7 +8715,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8771,7 +8739,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8810,7 +8778,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8845,14 +8813,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To format the attribute value, select and modify on of the format templates.
     </p>
     <p>
-      
+
     </p>
     <p>
       See also
@@ -8875,20 +8843,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       An <b>attribute</b>&#160;has a name and value/data, meaning name=value.
     </p>
     <p>
-      
+
     </p>
     <p>
       The list of attributes consists of two columns. The left column can contain the attribute's&#160;&#160;name and the right column its value.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -8931,7 +8899,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8941,7 +8909,7 @@
       URL's aure automatically recognised.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -8966,7 +8934,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -8985,7 +8953,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9004,7 +8972,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9023,14 +8991,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Brings the selected node to the centre of the screen, moving the surrounding nodes with it.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Short cut</b>
@@ -9061,7 +9029,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9083,20 +9051,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Toggles the display of the map between default (radial view) or list (outline view). </font>
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note </b>
@@ -9114,7 +9082,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -9127,14 +9095,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Hide or show all menu/tool bars. </font>
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -9150,7 +9118,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9165,7 +9133,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9181,14 +9149,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Toggles the appearance of selecting a node. When in Rectangular selection mode, the selected node has a solid line around it, with rounded corners. When not in Rectangular mode, the selected node has a grey background color. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
@@ -9213,7 +9181,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9228,20 +9196,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Press to (un)hide node features like node details, image, hyperlink (underlined). Also the node core is shortened and formatting is removed.
     </p>
     <p>
-      
+
     </p>
     <p>
       The hidden text and hyperlinks are shown when hovering with the cursor above the node core (tool tip). Images are not shown when hovering.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9257,14 +9225,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles the visibility of the Details field under the basic node text.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9290,14 +9258,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles the visibility of Tool Tips.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -9318,14 +9286,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Tool Tip is a window that opens when the mouse cursor is over a node and &#160;View &gt; Display Tootips is set. You are reading the current text in a Tool Tip window.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9349,14 +9317,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles visibility of the list of styles which apply to the selected node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -9376,14 +9344,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles visibility of modification times when the cursor hovers over the node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9405,14 +9373,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles the visibility of attributes as set by&#160;<i>Node features &gt; Attribute manger. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       Options are:
@@ -9456,7 +9424,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9478,7 +9446,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9498,14 +9466,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Toggles the Note panel visible or hidden. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -9533,7 +9501,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9548,7 +9516,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9565,14 +9533,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Toggles the visibility of a node's note text below its basic node text.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -9600,7 +9568,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9622,7 +9590,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9646,7 +9614,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9668,7 +9636,7 @@
           </li>
         </ul>
         <p>
-          
+
         </p>
       </li>
     </ul>
@@ -9697,14 +9665,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To change the appearance of a node. Select <i>View &gt; Properties Panel</i>&#160;to display most of the properties that can be changed. Check the property you want to change and enter a new value to change it. Select <i>View &gt; Properties Panel</i>&#160;again to close the panel. Alternatively properties can be changed through menu <i>Format</i>. For example, to change the text colour of the node, choose <i>Format &gt; Change node color</i>&#160;or press <i>Alt+Shift+F</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       Properties that can be changed in the <i>Properties panel</i>&#160;are:
@@ -9780,14 +9748,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Opens a list of node styles. The selected style will be appied to the selected node(s). </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Note </font>
@@ -9798,7 +9766,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also </b>
@@ -9830,7 +9798,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -9852,14 +9820,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A speciasl style which is automatically applied to each new Details of a node. It will set the font type, size color, but not e.g. bubble and edge. So if you want each Details to have a specific color, set it here.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9881,14 +9849,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A speciasl style which is automatically applied to each new note of a node. It will set the font type, size color, but not e.g. bubble and edge. So if you want each note to have a specific color, set it here.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9906,14 +9874,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A special style which is automatically applied if you press <i>Control</i>&#160; and click a free space of the map. The style is then automatically combined with the Edit &gt; Free posinoned node status.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9935,14 +9903,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Opens a list of user defined node styles. The selected style will be appied to the selected node(s). </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also </b>
@@ -9982,14 +9950,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Use or don't use level styles. The nodes automatically get the predefined styles related to their node level.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -9998,7 +9966,7 @@
       The predifined number of level styles is 5. It is possible to increase or decrease this number by adding or removing styles in the window that opens after <i>Format &gt; Manage styles &gt; Edit styles....</i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -10052,20 +10020,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Styles (classes) are a means to quickly&#160;&#160;apply or change a group of visual properties or content&#160;&#160;for all related nodes at once. Styles (classes) can be used to find, select or filter nodes which are associated with a particular type of content or structure.&#160;&#160;You can attach one or more styles to a node by selecting the style name(s) from a list. With filter rules you can automatically decide if a particular style should be applied to a particular node or not.. There is a predefined set of styles for 5 different hierarchical node levels which can be applied right away.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Example</b>. The <i>Freeplane Documentation</i>&#160;you are reading, contains visually discriminating styles for classes of information indicating respectively methods, exceptions, examples etc. Each node is attached to all the styles (classes) it belongs to. As a result&#160;&#160;you can see form the appearance of the node which type of information it contains. Also you can display only nodes containing one particular type of information, by filtering for for style (class) <i>Definition</i>. For example you can display only (all) definitions.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -10096,14 +10064,14 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a dialog to enter the name under which the selected node will be saved as a user style.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -10123,7 +10091,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -10149,7 +10117,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10161,7 +10129,7 @@
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -10181,7 +10149,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10199,20 +10167,20 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Opens a dialog to define the rules for automatically applying a particular style for each node. </font>A particular node may trigger different rules at once. In that case the different styles will be applied to the same&#160;&#160;node.
     </p>
     <p>
-      
+
     </p>
     <p>
       If the conditions of the rule are true, the style is applied to the node. Multiple rules may fire at once, hence a node can display multiple styles. The list of rules is evaluated from top rule to bottom rule. If a rule triggers and <i>Stop</i>&#160;is set for that rule, the rules below will not be evaluated and not fire. &#160;The style rule itself is similar to a filter rule.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Do</b>
@@ -10261,7 +10229,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10276,7 +10244,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10290,7 +10258,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10304,7 +10272,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10318,7 +10286,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10332,7 +10300,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10353,7 +10321,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10367,7 +10335,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10384,7 +10352,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10404,7 +10372,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10423,7 +10391,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10447,7 +10415,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10469,7 +10437,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10489,7 +10457,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <pre wrap="">The same nodes on the style map are used as templates and as styles.
@@ -10501,7 +10469,7 @@ and style basically means that they are virtually attached to relevant nodes.
 
 Actually style conditions build a chain so that many styles are applied to the
 same node if many conditions are satisfied.
-For instance if you have conditional styles 
+For instance if you have conditional styles
 
 Node text contains &quot;Important&quot; =&gt; styleOne,
 Node text contains &quot;error&quot; =&gt; styleTwo,
@@ -10515,7 +10483,7 @@ Other node features like attributes or details are editable. Therefore they
 are interpreted as a part of template. It is possible to include other features
 like notes or even child nodes in the future. The templates are applied
 as follows:
- 
+
 There are many ways to insert new nodes: before, after, as a child, as a parent,
 as summary node. After the new node is inserted you can apply a template for
 it just assigning the corresponding style. In this case its content is copied
@@ -10542,7 +10510,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10552,7 +10520,7 @@ elements from the styles activated by conditions are copied.</pre>
       The list of rules is evaluated from top rule to bottom rule. If a rule triggers and <i>Stop</i>&#160;is set for that rule, the rules below will not be evaluated and not fire. &#160;The style rule itself is similar to a filter rule.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Do</b>
@@ -10578,7 +10546,7 @@ elements from the styles activated by conditions are copied.</pre>
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -10605,7 +10573,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10620,7 +10588,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10634,7 +10602,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10648,7 +10616,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10662,7 +10630,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10676,7 +10644,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10697,7 +10665,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10711,7 +10679,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10728,7 +10696,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10748,7 +10716,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10767,7 +10735,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10784,14 +10752,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       This node you are reading is made using Conditional Node styles. The styles applied are shown at the top of the Tool Tip.
     </p>
     <p>
-      
+
     </p>
     <p>
       Open the window Styles &gt; Manage Conditional Node Styles to see the two rules, one for applying style Example and one for style ToNote. Both rules are of type: always apply this style. This is the most simple use of conditional node styles: to apply more than one style to the same node at once.
@@ -10810,14 +10778,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a dialog for choosing a map style. These styles are in fact mind maps.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -10842,14 +10810,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a dialog to edit all styles, add and remove styles.
     </p>
     <p>
-      
+
     </p>
     <p>
       To define a new user style in this mode:
@@ -10897,7 +10865,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10917,7 +10885,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10956,7 +10924,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10980,7 +10948,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -10999,7 +10967,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11021,7 +10989,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11043,7 +11011,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11062,14 +11030,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Changes font to Bold in whole basic node and Details.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11097,14 +11065,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Changes font to Italic in whole basic node and Details.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11131,14 +11099,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Increases font&#160;&#160;size in whole basic node and Details.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11165,14 +11133,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Decreases font&#160;&#160;size in whole basic node and Details.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11197,7 +11165,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11216,26 +11184,26 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       These actions effect the whole basic node text. and overrule WYSIWYG formatting in the edit windows and in the context menu of the inline editor. The action initially affects Details, but can be refined/undone by formatting in the edit dialog.
     </p>
     <p>
-      
+
     </p>
     <p>
       It was originally meant for easy, fast formatting. However, the formatting with the inline editor context menu makes these functions more or less obsolete.
     </p>
     <p>
-      
+
     </p>
     <p>
       To undo, select <i>Format &gt; Remove Format</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11258,7 +11226,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11279,7 +11247,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11301,7 +11269,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11319,7 +11287,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11339,7 +11307,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11354,7 +11322,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11374,29 +11342,29 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       These actions effect the whole basic node text. and overrule WYSIWYG formatting in the edit windows and in the context menu of the inline editor.
     </p>
     <p>
-      
+
     </p>
     <p>
       It was meant for easy, fast formatting. However, the formatting with the inline editor context menu makes these functions more or less obsolete.
     </p>
     <p>
-      
+
     </p>
     <p>
       To undo, select <i>Format &gt; Remove Format</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11419,17 +11387,17 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Sets the background color of the selected node(s) using a color chooser dialog. Formatting will apply to the entire node. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11461,14 +11429,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Undo set Bubble and show a horizontal line below the node's content. This is the default format, and it is used for this node and for most of the other nodes in this document. The alternative is Bubble format.</span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11492,14 +11460,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Surround the inner area of the node with a round-cornered Bubble. The Bubble format has been applied to this node. The alternative is Fork format.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11528,7 +11496,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11548,14 +11516,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Restores format to standar style
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See alo</b>
@@ -11591,14 +11559,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Changes the color of the cloud. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -11631,7 +11599,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11707,14 +11675,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens dialog to select the style to be applied to the selected node(s). </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><span style="color: #000000; font-family: SansSerif, sans-serif">Options are: </span></font>
@@ -11760,7 +11728,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11780,7 +11748,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11799,7 +11767,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11816,14 +11784,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Change the width of the node
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">See also </font></b>
@@ -11858,7 +11826,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11873,7 +11841,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11894,7 +11862,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11919,14 +11887,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Toggles the nodes that are children of the selected node between being visible/hidden. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font face="SansSerif, sans-serif" color="#000000">Short cut </font></b>
@@ -11952,7 +11920,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -11992,7 +11960,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12012,7 +11980,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12032,14 +12000,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Unfolds (makes visible) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Hot key</b>
@@ -12069,14 +12037,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Folds (hides) all nodes that are descendants of the selected node, including all children, grandchildren, etc. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Hot key</b>
@@ -12112,7 +12080,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12126,7 +12094,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12144,7 +12112,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12167,14 +12135,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Moves the selection focus to the root node (the parent of all other nodes). </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Short cut </b>
@@ -12201,7 +12169,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12219,14 +12187,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Moves the selection focus to the previous node in the map's hierarchy. If the previous node is currently hidden, the map will be unfolded to display the node. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font face="SansSerif, sans-serif" color="#000000">Short cut</font></b>
@@ -12248,14 +12216,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Moves the selection focus to the next node in the map's hierarchy. If the next node is currently hidden, the map will be unfolded to display the node. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Short cut</b>
@@ -12266,7 +12234,7 @@ elements from the styles activated by conditions are copied.</pre>
       </li>
     </ul>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -12280,7 +12248,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12298,7 +12266,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12321,7 +12289,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12341,7 +12309,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12367,20 +12335,20 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To <b>select a node </b>is to bring it into focus and to <b>un-select a node </b>is to remove the focus. The node in focus is can be acted upon by menu functions.
     </p>
     <p>
-      
+
     </p>
     <p>
       The currently selected node is highlighted by either a selection rectangle or a shaded node. The rectangle is the default. This can be changed in <i>View &gt; Rectangular selection</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       To <b>un-select</b>&#160;a selected node(s), click outside the node, in an empty place of the background; or
@@ -12389,13 +12357,13 @@ elements from the styles activated by conditions are copied.</pre>
       click on an other node, which wil be selected next.
     </p>
     <p>
-      
+
     </p>
     <p>
       The node under the cursor is automatically selected. To <b>keep this selection</b>&#160;when moving around the mouse cursor, keep <i>Shift</i>&#160;&#160;pressed. If you dislike this behaviour, you can turn automatic selection off in menu <i>Tools &gt; Preferences</i>.
     </p>
     <p>
-      
+
     </p>
     <p>
       Alternative ways of selecting a node or group of nodes are by pressing a special key or key combination.
@@ -12419,14 +12387,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To keep a selection when moving the cursor around, keep <i>Shift</i>&#160;pressed.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -12445,14 +12413,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To select the first&#160;&#160;or last sibling of the currently selected node &#160;press <i>PgUp </i>respectively<i>&#160;PgDown. </i>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -12470,11 +12438,11 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 <attribute NAME="Chapter" VALUE="2"/>
 </node>
-<node TEXT="Select All Descendants" STYLE_REF="Method" FOLDED="true" ID="ID_228451346" CREATED="1309424361071" MODIFIED="1311402755286" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Select All Descendants" STYLE_REF="Method" FOLDED="true" ID="ID_228451346" CREATED="1309424361071" MODIFIED="1337370032830" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12485,7 +12453,7 @@ elements from the styles activated by conditions are copied.</pre>
         press <i>Alt + End </i>to&#160;&#160;unfold all hidden descendants
       </li>
       <li>
-        press <i>Als + Shift + A </i>to select all visible descendants
+        press <i>Ctrl&#160;+ Shift + A </i>to select all visible descendants
       </li>
     </ul>
     <p>
@@ -12517,7 +12485,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12563,7 +12531,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12581,7 +12549,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12599,7 +12567,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12617,14 +12585,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Use the arrow keys to move the selection focus from one node to another node. The focus moves in the direction of the arrows.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also:</b>
@@ -12651,14 +12619,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Hidden text shown in a Tool Tip may hide a sibling under the current node. To move to the node below and show its tool tip, use the down arrow key.
     </p>
     <p>
-      
+
     </p>
     <p>
       To finish the appearance of the Too Tip, move the cursor up,&#160;&#160;above the node.
@@ -12681,14 +12649,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">If the node is hyperlinked, this command will execute the link. </span></font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif"><b>See also</b> </span></font>
@@ -12699,7 +12667,7 @@ elements from the styles activated by conditions are copied.</pre>
       </li>
     </ul>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -12710,20 +12678,20 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">To display only a subset of nodes. Build and use filters with the Filter Toolbar or the Filter Menu. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Method<b>&#160;Quick filter</b>&#160;does the major filtering (other options are available).</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>&#160;Filter rules</b>&#160;are build from thee elements:
@@ -12802,7 +12770,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12823,7 +12791,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12843,7 +12811,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12863,14 +12831,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Hides all visible nodes which do not fit the filter rules and options. Icon keeps unset..
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -12911,14 +12879,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To filter for all nodes modified after a certain date, ser a filterrrule (Date filter<i>, Modified after, date, xxx)</i>&#160;and <i>Quick filter</i>&#160;for all modified nodes.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -12939,14 +12907,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Display only the currently-selected node(s) and, optionally, their ancestors and/or descendants. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -12974,7 +12942,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -12994,7 +12962,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13014,20 +12982,20 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Opens the Filter Composer dialog to create and edit filter rules / manage filters. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">The first row contains three entries to define a filter rule, filled with (Node text, Contains, empty filed). and a check box for indicating if the Case of letters is relevant (<i>Match case</i>). The box below these editable fields contains the list of predefined rules. Initially it is empty. Two or more of these rules can be combined to form a more complex rule with AND and OR operators using the buttons to the right. A rule can be named with buttond Set Name. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font face="SansSerif, sans-serif" color="#000000">Do</font></b>
@@ -13221,7 +13189,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13267,7 +13235,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13286,7 +13254,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13307,14 +13275,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Toggles Display all ancestor nodes of nodes which match the filter when filtering is in effect (Applies to Filtered Nodes is set) </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -13338,14 +13306,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Togles Display all descendant nodes of nodes which match the filter when filtering is in effect (Applies to Filtered Nodes is set)</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -13376,14 +13344,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Expand all nodes in a map that match the filter. This is not a toggle switch: once the nodes are expanded, they can only be collapsed using other commands (such as Filter &gt; Undo, which may be used immediately after this command). </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
@@ -13414,14 +13382,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node. The searching direction is opposite to Find Next. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
@@ -13452,14 +13420,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Find text or other criteria in the selected node and all its descendant nodes. And if not found, search further in other branches. This is called depth first search.</font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font color="#000000" face="SansSerif, sans-serif">Note</font></b>
@@ -13501,7 +13469,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13516,14 +13484,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       The Time manager allows you to set dates, times (reminders) and tasks (reminder texts) in selected nodes. The date appears as basic node text. A clock icon signals that a reminder is set.&#160;&#160;This icon appears in the note and its predecessors, except nodes which are within a Sum node group. A flasing clock icon signals that a reminder time has been reached.
     </p>
     <p>
-      
+
     </p>
     <p>
       There are two locations where these functions can be set of edited.
@@ -13549,14 +13517,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a dialog to set ar change a date (text) or a reminder which has been attached to the selected node. The node and its predecessors show a clock icon. This icon flases at the reminder time. Also a red exclamation mark flashes in the root node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -13604,7 +13572,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13631,7 +13599,7 @@ elements from the styles activated by conditions are copied.</pre>
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">The entries can be searched, and changed with search and replace. </font>
@@ -13655,14 +13623,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Remove the reminder of the selected node. For alternatives:
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -13699,14 +13667,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <b>Encryption</b>&#160;is a method to protect (only) the descendants of a node from viewing and editing. unless the right encryption key has been entered.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -13746,14 +13714,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Opens a dialog&#160;&#160;to add and use&#160;&#160;a password to protect the descendants of the selected node form being displayed and edited. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><b>Note</b>&#160;</font>
@@ -13790,7 +13758,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13800,7 +13768,7 @@ elements from the styles activated by conditions are copied.</pre>
       This node is protected: my children are visible only after entering a password.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Do</b>
@@ -13831,7 +13799,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13847,7 +13815,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -13863,14 +13831,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font color="#000000" face="SansSerif, sans-serif">Allows assigning a hotkey combination to most menu commands, or reassigning the current hotkeys. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       Opens a dialog to:
@@ -13892,7 +13860,7 @@ elements from the styles activated by conditions are copied.</pre>
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -13921,14 +13889,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens a list of previously saved hot key sets to choose from.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -13952,14 +13920,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Opens a dialog to save all the currently-defined hot key short-cuts to a dedicated file, which may be used to share the keystroke sets among multiple computers.The dialog prompts for the name of the file, which is automatically given the &quot;.properties&quot; extension. </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font face="SansSerif, sans-serif" color="#000000"><b>Note</b></font>
@@ -13989,7 +13957,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14024,14 +13992,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       A <b>hot key</b>&#160;is a special key or key combination which can be used to trigger a menu item without having to navigate to the menu item.
     </p>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -14041,7 +14009,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14056,7 +14024,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14068,7 +14036,7 @@ elements from the styles activated by conditions are copied.</pre>
       </li>
     </ul>
     <p>
-      
+
     </p>
   </body>
 </html>
@@ -14079,7 +14047,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <pre wrap=""> Unassigned F-Key are passed through if the focused component is a JTextComponent.  (1.2.8_05</pre>
@@ -14091,7 +14059,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <pre wrap=""><a href="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076" class="moz-txt-link-freetext">https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076</a></pre>
@@ -14106,7 +14074,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14126,7 +14094,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14146,7 +14114,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14166,7 +14134,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14184,7 +14152,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14234,7 +14202,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14249,7 +14217,7 @@ elements from the styles activated by conditions are copied.</pre>
       </li>
     </ul>
     <p>
-      
+
     </p>
     <p>
       <b>See also</b>
@@ -14283,14 +14251,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To load an image in&#160;&#160;Details you can execute the script defined in this node.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Do </b>
@@ -14345,14 +14313,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       To make available the example script to insert an image to Details from any node, you should install it in directory scrips.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Do</b>
@@ -14427,14 +14395,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       <code>To execute an external command, save the script: </code>
     </p>
     <p>
-      
+
     </p>
     <p>
       <code>// @ExecutionModes(on_single_node) </code>
@@ -14443,7 +14411,7 @@ elements from the styles activated by conditions are copied.</pre>
       <code>&#160;'C:\path\to\my\command'.execute() </code>
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><code>Note</code></b>
@@ -14472,7 +14440,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14492,7 +14460,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14508,14 +14476,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Contains all styles, .mm format.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -14541,7 +14509,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14558,14 +14526,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Contains user defined icons.
     </p>
     <p>
-      
+
     </p>
     <p>
       Note
@@ -14591,7 +14559,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14608,7 +14576,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14635,7 +14603,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14653,7 +14621,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -14837,7 +14805,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     &gt;you can define how many nodes you want to see and the Freeplane unfolds them automatically and lets the rest folded.&#160;&#160;The property is actice only if &quot;On load&quot; is set to &quot;Fold all&quot; or &quot;Load from map or fold all
@@ -15278,11 +15246,11 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
-      
+
     </p>
     <p>
       <b>Note</b>
@@ -15317,7 +15285,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -15464,7 +15432,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -15743,7 +15711,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -15956,7 +15924,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -15969,7 +15937,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -15987,7 +15955,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16020,7 +15988,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16085,7 +16053,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16106,7 +16074,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16124,7 +16092,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16138,7 +16106,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16155,7 +16123,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16174,7 +16142,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16191,7 +16159,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16208,7 +16176,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16225,7 +16193,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16247,7 +16215,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16261,7 +16229,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16279,14 +16247,14 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
       Opens documentation from Internet. This gives the most recent information.
     </p>
     <p>
-      
+
     </p>
     <p>
       <b><font size="1">Note</font></b>
@@ -16298,7 +16266,7 @@ elements from the styles activated by conditions are copied.</pre>
       <font size="1" face="Times New Roman,serif">To link to the FAQ node: </font><font size="1">http://</font><font size="1" face="Times New Roman,serif">freeplane.sourceforge.net/doc/1.2.x/freeplane.mm#</font><font size="1" face="Calibri,sans-serif">&#160; ID_1040911735</font><font size="1">&#160; </font>
     </p>
     <p>
-      
+
     </p>
     <p>
       <font size="1">In the same way it is possible to link to the online tutorial: http://</font><font size="1" face="Times New Roman,serif">freeplane.sourceforge.net/doc/1.2.x/freeplaneTutorial.mm</font>
@@ -16311,7 +16279,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -16329,7 +16297,7 @@ elements from the styles activated by conditions are copied.</pre>
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>

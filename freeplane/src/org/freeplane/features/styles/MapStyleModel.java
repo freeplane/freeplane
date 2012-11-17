@@ -27,7 +27,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.swing.ComboBoxModel;
@@ -55,7 +54,8 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
-    public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
+	public static final String STYLES_PREDEFINED = "styles.predefined";
+	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
     public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
     public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
     public static final IStyle FLOATING_STYLE = new StyleNamedObject("defaultstyle.floating");
@@ -127,7 +127,12 @@ public class MapStyleModel implements IExtension {
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			styleMap.setRoot(root);
 			insertStyleMap(parentMap, styleMap);
-			final NodeModel predefinedStyleParentNode = getPredefinedStyleParentNode(styleMap);
+			NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, STYLES_PREDEFINED);
+			if(predefinedStyleParentNode == null){
+				predefinedStyleParentNode = new NodeModel(styleMap);
+				predefinedStyleParentNode.setUserObject(new StyleNamedObject(MapStyleModel.STYLES_PREDEFINED));
+				root.insert(predefinedStyleParentNode);
+			}
             if(styleNodes.get(DEFAULT_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DEFAULT_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 0);
@@ -273,16 +278,6 @@ public class MapStyleModel implements IExtension {
 		return properties.get(key);
 	}
 
-    NodeModel getPredefinedStyleParentNode(final MapModel styleMap) {
-        final String group = "styles.predefined";
-        return getStyleNodeGroup(styleMap, group);
-    }
-    
-    public NodeModel getUserStyleParentNode(final MapModel styleMap) {
-        final String group = "styles.user-defined";
-        return getStyleNodeGroup(styleMap, group);
-    }
-    
     public NodeModel getStyleNodeGroup(NodeModel styleNode){
         final int depth = styleNode.depth();
         if(depth < 1)
@@ -294,7 +289,7 @@ public class MapStyleModel implements IExtension {
         return node;
     }
 
-    private NodeModel getStyleNodeGroup(final MapModel styleMap, final String group) {
+    public NodeModel getStyleNodeGroup(final MapModel styleMap, final String group) {
         final NodeModel rootNode = styleMap.getRootNode();
         final int childCount = rootNode.getChildCount();
         for(int i = 0; i < childCount; i++){
@@ -304,10 +299,11 @@ public class MapStyleModel implements IExtension {
                 return childNode;
             }
         }
-        throw new NoSuchElementException();
+        return null;
     }
 
 	ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+	public static final String STYLES_USER_DEFINED = "styles.user-defined";
 	ComboBoxModel getStylesAsComboBoxModel() {
 		return stylesComboBoxModel;
     }

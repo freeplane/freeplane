@@ -78,6 +78,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -165,6 +166,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	private static void performBackup(final File file, final File backupFile) {
 	    try {
 	        FileUtils.copyFile(file, backupFile);
+	        backupFile.setLastModified(file.lastModified());
         }
         catch (IOException e) {
         }
@@ -471,6 +473,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
 		MapVersionInterpreter versionInterpreter = MapVersionInterpreter.getVersionInterpreter(mapStart);
+		map.addExtension(versionInterpreter);
 		if(versionInterpreter.anotherDialect){
 			String message = versionInterpreter.getDialectInfo(f.getAbsolutePath());
 			UITools.showMessage(message, JOptionPane.WARNING_MESSAGE);
@@ -749,8 +752,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * of temporary (internal) files.
 	 */
 	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
-		if (!isInternal && map.isReadOnly()) {
-			LogUtils.severe("Attempt to save read-only map.");
+		if (file.exists() && !file.canWrite()) {
+			LogUtils.severe("Attempt to write in read-only file.");
 			return false;
 		}
 		try {

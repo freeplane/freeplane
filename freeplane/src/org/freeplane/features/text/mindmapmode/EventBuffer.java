@@ -39,6 +39,7 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 	private Component textComponent;
 	boolean isActive = false;
 	private InputEvent firstEvent;
+	private KeyEvent dispatchedEvent = null;
 
 	public boolean isActive() {
 		return isActive;
@@ -57,15 +58,16 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 	}
 
 	public boolean dispatchKeyEvent(final KeyEvent ke) {
-		if(events.contains(ke)){
+		if(ke.equals(dispatchedEvent)){
 			return false;
 		}
 		if(textComponent != null){
 			KeyEvent newEvent = new KeyEvent(textComponent, ke.getID(), ke.getWhen(), ke.getModifiers(), ke.getKeyCode(), ke.getKeyChar(), ke.getKeyLocation());
 			events.add(newEvent);
 		}
-		else
-			events.add(ke);
+        else {
+	        events.add(ke);
+        }
 		
 		// Prevent Freeplane freeze
 		if(ke.getKeyCode() == KeyEvent.VK_ESCAPE 
@@ -86,11 +88,12 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 			for (int i = 0; i < events.size(); i++) {
 				final KeyEvent ke = events.get(i);
 				if(ke.getComponent().equals(textComponent))
-					e.getComponent().dispatchEvent(ke);
+					dispatchedEvent = ke;
 				else{
-					KeyEvent newEvent = new KeyEvent(textComponent, ke.getID(), ke.getWhen(), ke.getModifiers(), ke.getKeyCode(), ke.getKeyChar(), ke.getKeyLocation());
-					e.getComponent().dispatchEvent(newEvent);
+					dispatchedEvent = new KeyEvent(textComponent, ke.getID(), ke.getWhen(), ke.getModifiers(), ke.getKeyCode(), ke.getKeyChar(), ke.getKeyLocation());
 				}
+				e.getComponent().dispatchEvent(dispatchedEvent);
+				dispatchedEvent = null;
 			}
 		}
 		finally{
@@ -116,6 +119,7 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 		textComponent = null;
 		events.clear();
 		firstEvent = null;
+		dispatchedEvent = null;
 	}
 	public void activate(InputEvent e) {
 		activate();

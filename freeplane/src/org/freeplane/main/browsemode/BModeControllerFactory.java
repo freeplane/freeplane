@@ -44,6 +44,7 @@ import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteController;
+import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
@@ -101,6 +102,7 @@ public class BModeControllerFactory {
 		FoldingController.install(new FoldingController());
 		new ViewerController();
 		EncryptionController.install(new EncryptionController(modeController));
+		new AutomaticLayoutController();
 		return modeController;
 	}
 }

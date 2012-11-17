@@ -517,6 +517,17 @@
 			</text:p>
 		</text:list-item>
 	</xsl:template>
+	
+	<xsl:template match="a" mode="richcontent">
+		<xsl:element name="text:a" namespace="text">
+			<xsl:attribute namespace="xlink" name="xlink:type">simple</xsl:attribute>
+			<xsl:attribute namespace="xlink" name="xlink:href"><xsl:value-of
+				select="@href" />
+			</xsl:attribute>
+			<xsl:apply-templates select="text()" />
+		</xsl:element>
+	</xsl:template>
+	
 
 	<!--
 		<text:list-item> <text:p text:style-name="P1">b </text:list-item>

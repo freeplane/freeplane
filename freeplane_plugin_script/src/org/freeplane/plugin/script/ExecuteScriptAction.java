@@ -20,16 +20,12 @@
 package org.freeplane.plugin.script;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.WordUtils;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -52,18 +48,15 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		ON_SELECTED_NODE_RECURSIVELY
 	}
 
-	private final String script;
+	private final File script;
 	private final ExecutionMode mode;
-	private final boolean cacheContent;
 	private ScriptingPermissions permissions;
-	private String content;
 
 	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String script,
 	                           final ExecutionMode mode, final boolean cacheContent, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
-		this.script = script;
+		this.script = new File(script);
 		this.mode = mode;
-		this.cacheContent = cacheContent;
 		this.permissions = permissions;
 	}
 
@@ -74,10 +67,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
-			String scriptContent = getContentIfCached();
-			if (scriptContent == null) {
-				scriptContent = FileUtils.slurpFile(script);
-			}
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE) {
 				nodes.add(Controller.getCurrentController().getSelection().getSelected());
@@ -93,45 +82,23 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						// TODO: ensure that a script is invoked only once on every node?
 						// (might be a problem with recursive actions if parent and child
 						// are selected.)
-						ScriptingEngine.executeScriptRecursive(node, scriptContent, permissions);
+						ScriptingEngine.executeScriptRecursive(node, script, permissions);
 					}
 					else {
-						ScriptingEngine.executeScript(node, scriptContent, permissions);
+						ScriptingEngine.executeScript(node, script, permissions);
 					}
                 }
 				catch (ExecuteScriptException ex) {
-					LogUtils.warn("error executing script " + script + " - giving up", ex);
-					modeController.delayedRollback();
-					if (ex.getCause() instanceof SecurityException) {
-						final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);
-						UITools.errorMessage(TextUtils.format("ExecuteScriptSecurityError.text", message));
-					}
-					else {
-						final String message = WordUtils.wrap(ex.getMessage(), 80, "\n    ", false);
-						UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
-					}
+				    LogUtils.warn("error executing script " + script + " - giving up", ex);
+				    modeController.delayedRollback();
+					ScriptingEngine.showScriptExceptionErrorMessage(ex);
                 	return;
                 }
 			}
 			modeController.delayedCommit();
 		}
-		catch (final IOException ex) {
-			LogUtils.warn("error reading " + script, ex);
-			UITools.errorMessage(TextUtils.getText("ReadScriptError.text"));
-		}
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
-	}
-
-	private String getContentIfCached() throws IOException {
-		if (cacheContent && content == null) {
-			content = FileUtils.slurpFile(script);
-			// oops, logtool seems to be inoperable right now
-			LogUtils.info("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
-			System.out
-			    .println("cached " + String.format("%.1f", content.length() / 1000.) + " KB for script " + script);
-		}
-		return content;
 	}
 }

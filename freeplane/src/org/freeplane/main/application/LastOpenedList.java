@@ -20,9 +20,7 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Window;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

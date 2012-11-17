@@ -270,7 +270,8 @@ public class PseudoDamerauLevenshteinTest {
 		//DL.init("set up", "setup", true, true);
 		//DL.init("hobbies", "hobbys", true, true);
 		//DL.init("hobbys", "hobbies", true, true);
-		DL.init("thee", "The x y the jdlsjds salds", true, false);
+		//DL.init("thee", "The x y the jdlsjds salds", true, false);
+		DL.init("Bismark", "... Bismarck lived...Bismarck reigned...", true, true);
 		//DL.init("refugee", "refuge x y", true, true);
 		//StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB
 		List<PseudoDamerauLevenshtein.Alignment> alis = DL.computeAlignments(0.65);

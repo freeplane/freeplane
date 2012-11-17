@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.regex.Pattern;
 
@@ -29,14 +27,12 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.map.MapModel;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
-import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
+import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.ui.ViewController;
 
@@ -75,7 +71,7 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 		if(text ==  null){
 			text = "";
 		}
-		final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG("EditNoteInDialogAction.text", nodeModel, text, new EditNodeBase.IEditControl() {
+		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditDialog = null;
@@ -95,26 +91,23 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 			public EditedComponent getEditType() {
                 return EditedComponent.NOTE;
             }
-		}, false);
-		mCurrentEditDialog = editNodeWYSIWYG;
-		editNodeWYSIWYG.setBackground(Color.WHITE);
-		// set default font for notes:
-		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-		    NodeStyleController.class);
-		MapModel map = Controller.getCurrentModeController().getController().getMap();
-		if(map != null){
-		    final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
-		    editNodeWYSIWYG.setFont(defaultFont);
-		}
+		};
+		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
+		mCurrentEditDialog = textFieldCreator.createEditor(nodeModel, editControl, text, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
-		editNodeWYSIWYG.show(frame);
+		mCurrentEditDialog.show(frame);
+
     }
 
 
 	private void setHtmlText(final NodeModel node, final String newText) {
 		final String body = EditNoteInDialogAction.HTML_HEAD.matcher(newText).replaceFirst("");
 		final MNoteController noteController = (MNoteController) MNoteController.getController();
-		noteController.setNoteText(node, body.replaceFirst("\\s+$", ""));
+		final String trimmed = body.replaceFirst("\\s+$", "");
+		if(HtmlUtils.isEmpty(trimmed))
+			noteController.setNoteText(node, null);
+		else
+			noteController.setNoteText(node, trimmed);
 	}
 
 	private void stopEditing() {

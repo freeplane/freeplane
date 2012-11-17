@@ -34,7 +34,6 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,12 +44,14 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
@@ -106,7 +107,8 @@ import com.lightdev.app.shtm.TextResources;
  */
 public class MTextController extends TextController {
 	
-	public static final String NODE_TEXT = "NodeText";
+	private static final String PARSE_DATA_PROPERTY = "parse_data";
+    public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase mCurrentEditDialog = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
@@ -121,6 +123,15 @@ public class MTextController extends TextController {
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+            public void propertyChanged(String propertyName, String newValue, String oldValue) {
+                if (PARSE_DATA_PROPERTY.equals(propertyName)) {
+                    parseData = null;
+                    @SuppressWarnings("unused")
+                    boolean dummy = parseData();
+                }
+            }
+        });
 	}
 
 	private void createActions() {
@@ -338,6 +349,7 @@ public class MTextController extends TextController {
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditEventDispatcher keyEventDispatcher;
+    private Boolean parseData;
 
     public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
@@ -352,7 +364,7 @@ public class MTextController extends TextController {
 	}
 
     public Object guessObject(final Object text, final String oldFormat) {
-        if (ResourceController.getResourceController().getBooleanProperty("parse_data") && text instanceof String) {
+        if (parseData() && text instanceof String) {
             if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
                 return text;
             final Object parseResult = ScannerController.getController().parse((String) text);
@@ -363,6 +375,12 @@ public class MTextController extends TextController {
             return parseResult;
         }
         return text;
+    }
+
+    public boolean parseData() {
+        if (parseData == null)
+            parseData = ResourceController.getResourceController().getBooleanProperty(PARSE_DATA_PROPERTY);
+        return parseData;
     }
 	
 	/** converts strings to date, number or URI if possible. All other data types are left unchanged. */
@@ -660,7 +678,7 @@ public class MTextController extends TextController {
 	    }
 
 	    public boolean dispatchKeyEvent(KeyEvent e) {
-	    	if(e.getID() == KeyEvent.KEY_RELEASED)
+	    	if(e.getID() == KeyEvent.KEY_RELEASED || e.getID() == KeyEvent.KEY_TYPED)
 	    		return false;
 	    	switch(e.getKeyCode()){
 	    		case KeyEvent.VK_SHIFT:
@@ -670,11 +688,31 @@ public class MTextController extends TextController {
 	    		case KeyEvent.VK_ALT_GRAPH:
 	    			return false;
 	    	}
+	    	
 	    	uninstall();
+	    	if (isMenuEvent(e)){
+	    		return false;
+	    	}
 	    	eventQueue.activate(e);
 	    	edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
 	    	return true;
 	    }
+
+		private boolean isMenuEvent(KeyEvent e) {
+	        if(! editLong){
+	    		final String editLongKeyStrokeProperty = ResourceController.getResourceController().getProperty("acceleratorForMindMap/$EditLongAction$0", null);
+	    		if(editLongKeyStrokeProperty != null){
+	    			final KeyStroke editLongKeyStroke = UITools.getKeyStroke(editLongKeyStrokeProperty);
+	    			if(editLongKeyStroke != null){
+	    				final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+	    				if(editLongKeyStroke.equals(keyStroke)){
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    	}
+	        return false;
+        }
 
 		public void uninstall() {
 	        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
@@ -809,7 +847,10 @@ public class MTextController extends TextController {
 			keyEventDispatcher.uninstall();
 		}
 		if (mCurrentEditDialog != null) {
+			// Ensure that setText from the edit and the next action 
+			// are parts of different transactions
 			mCurrentEditDialog.closeEdit();
+			modeController.forceNewTransaction();
 			mCurrentEditDialog = null;
 		}
 	}
@@ -827,6 +868,12 @@ public class MTextController extends TextController {
 		}
 	}
 
+	/**
+	 * Note: when creating an SHTMLPanel using this method, you must make sure to attach
+	 * a FreeplaneToSHTMLPropertyChangeAdapter to the panel (see for example EditNodeWYSIWYG.HTMLDialog.createEditorPanel(String))
+	 * @param purpose
+	 * @return
+	 */
 	public SHTMLPanel createSHTMLPanel(String purpose) {
     	SHTMLPanel.setResources(new TextResources() {
     		public String getString(String pKey) {
@@ -864,6 +911,7 @@ public class MTextController extends TextController {
     	final JEditorPane editorPane = shtmlPanel.getEditorPane();
     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
     	fireEditorPaneCreated(editorPane, purpose);
+    	    	
 		return shtmlPanel;
     }
 

@@ -49,10 +49,11 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
+        private static final int LOOP_INCLINE_OFFSET = 45;
 	private static final int NORMAL_LENGTH = 50;
 	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
-	private static final int LABEL_SHIFT = 4;
+	private static final int LABEL_GAP = 4;
 	private static final double PRECISION = 2;
 	private Shape arrowLinkCurve;
 	private Rectangle sourceTextRectangle;
@@ -118,28 +119,27 @@ public class ConnectorView extends AConnectorView{
 		final int textHeight = textPainter.getTextHeight();
 		final int x;
 		if (controlPoint.x > endPoint.x) {
-			x = endPoint.x - textWidth;
+			x = endPoint.x - textWidth - LABEL_GAP;
 		}
 		else {
-			x = endPoint.x;
+			x = endPoint.x  + LABEL_GAP;
 		}
 		final int y;
 		if (controlPoint.y > endPoint.y) {
-			y = endPoint.y  + LABEL_SHIFT;
+			y = endPoint.y  + LABEL_GAP;
 		}
 		else {
-			y = endPoint.y - textHeight - LABEL_SHIFT;
+			y = endPoint.y - textHeight - LABEL_GAP;
 		}
 		textPainter.draw(x, y, textColor, bgColor);
 		return new Rectangle(x, y, textWidth, textHeight);
 	}
 	
-	private Rectangle drawMiddleLabel(final Graphics2D g, final String text) {
+	private Rectangle drawMiddleLabel(final Graphics2D g, final String text, final Point centerPoint) {
 		if (text == null || text.equals("")) {
 			return null;
 		}
 		final TextPainter textPainter = new TextPainter(g, text);
-		final Point centerPoint = getCenterPoint();
 		final int textWidth = textPainter.getTextWidth();
 		final int x = centerPoint.x - textWidth / 2;
 		final int textHeight = textPainter.getTextHeight();
@@ -162,12 +162,6 @@ public class ConnectorView extends AConnectorView{
 		}
 		final double halfLength = getHalfLength();
 		final PathIterator pathIterator = arrowLinkCurve.getPathIterator(new AffineTransform(), PRECISION);
-		if(getTarget() == getSource()){
-			pathIterator.next();
-			final double nextCoords[] = new double[6];
-			pathIterator.currentSegment(nextCoords);
-			return new Point((int)nextCoords[0], (int)nextCoords[1]);
-		}
 		double lastCoords[] = new double[6];
 		pathIterator.currentSegment(lastCoords);
 		double length = 0;
@@ -288,6 +282,7 @@ public class ConnectorView extends AConnectorView{
 	 * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
 	 */
 	public void paint(final Graphics graphics) {
+        final boolean selfLink = getSource() == getTarget();
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
 		}
@@ -317,6 +312,9 @@ public class ConnectorView extends AConnectorView{
 			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
 				final Point incl = calcInclination(target, dellength);
 				incl.y = -incl.y;
+				if (selfLink) {
+					fixInclineIfLoopNode(incl);
+				}
 				connectorModel.setEndInclination(incl);
 				endPoint = target.getLinkPoint(connectorModel.getEndInclination());
 			}
@@ -368,14 +366,18 @@ public class ConnectorView extends AConnectorView{
 		final boolean selfLink = getSource() == getTarget();
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
 		if (startPoint != null && endPoint != null) {
-			if(selfLink)
+			if(isLine) {
+                            if (selfLink) {
 				arrowLinkCurve = createLine(startPoint, startPoint2);
-			else if(isLine)
+                            }
+                            else {
 				arrowLinkCurve = createLine(startPoint, endPoint);
-			else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
-				arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
-			else
-				arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
+                            }
+                        }
+                        else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
+                            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
+                        else
+                            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
 		}
 		else
 			arrowLinkCurve = null;
@@ -383,18 +385,20 @@ public class ConnectorView extends AConnectorView{
 			g.draw(arrowLinkCurve);
 		}
 		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
-			if(! selfLink && isLine && endPoint != null)
-				paintArrow(g, startPoint, endPoint);
-			else
-				paintArrow(g, startPoint, startPoint2);
-		}
-		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
-			if (selfLink)
-				paintArrow(g, startPoint2, startPoint);
-			else if(isLine && startPoint != null)
+			if(!selfLink && isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
-			paintArrow(g, endPoint, endPoint2);
+				paintArrow(g, startPoint2, startPoint);
+		}
+		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
+			if(isLine && startPoint != null) {
+                            if (selfLink)
+				paintArrow(g, startPoint, startPoint2);
+                            else
+				paintArrow(g, startPoint, endPoint);
+                        }
+			else
+			paintArrow(g, endPoint2, endPoint);
 		}
 		if (connectorModel.getShowControlPointsFlag()) {
 			g.setColor(textColor);
@@ -408,7 +412,7 @@ public class ConnectorView extends AConnectorView{
 			    	arrowLinkCurve = createLine(startPoint, startPoint2);
 				}
 			}
-			if (endPoint != null) {
+			if (endPoint != null && !(selfLink && isLine)) {
 				g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
 				drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
 			    if (arrowLinkCurve == null) {
@@ -423,8 +427,8 @@ public class ConnectorView extends AConnectorView{
 		g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
     }
 
-	private void paintArrow(final Graphics2D g, Point startPoint, Point endPoint) {
-	    paintArrow(startPoint, endPoint, g, getZoom() * 10);
+	private void paintArrow(final Graphics2D g, Point from, Point to) {
+	    paintArrow(from, to, g, getZoom() * 10);
     }
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
@@ -453,8 +457,8 @@ public class ConnectorView extends AConnectorView{
 				middleTextRectangle = drawEndPointText(g, middleLabel, endPoint2, endPoint);
 			}
 		}
-		if (startPoint != null && endPoint != null) {
-			middleTextRectangle = drawMiddleLabel(g, middleLabel);
+                if (startPoint != null && endPoint != null) {
+                    middleTextRectangle = drawMiddleLabel(g, middleLabel, getCenterPoint());
 		}
 		g.setFont(oldFont);
     }
@@ -493,7 +497,15 @@ public class ConnectorView extends AConnectorView{
 
 	private void increaseBounds(Rectangle innerBounds, Rectangle rect) {
 	    if (rect != null)
-	    	innerBounds.add(rect);
-	    
-    }
+                innerBounds.add(rect);
+        }
+
+        private void fixInclineIfLoopNode(Point endIncline) {
+            if (endIncline.y < 0) {
+                endIncline.y -= LOOP_INCLINE_OFFSET;
+            }
+            else {
+                endIncline.y += LOOP_INCLINE_OFFSET;
+            }
+        }
 }

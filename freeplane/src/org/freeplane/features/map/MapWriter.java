@@ -132,9 +132,12 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	public void writeNodeAsXml(final Writer writer, final NodeModel node, final Mode mode,
-	                           final boolean writeInvisible, final boolean writeChildren) throws IOException {
+	                           final boolean writeInvisible, final boolean writeChildren, boolean forceFormat) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
 		xmlWriter.setHint(Hint.MODE, mode);
+		if (forceFormat) {
+			xmlWriter.setHint(WriterHint.FORCE_FORMATTING);
+		}
 		writeNode(xmlWriter, node, writeInvisible, writeChildren);
 		xmlWriter.flush();
 	}

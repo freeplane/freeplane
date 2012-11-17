@@ -31,7 +31,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-@SelectableAction(checkOnPopup=true)
+@SelectableAction
 public class SetLinkAnchorAction extends AFreeplaneAction {
 	public SetLinkAnchorAction() {
 		super("SetLinkAnchorAction");

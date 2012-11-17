@@ -26,7 +26,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.link.LinkController;
 
-@EnabledAction(checkOnPopup=true)
+@EnabledAction
 public class ClearLinkAnchorAction extends AFreeplaneAction {
 	public ClearLinkAnchorAction() {
 		super("ClearLinkAnchorAction");

@@ -28,16 +28,28 @@ import java.nio.channels.FileLock;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 
 public class LockManager extends TimerTask {
-	private File lockedSemaphoreFile = null;
-	private String lockingUserOfOldLock = null;
-	private final long lockSafetyPeriod = 5 * 60 * 1000;
-	private Timer lockTimer = null;
-	private final long lockUpdatePeriod = 4 * 60 * 1000;
+	static final String LOCK_EXPIRATION_TIME = "lock_expiration_time_in_minutes";
+	private File lockedSemaphoreFile;
+	private String lockingUserOfOldLock;
+	private final long lockSafetyPeriod;
+	private Timer lockTimer;
+	private final long lockUpdatePeriod;
+	
+	
+	public LockManager() {
+	    super();
+		lockedSemaphoreFile = null;
+		lockingUserOfOldLock = null;
+		lockTimer = null;
+		lockSafetyPeriod = ResourceController.getResourceController().getIntProperty(LOCK_EXPIRATION_TIME) * 60 * 1000;
+		lockUpdatePeriod = Math.round(lockSafetyPeriod * 0.8);
+    }
 
 	private File getSemaphoreFile(final File mapFile) {
 		return new File(mapFile.getParent() + System.getProperty("file.separator") + "$~" + mapFile.getName() + "~");
@@ -87,9 +99,8 @@ public class LockManager extends TimerTask {
 		try {
 			semaphoreReader = new BufferedReader(new FileReader(semaphoreFile));
 			final String lockingUser = semaphoreReader.readLine();
-			final long lockTime = new Long(semaphoreReader.readLine()).longValue();
-			final long timeDifference = System.currentTimeMillis() - lockTime;
-			if (timeDifference > lockSafetyPeriod) {
+			final String lockTime = semaphoreReader.readLine();
+			if (isLockExpired(lockTime)) {
 				lockingUserOfOldLock = lockingUser;
 				semaphoreFile.delete();
 			}
@@ -99,13 +110,15 @@ public class LockManager extends TimerTask {
 		}
 		catch (final FileNotFoundException e) {
 		}
+		catch (final NumberFormatException e) {
+		}
 		finally {
 			if (semaphoreReader != null) {
 				semaphoreReader.close();
 			}
 		}
 		writeSemaphoreFile(semaphoreFile);
-		if (lockTimer == null) {
+		if (lockTimer == null && lockUpdatePeriod > 0) {
 			lockTimer = SysUtils.createTimer(getClass().getSimpleName());
 			lockTimer.schedule(this, lockUpdatePeriod, lockUpdatePeriod);
 		}
@@ -113,6 +126,12 @@ public class LockManager extends TimerTask {
 		lockedSemaphoreFile = semaphoreFile;
 		return null;
 	}
+
+	private boolean isLockExpired(final String lockTimeString) {
+	    final long lockTime = new Long(lockTimeString).longValue();
+        final long timeDifference = System.currentTimeMillis() - lockTime;
+		return lockTimeString == null || lockSafetyPeriod > 0 && timeDifference > lockSafetyPeriod;
+    }
 
 	private void writeSemaphoreFile(final File inSemaphoreFile) throws Exception {
 		FileOutputStream semaphoreOutputStream;
