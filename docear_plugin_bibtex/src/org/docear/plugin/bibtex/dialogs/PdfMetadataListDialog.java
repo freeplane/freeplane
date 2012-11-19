@@ -58,6 +58,8 @@ private static final long serialVersionUID = -627410651667772600L;
 	private JScrollPane scrollPane;
 
 	private boolean bibResults;
+
+	private JLabel lblNewLabel;
 	
 	public PdfMetadataListDialog() {
 		setPreferredSize(new Dimension(640, 200));
@@ -77,7 +79,7 @@ private static final long serialVersionUID = -627410651667772600L;
 			new RowSpec[] {
 				RowSpec.decode("max(20dlu;default)"),}));
 		
-		JLabel lblNewLabel = new JLabel(TextUtils.getText("docear.metadata.import.help"));
+		lblNewLabel = new JLabel(TextUtils.getText("docear.metadata.import.help"));
 		panel.add(lblNewLabel, "2, 1");
 		
 				
@@ -128,6 +130,9 @@ private static final long serialVersionUID = -627410651667772600L;
 			});
 			scrollPane.setViewportView(list);
 			listModel.fireDataChanged();
+			if(!hasRemoteBib()) {
+				lblNewLabel.setText(TextUtils.getText("docear.metadata.import.help.fallback"));
+			}
 		}
 	}
 
