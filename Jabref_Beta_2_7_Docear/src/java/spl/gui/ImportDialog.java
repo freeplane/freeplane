@@ -85,10 +85,10 @@ public class ImportDialog extends JDialog {
         //DOCEAR
         labelMrDlib1 = new JLabel("Docear's digital library");
         labelMrDlib1.setFont(new Font(labelMrDlib1.getFont().getName(), Font.BOLD, 13));
-        labelMrDlib1.setForeground(new Color(-16776961));
+        //labelMrDlib1.setForeground(new Color(-16776961));
         labelMrDlib2 = new JLabel("Docear's digital library");
         labelMrDlib2.setFont(new Font(labelMrDlib1.getFont().getName(), Font.BOLD, 13));
-        labelMrDlib2.setForeground(new Color(-16776961));
+        //labelMrDlib2.setForeground(new Color(-16776961));
         buttonOK = new JButton(Globals.lang("Ok"));
         buttonCancel = new JButton(Globals.lang("Cancel"));
         DefaultFormBuilder b = new DefaultFormBuilder(new FormLayout("left:pref, 4dlu, left:pref:grow",""));                

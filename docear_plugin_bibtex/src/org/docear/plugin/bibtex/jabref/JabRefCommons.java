@@ -327,7 +327,8 @@ public abstract class JabRefCommons {
 		metadata.runServiceRequest(hash, params);
 		int response = JOptionPane.showConfirmDialog(UITools.getFrame(), metadata, TextUtils.getText("docear.metadata.import.title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if(metadata.wasSuccessful()) {
+		//if(metadata.wasSuccessful()) //does not work anymore with errors shown right away
+		{
 			if (response == JOptionPane.OK_OPTION) {
 				Util.setAutomaticFields(metadata.getEntries(), true, true, false);
 				BibtexEntry selected = metadata.getSelectedEntry();
@@ -374,7 +375,8 @@ public abstract class JabRefCommons {
 		metadata.runServiceRequest(hash, params);
 		int response = JOptionPane.showConfirmDialog(UITools.getFrame(), metadata, TextUtils.getText("docear.metadata.import.title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if(metadata.wasSuccessful()) {
+		//if(metadata.wasSuccessful()) //does not work anymore with errors shown right away
+		{
 			if (response == JOptionPane.OK_OPTION) {
 				BibtexEntry selected = metadata.getSelectedEntry();
 				selected.setField("dcr_pdf_hash", hash);

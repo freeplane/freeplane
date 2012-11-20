@@ -158,7 +158,7 @@ private static final long serialVersionUID = -627410651667772600L;
 							remoteBib = false;
 							StringBuilder sb = new StringBuilder();
 							sb.append("@ARTICLE{,\n  title = {");
-							sb.append(params.get("title"));
+							sb.append(params.get("title").get(0));
 							sb.append("}\n}");
 							bib = sb.toString();
 						}
