@@ -117,7 +117,7 @@ public class DocearMapWriter extends MapWriter {
 				}
 
 				if (map.getFile() != null) {			
-					URI mapUri = LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile(), LinkController.LINK_RELATIVE_TO_WORKSPACE);
+					URI mapUri = LinkController.toLinkTypeDependantURI(map.getFile(), map.getFile(), LinkController.LINK_ABSOLUTE);
 					modelExtension.setUri(mapUri);
 				}
 			}			
