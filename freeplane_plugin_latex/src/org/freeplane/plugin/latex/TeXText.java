@@ -26,11 +26,13 @@ public class TeXText
         rawText = rawText.replace("\\begin{align*}", "\n\n$\\quad ");
         rawText = rawText.replace("\\end{align*}", "$\n\n");
 
-        StringBuffer sb = new StringBuffer();
+        /*
         String[] lines = rawText.split("\n");
         if (lines.length == 1)
         {
-        	sb.append("\\text{" + lines[0] + "}");
+    		sb.append("\\text{");
+    		sb.append(lines[0]);
+    		sb.append("}");
         }
         else
         {
@@ -43,10 +45,19 @@ public class TeXText
         	}
         	sb.append("\\end{array} }");
         }
+        */
 
-        TeXFormula tf = new TeXFormula(sb.toString());
+        // NOTE: do not use the array env (see above), because array cells cannot be
+        // automatically line wrapped! (and since we now have automatic linebreaks,
+        // we don't need multiple formulae with one on each line!!)
+        StringBuffer sb = new StringBuffer();
+		sb.append("\\text{");
+		sb.append(rawText);
+		sb.append("}");
 
-        return tf.createTeXIcon(style, size, TeXConstants.UNIT_PIXEL, maxWidth, align, TeXConstants.UNIT_PIXEL, 20f);
+		TeXFormula tf = new TeXFormula(sb.toString());
+
+        return tf.createTeXIcon(style, size, TeXConstants.UNIT_PIXEL, maxWidth, align, TeXConstants.UNIT_PIXEL, 10f);
     }
 
 
