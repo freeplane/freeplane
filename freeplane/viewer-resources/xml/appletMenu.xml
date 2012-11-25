@@ -28,6 +28,7 @@
 							<menu_action action="ToggleMenubarAction" menu_key="MB_ToggleMenubarAction"/>
 							<menu_action action="ToggleToolbarAction"/>
 							<menu_action action="ShowFilterToolbarAction"/>
+							<menu_action action="ToggleScrollbarsAction"/>
 							</menu_submenu>
 						</menu_category>
 				</menu_category>
@@ -122,6 +123,7 @@
 		<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
 		<menu_action action="ToggleToolbarAction"/>
 		<menu_action action="ShowFilterToolbarAction"/>
+		<menu_action action="ToggleScrollbarsAction"/>
 		<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
 		<menu_action action="CenterSelectedNodeAction"/>
 		<menu_action accelerator="ESCAPE" action="MoveToRootAction"/>
