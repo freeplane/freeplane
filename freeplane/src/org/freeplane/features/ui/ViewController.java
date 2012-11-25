@@ -478,17 +478,21 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract public boolean isApplet();
 
 	public boolean isMenubarVisible() {
-		final String property;
+		return isComponentVisible("menubar");
+	}
+
+	private boolean isComponentVisible(String component) {
+	    final String property;
 		if (isFullScreenEnabled()) {
-			property = "menubarVisible.fullscreen";
+			property = component+"Visible.fullscreen";
 		}
 		else {
-			property = "menubarVisible";
+			property = "menubar"+"Visible";
 		}
 		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(
 		    getPropertyKeyPrefix() + property);
 		return booleanProperty;
-	}
+    }
 
 	public void obtainFocusForSelected() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -654,16 +658,20 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setMenubarVisible(final boolean visible) {
-		final String property;
+		setComponentVisible("menubar", getFreeplaneMenuBar(), visible);
+	}
+
+	private void setComponentVisible(final String componentName, final Component component, final boolean visible) {
+	    final String property;
 		if (isFullScreenEnabled()) {
-			property = "menubarVisible.fullscreen";
+			property = componentName+"Visible.fullscreen";
 		}
 		else {
-			property = "menubarVisible";
+			property = componentName+"Visible";
 		}
 		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
-		getFreeplaneMenuBar().setVisible(visible);
-	}
+		component.setVisible(visible);
+    }
 
 	public void setTextRenderingHint(final Graphics2D g) {
 		if (getAntialiasAll()) {
