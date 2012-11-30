@@ -25,25 +25,25 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
-class ToggleMenubarAction extends AFreeplaneAction {
+class ToggleScrollbarsAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	final private ViewController controller;
 
-	ToggleMenubarAction( final ViewController viewController) {
-		super("ToggleMenubarAction");
+	ToggleScrollbarsAction( final ViewController viewController) {
+		super("ToggleScrollbarsAction");
 		this.controller = viewController;
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		controller.setMenubarVisible(!controller.isMenubarVisible());
+		controller.setScrollbarsVisible(!controller.areScrollbarsVisible());
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(controller.isMenubarVisible());
+		setSelected(controller.areScrollbarsVisible());
 	}
 	@Override
 	public void afterMapChange(final Object newMap) {

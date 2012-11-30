@@ -72,7 +72,7 @@ public class FreeplaneSplashModern extends JWindow {
 		}
 	    InputStream fontInputStream = null;
 		try {
-			fontInputStream = ResourceController.getResourceController().getResource("/fonts/pecita-subset.ttf")
+			fontInputStream = ResourceController.getResourceController().getResource("/fonts/intuitive-subset.ttf")
 			    .openStream();
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
 		}
@@ -97,14 +97,13 @@ public class FreeplaneSplashModern extends JWindow {
 		final FreeplaneVersion version = FreeplaneVersion.getVersion();
 		final String versionString = getVersionText(version);
 		g2.setColor(Color.BLACK);
-		final int xCoordinate = 240;
-		final int yCoordinate = 240;
+		final int xCoordinate = 270;
+		final int yCoordinate = 300;
 		createVersionTextFont();
 		final float versionFontSize;
 		versionFontSize = 20;
 		g2.setFont(versionTextFont.deriveFont(versionFontSize));
-		final int stringWidth = g2.getFontMetrics().stringWidth(versionString);
-		g2.drawString(versionString, xCoordinate - stringWidth, yCoordinate);
+		g2.drawString(versionString, xCoordinate, yCoordinate);
 	}
 
 	private String getVersionText(final FreeplaneVersion version) {

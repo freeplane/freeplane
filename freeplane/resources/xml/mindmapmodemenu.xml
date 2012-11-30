@@ -180,6 +180,7 @@
 							<menu_action action="ToggleFBarAction" />
 							<menu_action action="ToggleLeftToolbarAction" />
 							<menu_action action="ToggleStatusAction" />
+							<menu_action action="ToggleScrollbarsAction"/>
 							</menu_submenu>
 						<menu_action action="ShowFormatPanel" />
 						</menu_category>
@@ -437,6 +438,7 @@
 		<menu_action action="ToggleFBarAction" />
 		<menu_action action="ToggleLeftToolbarAction" />
 		<menu_action action="ToggleStatusAction" />
+		<menu_action action="ToggleScrollbarsAction"/>
 			<menu_separator />
 		<menu_action action="ShowFormatPanel" />
 		<menu_action action="ShowHideNoteAction" accelerator="control GREATER" />
