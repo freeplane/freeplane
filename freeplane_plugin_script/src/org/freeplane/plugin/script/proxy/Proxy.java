@@ -206,7 +206,11 @@ public interface Proxy {
 	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
 	 * - read-only. */
 	interface ConnectorRO {
-		Color getColor();
+        /** returns one of LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE.
+         *  @since 1.3 */
+	    String getShape();
+
+	    Color getColor();
 
 		String getColorCode();
 
@@ -238,7 +242,11 @@ public interface Proxy {
 	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
 	 * - read-write. */
 	interface Connector extends ConnectorRO {
-		void setColor(Color color);
+        /** @param shape one of LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE.
+         *  @since 1.3 */
+        void setShape(String shape);
+
+        void setColor(Color color);
 
 		/** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
 		 *  @since 1.2 */
