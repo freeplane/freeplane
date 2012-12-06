@@ -1284,7 +1284,7 @@ public interface Proxy {
 		 *  @since 1.2 */
 		void setTextColorCode(String rgbString);
 
-        /** @param sets the floating style for the node (aka "free node"). Should normally only applied to direct
+        /** sets the floating style for the node (aka "free node"). Should normally only be applied to direct
          *  children of the root node.
          *  @since 1.2 */
         void setFloating(boolean floating);
