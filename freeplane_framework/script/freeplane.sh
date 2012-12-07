@@ -207,6 +207,8 @@ _debug "Calling: "\
  -xargs "${freedir}/props.xargs"\
  -xargs "${freedir}/init.xargs"
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
+
+# now actually launch Freeplane
 "${JAVACMD}" -Xmx512m\
  "-Dorg.freeplane.param1=$1"\
  "-Dorg.freeplane.param2=$2"\
