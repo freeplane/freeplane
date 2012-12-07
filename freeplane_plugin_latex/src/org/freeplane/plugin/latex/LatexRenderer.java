@@ -1,17 +1,28 @@
 package org.freeplane.plugin.latex;
 
-import javax.swing.Icon;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 
+import javax.swing.Icon;
+import javax.swing.JEditorPane;
+
+import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
+import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.EditNodeDialog;
+import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
+import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
-public class LatexRenderer extends AbstractContentTransformer {
+public class LatexRenderer extends AbstractContentTransformer implements IEditBaseCreator {
 
 	private static final String LATEX = "\\latex";
 
@@ -24,6 +35,19 @@ public class LatexRenderer extends AbstractContentTransformer {
 			throws TransformationException {
 		return content;
 	}
+	
+	private String getLatexNode(final String nodeText, final String nodeFormat, final boolean includePrefix)
+	{
+		int startLength = LATEX.length() + 1;
+		if(nodeText.length() > startLength && nodeText.startsWith(LATEX) && Character.isWhitespace(nodeText.charAt(startLength - 1))){
+			return includePrefix ? nodeText : nodeText.substring(startLength);
+		}
+		else if(LatexFormat.LATEX_FORMAT.equals(nodeFormat)){
+			return nodeText;
+		} else {
+			return null;
+		}
+	}
 
 	@Override
 	public Icon getIcon(TextController textController, Object content,
@@ -33,7 +57,11 @@ public class LatexRenderer extends AbstractContentTransformer {
 			String nodeFormat = textController.getNodeFormat(node);
 			if (PatternFormat.IDENTITY_PATTERN.equals(nodeFormat))
 				return null;
-			final String latext;
+			
+			final String latext = getLatexNode(string, nodeFormat, false);
+			if (latext == null)
+				return null;
+			/*
 			int startLength = LATEX.length() + 1;
 			if(string.length() > startLength && string.startsWith(LATEX) && Character.isWhitespace(string.charAt(startLength - 1))){
 				latext = string.substring(startLength);
@@ -43,6 +71,7 @@ public class LatexRenderer extends AbstractContentTransformer {
 			}
 			else
 				return null;
+			*/
 
 			try {
 				final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
@@ -55,6 +84,27 @@ public class LatexRenderer extends AbstractContentTransformer {
 
 			}
 
+		}
+		return null;
+	}
+
+	public EditNodeBase createEditor(NodeModel node,
+			IEditControl editControl, String text, boolean editLong) {
+		MTextController textController = MTextController.getController();
+		if (textController.isTextFormattingDisabled(node))
+			return null;
+		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
+		String nodeFormat = textController.getNodeFormat(node);
+		final String latexText = getLatexNode(text, nodeFormat, true);
+		if(latexText != null){
+			JEditorPane textEditor = new JEditorPane();
+			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
+			scrollPane.setMinimumSize(new Dimension(0, 60));
+			final EditNodeDialog editNodeDialog = new LatexEditor(node, latexText, firstKeyEvent, editControl, false, textEditor);
+			editNodeDialog.setTitle(TextUtils.getText("latex_editor"));
+			textEditor.setContentType("text/groovy");
+			return editNodeDialog;
 		}
 		return null;
 	}
