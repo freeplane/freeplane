@@ -75,7 +75,6 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 				return icon;
 			}
 			catch (final Exception e) {
-				e.printStackTrace();
 			}
 
 		}
