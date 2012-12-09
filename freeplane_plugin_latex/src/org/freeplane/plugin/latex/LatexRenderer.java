@@ -7,10 +7,12 @@ import javax.swing.Icon;
 import javax.swing.JEditorPane;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
@@ -52,7 +54,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	@Override
 	public Icon getIcon(TextController textController, Object content,
 			NodeModel node, Object transformedExtension) {
-		if(transformedExtension  == node.getUserObject()){
+		if(transformedExtension == node.getUserObject()){
 			String string = content.toString();
 			String nodeFormat = textController.getNodeFormat(node);
 			if (PatternFormat.IDENTITY_PATTERN.equals(nodeFormat))
@@ -61,27 +63,19 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			final String latext = getLatexNode(string, nodeFormat, false);
 			if (latext == null)
 				return null;
-			/*
-			int startLength = LATEX.length() + 1;
-			if(string.length() > startLength && string.startsWith(LATEX) && Character.isWhitespace(string.charAt(startLength - 1))){
-				latext = string.substring(startLength);
-			}
-			else if(LatexFormat.LATEX_FORMAT.equals(nodeFormat)){
-				latext = string; 
-			}
-			else
-				return null;
-			*/
-
 			try {
 				final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
 				final int maxWidth = ncs.getMaxWidth(node);
 				TeXText teXt = new TeXText(latext);
-				TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, LatexViewer.DEFAULT_FONT_SIZE, TeXConstants.ALIGN_LEFT, maxWidth);
+				int fontSize = LatexViewer.DEFAULT_FONT_SIZE;
+				NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
+				if (styleModel != null && styleModel.getFontSize() != null)
+					fontSize = styleModel.getFontSize();
+				TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
 				return icon;
 			}
 			catch (final Exception e) {
-
+				e.printStackTrace();
 			}
 
 		}
@@ -91,7 +85,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	public EditNodeBase createEditor(NodeModel node,
 			IEditControl editControl, String text, boolean editLong) {
 		MTextController textController = MTextController.getController();
-		if (textController.isTextFormattingDisabled(node))
+		if (textController.isTextFormattingDisabled(node)) // TODO:??
 			return null;
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 		String nodeFormat = textController.getNodeFormat(node);
