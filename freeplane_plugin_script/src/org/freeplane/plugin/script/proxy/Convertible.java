@@ -273,6 +273,6 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 	@Override
     public void setProperty(String property, Object newValue) {
-		throw new NotImplementedException("Convertibles are immutable");
+		throw new NotImplementedException("Convertibles are immutable; property to be changed: " + property);
     }
 }

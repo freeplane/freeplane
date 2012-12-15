@@ -19,8 +19,16 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		super(connector, scriptContext);
 	}
 
+	public String getShape() {
+		return getConnector().getShape().name();
+	}
+	
+	public void setShape(String shape) {
+	    getLinkController().setShape(getConnector(), Shape.valueOf(shape));
+	}
+	
 	public Color getColor() {
-		return getLinkController().getColor(getConnector());
+	    return getLinkController().getColor(getConnector());
 	}
 	
 	public String getColorCode() {
