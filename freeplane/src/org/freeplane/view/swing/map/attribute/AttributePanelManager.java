@@ -156,14 +156,17 @@ public class AttributePanelManager{
                 }
 
                 private Object formatValue(final PatternFormat newFormat, final AttributeTable table,
-                                           final Object toFormat) {
+                                           final Object objectToBeFormatted) {
                 	if (formatChooser.getSelectedItem() == null)
                 		return null;
-                	if(toFormat instanceof IFormattedObject)
-                		return formatValue(newFormat, table, ((IFormattedObject) toFormat).getObject());
-                    if (toFormat instanceof String && ((String)toFormat).startsWith("="))
-                        return new FormattedFormula((String) toFormat, newFormat.getPattern());
-                    return newFormat.formatObject(toFormat);
+                	if (objectToBeFormatted instanceof IFormattedObject) {
+	                    final Object actualObject = ((IFormattedObject) objectToBeFormatted).getObject();
+	                    if(actualObject != objectToBeFormatted)
+	                    	return formatValue(newFormat, table, actualObject);
+                    }
+                    if (objectToBeFormatted instanceof String && ((String)objectToBeFormatted).startsWith("="))
+                        return new FormattedFormula((String) objectToBeFormatted, newFormat.getPattern());
+                    return newFormat.formatObject(objectToBeFormatted);
                 }
             });
 
