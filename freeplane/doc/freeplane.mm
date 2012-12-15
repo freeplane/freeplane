@@ -210,7 +210,7 @@
 <hook NAME="AlwaysUnfoldedNode"/>
 </node>
 </node>
-<node TEXT="User guide" STYLE_REF="Title" POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1330615758144" HGAP="-37" VSHIFT="-60" TEXT_SHORTENED="true">
+<node TEXT="User guide" STYLE_REF="Title" FOLDED="true" POSITION="left" ID="ID_1405760079" CREATED="1286914216123" MODIFIED="1330615758144" HGAP="-37" VSHIFT="-60" TEXT_SHORTENED="true">
 <icon BUILTIN="gohome"/>
 <richcontent TYPE="DETAILS">
 
@@ -2886,9 +2886,9 @@
 </html>
 </richcontent>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="Contributers" ID="ID_1675707038" CREATED="1330616960325" MODIFIED="1335124396331" HGAP="-95" VSHIFT="29" LINK="http://freeplane.sourceforge.net/wiki/index.php/Contributors"/>
+<node TEXT="Contributors" ID="ID_1675707038" CREATED="1330616960325" MODIFIED="1355339930066" HGAP="-95" VSHIFT="29" LINK="http://freeplane.sourceforge.net/wiki/index.php/Contributors"/>
 </node>
-<node TEXT="Reference" STYLE_REF="Title" POSITION="right" ID="ID_332175012" CREATED="1286914216123" MODIFIED="1330615754041" HGAP="-37" VSHIFT="-64" TEXT_SHORTENED="true">
+<node TEXT="Reference" STYLE_REF="Title" FOLDED="true" POSITION="right" ID="ID_332175012" CREATED="1286914216123" MODIFIED="1330615754041" HGAP="-37" VSHIFT="-64" TEXT_SHORTENED="true">
 <icon BUILTIN="wizard"/>
 <richcontent TYPE="DETAILS">
 
@@ -6363,7 +6363,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Find &amp; replace attributes..." ID="ID_260530468" CREATED="1310842038396" MODIFIED="1314781375632" TEXT_SHORTENED="true">
+<node TEXT="Find &amp; replace attributes..." ID="ID_260530468" CREATED="1310842038396" MODIFIED="1355340076914" TEXT_SHORTENED="true">
 <icon BUILTIN="../showAttributes"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
@@ -6762,7 +6762,7 @@
 <attribute NAME="Chapter" VALUE="3,7"/>
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="See Internet" ID="ID_1974921327" CREATED="1310061549760" MODIFIED="1312920045876" LINK="http://freeplane.sourceforge.net/wiki/index.php/File:Freeplane_LaTex.mm" TEXT_SHORTENED="true">
+<node TEXT="See Internet" ID="ID_1974921327" CREATED="1310061549760" MODIFIED="1355340040168" LINK="http://freeplane.sourceforge.net/wiki/images/2/26/Freeplane_LaTex.mm" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Refine" LAST="false"/>
 </hook>
@@ -7925,7 +7925,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,4,5"/>
-<node TEXT="Properties panel" ID="ID_125269399" CREATED="1310714224145" MODIFIED="1311402583530" TEXT_SHORTENED="true">
+<node TEXT="Properties panel" FOLDED="true" ID="ID_125269399" CREATED="1310714224145" MODIFIED="1311402583530" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -9044,7 +9044,7 @@
 <node TEXT="Center selected node automatically" ID="ID_1299718023" CREATED="1335982472005" MODIFIED="1335982683146">
 <icon BUILTIN="help"/>
 </node>
-<node TEXT="View settings" ID="ID_1492135940" CREATED="1335978381041" MODIFIED="1335978389341">
+<node TEXT="View settings" FOLDED="true" ID="ID_1492135940" CREATED="1335978381041" MODIFIED="1335978389341">
 <node TEXT="Outline view" ID="ID_519734292" CREATED="1266247214640" MODIFIED="1310721911393" TEXT_SHORTENED="true">
 <icon BUILTIN="../outline_view"/>
 <richcontent TYPE="DETAILS">
@@ -9579,7 +9579,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Notes view" ID="ID_1709371267" CREATED="1306012919034" MODIFIED="1310727306434" TEXT_SHORTENED="true">
+<node TEXT="Notes view" FOLDED="true" ID="ID_1709371267" CREATED="1306012919034" MODIFIED="1310727306434" TEXT_SHORTENED="true">
 <hook NAME="SummaryNode"/>
 <attribute_layout VALUE_WIDTH="215"/>
 <hook NAME="NodeConditionalStyles">
@@ -11280,7 +11280,7 @@ elements from the styles activated by conditions are copied.</pre>
 </richcontent>
 </node>
 </node>
-<node TEXT="Blend color" ID="ID_1238551182" CREATED="1266251704359" MODIFIED="1335990268566" COLOR="#663300" TEXT_SHORTENED="true">
+<node TEXT="Blend color" FOLDED="true" ID="ID_1238551182" CREATED="1266251704359" MODIFIED="1335990268566" COLOR="#663300" TEXT_SHORTENED="true">
 <icon BUILTIN="../NodeColorBlendAction"/>
 <font NAME="SansSerif" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
@@ -14615,7 +14615,7 @@ elements from the styles activated by conditions are copied.</pre>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Preferences ..." ID="ID_827606855" CREATED="1310134532679" MODIFIED="1312967785134" TEXT_SHORTENED="true">
+<node TEXT="Preferences ..." FOLDED="true" ID="ID_827606855" CREATED="1310134532679" MODIFIED="1312967785134" TEXT_SHORTENED="true">
 <icon BUILTIN="../PropertyAction"/>
 <richcontent TYPE="DETAILS">
 
@@ -14896,7 +14896,7 @@ elements from the styles activated by conditions are copied.</pre>
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="8"/>
-<node TEXT="Look and feel" STYLE_REF="Method" ID="ID_702879709" CREATED="1311711679398" MODIFIED="1312921365030">
+<node TEXT="Look and feel" STYLE_REF="Method" FOLDED="true" ID="ID_702879709" CREATED="1311711679398" MODIFIED="1312921365030">
 <node TEXT="Default" ID="ID_1366474327" CREATED="1311483239570" MODIFIED="1311711744124">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
@@ -14929,7 +14929,7 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 <node TEXT="Apply system screen resolution default" STYLE_REF="IsChecked" ID="ID_719531600" CREATED="1337169567729" MODIFIED="1337169616794"/>
-<node TEXT="User defined screen resolution (dpi)" STYLE_REF="Method" ID="ID_1436875119" CREATED="1337169642248" MODIFIED="1337169863197">
+<node TEXT="User defined screen resolution (dpi)" STYLE_REF="Method" FOLDED="true" ID="ID_1436875119" CREATED="1337169642248" MODIFIED="1337169863197">
 <node TEXT="96" STYLE_REF="OptionalValue" ID="ID_1116758038" CREATED="1337169873733" MODIFIED="1337169894594"/>
 </node>
 <node TEXT="Use Tabs" ID="ID_678230606" CREATED="1310755710026" MODIFIED="1311924298928">
