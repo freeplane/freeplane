@@ -35,7 +35,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 /**
