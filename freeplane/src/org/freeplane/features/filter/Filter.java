@@ -42,7 +42,6 @@ public class Filter {
 	final private boolean appliesToVisibleNodesOnly;
 	final private ICondition condition;
 	final private int options;
-	private boolean cancelled = false;
 
 	public Filter(final ICondition condition, final boolean areAnchestorsShown,
 	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
@@ -112,7 +111,6 @@ public class Filter {
 		}
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
-			cancelled = false;
 		}
 	}
 
@@ -159,18 +157,13 @@ public class Filter {
 	}
 
 	private boolean checkNode(final NodeModel node) {
-		if (condition == null || cancelled) {
+		if (condition == null) {
 			return true;
 		}
 		if (appliesToVisibleNodesOnly && !node.isVisible()) {
 			return false;
 		}
-		try {
-			return condition.checkNode(node);
-		} catch (FilterCancelledException e) {
-			cancelled = true;
-			return true;
-		}
+		return condition.checkNode(node);
 	}
 
 	private boolean filterChildren(final NodeModel node,
