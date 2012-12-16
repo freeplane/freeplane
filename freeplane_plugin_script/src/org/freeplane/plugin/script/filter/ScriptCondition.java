@@ -1,11 +1,14 @@
 package org.freeplane.plugin.script.filter;
 
+import groovy.lang.Script;
+
 import java.awt.KeyboardFocusManager;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterCancelledException;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -20,6 +23,8 @@ public class ScriptCondition extends ASelectableCondition {
 	static final String NAME = "script_condition";
 	static final String SCRIPT = "SCRIPT";
 	final private String script;
+	private Script compiledScript = null;
+	private boolean canNotCompileScript = false;
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new ScriptCondition(element.getAttribute(SCRIPT, null));
@@ -31,11 +36,22 @@ public class ScriptCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
+		if(canNotCompileScript)
+			return false;
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		final PrintStream printStream = new PrintStream(out);
+		if(compiledScript == null) {
+			try {
+	            compiledScript = ScriptingEngine.compileScriptCheckExceptions(script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null);
+            }
+            catch (Exception e) {
+            	canNotCompileScript = true;
+            	return false;
+             }
+		}
 		final Object result;
         try {
-			result = ScriptingEngine.executeScript(node, script, printStream);
+			result = ScriptingEngine.executeScript(node, script, compiledScript, printStream);
 			if(result instanceof Boolean)
 				return (Boolean) result;
 			if(result instanceof Number)

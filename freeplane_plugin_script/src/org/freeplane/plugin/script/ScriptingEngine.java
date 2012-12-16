@@ -90,8 +90,7 @@ public class ScriptingEngine {
 	static private Object executeScript(final NodeModel node, final Object script, final IErrorHandler pErrorHandler,
 	                            final PrintStream pOutStream, final ScriptContext scriptContext,
 	                            ScriptingPermissions permissions) {
-		checkScriptExecutionEnabled(permissions);
-		Script compiledScript = compileScriptCheckExceptions(script, pErrorHandler, pOutStream);
+		Script compiledScript = compileScriptCheckExceptions(script, pErrorHandler, pOutStream, permissions);
 		return executeScript(node, script, compiledScript, pErrorHandler, pOutStream, scriptContext, permissions);
 	}
 	
@@ -99,7 +98,8 @@ public class ScriptingEngine {
                                        final IErrorHandler pErrorHandler, final PrintStream pOutStream,
                                        final ScriptContext scriptContext, ScriptingPermissions permissions) {
 	    try {
-			ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
+	    	checkScriptExecutionEnabled(permissions);
+	    	ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
 			final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 			final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 			final ScriptingSecurityManager scriptingSecurityManager = scriptingSecurityManager(script, pOutStream, permissions);
@@ -199,7 +199,7 @@ public class ScriptingEngine {
 		return compiledScript;
     }
 	
-	public static Script compileScriptCheckExceptions(Object script,  final IErrorHandler pErrorHandler, final PrintStream pOutStream){
+	public static Script compileScriptCheckExceptions(Object script,  final IErrorHandler pErrorHandler, final PrintStream pOutStream, ScriptingPermissions permissions){
 		try{
 			return compile(script);
 		}
@@ -213,7 +213,7 @@ public class ScriptingEngine {
 		}
 	}
 	
-	public static void checkScriptExecutionEnabled(ScriptingPermissions permissions) {
+	private static void checkScriptExecutionEnabled(ScriptingPermissions permissions) {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 		// get preferences (and store them again after the script execution,
@@ -273,9 +273,13 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, null, null);
+		return ScriptingEngine.executeScript(node, script, (ScriptContext)null, (ScriptingPermissions)null);
 	}
 
+	public static Object executeScript(NodeModel node, String script, Script compiledScript, PrintStream printStream) {
+		return executeScript(node, script, compiledScript, IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, null);
+    }
+	
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
 		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, System.out, null, permissions);
 	}
