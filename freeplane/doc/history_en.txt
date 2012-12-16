@@ -1,4 +1,8 @@
 ===============================
+1.2.21
+===============================
+Bug fixes for script based conditions for filters and conditional styles
+===============================
 1.2.20
 ===============================
 Install as 64 bit program on 64 bit windows
