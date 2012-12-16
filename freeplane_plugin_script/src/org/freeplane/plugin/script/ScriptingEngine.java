@@ -19,12 +19,12 @@
 package org.freeplane.plugin.script;
 
 import groovy.lang.Binding;
-import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,7 +63,7 @@ public class ScriptingEngine {
 	public static final String SCRIPT_PREFIX = "script";
 	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
 	private static List<String> classpath;
-	private static final IErrorHandler scriptErrorHandler = new IErrorHandler() {
+	public static final IErrorHandler IGNORING_SCRIPT_ERROR_HANDLER = new IErrorHandler() {
     	public void gotoLine(final int pLineNumber) {
     	}
     };
@@ -73,12 +73,10 @@ public class ScriptingEngine {
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
-    static Object executeScript(final NodeModel node, final String script, final IErrorHandler pErrorHandler,
+    public static Object executeScript(final NodeModel node, final String script, final IErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
-    	return executeScript(node, (Object)script, pErrorHandler,
-    		pOutStream, scriptContext,
-    		permissions);
+    	return executeScript(node, (Object)script, pErrorHandler, pOutStream, scriptContext, permissions);
 
     }
     static Object executeScript(final NodeModel node, final File script, final IErrorHandler pErrorHandler,
@@ -88,19 +86,135 @@ public class ScriptingEngine {
     		pOutStream, scriptContext,
     		permissions);
     }
+    
 	static private Object executeScript(final NodeModel node, final Object script, final IErrorHandler pErrorHandler,
 	                            final PrintStream pOutStream, final ScriptContext scriptContext,
 	                            ScriptingPermissions permissions) {
-		final Binding binding = new Binding();
-		binding.setVariable("c", ProxyFactory.createController(scriptContext));
-		binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
-		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
-		final PrintStream oldOut = System.out;
-		//
-		// == Security stuff ==
-		//
+		checkScriptExecutionEnabled(permissions);
+		Script compiledScript = compileScriptCheckExceptions(script, pErrorHandler, pOutStream);
+		return executeScript(node, script, compiledScript, pErrorHandler, pOutStream, scriptContext, permissions);
+	}
+	
+	public static Object executeScript(final NodeModel node, final Object script, Script compiledScript,
+                                       final IErrorHandler pErrorHandler, final PrintStream pOutStream,
+                                       final ScriptContext scriptContext, ScriptingPermissions permissions) {
+	    try {
+			ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
+			final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
+			final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
+			final ScriptingSecurityManager scriptingSecurityManager = scriptingSecurityManager(script, pOutStream, permissions);
+			final PrintStream oldOut = System.out;
+			try {
+				final Binding binding = new Binding();
+				binding.setVariable("c", ProxyFactory.createController(scriptContext));
+				binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
+				binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
+				compiledScript.setBinding(binding);
+				if (needsSecurityManager)
+					securityManager.setFinalSecurityManager(scriptingSecurityManager);
+				System.setOut(pOutStream);
+				return compiledScript.run();
+			}
+			finally {
+				if (compiledScript != null) {
+					InvokerHelper.removeClass(script.getClass());
+					if (needsSecurityManager)
+						securityManager.removeFinalSecurityManager(scriptingSecurityManager);
+				}
+				System.setOut(oldOut);
+				/* restore preferences (and assure that the values are unchanged!). */
+				originalScriptingPermissions.restorePermissions();
+			}
+		}
+		catch (final GroovyRuntimeException e) {
+			handleGroovyRuntimeException(e, pOutStream, pErrorHandler);
+		    throw new RuntimeException(e);
+
+		}
+		catch (final Throwable e) {
+			if (Controller.getCurrentController().getSelection() != null)
+				Controller.getCurrentModeController().getMapController().select(node);
+			throw new ExecuteScriptException(e.getMessage(), e);
+		}
+    }
+	
+	private static ScriptingSecurityManager scriptingSecurityManager(final Object script, final PrintStream pOutStream,
+                                                            ScriptingPermissions permissions) {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-		final ScriptingSecurityManager scriptingSecurityManager;
+	    final ScriptingSecurityManager scriptingSecurityManager;
+	    final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
+	    // get preferences (and store them again after the script execution,
+	    // such that the scripts are not able to change them).
+	    if (needsSecurityManager) {
+	    	if (permissions == null){
+	    		permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
+	    	}
+	    	if (!permissions.executeScriptsWithoutAsking()) {
+	    		final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
+	    		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+	    		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+	    		if (showResult != JOptionPane.OK_OPTION) {
+	    			throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
+	    		}
+	    	}
+	    }
+	    if (needsSecurityManager) {
+	    	if (permissions == null){
+	    		permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
+	    	}
+	    	final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
+	    	final String scriptContent;
+	    	if(script instanceof String)
+	    		scriptContent = (String) script;
+	    	else
+	    		scriptContent = null;
+	    	if (executeSignedScripts && scriptContent != null && new SignedScriptHandler().isScriptSigned(scriptContent, pOutStream)) {
+	            scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
+	        }
+	        else
+	    		scriptingSecurityManager = permissions.getScriptingSecurityManager();
+	    }
+	    else {
+	    	// will not be used
+	    	scriptingSecurityManager = null;
+	    }
+	    return scriptingSecurityManager;
+    }
+	
+	private static Script compile(Object script) throws CompilationFailedException, IOException {
+		if(script instanceof Script)
+			return (Script) script;
+		final Binding binding = new Binding();
+		binding.setVariable("c", null);
+		binding.setVariable("node", null);
+		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
+		final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
+		final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration()); 
+		final Script compiledScript;
+		if(script instanceof String)
+			compiledScript = shell.parse((String)script);
+		else if(script instanceof File)
+			compiledScript = shell.parse((File)script);
+		else throw new IllegalArgumentException();
+		return compiledScript;
+    }
+	
+	public static Script compileScriptCheckExceptions(Object script,  final IErrorHandler pErrorHandler, final PrintStream pOutStream){
+		try{
+			return compile(script);
+		}
+		catch (final GroovyRuntimeException e) {
+			handleGroovyRuntimeException(e, pOutStream, pErrorHandler);
+		    throw new RuntimeException(e);
+
+		}
+		catch (final Throwable e) {
+			throw new ExecuteScriptException(e.getMessage(), e);
+		}
+	}
+	
+	public static void checkScriptExecutionEnabled(ScriptingPermissions permissions) {
+		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 		// get preferences (and store them again after the script execution,
 		// such that the scripts are not able to change them).
@@ -116,96 +230,28 @@ public class ScriptingEngine {
 					throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
 				}
 			}
-			final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
-			final String scriptContent;
-			if(script instanceof String)
-				scriptContent = (String) script;
-			else
-				scriptContent = null;
-			if (executeSignedScripts && scriptContent != null && new SignedScriptHandler().isScriptSigned(scriptContent, pOutStream)) {
-	            scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
-            }
-            else
-				scriptingSecurityManager = permissions.getScriptingSecurityManager();
 		}
-		else {
-			// will not be used
-			scriptingSecurityManager = null;
-		}
-		//
-		// == execute ==
-		//
-		ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
-		try {
-			System.setOut(pOutStream);
-			final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
-			final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration()) {
-				/**
-				 * Evaluates some script against the current Binding and returns the result
-				 *
-				 * @param in       the stream reading the script
-				 * @param fileName is the logical file name of the script (which is used to create the class name of the script)
-				 */
-				@Override
-				public Object evaluate(GroovyCodeSource codeSource) throws CompilationFailedException {
-					Script script = null;
-					try {
-						script = parse(codeSource);
-						script.setBinding(getContext());
-						if (needsSecurityManager)
-							securityManager.setFinalSecurityManager(scriptingSecurityManager);
-						return script.run();
-					}
-					finally {
-						if (script != null) {
-							InvokerHelper.removeClass(script.getClass());
-							if (needsSecurityManager)
-								securityManager.removeFinalSecurityManager(scriptingSecurityManager);
-						}
-					}
-				}
-			};
-			if(script instanceof String)
-				return shell.evaluate((String)script);
-			if(script instanceof File)
-				return shell.evaluate((File)script);
-			throw new IllegalArgumentException();
-		}
-		catch (final GroovyRuntimeException e) {
-			/*
-			 * Cover exceptions in normal security context (ie. no problem with
-			 * (log) file writing etc.)
-			 */
-			// LogUtils.warn(e);
-			final String resultString = e.getMessage();
-			pOutStream.print("message: " + resultString);
-			final ModuleNode module = e.getModule();
-			final ASTNode astNode = e.getNode();
-			int lineNumber = -1;
-			if (module != null) {
-				lineNumber = module.getLineNumber();
-			}
-			else if (astNode != null) {
-				lineNumber = astNode.getLineNumber();
-			}
-			else {
-				lineNumber = ScriptingEngine.findLineNumberInString(resultString, lineNumber);
-			}
-			pOutStream.print("Line number: " + lineNumber);
-			pErrorHandler.gotoLine(lineNumber);
-			throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber, e);
-		}
-		catch (final Throwable e) {
-			if (Controller.getCurrentController().getSelection() != null)
-				Controller.getCurrentModeController().getMapController().select(node);
-			throw new ExecuteScriptException(e.getMessage(), e);
-		}
-		finally {
-			System.setOut(oldOut);
-			/* restore preferences (and assure that the values are unchanged!). */
-			originalScriptingPermissions.restorePermissions();
-		}
-	}
+    }
+	private static void handleGroovyRuntimeException(final GroovyRuntimeException e, final PrintStream pOutStream,
+                                                     final IErrorHandler pErrorHandler) {
+	    final String resultString = e.getMessage();
+	    pOutStream.print("message: " + resultString);
+	    final ModuleNode module = e.getModule();
+	    final ASTNode astNode = e.getNode();
+	    int lineNumber = -1;
+	    if (module != null) {
+	    	lineNumber = module.getLineNumber();
+	    }
+	    else if (astNode != null) {
+	    	lineNumber = astNode.getLineNumber();
+	    }
+	    else {
+	    	lineNumber = ScriptingEngine.findLineNumberInString(resultString, lineNumber);
+	    }
+	    pOutStream.print("Line number: " + lineNumber);
+	    pErrorHandler.gotoLine(lineNumber);
+	    throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber, e);
+    }
 
 	private static CompilerConfiguration createCompilerConfiguration() {
 		CompilerConfiguration config = new CompilerConfiguration();
@@ -231,20 +277,20 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
-		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, System.out, null, permissions);
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, System.out, null, permissions);
 	}
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, System.out, null, permissions);
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, System.out, null, permissions);
 	}
 	
 	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-		return ScriptingEngine.executeScript(node, script, ScriptingEngine.scriptErrorHandler, printStream, null, null);
+		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, null);
 	}
 
 	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
 	                                   final ScriptingPermissions permissions) {
-		return ScriptingEngine.executeScript(node, script, scriptErrorHandler, System.out, scriptContext, permissions);
+		return ScriptingEngine.executeScript(node, script, IGNORING_SCRIPT_ERROR_HANDLER, System.out, scriptContext, permissions);
 	}
 
 	static Object executeScriptRecursive(final NodeModel node, final File script,
