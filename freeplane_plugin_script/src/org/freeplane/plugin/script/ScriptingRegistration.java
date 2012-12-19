@@ -63,7 +63,7 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
-import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
+import org.freeplane.plugin.script.IFreeplaneScriptErrorHandler;
 import org.freeplane.plugin.script.addons.ManageAddOnsAction;
 import org.freeplane.plugin.script.addons.ManageAddOnsDialog;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
@@ -96,7 +96,7 @@ class ScriptingRegistration {
 			}
 		}
 
-		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
+		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IFreeplaneScriptErrorHandler pErrorHandler) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			// the script is completely in the hand of the user -> no security issues.
 			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getPermissiveScriptingPermissions();
@@ -148,7 +148,7 @@ class ScriptingRegistration {
 				    .getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
 				final String writeAccessString = properties
 				.getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
-				final String classpath = properties.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
+				final String classpath = properties.getProperty(IFreeplaneScript.RESOURCES_SCRIPT_CLASSPATH);
 				final boolean readAccess = readAccessString != null && Boolean.parseBoolean(readAccessString);
 				final boolean writeAccess = writeAccessString != null && Boolean.parseBoolean(writeAccessString);
 				final boolean classpathIsSet = classpath != null && classpath.length() > 0;

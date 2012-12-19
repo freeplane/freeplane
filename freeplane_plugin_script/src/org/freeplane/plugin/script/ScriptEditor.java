@@ -35,7 +35,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
-import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
+import org.freeplane.plugin.script.IFreeplaneScriptErrorHandler;
 
 /**
  * @author foltin
@@ -117,7 +117,7 @@ class ScriptEditor extends AFreeplaneAction {
 			}
 		}
 
-		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
+		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IFreeplaneScriptErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
 			ModeController mMindMapController = Controller.getCurrentModeController();
 			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(), script,

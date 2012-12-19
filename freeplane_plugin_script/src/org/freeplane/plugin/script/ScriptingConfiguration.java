@@ -166,7 +166,7 @@ class ScriptingConfiguration {
 
 	private TreeSet<String> getScriptDirs() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String dirsString = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_DIRECTORIES);
+		final String dirsString = resourceController.getProperty(IFreeplaneScript.RESOURCES_SCRIPT_DIRECTORIES);
 		final TreeSet<String> dirs = new TreeSet<String>(); // remove duplicates -> Set
 		if (dirsString != null) {
 			dirs.addAll(ConfigurationUtils.decodeListValue(dirsString, false));
@@ -340,7 +340,7 @@ class ScriptingConfiguration {
 
 	private void initClasspath() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String entries = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
+		final String entries = resourceController.getProperty(IFreeplaneScript.RESOURCES_SCRIPT_CLASSPATH);
 		classpath = new ArrayList<String>();
 		if (entries != null) {
 			for (String entry : ConfigurationUtils.decodeListValue(entries, false)) {

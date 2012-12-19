@@ -1,7 +1,5 @@
 package org.freeplane.plugin.script.filter;
 
-import groovy.lang.Script;
-
 import java.awt.KeyboardFocusManager;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -14,16 +12,15 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
-import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.IFreeplaneScript;
+import org.freeplane.plugin.script.GroovyShellFreeplaneScript;
 
 public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
 	private static final String SCRIPT_FILTER_ERROR_RESOURCE = "plugins/script_filter_error";
 	static final String NAME = "script_condition";
 	static final String SCRIPT = "SCRIPT";
-	final private String script;
-	private Script compiledScript = null;
-	private boolean canNotCompileScript = false;
+	final private IFreeplaneScript script;
 	private boolean errorReported = false;
 
 	static ASelectableCondition load(final XMLElement element) {
@@ -32,26 +29,15 @@ public class ScriptCondition extends ASelectableCondition {
 
 	public ScriptCondition(final String script) {
 		super();
-		this.script = script;
+		this.script = new GroovyShellFreeplaneScript(script);
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		if(canNotCompileScript)
-			return false;
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		final PrintStream printStream = new PrintStream(out);
-		if(compiledScript == null) {
-			try {
-	            compiledScript = ScriptingEngine.compileScriptCheckExceptions(script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null);
-            }
-            catch (Exception e) {
-            	canNotCompileScript = true;
-            	return false;
-             }
-		}
 		final Object result;
         try {
-			result = ScriptingEngine.executeScript(node, script, compiledScript, printStream);
+			result = script.setOutStream(printStream).execute(node);
 			if(result instanceof Boolean)
 				return (Boolean) result;
 			if(result instanceof Number)
@@ -82,12 +68,12 @@ public class ScriptCondition extends ASelectableCondition {
 
 	@Override
 	protected String createDescription() {
-		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, script);
+		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, script.getScript());
 	}
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		child.setAttribute(SCRIPT, script);
+		child.setAttribute(SCRIPT, script.getScript().toString());
 	}
 
 	@Override

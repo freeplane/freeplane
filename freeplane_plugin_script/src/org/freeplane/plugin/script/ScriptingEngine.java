@@ -18,250 +18,51 @@
  */
 package org.freeplane.plugin.script;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyRuntimeException;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
-
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.lang.WordUtils;
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.ModuleNode;
-import org.codehaus.groovy.control.CompilationFailedException;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.main.application.FreeplaneSecurityManager;
-import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 /**
  * @author foltin
  */
 public class ScriptingEngine {
-	public interface IErrorHandler {
-		void gotoLine(int pLineNumber);
-	}
-	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
-	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final String SCRIPT_PREFIX = "script";
-	private static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
-	private static List<String> classpath;
-	public static final IErrorHandler IGNORING_SCRIPT_ERROR_HANDLER = new IErrorHandler() {
-    	public void gotoLine(final int pLineNumber) {
-    	}
-    };
-
 	/**
 	 * @param permissions if null use default scripting permissions.
 	 * @return the result of the script, or null, if the user has cancelled.
 	 * @throws ExecuteScriptException on errors
 	 */
-    public static Object executeScript(final NodeModel node, final String script, final IErrorHandler pErrorHandler,
+    public static Object executeScript(final NodeModel node, final String script, final IFreeplaneScriptErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
-    	return executeScript(node, (Object)script, pErrorHandler, pOutStream, scriptContext, permissions);
+    	return new GroovyShellFreeplaneScript(script, permissions)
+    		.setErrorHandler(pErrorHandler)
+    		.setOutStream(pOutStream)
+    		.setScriptContext(scriptContext)
+    		.execute(node);
 
-    }
-    static Object executeScript(final NodeModel node, final File script, final IErrorHandler pErrorHandler,
-                                final PrintStream pOutStream, final ScriptContext scriptContext,
-                                ScriptingPermissions permissions) {
-    	return executeScript(node, (Object)script, pErrorHandler,
-    		pOutStream, scriptContext,
-    		permissions);
     }
     
-	static private Object executeScript(final NodeModel node, final Object script, final IErrorHandler pErrorHandler,
-	                            final PrintStream pOutStream, final ScriptContext scriptContext,
-	                            ScriptingPermissions permissions) {
-		Script compiledScript = compileScriptCheckExceptions(script, pErrorHandler, pOutStream, permissions);
-		return executeScript(node, script, compiledScript, pErrorHandler, pOutStream, scriptContext, permissions);
-	}
-	
-	public static Object executeScript(final NodeModel node, final Object script, Script compiledScript,
-                                       final IErrorHandler pErrorHandler, final PrintStream pOutStream,
-                                       final ScriptContext scriptContext, ScriptingPermissions permissions) {
-	    try {
-	    	checkScriptExecutionEnabled(permissions);
-	    	ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
-			final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-			final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
-			final ScriptingSecurityManager scriptingSecurityManager = scriptingSecurityManager(script, pOutStream, permissions);
-			final PrintStream oldOut = System.out;
-			try {
-				final Binding binding = new Binding();
-				binding.setVariable("c", ProxyFactory.createController(scriptContext));
-				binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
-				binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
-				compiledScript.setBinding(binding);
-				if (needsSecurityManager)
-					securityManager.setFinalSecurityManager(scriptingSecurityManager);
-				System.setOut(pOutStream);
-				return compiledScript.run();
-			}
-			finally {
-				if (compiledScript != null) {
-					InvokerHelper.removeClass(script.getClass());
-					if (needsSecurityManager)
-						securityManager.removeFinalSecurityManager(scriptingSecurityManager);
-				}
-				System.setOut(oldOut);
-				/* restore preferences (and assure that the values are unchanged!). */
-				originalScriptingPermissions.restorePermissions();
-			}
-		}
-		catch (final GroovyRuntimeException e) {
-			handleGroovyRuntimeException(e, pOutStream, pErrorHandler);
-		    throw new RuntimeException(e);
-
-		}
-		catch (final Throwable e) {
-			if (Controller.getCurrentController().getSelection() != null)
-				Controller.getCurrentModeController().getMapController().select(node);
-			throw new ExecuteScriptException(e.getMessage(), e);
-		}
+    static Object executeScript(final NodeModel node, final File script, final IFreeplaneScriptErrorHandler pErrorHandler,
+                                final PrintStream pOutStream, final ScriptContext scriptContext,
+                                ScriptingPermissions permissions) {
+    	return new GroovyShellFreeplaneScript(script, permissions)
+		.setErrorHandler(pErrorHandler)
+		.setOutStream(pOutStream)
+		.setScriptContext(scriptContext)
+		.execute(node);
     }
-	
-	private static ScriptingSecurityManager scriptingSecurityManager(final Object script, final PrintStream pOutStream,
-                                                            ScriptingPermissions permissions) {
-		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-	    final ScriptingSecurityManager scriptingSecurityManager;
-	    final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
-	    // get preferences (and store them again after the script execution,
-	    // such that the scripts are not able to change them).
-	    if (needsSecurityManager) {
-	    	if (permissions == null){
-	    		permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
-	    	}
-	    	if (!permissions.executeScriptsWithoutAsking()) {
-	    		final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-	    		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-	    		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-	    		if (showResult != JOptionPane.OK_OPTION) {
-	    			throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
-	    		}
-	    	}
-	    }
-	    if (needsSecurityManager) {
-	    	if (permissions == null){
-	    		permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
-	    	}
-	    	final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
-	    	final String scriptContent;
-	    	if(script instanceof String)
-	    		scriptContent = (String) script;
-	    	else
-	    		scriptContent = null;
-	    	if (executeSignedScripts && scriptContent != null && new SignedScriptHandler().isScriptSigned(scriptContent, pOutStream)) {
-	            scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
-	        }
-	        else
-	    		scriptingSecurityManager = permissions.getScriptingSecurityManager();
-	    }
-	    else {
-	    	// will not be used
-	    	scriptingSecurityManager = null;
-	    }
-	    return scriptingSecurityManager;
-    }
-	
-	private static Script compile(Object script) throws CompilationFailedException, IOException {
-		if(script instanceof Script)
-			return (Script) script;
-		final Binding binding = new Binding();
-		binding.setVariable("c", null);
-		binding.setVariable("node", null);
-		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
-		final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
-		final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration()); 
-		final Script compiledScript;
-		if(script instanceof String)
-			compiledScript = shell.parse((String)script);
-		else if(script instanceof File)
-			compiledScript = shell.parse((File)script);
-		else throw new IllegalArgumentException();
-		return compiledScript;
-    }
-	
-	public static Script compileScriptCheckExceptions(Object script,  final IErrorHandler pErrorHandler, final PrintStream pOutStream, ScriptingPermissions permissions){
-		try{
-			return compile(script);
-		}
-		catch (final GroovyRuntimeException e) {
-			handleGroovyRuntimeException(e, pOutStream, pErrorHandler);
-		    throw new RuntimeException(e);
-
-		}
-		catch (final Throwable e) {
-			throw new ExecuteScriptException(e.getMessage(), e);
-		}
-	}
-	
-	private static void checkScriptExecutionEnabled(ScriptingPermissions permissions) {
-		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
-		// get preferences (and store them again after the script execution,
-		// such that the scripts are not able to change them).
-		if (needsSecurityManager) {
-			if (permissions == null){
-				permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
-			}
-			if (!permissions.executeScriptsWithoutAsking()) {
-				final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-				    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-				    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-				if (showResult != JOptionPane.OK_OPTION) {
-					throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
-				}
-			}
-		}
-    }
-	private static void handleGroovyRuntimeException(final GroovyRuntimeException e, final PrintStream pOutStream,
-                                                     final IErrorHandler pErrorHandler) {
-	    final String resultString = e.getMessage();
-	    pOutStream.print("message: " + resultString);
-	    final ModuleNode module = e.getModule();
-	    final ASTNode astNode = e.getNode();
-	    int lineNumber = -1;
-	    if (module != null) {
-	    	lineNumber = module.getLineNumber();
-	    }
-	    else if (astNode != null) {
-	    	lineNumber = astNode.getLineNumber();
-	    }
-	    else {
-	    	lineNumber = ScriptingEngine.findLineNumberInString(resultString, lineNumber);
-	    }
-	    pOutStream.print("Line number: " + lineNumber);
-	    pErrorHandler.gotoLine(lineNumber);
-	    throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber, e);
-    }
-
-	private static CompilerConfiguration createCompilerConfiguration() {
-		CompilerConfiguration config = new CompilerConfiguration();
-		config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
-		if (!(classpath == null || classpath.isEmpty())) {
-			config.setClasspathList(classpath);
-		}
-		return config;
-	}
-
+    
 	public static int findLineNumberInString(final String resultString, int lineNumber) {
 		final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*@ line ([0-9]+).*",
 		    java.util.regex.Pattern.DOTALL);
@@ -273,28 +74,29 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-		return ScriptingEngine.executeScript(node, script, (ScriptContext)null, (ScriptingPermissions)null);
+    	return new GroovyShellFreeplaneScript(script).execute(node);
 	}
 
-	public static Object executeScript(NodeModel node, String script, Script compiledScript, PrintStream printStream) {
-		return executeScript(node, script, compiledScript, IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, null);
-    }
-	
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
-		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, System.out, null, permissions);
+    	return new GroovyShellFreeplaneScript(script, permissions).execute(node);
 	}
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, System.out, null, permissions);
+	   	return new GroovyShellFreeplaneScript(script, permissions)
+		.execute(node);
 	}
 	
 	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, null);
+	   	return new GroovyShellFreeplaneScript(script)
+		.setOutStream(printStream)
+		.execute(node);
 	}
 
 	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
 	                                   final ScriptingPermissions permissions) {
-		return ScriptingEngine.executeScript(node, script, IGNORING_SCRIPT_ERROR_HANDLER, System.out, scriptContext, permissions);
+    	return new GroovyShellFreeplaneScript(script, permissions)
+		.setScriptContext(scriptContext)
+		.execute(node);
 	}
 
 	static Object executeScriptRecursive(final NodeModel node, final File script,
@@ -337,15 +139,11 @@ public class ScriptingEngine {
 	/** allows to set the classpath for scripts. Due to security considerations it's not possible to set
 	 * this more than once. */
 	static void setClasspath(final List<String> classpath) {
-		if (ScriptingEngine.classpath != null)
-			throw new SecurityException("reset of script classpath is forbidden.");
-		ScriptingEngine.classpath = Collections.unmodifiableList(classpath);
-		if (!classpath.isEmpty())
-			LogUtils.info("extending script's classpath by " + classpath);
+		GroovyShellFreeplaneScript.setClasspath(classpath);
     }
 
 	static List<String> getClasspath() {
-		return classpath;
+		return GroovyShellFreeplaneScript.getClasspath();
 	}
 	
 	public static File getUserScriptDir() {
