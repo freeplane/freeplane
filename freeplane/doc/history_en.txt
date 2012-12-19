@@ -1,4 +1,25 @@
 ===============================
+1.2.21
+===============================
+Bug fixes for script based conditions for filters and conditional styles
+===============================
+1.2.20
+===============================
+Install as 64 bit program on 64 bit windows
+Do not check for java in windows installer
+Do not change edge width or style when AutomaticEdgeColorHook is executed
+#1801: improve consistency of data formatting
+Add min/maxNodeWidth to scripting API
+===============================
+1.2.19
+===============================
+Use launch4j as windows launcher
+Use standard portable app launcher
+copy user icons from freeplane 1.1.x on the first start
+build test dist version for PortableApps.com
+do not draw text on spash if the splash comes from a file
+Bug fixes
+===============================
 1.2.18
 ===============================
 Java 5 compatibility fixes

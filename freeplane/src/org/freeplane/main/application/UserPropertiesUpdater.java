@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Properties;
 
 import javax.swing.JLabel;
@@ -59,6 +60,12 @@ public class UserPropertiesUpdater {
 		if(! oldUserPreferencesFile.exists()){
 			return;
 		}
+		importOldPreferences(userPreferencesFile, oldUserPreferencesFile);
+		importOldIcons();
+	}
+
+	private void importOldPreferences(final File userPreferencesFile,
+			final File oldUserPreferencesFile) {
 		Properties userProp = new Properties();
 		FileInputStream inputStream = null;
 		try {
@@ -90,6 +97,7 @@ public class UserPropertiesUpdater {
         catch (NumberFormatException e) {
         }
     }
+	
 	void importOldDefaultStyle() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager fm = (MFileManager) MFileManager.getController(modeController);
@@ -181,6 +189,27 @@ public class UserPropertiesUpdater {
        nodeStyleModel.setFontFamilyName(defaultFont.getFamily());
        nodeStyleModel.setFontSize(defaultFont.getSize());
        styleNode.addExtension(nodeStyleModel);
+   }
+
+   private void importOldIcons() {
+		final File oldUserPreferencesFile =new File(System.getProperty("user.home"), ".freeplane/auto.properties");
+		if(! oldUserPreferencesFile.exists()){
+			return;
+		}
+	   final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
+		final File iconDir = new File(userPreferencesFile.getParentFile(), "icons");
+		if (iconDir.exists()) {
+			return;
+		}
+		LogUtils.info("creating user icons directory " + iconDir);
+		iconDir.mkdirs();
+		final File oldIconDir = new File(oldUserPreferencesFile.getParentFile(), "icons");
+		if(oldIconDir.exists()){
+			try {
+				org.apache.commons.io.FileUtils.copyDirectory(oldIconDir, iconDir);
+			} catch (Exception e) {
+			}
+		}
    }
 }
 

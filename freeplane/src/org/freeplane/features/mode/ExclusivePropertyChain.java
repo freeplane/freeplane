@@ -33,7 +33,8 @@ public class ExclusivePropertyChain<V, T> {
 	public V getProperty(final T node) {
 		final Iterator<IPropertyHandler<V, T>> iterator = map.values().iterator();
 		while (iterator.hasNext()) {
-			final V property = iterator.next().getProperty(node, null);
+			IPropertyHandler<V, T> handler = iterator.next();
+			final V property = handler.getProperty(node, null);
 			if (property != null) {
 				return property;
 			}

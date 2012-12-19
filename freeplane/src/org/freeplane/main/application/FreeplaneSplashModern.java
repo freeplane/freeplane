@@ -30,6 +30,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -61,33 +62,22 @@ public class FreeplaneSplashModern extends JWindow {
 
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
-		String splashImageName = "";
-		appName = ResourceController.getResourceController().getProperty("ApplicationName");
-		try {
-			splashImageName = appName+"_splash.png";
-			//FIXME - DOCEAR: synch with plugin/app start			
-			if(appName != null && !"freeplane".equals(appName.toLowerCase())) {
-				freeplaneNumber = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version");
-				status = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version_status");
-				if(freeplaneNumber == null) {
-					freeplaneNumber = "";
-					status = "";
-				}
-				if(status == null) {
-					status = "";
-				}
+		appName = ResourceController.getResourceController().getProperty("ApplicationName", "Freeplane");
+		//FIXME - DOCEAR: synch with plugin/app start			
+		if(appName != null && !"freeplane".equals(appName.toLowerCase())) {
+			freeplaneNumber = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version");
+			status = ResourceController.getResourceController().getProperty(appName.toLowerCase()+"_version_status");
+			if(freeplaneNumber == null) {
+				freeplaneNumber = "";
+				status = "";
+			}
+			if(status == null) {
+				status = "";
 			}
 		}
-		catch (final Exception e) {
-			splashImageName="Freeplane_splash.png";
-		}
-		
-		if (splashImageName == null || splashImageName.length() == 0) {
-			splashImageName="Freeplane_splash.png";
-		}
-		
-		splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
-		    "/images/"+splashImageName));
+		splashResource = ResourceController.getResourceController().getResource("/images/" + appName + "_splash.png");
+			
+		splashImage = new ImageIcon(splashResource);
 		getRootPane().setOpaque(false);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
@@ -115,27 +105,19 @@ public class FreeplaneSplashModern extends JWindow {
 
 	private final ImageIcon splashImage;
 	private Integer mWidth3;
+	private URL splashResource;
 
 	@Override
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
 		splashImage.paintIcon(this, g2, 0, 0);
-		if(appName != null && "freeplane".equals(appName.toLowerCase())) {
-			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			{
-				g2.setColor(Color.WHITE);
-				createVersionTextFont();
-				final float versionFontSize;
-				if(! status.equals(""))
-					versionFontSize = 18;
-				else
-					versionFontSize = 24;
-				g2.setFont(versionTextFont.deriveFont(versionFontSize));
-				final int xCoordinate = getWidth() - new Integer(g2.getFontMetrics().stringWidth(copyright)) - 10;
-				final int yCoordinate = 212;			
-				g2.drawString(freeplaneNumber + " " + status, xCoordinate, yCoordinate);
-			}
-			g2.setFont(versionTextFont.deriveFont(10f));
+		if(splashResource.getProtocol().equals("file"))
+			return;
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		final FreeplaneVersion version = FreeplaneVersion.getVersion();
+		final String freeplaneNumber = version.numberToString();
+		final String status = version.getType().toUpperCase();
+		{
 			g2.setColor(Color.WHITE);
 			int xCoordinate = 10;
 			final int yCoordinate = getSize().height - 10;

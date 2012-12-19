@@ -1,5 +1,7 @@
 package org.freeplane.plugin.script.filter;
 
+import groovy.lang.Script;
+
 import java.awt.KeyboardFocusManager;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -7,9 +9,9 @@ import java.io.PrintStream;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.filter.FilterCancelledException;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptingEngine;
@@ -20,6 +22,9 @@ public class ScriptCondition extends ASelectableCondition {
 	static final String NAME = "script_condition";
 	static final String SCRIPT = "SCRIPT";
 	final private String script;
+	private Script compiledScript = null;
+	private boolean canNotCompileScript = false;
+	private boolean errorReported = false;
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new ScriptCondition(element.getAttribute(SCRIPT, null));
@@ -31,11 +36,22 @@ public class ScriptCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
+		if(canNotCompileScript)
+			return false;
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		final PrintStream printStream = new PrintStream(out);
+		if(compiledScript == null) {
+			try {
+	            compiledScript = ScriptingEngine.compileScriptCheckExceptions(script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null);
+            }
+            catch (Exception e) {
+            	canNotCompileScript = true;
+            	return false;
+             }
+		}
 		final Object result;
         try {
-			result = ScriptingEngine.executeScript(node, script, printStream);
+			result = ScriptingEngine.executeScript(node, script, compiledScript, printStream);
 			if(result instanceof Boolean)
 				return (Boolean) result;
 			if(result instanceof Number)
@@ -44,29 +60,24 @@ public class ScriptCondition extends ASelectableCondition {
 	        printStream.close();
 	        final String info = TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
 	        	node.toString(), String.valueOf(result));
-	        cancel(info, true);
+	        setErrorStatus(info);
         }
         catch (ExecuteScriptException e) {
         	printStream.close();
 			final String info = TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
 			    node.toString(), out.toString());
-			cancel(info, false);
+			setErrorStatus(info);
         }
         return false;
 	}
 
-	private void cancel(final String info, boolean cancel) {
-		if(cancel){
+	private void setErrorStatus(final String info) {
+		if(! errorReported){
+			errorReported = true;
 			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), info,
 				TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 		}
-		else{
-			final int result = JOptionPane.showConfirmDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), info,
-				TextUtils.getText("error"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
-			if(result == JOptionPane.OK_OPTION)
-				return;
-		}
-		throw new FilterCancelledException(info);
+		Controller.getCurrentController().getViewController().out(info.trim().replaceAll("\\s", " ").substring(0, 80));
     }
 
 	@Override

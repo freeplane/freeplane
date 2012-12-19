@@ -45,7 +45,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -312,21 +311,27 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		try {
 			final PatternFormat format = PatternFormat.guessPatternFormat(formatString);
 			// logging for invalid pattern is done in guessPatternFormat()
-			if (obj == null)
-				return obj;
-			final Object toFormat = (obj instanceof IFormattedObject) ? ((IFormattedObject) obj).getObject() : obj;
+            if (obj == null)
+                return obj;
+			Object toFormat = extractObject(obj);
 			if (format == null)
 				return toFormat;
-			if (toFormat instanceof String && ((String) toFormat).startsWith("=")) {
-			    return new FormattedFormula((String) toFormat, formatString);
+			if (toFormat instanceof String) {
+			    final String string = (String) toFormat;
+                if (string.startsWith("=")) {
+			        return new FormattedFormula(string, formatString);
+			    }
+			    else {
+		            final ScannerController scannerController = ScannerController.getController();
+		            if (scannerController != null)
+		                toFormat = scannerController.parse(string);
+			    }
             }
-            else if (format.acceptsDate() && toFormat instanceof Date) {
+            if (format.acceptsDate() && toFormat instanceof Date) {
 				return new FormattedDate((Date) toFormat, formatString);
 			}
-            else if (format.acceptsNumber()) {
-                final Number number = toFormat instanceof Number ? (Number) toFormat : TextUtils.toNumber(HtmlUtils
-                    .htmlToPlain(toFormat.toString()));
-                return new FormattedNumber(number, formatString, format.formatObject(number).toString());
+            else if (format.acceptsNumber() && toFormat instanceof Number) {
+                return new FormattedNumber((Number) toFormat, formatString, format.formatObject(toFormat).toString());
             }
             else {
 				return new FormattedObject(toFormat, format);
@@ -339,6 +344,10 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 			return defaultObject;
 		}
 	}
+
+    private static Object extractObject(final Object obj) {
+        return (obj instanceof IFormattedObject) ? ((IFormattedObject) obj).getObject() : obj;
+    }
 
     /** returns a matching IFormattedObject if possible and if formatString is not-null.
      * Otherwise <a>obj</a> is returned.

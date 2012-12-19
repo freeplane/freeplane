@@ -24,7 +24,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -198,8 +197,11 @@ class ScriptingConfiguration {
 	/** scans <code>dir</code> for script files matching a given rexgex. */
 	private void addScripts(final File dir, final Map<File, Script> addOnScriptMap) {
 		if (dir.isDirectory()) {
-			for (final File file : Arrays.asList(dir.listFiles(createFilenameFilter(SCRIPT_REGEX)))) {
-				addScript(file, addOnScriptMap);
+			final File[] files = dir.listFiles(createFilenameFilter(SCRIPT_REGEX));
+			if(files != null){
+				for (final File file : files) {
+					addScript(file, addOnScriptMap);
+				}
 			}
 		}
 		else {
