@@ -56,7 +56,14 @@ public class TeXText
 
 		TeXFormula tf = new TeXFormula(sb.toString());
 
-        return tf.createTeXIcon(style, size, TeXConstants.UNIT_PIXEL, maxWidth, align, TeXConstants.UNIT_PIXEL, 10f);
+        //tf.createTeXIcon(style, size, TeXConstants.UNIT_PIXEL, maxWidth, align, TeXConstants.UNIT_PIXEL, 40f);
+		return tf.new TeXIconBuilder()
+			.setStyle(style)
+			.setSize(size)
+			.setWidth(TeXConstants.UNIT_PIXEL, maxWidth, align)
+			.setIsMaxWidth(true)
+			.setInterLineSpacing(TeXConstants.UNIT_PIXEL, /*40f*/size * 1.2F)
+			.build();
     }
 
 
@@ -76,7 +83,7 @@ public class TeXText
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel jl = new JLabel();
 //        jl.setIcon(tf.createTeXIcon(12, TeXConstants.ALIGN_CENTER));
-        jl.setIcon(tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, 16, TeXConstants.ALIGN_CENTER, 100));
+        jl.setIcon(tf.createTeXIcon(TeXConstants.STYLE_DISPLAY, 16, TeXConstants.ALIGN_LEFT, 400));
 
         Container cp = jf.getContentPane();
         cp.setLayout(new BorderLayout());
@@ -84,7 +91,7 @@ public class TeXText
         cp.add(jl, BorderLayout.CENTER);
         jf.pack();
         jf.setVisible(true);
-        jf.setBounds(0, 0, 400, 300);
+        //jf.setBounds(0, 0, 400, 300);
     }
 
 }
