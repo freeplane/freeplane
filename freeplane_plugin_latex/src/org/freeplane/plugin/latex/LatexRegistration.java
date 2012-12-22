@@ -36,7 +36,7 @@ class LatexRegistration {
 		final ModeController modeController = Controller.getCurrentModeController();
 		//LattexNodeHook -> Menu insert
 		final LatexNodeHook nodeHook = new LatexNodeHook();
-		if (modeController.getModeName() == "MindMap") {
+		if (modeController.getModeName().equals("MindMap")) {
 			modeController.addAction(new InsertLatexAction(nodeHook));
 			modeController.addAction(new EditLatexAction(nodeHook));
 			modeController.addAction(new DeleteLatexAction(nodeHook));
