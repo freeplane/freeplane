@@ -96,7 +96,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			scrollPane.setMinimumSize(new Dimension(0, 60));
 			final EditNodeDialog editNodeDialog = new LatexEditor(node, latexText, firstKeyEvent, editControl, false, textEditor);
 			editNodeDialog.setTitle(TextUtils.getText("latex_editor"));
-			textEditor.setContentType("text/groovy");
+			textEditor.setContentType("text/latex");
 			return editNodeDialog;
 		}
 		return null;

@@ -50,10 +50,11 @@ public class JSyntaxPaneProxy {
 		try {
 			final URL pluginUrl = context.getBundle().getEntry("/");
 			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-				jsyntaxpaneJar = new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane-jdk5.jar");
+				//jsyntaxpaneJar = new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane-jdk5.jar");
+				throw new IllegalStateException("This version of freeplane does not support java < 1.6!");
 			}
 			else {
-				jsyntaxpaneJar = new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane.jar");
+				jsyntaxpaneJar = new URL(pluginUrl, "lib/jsyntaxpane/jsyntaxpane-0.9.6.jar");
 			}
 			nodehighlighterJar = new URL(pluginUrl, "lib/jsyntaxpane/nodehighlighter.jar");
 		}
