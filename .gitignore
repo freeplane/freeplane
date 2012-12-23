@@ -20,9 +20,7 @@ freeplane_ant/test/freeplane_plugin_*
 freeplane_plugin_script/build-nodehighlighter
 freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
 freeplane_framework/temp
-<<<<<<< HEAD
 docear_plugin_bibtex/lib/JabRef-2.7.1.jar
 freeplane/lib/jortho.jar
 docear_plugin_core/src/TestMain.java
-=======
->>>>>>> freeplane/1.2.x
+
