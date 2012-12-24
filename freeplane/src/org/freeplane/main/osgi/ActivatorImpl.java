@@ -38,6 +38,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
 import org.osgi.framework.Bundle;
@@ -87,7 +88,7 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	private void loadPlugins(final BundleContext context) {
-		final String resourceBaseDir = FreeplaneStarter.getResourceBaseDir();
+		final String resourceBaseDir = FreeplaneGUIStarter.getResourceBaseDir();
 		final File baseDir = new File(resourceBaseDir).getAbsoluteFile().getParentFile();
 		List<Bundle> loadedPlugins = new LinkedList<Bundle>();
 		loadPlugins(context, new File(baseDir, "plugins"), loadedPlugins);
@@ -149,7 +150,7 @@ class ActivatorImpl implements BundleActivator {
 	private void startFramework(final BundleContext context) {
         registerClasspathUrlHandler(context);
 		if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
-			final File root = new File(FreeplaneStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+			final File root = new File(FreeplaneGUIStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			try {
 				String rootUrl = root.toURI().toURL().toString();
 				if (!rootUrl.endsWith("/")) {
@@ -162,7 +163,7 @@ class ActivatorImpl implements BundleActivator {
 			}
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
-		starter = new FreeplaneStarter();
+		starter = new FreeplaneGUIStarter();
 		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter);
 		singleInstanceManager.start(getCallParameters());
 		if (singleInstanceManager.isSlave()) {

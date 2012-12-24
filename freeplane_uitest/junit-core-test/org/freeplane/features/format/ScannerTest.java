@@ -32,7 +32,7 @@ import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.ScannerController;
-import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class ScannerTest {
 	public static void initStatics() throws Exception {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
 		System.setProperty("org.freeplane.nosplash", "true");
-		new FreeplaneStarter().createController();
+		new FreeplaneGUIStarter().createController();
 		MModeControllerFactory.createModeController();
 		formatController = FormatController.getController();
 		scannerController = ScannerController.getController();

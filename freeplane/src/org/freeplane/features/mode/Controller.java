@@ -170,7 +170,7 @@ public class Controller extends AController {
 		selectMode(newModeController);
 	}
 
-	public void setViewController(final FrameController viewController) {
+	public void setViewController(final ViewController viewController) {
 		this.viewController = viewController;
 	}
 

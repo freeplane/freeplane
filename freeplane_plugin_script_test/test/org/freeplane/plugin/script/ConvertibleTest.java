@@ -19,7 +19,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.plugin.script.proxy.ConversionException;
 import org.freeplane.plugin.script.proxy.Convertible;
 import org.freeplane.plugin.script.proxy.ConvertibleNoteText;
@@ -41,8 +41,8 @@ public class ConvertibleTest {
 	public static void initStatics() {
 		// we have to start Freeplane to create a Controller for script execution could we avoid that?
 		System.setProperty("org.freeplane.nosplash", "true");
-		final Controller controller = new FreeplaneStarter().createController();
-		new FreeplaneStarter().createModeControllers(controller);
+		final Controller controller = new FreeplaneGUIStarter().createController();
+		new FreeplaneGUIStarter().createModeControllers(controller);
 		ResourceController.getResourceController().setProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
 	}
 

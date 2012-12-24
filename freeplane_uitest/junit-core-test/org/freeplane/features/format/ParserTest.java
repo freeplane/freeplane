@@ -35,7 +35,7 @@ import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.IsoDateParser;
 import org.freeplane.features.format.NumberLiteralParser;
-import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class ParserTest {
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
 		System.setProperty("org.freeplane.nosplash", "true");
-		new FreeplaneStarter().createController();
+		new FreeplaneGUIStarter().createController();
 		MModeControllerFactory.createModeController();
 		formatController = FormatController.getController();
 		datePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATE)).toPattern();
