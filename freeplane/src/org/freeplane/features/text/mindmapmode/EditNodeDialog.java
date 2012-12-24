@@ -55,7 +55,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.FrameController;
 
 /**
  * @author foltin

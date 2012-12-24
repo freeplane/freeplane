@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.ui.FrameController;
 
 class ZoomOutAction extends AFreeplaneAction {
 	static final String NAME = "zoomOut";
