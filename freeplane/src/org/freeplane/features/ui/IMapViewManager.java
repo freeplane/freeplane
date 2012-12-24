@@ -21,13 +21,18 @@ package org.freeplane.features.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JScrollPane;
+
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -135,4 +140,13 @@ public interface IMapViewManager {
 	public Map<String, MapModel> getMaps(String modename);
 
 	public List<Component> getViews(MapModel map);
+	
+	public JScrollPane getScrollPane();
+	public Container getViewport();
+	public void updateMenus(final MenuBuilder menuBuilder);
+	public void obtainFocusForSelected();
+	public void setTitle();
+	public Object setEdgesRenderingHint(final Graphics2D g);
+	public void setTextRenderingHint(final Graphics2D g);
+	public boolean closeAllMaps();
 }

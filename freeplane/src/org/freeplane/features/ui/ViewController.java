@@ -20,71 +20,51 @@
 package org.freeplane.features.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.RootPaneContainer;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.ScannerController;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.StyleNamedObject;
@@ -93,7 +73,7 @@ import org.freeplane.features.time.TimeComboBoxEditor;
 /**
  * @author Dimitry Polivaev
  */
-abstract public class ViewController implements IMapViewChangeListener, IFreeplanePropertyListener {
+abstract public class ViewController {
 	public static final String STANDARD_STATUS_INFO_KEY = "standard";
 
 	private final class HorizontalToolbarPanel extends JPanel {
@@ -146,20 +126,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	public static final String VISIBLE_PROPERTY_KEY = "VISIBLE_PROPERTY_KEY";
 	public static final int TOP = 0, LEFT = 1, RIGHT = 2, BOTTOM = 3;
 	public static final String RESOURCE_ANTIALIAS = "antialias";
-	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
-	private boolean antialiasAll = false;
-	private boolean antialiasEdges = false;
 // // 	final private Controller controller;
-	private final IMapViewManager mapViewManager;
-	final private JScrollPane scrollPane;
 	final private JLabel status;
 	final private Map<String, Component> statusInfos;
 	final private JPanel statusPanel;
 	final private JComponent toolbarPanel[];
-	final private String userDefinedZoom;
-	final private ZoomInAction zoomIn;
-	private final DefaultComboBoxModel zoomModel;
-	final private ZoomOutAction zoomOut;
 	private Rectangle frameSize;
 
 	public Rectangle getFrameSize() {
@@ -172,7 +143,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	private int winState;
 	final private String propertyKeyPrefix;
-	private boolean setZoomComboBoxRun;
 	public static final String SLOW_SCROLLING = "slowScrolling";
 	public static Icon textIcon;
 	public static Icon numberIcon;
@@ -203,42 +173,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		statusInfos.put(STANDARD_STATUS_INFO_KEY, status);
 //		this.controller = controller;
 		controller.setViewController(this);
-		this.mapViewManager = mapViewManager;
-		mapViewManager.addMapViewChangeListener(this);
-		controller.addAction(new CloseAction());
-		zoomIn = new ZoomInAction(this);
-		controller.addAction(zoomIn);
-		zoomOut = new ZoomOutAction(this);
-		controller.addAction(zoomOut);
 		controller.addAction(new ToggleFullScreenAction(this));
-		userDefinedZoom = TextUtils.getText("user_defined_zoom");
-		zoomModel = new DefaultComboBoxModel(getZooms());
-		zoomModel.addElement(userDefinedZoom);
-		final String mapViewZoom = resourceController.getProperty(getPropertyKeyPrefix() + "map_view_zoom", "1.0");
-		try {
-			setZoom(Float.parseFloat(mapViewZoom));
-		}
-		catch (final Exception e) {
-			zoomModel.setSelectedItem("100%");
-			LogUtils.severe(e);
-		}
-		zoomModel.addListDataListener(new  ListDataListener() {
-			public void intervalRemoved(ListDataEvent e) {
-			}
-			
-			public void intervalAdded(ListDataEvent e) {
-			}
-			
-			public void contentsChanged(ListDataEvent e) {
-				if (!setZoomComboBoxRun && e.getIndex0() == -1) {
-					EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							setZoomByItem(zoomModel.getSelectedItem());
-						}
-					});
-				}
-			}
-		}) ;
+		controller.addAction(new CloseAction());
 		
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
@@ -249,76 +185,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
 		toolbarPanel[LEFT] = Box.createVerticalBox();
 		toolbarPanel[RIGHT] = Box.createVerticalBox();
-		scrollPane = new MapViewScrollPane();
-		resourceController.addPropertyChangeListener(this);
-		final String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
-		changeAntialias(antialiasProperty);
-	}
-
-	public void afterViewChange(final Component oldMap, final Component pNewMap) {
-		Controller controller = Controller.getCurrentController();
-		final ModeController oldModeController = controller.getModeController();
-		ModeController newModeController = oldModeController;
-		if (pNewMap != null) {
-			setViewportView(pNewMap);
-			final IMapSelection mapSelection = mapViewManager.getMapSelection();
-			final NodeModel selected = mapSelection.getSelected();
-			mapSelection.scrollNodeToVisible(selected);
-			setZoomComboBox(mapViewManager.getZoom());
-			obtainFocusForSelected();
-			newModeController = mapViewManager.getModeController(pNewMap);
-			if (newModeController != oldModeController) {
-				controller.selectMode(newModeController);
-			}
-		}
-		else {
-			setViewportView(null);
-		}
-		setTitle();
-		viewNumberChanged(mapViewManager.getViewNumber());
-		newModeController.getUserInputListenerFactory().updateMapList();
-		if (pNewMap != null) {
-			newModeController.setVisible(true);
-		}
-	}
-
-	public void afterViewClose(final Component oldView) {
-	}
-
-	public void afterViewCreated(final Component mapView) {
-	}
-
-	public void beforeViewChange(final Component oldMap, final Component newMap) {
-		Controller controller = Controller.getCurrentController();
-		final ModeController modeController = controller.getModeController();
-		if (oldMap != null) {
-			modeController.setVisible(false);
-		}
-	}
-
-	/**
-	 */
-	private void changeAntialias(final String command) {
-		if (command == null) {
-			return;
-		}
-		final Controller controller = getController();
-		if (command.equals("antialias_none")) {
-			setAntialiasEdges(false);
-			setAntialiasAll(false);
-		}
-		if (command.equals("antialias_edges")) {
-			setAntialiasEdges(true);
-			setAntialiasAll(false);
-		}
-		if (command.equals("antialias_all")) {
-			setAntialiasEdges(true);
-			setAntialiasAll(true);
-		}
-		final Component mapView = controller.getViewController().getMapView();
-		if (mapView != null) {
-			mapView.repaint();
-		}
 	}
 
 	public void changeNoteWindowLocation() {
@@ -326,22 +192,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public void err(final String msg) {
 		status.setText(msg);
-	}
-
-	private boolean getAntialiasAll() {
-		return antialiasAll;
-	}
-
-	private boolean getAntialiasEdges() {
-		return antialiasEdges;
-	}
-
-	public Color getBackgroundColor(final NodeModel node) {
-		return mapViewManager.getBackgroundColor(node);
-	}
-
-	public Component getComponent(final NodeModel node) {
-		return mapViewManager.getComponent(node);
 	}
 
 	/**
@@ -357,34 +207,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		return Controller.getCurrentController();
 	}
 
-	private float getCurrentZoomIndex() {
-		final int selectedIndex = zoomModel.getIndexOf(zoomModel.getSelectedItem());
-		final int itemCount = zoomModel.getSize();
-		if (selectedIndex != - 1) {
-			return selectedIndex;
-		}
-		final float userZoom = mapViewManager.getZoom();
-		for (int i = 0; i < itemCount - 1; i++) {
-			if (userZoom < getZoomValue(zoomModel.getElementAt(i))) {
-				return i - 0.5f;
-			}
-		}
-		return itemCount  - 1.5f;
-	}
-
-	public Font getFont(final NodeModel node) {
-		return mapViewManager.getFont(node);
-	}
-
 	public Frame getFrame() {
 		return JOptionPane.getFrameForComponent(getContentPane());
 	}
 
 	abstract public FreeplaneMenuBar getFreeplaneMenuBar();
-
-	public String getItemForZoom(final float f) {
-		return (int) (f * 100F) + "%";
-	}
 
 	/**
 	 * @return
@@ -393,55 +220,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	/**
 	 */
-	public MapModel getMap() {
-		return mapViewManager.getModel();
-	}
-
-	public Component getMapView() {
-		return getMapViewManager().getMapViewComponent();
-	}
-
-	public IMapViewManager getMapViewManager() {
-		return mapViewManager;
-	}
-
-	public JScrollPane getScrollPane() {
-		return scrollPane;
-	}
-
-	public Component getSelectedComponent() {
-		return mapViewManager.getSelectedComponent();
-	}
-
-	public IMapSelection getSelection() {
-		return mapViewManager.getMapSelection();
-	}
-
 	public JComponent getStatusBar() {
 		return statusPanel;
-	}
-
-	public Color getTextColor(final NodeModel node) {
-		return mapViewManager.getTextColor(node);
-	}
-
-	public Container getViewport() {
-		return scrollPane.getViewport();
-	}
-
-	public float getZoom() {
-		return mapViewManager.getZoom();
-	}
-
-	public String[] getZooms() {
-		return ViewController.zooms;
-	}
-
-	private float getZoomValue(final Object item) {
-		final String dirty = (String) item;
-		final String cleaned = dirty.substring(0, dirty.length() - 1);
-		final float zoomValue = Integer.parseInt(cleaned, 10) / 100F;
-		return zoomValue;
 	}
 
 	public void init(Controller controller) {
@@ -485,22 +265,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(
 		    getPropertyKeyPrefix() + property);
 		return booleanProperty;
-	}
-
-	public void obtainFocusForSelected() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (getMapView() != null) {
-					final Component selectedComponent = getSelectedComponent();
-					if(selectedComponent != null){
-						selectedComponent.requestFocus();
-					}
-				}
-				else {
-					getFreeplaneMenuBar().requestFocus();
-				}
-			}
-		});
 	}
 
 	abstract public void openDocument(URI uri) throws IOException;
@@ -561,39 +325,12 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		statusPanel.remove(oldComponent);
 	}
 
-	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
-			changeAntialias(newValue);
-		}
-	}
-
-	public boolean quit() {
-		while (getMapViewManager().getMapViewVector().size() > 0) {
-			if (getMapView() != null) {
-				final boolean closingNotCancelled = getMapViewManager().close(false);
-				if (!closingNotCancelled) {
-					return false;
-				}
-			}
-			else {
-				getMapViewManager().nextMapView();
-			}
-		}
-		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
-		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
-		return true;
-	}
-
 	/**
 	 * 
 	 */
 	abstract public void removeSplitPane();
 
 	public void saveProperties() {
-	}
-
-	public void scrollNodeToVisible(final NodeModel node) {
-		mapViewManager.scrollNodeToVisible(node);
 	}
 
 	public void selectMode( final ModeController oldModeController,  final ModeController newModeController) {
@@ -629,25 +366,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		getFreeplaneMenuBar().setVisible(isMenubarVisible());
 	}
 
-	public void setAntialiasAll(final boolean antialiasAll) {
-		this.antialiasAll = antialiasAll;
-	}
-
-	public void setAntialiasEdges(final boolean antialiasEdges) {
-		this.antialiasEdges = antialiasEdges;
-	}
-
-	public Object setEdgesRenderingHint(final Graphics2D g) {
-		final Object renderingHint = g.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-		if (getAntialiasEdges()) {
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		}
-		else {
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		}
-		return renderingHint;
-	}
-
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setMenubarVisible(final boolean visible) {
@@ -662,114 +380,18 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		getFreeplaneMenuBar().setVisible(visible);
 	}
 
-	public void setTextRenderingHint(final Graphics2D g) {
-		if (getAntialiasAll()) {
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		}
-		else {
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-		}
-	}
-
 	/**
 	 * Set the Frame title with mode and file if exist
 	 */
-	public void setTitle() {
-		final ModeController modeController = Controller.getCurrentModeController();
-		if (modeController == null) {
-			setTitle("");
-			return;
-		}
-		final Object[] messageArguments = { TextUtils.getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(TextUtils.getText("mode_title"));
-		String title = formatter.format(messageArguments);
-		String rawTitle = "";
-		final MapModel model = mapViewManager.getModel();
-		if (model != null) {
-			rawTitle = mapViewManager.getMapViewComponent().getName();
-			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
-			        + (model.isReadOnly() ? " (" + TextUtils.getText("read_only") + ")" : "");
-			final File file = model.getFile();
-			if (file != null) {
-				title += " " + file.getAbsolutePath();
-			}
-		}
-		setTitle(title);
-		modeController.getUserInputListenerFactory().updateMapList();
-	}
 
 	abstract public void setTitle(String title);
-
-	private void setViewportView(final Component view) {
-		scrollPane.setViewportView(view);
-	}
 
 	/**
 	 * @param b
 	 */
 	abstract public void setWaitingCursor(boolean b);
 
-	public void setZoom(final float zoom) {
-		mapViewManager.setZoom(zoom);
-		setZoomComboBox(zoom);
-		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = TextUtils.format("user_defined_zoom_status_bar", messageArguments);
-		out(stringResult);
-	}
-
-	private void setZoomByItem(final Object item) {
-		final float zoomValue;
-		if (((String) item).equals(userDefinedZoom)) {
-			final float zoom = mapViewManager.getZoom();
-			final int zoomInt = Math.round(100 * zoom);
-			final SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(zoomInt, 1, 3200, 1);
-			JSpinner spinner = new JSpinner(spinnerNumberModel);
-			final int option = JOptionPane.showConfirmDialog(scrollPane, spinner, TextUtils.getText("enter_zoom"), JOptionPane.OK_CANCEL_OPTION);
-			if(option == JOptionPane.OK_OPTION)
-				zoomValue = spinnerNumberModel.getNumber().floatValue() / 100;
-			else
-				zoomValue = zoom;
-		}
-		else
-			zoomValue = getZoomValue(item);
-		setZoom(zoomValue);
-	}
-
-	private void setZoomComboBox(final float f) {
-		setZoomComboBoxRun = true;
-		try {
-			final String toBeFound = getItemForZoom(f);
-			zoomModel.setSelectedItem(toBeFound);
-		}
-		finally {
-			setZoomComboBoxRun = false;
-		}
-	}
-
-	public void updateMenus(final MenuBuilder menuBuilder) {
-		if (menuBuilder.contains("main_toolbar_zoom")) {
-			final JComboBox zoomBox = new JComboBox(zoomModel);
-			menuBuilder.addElement("main_toolbar_zoom", zoomBox, MenuBuilder.AS_CHILD);
-			// FELIXHACK
-			//zoomBox.setRenderer(new ComboBoxRendererWithTooltip(zoomBox));
-		}
-	}
-
-	protected void viewNumberChanged(final int number) {
-	}
-
-	public void zoomIn() {
-		final float currentZoomIndex = getCurrentZoomIndex();
-		if (currentZoomIndex < zoomModel.getSize() - 2) {
-			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex + 1f)));
-		}
-	}
-
-	public void zoomOut() {
-		final float currentZoomIndex = getCurrentZoomIndex();
-		if (currentZoomIndex > 0) {
-			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
-		}
+	public void viewNumberChanged(final int number) {
 	}
 
 	void setFullScreen(final boolean fullScreen) {
@@ -969,4 +591,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	
 		return editor;
 	}
+
+	public boolean quit() {
+	    return getController().getMapViewManager().closeAllMaps();
+    }
 }

@@ -53,7 +53,7 @@ class DialogController extends ViewController {
 		super(controller, mapViewController, "dialog_");
 		this.dialog = dialog;
 		getContentPane().setLayout(new BorderLayout());
-		mContentComponent = getScrollPane();
+		mContentComponent = mapViewController.getScrollPane();
 		getContentPane().add(mContentComponent, BorderLayout.CENTER);
 	}
 

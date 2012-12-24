@@ -553,7 +553,7 @@ public class EditNodeTextField extends EditNodeBase {
     @Override
 	public void show(final RootPaneContainer frame) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final ViewController viewController = modeController.getController().getViewController();
+		final IMapViewManager viewController = modeController.getController().getMapViewManager();
 		final MTextController textController = (MTextController) TextController.getController(modeController);
 		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, parent);
 		font = parent.getFont();
@@ -628,7 +628,7 @@ public class EditNodeTextField extends EditNodeBase {
 		final StyleSheet styleSheet = document.getStyleSheet();
 		styleSheet.addRule(ruleBuilder.toString());
 		textfield.setText(text);
-		final MapView mapView = (MapView) viewController.getMapView();
+		final MapView mapView = (MapView) viewController.getMapViewComponent();
 		if(! mapView.isValid())
 			mapView.validate();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);

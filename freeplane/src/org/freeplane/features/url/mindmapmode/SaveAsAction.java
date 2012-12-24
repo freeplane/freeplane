@@ -37,6 +37,6 @@ class SaveAsAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		((MFileManager) UrlManager.getController()).saveAs(Controller.getCurrentController().getMap());
-		Controller.getCurrentController().getViewController().setTitle();
+		Controller.getCurrentController().getMapViewManager().setTitle();
 	}
 }

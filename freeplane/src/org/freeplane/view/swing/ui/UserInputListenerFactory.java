@@ -311,7 +311,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				throw e;
 			}
 		}
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 		viewController.updateMenus(menuBuilder);
 	}
 

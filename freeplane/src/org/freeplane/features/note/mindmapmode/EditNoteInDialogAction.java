@@ -34,6 +34,7 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 
 class EditNoteInDialogAction extends AFreeplaneAction {
@@ -57,7 +58,7 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent arg0) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel nodeModel = controller.getSelection().getSelected();
-		final ViewController viewController = controller.getViewController();
+		final IMapViewManager viewController = controller.getMapViewManager();
 		final Component node = viewController.getComponent(nodeModel);
 		node.requestFocus();
 		edit(nodeModel);
@@ -94,7 +95,7 @@ class EditNoteInDialogAction extends AFreeplaneAction {
 		};
 		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
 		mCurrentEditDialog = textFieldCreator.createEditor(nodeModel, editControl, text, true);
-		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
+		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		mCurrentEditDialog.show(frame);
 
     }

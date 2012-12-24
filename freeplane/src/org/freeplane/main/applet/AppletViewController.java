@@ -88,7 +88,7 @@ class AppletViewController extends ViewController {
 	@Override
 	public void init(Controller controller) {
 		mapContentBox = new JPanel(new BorderLayout());
-		mapContentBox.add(getScrollPane(), BorderLayout.CENTER);
+		mapContentBox.add(controller.getMapViewManager().getScrollPane(), BorderLayout.CENTER);
 		getContentPane().add(mapContentBox, BorderLayout.CENTER);
 		super.init(controller);
 		SwingUtilities.updateComponentTreeUI(applet);

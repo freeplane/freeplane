@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.map;
 
 import java.awt.Component;
 import java.awt.Point;
@@ -30,6 +30,7 @@ import javax.swing.Timer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author Dimitry Polivaev

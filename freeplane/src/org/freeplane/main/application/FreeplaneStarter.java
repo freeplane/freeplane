@@ -142,7 +142,7 @@ public class FreeplaneStarter {
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
 				splash.setVisible(true);
 			}
-			final MMapViewController mapViewController = new MMapViewController();
+			final MMapViewController mapViewController = new MMapViewController(controller);
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			System.setSecurityManager(new FreeplaneSecurityManager());
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());

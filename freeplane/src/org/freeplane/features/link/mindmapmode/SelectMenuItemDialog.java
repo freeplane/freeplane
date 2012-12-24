@@ -115,7 +115,7 @@ public class SelectMenuItemDialog extends JDialog {
 
 	public SelectMenuItemDialog(final NodeModel node) {
 		super(UITools.getFrame(), TextUtils.getText("select_menu_item_dialog"), true);
-		Controller.getCurrentController().getViewController().scrollNodeToVisible(node);
+		Controller.getCurrentController().getMapViewManager().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(this, node);
 		setSize(DIALOG_DIMENSION);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

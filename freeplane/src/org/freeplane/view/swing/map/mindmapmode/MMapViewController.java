@@ -58,12 +58,12 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(node, text, editControl, true);
 			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){ 
-				int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
+				int preferredHeight = (int) (getComponent(node).getHeight() * 1.2);
 				preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__min_default_window_height")));
 				preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__max_default_window_height")));
-				int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
+				int preferredWidth = (int) (getComponent(node).getWidth() * 1.2);
 				preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__min_default_window_width")));
 				preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
@@ -74,10 +74,10 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			final MainView mainView = (MainView) getComponent(node);
 	        final NodeView nodeView = mainView.getNodeView();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
-	            final Font font = viewController.getFont(node);
+	            final Font font = getFont(node);
 	            editNodeWYSIWYG.setTitle("edit_long_node");
 	            editNodeWYSIWYG.setFont(font);
-	            final Color nodeTextColor = viewController.getTextColor(node);
+	            final Color nodeTextColor = getTextColor(node);
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground());
 			}
@@ -134,7 +134,8 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		return textField;
 	}
 
-	public MMapViewController() {
+	public MMapViewController(Controller controller) {
+		super(controller);
 		new EditNodeTextField(null, null, null, null);
     }
 	

@@ -122,6 +122,10 @@ class ApplicationViewController extends ViewController {
 		initFrame(frame);
 	}
 
+	private JScrollPane getScrollPane() {
+	    return getController().getMapViewManager().getScrollPane();
+    }
+
 	/**
 	 * Called from the Controller, when the Location of the Note Window is changed on the Menu->View->Note Window Location 
 	 */
@@ -352,7 +356,7 @@ class ApplicationViewController extends ViewController {
 		final NodeModel node = selection.getSelected();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				final Component component = controller.getViewController().getComponent(node);
+				final Component component = controller.getMapViewManager().getComponent(node);
 				if (component != null) {
 					component.requestFocus();
 				}
@@ -371,7 +375,6 @@ class ApplicationViewController extends ViewController {
 	@Override
 	public void saveProperties() {
 		saveSplitPanePosition();
-		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
 		if (!isFullScreenEnabled()) {
 			final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 			if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
@@ -433,7 +436,7 @@ class ApplicationViewController extends ViewController {
 	}
 
 	@Override
-	protected void viewNumberChanged(final int number) {
+    public void viewNumberChanged(final int number) {
 		navigationPreviousMap.setEnabled(number > 1);
 		navigationNextMap.setEnabled(number > 1);
 	}
