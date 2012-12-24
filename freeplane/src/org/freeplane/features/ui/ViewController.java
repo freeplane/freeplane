@@ -255,9 +255,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		changeAntialias(antialiasProperty);
 	}
 
-	public void afterMapClose(final MapModel pOldMapView) {
-	}
-
 	public void afterViewChange(final Component oldMap, final Component pNewMap) {
 		Controller controller = Controller.getCurrentController();
 		final ModeController oldModeController = controller.getModeController();
