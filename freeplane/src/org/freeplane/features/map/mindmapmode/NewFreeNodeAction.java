@@ -26,7 +26,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 
 public class NewFreeNodeAction extends AFreeplaneAction {
 	/**

@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2012 Dimitry
  *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,580 +19,118 @@
  */
 package org.freeplane.features.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ComboBoxEditor;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
-import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
-import javax.swing.plaf.metal.MetalFileChooserUI;
 
-import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FixedBasicComboBoxEditor;
-import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.format.FormattedDate;
-import org.freeplane.features.format.FormattedObject;
-import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.StyleNamedObject;
-import org.freeplane.features.time.TimeComboBoxEditor;
 
 /**
  * @author Dimitry Polivaev
+ * 24.12.2012
  */
-abstract public class ViewController {
+public interface ViewController {
 	public static final String STANDARD_STATUS_INFO_KEY = "standard";
-
-	private final class HorizontalToolbarPanel extends JPanel {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		private HorizontalToolbarPanel(final LayoutManager layout) {
-			super(layout);
-		}
-
-		@Override
-		public void validateTree() {
-			if (!isValid()) {
-				super.validateTree();
-				resizeToolbarPane();
-			}
-		}
-
-		private void resizeToolbarPane() {
-			if (getWidth() == 0) {
-				return;
-			}
-			int lastComponent = getComponentCount() - 1;
-			while (lastComponent >= 0 && !getComponent(lastComponent).isVisible()) {
-				lastComponent--;
-			}
-			final Dimension oldPreferredSize = getPreferredSize();
-			final Dimension preferredSize;
-			if (lastComponent >= 0) {
-				final Component component = getComponent(lastComponent);
-				preferredSize = new Dimension(getWidth(), component.getY() + component.getHeight());
-			}
-			else {
-				preferredSize = new Dimension(0, 0);
-			}
-			if (oldPreferredSize.height != preferredSize.height) {
-				setPreferredSize(preferredSize);
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						getParent().invalidate();
-						((JComponent) getContentPane()).revalidate();
-					}
-				});
-			}
-		}
-	}
-
 	public static final String VISIBLE_PROPERTY_KEY = "VISIBLE_PROPERTY_KEY";
-	public static final int TOP = 0, LEFT = 1, RIGHT = 2, BOTTOM = 3;
+	public static final int BOTTOM = 3;
+	public static final int LEFT = 1;
+	public static final int RIGHT = 2;
+	public static final int TOP = 0;
 	public static final String RESOURCE_ANTIALIAS = "antialias";
-// // 	final private Controller controller;
-	final private JLabel status;
-	final private Map<String, Component> statusInfos;
-	final private JPanel statusPanel;
-	final private JComponent toolbarPanel[];
-	private Rectangle frameSize;
 
-	public Rectangle getFrameSize() {
-		return frameSize;
-	}
+	public Rectangle getFrameSize();
 
-	public void setFrameSize(final Rectangle frameSize) {
-		this.frameSize = frameSize;
-	}
+	public void setFrameSize(final Rectangle frameSize);
 
-	private int winState;
-	final private String propertyKeyPrefix;
 	public static final String SLOW_SCROLLING = "slowScrolling";
-	public static Icon textIcon;
-	public static Icon numberIcon;
-	public static Icon dateIcon;
-	public static Icon dateTimeIcon;
-	public static Icon linkIcon;
-	public static Icon localLinkIcon;
 
-	public ViewController(Controller controller,  final IMapViewManager mapViewManager,
-	                      final String propertyKeyPrefix) {
-		super();
-		final ResourceController resourceController = ResourceController.getResourceController();
-		if(textIcon == null){
-			ViewController.textIcon = new ImageIcon(resourceController.getResource("/images/text.png"));
-			ViewController.numberIcon = new ImageIcon(resourceController.getResource("/images/number.png"));
-			ViewController.dateIcon = new ImageIcon(resourceController.getResource("/images/calendar_red.png"));
-			ViewController.dateTimeIcon = new ImageIcon(resourceController.getResource("/images/calendar_clock_red.png"));
-			ViewController.linkIcon = new ImageIcon(resourceController.getResource("/images/" + resourceController.getProperty("link_icon")));
-			ViewController.localLinkIcon = new ImageIcon(resourceController.getResource("/images/" + resourceController.getProperty("link_local_icon")));
-		}
-		this.propertyKeyPrefix = propertyKeyPrefix;
-		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-		statusPanel.putClientProperty(VISIBLE_PROPERTY_KEY, "status_visible");
-		status = new JLabel();
-		status.setBorder(BorderFactory.createEtchedBorder());
-		statusPanel.add(status);
-		statusInfos = new HashMap<String, Component>();
-		statusInfos.put(STANDARD_STATUS_INFO_KEY, status);
-//		this.controller = controller;
-		controller.setViewController(this);
-		controller.addAction(new ToggleFullScreenAction(this));
-		controller.addAction(new CloseAction());
-		
-		controller.addAction(new ToggleMenubarAction(this));
-		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
-		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
-		toolbarPanel = new JComponent[4];
+	public void changeNoteWindowLocation();
 
-		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
-		toolbarPanel[LEFT] = Box.createVerticalBox();
-		toolbarPanel[RIGHT] = Box.createVerticalBox();
-	}
-
-	public void changeNoteWindowLocation() {
-	}
-
-	public void err(final String msg) {
-		status.setText(msg);
-	}
+	public void err(final String msg);
 
 	/**
 	 * @return
 	 */
-	abstract public RootPaneContainer getRootPaneContainer();
-	
-	public Container getContentPane(){
-		return getRootPaneContainer().getContentPane();
-	}
+	public RootPaneContainer getRootPaneContainer();
 
-	protected Controller getController() {
-		return Controller.getCurrentController();
-	}
+	public Container getContentPane();
 
-	public Frame getFrame() {
-		return JOptionPane.getFrameForComponent(getContentPane());
-	}
+	public Frame getFrame();
 
-	abstract public FreeplaneMenuBar getFreeplaneMenuBar();
+	public FreeplaneMenuBar getFreeplaneMenuBar();
 
 	/**
 	 * @return
 	 */
-	abstract public JFrame getJFrame();
+	public JFrame getJFrame();
 
 	/**
 	 */
-	public JComponent getStatusBar() {
-		return statusPanel;
-	}
+	public JComponent getStatusBar();
 
-	public void init(Controller controller) {
-		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
-		getContentPane().add(toolbarPanel[LEFT], BorderLayout.WEST);
-		getContentPane().add(toolbarPanel[RIGHT], BorderLayout.EAST);
-		getContentPane().add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
-//		status.setPreferredSize(status.getPreferredSize());
-		status.setText("");
-		getRootPaneContainer().getRootPane().putClientProperty(Controller.class, controller);
-		final Frame frame = getFrame();
-		frame.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(final ComponentEvent e) {
-				final Frame frame = (Frame) e.getComponent();
-				if (frame.getExtendedState() != Frame.NORMAL || isFullScreenEnabled()) {
-					return;
-				}
-				frameSize = frame.getBounds();
-			}
+	public void init(Controller controller);
 
-			@Override
-			public void componentMoved(final ComponentEvent e) {
-				componentResized(e);
-			}
-		});
-	}
+	public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
-	abstract public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
+	public boolean isApplet();
 
-	abstract public boolean isApplet();
+	public boolean isMenubarVisible();
 
-	public boolean isMenubarVisible() {
-		final String property;
-		if (isFullScreenEnabled()) {
-			property = "menubarVisible.fullscreen";
-		}
-		else {
-			property = "menubarVisible";
-		}
-		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(
-		    getPropertyKeyPrefix() + property);
-		return booleanProperty;
-	}
+	public void openDocument(URI uri) throws IOException;
 
-	abstract public void openDocument(URI uri) throws IOException;
+	public void openDocument(URL fileToUrl) throws Exception;
 
-	abstract public void openDocument(URL fileToUrl) throws Exception;
+	public void out(final String msg);
 
-	public void out(final String msg) {
-		status.setText(msg);
-	}
+	public void addStatusInfo(final String key, final String info);
 
-	public void addStatusInfo(final String key, final String info) {
-		addStatusInfo(key, info, null, null);
-	}
-	
-	public void addStatusInfo(final String key, Icon icon) {
-		addStatusInfo(key, null, icon, null);
-	}
-	
-	public void addStatusInfo(final String key, final String info, Icon icon) {
-		addStatusInfo(key, info, icon, null);
-	}
-	
-	public void addStatusInfo(final String key, final String info, Icon icon, final String tooltip) {
-		JLabel label = (JLabel) statusInfos.get(key);
-		if (label == null) {
-			label = new JLabel(info);
-			label.setBorder(BorderFactory.createEtchedBorder());
-			statusInfos.put(key, label);
-			statusPanel.add(label, statusPanel.getComponentCount() - 1);
-		}
-		else {
-			label.setText(info);
-			label.revalidate();
-			label.repaint();
-		}
-		label.setIcon(icon);
-		label.setToolTipText(tooltip);
-		label.setVisible(info != null || icon != null);
-	}
+	public void addStatusInfo(final String key, Icon icon);
 
-	public void addStatusComponent(final String key, Component component) {
-		Component oldComponent = statusInfos.put(key, component);
-		if (oldComponent == null) {
-			statusPanel.add(component, statusPanel.getComponentCount() - 1);
-		}
-		else {
-			final int index = UITools.getComponentIndex(component);
-			statusPanel.remove(index);
-			statusPanel.add(component, index);
-		}
-	}
+	public void addStatusInfo(final String key, final String info, Icon icon);
 
-	public void removeStatus(final String key) {
-		final Component oldComponent = statusInfos.remove(key);
-		if (oldComponent == null) {
-			return;
-		}
-		statusPanel.remove(oldComponent);
-	}
+	public void addStatusInfo(final String key, final String info, Icon icon, final String tooltip);
+
+	public void addStatusComponent(final String key, Component component);
+
+	public void removeStatus(final String key);
 
 	/**
 	 * 
 	 */
-	abstract public void removeSplitPane();
+	public void removeSplitPane();
 
-	public void saveProperties() {
-	}
+	public void saveProperties();
 
-	public void selectMode( final ModeController oldModeController,  final ModeController newModeController) {
-		if (oldModeController == newModeController) {
-			return;
-		}
-		if (oldModeController != null) {
-			final IUserInputListenerFactory userInputListenerFactory = oldModeController.getUserInputListenerFactory();
-			for (int j = 0; j < 4; j++) {
-				final Iterable<JComponent> modeToolBars = userInputListenerFactory.getToolBars(j);
-				if (modeToolBars != null) {
-					for (final Component toolBar : modeToolBars) {
-						toolbarPanel[j].remove(toolBar);
-					}
-					toolbarPanel[j].revalidate();
-				}
-			}
-		}
-		final IUserInputListenerFactory newUserInputListenerFactory = newModeController.getUserInputListenerFactory();
-		for (int j = 0; j < 4; j++) {
-			final Iterable<JComponent> newToolBars = newUserInputListenerFactory.getToolBars(j);
-			if (newToolBars != null) {
-				int i = 0;
-				for (final JComponent toolBar : newToolBars) {
-					toolBar.setVisible(isToolbarVisible(toolBar));
-					toolbarPanel[j].add(toolBar, i++);
-				}
-				toolbarPanel[j].revalidate();
-				toolbarPanel[j].repaint();
-			}
-		}
-		setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
-		getFreeplaneMenuBar().setVisible(isMenubarVisible());
-	}
+	public void selectMode(final ModeController oldModeController, final ModeController newModeController);
 
-	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
-
-	public void setMenubarVisible(final boolean visible) {
-		final String property;
-		if (isFullScreenEnabled()) {
-			property = "menubarVisible.fullscreen";
-		}
-		else {
-			property = "menubarVisible";
-		}
-		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
-		getFreeplaneMenuBar().setVisible(visible);
-	}
+	public void setMenubarVisible(final boolean visible);
 
 	/**
 	 * Set the Frame title with mode and file if exist
 	 */
-
-	abstract public void setTitle(String title);
+	public void setTitle(String title);
 
 	/**
 	 * @param b
 	 */
-	abstract public void setWaitingCursor(boolean b);
+	public void setWaitingCursor(boolean b);
 
-	public void viewNumberChanged(final int number) {
-	}
+	public void viewNumberChanged(final int number);
 
-	void setFullScreen(final boolean fullScreen) {
-		final Frame frame = getFrame();
-		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-		if (fullScreen == isFullScreenEnabled()) {
-			return;
-		}
-		if (fullScreen) {
-			winState = frame.getExtendedState();
-			frame.dispose();
-			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			frame.setBounds(0, 0, screenSize.width, screenSize.height);
-			frame.setUndecorated(true);
-			frame.setResizable(false);
-			getFreeplaneMenuBar().setVisible(isMenubarVisible());
-			for (int j = 0; j < 4; j++) {
-				final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
-				    .getToolBars(j);
-				for (final JComponent toolBar : toolBars) {
-					toolBar.setVisible(isToolbarVisible(toolBar));
-				}
-			}
-			frame.setVisible(true);
-		}
-		else {
-			frame.dispose();
-			frame.setUndecorated(false);
-			frame.setResizable(true);
-			frame.setBounds(frameSize);
-			frame.setExtendedState(winState);
-			getFreeplaneMenuBar().setVisible(isMenubarVisible());
-			for (int j = 0; j < 4; j++) {
-				final Iterable<JComponent> toolBars = getController().getModeController().getUserInputListenerFactory()
-				    .getToolBars(j);
-				for (final JComponent toolBar : toolBars) {
-					toolBar.setVisible(isToolbarVisible(toolBar));
-				}
-			}
-			frame.setVisible(true);
-		}
-		if(focusOwner != null)
-		    focusOwner.requestFocus();
-	}
+	public String completeVisiblePropertyKey(final JComponent toolBar);
 
-	boolean isToolbarVisible(final JComponent toolBar) {
-		final String completeKeyString = completeVisiblePropertyKey(toolBar);
-		if (completeKeyString == null) {
-			return true;
-		}
-		return !"false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
-	}
+	public void addObjectTypeInfo(Object value);
 
-	public String completeVisiblePropertyKey(final JComponent toolBar) {
-		final Object key = toolBar.getClientProperty(VISIBLE_PROPERTY_KEY);
-		if (key == null) {
-			return null;
-		}
-		final String keyString = key.toString();
-		final String completeKeyString;
-		if (isFullScreenEnabled()) {
-			completeKeyString = keyString + ".fullscreen";
-		}
-		else {
-			completeKeyString = keyString;
-		}
-		return getPropertyKeyPrefix() + completeKeyString;
-	}
-
-	protected boolean isFullScreenEnabled() {
-		return !getFrame().isResizable();
-	}
-
-	protected String getPropertyKeyPrefix() {
-		return propertyKeyPrefix;
-	}
-
-	public static void setLookAndFeel(final String lookAndFeel) {
-		try {
-			if (lookAndFeel.equals("default")) {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-			else {
-				UIManager.setLookAndFeel(lookAndFeel);
-			}
-		}
-		catch (final Exception ex) {
-			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
-		}
-		
-		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
-		
-		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
-		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
-		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created
-		try{
-			new JFileChooser();
-		}
-		catch (Throwable t){
-			try{
-				UIManager.getLookAndFeelDefaults().put("FileChooserUI", MetalFileChooserUI.class.getName());
-			}
-			catch (Throwable t1){
-			}
-		}
-	}
-
-	public void addObjectTypeInfo(Object value) {
-		if (value instanceof FormattedObject) {
-			value = ((FormattedObject) value).getObject();
-		}
-		if (value instanceof String || value instanceof StyleNamedObject) {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.textIcon);
-		}
-		else if (value instanceof FormattedDate) {
-			final FormattedDate fd = (FormattedDate) value;
-			if (fd.containsTime()) {
-				addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateTimeIcon);
-			}
-			else {
-				addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.dateIcon);
-			}
-		}
-		else if (value instanceof Number) {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.numberIcon);
-		}
-		else if (value instanceof URI) {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, ViewController.linkIcon);
-		}
-		else {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
-		}
-	}
-
-	public static ComboBoxEditor getTextDateTimeEditor() {
-	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
-		final NamedObject keyText = new NamedObject("text", "1Ab");
-		final BasicComboBoxEditor textEditor = new FixedBasicComboBoxEditor(){
-			private Object oldItem;
-	
-			@Override
-	        public void setItem(Object object) {
-				oldItem = object;
-				if(object instanceof FormattedDate)
-					super.setItem("");
-				else
-					super.setItem(object);
-	        }
-	
-			@Override
-	        public Object getItem() {
-	            final Object item = super.getItem();
-				final Object oldItem = this.oldItem;
-				this.oldItem = null;
-	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
-	            	return oldItem;
-	            if(ResourceController.getResourceController().getBooleanProperty("parse_data") 
-	            		&& item instanceof String){
-	                final Object scannedObject = ScannerController.getController().parse((String)item);
-	                return scannedObject;
-	            }
-				return item;
-	        }
-			
-		};
-		editor.put(keyText, textEditor);
-		
-		final NamedObject keyDate = new NamedObject("date", ""); 
-		keyDate.setIcon(dateIcon);
-		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
-			@Override
-	        public void setItem(Object object) {
-				if(object instanceof FormattedDate && !((FormattedDate)object).containsTime())
-					super.setItem(object);
-				else
-					super.setItem(null);
-	        }
-		};
-		
-		dateComboBoxEditor.setItem();
-		editor.put(keyDate, dateComboBoxEditor);
-	
-		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
-		keyDateTime.setIcon(dateTimeIcon);
-		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
-			@Override
-	        public void setItem(Object object) {
-				if(object instanceof FormattedDate && ((FormattedDate)object).containsTime())
-					super.setItem(object);
-				else
-					super.setItem(null);
-	        }
-		};
-		dateTimeComboBoxEditor.setItem();
-		editor.put(keyDateTime, dateTimeComboBoxEditor);
-	
-		return editor;
-	}
-
-	public boolean quit() {
-	    return getController().getMapViewManager().closeAllMaps();
-    }
+	public boolean quit();
 }

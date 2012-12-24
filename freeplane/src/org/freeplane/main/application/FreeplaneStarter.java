@@ -63,7 +63,7 @@ import org.freeplane.features.styles.LogicalStyleFilterController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
@@ -135,7 +135,7 @@ public class FreeplaneStarter {
 			FreeplaneStarter.showSysInfo();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
-			ViewController.setLookAndFeel(lookandfeel);
+			FrameController.setLookAndFeel(lookandfeel);
 			final JFrame frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);

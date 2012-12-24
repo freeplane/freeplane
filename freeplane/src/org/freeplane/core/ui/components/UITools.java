@@ -65,7 +65,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.application.FreeplaneSplashModern;
 

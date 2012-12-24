@@ -50,11 +50,11 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
-class ApplicationViewController extends ViewController {
+class ApplicationViewController extends FrameController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";

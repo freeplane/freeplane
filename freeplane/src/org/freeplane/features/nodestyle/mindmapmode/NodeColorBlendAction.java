@@ -29,7 +29,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 
 /**
  * @author foltin

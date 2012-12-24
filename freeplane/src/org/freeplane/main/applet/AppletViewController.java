@@ -42,12 +42,12 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev
  */
-class AppletViewController extends ViewController {
+class AppletViewController extends FrameController {
 	final private FreeplaneApplet applet;
 	private JComponent mComponentInSplitPane;
 	private JComponent mapContentBox;

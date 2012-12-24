@@ -37,7 +37,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -52,7 +52,7 @@ public class Controller extends AController {
  	private ModeController modeController;
 	private ModeController modeController4build;
 	final private Map<String, ModeController> modeControllers = new LinkedHashMap<String, ModeController>();
-	private ViewController viewController;
+	private FrameController viewController;
 	private final ResourceController resourceController;
 	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
 	private IMapViewManager mapViewManager;
@@ -125,7 +125,7 @@ public class Controller extends AController {
 	/**
 	 * @return
 	 */
-	public ViewController getViewController() {
+	public FrameController getViewController() {
 		return viewController;
 	}
 
@@ -169,7 +169,7 @@ public class Controller extends AController {
 		selectMode(newModeController);
 	}
 
-	public void setViewController(final ViewController viewController) {
+	public void setViewController(final FrameController viewController) {
 		this.viewController = viewController;
 	}
 
