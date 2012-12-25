@@ -41,6 +41,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
+import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -54,6 +55,7 @@ import org.osgi.service.url.URLStreamHandlerService;
  * 05.01.2009
  */
 class ActivatorImpl implements BundleActivator {
+	private static final String HEADLESS_RUN_PROPERTY_NAME = FreeplaneStarter.class.getName() + ".headless";
 	private FreeplaneStarter starter;
 
 	private String[] getCallParameters() {
@@ -163,7 +165,7 @@ class ActivatorImpl implements BundleActivator {
 			}
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
-		starter = new FreeplaneGUIStarter();
+		starter =  createStarter();
 		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter);
 		singleInstanceManager.start(getCallParameters());
 		if (singleInstanceManager.isSlave()) {
@@ -239,6 +241,13 @@ class ActivatorImpl implements BundleActivator {
 			}
 		});
 	}
+
+	public FreeplaneStarter createStarter() {
+		if(Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME))
+			return new FreeplaneHeadlessStarter();
+		else
+			return new FreeplaneGUIStarter();
+    }
 
     private void registerClasspathUrlHandler(final BundleContext context) {
         Hashtable<String, String[]> properties = new Hashtable<String, String[]>();

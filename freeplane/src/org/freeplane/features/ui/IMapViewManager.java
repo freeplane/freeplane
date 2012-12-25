@@ -107,8 +107,6 @@ public interface IMapViewManager {
 
 	public Color getTextColor(NodeModel node);
 
-	public int getViewNumber();
-
 	public float getZoom();
 
 	public void newMapView(final MapModel map, ModeController modeController);

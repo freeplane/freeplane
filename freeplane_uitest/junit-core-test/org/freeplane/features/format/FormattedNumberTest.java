@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.main.application.FreeplaneGUIStarter;
+import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,7 +38,8 @@ public class FormattedNumberTest {
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
 		System.setProperty("org.freeplane.nosplash", "true");
-		new FreeplaneGUIStarter().createController();
+		new FreeplaneHeadlessStarter().createController();
+//		new FreeplaneGUIStarter().createController();
 	}
 	
 	@Before

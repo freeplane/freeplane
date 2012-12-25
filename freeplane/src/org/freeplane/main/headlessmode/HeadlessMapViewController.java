@@ -27,6 +27,8 @@ import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,14 +51,16 @@ import org.freeplane.features.ui.IMapViewManager;
  */
 public class HeadlessMapViewController implements IMapViewManager {
 	final private Map<String, MapModel> maps = new HashMap<String, MapModel>();
+	Collection<IMapSelectionListener> mapSelectionListeners = new ArrayList<IMapSelectionListener>(); 
 	private MapModel currentMap = null;
+	private String currentKey = null;
 
 	public void addMapSelectionListener(IMapSelectionListener pListener) {
-		throw new RuntimeException("Method not implemented");
+		mapSelectionListeners.add(pListener);
 	}
 
 	public void addMapViewChangeListener(IMapViewChangeListener pListener) {
-		throw new RuntimeException("Method not implemented");
+		
 	}
 
 	public boolean changeToMapView(Component newMapView) {
@@ -64,8 +68,15 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public boolean changeToMapView(String mapViewDisplayName) {
-		if(maps.containsKey(mapViewDisplayName)) {
-			currentMap = maps.get(mapViewDisplayName);
+		if(mapViewDisplayName != null && maps.containsKey(mapViewDisplayName)) {
+			final MapModel nextMap = maps.get(mapViewDisplayName);
+			MapModel oldMap = currentMap;
+			for(IMapSelectionListener mapSelectionListener : mapSelectionListeners)
+				mapSelectionListener.beforeMapChange(oldMap, nextMap);
+			currentKey = mapViewDisplayName;
+			currentMap = nextMap;
+			for(IMapSelectionListener mapSelectionListener : mapSelectionListeners)
+				mapSelectionListener.afterMapChange(oldMap, nextMap);
 	        return true;
         }
         else
@@ -77,13 +88,20 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public String checkIfFileIsAlreadyOpened(URL urlToCheck) throws MalformedURLException {
-		// TODO Auto-generated method stub
-		return null;
+		final String key = urlToCheck.toString();
+		if(maps.containsKey(key))
+			return key;
+		else
+			return null;
 	}
 
 	public boolean close(boolean withoutSave) {
-		// TODO Auto-generated method stub
-		return false;
+		if(currentMap == null)
+			return false;
+		maps.remove(currentKey);
+		currentKey = null;
+		currentMap = null;
+		return true;
 	}
 
 	public String createHtmlMap() {
@@ -131,8 +149,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public MapModel getModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentMap;
 	}
 
 	public MapModel getModel(Component mapView) {
@@ -147,17 +164,16 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
-	public int getViewNumber() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public float getZoom() {
 		throw new RuntimeException("Method not implemented");
 	}
 
 	public void newMapView(MapModel map, ModeController modeController) {
-		// TODO Auto-generated method stub
+		final String key = map.getURL().toString();
+		if(key.equals(currentKey))
+			close(true);
+		maps.put(key, map);
+		changeToMapView(key);
 	}
 
 	public void nextMapView() {
@@ -185,13 +201,13 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public boolean tryToChangeToMapView(String mapView) {
-		// TODO Auto-generated method stub
-		return false;
+		return changeToMapView(mapView);
 	}
 
 	public boolean tryToChangeToMapView(URL url) throws MalformedURLException {
-		// TODO Auto-generated method stub
-		return false;
+		if(url == null)
+			return false;
+		return tryToChangeToMapView(url.toString());
 	}
 
 	public void updateMapViewName() {
@@ -203,8 +219,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public Map<String, MapModel> getMaps(String modename) {
-		// TODO Auto-generated method stub
-		return null;
+		return maps;
 	}
 
 	public List<Component> getViews(MapModel map) {
@@ -240,7 +255,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public boolean closeAllMaps() {
-		// TODO Auto-generated method stub
-		return false;
+		maps.clear();
+		currentKey = null;
+		currentMap = null;
+		return true;
 	}
 }

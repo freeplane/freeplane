@@ -74,7 +74,6 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			controller.setMapViewManager(mapViewController);
 			controller.setViewController(new HeadlessUIController());
 			System.setSecurityManager(new FreeplaneSecurityManager());
-			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();
 			FormatController.install(new FormatController());
@@ -101,11 +100,9 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 	}
 
 	public void createModeControllers(final Controller controller) {
-		MModeControllerFactory.createModeController();
+		HeadlessMModeControllerFactory.createModeController();
 		controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
 			applicationResourceController.getLastOpenedList());
-		BModeControllerFactory.createModeController();
-		FModeControllerFactory.createModeController();
     }
 
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
@@ -139,23 +136,6 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 	}
 
 	public void stop() {
-		try {
-			if (EventQueue.isDispatchThread()) {
-				Controller.getCurrentController().shutdown();
-				return;
-			}
-			EventQueue.invokeAndWait(new Runnable() {
-				public void run() {
-					Controller.getCurrentController().shutdown();
-				}
-			});
-		}
-		catch (final InterruptedException e) {
-			LogUtils.severe(e);
-		}
-		catch (final InvocationTargetException e) {
-			LogUtils.severe(e);
-		}
 	}
 
 	public ResourceController getResourceController() {
