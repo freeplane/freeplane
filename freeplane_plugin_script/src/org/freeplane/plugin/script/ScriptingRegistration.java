@@ -194,28 +194,28 @@ class ScriptingRegistration {
 		registerScriptAddOns();
 		createUserScriptsDirectory();
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, new ScriptConditionController());
-		final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-		if(userInputListenerFactory != null){
-		addPropertiesToOptionPanel();
-		final ScriptingConfiguration configuration = new ScriptingConfiguration();
-		ScriptingEngine.setClasspath(configuration.getClasspath());
-		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
-		modeController.addAction(new ScriptEditor());
-		modeController.addAction(new ExecuteScriptForAllNodes());
-		modeController.addAction(new ExecuteScriptForSelectionAction());
-		final ManageAddOnsAction manageAddOnsAction = new ManageAddOnsAction();
-		modeController.addAction(manageAddOnsAction);
-		modeController.addExtension(AddOnInstaller.class, new AddOnInstaller() {
-			public void install(final URL url) {
-				final ManageAddOnsDialog dialog = manageAddOnsAction.getDialog();
-				dialog.install(url);
-            }
-		});
-		modeController.addMenuContributor(new IMenuContributor() {
-			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				registerScripts(menuBuilder, configuration);
-			}
-		});
+		if(! modeController.isHeadless()){
+			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
+			addPropertiesToOptionPanel();
+			final ScriptingConfiguration configuration = new ScriptingConfiguration();
+			ScriptingEngine.setClasspath(configuration.getClasspath());
+			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
+			modeController.addAction(new ScriptEditor());
+			modeController.addAction(new ExecuteScriptForAllNodes());
+			modeController.addAction(new ExecuteScriptForSelectionAction());
+			final ManageAddOnsAction manageAddOnsAction = new ManageAddOnsAction();
+			modeController.addAction(manageAddOnsAction);
+			modeController.addExtension(AddOnInstaller.class, new AddOnInstaller() {
+				public void install(final URL url) {
+					final ManageAddOnsDialog dialog = manageAddOnsAction.getDialog();
+					dialog.install(url);
+				}
+			});
+			modeController.addMenuContributor(new IMenuContributor() {
+				public void updateMenus(ModeController modeController, MenuBuilder builder) {
+					registerScripts(menuBuilder, configuration);
+				}
+			});
 		}
 	}
 

@@ -209,8 +209,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new MapBackgroundColorAction());
 			modeController.addAction(new CopyMapStylesAction());
 		}
-		final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-		if(userInputListenerFactory != null){
+		if(! modeController.isHeadless()){
+			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 				public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {

@@ -160,8 +160,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	public FoldingController() {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
-		final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-		if(userInputListenerFactory != null){
+		if(!modeController.isHeadless()){
+			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			userInputListenerFactory.addMouseWheelEventHandler(this);
 			for (final AFreeplaneAction annotatedAction : getAnnotatedActions()) {
 				modeController.addAction(annotatedAction);

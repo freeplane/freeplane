@@ -427,4 +427,8 @@ public class ModeController extends AController {
 		}
 	}
 
+	public boolean isHeadless() {
+	    return getUserInputListenerFactory() == null;
+    }
+
 }
