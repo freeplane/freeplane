@@ -194,7 +194,7 @@ class ScriptingRegistration {
 		registerScriptAddOns();
 		createUserScriptsDirectory();
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, new ScriptConditionController());
-		if(! modeController.isHeadless()){
+		if(! modeController.getController().getViewController().isHeadless()){
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			addPropertiesToOptionPanel();
 			final ScriptingConfiguration configuration = new ScriptingConfiguration();

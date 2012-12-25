@@ -140,4 +140,6 @@ public interface ViewController {
 	public void invokeLater(Runnable runnable);
 
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException, ExecutionException;
+
+	public boolean isHeadless();
 }

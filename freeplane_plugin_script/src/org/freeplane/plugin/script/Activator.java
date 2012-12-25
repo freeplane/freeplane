@@ -19,10 +19,11 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
+			    	if(! modeController.getController().getViewController().isHeadless())
+			    		JSyntaxPaneProxy.init(context);
 				    new ScriptingRegistration(modeController);
 			    }
 		    }, props);
-		JSyntaxPaneProxy.init(context);
 	}
 
 	/*

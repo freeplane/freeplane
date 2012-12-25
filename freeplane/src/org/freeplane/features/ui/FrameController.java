@@ -603,5 +603,8 @@ abstract public class FrameController implements ViewController {
 		EventQueue.invokeAndWait(runnable);
     }
 	
+	public boolean isHeadless() {
+	    return false;
+    }
 	
 }

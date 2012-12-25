@@ -200,6 +200,10 @@ public class HeadlessUIController implements ViewController {
 	    worker.submit(runnable).get();
 	    
     }
+
+	public boolean isHeadless() {
+	    return true;
+    }
 	
 	
 }

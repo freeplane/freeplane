@@ -75,7 +75,6 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			controller.setViewController(new HeadlessUIController());
 			System.setSecurityManager(new FreeplaneSecurityManager());
 			FilterController.install();
-			PrintController.install();
 			FormatController.install(new FormatController());
 	        final ScannerController scannerController = new ScannerController();
 	        ScannerController.install(scannerController);

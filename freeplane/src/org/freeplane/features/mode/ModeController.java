@@ -426,9 +426,4 @@ public class ModeController extends AController {
 			toolTip.put(key, tooltip);
 		}
 	}
-
-	public boolean isHeadless() {
-	    return getUserInputListenerFactory() == null;
-    }
-
 }
