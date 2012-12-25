@@ -24,8 +24,10 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -133,4 +135,9 @@ public interface ViewController {
 	public void addObjectTypeInfo(Object value);
 
 	public boolean quit();
+	
+	public boolean isDispatchThread();
+	public void invokeLater(Runnable runnable);
+
+	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException, ExecutionException;
 }

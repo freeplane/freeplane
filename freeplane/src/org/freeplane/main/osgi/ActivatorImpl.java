@@ -214,7 +214,7 @@ class ActivatorImpl implements BundleActivator {
 			e.printStackTrace();
 		}
 		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
-			EventQueue.invokeLater(new Runnable() {
+			controller.getViewController().invokeLater(new Runnable() {
 				public void run() {
 					try {
 						Thread.sleep(1000);
@@ -226,7 +226,7 @@ class ActivatorImpl implements BundleActivator {
 			});
 			return;
 		}
-		EventQueue.invokeLater(new Runnable() {
+		controller.getViewController().invokeLater(new Runnable() {
 			public void run() {
 				final Bundle[] bundles = context.getBundles();
 				final HashSet<String> plugins = new HashSet<String>();

@@ -33,6 +33,7 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
@@ -589,4 +590,18 @@ abstract public class FrameController implements ViewController {
 	public boolean quit() {
 	    return getController().getMapViewManager().closeAllMaps();
     }
+
+	public boolean isDispatchThread() {
+	    return EventQueue.isDispatchThread();
+    }
+
+	public void invokeLater(Runnable runnable) {
+	   EventQueue.invokeLater(runnable);
+    }
+
+	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
+		EventQueue.invokeAndWait(runnable);
+    }
+	
+	
 }
