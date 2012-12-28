@@ -151,20 +151,7 @@ if [ -z "${freedir}" ]; then
 	exit 1
 fi
 
-if [ ! -f "${userfpdir}/patterns.xml" ] && [ -f /etc/freeplane/patterns.xml ]
-then
-	if [ ! -d "${userfpdir}" ]
-	then
-		_debug "Creating directory ${userfpdir}."
-		mkdir -p "${userfpdir}"
-	fi
-	_debug "Copying patterns.xml to ${userfpdir}."
-	cp /etc/freeplane/patterns.xml "${userfpdir}/patterns.xml"
-fi
-
 #--------- Call (at last) Freeplane -------------------------------------
-fwdir="${freedir}/fwdir"
-
 if [ "${JAVA_TYPE}" != "sun" ]
 then # non-Sun environments don't work currently but we try anyway, who knows.
 	defines=-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D
