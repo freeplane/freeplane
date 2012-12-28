@@ -154,7 +154,7 @@ fi
 #--------- Call (at last) Freeplane -------------------------------------
 if [ "${JAVA_TYPE}" != "sun" ]; then
 	# non-Sun environments don't work currently but we try anyway, who knows.
-	JAVA_DEFINES="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_DEFINES"
+	JAVA_OPTS="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_OPTS"
 fi
 
 _debug "Calling: "\
@@ -170,7 +170,7 @@ _debug "Calling: "\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
- $JAVA_DEFINES\
+ $JAVA_OPTS\
  $xdockname\
  -jar "${freedir}/framework.jar"\
  -xargs "${freedir}/props.xargs"\
@@ -190,7 +190,7 @@ _debug "Calling: "\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
- $JAVA_DEFINES\
+ $JAVA_OPTS\
  $xdockname\
  -jar "${freedir}/framework.jar"\
  -xargs "${freedir}/props.xargs"\
