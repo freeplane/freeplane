@@ -152,10 +152,11 @@ if [ -z "${freedir}" ]; then
 fi
 
 #--------- Call (at last) Freeplane -------------------------------------
-if [ "${JAVA_TYPE}" != "sun" ]
-then # non-Sun environments don't work currently but we try anyway, who knows.
-	defines=-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D
+if [ "${JAVA_TYPE}" != "sun" ]; then
+	# non-Sun environments don't work currently but we try anyway, who knows.
+	JAVA_DEFINES="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_DEFINES"
 fi
+
 _debug "Calling: "\
 "${JAVACMD}" -Xmx512m\
  "-Dorg.freeplane.param1=$1"\
@@ -169,7 +170,7 @@ _debug "Calling: "\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
- $defines\
+ $JAVA_DEFINES\
  $xdockname\
  -jar "${freedir}/framework.jar"\
  -xargs "${freedir}/props.xargs"\
@@ -189,7 +190,7 @@ _debug "Calling: "\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
- $defines\
+ $JAVA_DEFINES\
  $xdockname\
  -jar "${freedir}/framework.jar"\
  -xargs "${freedir}/props.xargs"\
