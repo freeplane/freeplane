@@ -19,36 +19,7 @@ public class TeXText
     }
 
 	public TeXIcon createTeXIcon(int style, int size, int align, int maxWidth) {
-        rawText = rawText.replace("\\begin{align}", "\n\n$\\quad ");
-        rawText = rawText.replace("\\end{align}", "$\n\n");
 
-        rawText = rawText.replace("\\begin{align*}", "\n\n$\\quad ");
-        rawText = rawText.replace("\\end{align*}", "$\n\n");
-
-        /*
-        String[] lines = rawText.split("\n");
-        if (lines.length == 1)
-        {
-    		sb.append("\\text{");
-    		sb.append(lines[0]);
-    		sb.append("}");
-        }
-        else
-        {
-        	sb.append("\\raisebox{0}{ \\begin{array}{l} ");
-        	for (int i = 0; i < lines.length; i++)
-        	{
-        		sb.append("\\text{");
-        		sb.append(lines[i]);
-        		sb.append("}\\\\ ");
-        	}
-        	sb.append("\\end{array} }");
-        }
-        */
-
-        // NOTE: do not use the array env (see above), because array cells cannot be
-        // automatically line wrapped! (and since we now have automatic linebreaks,
-        // we don't need multiple formulae with one on each line!!)
         StringBuffer sb = new StringBuffer();
 		sb.append("\\text{");
 		sb.append(rawText);
