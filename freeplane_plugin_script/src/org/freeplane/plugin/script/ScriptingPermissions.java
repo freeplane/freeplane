@@ -101,7 +101,7 @@ public class ScriptingPermissions {
 	}
 	
 	/** this method is called only if the formula plugin is active and so formula evaluation is allowed. */
-	static ScriptingPermissions getFormulaPermissions() {
+	public static ScriptingPermissions getFormulaPermissions() {
 		if (formulaPermissions == null) {
 			formulaPermissions = new ScriptingPermissions();
 			formulaPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);

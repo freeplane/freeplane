@@ -276,8 +276,8 @@ public class ScriptingEngine {
 		return ScriptingEngine.executeScript(node, script, (ScriptContext)null, (ScriptingPermissions)null);
 	}
 
-	public static Object executeScript(NodeModel node, String script, Script compiledScript, PrintStream printStream) {
-		return executeScript(node, script, compiledScript, IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, null);
+	public static Object executeScript(NodeModel node, String script, Script compiledScript, PrintStream printStream, ScriptingPermissions permissions) {
+		return executeScript(node, script, compiledScript, IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, permissions);
     }
 	
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {

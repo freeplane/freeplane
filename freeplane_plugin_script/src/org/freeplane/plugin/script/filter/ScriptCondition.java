@@ -15,6 +15,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.ScriptingPermissions;
 
 public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
@@ -40,9 +41,10 @@ public class ScriptCondition extends ASelectableCondition {
 			return false;
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		final PrintStream printStream = new PrintStream(out);
+		final ScriptingPermissions formulaPermissions = ScriptingPermissions.getFormulaPermissions();
 		if(compiledScript == null) {
 			try {
-	            compiledScript = ScriptingEngine.compileScriptCheckExceptions(script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null);
+				compiledScript = ScriptingEngine.compileScriptCheckExceptions(script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, formulaPermissions);
             }
             catch (Exception e) {
             	canNotCompileScript = true;
@@ -51,7 +53,7 @@ public class ScriptCondition extends ASelectableCondition {
 		}
 		final Object result;
         try {
-			result = ScriptingEngine.executeScript(node, script, compiledScript, printStream);
+			result = ScriptingEngine.executeScript(node, script, compiledScript, printStream, formulaPermissions);
 			if(result instanceof Boolean)
 				return (Boolean) result;
 			if(result instanceof Number)
