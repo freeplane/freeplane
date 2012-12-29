@@ -14,6 +14,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.IFreeplaneScript;
 import org.freeplane.plugin.script.GroovyShellFreeplaneScript;
+import org.freeplane.plugin.script.ScriptingPermissions;
 
 public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
@@ -29,7 +30,8 @@ public class ScriptCondition extends ASelectableCondition {
 
 	public ScriptCondition(final String script) {
 		super();
-		this.script = new GroovyShellFreeplaneScript(script);
+		final ScriptingPermissions formulaPermissions = ScriptingPermissions.getFormulaPermissions();
+		this.script = new GroovyShellFreeplaneScript(script, formulaPermissions);
 	}
 
 	public boolean checkNode(final NodeModel node) {
