@@ -52,14 +52,7 @@ public class ScriptSecurity {
 	    // such that the scripts are not able to change them).
 	    if (needsSecurityManager) {
 	    	final ScriptingPermissions permissions = permissions();
-			if (!permissions.executeScriptsWithoutAsking()) {
-	    		final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-	    		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-	    		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-	    		if (showResult != JOptionPane.OK_OPTION) {
-	    			throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
-	    		}
-	    	}
+	    	permissions.assertScriptExecutionAllowed();
 	    	final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
 	    	final String scriptContent;
 	    	if(script instanceof String)

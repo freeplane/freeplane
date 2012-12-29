@@ -26,7 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.util.TextUtils;
 
 /**
  * @author Volker Boerchers
@@ -134,11 +138,22 @@ public class ScriptingPermissions {
 		return get(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 	}
 	
-	public boolean executeScriptsWithoutAsking() {
+	private boolean executeScriptsWithoutAsking() {
 		return get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
 	}
 
 	public static List<String> getPermissionNames() {
 		return Arrays.asList(PERMISSION_NAMES);
+    }
+
+	public void assertScriptExecutionAllowed() {
+		if (! executeScriptsWithoutAsking()) {
+    		final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
+    		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+    		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+    		if (showResult != JOptionPane.OK_OPTION) {
+    			throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
+    		}
+    	}
     }
 }
