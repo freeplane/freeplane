@@ -79,23 +79,6 @@ public class ScriptSecurity {
 	    return scriptingSecurityManager;
     }
 	
-	void checkScriptExecutionEnabled() {
-		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
-		// get preferences (and store them again after the script execution,
-		// such that the scripts are not able to change them).
-		if (needsSecurityManager) {
-			if (!permissions().executeScriptsWithoutAsking()) {
-				final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-				    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-				    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-				if (showResult != JOptionPane.OK_OPTION) {
-					throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
-				}
-			}
-		}
-    }
-	
 	private ScriptingPermissions permissions() {
 		if(specificPermissions != null)
 	        return specificPermissions;

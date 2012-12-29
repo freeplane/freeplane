@@ -124,7 +124,6 @@ public class GenericFreeplaneScript implements IFreeplaneScript {
 	    	if(errorsInScript != null)
 	    		throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
 	    	final ScriptSecurity scriptSecurity = new ScriptSecurity(script, specificPermissions, outStream);
-	    	scriptSecurity.checkScriptExecutionEnabled();
 	    	ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
 			final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 			final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
