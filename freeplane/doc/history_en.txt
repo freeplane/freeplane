@@ -2,6 +2,7 @@
 1.2.21
 ===============================
 Bug fixes for script based conditions for filters and conditional styles
+Do not request more than 512m to avoid problems with 32 bit java
 ===============================
 1.2.20
 ===============================
