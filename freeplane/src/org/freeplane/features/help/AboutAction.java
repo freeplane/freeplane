@@ -31,12 +31,14 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AllowedDuringEditing;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
+@AllowedDuringEditing
 class AboutAction extends AFreeplaneAction {
 	/**
 	 * 
