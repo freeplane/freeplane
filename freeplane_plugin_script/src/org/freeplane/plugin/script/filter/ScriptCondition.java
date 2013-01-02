@@ -12,12 +12,10 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
-import org.freeplane.plugin.script.ScriptRenderer;
 import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions;
 
