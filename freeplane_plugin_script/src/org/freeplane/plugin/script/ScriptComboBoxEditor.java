@@ -47,7 +47,7 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 	final private List<ActionListener> actionListeners;
 	private String script;
 	private Dimension minimumSize;
-	private Rectangle bounds;
+	private Rectangle bounds = new Rectangle(600, 400);
 
 	public ScriptComboBoxEditor() {
 		showEditorBtn = new JButton();
