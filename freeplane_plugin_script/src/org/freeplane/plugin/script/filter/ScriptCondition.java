@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
@@ -81,6 +82,7 @@ public class ScriptCondition extends ASelectableCondition {
 			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), info,
 				TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 		}
+		LogUtils.warn(info);
 		Controller.getCurrentController().getViewController().out(info.trim().replaceAll("\\s", " ").substring(0, 80));
     }
 
