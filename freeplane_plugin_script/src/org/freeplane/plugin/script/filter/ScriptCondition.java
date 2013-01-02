@@ -2,18 +2,22 @@ package org.freeplane.plugin.script.filter;
 
 import groovy.lang.Script;
 
+import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
+import org.freeplane.plugin.script.ScriptRenderer;
 import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions;
 
@@ -86,6 +90,16 @@ public class ScriptCondition extends ASelectableCondition {
 	protected String createDescription() {
 		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, script);
 	}
+	
+	@Override
+	protected JComponent createRendererComponent() {
+	    final JComponent renderer = super.createRendererComponent();
+	    final Dimension preferredSize = renderer.getPreferredSize();
+	    if(preferredSize.width > 200)
+	    	renderer.setPreferredSize(new Dimension(200, preferredSize.height));
+		return renderer;
+    }
+
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
