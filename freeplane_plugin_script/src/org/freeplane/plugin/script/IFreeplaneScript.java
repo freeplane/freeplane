@@ -41,7 +41,7 @@ public interface IFreeplaneScript {
 
 	public IFreeplaneScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler);
 
-	public PrintStream getpOutStream();
+	public PrintStream getOutStream();
 
 	public IFreeplaneScript setOutStream(PrintStream outStream);
 

@@ -102,7 +102,7 @@ public class GroovyShellFreeplaneScript implements IFreeplaneScript {
     }
 
 	@Override
-    public PrintStream getpOutStream() {
+    public PrintStream getOutStream() {
     	return outStream;
     }
 

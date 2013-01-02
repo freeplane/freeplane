@@ -81,7 +81,7 @@ public class GenericFreeplaneScript implements IFreeplaneScript {
     }
 
 	@Override
-    public PrintStream getpOutStream() {
+    public PrintStream getOutStream() {
     	return outStream;
     }
 
