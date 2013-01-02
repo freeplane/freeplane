@@ -22,6 +22,7 @@ package org.freeplane.core.ui;
 import java.awt.Component;
 import java.awt.Event;
 import java.awt.Frame;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -34,6 +35,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.resources.ResourceController;
@@ -161,6 +163,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		if(isInactiveDuringEditing())
+			return;
 		final boolean newAcceleratorOnNextClickEnabled = AccelerateableAction.isNewAcceleratorOnNextClickEnabled();
 		final KeyStroke newAccelerator = acceleratorForNextClickedAction;
 		if (newAcceleratorOnNextClickEnabled) {
@@ -176,6 +180,14 @@ public class AccelerateableAction implements IFreeplaneAction {
 		}
 		originalAction.actionPerformed(e);
 	}
+
+	private boolean isInactiveDuringEditing() {
+	    if(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent) {
+	    	final AllowedDuringEditing allowedOnEditingAnnotation = originalAction.getClass().getAnnotation(AllowedDuringEditing.class);
+	        return allowedOnEditingAnnotation == null;
+        }
+	    return false;
+    }
 
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		originalAction.addPropertyChangeListener(listener);
