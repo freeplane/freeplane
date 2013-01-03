@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -95,8 +96,12 @@ public class ScriptCondition extends ASelectableCondition {
 	protected JComponent createRendererComponent() {
 	    final JComponent renderer = super.createRendererComponent();
 	    final Dimension preferredSize = renderer.getPreferredSize();
-	    if(preferredSize.width > 200)
-	    	renderer.setPreferredSize(new Dimension(200, preferredSize.height));
+	    if(preferredSize.width > 200) {
+	        renderer.setPreferredSize(new Dimension(200, preferredSize.height));
+        }
+	    if(preferredSize.width > 200 || script.contains("\n")) {
+	    	renderer.setToolTipText(HtmlUtils.plainToHTML(script));
+	    }
 		return renderer;
     }
 
