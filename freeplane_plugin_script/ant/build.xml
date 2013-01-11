@@ -21,12 +21,15 @@
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 			<exclude name="**/*Test.*" />
 		</javac>
+		<javac srcdir="src-jsyntaxpane" destdir="build" classpath="${classpath}" debug="${debug}" 
+			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
+		</javac>
 	</target>
 
 	<target name="dist" depends="build">
 		<jar jarfile="lib/plugin.jar">
 			<fileset dir="build"/>
-			<fileset dir="resources-jsyntaxpane" includes="**/combocompletions.txt"/>
+			<fileset dir="resources-jsyntaxpane"/>
 			<fileset dir="src">
 				<include name="**/*.xml"/>
 				<include name="**/*.properties"/>

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: felix
+Build-Jdk: 1.6.0_26
+Package: jsyntaxpane
+Main-Class: jsyntaxpane.SyntaxTester
+mode: development
+url: http://jsyntaxpane.googlecode.com/
+
