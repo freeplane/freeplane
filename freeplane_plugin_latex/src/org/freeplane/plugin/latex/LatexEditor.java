@@ -23,36 +23,17 @@ package org.freeplane.plugin.latex;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JEditorPane;
-import javax.swing.RootPaneContainer;
-
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
-import org.freeplane.view.swing.ui.mindmapmode.GlassPaneManager;
-import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
 
 /**
  *  @author Felix Natter (copied from FormulaEditor)
  */
-class LatexEditor extends EditNodeDialog implements INodeSelector {
+class LatexEditor extends EditNodeDialog {
 	
-	private JEditorPane textEditor;
-
 	LatexEditor(NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
                           boolean enableSplit, JEditorPane textEditor) {
 	    super(nodeModel, text, firstEvent, editControl, enableSplit, textEditor);
 	    super.setModal(false);
-	    this.textEditor = textEditor;
-    }
-
-	@Override
-    public void show(RootPaneContainer frame) {
-	    textEditor.addAncestorListener(new GlassPaneManager(frame.getRootPane(), this));
-	    super.show(frame);
-    }
-
-	public void nodeSelected(final NodeModel model) {
-		final String id = model.getID();
-		textEditor.replaceSelection(id);
-	    textEditor.requestFocus();
     }
 }

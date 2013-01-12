@@ -7,6 +7,7 @@ import javax.swing.Icon;
 import javax.swing.JEditorPane;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.PatternFormat;
@@ -67,10 +68,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 				final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
 				final int maxWidth = ncs.getMaxWidth(node);
 				TeXText teXt = new TeXText(latext);
-				int fontSize = LatexViewer.DEFAULT_FONT_SIZE;
-				NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
-				if (styleModel != null && styleModel.getFontSize() != null)
-					fontSize = styleModel.getFontSize();
+				int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
 				TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
 				return icon;
 			}
@@ -84,7 +82,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	public EditNodeBase createEditor(NodeModel node,
 			IEditControl editControl, String text, boolean editLong) {
 		MTextController textController = MTextController.getController();
-		if (textController.isTextFormattingDisabled(node)) // TODO:??
+		if (textController.isTextFormattingDisabled(node)) // Format=Text!
 			return null;
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 		String nodeFormat = textController.getNodeFormat(node);
