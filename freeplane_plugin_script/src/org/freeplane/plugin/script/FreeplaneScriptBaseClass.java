@@ -7,6 +7,7 @@ import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -216,7 +217,16 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     }
 
     /** parses text to the proper data type, if possible, setting format to the standard. Parsing is configured via
-     * config file scanner.xml */
+     * config file scanner.xml
+     * <pre>
+     * assert parse('2012-11-30') instanceof Date
+     * assert parse('1.22') instanceof Number
+     * // if parsing fails the original string is returned
+     * assert parse('2012XX11-30') == '2012XX11-30'
+     * 
+     * def d = parse('2012-10-30')
+     * c.statusInfo = "${d} is ${new Date() - d} days ago"
+     * </pre> */
     public Object parse(final String text) {
         return ScannerController.getController().parse(text);
     }
@@ -231,6 +241,13 @@ public abstract class FreeplaneScriptBaseClass extends Script {
      * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
     public Object format(final Object object) {
         return FormatController.formatUsingDefault(object);
+    }
+
+    /** Applies default date format (instead of standard date-time) format on the given date.
+     * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
+    public Object formatDate(final Date date) {
+        final String format = FormatController.getController().getDefaultDateFormat().toPattern();
+        return FormatController.format(date, format);
     }
 
     /** formats according to the internal standard, that is the conversion will be reversible

@@ -404,10 +404,10 @@ def createScripts() {
 	}
 }
 
-def expandVariables(String string) {
+def expandVariables(Object o) {
 	Map variableMap = configMap['properties']
 	// expands strings like "${name}.groovy"
-	string.replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : match })
+	String.valueOf(o).replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : match })
 }
 
 AddOnProperties parse() {

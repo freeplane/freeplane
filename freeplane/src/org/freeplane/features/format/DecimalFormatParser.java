@@ -30,6 +30,7 @@ public class DecimalFormatParser extends Parser {
 	public DecimalFormatParser(Locale locale) {
 		super(Parser.STYLE_DECIMAL, IFormattedObject.TYPE_NUMBER, null);
 		parser = (DecimalFormat) NumberFormat.getInstance(locale);
+		parser.setGroupingUsed(false);
 	}
 
 	@Override

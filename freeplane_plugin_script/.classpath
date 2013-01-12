@@ -8,5 +8,6 @@
 	<classpathentry kind="src" path="src-jsyntaxpane"/>
 	<classpathentry kind="lib" path="/freeplane/lib/forms-1.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/jsyntaxpane.jar"/>
+	<classpathentry exported="true" kind="lib" path="/freeplane/lib/jortho.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

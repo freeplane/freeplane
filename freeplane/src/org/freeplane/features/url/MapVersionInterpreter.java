@@ -87,9 +87,13 @@ public class MapVersionInterpreter implements IExtension{
 	
 	public String getDialectInfo(String path){
 		final String appInfo;
-		if(appName != null)
-			appInfo = TextUtils.format("dialect_info.app", path, appName);
-		else
+		if(appName != null) {
+			if("Freeplane".equals(appName))
+				appInfo = TextUtils.format("dialect_info.later_version", path);
+			else
+				appInfo = TextUtils.format("dialect_info.app", path, appName);
+        }
+        else
 			appInfo = TextUtils.format("dialect_info.unknownApp", path);
 		final String warning = TextUtils.getText("dialect_info.warning");
 		final String urlInfo;
