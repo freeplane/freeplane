@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
@@ -114,6 +115,12 @@ public class AddOnsController {
 	    languages.add(resourceController.getDefaultLanguageCode());
 	    for (String language : languages) {
 	    	final Map<String, String> resources = addOn.getTranslations().get(language);
+	    	for (Entry<String, String> entry : resources.entrySet()) {
+                if (entry.getValue().indexOf('\\') != -1) {
+                    // convert \uFFFF sequences
+                    entry.setValue(StringEscapeUtils.unescapeJava(entry.getValue()));
+                }
+	    	}
 	    	if (resources != null) {
 	    		resourceController.addLanguageResources(language, addOptionPanelPrefix(resources, addOn.getName()));
 	    		resourceController.addLanguageResources(language, resources);
