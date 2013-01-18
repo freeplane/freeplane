@@ -82,7 +82,7 @@ class CopyAttributes extends AFreeplaneAction {
     }
 }
 
-@EnabledAction(checkOnPopup = true)
+@EnabledAction(checkOnNodeChange = true)
 class PasteAttributes extends AMultipleNodeAction {
 	/**
 	 * 
