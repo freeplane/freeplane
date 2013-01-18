@@ -37,7 +37,7 @@ import org.freeplane.features.styles.MapStyleModel;
 class CopyAttributes extends AFreeplaneAction {
 	private static Object[] attributes = null;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -85,7 +85,7 @@ class CopyAttributes extends AFreeplaneAction {
 @EnabledAction(checkOnPopup = true)
 class PasteAttributes extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -121,10 +121,10 @@ class PasteAttributes extends AMultipleNodeAction {
     }
 }
 
-@EnabledAction(checkOnPopup = true)
+@EnabledAction(checkOnNodeChange = true)
 class AddStyleAttributes extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -154,7 +154,7 @@ class AddStyleAttributes extends AMultipleNodeAction {
 		final NodeModel styleNode = extension.getStyleNode(style);
 		return styleNode;
     }
-	
+
 	@Override
     public void setEnabled() {
 		for (final NodeModel selected : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
