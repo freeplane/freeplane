@@ -238,6 +238,8 @@
 					<exclude name="dist/**" />
 					<exclude name="*/bin/**" />
 					<exclude name="*/build/**" />
+					<exclude name="*/launcher_build/**" />
+					<exclude name="*/build-nodehighlighter/**" />
 					<exclude name="*/build4mac/**" />
 					<exclude name="*/dist/**" />
 					<exclude name="**/.backup/**" />
