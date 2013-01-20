@@ -33,6 +33,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteModel;
 
+@EnabledAction(checkOnNodeChange=true)
 class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	/**
 	 * 
