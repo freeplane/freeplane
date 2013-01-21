@@ -32,6 +32,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AllowedDuringEditing;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.HtmlUtils;
@@ -46,6 +47,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  * Sep 27, 2011
  */
+@AllowedDuringEditing
 public class HotKeyInfoAction extends AFreeplaneAction{
 
 	public HotKeyInfoAction() {

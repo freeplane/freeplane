@@ -538,7 +538,8 @@ public class MClipboardController extends ClipboardController {
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 			try {
 				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
-				return new FileListFlavorHandler(fileList);
+				if (!shouldIgnoreFileListFlavor(fileList))
+					return new FileListFlavorHandler(fileList);
 			}
 			catch (final UnsupportedFlavorException e) {
 			}
@@ -596,6 +597,16 @@ public class MClipboardController extends ClipboardController {
 		}
 		return null;
 	}
+
+	private boolean shouldIgnoreFileListFlavor(final List<File> fileList) {
+		if(fileList.isEmpty())
+			return true;
+		final File file = fileList.get(0);
+		if(file.isDirectory())
+			return false;
+	    final String name = file.getName();
+		return name.endsWith(".URL") || name.endsWith(".url");
+    }
 
 	@SuppressWarnings("unchecked")
     private List<File> castToFileList(Object transferData) {

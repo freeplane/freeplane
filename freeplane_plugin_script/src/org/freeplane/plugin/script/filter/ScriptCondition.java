@@ -2,12 +2,16 @@ package org.freeplane.plugin.script.filter;
 
 import groovy.lang.Script;
 
+import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
@@ -15,6 +19,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.ScriptingEngine;
+import org.freeplane.plugin.script.ScriptingPermissions;
 
 public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
@@ -40,9 +45,10 @@ public class ScriptCondition extends ASelectableCondition {
 			return false;
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		final PrintStream printStream = new PrintStream(out);
+		final ScriptingPermissions formulaPermissions = ScriptingPermissions.getFormulaPermissions();
 		if(compiledScript == null) {
 			try {
-	            compiledScript = ScriptingEngine.compileScriptCheckExceptions(script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null);
+				compiledScript = ScriptingEngine.compileScriptCheckExceptions(script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, formulaPermissions);
             }
             catch (Exception e) {
             	canNotCompileScript = true;
@@ -51,7 +57,7 @@ public class ScriptCondition extends ASelectableCondition {
 		}
 		final Object result;
         try {
-			result = ScriptingEngine.executeScript(node, script, compiledScript, printStream);
+			result = ScriptingEngine.executeScript(node, script, compiledScript, printStream, formulaPermissions);
 			if(result instanceof Boolean)
 				return (Boolean) result;
 			if(result instanceof Number)
@@ -77,6 +83,7 @@ public class ScriptCondition extends ASelectableCondition {
 			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), info,
 				TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 		}
+		LogUtils.warn(info);
 		Controller.getCurrentController().getViewController().out(info.trim().replaceAll("\\s", " ").substring(0, 80));
     }
 
@@ -84,6 +91,20 @@ public class ScriptCondition extends ASelectableCondition {
 	protected String createDescription() {
 		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, script);
 	}
+	
+	@Override
+	protected JComponent createRendererComponent() {
+	    final JComponent renderer = super.createRendererComponent();
+	    final Dimension preferredSize = renderer.getPreferredSize();
+	    if(preferredSize.width > 200) {
+	        renderer.setPreferredSize(new Dimension(200, preferredSize.height));
+        }
+	    if(preferredSize.width > 200 || script.contains("\n")) {
+	    	renderer.setToolTipText(HtmlUtils.plainToHTML(script));
+	    }
+		return renderer;
+    }
+
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
