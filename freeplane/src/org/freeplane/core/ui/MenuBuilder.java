@@ -574,19 +574,6 @@ public class MenuBuilder extends UIBuilder {
 		if (action instanceof PopupMenuListener) {
 			addPopupMenuListener(key, (PopupMenuListener) action);
 		}
-		if (AFreeplaneAction.checkEnabledOnPopup(action)) {
-			addPopupMenuListener(key, new PopupMenuListener() {
-				public void popupMenuCanceled(final PopupMenuEvent e) {
-				}
-
-				public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-				}
-
-				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					action.setEnabled();
-				}
-			});
-		}
 		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
