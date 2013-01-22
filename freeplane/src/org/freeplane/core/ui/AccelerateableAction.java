@@ -183,8 +183,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 
 	private boolean isInactiveDuringEditing() {
 	    if(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent) {
-	    	final AllowedDuringEditing allowedOnEditingAnnotation = originalAction.getClass().getAnnotation(AllowedDuringEditing.class);
-	        return allowedOnEditingAnnotation == null;
+	    	return ! originalAction.isAllowedDuringEditing();
         }
 	    return false;
     }
