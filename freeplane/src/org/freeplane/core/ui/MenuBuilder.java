@@ -22,6 +22,7 @@ package org.freeplane.core.ui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
@@ -76,8 +77,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class MenuBuilder extends UIBuilder {
-	private static final String EXTRA_SUBMENU = MenuBuilder.class.getName()+".extra_submenu";
-	private static final int MAX_MENU_ITEM_COUNT = ResourceController.getResourceController().getIntProperty("max_menu_item_count");
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;
 
@@ -401,6 +400,7 @@ public class MenuBuilder extends UIBuilder {
 
 	private static Insets nullInsets = new Insets(0, 0, 0, 0);
 	private static final String SHORTCUT_PROPERTY_PREFIX = "acceleratorFor";
+	static final int MAX_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height - 100;
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
@@ -571,9 +571,6 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	private void addListeners(final String key, final AFreeplaneAction action) {
-		if (action instanceof PopupMenuListener) {
-			addPopupMenuListener(key, (PopupMenuListener) action);
-		}
 		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
@@ -605,26 +602,7 @@ public class MenuBuilder extends UIBuilder {
 	@Override
 	protected void addComponent(final Container container, final Component component, final int index) {
 		if (container instanceof JMenu) {
-			final JMenu menu = (JMenu) container;
-			final JPopupMenu popupMenu = menu.getPopupMenu();
-			final int itemCount = popupMenu.getComponentCount();
-			if(itemCount < MAX_MENU_ITEM_COUNT || index < itemCount)
-				popupMenu.insert(component, index);
-			else{
-				final JMenu submenu;
-				final Component lastMenuItem = popupMenu.getComponent(itemCount - 1);
-				if(itemCount == MAX_MENU_ITEM_COUNT || ! isExtraSubMenu(lastMenuItem)){
-					if (component instanceof JPopupMenu.Separator)
-						return;
-					submenu = new JMenu("");
-					submenu.putClientProperty(EXTRA_SUBMENU, Boolean.TRUE);
-					popupMenu.add(submenu);
-				}
-				else{
-					submenu = (JMenu) lastMenuItem;
-				}
-				addComponent(submenu, component, submenu.getPopupMenu().getComponentCount());
-			}
+			new MenuSplitter().addMenuComponent((JMenu) container, component, index);
 			return;
 		}
 		if (container instanceof JToolBar && component instanceof AbstractButton) {
@@ -634,10 +612,6 @@ public class MenuBuilder extends UIBuilder {
 		}
 		super.addComponent(container, component, index);
 	}
-
-	private boolean isExtraSubMenu(final Component c) {
-	    return (c instanceof JMenu) &&  (Boolean.TRUE.equals(((JMenu)c).getClientProperty(EXTRA_SUBMENU)));
-    }
 
 	public void addComponent(final String parent, final Container item, final Action action, final int position) {
 		action.addPropertyChangeListener(new Enabler(item));
@@ -799,9 +773,7 @@ public class MenuBuilder extends UIBuilder {
 	protected Container getNextParentComponent(Container parentComponent) {
 		if(parentComponent.getComponentCount() > 0 && parentComponent instanceof JMenu)
 		{
-			final Component lastComponent = parentComponent.getComponent(parentComponent.getComponentCount()-1);
-			if(isExtraSubMenu(lastComponent))
-				return (Container) lastComponent;
+			return new MenuSplitter().getExtraSubMenu((JMenu)parentComponent);
 		}
 		return null;
     }
@@ -881,7 +853,7 @@ public class MenuBuilder extends UIBuilder {
 			super.removeChildComponents(popupMenu, node);
 			for(int i = popupMenu.getComponentCount()-1; i >= 0; i--){
 				final Component component = popupMenu.getComponent(i);
-				if(isExtraSubMenu(component)){
+				if(new MenuSplitter().isExtraSubMenu(component)){
 					final Container container = (Container) component;
 					super.removeChildComponents(container, node);
 					if(container.getComponentCount() == 0)

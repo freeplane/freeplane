@@ -163,8 +163,6 @@ public class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if(isInactiveDuringEditing())
-			return;
 		final boolean newAcceleratorOnNextClickEnabled = AccelerateableAction.isNewAcceleratorOnNextClickEnabled();
 		final KeyStroke newAccelerator = acceleratorForNextClickedAction;
 		if (newAcceleratorOnNextClickEnabled) {
@@ -180,14 +178,6 @@ public class AccelerateableAction implements IFreeplaneAction {
 		}
 		originalAction.actionPerformed(e);
 	}
-
-	private boolean isInactiveDuringEditing() {
-	    if(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent) {
-	    	final AllowedDuringEditing allowedOnEditingAnnotation = originalAction.getClass().getAnnotation(AllowedDuringEditing.class);
-	        return allowedOnEditingAnnotation == null;
-        }
-	    return false;
-    }
 
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		originalAction.addPropertyChangeListener(listener);

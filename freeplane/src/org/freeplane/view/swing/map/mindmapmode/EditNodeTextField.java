@@ -290,12 +290,7 @@ public class EditNodeTextField extends EditNodeBase {
 			if (e.isTemporary() && e.getOppositeComponent() == null) {
 				return;
 			}
-			if(textfield.isShowing()){
-				submitText();
-			}
-			else{
-				getEditControl().cancel();
-			}
+			submitText();
 			hideMe();
 		}
 

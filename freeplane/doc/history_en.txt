@@ -1,8 +1,11 @@
 ===============================
-1.2.21
+1.2.22
 ===============================
 Bug fixes for script based conditions for filters and conditional styles
 Do not request more than 512m to avoid problems with 32 bit java
+Fix: drag-drop of Firefox hyperlinks
+Fix: Change autoscrolling behavior if mouse pointer is outside the map
+Fix: fix unfold level actions if some children are hidden
 ===============================
 1.2.20
 ===============================
