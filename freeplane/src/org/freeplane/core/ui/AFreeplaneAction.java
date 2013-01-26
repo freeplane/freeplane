@@ -178,9 +178,4 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public void setVisible() {
 	}
-
-	public boolean isAllowedDuringEditing() {
-    	final AllowedDuringEditing allowedOnEditingAnnotation = getClass().getAnnotation(AllowedDuringEditing.class);
-        return allowedOnEditingAnnotation != null;
-    }
 }
