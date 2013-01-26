@@ -571,9 +571,6 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	private void addListeners(final String key, final AFreeplaneAction action) {
-		if (action instanceof PopupMenuListener) {
-			addPopupMenuListener(key, (PopupMenuListener) action);
-		}
 		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
