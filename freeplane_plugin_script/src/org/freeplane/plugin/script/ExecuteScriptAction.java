@@ -103,11 +103,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		}
 	}
 
-	@Override
-    public boolean isAllowedDuringEditing() {
-	    return allowedDuringEditing;
-    }
-
 	public void setAllowedDuringEditing(boolean allowedDuringEditing) {
     	this.allowedDuringEditing = allowedDuringEditing;
     }
