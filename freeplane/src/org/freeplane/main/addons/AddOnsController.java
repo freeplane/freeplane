@@ -115,13 +115,13 @@ public class AddOnsController {
 	    languages.add(resourceController.getDefaultLanguageCode());
 	    for (String language : languages) {
 	    	final Map<String, String> resources = addOn.getTranslations().get(language);
-	    	for (Entry<String, String> entry : resources.entrySet()) {
-                if (entry.getValue().indexOf('\\') != -1) {
-                    // convert \uFFFF sequences
-                    entry.setValue(StringEscapeUtils.unescapeJava(entry.getValue()));
-                }
-	    	}
 	    	if (resources != null) {
+	    	    for (Entry<String, String> entry : resources.entrySet()) {
+	    	        if (entry.getValue().indexOf('\\') != -1) {
+	    	            // convert \uFFFF sequences
+	    	            entry.setValue(StringEscapeUtils.unescapeJava(entry.getValue()));
+	    	        }
+	    	    }
 	    		resourceController.addLanguageResources(language, addOptionPanelPrefix(resources, addOn.getName()));
 	    		resourceController.addLanguageResources(language, resources);
 	    	}
