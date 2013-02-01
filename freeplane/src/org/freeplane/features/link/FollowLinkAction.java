@@ -21,17 +21,15 @@ package org.freeplane.features.link;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JMenuItem;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
+@EnabledAction(checkOnNodeChange = true)
+class FollowLinkAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public FollowLinkAction() {
@@ -50,6 +48,11 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 		}
 	}
 
+	@Override
+    public void setEnabled() {
+		setEnabled(isLinkEnabled());
+	}
+	
 	private boolean isLinkEnabled() {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		for (final NodeModel selNode : mapController.getSelectedNodes()) {
@@ -58,31 +61,5 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 			}
 		}
 		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing
-	 * .event.PopupMenuEvent)
-	 */
-	public void popupMenuCanceled(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(
-	 * javax.swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax
-	 * .swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-		final JMenuItem item = (JMenuItem) e.getSource();
-		item.setEnabled(isLinkEnabled());
 	}
 }

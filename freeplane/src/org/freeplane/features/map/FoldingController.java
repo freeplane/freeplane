@@ -243,6 +243,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 			return Integer.MAX_VALUE;
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		if(node.containsExtension(HideChildSubtree.class))
+			return depth(node) - 1;
 		if (mapController.isFolded(node)) {
 			return depth(node);
 		}
@@ -278,7 +280,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 	private void setFolded(final NodeModel node, final boolean state) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		if (! node.isRoot() && mapController.hasChildren(node) && (mapController.isFolded(node) != state)) {
+		if (! node.isRoot()) {
 			mapController.setFolded(node, state);
 		}
 	}

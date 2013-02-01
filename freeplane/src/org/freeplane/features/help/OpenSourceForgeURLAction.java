@@ -23,12 +23,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
+
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 
 /**
  * @author Dimitry Polivaev
  * 18.05.2009
  */
+
 public class OpenSourceForgeURLAction extends OpenURLAction {
 	/**
 	 * 

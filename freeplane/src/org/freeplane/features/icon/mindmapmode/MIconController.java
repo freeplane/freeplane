@@ -48,6 +48,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
@@ -301,7 +302,7 @@ public class MIconController extends IconController {
 		final AFreeplaneAction myAction = iconActions.get(icon);
 		final int separatorPosition = fileName.indexOf('/');
 		if (separatorPosition == -1) {
-			menu.add(myAction);
+			new MenuSplitter().addMenuComponent(menu, new JMenuItem(myAction),  menu.getItemCount());
 			return;
 		}
 		final String submenuName = fileName.substring(0, separatorPosition);

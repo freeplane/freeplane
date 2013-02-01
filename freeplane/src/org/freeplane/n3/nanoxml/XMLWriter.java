@@ -36,6 +36,7 @@ public class XMLWriter {
 	 * Where to write the output to.
 	 */
 	private PrintWriter writer;
+	private boolean inContent = false;
 
 	/**
 	 * Creates a new XML writer.
@@ -227,9 +228,6 @@ public class XMLWriter {
 		for (int i = 0; i < str.length(); i++) {
 			final char c = str.charAt(i);
 			switch (c) {
-				case 0x0A:
-					writer.print(c);
-					break;
 				case '<':
 					writer.print("&lt;");
 					break;
@@ -245,6 +243,11 @@ public class XMLWriter {
 				case '"':
 					writer.print("&quot;");
 					break;
+				case 0x0A:
+					if(inContent){
+						writer.print(c);
+						break;
+					}
 				default:
 					if ((c < ' ') || (c > 0x7E)) {
 						writer.print("&#x");
@@ -265,7 +268,9 @@ public class XMLWriter {
 	 *            the string to write.
 	 */
 	protected void writeEncodedContent(final String str) {
+		inContent = true;
 		writeEncoded(str);
+		inContent = false;
 	}
 
 	public PrintWriter getWriter() {

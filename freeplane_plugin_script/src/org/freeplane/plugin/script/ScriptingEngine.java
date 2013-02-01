@@ -98,7 +98,6 @@ public class ScriptingEngine {
                                        final IErrorHandler pErrorHandler, final PrintStream pOutStream,
                                        final ScriptContext scriptContext, ScriptingPermissions permissions) {
 	    try {
-	    	checkScriptExecutionEnabled(permissions);
 	    	ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
 			final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 			final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
@@ -141,7 +140,6 @@ public class ScriptingEngine {
 	private static ScriptingSecurityManager scriptingSecurityManager(final Object script, final PrintStream pOutStream,
                                                             ScriptingPermissions permissions) {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-	    final ScriptingSecurityManager scriptingSecurityManager;
 	    final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 	    // get preferences (and store them again after the script execution,
 	    // such that the scripts are not able to change them).
@@ -158,6 +156,7 @@ public class ScriptingEngine {
 	    		}
 	    	}
 	    }
+	    final ScriptingSecurityManager scriptingSecurityManager;
 	    if (needsSecurityManager) {
 	    	if (permissions == null){
 	    		permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
@@ -213,25 +212,6 @@ public class ScriptingEngine {
 		}
 	}
 	
-	private static void checkScriptExecutionEnabled(ScriptingPermissions permissions) {
-		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-		final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
-		// get preferences (and store them again after the script execution,
-		// such that the scripts are not able to change them).
-		if (needsSecurityManager) {
-			if (permissions == null){
-				permissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
-			}
-			if (!permissions.executeScriptsWithoutAsking()) {
-				final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
-				    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-				    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
-				if (showResult != JOptionPane.OK_OPTION) {
-					throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
-				}
-			}
-		}
-    }
 	private static void handleGroovyRuntimeException(final GroovyRuntimeException e, final PrintStream pOutStream,
                                                      final IErrorHandler pErrorHandler) {
 	    final String resultString = e.getMessage();
@@ -276,8 +256,8 @@ public class ScriptingEngine {
 		return ScriptingEngine.executeScript(node, script, (ScriptContext)null, (ScriptingPermissions)null);
 	}
 
-	public static Object executeScript(NodeModel node, String script, Script compiledScript, PrintStream printStream) {
-		return executeScript(node, script, compiledScript, IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, null);
+	public static Object executeScript(NodeModel node, String script, Script compiledScript, PrintStream printStream, ScriptingPermissions permissions) {
+		return executeScript(node, script, compiledScript, IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, permissions);
     }
 	
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {

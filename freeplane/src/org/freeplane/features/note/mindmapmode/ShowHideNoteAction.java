@@ -23,7 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+
 import org.freeplane.core.ui.SelectableAction;
+
 
 @SelectableAction(checkOnPropertyChange = "use_split_pane")
 class ShowHideNoteAction extends AFreeplaneAction {

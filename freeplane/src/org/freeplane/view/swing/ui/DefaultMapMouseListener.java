@@ -174,17 +174,23 @@ public class DefaultMapMouseListener implements IMouseListener {
 	 *
 	 */
 	public void mouseDragged(final MouseEvent e) {
-		final Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
 		final JComponent component = (JComponent) e.getComponent();
 		final MapView mapView = getMapView(component);
 		if(mapView == null)
 			return;
-		final boolean isEventPointVisible = component.getVisibleRect().contains(r);
-		if (!isEventPointVisible) {
-			component.scrollRectToVisible(r);
-		}
-		if (originX >= 0 && isEventPointVisible) {
-			mapView.scrollBy(originX - e.getX(), originY - e.getY());
+		if (originX >= 0) {
+			final int dx = originX - e.getX();
+			final int dy = originY - e.getY();
+			final Rectangle visibleRect = component.getVisibleRect();
+			final Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
+			final boolean isEventPointVisible = visibleRect.contains(r);
+			if (isEventPointVisible)
+	            mapView.scrollBy(dx, dy);
+            else {
+				mapView.scrollBy(dx/3, dy/3);
+				originX += dx/3;
+				originY += dy/3;
+			}
 		}
 	}
 

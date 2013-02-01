@@ -93,11 +93,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	private Timer timerForDelayedSelection;
 	protected final DoubleClickTimer doubleClickTimer;
 	private boolean wasFocused;
+	private MovedMouseEventFilter windowMouseTracker;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
 		popupListener = new ControllerPopupMenuListener();
 		doubleClickTimer = new DoubleClickTimer();
+		windowMouseTracker = new MovedMouseEventFilter();
 	}
 
 	private void createTimer(final MouseEvent e) {
@@ -242,17 +244,22 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mouseEntered(final MouseEvent e) {
-		createTimer(e);
-		mouseMoved(e);
+		if(windowMouseTracker.isRelevant(e)){
+			createTimer(e);
+			mouseMoved(e);
+		}
 	}
 
 	public void mouseExited(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		final MainView v = (MainView) e.getSource();
 		v.setMouseArea(MouseArea.OUT);
+		windowMouseTracker.trackWindowForComponent(v);
 	}
 
 	public void mouseMoved(final MouseEvent e) {
+		if(! windowMouseTracker.isRelevant(e))
+			return;
 		final MainView node = ((MainView) e.getComponent());
 		String link = node.getLink(e.getPoint());
 		boolean followLink = link != null;
