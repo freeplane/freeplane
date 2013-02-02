@@ -22,6 +22,7 @@ package org.freeplane.main.application;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
@@ -31,7 +32,6 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.MapModel;
@@ -51,9 +51,17 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
  * Nov 1, 2010
  */
 public class UserPropertiesUpdater {
+	
+	final private static String[] PREVIOUS_VERSION_DIRS = {"1.2.x"};
+	
 	void importOldProperties(){
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		if(userPreferencesFile.exists()){
+			return;
+		}
+		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
+		if(userPreferencesFile.exists()){
+			removeOpenedMaps(userPreferencesFile);
 			return;
 		}
 		final File oldUserPreferencesFile =new File(System.getProperty("user.home"), ".freeplane/auto.properties");
@@ -64,27 +72,76 @@ public class UserPropertiesUpdater {
 		importOldIcons();
 	}
 
+	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
+		final File parentDirectory = targetDirectory.getParentFile();
+		if(! parentDirectory.exists())
+			return;
+		for(String previousDirName : PREVIOUS_VERSION_DIRS){
+			if(previousDirName.equals(targetDirectory.getName()))
+				return;
+			File sourceDirectory = new File(parentDirectory, previousDirName);
+			if(sourceDirectory.exists()){
+				try {
+	                org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
+                }
+                catch (IOException e) {
+                }
+				return;
+			}
+		}
+    }
+
 	private void importOldPreferences(final File userPreferencesFile,
 			final File oldUserPreferencesFile) {
-		Properties userProp = new Properties();
-		FileInputStream inputStream = null;
 		try {
-	        inputStream = new FileInputStream(oldUserPreferencesFile);
-			userProp.load(inputStream);
+			Properties userProp = loadProperties(userPreferencesFile);
 	        userProp.remove("lastOpened_1.0.20");
 	        userProp.remove("openedNow_1.0.20");
 	        userProp.remove("browse_url_storage");
 	        fixFontSize(userProp, "defaultfontsize");
 	        fixFontSize(userProp, "label_font_size");
-	        userProp.store(new FileOutputStream(userPreferencesFile), null);
+	        saveProperties(userProp, userPreferencesFile);
         }
         catch (IOException e) {
         }
-		finally {
-			FileUtils.silentlyClose(inputStream);
-		}
 	}
 	
+	private void removeOpenedMaps(File userPreferencesFile) {
+		try {
+			Properties userProp = loadProperties(userPreferencesFile);
+	        userProp.remove("lastOpened_1.0.20");
+	        userProp.remove("openedNow_1.0.20");
+	        userProp.remove("browse_url_storage");
+	        saveProperties(userProp, userPreferencesFile);
+        }
+        catch (IOException e) {
+        }
+    }
+
+	Properties loadProperties(File userPreferencesFile) throws IOException {
+	    FileInputStream inputStream = null;
+	    Properties userProp = new Properties();
+	    try{
+	    inputStream = new FileInputStream(userPreferencesFile);
+	    userProp.load(inputStream);
+	    }
+	    finally {
+	    	org.freeplane.core.util.FileUtils.silentlyClose(inputStream);
+	    }
+	    return userProp;
+    }
+
+	void saveProperties(Properties userProp, File userPreferencesFile) throws IOException {
+	    FileOutputStream outputStream = null;
+	    try{
+	    	outputStream = new FileOutputStream(userPreferencesFile);
+	    	userProp.store(outputStream, null);
+	    }
+	    finally {
+	    	org.freeplane.core.util.FileUtils.silentlyClose(outputStream);
+	    }
+    }
+
 	private void fixFontSize(Properties userProp, String name) {
 	    final Object defaultFontSizeObj = userProp.remove(name);
 	    if(defaultFontSizeObj == null)

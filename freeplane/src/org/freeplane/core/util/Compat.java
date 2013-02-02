@@ -153,7 +153,7 @@ public class Compat {
 			}
 		}
 	}
-	final private static String CURRENT_VERSION_DIR= File.separatorChar + "1.2.x";
+	final private static String CURRENT_VERSION_DIR= File.separatorChar + "1.3.x";
 	
 	public static String getFreeplaneUserDirectory() {
 		String userFpDir = System.getProperty("org.freeplane.userfpdir");
