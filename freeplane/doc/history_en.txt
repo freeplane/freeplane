@@ -1,4 +1,11 @@
 ===============================
+1.3.1
+===============================
+Open Street Maps as node extensions
+Latex rendered inline with automatic line breaks
+Editor for Latex with Syntax Highlighting
+
+===============================
 1.2.22
 ===============================
 Bug fixes for script based conditions for filters and conditional styles
@@ -62,13 +69,13 @@ Creating of links between nodes and maps using link anchor actions
 ===============================
 Search enhancements: Approximate search feature, control search via key presses, busy cursor, some fixes
 Fix editable Comboboxes for some L&Fs
-New UI for folding 
-Formatting option to display hyper links as HTML 
+New UI for folding
+Formatting option to display hyper links as HTML
 Insert free nodes on double click + folding
 Options for editing on double click and folding on click inside a node
 Drop images if control is pressed and links to files otherwise
 Hyperlink in text as node text style option
-Performance and memory optimizations for scaling of external bitmap images 
+Performance and memory optimizations for scaling of external bitmap images
 
 ===============================
 1.2.12 beta
@@ -107,7 +114,7 @@ Add-on support
 ===============================
 1.2.9 alpha
 ===============================
-Better support for hyperlinks in editor dialog 
+Better support for hyperlinks in editor dialog
 Links can be accessed from inline editor and tooltips
 Free positioned nodes
 Paste of images from clipboard
@@ -126,7 +133,7 @@ Code completion in formula editor
 Performance optimizations for printing
 Filter flag "Unfold hidden nodes" removed
 Filter flag "apply to visible nodes" no more automatically set / unset
-Obsolete documentation key maps and menu references removed 
+Obsolete documentation key maps and menu references removed
 
 ===============================
 1.2.7 alpha
@@ -162,7 +169,7 @@ Multiline connector labels
 Individual connector label font family and font size
 "Add connector" action creates also connectors to self
 Preferences->Behavior->In-line node editor->Layout map during editing
-  disable for better performance 
+  disable for better performance
 
 ===============================
 1.2.4 alpha
@@ -219,7 +226,7 @@ Improved node tool tips with copy and scroll bar
 Script and formula editor JSyntaxPane from http://code.google.com/p/jsyntaxpane/
 When Formula Editor is visible, double click on node inserts node ID, single click folds/unfolds.
 Inline editor supports some HTML formatting, use pop-up menu->format or hot keys
-Automatic Edge Color 
+Automatic Edge Color
 "Grid" for moving of nodes (Preferences->Behaviour->Grid gap size)
 Copy and paste attributes between nodes
 Named filter conditions
@@ -245,7 +252,7 @@ Bug fix in remove format action of simply html
 Bug fixes in applet browser
 Catch exceptions thrown from hook writers
 414: handling of non letter characters in spell checker
-722]: Image http url putted in open file dialog for inserting an image hangs freeplane 
+722]: Image http url putted in open file dialog for inserting an image hangs freeplane
 
 ===============================
 1.1.1, 2010-07-17
@@ -263,7 +270,7 @@ Bug fixes:
 1.0.45 rc, 2010-06-06
 ===============================
 New features:
-Display filled folding mark if there are some descendant folded nodes  with visible descendants are hidden by a filter 
+Display filled folding mark if there are some descendant folded nodes  with visible descendants are hidden by a filter
 
 ===============================
 1.0.44 rc, 2010-05-23
