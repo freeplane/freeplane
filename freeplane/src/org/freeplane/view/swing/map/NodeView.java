@@ -100,7 +100,7 @@ public class NodeView extends JComponent implements INodeView {
 	static{
 		boolean paintDebugBorder = false;
 		try{
-			paintDebugBorder = System.getProperty("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_BORDER", "false").equalsIgnoreCase("true");
+			paintDebugBorder = Boolean.getBoolean("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_BORDER");
 		}
 		catch(Exception e){
 		}
@@ -960,7 +960,8 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if (PAINT_DEBUG_BORDER && isSelected()&& paintingMode.equals(PaintingMode.SELECTED_NODES)){
 			final int spaceAround = getZoomed(SPACE_AROUND);
-			g.drawRect(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
+			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+			g.drawRect(spaceAround - 1, spaceAround - 1, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
 		}
 	}
 
