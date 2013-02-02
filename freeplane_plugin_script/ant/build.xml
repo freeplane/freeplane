@@ -21,23 +21,15 @@
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 			<exclude name="**/*Test.*" />
 		</javac>
-	</target>
-
-	<target name="prepare-nodehighlighter">
-		<mkdir dir="build-nodehighlighter" />
-		<javac srcdir="src-jsyntaxpane" destdir="build-nodehighlighter" classpath="${classpath}" debug="${debug}" 
+		<javac srcdir="src-jsyntaxpane" destdir="build" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
-			<exclude name="**/*Test.*" />
 		</javac>
-		<jar jarfile="lib/jsyntaxpane/nodehighlighter.jar">
-			<fileset dir="build-nodehighlighter"/>
-			<fileset dir="src-jsyntaxpane" includes="**/combocompletions.txt"/>
-		</jar>
 	</target>
 
-	<target name="dist" depends="build, prepare-nodehighlighter">
+	<target name="dist" depends="build">
 		<jar jarfile="lib/plugin.jar">
 			<fileset dir="build"/>
+			<fileset dir="resources-jsyntaxpane"/>
 			<fileset dir="src">
 				<include name="**/*.xml"/>
 				<include name="**/*.properties"/>

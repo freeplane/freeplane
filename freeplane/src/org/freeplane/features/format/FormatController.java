@@ -66,6 +66,7 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 	private static final String ROOT_ELEMENT = "formats";
 	private String pathToFile;
 	private Locale locale;
+	private List<PatternFormat> specialFormats = new ArrayList<PatternFormat>();
 	private List<PatternFormat> dateFormats = new ArrayList<PatternFormat>();
 	private List<PatternFormat> numberFormats = new ArrayList<PatternFormat>();
 	private List<PatternFormat> stringFormats = new ArrayList<PatternFormat>();
@@ -130,6 +131,8 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 	private void initPatternFormats() {
 		if (formatsLoaded)
 			return;
+		specialFormats.add(PatternFormat.getStandardPatternFormat());
+		specialFormats.add(PatternFormat.getIdentityPatternFormat());
 		try {
 			if (pathToFile != null)
 				loadFormats();
@@ -151,22 +154,22 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 
 	private void addStandardFormats() {
 		String number = IFormattedObject.TYPE_NUMBER;
-		numberFormats.add(PatternFormat.create("#0.####", PatternFormat.STYLE_DECIMAL, number,
+		numberFormats.add(createFormat("#0.####", PatternFormat.STYLE_DECIMAL, number,
 		    "default number", locale));
-		numberFormats.add(PatternFormat.create("#.00", PatternFormat.STYLE_DECIMAL, number, "decimal", locale));
-		numberFormats.add(PatternFormat.create("#", PatternFormat.STYLE_DECIMAL, number, "integer", locale));
-		numberFormats.add(PatternFormat.create("#.##%", PatternFormat.STYLE_DECIMAL, number, "percent", locale));
+		numberFormats.add(createFormat("#.00", PatternFormat.STYLE_DECIMAL, number, "decimal", locale));
+		numberFormats.add(createFormat("#", PatternFormat.STYLE_DECIMAL, number, "integer", locale));
+		numberFormats.add(createFormat("#.##%", PatternFormat.STYLE_DECIMAL, number, "percent", locale));
 		String dType = IFormattedObject.TYPE_DATE;
 		final String dStyle = PatternFormat.STYLE_DATE;
 		dateFormats.add(createLocalPattern("short date", SimpleDateFormat.SHORT, null));
 		dateFormats.add(createLocalPattern("medium date", SimpleDateFormat.MEDIUM, null));
 		dateFormats.add(createLocalPattern("short datetime", SimpleDateFormat.SHORT, SimpleDateFormat.SHORT));
 		dateFormats.add(createLocalPattern("medium datetime", SimpleDateFormat.MEDIUM, SimpleDateFormat.SHORT));
-		dateFormats.add(PatternFormat.create("yyyy-MM-dd", dStyle, dType, "short iso date", locale));
-		dateFormats.add(PatternFormat.create("yyyy-MM-dd HH:mm", dStyle, dType, "long iso date", locale));
-		dateFormats.add(PatternFormat.create(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN, dStyle, dType,
+		dateFormats.add(createFormat("yyyy-MM-dd", dStyle, dType, "short iso date", locale));
+		dateFormats.add(createFormat("yyyy-MM-dd HH:mm", dStyle, dType, "long iso date", locale));
+		dateFormats.add(createFormat(FormattedDate.ISO_DATE_TIME_FORMAT_PATTERN, dStyle, dType,
 		    "full iso date", locale));
-		dateFormats.add(PatternFormat.create("HH:mm", dStyle, dType, "time", locale));
+		dateFormats.add(createFormat("HH:mm", dStyle, dType, "time", locale));
 	}
 
 	private PatternFormat createLocalPattern(String name, int dateStyle, Integer timeStyle) {
@@ -174,7 +177,7 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		    .getDateInstance(dateStyle, locale) : SimpleDateFormat.getDateTimeInstance(dateStyle, timeStyle, locale));
 		final String dStyle = PatternFormat.STYLE_DATE;
 		final String dType = IFormattedObject.TYPE_DATE;
-		return PatternFormat.create(simpleDateFormat.toPattern(), dStyle, dType, name, locale);
+		return createFormat(simpleDateFormat.toPattern(), dStyle, dType, name, locale);
 	}
 
 	private void loadFormats() throws Exception {
@@ -203,7 +206,7 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 					        + ", element content=" + content);
 				}
 				else {
-					final PatternFormat format = PatternFormat.create(content, style, type, name,
+					final PatternFormat format = createFormat(content, style, type, name,
 					    (locale == null ? null : new Locale(locale)));
 					if (type.equals(IFormattedObject.TYPE_DATE)) {
 						dateFormats.add(format);
@@ -241,10 +244,12 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		}
 	}
 
+	public void addPatternFormat(PatternFormat format){
+		specialFormats.add(format);
+	}
 	public ArrayList<PatternFormat> getAllFormats() {
 		final ArrayList<PatternFormat> formats = new ArrayList<PatternFormat>();
-		formats.add(PatternFormat.getStandardPatternFormat());
-		formats.add(PatternFormat.getIdentityPatternFormat());
+		formats.addAll(specialFormats);
 		formats.addAll(numberFormats);
 		formats.addAll(dateFormats);
 		formats.addAll(stringFormats);
@@ -470,4 +475,37 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
             locale = FormatUtils.getFormatLocaleFromResources();
         }
     }
+
+	public List<PatternFormat> getSpecialFormats() {
+		return specialFormats;
+	}
+
+	public PatternFormat createFormat(String pattern, String style, String type) {
+		for(PatternFormat specialFormat : specialFormats)
+			if (pattern.equals(specialFormat.getPattern()))
+				return specialFormat;
+	    if (style.equals(PatternFormat.STYLE_DATE))
+			return new DatePatternFormat(pattern);
+		else if (style.equals(PatternFormat.STYLE_FORMATTER))
+			return new FormatterPatternFormat(pattern, type);
+		else if (style.equals(PatternFormat.STYLE_DECIMAL))
+			return new DecimalPatternFormat(pattern);
+		else
+			throw new IllegalArgumentException("unknown format style");
+	}
+
+	public PatternFormat createFormat(final String pattern, final String style, final String type,
+	                                                final String name, final Locale locale) {
+		final PatternFormat format = createFormat(pattern, style, type, name);
+		format.setLocale(locale);
+		return format;
+	}
+
+	public PatternFormat createFormat(final String pattern, final String style, final String type,
+	                                                final String name) {
+		final PatternFormat format = createFormat(pattern, style, type);
+		format.setName(name);
+		return format;
+	}
+
 }

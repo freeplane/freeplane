@@ -19,8 +19,10 @@
  */
 package org.freeplane.plugin.latex;
 
+import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.text.TextController;
 
 /**
  * @author Stefan Ott
@@ -34,10 +36,12 @@ class LatexRegistration {
 		final ModeController modeController = Controller.getCurrentModeController();
 		//LattexNodeHook -> Menu insert
 		final LatexNodeHook nodeHook = new LatexNodeHook();
-		if (modeController.getModeName() == "MindMap") {
+		if (modeController.getModeName().equals("MindMap")) {
 			modeController.addAction(new InsertLatexAction(nodeHook));
 			modeController.addAction(new EditLatexAction(nodeHook));
 			modeController.addAction(new DeleteLatexAction(nodeHook));
+			modeController.getExtension(TextController.class).addTextTransformer(new LatexRenderer());
+			modeController.getController().getExtension(FormatController.class).addPatternFormat(new LatexFormat());
 		}
 	}
 }

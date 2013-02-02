@@ -207,7 +207,12 @@ public class AttributePanelManager{
     	
         private JComboBox createFormatChooser() {
             final List<PatternFormat> formats = FormatController.getController().getAllFormats();
-            final JComboBox formatChooser = new JComboBox(new Vector<PatternFormat>(formats));
+            Vector<PatternFormat> items = new Vector<PatternFormat>(formats);
+            for(int i = items.size()-1; i >= 0; i--){
+            	if(! items.get(i).canFormat(NodeAttributeTableModel.class))
+            		items.remove(i);
+            }
+			final JComboBox formatChooser = new JComboBox(items);
             formatChooser.setEditable(true);
             formatChooser.setSelectedItem(null);
             final String NODE_FORMAT = "OptionPanel.nodeformat"; // duplicated from StyleEditorPanel

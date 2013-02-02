@@ -20,9 +20,22 @@
 package org.freeplane.plugin.latex;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
 
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -30,8 +43,9 @@ import org.freeplane.features.mode.Controller;
  * 
  * @author Stefan Ott
  *
- *This class is called when a LaTeX formula is inserted into
+ *This class is called when a (legacy!) LaTeX formula is inserted into
  * (added to) a node
+ * @see http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane
  */
 @EnabledAction(checkOnNodeChange = true)
 public class InsertLatexAction extends AFreeplaneAction {
@@ -44,13 +58,25 @@ public class InsertLatexAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		final LatexExtension latexExtension = (LatexExtension) node.getExtension(LatexExtension.class);
-		if (latexExtension == null) {
-			nodeHook.editLatexInEditor(node);
-			Controller.getCurrentModeController().getMapController()
-			    .nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
-			return;
+		Box box = Box.createVerticalBox();
+		final String about1 = TextUtils.getText("LatexInsertLatexAction.msg1");
+		box.add(new JLabel(about1));
+		addUriWithoutTitle(box, "LaTeX_in_freeplane_url");
+		final String about2 = TextUtils.getText("LatexInsertLatexAction.msg2");
+		box.add(new JLabel(about2));
+		
+		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), box, TextUtils
+		    .getText("LatexInsertLatexAction.text"), JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private void addUriWithoutTitle(Box box, String uriProperty) {
+		try {
+			final String urlText = ResourceController.getResourceController().getProperty(uriProperty); 
+			URI uri = new URI(urlText);
+			JButton uriButton = UITools.createHtmlLinkStyleButton(uri, urlText);
+			uriButton.setHorizontalAlignment(SwingConstants.LEADING);
+			box.add(uriButton);
+		} catch (URISyntaxException e1) {
 		}
 	}
 

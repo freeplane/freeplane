@@ -22,12 +22,15 @@ package org.freeplane.features.format;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /** a thin wrapper around {@link SimpleDateFormat}, {@link DecimalFormat} and {@link Formatter}.
@@ -52,8 +55,8 @@ public abstract class PatternFormat /*extends Format*/ {
 	private Locale locale;
 
 	public PatternFormat(String pattern, String type) {
-		this.type = type;
 		this.pattern = pattern;
+		this.type = type;
 	}
 
 	/** the formal format description. */
@@ -85,35 +88,6 @@ public abstract class PatternFormat /*extends Format*/ {
 	/** selects the formatter implementation, e.g. "formatter" or "date" */
 	public abstract String getStyle();
 	
-	public static PatternFormat create(final String pattern, final String style, final String type) {
-	    if (pattern.equals(IDENTITY_PATTERN))
-	        return new IdentityPatternFormat();
-	    else if (pattern.equals(STANDARD_FORMAT_PATTERN))
-	        return new StandardPatternFormat();
-	    else if (style.equals(STYLE_DATE))
-			return new DatePatternFormat(pattern);
-		else if (style.equals(STYLE_FORMATTER))
-			return new FormatterPatternFormat(pattern, type);
-		else if (style.equals(STYLE_DECIMAL))
-			return new DecimalPatternFormat(pattern);
-		else
-			throw new IllegalArgumentException("unknown format style");
-	}
-	
-	public static PatternFormat create(final String pattern, final String style, final String type,
-	                                                final String name) {
-		final PatternFormat format = create(pattern, style, type);
-		format.setName(name);
-		return format;
-	}
-
-	public static PatternFormat create(final String pattern, final String style, final String type,
-	                                                final String name, final Locale locale) {
-		final PatternFormat format = create(pattern, style, type, name);
-		format.setLocale(locale);
-		return format;
-	}
-
 	// yyyy-MM-dd HH:mm:ss
 	final static Pattern datePattern = Pattern.compile("yy|[Hh]{1,2}:mm");
 
@@ -173,11 +147,10 @@ public abstract class PatternFormat /*extends Format*/ {
 				return new DecimalPatternFormat(pattern);
 			}
 			// only as a last resort?!
-			if (pattern.equals(IDENTITY_PATTERN)) {
-			    return IDENTITY;
-			}
-			if (pattern.equals(STANDARD_FORMAT_PATTERN)) {
-			    return STANDARD;
+			for(PatternFormat f : Controller.getCurrentController().getExtension(FormatController.class).getSpecialFormats()){
+				if (pattern.equals(f.getPattern())) {
+					return f;
+				}
 			}
 			LogUtils.warn("not a pattern format: '" + pattern + "'");
 			return null;
@@ -214,7 +187,7 @@ public abstract class PatternFormat /*extends Format*/ {
 
 	public static PatternFormat deserialize(String string) {
 		final String[] tokens = string.split(SERIALIZATION_SEPARATOR, 3);
-	    return create(TypeReference.decode(tokens[2]), tokens[1], tokens[0]);
+	    return FormatController.getController().createFormat(TypeReference.decode(tokens[2]), tokens[1], tokens[0]);
     }
 
 	public boolean acceptsDate() {
@@ -276,5 +249,9 @@ public abstract class PatternFormat /*extends Format*/ {
     @Override
     public String toString() {
         return pattern;
+    }
+    
+    public boolean canFormat(Class<?> clazz){
+    	return true;
     }
 }
