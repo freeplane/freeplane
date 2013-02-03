@@ -21,6 +21,7 @@ import jsyntaxpane.lexers.LaTeXLexer;
  *
  * @author Felix Natter
  */
+@SuppressWarnings("serial")
 public class LaTeXSyntaxKit extends DefaultSyntaxKit {
 
     public LaTeXSyntaxKit() {
