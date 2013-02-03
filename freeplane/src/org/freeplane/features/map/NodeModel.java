@@ -63,7 +63,7 @@ public class NodeModel implements MutableTreeNode {
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
 	public static final String NODE_ICON = "icon";
-	protected final List<NodeModel> children = new ArrayList<NodeModel>();
+	private final List<NodeModel> children = new ArrayList<NodeModel>();
 	private final ExtensionContainer extensionContainer;
 	final private FilterInfo filterInfo = new FilterInfo();
 	private boolean folded;
@@ -89,11 +89,15 @@ public class NodeModel implements MutableTreeNode {
 
 	public NodeModel(final Object userObject, final MapModel map) {
 		extensionContainer = new ExtensionContainer(new SmallExtensionMap());
-		setUserObject(userObject);
-		setHistoryInformation(new HistoryInformationModel());
+		init(userObject);
 		this.map = map;
 		icons = new NodeIconSetModel();
 	}
+
+	protected void init(final Object userObject) {
+	    setUserObject(userObject);
+		setHistoryInformation(new HistoryInformationModel());
+    }
 
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {
 		if (views == null) {
@@ -132,8 +136,12 @@ public class NodeModel implements MutableTreeNode {
 		return views == null || views.isEmpty();
 	}
 
+	protected List<NodeModel> getChildrenInternal() {
+	    return children;
+    }
+	
 	public Enumeration<NodeModel> children() {
-		final Iterator<NodeModel> i = children.iterator();
+		final Iterator<NodeModel> i = getChildrenInternal().iterator();
 		return new Enumeration<NodeModel>() {
 			public boolean hasMoreElements() {
 				return i.hasNext();
@@ -191,20 +199,20 @@ public class NodeModel implements MutableTreeNode {
 	};
 
 	public TreeNode getChildAt(final int childIndex) {
-		return children.get(childIndex);
+		return getChildrenInternal().get(childIndex);
 	}
 
 	public int getChildCount() {
-		if (children == null) {
+		if (getChildrenInternal() == null) {
 			return 0;
 		}
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-		return encryptionModel == null || encryptionModel.isAccessible() ? children.size() : 0;
+		return encryptionModel == null || encryptionModel.isAccessible() ? getChildrenInternal().size() : 0;
 	}
 
 	public int getChildPosition(final NodeModel childNode) {
 		int position = 0;
-		for (final ListIterator<NodeModel> i = children.listIterator(); i.hasNext(); ++position) {
+		for (final ListIterator<NodeModel> i = getChildrenInternal().listIterator(); i.hasNext(); ++position) {
 			if ((i.next()) == childNode) {
 				return position;
 			}
@@ -214,8 +222,8 @@ public class NodeModel implements MutableTreeNode {
 
 	public List<NodeModel> getChildren() {
 		List<NodeModel> childrenList;
-		if (children != null) {
-			childrenList = children;
+		if (getChildrenInternal() != null) {
+			childrenList = getChildrenInternal();
 		}
 		else {
 			childrenList = Collections.emptyList();
@@ -252,7 +260,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public int getIndex(final TreeNode node) {
-		return children.indexOf(node);
+		return getChildrenInternal().indexOf(node);
 	}
 
 	public MapModel getMap() {
@@ -323,10 +331,10 @@ public class NodeModel implements MutableTreeNode {
 		final NodeModel childNode = (NodeModel) child;
 		if (index < 0) {
 			index = getChildCount();
-			children.add(index, (NodeModel) child);
+			getChildrenInternal().add(index, (NodeModel) child);
 		}
 		else {
-			children.add(index, (NodeModel) child);
+			getChildrenInternal().add(index, (NodeModel) child);
 			preferredChild = childNode;
 		}
 		child.setParent(this);
@@ -398,23 +406,23 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void remove(final int index) {
-		final MutableTreeNode node = children.get(index);
+		final MutableTreeNode node = getChildrenInternal().get(index);
 		remove(node);
 	}
 
 	public void remove(final MutableTreeNode node) {
 		if (node == preferredChild) {
-			final int index = children.indexOf(node);
-			if (children.size() > index + 1) {
-				preferredChild = (children.get(index + 1));
+			final int index = getChildrenInternal().indexOf(node);
+			if (getChildrenInternal().size() > index + 1) {
+				preferredChild = (getChildrenInternal().get(index + 1));
 			}
 			else {
-				preferredChild = (index > 0) ? (NodeModel) (children.get(index - 1)) : null;
+				preferredChild = (index > 0) ? (NodeModel) (getChildrenInternal().get(index - 1)) : null;
 			}
 		}
 		final int index = getIndex(node);
 		node.setParent(null);
-		children.remove(node);
+		getChildrenInternal().remove(node);
 		fireNodeRemoved((NodeModel) node, index);
 	}
 
@@ -496,7 +504,7 @@ public class NodeModel implements MutableTreeNode {
 	 */
 	public void setMap(final MapModel map) {
 		this.map = map;
-		for (final NodeModel child : children) {
+		for (final NodeModel child : getChildrenInternal()) {
 			child.setMap(map);
 		}
 	}
