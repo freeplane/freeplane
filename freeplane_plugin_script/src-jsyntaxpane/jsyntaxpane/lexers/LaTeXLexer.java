@@ -32,6 +32,7 @@ import jsyntaxpane.TokenType;
  * on 11.01.13 23:18 from the specification file
  * <tt>latex.flex</tt>
  */
+@SuppressWarnings("unused")
 public final class LaTeXLexer extends DefaultJFlexLexer {
 
   /** This character denotes the end of file */
