@@ -112,6 +112,7 @@ public class UserPropertiesUpdater {
 	        userProp.remove("lastOpened_1.0.20");
 	        userProp.remove("openedNow_1.0.20");
 	        userProp.remove("browse_url_storage");
+	        userProp.remove("single_backup_directory_path");
 	        saveProperties(userProp, userPreferencesFile);
         }
         catch (IOException e) {
