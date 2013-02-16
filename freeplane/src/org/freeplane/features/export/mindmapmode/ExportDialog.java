@@ -109,11 +109,11 @@ public class ExportDialog {
 
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
-					final ExampleFileFilter filter = (ExampleFileFilter) evt.getNewValue();
-					if (filter == null) {
+					final FileFilter filter = fileChooser.getFileFilter();
+					if(! (filter instanceof ExampleFileFilter)){
 						return;
 					}
-					final File acceptableFile = getAcceptableFile(selectedFile, filter);
+					final File acceptableFile = getAcceptableFile(selectedFile, (ExampleFileFilter) filter);
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							fileChooser.setSelectedFile(acceptableFile);
