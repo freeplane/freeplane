@@ -716,7 +716,7 @@ public interface Proxy {
 		 * // equivalent:
 		 * node.map.filter = { it.text.contains("todo") }
 		 * 
-		 * // show anchestors of matching nodes
+		 * // show ancestors of matching nodes
 		 * node.map.filter(true, false){ it.text.contains("todo") }
 		 * // equivalent:
 		 * node.map.setFilter(true, false, { it.text.contains("todo") })
@@ -736,16 +736,16 @@ public interface Proxy {
 		 * @since 1.2 */
 		public void setFilter(final Closure<Boolean> closure);
 		
-		/** With {@link #filter(Closure)} neither anchestors not descendants of the visible nodes are shown. Use this
+		/** With {@link #filter(Closure)} neither ancestors not descendants of the visible nodes are shown. Use this
 		 * method to control these options.
 		 * @see #filter(Closure)
 		 * @since 1.2 */
-		public void filter(final boolean showAnchestors, final boolean showDescendants, final Closure<Boolean> closure);
+		public void filter(final boolean showAncestors, final boolean showDescendants, final Closure<Boolean> closure);
 
 		/** alias for {@link #setFilter(boolean, boolean, Closure)}
 		 * @see #filter(Closure)
 		 * @since 1.2 */
-		public void setFilter(final boolean showAnchestors, final boolean showDescendants, final Closure<Boolean> closure);
+		public void setFilter(final boolean showAncestors, final boolean showDescendants, final Closure<Boolean> closure);
 
 		/** reinstalls the previously undone filter if there is any.
 		 * Note: undo/redo for filters is separate to the undo/redo for other map state.
