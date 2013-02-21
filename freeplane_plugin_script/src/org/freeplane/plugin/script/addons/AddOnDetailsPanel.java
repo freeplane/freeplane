@@ -51,20 +51,25 @@ public class AddOnDetailsPanel extends JPanel {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				RowSpec.decode("top:default:grow"),}));
-		
+		if (warning != null) {
+			JLabel warningLabel = createWarningLabel(addOn);
+			add(warningLabel, "3, 2");
+		}
 		JLabel imageLabel = createImageLabel(addOn);
-		add(imageLabel, "1, 2");
+		add(imageLabel, "1, 4");
 		JLabel title = createTitleLabel(addOn);
-		add(title, "3, 2");
+		add(title, "3, 4");
 		JLabel author = createAuthorLabel(addOn);
-		add(author, "3, 4");
+		add(author, "3, 6");
 		final Box box = Box.createHorizontalBox();
 		box.add(new JLabel(getText("homepage")));
 		box.add(createAddOnHomepageButton(addOn));
-		add(box, "3, 6, left, default");
+		add(box, "3, 8, left, default");
 		JComponent details = createDetails(addOn);
-		add(details, "3, 7");
+		add(details, "3, 9");
 	}
 
 	private JLabel createImageLabel(AddOnProperties addOn) {
@@ -80,14 +85,18 @@ public class AddOnDetailsPanel extends JPanel {
 		this(addOn, null);
 	}
 
+	private JLabel createWarningLabel(final AddOnProperties addOn) {
+		return new JLabel("<html><body>" + warning.replaceAll("</?(html|body)>", "") + "</body></html>");
+	}
+
 	private JLabel createTitleLabel(final AddOnProperties addOn) {
 		return new JLabel("<html><body><b><font size='+2'>" + toHtml(addOn.getTranslatedName()) + " "
 				+ addOn.getVersion().replaceAll("^v", "") + "</font></b></body></html>");
 	}
 
 	private JLabel createAuthorLabel(final AddOnProperties addOn) {
-		final String text = addOn.getAuthor() == null ? "" : "<html><body><b><font size='-1'>"
-				+ getText("authored.by", toHtml(addOn.getAuthor())) + "</font></b></body></html>";
+		final String text = addOn.getAuthor() == null ? "" : "<html><body><strong><font size='-1'>"
+				+ getText("authored.by", toHtml(addOn.getAuthor())) + "</font></strong></body></html>";
 		return new JLabel(text);
 	}
 
@@ -119,12 +128,9 @@ public class AddOnDetailsPanel extends JPanel {
 				text.append("</table>");
 			}
 		}
-		if (warning != null) {
-			text.append("<p><p>");
-			text.append(warning.replaceAll("</?(html|body)>", ""));
-		}
 		text.append("</body></html>");
 		final JLabel label = new JLabel(text.toString());
+		label.setAutoscrolls(true);
 		final ImageIcon icon = IconNotFound.createIconOrReturnNull(addOn.getName() + "-screenshot-1.png");
 		if (icon != null)
 			label.setIcon(icon);
