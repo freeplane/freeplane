@@ -4,6 +4,7 @@
 Open Street Maps as node extensions
 Latex rendered inline with automatic line breaks
 Editor for Latex with Syntax Highlighting
+Cloud support in the scripting API
 
 ===============================
 1.2.22

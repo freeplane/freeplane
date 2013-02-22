@@ -40,6 +40,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Attributes;
+import org.freeplane.plugin.script.proxy.Proxy.Cloud;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 import org.freeplane.plugin.script.proxy.Proxy.Reminder;
 
@@ -175,6 +176,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public List<Proxy.Node> getChildren() {
 		return ProxyUtils.createListOfChildren(getDelegate(), getScriptContext());
 	}
+
+    // NodeRO: R
+    public Cloud getCloud() {
+        return new CloudProxy(this);
+    }
 
 	// NodeRO: R
 	public Collection<Proxy.Connector> getConnectorsIn() {
