@@ -441,17 +441,15 @@ class ApplicationViewController extends ViewController {
 	public void initFrame(final JFrame frame) {
 		// Preserve the existing icon image under Mac OS X 
 		if (!Compat.isMacOsX()) {
-//			final ImageIcon mWindowIcon;
-//			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-//				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-//				    "/images/Freeplane_frame_icon.png"));
-//			}
-//			else {
-//				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-//				    "/images/Freeplane_frame_icon_32x32.png"));
-//			}
-			final ImageIcon mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-		    "/images/Freeplane_frame_icon.png"));
+			final ImageIcon mWindowIcon;
+			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
+				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+				    "/images/Freeplane_frame_icon.png"));
+			}
+			else {
+				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+				    "/images/Freeplane_frame_icon_64x64.png"));
+			}
 			frame.setIconImage(mWindowIcon.getImage());
 		}
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
