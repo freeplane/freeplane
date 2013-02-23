@@ -11,7 +11,7 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.2.21 rc"
+#define MyVersion "1.2.22"
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
