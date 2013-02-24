@@ -5,7 +5,6 @@ package org.freeplane.plugin.script.proxy;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.freeplane.core.util.LogUtils;
@@ -35,7 +34,7 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
     }
 
     private ViewerController getViewerController() {
-        return (ViewerController) getModeController().getExtension(ViewerController.class);
+        return getModeController().getExtension(ViewerController.class);
     }
 
     public float getZoom() {
@@ -61,7 +60,8 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
                 return (URI) target;
             }
             else if (target instanceof String) {
-                return new URI((String) target);
+                // file names are not usable for displaying images
+                return new URL((String) target).toURI();
             }
             else if (target instanceof File) {
                 return ((File) target).toURI();
@@ -74,14 +74,14 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
                 return null;
             }
         }
-        catch (URISyntaxException e) {
+        catch (Exception e) {
             LogUtils.warn("cannot convert to an uri: " + target, e);
             return null;
         }
     }
 
     private boolean removeIfTargetIsNull(Object target) {
-        if (getExternalObjectModel() != null) {
+        if (target != null && getExternalObjectModel() != null) {
             getViewerController().undoableToggleHook(getDelegate(), null);
             return true;
         }
