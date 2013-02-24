@@ -81,7 +81,7 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
     }
 
     private boolean removeIfTargetIsNull(Object target) {
-        if (target != null && getExternalObjectModel() != null) {
+        if (target == null && getExternalObjectModel() != null) {
             getViewerController().undoableToggleHook(getDelegate(), null);
             return true;
         }
