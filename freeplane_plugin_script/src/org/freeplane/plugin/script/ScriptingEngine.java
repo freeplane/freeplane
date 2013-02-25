@@ -98,10 +98,10 @@ public class ScriptingEngine {
                                        final IErrorHandler pErrorHandler, final PrintStream pOutStream,
                                        final ScriptContext scriptContext, ScriptingPermissions permissions) {
 	    try {
-	    	ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
 			final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 			final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
 			final ScriptingSecurityManager scriptingSecurityManager = scriptingSecurityManager(script, pOutStream, permissions);
+			ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController.getResourceController().getProperties());
 			final PrintStream oldOut = System.out;
 			try {
 				final Binding binding = new Binding();
