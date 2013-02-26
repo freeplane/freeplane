@@ -52,6 +52,7 @@ public class NodeTooltipManager implements IExtension{
 	private JToolTip tip;
 	final private ComponentMouseListener componentMouseListener;
 	private WeakReference<Component> focusOwnerRef;
+	private boolean mouseOverComponent;
 
 	public static NodeTooltipManager getSharedInstance(ModeController modeController){
 		{
@@ -120,6 +121,7 @@ public class NodeTooltipManager implements IExtension{
 		exitTimer = new Timer(150, new exitTimerAction());
 		exitTimer.setRepeats(false);
 		componentMouseListener = new ComponentMouseListener();
+		mouseOverComponent = false;
 	}
 
 	/**
@@ -266,6 +268,8 @@ public class NodeTooltipManager implements IExtension{
 			initiateToolTip(event);
 		}
 		public void mouseExited(MouseEvent event) {
+			if(insideComponent == event.getComponent())
+				mouseOverComponent = false;
 		}
 		
 		public void mouseDragged(MouseEvent e) {
@@ -279,6 +283,7 @@ public class NodeTooltipManager implements IExtension{
 	private void initiateToolTip(MouseEvent event) {
 	JComponent component = (JComponent) event.getSource();
 	if(insideComponent == component){
+		mouseOverComponent = true;
 		return;
 	}
 	hideTipWindow();
@@ -288,21 +293,15 @@ public class NodeTooltipManager implements IExtension{
 		enterTimer.restart();
 	}
 
-	protected boolean mouseOverComponent() {
-		if(insideComponent.isShowing()){
-			final Point mousePosition = insideComponent.getMousePosition(true);
-			return mousePosition != null
-					&& new Rectangle(0, 0, insideComponent.getWidth(),
-							insideComponent.getHeight()).contains(mousePosition);
-		}
-		return false;
+	protected boolean isMouseOverComponent() {
+		return mouseOverComponent;
 	}
 
 
 	private class insideTimerAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (insideComponent != null){ 
-				if( mouseOverComponent()) {
+				if( isMouseOverComponent()) {
 					// Lazy lookup
 					if (toolTipText == null && mouseEvent != null) {
 						toolTipText = insideComponent.getToolTipText(mouseEvent);
@@ -330,7 +329,7 @@ public class NodeTooltipManager implements IExtension{
                 return;
             }
                     
-			if(tip.getMousePosition(true) != null || mouseOverComponent()){
+			if(isMouseOverTip() || isMouseOverComponent()){
 				exitTimer.restart();
 				return;
 			}
@@ -343,6 +342,10 @@ public class NodeTooltipManager implements IExtension{
 			}
 			hideTipWindow();
 		}
+
+		protected boolean isMouseOverTip() {
+	        return tip instanceof NodeTooltip && ((NodeTooltip)tip).isMouseInside();
+        }
 	}
 
 }
