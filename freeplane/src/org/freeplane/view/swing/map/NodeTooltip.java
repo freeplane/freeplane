@@ -1,5 +1,7 @@
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -33,7 +35,7 @@ import org.freeplane.features.url.UrlManager;
 
 @SuppressWarnings("serial")
 public class NodeTooltip extends JToolTip {
-	public class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
+	class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
 	    public void mouseMoved(final MouseEvent ev) {
 	    	final String link = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
 	    	boolean followLink = link != null;
@@ -67,8 +69,28 @@ public class NodeTooltip extends JToolTip {
 		public void mouseDragged(MouseEvent e) {
         }
     }
+	
+	class MouseInsideListener extends MouseAdapter implements MouseMotionListener{
+
+		@Override
+        public void mouseEntered(MouseEvent e) {
+			mouseInside = true;
+        }
+
+		@Override
+        public void mouseExited(MouseEvent e) {
+			mouseInside = false;        }
+
+		@Override
+        public void mouseMoved(MouseEvent e) {
+			mouseInside = true;        
+		}
+		
+	}
 
 	final private JEditorPane tip; 
+	private boolean mouseInside = false;
+	
 	public NodeTooltip(){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
@@ -77,9 +99,9 @@ public class NodeTooltip extends JToolTip {
 		tip.setEditorKit(kit);
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
-		final LinkMouseListener mouseListener = new LinkMouseListener();
-		tip.addMouseListener(mouseListener);
-		tip.addMouseMotionListener(mouseListener);
+		final LinkMouseListener linkMouseListener = new LinkMouseListener();
+		tip.addMouseListener(linkMouseListener);
+		tip.addMouseMotionListener(linkMouseListener);
 		final HTMLDocument document = (HTMLDocument) tip.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
 		styleSheet.removeStyle("p");
@@ -101,7 +123,20 @@ public class NodeTooltip extends JToolTip {
 		tip.setOpaque(false);
 //		scrollPane.setOpaque(false);
 //		scrollPane.getViewport().setOpaque(false);
+		
+		recursivelyAddMouseInsideListener(this, new MouseInsideListener());
 	}
+	
+	private void recursivelyAddMouseInsideListener(Component c, MouseInsideListener mouseInsideListener) {
+	    c.addMouseListener(mouseInsideListener);
+	    c.addMouseMotionListener(mouseInsideListener);
+	    if(c instanceof Container){
+	    	Container container = (Container) c;
+	    	for(Component childComponent : container.getComponents())
+	    		recursivelyAddMouseInsideListener(childComponent, mouseInsideListener);
+	    }
+	    
+    }
 	private static int maximumWidth = Integer.MAX_VALUE;
 	/**
 	 *  set maximum width
@@ -166,5 +201,9 @@ public class NodeTooltip extends JToolTip {
 	public void setBase(URL url){
 		((HTMLDocument)tip.getDocument()).setBase(url);
 	}
+
+	public boolean isMouseInside() {
+    	return mouseInside;
+    }
 
 }
