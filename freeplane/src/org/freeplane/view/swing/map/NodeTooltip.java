@@ -1,7 +1,5 @@
 package org.freeplane.view.swing.map;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -24,6 +22,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.core.ui.MouseInsideListener;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
@@ -70,26 +69,7 @@ public class NodeTooltip extends JToolTip {
         }
     }
 	
-	class MouseInsideListener extends MouseAdapter implements MouseMotionListener{
-
-		@Override
-        public void mouseEntered(MouseEvent e) {
-			mouseInside = true;
-        }
-
-		@Override
-        public void mouseExited(MouseEvent e) {
-			mouseInside = false;        }
-
-		@Override
-        public void mouseMoved(MouseEvent e) {
-			mouseInside = true;        
-		}
-		
-	}
-
 	final private JEditorPane tip; 
-	private boolean mouseInside = false;
 	
 	public NodeTooltip(){
 		tip  = new JEditorPane();
@@ -124,20 +104,11 @@ public class NodeTooltip extends JToolTip {
 //		scrollPane.setOpaque(false);
 //		scrollPane.getViewport().setOpaque(false);
 		
-		recursivelyAddMouseInsideListener(this, new MouseInsideListener());
+		mouseInsideListener = new MouseInsideListener(this);
 	}
 	
-	private void recursivelyAddMouseInsideListener(Component c, MouseInsideListener mouseInsideListener) {
-	    c.addMouseListener(mouseInsideListener);
-	    c.addMouseMotionListener(mouseInsideListener);
-	    if(c instanceof Container){
-	    	Container container = (Container) c;
-	    	for(Component childComponent : container.getComponents())
-	    		recursivelyAddMouseInsideListener(childComponent, mouseInsideListener);
-	    }
-	    
-    }
 	private static int maximumWidth = Integer.MAX_VALUE;
+	private MouseInsideListener mouseInsideListener;
 	/**
 	 *  set maximum width
 	 *  0 = no maximum width
@@ -203,7 +174,7 @@ public class NodeTooltip extends JToolTip {
 	}
 
 	public boolean isMouseInside() {
-    	return mouseInside;
+    	return mouseInsideListener.isMouseInside();
     }
 
 }
