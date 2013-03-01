@@ -460,7 +460,6 @@
 	<target name="cleandist" depends="clean,dist">
 	</target>
 
-	<!--
 	<target name="check-translation">
 		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
 	</target>
@@ -470,7 +469,6 @@
 	<target name="format-translation-force">
 		<ant antfile="ant/build.xml" target="format-translation-force" dir="${workspace}/freeplane" />
 	</target>
-	-->
 	<target name="create-plugin">
 		<create-plugin />
 	</target>
