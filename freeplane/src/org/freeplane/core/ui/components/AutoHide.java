@@ -8,10 +8,13 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
+import org.freeplane.core.ui.MouseInsideListener;
+
 public class AutoHide {
 	private static final int DELAY = 500;
 	final Timer timer;
 	final JComponent popup;
+	private MouseInsideListener mouseInsideListener;
 	
 	public static void start(JComponent popup){
 		new AutoHide(popup);
@@ -30,6 +33,8 @@ public class AutoHide {
 			@Override
             public void mouseEntered(MouseEvent e) {
 				AutoHide.this.popup.removeMouseListener(this);
+				mouseInsideListener = new MouseInsideListener(AutoHide.this.popup);
+				mouseInsideListener.mouseEntered(e);
 			    timer.start();
             }
 	    	
@@ -37,13 +42,18 @@ public class AutoHide {
     }
 	protected void tryToClosePopup() {
 		if(popup.isVisible()) {
-	        if (popup.getMousePosition(true) == null) {
+	        if (! mouseInsideListener.isMouseInside()) {
 	        	popup.setVisible(false);
-	        	timer.stop();
+	        	stop();
 	        }
         }
-		else
-			timer.stop();
+        else
+	        stop();
+    }
+
+	protected void stop() {
+		mouseInsideListener.disconnect();
+	    timer.stop();
     }
 	
 }
