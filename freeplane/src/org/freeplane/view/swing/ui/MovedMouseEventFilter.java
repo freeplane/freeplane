@@ -56,7 +56,12 @@ public class MovedMouseEventFilter extends WindowAdapter {
 
 	@Override
     public void windowGainedFocus(WindowEvent e) {
-		mousePositionAfterFocusGained = trackedWindow.getMousePosition();
+		try {
+	        mousePositionAfterFocusGained = trackedWindow.getMousePosition();
+        }
+		// Work around for mac os java bug
+        catch (ClassCastException ex) {
+        }
     }
 
 	public void trackWindowForComponent(Component c){

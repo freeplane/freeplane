@@ -28,6 +28,10 @@
 	<condition property="isMacOs">
 	      <os family="mac"/>
 	</condition>
+
+	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}" onerror="report" />
+	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}" onerror="report" />
+
 	<target name="prepare_freeplaneant">
 		<ant antfile="${workspace}/freeplane_ant/build.xml" target="jar"
 			dir="${workspace}/freeplane_ant"  inheritAll="false" />
@@ -56,7 +60,7 @@
 	</target>
 	
 	<target name="build" depends="prepare_jortho,localelist">
-		<!-- <antcall target="check-translation" /> -->
+		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
@@ -197,10 +201,6 @@
 		</jar>
 	</target>
 	
-	<!--
-	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}" onerror="report" />
-	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}" onerror="report" />
-	
 	<target name="check-translation">
 		<check-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
 		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
@@ -218,7 +218,6 @@
 			    sourcefile="${root}/viewer-resources/translations/Resources_en.properties" includes="*.properties" />
 		<antcall target="format-translation" />
 	</target>
-	-->
 
 	<target name="clean">
 		<delete dir="${build}" quiet="true" />

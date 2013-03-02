@@ -22,6 +22,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.core.ui.MouseInsideListener;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
@@ -33,7 +34,7 @@ import org.freeplane.features.url.UrlManager;
 
 @SuppressWarnings("serial")
 public class NodeTooltip extends JToolTip {
-	public class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
+	class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
 	    public void mouseMoved(final MouseEvent ev) {
 	    	final String link = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
 	    	boolean followLink = link != null;
@@ -67,8 +68,9 @@ public class NodeTooltip extends JToolTip {
 		public void mouseDragged(MouseEvent e) {
         }
     }
-
+	
 	final private JEditorPane tip; 
+	
 	public NodeTooltip(){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
@@ -77,9 +79,9 @@ public class NodeTooltip extends JToolTip {
 		tip.setEditorKit(kit);
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
-		final LinkMouseListener mouseListener = new LinkMouseListener();
-		tip.addMouseListener(mouseListener);
-		tip.addMouseMotionListener(mouseListener);
+		final LinkMouseListener linkMouseListener = new LinkMouseListener();
+		tip.addMouseListener(linkMouseListener);
+		tip.addMouseMotionListener(linkMouseListener);
 		final HTMLDocument document = (HTMLDocument) tip.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
 		styleSheet.removeStyle("p");
@@ -101,8 +103,12 @@ public class NodeTooltip extends JToolTip {
 		tip.setOpaque(false);
 //		scrollPane.setOpaque(false);
 //		scrollPane.getViewport().setOpaque(false);
+		
+		mouseInsideListener = new MouseInsideListener(this);
 	}
+	
 	private static int maximumWidth = Integer.MAX_VALUE;
+	private MouseInsideListener mouseInsideListener;
 	/**
 	 *  set maximum width
 	 *  0 = no maximum width
@@ -166,5 +172,9 @@ public class NodeTooltip extends JToolTip {
 	public void setBase(URL url){
 		((HTMLDocument)tip.getDocument()).setBase(url);
 	}
+
+	public boolean isMouseInside() {
+    	return mouseInsideListener.isMouseInside();
+    }
 
 }
