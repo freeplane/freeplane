@@ -184,7 +184,7 @@ public class TaskUtils {
 	}
 
 	static String toLine(String key, String value) {
-		return key + " = " + value;
+		return key + "=" + value;
 	}
 
 	static Project createProject(final Task task) {
