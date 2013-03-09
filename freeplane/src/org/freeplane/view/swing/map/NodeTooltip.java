@@ -1,10 +1,10 @@
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -17,7 +17,6 @@ import java.security.AccessControlException;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
-import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -103,12 +102,9 @@ public class NodeTooltip extends JToolTip {
 		tip.setOpaque(false);
 //		scrollPane.setOpaque(false);
 //		scrollPane.getViewport().setOpaque(false);
-		
-		mouseInsideListener = new MouseInsideListener(this);
 	}
 	
 	private static int maximumWidth = Integer.MAX_VALUE;
-	private MouseInsideListener mouseInsideListener;
 	/**
 	 *  set maximum width
 	 *  0 = no maximum width
@@ -138,9 +134,12 @@ public class NodeTooltip extends JToolTip {
     }
 
 	private void setTipTextUnsafe(String tipText) throws Exception{
+		tip.setSize(0, 0);
+		tip.setPreferredSize(null);
 		tip.setText(tipText);
 		Dimension preferredSize = tip.getPreferredSize();
 		if (preferredSize.width < maximumWidth) {
+			tip.setPreferredSize(preferredSize);
 			return ;
 		}
 		final HTMLDocument document = (HTMLDocument) tip.getDocument();
@@ -148,20 +147,19 @@ public class NodeTooltip extends JToolTip {
 		// bad hack: call "setEditable" only to update view
 		tip.setEditable(true);
 		tip.setEditable(false);
+		tip.setPreferredSize(tip.getPreferredSize());
 	}
 
 	@Override
     public Dimension getPreferredSize() {
-	    return getComponent(0).getPreferredSize();
+	    final Component scrollPane = getComponent(0);
+		return scrollPane.getPreferredSize();
     }
 
 	@Override
     public void layout() {
-		Window window = SwingUtilities.windowForComponent(this);
-		if(! window.getFocusableWindowState()){
-			window.setFocusableWindowState(true);
-		}
-		getComponent(0).setSize(getPreferredSize());
+		final Component scrollPane = getComponent(0);
+		scrollPane.setSize(getPreferredSize());
 	    super.layout();
     }
 
@@ -172,9 +170,4 @@ public class NodeTooltip extends JToolTip {
 	public void setBase(URL url){
 		((HTMLDocument)tip.getDocument()).setBase(url);
 	}
-
-	public boolean isMouseInside() {
-    	return mouseInsideListener.isMouseInside();
-    }
-
 }

@@ -2,10 +2,8 @@ package org.freeplane.view.swing.map;
 
 
 import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,10 +14,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.lang.ref.WeakReference;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JPopupMenu;
 import javax.swing.JToolTip;
-import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -27,6 +26,7 @@ import javax.swing.Timer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.MouseInsideListener;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -45,7 +45,7 @@ public class NodeTooltipManager implements IExtension{
 	private JComponent insideComponent;
 	private MouseEvent mouseEvent;
 	
-	private Popup tipPopup;
+	private JPopupMenu tipPopup;
 	/** The Window tip is being displayed in. This will be non-null if
 	 * the Window tip is in differs from that of insideComponent's Window.
 	 */
@@ -53,6 +53,7 @@ public class NodeTooltipManager implements IExtension{
 	final private ComponentMouseListener componentMouseListener;
 	private WeakReference<Component> focusOwnerRef;
 	private boolean mouseOverComponent;
+	private MouseInsideListener mouseInsideTooltipListener;
 
 	public static NodeTooltipManager getSharedInstance(ModeController modeController){
 		{
@@ -172,38 +173,12 @@ public class NodeTooltipManager implements IExtension{
 //		else{
 		nearComponent = insideComponent;
 //		}
-		final Point locationOnScreen = nearComponent.getLocationOnScreen();
-		final int height = nearComponent.getHeight();
-		Rectangle sBounds = nearComponent.getGraphicsConfiguration().getBounds();
-		final int minX = sBounds.x;
-		final int maxX = sBounds.x + sBounds.width;
-		final int minY = sBounds.y;
-		final int maxY = sBounds.y + sBounds.height;
-		int x = locationOnScreen.x;
-		int y = locationOnScreen.y + height;
-		final Dimension tipSize = tip.getPreferredSize();
-		final int tipWidth = tipSize.width;
-		if(x + tipWidth > maxX){
-			x = maxX - tipWidth;
-		}
-		if(x < minX){
-			x = minX;
-		}
-		final int tipHeight = tipSize.height;
-		if(y + tipHeight > maxY){
-			if(locationOnScreen.y - tipHeight > minY){
-				y = locationOnScreen.y - tipHeight;
-			}
-			else{
-				y = maxY - tipHeight;
-			}
-		}
-		if(y < minY){
-			y = minY;
-		}
 		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-		tipPopup = popupFactory.getPopup(nearComponent, tip, x, y);
-		tipPopup.show();
+		tipPopup = new JPopupMenu();
+		tipPopup.setLayout(new GridLayout(1, 1));
+		tipPopup.add(tip);
+		mouseInsideTooltipListener = new MouseInsideListener(tipPopup);
+		tipPopup.show(nearComponent, 0, nearComponent.getHeight());
         exitTimer.start();
 	}
 
@@ -219,10 +194,11 @@ public class NodeTooltipManager implements IExtension{
 			}
 			else
 				component = null;
-			tipPopup.hide();
+			tipPopup.setVisible(false);
 			if(component != null)
 				component.requestFocusInWindow();
 			tipPopup = null;
+			mouseInsideTooltipListener = null;
 			tip = null;
 			focusOwnerRef = null;
 			enterTimer.stop();
@@ -344,7 +320,7 @@ public class NodeTooltipManager implements IExtension{
 		}
 
 		protected boolean isMouseOverTip() {
-	        return tip instanceof NodeTooltip && ((NodeTooltip)tip).isMouseInside();
+	        return mouseInsideTooltipListener.isMouseInside();
         }
 	}
 
