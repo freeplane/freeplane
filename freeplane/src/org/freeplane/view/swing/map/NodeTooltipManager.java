@@ -2,10 +2,8 @@ package org.freeplane.view.swing.map;
 
 
 import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +16,8 @@ import java.lang.ref.WeakReference;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JPopupMenu;
 import javax.swing.JToolTip;
-import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -45,7 +43,7 @@ public class NodeTooltipManager implements IExtension{
 	private JComponent insideComponent;
 	private MouseEvent mouseEvent;
 	
-	private Popup tipPopup;
+	private JPopupMenu tipPopup;
 	/** The Window tip is being displayed in. This will be non-null if
 	 * the Window tip is in differs from that of insideComponent's Window.
 	 */
@@ -172,38 +170,11 @@ public class NodeTooltipManager implements IExtension{
 //		else{
 		nearComponent = insideComponent;
 //		}
-		final Point locationOnScreen = nearComponent.getLocationOnScreen();
-		final int height = nearComponent.getHeight();
-		Rectangle sBounds = nearComponent.getGraphicsConfiguration().getBounds();
-		final int minX = sBounds.x;
-		final int maxX = sBounds.x + sBounds.width;
-		final int minY = sBounds.y;
-		final int maxY = sBounds.y + sBounds.height;
-		int x = locationOnScreen.x;
-		int y = locationOnScreen.y + height;
-		final Dimension tipSize = tip.getPreferredSize();
-		final int tipWidth = tipSize.width;
-		if(x + tipWidth > maxX){
-			x = maxX - tipWidth;
-		}
-		if(x < minX){
-			x = minX;
-		}
-		final int tipHeight = tipSize.height;
-		if(y + tipHeight > maxY){
-			if(locationOnScreen.y - tipHeight > minY){
-				y = locationOnScreen.y - tipHeight;
-			}
-			else{
-				y = maxY - tipHeight;
-			}
-		}
-		if(y < minY){
-			y = minY;
-		}
 		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-		tipPopup = popupFactory.getPopup(nearComponent, tip, x, y);
-		tipPopup.show();
+		tipPopup = new JPopupMenu();
+		tipPopup.setLayout(new GridLayout(1, 1));
+		tipPopup.add(tip);
+		tipPopup.show(nearComponent, 0, nearComponent.getHeight());
         exitTimer.start();
 	}
 
@@ -219,7 +190,7 @@ public class NodeTooltipManager implements IExtension{
 			}
 			else
 				component = null;
-			tipPopup.hide();
+			tipPopup.setVisible(false);
 			if(component != null)
 				component.requestFocusInWindow();
 			tipPopup = null;
