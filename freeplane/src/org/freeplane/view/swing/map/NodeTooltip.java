@@ -102,12 +102,9 @@ public class NodeTooltip extends JToolTip {
 		tip.setOpaque(false);
 //		scrollPane.setOpaque(false);
 //		scrollPane.getViewport().setOpaque(false);
-		
-		mouseInsideListener = new MouseInsideListener(this);
 	}
 	
 	private static int maximumWidth = Integer.MAX_VALUE;
-	private MouseInsideListener mouseInsideListener;
 	/**
 	 *  set maximum width
 	 *  0 = no maximum width
@@ -173,9 +170,4 @@ public class NodeTooltip extends JToolTip {
 	public void setBase(URL url){
 		((HTMLDocument)tip.getDocument()).setBase(url);
 	}
-
-	public boolean isMouseInside() {
-    	return mouseInsideListener.isMouseInside();
-    }
-
 }

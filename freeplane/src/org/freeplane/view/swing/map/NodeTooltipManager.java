@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.lang.ref.WeakReference;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
@@ -25,6 +26,7 @@ import javax.swing.Timer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.MouseInsideListener;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -51,6 +53,7 @@ public class NodeTooltipManager implements IExtension{
 	final private ComponentMouseListener componentMouseListener;
 	private WeakReference<Component> focusOwnerRef;
 	private boolean mouseOverComponent;
+	private MouseInsideListener mouseInsideTooltipListener;
 
 	public static NodeTooltipManager getSharedInstance(ModeController modeController){
 		{
@@ -174,6 +177,7 @@ public class NodeTooltipManager implements IExtension{
 		tipPopup = new JPopupMenu();
 		tipPopup.setLayout(new GridLayout(1, 1));
 		tipPopup.add(tip);
+		mouseInsideTooltipListener = new MouseInsideListener(tipPopup);
 		tipPopup.show(nearComponent, 0, nearComponent.getHeight());
         exitTimer.start();
 	}
@@ -194,6 +198,7 @@ public class NodeTooltipManager implements IExtension{
 			if(component != null)
 				component.requestFocusInWindow();
 			tipPopup = null;
+			mouseInsideTooltipListener = null;
 			tip = null;
 			focusOwnerRef = null;
 			enterTimer.stop();
@@ -315,7 +320,7 @@ public class NodeTooltipManager implements IExtension{
 		}
 
 		protected boolean isMouseOverTip() {
-	        return tip instanceof NodeTooltip && ((NodeTooltip)tip).isMouseInside();
+	        return mouseInsideTooltipListener.isMouseInside();
         }
 	}
 
