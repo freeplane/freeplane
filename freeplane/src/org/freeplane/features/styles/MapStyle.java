@@ -288,7 +288,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			final ASelectableCondition condition;
 			if(styleElement.getChildrenCount() == 1){
 				final XMLElement conditionElement = styleElement.getChildAtIndex(0);
-				condition = conditionFactory.loadCondition(conditionElement);
+				try {
+	                condition = conditionFactory.loadCondition(conditionElement);
+                }
+                catch (Exception e) {
+	                e.printStackTrace();
+	                continue;
+                }
 			}
 			else{
 				condition = null;
