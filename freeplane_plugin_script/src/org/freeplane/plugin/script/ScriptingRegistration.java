@@ -206,6 +206,7 @@ class ScriptingRegistration {
 		});
 		final ScriptingConfiguration configuration = new ScriptingConfiguration();
 		ScriptingEngine.setClasspath(configuration.getClasspath());
+		ScriptCompiler.compileScriptsOnPath(configuration.getClasspath());
 		modeController.addMenuContributor(new IMenuContributor() {
 			public void updateMenus(ModeController modeController, MenuBuilder builder) {
 				registerScripts(menuBuilder, configuration);
@@ -216,7 +217,7 @@ class ScriptingRegistration {
 		    new ScriptConditionController());
 	}
 
-	private void registerScriptAddOns() {
+    private void registerScriptAddOns() {
 		File[] addonXmlFiles = AddOnsController.getController().getAddOnsDir().listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".script.xml");
@@ -250,7 +251,7 @@ class ScriptingRegistration {
 		}
 	}
 
-	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
+    private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final HashSet<String> registeredLocations = new HashSet<String>();
 		for (final String scriptsParentLocation : ScriptingConfiguration.getScriptsParentLocations()) {
 			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
