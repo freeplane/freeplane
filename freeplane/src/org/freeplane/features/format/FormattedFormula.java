@@ -25,7 +25,7 @@ import org.freeplane.core.util.SerializationMethod;
 
 /**
  * IFormattedObject that stores the format along a formula. This object does no formatting for itself but lets this
- * delegate to the FormulaContentTransformer.
+ * delegate to the FormulaTextTransformer.
  * @author vboerchers
  */
 @FactoryMethod("deserialize")
@@ -35,7 +35,6 @@ public class FormattedFormula implements IFormattedObject {
     private final String formula;
     private final String pattern;
 
-    /** tries to guess the right pattern formatter from format. */
     public FormattedFormula(final String formula, final String pattern) {
         this.formula = formula;
         this.pattern = pattern;
