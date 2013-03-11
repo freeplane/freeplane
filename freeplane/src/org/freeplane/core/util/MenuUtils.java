@@ -45,6 +45,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
+/** Utilities for dealing with the Freeplane menu: In scripts available as "global variable" menuUtils. */
 public class MenuUtils {
 	/** The userObject type for createMenuEntryTree(). */
 	public static class MenuEntry {
@@ -158,6 +159,7 @@ public class MenuUtils {
 		return null;
 	}
 
+	/** used as the basis for dynamic generation of hotkey list. */
 	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(final String menuRootKey,
 	                                                                      final MenuBuilder menuBuilder) {
 		final DefaultMutableTreeNode menuEntryTreeNode = MenuUtils.createMenuEntryTree(menuRootKey, menuBuilder);
@@ -197,6 +199,8 @@ public class MenuUtils {
 		return result;
 	}
 
+	/** Could be (but currently isn't) used to generate a mindmap representation of the menu.
+	 * @param children Enumeration of DefaultMutableTreeNode from the menu tree. */
 	@SuppressWarnings("rawtypes")
 	public static void insertAsNodeModelRecursively(final NodeModel nodeModel, final Enumeration children,
 	                                                final MapController mapController) {
@@ -227,12 +231,14 @@ public class MenuUtils {
 		return newNodeModel;
 	}
 
+	/** pretty print a keystroke. */
 	public static String formatKeyStroke(final KeyStroke keyStroke) {
 		final String keyModifiersText = KeyEvent.getKeyModifiersText(keyStroke.getModifiers());
 		final String keyText = KeyEvent.getKeyText(keyStroke.getKeyCode());
 		return keyModifiersText.length() == 0 ? keyText : keyModifiersText + "+" + keyText;
 	}
 
+	/** there are little reasons to use this in scripts. */
 	public static Node findAssignedMenuItemNodeRecursively(final DefaultMutableTreeNode menubarNode,
 	                                                       final KeyStroke keystroke) {
 		final Enumeration<?> children = menubarNode.children();
@@ -253,10 +259,13 @@ public class MenuUtils {
 		return null;
 	}
 
+	/** that's the key that is used to define keyboard accelerators, e.g. found in the auto.properties. */
     public static String makeAcceleratorKey(String menuItemKey) {
         return "acceleratorForMindMap/$" + menuItemKey + "$0";
     }
 
+    /** to be used from scripts to execute menu items. 
+     * Find out the menuItemKey of a menu item with the devtools add-on. It contains a tool for that. */
     public static void executeMenuItems(final List<String> menuItemKeys) {
         LogUtils.info("menu items to execute: " + menuItemKeys);
         final MenuBuilder menuBuilder = getMenuBuilder();
@@ -280,6 +289,7 @@ public class MenuUtils {
         return menuBuilder;
     }
 
+    /** returns the icon for a menuItemKey or null if it has none. */
     public static Icon getMenuItemIcon(String menuItemKey) {
         final DefaultMutableTreeNode treeNode = getMenuBuilder().get(menuItemKey);
         if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
