@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 
 import org.freeplane.core.resources.ResourceController;
 
-/** provides access to the current Freeplane version. In scripts use <code>Controller.freeplaneVersion</code>.
+/** provides access to the current Freeplane version. In scripts use <code>c.freeplaneVersion</code>.
  * For usage instructions see {@link #compareTo(FreeplaneVersion)}. */
 public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
@@ -124,10 +124,11 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 
 	/** Use it like this:
 	 * <pre>
-	 *   FreeplaneVersion required = FreeplaneVersion.getVersion("1.0.38");
-	 *   if (FreeplaneVersion.getVersion().compareTo(required) < 0)
-	 *       UITools.errorMessage("Freeplane version not supported"
-	 *           + " - update to at least " + required);
+     *   import org.freeplane.core.util.FreeplaneVersion
+     *   def required = FreeplaneVersion.getVersion("1.2.20")
+     *   if (c.freeplaneVersion < required)
+	 *       ui.errorMessage("Freeplane version ${c.freeplaneVersion}"
+	 *           + " not supported - update to at least ${required}")
 	 * </pre>
 	 */
 	public int compareTo(final FreeplaneVersion o) {
