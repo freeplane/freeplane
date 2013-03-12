@@ -160,7 +160,7 @@ public class MenuUtils {
 	}
 
 	/** Used as the basis for dynamic generation of hotkey list.
-	 * Same as {@link #createMenuEntryTree(String, Controller)} but all MenuEntries without associated accelerator
+	 * Same as {@link #createMenuEntryTree(String, MenuBuilder)} but all MenuEntries without associated accelerator
 	 * and (then) empty submenus are removed from the result.
 	 */
 	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(final String menuRootKey,
