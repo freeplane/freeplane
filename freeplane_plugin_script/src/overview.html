@@ -38,7 +38,7 @@
 <li><tt>node.to</tt></li>
 <li><tt>node['attr_name']</tt></li>
 <li><tt>node.attributes.values</tt></li>
-<li><tt>node.note</li>
+<li><tt>node.note</tt></li>
 <li><tt>node.details</tt></li>
 </ul>
 <p>A Convertible tries everything possible to convert an object to the requested target type. For instance <tt>node.to.date</tt> will return a date even if the node object is a String "2013-03-13" instead of a Date. This will work even with Maps imported from a data type agnostic FreeMind.</p>
@@ -47,7 +47,7 @@
 <li><tt>node.text</tt> returns the raw text, <tt>node.plainText</tt> is the same as <tt>node.to.plain</tt>.</li>
 <li><tt>node.attributes.getFirst('attr_name')</tt></li>
 <li><tt>node.attributes.map.values</tt> returns all values if there are no duplicated keys. From 1.3.2 use <tt>node.attributes.collect { it.value }</tt> instead.</li>
-<li><tt>node.noteText</li>
+<li><tt>node.noteText</tt></li>
 <li><tt>node.detailsText</tt></li>
 </ul>
 
