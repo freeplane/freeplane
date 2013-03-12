@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -201,6 +202,14 @@ public interface Proxy {
 		/** removes all attributes.
 		 * @since 1.2 */
 		void clear();
+
+		/** allows application of Groovy collection methods like each(), collect(), ...
+		 * <pre>
+		 *   def keyList = node.attributes.collect { it.key }
+         *   def values = node.attributes.collect { it.value }
+		 * </pre>
+		 * @since 1.3.2 */
+		Iterator<java.util.Map.Entry<String, Object>> iterator();
 	}
 
     /** Here are four ways to enable a cloud on the current node and switch it off again:
