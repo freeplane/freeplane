@@ -110,6 +110,7 @@
 		<delete>
 			<fileset defaultexcludes="no" dir="src" includes="**/*~"/>
 		</delete>
+		<delete file="lib/jsyntaxpane/nodehighlighter.jar" quiet="true"/>
 	</target>
 	
 </project>
