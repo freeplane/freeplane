@@ -207,6 +207,10 @@ public interface Proxy {
 		 * <pre>
 		 *   def keyList = node.attributes.collect { it.key }
          *   def values = node.attributes.collect { it.value }
+         *   node.attributes.each {
+         *       if (it.key =~ /.*day/)
+         *           it.value += ' days'
+         *   }
 		 * </pre>
 		 * @since 1.3.2 */
 		Iterator<java.util.Map.Entry<String, Object>> iterator();
@@ -612,11 +616,18 @@ public interface Proxy {
 
 		/** returns a read-only list of the names of the icons the node has. Think twice before you use this method
 		 * since it leads to ugly code, e.g. use <code>node.icons.first</code> or <code>node.icons[0]</code> instead of
-		 * <code>node.icons.icons[0]</code>. */
+		 * <code>node.icons.icons[0]</code>. Perhaps you could also use iteration over icons, see. */
 		List<String> getIcons();
 		
 		/** returns a list of the urls of the icons the node has. */
 		List<URL> getUrls();
+
+        /** allows application of Groovy collection methods like each(), collect(), ...
+         * <pre>
+         *   def freeIcons = node.icons.findAll { it.startsWith('free') }
+         * </pre>
+         * @since 1.3.2 */
+        Iterator<String> iterator();
 	}
 
 	/** Node's icons: <code>node.icons</code> - read-write. */

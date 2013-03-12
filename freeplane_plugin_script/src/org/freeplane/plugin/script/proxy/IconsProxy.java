@@ -6,6 +6,7 @@ package org.freeplane.plugin.script.proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.features.icon.IconController;
@@ -92,6 +93,27 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	    }
 	    return Collections.unmodifiableList(list);
 	}
+
+    public Iterator<String> iterator() {
+        return new Iterator<String>() {
+            final Iterator<String> iterator = getIcons().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public String next() {
+                return iterator.next();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("icons iterator is read-only");
+            }
+        };
+    }
 
 	public boolean remove(final int index) {
 		if (index >= size()) {
