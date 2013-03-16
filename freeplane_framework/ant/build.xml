@@ -455,6 +455,14 @@
 		<copy file="${workspace}/freeplane_plugin_script/dist/script-api.zip"
 			tofile="${dist}/script-api-${ver}.zip"
 			failonerror="false"/>
+		<checksum>
+		  <fileset dir="${dist}">
+		    <include name="*.dmg"/>
+		    <include name="*.zip"/>
+		    <include name="*.gz"/>
+		    <include name="*.exe"/>
+		  </fileset>
+		</checksum>
 	</target>
 
 	<target name="cleandist" depends="clean,dist">
