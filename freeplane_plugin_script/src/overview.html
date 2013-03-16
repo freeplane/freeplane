@@ -1,0 +1,32 @@
+<html>
+<body>
+<p>The Freeplane scripting API is an object oriented layer over the Freeplane internals.</p> It is meant to be upwards compatible and it grows with new Freeplane features. If you miss a special Freeplane feature in the API please create a change request in <a href="http://sourceforge.net/apps/mantisbt/freeplane/">Mantis</a>.
+<h2>The <a href="org/freeplane/plugin/script/proxy/Proxy.html">Proxy</a> interface</h2>
+<p>The interface is completely defined by the <a href="org/freeplane/plugin/script/proxy/Proxy.html">Proxy</a> interface with its numerous subinterfaces.</p>
+<p>In addition to the wrapper layer there are two extensions:</p>
+<h2><a href="org/freeplane/plugin/script/FreeplaneScriptBaseClass.html">FreeplaneScriptBaseClass</a></h2>
+This Groovy class is the base class of all formulas and Groovy scripts. It provides some methods you may find convenient.
+<h2>Utilities</h2>
+The following utility classes that also are listed in <a href="org/freeplane/plugin/script/FreeplaneScriptBaseClass.html">FreeplaneScriptBaseClass</a> might be useful. Where available use the shortcut (e.g. <tr>ui</tr> instead of <tr>UITools</tr>) since this requires no imports:
+<table border="1">
+<tr><th>Class</td><th>Shortcut</th></tr>
+<tr><td><a href="org/freeplane/core/ui/components/UITools.html">UITools</a></td><td>ui</td></tr>
+<tr><td><a href="org/freeplane/core/util/LogUtils.html">LogUtils</a></td><td>logger</td></tr>
+<tr><td><a href="org/freeplane/core/util/HtmlUtils.html">HtmlUtils</a></td><td>htmlUtils</td></tr>
+<tr><td><a href="org/freeplane/core/util/TextUtils.html">TextUtils</a></td><td>textUtils</td></tr>
+<tr><td><a href="org/freeplane/core/util/MenuUtils.html">MenuUtils</a></td><td>menuUtils</td></tr>
+<tr><td><a href="org/freeplane/plugin/script/FreeplaneScriptBaseClass.ConfigProperties.html">ConfigProperties</a></td><td>config</td></tr>
+<tr><td><a href="org/freeplane/core/util/FreeplaneVersion.html">FreeplaneVersion</a></td><td>-</td></tr>
+</table>
+<h2>Entry points</h2>
+Each script is given two variables:
+<pre>
+  Proxy.Node node
+  Proxy.Controller c
+</pre>
+
+<p>In formulas and Groovy scripts all methods and properties of the <tt>node</tt> variable are directly available so you can write <tt>children.size()</tt> instead of <tt>node.children.size()</tt>.</p>
+<h2>Access to Freeplane's internals</h2>
+<p>The existence of a comprehensive API doesn't prohibit access to internal interfaces. For most scripts this should not be necessary but especially add-on writers may need more than the scripting API. But note that these internal interfaces might change without further notice between two stable Freeplane versions (but probably not between minor versions). Also note that for understanding the internal interfaces you have to dive into the code. <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting_environment_setup">Setting up a proper development environment</a> is therefore indispensable.</p>
+</body>
+</html>

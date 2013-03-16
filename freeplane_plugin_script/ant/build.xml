@@ -62,7 +62,7 @@
 
 	<target name="api">
 		<mkdir dir="${apidocdir}" />
-		<javadoc destdir="${apidocdir}" access="public" classpath="${classpath}:build">
+		<javadoc destdir="${apidocdir}" overview="src/overview.html" access="public" classpath="${classpath}:build">
 			<sourcefiles>
 				<fileset dir="${root}">
 					<include name="**/Proxy.java" />
@@ -110,6 +110,7 @@
 		<delete>
 			<fileset defaultexcludes="no" dir="src" includes="**/*~"/>
 		</delete>
+		<delete file="lib/jsyntaxpane/nodehighlighter.jar" quiet="true"/>
 	</target>
 	
 </project>
