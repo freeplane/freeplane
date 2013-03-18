@@ -1,6 +1,5 @@
 package org.freeplane.core.util;
 
-import java.awt.datatransfer.StringSelection;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
