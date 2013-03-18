@@ -1,5 +1,6 @@
 package org.freeplane.core.util;
 
+import java.awt.datatransfer.StringSelection;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -8,6 +9,7 @@ import java.util.regex.Pattern;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.format.FormatController;
 
 /** utilities for translations, conversions to/from number and dates etc.
@@ -161,4 +163,9 @@ public class TextUtils {
 	public SimpleDateFormat getDefaultDateTimeFormat() {
 		return FormatController.getController().getDefaultDateTimeFormat();
 	}
+
+	/** Shortcut for scripting: Copies <code>string</code> to the system clipboard. */
+	public static void copyToClipboard(String string) {
+	    ClipboardController.getController().setClipboardContents(string);
+    }
 }
