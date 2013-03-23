@@ -181,8 +181,9 @@ public class FreeplaneStarter {
 
 	public void createModeControllers(final Controller controller) {
 		MModeControllerFactory.createModeController();
-		controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
-			applicationResourceController.getLastOpenedList());
+		final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
+		mindMapModeController.getMapController().addMapChangeListener(applicationResourceController.getLastOpenedList());
+		mindMapModeController.addMenuContributor(FilterController.getController(controller).getMenuContributor());
 		BModeControllerFactory.createModeController();
 		FModeControllerFactory.createModeController();
     }

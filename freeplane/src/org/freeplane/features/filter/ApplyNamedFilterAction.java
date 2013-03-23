@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2009 Dimitry Polivaev
+ *  Copyright (C) 2013 Dimitry
  *
- *  This file author is Dimitry Polivaev
+ *  This file author is Dimitry
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,34 +26,20 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 
 /**
  * @author Dimitry Polivaev
- * Mar 30, 2009
+ * 23.03.2013
  */
-final class QuickFilterAction extends AFreeplaneAction {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
+@SuppressWarnings("serial")
+public class ApplyNamedFilterAction extends AFreeplaneAction {
+	private final ASelectableCondition condition;
 	private final FilterController filterController;
-	private final FilterConditionEditor filterEditor;
 
-	/**
-	 * @param filterController
-	 * @param quickEditor 
-	 */
-	QuickFilterAction(final FilterController filterController, FilterConditionEditor quickEditor) {
-		super("QuickFilterAction");
+	public ApplyNamedFilterAction(FilterController filterController,  ASelectableCondition condition) {
+	    super("ApplyNamedFilterAction." + condition.getUserName(), condition.getUserName(), null);
 		this.filterController = filterController;
-		this.filterEditor = quickEditor;
-	}
+		this.condition = condition;
+    }
 
-	public void actionPerformed(final ActionEvent e) {
-		final ASelectableCondition condition = filterEditor.getCondition();
-		if(condition == null){
-			return;
-		}
+	public void actionPerformed(ActionEvent e) {
 		filterController.apply(condition);
 	}
 }
