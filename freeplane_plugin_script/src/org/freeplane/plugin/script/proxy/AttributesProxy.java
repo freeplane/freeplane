@@ -257,10 +257,11 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
         return !isEmpty();
     }
     
+    @SuppressWarnings("unchecked")
     public Iterator<Map.Entry<String, Object>> iterator() {
         final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
         if (attributeTableModel == null) {
-            return Collections.emptyIterator();
+            return  (Iterator<Map.Entry<String, Object>>) (Object) Collections.emptyMap().entrySet().iterator();
         }
         return new Iterator<Map.Entry<String, Object>>() {
             final private Iterator<Attribute> iterator = attributeTableModel.getAttributes().iterator();
