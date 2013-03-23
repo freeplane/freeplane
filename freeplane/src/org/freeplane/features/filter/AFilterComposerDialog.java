@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -560,7 +561,9 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		final JLabel conditionColumnHeader = new JLabel(TextUtils.getText("filter_conditions"));
 		conditionColumnHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);
-		conditionScrollPane.setPreferredSize(new Dimension(500, 200));
+		final Rectangle desktopBounds = UITools.getDesktopBounds(this);
+		Dimension preferredSize = new Dimension(desktopBounds.width * 2 / 3, desktopBounds.height * 2 / 3);
+		conditionScrollPane.setPreferredSize(preferredSize);
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
 		UITools.addEscapeActionToDialog(this);
 		pack();
