@@ -21,13 +21,17 @@ package org.freeplane.features.filter;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
@@ -95,8 +99,22 @@ class FindAction extends AFreeplaneAction {
 		editor.addAncestorListener(new AncestorListener() {
 			public void ancestorAdded(final AncestorEvent event) {
 				final Component component = event.getComponent();
-				((FilterConditionEditor) component).focusInputField(true);
-				((JComponent) component).removeAncestorListener(this);
+				final Window windowAncestor = SwingUtilities.getWindowAncestor(component);
+				if(windowAncestor.isFocused())
+					editor.focusInputField(true);
+				else{
+					windowAncestor.addWindowFocusListener(new WindowFocusListener() {
+						public void windowLostFocus(WindowEvent e) {
+						}
+						
+						public void windowGainedFocus(WindowEvent e) {
+							windowAncestor.removeWindowFocusListener(this);
+							editor.focusInputField(true);
+						}
+					});
+					windowAncestor.toFront();
+				}
+				editor.removeAncestorListener(this);
 			}
 
 			public void ancestorMoved(final AncestorEvent event) {

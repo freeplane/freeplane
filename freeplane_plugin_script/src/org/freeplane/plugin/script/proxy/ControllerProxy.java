@@ -79,16 +79,20 @@ class ControllerProxy implements Proxy.Controller {
 		    .getSortedSelection(differentSubtrees), scriptContext);
 	}
 
-	public void select(final Node toSelect) {
-		final NodeModel nodeModel = ((NodeProxy) toSelect).getDelegate();
-		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
-	}
+    public void select(final Node toSelect) {
+        if (toSelect != null) {
+            final NodeModel nodeModel = ((NodeProxy) toSelect).getDelegate();
+            Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
+        }
+    }
 
-	public void selectBranch(final Node branchRoot) {
-		final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
-		Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
-		Controller.getCurrentController().getSelection().selectBranch(nodeModel, false);
-	}
+    public void selectBranch(final Node branchRoot) {
+        if (branchRoot != null) {
+            final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
+            Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
+            Controller.getCurrentController().getSelection().selectBranch(nodeModel, false);
+        }
+    }
 
 	public void selectMultipleNodes(final List<Node> toSelect) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();

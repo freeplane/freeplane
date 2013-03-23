@@ -233,27 +233,31 @@ public class ReportGenerator extends StreamHandler {
 		EventQueue.invokeLater(new Runnable() {
 			@SuppressWarnings("serial")
 			public void run() {
-				errorCounter++;
-				if(TextUtils.getRawText("internal_error_tooltip", null) != null){
-					if(logButton == null){
-						final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-								"/images/icons/messagebox_warning.png"));
-						logButton = new JButton(){
-							@Override public Dimension getPreferredSize(){
-								Dimension preferredSize = super.getPreferredSize();
-								preferredSize.height = getIcon().getIconHeight();
-								return preferredSize;
-							}
-						};
-						logButton.addActionListener(new LogOpener());
-						logButton.setIcon(errorIcon);
-						String tooltip = TextUtils.getText("internal_error_tooltip");
-						logButton.setToolTipText(tooltip);
-						Controller.getCurrentController().getViewController().addStatusComponent("internal_error", logButton);
-					}
-					logButton.setText(TextUtils.format("errornumber", errorCounter));
+				try {
+	                errorCounter++;
+	                if(TextUtils.getRawText("internal_error_tooltip", null) != null){
+	                	if(logButton == null){
+	                		final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+	                				"/images/icons/messagebox_warning.png"));
+	                		logButton = new JButton(){
+	                			@Override public Dimension getPreferredSize(){
+	                				Dimension preferredSize = super.getPreferredSize();
+	                				preferredSize.height = getIcon().getIconHeight();
+	                				return preferredSize;
+	                			}
+	                		};
+	                		logButton.addActionListener(new LogOpener());
+	                		logButton.setIcon(errorIcon);
+	                		String tooltip = TextUtils.getText("internal_error_tooltip");
+	                		logButton.setToolTipText(tooltip);
+	                		Controller.getCurrentController().getViewController().addStatusComponent("internal_error", logButton);
+	                	}
+	                	logButton.setText(TextUtils.format("errornumber", errorCounter));
 
-				}
+	                }
+                }
+                catch (Exception e) {
+                }
 			}
 		});
 		super.publish(record);
