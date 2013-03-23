@@ -5,12 +5,13 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.main.application.CommandLineParser.Options;
 import org.junit.Before;
 import org.junit.Test;
 
 public class CommandLineParserTest {
-    private String[] emptyArray = new String[0];
+    private String[] emptyArray = args();
     private String[] someFiles = args("file1", "file2");
     private String menuItem = "$SomeAction0$";
     private String[] menuItems = args(menuItem);
@@ -19,6 +20,7 @@ public class CommandLineParserTest {
     @Before
     public void setUp() {
         System.setProperty("nonInteractive", "false");
+        resetUserDir();
     }
     
     @Test
@@ -81,6 +83,30 @@ public class CommandLineParserTest {
     public void testFilesAndMenuItemAndStopAndNonInteractiveThreeArgs() {
         final String[] args = merge(args("-X" + menuItem, "-N", "-S"), someFiles);
         check(CommandLineParser.parse(args), someFiles, menuItemsWithQuit, true, true, false);
+    }
+    
+    @Test
+    public void testSetUserDirOneArg() {
+        final String userDir = "path_to_some_directory";
+        final String[] args = merge(args("-U" + userDir), someFiles);
+        check(CommandLineParser.parse(args), someFiles, emptyArray, false, false, false);
+        checkUserDir(userDir);
+    }
+    
+    @Test
+    public void testSetUserDirTwoArgs() {
+        final String userDir = "path_to_some_directory";
+        final String[] args = merge(args("-U", userDir), someFiles);
+        check(CommandLineParser.parse(args), someFiles, emptyArray, false, false, false);
+        checkUserDir(userDir);
+    }
+
+    private void resetUserDir() {
+        System.setProperty(Compat.PROPERTY_FREEPLANE_USERDIR, " ");
+    }
+    
+    private void checkUserDir(final String userDir) {
+        assertEquals(System.getProperty(Compat.PROPERTY_FREEPLANE_USERDIR), userDir);
     }
 
     private void check(Options result, String[] filesToOpen, final String[] menuItems, final boolean stopAfterLaunch,
