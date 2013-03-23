@@ -35,15 +35,15 @@ import org.freeplane.features.mode.ModeController;
  * 23.03.2013
  */
 public class FilterMenuBuilder implements IMenuContributor {
-	private static final String MENU_NAMED_FILTERS = "menu_named_filters";
+	private static final String MENU_USER_DEFINED_FILTERS = "menu_user_defined_filters";
 	private final FilterController filterController;
 	FilterMenuBuilder(FilterController filtercontroller){
 		this.filterController = filtercontroller;
 	}
 	public void updateMenus(ModeController modeController, MenuBuilder builder) {
-		if(builder.get(MENU_NAMED_FILTERS) == null)
+		if(builder.get(MENU_USER_DEFINED_FILTERS) == null)
 			return;
-		builder.removeChildElements(MENU_NAMED_FILTERS);
+		builder.removeChildElements(MENU_USER_DEFINED_FILTERS);
 		final DefaultComboBoxModel filterConditions = filterController.getFilterConditions();
 		final HashSet<String> usedNames = new HashSet<String>();
 		for(int i = 0; i < filterConditions.getSize(); i++){
@@ -51,7 +51,7 @@ public class FilterMenuBuilder implements IMenuContributor {
 			final String conditionName = condition.getUserName();
 			if(conditionName != null && usedNames.add(conditionName)){
 				final ApplyNamedFilterAction action = new ApplyNamedFilterAction(filterController, condition);
-				builder.addAction(MENU_NAMED_FILTERS, action,UIBuilder.AS_CHILD );
+				builder.addAction(MENU_USER_DEFINED_FILTERS, action,UIBuilder.AS_CHILD );
 			}
 		}
 	}

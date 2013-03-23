@@ -338,7 +338,7 @@
 		</menu_submenu>
 		<menu_submenu name="filter" name_ref="menu_filter">
 		<menu_category name="Filter">
-			<menu_submenu name="named_filters" name_ref="named_filters" menu_key="menu_named_filters"/>
+			<menu_submenu name="user_defined_filters" name_ref="user_defined_filters" menu_key="menu_user_defined_filters"/>
 			<menu_category name="DoFilter">
 				<menu_action action="UndoFilterAction" />
 				<menu_action action="RedoFilterAction" />
