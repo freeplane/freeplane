@@ -1,4 +1,8 @@
 ===============================
+1.2.23
+===============================
+Bug fix for dragging of nodes when node tool tip is shown
+===============================
 1.2.22
 ===============================
 Bug fixes for script based conditions for filters and conditional styles
