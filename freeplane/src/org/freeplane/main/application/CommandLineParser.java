@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.freeplane.core.util.Compat;
+
 class CommandLineParser {
     static final String QUIT_MENU_ITEM_KEY = "MB_QuitAction";
 
@@ -12,6 +14,8 @@ class CommandLineParser {
                 + "\n -X<menukey>: execute menu item with key <menukey>. Use devtools add-on to find the menu keys" //
                 + "\n -S: stop after executing menu items" //
                 + "\n -N: set the 'nonInteractive' system property to 'true'" //
+                + "\n -U<userdir>: set the freeplane user config directory (default: "
+                + Compat.getDefaultFreeplaneUserDirectory() + ")" //
                 + "\n -h|--help: print this help";
         private List<String> filesToOpen = new ArrayList<String>();
         private List<String> menuItemsToExecute = new ArrayList<String>();
@@ -128,6 +132,17 @@ class CommandLineParser {
                     result.addMenuItemToExecute(arg.substring(2));
                 else if (args.length >= i)
                     result.addMenuItemToExecute(args[++i]);
+            }
+            else if (arg.startsWith("-U")) {
+                String userdir = null;
+                if (arg.length() > 2)
+                    userdir = arg.substring(2);
+                else if (args.length >= i)
+                    userdir = args[++i];
+                else
+                    System.err.println("option -U<userdir> misses its parameter");
+                if (userdir != null)
+                    System.setProperty("org.freeplane.userfpdir", userdir);
             }
             else if (arg.startsWith("-h")) {
                 result.setHelpRequested(true);

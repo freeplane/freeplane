@@ -4,6 +4,9 @@
 Bigger filter composer window depending on screen resolution
 Ability to rearrange custom filters in the filter composer
 Named filter conditions are part of the main menu
+Command line option -U <user config directory>
+Compile scripts on class path on startup
+Several scripting API extensions
 
 ===============================
 1.3.1
