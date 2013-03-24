@@ -22,6 +22,7 @@ import javax.swing.JToolTip;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -67,6 +68,7 @@ public class NodeTooltipManager implements IExtension{
 			"toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
 		NodeTooltip.setMaximumWidth(maxWidth);
 		setTooltipDelays(instance);
+		UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
@@ -165,14 +167,7 @@ public class NodeTooltipManager implements IExtension{
 		});
 
 		tip.setTipText(toolTipText);
-		PopupFactory popupFactory = PopupFactory.getSharedInstance();
-		final JComponent nearComponent;
-//		if (insideComponent instanceof MainView) {
-//			nearComponent = ((MainView)insideComponent).getNodeView().getContent();
-//		}
-//		else{
-		nearComponent = insideComponent;
-//		}
+		final JComponent nearComponent = insideComponent;
 		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
 		tipPopup = new JPopupMenu();
 		tipPopup.setLayout(new GridLayout(1, 1));
