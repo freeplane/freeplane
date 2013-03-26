@@ -88,7 +88,7 @@ class ConditionalStyleTable extends JTable {
 	    setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
 //	    setSelectionBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
 	    setRowHeight(20);
-		conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("always"));
+		conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("always"), true);
 		columnModel.getColumn(1).setCellRenderer(conditionRenderer);
 		columnModel.getColumn(1).setCellEditor(new ConditionEditor());
 		final JComboBox styleBox = new JComboBox();

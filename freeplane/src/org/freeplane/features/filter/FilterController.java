@@ -368,7 +368,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(applyQuickSelectBtn);
 		filterToolbar.add(applyQuickFilterBtn);
 		filterToolbar.add(applyQuickHighlightBtn);
-		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
+		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
+		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
 		return filterToolbar;
 	}
 
@@ -392,7 +393,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	DefaultConditionRenderer getConditionRenderer() {
 		if (conditionRenderer == null) {
-			conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"));
+			conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), true);
 		}
 		return conditionRenderer;
 	}
