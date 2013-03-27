@@ -27,7 +27,7 @@ public class AddOnProperties {
 	public static final String OP_CONFIGURE = "configure";
 	public static final String OP_DEACTIVATE = "deactivate";
 	public static final String OP_ACTIVATE = "activate";
-	public static final String OP_DEINSTALL = "deinstall";
+	public static final String OP_UNINSTALL = "uninstall";
 
 	private final AddOnType addOnType;
 	private boolean active = true;
@@ -42,8 +42,9 @@ public class AddOnProperties {
 	private Map<String, Map<String, String>> translations;
 	private String preferencesXml;
 	private Map<String, String> defaultProperties;
-	private List<String[/*action, file*/]> deinstallationRules;
+	private List<String[/*action, file*/]> uninstallationRules;
 	private List<String> images;
+	private List<String> lib;
 	private File addOnPropertiesFile;
 
 	public AddOnProperties(AddOnType addOnType) {
@@ -65,12 +66,13 @@ public class AddOnProperties {
 		this.setTranslations(parseTranslations(addOnElement.getChildrenNamed("translations")));
 		this.setPreferencesXml(getContentOfFirstElement(addOnElement.getChildrenNamed("preferences.xml")));
 		this.setDefaultProperties(parseAttributesToProperties(addOnElement.getChildrenNamed("default.properties")));
-		this.setImages(parseImages(addOnElement.getChildrenNamed("images")));
-		this.setDeinstallationRules(parseDeinstallationRules(addOnElement.getChildrenNamed("deinstall")));
+		this.setImages(parseBinaries(addOnElement.getChildrenNamed("images")));
+		this.setLib(parseBinaries(addOnElement.getChildrenNamed("lib")));
+		this.setUninstallationRules(parseUninstallationRules(addOnElement.getChildrenNamed("uninstall")));
 		validate();
 	}
 
-    private URL parseHomepage(String homepage) {
+	private URL parseHomepage(String homepage) {
 		try {
 			return new URL(homepage);
 		}
@@ -113,7 +115,7 @@ public class AddOnProperties {
 		return result;
 	}
 
-    private List<String> parseImages(Vector<XMLElement> xmlElements) {
+    private List<String> parseBinaries(Vector<XMLElement> xmlElements) {
         final List<String> result = new ArrayList<String>();
         if (xmlElements != null && !xmlElements.isEmpty()) {
             for (XMLElement xmlElement : xmlElements.get(0).getChildren()) {
@@ -123,7 +125,7 @@ public class AddOnProperties {
         return result;
     }
 
-	private List<String[]> parseDeinstallationRules(Vector<XMLElement> xmlElements) {
+	private List<String[]> parseUninstallationRules(Vector<XMLElement> xmlElements) {
 		final List<String[]> result = new ArrayList<String[]>();
 		if (xmlElements != null && !xmlElements.isEmpty()) {
 			for (XMLElement xmlElement : xmlElements.get(0).getChildren()) {
@@ -156,7 +158,7 @@ public class AddOnProperties {
 	public String getTranslatedName() {
 		return TextUtils.getRawText(getNameKey());
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -253,12 +255,12 @@ public class AddOnProperties {
 		this.defaultProperties = defaultProperties;
 	}
 
-	public List<String[]> getDeinstallationRules() {
-		return deinstallationRules;
+	public List<String[]> getUninstallationRules() {
+		return uninstallationRules;
 	}
 
-	public void setDeinstallationRules(List<String[]> rules) {
-		this.deinstallationRules = rules;
+	public void setUninstallationRules(List<String[]> rules) {
+		this.uninstallationRules = rules;
 	}
 
     public List<String> getImages() {
@@ -268,6 +270,15 @@ public class AddOnProperties {
     public void setImages(Collection<String> images) {
         this.images = new ArrayList<String>(images);
     }
+
+    public List<String> getLib() {
+    	return lib;
+	}
+
+    public void setLib(Collection<String> lib) {
+    	this.lib = new ArrayList<String>(lib);
+
+	}
 
     /** the persistence location of this AddOnProperties object. */
 	public File getAddOnPropertiesFile() {
@@ -285,8 +296,8 @@ public class AddOnProperties {
 			return active;
 		if (opName.equals(OP_ACTIVATE))
 			return !active;
-		if (opName.equals(OP_DEINSTALL))
-			return deinstallationRules != null && !deinstallationRules.isEmpty();
+		if (opName.equals(OP_UNINSTALL))
+			return uninstallationRules != null && !uninstallationRules.isEmpty();
 		return false;
 	}
 
@@ -326,8 +337,8 @@ public class AddOnProperties {
 	// 		writer.write('<![CDATA[' + configMap['preferences.xml'] + ']]>')
 	// 	}
 	// 	'default.properties'( configMap['default.properties'] )
-	// 	deinstall {
-	// 		configMap['deinstall'].collect { pair ->
+	// 	uninstall {
+	// 		configMap['uninstall'].collect { pair ->
 	// 			"${pair[0]}"(pair[1])
 	// 		}
 	// 	}
@@ -351,7 +362,8 @@ public class AddOnProperties {
 		addTranslationsAsChild(addonElement);
 		addDefaultPropertiesAsChild(addonElement);
 		addImagesAsChild(addonElement);
-		addDeinstallationRulesAsChild(addonElement);
+		addLibAsChild(addonElement);
+		addUninstallationRulesAsChild(addonElement);
 		return addonElement;
 	}
 
@@ -385,6 +397,18 @@ public class AddOnProperties {
 		parent.addChild(xmlElement);
 	}
 
+	private void addLibAsChild(XMLElement parent) {
+        final XMLElement xmlElement = new XMLElement("libs");
+        if (lib != null) {
+            for (String l : lib) {
+                final XMLElement libElement = new XMLElement("lib");
+                libElement.setAttribute("name", l);
+                xmlElement.addChild(libElement);
+            }
+        }
+        parent.addChild(xmlElement);
+	}
+
     private void addImagesAsChild(XMLElement parent) {
         final XMLElement xmlElement = new XMLElement("images");
         if (images != null) {
@@ -397,9 +421,9 @@ public class AddOnProperties {
         parent.addChild(xmlElement);
     }
 
-	private void addDeinstallationRulesAsChild(XMLElement parent) {
-	    final XMLElement xmlElement = new XMLElement("deinstall");
-	    for (String[] rule : deinstallationRules) {
+	private void addUninstallationRulesAsChild(XMLElement parent) {
+	    final XMLElement xmlElement = new XMLElement("uninstall");
+	    for (String[] rule : uninstallationRules) {
 	        final XMLElement ruleElement = new XMLElement(rule[0]);
 	        ruleElement.setContent(rule[1]);
 	        xmlElement.addChild(ruleElement);

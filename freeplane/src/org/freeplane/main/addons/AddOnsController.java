@@ -157,9 +157,9 @@ public class AddOnsController {
 		}
     }
 
-	public void deinstall(AddOnProperties addOn) {
-		LogUtils.info("deinstalling " + addOn);
-		for (String[] rule : addOn.getDeinstallationRules()) {
+	public void uninstall(AddOnProperties addOn) {
+		LogUtils.info("uninstalling " + addOn);
+		for (String[] rule : addOn.getUninstallationRules()) {
 			if (rule[0].equals("delete")) {
 				final File file = new File(expandVariables(rule));
 				if (!file.exists()) {
@@ -206,13 +206,13 @@ public class AddOnsController {
 
 	public void setAutoInstallEnabled(boolean autoInstall) {
 	   this.autoInstall = autoInstall;
-	    
+
     }
 
 	public boolean isAutoInstallEnabled() {
     	return autoInstall;
     }
-	
+
 	public AddOnProperties getInstalledAddOn(final String name) {
 		// Performance consideration: list is small -> iteration over list is OK.
 		for (AddOnProperties addOn : installedAddOns) {
