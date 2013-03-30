@@ -64,10 +64,6 @@ public class EditNodeDialog extends EditNodeBase {
 	private final boolean enableSplit;
 
 	private class LongNodeDialog extends EditDialog {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 
 		public LongNodeDialog(final RootPaneContainer frame, final String title, final Color background) {
 			super(EditNodeDialog.this, title, frame);

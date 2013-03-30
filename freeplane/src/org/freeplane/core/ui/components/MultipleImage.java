@@ -27,10 +27,6 @@ import java.util.List;
 import javax.swing.Icon;
 
 public class MultipleImage implements Icon {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	final private List<Icon> mIcons = new ArrayList<Icon>();
 
 	public MultipleImage() {

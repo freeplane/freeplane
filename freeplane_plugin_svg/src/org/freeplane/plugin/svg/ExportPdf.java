@@ -42,10 +42,6 @@ import org.w3c.dom.Element;
  * @author foltin
  */
 class ExportPdf extends ExportVectorGraphic {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public ExportPdf() {
 	}

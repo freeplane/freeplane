@@ -29,7 +29,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
@@ -42,9 +41,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
 
 class FindAction extends AFreeplaneAction {
