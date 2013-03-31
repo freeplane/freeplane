@@ -382,8 +382,11 @@ public class LinkController extends SelectionController implements IExtension {
     }
 
 	protected void loadURL(final NodeModel selectedNode, final ActionEvent e) {
-		final URI link = NodeLinks.getValidLink(selectedNode);
-		if (link != null) {
+		loadURL(selectedNode, e, NodeLinks.getValidLink(selectedNode));
+	}
+
+    public void loadURL(final NodeModel selectedNode, final ActionEvent e, final URI link) {
+        if (link != null) {
 			onDeselect(selectedNode);
 			ModeController modeController = Controller.getCurrentModeController();
 			if (LinkController.isMenuItemLink(link)) {
@@ -405,7 +408,7 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 			onSelect(modeController.getController().getSelection().getSelected());
 		}
-	}
+    }
 
 	public static URI toRelativeURI(final File map, final File input) {
 		try {

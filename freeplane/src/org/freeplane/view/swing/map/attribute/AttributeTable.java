@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.HierarchyEvent;
@@ -329,7 +330,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				final int xmax = linkIcon != null ? linkIcon.getIconWidth() : 0;
 				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
 				if(x < xmax){
-					UrlManager.getController().loadURL(uri);
+					LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), uri);
 					return false;
 				}
              }
