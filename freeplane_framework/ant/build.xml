@@ -528,6 +528,8 @@
 			  dir="${workspace}/freeplane_plugin_formula"/>
 		<ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_bugreport"/>
+		<ant antfile="ant/build.xml" target="clean" inheritall="false"
+			  dir="${workspace}/freeplane_plugin_openmaps"/>
 	</target>
 
 </project>
