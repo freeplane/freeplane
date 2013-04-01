@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.filter;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.DefaultComboBoxModel;

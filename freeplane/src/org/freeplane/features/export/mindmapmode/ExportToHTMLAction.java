@@ -35,11 +35,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 
 class ExportToHTMLAction implements IExportEngine {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	public ExportToHTMLAction() {
 		super();
 	}

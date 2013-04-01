@@ -20,7 +20,6 @@
 package org.freeplane.core.ui;
 
 import java.awt.Component;
-import java.awt.Container;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
