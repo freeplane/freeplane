@@ -292,6 +292,14 @@ public interface Proxy {
 		String getTargetLabel();
 
 		boolean simulatesEdge();
+
+		/** returns a Point.
+		 * @since 1.3.3 */
+		List<Integer> getStartInclination();
+		
+		/** returns a Point.
+		 * @since 1.3.3 */
+		List<Integer> getEndInclination();
 	}
 
 	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
@@ -326,6 +334,10 @@ public interface Proxy {
 		void setStartArrow(ArrowType arrowType);
 
 		void setTargetLabel(String label);
+
+        /** startPoint, endPoint: list of two integers representing a Point.
+         * @since 1.3.3 */
+        void setInclination(final List<Integer> startPoint, final List<Integer> endPoint);
 	}
 
 	/** Access to global state: <code>c</code> - read-only. */
