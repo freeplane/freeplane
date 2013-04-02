@@ -164,8 +164,8 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
     private static List<Integer> pointToList(Point point) {
         ArrayList<Integer> result = new ArrayList<Integer>(2);
-        result.set(0, point.x);
-        result.set(1, point.y);
+        result.add(point.x);
+        result.add(point.y);
         return result;
     }
 }
