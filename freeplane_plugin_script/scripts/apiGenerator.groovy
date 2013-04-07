@@ -16,6 +16,7 @@ import org.freeplane.core.util.TextUtils
 import org.freeplane.plugin.script.FreeplaneScriptBaseClass
 import org.freeplane.plugin.script.proxy.Convertible
 import org.freeplane.plugin.script.proxy.Proxy
+import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 
 // FIXME: api is installed locally but is there a portable way to find it?
@@ -253,6 +254,7 @@ makeApi(proxy, Convertible.class)
 def utils = createChild(newMap.root, UTILITES_NODE, null)
 initHeading(utils)
 makeApi(utils, FreeplaneScriptBaseClass.class)
+makeApi(proxy, ScriptUtils.class)
 makeApi(utils, UITools.class)
 makeApi(utils, TextUtils.class)
 makeApi(utils, FreeplaneVersion.class)

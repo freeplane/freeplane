@@ -58,6 +58,7 @@
 					<include name="**/Proxy.java" />
 					<include name="**/Convertible.java" />
 					<include name="**/FreeplaneScriptBaseClass.java" />
+					<include name="**/ScriptUtils.java" />
 				</fileset>
 				<fileset dir="${workspace}/freeplane">
 					<include name="**/UITools.java" />
