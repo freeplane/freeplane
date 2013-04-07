@@ -71,7 +71,17 @@
 </xsl:when>
 <xsl:when test="@TEXT=''"></xsl:when>
 <xsl:otherwise>
+<xsl:choose>
+<xsl:when test="starts-with(@TEXT, '\latex ')">
+<xsl:value-of select="substring-after(@TEXT, '\latex ')"/>
+</xsl:when>
+<xsl:when test="@FORMAT='latexPatternFormat'">
+<xsl:apply-templates select="@TEXT|richcontent"  mode="rawLatex"/>
+</xsl:when>
+<xsl:otherwise>
 <xsl:apply-templates select="@TEXT|richcontent"  mode="addEol"/>
+</xsl:otherwise>
+</xsl:choose>
 </xsl:otherwise>
 </xsl:choose>
 <xsl:apply-templates select="node" />
@@ -91,6 +101,9 @@
 	<xsl:apply-templates select="."/>
 </xsl:template>
 <!-- LaTeXChar: A recursive function that generates LaTeX special characters -->
+<xsl:template match = "@*|text()" mode="rawLatex">
+	<xsl:value-of select="."/>
+</xsl:template>
 <xsl:template match = "@*|text()">	
   <xsl:call-template name="esc">
     <xsl:with-param name="c" select='"&#160;"'/>

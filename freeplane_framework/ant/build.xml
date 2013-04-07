@@ -272,6 +272,7 @@
 				<exclude name="**/*.exe" />
 				<exclude name="**/*.res" />
 				<exclude name="**/*.jar" />
+				<exclude name="**/*.dll" />
 				<exclude name="**/*JavaApplicationStub*" />
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
