@@ -1151,12 +1151,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public NodeView getNextVisibleSibling(NodeView node, boolean down) {
-	    return returnSelfIfOtherParent(node, down);
-    }
-
-    private NodeView returnSelfIfOtherParent(NodeView node, boolean down) {
-        final NodeView nextNode = down ? node.getNextVisibleSibling() : node.getPreviousVisibleSibling();
-        return nextNode.getParentView() == node.getParentView() ? nextNode : node;
+	    return down ? node.getNextVisibleSibling() : node.getPreviousVisibleSibling();
     }
 
 	public boolean selectDown(boolean continious) {
