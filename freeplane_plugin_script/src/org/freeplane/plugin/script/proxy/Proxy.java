@@ -932,6 +932,13 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #getParent()} instead. */
 		Node getParentNode();
 
+        /** a list of all nodes starting from this node upto (and including) the root node.
+         * <pre>
+         *   def path = pathToRoot.collect{ it.plainText }.join('.')
+         * </pre>
+         * @since 1.3.3 */
+        List<Node> getPathToRoot();
+
         /** returns the next node with respect to this node in breadth-first order.
          * Returns null if this node is the only one in the map. */
         Node getNext();
