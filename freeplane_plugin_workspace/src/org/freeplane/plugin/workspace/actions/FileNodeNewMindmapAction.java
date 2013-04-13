@@ -11,7 +11,6 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FilenameUtils;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -29,7 +28,7 @@ public class FileNodeNewMindmapAction extends AWorkspaceAction {
 	private static final Icon icon;
 	
 	static {
-		icon = (ResourceController.getResourceController().getProperty("ApplicationName", "Docear").equals("Docear") ? DefaultFileNode.DOCEAR_ICON : DefaultFileNode.FREEPLANE_ICON);
+		icon = DefaultFileNode.getApplicationIcon();
 	}
 
 	public FileNodeNewMindmapAction() {

@@ -105,6 +105,7 @@ public class FileFolderDropHandler extends DefaultFileDropHandler {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
+	@SuppressWarnings("unchecked")
 	public boolean processDrop(AWorkspaceTreeNode targetNode, Transferable transferable, int dropAction) {
 		try {
 			if (transferable.isDataFlavorSupported(WorkspaceTransferable.WORKSPACE_NODE_FLAVOR)) {

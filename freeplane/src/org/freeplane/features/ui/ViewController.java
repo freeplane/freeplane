@@ -63,6 +63,7 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -248,7 +249,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
-		toolbarPanel[LEFT] = Box.createVerticalBox();
+		toolbarPanel[LEFT] = Box.createHorizontalBox(); //DOCEAR - set horizontal
 		toolbarPanel[RIGHT] = Box.createVerticalBox();
 		scrollPane = new MapViewScrollPane();
 		resourceController.addPropertyChangeListener(this);
@@ -884,7 +885,27 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			}
 			else {
-				UIManager.setLookAndFeel(lookAndFeel);
+				//DOCEAR - find LnF by name
+				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
+				boolean setLnF = false;
+				for(LookAndFeelInfo lafInfo : lafInfos){
+					if(lafInfo.getName().equalsIgnoreCase(lookAndFeel)){										
+						UIManager.setLookAndFeel(lafInfo.getClassName());						
+						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", lafInfo.getClassName());
+						setLnF = true;
+						break;										
+					}
+					if(lafInfo.getClassName().equals(lookAndFeel)){
+						UIManager.setLookAndFeel(lafInfo.getClassName());
+						setLnF = true;
+						break;
+					}
+				}
+				
+				if(!setLnF){
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
+				}
 			}
 		}
 		catch (final Exception ex) {

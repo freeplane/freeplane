@@ -15,7 +15,7 @@ import org.osgi.framework.BundleContext;
 /**
  * 
  */
-public abstract class WorkspaceDependentService implements BundleActivator{
+public abstract class WorkspaceDependingService implements BundleActivator{
 	public final static String DEPENDS_ON = "org.freeplane.plugin.workspace";
 	
 	/***********************************************************************************
@@ -28,7 +28,7 @@ public abstract class WorkspaceDependentService implements BundleActivator{
 
 	public abstract void startPlugin(BundleContext context, ModeController modeController);
 	
-	protected abstract Collection<IWorkspaceDependentControllerExtension> getControllerExtensions();
+	protected abstract Collection<IWorkspaceDependingControllerExtension> getControllerExtensions();
 	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
@@ -38,18 +38,18 @@ public abstract class WorkspaceDependentService implements BundleActivator{
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("dependsOn", new String[] { DEPENDS_ON }); //$NON-NLS-1$
 
-		Collection<IWorkspaceDependentControllerExtension> extensions = getControllerExtensions();
+		Collection<IWorkspaceDependingControllerExtension> extensions = getControllerExtensions();
 		if(extensions != null) {
-			for(IWorkspaceDependentControllerExtension provider : extensions) {
+			for(IWorkspaceDependingControllerExtension provider : extensions) {
 				try {
-					context.registerService(IWorkspaceDependentControllerExtension.class.getName(), provider, props);
+					context.registerService(IWorkspaceDependingControllerExtension.class.getName(), provider, props);
 				}
 				catch (Exception e) {
 					LogUtils.warn(provider.getClass() +" has not been registered", e);
 				}
 			}
 		}
-		context.registerService(WorkspaceDependentService.class.getName(), this, props);
+		context.registerService(WorkspaceDependingService.class.getName(), this, props);
 	}
 	
 }

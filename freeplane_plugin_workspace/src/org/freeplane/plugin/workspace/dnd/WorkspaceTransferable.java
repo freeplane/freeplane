@@ -133,6 +133,7 @@ public class WorkspaceTransferable implements Transferable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void merge(DataFlavor flavor, Object transferData) {
 		if(flavor.equals(WORKSPACE_URI_LIST_FLAVOR)) {
 			mergeURIList((String)transferData);
@@ -146,6 +147,7 @@ public class WorkspaceTransferable implements Transferable {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	private void mergeNodeList(List<AWorkspaceTreeNode> transferData) {
 		List<AWorkspaceTreeNode> nodes = (List<AWorkspaceTreeNode>) dataMap.get(WORKSPACE_NODE_FLAVOR);
 		for (AWorkspaceTreeNode newNode : transferData) {
@@ -155,6 +157,7 @@ public class WorkspaceTransferable implements Transferable {
 		}		
 	}
 
+	@SuppressWarnings("unchecked")
 	private void mergeFileList(List<File> transferData) {
 		List<File> files = (List<File>) dataMap.get(WORKSPACE_FILE_LIST_FLAVOR);
 		for (File newFile : transferData) {
@@ -177,6 +180,7 @@ public class WorkspaceTransferable implements Transferable {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean contains(AWorkspaceTreeNode node) {
 		if(node != null) {
 			List<AWorkspaceTreeNode> nodes = (List<AWorkspaceTreeNode>) dataMap.get(WORKSPACE_NODE_FLAVOR);
@@ -191,6 +195,7 @@ public class WorkspaceTransferable implements Transferable {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void refreshNodes() {
 		List<AWorkspaceTreeNode> nodes = (List<AWorkspaceTreeNode>) dataMap.get(WORKSPACE_NODE_FLAVOR);
 		if(nodes != null) {

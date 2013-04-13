@@ -72,12 +72,12 @@ public class Activator implements BundleActivator {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void startPluginServices(BundleContext context, ModeController modeController) {
 		try {
-			final ServiceReference[] dependends = context.getServiceReferences(WorkspaceDependentService.class.getName(),
-					"(dependsOn="+ WorkspaceDependentService.DEPENDS_ON +")");
+			final ServiceReference[] dependends = context.getServiceReferences(WorkspaceDependingService.class.getName(),
+					"(dependsOn="+ WorkspaceDependingService.DEPENDS_ON +")");
 			if (dependends != null) {
 				for (int i = 0; i < dependends.length; i++) {
 					final ServiceReference serviceReference = dependends[i];
-					final WorkspaceDependentService service = (WorkspaceDependentService) context.getService(serviceReference);
+					final WorkspaceDependingService service = (WorkspaceDependingService) context.getService(serviceReference);
 					service.startPlugin(context, modeController);
 					context.ungetService(serviceReference);
 				}
@@ -91,10 +91,10 @@ public class Activator implements BundleActivator {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void startControllerExtensions(BundleContext context, Controller controller) {
 		try {
-			final ServiceReference[] extensions = context.getServiceReferences(IWorkspaceDependentControllerExtension.class.getName(), "(dependsOn="+ WorkspaceDependentService.DEPENDS_ON +")");
+			final ServiceReference[] extensions = context.getServiceReferences(IWorkspaceDependingControllerExtension.class.getName(), "(dependsOn="+ WorkspaceDependingService.DEPENDS_ON +")");
 			if (extensions != null) {
 				for (ServiceReference serviceReference : extensions) {
-					final IWorkspaceDependentControllerExtension extension = (IWorkspaceDependentControllerExtension) context.getService(serviceReference);
+					final IWorkspaceDependingControllerExtension extension = (IWorkspaceDependingControllerExtension) context.getService(serviceReference);
 					extension.installExtension(context, controller);
 					context.ungetService(serviceReference);
 				}

@@ -93,6 +93,7 @@ public final class WorkspaceRootNode extends AFolderNode implements IWorkspaceNo
 	}
 	
 	public String getName() {
+		//WORKSPACE - todo: get name from somewhere or set it somehow
 		return "default workspace"; 
 	}
 	
