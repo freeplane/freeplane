@@ -70,8 +70,8 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, file);
 			PersistentNodeHook.removeMapExtensions(node);
 			((MMapController) modeController.getMapController()).insertNode(node, selected);
-			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, false);
-			((MLinkController) LinkController.getController()).setLink(node, (URI) null, false);
+			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, LinkController.LINK_ABSOLUTE);
+			((MLinkController) LinkController.getController()).setLink(node, (URI) null, LinkController.LINK_ABSOLUTE);
 		}
 		catch (final MalformedURLException ex) {
 			UITools.errorMessage(TextUtils.format("invalid_url_msg", uri.toString()));
