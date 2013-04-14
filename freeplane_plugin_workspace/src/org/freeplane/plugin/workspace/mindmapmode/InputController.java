@@ -1,5 +1,6 @@
 package org.freeplane.plugin.workspace.mindmapmode;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -146,9 +147,9 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
 	 */
 	
 	private void initActionKeyMap() {
-		actionKeyMap.put(new HotKeyIdentifier("copy", KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK)), WorkspaceController.getAction(NodeCopyAction.KEY));
-		actionKeyMap.put(new HotKeyIdentifier("cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK)), WorkspaceController.getAction(NodeCutAction.KEY));
-		actionKeyMap.put(new HotKeyIdentifier("paste", KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK),new KeyEventAcceptor() {
+		actionKeyMap.put(new HotKeyIdentifier("copy", KeyStroke.getKeyStroke(KeyEvent.VK_C, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())), WorkspaceController.getAction(NodeCopyAction.KEY));
+		actionKeyMap.put(new HotKeyIdentifier("cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())), WorkspaceController.getAction(NodeCutAction.KEY));
+		actionKeyMap.put(new HotKeyIdentifier("paste", KeyStroke.getKeyStroke(KeyEvent.VK_V, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),new KeyEventAcceptor() {
 			
 			public boolean accept(KeyEvent e) {
 				TreePath path = ((JTree) e.getSource()).getSelectionPath();
