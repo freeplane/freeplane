@@ -34,7 +34,7 @@ public class WorkspaceNewProjectAction extends AWorkspaceAction {
 			
 			//WORKSPACE - todo: ask for permission to create the directory or check for always_create setting
 			if(!path.exists() ) {
-				if(path.mkdir()) {
+				if(path.mkdirs()) {
 					LogUtils.info("new project directory created");
 				}
 				else {
