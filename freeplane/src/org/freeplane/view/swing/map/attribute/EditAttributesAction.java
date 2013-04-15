@@ -46,7 +46,7 @@ public class EditAttributesAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		final Controller controller = Controller.getCurrentController();
-		final AttributeView attributeView = (((MapView) controller.getViewController().getMapView()).getSelected())
+		final AttributeView attributeView = (((MapView) controller.getMapViewManager().getMapViewComponent()).getSelected())
 		    .getAttributeView();
 		final boolean attributesClosed = null == SwingUtilities.getAncestorOfClass(AttributeTable.class, focusOwner);
 		if (attributesClosed) {

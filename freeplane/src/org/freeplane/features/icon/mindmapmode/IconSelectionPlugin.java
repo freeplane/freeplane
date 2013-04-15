@@ -50,7 +50,8 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		final ModeController modeController = Controller.getCurrentModeController();
 		ArrayList<IIconInformation> actions = new ArrayList<IIconInformation>();
 		
-		final MapModel map = Controller.getCurrentController().getMap();
+		final Controller controller = Controller.getCurrentController();
+		final MapModel map = controller.getMap();
 		final IconRegistry iconRegistry = map.getIconRegistry();
 		final ListModel usedIcons = iconRegistry.getIconsAsListModel();
 		for(int i = 0; i < usedIcons.getSize(); i++){
@@ -68,11 +69,11 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		actions.add((IIconInformation) modeController.getAction("RemoveIconAction"));
 		actions.add((IIconInformation) modeController.getAction("RemoveAllIconsAction"));
 
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final ViewController viewController = controller.getViewController();
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(),
 		    actions);
-		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		viewController.scrollNodeToVisible(selected);
+		final NodeModel selected = controller.getSelection().getSelected();
+		controller.getMapViewManager().scrollNodeToVisible(selected);
 		selectionDialog.pack();
 		UITools.setDialogLocationRelativeTo(selectionDialog, selected);
 		selectionDialog.setModal(true);

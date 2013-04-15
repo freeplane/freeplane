@@ -238,7 +238,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
 		final Controller controller = Controller.getCurrentController();
-		if (!((MapView) controller.getViewController().getMapView()).isSelected(nodeV)) {
+		if (!((MapView) controller.getMapViewManager().getMapViewComponent()).isSelected(nodeV)) {
 			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
 		}
 	}

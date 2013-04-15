@@ -68,7 +68,7 @@ public class WorkspaceNewMapAction extends AFreeplaneAction {
 			//WORKSPACE - fixme: the updates do not show in mapview (ask dimitry)
 			//String oldName = map.getRootNode().getText(); 
 			map.getRootNode().setText(name);
-			Controller.getCurrentController().getViewController().getMapView().repaint();
+			Controller.getCurrentController().getMapViewManager().getMapViewComponent().repaint();
 		}
 		
 		if (save) {

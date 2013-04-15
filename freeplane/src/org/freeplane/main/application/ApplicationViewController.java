@@ -52,12 +52,12 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
-class ApplicationViewController extends ViewController {
+class ApplicationViewController extends FrameController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
@@ -124,6 +124,10 @@ class ApplicationViewController extends ViewController {
 		}
 		initFrame(frame);
 	}
+
+	private JScrollPane getScrollPane() {
+	    return getController().getMapViewManager().getScrollPane();
+    }
 
 	/**
 	 * Called from the Controller, when the Location of the Note Window is changed on the Menu->View->Note Window Location 
@@ -331,7 +335,7 @@ class ApplicationViewController extends ViewController {
 		}
 		catch (URISyntaxException e) {
 			uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef());
-		} 
+		}
 		openDocument(uri);
 	}
 
@@ -361,7 +365,7 @@ class ApplicationViewController extends ViewController {
 		final NodeModel node = selection.getSelected();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				final Component component = controller.getViewController().getComponent(node);
+				final Component component = controller.getMapViewManager().getComponent(node);
 				if (component != null) {
 					component.requestFocus();
 				}
@@ -380,7 +384,6 @@ class ApplicationViewController extends ViewController {
 	@Override
 	public void saveProperties() {
 		saveSplitPanePosition();
-		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
 		if (!isFullScreenEnabled()) {
 			final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 			if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
@@ -442,7 +445,7 @@ class ApplicationViewController extends ViewController {
 	}
 
 	@Override
-	protected void viewNumberChanged(final int number) {
+    public void viewNumberChanged(final int number) {
 		navigationPreviousMap.setEnabled(number > 1);
 		navigationNextMap.setEnabled(number > 1);
 	}

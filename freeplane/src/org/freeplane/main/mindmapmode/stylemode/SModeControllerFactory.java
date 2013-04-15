@@ -99,7 +99,7 @@ public class SModeControllerFactory {
 	Controller createController(final JDialog dialog) {
 		final Controller controller = new Controller(ResourceController.getResourceController());
 		Controller.setCurrentController(controller);
-		final MapViewController mapViewController = new MMapViewController();
+		final MapViewController mapViewController = new MMapViewController(controller);
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
 		controller.setViewController(viewController);
 		FilterController.install();

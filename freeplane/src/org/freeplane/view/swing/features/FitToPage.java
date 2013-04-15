@@ -47,7 +47,7 @@ public class FitToPage extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		view = (MapView) Controller.getCurrentController().getViewController().getMapView();
+		view = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		if (view == null) {
 			return;
 		}
@@ -80,6 +80,6 @@ public class FitToPage extends AFreeplaneAction {
 		if (heightZoom < newZoom) {
 			newZoom = heightZoom;
 		}
-		Controller.getCurrentController().getViewController().setZoom((float) (newZoom));
+		Controller.getCurrentController().getMapViewManager().setZoom((float) (newZoom));
 	}
 }

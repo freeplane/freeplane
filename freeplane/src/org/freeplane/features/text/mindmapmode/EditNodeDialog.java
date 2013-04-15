@@ -54,7 +54,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * @author foltin
@@ -67,8 +67,8 @@ public class EditNodeDialog extends EditNodeBase {
 
 		public LongNodeDialog(final RootPaneContainer frame, final String title, final Color background) {
 			super(EditNodeDialog.this, title, frame);
-			final ViewController viewController = Controller.getCurrentModeController().getController()
-			    .getViewController();
+			final IMapViewManager viewController = Controller.getCurrentModeController().getController()
+			    .getMapViewManager();
 			final JScrollPane editorScrollPane;
 			if (textComponent == null) {
 				JTextArea textArea = new JTextArea(getText());
@@ -308,7 +308,7 @@ public class EditNodeDialog extends EditNodeBase {
         }
 		dialog.getDialog().setModal(isModal);
 		dialog.getDialog().pack();
-		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
+		Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 			UITools.setDialogLocationUnder(dialog.getDialog(), getNode());
 		}

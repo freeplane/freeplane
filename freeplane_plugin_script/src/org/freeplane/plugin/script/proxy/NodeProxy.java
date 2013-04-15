@@ -5,6 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -24,10 +25,10 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
+import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -273,6 +274,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public Proxy.Node getParentNode() {
 		return getParent();
 	}
+
+    // NodeRO: R
+    public List<Node> getPathToRoot() {
+        return ProxyUtils.createNodeList(Arrays.asList(getDelegate().getPathToRoot()), getScriptContext());
+    }
 
     // NodeRO: R
     public Node getNext() {

@@ -59,7 +59,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 		if (e.isPopupTrigger()) {
 			Component popup = null;
 			final Component popupForModel;
-			final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
+			final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 			final ModeController modeController = Controller.getCurrentController().getModeController();
 			if(mapView != null){
 				final java.lang.Object obj = mapView.detectCollision(e.getPoint());
@@ -129,7 +129,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 		if(selection != null){
 			final NodeModel selected = selection.getSelected();
 			if(selected != null)
-				controller.getViewController().getComponent(selected).requestFocusInWindow();
+				controller.getMapViewManager().getComponent(selected).requestFocusInWindow();
 		}
 	}
 

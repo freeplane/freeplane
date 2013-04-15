@@ -93,6 +93,7 @@ import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
@@ -520,7 +521,7 @@ public class MTextController extends TextController {
             }
 		};
 		mCurrentEditDialog = createEditor(nodeModel, editControl, text, false, editLong, true);
-		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getViewController().getMapView());
+		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		mCurrentEditDialog.show(frame);
     }
 
@@ -749,8 +750,8 @@ public class MTextController extends TextController {
 		if (controller.getMap() != nodeModel.getMap()) {
 			return;
 		}
-		final ViewController viewController = controller.getViewController();
-		final Component map = viewController.getMapView();
+		final IMapViewManager viewController = controller.getMapViewManager();
+		final Component map = viewController.getMapViewComponent();
 		map.validate();
 		map.invalidate();
 		final Component node = viewController.getComponent(nodeModel);
@@ -949,4 +950,3 @@ public class MTextController extends TextController {
 	}
 
 }
-

@@ -67,6 +67,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mapio.MapIO;
@@ -260,7 +261,7 @@ public class UrlManager implements IExtension {
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals(XMLParseException.class.getName())) {
-			final int showDetail = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getMapView(),
+			final int showDetail = JOptionPane.showConfirmDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent(),
 			    TextUtils.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				UITools.errorMessage(ex);
@@ -394,8 +395,10 @@ public class UrlManager implements IExtension {
 		final MapModel map = Controller.getCurrentController().getMap();
 		return getAbsoluteUri(map, uri);
 	}
+
 	
 	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
+
 
 		//DOCEAR - added project relative uri resolution
 		URI resolvedURI;

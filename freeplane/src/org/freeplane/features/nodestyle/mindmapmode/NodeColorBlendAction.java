@@ -28,7 +28,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * @author foltin
@@ -54,8 +54,8 @@ class NodeColorBlendAction extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final ViewController viewController = Controller.getCurrentController().getViewController();
-		final Component mapView = viewController.getMapView();
+		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
+		final Component mapView = viewController.getMapViewComponent();
 		final Color mapColor = mapView.getBackground();
 		Color nodeColor = NodeStyleModel.getColor(node);
 		final MNodeStyleController mNodeStyleController = (MNodeStyleController) NodeStyleController

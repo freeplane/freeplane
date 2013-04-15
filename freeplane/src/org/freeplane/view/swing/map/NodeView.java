@@ -34,7 +34,6 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
-import java.awt.event.FocusAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.util.LinkedList;
@@ -942,7 +941,7 @@ public class NodeView extends JComponent implements INodeView {
 			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 			switch (paintingMode) {
 				case CLOUDS:
-					modeController.getController().getViewController().setEdgesRenderingHint(g2);
+					modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
 					final boolean isRoot = isRoot();
 					if (isRoot) {
 						paintCloud(g);
@@ -953,7 +952,7 @@ public class NodeView extends JComponent implements INodeView {
 			switch (paintingMode) {
 				case NODES:
 					g2.setStroke(BubbleMainView.DEF_STROKE);
-					modeController.getController().getViewController().setEdgesRenderingHint(g2);
+					modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
                     paintEdges(g2, this);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
@@ -1072,7 +1071,7 @@ public class NodeView extends JComponent implements INodeView {
 		final ModeController modeController = map.getModeController();
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		g2.setStroke(BubbleMainView.DEF_STROKE);
-		modeController.getController().getViewController().setEdgesRenderingHint(g2);
+		modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
 		final Point origin = new Point();
 		UITools.convertPointToAncestor(mainView, origin, this);
 		g.translate(origin.x, origin.y);

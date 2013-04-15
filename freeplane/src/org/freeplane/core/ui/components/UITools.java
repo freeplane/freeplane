@@ -64,7 +64,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.application.FreeplaneSplashModern;
 
@@ -334,7 +334,7 @@ public class UITools {
 		if (node == null) {
 			return;
 		}
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 		viewController.scrollNodeToVisible(node);
 		final Component c = viewController.getComponent(node);
 		UITools.setDialogLocationRelativeTo(dialog, c);
@@ -342,7 +342,7 @@ public class UITools {
 
 	public static void setDialogLocationUnder(final JDialog dialog, final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
-		final ViewController viewController = controller.getViewController();
+		final IMapViewManager viewController = controller.getMapViewManager();
 		final JComponent c = (JComponent) viewController.getComponent(node);
 		final int x = 0;
 		final int y = c.getHeight();
@@ -375,7 +375,7 @@ public class UITools {
 	public static int showConfirmDialog(final NodeModel node, final Object message, final String title,
 	                                    final int optionType, final int messageType) {
 		final Controller controller = Controller.getCurrentController();
-		final ViewController viewController = controller.getViewController();
+		final IMapViewManager viewController = controller.getMapViewManager();
 		final Component parentComponent;
 		if (node == null) {
 			parentComponent = getFrame();
@@ -398,7 +398,7 @@ public class UITools {
 			return null;
 		}
 		final Controller controller = Controller.getCurrentController();
-		final ViewController viewController = controller.getViewController();
+		final IMapViewManager viewController = controller.getMapViewManager();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, message, initialValue);
@@ -410,7 +410,7 @@ public class UITools {
 			return null;
 		}
 		final Controller controller = Controller.getCurrentController();
-		final ViewController viewController = controller.getViewController();
+		final IMapViewManager viewController = controller.getMapViewManager();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);

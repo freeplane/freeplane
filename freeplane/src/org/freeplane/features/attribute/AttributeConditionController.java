@@ -39,7 +39,7 @@ import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.link.LinkTransformer;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -129,7 +129,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	    if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return new FixedBasicComboBoxEditor();
-	    return ViewController.getTextDateTimeEditor();
+	    return FrameController.getTextDateTimeEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {

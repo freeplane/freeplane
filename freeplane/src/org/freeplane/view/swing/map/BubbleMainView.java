@@ -74,7 +74,7 @@ class BubbleMainView extends MainView {
 			return;
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
+		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
 		paintBackgound(g);
 		paintDragOver(g);
 		final Color edgeColor = nodeView.getEdgeColor();

@@ -51,7 +51,7 @@ class ExportPdf extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = (MapView) Controller.getCurrentController().getViewController().getMapView();
+			final MapView view = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 			if (view == null) {
 				return;
 			}

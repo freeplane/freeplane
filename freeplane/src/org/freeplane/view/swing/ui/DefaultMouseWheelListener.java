@@ -71,7 +71,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			newZoom = Math.max(1f / 32f, newZoom);
 			newZoom = Math.min(32f, newZoom);
 			if (newZoom != oldZoom) {
-				Controller.getCurrentController().getViewController().setZoom(newZoom);
+				Controller.getCurrentController().getMapViewManager().setZoom(newZoom);
 			}
 		}
 		else if ((e.getModifiers() & DefaultMouseWheelListener.HORIZONTAL_SCROLL_MASK) != 0) {
