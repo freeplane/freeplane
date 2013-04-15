@@ -460,7 +460,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	public void loadDefaultConditions() {
 	    try {
-			loadConditions(filterConditions, pathToFilterFile);
+			loadConditions(getFilterConditions(), pathToFilterFile);
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
