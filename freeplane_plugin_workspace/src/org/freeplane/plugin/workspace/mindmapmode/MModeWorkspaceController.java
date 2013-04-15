@@ -312,7 +312,7 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 			settings.load(in);
 		}
 		catch (final Exception ex) {
-			LogUtils.info("Workspace settings not found, new file created");
+			LogUtils.info("Workspace settings not found, create new file");
 			setupDefaultSettings();
 		}
 		finally {
