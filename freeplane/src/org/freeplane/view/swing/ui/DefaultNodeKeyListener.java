@@ -29,7 +29,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 
 	public void keyPressed(final KeyEvent e) {
 		final boolean checkForScrollMap = e.isShiftDown() && e.isControlDown()&& e.isAltDown();
-		final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
+		final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		if(checkForScrollMap){
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:

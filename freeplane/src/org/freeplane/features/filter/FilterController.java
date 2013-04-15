@@ -112,7 +112,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	    		public void ancestorMoved(final AncestorEvent event) {
 	    		}
 	    		public void ancestorRemoved(final AncestorEvent event) {
-	    			final Component selectedComponent = Controller.getCurrentController().getViewController().getSelectedComponent();
+	    			final Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
 	    			if(selectedComponent != null)
 	    				selectedComponent.requestFocusInWindow();
 	    			quickEditor.removeAncestorListener(this);

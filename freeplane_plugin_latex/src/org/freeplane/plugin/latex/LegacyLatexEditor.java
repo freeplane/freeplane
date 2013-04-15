@@ -97,7 +97,7 @@ public class LegacyLatexEditor {
 		textArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.ALT_MASK, false), dialogCloser);
 		textArea.getActionMap().put(dialogCloser, dialogCloser);
 		//position editor below node
-		Controller.getCurrentModeController().getController().getViewController().scrollNodeToVisible(node);
+		Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 			UITools.setDialogLocationUnder(edit, node);
 		}

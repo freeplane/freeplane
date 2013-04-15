@@ -57,7 +57,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
@@ -311,7 +310,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				throw e;
 			}
 		}
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 		viewController.updateMenus(menuBuilder);
 	}
 

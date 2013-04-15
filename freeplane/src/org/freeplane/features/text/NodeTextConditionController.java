@@ -38,7 +38,7 @@ import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -137,7 +137,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 		if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
 				|| selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
 			return new FixedBasicComboBoxEditor();
-		return ViewController.getTextDateTimeEditor();
+		return FrameController.getTextDateTimeEditor();
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {

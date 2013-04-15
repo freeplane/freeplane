@@ -21,14 +21,19 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,17 +41,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it
@@ -54,7 +74,7 @@ import org.freeplane.features.ui.IMapViewManager;
  * exchange between controller and this class is managed by observer pattern
  * (the controller observes changes to the map mapViews here).
  */
-public class MapViewController implements IMapViewManager {
+public class MapViewController implements IMapViewManager , IMapViewChangeListener, IFreeplanePropertyListener {
 	private String lastModeName;
 	/** reference to the current mapmapView; null is allowed, too. */
 	private MapView mapView;
@@ -65,11 +85,47 @@ public class MapViewController implements IMapViewManager {
 	 */
 	final private Vector<MapView> mapViewVector = new Vector<MapView>();
 	private float zoom;
+	final private JScrollPane scrollPane;
+	private boolean setZoomComboBoxRun;
+	private Controller controller;
 
 	/**
 	 * Reference to the current mode as the mapView may be null.
 	 */
-	public MapViewController() {
+	public MapViewController(Controller controller){
+		this.controller =controller;
+		controller.setMapViewManager(this);
+		addMapViewChangeListener(this);
+		scrollPane = new MapViewScrollPane();
+		zoomIn = new ZoomInAction(this);
+		controller.addAction(zoomIn);
+		zoomOut = new ZoomOutAction(this);
+		controller.addAction(zoomOut);
+		userDefinedZoom = TextUtils.getText("user_defined_zoom");
+		zoomModel = new DefaultComboBoxModel(getZooms());
+		zoomModel.addElement(userDefinedZoom);
+		ResourceController resourceController = ResourceController.getResourceController();
+		resourceController.addPropertyChangeListener(this);
+		zoomModel.setSelectedItem("100%");
+		zoomModel.addListDataListener(new  ListDataListener() {
+			public void intervalRemoved(ListDataEvent e) {
+			}
+			
+			public void intervalAdded(ListDataEvent e) {
+			}
+			
+			public void contentsChanged(ListDataEvent e) {
+				if (!setZoomComboBoxRun && e.getIndex0() == -1) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							setZoomByItem(zoomModel.getSelectedItem());
+						}
+					});
+				}
+			}
+		}) ;
+		final String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
+		changeAntialias(antialiasProperty);
 	}
 
 	/* (non-Javadoc)
@@ -493,7 +549,12 @@ public class MapViewController implements IMapViewManager {
 		}
 		mapStyle.setZoom(map, zoom);
 		mapView.setZoom(zoom);
+		setZoomComboBox(zoom);
+		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
+		final String stringResult = TextUtils.format("user_defined_zoom_status_bar", messageArguments);
+		controller.getViewController().out(stringResult);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#tryToChangeToMapView(java.lang.String)
@@ -550,4 +611,270 @@ public class MapViewController implements IMapViewManager {
 		}
 		return list;
 	}
+	
+	public void afterViewChange(final Component oldMap, final Component pNewMap) {
+		Controller controller = Controller.getCurrentController();
+		final ModeController oldModeController = controller.getModeController();
+		ModeController newModeController = oldModeController;
+		if (pNewMap != null) {
+			setViewportView(pNewMap);
+			final IMapSelection mapSelection = getMapSelection();
+			final NodeModel selected = mapSelection.getSelected();
+			mapSelection.scrollNodeToVisible(selected);
+			setZoomComboBox(getZoom());
+			obtainFocusForSelected();
+			newModeController = getModeController(pNewMap);
+			if (newModeController != oldModeController) {
+				controller.selectMode(newModeController);
+			}
+		}
+		else {
+			setViewportView(null);
+		}
+		setTitle();
+		controller.getViewController().viewNumberChanged(getViewNumber());
+		newModeController.getUserInputListenerFactory().updateMapList();
+		if (pNewMap != null) {
+			newModeController.setVisible(true);
+		}
+	}
+
+	public void afterViewClose(final Component oldView) {
+	}
+
+	public void afterViewCreated(final Component mapView) {
+	}
+
+	public void beforeViewChange(final Component oldMap, final Component newMap) {
+		Controller controller = Controller.getCurrentController();
+		final ModeController modeController = controller.getModeController();
+		if (oldMap != null) {
+			modeController.setVisible(false);
+		}
+	}
+
+	public Container getViewport() {
+		return scrollPane.getViewport();
+	}
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	private void setViewportView(final Component view) {
+		scrollPane.setViewportView(view);
+	}
+
+	private void setZoomByItem(final Object item) {
+		final float zoomValue;
+		if (((String) item).equals(userDefinedZoom)) {
+			final float zoom =getZoom();
+			final int zoomInt = Math.round(100 * zoom);
+			final SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(zoomInt, 1, 3200, 1);
+			JSpinner spinner = new JSpinner(spinnerNumberModel);
+			final int option = JOptionPane.showConfirmDialog(scrollPane, spinner, TextUtils.getText("enter_zoom"), JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION)
+				zoomValue = spinnerNumberModel.getNumber().floatValue() / 100;
+			else
+				zoomValue = zoom;
+		}
+		else
+			zoomValue = getZoomValue(item);
+		setZoom(zoomValue);
+	}
+
+	final private String userDefinedZoom;
+	final private ZoomInAction zoomIn;
+	private final DefaultComboBoxModel zoomModel;
+	final private ZoomOutAction zoomOut;
+	
+	private float getCurrentZoomIndex() {
+		final int selectedIndex = zoomModel.getIndexOf(zoomModel.getSelectedItem());
+		final int itemCount = zoomModel.getSize();
+		if (selectedIndex != - 1) {
+			return selectedIndex;
+		}
+		final float userZoom = getZoom();
+		for (int i = 0; i < itemCount - 1; i++) {
+			if (userZoom < getZoomValue(zoomModel.getElementAt(i))) {
+				return i - 0.5f;
+			}
+		}
+		return itemCount  - 1.5f;
+	}
+
+	public String getItemForZoom(final float f) {
+		return (int) (f * 100F) + "%";
+	}
+
+	private void setZoomComboBox(final float f) {
+		setZoomComboBoxRun = true;
+		try {
+			final String toBeFound = getItemForZoom(f);
+			zoomModel.setSelectedItem(toBeFound);
+		}
+		finally {
+			setZoomComboBoxRun = false;
+		}
+	}
+
+	public void zoomIn() {
+		final float currentZoomIndex = getCurrentZoomIndex();
+		if (currentZoomIndex < zoomModel.getSize() - 2) {
+			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex + 1f)));
+		}
+	}
+
+	public void zoomOut() {
+		final float currentZoomIndex = getCurrentZoomIndex();
+		if (currentZoomIndex > 0) {
+			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
+		}
+	}
+
+	public void updateMenus(final MenuBuilder menuBuilder) {
+		if (menuBuilder.contains("main_toolbar_zoom")) {
+			final JComboBox zoomBox = new JComboBox(zoomModel);
+			menuBuilder.addElement("main_toolbar_zoom", zoomBox, MenuBuilder.AS_CHILD);
+			// FELIXHACK
+			//zoomBox.setRenderer(new ComboBoxRendererWithTooltip(zoomBox));
+		}
+	}
+
+	public String[] getZooms() {
+		return zooms;
+	}
+
+	private float getZoomValue(final Object item) {
+		final String dirty = (String) item;
+		final String cleaned = dirty.substring(0, dirty.length() - 1);
+		final float zoomValue = Integer.parseInt(cleaned, 10) / 100F;
+		return zoomValue;
+	}
+
+	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
+	public void obtainFocusForSelected() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (getMapView() != null) {
+					final Component selectedComponent = getSelectedComponent();
+					if(selectedComponent != null){
+						selectedComponent.requestFocus();
+					}
+				}
+			}
+		});
+	}
+
+	public boolean closeAllMaps() {
+		while (getMapViewVector().size() > 0) {
+			if (getMapView() != null) {
+				final boolean closingNotCancelled = close(false);
+				if (!closingNotCancelled) {
+					return false;
+				}
+			}
+			else {
+				nextMapView();
+			}
+		}
+		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
+		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
+		return true;
+	}
+	private boolean antialiasAll = false;
+	private boolean antialiasEdges = false;
+	private boolean getAntialiasAll() {
+		return antialiasAll;
+	}
+
+	private boolean getAntialiasEdges() {
+		return antialiasEdges;
+	}
+
+	public void setAntialiasAll(final boolean antialiasAll) {
+		this.antialiasAll = antialiasAll;
+	}
+
+	public void setAntialiasEdges(final boolean antialiasEdges) {
+		this.antialiasEdges = antialiasEdges;
+	}
+
+	public Object setEdgesRenderingHint(final Graphics2D g) {
+		final Object renderingHint = g.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		if (getAntialiasEdges()) {
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		}
+		else {
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		}
+		return renderingHint;
+	}
+
+
+	public void setTextRenderingHint(final Graphics2D g) {
+		if (getAntialiasAll()) {
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		}
+		else {
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+		}
+	}
+	/**
+	 */
+	private void changeAntialias(final String command) {
+		if (command == null) {
+			return;
+		}
+		if (command.equals("antialias_none")) {
+			setAntialiasEdges(false);
+			setAntialiasAll(false);
+		}
+		if (command.equals("antialias_edges")) {
+			setAntialiasEdges(true);
+			setAntialiasAll(false);
+		}
+		if (command.equals("antialias_all")) {
+			setAntialiasEdges(true);
+			setAntialiasAll(true);
+		}
+		final Component mapView = getMapViewComponent();
+		if (mapView != null) {
+			mapView.repaint();
+		}
+	}
+
+
+	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
+			changeAntialias(newValue);
+		}
+	}
+	public void setTitle() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		if (modeController == null) {
+			controller.getViewController().setTitle("");
+			return;
+		}
+		final Object[] messageArguments = { TextUtils.getText(("mode_" + modeController.getModeName())) };
+		final MessageFormat formatter = new MessageFormat(TextUtils.getText("mode_title"));
+		String title = formatter.format(messageArguments);
+		String rawTitle = "";
+		final MapModel model = getModel();
+		if (model != null) {
+			rawTitle = getMapViewComponent().getName();
+			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
+			        + (model.isReadOnly() ? " (" + TextUtils.getText("read_only") + ")" : "");
+			final File file = model.getFile();
+			if (file != null) {
+				title += " " + file.getAbsolutePath();
+			}
+		}
+		controller.getViewController().setTitle(title);
+		modeController.getUserInputListenerFactory().updateMapList();
+	}
+
+	public void setScrollbarsVisible(boolean areScrollbarsVisible) {
+		scrollPane.setHorizontalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS : JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.VERTICAL_SCROLLBAR_ALWAYS : JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    }
 }

@@ -175,7 +175,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getResourceBaseDir() {
-		return FreeplaneStarter.getResourceBaseDir();
+		return FreeplaneGUIStarter.getResourceBaseDir();
 	}
 
 	@Override

@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.IMapViewManager;
 
 class EditDetailsAction extends AFreeplaneAction {
 	/**
@@ -47,7 +47,7 @@ class EditDetailsAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent arg0) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel nodeModel = controller.getSelection().getSelected();
-		final ViewController viewController = controller.getViewController();
+		final IMapViewManager viewController = controller.getMapViewManager();
 		final Component node = viewController.getComponent(nodeModel);
 		node.requestFocus();
 		final MTextController textController = (MTextController) MTextController.getController();

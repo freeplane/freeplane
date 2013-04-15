@@ -37,6 +37,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ViewController;
 
 /**
@@ -55,6 +56,7 @@ public class Controller extends AController {
 	private ViewController viewController;
 	private final ResourceController resourceController;
 	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
+	private IMapViewManager mapViewManager;
 
 	public Controller(ResourceController resourceController) {
 		super();
@@ -93,12 +95,16 @@ public class Controller extends AController {
 	 * @return
 	 */
 	public MapModel getMap() {
-		return getViewController().getMap();
+		return getMapViewManager().getModel();
 	}
 
 	public IMapViewManager getMapViewManager() {
-		return getViewController().getMapViewManager();
+		return mapViewManager;
 	}
+
+	public void setMapViewManager(IMapViewManager mapViewManager) {
+    	this.mapViewManager = mapViewManager;
+    }
 
 	/** @return the current modeController. */
 	public ModeController getModeController() {
@@ -114,7 +120,7 @@ public class Controller extends AController {
 	}
 
 	public IMapSelection getSelection() {
-		return getViewController().getSelection();
+		return getMapViewManager().getMapSelection();
 	}
 
 	/**

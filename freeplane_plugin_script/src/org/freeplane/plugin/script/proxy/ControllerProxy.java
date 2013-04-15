@@ -136,6 +136,10 @@ class ControllerProxy implements Proxy.Controller {
 		return Controller.getCurrentController().getViewController();
 	}
 
+	private IMapViewManager getMapViewManager() {
+		return Controller.getCurrentController().getMapViewManager();
+	}
+
 	public void setStatusInfo(final String infoPanelKey, final String info) {
 		final ViewController viewController = getViewController();
 		viewController.addStatusInfo(infoPanelKey, info, null);
@@ -229,11 +233,11 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
     public float getZoom() {
-	    return getViewController().getZoom();
+	    return getMapViewManager().getZoom();
     }
     
     public void setZoom(float ratio) {
-    	getViewController().setZoom(ratio);
+    	getMapViewManager().setZoom(ratio);
     }
 
     public boolean isInteractive() {

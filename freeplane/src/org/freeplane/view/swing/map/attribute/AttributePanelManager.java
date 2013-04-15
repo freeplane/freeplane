@@ -84,8 +84,8 @@ public class AttributePanelManager{
 
         public void onSelect(NodeModel node) {
             removeOldView();
-            final NodeView nodeView = (NodeView) Controller.getCurrentController().getViewController()
-                .getSelectedComponent();
+            final NodeView nodeView = (NodeView) Controller.getCurrentController()
+            		.getMapViewManager().getSelectedComponent();
             if (nodeView == null)
                 return;
             AttributeController.getController(modeController).createAttributeTableModel(node);

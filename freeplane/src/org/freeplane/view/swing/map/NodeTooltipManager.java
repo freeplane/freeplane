@@ -295,7 +295,7 @@ public class NodeTooltipManager implements IExtension{
             final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
             final Window activeWindow = currentKeyboardFocusManager.getActiveWindow();
             if(activeWindow instanceof JDialog && ((JDialog) activeWindow).isModal() 
-            		&& ! SwingUtilities.isDescendingFrom(Controller.getCurrentController().getViewController().getMapView(), activeWindow)){
+            		&& ! SwingUtilities.isDescendingFrom(Controller.getCurrentController().getMapViewManager().getMapViewComponent(), activeWindow)){
                 hideTipWindow();
                 return;
             }

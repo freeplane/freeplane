@@ -30,6 +30,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.ViewController;
 
 public class UndoHandler implements IUndoHandler {
 	final private List<ChangeListener> listeners;
@@ -277,14 +279,17 @@ public class UndoHandler implements IUndoHandler {
 	}
 
 	private void startActionFrame() {
-		if (actionFrameStarted == false && EventQueue.isDispatchThread()) {
-			actionFrameStarted = true;
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					actionFrameStarted = false;
-				}
-			});
-		}
+		if (actionFrameStarted == false) {
+	        final ViewController viewController = Controller.getCurrentController().getViewController();
+			if (viewController.isDispatchThread()) {
+	        	actionFrameStarted = true;
+	        	viewController.invokeLater(new Runnable() {
+	        		public void run() {
+	        			actionFrameStarted = false;
+	        		}
+	        	});
+	        }
+        }
 	}
 
 	public void forceNewTransaction() {

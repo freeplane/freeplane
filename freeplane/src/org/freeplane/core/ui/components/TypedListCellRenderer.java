@@ -25,7 +25,7 @@ import java.net.URI;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import org.freeplane.features.format.FormattedDate;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev
@@ -52,20 +52,20 @@ public class TypedListCellRenderer extends DefaultListCellRenderer{
 	                                              boolean cellHasFocus) {
 		super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		if (value instanceof String) {
-			setIcon(ViewController.textIcon);
+			setIcon(FrameController.textIcon);
 		}
 		else if (value instanceof FormattedDate) {
 			final FormattedDate fd = (FormattedDate) value;
 			if (fd.containsTime())
-				setIcon(ViewController.dateTimeIcon);
+				setIcon(FrameController.dateTimeIcon);
 			else
-				setIcon(ViewController.dateIcon);
+				setIcon(FrameController.dateIcon);
 		}
 		else if (value instanceof URI) {
-			setIcon(ViewController.linkIcon);
+			setIcon(FrameController.linkIcon);
 		}
 		else if (value instanceof Number) {
-			setIcon(ViewController.numberIcon);
+			setIcon(FrameController.numberIcon);
 		}
 		else if (value instanceof ObjectAndIcon) {
 			setIcon(((ObjectAndIcon) value).getIcon());

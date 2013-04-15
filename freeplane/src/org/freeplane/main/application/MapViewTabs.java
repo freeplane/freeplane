@@ -163,7 +163,7 @@ class MapViewTabs implements IMapViewChangeListener {
 		}
 		final Component mapView = mTabbedPaneMapViews.get(selectedIndex);
 		Controller controller = Controller.getCurrentController();
-		if (mapView != controller.getViewController().getMapView()) {
+		if (mapView != controller.getMapViewManager().getMapViewComponent()) {
 			controller.getMapViewManager().changeToMapView(mapView.getName());
 		}
 		if (mContentComponent != null) {

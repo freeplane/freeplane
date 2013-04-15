@@ -27,15 +27,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.freeplane.features.format.DateFormatParser;
-import org.freeplane.features.format.DecimalFormatParser;
-import org.freeplane.features.format.FormatController;
-import org.freeplane.features.format.FormattedDate;
-import org.freeplane.features.format.FormattedNumber;
-import org.freeplane.features.format.IFormattedObject;
-import org.freeplane.features.format.IsoDateParser;
-import org.freeplane.features.format.NumberLiteralParser;
-import org.freeplane.main.application.FreeplaneStarter;
+import org.freeplane.main.application.FreeplaneGUIStarter;
+import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
+import org.freeplane.main.headlessmode.HeadlessMModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,8 +48,11 @@ public class ParserTest {
 	public static void initStatics() {
 		// FIXME: we have to start Freeplane to create a Controller for script execution
 		System.setProperty("org.freeplane.nosplash", "true");
-		new FreeplaneStarter().createController();
-		MModeControllerFactory.createModeController();
+		new FreeplaneHeadlessStarter().createController();
+		HeadlessMModeControllerFactory.createModeController();
+//		new FreeplaneGUIStarter().createController();
+//		MModeControllerFactory.createModeController();
+		
 		formatController = FormatController.getController();
 		datePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATE)).toPattern();
 		datetimePattern = ((SimpleDateFormat) formatController.getDefaultFormat(TYPE_DATETIME)).toPattern();

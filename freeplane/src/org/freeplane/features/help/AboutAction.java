@@ -63,7 +63,7 @@ class AboutAction extends AFreeplaneAction {
 		addUri(box, "license_url", TextUtils.getText("license"));
 		addMessage(box, TextUtils.getText("license_text"));
 		
-		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), box, TextUtils
+		JOptionPane.showMessageDialog(Controller.getCurrentController().getMapViewManager().getViewport(), box, TextUtils
 		    .getText("AboutAction.text"), JOptionPane.INFORMATION_MESSAGE);
 	}
 

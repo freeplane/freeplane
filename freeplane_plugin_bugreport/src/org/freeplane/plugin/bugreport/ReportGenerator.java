@@ -54,11 +54,11 @@ public class ReportGenerator extends StreamHandler {
 
 	private class SubmitStarter implements Runnable {
 		SubmitStarter() {
-			if (EventQueue.isDispatchThread()) {
+			if (Controller.getCurrentController().getViewController().isDispatchThread()) {
 				return;
 			}
 			final Thread currentThread = Thread.currentThread();
-			EventQueue.invokeLater(new Runnable() {
+			Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 				public void run() {
 					try {
 						currentThread.join(1000);
@@ -219,6 +219,7 @@ public class ReportGenerator extends StreamHandler {
 	JButton logButton;
 	@Override
 	public synchronized void publish(final LogRecord record) {
+		final ViewController viewController = Controller.getCurrentController().getViewController();
 		if (out == null) {
 			out = new ByteArrayOutputStream();
 			setOutputStream(out);
@@ -228,36 +229,35 @@ public class ReportGenerator extends StreamHandler {
 		}
 		if (!(disabled || isRunning  || reportCollected)) {
 			reportCollected = true;
-			EventQueue.invokeLater(new SubmitStarter());
+			viewController.invokeLater(new SubmitStarter());
 		}
-		EventQueue.invokeLater(new Runnable() {
+		viewController.invokeLater(new Runnable() {
 			@SuppressWarnings("serial")
 			public void run() {
 				try {
-	                errorCounter++;
-	                if(TextUtils.getRawText("internal_error_tooltip", null) != null){
-	                	if(logButton == null){
-	                		final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-	                				"/images/icons/messagebox_warning.png"));
-	                		logButton = new JButton(){
-	                			@Override public Dimension getPreferredSize(){
-	                				Dimension preferredSize = super.getPreferredSize();
-	                				preferredSize.height = getIcon().getIconHeight();
-	                				return preferredSize;
-	                			}
-	                		};
-	                		logButton.addActionListener(new LogOpener());
-	                		logButton.setIcon(errorIcon);
-	                		String tooltip = TextUtils.getText("internal_error_tooltip");
-	                		logButton.setToolTipText(tooltip);
-	                		Controller.getCurrentController().getViewController().addStatusComponent("internal_error", logButton);
-	                	}
-	                	logButton.setText(TextUtils.format("errornumber", errorCounter));
-
-	                }
-                }
-                catch (Exception e) {
-                }
+					errorCounter++;
+					if(TextUtils.getRawText("internal_error_tooltip", null) != null){
+						if(logButton == null){
+							final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+									"/images/icons/messagebox_warning.png"));
+							logButton = new JButton(){
+								@Override public Dimension getPreferredSize(){
+									Dimension preferredSize = super.getPreferredSize();
+									preferredSize.height = getIcon().getIconHeight();
+									return preferredSize;
+								}
+							};
+							logButton.addActionListener(new LogOpener());
+							logButton.setIcon(errorIcon);
+							String tooltip = TextUtils.getText("internal_error_tooltip");
+							logButton.setToolTipText(tooltip);
+							viewController.addStatusComponent("internal_error", logButton);
+						}
+						logButton.setText(TextUtils.format("errornumber", errorCounter));
+					}
+				}
+				catch (Exception e) {
+				}
 			}
 		});
 		super.publish(record);
