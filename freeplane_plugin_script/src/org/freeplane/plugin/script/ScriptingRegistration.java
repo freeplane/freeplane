@@ -216,9 +216,9 @@ class ScriptingRegistration {
 				}
 			});
 			createUserScriptsDirectory();
-			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, 
-				new ScriptConditionController());
 		}
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, 
+			new ScriptConditionController());
 	}
 
     private void registerScriptAddOns() {
