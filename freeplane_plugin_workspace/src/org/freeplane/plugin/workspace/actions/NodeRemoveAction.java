@@ -63,9 +63,9 @@ public class NodeRemoveAction extends AWorkspaceAction {
 		);
 		if(option == JOptionPane.YES_OPTION) {			
 			for (AWorkspaceTreeNode targetNode : targetNodes) {
-				//WORKSPACE - info: used in case of key events
 				AWorkspaceTreeNode parent = targetNode.getParent();
 				if(targetNode instanceof DefaultFileNode) {
+					//WORKSPACE - info: used in case of key events
 					((DefaultFileNode) targetNode).delete();
 				}
 				else {

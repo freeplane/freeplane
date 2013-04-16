@@ -31,7 +31,7 @@ import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class InputController implements KeyListener, MouseListener, MouseMotionListener {
-	// WORKSPACE - todo: implement hot-key handling
+	// WORKSPACE - ToDo: implement gui for hot-key handling
 	private Map<HotKeyIdentifier, AFreeplaneAction> actionKeyMap = new LinkedHashMap<InputController.HotKeyIdentifier, AFreeplaneAction>();
 	
 	

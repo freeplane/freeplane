@@ -21,12 +21,10 @@ public class DefaultFileDropHandler implements INodeDropHandler {
 	 **********************************************************************************/
 	
 	public boolean processDrop(AWorkspaceTreeNode targetNode, Transferable transferable, int dropAction) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean acceptDrop(Transferable transferable) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

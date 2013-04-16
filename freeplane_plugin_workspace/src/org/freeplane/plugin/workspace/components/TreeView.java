@@ -91,9 +91,6 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 				
 		this.add(new JScrollPane(mTree), BorderLayout.CENTER);
 		
-		//WORKSPACE - todo: choose actions to use in Toolbar
-//		WorkspaceToolBar workspaceToolBar = new WorkspaceToolBar();
-//		add(workspaceToolBar, BorderLayout.NORTH);
 	}
 	
 	private void initTransferHandler() {

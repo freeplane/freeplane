@@ -184,7 +184,6 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		node.setParent(getParent());
 		node.setName(getName());
 		for(AWorkspaceTreeNode child : this.children) {
-			//FIXME: the model should handle this 
 			node.addChildNode(child.clone());
 		}		
 		return node;

@@ -184,12 +184,6 @@ public abstract class WorkspaceModel implements TreeModel {
 			else {
 				synchronized (projects) {				
 					AWorkspaceTreeNode node = projects.get(index-offset).getModel().getRoot();
-					//WORKSPACE - info: test if this'll work
-//					if(node == null) {
-//						node = new ProjectRootNode();
-//						node.setName("new project_"+projects.get(index-offset).getProjectID()+"...");
-//						projects.get(index-offset).getModel().setRoot(node);
-//					}
 					return node;
 				}
 			}

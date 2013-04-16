@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 import javax.swing.JOptionPane;
 
@@ -17,6 +18,7 @@ import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.components.dialog.WorkspaceNewFolderPanel;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.project.AWorkspaceProject;
 import org.freeplane.plugin.workspace.nodes.FolderLinkNode;
 import org.freeplane.plugin.workspace.nodes.FolderVirtualNode;
 
@@ -54,7 +56,7 @@ public class NodeNewFolderAction extends AWorkspaceAction {
 		if(targetNode == null) {
 			return;
 		}
-
+		AWorkspaceProject project = WorkspaceController.getProject(targetNode);
 		int mode = WorkspaceNewFolderPanel.MODE_VIRTUAL_PHYSICAL;
 		if(targetNode instanceof IFileSystemRepresentation) {
 			mode = WorkspaceNewFolderPanel.MODE_VIRTUAL_ONLY;
@@ -72,8 +74,13 @@ public class NodeNewFolderAction extends AWorkspaceAction {
 				if (path != null) {
 					FolderLinkNode node = new FolderLinkNode();				
 					node.setName(value);
-					//WORKSPACE - todo: get relative URI? 
-					node.setPath(path.toURI());
+					URI uri = project.getRelativeURI(path.toURI());
+					if(uri == null) {
+						node.setPath(path.toURI());
+					}
+					else {
+						node.setPath(uri);
+					}
 					targetNode.getModel().addNodeTo(node, targetNode);					
 					node.refresh();
 				}				

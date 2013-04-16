@@ -17,7 +17,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.workspace.URIUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.features.WorkspaceMapModelExtension;
-//WORKSPACE - todo register as LinkController but beware of addAction problems
+
 public class MModeWorkspaceLinkController extends MLinkController {
 	
 	public final static int LINK_RELATIVE_TO_PROJECT = 2;

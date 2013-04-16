@@ -22,6 +22,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.plugin.workspace.URIUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
@@ -614,8 +615,11 @@ public class ProjectModel implements WorkspaceTreeModel {
 			else if (node instanceof ALinkNode) {
 				URI uri = ((ALinkNode) node).getLinkURI();
 				if (uri.getPath().endsWith(filter)) {
-					//TODO - remodel uri -> absolute path
-					set.add(uri);
+					URI absUri = URIUtils.getAbsoluteURI(uri);
+					if(absUri == null) {
+						continue;
+					}
+					set.add(absUri);
 				}
 			}
 		}

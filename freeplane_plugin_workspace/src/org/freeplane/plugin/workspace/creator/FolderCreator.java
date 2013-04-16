@@ -25,7 +25,6 @@ public class FolderCreator extends AWorkspaceNodeCreator {
 	 **********************************************************************************/
 	public void addTypeCreator(final String typeName, final AWorkspaceNodeCreator creator) {
 		if(creatorTable.containsKey(typeName)) {
-			//TODO: maybe later changes to manage multiple creators for the same key
 			creatorTable.remove(typeName);
 		}
 		creatorTable.put(typeName, creator);

@@ -15,6 +15,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.plugin.workspace.URIUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
+import org.freeplane.plugin.workspace.model.project.AWorkspaceProject;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
 import org.freeplane.plugin.workspace.nodes.LinkTypeFileNode;
 
@@ -53,6 +54,7 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 		if(targetNode == null) {
 			return;
 		}
+		AWorkspaceProject project = WorkspaceController.getProject(targetNode);
 		if(targetNode instanceof AFolderNode) {
 			JFileChooser chooser = new JFileChooser(URIUtils.getAbsoluteFile(((AFolderNode) targetNode).getPath() == null ? WorkspaceController.getCurrentProject().getProjectHome() : ((AFolderNode) targetNode).getPath()));
 			chooser.setMultiSelectionEnabled(false);
@@ -62,12 +64,17 @@ public class NodeNewLinkAction extends AWorkspaceAction {
 				if(file != null) {
 					LinkTypeFileNode node = new LinkTypeFileNode();
 					node.setName(file.getName());
-					//WORKSPACE - todo: relative path?
 					URI path = chooser.getSelectedFile().toURI();
 					if (path == null) {
 						return;
-					}	
-					node.setLinkURI(path);
+					}
+					URI uri = project.getRelativeURI(path);
+					if(uri == null) {
+						node.setLinkURI(path);
+					}
+					else {
+						node.setLinkURI(uri);
+					}
 					targetNode.getModel().addNodeTo(node, targetNode);
 					targetNode.refresh();
 					targetNode.getModel().requestSave();

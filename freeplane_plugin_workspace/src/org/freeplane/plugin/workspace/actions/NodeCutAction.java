@@ -38,7 +38,6 @@ public class NodeCutAction extends AWorkspaceAction {
 		AWorkspaceTreeNode[] targetNodes = getSelectedNodes(event);
 		WorkspaceTransferable transferable = null;
 		for (AWorkspaceTreeNode targetNode : targetNodes) {
-			//WORKSPACE - todo: mark node as cut (icon etc)
 			if(targetNode instanceof IWorkspaceTransferableCreator) {
 				if(transferable == null) {
 					transferable = ((IWorkspaceTransferableCreator)targetNode).getTransferable();

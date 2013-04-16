@@ -284,7 +284,7 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 		WorkspaceController.addAction(new NodeNewLinkAction());
 		WorkspaceController.addAction(new NodeOpenLocationAction());
 		
-		//FIXME: #332
+		//WORKSPACE - fixed: #332
 		WorkspaceController.addAction(new NodeCutAction());
 		WorkspaceController.addAction(new NodeCopyAction());
 		WorkspaceController.addAction(new NodePasteAction());

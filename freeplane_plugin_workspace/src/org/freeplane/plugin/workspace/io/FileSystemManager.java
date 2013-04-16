@@ -165,7 +165,7 @@ public class FileSystemManager {
 			fileExtension = FileReadManager.DEFAULT_HANDLE;
 			handlers = getFileTypeHandlers().list(fileExtension);
 		}
-		if (handlers != null && handlers.size() == 1) { //FIXME: what if there is more than one handler for a single type?
+		if (handlers != null && handlers.size() == 1) { //WORKSPACE - ToDo: what if there is more than one handler for a single type?
 			IFileTypeHandler nodeCreator = handlers.get(0);
 			AWorkspaceTreeNode newParent = nodeCreator.createFileNode(parent, fileExtension, file);
 			return newParent;
