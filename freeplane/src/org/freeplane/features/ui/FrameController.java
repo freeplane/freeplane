@@ -52,6 +52,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
@@ -497,7 +498,25 @@ abstract public class FrameController implements ViewController {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			}
 			else {
-				UIManager.setLookAndFeel(lookAndFeel);
+				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
+				boolean setLnF = false;
+				for(LookAndFeelInfo lafInfo : lafInfos){
+					if(lafInfo.getName().equalsIgnoreCase(lookAndFeel)){										
+						UIManager.setLookAndFeel(lafInfo.getClassName());						
+						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", lafInfo.getClassName());
+						setLnF = true;
+						break;										
+					}
+					if(lafInfo.getClassName().equals(lookAndFeel)){
+						UIManager.setLookAndFeel(lafInfo.getClassName());
+						setLnF = true;
+						break;
+					}
+				}
+				if(!setLnF){
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
+				}
 			}
 		}
 		catch (final Exception ex) {
