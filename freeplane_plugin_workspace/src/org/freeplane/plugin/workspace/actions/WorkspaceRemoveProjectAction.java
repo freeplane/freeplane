@@ -42,6 +42,7 @@ public class WorkspaceRemoveProjectAction extends AWorkspaceAction {
 		}	
 	}
 	
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/

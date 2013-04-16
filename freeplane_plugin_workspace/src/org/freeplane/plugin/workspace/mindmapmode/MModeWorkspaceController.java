@@ -157,8 +157,21 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 				builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
 				final String MENU_PROJECT_ADD_KEY = builder.getMenuKey(MENU_PROJECT_KEY, "new");				
 				final JMenu addMenu = new JMenu(TextUtils.getText("workspace.action.new.label"));
+				builder.addMenuItem(MENU_PROJECT_KEY, addMenu, MENU_PROJECT_ADD_KEY, MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewFolderAction(), MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewLinkAction(), MenuBuilder.AS_CHILD);
+				final WorkspaceRemoveProjectAction rmProjectAction = new WorkspaceRemoveProjectAction();
+				builder.addAction(MENU_PROJECT_KEY, rmProjectAction, MenuBuilder.AS_CHILD);
+				
+				builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
+				setDefaultAccelerator(builder.getShortcutKey(builder.getMenuKey(MENU_PROJECT_KEY,WorkspaceProjectOpenLocationAction.KEY)), "control alt L");
+				final WorkspaceProjectOpenLocationAction openLocAction = new WorkspaceProjectOpenLocationAction();
+				builder.addAction(MENU_PROJECT_KEY, openLocAction, MenuBuilder.AS_CHILD);
+				
 				projectMenu.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {					
 					public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+						rmProjectAction.setEnabled();
+						openLocAction.setEnabled();
 						if(WorkspaceController.getCurrentProject() == null) {
 							addMenu.setEnabled(false);
 						}
@@ -171,15 +184,6 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 					
 					public void popupMenuCanceled(PopupMenuEvent e) {}
 				});
-				builder.addMenuItem(MENU_PROJECT_KEY, addMenu, MENU_PROJECT_ADD_KEY, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewFolderAction(), MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewLinkAction(), MenuBuilder.AS_CHILD);
-				
-				builder.addAction(MENU_PROJECT_KEY, new WorkspaceRemoveProjectAction(), MenuBuilder.AS_CHILD);
-				
-				builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
-				setDefaultAccelerator(builder.getShortcutKey(builder.getMenuKey(MENU_PROJECT_KEY,WorkspaceProjectOpenLocationAction.KEY)), "control alt L");
-				builder.addAction(MENU_PROJECT_KEY, new WorkspaceProjectOpenLocationAction(), MenuBuilder.AS_CHILD);
 			}
 			
 			private void setDefaultAccelerator(final String shortcutKey, String accelerator) {

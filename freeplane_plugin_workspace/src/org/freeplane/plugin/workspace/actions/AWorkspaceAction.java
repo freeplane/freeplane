@@ -48,6 +48,9 @@ public abstract class AWorkspaceAction extends AFreeplaneAction {
 		super.setSelected();
 	}
 	
+	public void afterMapChange(final Object newMap) {
+	}
+	
 	private void setIcon() {
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
 		if (iconResource != null) {
