@@ -4,7 +4,7 @@ Class-Path: ../
   freeplaneeditor.jar
   freeplaneviewer.jar
   freeplanemac.jar
-  commons-lang-2.0.jar
+  commons-lang-2.6.jar
   forms-1.0.5.jar
   jortho.jar
   gnu-regexp-1.1.4.jar
