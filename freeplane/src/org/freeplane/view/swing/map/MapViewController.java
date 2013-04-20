@@ -78,7 +78,7 @@ import org.freeplane.features.ui.ViewController;
 public class MapViewController implements IMapViewManager , IMapViewChangeListener, IFreeplanePropertyListener {
 	private String lastModeName;
 	/** reference to the current mapmapView; null is allowed, too. */
-	private MapView mapView;
+	private MapView selectedMapView;
 	MapViewChangeObserverCompound mapViewChangeListeners = new MapViewChangeObserverCompound();
 	/**
 	 * A vector of MapView instances. They are ordered according to their screen
@@ -160,17 +160,17 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 */
 	public boolean changeToMapView(final Component newMapViewComponent) {
 		final MapView newMapView = (MapView) newMapViewComponent;
-		final MapView oldMapView = mapView;
+		final MapView oldMapView = selectedMapView;
 		if (newMapView == oldMapView) {
 			return true;
 		}
 		mapViewChangeListeners.beforeMapViewChange(oldMapView, newMapView);
-		mapView = newMapView;
-		if (mapView != null) {
-			mapView.revalidateSelecteds();
-			final ModeController modeController = mapView.getModeController();
+		selectedMapView = newMapView;
+		if (selectedMapView != null) {
+			selectedMapView.revalidateSelecteds();
+			final ModeController modeController = selectedMapView.getModeController();
 			lastModeName = modeController.getModeName();
-			final float mapViewZoom = mapView.getZoom();
+			final float mapViewZoom = selectedMapView.getZoom();
 			if (zoom != mapViewZoom) {
 				setZoom(mapViewZoom);
 			}
@@ -212,13 +212,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 				break;
 			}
 		}
-		final MapView oldMapView = mapView;
+		final MapView oldMapView = selectedMapView;
 		final boolean changed = changeToMapView(mapViewCandidate);
 		if (changed) {
 			lastModeName = modeName;
-			if (oldMapView == mapView) {
+			if (oldMapView == selectedMapView) {
 				// if the same map remains selected post event for menu updates.
-				mapViewChangeListeners.afterMapViewChange(oldMapView, mapView);
+				mapViewChangeListeners.afterMapViewChange(oldMapView, selectedMapView);
 			}
 		}
 		return changed;
@@ -244,9 +244,14 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		if (mapView == null) {
+		return close(mapView, force);
+	}
+
+	public boolean close(final Component mapViewComponent, final boolean force) {
+	    if (mapViewComponent == null) {
 			return false;
 		}
+		MapView mapView = (MapView) mapViewComponent;
 		final MapController mapController = mapView.getModeController().getMapController();
 		final boolean closingNotCancelled = mapController.close(force);
 		if (!closingNotCancelled) {
@@ -260,7 +265,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			/* Keep the current running mode */
 			changeToMapView((MapView) null);
 		}
-		else {
+		else if(mapView == selectedMapView){
 			if (index >= mapViewVector.size() || index < 0) {
 				index = mapViewVector.size() - 1;
 			}
@@ -268,7 +273,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		mapViewChangeListeners.afterMapViewClose(mapView);
 		return true;
-	}
+    }
 
 	public String createHtmlMap() {
 		final MapModel model = getModel();
@@ -316,9 +321,9 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 * @see org.freeplane.core.frame.IMapViewController#getComponent(org.freeplane.core.model.NodeModel)
 	 */
 	public Component getComponent(final NodeModel node) {
-		if(mapView == null)
+		if(selectedMapView == null)
 			return null;
-		final NodeView nodeView = mapView.getNodeView(node);
+		final NodeView nodeView = selectedMapView.getNodeView(node);
 		if(nodeView == null)
 			return null;
 		return nodeView.getMainView();
@@ -370,7 +375,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	public MapView getMapView() {
-		return mapView;
+		return selectedMapView;
 	}
 
 	/* (non-Javadoc)
@@ -526,9 +531,9 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 * @see org.freeplane.core.frame.IMapViewController#scrollNodeToVisible(org.freeplane.core.model.NodeModel)
 	 */
 	public void scrollNodeToVisible(final NodeModel node) {
-		final NodeView nodeView = mapView.getNodeView(node);
+		final NodeView nodeView = selectedMapView.getNodeView(node);
 		if (nodeView != null) {
-			mapView.scrollNodeToVisible(nodeView);
+			selectedMapView.scrollNodeToVisible(nodeView);
 		}
 	}
 

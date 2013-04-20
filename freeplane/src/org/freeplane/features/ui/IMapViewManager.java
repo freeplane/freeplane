@@ -38,6 +38,7 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -75,7 +76,8 @@ public interface IMapViewManager {
 	 *            forces the closing without any save actions.
 	 */
 	public boolean close(final boolean withoutSave);
-
+	public boolean close(final Component view, final boolean force);
+	
 	public String createHtmlMap();
 
 	public RenderedImage createImage();

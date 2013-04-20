@@ -31,6 +31,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -83,6 +84,12 @@ class MapViewFrames implements IMapViewChangeListener {
 	    return (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, pNewMap);
     }
 
+	private Component getContainedView(JInternalFrame internalFrame) {
+        JScrollPane scrollPane = (JScrollPane) internalFrame.getContentPane().getComponent(0);
+		Component view = scrollPane.getViewport().getView();
+        return view;
+    }
+	
 	private void addInternalFrame(final Component pNewMap) {
 	    final String title = pNewMap.getName();
 		JInternalFrame viewFrame = new JInternalFrame(title,
@@ -90,6 +97,7 @@ class MapViewFrames implements IMapViewChangeListener {
 	          true, //closable
 	          true, //maximizable
 	          true);
+		viewFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		MapViewScrollPane mapViewScrollPane = new MapViewScrollPane();
 		mapViewScrollPane.getViewport().setView(pNewMap);
 		viewFrame.getContentPane().add(mapViewScrollPane);
@@ -102,18 +110,21 @@ class MapViewFrames implements IMapViewChangeListener {
         }
         catch (PropertyVetoException e) {
         }
+		
 		viewFrame.addInternalFrameListener(new InternalFrameAdapter() {
-
 			@Override
             public void internalFrameActivated(InternalFrameEvent e) {
-				JScrollPane scrollPane = (JScrollPane) e.getInternalFrame().getContentPane().getComponent(0);
-				viewSelectionChanged(scrollPane.getViewport().getView());
+				JInternalFrame internalFrame = e.getInternalFrame();
+				Component view = getContainedView(internalFrame);
+				viewSelectionChanged(view);
             }
 
 			@Override
-            public void internalFrameDeactivated(InternalFrameEvent e) {
+            public void internalFrameClosing(InternalFrameEvent e) {
+				JInternalFrame internalFrame = e.getInternalFrame();
+				Component view = getContainedView(internalFrame);
+				Controller.getCurrentController().getMapViewManager().close(view, false);
             }
-			
 		});
 
     }
