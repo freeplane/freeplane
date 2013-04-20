@@ -206,13 +206,14 @@ public class HeadlessUIController implements ViewController {
     }
 
 	public boolean areScrollbarsVisible() {
-	    // TODO Auto-generated method stub
 	    return false;
     }
 
 	public void setScrollbarsVisible(boolean b) {
-	    // TODO Auto-generated method stub
-	    
+    }
+
+	public boolean isFullScreenEnabled() {
+	    return false;
     }
 	
 	

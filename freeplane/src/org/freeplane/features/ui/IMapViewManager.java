@@ -138,15 +138,10 @@ public interface IMapViewManager {
 	public Map<String, MapModel> getMaps(String modename);
 
 	public List<Component> getViews(MapModel map);
-	
-	public JScrollPane getScrollPane();
-	public Container getViewport();
 	public void updateMenus(final MenuBuilder menuBuilder);
 	public void obtainFocusForSelected();
 	public void setTitle();
 	public Object setEdgesRenderingHint(final Graphics2D g);
 	public void setTextRenderingHint(final Graphics2D g);
 	public boolean closeAllMaps();
-
-	public void setScrollbarsVisible(boolean areScrollbarsVisible);
 }

@@ -52,6 +52,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.url.mindmapmode.FileOpener;
+import org.freeplane.view.swing.map.MapViewScrollPane;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class ApplicationViewController extends FrameController {
@@ -74,6 +75,7 @@ class ApplicationViewController extends FrameController {
 	final private NavigationNextMapAction navigationNextMap;
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
+	private JComponent mapPane;
 
 	@SuppressWarnings("serial")
     public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
@@ -89,14 +91,6 @@ class ApplicationViewController extends FrameController {
 		getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
 		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
-		if (ResourceController.getResourceController().getBooleanProperty("no_scrollbar")) {
-			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		}
-		else {
-			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		}
 		// disable all hotkeys for JSplitPane
 		mSplitPane = new JSplitPane(){
 			@Override
@@ -105,26 +99,27 @@ class ApplicationViewController extends FrameController {
 			}
 		};
 		setSplitPaneLayoutManager();
-		final JScrollPane contentComponent = getScrollPane();
-		mSplitPane.setLeftComponent(contentComponent);
-		mSplitPane.setRightComponent(null);
 		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
 		    ApplicationViewController.RESOURCES_USE_TABBED_PANE);
+		final Component contentPane;
 		if (shouldUseTabbedPane) {
-			new MapViewTabs(this, mSplitPane);
+			final MapViewTabs mapViewTabs = new MapViewTabs(this, mSplitPane);
+			contentPane = mapViewTabs.getTabbedPane();
+			getContentPane().add(contentPane, BorderLayout.CENTER);
+			mapPane = mapViewTabs.getMapPane();
 		}
 		else {
-			getContentPane().add(mSplitPane, BorderLayout.CENTER);
+			mapPane = new MapViewScrollPane();
+			contentPane = mSplitPane;
 			final FileOpener fileOpener = new FileOpener();
 			new DropTarget(mSplitPane, fileOpener);
 			mSplitPane.addMouseListener(new DefaultMapMouseListener());
 		}
+		getContentPane().add(contentPane, BorderLayout.CENTER);
+		mSplitPane.setLeftComponent(mapPane);
+		mSplitPane.setRightComponent(null);
 		initFrame(frame);
 	}
-
-	private JScrollPane getScrollPane() {
-	    return getController().getMapViewManager().getScrollPane();
-    }
 
 	/**
 	 * Called from the Controller, when the Location of the Note Window is changed on the Menu->View->Note Window Location 
@@ -179,13 +174,12 @@ class ApplicationViewController extends FrameController {
 		// --- Devider position variables --
 		int splitPanePosition = -1;
 		int lastSplitPanePosition = -1;
-		final JScrollPane scrollPane = getScrollPane();
-		scrollPane.setVisible(true);
+		mapPane.setVisible(true);
 		mSplitPane.setLeftComponent(null);
 		mSplitPane.setRightComponent(null);
 		if ("right".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-			mSplitPane.setLeftComponent(scrollPane);
+			mSplitPane.setLeftComponent(mapPane);
 			mSplitPane.setRightComponent(pMindMapComponent);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
@@ -193,20 +187,20 @@ class ApplicationViewController extends FrameController {
 		else if ("left".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 			mSplitPane.setLeftComponent(pMindMapComponent);
-			mSplitPane.setRightComponent(scrollPane);
+			mSplitPane.setRightComponent(mapPane);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
 		}
 		else if ("top".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			mSplitPane.setLeftComponent(pMindMapComponent);
-			mSplitPane.setRightComponent(scrollPane);
+			mSplitPane.setRightComponent(mapPane);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
 		}
 		else if ("bottom".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-			mSplitPane.setLeftComponent(scrollPane);
+			mSplitPane.setLeftComponent(mapPane);
 			mSplitPane.setRightComponent(pMindMapComponent);
 			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
@@ -342,11 +336,10 @@ class ApplicationViewController extends FrameController {
 	@Override
 	public void removeSplitPane() {
 		saveSplitPanePosition();
-		final JScrollPane scrollPane = getScrollPane();
 		mMindMapComponent = null;
 		mSplitPane.setLeftComponent(null);
 		mSplitPane.setRightComponent(null);
-		mSplitPane.setLeftComponent(scrollPane);
+		mSplitPane.setLeftComponent(mapPane);
 		setSplitPaneLayoutManager();
 		final Controller controller = Controller.getCurrentModeController().getController();
 		final IMapSelection selection = controller.getSelection();

@@ -23,8 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.dnd.DropTarget;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -33,9 +31,8 @@ import java.util.Vector;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.TabbedPaneUI;
@@ -45,6 +42,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.FileOpener;
+import org.freeplane.view.swing.map.MapViewScrollPane;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class MapViewTabs implements IMapViewChangeListener {
@@ -54,10 +52,12 @@ class MapViewTabs implements IMapViewChangeListener {
 	final private Vector<Component> mTabbedPaneMapViews;
 	private boolean mTabbedPaneSelectionUpdate = true;
 	private TabbedPaneUI tabbedPaneUI;
+	private final JScrollPane scrollpane;
 
 	public MapViewTabs( final ViewController fm, final JComponent contentComponent) {
 //		this.controller = controller;
 		mContentComponent = contentComponent;
+		this.scrollpane = new MapViewScrollPane();
 		mTabbedPane = new JTabbedPane();
 		removeTabbedPaneAccelerators();
 
@@ -75,7 +75,6 @@ class MapViewTabs implements IMapViewChangeListener {
 
 		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(this);
-		fm.getContentPane().add(mTabbedPane, BorderLayout.CENTER);
 	}
 
 	void removeTabbedPaneAccelerators() {
@@ -84,6 +83,13 @@ class MapViewTabs implements IMapViewChangeListener {
     }
 
 	public void afterViewChange(final Component pOldMap, final Component pNewMap) {
+		if (pNewMap != null) {
+			setViewportView(pNewMap);
+		}
+		else {
+			setViewportView(null);
+		}
+		
 		final int selectedIndex = mTabbedPane.getSelectedIndex();
 		if (pNewMap == null) {
 			return;
@@ -103,6 +109,10 @@ class MapViewTabs implements IMapViewChangeListener {
 		mTabbedPane.setSelectedIndex(mTabbedPane.getTabCount() - 1);
 		setTabsVisible();
 	}
+
+	private void setViewportView(Component component) {
+	    scrollpane.getViewport().setView(component);
+    }
 
 	public void afterViewClose(final Component pOldMapView) {
 		for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
@@ -132,20 +142,6 @@ class MapViewTabs implements IMapViewChangeListener {
 	}
 
 	public void beforeViewChange(final Component pOldMapView, final Component pNewMapView) {
-	}
-
-	public void removeContentComponent() {
-		mContentComponent = null;
-		if (mTabbedPane.getSelectedIndex() >= 0) {
-			mTabbedPane.setComponentAt(mTabbedPane.getSelectedIndex(), new JPanel());
-		}
-	}
-
-	public void setContentComponent(final Component mContentComponent) {
-		this.mContentComponent = mContentComponent;
-		if (mTabbedPane.getSelectedIndex() >= 0) {
-			mTabbedPane.setComponentAt(mTabbedPane.getSelectedIndex(), mContentComponent);
-		}
 	}
 
 	private void tabSelectionChanged() {
@@ -209,4 +205,12 @@ class MapViewTabs implements IMapViewChangeListener {
 	private boolean areTabsVisible() {
 		return tabbedPaneUI == null || tabbedPaneUI == mTabbedPane.getUI();
 	}
+
+	public JComponent getMapPane() {
+	    return scrollpane;
+    }
+
+	public Component getTabbedPane() {
+	    return mTabbedPane;
+    }
 }

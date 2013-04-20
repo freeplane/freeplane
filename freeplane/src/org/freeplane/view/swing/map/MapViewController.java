@@ -26,6 +26,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -85,7 +86,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 */
 	final private Vector<MapView> mapViewVector = new Vector<MapView>();
 	private float zoom;
-	final private JScrollPane scrollPane;
 	private boolean setZoomComboBoxRun;
 	private Controller controller;
 
@@ -96,7 +96,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		this.controller =controller;
 		controller.setMapViewManager(this);
 		addMapViewChangeListener(this);
-		scrollPane = new MapViewScrollPane();
 		zoomIn = new ZoomInAction(this);
 		controller.addAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
@@ -611,13 +610,11 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		return list;
 	}
-	
 	public void afterViewChange(final Component oldMap, final Component pNewMap) {
 		Controller controller = Controller.getCurrentController();
 		final ModeController oldModeController = controller.getModeController();
 		ModeController newModeController = oldModeController;
 		if (pNewMap != null) {
-			setViewportView(pNewMap);
 			final IMapSelection mapSelection = getMapSelection();
 			final NodeModel selected = mapSelection.getSelected();
 			mapSelection.scrollNodeToVisible(selected);
@@ -627,9 +624,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			if (newModeController != oldModeController) {
 				controller.selectMode(newModeController);
 			}
-		}
-		else {
-			setViewportView(null);
 		}
 		setTitle();
 		controller.getViewController().viewNumberChanged(getViewNumber());
@@ -653,17 +647,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 	}
 
-	public Container getViewport() {
-		return scrollPane.getViewport();
-	}
-	public JScrollPane getScrollPane() {
-		return scrollPane;
-	}
-
-	private void setViewportView(final Component view) {
-		scrollPane.setViewportView(view);
-	}
-
 	private void setZoomByItem(final Object item) {
 		final float zoomValue;
 		if (((String) item).equals(userDefinedZoom)) {
@@ -671,7 +654,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			final int zoomInt = Math.round(100 * zoom);
 			final SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(zoomInt, 1, 3200, 1);
 			JSpinner spinner = new JSpinner(spinnerNumberModel);
-			final int option = JOptionPane.showConfirmDialog(scrollPane, spinner, TextUtils.getText("enter_zoom"), JOptionPane.OK_CANCEL_OPTION);
+			final int option = JOptionPane.showConfirmDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), spinner, TextUtils.getText("enter_zoom"), JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION)
 				zoomValue = spinnerNumberModel.getNumber().floatValue() / 100;
 			else
@@ -872,9 +855,4 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		controller.getViewController().setTitle(title);
 		modeController.getUserInputListenerFactory().updateMapList();
 	}
-
-	public void setScrollbarsVisible(boolean areScrollbarsVisible) {
-		scrollPane.setHorizontalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS : JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.VERTICAL_SCROLLBAR_ALWAYS : JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-    }
 }

@@ -41,8 +41,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
-import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.view.swing.map.MapViewScrollPane;
 
 /**
  * @author Dimitry Polivaev
@@ -88,7 +89,7 @@ class AppletViewController extends FrameController {
 	@Override
 	public void init(Controller controller) {
 		mapContentBox = new JPanel(new BorderLayout());
-		mapContentBox.add(controller.getMapViewManager().getScrollPane(), BorderLayout.CENTER);
+		mapContentBox.add(new MapViewScrollPane(), BorderLayout.CENTER);
 		getContentPane().add(mapContentBox, BorderLayout.CENTER);
 		super.init(controller);
 		SwingUtilities.updateComponentTreeUI(applet);
