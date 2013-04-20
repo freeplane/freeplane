@@ -140,7 +140,7 @@
 			<menu_category menu_key="main_menu_mindmaps" name="mindmaps"/>
 			</menu_submenu>
 		</menu_category>
-	<menu_category name="map_popup">		
+	<menu_category name="map_popup">	
 		<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
 		<menu_action action="ToggleToolbarAction"/>
 		<menu_action action="ToggleLeftToolbarAction"/>

@@ -431,7 +431,9 @@
 			<menu_separator />
 		</menu_submenu>
 	</menu_category>
-	<menu_category name="map_popup">		
+	<menu_category name="map_popup">	
+		<menu_category name="mindmaps" menu_key="popup_menu_mindmaps"/>
+		<menu_separator />
 		<menu_action action="ToggleFullScreenAction" />
 		<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
 		<menu_action action="ToggleToolbarAction" />
@@ -440,12 +442,12 @@
 		<menu_action action="ToggleLeftToolbarAction" />
 		<menu_action action="ToggleStatusAction" />
 		<menu_action action="ToggleScrollbarsAction"/>
-			<menu_separator />
+		<menu_separator />
 		<menu_action action="ShowFormatPanel" />
 		<menu_action action="ShowHideNoteAction" accelerator="control GREATER" />
-			<menu_separator />
+		<menu_separator />
 		<menu_action action="MapBackgroundColorAction" />	
-			<menu_separator />
+		<menu_separator />
 		<menu_action action="ViewLayoutTypeAction.OUTLINE" />
 		<menu_action action="FitToPage" />
 		<menu_action action="CenterSelectedNodeAction"  />

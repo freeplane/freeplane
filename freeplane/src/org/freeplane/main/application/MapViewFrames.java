@@ -65,7 +65,7 @@ class MapViewFrames implements IMapViewChangeListener {
 		for (int i = 0; i < mPaneMapViews.size(); ++i) {
 			if (mPaneMapViews.get(i) == pNewMap) {
 				JInternalFrame frame = getContainingFrame(pNewMap);
-				if (frame.isSelected()) {
+				if (! frame.isSelected()) {
 					try {
 	                    frame.setSelected(true);
                     }
