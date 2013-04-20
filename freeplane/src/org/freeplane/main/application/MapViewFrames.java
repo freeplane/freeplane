@@ -20,7 +20,10 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.dnd.DropTarget;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
@@ -92,7 +95,7 @@ class MapViewFrames implements IMapViewChangeListener {
 	
 	private void addInternalFrame(final Component pNewMap) {
 	    final String title = pNewMap.getName();
-		JInternalFrame viewFrame = new JInternalFrame(title,
+		final JInternalFrame viewFrame = new JInternalFrame(title,
 	          true, //resizable
 	          true, //closable
 	          true, //maximizable
@@ -125,6 +128,22 @@ class MapViewFrames implements IMapViewChangeListener {
 				Component view = getContainedView(internalFrame);
 				Controller.getCurrentController().getMapViewManager().close(view, false);
             }
+		});
+		
+		viewFrame.addHierarchyListener(new HierarchyListener() {
+			public void hierarchyChanged(HierarchyEvent e) {
+				if(viewFrame.isShowing()){
+					viewFrame.removeHierarchyListener(this);
+					Component selectedComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+					Component containedView = getContainedView(viewFrame);
+					if(containedView == selectedComponent)
+	                    try {
+	                        viewFrame.setSelected(true);
+                        }
+                        catch (PropertyVetoException e1) {
+                        }
+				}
+			}
 		});
 
     }
