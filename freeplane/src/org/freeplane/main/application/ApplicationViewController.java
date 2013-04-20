@@ -54,7 +54,6 @@ import org.freeplane.view.swing.map.MapViewScrollPane;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class ApplicationViewController extends FrameController {
-	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
 	private static final String SPLIT_PANE_LAST_RIGHT_POSITION = "split_pane_last_right_position";
