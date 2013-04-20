@@ -25,7 +25,6 @@ import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.LayoutManager;
-import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -38,7 +37,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
@@ -99,23 +97,12 @@ class ApplicationViewController extends FrameController {
 			}
 		};
 		setSplitPaneLayoutManager();
-		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
-		    ApplicationViewController.RESOURCES_USE_TABBED_PANE);
 		final Component contentPane;
-		if (shouldUseTabbedPane) {
-			final MapViewTabs mapViewTabs = new MapViewTabs(this, mSplitPane);
-			contentPane = mapViewTabs.getTabbedPane();
-			getContentPane().add(contentPane, BorderLayout.CENTER);
-			mapPane = mapViewTabs.getMapPane();
-		}
-		else {
-			mapPane = new MapViewScrollPane();
-			contentPane = mSplitPane;
-			final FileOpener fileOpener = new FileOpener();
-			new DropTarget(mSplitPane, fileOpener);
-			mSplitPane.addMouseListener(new DefaultMapMouseListener());
-		}
+		final MapViewFrames mapViewPane = new MapViewFrames();
+		contentPane = mapViewPane.getMapPane();
 		getContentPane().add(contentPane, BorderLayout.CENTER);
+		mapPane = mapViewPane.getMapPane();
+		getContentPane().add(mSplitPane, BorderLayout.CENTER);
 		mSplitPane.setLeftComponent(mapPane);
 		mSplitPane.setRightComponent(null);
 		initFrame(frame);
