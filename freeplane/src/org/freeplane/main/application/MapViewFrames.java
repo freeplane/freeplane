@@ -112,7 +112,9 @@ class MapViewFrames implements IMapViewChangeListener {
 		MapViewScrollPane mapViewScrollPane = new MapViewScrollPane();
 		mapViewScrollPane.getViewport().setView(pNewMap);
 		viewFrame.getContentPane().add(mapViewScrollPane);
+		int frameCoordinate = (mPaneMapViews.size() - 1) * 20;
 		viewFrame.setSize(400, 400);
+		viewFrame.setLocation(frameCoordinate, frameCoordinate);
 		viewFrame.setVisible(true); 
 		desktopPane.add(viewFrame);
 		try {
