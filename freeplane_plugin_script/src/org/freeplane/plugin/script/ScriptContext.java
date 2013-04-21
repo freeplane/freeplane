@@ -63,17 +63,31 @@ public class ScriptContext {
 	public ScriptContext() {
 	}
 
-	public void accessNode(final NodeModel accessedNode) {
-		FormulaUtils.accessNode(stack.last().getNodeModel(), accessedNode);
-	}
+    public void accessNode(final NodeModel accessedNode) {
+        final NodeWrapper nodeWrapper = stackLastLogNull("accessNode");
+        if (nodeWrapper != null)
+            FormulaUtils.accessNode(nodeWrapper.getNodeModel(), accessedNode);
+    }
 
-	public void accessBranch(final NodeModel accessedNode) {
-		FormulaUtils.accessBranch(stack.last().getNodeModel(), accessedNode);
-	}
+    public void accessBranch(final NodeModel accessedNode) {
+        final NodeWrapper nodeWrapper = stackLastLogNull("accessBranch");
+        if (nodeWrapper != null)
+            FormulaUtils.accessBranch(nodeWrapper.getNodeModel(), accessedNode);
+    }
 
 	public void accessAll() {
-		FormulaUtils.accessAll(stack.last().getNodeModel());
+		final NodeWrapper nodeWrapper = stackLastLogNull("accessAll");
+		if (nodeWrapper != null)
+		    FormulaUtils.accessAll(nodeWrapper.getNodeModel());
 	}
+
+    @SuppressWarnings("unused")
+    private NodeWrapper stackLastLogNull(String method) {
+        final NodeWrapper last = stack.last();
+        if (FormulaUtils.DEBUG_FORMULA_EVALUATION && last == null)
+            System.err.println("stack is empty on " + method);
+        return last;
+    }
 
 	public boolean push(NodeModel nodeModel, String script) {
 		final boolean success = stack.push(new NodeWrapper(nodeModel, script));

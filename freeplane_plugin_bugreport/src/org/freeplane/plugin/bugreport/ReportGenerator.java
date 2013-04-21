@@ -1,7 +1,6 @@
 package org.freeplane.plugin.bugreport;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -219,7 +218,12 @@ public class ReportGenerator extends StreamHandler {
 	JButton logButton;
 	@Override
 	public synchronized void publish(final LogRecord record) {
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final Controller controller = Controller.getCurrentController();
+		if (controller == null) {
+		    // ReportGenerator is not available during controller initialization
+		    return;
+		}
+        final ViewController viewController = controller.getViewController();
 		if (out == null) {
 			out = new ByteArrayOutputStream();
 			setOutputStream(out);
