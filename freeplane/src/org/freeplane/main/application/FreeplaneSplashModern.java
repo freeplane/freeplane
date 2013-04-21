@@ -34,7 +34,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 import javax.swing.JWindow;
 
 import org.freeplane.core.resources.ResourceController;
@@ -64,6 +66,9 @@ public class FreeplaneSplashModern extends JWindow {
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
 		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));
 		setSize(labelSize);
+		RootPane rootPane = new RootPane();
+		rootPane.setSize(labelSize);
+		setRootPane(rootPane);
 	}
 
 	private void createVersionTextFont() {
@@ -86,24 +91,28 @@ public class FreeplaneSplashModern extends JWindow {
 
 	private final ImageIcon splashImage;
 	private URL splashResource;
+	
+	@SuppressWarnings("serial")
+    private class RootPane extends JRootPane{
 
-	@Override
-	public void paint(final Graphics g) {
-		final Graphics2D g2 = (Graphics2D) g;
-		splashImage.paintIcon(this, g2, 0, 0);
-		if(splashResource.getProtocol().equals("file"))
-			return;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		final FreeplaneVersion version = FreeplaneVersion.getVersion();
-		final String versionString = getVersionText(version);
-		g2.setColor(Color.BLACK);
-		final int xCoordinate = 164;
-		final int yCoordinate = 194;
-		createVersionTextFont();
-		final float versionFontSize;
-		versionFontSize = 15;
-		g2.setFont(versionTextFont.deriveFont(versionFontSize));
-		g2.drawString(versionString, xCoordinate, yCoordinate);
+		@Override
+		public void paint(final Graphics g) {
+			final Graphics2D g2 = (Graphics2D) g;
+			splashImage.paintIcon(this, g2, 0, 0);
+			if(splashResource.getProtocol().equals("file"))
+				return;
+			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			final FreeplaneVersion version = FreeplaneVersion.getVersion();
+			final String versionString = getVersionText(version);
+			g2.setColor(Color.BLACK);
+			final int xCoordinate = 164;
+			final int yCoordinate = 194;
+			createVersionTextFont();
+			final float versionFontSize;
+			versionFontSize = 15;
+			g2.setFont(versionTextFont.deriveFont(versionFontSize));
+			g2.drawString(versionString, xCoordinate, yCoordinate);
+		}
 	}
 
 	private String getVersionText(final FreeplaneVersion version) {
@@ -121,9 +130,13 @@ public class FreeplaneSplashModern extends JWindow {
 	public void setVisible(final boolean b) {
 		super.setVisible(b);
 		if (b) {
-			getRootPane().paintImmediately(0, 0, getWidth(), getHeight());
+			paintImmediately();
 		}
 	}
+
+	public void paintImmediately() {
+	    ((JComponent) getRootPane()).paintImmediately(0, 0, getWidth(), getHeight());
+    }
 	
 	static public void main(String[] args){
 		ApplicationResourceController applicationResourceController = new ApplicationResourceController();

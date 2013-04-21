@@ -19,6 +19,7 @@
  */
 package org.freeplane.main.application;
 
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.io.File;
@@ -28,8 +29,10 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
@@ -208,7 +211,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 			    final Options options = CommandLineParser.parse(args);
-				loadMaps(options.getFilesToOpenAsArray());
 				viewController.init(Controller.getCurrentController());
 				splash.toBack();
 				final Frame frame = viewController.getFrame();
@@ -217,6 +219,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
+				Container contentPane = viewController.getContentPane();
+				JComponent rootPane = (JComponent) contentPane.getParent();
+				contentPane.setVisible(false);
+				rootPane.paintImmediately(0, 0, rootPane.getWidth(), rootPane.getHeight());
+				splash.paintImmediately();
+				loadMaps(options.getFilesToOpenAsArray());
+				viewController.getContentPane().setVisible(true);
 				splash.dispose();
 				splash = null;
 				frame.toFront();
