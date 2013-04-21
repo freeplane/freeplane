@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.util.Vector;
 
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
@@ -52,6 +53,7 @@ class MapViewFrames implements IMapViewChangeListener {
 
 	public MapViewFrames() {
 		desktopPane = new JDesktopPane();
+		removeDesktopPaneAccelerators();
 		desktopPane.setFocusable(false);
 		mPaneMapViews = new Vector<Component>();
 		final FileOpener fileOpener = new FileOpener();
@@ -61,6 +63,12 @@ class MapViewFrames implements IMapViewChangeListener {
 		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(this);
 	}
+	
+	private void removeDesktopPaneAccelerators() {
+		 final InputMap map = new InputMap();
+		 desktopPane.setInputMap(JDesktopPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, map);
+	}
+
 
 	public void afterViewChange(final Component pOldMap, final Component pNewMap) {
 		if (pNewMap == null) {
