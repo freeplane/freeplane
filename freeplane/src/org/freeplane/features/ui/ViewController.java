@@ -43,6 +43,7 @@ import org.freeplane.features.mode.ModeController;
  * 24.12.2012
  */
 public interface ViewController {
+	public static final String FULLSCREEN_ENABLED_PROPERTY = "fullscreen_enabled";
 	public static final String STANDARD_STATUS_INFO_KEY = "standard";
 	public static final String VISIBLE_PROPERTY_KEY = "VISIBLE_PROPERTY_KEY";
 	public static final int BOTTOM = 3;
@@ -54,6 +55,7 @@ public interface ViewController {
 	public Rectangle getFrameSize();
 
 	public void setFrameSize(final Rectangle frameSize);
+	public boolean isFullScreenEnabled();
 
 	public static final String SLOW_SCROLLING = "slowScrolling";
 

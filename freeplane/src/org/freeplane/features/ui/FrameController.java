@@ -75,6 +75,7 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
+
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
 		 * 
@@ -372,8 +373,6 @@ abstract public class FrameController implements ViewController {
 
 	private void setUIComponentsVisible(IMapViewManager iMapViewManager) {
 	    getFreeplaneMenuBar().setVisible(isMenubarVisible());
-		final boolean areScrollbarsVisible = areScrollbarsVisible();
-		iMapViewManager.setScrollbarsVisible(areScrollbarsVisible);
     }
 
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
@@ -386,7 +385,6 @@ abstract public class FrameController implements ViewController {
 
 	public void setScrollbarsVisible(final boolean visible) {
 		setComponentVisibleProperty("scrollbars", visible);
-		Controller.getCurrentController().getMapViewManager().setScrollbarsVisible(visible);
 	}
 
 	private void setComponentVisibleProperty(final String componentName, final boolean visible) {
@@ -421,6 +419,7 @@ abstract public class FrameController implements ViewController {
 			return;
 		}
 		final Controller controller = getController();
+		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY, Boolean.toString(!fullScreen),Boolean.toString(fullScreen));
 		if (fullScreen) {
 			winState = frame.getExtendedState();
 			frame.dispose();
@@ -483,7 +482,7 @@ abstract public class FrameController implements ViewController {
 		return getPropertyKeyPrefix() + completeKeyString;
 	}
 
-	protected boolean isFullScreenEnabled() {
+	public boolean isFullScreenEnabled() {
 		return !getFrame().isResizable();
 	}
 

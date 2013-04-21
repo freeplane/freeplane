@@ -1,4 +1,8 @@
 ===============================
+1.3.3
+===============================
+Internal frames
+===============================
 1.3.2
 ===============================
 Bigger filter composer window depending on screen resolution

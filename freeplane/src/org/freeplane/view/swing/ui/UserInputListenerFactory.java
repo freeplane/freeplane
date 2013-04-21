@@ -255,9 +255,12 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public void updateMapList() {
 		updateModeMenu();
 		updateMapList("main_menu_mindmaps");
+		updateMapList("popup_menu_mindmaps");
 	}
 
 	private void updateMapList(final String mapsMenuPosition) {
+		if(! menuBuilder.contains(mapsMenuPosition))
+			return;
 		menuBuilder.removeChildElements(mapsMenuPosition);
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final List<? extends Component> mapViewVector = mapViewManager.getMapViewVector();

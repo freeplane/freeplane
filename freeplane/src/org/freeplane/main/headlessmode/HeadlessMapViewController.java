@@ -44,6 +44,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -261,8 +262,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 		return true;
 	}
 
-	public void setScrollbarsVisible(boolean areScrollbarsVisible) {
-	    // TODO Auto-generated method stub
-	    
+	public boolean close(Component mapViewComponent, boolean force) {
+		throw new RuntimeException("Method not implemented");
     }
 }

@@ -97,7 +97,8 @@
 			<menu_action accelerator="F1" action="DocumentationAction"/>	
 			</menu_submenu>
 	</menu_category>
-	<menu_category name="map_popup">		
+	<menu_category name="map_popup">	
+		<menu_category name="mindmaps" menu_key="popup_menu_mindmaps"/>	
 		<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
 		<menu_action action="ToggleToolbarAction"/>
 		<menu_action action="ShowFilterToolbarAction"/>
