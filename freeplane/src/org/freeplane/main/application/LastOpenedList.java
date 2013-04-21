@@ -20,21 +20,26 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Frame;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -66,6 +71,8 @@ import org.freeplane.n3.nanoxml.XMLException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
+	private static final String ICONIFIED = "ICONIFIED";
+	private static final String MAXIMIZED = "MAXIMIZED";
 	private static final String MENU_CATEGORY = "main_menu_most_recent_files";
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
 	private static final String OPENED_NOW = "openedNow_1.0.20";
@@ -75,7 +82,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 // // 	private final Controller controller;
 	private static boolean PORTABLE_APP = System.getProperty("portableapp", "false").equals("true");
 	private static String USER_DRIVE = System.getProperty("user.home", "").substring(0, 2);
-	final private List<String> currenlyOpenedList = new LinkedList<String>();
 	/**
 	 * Contains Restore strings.
 	 */
@@ -102,19 +108,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	public void afterViewClose(final Component oldView) {
-		final String restoreable = getRestoreable(oldView);
-		if (restoreable == null) {
-			return;
-		}
-		currenlyOpenedList.remove(restoreable);
 	}
 
 	public void afterViewCreated(final Component mapView) {
-		final String restoreable = getRestoreable(mapView);
-		if (restoreable == null) {
-			return;
-		}
-		currenlyOpenedList.add(restoreable);
 	}
 
 	public void beforeViewChange(final Component oldView, final Component newView) {
@@ -165,20 +161,11 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if (!event.getProperty().equals(UrlManager.MAP_URL)) {
 			return;
 		}
-		final URL before = (URL) event.getOldValue();
-		if (before != null) {
-			final String fileBefore = before.getFile();
-			if (fileBefore != null) {
-				final String restorable = getRestorable(new File(fileBefore));
-				currenlyOpenedList.remove(restorable);
-			}
-		}
 		final URL after = (URL) event.getNewValue();
 		if (after != null) {
 			final String fileAfter = after.getFile();
 			if (fileAfter != null) {
 				final String restorable = getRestorable(new File(fileAfter));
-				currenlyOpenedList.add(restorable);
 				updateList(event.getMap(), restorable);
 			}
 		}
@@ -199,19 +186,70 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 
 	public void open(final String restoreable) throws FileNotFoundException, MalformedURLException,
 	        IOException, URISyntaxException, XMLException {
-		final boolean changedToMapView = tryToChangeToMapView(restoreable);
-		if ((restoreable != null) && !(changedToMapView)) {
-			final StringTokenizer token = new StringTokenizer(restoreable, ":");
-			if (token.hasMoreTokens()) {
-				final String mode = token.nextToken();
-				Controller.getCurrentController().selectMode(mode);
-				String fileName = token.nextToken("").substring(1);
-				if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
-					fileName = USER_DRIVE + fileName.substring(1);
-				}
-				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
-			}
+		if (restoreable == null)
+			return;
+		final StringTokenizer tokens = new StringTokenizer(restoreable, ":");
+		if (!tokens.hasMoreTokens())
+			return;
+		final boolean changedToMapView;  
+		boolean restorableContainsFrameInfo = restoreable.contains(";frame:");
+		if(restorableContainsFrameInfo) {
+			changedToMapView = tryToChangeToMapView(restoreable.substring(0, restoreable.indexOf(";frame:")));
 		}
+        else {
+			changedToMapView = tryToChangeToMapView(restoreable);
+		}
+		if (! restorableContainsFrameInfo && changedToMapView)
+			return;
+		final String mode = tokens.nextToken();
+		Controller.getCurrentController().selectMode(mode);
+		String fileName = tokens.nextToken(";").substring(1);
+		if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
+			fileName = USER_DRIVE + fileName.substring(1);
+		}
+		if(!changedToMapView)
+			Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
+		else{
+			final MapModel map = Controller.getCurrentController().getMap();
+			Controller.getCurrentModeController().getMapController().newMapView(map);
+		}
+		if (!tokens.hasMoreTokens() || !tokens.nextToken(":").equals(";frame") ||  !tokens.hasMoreTokens())
+			return;
+		Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		if (! restoreable.startsWith(getRestoreable(mapViewComponent) + ';'))
+			return;
+		JInternalFrame frame = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, mapViewComponent);
+		if(frame == null)
+			return;
+		configureFrame(frame, tokens.nextToken());
+		
+		
+	}
+
+	private void configureFrame(JInternalFrame frame, String frameConfiguration) {
+		final StringTokenizer tokens = new StringTokenizer(frameConfiguration, ",");
+	    try {
+	    	String nextToken = tokens.nextToken();
+	    	if(nextToken.equals(MAXIMIZED)){
+	    		frame.setMaximum(true);
+	    		nextToken = tokens.nextToken();
+	    	}
+	    	else
+	    		frame.setMaximum(false);
+	    	if(nextToken.equals(ICONIFIED)){
+	    		frame.setIcon(true);
+	    		nextToken = tokens.nextToken();
+	    	}
+	    	else
+	    		frame.setIcon(false);
+	    	int x = Integer.parseInt(nextToken);
+	    	int y = Integer.parseInt(tokens.nextToken());
+	    	int width = Integer.parseInt(tokens.nextToken());
+	    	int height = Integer.parseInt(tokens.nextToken());
+	    	frame.setBounds(x, y, width, height);
+	    }
+	    catch (Exception e) {
+	    }
 	}
 
 	public void openMapsOnStart() {
@@ -275,9 +313,44 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	public void saveProperties() {
 		ResourceController.getResourceController().setProperty(LAST_OPENED,
 		    ConfigurationUtils.encodeListValue(lastOpenedList, true));
+		List<String> currenlyOpenedList = listCurrentlyOpenedMaps(); 
 		ResourceController.getResourceController().setProperty(OPENED_NOW,
 		    ConfigurationUtils.encodeListValue(currenlyOpenedList, true));
 	}
+
+	private List<String> listCurrentlyOpenedMaps() {
+		List<? extends Component> mapViews = Controller.getCurrentController().getMapViewManager().getMapViewVector();
+		List<String> restorables = new ArrayList<String>(mapViews.size());
+		for(Component mapViewComponent : mapViews){
+			String restoreable = getRestoreable(mapViewComponent);
+			if(restoreable != null) {
+				JInternalFrame frame = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, mapViewComponent);
+				if(frame != null){
+					String frameConfiguration = frameConfigurationString(frame);
+					restorables.add(restoreable + frameConfiguration);
+				}
+				else
+					restorables.add(restoreable);
+			}
+		}
+	    return restorables;
+    }
+
+	protected String frameConfigurationString(JInternalFrame frame) {
+	    StringBuilder restorableFrame = new StringBuilder();
+	    restorableFrame
+	    	.append(";frame:");
+	    if(frame.isMaximum())
+	    	restorableFrame.append(MAXIMIZED).append(",");
+	    if(frame.isIcon())
+	    	restorableFrame.append(ICONIFIED).append(",");
+	    restorableFrame.append(frame.getX()).append(",")
+	    	.append(frame.getY()).append(",")
+	    	.append(frame.getWidth()).append(",")
+	    	.append(frame.getHeight());
+	    String frameConfiguration = restorableFrame.toString();
+	    return frameConfiguration;
+    }
 
 	private boolean tryToChangeToMapView(final String restoreable) {
 		return Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(mRestorableToMapName.get(restoreable));
