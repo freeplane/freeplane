@@ -318,6 +318,18 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
 			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
 			String text = createOpenMapItemName(key);
+			
+			// Add space after ":"
+			String separator = ":";
+			String left;
+			String right;
+			int pos;
+			String result;			 
+			pos = text.indexOf(separator);			 
+			left = text.substring(0, pos+1);			 
+			right = text.substring(pos+1, text.length());			 
+			text = left + " " + right;
+			
 			item.setText(createOpenMapItemName(text));
 			item.setMnemonic(0);
 			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(),
