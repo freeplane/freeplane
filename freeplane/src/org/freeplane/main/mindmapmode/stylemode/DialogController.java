@@ -20,6 +20,7 @@
 package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.io.IOException;
 import java.net.URI;
@@ -30,6 +31,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.RootPaneContainer;
 
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -45,7 +47,7 @@ class DialogController extends FrameController {
 		return dialog;
 	}
 
-	private JComponent mContentComponent = null;
+	private JScrollPane mapViewScrollPane = null;
 
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
 	/** Contains the Note Window Component 
@@ -54,8 +56,8 @@ class DialogController extends FrameController {
 		super(controller, mapViewController, "dialog_");
 		this.dialog = dialog;
 		getContentPane().setLayout(new BorderLayout());
-		mContentComponent = new MapViewScrollPane();
-		getContentPane().add(mContentComponent, BorderLayout.CENTER);
+		mapViewScrollPane = new MapViewScrollPane();
+		getContentPane().add(mapViewScrollPane, BorderLayout.CENTER);
 	}
 
 	/*
@@ -143,4 +145,8 @@ class DialogController extends FrameController {
 	public void removeSplitPane() {
 		throw new UnsupportedOperationException();
 	}
+
+	public void setMapView(Component mapViewComponent) {
+	    mapViewScrollPane.getViewport().setView(mapViewComponent);
+    }
 }
