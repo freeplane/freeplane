@@ -63,6 +63,7 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 	private List<IProjectSelectionListener> projectSelectionListeners = new ArrayList<IProjectSelectionListener>();
 	private AWorkspaceProject lastSelectedProject;
 	private InputController inputController;
+	private ExpandedStateHandler expandedStateHandler;
 	
 	public TreeView() {
 		this.setLayout(new BorderLayout());
@@ -73,6 +74,7 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 		mTree.setCellRenderer(new WorkspaceNodeRenderer());
 		mTree.setCellEditor(new WorkspaceCellEditor(mTree, (DefaultTreeCellRenderer) mTree.getCellRenderer()));
 		mTree.addTreeExpansionListener(new DefaultTreeExpansionListener());
+		mTree.addTreeExpansionListener(getExpandedStateHandler());
         mTree.addTreeSelectionListener(new DefaultWorkspaceSelectionListener());
         mTree.addTreeSelectionListener(getProjectSelectionHandler());
         //WORKSPACE - impl(later): enable multi selection 
@@ -93,6 +95,13 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 		
 	}
 	
+	private ExpandedStateHandler getExpandedStateHandler() {
+		if(expandedStateHandler == null) {
+			expandedStateHandler = new ExpandedStateHandler(mTree);
+		}
+		return expandedStateHandler;
+	}
+
 	private void initTransferHandler() {
 		getTransferHandler().registerNodeDropHandler(DefaultFileNode.class, new DefaultFileDropHandler());
 	
@@ -153,6 +162,10 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 	public void collapsePath(TreePath treePath) {
 		mTree.collapsePath(treePath);		
 	}
+	
+	public void refreshView() {
+		getExpandedStateHandler().setExpandedStates(((AWorkspaceTreeNode)mTree.getModel().getRoot()).getModel(), true);
+	}
 
 	public void setModel(WorkspaceModel model) {
 		if(model instanceof TreeModel) {
@@ -161,7 +174,7 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 		else {
 			mTree.setModel(new TreeModelProxy(model));
 		}
-		
+		getExpandedStateHandler().registerModel(model);
 	}
 	
 	public WorkspaceTransferHandler getTransferHandler() {

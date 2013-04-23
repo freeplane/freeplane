@@ -16,6 +16,8 @@ public interface IWorkspaceView {
 	public void expandPath(TreePath treePath);
 
 	public void collapsePath(TreePath treePath);
+	
+	public void refreshView();
 		
 	public boolean containsComponent(Component comp);
 		

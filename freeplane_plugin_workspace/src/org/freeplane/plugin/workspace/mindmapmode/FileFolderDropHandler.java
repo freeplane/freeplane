@@ -11,6 +11,8 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.URIUtils;
+import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.components.IWorkspaceView;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.io.IFileSystemRepresentation;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
@@ -132,10 +134,12 @@ public class FileFolderDropHandler extends DefaultFileDropHandler {
 			}
 
 			targetNode.refresh();
-			// WORKSPACE - todo: do sth to save the expanded state
-			// if(WorkspaceController.getCurrentModeExtension().getView() instanceof IExpansionStateHandler) {
-			// ((IExpansionStateHandler) WorkspaceController.getCurrentModeExtension().getView()).addPathKey(this.getKey());
-			// }
+			
+			IWorkspaceView view = WorkspaceController.getCurrentModeExtension().getView();
+			if(view != null) {
+				view.expandPath(targetNode.getTreePath());
+				WorkspaceController.getCurrentModeExtension().getView().refreshView();
+			}
 		} catch (Exception e) {
 			LogUtils.warn("org.freeplane.plugin.workspace.mindmapmode.FolderFileDropHandler.processDrop(targetNode, transferable, dropAction)@2", e);
 		}

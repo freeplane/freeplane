@@ -246,12 +246,12 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 
 	public final void dragEnter(DropTargetDragEvent dtde) {
 		dtde.getDropTargetContext().getDropTarget().setDefaultActions(COPY_OR_MOVE);
-		LogUtils.info("org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler.dragEnter(dtde)");
+		//LogUtils.info("org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler.dragEnter(dtde)");
 	}
 
 	public final void dragExit(DropTargetEvent dte) {
 		dte.getDropTargetContext().getDropTarget().setDefaultActions(COPY);
-		LogUtils.info("org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler.dragExit(dte)");
+		//LogUtils.info("org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler.dragExit(dte)");
 	}
 
 	private TreePath lastPathLocation = null;
@@ -275,7 +275,7 @@ public class WorkspaceTransferHandler extends TransferHandler implements DropTar
 	}
 
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
-		LogUtils.info("org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler.dropActionChanged(dtde)");
+		//LogUtils.info("org.freeplane.plugin.workspace.dnd.WorkspaceTransferHandler.dropActionChanged(dtde)");
 	}
 
 	

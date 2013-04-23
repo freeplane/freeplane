@@ -311,10 +311,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 	public void reload(AWorkspaceTreeNode node) {
 		if (node != null) {
 			fireTreeStructureChanged(this, node.getTreePath(), null, null);
-//			AWorkspaceModeExtension ctrl = WorkspaceController.getCurrentModeExtension();
-//			if(ctrl.getView() != null && ctrl.getView() instanceof IExpansionStateHandler) {
-//				((IExpansionStateHandler) ctrl.getView()).restoreExpansionStates();
-//			}
 		}
 	}
 

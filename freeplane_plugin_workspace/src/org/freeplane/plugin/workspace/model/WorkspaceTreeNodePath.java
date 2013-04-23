@@ -88,6 +88,13 @@ public class WorkspaceTreeNodePath extends TreePath implements Destructable {
 	public AWorkspaceTreeNode getLastPathComponent() {
 		return (AWorkspaceTreeNode) super.getLastPathComponent();
 	}
+	
+	public boolean equals(Object o) {
+		if(o instanceof WorkspaceTreeNodePath) {
+			return this.toString().equals(o.toString());
+		}
+		return super.equals(o);
+	}
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

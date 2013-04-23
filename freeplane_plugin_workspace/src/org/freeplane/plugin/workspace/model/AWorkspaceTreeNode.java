@@ -173,7 +173,7 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 	}
 	
 	public void refresh() {
-		//override in child class, if needed
+		//override in child class, if necessary
 		getModel().reload(this);
 	}
 	
