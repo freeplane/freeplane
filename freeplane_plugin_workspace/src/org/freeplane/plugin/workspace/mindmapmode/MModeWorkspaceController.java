@@ -151,8 +151,8 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 				projectMenu.setMnemonic('o');				
 				builder.addMenuItem("/menu_bar/format", projectMenu, MENU_PROJECT_KEY, MenuBuilder.AFTER);
 				
-				builder.addAction(MENU_PROJECT_KEY, new WorkspaceNewProjectAction(), MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_PROJECT_KEY, new WorkspaceImportProjectAction(), MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_PROJECT_KEY, WorkspaceController.getAction(WorkspaceNewProjectAction.KEY), MenuBuilder.AS_CHILD);
+				builder.addAction(MENU_PROJECT_KEY, WorkspaceController.getAction(WorkspaceImportProjectAction.KEY), MenuBuilder.AS_CHILD);
 				
 				builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
 				final String MENU_PROJECT_ADD_KEY = builder.getMenuKey(MENU_PROJECT_KEY, "new");				
@@ -284,6 +284,7 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 		WorkspaceController.addAction(new WorkspaceExpandAction());
 		WorkspaceController.addAction(new WorkspaceCollapseAction());
 		WorkspaceController.addAction(new WorkspaceNewProjectAction());
+		WorkspaceController.addAction(new WorkspaceImportProjectAction());
 		WorkspaceController.addAction(new NodeNewFolderAction());
 		WorkspaceController.addAction(new NodeNewLinkAction());
 		WorkspaceController.addAction(new NodeOpenLocationAction());
