@@ -20,7 +20,7 @@ import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
-public final class WorkspaceRootNode extends AFolderNode implements IWorkspaceNodeActionListener {
+public class WorkspaceRootNode extends AFolderNode implements IWorkspaceNodeActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private static Icon DEFAULT_ICON = new ImageIcon(
