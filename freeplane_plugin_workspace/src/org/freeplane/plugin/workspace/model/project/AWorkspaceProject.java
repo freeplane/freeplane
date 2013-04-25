@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.freeplane.plugin.workspace.URIUtils;
 import org.freeplane.plugin.workspace.model.WorkspaceModelEvent;
-import org.freeplane.plugin.workspace.model.WorkspaceModelEvent.ProjectModelEventType;
+import org.freeplane.plugin.workspace.model.WorkspaceModelEvent.WorkspaceModelEventType;
 
 public abstract class AWorkspaceProject {	
 	
@@ -100,7 +100,7 @@ public abstract class AWorkspaceProject {
 		}
 
 		public void treeNodesChanged(WorkspaceModelEvent event) {
-			if(event.getType() == ProjectModelEventType.RENAMED && getModel().getRoot().equals(event.getTreePath().getLastPathComponent())) {
+			if(event.getType() == WorkspaceModelEventType.RENAMED && getModel().getRoot().equals(event.getTreePath().getLastPathComponent())) {
 				File file = URIUtils.getAbsoluteFile(getProjectHome());
 				File targetFile = new File(file.getParentFile(), getModel().getRoot().getName());
 				if(file.exists()) {

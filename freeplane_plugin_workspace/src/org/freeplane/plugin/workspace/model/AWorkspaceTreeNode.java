@@ -204,6 +204,20 @@ public abstract class AWorkspaceTreeNode implements Cloneable, TreeNode, Destruc
 		}
 	}
 	
+	public AWorkspaceTreeNode getChildById(String id) {
+		if(id == null) {
+			return null;
+		}
+		synchronized (children) {
+			for (AWorkspaceTreeNode child : children) {
+				if(id.equals(child.getId())) {
+					return child;
+				}
+			}
+		}
+		return null;
+	}
+	
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/

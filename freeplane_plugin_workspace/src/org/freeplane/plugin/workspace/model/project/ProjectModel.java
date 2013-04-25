@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.event.EventListenerList;
-import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -28,7 +27,7 @@ import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceModelEvent;
-import org.freeplane.plugin.workspace.model.WorkspaceModelEvent.ProjectModelEventType;
+import org.freeplane.plugin.workspace.model.WorkspaceModelEvent.WorkspaceModelEventType;
 import org.freeplane.plugin.workspace.model.WorkspaceModelException;
 import org.freeplane.plugin.workspace.model.WorkspaceTreeModel;
 import org.freeplane.plugin.workspace.nodes.AFolderNode;
@@ -42,8 +41,7 @@ public class ProjectModel implements WorkspaceTreeModel {
 	private final Map<String, AWorkspaceTreeNode> hashStringKeyIndex = new HashMap<String, AWorkspaceTreeNode>();
 	protected EventListenerList listenerList = new EventListenerList();
 	private final AWorkspaceProject PROJECT;
-	private Map<TreeModelListener, TreeModelListenerWrapper> wrapperMap = new HashMap<TreeModelListener, ProjectModel.TreeModelListenerWrapper>();
-
+	
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
@@ -64,20 +62,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		return (IProjectModelListener[]) listenerList.getListeners(IProjectModelListener.class);
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node being changed
-	 * @param path
-	 *            the path to the root node
-	 * @param childIndices
-	 *            the indices of the changed elements
-	 * @param children
-	 *            the changed elements
-	 */
 	protected void fireTreeNodesChanged(Object source, TreePath path, int[] childIndices, Object[] children) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -96,7 +80,7 @@ public class ProjectModel implements WorkspaceTreeModel {
 	protected void fireTreeNodeChanged(Object source, TreePath path, int childIndex, Object children, Object oldValue, Object newValue) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
-		WorkspaceModelEvent e = new WorkspaceModelEvent(getProject(), source, path, ProjectModelEventType.DEFAULT, oldValue, newValue);
+		WorkspaceModelEvent e = new WorkspaceModelEvent(getProject(), source, path, WorkspaceModelEventType.DEFAULT, oldValue, newValue);
 		// Process the listeners last to first, notifying
 		// those that are interested in this event
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -106,21 +90,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node where new elements are being inserted
-	 * @param path
-	 *            the path to the root node
-	 * @param childIndices
-	 *            the indices of the new elements
-	 * @param children
-	 *            the new elements
-	 * @see EventListenerList
-	 */
 	protected void fireTreeNodesInserted(Object source, TreePath path, int[] childIndices, Object[] children) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -136,21 +105,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node where elements are being removed
-	 * @param path
-	 *            the path to the root node
-	 * @param childIndices
-	 *            the indices of the removed elements
-	 * @param children
-	 *            the removed elements
-	 * @see EventListenerList
-	 */
 	protected void fireTreeNodesRemoved(Object source, TreePath path, int[] childIndices, Object[] children) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -166,21 +120,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node where elements are being removed
-	 * @param path
-	 *            the path to the root node
-	 * @param childIndices
-	 *            the indices of the removed elements
-	 * @param children
-	 *            the removed elements
-	 * @see EventListenerList
-	 */
 	protected void fireTreeNodesRemoved(Object source, TreePath path, Object from, Object to) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -190,27 +129,12 @@ public class ProjectModel implements WorkspaceTreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == IProjectModelListener.class) {
 				// Lazily create the event:
-				if (e == null) e = new WorkspaceModelEvent(getProject(), source, path, ProjectModelEventType.DELETED, from, to);
+				if (e == null) e = new WorkspaceModelEvent(getProject(), source, path, WorkspaceModelEventType.DELETED, from, to);
 				((IProjectModelListener) listeners[i + 1]).treeNodesRemoved(e);
 			}
 		}
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node where the tree model has changed
-	 * @param path
-	 *            the path to the root node
-	 * @param childIndices
-	 *            the indices of the affected elements
-	 * @param children
-	 *            the affected elements
-	 * @see EventListenerList
-	 */
 	protected void fireTreeStructureChanged(Object source, TreePath path, int[] childIndices, Object[] children) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -226,17 +150,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node where the tree model has changed
-	 * @param path
-	 *            the path to the root node
-	 * @see EventListenerList
-	 */
 	protected void fireTreeStructureChanged(Object source, TreePath path) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -252,17 +165,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node where the tree model has changed
-	 * @param path
-	 *            the path to the root node
-	 * @see EventListenerList
-	 */
 	protected void fireTreeStructureMoved(Object source, TreePath path, Object from, Object to) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -272,27 +174,12 @@ public class ProjectModel implements WorkspaceTreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == IProjectModelListener.class) {
 				// Lazily create the event:
-				if (e == null) e = new WorkspaceModelEvent(getProject(), source, path, ProjectModelEventType.MOVED, from, to);
+				if (e == null) e = new WorkspaceModelEvent(getProject(), source, path, WorkspaceModelEventType.MOVED, from, to);
 				((IProjectModelListener) listeners[i + 1]).treeStructureChanged(e);
 			}
 		}
 	}
 
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 * 
-	 * @param source
-	 *            the node where the tree model has changed
-	 * @param path
-	 *            the path to the root node
-	 * @param from
-	 *            the old name
-	 * @param path
-	 *            the new name
-	 * @see EventListenerList
-	 */
 	protected void fireTreeNodeRenamed(Object source, TreePath path, Object from, Object to) {
 		// Guaranteed to return a non-null array
 		Object[] listeners = listenerList.getListenerList();
@@ -302,7 +189,7 @@ public class ProjectModel implements WorkspaceTreeModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == IProjectModelListener.class) {
 				// Lazily create the event:
-				if (e == null) e = new WorkspaceModelEvent(getProject(), source, path, ProjectModelEventType.RENAMED, from, to);
+				if (e == null) e = new WorkspaceModelEvent(getProject(), source, path, WorkspaceModelEventType.RENAMED, from, to);
 				((IProjectModelListener) listeners[i + 1]).treeNodesChanged(e);
 			}
 		}
@@ -314,19 +201,10 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Invoke this method if you've modified the TreeNodes upon which this model
-	 * depends. The model will notify all of its listeners that the model has
-	 * changed.
-	 */
 	public void reload() {
 		reload(root);
 	}
 
-	/**
-	 * Invoke this method after you've changed how node is to be represented in
-	 * the tree.
-	 */
 	public void nodeChanged(AWorkspaceTreeNode node) {
 		if (listenerList != null && node != null) {
 			AWorkspaceTreeNode parent = node.getParent();
@@ -354,11 +232,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		fireTreeStructureMoved(this, node.getTreePath(), from, to);
 	}
 
-	/**
-	 * Invoke this method after you've inserted some TreeNodes into node.
-	 * childIndices should be the index of the new elements and must be sorted
-	 * in ascending order.
-	 */
 	public void nodesWereInserted(AWorkspaceTreeNode node, int[] childIndices) {
 		if (listenerList != null && node != null && childIndices != null && childIndices.length > 0) {
 			int cCount = childIndices.length;
@@ -370,22 +243,12 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Invoke this method after you've removed some TreeNodes from node.
-	 * childIndices should be the index of the removed elements and must be
-	 * sorted in ascending order. And removedChildren should be the array of the
-	 * children objects that were removed.
-	 */
 	public void nodesWereRemoved(AWorkspaceTreeNode node, int[] childIndices, Object[] removedChildren) {
 		if (node != null && childIndices != null) {
 			fireTreeNodesRemoved(this, node.getTreePath(), childIndices, removedChildren);
 		}
 	}
 
-	/**
-	 * Invoke this method after you've changed how the children identified by
-	 * childIndicies are to be represented in the tree.
-	 */
 	public void nodesChanged(AWorkspaceTreeNode node, int[] childIndices) {
 		if (node != null) {
 			if (childIndices != null) {
@@ -405,10 +268,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 		}
 	}
 
-	/**
-	 * Invoke this method if you've totally changed the children of node and its
-	 * childrens children... This will post a treeStructureChanged event.
-	 */
 	public void nodeStructureChanged(AWorkspaceTreeNode node) {
 		if (node != null) {
 			fireTreeStructureChanged(this, node.getTreePath(), null, null);
@@ -689,71 +548,6 @@ public class ProjectModel implements WorkspaceTreeModel {
 			return;
 		}
 		listenerList.remove(IProjectModelListener.class, listener);
-	}
-	
-	/**
-	 * please use addProjectModelListener(IProjectModelListener listener)
-	 * 
-	 * @param l TreeModelListener
-	 */
-	@Deprecated
-	public void addTreeModelListener(TreeModelListener l) {
-		addProjectModelListener(getWrapper(l));
-	}
-
-	/**
-	 * please use removeProjectModelListener(IProjectModelListener listener)
-	 * 
-	 * @param l TreeModelListener
-	 */
-	@Deprecated
-	public void removeTreeModelListener(TreeModelListener l) {
-		removeProjectModelListener(removeWrapper(l));
-	}
-
-	private IProjectModelListener getWrapper(TreeModelListener l) {
-		synchronized (wrapperMap) {
-			TreeModelListenerWrapper wrapper = wrapperMap .get(l);
-			if(wrapper == null) {
-				wrapper = new TreeModelListenerWrapper(l);
-				wrapperMap.put(l, wrapper);
-			}		
-			return wrapper;
-		}
-	}
-	
-	private IProjectModelListener removeWrapper(TreeModelListener l) {
-		synchronized (wrapperMap) {
-			TreeModelListenerWrapper wrapper = wrapperMap .get(l);
-			if(wrapper != null) {
-				wrapperMap.remove(l);
-			}		
-			return wrapper;
-		}
-	}
-	
-	private class TreeModelListenerWrapper implements IProjectModelListener {
-
-		private final TreeModelListener listener;
-		public TreeModelListenerWrapper(TreeModelListener l) {
-			this.listener = l;
-		}
-		
-		public void treeNodesChanged(WorkspaceModelEvent event) {
-			listener.treeNodesChanged(event);
-		}
-
-		public void treeNodesInserted(WorkspaceModelEvent event) {
-			listener.treeNodesInserted(event);
-		}
-
-		public void treeNodesRemoved(WorkspaceModelEvent event) {
-			listener.treeNodesRemoved(event);
-		}
-
-		public void treeStructureChanged(WorkspaceModelEvent event) {
-			listener.treeStructureChanged(event);
-		}
 	}
 
 	public void requestSave() {

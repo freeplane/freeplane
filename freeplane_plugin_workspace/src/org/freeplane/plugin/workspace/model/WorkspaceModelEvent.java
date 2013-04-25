@@ -9,14 +9,14 @@ public class WorkspaceModelEvent extends TreeModelEvent {
 
 	private static final long serialVersionUID = 1L;
 	private final AWorkspaceProject project; 
-	private final ProjectModelEventType type;
+	private final WorkspaceModelEventType type;
 	private final Object oldValue;
 	private final Object newValue;
 	
 	public WorkspaceModelEvent(AWorkspaceProject project, Object source, Object[] path, int[] childIndices, Object[] children) {
 		super(source, path, childIndices, children);
 		this.project = project;
-		this.type = ProjectModelEventType.DEFAULT;
+		this.type = WorkspaceModelEventType.DEFAULT;
 		this.oldValue = null;
 		this.newValue = null;		
 	}
@@ -24,7 +24,7 @@ public class WorkspaceModelEvent extends TreeModelEvent {
 	public WorkspaceModelEvent(AWorkspaceProject project, Object source, TreePath path, int[] childIndices, Object[] children) {
 		super(source, path, childIndices, children);
 		this.project = project;
-		this.type = ProjectModelEventType.DEFAULT;
+		this.type = WorkspaceModelEventType.DEFAULT;
 		this.oldValue = null;
 		this.newValue = null;
 	}
@@ -34,10 +34,10 @@ public class WorkspaceModelEvent extends TreeModelEvent {
 	}
 
 	public WorkspaceModelEvent(AWorkspaceProject project, Object source, TreePath path) {
-		this(project, source, path, ProjectModelEventType.DEFAULT, null, null);
+		this(project, source, path, WorkspaceModelEventType.DEFAULT, null, null);
 	}
 
-	public WorkspaceModelEvent(AWorkspaceProject project, Object source, TreePath path, ProjectModelEventType type, Object oldValue, Object newValue) {
+	public WorkspaceModelEvent(AWorkspaceProject project, Object source, TreePath path, WorkspaceModelEventType type, Object oldValue, Object newValue) {
 		super(source, path);
 		this.project = project;
 		this.type = type;
@@ -49,7 +49,7 @@ public class WorkspaceModelEvent extends TreeModelEvent {
 		return this.project;
 	}
 	
-	public ProjectModelEventType getType() {
+	public WorkspaceModelEventType getType() {
 		return type;
 	}	
 
@@ -61,7 +61,7 @@ public class WorkspaceModelEvent extends TreeModelEvent {
 		return newValue;
 	}
 
-	public enum ProjectModelEventType {
+	public enum WorkspaceModelEventType {
 		DEFAULT,
 		RENAMED,
 		MOVED,
