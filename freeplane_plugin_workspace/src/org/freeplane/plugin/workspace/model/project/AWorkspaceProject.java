@@ -35,9 +35,10 @@ public abstract class AWorkspaceProject {
 		return this.model;
 	}
 	
-	public IWorkspaceProjectExtension getExtensions(Class<? extends IWorkspaceProjectExtension> key) {
+	@SuppressWarnings("unchecked")
+	public <T extends IWorkspaceProjectExtension> T getExtensions(Class<T> key) {
 		synchronized (extensions) {
-			return extensions.get(key);
+			return (T) extensions.get(key);
 		}
 	}
 
