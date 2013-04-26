@@ -497,9 +497,17 @@ public abstract class WorkspaceModel implements TreeModel {
 		public AWorkspaceTreeNode getNode(String key) {
 			AWorkspaceTreeNode node = null;
 			for (AWorkspaceProject project : getProjects()) {
-				node = project.getModel().getNode(key);
-				if(node != null) {
-					break; 
+				ProjectModel pModel = project.getModel();
+				String pKey = pModel.getRoot().getKey(); 
+				if(pKey.equals(key)) {
+					node = pModel.getRoot();
+					break;
+				}
+				else {
+					node = pModel.getNode(key);
+					if(node != null) {
+						break; 
+					}
 				}
 			}
 			if(node == null && getRoot().getChildCount() > 0) {

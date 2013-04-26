@@ -3,6 +3,7 @@ package org.freeplane.plugin.workspace.actions;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.components.IWorkspaceView;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class NodeRefreshAction extends AWorkspaceAction {
@@ -24,7 +25,10 @@ public class NodeRefreshAction extends AWorkspaceAction {
 				targetNode.refresh();
 			}
 		}
-		
+		IWorkspaceView view = WorkspaceController.getCurrentModeExtension().getView();
+		if(view != null){
+			view.refreshView();
+		}
 	}	
 	
 	
