@@ -13,6 +13,7 @@
 	<classpathentry kind="lib" path="lib/freeplanemac.jar" sourcepath="/freeplane_mac/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/jortho.jar"/>
+	<classpathentry kind="lib" path="lib/idw-gpl.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
