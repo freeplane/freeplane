@@ -97,10 +97,10 @@ class ApplicationViewController extends FrameController {
 		};
 		setSplitPaneLayoutManager();
 		final Component contentPane;
-		final MapViewFrames mapViewPane = new MapViewFrames();
-		contentPane = mapViewPane.getMapPane();
+		final MapViewDockingWindows mapViewWindows = new MapViewDockingWindows();
+		contentPane = mapViewWindows.getMapPane();
 		getContentPane().add(contentPane, BorderLayout.CENTER);
-		mapPane = mapViewPane.getMapPane();
+		mapPane = mapViewWindows.getMapPane();
 		getContentPane().add(mSplitPane, BorderLayout.CENTER);
 		mSplitPane.setLeftComponent(mapPane);
 		mSplitPane.setRightComponent(null);
