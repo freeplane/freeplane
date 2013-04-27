@@ -170,6 +170,7 @@ class MapViewFrames implements IMapViewChangeListener {
 				desktopPane.remove(getContainingFrame(pOldMapView));
 				mPaneMapViews.remove(i);
 				mPaneSelectionUpdate = true;
+				desktopPane.repaint();
 				return;
 			}
 		}
