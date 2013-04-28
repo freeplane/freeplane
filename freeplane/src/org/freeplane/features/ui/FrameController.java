@@ -30,6 +30,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
@@ -436,7 +437,7 @@ abstract public class FrameController implements ViewController {
 					toolBar.setVisible(isToolbarVisible(toolBar));
 				}
 			}
-			frame.setVisible(true);
+			showFrames(frame);
 		}
 		else {
 			frame.dispose();
@@ -452,11 +453,17 @@ abstract public class FrameController implements ViewController {
 					toolBar.setVisible(isToolbarVisible(toolBar));
 				}
 			}
-			frame.setVisible(true);
+			showFrames(frame);
 		}
 		if(focusOwner != null)
 		    focusOwner.requestFocus();
 	}
+
+	protected void showFrames(final Frame frame) {
+	    frame.setVisible(true);
+	    for(Window child : frame.getOwnedWindows())
+	    	child.setVisible(true);
+    }
 
 	boolean isToolbarVisible(final JComponent toolBar) {
 		final String completeKeyString = completeVisiblePropertyKey(toolBar);
