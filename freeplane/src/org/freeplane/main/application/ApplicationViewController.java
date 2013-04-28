@@ -73,6 +73,7 @@ class ApplicationViewController extends FrameController {
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
 	private JComponent mapPane;
+	private MapViewDockingWindows mapViewWindows;
 
 	@SuppressWarnings("serial")
     public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
@@ -97,7 +98,7 @@ class ApplicationViewController extends FrameController {
 		};
 		setSplitPaneLayoutManager();
 		final Component contentPane;
-		final MapViewDockingWindows mapViewWindows = new MapViewDockingWindows();
+		mapViewWindows = new MapViewDockingWindows();
 		contentPane = mapViewWindows.getMapPane();
 		getContentPane().add(contentPane, BorderLayout.CENTER);
 		mapPane = mapViewWindows.getMapPane();
@@ -364,6 +365,7 @@ class ApplicationViewController extends FrameController {
 			}
 			resourceController.setProperty("appwindow_state", String.valueOf(winState));
 		}
+		mapViewWindows.saveLayout();
 	}
 
 	private void saveSplitPanePosition() {
@@ -457,5 +459,9 @@ class ApplicationViewController extends FrameController {
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 	}
+
+	public void openMapsOnStart() {
+	    mapViewWindows.loadLayout();
+    }
 
 }

@@ -20,9 +20,7 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Frame;
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -75,7 +72,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private static final String MAXIMIZED = "MAXIMIZED";
 	private static final String MENU_CATEGORY = "main_menu_most_recent_files";
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
-	private static final String OPENED_NOW = "openedNow_1.0.20";
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	public static final String LOAD_LAST_MAP = "load_last_map";
 	public static final String LOAD_LAST_MAPS = "load_last_maps";
@@ -192,14 +188,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if (!tokens.hasMoreTokens())
 			return;
 		final boolean changedToMapView;  
-		boolean restorableContainsFrameInfo = restoreable.contains(";frame:");
-		if(restorableContainsFrameInfo) {
-			changedToMapView = tryToChangeToMapView(restoreable.substring(0, restoreable.indexOf(";frame:")));
-		}
-        else {
 			changedToMapView = tryToChangeToMapView(restoreable);
-		}
-		if (! restorableContainsFrameInfo && changedToMapView)
+		if (changedToMapView)
 			return;
 		final String mode = tokens.nextToken();
 		Controller.getCurrentController().selectMode(mode);
@@ -213,43 +203,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final MapModel map = Controller.getCurrentController().getMap();
 			Controller.getCurrentModeController().getMapController().newMapView(map);
 		}
-		if (!tokens.hasMoreTokens() || !tokens.nextToken(":").equals(";frame") ||  !tokens.hasMoreTokens())
-			return;
-		Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-		if (! restoreable.startsWith(getRestoreable(mapViewComponent) + ';'))
-			return;
-		JInternalFrame frame = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, mapViewComponent);
-		if(frame == null)
-			return;
-		configureFrame(frame, tokens.nextToken());
-		
-		
-	}
-
-	private void configureFrame(JInternalFrame frame, String frameConfiguration) {
-		final StringTokenizer tokens = new StringTokenizer(frameConfiguration, ",");
-	    try {
-	    	String nextToken = tokens.nextToken();
-	    	if(nextToken.equals(MAXIMIZED)){
-	    		frame.setMaximum(true);
-	    		nextToken = tokens.nextToken();
-	    	}
-	    	else
-	    		frame.setMaximum(false);
-	    	if(nextToken.equals(ICONIFIED)){
-	    		frame.setIcon(true);
-	    		nextToken = tokens.nextToken();
-	    	}
-	    	else
-	    		frame.setIcon(false);
-	    	int x = Integer.parseInt(nextToken);
-	    	int y = Integer.parseInt(tokens.nextToken());
-	    	int width = Integer.parseInt(tokens.nextToken());
-	    	int height = Integer.parseInt(tokens.nextToken());
-	    	frame.setBounds(x, y, width, height);
-	    }
-	    catch (Exception e) {
-	    }
 	}
 
 	public void openMapsOnStart() {
@@ -261,18 +214,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		else {
 			lastMap = null;
 		}
-		final boolean loadLastMaps = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAPS);
-		if (loadLastMaps) {
-			final List<String> startList = new LinkedList<String>();
-			restoreList(OPENED_NOW, startList);
-			safeOpen(startList);
-			if (!lastOpenedList.isEmpty()) {
-				tryToChangeToMapView(lastMap);
-			}
-			return;
-		}
-		if (loadLastMap && !lastOpenedList.isEmpty()) {
-			safeOpen(lastMap);
+		if (lastMap != null) {
+			if(!tryToChangeToMapView(lastMap))
+				safeOpen(lastMap);
 		}
 	}
 
@@ -313,44 +257,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	public void saveProperties() {
 		ResourceController.getResourceController().setProperty(LAST_OPENED,
 		    ConfigurationUtils.encodeListValue(lastOpenedList, true));
-		List<String> currenlyOpenedList = listCurrentlyOpenedMaps(); 
-		ResourceController.getResourceController().setProperty(OPENED_NOW,
-		    ConfigurationUtils.encodeListValue(currenlyOpenedList, true));
 	}
-
-	private List<String> listCurrentlyOpenedMaps() {
-		List<? extends Component> mapViews = Controller.getCurrentController().getMapViewManager().getMapViewVector();
-		List<String> restorables = new ArrayList<String>(mapViews.size());
-		for(Component mapViewComponent : mapViews){
-			String restoreable = getRestoreable(mapViewComponent);
-			if(restoreable != null) {
-				JInternalFrame frame = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, mapViewComponent);
-				if(frame != null){
-					String frameConfiguration = frameConfigurationString(frame);
-					restorables.add(restoreable + frameConfiguration);
-				}
-				else
-					restorables.add(restoreable);
-			}
-		}
-	    return restorables;
-    }
-
-	protected String frameConfigurationString(JInternalFrame frame) {
-	    StringBuilder restorableFrame = new StringBuilder();
-	    restorableFrame
-	    	.append(";frame:");
-	    if(frame.isMaximum())
-	    	restorableFrame.append(MAXIMIZED).append(",");
-	    if(frame.isIcon())
-	    	restorableFrame.append(ICONIFIED).append(",");
-	    restorableFrame.append(frame.getX()).append(",")
-	    	.append(frame.getY()).append(",")
-	    	.append(frame.getWidth()).append(",")
-	    	.append(frame.getHeight());
-	    String frameConfiguration = restorableFrame.toString();
-	    return frameConfiguration;
-    }
 
 	private boolean tryToChangeToMapView(final String restoreable) {
 		return Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(mRestorableToMapName.get(restoreable));

@@ -247,6 +247,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
 		    "always_load_last_maps");
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
+			viewController.openMapsOnStart();
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
 		}
 		if (loadMaps(controller, args)) {
@@ -255,6 +256,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
 			final AddOnsController addonsController = AddOnsController.getController();
 			addonsController.setAutoInstallEnabled(false);
+			viewController.openMapsOnStart();
 			applicationResourceController.getLastOpenedList().openMapsOnStart();
 			addonsController.setAutoInstallEnabled(true);
 		}
