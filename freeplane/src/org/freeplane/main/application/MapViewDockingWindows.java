@@ -57,6 +57,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
@@ -77,15 +79,20 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		rootWindow = new RootWindow(new ViewSerializer() {
 
 			public void writeView(View view, ObjectOutputStream out) throws IOException {
-				Component component = getContainedMapView(view);
-				if(component instanceof MapView){
-					MapView mapView = (MapView) component;
-					out.writeBoolean(true);
-					out.writeUTF(mapView.getModeController().getModeName());
-					out.writeObject(mapView.getModel().getURL());
+				if(view.isDisplayable()) {
+					Component component = getContainedMapView(view);
+					if (component instanceof MapView) {
+						MapView mapView = (MapView) component;
+						if(mapView.getModeController().getModeName().equals(MModeController.MODENAME) 
+								&& ! mapView.getModel().containsExtension(DocuMapAttribute.class)){
+							out.writeBoolean(true);
+							out.writeUTF(mapView.getModeController().getModeName());
+							out.writeObject(mapView.getModel().getURL());
+							return;
+						}
+	                }
 				}
-				else
-					out.writeBoolean(false);
+				out.writeBoolean(false);
 			}
 			
 			public View readView(ObjectInputStream in) throws IOException {
@@ -250,7 +257,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		for (int i = 0; i < mPaneMapViews.size(); ++i) {
 			if (mPaneMapViews.get(i) == pOldMapView) {
 				mPaneSelectionUpdate = false;
-				rootWindow.remove(getContainingDockedWindow(pOldMapView));
+				rootWindow.removeView(getContainingDockedWindow(pOldMapView));
 				mPaneMapViews.remove(i);
 				mPaneSelectionUpdate = true;
 				rootWindow.repaint();

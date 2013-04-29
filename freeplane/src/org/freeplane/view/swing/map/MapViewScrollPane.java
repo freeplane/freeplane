@@ -98,21 +98,20 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	public MapViewScrollPane() {
 		super();
 		setViewport(new MapViewPort());
-		UITools.setScrollbarIncrement(this);
-		UITools.addScrollbarIncrementPropertyListener(this);
-		ResourceController.getResourceController().addPropertyChangeListener(this);
-		initializeScrollbarVisibility();
 	}
 
-	protected void initializeScrollbarVisibility() {
-	    addHierarchyListener(new HierarchyListener() {
-			public void hierarchyChanged(HierarchyEvent e) {
-				if(isShowing()){
-					removeHierarchyListener(this);
-					setScrollbarsVisiblilty();
-				}
-			}
-		});
+	@Override
+    public void addNotify() {
+	    super.addNotify();
+		setScrollbarsVisiblilty();
+		UITools.setScrollbarIncrement(this);
+		ResourceController.getResourceController().addPropertyChangeListener(MapViewScrollPane.this);
+    }
+
+	@Override
+    public void removeNotify() {
+	    super.removeNotify();
+		ResourceController.getResourceController().removePropertyChangeListener(MapViewScrollPane.this);
     }
 
 	@Override
@@ -129,6 +128,12 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 				|| propertyName.startsWith("scrollbarsVisible")){
 			setScrollbarsVisiblilty();
 		}
+		else if (propertyName.equals(UITools.SCROLLBAR_INCREMENT)) {
+			final int scrollbarIncrement = Integer.valueOf(newValue);
+			getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+			getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
+		}
+
     }
 
 	private void setScrollbarsVisiblilty() {

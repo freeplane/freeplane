@@ -68,13 +68,10 @@ import org.freeplane.n3.nanoxml.XMLException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
-	private static final String ICONIFIED = "ICONIFIED";
-	private static final String MAXIMIZED = "MAXIMIZED";
 	private static final String MENU_CATEGORY = "main_menu_most_recent_files";
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	public static final String LOAD_LAST_MAP = "load_last_map";
-	public static final String LOAD_LAST_MAPS = "load_last_maps";
 // // 	private final Controller controller;
 	private static boolean PORTABLE_APP = System.getProperty("portableapp", "false").equals("true");
 	private static String USER_DRIVE = System.getProperty("user.home", "").substring(0, 2);
@@ -129,13 +126,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			return "MindMap:" + absolutePath;
 		}
 		return "MindMap::" + absolutePath.substring(2);
-	}
-
-	private String getRestoreable(final Component mapView) {
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		final MapModel map = mapViewManager.getModel(mapView);
-		final String restoreString = getRestoreable(map);
-		return restoreString;
 	}
 
 	public String getRestoreable( final MapModel map) {

@@ -177,14 +177,14 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			addTableListeners();
 			attributeViewScrollPane = new AttributeViewScrollPane(attributeTable);
 			attributeViewScrollPane.setAlignmentX(AttributeViewScrollPane.LEFT_ALIGNMENT);
-			if(addToNodeView()){
+			if(isReduced()){
 				getNodeView().addContent(attributeViewScrollPane, VIEWER_POSITION);
 			}
 			setViewType(getAttributeRegistry().getAttributeViewType());
 		}
 	}
 
-	boolean addToNodeView() {
+	boolean isReduced() {
 	    return reducedAttributeTableModel != null;
     }
 
@@ -208,7 +208,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	private void setViewType(final String viewType) {
 		JTableHeader currentColumnHeaderView = null;
-		if (viewType == AttributeTableLayoutModel.SHOW_ALL || ! addToNodeView()) {
+		if (viewType == AttributeTableLayoutModel.SHOW_ALL || ! isReduced()) {
 			currentAttributeTableModel = getExtendedAttributeTableModel();
 			currentColumnHeaderView = tableHeader;
 		}
@@ -248,7 +248,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	public void stateChanged(final ChangeEvent event) {
 		setViewType(getAttributeRegistry().getAttributeViewType());
-		if(addToNodeView()){
+		if(isReduced()){
 			reducedAttributeTableModel.stateChanged(null);
 		}
 		if(attributeTable != null)
@@ -293,7 +293,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	 */
 	public void viewRemoved() {
 		removeListeners();
-		if (addToNodeView()) {
+		if (isReduced()) {
 			reducedAttributeTableModel.viewRemoved(nodeView);
 		}
 		if (extendedAttributeTableModel != null) {

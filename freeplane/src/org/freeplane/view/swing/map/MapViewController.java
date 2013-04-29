@@ -272,6 +272,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			changeToMapView((mapViewVector.get(index)));
 		}
 		mapViewChangeListeners.afterMapViewClose(mapView);
+		mapView.getRoot().remove();
 		return true;
     }
 
@@ -639,6 +640,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	public void afterViewClose(final Component oldView) {
+		ModeController newModeController = getModeController(oldView);
+		newModeController.getUserInputListenerFactory().updateMapList();
 	}
 
 	public void afterViewCreated(final Component mapView) {

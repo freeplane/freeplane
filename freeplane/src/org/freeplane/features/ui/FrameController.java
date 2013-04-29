@@ -37,6 +37,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -421,6 +424,7 @@ abstract public class FrameController implements ViewController {
 		}
 		final Controller controller = getController();
 		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY, Boolean.toString(!fullScreen),Boolean.toString(fullScreen));
+		Iterable<Window> visibleFrames = collectVisibleFrames(frame);
 		if (fullScreen) {
 			winState = frame.getExtendedState();
 			frame.dispose();
@@ -437,7 +441,7 @@ abstract public class FrameController implements ViewController {
 					toolBar.setVisible(isToolbarVisible(toolBar));
 				}
 			}
-			showFrames(frame);
+			showWindows(visibleFrames);
 		}
 		else {
 			frame.dispose();
@@ -453,15 +457,26 @@ abstract public class FrameController implements ViewController {
 					toolBar.setVisible(isToolbarVisible(toolBar));
 				}
 			}
-			showFrames(frame);
+			showWindows(visibleFrames);
 		}
 		if(focusOwner != null)
 		    focusOwner.requestFocus();
 	}
 
-	protected void showFrames(final Frame frame) {
-	    frame.setVisible(true);
-	    for(Window child : frame.getOwnedWindows())
+	private Collection<Window> collectVisibleFrames(Window window) {
+		if(! window.isVisible())
+			return Collections.emptyList();
+		Window[] ownedWindows = window.getOwnedWindows();
+		ArrayList<Window> visibleWindows = new ArrayList(ownedWindows.length+ 1); 
+		visibleWindows.add(window);
+		for(Window child : ownedWindows){
+			visibleWindows.addAll(collectVisibleFrames(child));
+		}
+		return visibleWindows;
+    }
+
+	protected void showWindows(final Iterable<Window> windows) {
+	    for(Window child : windows)
 	    	child.setVisible(true);
     }
 

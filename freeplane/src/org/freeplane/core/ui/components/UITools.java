@@ -416,7 +416,7 @@ public class UITools {
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);
 	}
 
-	private static final String SCROLLBAR_INCREMENT = "scrollbar_increment";
+	public static final String SCROLLBAR_INCREMENT = "scrollbar_increment";
 
 	public static void setScrollbarIncrement(final JScrollPane scrollPane) {
 		final int scrollbarIncrement = ResourceController.getResourceController()
