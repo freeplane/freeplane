@@ -22,8 +22,6 @@ package org.freeplane.main.application;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.dnd.DropTarget;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
@@ -31,7 +29,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Vector;
 
@@ -49,90 +46,41 @@ import net.infonode.docking.OperationAbortedException;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
-import net.infonode.docking.ViewSerializer;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.FileOpener;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.MapViewScrollPane;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
-// // 	final private Controller controller;
+	
+	// // 	final private Controller controller;
 	private static final String OPENED_NOW = "openedNow_1.3.04";
 	private RootWindow rootWindow = null;
 	final private Vector<Component> mPaneMapViews;
 	private boolean mPaneSelectionUpdate = true;
-	private boolean loadingLayouFromObjectInpusStream;
+	private boolean loadingLayoutFromObjectInpusStream;
+	private byte[] emptyConfigurations;
+	private MapViewSerializer viewSerializer;
 
 	public MapViewDockingWindows() {
-		rootWindow = new RootWindow(new ViewSerializer() {
-
-			public void writeView(View view, ObjectOutputStream out) throws IOException {
-				if(view.isDisplayable()) {
-					Component component = getContainedMapView(view);
-					if (component instanceof MapView) {
-						MapView mapView = (MapView) component;
-						if(mapView.getModeController().getModeName().equals(MModeController.MODENAME) 
-								&& ! mapView.getModel().containsExtension(DocuMapAttribute.class)){
-							out.writeBoolean(true);
-							out.writeUTF(mapView.getModeController().getModeName());
-							out.writeObject(mapView.getModel().getURL());
-							return;
-						}
-	                }
-				}
-				out.writeBoolean(false);
-			}
-			
-			public View readView(ObjectInputStream in) throws IOException {
-				try {
-					loadingLayouFromObjectInpusStream = true;
-					if (in.readBoolean()){
-						String modeName = in.readUTF();
-						Controller controller = Controller.getCurrentController();
-						controller.selectMode(modeName);
-						ModeController modeController = Controller.getCurrentModeController();
-						URL mapUrl = (URL) in.readObject();
-						if(mapUrl == null)
-							return null;
-						MapController mapController = modeController.getMapController();
-						boolean newMapLoaded = mapController.newMap(mapUrl);
-						if (!newMapLoaded){
-							MapModel map = controller.getMap();
-							if(map.getURL().equals(mapUrl)){
-								mapController.newMapView(map);
-							}
-						}
-						Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
-						if(mapViewComponent.getParent() == null) {
-							mPaneMapViews.add(mapViewComponent);
-	                        return newDockedView(mapViewComponent);
-                        }
-                        else
-							return null;
-					}
-	                return null;
-                }
-                catch (Exception e) {
-                	return null;
-                }
-				finally{
-					loadingLayouFromObjectInpusStream = false;
-				}
-			}
-		});
+		viewSerializer = new MapViewSerializer();
+		rootWindow = new RootWindow(viewSerializer);
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
+		try {
+	        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+			ObjectOutputStream wrapper = new ObjectOutputStream(byteStream);
+			rootWindow.write(wrapper);
+			wrapper.close();
+			emptyConfigurations = byteStream.toByteArray();
+        }
+        catch (IOException e1) {
+        }
 		removeDesktopPaneAccelerators();
 		mPaneMapViews = new Vector<Component>();
 		final FileOpener fileOpener = new FileOpener();
@@ -186,21 +134,23 @@ class MapViewDockingWindows implements IMapViewChangeListener {
     }
     
 	public void afterViewChange(final Component pOldMap, final Component pNewMap) {
-		if (pNewMap == null || loadingLayouFromObjectInpusStream) {
+		if (pNewMap == null) {
 			return;
 		}
-		for (int i = 0; i < mPaneMapViews.size(); ++i) {
-			if (mPaneMapViews.get(i) == pNewMap) {
-				View dockedView = getContainingDockedWindow(pNewMap);
-				dockedView.restoreFocus();
-				return;
+		if(! loadingLayoutFromObjectInpusStream) {
+			for (int i = 0; i < mPaneMapViews.size(); ++i) {
+				if (mPaneMapViews.get(i) == pNewMap) {
+					View dockedView = getContainingDockedWindow(pNewMap);
+					dockedView.restoreFocus();
+					return;
+				}
 			}
-		}
+	        addDockedWindow(pNewMap);
+        }
 		mPaneMapViews.add(pNewMap);
-		addDockedWindow(pNewMap);
 	}
 
-	private View getContainingDockedWindow(final Component pNewMap) {
+	static private View getContainingDockedWindow(final Component pNewMap) {
 	    return (View) SwingUtilities.getAncestorOfClass(View.class, pNewMap);
     }
 
@@ -217,41 +167,18 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				DockingUtil.addWindow(dynamicView, lastFocusedChildWindow.getRootWindow());
 		}
     }
-	private Component getContainedMapView(View dockedWindow) {
+	
+	static Component getContainedMapView(View dockedWindow) {
         JScrollPane scrollPane = (JScrollPane) dockedWindow.getComponent();
 		Component view = scrollPane.getViewport().getView();
         return view;
     }
 	
 	private void addDockedWindow(final Component pNewMap) {
-	    final View viewFrame = newDockedView(pNewMap);
+	    final View viewFrame = viewSerializer.newDockedView(pNewMap);
 
 		addDockedView(viewFrame);
     }
-
-	protected View newDockedView(final Component pNewMap) {
-		if(pNewMap.getParent() != null)
-			return null;
-	    final String title = pNewMap.getName();
-		MapViewScrollPane mapViewScrollPane = new MapViewScrollPane();
-		mapViewScrollPane.getViewport().setView(pNewMap);
-		@SuppressWarnings("serial")
-        final View viewFrame = new ConnectedToMenuView(title, null, mapViewScrollPane);
-		
-		viewFrame.addHierarchyListener(new HierarchyListener() {
-			public void hierarchyChanged(HierarchyEvent e) {
-				if(viewFrame.isShowing()){
-					viewFrame.removeHierarchyListener(this);
-					Component selectedComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-					Component containedView = getContainedMapView(viewFrame);
-					if(containedView == selectedComponent)
-						viewFrame.restoreFocus();
-				}
-			}
-		});
-	    return viewFrame;
-    }
-
 
 	public void afterViewClose(final Component pOldMapView) {
 		for (int i = 0; i < mPaneMapViews.size(); ++i) {
@@ -309,16 +236,27 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	        e.printStackTrace();
         }
 	}
+	
 	public void loadLayout(){
 		String encodedBytes = ResourceController.getResourceController().getProperty(OPENED_NOW, null);
 		if(encodedBytes != null){
 			byte[] bytes = Base64.decodeBase64(encodedBytes);
 			ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
 			try {
+				loadingLayoutFromObjectInpusStream = true;
 				rootWindow.read(new ObjectInputStream(byteStream));
 			}
-			catch (IOException e) {
-				e.printStackTrace();
+			catch (Exception e) {
+				LogUtils.severe(e);
+				try {
+	                rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(emptyConfigurations)));
+                }
+                catch (IOException e1) {
+                }
+			}
+			finally{
+				viewSerializer.removeDummyViews();
+				loadingLayoutFromObjectInpusStream = false;
 			}
 		}
 	}
