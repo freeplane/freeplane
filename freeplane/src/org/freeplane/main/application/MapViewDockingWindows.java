@@ -46,6 +46,8 @@ import net.infonode.docking.OperationAbortedException;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
+import net.infonode.docking.theme.BlueHighlightDockingTheme;
+import net.infonode.docking.theme.SoftBlueIceDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.util.Direction;
 
@@ -71,6 +73,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public MapViewDockingWindows() {
 		viewSerializer = new MapViewSerializer();
 		rootWindow = new RootWindow(viewSerializer);
+		rootWindow.getRootWindowProperties()
+			.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
 		try {
 	        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -184,7 +188,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		for (int i = 0; i < mPaneMapViews.size(); ++i) {
 			if (mPaneMapViews.get(i) == pOldMapView) {
 				mPaneSelectionUpdate = false;
-				rootWindow.removeView(getContainingDockedWindow(pOldMapView));
+				getContainingDockedWindow(pOldMapView).close();
 				mPaneMapViews.remove(i);
 				mPaneSelectionUpdate = true;
 				rootWindow.repaint();
