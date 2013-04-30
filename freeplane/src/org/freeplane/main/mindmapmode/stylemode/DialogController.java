@@ -125,8 +125,8 @@ class DialogController extends FrameController {
 	 * @see freeplane.main.FreeplaneMain#setTitle(java.lang.String)
 	 */
 	@Override
-	public void setTitle(final String title) {
-		dialog.setTitle(title);
+	public void setTitle(final String frameTitle, String viewTitle) {
+		dialog.setTitle(frameTitle);
 	}
 
 	@Override

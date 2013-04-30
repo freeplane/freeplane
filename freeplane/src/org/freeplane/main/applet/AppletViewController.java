@@ -196,7 +196,7 @@ class AppletViewController extends FrameController {
 	}
 
 	@Override
-	public void setTitle(final String title) {
+	public void setTitle(final String frameTitle, String viewTitle) {
 	}
 
 	@Override

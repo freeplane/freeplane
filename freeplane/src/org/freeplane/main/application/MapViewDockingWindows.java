@@ -54,9 +54,11 @@ import net.infonode.util.Direction;
 import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.FileOpener;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
@@ -64,7 +66,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	// // 	final private Controller controller;
 	private static final String OPENED_NOW = "openedNow_1.3.04";
 	private RootWindow rootWindow = null;
-	final private Vector<Component> mPaneMapViews;
+	final private Vector<Component> mapViews;
 	private boolean mPaneSelectionUpdate = true;
 	private boolean loadingLayoutFromObjectInpusStream;
 	private byte[] emptyConfigurations;
@@ -86,7 +88,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
         catch (IOException e1) {
         }
 		removeDesktopPaneAccelerators();
-		mPaneMapViews = new Vector<Component>();
+		mapViews = new Vector<Component>();
 		final FileOpener fileOpener = new FileOpener();
 		new DropTarget(rootWindow, fileOpener);
 		rootWindow.addMouseListener(new DefaultMapMouseListener());
@@ -105,7 +107,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 			@Override
             public void windowClosing(DockingWindow window) throws OperationAbortedException {
-				for(Component mapViewComponent : mPaneMapViews.toArray(new Component[]{}))
+				for(Component mapViewComponent : mapViews.toArray(new Component[]{}))
 					if(SwingUtilities.isDescendingFrom(mapViewComponent, window))
 					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent, false))
 						throw new OperationAbortedException("can not close view");
@@ -142,8 +144,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			return;
 		}
 		if(! loadingLayoutFromObjectInpusStream) {
-			for (int i = 0; i < mPaneMapViews.size(); ++i) {
-				if (mPaneMapViews.get(i) == pNewMap) {
+			for (int i = 0; i < mapViews.size(); ++i) {
+				if (mapViews.get(i) == pNewMap) {
 					View dockedView = getContainingDockedWindow(pNewMap);
 					dockedView.restoreFocus();
 					return;
@@ -151,7 +153,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			}
 	        addDockedWindow(pNewMap);
         }
-		mPaneMapViews.add(pNewMap);
+		mapViews.add(pNewMap);
 	}
 
 	static private View getContainingDockedWindow(final Component pNewMap) {
@@ -185,11 +187,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
     }
 
 	public void afterViewClose(final Component pOldMapView) {
-		for (int i = 0; i < mPaneMapViews.size(); ++i) {
-			if (mPaneMapViews.get(i) == pOldMapView) {
+		for (int i = 0; i < mapViews.size(); ++i) {
+			if (mapViews.get(i) == pOldMapView) {
 				mPaneSelectionUpdate = false;
 				getContainingDockedWindow(pOldMapView).close();
-				mPaneMapViews.remove(i);
+				mapViews.remove(i);
 				mPaneSelectionUpdate = true;
 				rootWindow.repaint();
 				return;
@@ -198,16 +200,6 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	}
 
 	public void afterViewCreated(final Component mapView) {
-		mapView.addPropertyChangeListener("name", new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				final Component pMapView = (Component) evt.getSource();
-				for (int i = 0; i < mPaneMapViews.size(); ++i) {
-					if (mPaneMapViews.get(i) == pMapView) {
-						getContainingDockedWindow(mapView).getViewProperties().setTitle(pMapView.getName());
-					}
-				}
-			}
-		});
 	}
 
 	public void beforeViewChange(final Component pOldMapView, final Component pNewMapView) {
@@ -264,4 +256,17 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			}
 		}
 	}
+
+	public void setTitle(String title) {
+		MapModel map = Controller.getCurrentController().getMap();
+		for (Component mapViewComponent: mapViews) {
+			if (viewContainsMap(mapViewComponent, map) ) {
+				getContainingDockedWindow(mapViewComponent).getViewProperties().setTitle(title);
+			}
+		}
+    }
+
+	private boolean viewContainsMap(Component mapViewComponent, MapModel map) {
+	    return (mapViewComponent instanceof MapView) && ((MapView)mapViewComponent).getModel().equals(map);
+    }
 }

@@ -164,7 +164,7 @@ public class HeadlessUIController implements ViewController {
 		throw new RuntimeException("Method not implemented");
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String frameTitle, String viewTitle) {
 		throw new RuntimeException("Method not implemented");
 	}
 

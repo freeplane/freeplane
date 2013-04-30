@@ -400,8 +400,9 @@ class ApplicationViewController extends FrameController {
 	 * @see freeplane.main.FreeplaneMain#setTitle(java.lang.String)
 	 */
 	@Override
-	public void setTitle(final String title) {
-		frame.setTitle(title);
+	public void setTitle(final String frameTitle, String viewTitle) {
+		frame.setTitle(frameTitle);
+		mapViewWindows.setTitle(viewTitle);
 	}
 
 	@Override

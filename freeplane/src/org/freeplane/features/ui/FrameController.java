@@ -406,7 +406,7 @@ abstract public class FrameController implements ViewController {
 	 * Set the Frame title with mode and file if exist
 	 */
 
-	abstract public void setTitle(String title);
+	abstract public void setTitle(String frameTitle, String viewTitle);
 
 	/**
 	 * @param b
