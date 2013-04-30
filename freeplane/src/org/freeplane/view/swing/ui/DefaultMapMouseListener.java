@@ -143,7 +143,8 @@ public class DefaultMapMouseListener implements IMouseListener {
 
 	public void mousePressed(final MouseEvent e) {
 		final MapView mapView = MapView.getMapView(e.getComponent());
-		mapView.select();
+		if(mapView != null)
+			mapView.select();
 		if (e.isPopupTrigger()) {
 			handlePopup(e);
 		}
