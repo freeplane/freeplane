@@ -163,6 +163,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		final MapView mapView = MapView.getMapView(e.getComponent());
+		mapView.select();
 		doubleClickTimer.cancel();
 		setClickDelay();
 		if (isInDragRegion(e)) {

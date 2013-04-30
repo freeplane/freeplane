@@ -71,9 +71,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	                    Controller controller = Controller.getCurrentController();
 						if (!controller.getModeController().isBlocked()&& controller.getSelection().size() <= 1) {
 							final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-							if(nodeV.isDisplayable() && nodeV.getModel().isVisible() 
-									&& nodeV.getMap() == controller.getMapViewManager().getMapViewComponent())
-								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+							if(nodeV.isDisplayable() && nodeV.getModel().isVisible()) {
+								nodeV.getMap().select();
+	                            controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+                            }
 	                    }
                     }
                     catch (NullPointerException e) {
@@ -294,6 +295,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
+		final MapView mapView = MapView.getMapView(e.getComponent());
+		mapView.select();
 		doubleClickTimer.cancel();
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();

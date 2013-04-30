@@ -27,6 +27,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
 
@@ -40,6 +41,8 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     	final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
     	if(nodeView == null)
     		return;
+    	MapView mapView = nodeView.getMap();
+    	mapView.select();
     	final NodeModel model = nodeView.getModel();
     	TextController controller = TextController.getController();
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();

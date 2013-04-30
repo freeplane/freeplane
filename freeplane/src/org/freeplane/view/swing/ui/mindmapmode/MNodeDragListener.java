@@ -18,6 +18,7 @@ import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -27,6 +28,8 @@ public class MNodeDragListener implements DragGestureListener {
 	public void dragGestureRecognized(final DragGestureEvent e) {
 		final MainView mainView = (MainView) e.getComponent();
 		final NodeView nodeView = mainView.getNodeView();
+		final MapView mapView = nodeView.getMap();
+		mapView.select();
 		if(! nodeView.isSelected()){
 			nodeView.getMap().getModeController().getController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
 		}

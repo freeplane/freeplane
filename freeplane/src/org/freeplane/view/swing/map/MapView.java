@@ -1913,5 +1913,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean isAncorPositionSet() {
 	    return anchorContentLocation.getX() != 0 || anchorContentLocation.getY() != 0;
     }
+
+	public static MapView getMapView(final Component component) {
+    	if(component instanceof MapView)
+    		return (MapView) component;
+    	return (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
+    }
+
+	public void select() {
+		getModeController().getController().getMapViewManager().changeToMapView(this);
+    }
     
 }
