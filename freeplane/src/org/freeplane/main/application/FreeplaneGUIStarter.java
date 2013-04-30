@@ -215,14 +215,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				splash.toBack();
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
+				Container contentPane = viewController.getContentPane();
+				contentPane.setVisible(false);
 				frame.setVisible(true);
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
-				Container contentPane = viewController.getContentPane();
-				JComponent rootPane = (JComponent) contentPane.getParent();
-				contentPane.setVisible(false);
-				rootPane.paintImmediately(0, 0, rootPane.getWidth(), rootPane.getHeight());
 				splash.paintImmediately();
 				loadMaps(options.getFilesToOpenAsArray());
 				viewController.getContentPane().setVisible(true);
