@@ -15,6 +15,7 @@ import java.awt.event.MouseMotionListener;
 import java.lang.ref.WeakReference;
 
 import javax.swing.BorderFactory;
+import javax.swing.FocusManager;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
@@ -168,12 +169,14 @@ public class NodeTooltipManager implements IExtension{
 
 		tip.setTipText(toolTipText);
 		final JComponent nearComponent = insideComponent;
-		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
+		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		focusOwnerRef = new WeakReference<Component>(focusOwner);
 		tipPopup = new JPopupMenu();
 		tipPopup.setLayout(new GridLayout(1, 1));
 		tipPopup.add(tip);
 		mouseInsideTooltipListener = new MouseInsideListener(tipPopup);
 		tipPopup.show(nearComponent, 0, nearComponent.getHeight());
+		focusOwner.requestFocusInWindow();
         exitTimer.start();
 	}
 
@@ -252,16 +255,20 @@ public class NodeTooltipManager implements IExtension{
 	}
 	
 	private void initiateToolTip(MouseEvent event) {
-	JComponent component = (JComponent) event.getSource();
-	if(insideComponent == component){
-		mouseOverComponent = true;
-		return;
-	}
-	hideTipWindow();
-	insideComponent = component;
-	mouseEvent = event;
-	if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS))
-		enterTimer.restart();
+		JComponent component = (JComponent) event.getSource();
+		Window focusedWindow = FocusManager.getCurrentManager().getFocusedWindow();
+		if (focusedWindow == null) {
+			return;
+		}
+		if(insideComponent == component){
+			mouseOverComponent = true;
+			return;
+		}
+		hideTipWindow();
+		insideComponent = component;
+		mouseEvent = event;
+		if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS))
+			enterTimer.restart();
 	}
 
 	protected boolean isMouseOverComponent() {

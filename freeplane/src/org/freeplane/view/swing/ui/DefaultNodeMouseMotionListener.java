@@ -1,8 +1,10 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
+import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.net.URI;
@@ -73,7 +75,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 							final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
 							if(nodeV.isDisplayable() && nodeV.getModel().isVisible()) {
 								nodeV.getMap().select();
-	                            controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
                             }
 	                    }
                     }
@@ -107,7 +109,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if(! isInside(e))
 			return;
 		stopTimerForDelayedSelection();
-		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
+		Window focusedWindow = FocusManager.getCurrentManager().getFocusedWindow();
+		if (focusedWindow == null) {
 			return;
 		}
 		if (KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent) {
