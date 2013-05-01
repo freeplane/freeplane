@@ -257,16 +257,20 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
 	}
 
-	public void setTitle(String title) {
-		MapModel map = Controller.getCurrentController().getMap();
+	public void setTitle() {
+		if(loadingLayoutFromObjectInpusStream)
+			return;
 		for (Component mapViewComponent: mapViews) {
-			if (viewContainsMap(mapViewComponent, map) ) {
-				getContainingDockedWindow(mapViewComponent).getViewProperties().setTitle(title);
-			}
+			if (mapViewComponent instanceof MapView ) {
+	            MapView mapView = (MapView)mapViewComponent;
+	            String name = mapView.getName();
+	            String title;
+	            if(mapView.getModel().isSaved())
+	            	title = name;
+	            else
+	            	title = name + " *";
+	            getContainingDockedWindow(mapViewComponent).getViewProperties().setTitle(title);
+            }
 		}
-    }
-
-	private boolean viewContainsMap(Component mapViewComponent, MapModel map) {
-	    return (mapViewComponent instanceof MapView) && ((MapView)mapViewComponent).getModel().equals(map);
     }
 }

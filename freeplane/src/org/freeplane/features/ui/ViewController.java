@@ -122,9 +122,8 @@ public interface ViewController {
 
 	/**
 	 * Set the Frame title with mode and file if exist
-	 * @param viewTitle TODO
 	 */
-	public void setTitle(String frameTitle, String viewTitle);
+	public void setTitle(String frameTitle);
 
 	/**
 	 * @param b
