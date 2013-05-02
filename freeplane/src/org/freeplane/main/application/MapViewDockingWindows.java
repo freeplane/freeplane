@@ -21,15 +21,15 @@ package org.freeplane.main.application;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.EventQueue;
 import java.awt.dnd.DropTarget;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.InputMap;
@@ -37,6 +37,7 @@ import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -47,14 +48,12 @@ import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
-import net.infonode.docking.theme.SoftBlueIceDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.FileOpener;
@@ -182,7 +181,6 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	
 	private void addDockedWindow(final Component pNewMap) {
 	    final View viewFrame = viewSerializer.newDockedView(pNewMap);
-
 		addDockedView(viewFrame);
     }
 
@@ -255,7 +253,23 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				loadingLayoutFromObjectInpusStream = false;
 			}
 		}
+		if(mapViews.size() > 0){
+			selectLater((MapView)mapViews.get(0), 3);
+		}
 	}
+	
+	private void selectLater(final MapView mapView, final int retryCount) {
+		Timer timer = new Timer(40, new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+				mapView.select();
+				mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
+				if(retryCount > 1)
+					selectLater(mapView, retryCount - 1);
+		    }
+		  });
+		timer.setRepeats(false);
+		timer.start();
+    }
 
 	public void setTitle() {
 		if(loadingLayoutFromObjectInpusStream)

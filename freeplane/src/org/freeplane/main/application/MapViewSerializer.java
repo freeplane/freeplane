@@ -113,18 +113,6 @@ class MapViewSerializer implements ViewSerializer {
 		mapViewScrollPane.getViewport().setView(pNewMap);
 		@SuppressWarnings("serial")
         final View viewFrame = new ConnectedToMenuView(title, null, mapViewScrollPane);
-		
-		viewFrame.addHierarchyListener(new HierarchyListener() {
-			public void hierarchyChanged(HierarchyEvent e) {
-				if(viewFrame.isShowing()){
-					viewFrame.removeHierarchyListener(this);
-					Component selectedComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-					Component containedView = MapViewDockingWindows.getContainedMapView(viewFrame);
-					if(containedView == selectedComponent)
-						viewFrame.restoreFocus();
-				}
-			}
-		});
 	    return viewFrame;
     }
 
