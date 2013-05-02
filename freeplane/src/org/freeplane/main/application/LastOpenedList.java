@@ -280,6 +280,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, this);
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
 			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
+			item.setActionCommand(key);
 			String text = createOpenMapItemName(key);
 			item.setText(createOpenMapItemName(text));
 			item.setMnemonic(0);
