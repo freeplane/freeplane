@@ -294,8 +294,11 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		if(separatorIndex == -1)
 			return restorable;
 		String key = restorable.substring(0, separatorIndex);
-		return TextUtils.getText("open_as" + key, key) + restorable.substring(separatorIndex);
-		
+		String fileName = restorable.substring(separatorIndex);
+		if(fileName.startsWith("::"))
+			return TextUtils.getText("open_as" + key, key) + fileName.substring(1);
+		else
+			return TextUtils.getText("open_as" + key, key) + fileName;
     }
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
