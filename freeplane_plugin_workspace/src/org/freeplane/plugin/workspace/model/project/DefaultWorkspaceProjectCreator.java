@@ -3,6 +3,7 @@ package org.freeplane.plugin.workspace.model.project;
 import java.io.File;
 import java.net.URI;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.UniqueIDCreator;
 import org.freeplane.features.link.LinkController;
@@ -44,7 +45,12 @@ public class DefaultWorkspaceProjectCreator implements IWorkspaceProjectCreater 
 				 */
 				try {
 					URI relativeUri = LinkController.getController().createRelativeURI(new File(getProjectHome()), new File(uri), LinkController.LINK_RELATIVE_TO_MINDMAP);
-					return new URI(WorkspaceController.PROJECT_RESOURCE_URL_PROTOCOL + "://"+ getProjectID() +"/"+relativeUri.getRawPath());
+					if(Compat.isWindowsOS() && relativeUri.getRawPath().contains(":")) {
+						return uri;
+					}
+					else {
+						return new URI(WorkspaceController.PROJECT_RESOURCE_URL_PROTOCOL + "://"+ getProjectID() +"/"+relativeUri.getRawPath());
+					}
 				}
 				catch (Exception e) {
 					LogUtils.warn(e);

@@ -9,6 +9,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 import org.freeplane.plugin.workspace.model.WorkspaceModel;
@@ -70,16 +71,21 @@ public class ExpandedStateHandler implements TreeExpansionListener, WorkspaceMod
 	
 	public void setExpandedStates(WorkspaceTreeModel targetModel, boolean cleanInvalidEntries) {
 		Iterator<String> iter = expandedNodeKeys.iterator();
-		while(iter.hasNext()) {
-			AWorkspaceTreeNode node = targetModel.getNode(iter.next());
-			if(node != null) {
-				treeView.expandPath(node.getTreePath());
-			}
-			else {
-				if(cleanInvalidEntries) {
-					iter.remove();
+		try {
+			while(iter.hasNext()) {
+				AWorkspaceTreeNode node = targetModel.getNode(iter.next());
+				if(node != null) {
+					treeView.expandPath(node.getTreePath());
+				}
+				else {
+					if(cleanInvalidEntries) {
+						iter.remove();
+					}
 				}
 			}
+		}
+		catch (Exception e) {
+			LogUtils.warn("Exception in org.freeplane.plugin.workspace.components.ExpandedStateHandler.setExpandedStates(targetModel, cleanInvalidEntries): aborted");
 		}
 	}
 
