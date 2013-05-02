@@ -16,6 +16,7 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.TreePath;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.actions.NodeCopyAction;
 import org.freeplane.plugin.workspace.actions.NodeCutAction;
@@ -32,7 +33,7 @@ import org.freeplane.plugin.workspace.model.AWorkspaceTreeNode;
 
 public class InputController implements KeyListener, MouseListener, MouseMotionListener {
 	// WORKSPACE - ToDo: implement gui for hot-key handling
-	private Map<HotKeyIdentifier, AFreeplaneAction> actionKeyMap = new LinkedHashMap<InputController.HotKeyIdentifier, AFreeplaneAction>();
+	private Map<HotKeyIdentifier, String> actionKeyMap = new LinkedHashMap<InputController.HotKeyIdentifier, String>();
 	
 	
 	private TreePath lastSelection = null;
@@ -147,8 +148,8 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
 	 */
 	
 	private void initActionKeyMap() {
-		actionKeyMap.put(new HotKeyIdentifier("copy", KeyStroke.getKeyStroke(KeyEvent.VK_C, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())), WorkspaceController.getAction(NodeCopyAction.KEY));
-		actionKeyMap.put(new HotKeyIdentifier("cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())), WorkspaceController.getAction(NodeCutAction.KEY));
+		actionKeyMap.put(new HotKeyIdentifier("copy", KeyStroke.getKeyStroke(KeyEvent.VK_C, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())), NodeCopyAction.KEY);
+		actionKeyMap.put(new HotKeyIdentifier("cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())),NodeCutAction.KEY);
 		actionKeyMap.put(new HotKeyIdentifier("paste", KeyStroke.getKeyStroke(KeyEvent.VK_V, /*KeyEvent.CTRL_DOWN_MASK*/Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),new KeyEventAcceptor() {
 			
 			public boolean accept(KeyEvent e) {
@@ -162,7 +163,7 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
 				}
 				return false;
 			}
-		}), WorkspaceController.getAction(NodePasteAction.KEY));
+		}), NodePasteAction.KEY);
 		actionKeyMap.put(new HotKeyIdentifier("delete", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), new KeyEventAcceptor() {
 			
 			public boolean accept(KeyEvent e) {
@@ -176,7 +177,7 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
 				}
 				return false;
 			}
-		}), WorkspaceController.getAction(NodeRemoveAction.KEY));
+		}), NodeRemoveAction.KEY);
 		actionKeyMap.put(new HotKeyIdentifier("rename", KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), new KeyEventAcceptor() {
 			public boolean accept(KeyEvent event) {
 				TreePath path = ((JTree) event.getSource()).getSelectionPath();
@@ -189,8 +190,8 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
 				}
 				return false;
 			}
-		}), WorkspaceController.getAction(NodeRenameAction.KEY));
-		actionKeyMap.put(new HotKeyIdentifier("refresh", KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0)), WorkspaceController.getAction(NodeRefreshAction.KEY));
+		}), NodeRenameAction.KEY);
+		actionKeyMap.put(new HotKeyIdentifier("refresh", KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0)), NodeRefreshAction.KEY);
 		
 	}
 
@@ -217,7 +218,13 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
 			for(HotKeyIdentifier id : actionKeyMap.keySet()) {
 				if(currentStroke.equals(id.getKeyStroke())) {
 					if(id.accept(e)) {
-						actionKeyMap.get(id).actionPerformed(new ActionEvent(e.getSource(), 0, null));
+						AFreeplaneAction action = WorkspaceController.getAction(actionKeyMap.get(id));
+						if(action != null) {
+							action.actionPerformed(new ActionEvent(e.getSource(), 0, null));
+						}
+						else {
+							LogUtils.info("No action set for: "+ id.getKeyStroke());
+						}
 					}
 					e.consume();
 					break;				
