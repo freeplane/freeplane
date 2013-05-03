@@ -153,7 +153,8 @@ public class NodeTooltipManager implements IExtension{
 
 
 	private void showTipWindow() {
-		if (insideComponent == null || !insideComponent.isShowing())
+		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		if (insideComponent == null || !insideComponent.isShowing() || focusOwner == null)
 			return;
 		tip = insideComponent.createToolTip();
 		tip.addComponentListener(new ComponentAdapter() {
@@ -169,7 +170,6 @@ public class NodeTooltipManager implements IExtension{
 
 		tip.setTipText(toolTipText);
 		final JComponent nearComponent = insideComponent;
-		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		focusOwnerRef = new WeakReference<Component>(focusOwner);
 		tipPopup = new JPopupMenu();
 		tipPopup.setLayout(new GridLayout(1, 1));
