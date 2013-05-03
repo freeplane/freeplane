@@ -239,11 +239,13 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			try {
 				loadingLayoutFromObjectInpusStream = true;
 				rootWindow.read(new ObjectInputStream(byteStream));
+				selectMapViewLater();
 			}
 			catch (Exception e) {
 				LogUtils.severe(e);
 				try {
 	                rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(emptyConfigurations)));
+	                selectMapViewLater();
                 }
                 catch (IOException e1) {
                 }
@@ -253,18 +255,30 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				loadingLayoutFromObjectInpusStream = false;
 			}
 		}
-		if(mapViews.size() > 0){
-			selectLater((MapView)mapViews.get(0), 3);
-		}
 	}
 	
-	private void selectLater(final MapView mapView, final int retryCount) {
+	private void selectMapViewLater() {
 		Timer timer = new Timer(40, new ActionListener() {
+			MapView mapView = null;
+			int retryCount = 3;
 		    public void actionPerformed(ActionEvent e) {
-				mapView.select();
-				mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
-				if(retryCount > 1)
-					selectLater(mapView, retryCount - 1);
+		    	if(mapView == null){
+		    		for(Component mapView : mapViews){
+		    			if(mapView.isShowing()){
+		    				this.mapView = (MapView) mapView;
+		    				break;
+		    			}
+		    		}
+		    	}
+
+		    	if(mapView != null){
+		    		mapView.select();
+		    		mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
+		    	}
+				if(retryCount > 1){
+					retryCount--;
+					((Timer)e.getSource()).start();
+				}
 		    }
 		  });
 		timer.setRepeats(false);
@@ -283,7 +297,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	            	title = name;
 	            else
 	            	title = name + " *";
-	            getContainingDockedWindow(mapViewComponent).getViewProperties().setTitle(title);
+	            View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
+				containingDockedWindow.getViewProperties().setTitle(title);
             }
 		}
     }
