@@ -152,6 +152,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			}
 	        addDockedWindow(pNewMap);
         }
+		else if(mapViews.contains(pNewMap))
+			return;
 		mapViews.add(pNewMap);
 	}
 
