@@ -1114,7 +1114,8 @@ public class NodeView extends JComponent implements INodeView {
 
 	protected void removeFromMap() {
 		setFocusCycleRoot(false);
-		getParent().remove(this);
+		Container parent = getParent();
+		parent.remove(this);
 	}
 
 	private void repaintEdge(final NodeView target) {
