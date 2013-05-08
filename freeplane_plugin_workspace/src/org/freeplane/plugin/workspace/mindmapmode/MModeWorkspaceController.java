@@ -69,9 +69,12 @@ import org.freeplane.plugin.workspace.creator.DefaultFileNodeCreator;
 import org.freeplane.plugin.workspace.dnd.WorkspaceTransferable;
 import org.freeplane.plugin.workspace.features.AWorkspaceModeExtension;
 import org.freeplane.plugin.workspace.handler.DefaultFileNodeIconHandler;
+import org.freeplane.plugin.workspace.handler.DirectoryMergeConflictDialog;
+import org.freeplane.plugin.workspace.handler.FileExistsConflictDialog;
 import org.freeplane.plugin.workspace.handler.LinkTypeFileIconHandler;
 import org.freeplane.plugin.workspace.io.AFileNodeCreator;
 import org.freeplane.plugin.workspace.io.FileReadManager;
+import org.freeplane.plugin.workspace.io.FileSystemManager;
 import org.freeplane.plugin.workspace.model.WorkspaceModel;
 import org.freeplane.plugin.workspace.model.project.AWorkspaceProject;
 import org.freeplane.plugin.workspace.model.project.IProjectSelectionListener;
@@ -227,6 +230,8 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 	}
 
 	private void setupView(ModeController modeController) {
+		FileSystemManager.setDirectoryConflictHandler(new DirectoryMergeConflictDialog());
+		FileSystemManager.setFileConflictHandler(new FileExistsConflictDialog());
 		boolean expanded = true;
 		try {
 			expanded = !Boolean.parseBoolean(settings.getProperty(WORKSPACE_VIEW_COLLAPSED, "false"));
@@ -457,7 +462,7 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 		save();
 	}
 	
-	private String getSettingsPath() {
+	public String getSettingsPath() {
 		return URIUtils.getAbsoluteFile(WorkspaceController.getApplicationSettingsHome()).getPath() + File.separator + "users"+File.separator+"default";
 	}
 

@@ -7,11 +7,14 @@ package org.freeplane.plugin.workspace.io;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -23,6 +26,8 @@ public class FileSystemManager {
 	private final FileReadManager typeManager;
 	private boolean filtering = true;
 	private FileReadManager fileTypeManager;
+	private static IConflictHandler directoryConflictHandler;
+	private static IConflictHandler fileConflictHandler;
 
 	public FileSystemManager(final FileReadManager typeManager) {
 		if(typeManager == null) {
@@ -102,6 +107,316 @@ public class FileSystemManager {
 			throw new IOException("could not create file: "+newFile.getPath());
 		}
 		return newFile;
+	}
+	
+	public static void copyFile(File srcFile, File destDir) throws IOException {
+		copyFile(srcFile, destDir, false);
+	}
+	
+	public static void copyFile(File srcFile, File destDir, Boolean overwrite) throws IOException {
+		if(srcFile == null || destDir == null) {
+			throw new IllegalArgumentException("NULL");
+		}
+		if(!srcFile.exists() || !srcFile.isFile()) {
+			throw new IllegalArgumentException("srcFile is not a file or does not exist");
+		}
+		
+		copyFiles(Arrays.asList(new File[]{srcFile}), destDir, overwrite);
+//		if(targetFile.exists()) {
+//			if(silentOverwrite) {
+//				if(!FileUtils.deleteQuietly(targetFile)) {
+//					throw new IOException("can not copy file "+targetFile);
+//				}
+//			}
+//			else {
+//				throw new FileExistsException(targetFile);
+//			}
+//		}
+//		
+//		FileUtils.copyFile(file, targetFile);
+	}
+	
+	public static void copyDirectory(File dir, File newParentDir) throws IOException {
+		copyDirectory(dir, newParentDir, false);
+	}
+	
+	public static void copyDirectory(File dir, File newParentDir, boolean overwrite) throws IOException {
+		if(dir == null || newParentDir == null) {
+			throw new IllegalArgumentException("NULL");
+		}
+		
+		if(newParentDir.exists() && !newParentDir.isDirectory()) {
+			throw new IOException("dest is no directory. a directory cannot be copied to a file.");
+		}
+		
+		copyFiles(Arrays.asList(new File[]{dir}), newParentDir, overwrite);
+	}
+	
+	public static void moveFile(File srcFile, File destDir) throws IOException {
+		moveFile(srcFile, destDir, false);
+	}
+	
+	public static void moveFile(File srcFile, File destDir, Boolean overwrite) throws IOException {
+		if(srcFile == null || destDir == null) {
+			throw new IllegalArgumentException("NULL");
+		}
+		if(!srcFile.exists() || !srcFile.isFile()) {
+			throw new IllegalArgumentException("srcFile is not a file or does not exist");
+		}
+		
+		moveFiles(Arrays.asList(new File[]{srcFile}), destDir, overwrite);
+	}
+	
+	public static void moveDirectory(File dir, File newParentDir) throws IOException {
+		copyDirectory(dir, newParentDir, false);
+	}
+	
+	public static void moveDirectory(File dir, File newParentDir, boolean overwrite) throws IOException {
+		if(dir == null || newParentDir == null) {
+			throw new IllegalArgumentException("NULL");
+		}
+		
+		if(newParentDir.exists() && !newParentDir.isDirectory()) {
+			throw new IOException("dest is no directory. a directory cannot be copied to a file.");
+		}
+		
+		moveFiles(Arrays.asList(new File[]{dir}), newParentDir, overwrite);
+	}
+	
+	public static void copyFiles(List<File> files, File destDir, boolean overwrite) throws IOException {
+		if(files == null || destDir == null) {
+			throw new IllegalArgumentException("NULL");
+		}
+		if(destDir.exists() && !destDir.isDirectory()) {
+			throw new IOException("destDir is no directory.");
+		}
+		List<ITask> opList = new ArrayList<ITask>();
+		
+		for (File file : files) {
+			buildCopyOperationList(file, new File(destDir, file.getName()), opList);
+		}
+		
+		Properties props = new Properties();
+		props.setProperty("overwriteAll", String.valueOf(overwrite));
+		props.setProperty("mergeAll", String.valueOf(overwrite));
+		
+		execOperations(opList, props);
+	}
+	
+	public static void moveFiles(List<File> files, File destDir, boolean overwrite) throws IOException {
+		if(files == null || destDir == null) {
+			throw new IllegalArgumentException("NULL");
+		}
+		if(destDir.exists() && !destDir.isDirectory()) {
+			throw new IOException("destDir is no directory.");
+		}
+		List<ITask> opList = new ArrayList<ITask>();
+		
+		for (File file : files) {
+			buildMoveOperationList(file, new File(destDir, file.getName()), opList);
+		}
+		
+		Properties props = new Properties();
+		props.setProperty("overwriteAll", String.valueOf(overwrite));
+		props.setProperty("mergeAll", String.valueOf(overwrite));
+		
+		execOperations(opList, props);
+	}
+	
+	public static List<ITask> buildCopyOperationList(final File srcFile, final File destFile) {
+		List<ITask> list = new ArrayList<ITask>();
+		buildCopyOperationList(srcFile, destFile, list);
+		return list;
+	}
+	
+	public static List<ITask> buildMoveOperationList(final File srcFile, final File destFile) {
+		List<ITask> list = new ArrayList<ITask>();
+		buildMoveOperationList(srcFile, destFile, list);
+		return list;
+	}
+	
+	public static void buildCopyOperationList(final File srcFile, final File destFile, final List<ITask> ops) {
+		if(srcFile.isDirectory()) {
+			ops.add(new ITask() {				
+				public void exec(Properties properties) throws IOException {
+					if(onSkipList(destFile.getParentFile(), properties)) {
+						addSkippedDir(destFile, properties);
+						throw new SkipTaskException();
+					}
+					
+					if(destFile.exists()) {
+						properties.setProperty("opType", "1");
+						if(!Boolean.parseBoolean(properties.getProperty("mergeAll", "false"))) {
+							try {
+								getDirectoryConflictHandler().resolveConflict(destFile, properties);
+							}
+							catch (SkipTaskException e) {
+								addSkippedDir(destFile, properties);
+								throw e;
+							}
+						}
+						FileUtils.touch(destFile);
+					}
+					else {
+						destFile.mkdirs();
+					}
+				}
+			});
+			for(File file : srcFile.listFiles()) {
+				buildCopyOperationList(file, new File(destFile, file.getName()), ops);
+			}
+		}
+		else {
+			ops.add(new ITask() {
+				public void exec(Properties properties) throws IOException {
+					if(onSkipList(destFile.getParentFile(), properties)) {
+						throw new SkipTaskException();
+					}
+					
+					if(destFile.exists()) {
+						properties.setProperty("opType", "1");
+						if(!Boolean.parseBoolean(properties.getProperty("overwriteAll", "false"))) {
+							getFileConflictHandler().resolveConflict(destFile, properties);
+						}
+					}
+					FileUtils.copyFile(srcFile, destFile);
+				}
+			});
+		}
+	}
+	
+	public static void buildMoveOperationList(final File srcFile, final File destFile, final List<ITask> ops) {
+		if(srcFile.isDirectory()) {
+			ops.add(new ITask() {				
+				public void exec(Properties properties) throws IOException {
+					if(onSkipList(destFile.getParentFile(), properties)) {
+						addSkippedDir(destFile, properties);
+						throw new SkipTaskException();
+					}
+					
+					if(destFile.exists()) {
+						properties.setProperty("opType", "2");
+						if(!Boolean.parseBoolean(properties.getProperty("mergeAll", "false"))) {
+							try {
+								getDirectoryConflictHandler().resolveConflict(destFile, properties);
+							}
+							catch (SkipTaskException e) {
+								addSkippedDir(destFile, properties);
+								throw e;
+							}
+						}
+						FileUtils.touch(destFile);
+					}
+					else {
+						destFile.mkdirs();
+					}
+				}
+			});
+			for(File file : srcFile.listFiles()) {
+				buildCopyOperationList(file, new File(destFile, file.getName()), ops);
+			}
+		}
+		else {
+			ops.add(new ITask() {
+				public void exec(Properties properties) throws IOException {
+					if(onSkipList(destFile.getParentFile(), properties)) {
+						throw new SkipTaskException();
+					}
+					
+					if(destFile.exists()) {
+						properties.setProperty("opType", "2");
+						if(!Boolean.parseBoolean(properties.getProperty("overwriteAll", "false"))) {
+							getFileConflictHandler().resolveConflict(destFile, properties);
+						}
+						if(!FileUtils.deleteQuietly(destFile)) {
+							throw new SkipTaskException();
+						}
+					}
+					FileUtils.copyFile(srcFile, destFile);
+				}
+			});
+		}
+	}
+	
+	private static void addSkippedDir(File dest, Properties properties) {
+		if(properties == null || dest == null) {
+			return;
+		}
+		String list = properties.getProperty("skippedDirs", "");
+		String entry = dest.getPath()+";";
+		if(!list.contains(entry)) {
+			list += entry;
+			properties.setProperty("skippedDirs", list);
+		}
+	}
+	
+	private static boolean onSkipList(File dest, Properties properties) {
+		if(properties == null || dest == null) {
+			return false;
+		}
+		String list = properties.getProperty("skippedDirs", "");
+		String entry = dest.getPath()+";";
+		if(list.contains(entry)) {
+			return true;
+		}
+		return false;
+	}
+
+	public static IConflictHandler getDirectoryConflictHandler() {
+		if(directoryConflictHandler == null) {
+			directoryConflictHandler = new IConflictHandler() {
+				public void resolveConflict(File file, Properties properties) throws IOException {
+					LogUtils.info("Error in org.freeplane.plugin.workspace.io.FileSystemManager: directory already exists: " + file);
+					throw new SkipTaskException();
+				}
+			};
+		}
+		return directoryConflictHandler;
+	}
+	
+	public static IConflictHandler getFileConflictHandler() {
+		if(fileConflictHandler == null) {
+			fileConflictHandler = new IConflictHandler() {
+				public void resolveConflict(File file, Properties properties) throws IOException {
+					LogUtils.info("Error in org.freeplane.plugin.workspace.io.FileSystemManager: file already exists: " + file);
+					throw new SkipTaskException();
+				}
+			};
+		}
+		return fileConflictHandler;
+	}
+	
+	public static void setDirectoryConflictHandler(IConflictHandler handler) {
+		directoryConflictHandler = handler;
+	}
+
+	public static void setFileConflictHandler(IConflictHandler handler) {
+		fileConflictHandler = handler;
+	}
+	
+	public static void execOperations(List<ITask> ops) throws IOException {
+		execOperations(ops, null);
+	}
+	
+	public static void execOperations(List<ITask> ops, Properties properties) throws IOException {
+		if(ops == null) {
+			return;
+		}
+		if(properties == null) {
+			properties = new Properties();
+		}
+		Iterator<ITask> iter = ops.iterator();
+		while (iter.hasNext()) {
+			ITask op = iter.next();
+			try {
+				op.exec(properties);
+				iter.remove();
+			} 
+			catch (SkipTaskException e) {
+				iter.remove();
+				continue;
+			}
+		}
 	}
 	
 	private ListHashTable<String, IFileTypeHandler> getFileTypeHandlers() {
