@@ -16,7 +16,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.actions.WorkspaceRemoveProjectAction;
-import org.freeplane.plugin.workspace.actions.WorkspaceNewProjectAction;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.event.IWorkspaceNodeActionListener;
@@ -110,14 +109,9 @@ public class ProjectRootNode extends AFolderNode implements IMutableLinkNode, IW
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
-					WorkspaceNewProjectAction.KEY,
-					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.new.folder",
 					"workspace.action.file.new.mindmap",
-					//WorkspacePopupMenuBuilder.SEPARATOR,
-					//"workspace.action.file.new.file",
 					WorkspacePopupMenuBuilder.endSubMenu(),
-					WorkspaceRemoveProjectAction.KEY,
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.open.location",
 					WorkspacePopupMenuBuilder.SEPARATOR,
@@ -126,6 +120,7 @@ public class ProjectRootNode extends AFolderNode implements IMutableLinkNode, IW
 					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
+					WorkspaceRemoveProjectAction.KEY,
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.refresh"	
 			});

@@ -16,12 +16,10 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.workspace.URIUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.actions.WorkspaceNewProjectAction;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.dnd.IWorkspaceTransferableCreator;
@@ -296,15 +294,11 @@ public class DefaultFileNode extends AWorkspaceTreeNode implements IWorkspaceNod
 		if (popupMenu == null) {			
 			popupMenu = new WorkspacePopupMenu();
 			WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
-					WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
-					WorkspaceNewProjectAction.KEY,
-					WorkspacePopupMenuBuilder.endSubMenu(),
 					"workspace.action.node.cut",
 					"workspace.action.node.copy",
 					"workspace.action.node.paste",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.rename",
-					"workspace.action.node.remove",
 					"workspace.action.file.delete",
 					WorkspacePopupMenuBuilder.SEPARATOR,
 					"workspace.action.node.refresh"

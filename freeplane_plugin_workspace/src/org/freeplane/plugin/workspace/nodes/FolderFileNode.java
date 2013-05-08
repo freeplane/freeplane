@@ -14,7 +14,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
-import org.freeplane.plugin.workspace.actions.WorkspaceNewProjectAction;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenu;
 import org.freeplane.plugin.workspace.components.menu.WorkspacePopupMenuBuilder;
 import org.freeplane.plugin.workspace.event.WorkspaceActionEvent;
@@ -98,12 +97,8 @@ public class FolderFileNode extends DefaultFileNode {
 				popupMenu = new WorkspacePopupMenu();
 				WorkspacePopupMenuBuilder.addActions(popupMenu, new String[] {
 						WorkspacePopupMenuBuilder.createSubMenu(TextUtils.getRawText("workspace.action.new.label")),
-						WorkspaceNewProjectAction.KEY,
-						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.new.folder",
 						"workspace.action.file.new.mindmap",
-						//WorkspacePopupMenuBuilder.SEPARATOR,
-						//"workspace.action.file.new.file",
 						WorkspacePopupMenuBuilder.endSubMenu(),
 						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.open.location",
@@ -113,7 +108,6 @@ public class FolderFileNode extends DefaultFileNode {
 						"workspace.action.node.paste",
 						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.rename",
-						"workspace.action.node.remove",
 						"workspace.action.file.delete",
 						WorkspacePopupMenuBuilder.SEPARATOR,
 						"workspace.action.node.refresh"		
