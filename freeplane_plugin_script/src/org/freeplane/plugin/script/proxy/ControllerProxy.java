@@ -82,6 +82,7 @@ class ControllerProxy implements Proxy.Controller {
     public void select(final Node toSelect) {
         if (toSelect != null) {
             final NodeModel nodeModel = ((NodeProxy) toSelect).getDelegate();
+            Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
             Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
         }
     }
