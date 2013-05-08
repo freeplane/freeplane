@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
 import org.freeplane.plugin.workspace.actions.NodeRefreshAction;
 import org.freeplane.plugin.workspace.actions.WorkspaceImportProjectAction;
@@ -85,7 +86,7 @@ public class WorkspaceRootNode extends AFolderNode implements IWorkspaceNodeActi
 	
 	public String getName() {
 		//WORKSPACE - todo: get name from somewhere or set it somehow
-		return "default workspace"; 
+		return TextUtils.getText("workspace.node.root.name"); 
 	}
 	
 	public void refresh() {

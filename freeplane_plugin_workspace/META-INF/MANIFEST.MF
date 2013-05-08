@@ -11,6 +11,7 @@ Import-Package: org.apache.commons.io,
  org.osgi.service.url;version="1.0.0"
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1"
 Export-Package: org.freeplane.core.ui,
+ org.freeplane.core.user,
  org.freeplane.core.util,
  org.freeplane.lang,
  org.freeplane.plugin.workspace,

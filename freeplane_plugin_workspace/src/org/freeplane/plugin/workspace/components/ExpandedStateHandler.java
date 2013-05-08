@@ -54,7 +54,9 @@ public class ExpandedStateHandler implements TreeExpansionListener, WorkspaceMod
 	}
 
 	public void projectAdded(WorkspaceModelEvent event) {
-		//setExpandedState(event);		
+		//setExpandedState(event);
+		String key = ((AWorkspaceTreeNode) event.getTreePath().getLastPathComponent()).getKey()+"/"+event.getProject().getProjectID();
+		expandedNodeKeys.add(key);
 	}
 
 	public void projectRemoved(WorkspaceModelEvent event) {

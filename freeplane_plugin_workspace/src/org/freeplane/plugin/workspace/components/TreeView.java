@@ -132,7 +132,7 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 			public void valueChanged(TreeSelectionEvent e) {
 				try {
 					AWorkspaceProject selected = WorkspaceController.getCurrentModel().getProject(((AWorkspaceTreeNode) e.getNewLeadSelectionPath().getLastPathComponent()).getModel());				
-					if(selected != null && !selected.equals(lastSelectedProject)) {
+					if(selected != lastSelectedProject) {
 						fireProjectSelectionChanged(selected);
 					}
 				}
@@ -291,9 +291,9 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 	}
 	
 	private void fireProjectSelectionChanged(AWorkspaceProject selected) {
-		if(selected == null) {
-			return;
-		}
+//		if(selected == null) {
+//			return;
+//		}
 		ProjectSelectionEvent event = new ProjectSelectionEvent(this, selected, this.lastSelectedProject);
 		this.lastSelectedProject = selected;
 		synchronized (projectSelectionListeners ) {
@@ -315,5 +315,4 @@ public class TreeView extends JPanel implements IWorkspaceView, ComponentCollaps
 	public void addToolBar(Component comp, String toolBarStack) {
 		this.add(comp, toolBarStack);
 	}
-	
 }

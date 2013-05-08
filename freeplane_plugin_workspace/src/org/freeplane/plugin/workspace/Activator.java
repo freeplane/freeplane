@@ -3,6 +3,7 @@ package org.freeplane.plugin.workspace;
 import java.util.Hashtable;
 
 import org.freeplane.core.ui.FreeplaneActionCascade;
+import org.freeplane.core.user.UserAccountController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -26,6 +27,7 @@ public class Activator implements BundleActivator {
 		context.registerService(IControllerExtensionProvider.class.getName(), new IControllerExtensionProvider() {
 			public void installExtension(Controller controller) {
 				WorkspaceController.install(controller);
+				UserAccountController.install(controller);
 				LogUtils.info("Workspace controller installed.");
 				startControllerExtensions(context, controller);
 			}
