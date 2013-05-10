@@ -19,7 +19,6 @@
  */
 package org.freeplane.main.osgi;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -179,11 +178,11 @@ class ActivatorImpl implements BundleActivator {
 		final Controller controller = starter.createController();
 		starter.createModeControllers(controller);
 		try {
-			final ServiceReference[] controllerProviders = context.getServiceReferences(
+			final ServiceReference<?>[] controllerProviders = context.getServiceReferences(
 			    IControllerExtensionProvider.class.getName(), null);
 			if (controllerProviders != null) {
 				for (int i = 0; i < controllerProviders.length; i++) {
-					final ServiceReference controllerProvider = controllerProviders[i];
+					final ServiceReference<?> controllerProvider = controllerProviders[i];
 					final IControllerExtensionProvider service = (IControllerExtensionProvider) context
 					    .getService(controllerProvider);
 					service.installExtension(controller);
@@ -197,13 +196,13 @@ class ActivatorImpl implements BundleActivator {
 		try {
 			final Set<String> modes = controller.getModes();
 			for (final String modeName : modes) {
-				final ServiceReference[] modeControllerProviders = context.getServiceReferences(
+				final ServiceReference<?>[] modeControllerProviders = context.getServiceReferences(
 				    IModeControllerExtensionProvider.class.getName(), "(mode=" + modeName + ")");
 				if (modeControllerProviders != null) {
 					final ModeController modeController = controller.getModeController(modeName);
 					Controller.getCurrentController().selectModeForBuild(modeController);
 					for (int i = 0; i < modeControllerProviders.length; i++) {
-						final ServiceReference modeControllerProvider = modeControllerProviders[i];
+						final ServiceReference<?> modeControllerProvider = modeControllerProviders[i];
 						final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
 						    .getService(modeControllerProvider);
 						service.installExtension(modeController);
