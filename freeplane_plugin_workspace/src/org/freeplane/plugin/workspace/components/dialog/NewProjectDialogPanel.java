@@ -1,15 +1,19 @@
 package org.freeplane.plugin.workspace.components.dialog;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.net.URI;
+import java.net.URL;
 import java.util.Locale;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -19,9 +23,11 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.workspace.URIUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
+import org.freeplane.plugin.workspace.model.project.AWorkspaceProject;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -33,7 +39,9 @@ public class NewProjectDialogPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTextField txtProjectName;
 	private JTextField txtProjectPath;
-	protected boolean manualChoice = false;	
+	protected boolean manualChoice = false;
+	private JLabel lblWarn;
+	private Component confirmButton;
 	
 	public NewProjectDialogPanel() {
 		setPreferredSize(new Dimension(400, 160));
@@ -48,7 +56,9 @@ public class NewProjectDialogPanel extends JPanel {
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:max(50dlu;pref)"),
+				RowSpec.decode("fill:max(30dlu;pref)"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:default"),
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -69,13 +79,21 @@ public class NewProjectDialogPanel extends JPanel {
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 		panel.add(lblNewLabel, "2, 2");
 		
+		lblWarn = new JLabel(TextUtils.getText(ImportProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".warn1"));
+		add(lblWarn, "2, 4, 5, 1");
+		URL url = this.getClass().getResource("/images/16x16/dialog-warning-4.png");
+		if(url != null) {
+			lblWarn.setIcon(new ImageIcon(url));
+		}
+		lblWarn.setVisible(false);
+		
 		JLabel lblProjectName = new JLabel(TextUtils.getText(NewProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".name.label"));
 		lblProjectName.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblProjectName, "2, 4, right, default");
+		add(lblProjectName, "2, 6, right, default");
 		
 		txtProjectName = new JTextField();
 		txtProjectName.setText(TextUtils.getText(NewProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".name.default"));
-		add(txtProjectName, "4, 4, fill, default");
+		add(txtProjectName, "4, 6, fill, default");
 		txtProjectName.setColumns(10);
 		txtProjectName.addKeyListener(new KeyListener() {			
 			public void keyTyped(KeyEvent evt) {
@@ -108,12 +126,41 @@ public class NewProjectDialogPanel extends JPanel {
 		
 		JLabel lblProjectPath = new JLabel(TextUtils.getText(NewProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".path.label"));
 		lblProjectPath.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblProjectPath, "2, 6, right, default");
+		add(lblProjectPath, "2, 8, right, default");
 		
 		txtProjectPath = new JTextField(getDefaultProjectPath(txtProjectName.getText()));
 		setProjectPath(getDefaultProjectPath(getProjectName()));
-		add(txtProjectPath, "4, 6, fill, default");
+		add(txtProjectPath, "4, 8, fill, default");
 		txtProjectPath.setColumns(10);
+		txtProjectPath.addKeyListener(new KeyListener() {			
+			public void keyTyped(KeyEvent evt) {
+				if(isBlackListed(evt.getKeyChar())) {
+					evt.consume();
+				}
+				else {
+					manualChoice = true;
+				}
+			}
+			
+			public void keyReleased(KeyEvent evt) {
+				if(isBlackListed(evt.getKeyChar())) {
+					evt.consume();
+				}
+				else {
+					manualChoice = true;
+				}
+				enableConfirmation();
+			}
+			
+			public void keyPressed(KeyEvent evt) {
+				if(isBlackListed(evt.getKeyChar())) {
+					evt.consume();
+				}
+				else {
+					manualChoice = true;
+				}
+			}
+		});
 		
 		JButton btnBrowse = new JButton("...");
 		btnBrowse.setToolTipText(TextUtils.getText(NewProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".button.tip"));
@@ -135,7 +182,13 @@ public class NewProjectDialogPanel extends JPanel {
 				}
 			}
 		});
-		add(btnBrowse, "6, 6");
+		add(btnBrowse, "6, 8");
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		enableConfirmation();
+		super.paint(g);
 	}
 	
 	public static boolean isBlackListed(char keyChar) {
@@ -169,6 +222,53 @@ public class NewProjectDialogPanel extends JPanel {
 		}		
 		return path.getAbsolutePath();
 	}
+	
+	private void enableConfirmation() {
+		if(confirmButton != null) {
+			if(NameExistsInWorkspace(getProjectName())) {
+				lblWarn.setText(TextUtils.getText(NewProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".warn1"));
+				lblWarn.setVisible(true);
+				confirmButton.setEnabled(false);					
+			}
+			else if(PathExistsInWorkspace(txtProjectPath.getText())) {
+				lblWarn.setText(TextUtils.getText(NewProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".warn2"));
+				lblWarn.setVisible(true);
+				confirmButton.setEnabled(false);
+			}
+			else {
+				confirmButton.setEnabled(true);
+				lblWarn.setVisible(false);
+			}	
+		}
+	}
+	
+	private boolean NameExistsInWorkspace(String name) {
+		for(AWorkspaceProject project : WorkspaceController.getCurrentModel().getProjects()) {
+			try {
+				if(project.getProjectName().equals(name)) {
+					return true;
+				}
+			} 
+			catch (Exception e) {
+				LogUtils.info(""+e.getMessage());
+			}
+		}
+		return false;
+	}
+	
+	private boolean PathExistsInWorkspace(String path) {
+		for(AWorkspaceProject project : WorkspaceController.getCurrentModel().getProjects()) {
+			try {
+				if(URIUtils.getFile(project.getProjectHome()).getAbsolutePath().equals(new File(path).getAbsolutePath())) {
+					return true;
+				}
+			} 
+			catch (Exception e) {
+				LogUtils.info(""+e.getMessage());
+			}
+		}
+		return false;
+	}
 
 	public String getProjectName() {
 		return txtProjectName.getText().trim();
@@ -176,6 +276,10 @@ public class NewProjectDialogPanel extends JPanel {
 	
 	public URI getProjectPath() {
 		return new File(txtProjectPath.getText()).toURI();
+	}
+	
+	public void setConfirmButton(Component comp) { 
+		this.confirmButton = comp;
 	}
 
 }

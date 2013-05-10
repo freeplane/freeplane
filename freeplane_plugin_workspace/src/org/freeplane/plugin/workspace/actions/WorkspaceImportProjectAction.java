@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -46,7 +47,11 @@ public class WorkspaceImportProjectAction extends AWorkspaceAction {
 				while(parent != null) {
 					if(parent instanceof JOptionPane) {
 						//WORKSPACE - test: os other than windows7
-						confirmButton = ((JPanel) ((JOptionPane)parent).getComponent(3)).getComponent(0);
+						for(Component comp : ((JOptionPane) parent).getComponents()) {
+							if(comp instanceof JPanel && ((JPanel) comp).getComponentCount() > 0 && ((JPanel) comp).getComponent(0) instanceof JButton) {
+								confirmButton = ((JPanel) comp).getComponent(0);
+							}
+						}
 					}						
 					parent = parent.getParent();
 				}
