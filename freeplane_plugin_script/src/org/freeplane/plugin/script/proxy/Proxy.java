@@ -665,6 +665,10 @@ public interface Proxy {
 
 		/** @deprecated since 1.2 - use {@link #remove(String)} instead. */
 		boolean removeIcon(String name);
+		
+		/** removes all icons.
+		 * @since 1.2 */
+		void clear();
 	}
 
 	/** Node's link: <code>node.link</code> - read-only.
