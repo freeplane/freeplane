@@ -854,6 +854,9 @@ public interface Proxy {
 		 *   assert val.num == new Long(12)
 		 *   // or use it just like a string
 		 *   assert val.startsWith("1")
+		 *   // check for availability of an attribute this way:
+		 *   if (node["unknown attribute"])
+		 *      // surprise: the node has an attribute with key "unknown attribute"
 		 * </pre>
 		 * @throws ExecuteScriptException 
 		 * @since 1.2
