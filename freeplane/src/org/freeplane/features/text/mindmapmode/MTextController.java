@@ -168,6 +168,8 @@ public class MTextController extends TextController {
 				}
 				int secondStart = 0;
 				int secondLen = doc.getLength() - pos;
+				if(secondLen <= 0)
+					return null;
 				final char[] secondText = doc.getText(pos, secondLen).toCharArray();
 				while ((secondStart < secondLen) && (secondText[secondStart] <= ' ')) {
 					secondStart++;
