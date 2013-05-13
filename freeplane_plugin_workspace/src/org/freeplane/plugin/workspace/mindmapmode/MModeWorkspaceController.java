@@ -176,7 +176,7 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 				final WorkspaceProjectOpenLocationAction openLocAction = new WorkspaceProjectOpenLocationAction();
 				builder.addAction(MENU_PROJECT_KEY, openLocAction, MenuBuilder.AS_CHILD);
 				
-				projectMenu.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {					
+				projectMenu.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
 					public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 						rmProjectAction.setEnabled();
 						openLocAction.setEnabled();
@@ -290,7 +290,8 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 		}
 		
 		getView().getNodeTypeIconManager().addNodeTypeIconHandler(LinkTypeFileNode.class, new LinkTypeFileIconHandler());
-		getView().getNodeTypeIconManager().addNodeTypeIconHandler(DefaultFileNode.class, new DefaultFileNodeIconHandler());				
+		getView().getNodeTypeIconManager().addNodeTypeIconHandler(DefaultFileNode.class, new DefaultFileNodeIconHandler());
+		getView().refreshView();
 	}
 		
 	private void setupActions(ModeController modeController) {
