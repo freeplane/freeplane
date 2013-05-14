@@ -86,7 +86,12 @@ public abstract class URIUtils {
 				return null;
 			}
 			try {
-				return new File(absoluteURI);
+				if(absoluteURI.getRawPath().startsWith("//")) {
+					new File("\\\\"+absoluteURI.normalize().getPath());
+				}
+				else {
+					return new File(absoluteURI.normalize());
+				}
 			}
 			catch (Exception e) {
 				LogUtils.info("Exception in "+ URIUtils.class+".getFile(URI): "+ e.getMessage());
