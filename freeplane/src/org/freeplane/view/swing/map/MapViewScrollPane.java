@@ -17,25 +17,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.map;
 
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.Timer;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author Dimitry Polivaev
  * 10.01.2009
  */
-class MapViewScrollPane extends JScrollPane {
+public class MapViewScrollPane extends JScrollPane implements IFreeplanePropertyListener {
 	@SuppressWarnings("serial")
     static class MapViewPort extends JViewport{
 
@@ -84,9 +89,6 @@ class MapViewScrollPane extends JScrollPane {
             }
 			return dx;
         }
-		
-		
-		
 	}
 	/**
 	 * 
@@ -96,9 +98,21 @@ class MapViewScrollPane extends JScrollPane {
 	public MapViewScrollPane() {
 		super();
 		setViewport(new MapViewPort());
-		UITools.setScrollbarIncrement(this);
-		UITools.addScrollbarIncrementPropertyListener(this);
 	}
+
+	@Override
+    public void addNotify() {
+	    super.addNotify();
+		setScrollbarsVisiblilty();
+		UITools.setScrollbarIncrement(this);
+		ResourceController.getResourceController().addPropertyChangeListener(MapViewScrollPane.this);
+    }
+
+	@Override
+    public void removeNotify() {
+	    super.removeNotify();
+		ResourceController.getResourceController().removePropertyChangeListener(MapViewScrollPane.this);
+    }
 
 	@Override
 	protected void validateTree() {
@@ -108,4 +122,23 @@ class MapViewScrollPane extends JScrollPane {
 		}
 		super.validateTree();
 	}
+
+	public void propertyChanged(String propertyName, String newValue, String oldValue) {
+		if(ViewController.FULLSCREEN_ENABLED_PROPERTY.equals(propertyName)
+				|| propertyName.startsWith("scrollbarsVisible")){
+			setScrollbarsVisiblilty();
+		}
+		else if (propertyName.equals(UITools.SCROLLBAR_INCREMENT)) {
+			final int scrollbarIncrement = Integer.valueOf(newValue);
+			getHorizontalScrollBar().setUnitIncrement(scrollbarIncrement);
+			getVerticalScrollBar().setUnitIncrement(scrollbarIncrement);
+		}
+
+    }
+
+	private void setScrollbarsVisiblilty() {
+	    boolean areScrollbarsVisible = Controller.getCurrentController().getViewController().areScrollbarsVisible();
+	    setHorizontalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS : JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	    setVerticalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.VERTICAL_SCROLLBAR_ALWAYS : JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    }
 }

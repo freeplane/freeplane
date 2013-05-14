@@ -42,10 +42,6 @@ import org.w3c.dom.Element;
  * @author foltin
  */
 class ExportPdf extends ExportVectorGraphic {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public ExportPdf() {
 	}
@@ -55,7 +51,7 @@ class ExportPdf extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = (MapView) Controller.getCurrentController().getViewController().getMapView();
+			final MapView view = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 			if (view == null) {
 				return;
 			}

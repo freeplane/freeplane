@@ -22,14 +22,12 @@ package org.freeplane.features.format;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Formatter;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 

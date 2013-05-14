@@ -244,7 +244,7 @@ public class UrlManager implements IExtension {
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals(XMLParseException.class.getName())) {
-			final int showDetail = JOptionPane.showConfirmDialog(Controller.getCurrentController().getViewController().getMapView(),
+			final int showDetail = JOptionPane.showConfirmDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent(),
 			    TextUtils.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				UITools.errorMessage(ex);

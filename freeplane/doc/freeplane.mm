@@ -16437,7 +16437,6 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="See Wiki Page" STYLE_REF="Refine" ID="ID_371827729" CREATED="1356894993244" MODIFIED="1356895291580" LINK="http://freeplane.sourceforge.net/wiki/index.php/Open_Street_Map_Plugin">
@@ -16463,7 +16462,6 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
   </body>
 </html>
-
 </richcontent>
 <node TEXT="my formula: $x_2=\frac{1}{2}$" ID="ID_1836098760" CREATED="1357646440896" MODIFIED="1357646455758" FORMAT="latexPatternFormat"/>
 </node>
@@ -16471,11 +16469,14 @@ elements from the styles activated by conditions are copied.</pre>
 <node TEXT="The default mode is text mode, so you need to enclose formulae in $...$, \[...\] or $$...$$" ID="ID_1312795282" CREATED="1357645879905" MODIFIED="1357645909291"/>
 <node TEXT="Once a node is recognized as LaTeX, the editor offers LaTeX syntax highlighting" ID="ID_1129503143" CREATED="1357645850715" MODIFIED="1357646079196"/>
 <node TEXT="Automatic line breaks are supported" ID="ID_616831674" CREATED="1357646339516" MODIFIED="1357646349607"/>
-<node TEXT="The old way to include LaTeX (underneath nodes,&#xa;using Edit-&gt;Node extensions) is deprecated" ID="ID_698061781" CREATED="1357645557606" MODIFIED="1357645704902">
+<node TEXT="The old way to include LaTeX (underneath nodes,&#xa;using Edit-&gt;Node extensions) is deprecated" ID="ID_698061781" CREATED="1357645557606" MODIFIED="1364582084107">
 <node TEXT="You can still edit those boxes" ID="ID_1906721955" CREATED="1357645589542" MODIFIED="1357645628635"/>
 <node TEXT="You cannot add new boxes" ID="ID_157775874" CREATED="1357645604036" MODIFIED="1357645633788"/>
 </node>
-<node TEXT="See Wiki Page" STYLE_REF="Refine" ID="ID_1332207150" CREATED="1356894993244" MODIFIED="1357646033840" LINK="http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane">
+<node TEXT="See Wiki Page" STYLE_REF="Refine" ID="ID_29057214" CREATED="1356894993244" MODIFIED="1357646033840" LINK="http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+</node>
+<node TEXT="See example Mind Map" STYLE_REF="Refine" ID="ID_1169480912" CREATED="1356894993244" MODIFIED="1364582039049" LINK="../../freeplane_plugin_latex/doc/Freeplane_LaTeX.mm">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>

@@ -31,7 +31,6 @@ import java.awt.event.WindowFocusListener;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMouseListener;
@@ -59,7 +58,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 		if (e.isPopupTrigger()) {
 			Component popup = null;
 			final Component popupForModel;
-			final MapView mapView = (MapView) Controller.getCurrentController().getViewController().getMapView();
+			final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 			final ModeController modeController = Controller.getCurrentController().getModeController();
 			if(mapView != null){
 				final java.lang.Object obj = mapView.detectCollision(e.getPoint());
@@ -129,7 +128,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 		if(selection != null){
 			final NodeModel selected = selection.getSelected();
 			if(selected != null)
-				controller.getViewController().getComponent(selected).requestFocusInWindow();
+				controller.getMapViewManager().getComponent(selected).requestFocusInWindow();
 		}
 	}
 
@@ -143,11 +142,13 @@ public class DefaultMapMouseListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
+		final MapView mapView = MapView.getMapView(e.getComponent());
+		if(mapView != null)
+			mapView.select();
 		if (e.isPopupTrigger()) {
 			handlePopup(e);
 		}
 		else if (e.getButton() == MouseEvent.BUTTON1){
-			final MapView mapView = getMapView(e.getComponent());
 			if(mapView != null){
 				mapView.setMoveCursor(true);
 				originX = e.getX();
@@ -158,7 +159,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 	}
 
 	public void mouseReleased(final MouseEvent e) {
-		final MapView mapView = getMapView(e.getComponent());
+		final MapView mapView = MapView.getMapView(e.getComponent());
 		if(mapView != null)
 			mapView.setMoveCursor(false);
 		originX = -1;
@@ -175,7 +176,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 	 */
 	public void mouseDragged(final MouseEvent e) {
 		final JComponent component = (JComponent) e.getComponent();
-		final MapView mapView = getMapView(component);
+		final MapView mapView = MapView.getMapView(component);
 		if(mapView == null)
 			return;
 		if (originX >= 0) {
@@ -192,11 +193,5 @@ public class DefaultMapMouseListener implements IMouseListener {
 				originY += dy/3;
 			}
 		}
-	}
-
-	private MapView getMapView(final Component component) {
-		if(component instanceof MapView)
-			return (MapView) component;
-		return (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
 	}
 }

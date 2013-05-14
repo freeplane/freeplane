@@ -65,7 +65,7 @@ public class InsertLatexAction extends AFreeplaneAction {
 		final String about2 = TextUtils.getText("LatexInsertLatexAction.msg2");
 		box.add(new JLabel(about2));
 		
-		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), box, TextUtils
+		JOptionPane.showMessageDialog(UITools.getFrame(), box, TextUtils
 		    .getText("LatexInsertLatexAction.text"), JOptionPane.INFORMATION_MESSAGE);
 	}
 

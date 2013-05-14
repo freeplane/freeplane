@@ -13,7 +13,7 @@
 	<property file="ant/ant.properties" />
 	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
 	<property name="google.translator.jar" value="${workspace}/freeplane_framework/ant/lib/google-api-translate-java-0.92.jar" />
-	<property name="external.jars" value="${commons-lang.jar}:${commons-io.jar}:${imgscalr.jar}:${forms.jar}:${SimplyHTML.jar}:${jortho.jar}" />
+	<property name="external.jars" value="${commons-lang.jar}:${commons-io.jar}:${commons-codec.jar}:${imgscalr.jar}:${forms.jar}:${SimplyHTML.jar}:${jortho.jar}:${idwgpl.jar}" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
     <property name="dist.resources" value="${dist}/resources" />

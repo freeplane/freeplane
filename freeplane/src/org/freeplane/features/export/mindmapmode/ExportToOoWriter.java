@@ -52,11 +52,6 @@ import org.freeplane.features.mode.ModeController;
  * @author foltin
  */
 public class ExportToOoWriter extends AExportEngine {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	public ExportToOoWriter() {
 	}
 

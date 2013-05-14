@@ -15,6 +15,7 @@ import java.awt.event.MouseMotionListener;
 import java.lang.ref.WeakReference;
 
 import javax.swing.BorderFactory;
+import javax.swing.FocusManager;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
@@ -22,6 +23,7 @@ import javax.swing.JToolTip;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -67,6 +69,7 @@ public class NodeTooltipManager implements IExtension{
 			"toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
 		NodeTooltip.setMaximumWidth(maxWidth);
 		setTooltipDelays(instance);
+		UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
@@ -150,7 +153,8 @@ public class NodeTooltipManager implements IExtension{
 
 
 	private void showTipWindow() {
-		if (insideComponent == null || !insideComponent.isShowing())
+		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		if (insideComponent == null || !insideComponent.isShowing() || focusOwner == null)
 			return;
 		tip = insideComponent.createToolTip();
 		tip.addComponentListener(new ComponentAdapter() {
@@ -165,20 +169,14 @@ public class NodeTooltipManager implements IExtension{
 		});
 
 		tip.setTipText(toolTipText);
-		PopupFactory popupFactory = PopupFactory.getSharedInstance();
-		final JComponent nearComponent;
-//		if (insideComponent instanceof MainView) {
-//			nearComponent = ((MainView)insideComponent).getNodeView().getContent();
-//		}
-//		else{
-		nearComponent = insideComponent;
-//		}
-		focusOwnerRef = new WeakReference<Component>(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
+		final JComponent nearComponent = insideComponent;
+		focusOwnerRef = new WeakReference<Component>(focusOwner);
 		tipPopup = new JPopupMenu();
 		tipPopup.setLayout(new GridLayout(1, 1));
 		tipPopup.add(tip);
 		mouseInsideTooltipListener = new MouseInsideListener(tipPopup);
 		tipPopup.show(nearComponent, 0, nearComponent.getHeight());
+		focusOwner.requestFocusInWindow();
         exitTimer.start();
 	}
 
@@ -257,16 +255,20 @@ public class NodeTooltipManager implements IExtension{
 	}
 	
 	private void initiateToolTip(MouseEvent event) {
-	JComponent component = (JComponent) event.getSource();
-	if(insideComponent == component){
-		mouseOverComponent = true;
-		return;
-	}
-	hideTipWindow();
-	insideComponent = component;
-	mouseEvent = event;
-	if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS))
-		enterTimer.restart();
+		JComponent component = (JComponent) event.getSource();
+		Window focusedWindow = FocusManager.getCurrentManager().getFocusedWindow();
+		if (focusedWindow == null) {
+			return;
+		}
+		if(insideComponent == component){
+			mouseOverComponent = true;
+			return;
+		}
+		hideTipWindow();
+		insideComponent = component;
+		mouseEvent = event;
+		if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS))
+			enterTimer.restart();
 	}
 
 	protected boolean isMouseOverComponent() {
@@ -300,7 +302,7 @@ public class NodeTooltipManager implements IExtension{
             final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
             final Window activeWindow = currentKeyboardFocusManager.getActiveWindow();
             if(activeWindow instanceof JDialog && ((JDialog) activeWindow).isModal() 
-            		&& ! SwingUtilities.isDescendingFrom(Controller.getCurrentController().getViewController().getMapView(), activeWindow)){
+            		&& ! SwingUtilities.isDescendingFrom(Controller.getCurrentController().getMapViewManager().getMapViewComponent(), activeWindow)){
                 hideTipWindow();
                 return;
             }

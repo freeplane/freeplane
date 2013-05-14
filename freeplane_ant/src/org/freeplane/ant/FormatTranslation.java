@@ -132,8 +132,35 @@ public class FormatTranslation extends Task {
 		for (String arg : argc) {
 			inputFiles[i++] = new File(arg);
 		}
-		new FormatTranslation().process(inputFiles, false);
+		new FormatTranslation().configureFromDefines().process(inputFiles, false);
 	}
+
+	private FormatTranslation configureFromDefines() {
+		final String eolStyle = getConfigurationProperty("eolStyle");
+		if(eolStyle != null)
+			setEolStyle(eolStyle);
+		final String dir = getConfigurationProperty("dir");
+		if(dir != null)
+			setDir(dir);
+		final String includes = getConfigurationProperty("includes");
+		if(includes != null)
+			setIncludes(includes);
+		final String excludes = getConfigurationProperty("excludes");
+		if(excludes != null)
+			setExcludes(excludes);
+		final String outputDir = getConfigurationProperty("outputdir");
+		if(outputDir != null)
+			setOutputDir(outputDir);
+		final String writeIfUnchanged = getConfigurationProperty("writeIfUnchanged");
+		if(writeIfUnchanged != null)
+			setWriteIfUnchanged(Boolean.parseBoolean(writeIfUnchanged));
+	    return this;
+    }
+
+	protected String getConfigurationProperty(String key) {
+	    String propertyName = getClass().getName() + "." + key;
+		return System.getProperty(propertyName, null);
+    }
 
 	private int process(File[] inputFiles, boolean checkOnly) {
 		try {
@@ -156,7 +183,11 @@ public class FormatTranslation extends Task {
 						    Project.MSG_DEBUG);
 				}
 				if (!checkOnly && (formattingRequired || writeIfUnchanged)) {
-					File outputFile = new File(outputDir, inputFile.getName());
+					File outputFile;
+					if (outputDir != null)
+						outputFile = new File(outputDir, inputFile.getName());
+					else
+						outputFile = inputFile;
 					TaskUtils.writeFile(outputFile, sortedLines, lineSeparator);
 				}
 			}

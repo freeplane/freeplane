@@ -1,61 +1,59 @@
 package org.freeplane.plugin.script;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.ArrayList;
+import groovy.lang.GroovyClassLoader;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.apache.commons.io.FileUtils;
+import org.codehaus.groovy.control.CompilationUnit;
+import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.FileSystemCompiler;
 import org.freeplane.core.util.LogUtils;
 
 public class ScriptCompiler {
     public static void compileScriptsOnPath(ArrayList<String> pathElements) {
-        final ArrayList<File> groovyFiles = collectGroovyFiles(pathElements);
-        if (!groovyFiles.isEmpty())
-            compile(groovyFiles);
-    }
-
-    private static ArrayList<File> collectGroovyFiles(ArrayList<String> pathElements) {
-        final FileFilter groovyFileFilter = createGroovyFileFilter();
-        final ArrayList<File> groovyFiles = new ArrayList<File>();
-        for (String path : pathElements) {
-            appendFilesForPath(groovyFiles, groovyFileFilter, path);
-        }
-        return groovyFiles;
-    }
-
-    private static void appendFilesForPath(ArrayList<File> groovyFiles, FileFilter groovyFileFilter, String path) {
-        final File[] files = new File(path).listFiles(groovyFileFilter);
-        final boolean isDirectory = (files != null);
-        if (isDirectory) {
-            for (int i = 0; i < files.length; i++) {
-                groovyFiles.add(files[i]);
-            }
+        for (String pathElement : pathElements) {
+            final File dir = new File(pathElement);
+            if (dir.isDirectory())
+                compileScriptsInDirectory(dir);
         }
     }
 
-    private static FileFilter createGroovyFileFilter() {
-        final FileFilter groovyFileFilter = new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().endsWith(".groovy");
-            }
-        };
-        return groovyFileFilter;
+    private static void compileScriptsInDirectory(File dir) {
+        final Collection<File> files = FileUtils.listFiles(dir, new String[] { ".groovy" }, true);
+        if (!files.isEmpty())
+            compile(dir, files);
     }
 
-    private static void compile(ArrayList<File> groovyFiles) {
+    private static void compile(File dir, Collection<File> files) {
+        compile(dir, toArray(files));
+    }
+
+    private static void compile(File dir, File[] files) {
         try {
-            final FileSystemCompiler fileSystemCompiler = new FileSystemCompiler(
-                ScriptingEngine.createCompilerConfiguration());
-            fileSystemCompiler.compile(toArray(groovyFiles));
-            LogUtils.info("compiled " + groovyFiles);
+            final CompilerConfiguration compilerConfiguration = ScriptingEngine.createCompilerConfiguration();
+            compilerConfiguration.setTargetDirectory(dir);
+            final CompilationUnit unit = new CompilationUnit(compilerConfiguration, null, new GroovyClassLoader(
+                ScriptingEngine.class.getClassLoader()));
+            new FileSystemCompiler(compilerConfiguration, unit).compile(files);
+            LogUtils.info("compiled in " + dir + ": " + createNameList(files));
         }
         catch (Exception e) {
-            LogUtils.severe("error compiling " + groovyFiles, e);
+            LogUtils.severe("error compiling in " + dir + createNameList(files), e);
         }
     }
 
-    private static File[] toArray(ArrayList<File> groovyFiles) {
+    private static File[] toArray(Collection<File> groovyFiles) {
         return groovyFiles.toArray(new File[groovyFiles.size()]);
+    }
+
+    private static ArrayList<String> createNameList(File[] files) {
+        final ArrayList<String> names = new ArrayList<String>(files.length);
+        for (File file : files) {
+            names.add(file.getName());
+        }
+        return names;
     }
 }

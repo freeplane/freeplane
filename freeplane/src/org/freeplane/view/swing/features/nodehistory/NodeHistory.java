@@ -187,7 +187,7 @@ public class NodeHistory implements IExtension {
 
 	private void onNodeSelect(final NodeModel pNode) {
 		if (currentNodeHolder != null
-		        && currentNodeHolder.isIdentical(((MapView) controller.getViewController().getMapView())
+		        && currentNodeHolder.isIdentical(((MapView) controller.getMapViewManager().getMapViewComponent())
 		            .getNodeView(pNode))) {
 			return;
 		}
@@ -199,7 +199,7 @@ public class NodeHistory implements IExtension {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}
-		currentNodeHolder = new NodeHolder(((MapView) controller.getViewController().getMapView()).getNodeView(pNode));
+		currentNodeHolder = new NodeHolder(((MapView) controller.getMapViewManager().getMapViewComponent()).getNodeView(pNode));
 		nodeIterator.add(currentNodeHolder);
 	}
 }

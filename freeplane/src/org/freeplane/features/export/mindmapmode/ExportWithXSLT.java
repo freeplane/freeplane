@@ -138,7 +138,7 @@ public class ExportWithXSLT extends AExportEngine {
 	 * @param map 
 	 */
 	private boolean createImageFromMap(MapModel map, final String directoryName) {
-		if (Controller.getCurrentController().getViewController().getMapView() == null) {
+		if (Controller.getCurrentController().getMapViewManager().getMapViewComponent() == null) {
 			return false;
 		}
 		final RenderedImage image = createBufferedImage(map);

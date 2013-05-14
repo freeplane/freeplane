@@ -1,8 +1,10 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
+import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.net.URI;
@@ -71,9 +73,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	                    Controller controller = Controller.getCurrentController();
 						if (!controller.getModeController().isBlocked()&& controller.getSelection().size() <= 1) {
 							final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-							if(nodeV.isDisplayable() && nodeV.getModel().isVisible() 
-									&& nodeV.getMap() == controller.getMapViewManager().getMapViewComponent())
+							if(nodeV.isDisplayable() && nodeV.getModel().isVisible()) {
+								nodeV.getMap().select();
 								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+                            }
 	                    }
                     }
                     catch (NullPointerException e) {
@@ -106,7 +109,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if(! isInside(e))
 			return;
 		stopTimerForDelayedSelection();
-		if (!JOptionPane.getFrameForComponent(e.getComponent()).isFocused()) {
+		Window focusedWindow = FocusManager.getCurrentManager().getFocusedWindow();
+		if (focusedWindow == null) {
 			return;
 		}
 		if (KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent) {
@@ -238,7 +242,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
 		final Controller controller = Controller.getCurrentController();
-		if (!((MapView) controller.getViewController().getMapView()).isSelected(nodeV)) {
+		if (!((MapView) controller.getMapViewManager().getMapViewComponent()).isSelected(nodeV)) {
 			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
 		}
 	}
@@ -294,6 +298,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 	public void mousePressed(final MouseEvent e) {
+		final MapView mapView = MapView.getMapView(e.getComponent());
+		mapView.select();
 		doubleClickTimer.cancel();
 		final MainView component = (MainView) e.getComponent();
 		wasFocused = component.hasFocus();

@@ -50,7 +50,7 @@ class CopyMapStylesAction extends AFreeplaneAction {
 		final MFileManager fileManager = MFileManager.getController(modeController);
 		final JFileChooser fileChooser = fileManager.getFileChooser(true);
 		fileChooser.setMultiSelectionEnabled(false);
-		final int returnVal = fileChooser.showOpenDialog(controller.getViewController().getMapView());
+		final int returnVal = fileChooser.showOpenDialog(controller.getMapViewManager().getMapViewComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return;
 		}

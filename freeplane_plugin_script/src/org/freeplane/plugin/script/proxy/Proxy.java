@@ -292,6 +292,14 @@ public interface Proxy {
 		String getTargetLabel();
 
 		boolean simulatesEdge();
+
+		/** returns a Point.
+		 * @since 1.3.3 */
+		List<Integer> getStartInclination();
+		
+		/** returns a Point.
+		 * @since 1.3.3 */
+		List<Integer> getEndInclination();
 	}
 
 	/** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
@@ -326,6 +334,10 @@ public interface Proxy {
 		void setStartArrow(ArrowType arrowType);
 
 		void setTargetLabel(String label);
+
+        /** startPoint, endPoint: list of two integers representing a Point.
+         * @since 1.3.3 */
+        void setInclination(final List<Integer> startPoint, final List<Integer> endPoint);
 	}
 
 	/** Access to global state: <code>c</code> - read-only. */
@@ -842,6 +854,9 @@ public interface Proxy {
 		 *   assert val.num == new Long(12)
 		 *   // or use it just like a string
 		 *   assert val.startsWith("1")
+		 *   // check for availability of an attribute this way:
+		 *   if (node["unknown attribute"])
+		 *      // surprise: the node has an attribute with key "unknown attribute"
 		 * </pre>
 		 * @throws ExecuteScriptException 
 		 * @since 1.2
@@ -919,6 +934,13 @@ public interface Proxy {
 
 		/** @deprecated since 1.2 - use {@link #getParent()} instead. */
 		Node getParentNode();
+
+        /** a list of all nodes starting from this node upto (and including) the root node.
+         * <pre>
+         *   def path = pathToRoot.collect{ it.plainText }.join('.')
+         * </pre>
+         * @since 1.3.3 */
+        List<Node> getPathToRoot();
 
         /** returns the next node with respect to this node in breadth-first order.
          * Returns null if this node is the only one in the map. */

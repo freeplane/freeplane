@@ -120,6 +120,6 @@ class IconConditionController implements IElementaryConditionController {
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
 		// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
 		// (and that would put in a default string like "No Filtering (remove)"!)
-		return new DefaultConditionRenderer("");
+		return new DefaultConditionRenderer("", true);
     }
 }

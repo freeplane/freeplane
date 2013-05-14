@@ -4,12 +4,15 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
@@ -19,7 +22,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 		super(connector, scriptContext);
 	}
 
-	public String getShape() {
+    public String getShape() {
 		return getConnector().getShape().name();
 	}
 	
@@ -140,4 +143,29 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	public boolean simulatesEdge() {
 		return Shape.EDGE_LIKE.equals(getConnector().getShape());
 	}
+
+    public List<Integer> getStartInclination() {
+        return pointToList(getConnector().getStartInclination());
+    }
+
+    public void setInclination(final List<Integer> startPoint, final List<Integer> endPoint) {
+        if (startPoint == null || startPoint.size() != 2 || endPoint == null || endPoint.size() != 2)
+            throw new IllegalArgumentException("start and end points must have 2 elements");
+        getLinkController().setArrowLinkEndPoints(getConnector(), listToPoint(startPoint), listToPoint(endPoint));
+    }
+
+    public List<Integer> getEndInclination() {
+        return pointToList(getConnector().getEndInclination());
+    }
+    
+    private Point listToPoint(List<Integer> point) {
+        return new Point(point.get(0), point.get(1));
+    }
+
+    private static List<Integer> pointToList(Point point) {
+        ArrayList<Integer> result = new ArrayList<Integer>(2);
+        result.add(point.x);
+        result.add(point.y);
+        return result;
+    }
 }

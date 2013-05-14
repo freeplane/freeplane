@@ -39,7 +39,7 @@ class OpenAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager.getController(modeController).open();
-		Controller.getCurrentController().getViewController().setTitle();
+		Controller.getCurrentController().getMapViewManager().setTitle();
 	}
 
 	@Override

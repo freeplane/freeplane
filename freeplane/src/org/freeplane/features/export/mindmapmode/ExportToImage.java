@@ -38,12 +38,6 @@ import org.freeplane.features.mode.Controller;
  * @author rreppel
  */
 public class ExportToImage extends AExportEngine {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-
 	private final String imageDescripton;
 	private final String imageType;
 

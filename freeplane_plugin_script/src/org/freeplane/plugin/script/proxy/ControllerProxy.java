@@ -79,16 +79,21 @@ class ControllerProxy implements Proxy.Controller {
 		    .getSortedSelection(differentSubtrees), scriptContext);
 	}
 
-	public void select(final Node toSelect) {
-		final NodeModel nodeModel = ((NodeProxy) toSelect).getDelegate();
-		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
-	}
+    public void select(final Node toSelect) {
+        if (toSelect != null) {
+            final NodeModel nodeModel = ((NodeProxy) toSelect).getDelegate();
+            Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
+            Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
+        }
+    }
 
-	public void selectBranch(final Node branchRoot) {
-		final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
-		Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
-		Controller.getCurrentController().getSelection().selectBranch(nodeModel, false);
-	}
+    public void selectBranch(final Node branchRoot) {
+        if (branchRoot != null) {
+            final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
+            Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
+            Controller.getCurrentController().getSelection().selectBranch(nodeModel, false);
+        }
+    }
 
 	public void selectMultipleNodes(final List<Node> toSelect) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
@@ -130,6 +135,10 @@ class ControllerProxy implements Proxy.Controller {
 
 	private ViewController getViewController() {
 		return Controller.getCurrentController().getViewController();
+	}
+
+	private IMapViewManager getMapViewManager() {
+		return Controller.getCurrentController().getMapViewManager();
 	}
 
 	public void setStatusInfo(final String infoPanelKey, final String info) {
@@ -225,11 +234,11 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
     public float getZoom() {
-	    return getViewController().getZoom();
+	    return getMapViewManager().getZoom();
     }
     
     public void setZoom(float ratio) {
-    	getViewController().setZoom(ratio);
+    	getMapViewManager().setZoom(ratio);
     }
 
     public boolean isInteractive() {

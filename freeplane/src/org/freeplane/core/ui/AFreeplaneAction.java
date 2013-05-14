@@ -31,7 +31,6 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev

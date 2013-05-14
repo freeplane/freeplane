@@ -17,26 +17,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.map;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 
-class ZoomOutAction extends AFreeplaneAction {
-	static final String NAME = "zoomOut";
+class ZoomInAction extends AFreeplaneAction {
+	static final String NAME = "zoomIn";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private ViewController viewController;
+	final private MapViewController controller;
 
-	public ZoomOutAction(final ViewController viewController) {
-		super("ZoomOutAction");
-		this.viewController = viewController;
+	public ZoomInAction(final MapViewController controller) {
+		super("ZoomInAction");
+		this.controller = controller;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		viewController.zoomOut();
+		controller.zoomIn();
 	}
 }
