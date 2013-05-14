@@ -120,5 +120,23 @@ public abstract class URIUtils {
 	}
 	
 	
-
+	public static String encodedFilePath(String path) throws IllegalArgumentException {
+		try {
+			URI uri = new URI("file", null, path, null);
+			return uri.getRawPath();
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException("Exception in org.freeplane.plugin.workspace.URIUtils.encodeFilePath(path): "+e.getMessage());
+		}
+	}
+	
+	public static String decodedFilePath(String path) throws IllegalArgumentException {
+		try {
+			URI uri = new URI(path);
+			return uri.getPath();
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException("Exception in org.freeplane.plugin.workspace.URIUtils.encodeFilePath(path): "+e.getMessage());
+		}
+	}
 }

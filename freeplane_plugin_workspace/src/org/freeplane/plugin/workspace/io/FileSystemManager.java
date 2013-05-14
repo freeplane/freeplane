@@ -313,7 +313,7 @@ public class FileSystemManager {
 				}
 			});
 			for(File file : srcFile.listFiles()) {
-				buildCopyOperationList(file, new File(destFile, file.getName()), ops);
+				buildMoveOperationList(file, new File(destFile, file.getName()), ops);
 			}
 		}
 		else {
@@ -332,7 +332,7 @@ public class FileSystemManager {
 							throw new SkipTaskException();
 						}
 					}
-					FileUtils.copyFile(srcFile, destFile);
+					FileUtils.moveFile(srcFile, destFile);
 				}
 			});
 		}
