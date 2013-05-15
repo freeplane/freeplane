@@ -281,20 +281,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
 			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
 			item.setActionCommand(key);
-			String text = createOpenMapItemName(key);
-			
-			// Add space after ":"
-			String separator = ":";
-			String left;
-			String right;
-			int pos;
-			String result;			 
-			pos = text.indexOf(separator);			 
-			left = text.substring(0, pos+1);			 
-			right = text.substring(pos+1, text.length());			 
-			text = left + " " + right;
-			
-			item.setText(createOpenMapItemName(text));
+			String text = createOpenMapItemName(key);						
+			item.setText(text);
 			item.setMnemonic(0);
 			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(),
 			    UIBuilder.AS_CHILD);
@@ -308,9 +296,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		String key = restorable.substring(0, separatorIndex);
 		String fileName = restorable.substring(separatorIndex);
 		if(fileName.startsWith("::"))
-			return TextUtils.getText("open_as" + key, key) + fileName.substring(1);
+			return TextUtils.getText("open_as" + key, key) + " " + fileName.substring(2);
 		else
-			return TextUtils.getText("open_as" + key, key) + fileName;
+			return TextUtils.getText("open_as" + key, key) + " " + fileName.substring(1);
     }
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
