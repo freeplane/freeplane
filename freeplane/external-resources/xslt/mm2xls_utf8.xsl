@@ -118,8 +118,15 @@
 		<xsl:if test="richcontent[@TYPE='NOTE' or @TYPE='DETAILS']">
 			<Comment>
 				<xsl:element name="ss:Data" namespace="urn:schemas-microsoft-com:office:spreadsheet">
-					<xsl:copy-of select="richcontent[@TYPE='DETAILS']/html/body/*" />
-					<xsl:copy-of select="richcontent[@TYPE='NOTE']/html/body/*" />
+					<xsl:call-template name="strip-html-body">
+					  <xsl:with-param name="body" select="richcontent[@TYPE='DETAILS']/html/body" />
+					</xsl:call-template>
+					<xsl:if test="richcontent[@TYPE='NOTE'] and richcontent[@TYPE='DETAILS']">
+					  <xsl:text>&#x0A;&#x0A;</xsl:text>
+					</xsl:if>
+					<xsl:call-template name="strip-html-body">
+					  <xsl:with-param name="body" select="richcontent[@TYPE='NOTE']/html/body" />
+					</xsl:call-template>
 				</xsl:element>
 			</Comment>
 		</xsl:if>
