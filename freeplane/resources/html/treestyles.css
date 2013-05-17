@@ -52,6 +52,13 @@ text-align:right;
   border-color:#dddddd;
 }
 
+div.nodecontent p:first-child {
+  display:inline;
+}
+div.nodecontent p + p:last-child {
+  margin-bottom:0;
+}
+
 h1 {
     text-align:center;
 }
