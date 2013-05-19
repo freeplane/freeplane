@@ -807,7 +807,7 @@ public class MenuBuilder extends UIBuilder {
 		return super.getParentComponentCount(parentComponent);
 	}
 
-	String getShortcutKey(final String key) {
+	public String getShortcutKey(final String key) {
 		return SHORTCUT_PROPERTY_PREFIX + modeController.getModeName() + "/" + key;
 	}
 

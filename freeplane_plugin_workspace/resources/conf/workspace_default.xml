@@ -1,0 +1,11 @@
+<workspace name="My Workspace" version="1.0" meta="docear">
+    <folder type="virtual" name="Mindmaps">
+    	<folder type="physical" path="workspace:/mindmaps/" />
+    </folder>
+
+    <folder type="virtual" name="Miscellaneous" >
+        <link type="file" path="workspace:/mindmaps/new_mindmap.mm" />
+        <link type="file" path="workspace:/other_mindmap.mm" />
+    </folder>
+
+</workspace>

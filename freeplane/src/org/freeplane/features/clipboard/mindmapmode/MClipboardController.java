@@ -73,6 +73,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
@@ -100,10 +101,7 @@ public class MClipboardController extends ClipboardController {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
 					final String href = m.group(1);
-					final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links")
-					    .equals("relative");
-					((MLinkController) LinkController.getController()).setLink(node, href,
-					    useRelativeUri);
+					((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, href);
 				}
 			}
 			((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target);
@@ -131,14 +129,7 @@ public class MClipboardController extends ClipboardController {
 				}
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
-				final URI uri;
-				if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
-					uri = LinkController.toRelativeURI(node.getMap().getFile(), file);
-				}
-				else {
-					uri = file.getAbsoluteFile().toURI();
-				}
-				((MLinkController) LinkController.getController()).setLink(node, uri, false);
+				((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
 			}
 		}
@@ -445,15 +436,7 @@ public class MClipboardController extends ClipboardController {
 	    			return;
 	    		if(! FileUtils.getExtension(file.getName()).equals(IMAGE_FORMAT))
 	    			file = new File(file.getPath() + '.' + IMAGE_FORMAT);
-	    		final URI uri;
-	    		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-	    			    "relative");
-	    		if (useRelativeUri) {
-	    			uri = LinkController.toRelativeURI(mindmapFile, file);
-	    		}
-	    		else{
-	    			uri = file.toURI();
-	    		}
+	    		final URI uri = LinkController.toLinkTypeDependantURI(mindmapFile, file);
 	            ImageIO.write(image, IMAGE_FORMAT, file);
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 				final ExternalResource extension = new ExternalResource(uri);
@@ -742,8 +725,6 @@ public class MClipboardController extends ClipboardController {
 		parentNodes.add(parent);
 		parentNodesDepths.add(new Integer(-1));
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-		    "relative");
 		for (int i = 0; i < textFragments.length; ++i) {
 			final TextFragment textFragment = textFragments[i];
 			String text = textFragment.text;
@@ -753,9 +734,12 @@ public class MClipboardController extends ClipboardController {
 				try {
 					URI linkUri = new URI(link);
 					uri = linkUri;
-					if (useRelativeUri && "file".equals(linkUri.getScheme())) {
+					
+					File absoluteFile = UrlManager.getController().getAbsoluteFile(map, uri);
+					if(absoluteFile != null) {
+					//if ("file".equals(linkUri.getScheme())) {
 						final File mapFile = map.getFile();
-						uri  = LinkController.toRelativeURI(mapFile, new File(linkUri));
+						uri  = LinkController.toLinkTypeDependantURI(mapFile, absoluteFile);
 						if(link.equals(text)){
 							text =  uri.toString();
 						}

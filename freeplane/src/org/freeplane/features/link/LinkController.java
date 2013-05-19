@@ -97,14 +97,38 @@ public class LinkController extends SelectionController implements IExtension {
 	public static LinkController getController(ModeController modeController) {
 		return (LinkController) modeController.getExtension(LinkController.class);
 	}
+	
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(3,
-		    new LinkConditionController());
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(3, new LinkConditionController());
 	}
 
 	public static void install( final LinkController linkController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LinkController.class, linkController);
+		linkController.init();
+	}
+
+	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
+	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
+	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty("link_local_icon");
+
+// 	final private ModeController modeController;
+
+	public LinkController() {
+//		this.modeController = modeController;
+	}
+
+	protected void init() {
+		createActions();
+		final ModeController modeController = Controller.getCurrentModeController();
+		final MapController mapController = modeController.getMapController();
+		final ReadManager readManager = mapController.getReadManager();
+		final WriteManager writeManager = mapController.getWriteManager();
+		new LinkBuilder(this).registerBy(readManager, writeManager);
+		final LinkTransformer textTransformer = new LinkTransformer(modeController, 10);
+		TextController.getController(modeController).addTextTransformer(textTransformer);
+		textTransformer.registerListeners(modeController);
+		
 		final INodeSelectionListener listener = new INodeSelectionListener() {
 			public void onDeselect(final NodeModel node) {
 			}
@@ -118,26 +142,6 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		};
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(listener);
-	}
-
-	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
-	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
-	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty(
-	"link_local_icon");
-
-// 	final private ModeController modeController;
-
-	public LinkController() {
-//		this.modeController = modeController;
-		createActions();
-		final ModeController modeController = Controller.getCurrentModeController();
-		final MapController mapController = modeController.getMapController();
-		final ReadManager readManager = mapController.getReadManager();
-		final WriteManager writeManager = mapController.getWriteManager();
-		new LinkBuilder(this).registerBy(readManager, writeManager);
-		final LinkTransformer textTransformer = new LinkTransformer(modeController, 10);
-		TextController.getController(modeController).addTextTransformer(textTransformer);
-		textTransformer.registerListeners(modeController);
 	}
 
 	private void addLinks(final JComponent arrowLinkPopup, final NodeModel source) {
@@ -158,8 +162,9 @@ public class LinkController extends SelectionController implements IExtension {
             componentBox.add(Box.createHorizontalStrut(10));
             componentBox.add(component);
         }
-        else
+        else {
             componentBox = component;
+        }
         componentBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
         componentBox.setMinimumSize(new Dimension());
         componentBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -410,27 +415,94 @@ public class LinkController extends SelectionController implements IExtension {
 		}
     }
 
-	public static URI toRelativeURI(final File map, final File input) {
+    public static int getLinkType() {
+		return getController().linkType();
+	}
+	
+    public static final int LINK_ABSOLUTE = 0;
+	public static final int LINK_RELATIVE_TO_MINDMAP = 1;
+    
+	public int linkType() {
+		String linkTypeProperty = ResourceController.getResourceController().getProperty("links");
+		if ("relative".equals(linkTypeProperty)) {
+			return LINK_RELATIVE_TO_MINDMAP;
+		}
+		return LINK_ABSOLUTE;
+	}
+
+	public static URI toLinkTypeDependantURI(final File map, final File input) {
+		int type = getLinkType();
+		if (type == LINK_ABSOLUTE) {
+			return input.getAbsoluteFile().toURI();
+		}
+		return toRelativeURI(map, input, type);
+	}
+	
+	public static URI toLinkTypeDependantURI(final File map, final File input, final int linkType) {
+		return toRelativeURI(map, input, linkType);
+	}
+	
+	public static URI toRelativeURI(final File map, final File input, final int linkType) {
+		return getController().createRelativeURI(map, input, linkType);
+	}
+	
+	public static URI normalizeURI(URI uri){
+		final String UNC_PREFIX = "//";
+		URI normalizedUri = uri.normalize();
+		//Fix UNC paths that are incorrectly normalized by URI#resolve (see Java bug 4723726)
+		String normalizedPath = normalizedUri.getPath();
+		if ("file".equalsIgnoreCase(uri.getScheme()) && uri.getPath() != null && uri.getPath().startsWith(UNC_PREFIX) && (normalizedPath == null || !normalizedPath.startsWith(UNC_PREFIX))){
 		try {
+				normalizedUri = new URI(normalizedUri.getScheme(), ensureUNCPath(normalizedUri.getSchemeSpecificPart()), normalizedUri.getFragment());
+			} catch (URISyntaxException e) {
+				LogUtils.warn(e);
+			}
+		}				
+		return normalizedUri;
+	}
+	
+	private static String ensureUNCPath(String path) {
+		int len = path.length();
+		StringBuffer result = new StringBuffer(len);
+		for (int i = 0; i < 4; i++) {
+			//    if we have hit the first non-slash character, add another leading slash
+			if (i >= len || result.length() > 0 || path.charAt(i) != '/')
+				result.append('/');
+		}
+		result.append(path);
+		return result.toString();
+	}
+	
+	public URI createRelativeURI(final File map, final File input, final int linkType) {
+		if (linkType == LINK_ABSOLUTE) {
+			return null;
+		}
+		try {			
+			URI mapUri = null;
+			if (map != null) {
+				mapUri = map.getAbsoluteFile().toURI();
+			}
+			
 			final URI fileUri = input.getAbsoluteFile().toURI();
-			if (map == null) {
+			boolean isUNCinput = fileUri.getPath().startsWith("//");
+			boolean isUNCmap = mapUri.getPath().startsWith("//");
+			if((isUNCinput != isUNCmap)) {
 				return fileUri;
 			}
-			final URI mapUri = map.getAbsoluteFile().toURI();
 			final String filePathAsString = fileUri.getRawPath();
 			final String mapPathAsString = mapUri.getRawPath();
 			int differencePos;
 			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
 			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
-			int lastCommonSeparatorPos = 0;
-			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
+			int lastCommonSeparatorPos = -1;
+			for (differencePos = 0; differencePos <= lastIndexOfSeparatorInMapPath
 			        && differencePos <= lastIndexOfSeparatorInFilePath
 			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
 				if (filePathAsString.charAt(differencePos) == '/') {
 					lastCommonSeparatorPos = differencePos;
 				}
 			}
-			if (lastCommonSeparatorPos == 0) {
+			if (lastCommonSeparatorPos < 0) {
 				return fileUri;
 			}
 			final StringBuilder relativePath = new StringBuilder();
@@ -440,6 +512,7 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 			}
 			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
+
 			return new URI(relativePath.toString());
 		}
 		catch (final URISyntaxException e) {
@@ -447,6 +520,44 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		return null;
 	}
+
+//	public static URI toRelativeURI(final File map, final File input) {
+//		try {
+//			final URI fileUri = input.getAbsoluteFile().toURI();
+//			if (map == null) {
+//				return fileUri;
+//			}
+//			final URI mapUri = map.getAbsoluteFile().toURI();
+//			final String filePathAsString = fileUri.getRawPath();
+//			final String mapPathAsString = mapUri.getRawPath();
+//			int differencePos;
+//			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
+//			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
+//			int lastCommonSeparatorPos = 0;
+//			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
+//			        && differencePos <= lastIndexOfSeparatorInFilePath
+//			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
+//				if (filePathAsString.charAt(differencePos) == '/') {
+//					lastCommonSeparatorPos = differencePos;
+//				}
+//			}
+//			if (lastCommonSeparatorPos == 0) {
+//				return fileUri;
+//			}
+//			final StringBuilder relativePath = new StringBuilder();
+//			for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
+//				if (mapPathAsString.charAt(i) == '/') {
+//					relativePath.append("../");
+//				}
+//			}
+//			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
+//			return new URI(relativePath.toString());
+//		}
+//		catch (final URISyntaxException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
 	// patterns only need to be compiled once
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]

@@ -38,6 +38,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 import javax.swing.AbstractAction;
@@ -60,13 +61,15 @@ import javax.xml.transform.stream.StreamSource;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
+
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -163,6 +166,7 @@ public class UrlManager implements IExtension {
 	public static void install( final UrlManager urlManager) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(UrlManager.class, urlManager);
+		urlManager.init();
 	}
 
 // // 	final private Controller controller;
@@ -170,6 +174,9 @@ public class UrlManager implements IExtension {
 
 	public UrlManager() {
 		super();
+	}
+	
+	protected void init() {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		createActions();
@@ -181,12 +188,16 @@ public class UrlManager implements IExtension {
 	private void createActions() {
 	}
 
+	public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
+		return getFileChooser(filter, useDirectorySelector, false);
+	}
+
 	/**
 	 * Creates a file chooser with the last selected directory as default.
 	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
-    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
+    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector, boolean showHiddenFiles) {
 		final File parentFile = getMapsParentFile(Controller.getCurrentController().getMap());
 		if (parentFile != null && getLastCurrentDir() == null) {
 			setLastCurrentDir(parentFile);
@@ -219,6 +230,12 @@ public class UrlManager implements IExtension {
 		};
 		if (getLastCurrentDir() != null) {
 			chooser.setCurrentDirectory(getLastCurrentDir());
+		}
+		if (showHiddenFiles) {
+			chooser.setFileHidingEnabled(false);
+		}
+		if (useDirectorySelector) {
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		}
 		if (filter != null) {
 			chooser.addChoosableFileFilter(filter);
@@ -333,6 +350,16 @@ public class UrlManager implements IExtension {
 					return;
 				}
 			}
+			//DOCEAR: mindmaps can be linked in a mindmap --> therefore project-relative-paths are possible
+			if(!"file".equals(uri.getScheme())) {
+				try {
+					uri = uri.toURL().openConnection().getURL().toURI().normalize();
+				}
+				catch (Exception e) {
+					LogUtils.warn("link " + uri + " not found", e);
+					UITools.errorMessage(TextUtils.format("link_not_found", uri.toString()));
+				}
+			}
 			try {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
@@ -369,11 +396,28 @@ public class UrlManager implements IExtension {
 		return getAbsoluteUri(map, uri);
 	}
 
+	
 	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
-		if (uri.isAbsolute()) {
-			return uri;
+
+
+		//DOCEAR - added project relative uri resolution
+		URI resolvedURI;
+		try {
+			resolvedURI = uri.toURL().openConnection().getURL().toURI();
+		} catch (IOException ex) {
+			LogUtils.warn(ex);
+			return null;
+		} catch (URISyntaxException ex) {
+			LogUtils.warn(ex);
+			return null;
+		} catch (IllegalArgumentException ex) {
+			resolvedURI = uri;
 		}
-		final String path = uri.getPath();
+		
+		if (resolvedURI.isAbsolute()) {
+			return resolvedURI;
+		}
+		final String path = resolvedURI.getPath();
 		try {
 			URL context = map.getURL();
 			if(context == null)
@@ -385,6 +429,51 @@ public class UrlManager implements IExtension {
 			LogUtils.warn(e);
 			return null;
 		}
+	}
+
+	public File getAbsoluteFile(final MapModel map, final URI uri) {
+		if(uri == null) {
+			return null;
+		}
+		try {
+			URLConnection urlConnection;
+			// windows drive letters are interpreted as uri schemes -> make a file from the scheme-less uri string and use this to resolve the path
+			if(Compat.isWindowsOS() && (uri.getScheme() != null && uri.getScheme().length() == 1)) { 
+				urlConnection = (new File(uri.toString())).toURI().toURL().openConnection();
+			} 
+			else if(uri.getScheme() == null && !uri.getPath().startsWith(File.separator)) {
+				if(map != null) {
+					urlConnection = (new File(uri.toString())).toURI().toURL().openConnection();
+				} 
+				else {
+					urlConnection = UrlManager.getController().getAbsoluteUri(map, uri).toURL().openConnection();
+				}
+			}
+			else {
+				urlConnection = uri.toURL().openConnection();				
+			}
+			
+			if (urlConnection == null) {
+				return null;
+			}
+			else {
+				URI absoluteUri = urlConnection.getURL().toURI().normalize();
+				if("file".equalsIgnoreCase(absoluteUri.getScheme())){
+					return new File(absoluteUri);
+				}				
+			}
+		}
+		catch (URISyntaxException e) {
+			LogUtils.warn(e);
+		}
+		catch (IOException e) {
+			LogUtils.warn(e);
+		}
+		catch (Exception e){
+			LogUtils.warn(e);
+		}
+		return null;
+
 	}
 
 	public URL getAbsoluteUrl(final MapModel map, final URI uri) throws MalformedURLException {
@@ -400,11 +489,36 @@ public class UrlManager implements IExtension {
 			sb.append('#');
 			sb.append(fragment);
 		}
-		if (!uri.isAbsolute() || uri.isOpaque()) {
+		if (!uri.isAbsolute() || uri.isOpaque() || uri.getScheme().length()>0) {
 			final URL mapUrl = map.getURL();
 			final String scheme = uri.getScheme();
 			if (scheme == null || mapUrl.getProtocol().equals(scheme)) {
 				final URL url = new URL(mapUrl, sb.toString());
+				return url;
+			}
+		}
+		final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
+		return url;
+	}
+
+	public URL getAbsoluteUrl(final URI base, final URI uri) throws MalformedURLException {
+		final String path = uri.isOpaque() ? uri.getSchemeSpecificPart() : uri.getPath();
+		final StringBuilder sb = new StringBuilder(path);
+		final String query = uri.getQuery();
+		if (query != null) {
+			sb.append('?');
+			sb.append(query);
+		}
+		final String fragment = uri.getFragment();
+		if (fragment != null) {
+			sb.append('#');
+			sb.append(fragment);
+		}
+		if (!uri.isAbsolute() || uri.isOpaque() || uri.getScheme().length()>0) {
+			final URL baseUrl = base.toURL();
+			final String scheme = uri.getScheme();
+			if (scheme == null || baseUrl.getProtocol().equals(scheme)) {
+				final URL url = new URL(baseUrl, sb.toString());
 				return url;
 			}
 		}

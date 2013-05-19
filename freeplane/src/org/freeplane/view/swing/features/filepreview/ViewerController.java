@@ -466,7 +466,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return null;
 		}
 		if (useRelativeUri) {
-			uri = LinkController.toRelativeURI(map.getFile(), input);
+			uri = LinkController.toLinkTypeDependantURI(map.getFile(), input);
 		}
 		final ExternalResource preview = new ExternalResource(uri);
 		ProgressIcons.updateExtendedProgressIcons(node, input.getName());
@@ -660,16 +660,15 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		if (uri == null || getViewerFactory(uri) == null) {
 			return false;
 		}
-		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-		    "relative");
+		
 		final File mapFile = targetNode.getMap().getFile();
-		if (mapFile == null && useRelativeUri) {
+		if (mapFile == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
 			    TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		if (useRelativeUri) {
-			uri = LinkController.toRelativeURI(mapFile, file);
+		if (LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
+			uri = LinkController.toLinkTypeDependantURI(mapFile, file);
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node;

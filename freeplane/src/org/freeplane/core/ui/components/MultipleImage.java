@@ -21,6 +21,7 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,5 +66,18 @@ public class MultipleImage implements Icon {
 			icon.paintIcon(c, g, myX, y);
 			myX += icon.getIconWidth();
 		}
+	}
+	
+
+	//DOCEAR - get a rect relative to this image for a specific icon  
+	public Rectangle getIconR(Icon icon) {
+		int myX = 0;
+		for (final Icon ico : mIcons) {
+			if(ico.equals(icon)) {
+				return new Rectangle(myX, 0, ico.getIconWidth(), ico.getIconHeight());
+			}
+			myX += ico.getIconWidth();
+		}
+		return null;
 	}
 };
