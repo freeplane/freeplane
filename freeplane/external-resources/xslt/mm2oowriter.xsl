@@ -230,6 +230,16 @@
 	  <xsl:apply-templates select="node" />
 	</xsl:template>
 
+	<xsl:template name="output-node-as-heading">
+	  <xsl:param name="heading_level" select="-1"/>
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style">
+	      <xsl:text>Heading_20_</xsl:text><xsl:value-of select="$heading_level" />
+	    </xsl:with-param>
+	    <xsl:with-param name="heading_level" select="$heading_level" />
+	  </xsl:call-template>
+	</xsl:template>
+
 
 	<xsl:template match="node">
 		<xsl:variable name="depth">
@@ -251,10 +261,7 @@
 			  </text:list>
 			</xsl:when>
 			<xsl:otherwise>
-			  <xsl:call-template name="output-all-nodecontent">
-			    <xsl:with-param name="style">
-			      <xsl:text>Heading_20_</xsl:text><xsl:value-of select="$depth" />
-			    </xsl:with-param>
+			  <xsl:call-template name="output-node-as-heading">
 			    <xsl:with-param name="heading_level" select="$depth" />
 			  </xsl:call-template>
 			</xsl:otherwise>
