@@ -341,10 +341,10 @@
       <attribute name="style:display-name"><value-of select="@TEXT"/></attribute>
       <style:text-properties>
 	<attribute name="fo:font-size"><value-of select="font/@SIZE"/></attribute>
-	<if test="font/ITALIC='true'">
+	<if test="font/@ITALIC='true'">
 	  <attribute name="fo:font-style">italic</attribute>
 	</if>
-	<if test="font/BOLD='true'">
+	<if test="font/@BOLD='true'">
 	  <attribute name="fo:font-weight">bold</attribute>
 	</if>
       </style:text-properties>
