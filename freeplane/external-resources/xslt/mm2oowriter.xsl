@@ -241,23 +241,23 @@
 				  <xsl:with-param name="style">Title</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-					<xsl:when test="ancestor::node[@FOLDED='true']">
-						<text:list text:style-name="L1">
-							<text:list-item>
-							  <xsl:call-template name="output-all-nodecontent">
-							    <xsl:with-param name="style">Standard</xsl:with-param>
-							  </xsl:call-template>
-							</text:list-item>
-						</text:list>
-					</xsl:when>
-					<xsl:otherwise>
-					  <xsl:call-template name="output-all-nodecontent">
-					    <xsl:with-param name="style">
-					      <xsl:text>Heading_20_</xsl:text><xsl:value-of select="$depth" />
-					    </xsl:with-param>
-					    <xsl:with-param name="heading_level" select="$depth" />
-					  </xsl:call-template>
-					</xsl:otherwise>
+			<xsl:when test="ancestor::node[@FOLDED='true']">
+			  <text:list text:style-name="L1">
+			    <text:list-item>
+			      <xsl:call-template name="output-all-nodecontent">
+				<xsl:with-param name="style">Standard</xsl:with-param>
+			      </xsl:call-template>
+			    </text:list-item>
+			  </text:list>
+			</xsl:when>
+			<xsl:otherwise>
+			  <xsl:call-template name="output-all-nodecontent">
+			    <xsl:with-param name="style">
+			      <xsl:text>Heading_20_</xsl:text><xsl:value-of select="$depth" />
+			    </xsl:with-param>
+			    <xsl:with-param name="heading_level" select="$depth" />
+			  </xsl:call-template>
+			</xsl:otherwise>
 		</xsl:choose>
 
 	</xsl:template>
@@ -323,17 +323,17 @@
 					<xsl:with-param name="style" select="$style" />
 				</xsl:apply-templates>
 			</xsl:when>
-					<xsl:when test="$style = ''">
-						<!--no style for headings. -->
-						<xsl:call-template name="textnode" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:element name="text:p">
-							<xsl:attribute name="text:style-name"><xsl:value-of
-								select="$style" /></xsl:attribute>
-							<xsl:call-template name="textnode" />
-						</xsl:element>
-					</xsl:otherwise>
+			<xsl:when test="$style = ''">
+				<!--no style for headings. -->
+				<xsl:call-template name="textnode" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:element name="text:p">
+					<xsl:attribute name="text:style-name"><xsl:value-of
+						select="$style" /></xsl:attribute>
+					<xsl:call-template name="textnode" />
+				</xsl:element>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template> <!-- xsl:template name="output-nodecontent" -->
 
