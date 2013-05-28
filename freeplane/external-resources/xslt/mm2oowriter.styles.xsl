@@ -246,6 +246,8 @@
 				style:font-size-complex="9pt" />
 		</style:style>
 
+		<!--- pre-defined styles -->
+		<apply-templates select=".//stylenode[starts-with(@LOCALIZED_TEXT,'defaultstyle.')]" />
 		<!--- custom styles -->
 		<apply-templates select=".//stylenode[@LOCALIZED_TEXT='styles.user-defined']//stylenode" />
 
@@ -356,6 +358,12 @@
    <template match="stylenode[@TEXT]">
      <call-template name="paragraph-style">
        <with-param name="stylename" select="@TEXT" />
+     </call-template>
+   </template>
+
+   <template match="stylenode[starts-with(@LOCALIZED_TEXT,'defaultstyle.')]" >
+     <call-template name="paragraph-style">
+       <with-param name="stylename" select="substring-after(@LOCALIZED_TEXT,'defaultstyle.')" />
      </call-template>
    </template>
 
