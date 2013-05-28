@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!--
-		/*Freeplane - A Program for creating and viewing Mindmaps *Copyright
-		(C) 2000-2008 Christian Foltin and others. * *See COPYING for Details
-		* *This program is free software; you can redistribute it and/or
-		*modify it under the terms of the GNU General Public License *as
-		published by the Free Software Foundation; either version 2 *of the
-		License, or (at your option) any later version. * *This program is
-		distributed in the hope that it will be useful, *but WITHOUT ANY
-		WARRANTY; without even the implied warranty of *MERCHANTABILITY or
-		FITNESS FOR A PARTICULAR PURPOSE. See the *GNU General Public License
-		for more details. * *You should have received a copy of the GNU
-		General Public License *along with this program; if not, write to the
-		Free Software *Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-		MA 02111-1307, USA. * */
-	-->
+<!--
+/*Freeplane - A Program for creating and viewing Mindmaps
+ *Copyright (C) 2000-2008  Christian Foltin and others.
+ *
+ *See COPYING for Details
+ *
+ *This program is free software; you can redistribute it and/or
+ *modify it under the terms of the GNU General Public License
+ *as published by the Free Software Foundation; either version 2
+ *of the License, or (at your option) any later version.
+ *
+ *This program is distributed in the hope that it will be useful,
+ *but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *GNU General Public License for more details.
+ *
+ *You should have received a copy of the GNU General Public License
+ *along with this program; if not, write to the Free Software
+ *Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * This stylesheet is for generating `content.xml` for ODT-Files (Open Document Text),
+ * used for exporting to OpenOffice/LibeOffice Writer documents.
+ */
+-->
 <xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
@@ -264,20 +273,27 @@
 	<xsl:template match="hook" />
 
 	<!--
-		<xsl:template
-		match="hook[@NAME='accessories/plugins/NodeNote.properties']">
-		<xsl:choose> <xsl:when test="./text"> <text:p
-		text:style-name="Standard"> <xsl:value-of select="./text"/> </text:p>
-		</xsl:when> </xsl:choose> </xsl:template> <xsl:template match="node"
-		mode="childoutputOrdered"> <xsl:param name="nodeText"></xsl:param>
-		<text:ordered-list text:style-name="L1"
-		text:continue-numbering="true"> <text:list-item> <xsl:apply-templates
-		select=".." mode="childoutputOrdered"> <xsl:with-param
-		name="nodeText"><xsl:copy-of select="$nodeText"/></xsl:with-param>
-		</xsl:apply-templates> </text:list-item> </text:ordered-list>
-		</xsl:template> <xsl:template match="map" mode="childoutputOrdered">
-		<xsl:param name="nodeText"></xsl:param> <xsl:copy-of
-		select="$nodeText"/> </xsl:template>
+	<xsl:template match="hook[@NAME='accessories/plugins/NodeNote.properties']">
+	  <xsl:choose>
+	    <xsl:when test="./text">
+	      <text:p text:style-name="Standard"> <xsl:value-of select="./text"/> </text:p>
+	    </xsl:when>
+	  </xsl:choose>
+	</xsl:template>
+	<xsl:template match="node" mode="childoutputOrdered">
+	  <xsl:param name="nodeText"></xsl:param>
+	  <text:ordered-list text:style-name="L1" text:continue-numbering="true">
+	    <text:list-item>
+	      <xsl:apply-templates select=".." mode="childoutputOrdered">
+		<xsl:with-param name="nodeText"><xsl:copy-of select="$nodeText"/></xsl:with-param>
+	      </xsl:apply-templates>
+	    </text:list-item>
+	  </text:ordered-list>
+	  </xsl:template>
+	  <xsl:template match="map" mode="childoutputOrdered">
+	    <xsl:param name="nodeText"></xsl:param>
+	    <xsl:copy-of select="$nodeText"/>
+	  </xsl:template>
 	-->
 	<xsl:template match="node" mode="depthMesurement">
 		<xsl:param name="depth" select=" '0' " />
@@ -530,45 +546,56 @@
 	
 
 	<!--
-		<text:list-item> <text:p text:style-name="P1">b </text:list-item>
-		<text:list-item> <text:p text:style-name="P1">c</text:p>
-		</text:list-item> <text:p text:style-name="P2"/>
+		<text:list-item> <text:p text:style-name="P1">b</text:p></text:list-item>
+		<text:list-item> <text:p text:style-name="P1">c</text:p></text:list-item>
+		<text:p text:style-name="P2"/>
 	-->
 	<!--
-		<text:ordered-list text:style-name="L2"> <text:list-item> <text:p
-		text:style-name="P3">1</text:p> </text:list-item> <text:list-item>
-		<text:p text:style-name="P3">2</text:p> </text:list-item>
-		<text:list-item> <text:p text:style-name="P3">3</text:p>
-		</text:list-item> </text:ordered-list> <text:p text:style-name="P2"/>
+		<text:ordered-list text:style-name="L2">
+		  <text:list-item><text:p text:style-name="P3">1</text:p></text:list-item>
+		  <text:list-item><text:p text:style-name="P3">2</text:p></text:list-item>
+		  <text:list-item><text:p text:style-name="P3">3</text:p></text:list-item>
+		</text:ordered-list>
+		<text:p text:style-name="P2"/>
 	-->
 	<!--
-		Table: <table:table table:name="Table1" table:style-name="Table1">
-		<table:table-column table:style-name="Table1.A"
-		table:number-columns-repeated="3"/> <table:table-row>
-		<table:table-cell table:style-name="Table1.A1"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T11</text:p> </table:table-cell> <table:table-cell
-		table:style-name="Table1.A1" table:value-type="string"> <text:p
-		text:style-name="Table Contents">T21</text:p> </table:table-cell>
-		<table:table-cell table:style-name="Table1.C1"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T31</text:p> </table:table-cell> </table:table-row>
-		<table:table-row> <table:table-cell table:style-name="Table1.A2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T12</text:p> </table:table-cell> <table:table-cell
-		table:style-name="Table1.A2" table:value-type="string"> <text:p
-		text:style-name="Table Contents">T22</text:p> </table:table-cell>
-		<table:table-cell table:style-name="Table1.C2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T32</text:p> </table:table-cell> </table:table-row>
-		<table:table-row> <table:table-cell table:style-name="Table1.A2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T13</text:p> </table:table-cell> <table:table-cell
-		table:style-name="Table1.A2" table:value-type="string"> <text:p
-		text:style-name="Table Contents">T23</text:p> </table:table-cell>
-		<table:table-cell table:style-name="Table1.C2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T32</text:p> </table:table-cell> </table:table-row>
+		Table:
+		<table:table table:name="Table1" table:style-name="Table1">
+		  <table:table-column table:style-name="Table1.A"
+				      table:number-columns-repeated="3"/>
+		  <table:table-row>
+		    <table:table-cell table:style-name="Table1.A1" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T11</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.A1" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T21</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.C1" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T31</text:p>
+		    </table:table-cell>
+		  </table:table-row>
+		  <table:table-row>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T12</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T22</text:p>
+		      </table:table-cell>
+		      <table:table-cell table:style-name="Table1.C2" table:value-type="string">
+			<text:p text:style-name="Table Contents">T32</text:p>
+		      </table:table-cell>
+		  </table:table-row>
+		  <table:table-row>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T13</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T23</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.C2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T32</text:p>
+		    </table:table-cell>
+		  </table:table-row>
 		</table:table>
 	-->
 
