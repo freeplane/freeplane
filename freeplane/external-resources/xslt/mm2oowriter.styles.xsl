@@ -336,7 +336,7 @@
 
   <template match="stylenode[@TEXT]">
     <style:style style:family="paragraph" style:class="text"
-		 style:parent-style-name="Text_20_body">
+		 style:parent-style-name="Text_20_body"><!-- todo: think about using a non-hardcoded parent-->
       <attribute name="style:name"><value-of select="translate(@TEXT, ' ', '_')"/></attribute>
       <attribute name="style:display-name"><value-of select="@TEXT"/></attribute>
       <style:text-properties>
