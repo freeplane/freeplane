@@ -334,11 +334,12 @@
       </office:document-styles>
    </template>
 
-  <template match="stylenode[@TEXT]">
+   <template name="paragraph-style">
+    <param name="stylename" />
     <style:style style:family="paragraph" style:class="text"
 		 style:parent-style-name="Text_20_body"><!-- todo: think about using a non-hardcoded parent-->
-      <attribute name="style:name"><value-of select="translate(@TEXT, ' ', '_')"/></attribute>
-      <attribute name="style:display-name"><value-of select="@TEXT"/></attribute>
+      <attribute name="style:name"><value-of select="translate($stylename, ' ', '_')"/></attribute>
+      <attribute name="style:display-name"><value-of select="$stylename"/></attribute>
       <style:text-properties>
 	<attribute name="fo:color"><value-of select="@COLOR"/></attribute>
 	<attribute name="fo:font-size"><value-of select="font/@SIZE"/>pt</attribute>
@@ -350,6 +351,12 @@
 	</if>
       </style:text-properties>
     </style:style>
-  </template>
+   </template>
+
+   <template match="stylenode[@TEXT]">
+     <call-template name="paragraph-style">
+       <with-param name="stylename" select="@TEXT" />
+     </call-template>
+   </template>
 
 </stylesheet>
