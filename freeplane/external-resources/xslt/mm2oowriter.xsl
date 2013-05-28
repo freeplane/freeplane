@@ -205,64 +205,60 @@
 		</office:document-content>
 	</xsl:template>
 
+	<xsl:template name="output-all-nodecontent">
+	  <xsl:param name="style"/>
+	  <xsl:param name="heading_level" select="-1"/>
+	  <xsl:choose>
+	    <xsl:when test="$heading_level &gt; 0">
+	      <xsl:element name="text:h">
+		<xsl:attribute name="text:style-name"><xsl:value-of select="$style" /></xsl:attribute>
+		<xsl:attribute name="text:outline-level"><xsl:value-of select="$heading_level" /></xsl:attribute>
+		<xsl:call-template name="output-nodecontent">
+		  <xsl:with-param name="style" /><!--No Style for Headings. -->
+		</xsl:call-template>
+	      </xsl:element>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:call-template name="output-nodecontent">
+		<xsl:with-param name="style"><xsl:value-of select="$style" /></xsl:with-param>
+	      </xsl:call-template>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	  <xsl:apply-templates select="hook|@LINK" />
+	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
+	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
+	  <xsl:apply-templates select="node" />
+	</xsl:template>
+
+
 	<xsl:template match="node">
 		<xsl:variable name="depth">
 			<xsl:apply-templates select=".." mode="depthMesurement" />
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$depth=0"><!-- Title -->
-				<xsl:call-template name="output-nodecontent">
-					<xsl:with-param name="style">
-						Title
-					</xsl:with-param>
+			<xsl:when test="$depth=0"><!-- Root Node becomes 'Title' -->
+				<xsl:call-template name="output-all-nodecontent">
+				  <xsl:with-param name="style">Title</xsl:with-param>
 				</xsl:call-template>
-				<xsl:apply-templates select="hook|@LINK" />
-				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'DETAILS'"/> </xsl:call-template>
-				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'NOTE'"/> </xsl:call-template>
-				<xsl:apply-templates select="node" />
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
 					<xsl:when test="ancestor::node[@FOLDED='true']">
 						<text:list text:style-name="L1">
 							<text:list-item>
-								<xsl:call-template name="output-nodecontent">
-									<xsl:with-param name="style">
-										Standard
-									</xsl:with-param>
-								</xsl:call-template>
-								<xsl:apply-templates select="hook|@LINK" />
-								<xsl:call-template name="output-notecontent">
-									<xsl:with-param name="contentType" select="'DETAILS'" />
-								</xsl:call-template>
-								<xsl:call-template name="output-notecontent">
-									<xsl:with-param name="contentType" select="'NOTE'" />
-								</xsl:call-template>
-								<xsl:apply-templates select="node" />
+							  <xsl:call-template name="output-all-nodecontent">
+							    <xsl:with-param name="style">Standard</xsl:with-param>
+							  </xsl:call-template>
 							</text:list-item>
 						</text:list>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:variable name="heading_level">
-							<xsl:text>Heading_20_</xsl:text>
-							<xsl:value-of select="$depth" />
-						</xsl:variable>
-						<xsl:element name="text:h">
-							<xsl:attribute name="text:style-name"><!--
-								--><xsl:value-of
-								select="$heading_level" /><!--
-							--></xsl:attribute>
-							<xsl:attribute name="text:outline-level"><xsl:value-of
-								select="$depth" /></xsl:attribute>
-							<xsl:call-template name="output-nodecontent">
-								<!--No Style for Headings.-->
-								<xsl:with-param name="style"></xsl:with-param>
-							</xsl:call-template>
-						</xsl:element>
-						<xsl:apply-templates select="hook|@LINK" />
-						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'DETAILS'"/> </xsl:call-template>
-						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'NOTE'"/> </xsl:call-template>
-						<xsl:apply-templates select="node" />
+					  <xsl:call-template name="output-all-nodecontent">
+					    <xsl:with-param name="style">
+					      <xsl:text>Heading_20_</xsl:text><xsl:value-of select="$depth" />
+					    </xsl:with-param>
+					    <xsl:with-param name="heading_level" select="$depth" />
+					  </xsl:call-template>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>
