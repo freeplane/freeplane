@@ -241,8 +241,6 @@
 				  <xsl:with-param name="style">Title</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			<xsl:otherwise>
-				<xsl:choose>
 					<xsl:when test="ancestor::node[@FOLDED='true']">
 						<text:list text:style-name="L1">
 							<text:list-item>
@@ -260,8 +258,6 @@
 					    <xsl:with-param name="heading_level" select="$depth" />
 					  </xsl:call-template>
 					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:otherwise>
 		</xsl:choose>
 
 	</xsl:template>
@@ -327,8 +323,6 @@
 					<xsl:with-param name="style" select="$style" />
 				</xsl:apply-templates>
 			</xsl:when>
-			<xsl:otherwise>
-				<xsl:choose>
 					<xsl:when test="$style = ''">
 						<!--no style for headings. -->
 						<xsl:call-template name="textnode" />
@@ -340,8 +334,6 @@
 							<xsl:call-template name="textnode" />
 						</xsl:element>
 					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template> <!-- xsl:template name="output-nodecontent" -->
 
