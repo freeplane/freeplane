@@ -2,6 +2,7 @@
 <!--
 /*Freeplane - A Program for creating and viewing Mindmaps
  *Copyright (C) 2000-2008  Christian Foltin and others.
+ *This file is Copyright (C) 2013 Hartmut Goebel
  *
  *See COPYING for Details
  *
@@ -19,9 +20,21 @@
  *along with this program; if not, write to the Free Software
  *Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
+ * This stylesheet is for generating `styles.xml` for ODF-Files (Open Document Format),
+ * used e.g. for exporting to OpenOffice/LibeOffice Writer documents.
  */
 -->
-<office:document-styles
+<stylesheet version="1.0"
+	    xmlns="http://www.w3.org/1999/XSL/Transform"
+	    xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+	    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0">
+
+  <output method="xml" version="1.0" indent="yes"
+	      encoding="UTF-8" omit-xml-declaration="no" />
+  <strip-space elements="*" />
+
+  <template match="map">
+    <office:document-styles
 	xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
 	xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
@@ -308,9 +321,13 @@
 			<style:header-style />
 			<style:footer-style />
 		</style:page-layout>
+
 	</office:automatic-styles>
 	<office:master-styles>
 		<style:master-page style:name="Standard"
 			style:page-layout-name="pm1" />
 	</office:master-styles>
-</office:document-styles>
+      </office:document-styles>
+   </template>
+
+</stylesheet>
