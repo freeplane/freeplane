@@ -340,7 +340,7 @@
       <attribute name="style:name"><value-of select="translate(@TEXT, ' ', '_')"/></attribute>
       <attribute name="style:display-name"><value-of select="@TEXT"/></attribute>
       <style:text-properties>
-	<attribute name="fo:font-size"><value-of select="font/@SIZE"/></attribute>
+	<attribute name="fo:font-size"><value-of select="font/@SIZE"/>pt</attribute>
 	<if test="font/@ITALIC='true'">
 	  <attribute name="fo:font-style">italic</attribute>
 	</if>
