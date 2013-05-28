@@ -278,6 +278,12 @@
 			    <xsl:with-param name="heading_level" select="substring-after(./@LOCALIZED_STYLE_REF,'AutomaticLayout.level,')" />
 			  </xsl:call-template>
 			</xsl:when>
+			<xsl:when test="starts-with(./@LOCALIZED_STYLE_REF,'defaultstyle.')">
+			  <!-- one of the Freeplane pre-defined styles -->
+			  <xsl:call-template name="output-all-nodecontent">
+			    <xsl:with-param name="style" select="substring-after(./@LOCALIZED_STYLE_REF,'defaultstyle.')" />
+			  </xsl:call-template>
+			</xsl:when>
 			<xsl:otherwise>
 			  <xsl:call-template name="output-all-nodecontent">
 			    <xsl:with-param name="style">Standard</xsl:with-param>
