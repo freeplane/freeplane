@@ -284,6 +284,12 @@
 			    <xsl:with-param name="style" select="substring-after(./@LOCALIZED_STYLE_REF,'defaultstyle.')" />
 			  </xsl:call-template>
 			</xsl:when>
+			<xsl:when test="@STYLE_REF">
+			  <!-- a custom style -->
+			  <xsl:call-template name="output-all-nodecontent">
+			    <xsl:with-param name="style" select="translate(@STYLE_REF, ' ', '_')" />
+			  </xsl:call-template>
+			</xsl:when>
 			<xsl:otherwise>
 			  <xsl:call-template name="output-all-nodecontent">
 			    <xsl:with-param name="style">Standard</xsl:with-param>
