@@ -260,7 +260,20 @@
 			    </text:list-item>
 			  </text:list>
 			</xsl:when>
+			<xsl:when test="/map/node/hook[@NAME='accessories/plugins/AutomaticLayout.properties' and @VALUE='ALL'] and $depth &lt;= 4">
+			  <!-- automatic layout for all nodes up to level 4 -->
+			  <xsl:call-template name="output-node-as-heading">
+			    <xsl:with-param name="heading_level" select="$depth" />
+			  </xsl:call-template>
+			</xsl:when>
+			<xsl:when test="/map/node/hook[@NAME='accessories/plugins/AutomaticLayout.properties' and @VALUE='HEADINGS'] and $depth &lt;= 4 and ./node">
+			  <!-- automatic layout for non-leaf nodes up to level 4 -->
+			  <xsl:call-template name="output-node-as-heading">
+			    <xsl:with-param name="heading_level" select="$depth" />
+			  </xsl:call-template>
+			</xsl:when>
 			<xsl:when test="starts-with(./@LOCALIZED_STYLE_REF,'AutomaticLayout.level,')">
+			  <!-- heading style for one of the known heading levels -->
 			  <!-- todo: use level from @LOCALIZED_STYLE_REF instead of $depth -->
 			  <xsl:call-template name="output-node-as-heading">
 			    <xsl:with-param name="heading_level" select="$depth" />
