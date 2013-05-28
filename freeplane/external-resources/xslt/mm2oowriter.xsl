@@ -274,9 +274,8 @@
 			</xsl:when>
 			<xsl:when test="starts-with(./@LOCALIZED_STYLE_REF,'AutomaticLayout.level,')">
 			  <!-- heading style for one of the known heading levels -->
-			  <!-- todo: use level from @LOCALIZED_STYLE_REF instead of $depth -->
 			  <xsl:call-template name="output-node-as-heading">
-			    <xsl:with-param name="heading_level" select="$depth" />
+			    <xsl:with-param name="heading_level" select="substring-after(./@LOCALIZED_STYLE_REF,'AutomaticLayout.level,')" />
 			  </xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
