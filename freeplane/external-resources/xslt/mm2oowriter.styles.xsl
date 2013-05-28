@@ -245,6 +245,10 @@
 				style:font-size-asian="9pt" style:font-name-complex="StarSymbol"
 				style:font-size-complex="9pt" />
 		</style:style>
+
+		<!--- custom styles -->
+		<apply-templates select=".//stylenode[@LOCALIZED_TEXT='styles.user-defined']//stylenode" />
+
 		<text:outline-style>
 			<text:outline-level-style text:level="1"
 				style:num-format="1">
@@ -329,5 +333,21 @@
 	</office:master-styles>
       </office:document-styles>
    </template>
+
+  <template match="stylenode[@TEXT]">
+    <style:style style:family="paragraph" style:class="text"
+		 style:parent-style-name="Text_20_body">
+      <attribute name="style:name"><value-of select="@TEXT"/></attribute>
+      <style:text-properties>
+	<attribute name="fo:font-size"><value-of select="font/@SIZE"/></attribute>
+	<if test="font/ITALIC='true'">
+	  <attribute name="fo:font-style">italic</attribute>
+	</if>
+	<if test="font/BOLD='true'">
+	  <attribute name="fo:font-weight">bold</attribute>
+	</if>
+      </style:text-properties>
+    </style:style>
+  </template>
 
 </stylesheet>
