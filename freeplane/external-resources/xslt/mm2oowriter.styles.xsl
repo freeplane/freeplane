@@ -337,7 +337,8 @@
   <template match="stylenode[@TEXT]">
     <style:style style:family="paragraph" style:class="text"
 		 style:parent-style-name="Text_20_body">
-      <attribute name="style:name"><value-of select="@TEXT"/></attribute>
+      <attribute name="style:name"><value-of select="translate(@TEXT, ' ', '_')"/></attribute>
+      <attribute name="style:display-name"><value-of select="@TEXT"/></attribute>
       <style:text-properties>
 	<attribute name="fo:font-size"><value-of select="font/@SIZE"/></attribute>
 	<if test="font/ITALIC='true'">
