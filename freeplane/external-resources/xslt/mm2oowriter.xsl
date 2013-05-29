@@ -214,7 +214,7 @@
 		<xsl:attribute name="text:style-name"><xsl:value-of select="$style" /></xsl:attribute>
 		<xsl:attribute name="text:outline-level"><xsl:value-of select="$heading_level" /></xsl:attribute>
 		<xsl:call-template name="output-nodecontent">
-		  <xsl:with-param name="style" /><!--No Style for Headings. -->
+		  <xsl:with-param name="style" /><!-- for headings the style is set by the text:h tag  -->
 		</xsl:call-template>
 	      </xsl:element>
 	    </xsl:when>
