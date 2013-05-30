@@ -502,39 +502,69 @@ Not implemented
 	<xsl:template match="ul" mode="richcontent">
 		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list text:style-name="List_20_1">
-			<xsl:apply-templates select="text()|*" mode="richcontentul">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P1</xsl:with-param>
 			</xsl:apply-templates>
 		</text:list>
 	</xsl:template>
 	<xsl:template match="ol" mode="richcontent">
 		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list text:style-name="Numbering_20_1">
-			<xsl:apply-templates select="text()|*" mode="richcontentol">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P2</xsl:with-param>
 			</xsl:apply-templates>
 		</text:list>
 	</xsl:template>
-	<xsl:template match="li" mode="richcontentul">
+	<xsl:template match="li" mode="richcontent">
 		<xsl:param name="style">Text_20_body</xsl:param>
+		<xsl:param name="itemstyle"/>
 		<text:list-item>
-			<text:p text:style-name="P1">
+			<text:p>
+			  <xsl:attribute name="text:style-name"><xsl:value-of select="$itemstyle" /></xsl:attribute>
 				<xsl:apply-templates select="text()|*" mode="richcontent">
 					<xsl:with-param name="style" select="$style"></xsl:with-param>
 				</xsl:apply-templates>
 			</text:p>
 		</text:list-item>
 	</xsl:template>
-	<xsl:template match="li" mode="richcontentol">
+
+	<!--== some work-arounds for nested lists ==-->
+	<!-- list-item with contained list, nested according to XHTML: do not emit <text:p> -->
+	<xsl:template match="li[ol] | li[ul]" mode="richcontent">
 		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list-item>
-			<text:p text:style-name="P2">
-				<xsl:apply-templates select="text()|*" mode="richcontent">
-					<xsl:with-param name="style" select="$style"></xsl:with-param>
-				</xsl:apply-templates>
-			</text:p>
+		  <xsl:apply-templates select="text()|*" mode="richcontent">
+		    <xsl:with-param name="style" select="$style"></xsl:with-param>
+		  </xsl:apply-templates>
 		</text:list-item>
 	</xsl:template>
+	<!-- list contined in a list-item, nested according to XHTML: emit <text:-list-item> -->
+	<xsl:template match="ul[../li]" mode="richcontent">
+		<xsl:param name="style">Text_20_body</xsl:param>
+		<text:list-item>
+		  <text:list text:style-name="List_20_1">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
+				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P1</xsl:with-param>
+			</xsl:apply-templates>
+		  </text:list>
+		</text:list-item>
+	</xsl:template>
+	<!-- list contined in a list-item, nested according to XHTML: emit <text:-list-item> -->
+	<xsl:template match="ol[../li]" mode="richcontent">
+		<xsl:param name="style">Text_20_body</xsl:param>
+		<text:list-item>
+		  <text:list text:style-name="Numbering_20_1">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
+				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P2</xsl:with-param>
+			</xsl:apply-templates>
+		  </text:list>
+		</text:list-item>
+	</xsl:template>
+
 	
 	<xsl:template match="a" mode="richcontent">
 		<xsl:element name="text:a" namespace="text">
