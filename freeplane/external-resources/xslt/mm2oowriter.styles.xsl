@@ -257,6 +257,7 @@
 		    <with-param name="level" select="10"/> <!-- define 10 level-styles -->
 		  </call-template>
 		</text:outline-style>
+
 		<!-- generate the numbering list definition -->
 		<text:list-style style:name="Numbering_20_1" style:display-name="Numbering 1">
 		  <call-template name="gen-numbering-list-style">
@@ -264,6 +265,14 @@
 		    <with-param name="indent" select="5"/> <!-- indent per level in millimeters -->
 		  </call-template>
 		</text:list-style>
+		<!-- generate the bullet list definition -->
+		<text:list-style style:name="List_20_1" style:display-name="List 1">
+		  <call-template name="gen-bullet-list-style">
+		    <with-param name="chars" select="'&#9679;&#9675;&#9632;&#9679;&#9675;&#9632;&#9679;&#9675;&#9632;&#9679;'"/>
+		    <with-param name="indent" select="4"/> <!-- indent per level in millimeters -->
+		  </call-template>
+		</text:list-style>
+
 		<text:notes-configuration text:note-class="footnote"
 			style:num-format="1" text:start-value="0"
 			text:footnotes-position="page" text:start-numbering-at="document" />
@@ -296,6 +305,7 @@
 	</office:master-styles>
       </office:document-styles>
    </template>
+
 
    <template name="paragraph-style">
     <param name="stylename" />
@@ -364,6 +374,31 @@
 	 </style:list-level-label-alignment>
        </style:list-level-properties>
      </text:list-level-style-number>
+   </template>
+
+   <template name="gen-bullet-list-style">
+     <param name="chars" />
+     <param name="indent" select="5" /><!-- indent per level in millimeters -->
+     <param name="level" select="1"/>
+     <text:list-level-style-bullet text:style-name="Numbering_20_Symbols">
+       <attribute name="text:level"><value-of select="$level" /></attribute>
+       <attribute name="text:bullet-char"><value-of select="substring($chars,1,1)" /></attribute>
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+	 <style:list-level-label-alignment text:label-followed-by="listtab">
+	   <attribute name="text:list-tab-stop-position"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:margin-left"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:text-indent"><value-of select="concat(string(-$indent), 'mm')" /></attribute>
+	 </style:list-level-label-alignment>
+       </style:list-level-properties>
+       <style:text-properties style:font-name="OpenSymbol"/>
+     </text:list-level-style-bullet>
+     <if test="string-length($chars) &gt; 1">
+       <call-template name="gen-bullet-list-style">
+	 <with-param name="chars" select="substring($chars,2)"/>
+	 <with-param name="indent" select="$indent"/>
+	 <with-param name="level" select="$level+1"/>
+       </call-template>
+     </if>
    </template>
 
 </stylesheet>
