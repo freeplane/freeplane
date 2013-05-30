@@ -84,6 +84,10 @@
 				<!-- P1 = unnumbered list item -->
 				<style:style style:name="P1" style:family="paragraph"
 					style:parent-style-name="Text_20_body" style:list-style-name="L1" />
+				<!-- P2 = numbered list item -->
+				<style:style style:name="P2" style:family="paragraph"
+					     style:parent-style-name="Numbering_20_1"
+					     style:list-style-name="Numbering_20_1" />
 				<!-- P3 = center -->
 				<style:style style:name="P3" style:family="paragraph"
 					style:parent-style-name="Standard">
@@ -233,6 +237,11 @@
 	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
 	  <!-- walk the sub-nodes -->
 	  <xsl:choose>
+	    <xsl:when test="./node[@NUMBERED='true']">
+	      <text:list text:style-name="Numbering_20_1">
+		<xsl:apply-templates select="node" />
+	      </text:list>
+	    </xsl:when>
 	    <xsl:when test="(@FOLDED='true' or ancestor::node[@FOLDED='true']) and ./node">
 	      <text:list text:style-name="List_20_1">
 		<xsl:apply-templates select="node" />
@@ -264,6 +273,14 @@
 				<xsl:call-template name="output-all-nodecontent">
 				  <xsl:with-param name="style">Title</xsl:with-param>
 				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="@NUMBERED='true'">
+			  <text:list-item>
+			    <xsl:call-template name="output-all-nodecontent">
+			      <!-- :todo: need to remove numbers added by Freeplane -->
+			      <xsl:with-param name="style">P2</xsl:with-param>
+			    </xsl:call-template>
+			  </text:list-item>
 			</xsl:when>
 			<xsl:when test="ancestor::node[@FOLDED='true']">
 			    <text:list-item>
