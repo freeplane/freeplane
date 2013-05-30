@@ -246,6 +246,9 @@
 				style:font-size-asian="9pt" style:font-name-complex="StarSymbol"
 				style:font-size-complex="9pt" />
 		</style:style>
+		<style:style style:name="Numbering_20_Symbols"
+			     style:display-name="Numbering Symbols"
+			     style:family="text"/>
 
 		<!--- pre-defined styles -->
 		<apply-templates select=".//stylenode[starts-with(@LOCALIZED_TEXT,'defaultstyle.')]" />
