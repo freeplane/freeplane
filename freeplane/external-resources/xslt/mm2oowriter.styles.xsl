@@ -257,6 +257,13 @@
 		    <with-param name="level" select="10"/> <!-- define 10 level-styles -->
 		  </call-template>
 		</text:outline-style>
+		<!-- generate the numbering list definition -->
+		<text:list-style style:name="Numbering_20_1" style:display-name="Numbering 1">
+		  <call-template name="gen-numbering-list-style">
+		    <with-param name="level" select="10"/> <!-- define 10 level-styles -->
+		    <with-param name="indent" select="5"/> <!-- indent per level in millimeters -->
+		  </call-template>
+		</text:list-style>
 		<text:notes-configuration text:note-class="footnote"
 			style:num-format="1" text:start-value="0"
 			text:footnotes-position="page" text:start-numbering-at="document" />
@@ -335,6 +342,28 @@
        <attribute name="text:display-levels"><value-of select="$level" /></attribute>
        <style:list-level-properties text:min-label-distance="0.381cm" />
      </text:outline-level-style>
+   </template>
+
+   <template name="gen-numbering-list-style">
+     <param name="level" />
+     <param name="indent" select="5" /><!-- indent per level in millimeters -->
+     <if test="$level &gt; 1">
+       <call-template name="gen-numbering-list-style">
+	 <with-param name="level" select="$level -1"/>
+	 <with-param name="indent" select="$indent"/>
+       </call-template>
+     </if>
+     <text:list-level-style-number
+	 text:style-name="Numbering_20_Symbols" style:num-suffix="." style:num-format="1">
+       <attribute name="text:level"><value-of select="$level" /></attribute>
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+	 <style:list-level-label-alignment text:label-followed-by="listtab">
+	   <attribute name="text:list-tab-stop-position"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:margin-left"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:text-indent"><value-of select="concat(string(-$indent), 'mm')" /></attribute>
+	 </style:list-level-label-alignment>
+       </style:list-level-properties>
+     </text:list-level-style-number>
    </template>
 
 </stylesheet>
