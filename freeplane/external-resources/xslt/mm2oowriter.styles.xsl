@@ -204,6 +204,12 @@
 		</style:style>
 		<style:style style:name="List" style:family="paragraph"
 			style:parent-style-name="Text_20_body" style:class="list" />
+		<style:style style:name="List_20_1" style:family="paragraph"
+			     style:display-name="List 1"
+			     style:parent-style-name="List" style:class="list" />
+		<style:style style:name="Numbering_20_1" style:family="paragraph"
+			     style:display-name="Numbering 1"
+			     style:parent-style-name="List" style:class="list" />
 		<style:style style:name="Caption" style:family="paragraph"
 			style:parent-style-name="Standard" style:class="extra">
 			<style:paragraph-properties fo:margin-top="0.212cm"
