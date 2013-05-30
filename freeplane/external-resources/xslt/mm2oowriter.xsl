@@ -195,13 +195,13 @@ Not implemented
 	  <xsl:param name="heading_level" select="-1"/>
 	  <xsl:choose>
 	    <xsl:when test="$heading_level &gt; 0">
-	      <xsl:element name="text:h">
+	      <text:h>
 		<xsl:attribute name="text:style-name"><xsl:value-of select="$style" /></xsl:attribute>
 		<xsl:attribute name="text:outline-level"><xsl:value-of select="$heading_level" /></xsl:attribute>
 		<xsl:call-template name="output-nodecontent">
 		  <xsl:with-param name="style" /><!-- for headings the style is set by the text:h tag  -->
 		</xsl:call-template>
-	      </xsl:element>
+	      </text:h>
 	    </xsl:when>
 	    <xsl:otherwise>
 	      <xsl:call-template name="output-nodecontent">
@@ -357,13 +357,13 @@ Not implemented
 	<!-- Give links out. -->
 	<xsl:template match="@LINK">
 		<text:p text:style-name="Text_20_body">
-			<xsl:element name="text:a" namespace="text">
-				<xsl:attribute namespace="xlink" name="xlink:type">simple</xsl:attribute>
-				<xsl:attribute namespace="xlink" name="xlink:href"><xsl:value-of
-					select="." />
+			<text:a>
+				<xsl:attribute name="xlink:type">simple</xsl:attribute>
+				<xsl:attribute name="xlink:href">
+					<xsl:value-of select="." />
 				</xsl:attribute>
 				<xsl:value-of select="." />
-			</xsl:element>
+			</text:a>
 		</text:p>
 	</xsl:template>
 
@@ -381,11 +381,11 @@ Not implemented
 				<xsl:call-template name="textnode" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="text:p">
+				<text:p>
 					<xsl:attribute name="text:style-name"><xsl:value-of
 						select="$style" /></xsl:attribute>
 					<xsl:call-template name="textnode" />
-				</xsl:element>
+				</text:p>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template> <!-- xsl:template name="output-nodecontent" -->
@@ -472,13 +472,13 @@ Not implemented
 				</text:p>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="text:p">
+				<text:p>
 					<xsl:attribute name="text:style-name"><xsl:value-of
 						select="$style" /></xsl:attribute>
 					<xsl:apply-templates select="text()|*" mode="richcontent">
 						<xsl:with-param name="style" select="$style"></xsl:with-param>
 					</xsl:apply-templates>
-				</xsl:element>
+				</text:p>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -567,13 +567,13 @@ Not implemented
 
 	
 	<xsl:template match="a" mode="richcontent">
-		<xsl:element name="text:a" namespace="text">
-			<xsl:attribute namespace="xlink" name="xlink:type">simple</xsl:attribute>
-			<xsl:attribute namespace="xlink" name="xlink:href"><xsl:value-of
-				select="@href" />
+		<text:a>
+			<xsl:attribute name="xlink:type">simple</xsl:attribute>
+			<xsl:attribute name="xlink:href">
+				<xsl:value-of select="@href" />
 			</xsl:attribute>
 			<xsl:apply-templates select="text()" />
-		</xsl:element>
+		</text:a>
 	</xsl:template>
 	
 
