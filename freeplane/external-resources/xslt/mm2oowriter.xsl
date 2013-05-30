@@ -81,18 +81,22 @@
 					style:font-family-generic="system" style:font-pitch="variable" />
 			</office:font-face-decls>
 			<office:automatic-styles>
+				<!-- P1 = unnumbered list item -->
 				<style:style style:name="P1" style:family="paragraph"
 					style:parent-style-name="Text_20_body" style:list-style-name="L1" />
+				<!-- P3 = center -->
 				<style:style style:name="P3" style:family="paragraph"
 					style:parent-style-name="Standard">
 					<style:paragraph-properties
 						fo:text-align="center" style:justify-single-word="false" />
 				</style:style>
+				<!-- P4 = align right -->
 				<style:style style:name="P4" style:family="paragraph"
 					style:parent-style-name="Standard">
 					<style:paragraph-properties
 						fo:text-align="end" style:justify-single-word="false" />
 				</style:style>
+				<!-- P5 = justify -->
 				<style:style style:name="P5" style:family="paragraph"
 					style:parent-style-name="Standard">
 					<style:paragraph-properties
