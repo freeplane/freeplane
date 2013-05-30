@@ -424,10 +424,11 @@ Not implemented
 	<!-- replace ASCII line breaks through ODF line breaks (br) -->
 	<xsl:template name="format_text">
 		<xsl:param name="nodetext"></xsl:param>
-		<xsl:if test="string-length(substring-after($nodetext,'&#xa;')) = 0">
+		<xsl:choose>
+		  <xsl:when test="not(contains($nodetext,'&#xa;'))">
 			<xsl:value-of select="$nodetext" />
-		</xsl:if>
-		<xsl:if test="string-length(substring-after($nodetext,'&#xa;')) > 0">
+		  </xsl:when>
+		  <xsl:otherwise>
 			<xsl:value-of select="substring-before($nodetext,'&#xa;')" />
 			<text:line-break />
 			<xsl:call-template name="format_text">
@@ -435,7 +436,8 @@ Not implemented
 					<xsl:value-of select="substring-after($nodetext,'&#xa;')" />
 				</xsl:with-param>
 			</xsl:call-template>
-		</xsl:if>
+		  </xsl:otherwise>
+		</xsl:choose>
 	</xsl:template> <!-- xsl:template name="format_text" -->
 
 	<xsl:template match="body" mode="richcontent">
