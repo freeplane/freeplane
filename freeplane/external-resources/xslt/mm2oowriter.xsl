@@ -410,7 +410,7 @@ Not implemented
 			<xsl:with-param name="nodetext">
 				<xsl:choose>
 					<xsl:when test="@TEXT = ''">
-						<xsl:text> </xsl:text>
+						<xsl:text />
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="@TEXT" />
