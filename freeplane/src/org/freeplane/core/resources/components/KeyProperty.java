@@ -32,6 +32,7 @@ import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.layout.Sizes;
 
 /**
  * @author Dimitry Polivaev
@@ -77,7 +78,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		String tooltip = TextUtils.getOptionalText(getDescription());
 		label.setToolTipText(tooltip);
 		if (KeyProperty.rowSpec == null) {
-			KeyProperty.rowSpec = new RowSpec("fill:20dlu");
+			KeyProperty.rowSpec = new RowSpec(RowSpec.FILL, Sizes.dluX(20), 0.0);
 		}
 		if (3 < builder.getColumn()) {
 			builder.appendRelatedComponentsGapRow();
