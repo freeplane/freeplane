@@ -368,9 +368,7 @@ Not implemented
 	</xsl:template>
 
 	<xsl:template name="output-nodecontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<xsl:choose>
 			<xsl:when test="richcontent[@TYPE='NODE']">
 				<xsl:apply-templates select="richcontent[@TYPE='NODE']/html/body"
@@ -425,10 +423,7 @@ Not implemented
 	</xsl:template> <!-- xsl:template name="textnode" -->
 
 	<xsl:template match="body" mode="richcontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
-		<!--       <xsl:copy-of select="string(.)"/> -->
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<xsl:apply-templates select="text()|*" mode="richcontent">
 			<xsl:with-param name="style" select="$style"></xsl:with-param>
 		</xsl:apply-templates>
@@ -440,9 +435,7 @@ Not implemented
 		<text:line-break />
 	</xsl:template>
 	<xsl:template match="b" mode="richcontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:span text:style-name="T1">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -450,9 +443,7 @@ Not implemented
 		</text:span>
 	</xsl:template>
 	<xsl:template match="p" mode="richcontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<xsl:choose>
 			<xsl:when test="$style = ''">
 				<xsl:apply-templates select="text()|*" mode="richcontent">
@@ -493,9 +484,7 @@ Not implemented
 	</xsl:template>
 
 	<xsl:template match="i" mode="richcontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:span text:style-name="T2">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -503,9 +492,7 @@ Not implemented
 		</text:span>
 	</xsl:template>
 	<xsl:template match="u" mode="richcontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:span text:style-name="T3">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -513,9 +500,7 @@ Not implemented
 		</text:span>
 	</xsl:template>
 	<xsl:template match="ul" mode="richcontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list text:style-name="L1">
 			<xsl:apply-templates select="text()|*" mode="richcontentul">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -524,9 +509,7 @@ Not implemented
 		<text:p text:style-name="P3" />
 	</xsl:template>
 	<xsl:template match="ol" mode="richcontent">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list text:style-name="L2">
 			<xsl:apply-templates select="text()|*" mode="richcontentol">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -535,30 +518,22 @@ Not implemented
 		<text:p text:style-name="P3" />
 	</xsl:template>
 	<xsl:template match="li" mode="richcontentul">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list-item>
-			<text:p text:style-name="P1"><!--
-			-->
+			<text:p text:style-name="P1">
 				<xsl:apply-templates select="text()|*" mode="richcontent">
 					<xsl:with-param name="style" select="$style"></xsl:with-param>
-				</xsl:apply-templates><!--			
-		-->
+				</xsl:apply-templates>
 			</text:p>
 		</text:list-item>
 	</xsl:template>
 	<xsl:template match="li" mode="richcontentol">
-		<xsl:param name="style">
-			Text_20_body
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list-item>
-			<text:p text:style-name="P2"><!--
-			-->
+			<text:p text:style-name="P2">
 				<xsl:apply-templates select="text()|*" mode="richcontent">
 					<xsl:with-param name="style" select="$style"></xsl:with-param>
-				</xsl:apply-templates><!--			
-		-->
+				</xsl:apply-templates>
 			</text:p>
 		</text:list-item>
 	</xsl:template>
