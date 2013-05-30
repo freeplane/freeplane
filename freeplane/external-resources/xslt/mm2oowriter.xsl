@@ -55,7 +55,7 @@ Formatting rules used in this style-sheet
   contain a style with the same name which tries to mimic the style in
   the map.
 
-* If the node does not have a style set, it will become "Standard".
+* If the node does not have a style set, it will become "Text body".
 
 Please note: Formats applied on a node-level (using the "Format"
 panel), will not be transferred to the Open Document Format.
@@ -136,30 +136,33 @@ Not implemented
 					     style:list-style-name="Numbering_20_1" />
 				<!-- P3 = center -->
 				<style:style style:name="P3" style:family="paragraph"
-					style:parent-style-name="Standard">
+					style:parent-style-name="Text_20_body">
 					<style:paragraph-properties
 						fo:text-align="center" style:justify-single-word="false" />
 				</style:style>
 				<!-- P4 = align right -->
 				<style:style style:name="P4" style:family="paragraph"
-					style:parent-style-name="Standard">
+					style:parent-style-name="Text_20_body">
 					<style:paragraph-properties
 						fo:text-align="end" style:justify-single-word="false" />
 				</style:style>
 				<!-- P5 = justify -->
 				<style:style style:name="P5" style:family="paragraph"
-					style:parent-style-name="Standard">
+					style:parent-style-name="Text_20_body">
 					<style:paragraph-properties
 						fo:text-align="justify" style:justify-single-word="false" />
 				</style:style>
+				<!-- T1 = bold text -->
 				<style:style style:name="T1" style:family="text">
 					<style:text-properties fo:font-weight="bold"
 						style:font-weight-asian="bold" style:font-weight-complex="bold" />
 				</style:style>
+				<!-- T2 = italic text -->
 				<style:style style:name="T2" style:family="text">
 					<style:text-properties fo:font-style="italic"
 						style:font-style-asian="italic" style:font-style-complex="italic" />
 				</style:style>
+				<!-- T3 = underlined text -->
 				<style:style style:name="T3" style:family="text">
 					<style:text-properties
 						style:text-underline-style="solid" style:text-underline-width="auto"
@@ -309,7 +312,7 @@ Not implemented
 	<xsl:template mode="normal-node-with-style"
 		  match="node"> <!-- no style defined -->
 	  <xsl:call-template name="output-all-nodecontent">
-	    <xsl:with-param name="style">Standard</xsl:with-param>
+	    <xsl:with-param name="style">Text_20_body</xsl:with-param>
 	  </xsl:call-template>
 	</xsl:template>
 
@@ -320,7 +323,7 @@ Not implemented
 	<xsl:template match="hook[@NAME='accessories/plugins/NodeNote.properties']">
 	  <xsl:choose>
 	    <xsl:when test="./text">
-	      <text:p text:style-name="Standard"> <xsl:value-of select="./text"/> </text:p>
+	      <text:p text:style-name="Text_20_body"> <xsl:value-of select="./text"/> </text:p>
 	    </xsl:when>
 	  </xsl:choose>
 	</xsl:template>
@@ -353,7 +356,7 @@ Not implemented
 
 	<!-- Give links out. -->
 	<xsl:template match="@LINK">
-		<text:p text:style-name="Standard">
+		<text:p text:style-name="Text_20_body">
 			<xsl:element name="text:a" namespace="text">
 				<xsl:attribute namespace="xlink" name="xlink:type">simple</xsl:attribute>
 				<xsl:attribute namespace="xlink" name="xlink:href"><xsl:value-of
@@ -366,7 +369,7 @@ Not implemented
 
 	<xsl:template name="output-nodecontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<xsl:choose>
 			<xsl:when test="richcontent[@TYPE='NODE']">
@@ -395,7 +398,7 @@ Not implemented
 			<xsl:apply-templates select="richcontent[@TYPE=$contentType]/html/body"
 				mode="richcontent">
 				<xsl:with-param name="style">
-					Standard
+					Text_20_body
 				</xsl:with-param>
 			</xsl:apply-templates>
 		</xsl:if>
@@ -437,7 +440,7 @@ Not implemented
 
 	<xsl:template match="body" mode="richcontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<!--       <xsl:copy-of select="string(.)"/> -->
 		<xsl:apply-templates select="text()|*" mode="richcontent">
@@ -452,7 +455,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="b" mode="richcontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<text:span text:style-name="T1">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
@@ -462,7 +465,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="p" mode="richcontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<xsl:choose>
 			<xsl:when test="$style = ''">
@@ -505,7 +508,7 @@ Not implemented
 
 	<xsl:template match="i" mode="richcontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<text:span text:style-name="T2">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
@@ -515,7 +518,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="u" mode="richcontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<text:span text:style-name="T3">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
@@ -525,7 +528,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="ul" mode="richcontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<text:list text:style-name="L1">
 			<xsl:apply-templates select="text()|*" mode="richcontentul">
@@ -536,7 +539,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="ol" mode="richcontent">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<text:list text:style-name="L2">
 			<xsl:apply-templates select="text()|*" mode="richcontentol">
@@ -547,7 +550,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="li" mode="richcontentul">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<text:list-item>
 			<text:p text:style-name="P1"><!--
@@ -561,7 +564,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="li" mode="richcontentol">
 		<xsl:param name="style">
-			Standard
+			Text_20_body
 		</xsl:param>
 		<text:list-item>
 			<text:p text:style-name="P2"><!--
