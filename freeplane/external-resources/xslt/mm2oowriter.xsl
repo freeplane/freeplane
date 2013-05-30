@@ -168,6 +168,7 @@ Not implemented
 						style:text-underline-style="solid" style:text-underline-width="auto"
 						style:text-underline-color="font-color" />
 				</style:style>
+
 			</office:automatic-styles>
 			<office:body>
 				<office:text>
@@ -430,6 +431,14 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="text()" mode="richcontent">
 		<xsl:copy-of select="string(.)" />
+	</xsl:template>
+	<xsl:template match="body[text()]" mode="richcontent">
+	  <text:p text:style-name="Error">
+	    <text:span text:style-name="ErrorIntro">
+	      <xsl:text>This rich-text node does not conform to the HTML standard. Please check your HTML code in this node.</xsl:text>
+	    </text:span>
+	    <xsl:copy-of select="normalize-space(.)" />
+	  </text:p>
 	</xsl:template>
 	<xsl:template match="br" mode="richcontent">
 		<text:line-break />
