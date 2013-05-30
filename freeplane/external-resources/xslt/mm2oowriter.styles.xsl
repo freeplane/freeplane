@@ -347,6 +347,9 @@
 	  <attribute name="fo:font-weight">bold</attribute>
 	</if>
       </style:text-properties>
+      <style:paragraph-properties>
+	<attribute name="fo:background-color"><value-of select="@BACKGROUND_COLOR"/></attribute>
+      </style:paragraph-properties>
     </style:style>
    </template>
 
