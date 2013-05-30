@@ -231,7 +231,17 @@
 	  <xsl:apply-templates select="hook|@LINK" />
 	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
 	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
-	  <xsl:apply-templates select="node" />
+	  <!-- walk the sub-nodes -->
+	  <xsl:choose>
+	    <xsl:when test="(@FOLDED='true' or ancestor::node[@FOLDED='true']) and ./node">
+	      <text:list text:style-name="List_20_1">
+		<xsl:apply-templates select="node" />
+	      </text:list>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:apply-templates select="node" />
+	    </xsl:otherwise>
+	  </xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="output-node-as-heading">
@@ -256,13 +266,11 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="ancestor::node[@FOLDED='true']">
-			  <text:list text:style-name="L1">
 			    <text:list-item>
 			      <xsl:call-template name="output-all-nodecontent">
 				<xsl:with-param name="style">Standard</xsl:with-param>
 			      </xsl:call-template>
 			    </text:list-item>
-			  </text:list>
 			</xsl:when>
 			<xsl:when test="/map/node/hook[@NAME='accessories/plugins/AutomaticLayout.properties' and @VALUE='ALL'] and $depth &lt;= 4">
 			  <!-- automatic layout for all nodes up to level 4 -->
