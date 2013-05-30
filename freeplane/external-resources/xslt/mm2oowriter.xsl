@@ -83,7 +83,8 @@
 			<office:automatic-styles>
 				<!-- P1 = unnumbered list item -->
 				<style:style style:name="P1" style:family="paragraph"
-					style:parent-style-name="Text_20_body" style:list-style-name="L1" />
+					     style:parent-style-name="List_20_1"
+					     style:list-style-name="List_20_1"/>
 				<!-- P2 = numbered list item -->
 				<style:style style:name="P2" style:family="paragraph"
 					     style:parent-style-name="Numbering_20_1"
@@ -119,78 +120,6 @@
 						style:text-underline-style="solid" style:text-underline-width="auto"
 						style:text-underline-color="font-color" />
 				</style:style>
-				<text:list-style style:name="L1">
-					<text:list-level-style-bullet
-						text:level="1" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="0.635cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="2" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="○">
-						<style:list-level-properties
-							text:space-before="1.27cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="3" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="■">
-						<style:list-level-properties
-							text:space-before="1.905cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="4" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="2.54cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="5" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="○">
-						<style:list-level-properties
-							text:space-before="3.175cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="6" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="■">
-						<style:list-level-properties
-							text:space-before="3.81cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="7" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="4.445cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="8" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="○">
-						<style:list-level-properties
-							text:space-before="5.08cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="9" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="■">
-						<style:list-level-properties
-							text:space-before="5.715cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="10" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="6.35cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-				</text:list-style>
 			</office:automatic-styles>
 			<office:body>
 				<office:text>
@@ -285,7 +214,7 @@
 			<xsl:when test="ancestor::node[@FOLDED='true']">
 			    <text:list-item>
 			      <xsl:call-template name="output-all-nodecontent">
-				<xsl:with-param name="style">Standard</xsl:with-param>
+				<xsl:with-param name="style">P1</xsl:with-param>
 			      </xsl:call-template>
 			    </text:list-item>
 			</xsl:when>
