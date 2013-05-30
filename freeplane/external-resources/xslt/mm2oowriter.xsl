@@ -506,7 +506,6 @@ Not implemented
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
 			</xsl:apply-templates>
 		</text:list>
-		<text:p text:style-name="P3" />
 	</xsl:template>
 	<xsl:template match="ol" mode="richcontent">
 		<xsl:param name="style">Text_20_body</xsl:param>
@@ -515,7 +514,6 @@ Not implemented
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
 			</xsl:apply-templates>
 		</text:list>
-		<text:p text:style-name="P3" />
 	</xsl:template>
 	<xsl:template match="li" mode="richcontentul">
 		<xsl:param name="style">Text_20_body</xsl:param>
