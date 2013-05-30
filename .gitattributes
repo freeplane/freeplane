@@ -1,1 +1,3 @@
 * text=auto
+freeplane/resources/translations/*.properties -text
+freeplane/viewer-resources/translations/*.properties -text
