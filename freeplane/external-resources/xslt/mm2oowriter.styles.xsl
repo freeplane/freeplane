@@ -26,6 +26,7 @@
 -->
 <stylesheet version="1.0"
 	    xmlns="http://www.w3.org/1999/XSL/Transform"
+	    xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
 	    xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
 	    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0">
 
@@ -252,56 +253,9 @@
 		<apply-templates select=".//stylenode[@LOCALIZED_TEXT='styles.user-defined']//stylenode" />
 
 		<text:outline-style>
-			<text:outline-level-style text:level="1"
-				style:num-format="1">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="2"
-				style:num-format="1" text:display-levels="2">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="3"
-				style:num-format="1" text:display-levels="3">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="4"
-				style:num-format="1" text:display-levels="4">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="5"
-				style:num-format="1" text:display-levels="5">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="6"
-				style:num-format="1" text:display-levels="6">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="7"
-				style:num-format="1" text:display-levels="7">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="8"
-				style:num-format="1" text:display-levels="8">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="9"
-				style:num-format="1" text:display-levels="9">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="10"
-				style:num-format="1" text:display-levels="10">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
+		  <call-template name="gen-outline-style">
+		    <with-param name="level" select="10"/> <!-- define 10 level-styles -->
+		  </call-template>
 		</text:outline-style>
 		<text:notes-configuration text:note-class="footnote"
 			style:num-format="1" text:start-value="0"
@@ -365,6 +319,22 @@
      <call-template name="paragraph-style">
        <with-param name="stylename" select="substring-after(@LOCALIZED_TEXT,'defaultstyle.')" />
      </call-template>
+   </template>
+
+   <!-- templates for generating uniform styles -->
+
+   <template name="gen-outline-style">
+     <param name="level" />
+     <if test="$level &gt; 1">
+       <call-template name="gen-outline-style">
+	 <with-param name="level" select="$level -1"/>
+       </call-template>
+     </if>
+     <text:outline-level-style style:num-format="1">
+       <attribute name="text:level"><value-of select="$level" /></attribute>
+       <attribute name="text:display-levels"><value-of select="$level" /></attribute>
+       <style:list-level-properties text:min-label-distance="0.381cm" />
+     </text:outline-level-style>
    </template>
 
 </stylesheet>
