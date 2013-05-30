@@ -241,26 +241,35 @@
 			    <xsl:with-param name="heading_level" select="substring-after(./@LOCALIZED_STYLE_REF,'AutomaticLayout.level,')" />
 			  </xsl:call-template>
 			</xsl:when>
-			<xsl:when test="starts-with(./@LOCALIZED_STYLE_REF,'defaultstyle.')">
-			  <!-- one of the Freeplane pre-defined styles -->
-			  <xsl:call-template name="output-all-nodecontent">
-			    <xsl:with-param name="style" select="substring-after(./@LOCALIZED_STYLE_REF,'defaultstyle.')" />
-			  </xsl:call-template>
-			</xsl:when>
-			<xsl:when test="@STYLE_REF">
-			  <!-- a custom style -->
-			  <xsl:call-template name="output-all-nodecontent">
-			    <xsl:with-param name="style" select="translate(@STYLE_REF, ' ', '_')" />
-			  </xsl:call-template>
-			</xsl:when>
 			<xsl:otherwise>
-			  <xsl:call-template name="output-all-nodecontent">
-			    <xsl:with-param name="style">Standard</xsl:with-param>
-			  </xsl:call-template>
+			  <xsl:apply-templates select="." mode="normal-node-with-style"/>
 			</xsl:otherwise>
 		</xsl:choose>
-
 	</xsl:template>
+
+	<xsl:template mode="normal-node-with-style"
+		  match="node[@STYLE_REF]">
+	  <!-- a custom style -->
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style" select="translate(@STYLE_REF, ' ', '_')" />
+	  </xsl:call-template>
+	</xsl:template>
+
+	<xsl:template mode="normal-node-with-style"
+		  match="node[starts-with(@LOCALIZED_STYLE_REF,'defaultstyle.')]">
+	  <!-- one of the Freeplane pre-defined styles -->
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style" select="substring-after(./@LOCALIZED_STYLE_REF,'defaultstyle.')" />
+	  </xsl:call-template>
+	</xsl:template>
+
+	<xsl:template mode="normal-node-with-style"
+		  match="node"> <!-- no style defined -->
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style">Standard</xsl:with-param>
+	  </xsl:call-template>
+	</xsl:template>
+
 
 	<xsl:template match="hook" />
 
