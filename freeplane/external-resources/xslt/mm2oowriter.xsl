@@ -212,9 +212,7 @@
 			  </text:list-item>
 			</xsl:when>
 			<xsl:when test="ancestor::node[@FOLDED='true'] and ../hook[@NAME='AlwaysUnfoldedNode']">
-			      <xsl:call-template name="output-all-nodecontent">
-				<xsl:with-param name="style">Standard</xsl:with-param>
-			      </xsl:call-template>
+			  <xsl:apply-templates select="." mode="normal-node-with-style"/>
 			</xsl:when>
 			<xsl:when test="ancestor::node[@FOLDED='true']">
 			    <text:list-item>
