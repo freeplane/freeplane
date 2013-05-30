@@ -501,7 +501,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="ul" mode="richcontent">
 		<xsl:param name="style">Text_20_body</xsl:param>
-		<text:list text:style-name="L1">
+		<text:list text:style-name="List_20_1">
 			<xsl:apply-templates select="text()|*" mode="richcontentul">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
 			</xsl:apply-templates>
@@ -509,7 +509,7 @@ Not implemented
 	</xsl:template>
 	<xsl:template match="ol" mode="richcontent">
 		<xsl:param name="style">Text_20_body</xsl:param>
-		<text:list text:style-name="L2">
+		<text:list text:style-name="Numbering_20_1">
 			<xsl:apply-templates select="text()|*" mode="richcontentol">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
 			</xsl:apply-templates>
