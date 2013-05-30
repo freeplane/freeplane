@@ -380,7 +380,7 @@
      <param name="chars" />
      <param name="indent" select="5" /><!-- indent per level in millimeters -->
      <param name="level" select="1"/>
-     <text:list-level-style-bullet text:style-name="Numbering_20_Symbols">
+     <text:list-level-style-bullet text:style-name="Bullet_20_Symbols">
        <attribute name="text:level"><value-of select="$level" /></attribute>
        <attribute name="text:bullet-char"><value-of select="substring($chars,1,1)" /></attribute>
        <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
@@ -390,7 +390,6 @@
 	   <attribute name="fo:text-indent"><value-of select="concat(string(-$indent), 'mm')" /></attribute>
 	 </style:list-level-label-alignment>
        </style:list-level-properties>
-       <style:text-properties style:font-name="OpenSymbol"/>
      </text:list-level-style-bullet>
      <if test="string-length($chars) &gt; 1">
        <call-template name="gen-bullet-list-style">
