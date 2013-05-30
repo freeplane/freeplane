@@ -405,25 +405,9 @@ Not implemented
 	</xsl:template> <!-- xsl:template name="output-note" -->
 
 
-	<xsl:template name="textnode">
-		<xsl:call-template name="format_text">
-			<xsl:with-param name="nodetext">
-				<xsl:choose>
-					<xsl:when test="@TEXT = ''">
-						<xsl:text />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="@TEXT" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template> <!-- xsl:template name="textnode" -->
-
-
 	<!-- replace ASCII line breaks through ODF line breaks (br) -->
-	<xsl:template name="format_text">
-		<xsl:param name="nodetext"></xsl:param>
+	<xsl:template name="textnode">
+		<xsl:param name="nodetext" select="@TEXT" />
 		<xsl:choose>
 		  <xsl:when test="not(contains($nodetext,'&#xa;'))">
 			<xsl:value-of select="$nodetext" />
@@ -431,14 +415,14 @@ Not implemented
 		  <xsl:otherwise>
 			<xsl:value-of select="substring-before($nodetext,'&#xa;')" />
 			<text:line-break />
-			<xsl:call-template name="format_text">
+			<xsl:call-template name="textnode">
 				<xsl:with-param name="nodetext">
 					<xsl:value-of select="substring-after($nodetext,'&#xa;')" />
 				</xsl:with-param>
 			</xsl:call-template>
 		  </xsl:otherwise>
 		</xsl:choose>
-	</xsl:template> <!-- xsl:template name="format_text" -->
+	</xsl:template> <!-- xsl:template name="textnode" -->
 
 	<xsl:template match="body" mode="richcontent">
 		<xsl:param name="style">
