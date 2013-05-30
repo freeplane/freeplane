@@ -22,6 +22,51 @@
  * This stylesheet is for generating `content.xml` for ODT-Files (Open Document Text),
  * used for exporting to OpenOffice/LibeOffice Writer documents.
  */
+
+Formatting rules used in this style-sheet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* The root node will get style "Title".
+
+* Nodes with "automatic node-numbering" set will become numbered
+  list-items.
+
+  Please note: If some but not all sibling nodes have "automatic
+               node-numbering" set, the result is unpredicted.
+
+* Children (and grand-children) of folded nodes will become nested
+  bullet lists, except if a node has "always unfold node" set. In these
+  case it's children will not become list-items, but normal
+  paragraphs, but the grand-children will be list-items again.
+
+* Automatic layout modes are honored, both non-leaf-mode and
+  all-nodes-mode. Nodes will become headings of the corresponding
+  level. As in the map, four levels are used.
+
+  Please note: Automatic layout mode overrules nodes styles, as it
+               does in the map. But node folding and auto-numbering
+               overrules automatic layout mode.
+
+* Automatic layout level styles (per-defined styles with names "Level
+  ...") are honored. These will become headings of the corresponding
+  level.
+
+* If the node has a style set (either a pre-defined or a custom), the
+  node will become a paragraph with this style set. The document will
+  contain a style with the same name which tries to mimic the style in
+  the map.
+
+* If the node does not have a style set, it will become "Standard".
+
+Please note: Formats applied on a node-level (using the "Format"
+panel), will not be transferred to the Open Document Format.
+
+
+Not implemented
+~~~~~~~~~~~~~~~~~~~
+- Tables (may occur in rich-text nodes)
+- Pictures
+- Icons for nodes (will most probably never be implemented).
+
 -->
 <xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
