@@ -51,7 +51,7 @@ import org.freeplane.features.mode.ModeController;
 /**
  * @author foltin
  */
-public class ExportToOoWriter extends AExportEngine {
+public class ExportToOoWriter implements IExportEngine {
 	public ExportToOoWriter() {
 	}
 

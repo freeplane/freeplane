@@ -17,13 +17,14 @@
             <boolean name = "experimental_file_locking_on"/>
             <path name = "standard_template"/>
         </separator>
-        <separator name = "automatic_save">
-            <number name = "time_for_automatic_save" min = "0"/> 
-            <boolean name = "single_backup_directory"/>
-            <path name = "single_backup_directory_path" dir="true"/>
-            <boolean name = "delete_automatic_saves_at_exit"/>
-            <number name = "number_of_different_files_for_automatic_save" min = "0" max="25"/>
-            <number name = "backup_file_number" min = "0" max="25"/>
+        <separator name = "load">
+           <combo name = "load_folding">
+            	<choice value="always_fold_all_after_load"/>
+            	<choice value="load_folding_from_map_default_fold_all"/>
+            	<choice value="load_folding_from_map_default_unfold_all"/>
+            	<choice value="always_unfold_all_after_load"/>
+            </combo>
+            <number name="max_displayed_node_count" min="1"/> 
         </separator>
         <separator name = "save">
             <combo name = "save_folding">
@@ -33,14 +34,16 @@
             </combo> 
             <boolean name = "save_modification_times"/>
         </separator>
-        <separator name = "load">
-           <combo name = "load_folding">
-            	<choice value="always_fold_all_after_load"/>
-            	<choice value="load_folding_from_map_default_fold_all"/>
-            	<choice value="load_folding_from_map_default_unfold_all"/>
-            	<choice value="always_unfold_all_after_load"/>
-            </combo>
-            <number name="max_displayed_node_count" min="1"/> 
+        <separator name = "automatic_save">
+            <number name = "time_for_automatic_save" min = "0"/> 
+            <boolean name = "single_backup_directory"/>
+            <path name = "single_backup_directory_path" dir="true"/>
+            <boolean name = "delete_automatic_saves_at_exit"/>
+            <number name = "number_of_different_files_for_automatic_save" min = "0" max="25"/>
+            <number name = "backup_file_number" min = "0" max="25"/>
+        </separator>
+        <separator name = "export">
+        	<number name = "exported_image_resolution_dpi" min = "72" max= "2400"/> 
         </separator>
        <separator name="hyperlink_types">        
             <combo name="links">

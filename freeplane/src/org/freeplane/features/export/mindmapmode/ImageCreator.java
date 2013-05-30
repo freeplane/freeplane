@@ -27,12 +27,23 @@ import org.freeplane.features.mode.Controller;
 /**
  * @author foltin
  */
-abstract public class AExportEngine implements IExportEngine {
+class ImageCreator{
+	private int imageResolutionInDpi;
+
+	public ImageCreator(int imageResolutionInDpi) {
+	    super();
+	    this.imageResolutionInDpi = imageResolutionInDpi;
+    }
+
 	public RenderedImage createBufferedImage(MapModel map) {
-        final Controller controller = Controller.getCurrentController();
+		final Controller controller = Controller.getCurrentController();
 		if(! map.equals(controller.getMap())) {
 			return null;
         }
-        return controller.getMapViewManager().createImage();
+        return controller.getMapViewManager().createImage(imageResolutionInDpi);
 	}
+
+	public int getImageResolutionDPI() {
+	    return imageResolutionInDpi;
+    }
 }

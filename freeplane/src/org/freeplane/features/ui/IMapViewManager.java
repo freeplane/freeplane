@@ -80,7 +80,7 @@ public interface IMapViewManager {
 	
 	public String createHtmlMap();
 
-	public RenderedImage createImage();
+	public RenderedImage createImage(int dpi);
 
 	public Color getBackgroundColor(NodeModel node);
 

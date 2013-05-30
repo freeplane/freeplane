@@ -55,6 +55,7 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -283,7 +284,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return creator.generateHtml();
 	}
 
-	public RenderedImage createImage() {
+	public RenderedImage createImage(int dpi) {
 		final MapView view = getMapView();
 		if (view == null) {
 			return null;
@@ -295,8 +296,15 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		innerBounds.y -= BOUND;
 		innerBounds.width += 2 * BOUND;
 		innerBounds.height += 2 * BOUND;
-		final BufferedImage myImage = (BufferedImage) view.createImage(innerBounds.width, innerBounds.height);
-		final Graphics g = myImage.getGraphics();
+		
+		double scaleFactor = (double) dpi / (double) UITools.getScreenResolution();
+
+		int imageWidth = (int) Math.ceil(innerBounds.width * scaleFactor);
+		int imageHeight = (int) Math.ceil(innerBounds.height * scaleFactor);
+		
+		final BufferedImage myImage = (BufferedImage) view.createImage(imageWidth, imageHeight);
+		final Graphics2D g = (Graphics2D) myImage.getGraphics();
+		g.scale(scaleFactor, scaleFactor);
 		g.translate(-innerBounds.x, -innerBounds.y);
 		view.print(g);
 		view.endPrinting();
