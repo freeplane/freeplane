@@ -210,6 +210,21 @@
 		<style:style style:name="Numbering_20_1" style:family="paragraph"
 			     style:display-name="Numbering 1"
 			     style:parent-style-name="List" style:class="list" />
+		<!-- a paragraph style for marking conversion errors -->
+		<style:style style:name="Error" style:family="paragraph"
+			     style:parent-style-name="Text_20_body">
+		  <style:paragraph-properties
+		      style:border-line-width="0.026cm 0.062cm 0.053cm"
+		      fo:padding="0.15cm"
+		      fo:border="4pt double #ff0000"/>
+		</style:style>
+		<!-- and a character style for the added error text -->
+		<style:style style:name="ErrorIntro" style:family="text">
+		  <style:text-properties
+		      fo:color="#ff0000"
+		      style:text-line-through-style="none"
+		      style:text-line-through-width="none" fo:font-weight="bold"/>
+		</style:style>
 		<style:style style:name="Caption" style:family="paragraph"
 			style:parent-style-name="Standard" style:class="extra">
 			<style:paragraph-properties fo:margin-top="0.212cm"
