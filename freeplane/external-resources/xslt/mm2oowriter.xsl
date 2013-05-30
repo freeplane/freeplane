@@ -61,7 +61,7 @@ Please note: Formats applied on a node-level (using the "Format"
 panel), will not be transferred to the Open Document Format.
 
 Rich-text nodes are converted, too. If you have some hand-crafted HTML
-in the rech-text, the result may not ba what you expect, as not all
+in the rech-text, the result may not be what you expect, as not all
 cases of wrong-formatted HTML is handled. If using text-nodes and the
 formatting features described above, you'll be on the safe side.
 
