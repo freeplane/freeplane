@@ -171,7 +171,7 @@
 		<xsl:apply-templates select="node" />
 	      </text:list>
 	    </xsl:when>
-	    <xsl:when test="(@FOLDED='true' or ancestor::node[@FOLDED='true']) and ./node">
+	    <xsl:when test="(@FOLDED='true' or ancestor::node[@FOLDED='true']) and not(hook[@NAME='AlwaysUnfoldedNode']) and ./node">
 	      <text:list text:style-name="List_20_1">
 		<xsl:apply-templates select="node" />
 	      </text:list>
@@ -210,6 +210,11 @@
 			      <xsl:with-param name="style">P2</xsl:with-param>
 			    </xsl:call-template>
 			  </text:list-item>
+			</xsl:when>
+			<xsl:when test="ancestor::node[@FOLDED='true'] and ../hook[@NAME='AlwaysUnfoldedNode']">
+			      <xsl:call-template name="output-all-nodecontent">
+				<xsl:with-param name="style">Standard</xsl:with-param>
+			      </xsl:call-template>
 			</xsl:when>
 			<xsl:when test="ancestor::node[@FOLDED='true']">
 			    <text:list-item>
