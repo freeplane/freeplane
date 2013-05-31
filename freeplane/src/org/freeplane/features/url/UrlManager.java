@@ -234,9 +234,6 @@ public class UrlManager implements IExtension {
 		if (showHiddenFiles) {
 			chooser.setFileHidingEnabled(false);
 		}
-		if (useDirectorySelector) {
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		}
 		if (filter != null) {
 			chooser.addChoosableFileFilter(filter);
 			chooser.setFileFilter(filter);
