@@ -1,19 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!--
-		/*Freeplane - A Program for creating and viewing Mindmaps *Copyright
-		(C) 2000-2008 Christian Foltin and others. * *See COPYING for Details
-		* *This program is free software; you can redistribute it and/or
-		*modify it under the terms of the GNU General Public License *as
-		published by the Free Software Foundation; either version 2 *of the
-		License, or (at your option) any later version. * *This program is
-		distributed in the hope that it will be useful, *but WITHOUT ANY
-		WARRANTY; without even the implied warranty of *MERCHANTABILITY or
-		FITNESS FOR A PARTICULAR PURPOSE. See the *GNU General Public License
-		for more details. * *You should have received a copy of the GNU
-		General Public License *along with this program; if not, write to the
-		Free Software *Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-		MA 02111-1307, USA. * */
-	-->
+<!--
+/*Freeplane - A Program for creating and viewing Mindmaps
+ *Copyright (C) 2000-2008  Christian Foltin and others.
+ *
+ *See COPYING for Details
+ *
+ *This program is free software; you can redistribute it and/or
+ *modify it under the terms of the GNU General Public License
+ *as published by the Free Software Foundation; either version 2
+ *of the License, or (at your option) any later version.
+ *
+ *This program is distributed in the hope that it will be useful,
+ *but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *GNU General Public License for more details.
+ *
+ *You should have received a copy of the GNU General Public License
+ *along with this program; if not, write to the Free Software
+ *Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * This stylesheet is for generating `content.xml` for ODT-Files (Open Document Text),
+ * used for exporting to OpenOffice/LibeOffice Writer documents.
+ */
+
+Formatting rules used in this style-sheet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* The root node will get style "Title".
+
+* Nodes with "automatic node-numbering" set will become numbered
+  list-items.
+
+  Please note: If some but not all sibling nodes have "automatic
+               node-numbering" set, the result is unpredicted.
+
+* Children (and grand-children) of folded nodes will become nested
+  bullet lists, except if a node has "always unfold node" set. In these
+  case it's children will not become list-items, but normal
+  paragraphs, but the grand-children will be list-items again.
+
+* Automatic layout modes are honored, both non-leaf-mode and
+  all-nodes-mode. Nodes will become headings of the corresponding
+  level. As in the map, four levels are used.
+
+  Please note: Automatic layout mode overrules nodes styles, as it
+               does in the map. But node folding and auto-numbering
+               overrules automatic layout mode.
+
+* Automatic layout level styles (per-defined styles with names "Level
+  ...") are honored. These will become headings of the corresponding
+  level.
+
+* If the node has a style set (either a pre-defined or a custom), the
+  node will become a paragraph with this style set. The document will
+  contain a style with the same name which tries to mimic the style in
+  the map.
+
+* If the node does not have a style set, it will become "Text body".
+
+Please note: Formats applied on a node-level (using the "Format"
+panel), will not be transferred to the Open Document Format.
+
+Rich-text nodes are converted, too. If you have some hand-crafted HTML
+in the rech-text, the result may not be what you expect, as not all
+cases of wrong-formatted HTML is handled. If using text-nodes and the
+formatting features described above, you'll be on the safe side.
+
+Not implemented
+~~~~~~~~~~~~~~~~~~~
+- Tables (may occur in rich-text nodes)
+- Pictures
+- Icons for nodes (will most probably never be implemented).
+
+-->
 <xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
@@ -72,108 +130,49 @@
 					style:font-family-generic="system" style:font-pitch="variable" />
 			</office:font-face-decls>
 			<office:automatic-styles>
+				<!-- P1 = unnumbered list item -->
 				<style:style style:name="P1" style:family="paragraph"
-					style:parent-style-name="Text_20_body" style:list-style-name="L1" />
+					     style:parent-style-name="List_20_1"
+					     style:list-style-name="List_20_1"/>
+				<!-- P2 = numbered list item -->
+				<style:style style:name="P2" style:family="paragraph"
+					     style:parent-style-name="Numbering_20_1"
+					     style:list-style-name="Numbering_20_1" />
+				<!-- P3 = center -->
 				<style:style style:name="P3" style:family="paragraph"
-					style:parent-style-name="Standard">
+					style:parent-style-name="Text_20_body">
 					<style:paragraph-properties
 						fo:text-align="center" style:justify-single-word="false" />
 				</style:style>
+				<!-- P4 = align right -->
 				<style:style style:name="P4" style:family="paragraph"
-					style:parent-style-name="Standard">
+					style:parent-style-name="Text_20_body">
 					<style:paragraph-properties
 						fo:text-align="end" style:justify-single-word="false" />
 				</style:style>
+				<!-- P5 = justify -->
 				<style:style style:name="P5" style:family="paragraph"
-					style:parent-style-name="Standard">
+					style:parent-style-name="Text_20_body">
 					<style:paragraph-properties
 						fo:text-align="justify" style:justify-single-word="false" />
 				</style:style>
+				<!-- T1 = bold text -->
 				<style:style style:name="T1" style:family="text">
 					<style:text-properties fo:font-weight="bold"
 						style:font-weight-asian="bold" style:font-weight-complex="bold" />
 				</style:style>
+				<!-- T2 = italic text -->
 				<style:style style:name="T2" style:family="text">
 					<style:text-properties fo:font-style="italic"
 						style:font-style-asian="italic" style:font-style-complex="italic" />
 				</style:style>
+				<!-- T3 = underlined text -->
 				<style:style style:name="T3" style:family="text">
 					<style:text-properties
 						style:text-underline-style="solid" style:text-underline-width="auto"
 						style:text-underline-color="font-color" />
 				</style:style>
-				<text:list-style style:name="L1">
-					<text:list-level-style-bullet
-						text:level="1" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="0.635cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="2" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="○">
-						<style:list-level-properties
-							text:space-before="1.27cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="3" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="■">
-						<style:list-level-properties
-							text:space-before="1.905cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="4" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="2.54cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="5" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="○">
-						<style:list-level-properties
-							text:space-before="3.175cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="6" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="■">
-						<style:list-level-properties
-							text:space-before="3.81cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="7" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="4.445cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="8" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="○">
-						<style:list-level-properties
-							text:space-before="5.08cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="9" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="■">
-						<style:list-level-properties
-							text:space-before="5.715cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-					<text:list-level-style-bullet
-						text:level="10" text:style-name="Bullet_20_Symbols"
-						style:num-suffix="." text:bullet-char="●">
-						<style:list-level-properties
-							text:space-before="6.35cm" text:min-label-width="0.635cm" />
-						<style:text-properties style:font-name="StarSymbol" />
-					</text:list-level-style-bullet>
-				</text:list-style>
+
 			</office:automatic-styles>
 			<office:body>
 				<office:text>
@@ -196,88 +195,157 @@
 		</office:document-content>
 	</xsl:template>
 
+	<xsl:template name="output-all-nodecontent">
+	  <xsl:param name="style"/>
+	  <xsl:param name="heading_level" select="-1"/>
+	  <xsl:choose>
+	    <xsl:when test="$heading_level &gt; 0">
+	      <text:h>
+		<xsl:attribute name="text:style-name"><xsl:value-of select="$style" /></xsl:attribute>
+		<xsl:attribute name="text:outline-level"><xsl:value-of select="$heading_level" /></xsl:attribute>
+		<xsl:call-template name="output-nodecontent">
+		  <xsl:with-param name="style" /><!-- for headings the style is set by the text:h tag  -->
+		</xsl:call-template>
+	      </text:h>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:call-template name="output-nodecontent">
+		<xsl:with-param name="style"><xsl:value-of select="$style" /></xsl:with-param>
+	      </xsl:call-template>
+	    </xsl:otherwise>
+	  </xsl:choose>
+	  <xsl:apply-templates select="hook|@LINK" />
+	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
+	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
+	  <!-- walk the sub-nodes -->
+	  <xsl:choose>
+	    <xsl:when test="./node[@NUMBERED='true']">
+	      <text:list text:style-name="Numbering_20_1">
+		<xsl:apply-templates select="node" />
+	      </text:list>
+	    </xsl:when>
+	    <xsl:when test="(@FOLDED='true' or ancestor::node[@FOLDED='true']) and not(hook[@NAME='AlwaysUnfoldedNode']) and ./node">
+	      <text:list text:style-name="List_20_1">
+		<xsl:apply-templates select="node" />
+	      </text:list>
+	    </xsl:when>
+	    <xsl:otherwise>
+	      <xsl:apply-templates select="node" />
+	    </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="output-node-as-heading">
+	  <xsl:param name="heading_level" select="-1"/>
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style">
+	      <xsl:text>Heading_20_</xsl:text><xsl:value-of select="$heading_level" />
+	    </xsl:with-param>
+	    <xsl:with-param name="heading_level" select="$heading_level" />
+	  </xsl:call-template>
+	</xsl:template>
+
+
 	<xsl:template match="node">
 		<xsl:variable name="depth">
 			<xsl:apply-templates select=".." mode="depthMesurement" />
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$depth=0"><!-- Title -->
-				<xsl:call-template name="output-nodecontent">
-					<xsl:with-param name="style">
-						Title
-					</xsl:with-param>
+			<xsl:when test="$depth=0"><!-- Root Node becomes 'Title' -->
+				<xsl:call-template name="output-all-nodecontent">
+				  <xsl:with-param name="style">Title</xsl:with-param>
 				</xsl:call-template>
-				<xsl:apply-templates select="hook|@LINK" />
-				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'DETAILS'"/> </xsl:call-template>
-				<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'NOTE'"/> </xsl:call-template>
-				<xsl:apply-templates select="node" />
+			</xsl:when>
+			<xsl:when test="@NUMBERED='true'">
+			  <text:list-item>
+			    <xsl:call-template name="output-all-nodecontent">
+			      <!-- :todo: need to remove numbers added by Freeplane -->
+			      <xsl:with-param name="style">P2</xsl:with-param>
+			    </xsl:call-template>
+			  </text:list-item>
+			</xsl:when>
+			<xsl:when test="ancestor::node[@FOLDED='true'] and ../hook[@NAME='AlwaysUnfoldedNode']">
+			  <xsl:apply-templates select="." mode="normal-node-with-style"/>
+			</xsl:when>
+			<xsl:when test="ancestor::node[@FOLDED='true']">
+			    <text:list-item>
+			      <xsl:call-template name="output-all-nodecontent">
+				<xsl:with-param name="style">P1</xsl:with-param>
+			      </xsl:call-template>
+			    </text:list-item>
+			</xsl:when>
+			<xsl:when test="/map/node/hook[@NAME='accessories/plugins/AutomaticLayout.properties' and @VALUE='ALL'] and $depth &lt;= 4">
+			  <!-- automatic layout for all nodes up to level 4 -->
+			  <xsl:call-template name="output-node-as-heading">
+			    <xsl:with-param name="heading_level" select="$depth" />
+			  </xsl:call-template>
+			</xsl:when>
+			<xsl:when test="/map/node/hook[@NAME='accessories/plugins/AutomaticLayout.properties' and @VALUE='HEADINGS'] and $depth &lt;= 4 and ./node">
+			  <!-- automatic layout for non-leaf nodes up to level 4 -->
+			  <xsl:call-template name="output-node-as-heading">
+			    <xsl:with-param name="heading_level" select="$depth" />
+			  </xsl:call-template>
+			</xsl:when>
+			<xsl:when test="starts-with(./@LOCALIZED_STYLE_REF,'AutomaticLayout.level,')">
+			  <!-- heading style for one of the known heading levels -->
+			  <xsl:call-template name="output-node-as-heading">
+			    <xsl:with-param name="heading_level" select="substring-after(./@LOCALIZED_STYLE_REF,'AutomaticLayout.level,')" />
+			  </xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:choose>
-					<xsl:when test="ancestor::node[@FOLDED='true']">
-						<text:list text:style-name="L1">
-							<text:list-item>
-								<xsl:call-template name="output-nodecontent">
-									<xsl:with-param name="style">
-										Standard
-									</xsl:with-param>
-								</xsl:call-template>
-								<xsl:apply-templates select="hook|@LINK" />
-								<xsl:call-template name="output-notecontent">
-									<xsl:with-param name="contentType" select="'DETAILS'" />
-								</xsl:call-template>
-								<xsl:call-template name="output-notecontent">
-									<xsl:with-param name="contentType" select="'NOTE'" />
-								</xsl:call-template>
-								<xsl:apply-templates select="node" />
-							</text:list-item>
-						</text:list>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:variable name="heading_level">
-							<xsl:text>Heading_20_</xsl:text>
-							<xsl:value-of select="$depth" />
-						</xsl:variable>
-						<xsl:element name="text:h">
-							<xsl:attribute name="text:style-name"><!--
-								--><xsl:value-of
-								select="$heading_level" /><!--
-							--></xsl:attribute>
-							<xsl:attribute name="text:outline-level"><xsl:value-of
-								select="$depth" /></xsl:attribute>
-							<xsl:call-template name="output-nodecontent">
-								<!--No Style for Headings.-->
-								<xsl:with-param name="style"></xsl:with-param>
-							</xsl:call-template>
-						</xsl:element>
-						<xsl:apply-templates select="hook|@LINK" />
-						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'DETAILS'"/> </xsl:call-template>
-						<xsl:call-template name="output-notecontent"> <xsl:with-param name="contentType" select="'NOTE'"/> </xsl:call-template>
-						<xsl:apply-templates select="node" />
-					</xsl:otherwise>
-				</xsl:choose>
+			  <xsl:apply-templates select="." mode="normal-node-with-style"/>
 			</xsl:otherwise>
 		</xsl:choose>
-
 	</xsl:template>
+
+	<xsl:template mode="normal-node-with-style"
+		  match="node[@STYLE_REF]">
+	  <!-- a custom style -->
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style" select="translate(@STYLE_REF, ' ', '_')" />
+	  </xsl:call-template>
+	</xsl:template>
+
+	<xsl:template mode="normal-node-with-style"
+		  match="node[starts-with(@LOCALIZED_STYLE_REF,'defaultstyle.')]">
+	  <!-- one of the Freeplane pre-defined styles -->
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style" select="substring-after(./@LOCALIZED_STYLE_REF,'defaultstyle.')" />
+	  </xsl:call-template>
+	</xsl:template>
+
+	<xsl:template mode="normal-node-with-style"
+		  match="node"> <!-- no style defined -->
+	  <xsl:call-template name="output-all-nodecontent">
+	    <xsl:with-param name="style">Text_20_body</xsl:with-param>
+	  </xsl:call-template>
+	</xsl:template>
+
 
 	<xsl:template match="hook" />
 
 	<!--
-		<xsl:template
-		match="hook[@NAME='accessories/plugins/NodeNote.properties']">
-		<xsl:choose> <xsl:when test="./text"> <text:p
-		text:style-name="Standard"> <xsl:value-of select="./text"/> </text:p>
-		</xsl:when> </xsl:choose> </xsl:template> <xsl:template match="node"
-		mode="childoutputOrdered"> <xsl:param name="nodeText"></xsl:param>
-		<text:ordered-list text:style-name="L1"
-		text:continue-numbering="true"> <text:list-item> <xsl:apply-templates
-		select=".." mode="childoutputOrdered"> <xsl:with-param
-		name="nodeText"><xsl:copy-of select="$nodeText"/></xsl:with-param>
-		</xsl:apply-templates> </text:list-item> </text:ordered-list>
-		</xsl:template> <xsl:template match="map" mode="childoutputOrdered">
-		<xsl:param name="nodeText"></xsl:param> <xsl:copy-of
-		select="$nodeText"/> </xsl:template>
+	<xsl:template match="hook[@NAME='accessories/plugins/NodeNote.properties']">
+	  <xsl:choose>
+	    <xsl:when test="./text">
+	      <text:p text:style-name="Text_20_body"> <xsl:value-of select="./text"/> </text:p>
+	    </xsl:when>
+	  </xsl:choose>
+	</xsl:template>
+	<xsl:template match="node" mode="childoutputOrdered">
+	  <xsl:param name="nodeText"></xsl:param>
+	  <text:ordered-list text:style-name="L1" text:continue-numbering="true">
+	    <text:list-item>
+	      <xsl:apply-templates select=".." mode="childoutputOrdered">
+		<xsl:with-param name="nodeText"><xsl:copy-of select="$nodeText"/></xsl:with-param>
+	      </xsl:apply-templates>
+	    </text:list-item>
+	  </text:ordered-list>
+	  </xsl:template>
+	  <xsl:template match="map" mode="childoutputOrdered">
+	    <xsl:param name="nodeText"></xsl:param>
+	    <xsl:copy-of select="$nodeText"/>
+	  </xsl:template>
 	-->
 	<xsl:template match="node" mode="depthMesurement">
 		<xsl:param name="depth" select=" '0' " />
@@ -293,21 +361,19 @@
 
 	<!-- Give links out. -->
 	<xsl:template match="@LINK">
-		<text:p text:style-name="Standard">
-			<xsl:element name="text:a" namespace="text">
-				<xsl:attribute namespace="xlink" name="xlink:type">simple</xsl:attribute>
-				<xsl:attribute namespace="xlink" name="xlink:href"><xsl:value-of
-					select="." />
+		<text:p text:style-name="Text_20_body">
+			<text:a>
+				<xsl:attribute name="xlink:type">simple</xsl:attribute>
+				<xsl:attribute name="xlink:href">
+					<xsl:value-of select="." />
 				</xsl:attribute>
 				<xsl:value-of select="." />
-			</xsl:element>
+			</text:a>
 		</text:p>
 	</xsl:template>
 
 	<xsl:template name="output-nodecontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<xsl:choose>
 			<xsl:when test="richcontent[@TYPE='NODE']">
 				<xsl:apply-templates select="richcontent[@TYPE='NODE']/html/body"
@@ -315,20 +381,16 @@
 					<xsl:with-param name="style" select="$style" />
 				</xsl:apply-templates>
 			</xsl:when>
+			<xsl:when test="$style = ''">
+				<!--no style for headings. -->
+				<xsl:call-template name="textnode" />
+			</xsl:when>
 			<xsl:otherwise>
-				<xsl:choose>
-					<xsl:when test="$style = ''">
-						<!--no style for headings. -->
-						<xsl:call-template name="textnode" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:element name="text:p">
-							<xsl:attribute name="text:style-name"><xsl:value-of
-								select="$style" /></xsl:attribute>
-							<xsl:call-template name="textnode" />
-						</xsl:element>
-					</xsl:otherwise>
-				</xsl:choose>
+				<text:p>
+					<xsl:attribute name="text:style-name"><xsl:value-of
+						select="$style" /></xsl:attribute>
+					<xsl:call-template name="textnode" />
+				</text:p>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template> <!-- xsl:template name="output-nodecontent" -->
@@ -339,51 +401,34 @@
 			<xsl:apply-templates select="richcontent[@TYPE=$contentType]/html/body"
 				mode="richcontent">
 				<xsl:with-param name="style">
-					Standard
+					Text_20_body
 				</xsl:with-param>
 			</xsl:apply-templates>
 		</xsl:if>
 	</xsl:template> <!-- xsl:template name="output-note" -->
 
 
-	<xsl:template name="textnode">
-		<xsl:call-template name="format_text">
-			<xsl:with-param name="nodetext">
-				<xsl:choose>
-					<xsl:when test="@TEXT = ''">
-						<xsl:text> </xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="@TEXT" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template> <!-- xsl:template name="textnode" -->
-
-
 	<!-- replace ASCII line breaks through ODF line breaks (br) -->
-	<xsl:template name="format_text">
-		<xsl:param name="nodetext"></xsl:param>
-		<xsl:if test="string-length(substring-after($nodetext,'&#xa;')) = 0">
+	<xsl:template name="textnode">
+		<xsl:param name="nodetext" select="@TEXT" />
+		<xsl:choose>
+		  <xsl:when test="not(contains($nodetext,'&#xa;'))">
 			<xsl:value-of select="$nodetext" />
-		</xsl:if>
-		<xsl:if test="string-length(substring-after($nodetext,'&#xa;')) > 0">
+		  </xsl:when>
+		  <xsl:otherwise>
 			<xsl:value-of select="substring-before($nodetext,'&#xa;')" />
 			<text:line-break />
-			<xsl:call-template name="format_text">
+			<xsl:call-template name="textnode">
 				<xsl:with-param name="nodetext">
 					<xsl:value-of select="substring-after($nodetext,'&#xa;')" />
 				</xsl:with-param>
 			</xsl:call-template>
-		</xsl:if>
-	</xsl:template> <!-- xsl:template name="format_text" -->
+		  </xsl:otherwise>
+		</xsl:choose>
+	</xsl:template> <!-- xsl:template name="textnode" -->
 
 	<xsl:template match="body" mode="richcontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
-		<!--       <xsl:copy-of select="string(.)"/> -->
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<xsl:apply-templates select="text()|*" mode="richcontent">
 			<xsl:with-param name="style" select="$style"></xsl:with-param>
 		</xsl:apply-templates>
@@ -391,13 +436,19 @@
 	<xsl:template match="text()" mode="richcontent">
 		<xsl:copy-of select="string(.)" />
 	</xsl:template>
+	<xsl:template match="body[text()]" mode="richcontent">
+	  <text:p text:style-name="Error">
+	    <text:span text:style-name="ErrorIntro">
+	      <xsl:text>This rich-text node does not conform to the HTML standard. Please check your HTML code in this node.</xsl:text>
+	    </text:span>
+	    <xsl:copy-of select="normalize-space(.)" />
+	  </text:p>
+	</xsl:template>
 	<xsl:template match="br" mode="richcontent">
 		<text:line-break />
 	</xsl:template>
 	<xsl:template match="b" mode="richcontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:span text:style-name="T1">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -405,9 +456,7 @@
 		</text:span>
 	</xsl:template>
 	<xsl:template match="p" mode="richcontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<xsl:choose>
 			<xsl:when test="$style = ''">
 				<xsl:apply-templates select="text()|*" mode="richcontent">
@@ -436,21 +485,19 @@
 				</text:p>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="text:p">
+				<text:p>
 					<xsl:attribute name="text:style-name"><xsl:value-of
 						select="$style" /></xsl:attribute>
 					<xsl:apply-templates select="text()|*" mode="richcontent">
 						<xsl:with-param name="style" select="$style"></xsl:with-param>
 					</xsl:apply-templates>
-				</xsl:element>
+				</text:p>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="i" mode="richcontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:span text:style-name="T2">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -458,9 +505,7 @@
 		</text:span>
 	</xsl:template>
 	<xsl:template match="u" mode="richcontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:span text:style-name="T3">
 			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
@@ -468,107 +513,134 @@
 		</text:span>
 	</xsl:template>
 	<xsl:template match="ul" mode="richcontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
-		<text:list text:style-name="L1">
-			<xsl:apply-templates select="text()|*" mode="richcontentul">
+		<xsl:param name="style">Text_20_body</xsl:param>
+		<text:list text:style-name="List_20_1">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P1</xsl:with-param>
 			</xsl:apply-templates>
 		</text:list>
-		<text:p text:style-name="P3" />
 	</xsl:template>
 	<xsl:template match="ol" mode="richcontent">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
-		<text:list text:style-name="L2">
-			<xsl:apply-templates select="text()|*" mode="richcontentol">
+		<xsl:param name="style">Text_20_body</xsl:param>
+		<text:list text:style-name="Numbering_20_1">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
 				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P2</xsl:with-param>
 			</xsl:apply-templates>
 		</text:list>
-		<text:p text:style-name="P3" />
 	</xsl:template>
-	<xsl:template match="li" mode="richcontentul">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
+	<xsl:template match="li" mode="richcontent">
+		<xsl:param name="style">Text_20_body</xsl:param>
+		<xsl:param name="itemstyle"/>
 		<text:list-item>
-			<text:p text:style-name="P1"><!--
-			-->
+			<text:p>
+			  <xsl:attribute name="text:style-name"><xsl:value-of select="$itemstyle" /></xsl:attribute>
 				<xsl:apply-templates select="text()|*" mode="richcontent">
 					<xsl:with-param name="style" select="$style"></xsl:with-param>
-				</xsl:apply-templates><!--			
-		-->
+				</xsl:apply-templates>
 			</text:p>
 		</text:list-item>
 	</xsl:template>
-	<xsl:template match="li" mode="richcontentol">
-		<xsl:param name="style">
-			Standard
-		</xsl:param>
+
+	<!--== some work-arounds for nested lists ==-->
+	<!-- list-item with contained list, nested according to XHTML: do not emit <text:p> -->
+	<xsl:template match="li[ol] | li[ul]" mode="richcontent">
+		<xsl:param name="style">Text_20_body</xsl:param>
 		<text:list-item>
-			<text:p text:style-name="P2"><!--
-			-->
-				<xsl:apply-templates select="text()|*" mode="richcontent">
-					<xsl:with-param name="style" select="$style"></xsl:with-param>
-				</xsl:apply-templates><!--			
-		-->
-			</text:p>
+		  <xsl:apply-templates select="text()|*" mode="richcontent">
+		    <xsl:with-param name="style" select="$style"></xsl:with-param>
+		  </xsl:apply-templates>
 		</text:list-item>
 	</xsl:template>
+	<!-- list contined in a list-item, nested according to XHTML: emit <text:-list-item> -->
+	<xsl:template match="ul[../li]" mode="richcontent">
+		<xsl:param name="style">Text_20_body</xsl:param>
+		<text:list-item>
+		  <text:list text:style-name="List_20_1">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
+				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P1</xsl:with-param>
+			</xsl:apply-templates>
+		  </text:list>
+		</text:list-item>
+	</xsl:template>
+	<!-- list contined in a list-item, nested according to XHTML: emit <text:-list-item> -->
+	<xsl:template match="ol[../li]" mode="richcontent">
+		<xsl:param name="style">Text_20_body</xsl:param>
+		<text:list-item>
+		  <text:list text:style-name="Numbering_20_1">
+			<xsl:apply-templates select="text()|*" mode="richcontent">
+				<xsl:with-param name="style" select="$style"></xsl:with-param>
+				<xsl:with-param name="itemstyle">P2</xsl:with-param>
+			</xsl:apply-templates>
+		  </text:list>
+		</text:list-item>
+	</xsl:template>
+
 	
 	<xsl:template match="a" mode="richcontent">
-		<xsl:element name="text:a" namespace="text">
-			<xsl:attribute namespace="xlink" name="xlink:type">simple</xsl:attribute>
-			<xsl:attribute namespace="xlink" name="xlink:href"><xsl:value-of
-				select="@href" />
+		<text:a>
+			<xsl:attribute name="xlink:type">simple</xsl:attribute>
+			<xsl:attribute name="xlink:href">
+				<xsl:value-of select="@href" />
 			</xsl:attribute>
 			<xsl:apply-templates select="text()" />
-		</xsl:element>
+		</text:a>
 	</xsl:template>
 	
 
 	<!--
-		<text:list-item> <text:p text:style-name="P1">b </text:list-item>
-		<text:list-item> <text:p text:style-name="P1">c</text:p>
-		</text:list-item> <text:p text:style-name="P2"/>
+		<text:list-item> <text:p text:style-name="P1">b</text:p></text:list-item>
+		<text:list-item> <text:p text:style-name="P1">c</text:p></text:list-item>
+		<text:p text:style-name="P2"/>
 	-->
 	<!--
-		<text:ordered-list text:style-name="L2"> <text:list-item> <text:p
-		text:style-name="P3">1</text:p> </text:list-item> <text:list-item>
-		<text:p text:style-name="P3">2</text:p> </text:list-item>
-		<text:list-item> <text:p text:style-name="P3">3</text:p>
-		</text:list-item> </text:ordered-list> <text:p text:style-name="P2"/>
+		<text:ordered-list text:style-name="L2">
+		  <text:list-item><text:p text:style-name="P3">1</text:p></text:list-item>
+		  <text:list-item><text:p text:style-name="P3">2</text:p></text:list-item>
+		  <text:list-item><text:p text:style-name="P3">3</text:p></text:list-item>
+		</text:ordered-list>
+		<text:p text:style-name="P2"/>
 	-->
 	<!--
-		Table: <table:table table:name="Table1" table:style-name="Table1">
-		<table:table-column table:style-name="Table1.A"
-		table:number-columns-repeated="3"/> <table:table-row>
-		<table:table-cell table:style-name="Table1.A1"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T11</text:p> </table:table-cell> <table:table-cell
-		table:style-name="Table1.A1" table:value-type="string"> <text:p
-		text:style-name="Table Contents">T21</text:p> </table:table-cell>
-		<table:table-cell table:style-name="Table1.C1"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T31</text:p> </table:table-cell> </table:table-row>
-		<table:table-row> <table:table-cell table:style-name="Table1.A2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T12</text:p> </table:table-cell> <table:table-cell
-		table:style-name="Table1.A2" table:value-type="string"> <text:p
-		text:style-name="Table Contents">T22</text:p> </table:table-cell>
-		<table:table-cell table:style-name="Table1.C2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T32</text:p> </table:table-cell> </table:table-row>
-		<table:table-row> <table:table-cell table:style-name="Table1.A2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T13</text:p> </table:table-cell> <table:table-cell
-		table:style-name="Table1.A2" table:value-type="string"> <text:p
-		text:style-name="Table Contents">T23</text:p> </table:table-cell>
-		<table:table-cell table:style-name="Table1.C2"
-		table:value-type="string"> <text:p text:style-name="Table
-		Contents">T32</text:p> </table:table-cell> </table:table-row>
+		Table:
+		<table:table table:name="Table1" table:style-name="Table1">
+		  <table:table-column table:style-name="Table1.A"
+				      table:number-columns-repeated="3"/>
+		  <table:table-row>
+		    <table:table-cell table:style-name="Table1.A1" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T11</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.A1" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T21</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.C1" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T31</text:p>
+		    </table:table-cell>
+		  </table:table-row>
+		  <table:table-row>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T12</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T22</text:p>
+		      </table:table-cell>
+		      <table:table-cell table:style-name="Table1.C2" table:value-type="string">
+			<text:p text:style-name="Table Contents">T32</text:p>
+		      </table:table-cell>
+		  </table:table-row>
+		  <table:table-row>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T13</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.A2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T23</text:p>
+		    </table:table-cell>
+		    <table:table-cell table:style-name="Table1.C2" table:value-type="string">
+		      <text:p text:style-name="Table Contents">T32</text:p>
+		    </table:table-cell>
+		  </table:table-row>
 		</table:table>
 	-->
 

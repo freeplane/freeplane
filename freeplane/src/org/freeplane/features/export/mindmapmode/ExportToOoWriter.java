@@ -132,17 +132,20 @@ public class ExportToOoWriter implements IExportEngine {
 			final ModeController controller = Controller.getCurrentModeController();
 			controller.getMapController().getFilteredXml(map, writer, Mode.EXPORT, true);
 			final Result result = new StreamResult(zipout);
+
 			ZipEntry entry = new ZipEntry("content.xml");
 			zipout.putNextEntry(entry);
 			applyXsltFile("/xslt/mm2oowriter.xsl", writer, result);
 			zipout.closeEntry();
+
 			entry = new ZipEntry("META-INF/manifest.xml");
 			zipout.putNextEntry(entry);
 			applyXsltFile("/xslt/mm2oowriter.manifest.xsl", writer, result);
 			zipout.closeEntry();
+
 			entry = new ZipEntry("styles.xml");
 			zipout.putNextEntry(entry);
-			copyFromResource("/xml/mm2oowriterStyles.xml", zipout);
+			applyXsltFile("/xslt/mm2oowriter.styles.xsl", writer, result);
 			zipout.closeEntry();
 		}
 		finally {

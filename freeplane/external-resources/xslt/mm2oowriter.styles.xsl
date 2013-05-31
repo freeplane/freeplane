@@ -2,6 +2,7 @@
 <!--
 /*Freeplane - A Program for creating and viewing Mindmaps
  *Copyright (C) 2000-2008  Christian Foltin and others.
+ *This file is Copyright (C) 2013 Hartmut Goebel
  *
  *See COPYING for Details
  *
@@ -19,9 +20,22 @@
  *along with this program; if not, write to the Free Software
  *Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
+ * This stylesheet is for generating `styles.xml` for ODF-Files (Open Document Format),
+ * used e.g. for exporting to OpenOffice/LibeOffice Writer documents.
  */
 -->
-<office:document-styles
+<stylesheet version="1.0"
+	    xmlns="http://www.w3.org/1999/XSL/Transform"
+	    xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+	    xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+	    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0">
+
+  <output method="xml" version="1.0" indent="yes"
+	      encoding="UTF-8" omit-xml-declaration="no" />
+  <strip-space elements="*" />
+
+  <template match="map">
+    <office:document-styles
 	xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 	xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
 	xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
@@ -190,6 +204,27 @@
 		</style:style>
 		<style:style style:name="List" style:family="paragraph"
 			style:parent-style-name="Text_20_body" style:class="list" />
+		<style:style style:name="List_20_1" style:family="paragraph"
+			     style:display-name="List 1"
+			     style:parent-style-name="List" style:class="list" />
+		<style:style style:name="Numbering_20_1" style:family="paragraph"
+			     style:display-name="Numbering 1"
+			     style:parent-style-name="List" style:class="list" />
+		<!-- a paragraph style for marking conversion errors -->
+		<style:style style:name="Error" style:family="paragraph"
+			     style:parent-style-name="Text_20_body">
+		  <style:paragraph-properties
+		      style:border-line-width="0.026cm 0.062cm 0.053cm"
+		      fo:padding="0.15cm"
+		      fo:border="4pt double #ff0000"/>
+		</style:style>
+		<!-- and a character style for the added error text -->
+		<style:style style:name="ErrorIntro" style:family="text">
+		  <style:text-properties
+		      fo:color="#ff0000"
+		      style:text-line-through-style="none"
+		      style:text-line-through-width="none" fo:font-weight="bold"/>
+		</style:style>
 		<style:style style:name="Caption" style:family="paragraph"
 			style:parent-style-name="Standard" style:class="extra">
 			<style:paragraph-properties fo:margin-top="0.212cm"
@@ -232,58 +267,36 @@
 				style:font-size-asian="9pt" style:font-name-complex="StarSymbol"
 				style:font-size-complex="9pt" />
 		</style:style>
+		<style:style style:name="Numbering_20_Symbols"
+			     style:display-name="Numbering Symbols"
+			     style:family="text"/>
+
+		<!--- pre-defined styles -->
+		<apply-templates select=".//stylenode[starts-with(@LOCALIZED_TEXT,'defaultstyle.')]" />
+		<!--- custom styles -->
+		<apply-templates select=".//stylenode[@LOCALIZED_TEXT='styles.user-defined']//stylenode" />
+
 		<text:outline-style>
-			<text:outline-level-style text:level="1"
-				style:num-format="1">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="2"
-				style:num-format="1" text:display-levels="2">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="3"
-				style:num-format="1" text:display-levels="3">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="4"
-				style:num-format="1" text:display-levels="4">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="5"
-				style:num-format="1" text:display-levels="5">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="6"
-				style:num-format="1" text:display-levels="6">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="7"
-				style:num-format="1" text:display-levels="7">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="8"
-				style:num-format="1" text:display-levels="8">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="9"
-				style:num-format="1" text:display-levels="9">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
-			<text:outline-level-style text:level="10"
-				style:num-format="1" text:display-levels="10">
-				<style:list-level-properties
-					text:min-label-distance="0.381cm" />
-			</text:outline-level-style>
+		  <call-template name="gen-outline-style">
+		    <with-param name="level" select="10"/> <!-- define 10 level-styles -->
+		  </call-template>
 		</text:outline-style>
+
+		<!-- generate the numbering list definition -->
+		<text:list-style style:name="Numbering_20_1" style:display-name="Numbering 1">
+		  <call-template name="gen-numbering-list-style">
+		    <with-param name="level" select="10"/> <!-- define 10 level-styles -->
+		    <with-param name="indent" select="5"/> <!-- indent per level in millimeters -->
+		  </call-template>
+		</text:list-style>
+		<!-- generate the bullet list definition -->
+		<text:list-style style:name="List_20_1" style:display-name="List 1">
+		  <call-template name="gen-bullet-list-style">
+		    <with-param name="chars" select="'&#9679;&#9675;&#9632;&#9679;&#9675;&#9632;&#9679;&#9675;&#9632;&#9679;'"/>
+		    <with-param name="indent" select="4"/> <!-- indent per level in millimeters -->
+		  </call-template>
+		</text:list-style>
+
 		<text:notes-configuration text:note-class="footnote"
 			style:num-format="1" text:start-value="0"
 			text:footnotes-position="page" text:start-numbering-at="document" />
@@ -308,9 +321,110 @@
 			<style:header-style />
 			<style:footer-style />
 		</style:page-layout>
+
 	</office:automatic-styles>
 	<office:master-styles>
 		<style:master-page style:name="Standard"
 			style:page-layout-name="pm1" />
 	</office:master-styles>
-</office:document-styles>
+      </office:document-styles>
+   </template>
+
+
+   <template name="paragraph-style">
+    <param name="stylename" />
+    <style:style style:family="paragraph" style:class="text"
+		 style:parent-style-name="Text_20_body"><!-- todo: think about using a non-hardcoded parent-->
+      <attribute name="style:name"><value-of select="translate($stylename, ' ', '_')"/></attribute>
+      <attribute name="style:display-name"><value-of select="$stylename"/></attribute>
+      <style:text-properties>
+	<attribute name="fo:color"><value-of select="@COLOR"/></attribute>
+	<attribute name="fo:font-size"><value-of select="font/@SIZE"/>pt</attribute>
+	<if test="font/@ITALIC='true'">
+	  <attribute name="fo:font-style">italic</attribute>
+	</if>
+	<if test="font/@BOLD='true'">
+	  <attribute name="fo:font-weight">bold</attribute>
+	</if>
+      </style:text-properties>
+      <style:paragraph-properties>
+	<attribute name="fo:background-color"><value-of select="@BACKGROUND_COLOR"/></attribute>
+      </style:paragraph-properties>
+    </style:style>
+   </template>
+
+   <template match="stylenode[@TEXT]">
+     <call-template name="paragraph-style">
+       <with-param name="stylename" select="@TEXT" />
+     </call-template>
+   </template>
+
+   <template match="stylenode[starts-with(@LOCALIZED_TEXT,'defaultstyle.')]" >
+     <call-template name="paragraph-style">
+       <with-param name="stylename" select="substring-after(@LOCALIZED_TEXT,'defaultstyle.')" />
+     </call-template>
+   </template>
+
+   <!-- templates for generating uniform styles -->
+
+   <template name="gen-outline-style">
+     <param name="level" />
+     <if test="$level &gt; 1">
+       <call-template name="gen-outline-style">
+	 <with-param name="level" select="$level -1"/>
+       </call-template>
+     </if>
+     <text:outline-level-style style:num-format="1">
+       <attribute name="text:level"><value-of select="$level" /></attribute>
+       <attribute name="text:display-levels"><value-of select="$level" /></attribute>
+       <style:list-level-properties text:min-label-distance="0.381cm" />
+     </text:outline-level-style>
+   </template>
+
+   <template name="gen-numbering-list-style">
+     <param name="level" />
+     <param name="indent" select="5" /><!-- indent per level in millimeters -->
+     <if test="$level &gt; 1">
+       <call-template name="gen-numbering-list-style">
+	 <with-param name="level" select="$level -1"/>
+	 <with-param name="indent" select="$indent"/>
+       </call-template>
+     </if>
+     <text:list-level-style-number
+	 text:style-name="Numbering_20_Symbols" style:num-suffix="." style:num-format="1">
+       <attribute name="text:level"><value-of select="$level" /></attribute>
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+	 <style:list-level-label-alignment text:label-followed-by="listtab">
+	   <attribute name="text:list-tab-stop-position"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:margin-left"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:text-indent"><value-of select="concat(string(-$indent), 'mm')" /></attribute>
+	 </style:list-level-label-alignment>
+       </style:list-level-properties>
+     </text:list-level-style-number>
+   </template>
+
+   <template name="gen-bullet-list-style">
+     <param name="chars" />
+     <param name="indent" select="5" /><!-- indent per level in millimeters -->
+     <param name="level" select="1"/>
+     <text:list-level-style-bullet text:style-name="Bullet_20_Symbols">
+       <attribute name="text:level"><value-of select="$level" /></attribute>
+       <attribute name="text:bullet-char"><value-of select="substring($chars,1,1)" /></attribute>
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+	 <style:list-level-label-alignment text:label-followed-by="listtab">
+	   <attribute name="text:list-tab-stop-position"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:margin-left"><value-of select="concat(string($level*$indent), 'mm')" /></attribute>
+	   <attribute name="fo:text-indent"><value-of select="concat(string(-$indent), 'mm')" /></attribute>
+	 </style:list-level-label-alignment>
+       </style:list-level-properties>
+     </text:list-level-style-bullet>
+     <if test="string-length($chars) &gt; 1">
+       <call-template name="gen-bullet-list-style">
+	 <with-param name="chars" select="substring($chars,2)"/>
+	 <with-param name="indent" select="$indent"/>
+	 <with-param name="level" select="$level+1"/>
+       </call-template>
+     </if>
+   </template>
+
+</stylesheet>
