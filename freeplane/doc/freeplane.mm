@@ -1870,10 +1870,10 @@
     </p>
     <ul>
       <li>
-        Open the freeplane system files and locate the files freeplaneeditar.jar and freeplaneviewe.jar.
+        Open the freeplane system files and locate the files freeplaneeditor.jar and freeplaneviewer.jar.
       </li>
       <li>
-        rename these files into freeplaneeditar.zip and freeplaneviewe.zip
+        rename these files into freeplaneeditor.zip and freeplaneviewer.zip
       </li>
       <li>
         Extract both zip directories.
@@ -1900,7 +1900,7 @@
 
     </p>
     <p>
-      Resart Freeplane. The new system icon should be shown in stead of the old.
+      Restart Freeplane. The new system icon should be shown instead of the old ones.
     </p>
   </body>
 </html>
