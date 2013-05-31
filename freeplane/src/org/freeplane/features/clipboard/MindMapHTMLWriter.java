@@ -413,45 +413,9 @@ class MindMapHTMLWriter {
 		fileout.write("    body {");
 		writeDefaultFontStyle();
 		fileout.write("}" + MindMapHTMLWriter.el);
-		fileout.write("    li { list-style: none;  margin: 0; }" + MindMapHTMLWriter.el);
-		fileout.write("    p { margin: 0; }" + MindMapHTMLWriter.el);
-		if (writeFoldingCode) {
-			fileout
-			    .write("    span.foldopened { color: white; font-size: xx-small;"
-			            + MindMapHTMLWriter.el
-			            + "    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;"
-			            + MindMapHTMLWriter.el
-			            + "    VISIBILITY: visible;"
-			            + MindMapHTMLWriter.el
-			            + "    cursor:pointer; }"
-			            + MindMapHTMLWriter.el
-			            + ""
-			            + MindMapHTMLWriter.el
-			            + ""
-			            + MindMapHTMLWriter.el
-			            + "    span.foldclosed { color: #666666; font-size: xx-small;"
-			            + MindMapHTMLWriter.el
-			            + "    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;"
-			            + MindMapHTMLWriter.el
-			            + "    VISIBILITY: hidden;"
-			            + MindMapHTMLWriter.el
-			            + "    cursor:pointer; }"
-			            + MindMapHTMLWriter.el
-			            + ""
-			            + MindMapHTMLWriter.el
-			            + "    span.foldspecial { color: #666666; font-size: xx-small; border-style: none solid solid none;"
-			            + MindMapHTMLWriter.el
-			            + "    border-color: #CCCCCC; border-width: 1; font-family: sans-serif; padding: 0em 0.1em 0em 0.1em; background: #e0e0e0;"
-			            + MindMapHTMLWriter.el + "    cursor:pointer; }" + MindMapHTMLWriter.el);
-		}
-		fileout.write(MindMapHTMLWriter.el + "    span.l { color: red; font-weight: bold; }" + MindMapHTMLWriter.el
-		        + "" + MindMapHTMLWriter.el + "    a.mapnode:link {text-decoration: none; color: black; }"
-		        + MindMapHTMLWriter.el + "    a.mapnode:visited {text-decoration: none; color: black; }"
-		        + MindMapHTMLWriter.el + "    a.mapnode:active {text-decoration: none; color: black; }"
-		        + MindMapHTMLWriter.el
-		        + "    a.mapnode:hover {text-decoration: none; color: black; background: #eeeee0; }"
-		        + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el + "</style>" + MindMapHTMLWriter.el
-		        + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
+		fileout.write(FileUtils.slurpResource("/html/folding.css"));
+		fileout.write(MindMapHTMLWriter.el + MindMapHTMLWriter.el + "</style>" + MindMapHTMLWriter.el
+			      + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
 	}
 
 	private void writeDefaultFontStyle() throws IOException {
