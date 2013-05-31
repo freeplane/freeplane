@@ -114,17 +114,17 @@ public class ExportToOoWriter implements IExportEngine {
 
 			ZipEntry entry = new ZipEntry("content.xml");
 			zipout.putNextEntry(entry);
-			applyXsltFile("/xslt/mm2oowriter.xsl", writer, result);
+			applyXsltFile("/xslt/export2oowriter.xsl", writer, result);
 			zipout.closeEntry();
 
 			entry = new ZipEntry("META-INF/manifest.xml");
 			zipout.putNextEntry(entry);
-			applyXsltFile("/xslt/mm2oowriter.manifest.xsl", writer, result);
+			applyXsltFile("/xslt/export2oowriter.manifest.xsl", writer, result);
 			zipout.closeEntry();
 
 			entry = new ZipEntry("styles.xml");
 			zipout.putNextEntry(entry);
-			applyXsltFile("/xslt/mm2oowriter.styles.xsl", writer, result);
+			applyXsltFile("/xslt/export2oowriter.styles.xsl", writer, result);
 			zipout.closeEntry();
 		}
 		finally {
