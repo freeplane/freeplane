@@ -5,3 +5,27 @@ JOrtho_0.4_freeplane/src/com/inet/jortho/i18n/*.properties -text
 *.sh eol=lf
 *.bat eol=crlf
 
+*.png  -text
+*.gif  -text
+*.jpeg -text
+*.jpg  -text
+*.JPG  -text
+*.ico  -text
+*.bmp  -text
+*.icns -text
+
+*.ortho -text
+*.swf   -text
+*.ttf -text
+
+*.jar -text
+
+*.exe -text
+*.dll -text
+freeplane_framework/mac-jarbundler/FreeplaneJavaApplicationStub -text
+
+*/help/doc/JavaHelpSearch/OFFSETS   -text
+*/help/doc/JavaHelpSearch/POSITIONS -text
+*/help/doc/JavaHelpSearch/DOCS      -text
+*/help/doc/JavaHelpSearch/DOCS.TAB  -text
+*/help/doc/JavaHelpSearch/TMAP      -text
