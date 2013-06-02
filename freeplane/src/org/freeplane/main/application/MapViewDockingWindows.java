@@ -21,7 +21,6 @@ package org.freeplane.main.application;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.EventQueue;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +37,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -47,6 +47,7 @@ import net.infonode.docking.OperationAbortedException;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
+import net.infonode.docking.properties.RootWindowProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.util.Direction;
@@ -61,7 +62,7 @@ import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
-	
+
 	// // 	final private Controller controller;
 	private static final String OPENED_NOW = "openedNow_1.3.04";
 	private RootWindow rootWindow = null;
@@ -69,13 +70,14 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	private boolean mPaneSelectionUpdate = true;
 	private boolean loadingLayoutFromObjectInpusStream;
 	private byte[] emptyConfigurations;
-	private MapViewSerializer viewSerializer;
+	private final MapViewSerializer viewSerializer;
 
 	public MapViewDockingWindows() {
 		viewSerializer = new MapViewSerializer();
 		rootWindow = new RootWindow(viewSerializer);
-		rootWindow.getRootWindowProperties()
-			.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
+		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
+		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
+		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
 		try {
 	        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -98,7 +100,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 			@Override
             public void viewFocusChanged(View previouslyFocusedView, View focusedView) {
-	            if(focusedView != null){
+	            if(previouslyFocusedView != null && focusedView != null){
 	            	Component containedMapView = getContainedMapView(focusedView);
 	            	viewSelectionChanged(containedMapView);
 	            }
@@ -112,18 +114,18 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 						throw new OperationAbortedException("can not close view");
 	            super.windowClosing(window);
             }
-			
+
 		});
-		
+
 		new InternalFrameAdapter() {
 			@Override
             public void internalFrameClosing(InternalFrameEvent e) {
             }
 		};
-		
+
 
 	}
-	
+
 	private void removeDesktopPaneAccelerators() {
 		 final InputMap map = new InputMap();
 		 rootWindow.setInputMap(JDesktopPane.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, map);
@@ -137,7 +139,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
   	  else
   		  return getLastFocusedChildWindow(lastFocusedChildWindow);
     }
-    
+
 	public void afterViewChange(final Component pOldMap, final Component pNewMap) {
 		if (pNewMap == null) {
 			return;
@@ -174,13 +176,13 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				DockingUtil.addWindow(dynamicView, lastFocusedChildWindow.getRootWindow());
 		}
     }
-	
+
 	static Component getContainedMapView(View dockedWindow) {
         JScrollPane scrollPane = (JScrollPane) dockedWindow.getComponent();
 		Component view = scrollPane.getViewport().getView();
         return view;
     }
-	
+
 	private void addDockedWindow(final Component pNewMap) {
 	    final View viewFrame = viewSerializer.newDockedView(pNewMap);
 		addDockedView(viewFrame);
@@ -218,7 +220,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public JComponent getMapPane() {
 	    return rootWindow;
     }
-	
+
 	public void saveLayout(){
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		try {
@@ -232,7 +234,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	        e.printStackTrace();
         }
 	}
-	
+
 	public void loadLayout(){
 		String encodedBytes = ResourceController.getResourceController().getProperty(OPENED_NOW, null);
 		if(encodedBytes != null){
@@ -258,7 +260,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			}
 		}
 	}
-	
+
 	private void selectMapViewLater() {
 		Timer timer = new Timer(40, new ActionListener() {
 			MapView mapView = null;
