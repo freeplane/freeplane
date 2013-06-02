@@ -117,6 +117,9 @@
 			</fileset>
 			<fileset dir="${resources}">
 				<exclude name="**/preferences.mm" />
+				<exclude name="**/mindmapmodemenu.mm" />
+				<exclude name="**/filemodemenu.mm" />
+				<exclude name="**/stylemodemenu.mm" />
 			</fileset>
 		</jar>
 	</target>
