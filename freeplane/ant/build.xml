@@ -115,7 +115,9 @@
 				<include name="translations/**" />
 				<exclude name="**/*.jar" />
 			</fileset>
-			<fileset dir="${resources}" />
+			<fileset dir="${resources}">
+				<exclude name="**/preferences.mm" />
+			</fileset>
 		</jar>
 	</target>
 	
