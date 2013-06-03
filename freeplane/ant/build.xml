@@ -59,7 +59,7 @@
 		<echo file="${build}/translations/locales.txt">${locales}</echo>
 	</target>
 	
-	<target name="build" depends="prepare_jortho,localelist">
+	<target name="build" depends="prepare_jortho,localelist,build-ui-xml">
 		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
@@ -73,6 +73,22 @@
 			debug="${debug}" source="1.3" target="1.1" encoding="utf8">
 			<include name="org/freeplane/main/application/FreeplaneMain.java" />
 		</javac>
+	</target>
+
+	<target name="build-ui-xml">
+		<xslt in="${resources}/xml/preferences.mm"
+		      style="ant/mm2preferences.xsl"
+		      out="${resources}/xml/preferences.xml"/>
+
+		<xslt in="${resources}/xml/filemodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/filemodemenu.xml"/>
+		<xslt in="${resources}/xml/stylemodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/stylemodemenu.xml"/>
+		<xslt in="${resources}/xml/mindmapmodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/mindmapmodemenu.xml"/>
 	</target>
 
 	<target name="osgi_build" depends="build">
