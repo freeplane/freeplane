@@ -89,6 +89,9 @@
 		<xslt in="${resources}/xml/mindmapmodemenu.mm"
 		      style="ant/mm2menu.xsl"
 		      out="${resources}/xml/mindmapmodemenu.xml"/>
+		<xslt in="${resources}/xml/browsemodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/browsemodemenu.xml"/>
 		<xslt in="${viewer-resources}/xml/appletMenu.mm"
 		      style="ant/mm2menu.xsl"
 		      out="${viewer-resources}/xml/appletMenu.xml"/>
@@ -138,6 +141,7 @@
 			</fileset>
 			<fileset dir="${resources}">
 				<exclude name="**/preferences.mm" />
+				<exclude name="**/browsemodemenu.mm" />
 				<exclude name="**/mindmapmodemenu.mm" />
 				<exclude name="**/filemodemenu.mm" />
 				<exclude name="**/stylemodemenu.mm" />
@@ -253,6 +257,7 @@
 			<fileset defaultexcludes="no" dir="${src}" includes="**/*~" />
 			<fileset dir="${resources}">
 				<include name="**/preferences.xml" />
+				<include name="**/browsemodemenu.xml" />
 				<include name="**/mindmapmodemenu.xml" />
 				<include name="**/filemodemenu.xml" />
 				<include name="**/stylemodemenu.xml" />

@@ -21,6 +21,7 @@ freeplane_plugin_script/build-nodehighlighter
 freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
 freeplane_framework/temp
 
+freeplane/resources/xml/browsemodemenu.xml
 freeplane/resources/xml/filemodemenu.xml
 freeplane/resources/xml/mindmapmodemenu.xml
 freeplane/resources/xml/preferences.xml
