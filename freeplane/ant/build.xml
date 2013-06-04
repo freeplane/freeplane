@@ -89,6 +89,9 @@
 		<xslt in="${resources}/xml/mindmapmodemenu.mm"
 		      style="ant/mm2menu.xsl"
 		      out="${resources}/xml/mindmapmodemenu.xml"/>
+		<xslt in="${viewer-resources}/xml/appletMenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${viewer-resources}/xml/appletMenu.xml"/>
 	</target>
 
 	<target name="osgi_build" depends="build">
@@ -119,7 +122,9 @@
 				<exclude name="**/core/resources/ui/**" />
 				<exclude name="translations/**" />
 			</fileset>
-			<fileset dir="${viewer-resources}" />
+			<fileset dir="${viewer-resources}">
+				<exclude name="**/appletMenu.mm" />
+			</fileset>
 		</jar>
 		<jar jarfile="${freeplaneeditor.jar}" manifest="${manifest}">
 			<fileset dir="${build}">
