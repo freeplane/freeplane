@@ -52,11 +52,13 @@
 <stylenode TEXT="radio_action">
 <icon BUILTIN="unchecked"/>
 </stylenode>
-<stylenode TEXT="catagory"/>
-<stylenode TEXT="category">
+<stylenode TEXT="category" COLOR="#000000" BACKGROUND_COLOR="#ccffcc">
+<font ITALIC="true"/>
 <cloud COLOR="#ccffcc" SHAPE="ARC"/>
 </stylenode>
-<stylenode TEXT="submenu"/>
+<stylenode TEXT="submenu">
+<font ITALIC="true"/>
+</stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -85,7 +87,7 @@
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="file"/>
 <attribute NAME="name_ref" VALUE="file"/>
-<node TEXT="last" ID="ID_235051047" CREATED="1370196341010" MODIFIED="1370196341010">
+<node TEXT="Most recent maps" ID="ID_235051047" CREATED="1370196341010" MODIFIED="1370336913324">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="menu_key" VALUE="main_menu_most_recent_files"/>
 <attribute NAME="name" VALUE="last"/>
@@ -116,7 +118,7 @@
 <attribute NAME="menu_key" VALUE="MB_QuitAction"/>
 </node>
 </node>
-<node TEXT="Edit" ID="ID_1176046308" CREATED="1370196341026" MODIFIED="1370196341026">
+<node TEXT="Edit" FOLDED="true" ID="ID_1176046308" CREATED="1370196341026" MODIFIED="1370196341026">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="edit"/>
 <attribute NAME="name_ref" VALUE="edit"/>
@@ -153,7 +155,7 @@
 <node TEXT="toolbars" FOLDED="true" ID="ID_7330669" CREATED="1370196341028" MODIFIED="1370196341028">
 <attribute NAME="type" VALUE="category"/>
 <attribute NAME="name" VALUE="toolbars"/>
-<node TEXT="toolbars" FOLDED="true" ID="ID_623864969" CREATED="1370196341034" MODIFIED="1370196341034">
+<node TEXT="Toolbars" FOLDED="true" ID="ID_623864969" CREATED="1370196341034" MODIFIED="1370336842333">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="toolbars"/>
 <attribute NAME="name_ref" VALUE="menu_toolbars"/>
@@ -175,7 +177,7 @@
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="ToggleScrollbarsAction"/>
 </node>
-<node TEXT="SetBooleanPropertyAction.presentation_mode" ID="ID_1201946503" CREATED="1370196341035" MODIFIED="1370196341035">
+<node TEXT="Presentation mode" ID="ID_1201946503" CREATED="1370196341035" MODIFIED="1370336996637">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="SetBooleanPropertyAction.presentation_mode"/>
 </node>

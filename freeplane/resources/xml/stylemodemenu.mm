@@ -52,11 +52,13 @@
 <stylenode TEXT="radio_action">
 <icon BUILTIN="unchecked"/>
 </stylenode>
-<stylenode TEXT="catagory"/>
-<stylenode TEXT="category">
+<stylenode TEXT="category" COLOR="#000000" BACKGROUND_COLOR="#ccffcc">
+<font ITALIC="true"/>
 <cloud COLOR="#ccffcc" SHAPE="ARC"/>
 </stylenode>
-<stylenode TEXT="submenu"/>
+<stylenode TEXT="submenu">
+<font ITALIC="true"/>
+</stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -94,7 +96,7 @@
 <attribute NAME="action" VALUE="styledialog.cancel"/>
 </node>
 </node>
-<node TEXT="Edit" ID="ID_1301905948" CREATED="1370196501368" MODIFIED="1370196501368">
+<node TEXT="Edit" FOLDED="true" ID="ID_1301905948" CREATED="1370196501368" MODIFIED="1370196501368">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="edit"/>
 <attribute NAME="name_ref" VALUE="edit"/>
@@ -108,11 +110,11 @@
 <attribute NAME="action" VALUE="CloudAction"/>
 </node>
 </node>
-<node TEXT="icons" FOLDED="true" ID="ID_764034244" CREATED="1370196501369" MODIFIED="1370196501369">
+<node TEXT="Icons" FOLDED="true" ID="ID_764034244" CREATED="1370196501369" MODIFIED="1370337081696">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="icons"/>
 <attribute NAME="name_ref" VALUE="menu_iconView"/>
-<node TEXT="icons" FOLDED="true" ID="ID_781060873" CREATED="1370196501369" MODIFIED="1370196501369">
+<node TEXT="Icons by category" ID="ID_781060873" CREATED="1370196501369" MODIFIED="1370337168033">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="icons"/>
 <attribute NAME="name_ref" VALUE="menu_iconByCategory"/>
@@ -226,17 +228,17 @@
 </node>
 </node>
 </node>
-<node TEXT="view" FOLDED="true" ID="ID_1971871198" CREATED="1370196501385" MODIFIED="1370196501385">
+<node TEXT="View" FOLDED="true" ID="ID_1971871198" CREATED="1370196501385" MODIFIED="1370337204561">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="view"/>
 <attribute NAME="name_ref" VALUE="menu_view"/>
 <node TEXT="Menu_Toolbar_Panel" FOLDED="true" ID="ID_1212160763" CREATED="1370196501385" MODIFIED="1370196501385">
 <attribute NAME="type" VALUE="category"/>
 <attribute NAME="name" VALUE="Menu_Toolbar_Panel"/>
-<node TEXT="toolbars" FOLDED="true" ID="ID_566424244" CREATED="1370196501385" MODIFIED="1370196501385">
+<node TEXT="toolbars" ID="ID_566424244" CREATED="1370196501385" MODIFIED="1370196501385">
 <attribute NAME="type" VALUE="category"/>
 <attribute NAME="name" VALUE="toolbars"/>
-<node TEXT="toolbars" FOLDED="true" ID="ID_1553060806" CREATED="1370196501385" MODIFIED="1370196501385">
+<node TEXT="Toolbars" FOLDED="true" ID="ID_1553060806" CREATED="1370196501385" MODIFIED="1370337193088">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="toolbars"/>
 <attribute NAME="name_ref" VALUE="menu_toolbars"/>
@@ -320,7 +322,7 @@
 </node>
 </node>
 </node>
-<node TEXT="format" FOLDED="true" ID="ID_941939596" CREATED="1370196501470" MODIFIED="1370196501470">
+<node TEXT="Format" FOLDED="true" ID="ID_941939596" CREATED="1370196501470" MODIFIED="1370337222438">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="format"/>
 <attribute NAME="name_ref" VALUE="menu_format"/>
@@ -419,7 +421,7 @@
 <attribute NAME="action" VALUE="RemoveFormatAction"/>
 </node>
 </node>
-<node TEXT="CloudProperties" FOLDED="true" ID="ID_680662992" CREATED="1370196501508" MODIFIED="1370196501508">
+<node TEXT="Cloud properties" FOLDED="true" ID="ID_680662992" CREATED="1370196501508" MODIFIED="1370337239848">
 <attribute NAME="type" VALUE="category"/>
 <attribute NAME="name" VALUE="CloudProperties"/>
 <node TEXT="Cloud color..." ID="ID_520617030" CREATED="1370196501508" MODIFIED="1370196501508">
@@ -427,7 +429,7 @@
 <attribute NAME="action" VALUE="CloudColorAction"/>
 </node>
 </node>
-<node TEXT="EdgeProperties" FOLDED="true" ID="ID_1540738912" CREATED="1370196501508" MODIFIED="1370196501508">
+<node TEXT="Edge properties" FOLDED="true" ID="ID_1540738912" CREATED="1370196501508" MODIFIED="1370337236313">
 <attribute NAME="type" VALUE="category"/>
 <attribute NAME="name" VALUE="EdgeProperties"/>
 <node TEXT="Styles" FOLDED="true" ID="ID_1151570828" CREATED="1370196501508" MODIFIED="1370196501508">
@@ -475,19 +477,19 @@
 <attribute NAME="type" VALUE="radio_action"/>
 <attribute NAME="action" VALUE="EdgeWidthAction_width_thin"/>
 </node>
-<node TEXT="EdgeWidthAction_1" ID="ID_87819819" CREATED="1370196501512" MODIFIED="1370196501512">
+<node TEXT="1" OBJECT="java.lang.Long|1" ID="ID_87819819" CREATED="1370196501512" MODIFIED="1370337248602">
 <attribute NAME="type" VALUE="radio_action"/>
 <attribute NAME="action" VALUE="EdgeWidthAction_1"/>
 </node>
-<node TEXT="EdgeWidthAction_2" ID="ID_121140983" CREATED="1370196501512" MODIFIED="1370196501512">
+<node TEXT="2" OBJECT="java.lang.Long|2" ID="ID_121140983" CREATED="1370196501512" MODIFIED="1370337249446">
 <attribute NAME="type" VALUE="radio_action"/>
 <attribute NAME="action" VALUE="EdgeWidthAction_2"/>
 </node>
-<node TEXT="EdgeWidthAction_4" ID="ID_909658892" CREATED="1370196501513" MODIFIED="1370196501513">
+<node TEXT="4" OBJECT="java.lang.Long|4" ID="ID_909658892" CREATED="1370196501513" MODIFIED="1370337251851">
 <attribute NAME="type" VALUE="radio_action"/>
 <attribute NAME="action" VALUE="EdgeWidthAction_4"/>
 </node>
-<node TEXT="EdgeWidthAction_8" ID="ID_609459319" CREATED="1370196501513" MODIFIED="1370196501513">
+<node TEXT="8" OBJECT="java.lang.Long|8" ID="ID_609459319" CREATED="1370196501513" MODIFIED="1370337253325">
 <attribute NAME="type" VALUE="radio_action"/>
 <attribute NAME="action" VALUE="EdgeWidthAction_8"/>
 </node>
@@ -503,7 +505,7 @@
 <attribute NAME="action" VALUE="NodeWidthAction"/>
 </node>
 </node>
-<node TEXT="navigate" FOLDED="true" ID="ID_101184743" CREATED="1370196501513" MODIFIED="1370196501513">
+<node TEXT="Navigate" FOLDED="true" ID="ID_101184743" CREATED="1370196501513" MODIFIED="1370337347567">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="navigate"/>
 <attribute NAME="name_ref" VALUE="menu_navigate"/>
