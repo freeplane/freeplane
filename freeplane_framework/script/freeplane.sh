@@ -110,10 +110,10 @@ __move_old_userfpdir_to_XDG_CONFIG_HOME() {
     old_userfpdir="${HOME}/.freeplane"
     if [ -d "$old_userfpdir" -a ! -d "$userfpdir" ] ; then
 	mv "$old_userfpdir" "$userfpdir"
+	for n in "$userfpdir"/*/auto.properties ; do
+	    sed -i~ 's!'"$old_userfpdir"'/!'"$userfpdir"'/!' "$n"
+	done
     fi
-    for n in "$userfpdir"/*/auto.properties ; do
-	sed -i~ 's!'"$old_userfpdir"'/!'"$userfpdir"'/!' "$n"
-    done
 }
 
 userfpdir="${XDG_CONFIG_HOME:-$HOME/.config}/freeplane"
