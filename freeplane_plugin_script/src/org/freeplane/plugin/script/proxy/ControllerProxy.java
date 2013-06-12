@@ -7,16 +7,21 @@ import groovy.lang.Closure;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.export.mindmapmode.ExportController;
+import org.freeplane.features.export.mindmapmode.IExportEngine;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
@@ -243,5 +248,37 @@ class ControllerProxy implements Proxy.Controller {
 
     public boolean isInteractive() {
         return !Boolean.parseBoolean(System.getProperty("nonInteractive"));
+    }
+
+    public List<String> getExportTypeDescriptions() {
+        final ArrayList<String> list = new ArrayList<String>();
+        for (FileFilter fileFilter : ExportController.getContoller().getFileFilters()) {
+            list.add(fileFilter.getDescription());
+        }
+        return list;
+    }
+
+    public void export(Map map, File destFile, String exportTypeDescription, boolean overwriteExisting) {
+        final FileFilter filter = findExportFileFilterByDescription(exportTypeDescription);
+        if (filter == null) {
+            throw new IllegalArgumentException("no export defined for '" + exportTypeDescription + "'");
+        }
+        else if (!overwriteExisting && destFile.exists()) {
+            throw new RuntimeException("destination file " + destFile.getAbsolutePath()
+                    + " already exists - set overwriteExisting to true?");
+        }
+        else {
+            final IExportEngine exportEngine = ExportController.getContoller().getFilterMap().get(filter);
+            exportEngine.export(((MapProxy) map).getDelegate(), destFile);
+            LogUtils.info("exported " + map.getFile() + " to " + destFile.getAbsolutePath());
+        }
+    }
+
+    private FileFilter findExportFileFilterByDescription(String exportTypeDescription) {
+        for (FileFilter fileFilter : ExportController.getContoller().getFileFilters()) {
+            if (fileFilter.getDescription().equals(exportTypeDescription))
+                return fileFilter;
+        }
+        return null;
     }
 }

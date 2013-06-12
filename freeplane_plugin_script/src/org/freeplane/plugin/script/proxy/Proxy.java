@@ -441,6 +441,18 @@ public interface Proxy {
 		/** returns false if the system 'nonInteractive' is set. This can be used in actions to not open dialogs etc.
 		 * @since 1.2 */
 		boolean isInteractive();
+
+		List<String> getExportTypeDescriptions();
+
+        /** exports map to destination file, example:
+         * <pre>
+         *   println c.getExportTypeDescriptions.join('\n')
+         *   boolean overwriteExistingFile = true
+         *   c.export(node.map, new File('/tmp/t.png'), 'Portable Network Graphic (PNG) (.png)', overwriteExistingFile)
+         * </pre>
+         * @param exportTypeDescription Use {@link #getExportTypeDescriptions()} to look up available exportTypes
+         * @since 1.3.5 */
+        void export(Map map, File destinationFile, String exportTypeDescription, boolean overwriteExisting);
 	}
 
 	/** Access to global state: <code>c</code> - read-write. */
@@ -454,7 +466,7 @@ public interface Proxy {
 		/** opens the appropriate popup text editor. Does not block until edit has finished.
 		 * @since 1.2.2 */
 		void editInPopup(Node node);
-
+		
 		void select(Node toSelect);
 
 		/** selects branchRoot and all children */
