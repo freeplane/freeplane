@@ -21,12 +21,9 @@ package org.freeplane.view.swing.ui;
 
 import java.awt.event.MouseEvent;
 
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -71,25 +68,12 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		showPopupMenu(e);
+		new NodePopupMenuDisplayer().showNodePopupMenu(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		showPopupMenu(e);
+		new NodePopupMenuDisplayer().showNodePopupMenu(e);
 	}
 
-	public void showPopupMenu(final MouseEvent e) {
-		if (e.isPopupTrigger()) {
-			ModeController mc = Controller.getCurrentController().getModeController();
-			final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
-			if (nodeView == null)
-				return;
-			if (!nodeView.isSelected()) {
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
-			}
-			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-			new PopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
-		}
-	}
 }

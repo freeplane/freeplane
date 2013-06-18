@@ -318,14 +318,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (inside || inFoldingRegion) {
 			if(inside){
 				stopTimerForDelayedSelection();
-				ModeController mc = Controller.getCurrentController().getModeController();
-				final MainView component = (MainView) e.getComponent();
-				final NodeView nodeView = component.getNodeView();
-				if(! nodeView.isSelected()){
-					Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
-				}
-				final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-				new PopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
+				new NodePopupMenuDisplayer().showNodePopupMenu(e);
 			}
 			else if(inFoldingRegion){
 				showFoldingPopup(e);
@@ -342,7 +335,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final NodeView nodeView = component.getNodeView();
 		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
 		AutoHide.start(popupmenu);
-		new PopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
+		new NodePopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
     }
 
 	protected boolean isInside(final MouseEvent e) {
