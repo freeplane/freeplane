@@ -1,7 +1,6 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
-import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -12,13 +11,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.FocusManager;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.AutoHide;
@@ -92,15 +89,13 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	 */
 	private Rectangle controlRegionForDelayedSelection;
 // 	final private ModeController mc;
-	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
 	protected final DoubleClickTimer doubleClickTimer;
 	private boolean wasFocused;
-	private MovedMouseEventFilter windowMouseTracker;
+	private final MovedMouseEventFilter windowMouseTracker;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
-		popupListener = new ControllerPopupMenuListener();
 		doubleClickTimer = new DoubleClickTimer();
 		windowMouseTracker = new MovedMouseEventFilter();
 	}
@@ -180,7 +175,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					e.consume();
 					return;
 				}
-				
+
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
 					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 					if(!shouldSelectOnClick(e)){
@@ -201,8 +196,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			}
 		}
 		final boolean inFoldingRegion = isInFoldingRegion(e);
-		if ((plainEvent && inFoldingRegion 
-				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e)) 
+		if ((plainEvent && inFoldingRegion
+				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e))
 				&& !shouldSelectOnClick(e)) {
 			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 			doubleClickTimer.cancel();
@@ -291,7 +286,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
         if (node.getCursor().getType() != requiredCursor.getType() || requiredCursor.getType() == Cursor.CUSTOM_CURSOR && node.getCursor() != requiredCursor) {
         	node.setCursor(requiredCursor);
         }
-		if (controlRegionForDelayedSelection == null 
+		if (controlRegionForDelayedSelection == null
 				|| !controlRegionForDelayedSelection.contains(e.getPoint())) {
 				createTimer(e);
 		}
@@ -330,7 +325,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
 				}
 				final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-				showMenuAndConsumeEvent(popupmenu, e);
+				new PopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
 			}
 			else if(inFoldingRegion){
 				showFoldingPopup(e);
@@ -347,15 +342,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final NodeView nodeView = component.getNodeView();
 		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
 		AutoHide.start(popupmenu);
-		showMenuAndConsumeEvent(popupmenu, e);
-    }
-
-	private void showMenuAndConsumeEvent(final JPopupMenu popupmenu, final MouseEvent e) {
-	    if (popupmenu != null) {
-	    	popupmenu.addHierarchyListener(popupListener);
-	    	popupmenu.show(e.getComponent(), e.getX(), e.getY());
-	    	e.consume();
-	    }
+		new PopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
     }
 
 	protected boolean isInside(final MouseEvent e) {
@@ -384,7 +371,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			selection.toggleSelected(newlySelectedNode);
 		}
 		if(extend == range){
-			if (selection.isSelected(newlySelectedNode) && selection.size() == 1 
+			if (selection.isSelected(newlySelectedNode) && selection.size() == 1
 			        && FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)
 				return;
 			else {
