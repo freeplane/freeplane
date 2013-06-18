@@ -21,9 +21,13 @@ package org.freeplane.view.swing.ui;
 
 import java.awt.event.MouseEvent;
 
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -38,6 +42,13 @@ import org.freeplane.view.swing.map.ZoomableLabel;
 public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
+		final ModeController mc = Controller.getCurrentController().getModeController();
+		if (Compat.isMacOsX()) {
+			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+			if (popupmenu.isShowing()) {
+				return;
+			}
+		}
     	final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
     	if(nodeView == null)
     		return;
