@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.ui;
 
+import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -38,6 +39,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -49,6 +51,7 @@ public class NodeSelector {
 	private static final String SELECTION_METHOD_BY_CLICK = "selection_method_by_click";
 	private static final String TIME_FOR_DELAYED_SELECTION = "time_for_delayed_selection";
 	private static final String SELECTION_METHOD = "selection_method";
+	private final MovedMouseEventFilter windowMouseTracker = new MovedMouseEventFilter();
 
 	protected class TimeDelayedSelection extends TimerTask {
 		final private MouseEvent e;
@@ -73,7 +76,8 @@ public class NodeSelector {
 					try {
 						Controller controller = Controller.getCurrentController();
 						if (!controller.getModeController().isBlocked() && controller.getSelection().size() <= 1) {
-							final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
+							final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
+							    e.getComponent());
 							if (nodeV.isDisplayable() && nodeV.getModel().isVisible()) {
 								nodeV.getMap().select();
 								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
@@ -140,8 +144,7 @@ public class NodeSelector {
 
 	public boolean shouldSelectOnClick(MouseEvent e) {
 		if (isInside(e)) {
-			final MainView component = (MainView) e.getComponent();
-			NodeView nodeView = component.getNodeView();
+			final NodeView nodeView = getRelatedNodeView(e);
 			return !nodeView.isSelected() || Controller.getCurrentController().getSelection().size() != 1;
 		}
 		return false;
@@ -149,8 +152,8 @@ public class NodeSelector {
 
 	public void extendSelection(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
-		final MainView mainView = (MainView) e.getComponent();
-		final NodeModel newlySelectedNode = mainView.getNodeView().getModel();
+		final NodeView nodeView = getRelatedNodeView(e);
+		final NodeModel newlySelectedNode = nodeView.getModel();
 		final boolean extend = Compat.isMacOsX() ? e.isMetaDown() : e.isControlDown();
 		final boolean range = e.isShiftDown();
 		final IMapSelection selection = controller.getSelection();
@@ -169,5 +172,25 @@ public class NodeSelector {
 			}
 			e.consume();
 		}
+	}
+
+	public void selectSingleNode(MouseEvent e) {
+		final NodeView nodeV = getRelatedNodeView(e);
+		final Controller controller = Controller.getCurrentController();
+		if (!((MapView) controller.getMapViewManager().getMapViewComponent()).isSelected(nodeV)) {
+			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+		}
+	}
+
+	public NodeView getRelatedNodeView(MouseEvent e) {
+		return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
+	}
+
+	public boolean isRelevant(MouseEvent e) {
+		return windowMouseTracker.isRelevant(e);
+	}
+
+	public void trackWindowForComponent(Component c) {
+		windowMouseTracker.trackWindowForComponent(c);
 	}
 }

@@ -29,20 +29,18 @@ import org.freeplane.view.swing.map.NodeView;
  * The MouseMotionListener which belongs to every NodeView
  */
 public class DefaultNodeMouseMotionListener implements IMouseListener {
-	protected final NodeSelector nodeSelector = new NodeSelector();
+	protected final NodeSelector nodeSelector;
 	private static final String FOLD_ON_CLICK_INSIDE = "fold_on_click_inside";
 	/**
 	 * The mouse has to stay in this region to enable the selection after a
 	 * given time.
 	 */
 	protected final DoubleClickTimer doubleClickTimer;
-	private boolean wasFocused;
-	private final MovedMouseEventFilter windowMouseTracker;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
 		doubleClickTimer = new DoubleClickTimer();
-		windowMouseTracker = new MovedMouseEventFilter();
+		nodeSelector = new NodeSelector();
 	}
 
 
@@ -140,15 +138,11 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (!nodeSelector.isInside(e))
 			return;
 		nodeSelector.stopTimerForDelayedSelection();
-		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-		final Controller controller = Controller.getCurrentController();
-		if (!((MapView) controller.getMapViewManager().getMapViewComponent()).isSelected(nodeV)) {
-			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
-		}
+		nodeSelector.selectSingleNode(e);
 	}
 
 	public void mouseEntered(final MouseEvent e) {
-		if(windowMouseTracker.isRelevant(e)){
+		if (nodeSelector.isRelevant(e)) {
 			nodeSelector.createTimer(e);
 			mouseMoved(e);
 		}
@@ -158,11 +152,11 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		nodeSelector.stopTimerForDelayedSelection();
 		final MainView v = (MainView) e.getSource();
 		v.setMouseArea(MouseArea.OUT);
-		windowMouseTracker.trackWindowForComponent(v);
+		nodeSelector.trackWindowForComponent(v);
 	}
 
 	public void mouseMoved(final MouseEvent e) {
-		if(! windowMouseTracker.isRelevant(e))
+		if (!nodeSelector.isRelevant(e))
 			return;
 		final MainView node = ((MainView) e.getComponent());
 		String link = node.getLink(e.getPoint());
@@ -198,14 +192,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MapView mapView = MapView.getMapView(e.getComponent());
 		mapView.select();
 		doubleClickTimer.cancel();
-		final MainView component = (MainView) e.getComponent();
-		wasFocused = component.hasFocus();
 		showPopupMenu(e);
 	}
-
-	public boolean wasFocused() {
-    	return wasFocused;
-    }
 
 	public void mouseReleased(final MouseEvent e) {
 		nodeSelector.stopTimerForDelayedSelection();
@@ -233,8 +221,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final FoldingController foldingController = mc.getExtension(FoldingController.class);
 		if(foldingController == null)
 			return;
-		final MainView component = (MainView) e.getComponent();
-		final NodeView nodeView = component.getNodeView();
+		final NodeView nodeView = nodeSelector.getRelatedNodeView(e);
 		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
 		AutoHide.start(popupmenu);
 		new NodePopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
