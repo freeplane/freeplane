@@ -67,7 +67,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mapio.MapIO;
@@ -97,7 +96,7 @@ public class UrlManager implements IExtension {
 
 	public static UrlManager getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
-		return (UrlManager) modeController.getExtension(UrlManager.class);
+		return modeController.getExtension(UrlManager.class);
 	}
 
 	/**
@@ -175,7 +174,7 @@ public class UrlManager implements IExtension {
 	public UrlManager() {
 		super();
 	}
-	
+
 	protected void init() {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
@@ -207,13 +206,13 @@ public class UrlManager implements IExtension {
             protected JDialog createDialog(Component parent) throws HeadlessException {
  				final JDialog dialog = super.createDialog(parent);
 	            final JComponent selector = createDirectorySelector(this);
-	           
+
 	            //Close dialog when escape is pressed
 	            InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 	            in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
 	            ActionMap aMap = dialog.getRootPane().getActionMap();
 	            aMap.put("escape", new AbstractAction()
-	            		{ 
+	            		{
 	            		public void actionPerformed (ActionEvent e)
 	            		{
 	            			dialog.dispose();
@@ -223,7 +222,7 @@ public class UrlManager implements IExtension {
 	            	dialog.getContentPane().add(selector, BorderLayout.NORTH);
 	            	dialog.pack();
 	            }
-	            
+
 				return dialog;
             }
 
@@ -341,11 +340,16 @@ public class UrlManager implements IExtension {
 		try {
 			final String extension = FileUtils.getExtension(uri.getRawPath());
 			if(! uri.isAbsolute()){
-				uri = getAbsoluteUri(uri);
-				if(uri == null){
-					UITools.errorMessage(TextUtils.getText("map_not_saved"));
+				URI absoluteUri = getAbsoluteUri(uri);
+				if (absoluteUri == null) {
+					final MapModel map = Controller.getCurrentController().getMap();
+					if (map.getURL() == null)
+						UITools.errorMessage(TextUtils.getText("map_not_saved"));
+					else
+						UITools.errorMessage(TextUtils.format("link_not_found", String.valueOf(uri)));
 					return;
 				}
+				uri = absoluteUri;
 			}
 			//DOCEAR: mindmaps can be linked in a mindmap --> therefore project-relative-paths are possible
 			if(!"file".equals(uri.getScheme())) {
@@ -393,7 +397,7 @@ public class UrlManager implements IExtension {
 		return getAbsoluteUri(map, uri);
 	}
 
-	
+
 	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
 
 
@@ -410,7 +414,7 @@ public class UrlManager implements IExtension {
 		} catch (IllegalArgumentException ex) {
 			resolvedURI = uri;
 		}
-		
+
 		if (resolvedURI.isAbsolute()) {
 			return resolvedURI;
 		}
@@ -435,21 +439,21 @@ public class UrlManager implements IExtension {
 		try {
 			URLConnection urlConnection;
 			// windows drive letters are interpreted as uri schemes -> make a file from the scheme-less uri string and use this to resolve the path
-			if(Compat.isWindowsOS() && (uri.getScheme() != null && uri.getScheme().length() == 1)) { 
+			if(Compat.isWindowsOS() && (uri.getScheme() != null && uri.getScheme().length() == 1)) {
 				urlConnection = (new File(uri.toString())).toURI().toURL().openConnection();
-			} 
+			}
 			else if(uri.getScheme() == null && !uri.getPath().startsWith(File.separator)) {
 				if(map != null) {
 					urlConnection = (new File(uri.toString())).toURI().toURL().openConnection();
-				} 
+				}
 				else {
 					urlConnection = UrlManager.getController().getAbsoluteUri(map, uri).toURL().openConnection();
 				}
 			}
 			else {
-				urlConnection = uri.toURL().openConnection();				
+				urlConnection = uri.toURL().openConnection();
 			}
-			
+
 			if (urlConnection == null) {
 				return null;
 			}
@@ -457,7 +461,7 @@ public class UrlManager implements IExtension {
 				URI absoluteUri = urlConnection.getURL().toURI().normalize();
 				if("file".equalsIgnoreCase(absoluteUri.getScheme())){
 					return new File(absoluteUri);
-				}				
+				}
 			}
 		}
 		catch (URISyntaxException e) {
