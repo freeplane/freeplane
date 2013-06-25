@@ -24,9 +24,12 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -41,6 +44,7 @@ public class JResizer extends JComponent{
 	private Point point;
 	private int index;
 	public enum Direction {RIGHT, LEFT, UP, DOWN}
+	private Set<ResizerListener> resizeListener = new LinkedHashSet<ResizerListener>();
 
 	public JResizer(final Direction d) {
 		setOpaque(true);
@@ -126,9 +130,10 @@ public class JResizer extends JComponent{
 					else if(d.equals(Direction.DOWN)){
 						size.height -= (point2.x - point.x);
 					}
-					resizedComponent.setPreferredSize(size);
+					resizedComponent.setPreferredSize(new Dimension(Math.max(size.width, 0), Math.max(size.height, 0)));
 					parent.revalidate();
 					parent.repaint();
+					fireSizeChanged(resizedComponent);
 				}
 				else{
 					index = getIndex();
@@ -137,5 +142,32 @@ public class JResizer extends JComponent{
             }
 		});
     }
+	
+	public void addResizerListener(ResizerListener listener) {
+		if(listener == null) return;
+		
+		synchronized (resizeListener) {
+			resizeListener.add(listener);
+		}
+		
+	}
+	
+	public void removeResizerListener(ComponentListener listener) {
+		if(listener == null) return;
+		
+		synchronized (resizeListener) {
+			resizeListener.remove(listener);
+		}		
+	}
+	
+	private void fireSizeChanged(Component resizedComponent) {
+		ResizeEvent event = new ResizeEvent(resizedComponent);
+		synchronized (this.resizeListener) {
+			for(ResizerListener listener : resizeListener) {
+				listener.componentResized(event);
+			}
+		}
+		
+	}
 	
 }

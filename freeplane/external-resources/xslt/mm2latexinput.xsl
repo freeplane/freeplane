@@ -2,7 +2,7 @@
 
 
 	<!--
-		MINDMAPEXPORTFILTER tex  latex input
+		MINDMAPEXPORTFILTER tex  Latex input
 		
 		: This code	released under the GPL. 
 		: (http://www.gnu.org/copyleft/gpl.html) 
@@ -22,15 +22,19 @@
 	version='1.0'>
 	<xsl:output omit-xml-declaration="yes"  method="text"/>
 
+  <xsl:param name="sectionLevel1" select="'section'"/>
+  <xsl:param name="sectionLevel2" select="'subsection'"/>
+  <xsl:param name="sectionLevel3" select="'subsubsection'"/>
+
 	<xsl:template match="map">
 		<xsl:apply-templates select="node/node" />
     </xsl:template>
-
 
 <!-- ======= Body ====== -->
 
 <!-- Sections Processing -->
 <xsl:template match="node">
+
 <xsl:variable name="target" select="arrowlink/@DESTINATION"/>
 
 <xsl:choose>
@@ -48,17 +52,17 @@
 </xsl:text>
 </xsl:when>
 <xsl:when test="count(ancestor::node())-2&lt;=1">
-<xsl:text>\section</xsl:text>
+<xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel1"/>
 <xsl:text>{</xsl:text>
 <xsl:apply-templates select="@TEXT|richcontent" /><xsl:text>}
 </xsl:text></xsl:when>
 <xsl:when test="node and not(@LOCALIZED_STYLE_REF) and count(ancestor::node())-2=2">
-<xsl:text>\subsection</xsl:text>
+<xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel2"/>
 <xsl:text>{</xsl:text>
 <xsl:apply-templates select="@TEXT|richcontent" /><xsl:text>}
 </xsl:text></xsl:when>
 <xsl:when test="node and not(@LOCALIZED_STYLE_REF) and count(ancestor::node())-2=3">
-<xsl:text>\subsubsection</xsl:text>
+<xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel3"/>
 <xsl:text>{</xsl:text>
 <xsl:apply-templates select="@TEXT|richcontent" /><xsl:text>}
 </xsl:text></xsl:when>
@@ -71,21 +75,31 @@
 </xsl:when>
 <xsl:when test="@TEXT=''"></xsl:when>
 <xsl:otherwise>
+
 <xsl:choose>
 <xsl:when test="starts-with(@TEXT, '\latex ')">
-<xsl:value-of select="substring-after(@TEXT, '\latex ')"/>
+  <xsl:value-of select="substring-after(@TEXT, '\latex ')"/>
+  <xsl:text>
+
+</xsl:text>    
 </xsl:when>
 <xsl:when test="@FORMAT='latexPatternFormat'">
-<xsl:apply-templates select="@TEXT|richcontent"  mode="rawLatex"/>
+  <!--<xsl:apply-templates select="@TEXT|richcontent"  mode="rawLatex"/>-->
+  <xsl:value-of select="@TEXT"/>
+  <xsl:text>
+
+  </xsl:text>    
 </xsl:when>
 <xsl:otherwise>
-<xsl:apply-templates select="@TEXT|richcontent"  mode="addEol"/>
+  <xsl:apply-templates select="@TEXT|richcontent"  mode="addEol"/>
 </xsl:otherwise>
 </xsl:choose>
 </xsl:otherwise>
 </xsl:choose>
+
 <xsl:apply-templates select="node" />
 </xsl:template>
+
 <xsl:template match="richcontent"  >
 	<xsl:apply-templates select="html"/>
 </xsl:template>
@@ -94,12 +108,20 @@
 
 <!-- End of Sections Processing -->
 <xsl:template match="@TEXT" mode="addEol">
+<!--
 	<xsl:text>
 \par </xsl:text>	<xsl:apply-templates select="."/>
+-->
+<xsl:text>
+
+</xsl:text>
+<xsl:apply-templates select="."/>
 </xsl:template>
+
 <xsl:template match="richcontent" mode="addEol">
 	<xsl:apply-templates select="."/>
 </xsl:template>
+
 <!-- LaTeXChar: A recursive function that generates LaTeX special characters -->
 <xsl:template match = "@*|text()" mode="rawLatex">
 	<xsl:value-of select="."/>
@@ -204,21 +226,21 @@
 
 <!-- body sections -->
 <xsl:template match="h1">
-  <xsl:text>\section{</xsl:text>
+  <xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel1"/><xsl:text>{</xsl:text>
   <xsl:apply-templates/>
   <xsl:text>}
   </xsl:text>
 </xsl:template>
 
 <xsl:template match="h2">
-  <xsl:text>\subsection{</xsl:text>
+  <xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel2"/><xsl:text>{</xsl:text>
   <xsl:apply-templates/>
   <xsl:text>}
   </xsl:text>
 </xsl:template>
 
 <xsl:template match="h3">
-  <xsl:text>\subsubsection{</xsl:text>
+  <xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel3"/><xsl:text>{</xsl:text>
   <xsl:apply-templates/>
   <xsl:text>}
   </xsl:text>

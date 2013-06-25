@@ -23,12 +23,16 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.swing.Action;
 import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -49,6 +53,12 @@ class DocumentationAction extends AFreeplaneAction {
 		final File baseDir = new File(resourceController.getInstallationBaseDir());
 		final String languageCode = resourceController.getLanguageCode();
 		final File file = ConfigurationUtils.getLocalizedFile(new File[]{userDir, baseDir}, document, languageCode);
+		if(file == null){
+			String name = (String) getValue(Action.NAME);
+			String errorMessage = TextUtils.format("invalid_file_msg", name);
+			UITools.errorMessage(errorMessage);
+			return;
+		}
 		try {
 			final URL endUrl = file.toURL();
 			SwingUtilities.invokeLater(new Runnable() {

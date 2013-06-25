@@ -109,7 +109,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
-	public RenderedImage createImage() {
+	public RenderedImage createImage(int dpi) {
 		throw new RuntimeException("Method not implemented");
 	}
 

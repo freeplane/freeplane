@@ -114,6 +114,9 @@ class IconConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(IconContainedCondition.NAME)) {
 			return IconContainedCondition.load(element);
 		}
+		if (element.getName().equalsIgnoreCase(IconExistsCondition.NAME)) {
+			return IconExistsCondition.load(element);
+		}
 		return null;
 	}
 

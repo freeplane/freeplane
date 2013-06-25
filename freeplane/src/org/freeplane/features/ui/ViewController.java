@@ -1,8 +1,14 @@
 /*
  *  Freeplane - mind map editor
+<<<<<<< HEAD
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *
+ *  This file is modified by Dimitry Polivaev in 2008.
+=======
  *  Copyright (C) 2012 Dimitry
  *
  *  This file author is Dimitry
+>>>>>>> upstream_freeplane/master
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -77,6 +83,7 @@ public interface ViewController {
 	/**
 	 * @return
 	 */
+
 	public JFrame getJFrame();
 
 	/**
@@ -148,4 +155,5 @@ public interface ViewController {
 	public boolean areScrollbarsVisible();
 
 	public void setScrollbarsVisible(boolean b);
+
 }

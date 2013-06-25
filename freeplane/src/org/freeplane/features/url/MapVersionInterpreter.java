@@ -1,6 +1,12 @@
 package org.freeplane.features.url;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +29,12 @@ public class MapVersionInterpreter implements IExtension{
 	
 */	
 	static final public MapVersionInterpreter DEFAULT = new MapVersionInterpreter("", 0, "", false, true, null, null);
+	static final public IMapInputStreamConverter DEFAULT_INPUTSTREAM_CONVERTER = new IMapInputStreamConverter() {		
+		private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
+		public Reader getConvertedStream(File f) throws FileNotFoundException, IOException {			
+			return UrlManager.getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
+		}		
+	};
 	final public String mapBegin;
 	final public String name;
 	final public int version;
@@ -30,8 +42,20 @@ public class MapVersionInterpreter implements IExtension{
 	final public boolean anotherDialect;
 	final public String appName;
 	final public String url;
+	final public IMapInputStreamConverter inputStreamConverter;
+	final public IMapConverter mapConverter;
+	
 	MapVersionInterpreter(String name, int version, String versionBegin, boolean needsConversion, boolean anotherDialect,
 			String appName, String url) {
+		this(name, version, versionBegin, needsConversion, anotherDialect, appName, url, DEFAULT_INPUTSTREAM_CONVERTER, null);
+	}
+	
+	public MapVersionInterpreter(String name, int version, String versionBegin, boolean needsConversion, boolean anotherDialect,
+			String appName, String url, IMapInputStreamConverter inputStreamConverter, IMapConverter mapConverter) {
+		
+		this.inputStreamConverter = inputStreamConverter;
+		this.mapConverter = mapConverter;
+		
 		this.name = name;
 		this.version = version;
 		this.mapBegin = "<map version=\"" + versionBegin;
@@ -81,8 +105,23 @@ public class MapVersionInterpreter implements IExtension{
 		return values;
 	}
 
+	public static void addMapVersionInterpreter(MapVersionInterpreter interpreter) {
+		ArrayList<MapVersionInterpreter> list = new ArrayList<MapVersionInterpreter>();
+		list.add(interpreter);
+		list.addAll(Arrays.asList(values()));
+		values = list.toArray(values);
+	}
+
 	private boolean knows(String mapBegin) {
 		return mapBegin.startsWith(this.mapBegin);
+	}
+	
+	public IMapConverter getMapConverter() {
+		return this.mapConverter;
+	}
+	
+	public IMapInputStreamConverter getMapInputStreamConverter() {
+		return this.inputStreamConverter;
 	}
 	
 	public String getDialectInfo(String path){

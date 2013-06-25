@@ -59,7 +59,7 @@
 		<echo file="${build}/translations/locales.txt">${locales}</echo>
 	</target>
 	
-	<target name="build" depends="prepare_jortho,localelist">
+	<target name="build" depends="prepare_jortho,localelist,build-ui-xml">
 		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
@@ -73,6 +73,28 @@
 			debug="${debug}" source="1.3" target="1.1" encoding="utf8">
 			<include name="org/freeplane/main/application/FreeplaneMain.java" />
 		</javac>
+	</target>
+
+	<target name="build-ui-xml">
+		<xslt in="${resources}/xml/preferences.mm"
+		      style="ant/mm2preferences.xsl"
+		      out="${resources}/xml/preferences.xml"/>
+
+		<xslt in="${resources}/xml/filemodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/filemodemenu.xml"/>
+		<xslt in="${resources}/xml/stylemodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/stylemodemenu.xml"/>
+		<xslt in="${resources}/xml/mindmapmodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/mindmapmodemenu.xml"/>
+		<xslt in="${resources}/xml/browsemodemenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${resources}/xml/browsemodemenu.xml"/>
+		<xslt in="${viewer-resources}/xml/appletMenu.mm"
+		      style="ant/mm2menu.xsl"
+		      out="${viewer-resources}/xml/appletMenu.xml"/>
 	</target>
 
 	<target name="osgi_build" depends="build">
@@ -103,7 +125,9 @@
 				<exclude name="**/core/resources/ui/**" />
 				<exclude name="translations/**" />
 			</fileset>
-			<fileset dir="${viewer-resources}" />
+			<fileset dir="${viewer-resources}">
+				<exclude name="**/appletMenu.mm" />
+			</fileset>
 		</jar>
 		<jar jarfile="${freeplaneeditor.jar}" manifest="${manifest}">
 			<fileset dir="${build}">
@@ -115,7 +139,13 @@
 				<include name="translations/**" />
 				<exclude name="**/*.jar" />
 			</fileset>
-			<fileset dir="${resources}" />
+			<fileset dir="${resources}">
+				<exclude name="**/preferences.mm" />
+				<exclude name="**/browsemodemenu.mm" />
+				<exclude name="**/mindmapmodemenu.mm" />
+				<exclude name="**/filemodemenu.mm" />
+				<exclude name="**/stylemodemenu.mm" />
+			</fileset>
 		</jar>
 	</target>
 	
@@ -225,6 +255,17 @@
 		<delete file="lib/jortho.jar" />
 		<delete>
 			<fileset defaultexcludes="no" dir="${src}" includes="**/*~" />
+			<fileset dir="${resources}">
+				<include name="**/preferences.xml" />
+				<include name="**/browsemodemenu.xml" />
+				<include name="**/mindmapmodemenu.xml" />
+				<include name="**/filemodemenu.xml" />
+				<include name="**/stylemodemenu.xml" />
+				<include name="**/appletMenu.xml" />
+			</fileset>
+			<fileset dir="${viewer-resources}">
+				<include name="**/appletMenu.xml" />
+			</fileset>
 		</delete>
 	</target>
 
