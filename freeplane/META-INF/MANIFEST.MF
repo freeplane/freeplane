@@ -13,7 +13,6 @@ Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/gnu-regexp-1.1.4.jar,
  lib/SimplyHTML.jar,
  lib/jortho.jar,
- lib/imgscalr-lib-3.2.jar,
  lib/idw-gpl.jar,
  lib/commons-codec-1.7.jar
 Bundle-Activator: org.freeplane.main.osgi.Activator
