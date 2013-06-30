@@ -31,7 +31,6 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.EncryptionModel;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -61,9 +60,9 @@ public class EncryptionController implements IExtension {
 	private void registerStateIconProvider(final ModeController modeController) {
 	    IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
 			public UIIcon getStateIcon(NodeModel node) {
-				final EncryptionModel encNode = EncryptionModel.getModel(node);
-				if (encNode != null) {
-					if(encNode.isAccessible())
+				final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
+				if (encryptionModel != null) {
+					if(encryptionModel.isAccessible())
 						return decryptedIcon;
 					else
 						return encryptedIcon;
@@ -72,38 +71,33 @@ public class EncryptionController implements IExtension {
 			}
 		});
     }
-	/**
-	 * @param e 
-	 */
+
 	public void toggleCryptState(final NodeModel node) {
-		final ModeController mindMapController = Controller.getCurrentModeController();
-		final EncryptionModel encNode = EncryptionModel.getModel(node);
-		if (encNode != null) {
-			final boolean wasAccessible = encNode.isAccessible();
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
+		if (encryptionModel != null) {
+			final boolean wasAccessible = encryptionModel.isAccessible();
 			final boolean wasFolded = node.isFolded();
 			if (wasAccessible) {
-				encNode.setAccessible(false);
-				encNode.getEncryptedContent(mindMapController.getMapController());
+				encryptionModel.setAccessible(false);
+				encryptionModel.getEncryptedContent(Controller.getCurrentModeController().getMapController());
 				node.setFolded(true);
 			}
 			else {
-				if (doPasswordCheckAndDecryptNode(encNode)) {
+				if (doPasswordCheckAndDecryptNode(encryptionModel)) {
 					node.setFolded(false);
 				}
 				else {
 					return;
 				}
 			}
-			final Controller controller = Controller.getCurrentController();
-			final IMapSelection selection = controller.getSelection();
-			selection.selectAsTheOnlyOneSelected(node);
+			Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 			final IActor actor = new IActor() {
 				public void act() {
-					encNode.setAccessible(!wasAccessible);
+					encryptionModel.setAccessible(!wasAccessible);
 					if (wasAccessible) {
 						node.setFolded(true);
 					}
-					mindMapController.getMapController().nodeRefresh(node);
+					Controller.getCurrentModeController().getMapController().nodeRefresh(node);
 				}
 
 				public String getDescription() {
@@ -111,11 +105,11 @@ public class EncryptionController implements IExtension {
 				}
 
 				public void undo() {
-					encNode.setAccessible(wasAccessible);
+					encryptionModel.setAccessible(wasAccessible);
 					if (wasAccessible) {
 						node.setFolded(wasFolded);
 					}
-					mindMapController.getMapController().nodeRefresh(node);
+					Controller.getCurrentModeController().getMapController().nodeRefresh(node);
 				}
 			};
 			Controller.getCurrentModeController().execute(actor, node.getMap());
@@ -124,10 +118,8 @@ public class EncryptionController implements IExtension {
 			encrypt(node);
 		}
 	}
-	/**
-	 * @param e 
-	 */
-	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
+
+	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encryptionModel) {
 		while (true) {
 			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getCurrentController().getViewController()
 			    .getFrame(), false);
@@ -137,7 +129,7 @@ public class EncryptionController implements IExtension {
 				return false;
 			}
 			final StringBuilder password = pwdDialog.getPassword();
-			if (!encNode.decrypt(Controller.getCurrentModeController().getMapController(), new SingleDesEncrypter(password))) {
+			if (!encryptionModel.decrypt(Controller.getCurrentModeController().getMapController(), new SingleDesEncrypter(password))) {
 				final Controller controller = Controller.getCurrentController();
 				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), TextUtils
 				    .getText("accessories/plugins/EncryptNode.properties_wrong_password"), "Freeplane",
@@ -150,18 +142,16 @@ public class EncryptionController implements IExtension {
 		}
 	}
 
-	/**
-	 */
 	private void encrypt(final NodeModel node) {
 		final StringBuilder password = getUsersPassword();
 		if (password == null) {
 			return;
 		}
-		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
-		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
+		final EncryptionModel encryptionModel = new EncryptionModel(node);
+		encryptionModel.setEncrypter(new SingleDesEncrypter(password));
 		final IActor actor = new IActor() {
 			public void act() {
-				node.addExtension(encryptedMindMapNode);
+				node.addExtension(encryptionModel);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 
@@ -170,15 +160,13 @@ public class EncryptionController implements IExtension {
 			}
 
 			public void undo() {
-				node.removeExtension(encryptedMindMapNode);
+				node.removeExtension(encryptionModel);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	/**
-	 */
 	private StringBuilder getUsersPassword() {
 		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getCurrentController().getViewController().getFrame(),
 		    true);
