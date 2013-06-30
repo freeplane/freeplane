@@ -51,7 +51,7 @@ import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 
 /**
  * scans for scripts to be registered via {@link ScriptingRegistration}.
- * 
+ *
  * @author Volker Boerchers
  */
 class ScriptingConfiguration {
@@ -119,9 +119,10 @@ class ScriptingConfiguration {
 
 	private static final String[] MENU_BAR_SCRIPTS_PARENT_LOCATIONS = {"main_menu_scripting", "node_popup_scripting"};
 	private static final String SCRIPT_REGEX = ".+\\.groovy$";
-	private static final String JAR_REGEX = ".+\\.jar$";
+	private static final String LIB_REGEX = ".+\\.jar$";
 	// or use property script_directories?
 	static final String USER_SCRIPTS_DIR = "scripts";
+	static final String USER_LIB_DIR = "lib";
 	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
 	private ArrayList<String> classpath;
@@ -264,7 +265,7 @@ class ScriptingConfiguration {
 		setCacheMode(content, metaData);
 		return metaData;
 	}
-	
+
 	private ScriptMetaData createMetaData(final String scriptName, final Script scriptConfig) {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
 		metaData.removeAllExecutionModes();
@@ -342,8 +343,12 @@ class ScriptingConfiguration {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final String entries = resourceController.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
 		classpath = new ArrayList<String>();
+		ArrayList<String> configEntries = new ArrayList<String>();
+		// built in library path
+		configEntries.addAll(ConfigurationUtils.decodeListValue(entries, false));
+		configEntries.add(ScriptingEngine.getUserLibDir().getAbsolutePath());
 		if (entries != null) {
-			for (String entry : ConfigurationUtils.decodeListValue(entries, false)) {
+			for (String entry : configEntries) {
 				final File file = createFile(entry);
 				if (!file.exists()) {
 					LogUtils.warn("classpath entry '" + entry + "' doesn't exist. (Use " + File.pathSeparator
@@ -351,8 +356,8 @@ class ScriptingConfiguration {
 				}
 				else if (file.isDirectory()) {
 					classpath.add(file.getAbsolutePath());
-					for (final File jar : file.listFiles(createFilenameFilter(JAR_REGEX))) {
-						classpath.add(jar.getAbsolutePath());
+					for (final File lib : file.listFiles(createFilenameFilter(LIB_REGEX))) {
+						classpath.add(lib.getAbsolutePath());
 					}
 				}
 				else {

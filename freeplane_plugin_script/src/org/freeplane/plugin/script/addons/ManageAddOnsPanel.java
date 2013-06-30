@@ -93,7 +93,7 @@ public class ManageAddOnsPanel extends JPanel {
 		public AddOnProperties getAddOnAt(int row) {
 			return addOns.get(row);
 		}
-		
+
 		public void addAddOn(final AddOnProperties addOn) {
 			final int row = addOns.size();
 			addOns.add(addOn);
@@ -124,7 +124,7 @@ public class ManageAddOnsPanel extends JPanel {
 		JScrollPane tableScrollPane = new JScrollPane(jTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		tableScrollPane.getViewport().setBackground(Color.white);
-		
+
 		final JPanel emptyPanel = new JPanel();
 		emptyPanel.setOpaque(false);
 		final JScrollPane descriptionScrollPane = new JScrollPane(emptyPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -143,7 +143,7 @@ public class ManageAddOnsPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		panel.add(tableScrollPane);
 		panel.add(descriptionScrollPane);
     }
@@ -161,7 +161,7 @@ public class ManageAddOnsPanel extends JPanel {
 		JButton[] buttons = new JButton[] { createButton(AddOnProperties.OP_CONFIGURE) //
 		        , createButton(AddOnProperties.OP_DEACTIVATE) //
 		        , createButton(AddOnProperties.OP_ACTIVATE) //
-		        , createButton(AddOnProperties.OP_DEINSTALL) //
+		        , createButton(AddOnProperties.OP_UNINSTALL) //
 		};
 		columnModel.getColumn(iconColumn).setMinWidth(rowHeight);
 		columnModel.getColumn(iconColumn).setPreferredWidth(rowHeight);
@@ -171,7 +171,7 @@ public class ManageAddOnsPanel extends JPanel {
 		Action[] actions = new Action[] { createConfigureAction(tableModel) //
 		        , createDeactivateAction(tableModel) //
 		        , createActivateAction(tableModel) //
-		        , createDeinstallAction(tableModel) //
+		        , createUninstallAction(tableModel) //
 		};
 		table.getColumnModel().getColumn(textColumn).setCellRenderer(ADDON_RENDERER);
 		new ButtonsInCellRenderer(table, buttons, actions, buttonsColumn);
@@ -242,29 +242,29 @@ public class ManageAddOnsPanel extends JPanel {
 		};
 	}
 
-	private AbstractAction createDeinstallAction(final AddOnTableModel tableModel) {
+	private AbstractAction createUninstallAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
-				if (!addOn.supportsOperation(AddOnProperties.OP_DEINSTALL)) {
-					UITools.errorMessage(getText("cannot.deinstall", addOn.getTranslatedName()));
+				if (!addOn.supportsOperation(AddOnProperties.OP_UNINSTALL)) {
+					UITools.errorMessage(getText("cannot.uninstall", addOn.getTranslatedName()));
 				}
 				else {
 					int result = JOptionPane.showConfirmDialog(ManageAddOnsPanel.this,
-					    getText("really.deinstall", TextUtils.getText(addOn.getNameKey())), getText("deinstall"),
+					    getText("really.uninstall", TextUtils.getText(addOn.getNameKey())), getText("uninstall"),
 					    JOptionPane.OK_CANCEL_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
-					    deinstall(tableModel, addOn);
+					    uninstall(tableModel, addOn);
 						repaint();
-						UITools.informationMessage(getText("deinstallation.success", addOn.getTranslatedName()));
+						UITools.informationMessage(getText("uninstallation.success", addOn.getTranslatedName()));
 					}
 				}
 			}
 
-            private void deinstall(final AddOnTableModel tableModel, final AddOnProperties addOn) {
+            private void uninstall(final AddOnTableModel tableModel, final AddOnProperties addOn) {
                 try {
-                    AddOnsController.getController().deinstall(addOn);
+                    AddOnsController.getController().uninstall(addOn);
                     tableModel.removeAddOn(addOn);
                 }
                 finally {

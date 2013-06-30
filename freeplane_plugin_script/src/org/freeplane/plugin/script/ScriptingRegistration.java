@@ -216,12 +216,13 @@ class ScriptingRegistration {
 				}
 			});
 			createUserScriptsDirectory();
+		    createUserLibDirectory();
 		}
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, 
-			new ScriptConditionController());
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10,
+		    new ScriptConditionController());
 	}
 
-    private void registerScriptAddOns() {
+	private void registerScriptAddOns() {
 		File[] addonXmlFiles = AddOnsController.getController().getAddOnsDir().listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".script.xml");
@@ -255,7 +256,15 @@ class ScriptingRegistration {
 		}
 	}
 
-    private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
+	private void createUserLibDirectory() {
+		final File libDir = ScriptingEngine.getUserLibDir();
+		if (!libDir.exists()) {
+			LogUtils.info("creating user library directory " + libDir);
+			libDir.mkdirs();
+		}
+	}
+
+	private void registerScripts(final MenuBuilder menuBuilder, ScriptingConfiguration configuration) {
 		final HashSet<String> registeredLocations = new HashSet<String>();
 		for (final String scriptsParentLocation : ScriptingConfiguration.getScriptsParentLocations()) {
 			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);

@@ -182,6 +182,18 @@ def parseZips(Map childNodeMap) {
 	println property + ': ' + configMap[property].dump()
 }
 
+def parseLibs(Map childNodeMap) {
+	def property = 'lib'
+	Proxy.Node propertyNode = childNodeMap[property]
+	if (!propertyNode)
+		return
+	configMap[property] = propertyNode.children.inject([:]){ map, child ->
+		map[child.plainText] = ensureNoHtml(theOnlyChild(child)).binary
+		return map
+	}
+	println property + ': ' + configMap[property].dump()
+}
+
 def parseImages(Map childNodeMap) {
     def property = 'images'
     Proxy.Node propertyNode = childNodeMap[property]
@@ -217,6 +229,19 @@ def installImages() {
             installationAssert(false, e.message);
         }
     }
+}
+
+def installLibs() {
+	File destDir = new File(installationbase, 'lib')
+	destDir.mkdirs()
+	configMap['lib'].each{ filename, libData ->
+		try {
+			new File(destDir, expandVariables(filename)).bytes = libData
+		} catch (Exception e) {
+			e.printStackTrace()
+			installationAssert(false, e.message);
+		}
+	}
 }
 
 void unpack(File destDir, byte[] zipData) {
@@ -262,7 +287,7 @@ def parseScripts(Map childNodeMap) {
 		script.name = expandVariables(scriptNode.plainText)
 		script.file = new File(ScriptingEngine.getUserScriptDir(), script.name)
 		script.scriptBody = ensureNoHtml(theOnlyChild(scriptNode)).text
-		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
+		mapStructureAssert(!htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
 		scriptNode.attributes.map.each { k,v ->
 			if (k == 'executionMode')
 				script[k] = ScriptAddOnProperties.parseExecutionMode(v)
@@ -346,8 +371,8 @@ ScriptingPermissions parsePermissions(Proxy.Node propertyNode, String scriptName
 }
 
 // a list of [action, file] pairs
-def parseDeinstallationRules(Map childNodeMap) {
-	def property = 'deinstall'
+def parseUninstallationRules(Map childNodeMap) {
+	def property = 'uninstall'
 	Proxy.Node propertyNode = childNodeMap[property]
 	def attribs = propertyNode.attributes
 	// we can't use a simple map since most entries have the same key -> iterate over index
@@ -355,11 +380,11 @@ def parseDeinstallationRules(Map childNodeMap) {
 		// the right type for AddOnProperties
 		[attribs.getKey(it), expandVariables(attribs.get(it)).trim()] as String[]
 	}
-	def knownDeinstallationRules = [
+	def knownUninstallationRules = [
 		'delete'
 	]
-	def unknownDeinstallationRules = attribs.names.findAll{ k -> ! knownDeinstallationRules.contains(k) }
-	mapStructureAssert( ! unknownDeinstallationRules, textUtils.format('addons.installer.unknown.deinstallation.rules', unknownDeinstallationRules))
+	def unknownUninstallationRules = attribs.names.findAll{ k -> ! knownUninstallationRules.contains(k) }
+	mapStructureAssert( ! unknownUninstallationRules, textUtils.format('addons.installer.unknown.uninstallation.rules', unknownUninstallationRules))
 	println property + ': ' + configMap[property]
 }
 
@@ -379,6 +404,12 @@ def handlePermissions() {
 
 def scriptDir() {
 	File dir = new File(installationbase, 'scripts')
+	installationAssert(dir.exists(), null)
+	return dir
+}
+
+def libDir() {
+	File dir = new File(installationbase, 'lib')
 	installationAssert(dir.exists(), null)
 	return dir
 }
@@ -419,8 +450,9 @@ AddOnProperties parse() {
 		'default.properties',
 		'scripts',
 		'zips',
-		'deinstall',
+		'uninstall',
 		'images',
+		'lib',
 	]
 	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
 		map[key] = node.map.root.find{ it.plainText == key }[0]
@@ -431,6 +463,7 @@ AddOnProperties parse() {
 	}
     // note: images came after the first beta
     missingChildNodes.remove('images')
+	missingChildNodes.remove('lib')
 	mapStructureAssert( ! missingChildNodes, textUtils.format('addons.installer.missing.child.nodes', missingChildNodes.keySet()))
 
 	parseProperties(childNodeMap)
@@ -443,7 +476,8 @@ AddOnProperties parse() {
 	parseScripts(childNodeMap)
 	parseZips(childNodeMap)
 	parseImages(childNodeMap)
-	parseDeinstallationRules(childNodeMap)
+	parseLibs(childNodeMap)
+	parseUninstallationRules(childNodeMap)
 
 	def addOn = new ScriptAddOnProperties(configMap['properties']['name'])
 	configMap['properties'].each { k,v ->
@@ -457,8 +491,9 @@ AddOnProperties parse() {
 	addOn.translations = configMap['translations']
 	addOn.preferencesXml = configMap['preferences.xml']
 	addOn.defaultProperties = configMap['default.properties']
-	addOn.deinstallationRules = configMap['deinstall']
+	addOn.uninstallationRules = configMap['uninstall']
     addOn.images = configMap['images'] ? configMap['images'].keySet() : []
+	addOn.lib = configMap['lib'] ? configMap['lib'].keySet() : []
 	addOn.scripts = configMap['scripts']
 
 	return addOn
@@ -521,6 +556,7 @@ def install(AddOnProperties addOn) {
 	createScripts()
 	installZips()
 	installImages()
+	installLibs()
 	new File(addOnDir(), expandVariables('${name}.script.xml')).text = addOn.toXmlString()
 }
 
@@ -533,7 +569,7 @@ try {
 	if (confirmInstall(addOn, installedAddOn)) {
 		def message
 		if (isUpdate) {
-			AddOnsController.getController().deinstall(installedAddOn)
+			AddOnsController.getController().uninstall(installedAddOn)
 			message = textUtils.format('addons.installer.success.update', installedAddOn.version, addOn.version)
 		}
 		else {

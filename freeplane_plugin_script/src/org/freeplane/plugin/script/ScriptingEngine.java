@@ -86,14 +86,14 @@ public class ScriptingEngine {
     		pOutStream, scriptContext,
     		permissions);
     }
-    
+
 	static private Object executeScript(final NodeModel node, final Object script, final IErrorHandler pErrorHandler,
 	                            final PrintStream pOutStream, final ScriptContext scriptContext,
 	                            ScriptingPermissions permissions) {
 		Script compiledScript = compileScriptCheckExceptions(script, pErrorHandler, pOutStream, permissions);
 		return executeScript(node, script, compiledScript, pErrorHandler, pOutStream, scriptContext, permissions);
 	}
-	
+
 	public static Object executeScript(final NodeModel node, final Object script, Script compiledScript,
                                        final IErrorHandler pErrorHandler, final PrintStream pOutStream,
                                        final ScriptContext scriptContext, ScriptingPermissions permissions) {
@@ -136,7 +136,7 @@ public class ScriptingEngine {
 			throw new ExecuteScriptException(e.getMessage(), e);
 		}
     }
-	
+
 	private static ScriptingSecurityManager scriptingSecurityManager(final Object script, final PrintStream pOutStream,
                                                             ScriptingPermissions permissions) {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
@@ -179,7 +179,7 @@ public class ScriptingEngine {
 	    }
 	    return scriptingSecurityManager;
     }
-	
+
 	private static Script compile(Object script) throws CompilationFailedException, IOException {
 		if(script instanceof Script)
 			return (Script) script;
@@ -188,7 +188,7 @@ public class ScriptingEngine {
 		binding.setVariable("node", null);
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
 		final ClassLoader classLoader = ScriptingEngine.class.getClassLoader();
-		final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration()); 
+		final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
 		final Script compiledScript;
 		if(script instanceof String)
 			compiledScript = shell.parse((String)script);
@@ -197,7 +197,7 @@ public class ScriptingEngine {
 		else throw new IllegalArgumentException();
 		return compiledScript;
     }
-	
+
 	public static Script compileScriptCheckExceptions(Object script,  final IErrorHandler pErrorHandler, final PrintStream pOutStream, ScriptingPermissions permissions){
 		try{
 			return compile(script);
@@ -211,7 +211,7 @@ public class ScriptingEngine {
 			throw new ExecuteScriptException(e.getMessage(), e);
 		}
 	}
-	
+
 	private static void handleGroovyRuntimeException(final GroovyRuntimeException e, final PrintStream pOutStream,
                                                      final IErrorHandler pErrorHandler) {
 	    final String resultString = e.getMessage();
@@ -259,7 +259,7 @@ public class ScriptingEngine {
 	public static Object executeScript(NodeModel node, String script, Script compiledScript, PrintStream printStream, ScriptingPermissions permissions) {
 		return executeScript(node, script, compiledScript, IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, permissions);
     }
-	
+
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
 		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, System.out, null, permissions);
 	}
@@ -267,7 +267,7 @@ public class ScriptingEngine {
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
 		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, System.out, null, permissions);
 	}
-	
+
 	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
 		return ScriptingEngine.executeScript(node, script, ScriptingEngine.IGNORING_SCRIPT_ERROR_HANDLER, printStream, null, null);
 	}
@@ -327,11 +327,12 @@ public class ScriptingEngine {
 	static List<String> getClasspath() {
 		return classpath;
 	}
-	
+
 	public static File getUserScriptDir() {
         final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
     	return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
     }
+
 	static void showScriptExceptionErrorMessage(ExecuteScriptException ex) {
         if (ex.getCause() instanceof SecurityException) {
         	final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);
@@ -342,4 +343,9 @@ public class ScriptingEngine {
         	UITools.errorMessage(TextUtils.format("ExecuteScriptError.text", message));
         }
     }
+
+	public static File getUserLibDir() {
+		final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
+		return new File(userDir, ScriptingConfiguration.USER_LIB_DIR);
+	}
 }
