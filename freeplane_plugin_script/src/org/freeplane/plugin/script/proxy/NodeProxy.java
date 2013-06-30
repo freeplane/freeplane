@@ -16,14 +16,20 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.encrypt.Base64Coding;
+import org.freeplane.features.encrypt.EncryptionController;
+import org.freeplane.features.encrypt.PasswordStrategy;
+import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
@@ -39,6 +45,7 @@ import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.plugin.script.proxy.Proxy.Cloud;
@@ -706,4 +713,61 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public Number previous() {
 		return NumberMath.subtract(this.getTo().getNum0(), ONE);
 	}
+
+    public boolean hasEncryption() {
+        return getEncryptionModel() != null;
+    }
+
+    public boolean isEncrypted() {
+        final EncryptionModel encryptionModel = getEncryptionModel();
+        return encryptionModel != null && !encryptionModel.isAccessible();
+    }
+
+    public void encrypt(String password) {
+        if (!isEncrypted())
+            getEncryptionController().toggleCryptState(getDelegate(), makePasswordStrategy(password));
+    }
+
+    public void decrypt(String password) {
+        if (isEncrypted())
+            getEncryptionController().toggleCryptState(getDelegate(), makePasswordStrategy(password));
+    }
+    
+    public void removeEncryption(String password) {
+        getEncryptionController().removeEncryption(getDelegate(), makePasswordStrategy(password));
+    }
+
+    private PasswordStrategy makePasswordStrategy(final String password) {
+        return new PasswordStrategy() {
+            public StringBuilder getPassword() {
+                return new StringBuilder(password);
+            }
+
+            public StringBuilder getPasswordWithConfirmation() {
+                return getPassword();
+            }
+
+            public void onWrongPassword() {
+                LogUtils.info("wrong password for node " + getDelegate());
+                setStatusInfo(TextUtils.getText("accessories/plugins/EncryptNode.properties_wrong_password"));
+            }
+
+            public boolean isCancelled() {
+                return false;
+            }
+        };
+    }
+
+    private void setStatusInfo(String text) {
+        final ViewController viewController = Controller.getCurrentController().getViewController();
+        viewController.out(text);
+    }
+    
+    private MEncryptionController getEncryptionController() {
+        return (MEncryptionController) Controller.getCurrentModeController().getExtension(EncryptionController.class);
+    }
+
+    private EncryptionModel getEncryptionModel() {
+        return EncryptionModel.getModel(getDelegate());
+    }
 }

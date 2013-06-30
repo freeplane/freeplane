@@ -42,7 +42,7 @@ public class EnterPassword extends AFreeplaneAction{
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		encryptionController.toggleCryptState(node);
+		encryptionController.toggleCryptState(node, new SwingPasswordStrategy());
 	}
 
 	public boolean canBeEnabled() {

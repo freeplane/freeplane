@@ -1331,6 +1331,26 @@ public interface Proxy {
 		void setAttributes(java.util.Map<String, Object> attributes);
 
 		void setLeft(boolean isLeft);
+
+        /** Returns true if the node is password protected, no matter if currently accessible (password entered) or not.
+         * @since 1.3.6 */
+		boolean hasEncryption();
+        
+        /** decrypts a node and remove the password protection.
+         * @since 1.3.6 */
+        void removeEncryption(String password);
+		
+		/** Returns true if the node has password protection and is currently unaccessible (password has to be entered).
+		 * @since 1.3.6 */
+		boolean isEncrypted();
+		
+		/** encrypts a node. If the node has child nodes the branch is folded.
+		 * @since 1.3.6 */
+		void encrypt(String password);
+
+		/** decrypts a node without removing the encryption.
+         * @since 1.3.6 */
+		void decrypt(String password);
 	}
 
 	/** Node's style: <code>node.style</code> - read-only. */
