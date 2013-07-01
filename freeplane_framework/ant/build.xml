@@ -266,6 +266,16 @@
 					<exclude name="freeplane_framework/windows-icons/Objects/**" />
 					<exclude name="freeplane_framework/windows-icons/*.layout" />
 					<exclude name="freeplane_framework/windows-icons/Makefile.win" />
+
+				        <!-- these are generated using mm2menu.xsl/mm2preferences.xsl! -->
+				        <exclude name="freeplane/resources/xml/browsemodemenu.xml"/>
+				        <exclude name="freeplane/resources/xml/filemodemenu.xml"/>
+				        <exclude name="freeplane/resources/xml/mindmapmodemenu.xml"/>
+				        <exclude name="freeplane/resources/xml/preferences.xml"/>
+				        <exclude name="freeplane/resources/xml/stylemodemenu.xml"/>
+				        <exclude name="freeplane/viewer-resources/xml/appletMenu.xml"/>
+				        <exclude name="freeplane_plugin_formula/src/org/freeplane/plugin/formula/preferences.xml"/>
+				        <exclude name="freeplane_plugin_script/src/org/freeplane/plugin/script/preferences.xml"/>
 				</patternset>
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
