@@ -30,6 +30,8 @@
 	<property name="build.doc" value="${build}/doc" />
 	<property name="build.scripts" value="${build}/scripts" />
 	<property name="script" value="${root}/script" />
+	
+	<property name="skip_workspace" value="true" />
 
 	<!-- Mac OS X -->
 	<condition property="isMacOs">
