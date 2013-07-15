@@ -260,7 +260,6 @@ def parseScripts(Map childNodeMap) {
 	configMap[property] = propertyNode.children.inject([]){ scripts, scriptNode ->
 		def script = new ScriptAddOnProperties.Script()
 		script.name = expandVariables(scriptNode.plainText)
-		script.file = new File(ScriptingEngine.getUserScriptDir(), script.name)
 		script.scriptBody = ensureNoHtml(theOnlyChild(scriptNode)).text
 		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
 		scriptNode.attributes.map.each { k,v ->
@@ -392,7 +391,7 @@ def addOnDir() {
 def createScripts() {
 	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
 	scripts.each { script ->
-		File file = script.file
+		File file = new File(ScriptingEngine.getUserScriptDir(), script.name)
 		try {
 			file.text = script.scriptBody
 		}
