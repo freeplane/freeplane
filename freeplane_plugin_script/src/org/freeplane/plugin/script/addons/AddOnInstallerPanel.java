@@ -169,7 +169,7 @@ public class AddOnInstallerPanel extends JPanel {
 				final File scriptDir = new File(resourceController.getInstallationBaseDir(), "scripts");
 				final File installScript = new File(scriptDir, "installScriptAddOn.groovy");
 				if (!installScript.exists())
-					throw new RuntimeException("internal error: installer not found");
+					throw new RuntimeException("internal error: installer not found at " + installScript);
 				return FileUtils.slurpFile(installScript);
 			}
 
