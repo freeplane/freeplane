@@ -363,7 +363,7 @@ public class StdXMLReader implements IXMLReader {
 		int ch = readImpl();
 		while (ch < 0) {
 			if (readers.empty()) {
-				throw new IOException("Unexpected EOF");
+				throw new IOException("Unexpected EOF at line " + getLineNr());
 			}
 			currentReader.pbReader.close();
 			currentReader = (StackedReader) readers.pop();

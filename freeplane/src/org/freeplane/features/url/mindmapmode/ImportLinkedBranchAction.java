@@ -40,6 +40,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
@@ -57,9 +58,9 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog((viewController.getMapView()), TextUtils
+			JOptionPane.showMessageDialog((viewController.getMapViewComponent()), TextUtils
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
@@ -70,8 +71,8 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, file);
 			PersistentNodeHook.removeMapExtensions(node);
 			((MMapController) modeController.getMapController()).insertNode(node, selected);
-			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, false);
-			((MLinkController) LinkController.getController()).setLink(node, (URI) null, false);
+			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, LinkController.LINK_ABSOLUTE);
+			((MLinkController) LinkController.getController()).setLink(node, (URI) null, LinkController.LINK_ABSOLUTE);
 		}
 		catch (final MalformedURLException ex) {
 			UITools.errorMessage(TextUtils.format("invalid_url_msg", uri.toString()));

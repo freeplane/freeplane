@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -288,7 +289,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			final ASelectableCondition condition;
 			if(styleElement.getChildrenCount() == 1){
 				final XMLElement conditionElement = styleElement.getChildAtIndex(0);
-				condition = conditionFactory.loadCondition(conditionElement);
+				try {
+	                condition = conditionFactory.loadCondition(conditionElement);
+                }
+                catch (Exception e) {
+	                e.printStackTrace();
+	                continue;
+                }
 			}
 			else{
 				condition = null;
@@ -541,4 +548,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			styleModel.setProperty(key, value);
 			return value;
 	}
+	
+	public String getProperty(final MapModel model, final String key) {
+	    return MapStyleModel.getExtension(model).getProperty(key);
+	}
+	
+    public Map<String, String> getPropertiesReadOnly(final MapModel model) {
+        return Collections.unmodifiableMap(MapStyleModel.getExtension(model).getProperties());
+    }
 }

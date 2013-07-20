@@ -105,7 +105,7 @@ public class ColorTracker implements ActionListener, Serializable {
 	                                                  final String title, final Color initialColor, Color defaultColor)
 	        throws HeadlessException {
 		Controller controller = Controller.getCurrentController();
-		final Component component = controller.getViewController().getComponent(nodeModel);
+		final Component component = controller.getMapViewManager().getComponent(nodeModel);
 		return ColorTracker.showCommonJColorChooserDialog(component, title, initialColor, defaultColor);
 	}
 

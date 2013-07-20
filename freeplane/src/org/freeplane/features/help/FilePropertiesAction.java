@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.text.DateFormat;
@@ -39,6 +40,7 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ICondition;
@@ -322,7 +324,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 		gridbag.setConstraints(nodeSelectedNodeCountLabel, c);
 		panel.add(nodeSelectedNodeCountLabel);
 		//Show dialog
-		JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getViewport(), panel,
+		JOptionPane.showMessageDialog(UITools.getFrame(), panel,
 		    TextUtils.getText("FilePropertiesAction.text"), JOptionPane.PLAIN_MESSAGE);
 	}
 

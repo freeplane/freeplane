@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -30,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Collection;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
@@ -146,32 +148,29 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class ConditionListSelectionListener implements ListSelectionListener {
 		public void valueChanged(final ListSelectionEvent e) {
-			if (elementaryConditionList.getMinSelectionIndex() == -1) {
+			final int minSelectionIndex = elementaryConditionList.getMinSelectionIndex();
+			if (minSelectionIndex == -1) {
 				btnNot.setEnabled(false);
 				btnSplit.setEnabled(false);
 				btnAnd.setEnabled(false);
 				btnOr.setEnabled(false);
 				btnDelete.setEnabled(false);
 				btnName.setEnabled(false);
-				return;
+				btnUp.setEnabled(false);
+				btnDown.setEnabled(false);
 			}
-			else if (elementaryConditionList.getMinSelectionIndex() == elementaryConditionList.getMaxSelectionIndex()) {
-				btnNot.setEnabled(true);
-				btnSplit.setEnabled(elementaryConditionList.getSelectedValue() instanceof ICombinedCondition);
-				btnAnd.setEnabled(false);
-				btnOr.setEnabled(false);
-				btnDelete.setEnabled(true);
-				btnName.setEnabled(true);
-				return;
-			}
-			else {
-				btnNot.setEnabled(false);
-				btnSplit.setEnabled(false);
-				btnAnd.setEnabled(true);
-				btnOr.setEnabled(true);
-				btnDelete.setEnabled(true);
-				btnName.setEnabled(false);
-			}
+            else {
+            	btnUp.setEnabled(true);
+            	btnDown.setEnabled(true);
+            	btnDelete.setEnabled(true);
+	            final int maxSelectionIndex = elementaryConditionList.getMaxSelectionIndex();
+				final boolean oneElementChosen = minSelectionIndex == maxSelectionIndex;
+				btnNot.setEnabled(oneElementChosen);
+				btnName.setEnabled(oneElementChosen);
+				btnAnd.setEnabled(! oneElementChosen);
+				btnOr.setEnabled(! oneElementChosen);
+				btnSplit.setEnabled(oneElementChosen && elementaryConditionList.getSelectedValue() instanceof ICombinedCondition);
+            }
 		}
 	}
 
@@ -366,6 +365,45 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		}
 	}
 
+	private class MoveConditionAction extends AFreeplaneAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		final private int positionChange;
+		private DefaultComboBoxModel model;
+		private int[] selectedIndices;
+
+		MoveConditionAction(String key, boolean up) {
+			super(key);
+			this.positionChange = up ? -1 : 1;
+		}
+
+		public void actionPerformed(final ActionEvent e) {
+			model = (DefaultComboBoxModel) elementaryConditionList.getModel();
+			selectedIndices = elementaryConditionList.getSelectedIndices();
+			if(positionChange < 1)
+				for (int selectedIndexPosition = 0; selectedIndexPosition < selectedIndices.length; selectedIndexPosition++){
+					moveIndex(selectedIndexPosition);
+				}
+			else
+				for (int selectedIndexPosition = selectedIndices.length - 1; selectedIndexPosition >= 0; selectedIndexPosition--){
+					moveIndex(selectedIndexPosition);
+				}
+			elementaryConditionList.setSelectedIndices(selectedIndices);
+		}
+
+		protected void moveIndex(int selectedIndexPosition) {
+	        int index = selectedIndices[selectedIndexPosition];
+	        final ASelectableCondition condition = (ASelectableCondition) model.getElementAt(index);
+	        final int newPosition = index + positionChange;
+	        if(newPosition >= 0 && newPosition < model.getSize() && ! elementaryConditionList.isSelectedIndex(newPosition)){
+	        	model.removeElementAt(index);
+	        	model.insertElementAt(condition, newPosition);
+	        	selectedIndices[selectedIndexPosition] = newPosition;
+	        }
+        }
+	}
 	private class LoadAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
@@ -436,12 +474,14 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private JButton btnAdd;
+	private static final int GAP_BETWEEN_BUTTONS = 10;
 	final private JButton btnAnd;
 	final private JButton btnApply;
 	final private JButton btnCancel;
 	final private JButton btnDelete;
 	final private JButton btnName;
+	final private JButton btnUp;
+	final private JButton btnDown;
 	private JButton btnLoad;
 	final private JButton btnNot;
 	final private JButton btnSplit;
@@ -454,6 +494,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	final private JList elementaryConditionList;
 	final private FilterController filterController;
 	private DefaultComboBoxModel internalConditionsModel;
+	private Box conditionButtonBox;
 
 	public AFilterComposerDialog(String title, boolean modal) {
 		super(Controller.getCurrentController().getViewController().getFrame(), title, modal);
@@ -463,43 +504,18 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		    BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 		//		this.controller = controller;
 		getContentPane().add(editor, BorderLayout.NORTH);
-		final Box conditionButtonBox = Box.createVerticalBox();
+		conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
-		btnAdd = new JButton(new AddElementaryConditionAction());
-		btnAdd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(Box.createVerticalGlue());
-		conditionButtonBox.add(btnAdd);
-		btnNot = new JButton(new CreateNotSatisfiedConditionAction());
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnNot.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnNot);
-		btnNot.setEnabled(false);
-		btnAnd = new JButton(new CreateConjunctConditionAction());
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnAnd.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnAnd);
-		btnAnd.setEnabled(false);
-		btnOr = new JButton(new CreateDisjunctConditionAction());
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnOr.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnOr);
-		btnOr.setEnabled(false);
-		btnSplit = new JButton(new SplitConditionAction());
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnSplit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnSplit);
-		btnSplit.setEnabled(false);
-		btnDelete = new JButton(new DeleteConditionAction());
-		btnDelete.setEnabled(false);
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnDelete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnDelete);
-		btnName = new JButton(new NameConditionAction());
-		btnName.setEnabled(false);
-		conditionButtonBox.add(Box.createVerticalGlue());
-		btnName.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
-		conditionButtonBox.add(btnName);
+		addAction(new AddElementaryConditionAction(), true);
+		btnNot = addAction(new CreateNotSatisfiedConditionAction(), false);
+		btnAnd = addAction(new CreateConjunctConditionAction(), false);
+		btnOr = addAction(new CreateDisjunctConditionAction(), false);
+		btnSplit = addAction(new SplitConditionAction(), false);
+		btnDelete = addAction(new DeleteConditionAction(), false);
+		btnName = addAction(new NameConditionAction(), false);
+		btnUp = addAction(new MoveConditionAction("UpConditionAction", true), false);
+		btnDown = addAction(new MoveConditionAction("DownConditionAction", false), false);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		final Box controllerBox = Box.createHorizontalBox();
 		controllerBox.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -560,11 +576,23 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		final JLabel conditionColumnHeader = new JLabel(TextUtils.getText("filter_conditions"));
 		conditionColumnHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);
-		conditionScrollPane.setPreferredSize(new Dimension(500, 200));
+		final Rectangle desktopBounds = UITools.getDesktopBounds(this);
+		Dimension preferredSize = new Dimension(desktopBounds.width * 2 / 3, desktopBounds.height * 2 / 3);
+		conditionScrollPane.setPreferredSize(preferredSize);
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
 		UITools.addEscapeActionToDialog(this);
 		pack();
 	}
+
+	private JButton addAction(Action action, boolean enabled) {
+	    JButton button = new JButton(action);
+		button.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
+		conditionButtonBox.add(Box.createVerticalStrut(GAP_BETWEEN_BUTTONS));
+		conditionButtonBox.add(button);
+		if(! enabled)
+			button.setEnabled(false);
+	    return button;
+    }
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		editor.mapChanged(newMap);

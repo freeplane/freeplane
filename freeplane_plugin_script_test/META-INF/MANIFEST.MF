@@ -4,7 +4,7 @@ Bundle-Name: Test1
 Bundle-SymbolicName: freeplane_plugin_script_test
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.freeplane.plugin.script;bundle-version="1.0.1"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.freeplane.plugin.script
 Import-Package: org.junit;version="4.5.0",
  org.junit.runner,

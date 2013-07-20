@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.AllowedDuringEditing;
+
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -33,7 +33,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 /**
  * @author foltin
  */
-@AllowedDuringEditing
+
 public class SaveAll extends AFreeplaneAction {
 	/**
 	 * 
@@ -49,7 +49,7 @@ public class SaveAll extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
-		final Component initialMapView = controller.getViewController().getMapView();
+		final Component initialMapView = controller.getMapViewManager().getMapViewComponent();
 		final Map<String, MapModel> mapViews = getMapViews();
 		final Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
 		while (iterator.hasNext()) {

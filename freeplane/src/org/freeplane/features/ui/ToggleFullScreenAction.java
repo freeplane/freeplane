@@ -41,13 +41,13 @@ public class ToggleFullScreenAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final FrameController viewController = (FrameController) Controller.getCurrentController().getViewController();
 		viewController.setFullScreen(!viewController.isFullScreenEnabled());
 	}
 
 	@Override
 	public void setSelected() {
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final FrameController viewController = (FrameController) Controller.getCurrentController().getViewController();
 		setSelected(viewController.isFullScreenEnabled());
 	}
 	

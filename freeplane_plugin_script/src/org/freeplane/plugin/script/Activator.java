@@ -2,6 +2,9 @@ package org.freeplane.plugin.script;
 
 import java.util.Hashtable;
 
+import jsyntaxpane.DefaultSyntaxKit;
+import jsyntaxpane.syntaxkits.GroovySyntaxKit;
+
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
@@ -19,11 +22,28 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
+			    	if(! modeController.getController().getViewController().isHeadless())
+			    		initJSyntaxPane(context);
 				    new ScriptingRegistration(modeController);
 			    }
 		    }, props);
-		JSyntaxPaneProxy.init(context);
 	}
+	
+	private void initJSyntaxPane(BundleContext context) {
+	    final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+	    try {
+            Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
+            DefaultSyntaxKit.initKit();
+            final String components = "jsyntaxpane.components.PairsMarker" //
+            		+ ", jsyntaxpane.components.LineNumbersRuler" //
+            		+ ", jsyntaxpane.components.TokenMarker" //
+            		+ ", org.freeplane.plugin.script.NodeIdHighLighter";
+            	new GroovySyntaxKit().setProperty("Components", components);
+        }
+        finally {
+        	Thread.currentThread().setContextClassLoader(contextClassLoader);
+        }
+}
 
 	/*
 	 * (non-Javadoc)

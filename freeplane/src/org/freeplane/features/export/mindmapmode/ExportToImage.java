@@ -17,14 +17,25 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOInvalidTreeException;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageOutputStream;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -37,13 +48,7 @@ import org.freeplane.features.mode.Controller;
  * @author kakeda
  * @author rreppel
  */
-public class ExportToImage extends AExportEngine {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-
+public class ExportToImage implements IExportEngine {
 	private final String imageDescripton;
 	private final String imageType;
 
@@ -54,7 +59,7 @@ public class ExportToImage extends AExportEngine {
 
 	public void export(MapModel map, File toFile) {
 		try {
-			final RenderedImage image = createBufferedImage(map);
+			final RenderedImage image = new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
 			if (image != null) {
 				exportToImage(image, toFile);
 			}
@@ -71,9 +76,27 @@ public class ExportToImage extends AExportEngine {
 	public boolean exportToImage(final RenderedImage image, File chosenFile) {
 		try {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
-			final FileOutputStream out = new FileOutputStream(chosenFile);
-			ImageIO.write(image, imageType, out);
-			out.close();
+			Iterator<ImageWriter> imageWritersByFormatName = ImageIO.getImageWritersByFormatName(imageType);
+			for(;;){
+				ImageWriter writer = imageWritersByFormatName.next();
+				ImageWriteParam writeParam = writer.getDefaultWriteParam();
+				ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_INT_RGB);
+				IIOMetadata metadata = writer.getDefaultImageMetadata(typeSpecifier, writeParam);
+				if ((metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported()) && imageWritersByFormatName.hasNext()) {
+					continue;
+                }
+				addDpiToMetadata(metadata);
+				final FileOutputStream outFile = new FileOutputStream(chosenFile);
+				final ImageOutputStream stream = ImageIO.createImageOutputStream(outFile);
+				try {
+					writer.setOutput(ImageIO.createImageOutputStream(outFile));
+					writer.write(metadata, new IIOImage(image, null, metadata), writeParam);
+					break;
+				} finally {
+					stream.close();
+					outFile.close();
+				}
+			}
 		}
 		catch (final IOException e1) {
 			LogUtils.warn(e1);
@@ -85,8 +108,26 @@ public class ExportToImage extends AExportEngine {
 		return true;
 	}
 
+	private void addDpiToMetadata(IIOMetadata metadata) throws IIOInvalidTreeException {
+	    int dpi = getImageResolutionDPI();
+	    double dotsPerMilli = 1.0 * dpi / 10 / 2.54;
+	    IIOMetadataNode root = new IIOMetadataNode("javax_imageio_1.0");
+	    IIOMetadataNode horiz = new IIOMetadataNode("HorizontalPixelSize");
+	    horiz.setAttribute("value", Double.toString(dotsPerMilli));
+	    IIOMetadataNode vert = new IIOMetadataNode("VerticalPixelSize");
+	    vert.setAttribute("value", Double.toString(dotsPerMilli));
+	    IIOMetadataNode dim = new IIOMetadataNode("Dimension");
+	    dim.appendChild(horiz);
+	    dim.appendChild(vert);
+	    root.appendChild(dim);
+	    metadata.mergeTree("javax_imageio_1.0", root);
+    }
+
 	public FileFilter getFileFilter() {
 		return new ExampleFileFilter(imageType, imageDescripton);
     }
 
+	private int getImageResolutionDPI() {
+	    return ResourceController.getResourceController().getIntProperty("exported_image_resolution_dpi", 300);
+    }
 }

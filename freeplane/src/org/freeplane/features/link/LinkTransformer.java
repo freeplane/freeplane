@@ -30,7 +30,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev
@@ -67,7 +67,7 @@ public class LinkTransformer extends AbstractContentTransformer {
 		final NodeModel target = map.getNodeForID(nodeID);
 		if(target != null){
 			final String shortText = TextController.getController(modeController).getShortText(target);
-			final Icon icon = ViewController.localLinkIcon;
+			final Icon icon = FrameController.localLinkIcon;
 			return new ObjectAndIcon(shortText, icon);
 		}
 		else

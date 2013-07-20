@@ -26,6 +26,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 
 @SuppressWarnings("serial")
 public class ZoomableLabel extends JLabel {
+	public static final String TEXT_RENDERING_ICON = "TextRenderingIcon";
 
 	protected static final Graphics2D fmg;
 	static {

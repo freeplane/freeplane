@@ -162,21 +162,21 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	}
 
 	// Map: R/W
-	public void setFilter(final boolean showAnchestors, final boolean showDescendants, final Closure<Boolean> closure) {
+	public void setFilter(final boolean showAncestors, final boolean showDescendants, final Closure<Boolean> closure) {
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		if (closure == null) {
 			filterController.applyNoFiltering();
 		}
 		else {
-			final Filter filter = new Filter(ProxyUtils.createCondition(closure, getScriptContext()), showAnchestors,
+			final Filter filter = new Filter(ProxyUtils.createCondition(closure, getScriptContext()), showAncestors,
 			    showDescendants, true);
 			filterController.applyFilter(filter, getDelegate(), true);
 		}
 	}
 	
 	// Map: R/W
-	public void filter(final boolean showAnchestors, final boolean showDescendants, final Closure<Boolean> closure) {
-		setFilter(showAnchestors, showDescendants, closure);
+	public void filter(final boolean showAncestors, final boolean showDescendants, final Closure<Boolean> closure) {
+		setFilter(showAncestors, showDescendants, closure);
 	}
 
 	// Map: R/W
@@ -187,5 +187,10 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	// Map: R/W
 	public void undoFilter() {
 		FilterController.getCurrentFilterController().undo();
+    }
+
+    // Map: RO
+    public Proxy.Properties getStorage() {
+        return new PropertiesProxy(getDelegate(), getScriptContext());
     }
 }

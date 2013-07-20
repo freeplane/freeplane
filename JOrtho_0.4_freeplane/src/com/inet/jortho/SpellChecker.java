@@ -505,7 +505,7 @@ public class SpellChecker {
 	 * @return the current <code>Dictionary</code> or null if not set.
 	 * @see #registerDictionaries(URL, String, String)
 	 */
-	static Dictionary getCurrentDictionary() {
+	public static Dictionary getCurrentDictionary() {
 		return currentDictionary;
 	}
 

@@ -1,0 +1,68 @@
+// @ExecutionModes(on_single_node)
+// @ExecutionModes(on_selected_node)
+// @ExecutionModes(on_selected_node_recursively)
+addConnectorTo(|)
+appendBranch(|)
+appendChild(|)
+attributes
+children
+children.collect{ | }
+children.each{ | }
+children.sum(|){  }
+connectorsIn
+connectorsIn.collect{ | }
+connectorsIn.each{ | }
+connectorsIn.sum(|){  }
+connectorsOut
+connectorsOut.collect{ | }
+connectorsOut.each{ | }
+connectorsOut.sum(|){  }
+createChild(|)
+createdAt
+dateTime
+def
+delete(|)
+details
+detailsText
+externalObject
+find(|)
+findAll(|)
+findAllDepthFirst(|)
+folded
+format
+getAt(|)
+getChildPosition(|)
+getNodeLevel(|)
+hasStyle(|)
+hideDetails
+htmlUtils
+icons
+id
+import
+isDescendantOf(|)
+lastModifiedAt
+leaf
+left
+link
+logger
+map
+moveTo(|)
+node
+nodeID
+note
+noteText
+object
+parent
+parentNode
+plainText
+plainTextContent
+putAt(|)
+removeConnector(|)
+root
+style
+text
+textUtils
+to
+ui
+value
+visible

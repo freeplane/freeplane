@@ -55,7 +55,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getMapView(), TextUtils
+			JOptionPane.showMessageDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent(), TextUtils
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
@@ -69,7 +69,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 				((MMapController) modeController.getMapController()).insertNode(child, selected);
 			}
-			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, false);
+			((MLinkController) LinkController.getController()).setLink(selected, (URI) null, LinkController.LINK_ABSOLUTE);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController().handleLoadingException(ex);

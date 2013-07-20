@@ -30,15 +30,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import org.apache.commons.lang.WordUtils;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneSecurityManager;
@@ -50,30 +47,30 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
  */
 public class GroovyShellFreeplaneScript implements IFreeplaneScript {
 	private static List<String> classpath;
-	final private Object script; 
-    private ScriptingPermissions specificPermissions;
+	final private Object script;
+    private final ScriptingPermissions specificPermissions;
     private Script compiledScript;
     private Throwable errorsInScript;
-    private IFreeplaneScriptErrorHandler errorHandler; 
+    private IFreeplaneScriptErrorHandler errorHandler;
     private PrintStream outStream;
-    private ScriptContext scriptContext; 
-    
+    private ScriptContext scriptContext;
+
 	public GroovyShellFreeplaneScript(String script){
 		this((Object)script);
 	}
-   
+
 	public GroovyShellFreeplaneScript(File script){
 		this((Object)script);
 	}
-   
+
 	public GroovyShellFreeplaneScript(String script, ScriptingPermissions permissions){
 		this((Object)script, permissions);
 	}
-   
+
 	public GroovyShellFreeplaneScript(File script, ScriptingPermissions permissions){
 		this((Object)script, permissions);
 	}
-   
+
 
 	private GroovyShellFreeplaneScript(Object script, ScriptingPermissions permissions) {
 	    super();
@@ -83,9 +80,9 @@ public class GroovyShellFreeplaneScript implements IFreeplaneScript {
 	    errorsInScript = null;
 	    errorHandler = IGNORING_SCRIPT_ERROR_HANDLER;
 	    outStream = System.out;
-	    scriptContext = null; 
+	    scriptContext = null;
     }
-	
+
 	private GroovyShellFreeplaneScript(Object script){
 		this(script, null);
 	}
@@ -136,8 +133,8 @@ public class GroovyShellFreeplaneScript implements IFreeplaneScript {
     public Script getCompiledScript() {
     	return compiledScript;
     }
-	
-	
+
+
 	@Override
     public Object execute(final NodeModel node) {
 	    try {
@@ -188,7 +185,7 @@ public class GroovyShellFreeplaneScript implements IFreeplaneScript {
 	    binding.setVariable("cookies", GenericFreeplaneScript.sScriptCookies);
 	    return binding;
     }
-	
+
 
 	private Script compile() throws Throwable {
 		if(compiledScript != null)
@@ -201,7 +198,7 @@ public class GroovyShellFreeplaneScript implements IFreeplaneScript {
 			try{
 				final Binding binding = createBindingForCompilation();
 				final ClassLoader classLoader = GroovyShellFreeplaneScript.class.getClassLoader();
-				final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration()); 
+				final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
 				final Script compiledScript;
 				if(script instanceof String)
 					compiledScript = shell.parse((String)script);
@@ -245,7 +242,7 @@ public class GroovyShellFreeplaneScript implements IFreeplaneScript {
 	    throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber, e);
     }
 
-	private CompilerConfiguration createCompilerConfiguration() {
+	static CompilerConfiguration createCompilerConfiguration() {
 		CompilerConfiguration config = new CompilerConfiguration();
 		config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
 		if (!(classpath == null || classpath.isEmpty())) {

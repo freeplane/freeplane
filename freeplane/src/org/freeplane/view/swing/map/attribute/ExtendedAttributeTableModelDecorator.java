@@ -50,7 +50,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	 */
 	@Override
 	public boolean areAttributesVisible() {
-		return getRowCount() != 0 || ! attributeView.addToNodeView();
+		return getRowCount() != 0 || ! attributeView.isReduced();
 	}
 
 	@Override

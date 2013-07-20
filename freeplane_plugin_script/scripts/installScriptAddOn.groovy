@@ -391,7 +391,7 @@ def addOnDir() {
 
 def createScripts() {
 	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
-	scripts.each { script -> 
+	scripts.each { script ->
 		File file = script.file
 		try {
 			file.text = script.scriptBody
@@ -404,10 +404,10 @@ def createScripts() {
 	}
 }
 
-def expandVariables(String string) {
+def expandVariables(Object o) {
 	Map variableMap = configMap['properties']
 	// expands strings like "${name}.groovy"
-	string.replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : match })
+	String.valueOf(o).replaceAll(/\$\{([^}]+)\}/, { match, key -> variableMap[key] ? variableMap[key] : match })
 }
 
 AddOnProperties parse() {
@@ -469,7 +469,7 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 	def dialogPrefSize = new Dimension((int) screenSize.getWidth() * 3 / 5, (int) screenSize.getHeight() * 1 / 2);
 	def warning = textUtils.removeTranslateComment(textUtils.getText('addons.installer.warning'))
 	def addOnDetailsPanel = new AddOnDetailsPanel(addOn, warning)
-	addOnDetailsPanel.maxWidth = 600
+	addOnDetailsPanel.maxWidth = 500
 	def installButtonText = installedAddOn ? textUtils.format('addons.installer.update', installedAddOn.version)
 		: textUtils.getText('addons.installer.install')
 
@@ -480,9 +480,15 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 						locationRelativeTo:ui.frame, owner:ui.frame, pack:true, preferredSize:dialogPrefSize) {
 		scrollPane() {
 			panel() {
+				panel(alignmentX:0.05) {
+					flowLayout(alignment:FlowLayout.LEFT)
+					button(action: action(name: textUtils.getText('cancel'), mnemonic: 'C', closure: {dispose()}))
+					defaultButton = button(id:'defBtn', action: action(name: installButtonText,
+						mnemonic: 'I', defaultButton:true, selected:true, closure: {vars.ok = true; dispose()}))
+				}
 				boxLayout(axis:BoxLayout.Y_AXIS)
 				widget(addOnDetailsPanel)
-				panel(alignmentX:0f) {
+				panel(alignmentX:0.05) {
 					flowLayout(alignment:FlowLayout.RIGHT)
 					button(action: action(name: textUtils.getText('cancel'), mnemonic: 'C', closure: {dispose()}))
 					defaultButton = button(id:'defBtn', action: action(name: installButtonText,

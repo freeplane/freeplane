@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
@@ -208,59 +209,62 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new MapBackgroundColorAction());
 			modeController.addAction(new CopyMapStylesAction());
 		}
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
-			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-				removeStyleMenu(menuBuilder, "main_menu_styles");
-				removeStyleMenu(menuBuilder, "node_popup_styles");
-			}
-
-			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-				addStyleMenu(menuBuilder, "main_menu_styles", newMap);
-				addStyleMenu(menuBuilder, "node_popup_styles", newMap);
-			}
-		});
-		final MapController mapController = modeController.getMapController();
-		mapController.addMapChangeListener(new IMapChangeListener() {
-			public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-			                           final NodeModel child, final int newIndex) {
-			}
-
-			public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
-			}
-
-			public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-			                        final NodeModel child, final int newIndex) {
-			}
-
-			public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-			}
-
-			public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-			}
-
-			public void mapChanged(final MapChangeEvent event) {
-				if (event.getProperty().equals(MapStyle.MAP_STYLES)) {
+		if(! modeController.getController().getViewController().isHeadless()){
+			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
+			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
+			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+				public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 					removeStyleMenu(menuBuilder, "main_menu_styles");
-					addStyleMenu(menuBuilder, "main_menu_styles", event.getMap());
 					removeStyleMenu(menuBuilder, "node_popup_styles");
-					addStyleMenu(menuBuilder, "node_popup_styles", event.getMap());
 				}
-			}
-		});
-		mapController.addNodeSelectionListener(new INodeSelectionListener() {
-			public void onSelect(final NodeModel node) {
-				selectActions();
-			}
 
-			public void onDeselect(final NodeModel node) {
-			}
-		});
-    }
+				public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+					addStyleMenu(menuBuilder, "main_menu_styles", newMap);
+					addStyleMenu(menuBuilder, "node_popup_styles", newMap);
+				}
+			});
+			final MapController mapController = modeController.getMapController();
+			mapController.addMapChangeListener(new IMapChangeListener() {
+				public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+				                           final NodeModel child, final int newIndex) {
+				}
+
+				public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+				}
+
+				public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+				                        final NodeModel child, final int newIndex) {
+				}
+
+				public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+				}
+
+				public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+				}
+
+				public void mapChanged(final MapChangeEvent event) {
+					if (event.getProperty().equals(MapStyle.MAP_STYLES)) {
+						removeStyleMenu(menuBuilder, "main_menu_styles");
+						addStyleMenu(menuBuilder, "main_menu_styles", event.getMap());
+						removeStyleMenu(menuBuilder, "node_popup_styles");
+						addStyleMenu(menuBuilder, "node_popup_styles", event.getMap());
+					}
+				}
+			});
+			mapController.addNodeSelectionListener(new INodeSelectionListener() {
+				public void onSelect(final NodeModel node) {
+					selectActions();
+				}
+
+				public void onDeselect(final NodeModel node) {
+				}
+			});
+		}
+	}
 
 	protected void removeStyleMenu(final MenuBuilder menuBuilder, final String formatMenuString) {
-	    if(null != menuBuilder.get(formatMenuString))
-	        menuBuilder.removeChildElements(formatMenuString);
+		if(null != menuBuilder.get(formatMenuString))
+			menuBuilder.removeChildElements(formatMenuString);
 		actions.clear();
 	}
 

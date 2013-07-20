@@ -1,3 +1,4 @@
+
 /*
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
@@ -29,8 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.IOExceptionWithCause;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.util.LogUtils;
@@ -55,6 +58,8 @@ public class Controller extends AController {
 	private ViewController viewController;
 	private final ResourceController resourceController;
 	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
+	private final OptionPanelController optionPanelController;
+	private IMapViewManager mapViewManager;
 
 	public Controller(ResourceController resourceController) {
 		super();
@@ -62,6 +67,7 @@ public class Controller extends AController {
 			currentController = this;
 		}
 		this.resourceController = resourceController; 
+		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new MoveToRootAction());
 		addAction(new CenterSelectedNodeAction());
@@ -85,7 +91,7 @@ public class Controller extends AController {
 		getMapViewManager().close(withoutSave);
 	}
 
-	public IExtension getExtension(final Class<? extends IExtension> clazz) {
+	public <T extends IExtension> T getExtension(final Class<T> clazz){
 		return extensionContainer.getExtension(clazz);
 	}
 
@@ -93,12 +99,16 @@ public class Controller extends AController {
 	 * @return
 	 */
 	public MapModel getMap() {
-		return getViewController().getMap();
+		return getMapViewManager().getModel();
 	}
 
 	public IMapViewManager getMapViewManager() {
-		return getViewController().getMapViewManager();
+		return mapViewManager;
 	}
+
+	public void setMapViewManager(IMapViewManager mapViewManager) {
+    	this.mapViewManager = mapViewManager;
+    }
 
 	/** @return the current modeController. */
 	public ModeController getModeController() {
@@ -114,7 +124,7 @@ public class Controller extends AController {
 	}
 
 	public IMapSelection getSelection() {
-		return getViewController().getSelection();
+		return getMapViewManager().getMapSelection();
 	}
 
 	/**
@@ -178,14 +188,58 @@ public class Controller extends AController {
 		return true;
 	}
 
-	public static Process exec(final String string) throws IOException {
-		LogUtils.info("execute " + string);
-		return Runtime.getRuntime().exec(string);
+	public static void exec(final String string) throws IOException {
+		exec(string, false);
 	}
 
-	public static Process exec(final String[] command) throws IOException {
+	public static void exec(final String string, boolean waitFor) throws IOException {
+		IControllerExecuteExtension ext = Controller.getCurrentController().getExtension(IControllerExecuteExtension.class);
+		if(ext == null) {
+			ext = Controller.getCurrentController().getDefaultExecuter();
+		}
+		
+		ext.exec(string, waitFor);
+	}
+	
+	public static void exec(final String[] command) throws IOException {
+		exec(command, false);
+	}
+	
+	public static void exec(final String[] command, boolean waitFor) throws IOException {
+		IControllerExecuteExtension ext = Controller.getCurrentController().getExtension(IControllerExecuteExtension.class);
+		if(ext == null) {
+			ext = Controller.getCurrentController().getDefaultExecuter();
+		}
+		
+		ext.exec(command, waitFor);
+	}
+
+	private IControllerExecuteExtension getDefaultExecuter() {
+		return new IControllerExecuteExtension() {
+			
+			public void exec(String[] command, boolean waitFor) throws IOException {
 		LogUtils.info("execute " + Arrays.toString(command));
-		return Runtime.getRuntime().exec(command);
+				Process proc = Runtime.getRuntime().exec(command);
+				waiting(waitFor, proc);
+			}
+			
+			public void exec(String string, boolean waitFor) throws IOException {
+				LogUtils.info("execute " + string);
+				Process proc = Runtime.getRuntime().exec(string);
+				waiting(waitFor, proc);
+			}
+
+			private void waiting(boolean waitFor, Process proc)
+					throws IOExceptionWithCause {
+				if(waitFor) {
+					try {
+						proc.waitFor();
+					} catch (InterruptedException e) {
+						throw new IOExceptionWithCause(e);
+					}
+				}
+			}
+		};
 	}
 
 	private static ThreadLocal<Controller> threadController = new ThreadLocal<Controller>();
@@ -218,5 +272,9 @@ public class Controller extends AController {
 	
 	public List<IValidator> getOptionValidators() {
 		return optionValidators;
+	}
+	
+	public OptionPanelController getOptionPanelController() {
+		return optionPanelController;
 	}
 }

@@ -57,7 +57,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
@@ -256,9 +255,12 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public void updateMapList() {
 		updateModeMenu();
 		updateMapList("main_menu_mindmaps");
+		updateMapList("popup_menu_mindmaps");
 	}
 
 	private void updateMapList(final String mapsMenuPosition) {
+		if(! menuBuilder.contains(mapsMenuPosition))
+			return;
 		menuBuilder.removeChildElements(mapsMenuPosition);
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final List<? extends Component> mapViewVector = mapViewManager.getMapViewVector();
@@ -311,7 +313,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				throw e;
 			}
 		}
-		final ViewController viewController = Controller.getCurrentController().getViewController();
+		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 		viewController.updateMenus(menuBuilder);
 	}
 

@@ -29,7 +29,7 @@ import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
-import org.freeplane.features.export.mindmapmode.AExportEngine;
+import org.freeplane.features.export.mindmapmode.IExportEngine;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -37,7 +37,7 @@ import org.w3c.dom.Document;
 /**
  * @author foltin
  */
-abstract class ExportVectorGraphic extends AExportEngine {
+abstract class ExportVectorGraphic implements IExportEngine {
 	/**
 	 * 
 	 */

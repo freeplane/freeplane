@@ -56,10 +56,6 @@ import com.lightdev.app.shtm.SHTMLPanel;
  */
 public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 		private SHTMLPanel htmlEditorPanel;
 		private JButton splitButton;
 

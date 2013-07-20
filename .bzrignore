@@ -23,3 +23,4 @@ backups
 ./freeplane_plugin_script/build-nodehighlighter
 ./freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
 ./freeplane_framework/temp
+./freeplane_plugin_latex/lib/jlatexmath-src-all-0.9.7.zip

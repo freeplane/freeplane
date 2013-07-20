@@ -21,7 +21,8 @@ import org.freeplane.features.mode.Controller;
  * @author robert.ladstaetter
  */
 public class Compat {
-	public static final String JAVA_VERSION = System.getProperty("java.version");
+	public static final String PROPERTY_FREEPLANE_USERDIR = "org.freeplane.userfpdir";
+    public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String VERSION_1_6_0 = "1.6.0";
 
 	private static enum OS {
@@ -153,17 +154,21 @@ public class Compat {
 			}
 		}
 	}
-	final private static String PREVIEW_DIR=File.separatorChar + "1.2.x";
-	
+	final private static String CURRENT_VERSION_DIR= File.separatorChar + "1.3.x";
+
+	/** the directory *including* the version directory. */
 	public static String getFreeplaneUserDirectory() {
-		String userFpDir = System.getProperty("org.freeplane.userfpdir");
+		String userFpDir = System.getProperty(PROPERTY_FREEPLANE_USERDIR);
 		if(userFpDir == null){
-			userFpDir = System.getProperty("user.home")+ File.separator + ".freeplane";
+			userFpDir = getDefaultFreeplaneUserDirectory();
 		}
-		if(PREVIEW_DIR != null)
-			return userFpDir + PREVIEW_DIR;
-		return userFpDir;
+		return userFpDir + CURRENT_VERSION_DIR;
 	}
+
+	/** the default FP directory *excluding* the version directory. */
+    public static String getDefaultFreeplaneUserDirectory() {
+        return System.getProperty("user.home")+ File.separator + ".freeplane";
+    }
 
 	static public String smbUri2unc(final URI uri) {
 		String uriString;

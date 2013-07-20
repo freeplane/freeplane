@@ -326,7 +326,7 @@ public abstract class MainView extends ZoomableLabel {
 		final Graphics2D g2 = (Graphics2D) g;
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		final MapView parent = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-		parent.getModeController().getController().getViewController().setEdgesRenderingHint(g2);
+		parent.getModeController().getController().getMapViewManager().setEdgesRenderingHint(g2);
 		final Color color = g2.getColor();
 		NodeView movedView = getNodeView();
 		Rectangle r = getDragRectangle();
@@ -463,12 +463,14 @@ public abstract class MainView extends ZoomableLabel {
 		try {
 			if(isShortened && (content instanceof String))
 				content = HtmlUtils.htmlToPlain((String) content);
-			final Object obj = textController.getTransformedObject(content, nodeModel, userObject);
+			final Object transformedContent = textController.getTransformedObject(content, nodeModel, userObject);
 			if(nodeView.isSelected()){
-				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(obj);
+				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(transformedContent);
 			}
-			text = obj.toString();
-			textModified = obj instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;
+			Icon icon = textController.getIcon(transformedContent, nodeModel, content);
+			putClientProperty(TEXT_RENDERING_ICON, icon);
+			text = transformedContent.toString();
+			textModified = transformedContent instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);

@@ -8,6 +8,7 @@ import groovy.lang.MissingMethodException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -254,5 +255,51 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
     /** make <code>if (node.attributes) println "has attributes"</code> work. */
     public boolean asBoolean() {
         return !isEmpty();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Iterator<Map.Entry<String, Object>> iterator() {
+        final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+        if (attributeTableModel == null) {
+            return  (Iterator<Map.Entry<String, Object>>) (Object) Collections.emptyMap().entrySet().iterator();
+        }
+        return new Iterator<Map.Entry<String, Object>>() {
+            final private Iterator<Attribute> iterator = attributeTableModel.getAttributes().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public Map.Entry<String, Object> next() {
+                final Attribute attribute = iterator.next();
+                return new Map.Entry<String, Object>() {
+
+                    @Override
+                    public String getKey() {
+                        return attribute.getName();
+                    }
+
+                    @Override
+                    public Object getValue() {
+                        return attribute.getValue();
+                    }
+
+                    @Override
+                    public Object setValue(Object value) {
+                        final Object oldValue = attribute.getValue();
+                        attribute.setValue(value);
+                        return oldValue;
+                    }
+                    ;
+                };
+            }
+
+            @Override
+            public void remove() {
+                iterator.remove();
+            }
+        };
     }
 }

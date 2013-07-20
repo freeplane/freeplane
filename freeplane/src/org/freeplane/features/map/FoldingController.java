@@ -31,6 +31,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -159,9 +160,12 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	public FoldingController() {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
-		for (final AFreeplaneAction annotatedAction : getAnnotatedActions()) {
-			modeController.addAction(annotatedAction);
+		if(!modeController.getController().getViewController().isHeadless()){
+			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
+			userInputListenerFactory.addMouseWheelEventHandler(this);
+			for (final AFreeplaneAction annotatedAction : getAnnotatedActions()) {
+				modeController.addAction(annotatedAction);
+			}
 		}
 	}
 
@@ -243,6 +247,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 			return Integer.MAX_VALUE;
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		if(node.containsExtension(HideChildSubtree.class))
+			return depth(node) - 1;
 		if (mapController.isFolded(node)) {
 			return depth(node);
 		}
@@ -278,7 +284,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 	private void setFolded(final NodeModel node, final boolean state) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		if (! node.isRoot() && mapController.hasChildren(node) && (mapController.isFolded(node) != state)) {
+		if (! node.isRoot()) {
 			mapController.setFolded(node, state);
 		}
 	}

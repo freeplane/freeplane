@@ -1,0 +1,69 @@
+<html>
+<body>
+<p>The Freeplane scripting API is an object oriented layer over the Freeplane internals.</p>
+<p>It is meant to be upwards compatible and it grows with new Freeplane features. If you miss a special Freeplane feature in the API please create a change request in <a href="http://sourceforge.net/apps/mantisbt/freeplane/">Mantis</a>.</p>
+
+<h2>The <a href="org/freeplane/plugin/script/proxy/Proxy.html">Proxy</a> interface</h2>
+<p>The interface is completely defined by the <a href="org/freeplane/plugin/script/proxy/Proxy.html">Proxy</a> interface with its numerous subinterfaces.</p>
+<p>In addition to the wrapper layer there are two extensions:</p>
+
+<h2><a href="org/freeplane/plugin/script/FreeplaneScriptBaseClass.html">FreeplaneScriptBaseClass</a></h2>
+<p>This Groovy class is the base class of all formulas and Groovy scripts. It provides some methods you may find convenient.</p>
+
+<h2>Utilities</h2>
+<p>The following utility classes that also are listed in <a href="org/freeplane/plugin/script/FreeplaneScriptBaseClass.html">FreeplaneScriptBaseClass</a> might be useful. Where available use the shortcut (e.g. <tr>ui</tr> instead of <tr>UITools</tr>) since this requires no imports:</p>
+<table border="1">
+<tr><th>Class</td><th>Shortcut</th></tr>
+<tr><td><a href="org/freeplane/core/ui/components/UITools.html">UITools</a></td><td>ui</td></tr>
+<tr><td><a href="org/freeplane/core/util/LogUtils.html">LogUtils</a></td><td>logger</td></tr>
+<tr><td><a href="org/freeplane/core/util/HtmlUtils.html">HtmlUtils</a></td><td>htmlUtils</td></tr>
+<tr><td><a href="org/freeplane/core/util/TextUtils.html">TextUtils</a></td><td>textUtils</td></tr>
+<tr><td><a href="org/freeplane/core/util/MenuUtils.html">MenuUtils</a></td><td>menuUtils</td></tr>
+<tr><td><a href="org/freeplane/plugin/script/FreeplaneScriptBaseClass.ConfigProperties.html">ConfigProperties</a></td><td>config</td></tr>
+<tr><td><a href="org/freeplane/core/util/FreeplaneVersion.html">FreeplaneVersion</a></td><td>-</td></tr>
+</table>
+
+<h2>Entry points</h2>
+<p>Each script is given two variables:</p>
+<pre>
+  Proxy.Node node
+  Proxy.Controller c
+</pre>
+
+<p>In formulas and Groovy scripts all methods and properties of the <tt>node</tt> variable are directly available so you can write <tt>children.size()</tt> instead of <tt>node.children.size()</tt>.</p>
+
+<h2>Convertible</h2>
+<p>A very important usability improvement, not only for formula writers, is the introduction of the class <a href="org/freeplane/plugin/script/proxy/Convertible.html">Convertible</a> that is returned now by some methods/properties:</p>
+<ul>
+<li><tt>node.to</tt></li>
+<li><tt>node['attr_name']</tt></li>
+<li><tt>node.attributes.values</tt></li>
+<li><tt>node.note</tt></li>
+<li><tt>node.details</tt></li>
+</ul>
+<p>A Convertible tries everything possible to convert an object to the requested target type. For instance <tt>node.to.date</tt> will return a date even if the node object is a String "2013-03-13" instead of a Date. This will work even with Maps imported from a data type agnostic FreeMind.</p>
+<p>Convertible can get in your way sometimes if all what you want is the raw string (e.g. of a note). If you need that use these methods/attributes instead:
+<ul>
+<li><tt>node.text</tt> returns the raw text, <tt>node.plainText</tt> is the same as <tt>node.to.plain</tt>.</li>
+<li><tt>node.attributes.getFirst('attr_name')</tt></li>
+<li><tt>node.attributes.map.values</tt> returns all values if there are no duplicated keys. From 1.3.2 use <tt>node.attributes.collect { it.value }</tt> instead.</li>
+<li><tt>node.noteText</tt></li>
+<li><tt>node.detailsText</tt></li>
+</ul>
+
+<h2>Extended Setters</h2>
+<p>Some attributes have been changed from type String to Object which avoids ugly conversions back and forth between Strings, Dates and Number:
+<ul>
+<li>It's <tt>node.setText(Object)</tt> although <tt>node.getText()</tt> returns an String. Better use the attribute <tt>node.object</tt> which is symmetric in getter and setter types.</li>
+<li>Attribute values are not restricted to String (anymore).</li>
+</ul>
+<p>Other attributes are still String valued but their setters accept other Objects as well. This requires a conversion of course.</p>
+<ul>
+<li><tt>node.note</tt> has a HTML string but <tt>node.setNote()</tt> accepts an Object and <tt>node.getNote()</tt> returns a <a href="org/freeplane/plugin/script/proxy/Convertible.html">Convertible</a> for the plain text note.</li>
+<li>The same holds for <tt>node.details</tt> which also has a HTML string value but it's <tt>node.setDetails(Object)</tt> and <tt>node.getDetails()</tt> returns a <a href="org/freeplane/plugin/script/proxy/Convertible.html">Convertible</a>.</li>
+</ul>
+
+<h2>Access to Freeplane's internals</h2>
+<p>The existence of a comprehensive API doesn't prohibit access to internal interfaces. For most scripts this should not be necessary but especially add-on writers may need more than the scripting API. But note that these internal interfaces might change without further notice between two stable Freeplane versions (but probably not between minor versions). Also note that for understanding the internal interfaces you have to dive into the code. <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting_environment_setup">Setting up a proper development environment</a> is therefore indispensable.</p>
+</body>
+</html>

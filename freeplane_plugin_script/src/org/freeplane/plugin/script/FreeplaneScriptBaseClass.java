@@ -7,6 +7,7 @@ import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -16,6 +17,7 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
@@ -28,7 +30,21 @@ import org.freeplane.plugin.script.proxy.Convertible;
 import org.freeplane.plugin.script.proxy.Proxy;
 
 /** All methods of this class are available as "global" methods in every script.
- * Only documented methods are meant to be used in scripts. */
+ * Only documented methods are meant to be used in scripts.
+ * <p>The following global objects are provided as shortcuts by the binding of this class:
+ * <ul>
+ * <li><b>ui:</b> see {@link UITools}</li>
+ * <li><b>logger:</b> see {@link LogUtils}</li>
+ * <li><b>htmlUtils:</b> see {@link HtmlUtils}</li>
+ * <li><b>textUtils:</b> see {@link TextUtils}</li>
+ * <li><b>menuUtils:</b> see {@link MenuUtils}</li>
+ * <li><b>config:</b> see {@link ConfigProperties}</li>
+ * </ul>
+ * The following classes may also be useful in scripting:
+ * <ul>
+ * <li>{@link FreeplaneVersion}</li>
+ * </ul>
+ */
 public abstract class FreeplaneScriptBaseClass extends Script {
 	/**
 	 * Accessor for Freeplane's configuration: In scripts available
@@ -216,12 +232,26 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     }
 
     /** parses text to the proper data type, if possible, setting format to the standard. Parsing is configured via
-     * config file scanner.xml */
+     * config file scanner.xml
+     * <pre>
+     * assert parse('2012-11-30') instanceof Date
+     * assert parse('1.22') instanceof Number
+     * // if parsing fails the original string is returned
+     * assert parse('2012XX11-30') == '2012XX11-30'
+     * 
+     * def d = parse('2012-10-30')
+     * c.statusInfo = "${d} is ${new Date() - d} days ago"
+     * </pre> */
     public Object parse(final String text) {
         return ScannerController.getController().parse(text);
     }
-    
+
     /** uses formatString to return a FormattedObject.
+     * <p><em>Note:</em> If you want to format the node core better use the format node attribute instead:
+     * <pre>
+     * node.object = new Date()
+     * node.format = 'dd/MM/yy'
+     * </pre>
      * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
     public Object format(final Object object, final String formatString) {
         return FormatController.format(object, formatString);
@@ -231,6 +261,13 @@ public abstract class FreeplaneScriptBaseClass extends Script {
      * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
     public Object format(final Object object) {
         return FormatController.formatUsingDefault(object);
+    }
+
+    /** Applies default date format (instead of standard date-time) format on the given date.
+     * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
+    public Object formatDate(final Date date) {
+        final String format = FormatController.getController().getDefaultDateFormat().toPattern();
+        return FormatController.format(date, format);
     }
 
     /** formats according to the internal standard, that is the conversion will be reversible

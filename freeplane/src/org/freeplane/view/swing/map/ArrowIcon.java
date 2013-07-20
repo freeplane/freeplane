@@ -80,7 +80,7 @@ class ArrowIcon implements Icon{
 		Graphics2D g2= (Graphics2D) g;
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		ModeController modeController = this.nodeView.getMap().getModeController();
-		modeController.getController().getViewController().setEdgesRenderingHint(g2);
+		modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
 		g.drawPolygon(xs, ys, 3); 
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		g.setColor(oldColor);

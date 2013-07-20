@@ -7,168 +7,215 @@
 // (at your option) any later version.
 
 import java.lang.reflect.Method
-import org.freeplane.plugin.script.proxy.Proxy
+
+import org.freeplane.core.ui.components.UITools
+import org.freeplane.core.util.FreeplaneVersion
+import org.freeplane.core.util.HtmlUtils
+import org.freeplane.core.util.LogUtils
+import org.freeplane.core.util.TextUtils
+import org.freeplane.plugin.script.FreeplaneScriptBaseClass
 import org.freeplane.plugin.script.proxy.Convertible
+import org.freeplane.plugin.script.proxy.Proxy
+import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 
-def makeApi(Proxy.Node node, Class clazz, String apiBase) {
-	def classNode = node.createChild(typeToString(clazz))
-	TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
-	classNode.link.text = getApiLink(apiBase, clazz)
-	classNode.style.font.bold = true
-	clazz.getMethods().findAll {
-		it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO')
-	}.sort {
-		a,b -> b.name <=> a.name
-	}.each {
-		if (!addProperty(memberMap, it))
-			addMethod(memberMap, it);
-	}
-	classNode.createChild('Package: ' + clazz.getPackage().name)
-	classNode.folded = true
-	memberMap.each { k,v ->
-		createMemberNode(k, v, classNode, apiBase)
-	}
-	// input for freeplane_plugin_script/src-jsyntaxpane/META-INF/services/jsyntaxpane/syntaxkits/groovysyntaxkit/combocompletions.txt
-	boolean printCompletionList = false
-	if (printCompletionList && classNode.to.plain == 'Node')
-		printCompletions(memberMap)
+// FIXME: api is installed locally but is there a portable way to find it?
+URI getApiLink(String path) {
+    try {
+        def apiBase = path.startsWith('org/freeplane') ? 'http://freeplane.sourceforge.net/doc/api'
+                : 'http://groovy.codehaus.org/groovy-jdk'
+        return new URI(apiBase + '/' + path)
+    } catch (Exception e) {
+        logger.severe("could not create link for class ${path}", e)
+        return null
+    }
+}
+
+URI getApiLink(Class clazz) {
+    if (clazz == void.class)
+        return null
+    else if (clazz.isArray())
+        clazz = List.class // that's a useful approximation in Groovy
+    else if (clazz.isPrimitive())
+        clazz = wrap(clazz)
+    return getApiLink(clazz.name.replace('.', '/').replace('$', '.') + '.html')
+}
+
+// see http://stackoverflow.com/questions/1704634/simple-way-to-get-wrapper-class-type-in-java
+private static <T> Class<T> wrap(Class<T> clazz) {
+    if (clazz == boolean.class) return Boolean.class
+    if (clazz == byte.class) return Byte.class
+    if (clazz == char.class) return Character.class
+    if (clazz == double.class) return Double.class
+    if (clazz == float.class) return Float.class
+    if (clazz == int.class) return Integer.class
+    if (clazz == long.class) return Long.class
+    if (clazz == short.class) return Short.class
+    if (clazz == void.class) return Void.class
+    return clazz
+}
+
+def makeApi(Proxy.Node node, Class clazz) {
+    def classNode = node.createChild(typeToString(clazz))
+    TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
+    classNode.link.uri = getApiLink(clazz)
+    classNode.style.font.bold = true
+    clazz.getMethods().findAll {
+        it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO')
+    }.sort {
+        a,b -> b.name <=> a.name
+    }.each {
+        if (!addProperty(memberMap, it))
+            addMethod(memberMap, it);
+    }
+    classNode.createChild('Package: ' + clazz.getPackage().name)
+    classNode.folded = true
+    memberMap.each { k,v ->
+        createMemberNode(k, v, classNode)
+    }
+    // input for freeplane_plugin_script/src-jsyntaxpane/META-INF/services/jsyntaxpane/syntaxkits/groovysyntaxkit/combocompletions.txt
+    boolean printCompletionList = false
+    if (printCompletionList && classNode.to.plain == 'Node')
+        printCompletions(memberMap)
 }
 
 def printCompletions(TreeMap<String, Map<String, Object>> memberMap) {
-	TreeSet completions = new TreeSet()
-	completions.addAll(['logger', 'ui', 'htmlUtils', 'textUtils', 'node', 'import', 'def', 'String'])
-	completions.addAll(['single_node', 'selected_node', 'selected_node_recursively'].collect{ "// @ExecutionModes($it)" })
-	
-	memberMap.each { memberName,attribs ->
-		if (attribs['method'])
-			completions << memberName + '(|)'
-		else {
-			completions << memberName
-			if (attribs['type_read'] && Collection.class.isAssignableFrom(attribs['type_read'])) {
-				completions << memberName + '.each{ | }'
-				completions << memberName + '.collect{ | }'
-				completions << memberName + '.sum(|){  }'
-			}
-		}
-	}
-	println completions.join("\n")
+    TreeSet completions = new TreeSet()
+    completions.addAll(['logger', 'ui', 'htmlUtils', 'textUtils', 'node', 'import', 'def', 'String'])
+    memberMap.each { memberName,attribs ->
+        if (attribs['method'])
+            completions << memberName + '(|)'
+        else {
+            completions << memberName
+            if (attribs['type_read'] && Collection.class.isAssignableFrom(attribs['type_read'])) {
+                completions << memberName + '.each{ | }'
+                completions << memberName + '.collect{ | }'
+                completions << memberName + '.sum(|){  }'
+            }
+        }
+    }
+    println completions.join("\n")
 }
 
-def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node classNode, String apiBase) {
-	Proxy.Node memberNode
-	if (attribs['method']) {
-		memberNode = classNode.createChild(attribs['method'])
-		memberNode.icons.add('bookmark')
-	}
-	else {
-		// property
-		def mode = (attribs['type_read'] ? 'r' : '') + (attribs['type_write'] ? 'w' : '')
-		def type = attribs['type_read'] ? attribs['type_read'] : attribs['type_write']
-		//	if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
-		//		logger.severe("property ${memberName} has differing getter and setter types")
-		//	}
-		memberNode = classNode.createChild(formatProperty(memberName, typeToString(type), mode))
-		memberNode.icons.add('wizard')
-		[ 'method_read', 'method_write' ].each {
-			if (attribs[it]) {
-				memberNode.createChild(formatMethod(attribs[it])).icons.add('bookmark')
-			}
-		}
-	}
-	attribs['types'].each {
-		if (it.declaringClass == Proxy.class || it == Convertible.class) {
-			def typeNode = memberNode.createChild(typeToString(it))
-			typeNode.link.text = getApiLink(apiBase, it)
-		}
-	}
-	memberNode.folded = true
-	return memberNode
-}
-
-def getApiLink(String apiBase, Class clazz) {
-	def path = clazz.name.replace('.', '/').replace('$', '.')
-	return apiBase + '/' + path + '.html'
+def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node classNode) {
+    Proxy.Node memberNode
+    if (attribs['method']) {
+        memberNode = classNode.createChild(attribs['method'])
+        memberNode.icons.add('bookmark')
+    }
+    else {
+        // property
+        def mode = (attribs['type_read'] ? 'r' : '') + (attribs['type_write'] ? 'w' : '')
+        def type = attribs['type_read'] ? attribs['type_read'] : attribs['type_write']
+        //	if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
+        //		logger.severe("property ${memberName} has differing getter and setter types")
+        //	}
+        memberNode = classNode.createChild(formatProperty(memberName, typeToString(type), mode))
+        memberNode.icons.add('wizard')
+        [ 'method_read', 'method_write' ].each {
+            if (attribs[it]) {
+                Proxy.Node methodNode = memberNode.createChild(formatMethod(attribs[it]))
+                methodNode.icons.add('bookmark')
+                methodNode.link.uri = getApiLink(attribs['return_type'])
+            }
+        }
+    }
+    if (attribs['return_type']) {
+        memberNode.link.uri = getApiLink(attribs['return_type'])
+    }
+    attribs['types'].each {
+        def typeNode = memberNode.createChild(typeToString(it))
+        typeNode.link.uri = getApiLink(it)
+    }
+    memberNode.folded = true
+    return memberNode
 }
 
 def typeToString(Class clazz) {
-	return clazz.simpleName.replace('Proxy$', '')
+    return clazz.simpleName.replace('Proxy$', '')
 }
 
 // returns a value if this method is a getter or setter otherwise it returns null
 def addProperty(Map<String, Map<String, Object>> memberMap, Method method) {
-	if (isGetter(method) && ! method.parameterTypes) {
-		def propertyMap = getOrCreatePropertiesMap(memberMap, getPropertyName(method))
-		propertyMap['read'] = true
-		propertyMap['type_read'] = method.returnType
-		propertyMap['types'] = [ method.returnType ]
-		propertyMap['method_read'] = method
-	}
-	else if (isSetter(method) && method.parameterTypes.size() == 1) {
-		def propertyMap = getOrCreatePropertiesMap(memberMap, getPropertyName(method))
-		propertyMap['write'] = true
-		propertyMap['type_write'] = method.parameterTypes[0]
-		propertyMap['types'] = [ method.returnType ]
-		propertyMap['method_write'] = method
-	}
+    if (isGetter(method) && ! method.parameterTypes) {
+        def propertyMap = getOrCreatePropertiesMap(memberMap, getPropertyName(method))
+        propertyMap['read'] = true
+        propertyMap['type_read'] = method.returnType
+        propertyMap['method_read'] = method
+        propertyMap['return_type'] = method.returnType
+    }
+    else if (isSetter(method) && method.parameterTypes.size() == 1) {
+        def propertyMap = getOrCreatePropertiesMap(memberMap, getPropertyName(method))
+        propertyMap['write'] = true
+        propertyMap['type_write'] = method.parameterTypes[0]
+        propertyMap['method_write'] = method
+        propertyMap['return_type'] = method.returnType
+    }
 }
 
 def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
-	def propertyMap = getOrCreatePropertiesMap(memberMap, method.name)
-	propertyMap['types'] = method.parameterTypes
-	propertyMap['method'] = formatMethod(method)
+    def propertyMap = getOrCreatePropertiesMap(memberMap, method.name)
+    propertyMap['types'] = method.parameterTypes
+    propertyMap['method'] = formatMethod(method)
+    propertyMap['return_type'] = method.returnType
 }
 
 def formatProperty(String property, String type, String mode) {
-	return "<html><body><b>${property}</b>: ${type} (${mode})"
-// Plain text:
-//	return "${property}: ${type} (${mode})"
+    return "<html><body><b>${property}</b>: ${type} (${mode})"
+    // Plain text:
+    //	return "${property}: ${type} (${mode})"
+}
+
+def formatParameter(Class clazz) {
+    def uri = getApiLink(clazz)
+    if (uri)
+        "<a href='${uri.toURL()}'>${typeToString(clazz)}</a>"
 }
 
 def formatMethod(Method method) {
-	return '<html><body>' + typeToString(method.returnType) +
-		' <b>' + method.name + '</b>' +
-		'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
-// Plain text:
-//	return typeToString(method.returnType) +
-//		' ' + method.name +
-//		'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+    return '<html><body>' + typeToString(method.returnType) +
+    ' <b>' + method.name + '</b>' +
+    '(' + method.parameterTypes.collect{ formatParameter(it) }.join(', ') + ')'
+    // Plain text:
+    //	return typeToString(method.returnType) +
+    //		' ' + method.name +
+    //		'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
 }
 
 def isGetter(Method method) {
-	return method.name =~ '^(?:[gs]et|is)[A-Z].*'
+    return method.name =~ '^(?:[gs]et|is)[A-Z].*'
 }
 
 def isSetter(Method method) {
-	return method.name =~ '^set[A-Z].*'
+    return method.name =~ '^set[A-Z].*'
 }
 
 /** returns null if this is not a proper bean method name (get/set/is). */
 def getPropertyName(Method method) {
-	def name = method.name.replaceFirst('^(?:[gs]et|is)([A-Z])', '$1')
-	if (name != method.name)
-		return name.substring(0, 1).toLowerCase() + name.substring(1)
-	else
-		return null
+    def name = method.name.replaceFirst('^(?:[gs]et|is)([A-Z])', '$1')
+    if (name != method.name)
+        return name.substring(0, 1).toLowerCase() + name.substring(1)
+    else
+        return null
 }
 
 private Map getOrCreatePropertiesMap(Map properties, String name) {
-	def propertyMap = properties[name]
-	if (propertyMap == null) {
-		propertyMap = [:]
-		properties[name] = propertyMap
-	}
-	return propertyMap
+    def propertyMap = properties[name]
+    if (propertyMap == null) {
+        propertyMap = [:]
+        properties[name] = propertyMap
+    }
+    return propertyMap
 }
 
 def initHeading(Proxy.Node node) {
-	node.style.font.bold = true
+    node.style.font.bold = true
 }
 
 def createChild(Proxy.Node parent, text, link) {
-	def result = parent.createChild(text)
-	result.link.text = link
-	return result
+    def result = parent.createChild(text)
+    result.link.text = link
+    return result
 }
 
 // == MAIN ==
@@ -178,41 +225,41 @@ def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
 def WEB_NODE = textUtils.getText('scripting_api_generator_web')
 def LEGEND_NODE = textUtils.getText('scripting_api_generator_legend')
 c.deactivateUndo()
-// FIXME: api is installed locally but is there a portable way to find it?
-def apiBase = 'http://freeplane.sourceforge.net/doc/api'
 Proxy.Map newMap = c.newMap()
 def oldName = newMap.name
 newMap.name = MAP_NAME
 newMap.root.text = MAP_NAME
 newMap.root.style.font.bold = true
-newMap.root.link.text = apiBase + '/index.html'
+newMap.root.link.uri = getApiLink('index.html')
 initHeading(newMap.root)
 
 
 // Proxy
-def proxy = createChild(newMap.root, PROXY_NODE, apiBase + '/org/freeplane/plugin/script/proxy/Proxy.html')
+def proxy = createChild(newMap.root, PROXY_NODE, getApiLink(Proxy.class))
 initHeading(proxy)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Attributes'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Connector'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Controller'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Edge'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$ExternalObject'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Font'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Icons'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Link'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Map'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$Node'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Proxy$NodeStyle'), apiBase)
-makeApi(proxy, Class.forName('org.freeplane.plugin.script.proxy.Convertible'), apiBase)
+makeApi(proxy, Proxy.Attributes.class)
+makeApi(proxy, Proxy.Cloud.class)
+makeApi(proxy, Proxy.Connector.class)
+makeApi(proxy, Proxy.Controller.class)
+makeApi(proxy, Proxy.Edge.class)
+makeApi(proxy, Proxy.ExternalObject.class)
+makeApi(proxy, Proxy.Font.class)
+makeApi(proxy, Proxy.Icons.class)
+makeApi(proxy, Proxy.Link.class)
+makeApi(proxy, Proxy.Map.class)
+makeApi(proxy, Proxy.Node.class)
+makeApi(proxy, Proxy.NodeStyle.class)
+makeApi(proxy, Convertible.class)
 
 def utils = createChild(newMap.root, UTILITES_NODE, null)
 initHeading(utils)
-makeApi(utils, Class.forName('org.freeplane.plugin.script.FreeplaneScriptBaseClass'), apiBase)
-makeApi(utils, Class.forName('org.freeplane.core.ui.components.UITools'), apiBase)
-makeApi(utils, Class.forName('org.freeplane.core.util.TextUtils'), apiBase)
-makeApi(utils, Class.forName('org.freeplane.core.util.FreeplaneVersion'), apiBase)
-makeApi(utils, Class.forName('org.freeplane.core.util.HtmlUtils'), apiBase)
-makeApi(utils, Class.forName('org.freeplane.core.util.LogUtils'), apiBase)
+makeApi(utils, FreeplaneScriptBaseClass.class)
+makeApi(proxy, ScriptUtils.class)
+makeApi(utils, UITools.class)
+makeApi(utils, TextUtils.class)
+makeApi(utils, FreeplaneVersion.class)
+makeApi(utils, HtmlUtils.class)
+makeApi(utils, LogUtils.class)
 
 def web = createChild(newMap.root, WEB_NODE, 'http://freeplane.sourceforge.net/wiki/index.php/Scripting')
 initHeading(web)
@@ -234,9 +281,9 @@ propertyBasics.createChild("  node.text = 'Hello, world!'")
 propertyBasics.createChild("instead of")
 propertyBasics.createChild("  node.setText('Hello, world!')")
 propertyLegend.createChild("read-only properties are indicated by a trailing (r)").
-	createChild('if (node.leaf)\n    println "the id of this leaf node is " + node.id')
+        createChild('if (node.leaf)\n    println "the id of this leaf node is " + node.id')
 propertyLegend.createChild("write-only and read-write properties are indicated by a trailing (w) or (rw)").
-	createChild('node.text += " some suffix"')
+        createChild('node.text += " some suffix"')
 propertyLegend.createChild("properties with differing type of setter and getter have two nodes")
 legend.folded = true
 

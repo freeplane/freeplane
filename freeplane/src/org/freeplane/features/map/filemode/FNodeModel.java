@@ -42,7 +42,7 @@ class FNodeModel extends NodeModel {
 
 	@Override
 	public List<NodeModel> getChildren() {
-		if (!children.isEmpty()) {
+		if (!getChildrenInternal().isEmpty()) {
 			return super.getChildren();
 		}
 		try {
@@ -55,7 +55,7 @@ class FNodeModel extends NodeModel {
 						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
 						NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(childFile.toURI());
 						fileNodeModel.setLeft(isNewChildLeft());
-						children.add(getChildCount(), fileNodeModel);
+						getChildrenInternal().add(getChildCount(), fileNodeModel);
 						fileNodeModel.setParent(this);
 					}
 				}

@@ -41,7 +41,8 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 
 public class MModeController extends ModeController {
-	static public final String MODENAME = "MindMap";
+	private static final String LOOKANDFEEL_PROPERTY = "lookandfeel";
+    static public final String MODENAME = "MindMap";
 	private RedoAction redo;
 	public static final String RESOURCES_DELETE_NODES_WITHOUT_QUESTION = "delete_nodes_without_question";
 	private UndoAction undo;
@@ -119,9 +120,18 @@ public class MModeController extends ModeController {
 			lafNames.add(className);
 			translatedLafNames.add(info.getName());
 		}
-		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
+		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
+		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
 		return new PropertyAction(optionPanelBuilder.getRoot());
+    }
+
+    private static void addCurrentLookAndFeelIfNecessary(Vector<String> lafNames, Vector<String> translatedLafNames) {
+        final String currentLaf = ResourceController.getResourceController().getProperty(LOOKANDFEEL_PROPERTY);
+        if (!lafNames.contains(currentLaf)) {
+            lafNames.add(currentLaf);
+            translatedLafNames.add(currentLaf.replaceFirst(".*\\.", ""));
+        }
     }
 
 	@Override

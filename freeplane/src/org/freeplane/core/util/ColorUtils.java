@@ -22,7 +22,7 @@ public class ColorUtils {
 			return null;
 		}
 		if (str.length() != 7 || str.charAt(0) != '#') {
-			throw new NumberFormatException("wrong color format in " + str);
+			throw new NumberFormatException("wrong color format in " + str + ". Expecting #rrggbb");
 		}
 		return new Color(Integer.parseInt(str.substring(1, 3), 16), Integer.parseInt(str.substring(3, 5), 16), Integer
 		    .parseInt(str.substring(5, 7), 16));

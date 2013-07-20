@@ -55,7 +55,7 @@ public class ManageNodeConditionalStylesAction extends AManageConditionalStylesA
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.startTransaction();
 		try{
-			final int confirmed = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(), pane, TextUtils.getText(TextUtils.removeMnemonic("ManageNodeConditionalStylesAction.text")), JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+			final int confirmed = JOptionPane.showConfirmDialog(controller.getMapViewManager().getMapViewComponent(), pane, TextUtils.getText(TextUtils.removeMnemonic("ManageNodeConditionalStylesAction.text")), JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
 			if(JOptionPane.OK_OPTION == confirmed){
 				modeController.commit();
 				modeController.getMapController().nodeChanged(controller.getSelection().getSelected(),NodeModel.UNKNOWN_PROPERTY,null,null);

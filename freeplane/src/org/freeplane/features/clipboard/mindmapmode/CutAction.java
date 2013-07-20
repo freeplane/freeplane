@@ -59,6 +59,6 @@ class CutAction extends AFreeplaneAction {
 		final MClipboardController clipboardController = (MClipboardController) mMindMapController
 		    .getExtension(ClipboardController.class);
 		clipboardController.cut(controller.getSelection().getSortedSelection(true));
-		controller.getViewController().obtainFocusForSelected();
+		controller.getMapViewManager().obtainFocusForSelected();
 	}
 }

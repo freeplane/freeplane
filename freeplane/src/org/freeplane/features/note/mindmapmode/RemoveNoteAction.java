@@ -23,17 +23,17 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteModel;
 
-class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
+@EnabledAction(checkOnNodeChange = true)
+class RemoveNoteAction extends AFreeplaneAction{
 	/**
 	 * 
 	 */
@@ -65,52 +65,29 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event
-	 * .PopupMenuEvent)
-	 */
-	public void popupMenuCanceled(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax
-	 * .swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.
-	 * swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-		setEnabled();
-	}
-
 	private void removeNote(final NodeModel node) {
 		noteController.setNoteText(node, null);
 	}
 
 	@Override
 	public void setEnabled() {
-		boolean foundNote = false;
+		setEnabled(doesNoteExist());
+	}
+
+	private boolean doesNoteExist() {
+	    boolean foundNote = false;
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController == null) {
-			setEnabled(false);
-			return;
+			foundNote = false;
 		}
-		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
-			if (NoteModel.getNoteText(node) != null) {
-				foundNote = true;
-				break;
-			}
-		}
-		setEnabled(foundNote);
-	}
+        else {
+	        for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
+	        	if (NoteModel.getNoteText(node) != null) {
+	        		foundNote = true;
+	        		break;
+	        	}
+	        }
+        }
+	    return foundNote;
+    }
 }

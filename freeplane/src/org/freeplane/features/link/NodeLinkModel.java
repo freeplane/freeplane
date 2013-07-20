@@ -40,4 +40,9 @@ public class NodeLinkModel extends LinkModel {
 	public NodeModel getTarget() {
 		return getSource().getMap().getNodeForID(getTargetID());
 	}
+	
+	public boolean isSelfLink() {
+		return getSource().createID().equals(getTargetID());
+	}
+
 }

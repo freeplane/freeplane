@@ -24,13 +24,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.AllowedDuringEditing;
+
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
-@AllowedDuringEditing
+
 class OpenURLAction extends AFreeplaneAction {
 	/**
 	 * 

@@ -31,7 +31,6 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -48,14 +47,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 			return false;
 		}
 		return annotation.checkOnNodeChange();
-	}
-
-	static public boolean checkEnabledOnPopup(final AFreeplaneAction action) {
-		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return annotation.checkOnPopup();
 	}
 
 	static public boolean checkSelectionOnChange(final AFreeplaneAction action) {
@@ -172,23 +163,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	public void setEnabled() {
 	}
 	
-	
-
-	@Override
-	public boolean isEnabled() {
-		if(! Boolean.TRUE.equals(getValue("AFreeplaneAction.setEnabled")) && AFreeplaneAction.checkEnabledOnPopup(this)
-				&& Controller.getCurrentController().getSelection() != null)
-			setEnabled();
-		return super.isEnabled();
-	}
-
-	@Override
-	public void setEnabled(boolean newValue) {
-		putValue("AFreeplaneAction.setEnabled", Boolean.TRUE);
-		super.setEnabled(newValue);
-		putValue("AFreeplaneAction.setEnabled", null);
-	}
-
 	public void setSelected() {
 	}
 

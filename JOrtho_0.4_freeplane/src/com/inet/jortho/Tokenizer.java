@@ -35,7 +35,7 @@ import javax.swing.text.Utilities;
  * Break the text and words and search for misspelling.
  * @author Volker Berlin
  */
-class Tokenizer {
+public class Tokenizer {
 	private final Dictionary dictionary;
 	private final Document doc;
 	/** end offset of current paragraph */
@@ -151,7 +151,7 @@ class Tokenizer {
 	/**
 	 * Get the next misspelling word. If not found then it return null.
 	 */
-	String nextInvalidWord() {
+	public String nextInvalidWord() {
 		isFirstWordInSentence = false;
 		while (true) {
 			if (endWord == BreakIterator.DONE) {

@@ -22,7 +22,6 @@ package org.freeplane.core.ui;
 import java.awt.Component;
 import java.awt.Event;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -35,7 +34,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.resources.ResourceController;
@@ -140,12 +138,12 @@ public class AccelerateableAction implements IFreeplaneAction {
 			return;
 		}
         acceleratorForNextClickedAction = accelerator;
-		final String titel = TextUtils.getText("SetAcceleratorOnNextClickAction.text");
-		String text = TextUtils.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
+        String title = TextUtils.getText("SetAccelerator.dialogTitle");
+        String text = TextUtils.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
 		if(accelerator != null)
-		    text = text + " " + toString(accelerator);
+			text = TextUtils.format("SetAccelerator.keystrokeDetected", toString(accelerator)) + "\n" + text;
 		final Frame frame = Controller.getCurrentController().getViewController().getFrame();
-		setAcceleratorOnNextClickActionDialog = UITools.createCancelDialog(frame, titel, text);
+		setAcceleratorOnNextClickActionDialog = UITools.createCancelDialog(frame, title, text);
 		setAcceleratorOnNextClickActionDialog.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentHidden(final ComponentEvent e) {
@@ -163,8 +161,6 @@ public class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if(isInactiveDuringEditing())
-			return;
 		final boolean newAcceleratorOnNextClickEnabled = AccelerateableAction.isNewAcceleratorOnNextClickEnabled();
 		final KeyStroke newAccelerator = acceleratorForNextClickedAction;
 		if (newAcceleratorOnNextClickEnabled) {
@@ -180,14 +176,6 @@ public class AccelerateableAction implements IFreeplaneAction {
 		}
 		originalAction.actionPerformed(e);
 	}
-
-	private boolean isInactiveDuringEditing() {
-	    if(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent) {
-	    	final AllowedDuringEditing allowedOnEditingAnnotation = originalAction.getClass().getAnnotation(AllowedDuringEditing.class);
-	        return allowedOnEditingAnnotation == null;
-        }
-	    return false;
-    }
 
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		originalAction.addPropertyChangeListener(listener);

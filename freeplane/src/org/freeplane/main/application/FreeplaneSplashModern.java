@@ -33,7 +33,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 import javax.swing.JWindow;
 
 import org.freeplane.core.resources.ResourceController;
@@ -45,16 +47,14 @@ import org.freeplane.features.mode.Controller;
  * Class that displays a splash screen
  * Is run in a separate thread so that the applet continues to load in the background
  * @author Karsten Pawlik
- * 
+ *
  */
 public class FreeplaneSplashModern extends JWindow {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Font versionTextFont = null;
-	private final String description = ResourceController.getResourceController().getProperty("freeplane_description");
-	private final String copyright = ResourceController.getResourceController().getProperty("freeplane_copyright");
 
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
@@ -65,6 +65,9 @@ public class FreeplaneSplashModern extends JWindow {
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
 		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));
 		setSize(labelSize);
+		RootPane rootPane = new RootPane();
+		rootPane.setSize(labelSize);
+		setRootPane(rootPane);
 	}
 
 	private void createVersionTextFont() {
@@ -73,7 +76,7 @@ public class FreeplaneSplashModern extends JWindow {
 		}
 	    InputStream fontInputStream = null;
 		try {
-			fontInputStream = ResourceController.getResourceController().getResource("/fonts/BPreplay.ttf")
+			fontInputStream = ResourceController.getResourceController().getResource("/fonts/intuitive-subset.ttf")
 			    .openStream();
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
 		}
@@ -86,52 +89,54 @@ public class FreeplaneSplashModern extends JWindow {
     }
 
 	private final ImageIcon splashImage;
-	private Integer mWidth3;
-	private URL splashResource;
+	private final URL splashResource;
 
-	@Override
-	public void paint(final Graphics g) {
-		final Graphics2D g2 = (Graphics2D) g;
-		splashImage.paintIcon(this, g2, 0, 0);
-		if(splashResource.getProtocol().equals("file"))
-			return;
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		final FreeplaneVersion version = FreeplaneVersion.getVersion();
-		final String freeplaneNumber = version.numberToString();
-		final String status = version.getType().toUpperCase();
-		{
+	@SuppressWarnings("serial")
+    private class RootPane extends JRootPane{
+
+		@Override
+		public void paint(final Graphics g) {
+			final Graphics2D g2 = (Graphics2D) g;
+			splashImage.paintIcon(this, g2, 0, 0);
+			if(splashResource.getProtocol().equals("file"))
+				return;
+			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			final FreeplaneVersion version = FreeplaneVersion.getVersion();
+			final String versionString = getVersionText(version);
 			g2.setColor(Color.WHITE);
-			final int xCoordinate = 260;
-			final int yCoordinate = 212;
 			createVersionTextFont();
-			final float versionFontSize;
-			if(! status.equals(""))
-				versionFontSize = 18;
-			else
-				versionFontSize = 24;
+			final float versionFontSize= 20;
 			g2.setFont(versionTextFont.deriveFont(versionFontSize));
-			g2.drawString(freeplaneNumber + " " + status, xCoordinate, yCoordinate);
+			int versionStringWidth = g2.getFontMetrics().stringWidth(versionString);
+			final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - 20;
+			final int yCoordinate = 20;
+			g2.drawString(versionString, xCoordinate, yCoordinate);
 		}
-		g2.setFont(versionTextFont.deriveFont(10f));
-		g2.setColor(Color.WHITE);
-		int xCoordinate = 10;
-		final int yCoordinate = getSize().height - 10;
-		g2.drawString(description, xCoordinate, yCoordinate);
-		if (mWidth3 == null) {
-			mWidth3 = new Integer(g2.getFontMetrics().stringWidth(copyright));
-		}
-		xCoordinate = getSize().width - mWidth3.intValue() - 10;
-		g2.drawString(copyright, xCoordinate, yCoordinate);
 	}
+
+	private String getVersionText(final FreeplaneVersion version) {
+	    final String freeplaneNumber = version.numberToString();
+		final String status = version.getType().toLowerCase();
+		if("".equals(status))
+			return freeplaneNumber;
+		else{
+			final String versionString = freeplaneNumber + " " + status;
+			return versionString;
+		}
+    }
 
 	@Override
 	public void setVisible(final boolean b) {
 		super.setVisible(b);
 		if (b) {
-			getRootPane().paintImmediately(0, 0, getWidth(), getHeight());
+			paintImmediately();
 		}
 	}
-	
+
+	public void paintImmediately() {
+	    ((JComponent) getRootPane()).paintImmediately(0, 0, getWidth(), getHeight());
+    }
+
 	static public void main(String[] args){
 		ApplicationResourceController applicationResourceController = new ApplicationResourceController();
 		Controller controller = new Controller(applicationResourceController);

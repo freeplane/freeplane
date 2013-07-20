@@ -23,21 +23,19 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 
+/**
+ * This class has methods to get informations
+ * about attributes from a NodeModel
+ * 
+ * @author Stefan Ott
+ */
 @EnabledAction(checkOnNodeChange = true)
 public class AttributeUtilities {
-	/**
-	 * @author Stefan Ott
-	 * 
-	 * This class has methods to get informations
-	 * about attributes from a NodeModel
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public AttributeUtilities() {
 	};
 
 	/**
-	 * 
 	 * @return : the number of attributes attached to the node. 0 for none.
 	 */
 	public int getNumberOfAttributes(final NodeModel node) {
@@ -51,7 +49,6 @@ public class AttributeUtilities {
 	}
 
 	/**
-	 * 
 	 * @return : true if the node has at least one attribute attached.
 	 */
 	public boolean hasAttributes(final NodeModel node) {

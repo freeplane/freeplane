@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.freeplane.plugin.openmaps
+Bundle-SymbolicName: org.freeplane.plugin.openmaps
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.freeplane.plugin.openmaps.Activator
+Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: lib/JMapViewer.jar, lib/plugin.jar
+Require-Bundle: org.freeplane.core;bundle-version="1.0.1"

@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -102,10 +103,13 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 
 	protected void setButtonText() {
 	    final String text = script.substring(0, Math.min(40, script.length())).trim().replaceAll("\\s+", " ");
-	    if(! text.equals(""))
-	    	showEditorBtn.setText(text);
-	    else{
+	    if(! text.equals("")) {
+	    	showEditorBtn.setToolTipText(HtmlUtils.plainToHTML(script));
+	        showEditorBtn.setText(text);
+        }
+        else{
 	    	final String title = TextUtils.getText("EditScript");
+	    	showEditorBtn.setToolTipText(null);
 	    	showEditorBtn.setText(title);
 	    }
 

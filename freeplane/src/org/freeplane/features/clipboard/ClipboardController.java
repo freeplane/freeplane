@@ -125,7 +125,7 @@ public class ClipboardController implements IExtension {
 		target.setSize(size);
 		int i = size - 1;
 		for (NodeModel node : source) {
-			target.set(i, duplicate(node, false));
+			target.set(i, new SingleCopySource(node));
 			i--;
 		}
 		return copy(target, false);

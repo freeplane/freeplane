@@ -232,7 +232,7 @@ public class FilterConditionEditor extends JComponent {
 
 	public void focusInputField(final boolean selectAll) {
 		if (values.isEnabled()) {
-			values.requestFocus();
+			values.requestFocusInWindow();
 			final Component editorComponent = values.getEditor().getEditorComponent();
 			if (selectAll && editorComponent instanceof JTextComponent) {
 				((JTextComponent) editorComponent).selectAll();

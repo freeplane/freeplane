@@ -118,8 +118,8 @@ class ScriptingConfiguration {
 	}
 
 	private static final String[] MENU_BAR_SCRIPTS_PARENT_LOCATIONS = {"main_menu_scripting", "node_popup_scripting"};
-	private static final String SCRIPT_REGEX = ".*\\.groovy$";
-	private static final String JAR_REGEX = ".*\\.jar$";
+	private static final String SCRIPT_REGEX = ".+\\.groovy$";
+	private static final String JAR_REGEX = ".+\\.jar$";
 	// or use property script_directories?
 	static final String USER_SCRIPTS_DIR = "scripts";
 	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
