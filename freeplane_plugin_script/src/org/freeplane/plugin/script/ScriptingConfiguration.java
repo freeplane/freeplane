@@ -157,7 +157,7 @@ class ScriptingConfiguration {
 	        	final List<Script> scripts = scriptAddOnProperties.getScripts();
 	        	for (Script script : scripts) {
 	        		script.active = addOnProperties.isActive();
-	        		result.put(script.file, script);
+	        		result.put(new File(ScriptingEngine.getUserScriptDir(), script.name), script);
                 }
 	        }
         }
