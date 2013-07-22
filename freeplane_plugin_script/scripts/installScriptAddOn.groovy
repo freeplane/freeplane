@@ -269,7 +269,7 @@ def parseScripts(Map childNodeMap) {
 				script[k] = expandVariables(v)
 		}
 		script.permissions = parsePermissions(scriptNode, script.name)
-		mapStructureAssert(script.name.endsWith('.groovy'), textUtils.format('addons.installer.groovy.script.name', script.name))
+		mapStructureAssert(script.name.matches('.*\\.\\w+'), textUtils.format('addons.installer.script.name.suffix', script.name))
 		mapStructureAssert(script.menuTitleKey, textUtils.format('addons.installer.script.no.menutitle', script))
 		mapStructureAssert(script.menuLocation, textUtils.format('addons.installer.script.no.menulocation', script))
 		mapStructureAssert(script.executionMode, textUtils.format('addons.installer.script.no.execution_mode', script))
