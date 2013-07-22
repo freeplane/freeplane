@@ -29,7 +29,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * 17.12.2012
  */
-public interface IFreeplaneScript {
+public interface IScript {
 	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final IFreeplaneScriptErrorHandler IGNORING_SCRIPT_ERROR_HANDLER = new IFreeplaneScriptErrorHandler() {
@@ -39,15 +39,15 @@ public interface IFreeplaneScript {
 
 	public IFreeplaneScriptErrorHandler getErrorHandler();
 
-	public IFreeplaneScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler);
+	public IScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler);
 
 	public PrintStream getOutStream();
 
-	public IFreeplaneScript setOutStream(PrintStream outStream);
+	public IScript setOutStream(PrintStream outStream);
 
 	public ScriptContext getScriptContext();
 
-	public IFreeplaneScript setScriptContext(ScriptContext scriptContext);
+	public IScript setScriptContext(ScriptContext scriptContext);
 
 	public Object getScript();
 

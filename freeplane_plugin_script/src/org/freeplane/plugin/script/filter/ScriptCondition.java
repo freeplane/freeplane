@@ -16,8 +16,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
-import org.freeplane.plugin.script.GroovyShellFreeplaneScript;
-import org.freeplane.plugin.script.IFreeplaneScript;
+import org.freeplane.plugin.script.GroovyScript;
+import org.freeplane.plugin.script.IScript;
 import org.freeplane.plugin.script.ScriptingPermissions;
 
 public class ScriptCondition extends ASelectableCondition {
@@ -25,7 +25,7 @@ public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_ERROR_RESOURCE = "plugins/script_filter_error";
 	static final String NAME = "script_condition";
 	static final String SCRIPT = "SCRIPT";
-	final private IFreeplaneScript script;
+	final private IScript script;
 	private boolean errorReported = false;
 
 	static ASelectableCondition load(final XMLElement element) {
@@ -35,7 +35,7 @@ public class ScriptCondition extends ASelectableCondition {
 	public ScriptCondition(final String script) {
 		super();
 		final ScriptingPermissions formulaPermissions = ScriptingPermissions.getFormulaPermissions();
-		this.script = new GroovyShellFreeplaneScript(script, formulaPermissions);
+		this.script = new GroovyScript(script, formulaPermissions);
 	}
 
 	@Override

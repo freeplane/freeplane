@@ -22,6 +22,7 @@ public class ScriptCompiler {
     }
 
     private static void compileScriptsInDirectory(File dir) {
+        // FIXME: compile .js and the like too
         final Collection<File> files = FileUtils.listFiles(dir, new String[] { ".groovy" }, true);
         if (!files.isEmpty())
             compile(dir, files);
@@ -33,7 +34,7 @@ public class ScriptCompiler {
 
     private static void compile(File dir, File[] files) {
         try {
-			final CompilerConfiguration compilerConfiguration = GroovyShellFreeplaneScript
+			final CompilerConfiguration compilerConfiguration = GroovyScript
 			    .createCompilerConfiguration();
             compilerConfiguration.setTargetDirectory(dir);
             final CompilationUnit unit = new CompilationUnit(compilerConfiguration, null, new GroovyClassLoader(

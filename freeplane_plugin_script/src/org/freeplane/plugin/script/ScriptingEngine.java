@@ -45,7 +45,7 @@ public class ScriptingEngine {
     public static Object executeScript(final NodeModel node, final String script, final IFreeplaneScriptErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
-    	return new GroovyShellFreeplaneScript(script, permissions)
+    	return new GroovyScript(script, permissions)
     		.setErrorHandler(pErrorHandler)
     		.setOutStream(pOutStream)
     		.setScriptContext(scriptContext)
@@ -56,7 +56,7 @@ public class ScriptingEngine {
     static Object executeScript(final NodeModel node, final File script, final IFreeplaneScriptErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
-    	return new GroovyShellFreeplaneScript(script, permissions)
+    	return new GroovyScript(script, permissions)
 		.setErrorHandler(pErrorHandler)
 		.setOutStream(pOutStream)
 		.setScriptContext(scriptContext)
@@ -74,27 +74,27 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-    	return new GroovyShellFreeplaneScript(script).execute(node);
+    	return new GroovyScript(script).execute(node);
 	}
 
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
-    	return new GroovyShellFreeplaneScript(script, permissions).execute(node);
+    	return new GroovyScript(script, permissions).execute(node);
 	}
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-	   	return new GroovyShellFreeplaneScript(script, permissions)
+	   	return new GroovyScript(script, permissions)
 		.execute(node);
 	}
 	
 	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-	   	return new GroovyShellFreeplaneScript(script)
+	   	return new GroovyScript(script)
 		.setOutStream(printStream)
 		.execute(node);
 	}
 
 	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
 	                                   final ScriptingPermissions permissions) {
-    	return new GroovyShellFreeplaneScript(script, permissions)
+    	return new GroovyScript(script, permissions)
 		.setScriptContext(scriptContext)
 		.execute(node);
 	}
@@ -139,11 +139,11 @@ public class ScriptingEngine {
 	/** allows to set the classpath for scripts. Due to security considerations it's not possible to set
 	 * this more than once. */
 	static void setClasspath(final List<String> classpath) {
-		GroovyShellFreeplaneScript.setClasspath(classpath);
+		GroovyScript.setClasspath(classpath);
     }
 
 	static List<String> getClasspath() {
-		return GroovyShellFreeplaneScript.getClasspath();
+		return GroovyScript.getClasspath();
 	}
 	
 	public static File getUserScriptDir() {

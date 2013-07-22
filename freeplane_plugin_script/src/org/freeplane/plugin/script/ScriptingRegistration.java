@@ -149,7 +149,7 @@ class ScriptingRegistration {
 				    .getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
 				final String writeAccessString = properties
 				.getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
-				final String classpath = properties.getProperty(IFreeplaneScript.RESOURCES_SCRIPT_CLASSPATH);
+				final String classpath = properties.getProperty(IScript.RESOURCES_SCRIPT_CLASSPATH);
 				final boolean readAccess = readAccessString != null && Boolean.parseBoolean(readAccessString);
 				final boolean writeAccess = writeAccessString != null && Boolean.parseBoolean(writeAccessString);
 				final boolean classpathIsSet = classpath != null && classpath.length() > 0;

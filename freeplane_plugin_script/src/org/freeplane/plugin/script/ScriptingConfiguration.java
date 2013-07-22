@@ -36,6 +36,9 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
+
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ConfigurationUtils;
@@ -118,7 +121,6 @@ class ScriptingConfiguration {
 	}
 
 	private static final String[] MENU_BAR_SCRIPTS_PARENT_LOCATIONS = {"main_menu_scripting", "node_popup_scripting"};
-	private static final String SCRIPT_REGEX = ".+\\.groovy$";
 	private static final String JAR_REGEX = ".+\\.jar$";
 	// or use property script_directories?
 	static final String USER_SCRIPTS_DIR = "scripts";
@@ -166,7 +168,7 @@ class ScriptingConfiguration {
 
 	private TreeSet<String> getScriptDirs() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String dirsString = resourceController.getProperty(IFreeplaneScript.RESOURCES_SCRIPT_DIRECTORIES);
+		final String dirsString = resourceController.getProperty(IScript.RESOURCES_SCRIPT_DIRECTORIES);
 		final TreeSet<String> dirs = new TreeSet<String>(); // remove duplicates -> Set
 		if (dirsString != null) {
 			dirs.addAll(ConfigurationUtils.decodeListValue(dirsString, false));
@@ -197,7 +199,7 @@ class ScriptingConfiguration {
 	/** scans <code>dir</code> for script files matching a given rexgex. */
 	private void addScripts(final File dir, final Map<File, Script> addOnScriptMap) {
 		if (dir.isDirectory()) {
-			final File[] files = dir.listFiles(createFilenameFilter(SCRIPT_REGEX));
+			final File[] files = dir.listFiles(createFilenameFilter(createScriptRegExp()));
 			if(files != null){
 				for (final File file : files) {
 					addScript(file, addOnScriptMap);
@@ -208,6 +210,14 @@ class ScriptingConfiguration {
 			LogUtils.warn("not a (script) directory: " + dir);
 		}
 	}
+
+    private String createScriptRegExp() {
+        final ArrayList<String> extensions = new ArrayList<String>();
+        for (ScriptEngineFactory scriptEngineFactory : new ScriptEngineManager().getEngineFactories()) {
+            extensions.addAll(scriptEngineFactory.getExtensions());
+        }
+        return ".+\\.(" + StringUtils.join(extensions, "|") + ")$";
+    }
 
 	private FilenameFilter createFilenameFilter(final String regexp) {
 		final FilenameFilter filter = new FilenameFilter() {
@@ -340,7 +350,7 @@ class ScriptingConfiguration {
 
 	private void initClasspath() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String entries = resourceController.getProperty(IFreeplaneScript.RESOURCES_SCRIPT_CLASSPATH);
+		final String entries = resourceController.getProperty(IScript.RESOURCES_SCRIPT_CLASSPATH);
 		classpath = new ArrayList<String>();
 		if (entries != null) {
 			for (String entry : ConfigurationUtils.decodeListValue(entries, false)) {
