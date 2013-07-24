@@ -297,11 +297,15 @@ public final class FreeplaneSecurityManager extends SecurityManager {
 	}
 
 	public void setFinalSecurityManager(final SecurityManager finalSecurityManager) {
-		if (mFinalSecurityManager != null) {
+		if (hasFinalSecurityManager()) {
 			throw new SecurityException("There is a SecurityManager installed already.");
 		}
 		mFinalSecurityManager = finalSecurityManager;
 	}
+
+    public boolean hasFinalSecurityManager() {
+        return mFinalSecurityManager != null;
+    }
 	
 	public void removeFinalSecurityManager(final SecurityManager finalSecurityManager) {
 		if (finalSecurityManager == mFinalSecurityManager) {

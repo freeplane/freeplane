@@ -138,14 +138,14 @@ public class GroovyScript implements IScript {
             if (errorsInScript != null)
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
             final ScriptSecurity scriptSecurity = new ScriptSecurity(script, specificPermissions, outStream);
-            ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
+            final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
             final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
             final ScriptingSecurityManager scriptingSecurityManager = scriptSecurity.getScriptingSecurityManager();
             final PrintStream oldOut = System.out;
             try {
-                compiledScript = compile();
+                compileAndCache();
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 if (needsSecurityManager)
@@ -154,11 +154,12 @@ public class GroovyScript implements IScript {
                 return compiledScript.run();
             }
             finally {
-                if (compiledScript != null) {
-                    InvokerHelper.removeClass(script.getClass());
-                    if (needsSecurityManager)
-                        securityManager.removeFinalSecurityManager(scriptingSecurityManager);
+                if (compiledScript != null && !IScript.CACHE_COMPILED_SCRIPTS) {
+                    InvokerHelper.removeClass(compiledScript.getClass());
+                    compiledScript = null;
                 }
+                if (needsSecurityManager && securityManager.hasFinalSecurityManager())
+                    securityManager.removeFinalSecurityManager(scriptingSecurityManager);
                 System.setOut(oldOut);
                 /* restore preferences (and assure that the values are unchanged!). */
                 originalScriptingPermissions.restorePermissions();
@@ -182,7 +183,7 @@ public class GroovyScript implements IScript {
         return binding;
     }
 
-    private Script compile() throws Throwable {
+    private Script compileAndCache() throws Throwable {
         if (compiledScript != null)
             return compiledScript;
         else if (errorsInScript != null)
@@ -194,7 +195,6 @@ public class GroovyScript implements IScript {
                 final Binding binding = createBindingForCompilation();
                 final ClassLoader classLoader = GroovyScript.class.getClassLoader();
                 final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
-                final Script compiledScript;
                 if (script instanceof String)
                     compiledScript = shell.parse((String) script);
                 else if (script instanceof File)

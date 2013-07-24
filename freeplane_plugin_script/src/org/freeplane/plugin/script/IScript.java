@@ -19,8 +19,6 @@
  */
 package org.freeplane.plugin.script;
 
-import groovy.lang.Script;
-
 import java.io.PrintStream;
 
 import org.freeplane.features.map.NodeModel;
@@ -30,6 +28,7 @@ import org.freeplane.features.map.NodeModel;
  * 17.12.2012
  */
 public interface IScript {
+    public static final boolean CACHE_COMPILED_SCRIPTS = false;
 	public static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
 	public static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
 	public static final IFreeplaneScriptErrorHandler IGNORING_SCRIPT_ERROR_HANDLER = new IFreeplaneScriptErrorHandler() {

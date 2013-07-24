@@ -44,7 +44,6 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
  * Implements scripting via JSR233 implementation for all other languages except Groovy.
  */
 public class GenericScript implements IScript {
-    private static final boolean CACHE_COMPILED_SCRIPTS = false;
     final private String script;
     private ScriptingPermissions specificPermissions;
     private CompiledScript compiledScript;
@@ -158,10 +157,11 @@ public class GenericScript implements IScript {
                 }
             }
             finally {
-                if (compiledScript != null) {
-                    if (needsSecurityManager)
-                        securityManager.removeFinalSecurityManager(scriptingSecurityManager);
+                if (compiledScript != null && !IScript.CACHE_COMPILED_SCRIPTS) {
+                    compiledScript = null;
                 }
+                if (needsSecurityManager && securityManager.hasFinalSecurityManager())
+                    securityManager.removeFinalSecurityManager(scriptingSecurityManager);
                 /* restore preferences (and assure that the values are unchanged!). */
                 originalScriptingPermissions.restorePermissions();
             }
@@ -196,14 +196,14 @@ public class GenericScript implements IScript {
     private static ScriptEngineManager getScriptEngineManager() {
         synchronized (scriptEngineManagerMutex) {
             if (scriptEngineManager == null)
-                scriptEngineManager = new ScriptEngineManager();
+                scriptEngineManager = new ScriptEngineManager(ScriptingEngine.class.getClassLoader());
             return scriptEngineManager;
         }
     }
 
     @SuppressWarnings("unused")
     private void compileAndCache(Compilable engine) throws Throwable {
-        if (compiledScript != null && CACHE_COMPILED_SCRIPTS)
+        if (IScript.CACHE_COMPILED_SCRIPTS && compiledScript != null)
             return;
         else if (errorsInScript != null)
             throw errorsInScript;
