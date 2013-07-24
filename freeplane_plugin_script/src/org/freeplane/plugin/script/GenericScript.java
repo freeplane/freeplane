@@ -20,9 +20,9 @@
 package org.freeplane.plugin.script;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.util.HashMap;
 
 import javax.script.Bindings;
 import javax.script.Compilable;
@@ -32,7 +32,9 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
+import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneSecurityManager;
@@ -42,6 +44,7 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
  * Implements scripting via JSR233 implementation for all other languages except Groovy.
  */
 public class GenericScript implements IScript {
+    private static final boolean CACHE_COMPILED_SCRIPTS = false;
     final private String script;
     private ScriptingPermissions specificPermissions;
     private CompiledScript compiledScript;
@@ -49,14 +52,14 @@ public class GenericScript implements IScript {
     private IFreeplaneScriptErrorHandler errorHandler;
     private PrintStream outStream;
     private ScriptContext scriptContext;
-    private final String scriptEngineName;
-    static final HashMap<String, Object> sScriptCookies = new HashMap<String, Object>();
+    private final static Object scriptEngineManagerMutex = new Object();
+    private static ScriptEngineManager scriptEngineManager;
+    private final ScriptEngine engine;
 
-    public GenericScript(String script, String scriptEngineName, ScriptingPermissions permissions) {
-        super();
+    public GenericScript(String script, ScriptEngine scriptEngine, ScriptingPermissions permissions) {
         this.script = script;
         this.specificPermissions = permissions;
-        this.scriptEngineName = scriptEngineName;
+        engine = scriptEngine;
         compiledScript = null;
         errorsInScript = null;
         errorHandler = IGNORING_SCRIPT_ERROR_HANDLER;
@@ -64,8 +67,21 @@ public class GenericScript implements IScript {
         scriptContext = null;
     }
 
-    public GenericScript(String script, String scriptEngineName) {
-        this(script, scriptEngineName, null);
+    public GenericScript(String script, String scriptEngineName, ScriptingPermissions permissions) {
+        this(script, findScriptEngine(scriptEngineName), permissions);
+    }
+    
+    public GenericScript(File scriptFile, ScriptingPermissions permissions) {
+        this(slurpFile(scriptFile), findScriptEngine(scriptFile), permissions);
+    }
+
+    private static String slurpFile(File scriptFile) {
+        try {
+            return FileUtils.slurpFile(scriptFile);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -122,29 +138,23 @@ public class GenericScript implements IScript {
             if (errorsInScript != null)
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
             final ScriptSecurity scriptSecurity = new ScriptSecurity(script, specificPermissions, outStream);
-            ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
+            final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
             final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
             final ScriptingSecurityManager scriptingSecurityManager = scriptSecurity.getScriptingSecurityManager();
             try {
-                SimpleScriptContext context = new SimpleScriptContext();
-                context.setWriter(new OutputStreamWriter(outStream));
-                context.setErrorWriter(new OutputStreamWriter(outStream));
-                ScriptEngineManager manager = new ScriptEngineManager();
-                ScriptEngine engine = manager.getEngineByName(scriptEngineName);
+                final SimpleScriptContext context = createScriptContext(node);
                 if (engine instanceof Compilable) {
-                    compiledScript = compile();
-                    final Bindings bindings = createBinding(node);
+                    compileAndCache((Compilable) engine);
                     if (needsSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
-                    return compiledScript.eval(bindings);
+                    return compiledScript.eval(context);
                 }
                 else {
-                    final Bindings bindings = createBinding(node);
                     if (needsSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
-                    return engine.eval(script, bindings);
+                    return engine.eval(script, context);
                 }
             }
             finally {
@@ -167,32 +177,54 @@ public class GenericScript implements IScript {
         }
     }
 
+    private SimpleScriptContext createScriptContext(final NodeModel node) {
+        final SimpleScriptContext context = new SimpleScriptContext();
+        // FIXME: two writer for one stream?
+        context.setWriter(new OutputStreamWriter(outStream));
+        context.setErrorWriter(new OutputStreamWriter(outStream));
+        context.setBindings(createBinding(node), javax.script.ScriptContext.ENGINE_SCOPE);
+        return context;
+    }
+
     private Bindings createBinding(final NodeModel node) {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName(scriptEngineName);
-        Bindings binding = engine.createBindings();
+        final Bindings binding = engine.createBindings();
         binding.put("c", ProxyFactory.createController(scriptContext));
         binding.put("node", ProxyFactory.createNode(node, scriptContext));
-        binding.put("cookies", GenericScript.sScriptCookies);
         return binding;
     }
 
-    private CompiledScript compile() throws Throwable {
-        if (compiledScript != null)
-            return compiledScript;
+    private static ScriptEngineManager getScriptEngineManager() {
+        synchronized (scriptEngineManagerMutex) {
+            if (scriptEngineManager == null)
+                scriptEngineManager = new ScriptEngineManager();
+            return scriptEngineManager;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private void compileAndCache(Compilable engine) throws Throwable {
+        if (compiledScript != null && CACHE_COMPILED_SCRIPTS)
+            return;
         else if (errorsInScript != null)
             throw errorsInScript;
         else
             try {
-                ScriptEngineManager manager = new ScriptEngineManager();
-                Compilable engine = (Compilable) manager.getEngineByName(scriptEngineName);
-                final CompiledScript compiledScript = engine.compile(script);
-                return compiledScript;
+                compiledScript = engine.compile(script);
             }
             catch (Throwable e) {
                 errorsInScript = e;
                 throw e;
             }
+    }
+
+    private static ScriptEngine findScriptEngine(String scriptEngineName) {
+        final ScriptEngineManager manager = getScriptEngineManager();
+        return manager.getEngineByName(scriptEngineName);
+    }
+
+    private static ScriptEngine findScriptEngine(File scriptFile) {
+        final ScriptEngineManager manager = getScriptEngineManager();
+        return manager.getEngineByExtension(FilenameUtils.getExtension(scriptFile.getName()));
     }
 
     private void handleScriptRuntimeException(final ScriptException e) {

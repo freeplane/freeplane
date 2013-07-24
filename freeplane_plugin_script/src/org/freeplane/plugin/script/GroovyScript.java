@@ -179,7 +179,6 @@ public class GroovyScript implements IScript {
         final Binding binding = new Binding();
         binding.setVariable("c", ProxyFactory.createController(scriptContext));
         binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
-        binding.setVariable("cookies", GenericScript.sScriptCookies);
         return binding;
     }
 
@@ -214,7 +213,6 @@ public class GroovyScript implements IScript {
         final Binding binding = new Binding();
         binding.setVariable("c", null);
         binding.setVariable("node", null);
-        binding.setVariable("cookies", GenericScript.sScriptCookies);
         return binding;
     }
 

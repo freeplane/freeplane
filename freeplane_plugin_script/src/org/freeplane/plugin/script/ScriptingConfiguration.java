@@ -216,6 +216,7 @@ class ScriptingConfiguration {
         for (ScriptEngineFactory scriptEngineFactory : new ScriptEngineManager().getEngineFactories()) {
             extensions.addAll(scriptEngineFactory.getExtensions());
         }
+        LogUtils.info("looking for scripts with the following endings: " + extensions);
         return ".+\\.(" + StringUtils.join(extensions, "|") + ")$";
     }
 

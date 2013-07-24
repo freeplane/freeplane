@@ -56,11 +56,11 @@ public class ScriptingEngine {
     static Object executeScript(final NodeModel node, final File script, final IFreeplaneScriptErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
-    	return new GroovyScript(script, permissions)
-		.setErrorHandler(pErrorHandler)
-		.setOutStream(pOutStream)
-		.setScriptContext(scriptContext)
-		.execute(node);
+        return createScriptForFile(script, permissions) //
+            .setErrorHandler(pErrorHandler) //
+            .setOutStream(pOutStream) //
+            .setScriptContext(scriptContext) //
+            .execute(node);
     }
     
 	public static int findLineNumberInString(final String resultString, int lineNumber) {
@@ -78,26 +78,31 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
-    	return new GroovyScript(script, permissions).execute(node);
+    	return createScriptForFile(script, permissions).execute(node);
 	}
+
+    private static IScript createScriptForFile(File script, ScriptingPermissions permissions) {
+        final boolean isGroovy = script.getName().endsWith(".groovy");
+        return isGroovy ? new GroovyScript(script, permissions) : new GenericScript(script, permissions);
+    }
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-	   	return new GroovyScript(script, permissions)
-		.execute(node);
+        return new GroovyScript(script, permissions) //
+            .execute(node);
 	}
 	
-	public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-	   	return new GroovyScript(script)
-		.setOutStream(printStream)
-		.execute(node);
-	}
+    public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
+        return new GroovyScript(script) //
+            .setOutStream(printStream) //
+            .execute(node);
+    }
 
-	public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
-	                                   final ScriptingPermissions permissions) {
-    	return new GroovyScript(script, permissions)
-		.setScriptContext(scriptContext)
-		.execute(node);
-	}
+    public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
+                                       final ScriptingPermissions permissions) {
+        return new GroovyScript(script, permissions) //
+            .setScriptContext(scriptContext) //
+            .execute(node);
+    }
 
 	static Object executeScriptRecursive(final NodeModel node, final File script,
 	                                     final ScriptingPermissions permissions) {

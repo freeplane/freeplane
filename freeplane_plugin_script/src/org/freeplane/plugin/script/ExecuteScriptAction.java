@@ -51,7 +51,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	private final File script;
 	private final ExecutionMode mode;
 	private ScriptingPermissions permissions;
-	private boolean allowedDuringEditing = false;
 
 	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String script,
 	                           final ExecutionMode mode, final boolean cacheContent, ScriptingPermissions permissions) {
@@ -102,10 +101,4 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
-
-	public void setAllowedDuringEditing(boolean allowedDuringEditing) {
-    	this.allowedDuringEditing = allowedDuringEditing;
-    }
-	
-	
 }
