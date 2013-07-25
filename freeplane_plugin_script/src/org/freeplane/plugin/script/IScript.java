@@ -36,21 +36,13 @@ public interface IScript {
 		}
 	};
 
-	public IFreeplaneScriptErrorHandler getErrorHandler();
-
 	public IScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler);
 
-	public PrintStream getOutStream();
-
 	public IScript setOutStream(PrintStream outStream);
-
-	public ScriptContext getScriptContext();
 
 	public IScript setScriptContext(ScriptContext scriptContext);
 
 	public Object getScript();
-
-	public ScriptingPermissions getSpecificPermissions();
 
 	public Object execute(final NodeModel node);
 }

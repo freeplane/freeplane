@@ -86,30 +86,15 @@ public class GroovyScript implements IScript {
     }
 
     @Override
-    public IFreeplaneScriptErrorHandler getErrorHandler() {
-        return errorHandler;
-    }
-
-    @Override
     public IScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler) {
         this.errorHandler = pErrorHandler;
         return this;
     }
 
     @Override
-    public PrintStream getOutStream() {
-        return outStream;
-    }
-
-    @Override
     public IScript setOutStream(PrintStream outStream) {
         this.outStream = outStream;
         return this;
-    }
-
-    @Override
-    public ScriptContext getScriptContext() {
-        return scriptContext;
     }
 
     @Override
@@ -121,11 +106,6 @@ public class GroovyScript implements IScript {
     @Override
     public Object getScript() {
         return script;
-    }
-
-    @Override
-    public ScriptingPermissions getSpecificPermissions() {
-        return specificPermissions;
     }
 
     public Script getCompiledScript() {

@@ -84,30 +84,15 @@ public class GenericScript implements IScript {
     }
 
     @Override
-    public IFreeplaneScriptErrorHandler getErrorHandler() {
-        return errorHandler;
-    }
-
-    @Override
     public IScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler) {
         this.errorHandler = pErrorHandler;
         return this;
     }
 
     @Override
-    public PrintStream getOutStream() {
-        return outStream;
-    }
-
-    @Override
     public IScript setOutStream(PrintStream outStream) {
         this.outStream = outStream;
         return this;
-    }
-
-    @Override
-    public ScriptContext getScriptContext() {
-        return scriptContext;
     }
 
     @Override
@@ -119,11 +104,6 @@ public class GenericScript implements IScript {
     @Override
     public Object getScript() {
         return script;
-    }
-
-    @Override
-    public ScriptingPermissions getSpecificPermissions() {
-        return specificPermissions;
     }
 
     static public File getUserScriptDir() {
@@ -196,7 +176,7 @@ public class GenericScript implements IScript {
     private static ScriptEngineManager getScriptEngineManager() {
         synchronized (scriptEngineManagerMutex) {
             if (scriptEngineManager == null)
-                scriptEngineManager = new ScriptEngineManager(ScriptingEngine.class.getClassLoader());
+                scriptEngineManager = new ScriptEngineManager(GenericScript.class.getClassLoader());
             return scriptEngineManager;
         }
     }
