@@ -201,9 +201,8 @@ public class GenericScript implements IScript {
         }
     }
 
-    @SuppressWarnings("unused")
     private void compileAndCache(Compilable engine) throws Throwable {
-        if (IScript.CACHE_COMPILED_SCRIPTS && compiledScript != null)
+        if (compiledScript != null)
             return;
         else if (errorsInScript != null)
             throw errorsInScript;
