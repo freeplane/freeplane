@@ -141,14 +141,14 @@ public class GroovyScript implements IScript {
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-            final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
+            final boolean needToSetFinalSecurityManager = securityManager.needToSetFinalSecurityManager();
             final ScriptingSecurityManager scriptingSecurityManager = scriptSecurity.getScriptingSecurityManager();
             final PrintStream oldOut = System.out;
             try {
                 compileAndCache();
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
-                if (needsSecurityManager)
+                if (needToSetFinalSecurityManager)
                     securityManager.setFinalSecurityManager(scriptingSecurityManager);
                 System.setOut(outStream);
                 return compiledScript.run();
@@ -158,7 +158,7 @@ public class GroovyScript implements IScript {
                     InvokerHelper.removeClass(compiledScript.getClass());
                     compiledScript = null;
                 }
-                if (needsSecurityManager && securityManager.hasFinalSecurityManager())
+                if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
                     securityManager.removeFinalSecurityManager(scriptingSecurityManager);
                 System.setOut(oldOut);
                 /* restore preferences (and assure that the values are unchanged!). */

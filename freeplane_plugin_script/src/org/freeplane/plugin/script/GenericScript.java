@@ -140,18 +140,18 @@ public class GenericScript implements IScript {
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-            final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
+            final boolean needToSetFinalSecurityManager = securityManager.needToSetFinalSecurityManager();
             final ScriptingSecurityManager scriptingSecurityManager = scriptSecurity.getScriptingSecurityManager();
             try {
                 final SimpleScriptContext context = createScriptContext(node);
                 if (engine instanceof Compilable) {
                     compileAndCache((Compilable) engine);
-                    if (needsSecurityManager)
+                    if (needToSetFinalSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
                     return compiledScript.eval(context);
                 }
                 else {
-                    if (needsSecurityManager)
+                    if (needToSetFinalSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
                     return engine.eval(script, context);
                 }
@@ -160,7 +160,7 @@ public class GenericScript implements IScript {
                 if (compiledScript != null && !IScript.CACHE_COMPILED_SCRIPTS) {
                     compiledScript = null;
                 }
-                if (needsSecurityManager && securityManager.hasFinalSecurityManager())
+                if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
                     securityManager.removeFinalSecurityManager(scriptingSecurityManager);
                 /* restore preferences (and assure that the values are unchanged!). */
                 originalScriptingPermissions.restorePermissions();

@@ -21,11 +21,7 @@ package org.freeplane.plugin.script;
 
 import java.io.PrintStream;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.main.application.FreeplaneSecurityManager;
 
 /**
@@ -44,32 +40,31 @@ public class ScriptSecurity {
 	    this.outStream = outStream;
     }
 
-	ScriptingSecurityManager getScriptingSecurityManager() {
-		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-	    final ScriptingSecurityManager scriptingSecurityManager;
-	    final boolean needsSecurityManager = securityManager.needsFinalSecurityManager();
-	    // get preferences (and store them again after the script execution,
-	    // such that the scripts are not able to change them).
-	    if (needsSecurityManager) {
-	    	final ScriptingPermissions permissions = permissions();
-	    	permissions.assertScriptExecutionAllowed();
-	    	final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
-	    	final String scriptContent;
-	    	if(script instanceof String)
-	    		scriptContent = (String) script;
-	    	else
-	    		scriptContent = null;
-	    	if (executeSignedScripts && scriptContent != null && new SignedScriptHandler().isScriptSigned(scriptContent, outStream)) {
-	            scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
-	        }
-	        else
-	    		scriptingSecurityManager = permissions.getScriptingSecurityManager();
-	    }
-	    else {
-	    	// will not be used
-	    	scriptingSecurityManager = null;
-	    }
-	    return scriptingSecurityManager;
+    ScriptingSecurityManager getScriptingSecurityManager() {
+        final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
+        final ScriptingSecurityManager scriptingSecurityManager;
+        // get preferences (and store them again after the script execution,
+        // such that the scripts are not able to change them).
+        if (securityManager.needToSetFinalSecurityManager()) {
+            final ScriptingPermissions permissions = permissions();
+            permissions.assertScriptExecutionAllowed();
+            final boolean executeSignedScripts = permissions.isExecuteSignedScriptsWithoutRestriction();
+            if (executeSignedScripts && isSignedScript()) {
+                scriptingSecurityManager = permissions.getPermissiveScriptingSecurityManager();
+            }
+            else {
+                scriptingSecurityManager = permissions.getScriptingSecurityManager();
+            }
+        }
+        else {
+            // will not be used
+            scriptingSecurityManager = null;
+        }
+        return scriptingSecurityManager;
+    }
+
+    private boolean isSignedScript() {
+        return script instanceof String && new SignedScriptHandler().isScriptSigned((String) script, outStream);
     }
 	
 	private ScriptingPermissions permissions() {
