@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -212,7 +213,16 @@ public class AddOnProperties {
 	}
 	
 	public URL getUpdateUrl() {
-		return updateUrl;
+		if (updateUrl != null) {
+			return updateUrl;
+		} else {
+			try {
+				return new URL(homepage.toString() + "/version.txt");
+			}
+			catch (MalformedURLException e){
+				return null;
+			}
+		}
 	}
 	
 	public void setHomepage(URL homepage) {
