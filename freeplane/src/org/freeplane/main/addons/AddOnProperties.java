@@ -37,6 +37,7 @@ public class AddOnProperties {
 	private FreeplaneVersion freeplaneVersionFrom;
 	private FreeplaneVersion freeplaneVersionTo;
 	private URL homepage;
+	private URL updateUrl;
 	private String description;
 	private String license;
 	private Map<String, Map<String, String>> translations;
@@ -58,6 +59,7 @@ public class AddOnProperties {
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
 		this.setHomepage(parseHomepage(addOnElement.getAttribute("homepage", null)));
+		this.setUpdateUrl(parseHomepage(addOnElement.getAttribute("update url", null)));
 		this.setActive(Boolean.parseBoolean(addOnElement.getAttribute("active", "true")));
 		this.setDescription(getContentOfFirstElement(addOnElement.getChildrenNamed("description")));
 		this.setLicense(getContentOfFirstElement(addOnElement.getChildrenNamed("license")));
@@ -208,11 +210,19 @@ public class AddOnProperties {
 	public URL getHomepage() {
 		return homepage;
 	}
-
+	
+	public URL getUpdateUrl() {
+		return updateUrl;
+	}
+	
 	public void setHomepage(URL homepage) {
 		this.homepage = homepage;
 	}
 
+	public void setUpdateUrl(URL updateUrl) {
+		this.updateUrl = updateUrl;
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -342,6 +352,8 @@ public class AddOnProperties {
 			addonElement.setAttribute("freeplaneVersionTo", freeplaneVersionTo.toString());
 		if (homepage != null)
 			addonElement.setAttribute("homepage", homepage.toString());
+		if (updateUrl != null)
+			addonElement.setAttribute("updateUrl", updateUrl.toString());
 		if (author != null)
 			addonElement.setAttribute("author", author);
 		addonElement.setAttribute("active", Boolean.toString(active));
