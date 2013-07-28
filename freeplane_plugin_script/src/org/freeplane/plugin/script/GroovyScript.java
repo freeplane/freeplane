@@ -26,8 +26,6 @@ import groovy.lang.Script;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.Collections;
-import java.util.List;
 import java.util.regex.Matcher;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -35,7 +33,6 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneSecurityManager;
@@ -45,7 +42,6 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
  * Special scripting implementation for Groovy.
  */
 public class GroovyScript implements IScript {
-    private static List<String> classpath;
     final private Object script;
     private final ScriptingPermissions specificPermissions;
     private Script compiledScript;
@@ -76,7 +72,7 @@ public class GroovyScript implements IScript {
         this.specificPermissions = permissions;
         compiledScript = null;
         errorsInScript = null;
-        errorHandler = IGNORING_SCRIPT_ERROR_HANDLER;
+        errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
         outStream = System.out;
         scriptContext = null;
     }
@@ -117,12 +113,11 @@ public class GroovyScript implements IScript {
         try {
             if (errorsInScript != null)
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
-            final ScriptSecurity scriptSecurity = new ScriptSecurity(script, specificPermissions, outStream);
+            final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
             final boolean needToSetFinalSecurityManager = securityManager.needToSetFinalSecurityManager();
-            final ScriptingSecurityManager scriptingSecurityManager = scriptSecurity.getScriptingSecurityManager();
             final PrintStream oldOut = System.out;
             try {
                 compileAndCache();
@@ -134,7 +129,7 @@ public class GroovyScript implements IScript {
                 return compiledScript.run();
             }
             finally {
-                if (compiledScript != null && !IScript.CACHE_COMPILED_SCRIPTS) {
+                if (compiledScript != null && !ScriptResources.CACHE_COMPILED_SCRIPTS) {
                     InvokerHelper.removeClass(compiledScript.getClass());
                     compiledScript = null;
                 }
@@ -154,6 +149,10 @@ public class GroovyScript implements IScript {
                 Controller.getCurrentModeController().getMapController().select(node);
             throw new ExecuteScriptException(e.getMessage(), e);
         }
+    }
+
+    private ScriptingSecurityManager createScriptingSecurityManager() {
+        return new ScriptSecurity(script, specificPermissions, outStream).getScriptingSecurityManager();
     }
 
     private Binding createBinding(final NodeModel node) {
@@ -197,8 +196,7 @@ public class GroovyScript implements IScript {
     }
 
     private void handleScriptRuntimeException(final GroovyRuntimeException e) {
-        final String resultString = e.getMessage();
-        outStream.print("message: " + resultString);
+        outStream.print("message: " + e.getMessage());
         final ModuleNode module = e.getModule();
         final ASTNode astNode = e.getNode();
         int lineNumber = -1;
@@ -209,7 +207,7 @@ public class GroovyScript implements IScript {
             lineNumber = astNode.getLineNumber();
         }
         else {
-            lineNumber = findLineNumberInString(resultString, lineNumber);
+            lineNumber = findLineNumberInString(e.getMessage(), lineNumber);
         }
         outStream.print("Line number: " + lineNumber);
         errorHandler.gotoLine(lineNumber);
@@ -219,8 +217,8 @@ public class GroovyScript implements IScript {
     static CompilerConfiguration createCompilerConfiguration() {
         CompilerConfiguration config = new CompilerConfiguration();
         config.setScriptBaseClass(FreeplaneScriptBaseClass.class.getName());
-        if (!(classpath == null || classpath.isEmpty())) {
-            config.setClasspathList(classpath);
+        if (!(ScriptResources.getClasspath() == null || ScriptResources.getClasspath().isEmpty())) {
+            config.setClasspathList(ScriptResources.getClasspath());
         }
         return config;
     }
@@ -233,19 +231,5 @@ public class GroovyScript implements IScript {
             lineNumber = Integer.parseInt(matcher.group(1));
         }
         return lineNumber;
-    }
-
-    /** allows to set the classpath for scripts. Due to security considerations it's not possible to set
-     * this more than once. */
-    static void setClasspath(final List<String> classpath) {
-        if (GroovyScript.classpath != null)
-            throw new SecurityException("reset of script classpath is forbidden.");
-        GroovyScript.classpath = Collections.unmodifiableList(classpath);
-        if (!classpath.isEmpty())
-            LogUtils.info("extending script's classpath by " + classpath);
-    }
-
-    static List<String> getClasspath() {
-        return classpath;
     }
 }

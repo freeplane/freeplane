@@ -110,7 +110,7 @@ public class ScriptingPermissions {
 			formulaPermissions = new ScriptingPermissions();
 			formulaPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
 			// the classpath is set by the user - this forces us to loose the permissions a bit (if the user permits it)
-			if (ScriptingEngine.getClasspath() != null) {
+			if (ScriptResources.getClasspath() != null) {
 				formulaPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION, ResourceController
 				    .getResourceController().getBooleanProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION));
 			}

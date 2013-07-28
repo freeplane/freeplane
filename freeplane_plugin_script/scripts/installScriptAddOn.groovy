@@ -31,6 +31,7 @@ import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.main.addons.AddOnsController
 import org.freeplane.plugin.script.ExecuteScriptAction
+import org.freeplane.plugin.script.ScriptResources;
 import org.freeplane.plugin.script.ScriptingEngine
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.AddOnDetailsPanel
@@ -391,7 +392,7 @@ def addOnDir() {
 def createScripts() {
 	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
 	scripts.each { script ->
-		File file = new File(ScriptingEngine.getUserScriptDir(), script.name)
+		File file = new File(ScriptResources.getUserScriptDir(), script.name)
 		try {
 			file.text = script.scriptBody
 		}

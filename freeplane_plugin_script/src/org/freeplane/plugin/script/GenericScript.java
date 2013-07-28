@@ -23,6 +23,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.script.Bindings;
 import javax.script.Compilable;
@@ -54,14 +58,15 @@ public class GenericScript implements IScript {
     private final static Object scriptEngineManagerMutex = new Object();
     private static ScriptEngineManager scriptEngineManager;
     private final ScriptEngine engine;
+    private boolean compilationEnabled = true;
 
-    public GenericScript(String script, ScriptEngine scriptEngine, ScriptingPermissions permissions) {
+    public GenericScript(String script, ScriptEngine engine, ScriptingPermissions permissions) {
         this.script = script;
         this.specificPermissions = permissions;
-        engine = scriptEngine;
+        this.engine = engine;
         compiledScript = null;
         errorsInScript = null;
-        errorHandler = IGNORING_SCRIPT_ERROR_HANDLER;
+        errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
         outStream = System.out;
         scriptContext = null;
     }
@@ -69,9 +74,11 @@ public class GenericScript implements IScript {
     public GenericScript(String script, String scriptEngineName, ScriptingPermissions permissions) {
         this(script, findScriptEngine(scriptEngineName), permissions);
     }
-    
+
     public GenericScript(File scriptFile, ScriptingPermissions permissions) {
         this(slurpFile(scriptFile), findScriptEngine(scriptFile), permissions);
+        engine.put(ScriptEngine.FILENAME, scriptFile.toString());
+        compilationEnabled = !disableScriptCompilation(scriptFile);
     }
 
     private static String slurpFile(File scriptFile) {
@@ -106,25 +113,19 @@ public class GenericScript implements IScript {
         return script;
     }
 
-    static public File getUserScriptDir() {
-        final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-        return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
-    }
-
     @Override
     public Object execute(final NodeModel node) {
         try {
             if (errorsInScript != null)
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
-            final ScriptSecurity scriptSecurity = new ScriptSecurity(script, specificPermissions, outStream);
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
+            final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
             final boolean needToSetFinalSecurityManager = securityManager.needToSetFinalSecurityManager();
-            final ScriptingSecurityManager scriptingSecurityManager = scriptSecurity.getScriptingSecurityManager();
             try {
                 final SimpleScriptContext context = createScriptContext(node);
-                if (engine instanceof Compilable) {
+                if (compilationEnabled && engine instanceof Compilable) {
                     compileAndCache((Compilable) engine);
                     if (needToSetFinalSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
@@ -137,7 +138,7 @@ public class GenericScript implements IScript {
                 }
             }
             finally {
-                if (compiledScript != null && !IScript.CACHE_COMPILED_SCRIPTS) {
+                if (compiledScript != null && !ScriptResources.CACHE_COMPILED_SCRIPTS) {
                     compiledScript = null;
                 }
                 if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
@@ -155,6 +156,14 @@ public class GenericScript implements IScript {
                 Controller.getCurrentModeController().getMapController().select(node);
             throw new ExecuteScriptException(e.getMessage(), e);
         }
+    }
+
+    private ScriptingSecurityManager createScriptingSecurityManager() {
+        return new ScriptSecurity(script, specificPermissions, outStream).getScriptingSecurityManager();
+    }
+
+    private boolean disableScriptCompilation(File scriptFile) {
+        return FilenameUtils.isExtension(scriptFile.getName(), ScriptResources.SCRIPT_COMPILATION_DISABLED_EXTENSIONS);
     }
 
     private SimpleScriptContext createScriptContext(final NodeModel node) {
@@ -175,9 +184,28 @@ public class GenericScript implements IScript {
 
     private static ScriptEngineManager getScriptEngineManager() {
         synchronized (scriptEngineManagerMutex) {
-            if (scriptEngineManager == null)
-                scriptEngineManager = new ScriptEngineManager(GenericScript.class.getClassLoader());
+            if (scriptEngineManager == null) {
+                scriptEngineManager = new ScriptEngineManager(createClassLoader());
+            }
             return scriptEngineManager;
+        }
+    }
+
+    private static ClassLoader createClassLoader() {
+        final List<String> classpath = ScriptResources.getClasspath();
+        final List<URL> urls = new ArrayList<URL>();
+        for (String path : classpath) {
+            urls.add(pathToUrl(path));
+        }
+        return URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), GenericScript.class.getClassLoader());
+    }
+
+    private static URL pathToUrl(String path) {
+        try {
+            return new File(path).toURI().toURL();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -198,17 +226,23 @@ public class GenericScript implements IScript {
 
     private static ScriptEngine findScriptEngine(String scriptEngineName) {
         final ScriptEngineManager manager = getScriptEngineManager();
-        return manager.getEngineByName(scriptEngineName);
+        return checkNotNull(manager.getEngineByName(scriptEngineName), "name", scriptEngineName);
     }
 
     private static ScriptEngine findScriptEngine(File scriptFile) {
         final ScriptEngineManager manager = getScriptEngineManager();
-        return manager.getEngineByExtension(FilenameUtils.getExtension(scriptFile.getName()));
+        final String extension = FilenameUtils.getExtension(scriptFile.getName());
+        return checkNotNull(manager.getEngineByExtension(extension), "extension", extension);
+    }
+    
+    private static ScriptEngine checkNotNull(final ScriptEngine motor, String what, String detail) {
+        if (motor == null)
+            throw new RuntimeException("can't load script engine by " + what + ": " + detail);
+        return motor;
     }
 
     private void handleScriptRuntimeException(final ScriptException e) {
-        final String resultString = e.getMessage();
-        outStream.print("message: " + resultString);
+        outStream.print("message: " + e.getMessage());
         int lineNumber = e.getLineNumber();
         outStream.print("Line number: " + lineNumber);
         errorHandler.gotoLine(lineNumber);

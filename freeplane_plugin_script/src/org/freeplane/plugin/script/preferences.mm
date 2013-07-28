@@ -109,7 +109,7 @@
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="execute_scripts_without_write_restriction"/>
 </node>
-<node TEXT="execute_scripts_without_network_restriction" ID="ID_195127580" CREATED="1370289521203" MODIFIED="1370289521203">
+<node TEXT="Permit network operations" ID="ID_195127580" CREATED="1370289521203" MODIFIED="1374872139163">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="execute_scripts_without_network_restriction"/>
 </node>
@@ -124,6 +124,14 @@
 <node TEXT="Optional user key alias for signing" ID="ID_613870876" CREATED="1370289521205" MODIFIED="1370291019630">
 <attribute NAME="type" VALUE="string"/>
 <attribute NAME="name" VALUE="script_user_key_name_for_signing"/>
+</node>
+<node TEXT="File extensions not to be compiled" ID="ID_181914556" CREATED="1370289521206" MODIFIED="1374873088786">
+<attribute NAME="type" VALUE="string"/>
+<attribute NAME="name" VALUE="script_compilation_disabled_extensions"/>
+</node>
+<node TEXT="Cache compiled scripts" ID="ID_627773658" CREATED="1370289521205" MODIFIED="1374883956619">
+<attribute NAME="type" VALUE="boolean"/>
+<attribute NAME="name" VALUE="script_cache_compiled_scripts"/>
 </node>
 <node TEXT="Script search path" ID="ID_425351509" CREATED="1370289521206" MODIFIED="1370290984647">
 <attribute NAME="type" VALUE="string"/>

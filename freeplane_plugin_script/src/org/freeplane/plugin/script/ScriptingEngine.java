@@ -20,11 +20,9 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.List;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang.WordUtils;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -141,21 +139,12 @@ public class ScriptingEngine {
 		return;
 	}
 
-	/** allows to set the classpath for scripts. Due to security considerations it's not possible to set
-	 * this more than once. */
-	static void setClasspath(final List<String> classpath) {
-		GroovyScript.setClasspath(classpath);
+	/** @deprecated use ScriptResources.getUserScriptDir() instead. */
+    static public File getUserScriptDir() {
+        return ScriptResources.getUserScriptDir();
     }
 
-	static List<String> getClasspath() {
-		return GroovyScript.getClasspath();
-	}
-	
-	public static File getUserScriptDir() {
-        final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-    	return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
-    }
-	static void showScriptExceptionErrorMessage(ExecuteScriptException ex) {
+    static void showScriptExceptionErrorMessage(ExecuteScriptException ex) {
         if (ex.getCause() instanceof SecurityException) {
         	final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);
         	UITools.errorMessage(TextUtils.format("ExecuteScriptSecurityError.text", message));

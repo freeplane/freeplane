@@ -159,7 +159,7 @@ class ScriptingConfiguration {
 	        	final List<Script> scripts = scriptAddOnProperties.getScripts();
 	        	for (Script script : scripts) {
 	        		script.active = addOnProperties.isActive();
-	        		result.put(new File(ScriptingEngine.getUserScriptDir(), script.name), script);
+	        		result.put(new File(ScriptResources.getUserScriptDir(), script.name), script);
                 }
 	        }
         }
@@ -168,7 +168,7 @@ class ScriptingConfiguration {
 
 	private TreeSet<String> getScriptDirs() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String dirsString = resourceController.getProperty(IScript.RESOURCES_SCRIPT_DIRECTORIES);
+		final String dirsString = resourceController.getProperty(ScriptResources.RESOURCES_SCRIPT_DIRECTORIES);
 		final TreeSet<String> dirs = new TreeSet<String>(); // remove duplicates -> Set
 		if (dirsString != null) {
 			dirs.addAll(ConfigurationUtils.decodeListValue(dirsString, false));
@@ -213,6 +213,7 @@ class ScriptingConfiguration {
 
     private String createScriptRegExp() {
         final ArrayList<String> extensions = new ArrayList<String>();
+        extensions.add("clj");
         for (ScriptEngineFactory scriptEngineFactory : new ScriptEngineManager().getEngineFactories()) {
             extensions.addAll(scriptEngineFactory.getExtensions());
         }
@@ -351,7 +352,7 @@ class ScriptingConfiguration {
 
 	private void initClasspath() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String entries = resourceController.getProperty(IScript.RESOURCES_SCRIPT_CLASSPATH);
+		final String entries = resourceController.getProperty(ScriptResources.RESOURCES_SCRIPT_CLASSPATH);
 		classpath = new ArrayList<String>();
 		if (entries != null) {
 			for (String entry : ConfigurationUtils.decodeListValue(entries, false)) {
