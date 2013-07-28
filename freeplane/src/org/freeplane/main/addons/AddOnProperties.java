@@ -35,6 +35,7 @@ public class AddOnProperties {
 	private String name;
 	private String author;
 	private String version;
+	private String lastVersion;
 	private FreeplaneVersion freeplaneVersionFrom;
 	private FreeplaneVersion freeplaneVersionTo;
 	private URL homepage;
@@ -56,6 +57,7 @@ public class AddOnProperties {
 		this(addOnType);
 		this.setName(addOnElement.getAttribute("name", null));
 		this.setVersion(addOnElement.getAttribute("version", null));
+		this.setLastVersion(addOnElement.getAttribute("lastVersion", null));
 		this.setFreeplaneVersionFrom(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionFrom",
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
@@ -188,8 +190,16 @@ public class AddOnProperties {
 		return version;
 	}
 
+	public String getLastVersion() {
+		return lastVersion;
+	}
+
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public void setLastVersion(String lastVersion) {
+		this.lastVersion = lastVersion;
 	}
 
 	public FreeplaneVersion getFreeplaneVersionFrom() {
@@ -357,6 +367,7 @@ public class AddOnProperties {
 		final XMLElement addonElement = new XMLElement("addon");
 		addonElement.setAttribute("name", name);
 		addonElement.setAttribute("version", version);
+		addonElement.setAttribute("lastVersion", lastVersion);
 		addonElement.setAttribute("freeplaneVersionFrom", freeplaneVersionFrom.toString());
 		if (freeplaneVersionTo != null)
 			addonElement.setAttribute("freeplaneVersionTo", freeplaneVersionTo.toString());
