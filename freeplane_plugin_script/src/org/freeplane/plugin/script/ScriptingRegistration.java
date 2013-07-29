@@ -64,7 +64,6 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
-import org.freeplane.plugin.script.IFreeplaneScriptErrorHandler;
 import org.freeplane.plugin.script.addons.ManageAddOnsAction;
 import org.freeplane.plugin.script.addons.ManageAddOnsDialog;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
@@ -208,8 +207,7 @@ class ScriptingRegistration {
 				}
 			});
 			final ScriptingConfiguration configuration = new ScriptingConfiguration();
-			ScriptResources.setClasspath(configuration.getClasspath());
-			ScriptCompiler.compileScriptsOnPath(configuration.getClasspath());
+			ScriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 			modeController.addMenuContributor(new IMenuContributor() {
 				public void updateMenus(ModeController modeController, MenuBuilder builder) {
 					registerScripts(menuBuilder, configuration);

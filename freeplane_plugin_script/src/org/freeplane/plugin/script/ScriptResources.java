@@ -20,11 +20,18 @@ public class ScriptResources {
         .getProperty(RESOURCES_SCRIPT_COMPILATION_DISABLED_EXTENSIONS, "").split("\\W+");
     static final boolean CACHE_COMPILED_SCRIPTS = ResourceController.getResourceController().getBooleanProperty(
         RESOURCE_SCRIPT_CACHE_COMPILED_SCRIPTS);
+    private static final String USER_SCRIPTS_DIR = "scripts";
+    private static final String BUILTIN_SCRIPTS_DIR = "scripts";
     private static List<String> classpath;
+    private static final File builtinScriptsDir = buildBuiltinScriptsDir();
+    private static final File userScriptDir = buildUserScriptsDir();
 
     static public File getUserScriptDir() {
-        final String userDir = ResourceController.getResourceController().getFreeplaneUserDirectory();
-        return new File(userDir, ScriptingConfiguration.USER_SCRIPTS_DIR);
+        return userScriptDir;
+    }
+
+    static File getBuiltinScriptsDir() {
+        return builtinScriptsDir;
     }
 
     static List<String> getClasspath() {
@@ -39,5 +46,14 @@ public class ScriptResources {
         classpath = Collections.unmodifiableList(newClasspath);
         if (!classpath.isEmpty())
             LogUtils.info("extending script's classpath by " + classpath);
+    }
+
+    private static File buildBuiltinScriptsDir() {
+        return new File(ResourceController.getResourceController().getInstallationBaseDir(), BUILTIN_SCRIPTS_DIR);
+    }
+
+    private static File buildUserScriptsDir() {
+        return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
+            ScriptResources.USER_SCRIPTS_DIR);
     }
 }

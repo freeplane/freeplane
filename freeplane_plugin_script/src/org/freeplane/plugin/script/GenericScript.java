@@ -182,7 +182,7 @@ public class GenericScript implements IScript {
         return binding;
     }
 
-    private static ScriptEngineManager getScriptEngineManager() {
+    static ScriptEngineManager getScriptEngineManager() {
         synchronized (scriptEngineManagerMutex) {
             if (scriptEngineManager == null) {
                 scriptEngineManager = new ScriptEngineManager(createClassLoader());
