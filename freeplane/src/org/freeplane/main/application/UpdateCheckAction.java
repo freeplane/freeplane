@@ -438,7 +438,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			c.gridy = gridRow;
 			changelogButton = new JButton(TextUtils.getText("updater.viewChangelog"));
 			changelogButton.addActionListener(openUrlListener);
-			changelogButton.setActionCommand(addOnProperties.getHomepage().toString());
+			changelogButton.setActionCommand(addOnProperties.getUpdateUrl().toString());
 			gridPane.add(changelogButton,c );
 			changelogButton.setEnabled(needsUpdate);
 			
@@ -446,7 +446,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			c.gridy = gridRow;
 			updateButton = new JButton(TextUtils.getText("updater.goToDownload"));
 			updateButton.addActionListener(openUrlListener);
-			updateButton.setActionCommand(addOnProperties.getUpdateUrl().toString());
+			updateButton.setActionCommand(addOnProperties.getHomepage().toString());
 			gridPane.add(updateButton, c);
 			updateButton.setEnabled(needsUpdate);
 
