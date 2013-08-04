@@ -34,11 +34,16 @@ public class AddOnProperties {
 	private boolean active = true;
 	private String name;
 	private String author;
+	// installed version
 	private String version;
-	private String lastVersion;
+	// latest known version
+	// filled by the updater to use it either in the updater
+	// or in the add-on manager
+	private String latestVersion;
 	private FreeplaneVersion freeplaneVersionFrom;
 	private FreeplaneVersion freeplaneVersionTo;
 	private URL homepage;
+	// the URL source to fetch the latest version
 	private URL updateUrl;
 	private String description;
 	private String license;
@@ -57,7 +62,7 @@ public class AddOnProperties {
 		this(addOnType);
 		this.setName(addOnElement.getAttribute("name", null));
 		this.setVersion(addOnElement.getAttribute("version", null));
-		this.setLastVersion(addOnElement.getAttribute("lastVersion", null));
+		this.setLatestVersion(addOnElement.getAttribute("latestVersion", null));
 		this.setFreeplaneVersionFrom(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionFrom",
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
@@ -190,16 +195,16 @@ public class AddOnProperties {
 		return version;
 	}
 
-	public String getLastVersion() {
-		return lastVersion;
+	public String getLatestVersion() {
+		return latestVersion;
 	}
 
 	public void setVersion(String version) {
 		this.version = version;
 	}
 
-	public void setLastVersion(String lastVersion) {
-		this.lastVersion = lastVersion;
+	public void setLatestVersion(String latestVersion) {
+		this.latestVersion = latestVersion;
 	}
 
 	public FreeplaneVersion getFreeplaneVersionFrom() {
@@ -222,6 +227,8 @@ public class AddOnProperties {
 		return homepage;
 	}
 	
+	// If the updateUrl is not set, the default is $homepage/version.txt
+	// This will help to update old add-ons.
 	public URL getUpdateUrl() {
 		if (updateUrl != null) {
 			return updateUrl;
@@ -367,7 +374,7 @@ public class AddOnProperties {
 		final XMLElement addonElement = new XMLElement("addon");
 		addonElement.setAttribute("name", name);
 		addonElement.setAttribute("version", version);
-		addonElement.setAttribute("lastVersion", lastVersion);
+		addonElement.setAttribute("latestVersion", latestVersion);
 		addonElement.setAttribute("freeplaneVersionFrom", freeplaneVersionFrom.toString());
 		if (freeplaneVersionTo != null)
 			addonElement.setAttribute("freeplaneVersionTo", freeplaneVersionTo.toString());

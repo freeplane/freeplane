@@ -180,24 +180,33 @@ class UpdateCheckAction extends AFreeplaneAction {
 			}
 		});
 	}
+
 	
+	// looking for new versions of add-ons
+	// and store the latest version as a property
 	private void checkForAddonsUpdates() {
+		// loop on add-ons
 		List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
 		for (AddOnProperties addOnProperties : installedAddOns) {
 			FreeplaneVersion addOnLocalVersion;
 			try {
+				// strip the "v" in some old version numbers "v0.x.y" => "0.x.y"
 				addOnLocalVersion = FreeplaneVersion.getVersion((addOnProperties.getVersion().replace("v", "")));
 			} catch (IllegalArgumentException e) {
 				addOnLocalVersion = FreeplaneVersion.getVersion("0.0.0");
 			}
+			// get the update-url for this add-on
+			// append the current add-on version for
+			// - statistics (appending a freeplane installation unique id would enable building add-on usage statistics) 
+			// - handling special cases ? (maybe we could send the freeplane version too)
 			final String addOnUpdateUrl = addOnProperties.getUpdateUrl().toString() + "?v=" + addOnLocalVersion.toString();
 			final HttpVersionClient versionClient = new HttpVersionClient(addOnUpdateUrl, addOnLocalVersion);
 			final boolean connectSuccesfull;
-			FreeplaneVersion lastVersion = versionClient.getRemoteVersion();
+			final FreeplaneVersion latestVersion = versionClient.getRemoteVersion();
 
 			connectSuccesfull = versionClient.isSuccessful();
 			if (connectSuccesfull) {
-				addOnProperties.setLastVersion(lastVersion.toString());
+				addOnProperties.setLatestVersion(latestVersion.toString());
 			}
         }
 	}
@@ -269,28 +278,39 @@ class UpdateCheckAction extends AFreeplaneAction {
 		return;
 	}
 
-	private int showUpdateDialog(final String info, final FreeplaneVersion freeplaneLastVersion, final String history) {
+	private int showUpdateDialog(final String info, final FreeplaneVersion freeplaneLatestVersion, final String history) {
+		
+		// dialog layout
+		// - messagePane (verticalBox)
+		// |- gridPane (GridBagLayout)
+		//     Components | Installed version | Latestversion | Changelog button | Got to download button
+		//
+		// |- preferences label
+		// |- checkbox for automatic update
+		
 		final Box messagePane = Box.createVerticalBox();
-		JLabel emptyLabel = new JLabel("");
+		final JLabel emptyLabel = new JLabel("");
 		
 		// grid setup
-		JPanel gridPane = new JPanel(new GridBagLayout());
+		final JPanel gridPane = new JPanel(new GridBagLayout());
 		gridPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		Border paddingBorder = BorderFactory.createEmptyBorder(0, 10, 10, 0);
+		
+		final Border paddingBorder = BorderFactory.createEmptyBorder(0, 10, 10, 0);
 		gridPane.setBorder(BorderFactory.createCompoundBorder(paddingBorder,paddingBorder));
 		
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         int gridRow = 0;
         c.weightx = 0.5;
         
 		
 		// table headers
-		JLabel componentHeader = new JLabel(TextUtils.getText("updater.component"), SwingConstants.CENTER);
-		JLabel installedVersionHeader = new JLabel(TextUtils.getText("updater.version.installed"), SwingConstants.CENTER);
-		JLabel latestVersionHeader = new JLabel(TextUtils.getText("updater.version.latest"), SwingConstants.CENTER);
+		final JLabel componentHeader = new JLabel(TextUtils.getText("updater.component"), SwingConstants.CENTER);
+		final JLabel installedVersionHeader = new JLabel(TextUtils.getText("updater.version.installed"), SwingConstants.CENTER);
+		final JLabel latestVersionHeader = new JLabel(TextUtils.getText("updater.version.latest"), SwingConstants.CENTER);
 		
-		Font boldFont = new Font(componentHeader.getFont().getName(),Font.BOLD,componentHeader.getFont().getSize());
+		final Font boldFont = new Font(componentHeader.getFont().getName(),Font.BOLD,componentHeader.getFont().getSize());
+		
 		componentHeader.setFont(boldFont);
 		installedVersionHeader.setFont(boldFont);
 		latestVersionHeader.setFont(boldFont);
@@ -319,11 +339,12 @@ class UpdateCheckAction extends AFreeplaneAction {
 		
         
 		final JLabel freeplaneLabel = new JLabel("Freeplane");
-		FreeplaneVersion freeplaneLocalVersion = FreeplaneVersion.getVersion();
-		JLabel freeplaneInstalledVersionLabel = new JLabel(freeplaneLocalVersion.toString(), SwingConstants.CENTER);
-		JLabel freeplaneLatestVersionLabel;
+		final FreeplaneVersion freeplaneLocalVersion = FreeplaneVersion.getVersion();
+		final JLabel freeplaneInstalledVersionLabel = new JLabel(freeplaneLocalVersion.toString(), SwingConstants.CENTER);
+		final JLabel freeplaneLatestVersionLabel;
 
-		JButton updateButton, changelogButton;
+		JButton updateButton;
+		JButton changelogButton;
 		final Locale defaultLocale = Locale.getDefault();
 		final String language = defaultLocale.getLanguage();
 		final String translatedWebUpdate = getWebUpdateUrl(language);
@@ -337,14 +358,14 @@ class UpdateCheckAction extends AFreeplaneAction {
 		updateButton.setActionCommand("http://freeplane.sourceforge.net");
 
 		Boolean needsUpdate = Boolean.FALSE;
-		if (freeplaneLastVersion != null) {
-			if (freeplaneLocalVersion.compareTo(freeplaneLastVersion) < 0) {
+		if (freeplaneLatestVersion != null) {
+			if (freeplaneLocalVersion.compareTo(freeplaneLatestVersion) < 0) {
 				needsUpdate = Boolean.TRUE;
 			} else {
 				needsUpdate = Boolean.FALSE;
 			}
 
-			freeplaneLatestVersionLabel = new JLabel(freeplaneLastVersion.toString(), SwingConstants.CENTER);
+			freeplaneLatestVersionLabel = new JLabel(freeplaneLatestVersion.toString(), SwingConstants.CENTER);
 		} else {
 			freeplaneLatestVersionLabel = new JLabel(TextUtils.getText("updater.version.unknown"), SwingConstants.CENTER);
 			freeplaneLatestVersionLabel.setToolTipText(TextUtils.getText(info));
@@ -365,49 +386,36 @@ class UpdateCheckAction extends AFreeplaneAction {
 		c.gridx = 4;
 		gridPane.add(updateButton, c);
 		
-		
-/*				
-		if (history != "") {
-			final JTextArea historyArea = new JTextArea(history);
-			historyArea.setEditable(false);
-			final JScrollPane historyPane = new JScrollPane(historyArea);
-			historyPane.setPreferredSize(new Dimension(500, 300));
-			historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-			c.weightx = 1.0;
-			c.gridx = 0;
-			c.gridy = 2;
-			gridPane.add(historyPane, c);
-		}
-*/
-		List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
+
+		final List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
 		gridRow = 3;
 		for (AddOnProperties addOnProperties : installedAddOns) {
 			FreeplaneVersion addOnLocalVersion;
-			FreeplaneVersion addOnLastVersion;
+			FreeplaneVersion addOnLatestVersion;
 			try {
 				addOnLocalVersion = FreeplaneVersion.getVersion((addOnProperties.getVersion().replace("v", "")));
 			} catch (IllegalArgumentException e) {
 				addOnLocalVersion = FreeplaneVersion.getVersion("0.0.0");
 			}
 			try {
-				addOnLastVersion = FreeplaneVersion.getVersion((addOnProperties.getLastVersion()));
+				addOnLatestVersion = FreeplaneVersion.getVersion((addOnProperties.getLatestVersion()));
 			} catch (IllegalArgumentException e) {
-				addOnLastVersion = FreeplaneVersion.getVersion("0.0.0");
+				addOnLatestVersion = FreeplaneVersion.getVersion("0.0.0");
 			}
 
-			JLabel addOnLabel, addOnInstalledVersionLabel, addOnLatestVersionLabel;
+			final JLabel addOnLabel, addOnInstalledVersionLabel, addOnLatestVersionLabel;
 			
 			
 			addOnInstalledVersionLabel = new JLabel(addOnLocalVersion.toString(), SwingConstants.CENTER);
 			
 			needsUpdate = Boolean.FALSE;
-			if (addOnLastVersion != null) {
-				if (addOnLocalVersion.compareTo(addOnLastVersion) < 0) {
+			if (addOnLatestVersion != null) {
+				if (addOnLocalVersion.compareTo(addOnLatestVersion) < 0) {
 					needsUpdate = Boolean.TRUE;
 				} else {
 					
 				}
-				addOnLatestVersionLabel = new JLabel(addOnLastVersion.toString(), SwingConstants.CENTER);
+				addOnLatestVersionLabel = new JLabel(addOnLatestVersion.toString(), SwingConstants.CENTER);
 			} else {
 				addOnLatestVersionLabel = new JLabel(TextUtils.getText("updater.version.unknown"), SwingConstants.CENTER);
 				addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.unreachable") + " " + addOnProperties.getUpdateUrl().toString());
@@ -447,7 +455,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		messagePane.add(gridPane);
 		
 		
-		JLabel confLabel = new JLabel(TextUtils.getText("preferences"));
+		final JLabel confLabel = new JLabel(TextUtils.getText("preferences"));
 		confLabel.setFont(boldFont);
 		messagePane.add(confLabel);
 		final JCheckBox updateAutomatically = new JCheckBox(TextUtils
