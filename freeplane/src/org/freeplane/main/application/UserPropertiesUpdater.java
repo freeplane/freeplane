@@ -22,9 +22,9 @@ package org.freeplane.main.application;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.JLabel;
@@ -50,9 +50,10 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
  * Nov 1, 2010
  */
 public class UserPropertiesUpdater {
-	
-	final private static String[] PREVIOUS_VERSION_DIRS = {"1.2.x"};
-	
+
+
+	private static final String ORG_FREEPLANE_OLD_USERFPDIR = "org.freeplane.old_userfpdir";
+
 	void importOldProperties(){
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		if(userPreferencesFile.exists()){
@@ -75,7 +76,14 @@ public class UserPropertiesUpdater {
 		final File parentDirectory = targetDirectory.getParentFile();
 		if(! parentDirectory.exists())
 			return;
-		for(String previousDirName : PREVIOUS_VERSION_DIRS){
+		ArrayList<String> previousVersionDirs = new ArrayList<String>();
+		previousVersionDirs.add("1.2.x");
+		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
+		if (old_userfpdir != null) {
+			previousVersionDirs.add(new File(old_userfpdir, "1.3.x").getPath());
+			previousVersionDirs.add(new File(old_userfpdir, "1.2.x").getPath());
+		}
+		for (String previousDirName : previousVersionDirs) {
 			if(previousDirName.equals(targetDirectory.getName()))
 				return;
 			File sourceDirectory = new File(parentDirectory, previousDirName);
@@ -104,7 +112,7 @@ public class UserPropertiesUpdater {
         catch (IOException e) {
         }
 	}
-	
+
 	private void removeOpenedMaps(File userPreferencesFile) {
 		try {
 			Properties userProp = loadProperties(userPreferencesFile);
@@ -154,10 +162,10 @@ public class UserPropertiesUpdater {
         catch (NumberFormatException e) {
         }
     }
-	
+
 	void importOldDefaultStyle() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
-		MFileManager fm = (MFileManager) MFileManager.getController(modeController);
+		MFileManager fm = MFileManager.getController(modeController);
 		final String standardTemplateName = fm.getStandardTemplateName();
 		final File userDefault;
 		final File absolute = new File(standardTemplateName);
@@ -199,7 +207,7 @@ public class UserPropertiesUpdater {
         }
         catch (IOException e) {
         }
-        
+
 
 	}
    private void updateDefaultStyle(final NodeStyleController nodeStyleController, MapModel defaultStyleMap) {
@@ -219,11 +227,11 @@ public class UserPropertiesUpdater {
 		nodeStyleModel.setShape(nodeStyleController.getShape(styleNode));
 
 		styleNode.addExtension(nodeStyleModel);
-		
+
 		final NodeSizeModel nodeSizeModel = new NodeSizeModel();
 		nodeSizeModel.setMaxNodeWidth(nodeStyleController.getMaxWidth(styleNode));
 		nodeSizeModel.setMinNodeWidth(nodeStyleController.getMinWidth(styleNode));
-		
+
 		final EdgeModel standardEdgeModel = EdgeModel.getModel(styleNode);
 		if(standardEdgeModel != null){
 			final EdgeModel edgeModel = new EdgeModel();
