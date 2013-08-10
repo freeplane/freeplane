@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.JLabel;
@@ -74,28 +73,26 @@ public class UserPropertiesUpdater {
 
 	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
 		final File parentDirectory = targetDirectory.getParentFile();
-		if(! parentDirectory.exists())
-			return;
-		ArrayList<String> previousVersionDirs = new ArrayList<String>();
-		previousVersionDirs.add("1.2.x");
+		final String previousDirName = "1.2.x";
+		final File sourceDirectory;
 		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
-		if (old_userfpdir != null) {
-			previousVersionDirs.add(new File(old_userfpdir, "1.3.x").getPath());
-			previousVersionDirs.add(new File(old_userfpdir, "1.2.x").getPath());
-		}
-		for (String previousDirName : previousVersionDirs) {
-			if(previousDirName.equals(targetDirectory.getName()))
-				return;
-			File sourceDirectory = new File(parentDirectory, previousDirName);
-			if(sourceDirectory.exists()){
-				try {
-	                org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
-                }
-                catch (IOException e) {
-                }
-				return;
+		if (isDefined(old_userfpdir))
+			sourceDirectory = new File(old_userfpdir, previousDirName);
+		else
+			sourceDirectory = new File(parentDirectory, previousDirName);
+		if (sourceDirectory.exists() && !sourceDirectory.getAbsolutePath().equals(targetDirectory.getAbsolutePath())) {
+			try {
+				parentDirectory.mkdirs();
+				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
 			}
+			catch (IOException e) {
+			}
+			return;
 		}
+    }
+
+	private boolean isDefined(String old_userfpdir) {
+	    return old_userfpdir != null;
     }
 
 	private void importOldPreferences(final File userPreferencesFile,
