@@ -74,7 +74,7 @@ class HttpVersionClient {
 			return;
 		}
 		catch (final IOException e) {
-			LogUtils.warn("Could not read update url - check your internet connection.");
+			LogUtils.warn("Could not read update url (" + url + ") - check your internet connection.");
 			return;
 		}
 		catch (final IllegalArgumentException e) {
