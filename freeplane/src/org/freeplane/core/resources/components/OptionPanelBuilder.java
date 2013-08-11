@@ -342,6 +342,14 @@ public class OptionPanelBuilder {
 		}
 	}
 
+	private class TextBoxOptionCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			final int lines = data.getAttribute("lines", 2);
+			return createTextBoxOptionCreator(name, lines);
+		}
+	}
+
 	private class TabCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
@@ -511,6 +519,14 @@ public class OptionPanelBuilder {
 		};
 	}
 
+	private IPropertyControlCreator createTextBoxOptionCreator(final String name, final int lines) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new TextBoxProperty(name, lines);
+			}
+		};
+	}
+
 	private IPropertyControlCreator createTabCreator(final String label, final String layout) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -550,6 +566,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("separator", new SeparatorCreator());
 		readManager.addElementHandler("text", new TextCreator());
 		readManager.addElementHandler("string", new StringOptionCreator());
+		readManager.addElementHandler("textbox", new TextBoxOptionCreator());
 		readManager.addElementHandler("font", new FontOptionCreator());
 		readManager.addElementHandler("boolean", new BooleanOptionCreator());
 		readManager.addElementHandler("number", new NumberOptionCreator());

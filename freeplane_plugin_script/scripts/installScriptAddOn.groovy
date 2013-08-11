@@ -31,6 +31,7 @@ import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.main.addons.AddOnsController
 import org.freeplane.plugin.script.ExecuteScriptAction
+import org.freeplane.plugin.script.ScriptResources;
 import org.freeplane.plugin.script.ScriptingEngine
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.AddOnDetailsPanel
@@ -260,7 +261,6 @@ def parseScripts(Map childNodeMap) {
 	configMap[property] = propertyNode.children.inject([]){ scripts, scriptNode ->
 		def script = new ScriptAddOnProperties.Script()
 		script.name = expandVariables(scriptNode.plainText)
-		script.file = new File(ScriptingEngine.getUserScriptDir(), script.name)
 		script.scriptBody = ensureNoHtml(theOnlyChild(scriptNode)).text
 		mapStructureAssert( ! htmlUtils.isHtmlNode(script.scriptBody), textUtils.getText('addons.installer.html.script'))
 		scriptNode.attributes.map.each { k,v ->
@@ -270,7 +270,7 @@ def parseScripts(Map childNodeMap) {
 				script[k] = expandVariables(v)
 		}
 		script.permissions = parsePermissions(scriptNode, script.name)
-		mapStructureAssert(script.name.endsWith('.groovy'), textUtils.format('addons.installer.groovy.script.name', script.name))
+		mapStructureAssert(script.name.matches('.*\\.\\w+'), textUtils.format('addons.installer.script.name.suffix', script.name))
 		mapStructureAssert(script.menuTitleKey, textUtils.format('addons.installer.script.no.menutitle', script))
 		mapStructureAssert(script.menuLocation, textUtils.format('addons.installer.script.no.menulocation', script))
 		mapStructureAssert(script.executionMode, textUtils.format('addons.installer.script.no.execution_mode', script))
@@ -392,7 +392,7 @@ def addOnDir() {
 def createScripts() {
 	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
 	scripts.each { script ->
-		File file = script.file
+		File file = new File(ScriptResources.getUserScriptDir(), script.name)
 		try {
 			file.text = script.scriptBody
 		}

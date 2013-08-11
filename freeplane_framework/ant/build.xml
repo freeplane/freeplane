@@ -278,6 +278,7 @@
 				        <exclude name="freeplane/viewer-resources/xml/appletMenu.xml"/>
 				        <exclude name="freeplane_plugin_formula/src/org/freeplane/plugin/formula/preferences.xml"/>
 				        <exclude name="freeplane_plugin_script/src/org/freeplane/plugin/script/preferences.xml"/>
+			        	<exclude name="freeplane_plugin_latex/src/org/freeplane/plugin/latex/preferences.xml"/>
 				</patternset>
 			</tarfileset>
 			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">

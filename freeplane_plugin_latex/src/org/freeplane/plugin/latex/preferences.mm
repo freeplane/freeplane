@@ -1,7 +1,6 @@
 <map version="freeplane 1.3.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<attribute_registry SHOW_ATTRIBUTES="hide"/>
-<node TEXT="Script Preferences" ID="ID_776863743" CREATED="1370289521201" MODIFIED="1370289551128"><hook NAME="MapStyle">
+<node TEXT="LaTeX Preferences" ID="ID_647512264" CREATED="1370289419953" MODIFIED="1375536648731"><hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="true" STYLE_REF="boolean" LAST="false">
             <attribute_contains_condition ATTRIBUTE="type" VALUE="boolean" MATCH_CASE="true" MATCH_APPROXIMATELY="false"/>
@@ -91,55 +90,16 @@
 </stylenode>
 </map_styles>
 </hook>
-<node TEXT="Plugins" POSITION="right" ID="ID_1156983468" CREATED="1370289521201" MODIFIED="1370290786048">
+<node TEXT="Plugins" POSITION="right" ID="ID_591627084" CREATED="1370289419953" MODIFIED="1370290599743">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="plugins"/>
-<node TEXT="Scripting" ID="ID_301669529" CREATED="1370289521201" MODIFIED="1370290789400">
+<node TEXT="Latex" ID="ID_1783515461" CREATED="1370289419958" MODIFIED="1375536911261">
 <attribute NAME="type" VALUE="separator"/>
-<attribute NAME="name" VALUE="scripting"/>
-<node TEXT="Script Execution enabled" ID="ID_1919787107" CREATED="1370289521202" MODIFIED="1370290835206">
-<attribute NAME="type" VALUE="remind_value"/>
-<attribute NAME="name" VALUE="execute_scripts_without_asking"/>
-</node>
-<node TEXT="Permit file/read operations" ID="ID_670476941" CREATED="1370289521202" MODIFIED="1370290940640">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="execute_scripts_without_file_restriction"/>
-</node>
-<node TEXT="Permit file/write operations" ID="ID_357965285" CREATED="1370289521203" MODIFIED="1370290936639">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="execute_scripts_without_write_restriction"/>
-</node>
-<node TEXT="Permit network operations" ID="ID_195127580" CREATED="1370289521203" MODIFIED="1374872139163">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="execute_scripts_without_network_restriction"/>
-</node>
-<node TEXT="Permit to execute other applications" ID="ID_1113896850" CREATED="1370289521204" MODIFIED="1370290863922">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="execute_scripts_without_exec_restriction"/>
-</node>
-<node TEXT="Trust signed scripts" ID="ID_1220206880" CREATED="1370289521205" MODIFIED="1370291042560">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="signed_script_are_trusted"/>
-</node>
-<node TEXT="Optional user key alias for signing" ID="ID_613870876" CREATED="1370289521205" MODIFIED="1370291019630">
-<attribute NAME="type" VALUE="string"/>
-<attribute NAME="name" VALUE="script_user_key_name_for_signing"/>
-</node>
-<node TEXT="File extensions not to be compiled" ID="ID_181914556" CREATED="1370289521206" MODIFIED="1374873088786">
-<attribute NAME="type" VALUE="string"/>
-<attribute NAME="name" VALUE="script_compilation_disabled_extensions"/>
-</node>
-<node TEXT="Cache compiled scripts" ID="ID_627773658" CREATED="1370289521205" MODIFIED="1374883956619">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="script_cache_compiled_scripts"/>
-</node>
-<node TEXT="Script search path" ID="ID_425351509" CREATED="1370289521206" MODIFIED="1370290984647">
-<attribute NAME="type" VALUE="string"/>
-<attribute NAME="name" VALUE="script_directories"/>
-</node>
-<node TEXT="Script Classpath" ID="ID_1675835784" CREATED="1370289521206" MODIFIED="1370290990320">
-<attribute NAME="type" VALUE="string"/>
-<attribute NAME="name" VALUE="script_classpath"/>
+<attribute NAME="name" VALUE="latex"/>
+<node TEXT="Common Macros" ID="ID_11961549" CREATED="1370289419960" MODIFIED="1375536896131">
+<attribute NAME="type" VALUE="textbox"/>
+<attribute NAME="name" VALUE="latex_macros"/>
+<attribute NAME="lines" VALUE="5" OBJECT="org.freeplane.features.format.FormattedNumber|5"/>
 </node>
 </node>
 </node>

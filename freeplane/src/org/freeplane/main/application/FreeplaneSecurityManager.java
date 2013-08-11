@@ -34,288 +34,236 @@ import java.security.Permission;
  * @author foltin
  */
 public final class FreeplaneSecurityManager extends SecurityManager {
-	private SecurityManager mFinalSecurityManager = null;
+    private SecurityManager finalSecurityManager = null;
 
-	public FreeplaneSecurityManager() {
-	}
+    public FreeplaneSecurityManager() {
+    }
 
-	@Override
-	public void checkAccept(final String pHost, final int pPort) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkAccept(pHost, pPort);
-	}
-
-	@Override
-	public void checkAccess(final Thread pT) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkAccess(pT);
-	}
-
-	@Override
-	public void checkAccess(final ThreadGroup pG) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkAccess(pG);
-	}
-
-	@Override
-	public void checkAwtEventQueueAccess() {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkAwtEventQueueAccess();
-	}
-
-	@Override
-	public void checkConnect(final String pHost, final int pPort) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkConnect(pHost, pPort);
-	}
-
-	@Override
-	public void checkConnect(final String pHost, final int pPort, final Object pContext) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkConnect(pHost, pPort, pContext);
-	}
-
-	@Override
-	public void checkCreateClassLoader() {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkCreateClassLoader();
-	}
-
-	@Override
-	public void checkDelete(final String pFile) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkDelete(pFile);
-	}
-
-	@Override
-	public void checkExec(final String pCmd) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkExec(pCmd);
-	}
-
-	@Override
-	public void checkExit(final int pStatus) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkExit(pStatus);
-	}
-
-	@Override
-	public void checkLink(final String pLib) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkLink(pLib);
-	}
-
-	@Override
-	public void checkListen(final int pPort) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkListen(pPort);
-	}
-
-	@Override
-	public void checkMemberAccess(final Class<?> clazz, final int which) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkMemberAccess(clazz, which);
-	}
-
-	@Override
-	public void checkMulticast(final InetAddress pMaddr) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkMulticast(pMaddr);
-	}
-
-	@SuppressWarnings("deprecation")// we have to override it in case it's used by anyone
     @Override
-	public void checkMulticast(final InetAddress pMaddr, final byte pTtl) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkMulticast(pMaddr, pTtl);
-	}
+    public void checkAccept(final String pHost, final int pPort) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkAccept(pHost, pPort);
+    }
 
-	@Override
-	public void checkPackageAccess(final String pPkg) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkPackageAccess(pPkg);
-	}
+    @Override
+    public void checkAccess(final Thread pT) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkAccess(pT);
+    }
 
-	@Override
-	public void checkPackageDefinition(final String pPkg) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkPackageDefinition(pPkg);
-	}
+    @Override
+    public void checkAccess(final ThreadGroup pG) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkAccess(pG);
+    }
 
-	@Override
-	public void checkPermission(final Permission pPerm) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkPermission(pPerm);
-	}
+    @Override
+    public void checkAwtEventQueueAccess() {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkAwtEventQueueAccess();
+    }
 
-	@Override
-	public void checkPermission(final Permission pPerm, final Object pContext) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkPermission(pPerm, pContext);
-	}
+    @Override
+    public void checkConnect(final String pHost, final int pPort) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkConnect(pHost, pPort);
+    }
 
-	@Override
-	public void checkPrintJobAccess() {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkPrintJobAccess();
-	}
+    @Override
+    public void checkConnect(final String pHost, final int pPort, final Object pContext) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkConnect(pHost, pPort, pContext);
+    }
 
-	@Override
-	public void checkPropertiesAccess() {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkPropertiesAccess();
-	}
+    @Override
+    public void checkCreateClassLoader() {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkCreateClassLoader();
+    }
 
-	@Override
-	public void checkPropertyAccess(final String pKey) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkPropertyAccess(pKey);
-	}
+    @Override
+    public void checkDelete(final String pFile) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkDelete(pFile);
+    }
 
-	@Override
-	public void checkRead(final FileDescriptor pFd) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkRead(pFd);
-	}
+    @Override
+    public void checkExec(final String pCmd) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkExec(pCmd);
+    }
 
-	@Override
-	public void checkRead(final String pFile) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkRead(pFile);
-	}
+    @Override
+    public void checkExit(final int pStatus) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkExit(pStatus);
+    }
 
-	@Override
-	public void checkRead(final String pFile, final Object pContext) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkRead(pFile, pContext);
-	}
+    @Override
+    public void checkLink(final String pLib) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkLink(pLib);
+    }
 
-	@Override
-	public void checkSecurityAccess(final String pTarget) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkSecurityAccess(pTarget);
-	}
+    @Override
+    public void checkListen(final int pPort) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkListen(pPort);
+    }
 
-	@Override
-	public void checkSetFactory() {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkSetFactory();
-	}
+    @Override
+    public void checkMemberAccess(final Class<?> clazz, final int which) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkMemberAccess(clazz, which);
+    }
 
-	@Override
-	public void checkSystemClipboardAccess() {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkSystemClipboardAccess();
-	}
+    @Override
+    public void checkMulticast(final InetAddress pMaddr) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkMulticast(pMaddr);
+    }
 
-	@Override
-	public boolean checkTopLevelWindow(final Object pWindow) {
-		if (mFinalSecurityManager == null) {
-			return true;
-		}
-		return mFinalSecurityManager.checkTopLevelWindow(pWindow);
-	}
+    @SuppressWarnings("deprecation")
+    // we have to override it in case it's used by anyone
+    @Override
+    public void checkMulticast(final InetAddress pMaddr, final byte pTtl) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkMulticast(pMaddr, pTtl);
+    }
 
-	@Override
-	public void checkWrite(final FileDescriptor pFd) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkWrite(pFd);
-	}
+    @Override
+    public void checkPackageAccess(final String pPkg) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkPackageAccess(pPkg);
+    }
 
-	@Override
-	public void checkWrite(final String pFile) {
-		if (mFinalSecurityManager == null) {
-			return;
-		}
-		mFinalSecurityManager.checkWrite(pFile);
-	}
+    @Override
+    public void checkPackageDefinition(final String pPkg) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkPackageDefinition(pPkg);
+    }
 
-	@Override
-	public Object getSecurityContext() {
-		if (mFinalSecurityManager == null) {
-			return super.getSecurityContext();
-		}
-		return mFinalSecurityManager.getSecurityContext();
-	}
+    @Override
+    public void checkPermission(final Permission pPerm) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkPermission(pPerm);
+    }
 
-	public void setFinalSecurityManager(final SecurityManager finalSecurityManager) {
-		if (mFinalSecurityManager != null) {
-			throw new SecurityException("There is a SecurityManager installed already.");
-		}
-		mFinalSecurityManager = finalSecurityManager;
-	}
-	
-	public void removeFinalSecurityManager(final SecurityManager finalSecurityManager) {
-		if (finalSecurityManager == mFinalSecurityManager) {
-			mFinalSecurityManager = null;
-			return;
-		}
-		else {
-			throw new SecurityException("Wrong SecurityManager to remove.");
-		}
-	}
+    @Override
+    public void checkPermission(final Permission pPerm, final Object pContext) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkPermission(pPerm, pContext);
+    }
 
-	/** needed since scripts may be invoked recursively and the security manager may only be set replaced. */
-	public boolean needsFinalSecurityManager() {
-	    return mFinalSecurityManager == null 
-	    && ! Boolean.valueOf(System.getProperty("org.freeplane.main.application.FreeplaneSecurityManager.disable", "false"));
+    @Override
+    public void checkPrintJobAccess() {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkPrintJobAccess();
+    }
+
+    @Override
+    public void checkPropertiesAccess() {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkPropertiesAccess();
+    }
+
+    @Override
+    public void checkPropertyAccess(final String pKey) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkPropertyAccess(pKey);
+    }
+
+    @Override
+    public void checkRead(final FileDescriptor pFd) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkRead(pFd);
+    }
+
+    @Override
+    public void checkRead(final String pFile) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkRead(pFile);
+    }
+
+    @Override
+    public void checkRead(final String pFile, final Object pContext) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkRead(pFile, pContext);
+    }
+
+    @Override
+    public void checkSecurityAccess(final String pTarget) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkSecurityAccess(pTarget);
+    }
+
+    @Override
+    public void checkSetFactory() {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkSetFactory();
+    }
+
+    @Override
+    public void checkSystemClipboardAccess() {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkSystemClipboardAccess();
+    }
+
+    @Override
+    public boolean checkTopLevelWindow(final Object pWindow) {
+        if (finalSecurityManager == null) {
+            return true;
+        }
+        return finalSecurityManager.checkTopLevelWindow(pWindow);
+    }
+
+    @Override
+    public void checkWrite(final FileDescriptor pFd) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkWrite(pFd);
+    }
+
+    @Override
+    public void checkWrite(final String pFile) {
+        if (finalSecurityManager != null)
+            finalSecurityManager.checkWrite(pFile);
+    }
+
+    @Override
+    public Object getSecurityContext() {
+        if (finalSecurityManager == null) {
+            return super.getSecurityContext();
+        }
+        return finalSecurityManager.getSecurityContext();
+    }
+
+    public void setFinalSecurityManager(final SecurityManager finalSecurityManager) {
+        if (hasFinalSecurityManager()) {
+            throw new SecurityException("There is a SecurityManager installed already.");
+        }
+        this.finalSecurityManager = finalSecurityManager;
+    }
+
+    public boolean hasFinalSecurityManager() {
+        return finalSecurityManager != null;
+    }
+
+    public void removeFinalSecurityManager(final SecurityManager finalSecurityManager) {
+        if (this.finalSecurityManager == finalSecurityManager) {
+            this.finalSecurityManager = null;
+        }
+        else {
+            throw new SecurityException("Wrong SecurityManager to remove.");
+        }
+    }
+
+    /** needed since scripts may be invoked recursively and the security manager may only be set replaced. */
+    public boolean needToSetFinalSecurityManager() {
+        return !hasFinalSecurityManager() && isEnabled();
+    }
+
+    public boolean isEnabled() {
+        return !Boolean.valueOf(System.getProperty("org.freeplane.main.application.FreeplaneSecurityManager.disable",
+            "false"));
     }
 }

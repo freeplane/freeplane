@@ -62,7 +62,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
+import org.freeplane.plugin.script.IFreeplaneScriptErrorHandler;
 
 /**
  */
@@ -111,7 +111,7 @@ class ScriptEditorPanel extends JDialog {
 
 		void endDialog(boolean pIsCanceled);
 
-		Object executeScript(int pIndex, PrintStream outStream, IErrorHandler pErrorHandler);
+		Object executeScript(int pIndex, PrintStream outStream, IFreeplaneScriptErrorHandler pErrorHandler);
 
 		int getAmountOfScripts();
 
@@ -425,8 +425,8 @@ class ScriptEditorPanel extends JDialog {
 		mScriptModel.endDialog(pIsCanceled);
 	}
 
-	IErrorHandler getErrorHandler() {
-		return new IErrorHandler() {
+	IFreeplaneScriptErrorHandler getErrorHandler() {
+		return new IFreeplaneScriptErrorHandler() {
 			public void gotoLine(final int pLineNumber) {
 				ActionUtils.setCaretPosition(mScriptTextField, pLineNumber, 1);
 			}

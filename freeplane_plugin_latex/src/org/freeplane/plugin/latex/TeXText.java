@@ -6,12 +6,16 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 public class TeXText
 {
+	private static final String LATEX_MACROS = "latex_macros";
+
     String rawText;
 
     public TeXText(String t) {
@@ -20,10 +24,17 @@ public class TeXText
 
 	public TeXIcon createTeXIcon(int style, int size, int align, int maxWidth) {
 
+        final String predefinedMacros = ResourceController.getResourceController().getProperty(LATEX_MACROS);
         StringBuffer sb = new StringBuffer();
-		sb.append("\\text{");
-		sb.append(rawText);
-		sb.append("}");
+        if (predefinedMacros != null) {
+           sb.append(predefinedMacros + "\n\n");
+        }
+        sb.append("\n\n")
+		.append("\\text{")
+		.append(rawText)
+		.append("}");
+
+//        LogUtils.severe(String.format("TeX='%s'", sb.toString()));
 
 		TeXFormula tf = new TeXFormula(sb.toString());
 
