@@ -57,6 +57,7 @@ public class GenericScript implements IScript {
     private ScriptContext scriptContext;
     private final static Object scriptEngineManagerMutex = new Object();
     private static ScriptEngineManager scriptEngineManager;
+    private static URLClassLoader classLoader;
     private final ScriptEngine engine;
     private boolean compilationEnabled = true;
 
@@ -185,19 +186,24 @@ public class GenericScript implements IScript {
     static ScriptEngineManager getScriptEngineManager() {
         synchronized (scriptEngineManagerMutex) {
             if (scriptEngineManager == null) {
-                scriptEngineManager = new ScriptEngineManager(createClassLoader());
+                final ClassLoader classLoader = createClassLoader();
+                scriptEngineManager = new ScriptEngineManager(classLoader);
             }
             return scriptEngineManager;
         }
     }
 
     private static ClassLoader createClassLoader() {
-        final List<String> classpath = ScriptResources.getClasspath();
-        final List<URL> urls = new ArrayList<URL>();
-        for (String path : classpath) {
-            urls.add(pathToUrl(path));
+        if (classLoader == null) {
+            final List<String> classpath = ScriptResources.getClasspath();
+            final List<URL> urls = new ArrayList<URL>();
+            for (String path : classpath) {
+                urls.add(pathToUrl(path));
+            }
+            classLoader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]),
+                GenericScript.class.getClassLoader());
         }
-        return URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), GenericScript.class.getClassLoader());
+        return classLoader;
     }
 
     private static URL pathToUrl(String path) {
