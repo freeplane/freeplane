@@ -107,7 +107,7 @@ output_debug_info() {
 #--------- Put the environment together --------------------------------
 __move_old_userfpdir_to_XDG_CONFIG_HOME() {
     if [ -d "$old_userfpdir/1.3.x" -a ! -d "$userfpdir" ] ; then
-    	mkdir $userfpdir
+    	mkdir "$userfpdir"
 		mv "$old_userfpdir/1.3.x" "$userfpdir/1.3.x"
 		ln -s "$userfpdir/1.3.x" "$old_userfpdir/1.3.x"
     fi
