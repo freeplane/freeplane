@@ -15,7 +15,7 @@ class CommandLineParser {
                 + "\n -S: stop after executing menu items" //
                 + "\n -N: set the 'nonInteractive' system property to 'true'" //
                 + "\n -U<userdir>: set the freeplane user config directory (default: "
-                + Compat.getDefaultFreeplaneUserDirectory() + ")" //
+		        + Compat.getFreeplaneUserDirectory() + ")" //
                 + "\n -h|--help: print this help";
         private List<String> filesToOpen = new ArrayList<String>();
         private List<String> menuItemsToExecute = new ArrayList<String>();
@@ -26,7 +26,7 @@ class CommandLineParser {
         public void setFilesToOpen(final String[] filesToOpen) {
             this.filesToOpen = Arrays.asList(filesToOpen);
         }
-        
+
         public void setMenuItemsToExecute(final String[] menuItemsToExecute) {
             this.menuItemsToExecute = Arrays.asList(menuItemsToExecute);
         }
@@ -42,7 +42,7 @@ class CommandLineParser {
         public List<String> getFilesToOpen() {
             return filesToOpen;
         }
-        
+
         public String[] getFilesToOpenAsArray() {
             return filesToOpen.toArray(new String[filesToOpen.size()]);
         }
@@ -50,7 +50,7 @@ class CommandLineParser {
         public List<String> getMenuItemsToExecute() {
             return menuItemsToExecute;
         }
-        
+
         public String[] getMenuItemsToExecuteAsArray() {
             return menuItemsToExecute.toArray(new String[menuItemsToExecute.size()]);
         }
@@ -66,7 +66,7 @@ class CommandLineParser {
         public void addMenuItemToExecute(String item) {
             menuItemsToExecute.add(item);
         }
-        
+
         /** leads to setting of system property 'nonInteractive' - check via
          * <pre>
          *   boolean nonInteractive = Boolean.parseBoolean(System.getProperty("nonInteractive"));
