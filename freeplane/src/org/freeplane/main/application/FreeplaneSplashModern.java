@@ -94,8 +94,12 @@ public class FreeplaneSplashModern extends JWindow {
 	@SuppressWarnings("serial")
     private class RootPane extends JRootPane{
 
+		public RootPane() {
+			setDoubleBuffered(false);
+		}
+
 		@Override
-		public void paint(final Graphics g) {
+		public void paintComponent(final Graphics g) {
 			final Graphics2D g2 = (Graphics2D) g;
 			splashImage.paintIcon(this, g2, 0, 0);
 			if(splashResource.getProtocol().equals("file"))
@@ -111,6 +115,10 @@ public class FreeplaneSplashModern extends JWindow {
 			final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - 20;
 			final int yCoordinate = 20;
 			g2.drawString(versionString, xCoordinate, yCoordinate);
+		}
+
+		@Override
+		public void paintChildren(final Graphics g) {
 		}
 	}
 
