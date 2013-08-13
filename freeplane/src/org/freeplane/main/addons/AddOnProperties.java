@@ -67,7 +67,7 @@ public class AddOnProperties {
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
 		this.setHomepage(parseHomepage(addOnElement.getAttribute("homepage", null)));
-		this.setUpdateUrl(parseHomepage(addOnElement.getAttribute("update url", null)));
+		this.setUpdateUrl(parseHomepage(addOnElement.getAttribute("updateUrl", null)));
 		this.setActive(Boolean.parseBoolean(addOnElement.getAttribute("active", "true")));
 		this.setDescription(getContentOfFirstElement(addOnElement.getChildrenNamed("description")));
 		this.setLicense(getContentOfFirstElement(addOnElement.getChildrenNamed("license")));
