@@ -208,6 +208,12 @@ class UpdateCheckAction extends AFreeplaneAction {
 				connectSuccesfull = versionClient.isSuccessful();
 				if (connectSuccesfull) {
 					addOnProperties.setLatestVersion(latestVersion.toString());
+					if (versionClient.getRemoteVersionDownloadUrl() != null) {
+						addOnProperties.setLatestVersionDownloadUrl(versionClient.getRemoteVersionDownloadUrl());
+					}
+					if (versionClient.getRemoteVersionChangelogUrl() != null) {
+						addOnProperties.setLatestVersionChangelogUrl(versionClient.getRemoteVersionChangelogUrl());
+					}
 				}
 			}
         }
@@ -444,7 +450,9 @@ class UpdateCheckAction extends AFreeplaneAction {
 			c.gridy = gridRow;
 			changelogButton = new JButton(TextUtils.getText("updater.viewChangelog"));
 			changelogButton.addActionListener(openUrlListener);
-			if (addOnProperties.getUpdateUrl() != null) {
+			if (addOnProperties.getLatestVersionChangelogUrl() != null) {
+				changelogButton.setActionCommand(addOnProperties.getLatestVersionChangelogUrl().toString());
+			} else if (addOnProperties.getUpdateUrl() != null) {
 				changelogButton.setActionCommand(addOnProperties.getUpdateUrl().toString());
 			}
 			gridPane.add(changelogButton,c );
@@ -454,7 +462,9 @@ class UpdateCheckAction extends AFreeplaneAction {
 			c.gridy = gridRow;
 			updateButton = new JButton(TextUtils.getText("updater.goToDownload"));
 			updateButton.addActionListener(openUrlListener);
-			if (addOnProperties.getHomepage() != null) {
+			if (addOnProperties.getLatestVersionDownloadUrl() != null) {
+				updateButton.setActionCommand(addOnProperties.getLatestVersionDownloadUrl().toString());
+			} else if (addOnProperties.getHomepage() != null) {
 				updateButton.setActionCommand(addOnProperties.getHomepage().toString());
 			}
 			gridPane.add(updateButton, c);

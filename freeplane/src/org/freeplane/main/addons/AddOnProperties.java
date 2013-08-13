@@ -45,6 +45,10 @@ public class AddOnProperties {
 	private URL homepage;
 	// the URL source to fetch the latest version
 	private URL updateUrl;
+	// extra URL where to download the latest version and changelog
+	// these are not stored in the xml file, they are only updated dynamically during update check
+	private URL latestVersionDownloadUrl;
+	private URL latestVersionChangelogUrl;
 	private String description;
 	private String license;
 	private Map<String, Map<String, String>> translations;
@@ -199,8 +203,24 @@ public class AddOnProperties {
 		return latestVersion;
 	}
 
+	public URL getLatestVersionDownloadUrl() {
+		return latestVersionDownloadUrl;
+	}
+
+	public URL getLatestVersionChangelogUrl() {
+		return latestVersionChangelogUrl;
+	}
+
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public void setLatestVersionDownloadUrl(URL latestVersionDownloadUrl) {
+		this.latestVersionDownloadUrl = latestVersionDownloadUrl;
+	}
+
+	public void setLatestVersionChangelogUrl(URL latestVersionChangelogUrl) {
+		this.latestVersionChangelogUrl = latestVersionChangelogUrl;
 	}
 
 	public void setLatestVersion(String latestVersion) {

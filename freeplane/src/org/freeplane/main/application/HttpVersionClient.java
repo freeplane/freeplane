@@ -27,6 +27,8 @@ class HttpVersionClient {
 	private String history;
 	private FreeplaneVersion remoteVersion;
 	private boolean successful;
+	private URL remoteVersionDownloadUrl;
+	private URL remoteVersionChangelogUrl;
 
 	public HttpVersionClient(final String versionUrl, final FreeplaneVersion currentVersion) {
 		this(HttpVersionClient.getUrl(versionUrl), currentVersion);
@@ -52,13 +54,28 @@ class HttpVersionClient {
 				Properties versionProperties = new Properties();
 				versionProperties.load(new InputStreamReader(url.openConnection().getInputStream()));
 
-				// if the 'version' property doesn't exist, an IllegalArgumentException will be raised
+				// if the 'version' property doesn't exist, an IllegalArgumentException will be raised since it's mandatory
 				if (versionProperties.getProperty("version") != null) {
 					remoteVersion = FreeplaneVersion.getVersion(versionProperties.getProperty("version"));
 					successful = true;
 					if (remoteVersion.compareTo(currentVersion) <= 0) {
 						return;
 					}
+					
+					// parsing optionnal properties
+					try {
+						remoteVersionDownloadUrl = new URL(versionProperties.getProperty("downloadUrl"));
+					} catch (final MalformedURLException e) {
+						remoteVersionDownloadUrl = null;
+					}
+					
+					try {
+						remoteVersionChangelogUrl = new URL(versionProperties.getProperty("changelogUrl"));
+					} catch (final MalformedURLException e) {
+						remoteVersionChangelogUrl = null;
+					}
+					
+					
 				} else {
 					throw new IllegalArgumentException();
 				}
@@ -131,6 +148,15 @@ class HttpVersionClient {
 		return remoteVersion;
 	}
 
+	public URL getRemoteVersionDownloadUrl() {
+		return remoteVersionDownloadUrl;
+	}
+
+	public URL getRemoteVersionChangelogUrl() {
+		return remoteVersionChangelogUrl;
+	}
+	
+	
 	public boolean isSuccessful() {
 		return successful;
 	}
