@@ -233,10 +233,14 @@ public class AddOnProperties {
 		if (updateUrl != null) {
 			return updateUrl;
 		} else {
-			try {
-				return new URL(homepage.toString() + "/version.txt");
-			}
-			catch (MalformedURLException e){
+			if (homepage != null) {
+				try {
+					return new URL(homepage.toString() + "/version.txt");
+				}
+				catch (MalformedURLException e){
+					return null;
+				}
+			} else {
 				return null;
 			}
 		}
