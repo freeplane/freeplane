@@ -64,39 +64,39 @@ class HttpVersionClient {
 				}
 			} else {
 				// "version.txt" format
-			in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
-			
-			String line = in.readLine();
-			while (line != null && !line.startsWith("=====")) {
-				line = in.readLine();
-			}
-			while (line != null && line.startsWith("=====")) {
-				line = in.readLine();
-			}
-			if (line == null) {
-				return;
-			}
-			remoteVersion = FreeplaneVersion.getVersion(line);
-			successful = true;
-			if (remoteVersion.compareTo(currentVersion) <= 0) {
-				return;
-			}
-			final StringBuilder historyBuffer = new StringBuilder();
-			historyBuffer.append(line);
-			historyBuffer.append('\n');
-			for (line = in.readLine(); line != null; line = in.readLine()) {
-				try {
-					final FreeplaneVersion version = FreeplaneVersion.getVersion(line);
-					if (version.compareTo(currentVersion) <= 0) {
-						break;
-					}
+				in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+				
+				String line = in.readLine();
+				while (line != null && !line.startsWith("=====")) {
+					line = in.readLine();
 				}
-				catch (final IllegalArgumentException e) {
+				while (line != null && line.startsWith("=====")) {
+					line = in.readLine();
 				}
+				if (line == null) {
+					return;
+				}
+				remoteVersion = FreeplaneVersion.getVersion(line);
+				successful = true;
+				if (remoteVersion.compareTo(currentVersion) <= 0) {
+					return;
+				}
+				final StringBuilder historyBuffer = new StringBuilder();
 				historyBuffer.append(line);
 				historyBuffer.append('\n');
-			}
-			history = historyBuffer.toString();
+				for (line = in.readLine(); line != null; line = in.readLine()) {
+					try {
+						final FreeplaneVersion version = FreeplaneVersion.getVersion(line);
+						if (version.compareTo(currentVersion) <= 0) {
+							break;
+						}
+					}
+					catch (final IllegalArgumentException e) {
+					}
+					historyBuffer.append(line);
+					historyBuffer.append('\n');
+				}
+				history = historyBuffer.toString();
 			}
 		}
 		catch (final NullPointerException e) {
