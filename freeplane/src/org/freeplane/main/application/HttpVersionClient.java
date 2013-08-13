@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
@@ -36,8 +37,35 @@ class HttpVersionClient {
 		history = "";
 		successful = false;
 		BufferedReader in = null;
+		
+		// get file format to use the good parser later
+		String fileFormat = "default";
+		if ( (url.getPath() != null) && (url.getPath().length() > 11)) {
+			// valid file formats :
+			// - '.properties'
+			fileFormat = url.getPath().substring(url.getPath().length() - 11, url.getPath().length());
+		}
+		
 		try {
+			if (fileFormat.equals(".properties")) {
+				// properties format
+				Properties versionProperties = new Properties();
+				versionProperties.load(new InputStreamReader(url.openConnection().getInputStream()));
+
+				// if the 'version' property doesn't exist, an IllegalArgumentException will be raised
+				if (versionProperties.getProperty("version") != null) {
+					remoteVersion = FreeplaneVersion.getVersion(versionProperties.getProperty("version"));
+					successful = true;
+					if (remoteVersion.compareTo(currentVersion) <= 0) {
+						return;
+					}
+				} else {
+					throw new IllegalArgumentException();
+				}
+			} else {
+				// "version.txt" format
 			in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+			
 			String line = in.readLine();
 			while (line != null && !line.startsWith("=====")) {
 				line = in.readLine();
@@ -69,6 +97,7 @@ class HttpVersionClient {
 				historyBuffer.append('\n');
 			}
 			history = historyBuffer.toString();
+			}
 		}
 		catch (final NullPointerException e) {
 			return;
