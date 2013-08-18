@@ -47,13 +47,13 @@ import org.freeplane.core.util.TextUtils;
  */
 public class PropertyAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private final DefaultMutableTreeNode controls;
 
 	/**
-	 * @param controls 
+	 * @param controls
 	 *
 	 */
 	public PropertyAction( final DefaultMutableTreeNode controls) {
@@ -116,7 +116,7 @@ public class PropertyAction extends AFreeplaneAction {
 		});
 		final Action action = new AbstractAction() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -126,12 +126,12 @@ public class PropertyAction extends AFreeplaneAction {
 		};
 		UITools.addEscapeActionToDialog(dialog, action);
 		if (storage == null) {
-			dialog.pack();
+			UITools.setBounds(dialog, -1, -1, dialog.getPreferredSize().width + 50, -1);
 		}
 		dialog.setVisible(true);
 	}
 
 	@Override
-    public void afterMapChange(final Object newMap) {  
+    public void afterMapChange(final Object newMap) {
     }
 }
