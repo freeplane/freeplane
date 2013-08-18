@@ -162,8 +162,12 @@ fi
 
 #--------- Call (at last) Freeplane -------------------------------------
 if [ "${JAVA_TYPE}" != "sun" ]; then
-	# non-Sun environments don't work currently but we try anyway, who knows.
-	JAVA_OPTS="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_OPTS"
+  # OpenJDK(7) fixes (don't use OpenJDK6!!)
+  JAVA_OPTS="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_OPTS"
+
+  # this sometimes helps with visual mindmap distortions
+  # (but it can also create trouble so it's disabled by default):
+  #JAVA_OPTS="-Dsun.java2d.xrender=True $JAVA_OPTS"
 fi
 
 _debug "Calling: "\
