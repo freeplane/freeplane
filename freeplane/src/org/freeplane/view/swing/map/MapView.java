@@ -549,7 +549,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			addHierarchyListener(retryEventListener);
 			return;
 		}
-		if (!layoutCompleted()) {
+		if (!isLayoutCompleted()) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					centerNode(nodeToBeCentered, MapView.this.slowScroll);
@@ -577,7 +577,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.slowScroll = false;
 	}
 
-	private boolean layoutCompleted() {
+	private boolean isLayoutCompleted() {
 	    boolean layoutCompleted = getParent().isValid();
 		return layoutCompleted;
     }
