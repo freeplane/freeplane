@@ -26,8 +26,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.core.util.LogUtils;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class NumberProperty extends PropertyBean implements IPropertyControl {
@@ -52,7 +50,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		});
 		isDoubleProperty = false;
 	}
-	
+
 	public NumberProperty(final String name, final double min, final double max, final double step) {
 		super(name);
 		spinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
@@ -82,22 +80,20 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		Number someValue;
 		if (isDoubleProperty)
 		{
-			someValue = 1.0;
 			try {
 				someValue = Double.parseDouble(value);
 			}
 			catch (final NumberFormatException e) {
-				LogUtils.severe(e);
+				someValue = 1.0;
 			}
 		}
 		else
 		{
-			someValue = 100;
 			try {
 				someValue = Integer.parseInt(value);
 			}
 			catch (final NumberFormatException e) {
-				LogUtils.severe(e);
+				someValue = 100;
 			}
 		}
 		spinner.setValue(someValue);
