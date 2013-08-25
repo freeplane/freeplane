@@ -29,10 +29,8 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
@@ -88,7 +86,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		info.append("freeplane_version = ");
 		info.append(FreeplaneVersion.getVersion());
 		String revision = FreeplaneVersion.getVersion().getRevision();
-		
+
 		info.append("; freeplane_xml_version = ");
 		info.append(FreeplaneVersion.XML_VERSION);
 		if(! revision.equals("")){
@@ -104,7 +102,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		LogUtils.info(info.toString());
 	}
 
-	private ApplicationResourceController applicationResourceController;
+	private final ApplicationResourceController applicationResourceController;
 // // 	private Controller controller;
 	private FreeplaneSplashModern splash = null;
     private boolean startupFinished = false;
@@ -214,20 +212,18 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			public void run() {
 			    final Options options = CommandLineParser.parse(args);
 				viewController.init(Controller.getCurrentController());
-				splash.toBack();
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
 				Container contentPane = viewController.getContentPane();
 				contentPane.setVisible(false);
+				splash.dispose();
+				splash = null;
 				frame.setVisible(true);
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
-				splash.paintImmediately();
 				loadMaps(options.getFilesToOpenAsArray());
 				viewController.getContentPane().setVisible(true);
-				splash.dispose();
-				splash = null;
 				frame.toFront();
 				startupFinished = true;
 		        System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
@@ -241,7 +237,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
             }
 		});
 	}
-	
+
 	private void loadMaps( final String[] args) {
 		final Controller controller = Controller.getCurrentController();
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
@@ -282,10 +278,10 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    else if(loadLastMap)
 	    	applicationResourceController.getLastOpenedList().openMapsOnStart();
     }
-	
+
 	public void loadMapsLater(final String[] args){
 	    EventQueue.invokeLater(new Runnable() {
- 
+
             public void run() {
                 if(startupFinished && EventQueue.isDispatchThread()){
                     loadMaps(Controller.getCurrentController(), args);
@@ -309,7 +305,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         frame.toFront();
         frame.requestFocus();
     }
-    
+
     private boolean loadMaps(final Controller controller, final String[] args) {
         boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
