@@ -424,7 +424,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean slowScroll;
 	private static boolean presentationModeEnabled;
 	private static int transparency;
-	private HierarchyListener retryEventListener;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -510,55 +509,35 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		scrollRectToVisible(r);
 	}
 
-	/**
-	 * Problem: Before scrollRectToVisible is called, the node has the location
-	 * (0,0), ie. the location first gets calculated after the scrollpane is
-	 * actually scrolled. Thus, as a workaround, I simply call
-	 * scrollRectToVisible twice, the first time the location of the node is
-	 * calculated, the second time the scrollPane is actually scrolled.
-	 * @param slowScroll TODO
-	 */
-//	public void centerNode(final NodeView node) {
-//
-//	}
 	public void centerNode(final NodeView node, boolean slowScroll) {
-		if (node == null)
-			return;
-		NodeView previousNodeToBeCentered = nodeToBeCentered;
-		nodeToBeCentered = node;
-		this.slowScroll = slowScroll;
-		boolean retry = false;
-		if (SwingUtilities.getRoot(this) == null) {
-			retry = true;
-		}
-		nodeToBeVisible = null;
-		if (retry || !isShowing()) {
-			if (previousNodeToBeCentered == nodeToBeCentered)
-				return;
-			if (retryEventListener != null)
-				removeHierarchyListener(retryEventListener);
-			retryEventListener = new HierarchyListener() {
-				public void hierarchyChanged(HierarchyEvent e) {
-					if (isShowing()) {
-						removeHierarchyListener(retryEventListener);
-						if (nodeToBeCentered != null)
-							centerNode(nodeToBeCentered, MapView.this.slowScroll);
-					}
+		if (node != null) {
+			this.slowScroll = slowScroll;
+			nodeToBeVisible = null;
+			if (!isShowing()) {
+				centerNodeAfterMapIsDisplayed(node);
+			}
+			else {
+				nodeToBeCentered = node;
+				if (!isLayoutCompleted()) {
+					centerNodeLater();
 				}
-			};
-			addHierarchyListener(retryEventListener);
-			return;
-		}
-		if (!isLayoutCompleted()) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					centerNode(nodeToBeCentered, MapView.this.slowScroll);
+				else {
+					centerNodeNow(slowScroll);
 				}
-			});
-			return;
+			}
 		}
+	}
 
-		final JViewport viewPort = (JViewport) getParent();
+	private void centerNodeLater() {
+	    EventQueue.invokeLater(new Runnable() {
+	    	public void run() {
+	    		centerNode(nodeToBeCentered, MapView.this.slowScroll);
+	    	}
+	    });
+    }
+
+	private void centerNodeNow(boolean slowScroll) {
+	    final JViewport viewPort = (JViewport) getParent();
 		if(slowScroll)
 			viewPort.putClientProperty(ViewController.SLOW_SCROLLING, Boolean.TRUE);
 		final Dimension d = viewPort.getExtentSize();
@@ -575,7 +554,24 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		nodeToBeCentered = null;
 		this.slowScroll = false;
-	}
+    }
+
+	private void centerNodeAfterMapIsDisplayed(final NodeView node) {
+	    boolean isRetryEventListenerAlreadySet = null != nodeToBeCentered;
+	    if (!isRetryEventListenerAlreadySet) {
+	    	HierarchyListener retryEventListener = new HierarchyListener() {
+	    		public void hierarchyChanged(HierarchyEvent e) {
+	    			if (isShowing()) {
+	    				removeHierarchyListener(this);
+	    				if (nodeToBeCentered != null)
+	    					centerNode(nodeToBeCentered, MapView.this.slowScroll);
+	    			}
+	    		}
+	    	};
+	    	addHierarchyListener(retryEventListener);
+	    }
+	    nodeToBeCentered = node;
+    }
 
 	private boolean isLayoutCompleted() {
 	    boolean layoutCompleted = getParent().isValid();
