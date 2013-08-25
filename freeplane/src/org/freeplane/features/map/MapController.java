@@ -92,7 +92,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		public void mapChanged(MapChangeEvent event) {
-			action.setEnabled();	
+			action.setEnabled();
 		}
 
 		public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
@@ -188,7 +188,7 @@ public class MapController extends SelectionController implements IExtension{
 			setActionSelected();
 		}
 	}
-	
+
 	public static void install() {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(8,
 		    new NodeLevelConditionController());
@@ -293,14 +293,14 @@ public class MapController extends SelectionController implements IExtension{
 		if (node == null) {
 			throw new IllegalArgumentException("setFolded was called with a null node.");
 		}
-		if (node.getChildCount() == 0) 
+		if (node.getChildCount() == 0)
 			return;
 		final boolean unfold = ! folded;
 		final boolean childShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
 	    if (unfold && unfoldInvisibleChildren(node, true))
 	        mapChanged = true;
-		if (node.isFolded() != folded && !(node.isRoot() && folded)){ 
+		if (node.isFolded() != folded && !(node.isRoot() && folded)){
 			node.setFolded(folded);
 			mapChanged = true;
 		}
@@ -312,10 +312,10 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public boolean showNextChild(final NodeModel node) {
-		if (node.getChildCount() == 0) 
+		if (node.getChildCount() == 0)
 			return false;
 		final boolean unfold = node.isFolded();
-		if (unfold){ 
+		if (unfold){
 			for(NodeModel child:childrenUnfolded(node)){
 				child.addExtension(HideChildSubtree.instance);
 			}
@@ -323,7 +323,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 		boolean childMadeVisible = false;
 		for(NodeModel child:childrenUnfolded(node)){
-			if (child.removeExtension(HideChildSubtree.instance) && 
+			if (child.removeExtension(HideChildSubtree.instance) &&
 					(child.isVisible() || unfoldInvisibleChildren(child, true))){
 				childMadeVisible = true;
 				break;
@@ -340,7 +340,7 @@ public class MapController extends SelectionController implements IExtension{
 	    node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
 	    	Boolean.FALSE));
     }
-	
+
 	public boolean hasHiddenChildren(final NodeModel node){
 		if(! node.hasChildren())
 			return false;
@@ -382,7 +382,7 @@ public class MapController extends SelectionController implements IExtension{
 			final NodeModel child = (NodeModel) node.getChildAt(i);
 			if(child.isVisible())
 				visibleFound = true;
-			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){	
+			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){
 				visibleFound = unfolded = true;
 				child.setFolded(false);
 			}
@@ -429,15 +429,14 @@ public class MapController extends SelectionController implements IExtension{
 	/**
 	 * Return false if user has canceled.
 	 */
-	public boolean close(final boolean force) {
-		final MapModel map = Controller.getCurrentController().getMap();
+	public boolean close(final MapModel map, final boolean force) {
 		fireMapRemoved(map);
 		map.destroy();
 		return true;
 	}
 
 	/**
-	 * @param modeController 
+	 * @param modeController
 	 *
 	 */
 	private void createActions() {
@@ -671,7 +670,7 @@ public class MapController extends SelectionController implements IExtension{
 		return node.isFolded();
 	}
 
-	/**@throws XMLException 
+	/**@throws XMLException
 	 * @deprecated -- use MapIO*/
 	@Deprecated
 	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException, XMLException{
@@ -777,7 +776,7 @@ public class MapController extends SelectionController implements IExtension{
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
 	private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
-	
+
 	private static class NodeRefreshKey{
 		final NodeModel node;
 		final Object property;
@@ -806,14 +805,14 @@ public class MapController extends SelectionController implements IExtension{
 		final ModeController controller;
 		Object oldValue;
 		Object newValue;
-		public NodeRefreshValue(ModeController controller, 
+		public NodeRefreshValue(ModeController controller,
 				Object oldValue, Object newValue) {
 			super();
 			this.controller = controller;
 			this.oldValue = oldValue;
 			this.newValue = newValue;
 		}
-		
+
 	}
 
 	/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the

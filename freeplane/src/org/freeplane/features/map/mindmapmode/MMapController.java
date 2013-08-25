@@ -250,8 +250,7 @@ public class MMapController extends MapController {
 	 * Return false if user has canceled.
 	 */
 	@Override
-	public boolean close(final boolean force) {
-		final MapModel map = Controller.getCurrentController().getMap();
+	public boolean close(final MapModel map, final boolean force) {
 		if (!force && !map.isSaved()) {
 			final List<Component> views = Controller.getCurrentController().getMapViewManager().getViews(map);
 			if (views.size() == 1) {
@@ -272,7 +271,7 @@ public class MMapController extends MapController {
 				}
 			}
 		}
-		return super.close(force);
+		return super.close(map, force);
 	}
 
 	private void createActions() {
