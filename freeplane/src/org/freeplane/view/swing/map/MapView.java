@@ -573,9 +573,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    nodeToBeCentered = node;
     }
 
-	private boolean isLayoutCompleted() {
-	    boolean layoutCompleted = getParent().isValid();
-		return layoutCompleted;
+	boolean isLayoutCompleted() {
+	    final JViewport viewPort = (JViewport) getParent();
+		final Dimension visibleDimension = viewPort.getExtentSize();
+		return visibleDimension.width > 0;
     }
 
 	static private void createPropertyChangeListener() {
