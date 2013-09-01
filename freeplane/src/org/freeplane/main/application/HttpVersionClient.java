@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
@@ -26,6 +27,8 @@ class HttpVersionClient {
 	private String history;
 	private FreeplaneVersion remoteVersion;
 	private boolean successful;
+	private URL remoteVersionDownloadUrl;
+	private URL remoteVersionChangelogUrl;
 
 	public HttpVersionClient(final String versionUrl, final FreeplaneVersion currentVersion) {
 		this(HttpVersionClient.getUrl(versionUrl), currentVersion);
@@ -36,39 +39,82 @@ class HttpVersionClient {
 		history = "";
 		successful = false;
 		BufferedReader in = null;
+		
+		// get file format to use the good parser later
+		String fileFormat = "default";
+		if ( (url.getPath() != null) && (url.getPath().length() > 11)) {
+			// valid file formats :
+			// - '.properties'
+			fileFormat = url.getPath().substring(url.getPath().length() - 11, url.getPath().length());
+		}
+		
 		try {
-			in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
-			String line = in.readLine();
-			while (line != null && !line.startsWith("=====")) {
-				line = in.readLine();
-			}
-			while (line != null && line.startsWith("=====")) {
-				line = in.readLine();
-			}
-			if (line == null) {
-				return;
-			}
-			remoteVersion = FreeplaneVersion.getVersion(line);
-			successful = true;
-			if (remoteVersion.compareTo(currentVersion) <= 0) {
-				return;
-			}
-			final StringBuilder historyBuffer = new StringBuilder();
-			historyBuffer.append(line);
-			historyBuffer.append('\n');
-			for (line = in.readLine(); line != null; line = in.readLine()) {
-				try {
-					final FreeplaneVersion version = FreeplaneVersion.getVersion(line);
-					if (version.compareTo(currentVersion) <= 0) {
-						break;
+			if (fileFormat.equals(".properties")) {
+				// properties format
+				Properties versionProperties = new Properties();
+				versionProperties.load(new InputStreamReader(url.openConnection().getInputStream()));
+
+				// if the 'version' property doesn't exist, an IllegalArgumentException will be raised since it's mandatory
+				if (versionProperties.getProperty("version") != null) {
+					remoteVersion = FreeplaneVersion.getVersion(versionProperties.getProperty("version"));
+					successful = true;
+					if (remoteVersion.compareTo(currentVersion) <= 0) {
+						return;
 					}
+					
+					// parsing optionnal properties
+					try {
+						remoteVersionDownloadUrl = new URL(versionProperties.getProperty("downloadUrl"));
+					} catch (final MalformedURLException e) {
+						remoteVersionDownloadUrl = null;
+					}
+					
+					try {
+						remoteVersionChangelogUrl = new URL(versionProperties.getProperty("changelogUrl"));
+					} catch (final MalformedURLException e) {
+						remoteVersionChangelogUrl = null;
+					}
+					
+					
+				} else {
+					throw new IllegalArgumentException();
 				}
-				catch (final IllegalArgumentException e) {
+			} else {
+				// "version.txt" format
+				in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+				
+				String line = in.readLine();
+				while (line != null && !line.startsWith("=====")) {
+					line = in.readLine();
 				}
+				while (line != null && line.startsWith("=====")) {
+					line = in.readLine();
+				}
+				if (line == null) {
+					return;
+				}
+				remoteVersion = FreeplaneVersion.getVersion(line);
+				successful = true;
+				if (remoteVersion.compareTo(currentVersion) <= 0) {
+					return;
+				}
+				final StringBuilder historyBuffer = new StringBuilder();
 				historyBuffer.append(line);
 				historyBuffer.append('\n');
+				for (line = in.readLine(); line != null; line = in.readLine()) {
+					try {
+						final FreeplaneVersion version = FreeplaneVersion.getVersion(line);
+						if (version.compareTo(currentVersion) <= 0) {
+							break;
+						}
+					}
+					catch (final IllegalArgumentException e) {
+					}
+					historyBuffer.append(line);
+					historyBuffer.append('\n');
+				}
+				history = historyBuffer.toString();
 			}
-			history = historyBuffer.toString();
 		}
 		catch (final NullPointerException e) {
 			return;
@@ -102,6 +148,15 @@ class HttpVersionClient {
 		return remoteVersion;
 	}
 
+	public URL getRemoteVersionDownloadUrl() {
+		return remoteVersionDownloadUrl;
+	}
+
+	public URL getRemoteVersionChangelogUrl() {
+		return remoteVersionChangelogUrl;
+	}
+	
+	
 	public boolean isSuccessful() {
 		return successful;
 	}

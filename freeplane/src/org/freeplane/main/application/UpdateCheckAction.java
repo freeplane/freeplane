@@ -198,15 +198,23 @@ class UpdateCheckAction extends AFreeplaneAction {
 			// get the update-url for this add-on
 			// append the current add-on version for
 			// - statistics (appending a freeplane installation unique id would enable building add-on usage statistics) 
-			// - handling special cases ? (maybe we could send the freeplane version too)
-			final String addOnUpdateUrl = addOnProperties.getUpdateUrl().toString() + "?v=" + addOnLocalVersion.toString();
-			final HttpVersionClient versionClient = new HttpVersionClient(addOnUpdateUrl, addOnLocalVersion);
-			final boolean connectSuccesfull;
-			final FreeplaneVersion latestVersion = versionClient.getRemoteVersion();
+			// - handling special cases ? (maybe we could send the freeplane version too)			
+			if (addOnProperties.getUpdateUrl() != null) {
+				final String addOnUpdateRequest = addOnProperties.getUpdateUrl().toString() + "?v=" + addOnLocalVersion.toString();
+				final HttpVersionClient versionClient = new HttpVersionClient(addOnUpdateRequest, addOnLocalVersion);
+				final boolean connectSuccesfull;
+				final FreeplaneVersion latestVersion = versionClient.getRemoteVersion();
 
-			connectSuccesfull = versionClient.isSuccessful();
-			if (connectSuccesfull) {
-				addOnProperties.setLatestVersion(latestVersion.toString());
+				connectSuccesfull = versionClient.isSuccessful();
+				if (connectSuccesfull) {
+					addOnProperties.setLatestVersion(latestVersion.toString());
+					if (versionClient.getRemoteVersionDownloadUrl() != null) {
+						addOnProperties.setLatestVersionDownloadUrl(versionClient.getRemoteVersionDownloadUrl());
+					}
+					if (versionClient.getRemoteVersionChangelogUrl() != null) {
+						addOnProperties.setLatestVersionChangelogUrl(versionClient.getRemoteVersionChangelogUrl());
+					}
+				}
 			}
         }
 	}
@@ -418,7 +426,11 @@ class UpdateCheckAction extends AFreeplaneAction {
 				addOnLatestVersionLabel = new JLabel(addOnLatestVersion.toString(), SwingConstants.CENTER);
 			} else {
 				addOnLatestVersionLabel = new JLabel(TextUtils.getText("updater.version.unknown"), SwingConstants.CENTER);
-				addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.unreachable") + " " + addOnProperties.getUpdateUrl().toString());
+				if (addOnProperties.getUpdateUrl() != null) {
+					addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.unreachable") + " " + addOnProperties.getUpdateUrl().toString());
+				} else {
+					addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.noUpdateUrl"));
+				}
 			}
 			
 			addOnLabel = new JLabel(TextUtils.getText("addons." + addOnProperties.getName()));
@@ -438,7 +450,11 @@ class UpdateCheckAction extends AFreeplaneAction {
 			c.gridy = gridRow;
 			changelogButton = new JButton(TextUtils.getText("updater.viewChangelog"));
 			changelogButton.addActionListener(openUrlListener);
-			changelogButton.setActionCommand(addOnProperties.getUpdateUrl().toString());
+			if (addOnProperties.getLatestVersionChangelogUrl() != null) {
+				changelogButton.setActionCommand(addOnProperties.getLatestVersionChangelogUrl().toString());
+			} else if (addOnProperties.getUpdateUrl() != null) {
+				changelogButton.setActionCommand(addOnProperties.getUpdateUrl().toString());
+			}
 			gridPane.add(changelogButton,c );
 			changelogButton.setEnabled(needsUpdate);
 			
@@ -446,7 +462,11 @@ class UpdateCheckAction extends AFreeplaneAction {
 			c.gridy = gridRow;
 			updateButton = new JButton(TextUtils.getText("updater.goToDownload"));
 			updateButton.addActionListener(openUrlListener);
-			updateButton.setActionCommand(addOnProperties.getHomepage().toString());
+			if (addOnProperties.getLatestVersionDownloadUrl() != null) {
+				updateButton.setActionCommand(addOnProperties.getLatestVersionDownloadUrl().toString());
+			} else if (addOnProperties.getHomepage() != null) {
+				updateButton.setActionCommand(addOnProperties.getHomepage().toString());
+			}
 			gridPane.add(updateButton, c);
 			updateButton.setEnabled(needsUpdate);
 

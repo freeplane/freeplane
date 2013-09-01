@@ -45,6 +45,10 @@ public class AddOnProperties {
 	private URL homepage;
 	// the URL source to fetch the latest version
 	private URL updateUrl;
+	// extra URL where to download the latest version and changelog
+	// these are not stored in the xml file, they are only updated dynamically during update check
+	private URL latestVersionDownloadUrl;
+	private URL latestVersionChangelogUrl;
 	private String description;
 	private String license;
 	private Map<String, Map<String, String>> translations;
@@ -67,7 +71,7 @@ public class AddOnProperties {
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
 		this.setHomepage(parseHomepage(addOnElement.getAttribute("homepage", null)));
-		this.setUpdateUrl(parseHomepage(addOnElement.getAttribute("update url", null)));
+		this.setUpdateUrl(parseHomepage(addOnElement.getAttribute("updateUrl", null)));
 		this.setActive(Boolean.parseBoolean(addOnElement.getAttribute("active", "true")));
 		this.setDescription(getContentOfFirstElement(addOnElement.getChildrenNamed("description")));
 		this.setLicense(getContentOfFirstElement(addOnElement.getChildrenNamed("license")));
@@ -199,8 +203,24 @@ public class AddOnProperties {
 		return latestVersion;
 	}
 
+	public URL getLatestVersionDownloadUrl() {
+		return latestVersionDownloadUrl;
+	}
+
+	public URL getLatestVersionChangelogUrl() {
+		return latestVersionChangelogUrl;
+	}
+
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public void setLatestVersionDownloadUrl(URL latestVersionDownloadUrl) {
+		this.latestVersionDownloadUrl = latestVersionDownloadUrl;
+	}
+
+	public void setLatestVersionChangelogUrl(URL latestVersionChangelogUrl) {
+		this.latestVersionChangelogUrl = latestVersionChangelogUrl;
 	}
 
 	public void setLatestVersion(String latestVersion) {
@@ -233,10 +253,14 @@ public class AddOnProperties {
 		if (updateUrl != null) {
 			return updateUrl;
 		} else {
-			try {
-				return new URL(homepage.toString() + "/version.txt");
-			}
-			catch (MalformedURLException e){
+			if (homepage != null) {
+				try {
+					return new URL(homepage.toString() + "/version.txt");
+				}
+				catch (MalformedURLException e){
+					return null;
+				}
+			} else {
 				return null;
 			}
 		}
