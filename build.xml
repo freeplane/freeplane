@@ -1,5 +1,12 @@
 <project name="GlobalFreeplane" default="dist" basedir=".">
 
+	<!-- work around "warning: 'includeantruntime' was not set"
+	     see http://stackoverflow.com/questions/5103384/ant-warning-includeantruntime-was-not-set
+	-->
+	<presetdef name="javac">
+		<javac includeantruntime = "false" />
+	</presetdef>
+
 	<target name="build">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="build"
 			inheritAll="false" />
