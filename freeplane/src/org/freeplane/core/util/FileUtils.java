@@ -9,8 +9,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -132,18 +134,49 @@ public class FileUtils {
 		return props;
 	}
 
+
+	private static String slurp(final Reader reader) throws IOException {
+		/* read data into a string */
+		final StringBuilder builder = new StringBuilder();
+		final char[] buf = new char[1024];
+		int len;
+		while ((len = reader.read(buf)) > 0) {
+			builder.append(buf, 0, len);
+		}
+		final String result = builder.toString();
+		return result;
+	}
+
+	public static String slurpResource(final URL resource) throws IOException {
+		/* read the `resource` into s atring */
+		InputStream instream = null;
+		try {
+			instream = resource.openStream();
+			final BufferedReader input = new BufferedReader(new InputStreamReader(instream));
+			return slurp(input);
+		}
+		finally {
+			if (instream != null) {
+				instream.close();
+			}
+		}
+	}
+
+	public static String slurpResource(final String fileName) throws IOException {
+		/* read the resource `fileName` into s atring */
+		final URL resource = ResourceController.getResourceController().getResource(fileName);
+		if (resource == null) {
+			LogUtils.severe("Cannot find resource: " + fileName);
+			return "";
+		}
+		return FileUtils.slurpResource(resource);
+	}
+
 	public static String slurpFile(final File file) throws IOException {
 		FileReader in = null;
 		try {
 			in = new FileReader(file);
-			final StringBuilder builder = new StringBuilder();
-			final char[] buf = new char[1024];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				builder.append(buf, 0, len);
-			}
-			final String result = builder.toString();
-			return result;
+			return slurp(in);
 		}
 		finally {
 			if (in != null) {

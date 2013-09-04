@@ -103,27 +103,6 @@ public class ExportToOoWriter implements IExportEngine {
 		}
 	}
 
-	// note: out is not closed
-	private void copyFromResource(final String fileName, final OutputStream out) {
-		InputStream in = null;
-		try {
-			final URL resource = ResourceController.getResourceController().getResource(fileName);
-			if (resource == null) {
-				LogUtils.severe("Cannot find resource: " + fileName);
-				return;
-			}
-			in = resource.openStream();
-			FileUtils.copyStream(in, out);
-		}
-		catch (final Exception e) {
-			LogUtils.severe("File not found or could not be copied. Was searching for " + fileName
-			        + " and should go to " + out, e);
-			return;
-		}
-		finally {
-			FileUtils.silentlyClose(in);
-		}
-	}
 
 	public void exportToOoWriter(MapModel map, final File file) throws IOException {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
@@ -135,17 +114,17 @@ public class ExportToOoWriter implements IExportEngine {
 
 			ZipEntry entry = new ZipEntry("content.xml");
 			zipout.putNextEntry(entry);
-			applyXsltFile("/xslt/mm2oowriter.xsl", writer, result);
+			applyXsltFile("/xslt/export2oowriter.xsl", writer, result);
 			zipout.closeEntry();
 
 			entry = new ZipEntry("META-INF/manifest.xml");
 			zipout.putNextEntry(entry);
-			applyXsltFile("/xslt/mm2oowriter.manifest.xsl", writer, result);
+			applyXsltFile("/xslt/export2oowriter.manifest.xsl", writer, result);
 			zipout.closeEntry();
 
 			entry = new ZipEntry("styles.xml");
 			zipout.putNextEntry(entry);
-			applyXsltFile("/xslt/mm2oowriter.styles.xsl", writer, result);
+			applyXsltFile("/xslt/export2oowriter.styles.xsl", writer, result);
 			zipout.closeEntry();
 		}
 		finally {
