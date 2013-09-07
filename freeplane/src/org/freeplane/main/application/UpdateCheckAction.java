@@ -3,20 +3,30 @@ package org.freeplane.main.application;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
+import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.border.Border;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -26,6 +36,8 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.main.addons.AddOnProperties;
+import org.freeplane.main.addons.AddOnsController;
 
 /**
  * Checks for updates.
@@ -156,6 +168,8 @@ class UpdateCheckAction extends AFreeplaneAction {
 			history = translatedVersionClient.getHistory();
 			connectSuccesfull = translatedVersionClient.isSuccessful();
 		}
+		
+		checkForAddonsUpdates();
 		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
 				addUpdateButton(lastVersion);
@@ -165,6 +179,44 @@ class UpdateCheckAction extends AFreeplaneAction {
 				showUpdateDialog(connectSuccesfull, localVersion, lastVersion, history);
 			}
 		});
+	}
+
+	
+	// looking for new versions of add-ons
+	// and store the latest version as a property
+	private void checkForAddonsUpdates() {
+		// loop on add-ons
+		List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
+		for (AddOnProperties addOnProperties : installedAddOns) {
+			FreeplaneVersion addOnLocalVersion;
+			try {
+				// strip the "v" in some old version numbers "v0.x.y" => "0.x.y"
+				addOnLocalVersion = FreeplaneVersion.getVersion((addOnProperties.getVersion().replace("v", "")));
+			} catch (IllegalArgumentException e) {
+				addOnLocalVersion = FreeplaneVersion.getVersion("0.0.0");
+			}
+			// get the update-url for this add-on
+			// append the current add-on version for
+			// - statistics (appending a freeplane installation unique id would enable building add-on usage statistics) 
+			// - handling special cases ? (maybe we could send the freeplane version too)			
+			if (addOnProperties.getUpdateUrl() != null) {
+				final String addOnUpdateRequest = addOnProperties.getUpdateUrl().toString() + "?v=" + addOnLocalVersion.toString();
+				final HttpVersionClient versionClient = new HttpVersionClient(addOnUpdateRequest, addOnLocalVersion);
+				final boolean connectSuccesfull;
+				final FreeplaneVersion latestVersion = versionClient.getRemoteVersion();
+
+				connectSuccesfull = versionClient.isSuccessful();
+				if (connectSuccesfull) {
+					addOnProperties.setLatestVersion(latestVersion.toString());
+					if (versionClient.getRemoteVersionDownloadUrl() != null) {
+						addOnProperties.setLatestVersionDownloadUrl(versionClient.getRemoteVersionDownloadUrl());
+					}
+					if (versionClient.getRemoteVersionChangelogUrl() != null) {
+						addOnProperties.setLatestVersionChangelogUrl(versionClient.getRemoteVersionChangelogUrl());
+					}
+				}
+			}
+        }
 	}
 
 	private String getWebUpdateUrl(final String language) {
@@ -190,6 +242,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		if (property.equals("")) {
 			return null;
 		}
+		
 		FreeplaneVersion lastVersion = FreeplaneVersion.getVersion(property);
 		if (lastVersion.compareTo(localVersion) <= 0) {
 			lastVersion = null;
@@ -221,65 +274,219 @@ class UpdateCheckAction extends AFreeplaneAction {
 		autorunTimer.start();
 	}
 
+
 	private void showUpdateDialog(final boolean connectSuccesfull, final FreeplaneVersion localVersion,
 	                              final FreeplaneVersion newVersion, final String history) {
-		final int choice;
 		if (connectSuccesfull == false) {
-			choice = showUpdateDialog("can_not_connect_to_info_server", "", "");
+			showUpdateDialog("can_not_connect_to_info_server", newVersion, history);
+		} else {
+			showUpdateDialog("new_version_available", newVersion, history);
 		}
-		else if (localVersion.compareTo(newVersion) < 0) {
-			choice = showUpdateDialog("new_version_available", newVersion.toString(), history);
-		}
-		else {
-			showUpdateDialog("version_up_to_date", null, null);
-			choice = -1;
-		}
-		if (0 != choice) {
-			return;
-		}
-		// go to download page
-		try {
-			Controller.getCurrentController().getViewController().openDocument(
-			    new URL(ResourceController.getResourceController().getProperty(WEB_DOWNLOAD_LOCATION_KEY)));
-		}
-		catch (final MalformedURLException ex) {
-			UITools.errorMessage(TextUtils.getText("url_error") + "\n" + ex);
-		}
-		catch (final Exception ex) {
-			UITools.errorMessage(ex);
-		}
+		
+		return;
 	}
 
-	private int showUpdateDialog(final String info, final String newVersion, final String history) {
+	private int showUpdateDialog(final String info, final FreeplaneVersion freeplaneLatestVersion, final String history) {
+		
+		// dialog layout
+		// - messagePane (verticalBox)
+		// |- gridPane (GridBagLayout)
+		//     Components | Installed version | Latestversion | Changelog button | Got to download button
+		//
+		// |- preferences label
+		// |- checkbox for automatic update
+		
 		final Box messagePane = Box.createVerticalBox();
-		final JLabel messageLabel;
-		if (newVersion != null) {
-			messageLabel = new JLabel(TextUtils.format(info, newVersion.toString()));
+		final JLabel emptyLabel = new JLabel("");
+		
+		// grid setup
+		final JPanel gridPane = new JPanel(new GridBagLayout());
+		gridPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		
+		final Border paddingBorder = BorderFactory.createEmptyBorder(0, 10, 10, 0);
+		gridPane.setBorder(BorderFactory.createCompoundBorder(paddingBorder,paddingBorder));
+		
+		final GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        int gridRow = 0;
+        c.weightx = 0.5;
+        
+		
+		// table headers
+		final JLabel componentHeader = new JLabel(TextUtils.getText("updater.component"), SwingConstants.CENTER);
+		final JLabel installedVersionHeader = new JLabel(TextUtils.getText("updater.version.installed"), SwingConstants.CENTER);
+		final JLabel latestVersionHeader = new JLabel(TextUtils.getText("updater.version.latest"), SwingConstants.CENTER);
+		
+		final Font boldFont = new Font(componentHeader.getFont().getName(),Font.BOLD,componentHeader.getFont().getSize());
+		
+		componentHeader.setFont(boldFont);
+		installedVersionHeader.setFont(boldFont);
+		latestVersionHeader.setFont(boldFont);
+		
+		componentHeader.setBorder(paddingBorder);
+		installedVersionHeader.setBorder(paddingBorder);
+		latestVersionHeader.setBorder(paddingBorder);
+
+		// adding headers
+        c.gridy = 0;
+        
+        c.gridx = 0;
+		gridPane.add(componentHeader, c);
+		c.gridx = 1;
+		gridPane.add(installedVersionHeader, c);
+		c.gridx = 2;
+		gridPane.add(latestVersionHeader, c);
+		c.gridx = 3;
+		gridPane.add(emptyLabel, c);
+		c.gridx = 4;
+		gridPane.add(emptyLabel, c);
+        
+		
+		// first row : freeplane
+        c.gridy = 1;
+		
+        
+		final JLabel freeplaneLabel = new JLabel("Freeplane");
+		final FreeplaneVersion freeplaneLocalVersion = FreeplaneVersion.getVersion();
+		final JLabel freeplaneInstalledVersionLabel = new JLabel(freeplaneLocalVersion.toString(), SwingConstants.CENTER);
+		final JLabel freeplaneLatestVersionLabel;
+
+		JButton updateButton;
+		JButton changelogButton;
+		final Locale defaultLocale = Locale.getDefault();
+		final String language = defaultLocale.getLanguage();
+		final String translatedWebUpdate = getWebUpdateUrl(language);
+		
+		changelogButton = new JButton(TextUtils.getText("updater.viewChangelog"));
+		changelogButton.addActionListener(openUrlListener);
+		changelogButton.setActionCommand(translatedWebUpdate);
+		
+		updateButton = new JButton(TextUtils.getText("updater.goToDownload"));
+		updateButton.addActionListener(openUrlListener);
+		updateButton.setActionCommand("http://freeplane.sourceforge.net");
+
+		Boolean needsUpdate = Boolean.FALSE;
+		if (freeplaneLatestVersion != null) {
+			if (freeplaneLocalVersion.compareTo(freeplaneLatestVersion) < 0) {
+				needsUpdate = Boolean.TRUE;
+			} else {
+				needsUpdate = Boolean.FALSE;
+			}
+
+			freeplaneLatestVersionLabel = new JLabel(freeplaneLatestVersion.toString(), SwingConstants.CENTER);
+		} else {
+			freeplaneLatestVersionLabel = new JLabel(TextUtils.getText("updater.version.unknown"), SwingConstants.CENTER);
+			freeplaneLatestVersionLabel.setToolTipText(TextUtils.getText(info));
 		}
-		else {
-			messageLabel = new JLabel(TextUtils.getText(info));
+		changelogButton.setEnabled(needsUpdate);
+		updateButton.setEnabled(needsUpdate);
+
+
+		
+		c.gridx = 0;
+		gridPane.add(freeplaneLabel, c);
+		c.gridx = 1;
+		gridPane.add(freeplaneInstalledVersionLabel, c);
+		c.gridx = 2;
+		gridPane.add(freeplaneLatestVersionLabel, c);
+		c.gridx = 3;
+		gridPane.add(changelogButton, c);
+		c.gridx = 4;
+		gridPane.add(updateButton, c);
+		
+
+		final List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
+		gridRow = 3;
+		for (AddOnProperties addOnProperties : installedAddOns) {
+			FreeplaneVersion addOnLocalVersion;
+			FreeplaneVersion addOnLatestVersion;
+			try {
+				addOnLocalVersion = FreeplaneVersion.getVersion((addOnProperties.getVersion().replace("v", "")));
+			} catch (IllegalArgumentException e) {
+				addOnLocalVersion = FreeplaneVersion.getVersion("0.0.0");
+			}
+			try {
+				addOnLatestVersion = FreeplaneVersion.getVersion((addOnProperties.getLatestVersion()));
+			} catch (IllegalArgumentException e) {
+				addOnLatestVersion = FreeplaneVersion.getVersion("0.0.0");
+			}
+
+			final JLabel addOnLabel, addOnInstalledVersionLabel, addOnLatestVersionLabel;
+			
+			
+			addOnInstalledVersionLabel = new JLabel(addOnLocalVersion.toString(), SwingConstants.CENTER);
+			
+			needsUpdate = Boolean.FALSE;
+			if (addOnLatestVersion != null) {
+				if (addOnLocalVersion.compareTo(addOnLatestVersion) < 0) {
+					needsUpdate = Boolean.TRUE;
+				} else {
+					
+				}
+				addOnLatestVersionLabel = new JLabel(addOnLatestVersion.toString(), SwingConstants.CENTER);
+			} else {
+				addOnLatestVersionLabel = new JLabel(TextUtils.getText("updater.version.unknown"), SwingConstants.CENTER);
+				if (addOnProperties.getUpdateUrl() != null) {
+					addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.unreachable") + " " + addOnProperties.getUpdateUrl().toString());
+				} else {
+					addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.noUpdateUrl"));
+				}
+			}
+			
+			addOnLabel = new JLabel(TextUtils.getText("addons." + addOnProperties.getName()));
+			c.gridx = 0;
+			c.gridy = gridRow;
+			gridPane.add(addOnLabel, c);
+			
+			c.gridx = 1;
+			c.gridy = gridRow;
+			gridPane.add(addOnInstalledVersionLabel, c);
+			
+			c.gridx = 2;
+			c.gridy = gridRow;
+			gridPane.add(addOnLatestVersionLabel, c);
+			
+			c.gridx = 3;
+			c.gridy = gridRow;
+			changelogButton = new JButton(TextUtils.getText("updater.viewChangelog"));
+			changelogButton.addActionListener(openUrlListener);
+			if (addOnProperties.getLatestVersionChangelogUrl() != null) {
+				changelogButton.setActionCommand(addOnProperties.getLatestVersionChangelogUrl().toString());
+			} else if (addOnProperties.getUpdateUrl() != null) {
+				changelogButton.setActionCommand(addOnProperties.getUpdateUrl().toString());
+			}
+			gridPane.add(changelogButton,c );
+			changelogButton.setEnabled(needsUpdate);
+			
+			c.gridx = 4;
+			c.gridy = gridRow;
+			updateButton = new JButton(TextUtils.getText("updater.goToDownload"));
+			updateButton.addActionListener(openUrlListener);
+			if (addOnProperties.getLatestVersionDownloadUrl() != null) {
+				updateButton.setActionCommand(addOnProperties.getLatestVersionDownloadUrl().toString());
+			} else if (addOnProperties.getHomepage() != null) {
+				updateButton.setActionCommand(addOnProperties.getHomepage().toString());
+			}
+			gridPane.add(updateButton, c);
+			updateButton.setEnabled(needsUpdate);
+
+			gridRow++;
 		}
-		messageLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		messagePane.add(messageLabel);
-		final JTextArea historyArea = new JTextArea(history);
-		historyArea.setEditable(false);
-		final JScrollPane historyPane = new JScrollPane(historyArea);
-		historyPane.setPreferredSize(new Dimension(500, 300));
-		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		messagePane.add(historyPane);
+		messagePane.add(gridPane);
+		
+		
+		final JLabel confLabel = new JLabel(TextUtils.getText("preferences"));
+		confLabel.setFont(boldFont);
+		messagePane.add(confLabel);
 		final JCheckBox updateAutomatically = new JCheckBox(TextUtils
-		    .getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
-		    .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
-		updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			    .getText("OptionPanel.check_updates_automatically"), ResourceController.getResourceController()
+			    .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
+			updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(updateAutomatically);
 		final Object[] options;
-		if (newVersion != null) {
-			options = new Object[] { TextUtils.getText("download"),
-			        TextUtils.getText("cancel") };
-		}
-		else {
-			options = new Object[] { TextUtils.getText("simplyhtml.closeBtnName") };
-		}
+		options = new Object[] { TextUtils.getText("simplyhtml.closeBtnName") };
+
+		
 		final int choice = JOptionPane.showOptionDialog(Controller.getCurrentController().getViewController().getFrame(), messagePane,
 		    TextUtils.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 		    options, options[0]);
@@ -287,4 +494,21 @@ class UpdateCheckAction extends AFreeplaneAction {
 		    Boolean.toString(updateAutomatically.isSelected()));
 		return choice;
 	}
+
+
+	private ActionListener openUrlListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				Controller.getCurrentController().getViewController().openDocument(
+						new URL( ((JButton) e.getSource()).getActionCommand()) );
+			}
+			catch (final MalformedURLException ex) {
+				UITools.errorMessage(TextUtils.getText("url_error") + "\n" + ex);
+			}
+			catch (final Exception ex) {
+				UITools.errorMessage(ex);
+			}
+		}
+	};
+
 }
