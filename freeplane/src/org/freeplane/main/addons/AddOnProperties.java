@@ -70,8 +70,8 @@ public class AddOnProperties {
 		this.setFreeplaneVersionFrom(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionFrom",
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
-		this.setHomepage(parseHomepage(addOnElement.getAttribute("homepage", null)));
-		this.setUpdateUrl(parseHomepage(addOnElement.getAttribute("updateUrl", null)));
+		this.setHomepage(parseUrl(addOnElement.getAttribute("homepage", null)));
+		this.setUpdateUrl(parseUrl(addOnElement.getAttribute("updateUrl", null)));
 		this.setActive(Boolean.parseBoolean(addOnElement.getAttribute("active", "true")));
 		this.setDescription(getContentOfFirstElement(addOnElement.getChildrenNamed("description")));
 		this.setLicense(getContentOfFirstElement(addOnElement.getChildrenNamed("license")));
@@ -84,9 +84,9 @@ public class AddOnProperties {
 		validate();
 	}
 
-    private URL parseHomepage(String homepage) {
+    private URL parseUrl(String url) {
 		try {
-			return new URL(homepage);
+			return new URL(url);
 		}
 		catch (Exception e) {
 			return null;
@@ -247,24 +247,26 @@ public class AddOnProperties {
 		return homepage;
 	}
 	
-	// If the updateUrl is not set, the default is $homepage/version.txt
-	// This will help to update old add-ons.
-	public URL getUpdateUrl() {
-		if (updateUrl != null) {
-			return updateUrl;
-		} else {
-			if (homepage != null) {
-				try {
-					return new URL(homepage.toString() + "/version.txt");
-				}
-				catch (MalformedURLException e){
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}
+    // If the updateUrl is not set, the default is $homepage/version.txt
+    // This will help to update old add-ons.
+    public URL getUpdateUrl() {
+        if (updateUrl != null)
+            return updateUrl;
+        else if (homepage != null && !homepage.getPath().isEmpty())
+            return homepagePlusLatestVersionFile();
+        else
+            return null;
+    }
+
+    private URL homepagePlusLatestVersionFile() {
+        try {
+            final File file = new File(homepage.getPath(), AddOnsController.LATEST_VERSION_FILE);
+            return new URL(homepage.getProtocol(), homepage.getHost(), homepage.getPort(), file.getPath());
+        }
+        catch (MalformedURLException e) {
+            return null;
+        }
+    }
 	
 	public void setHomepage(URL homepage) {
 		this.homepage = homepage;

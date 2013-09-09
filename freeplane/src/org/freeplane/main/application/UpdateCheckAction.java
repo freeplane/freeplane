@@ -1,8 +1,6 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,9 +9,9 @@ import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -22,8 +20,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.Border;
@@ -33,6 +29,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
@@ -58,10 +55,10 @@ class UpdateCheckAction extends AFreeplaneAction {
 	private static final int TWO_DAYS = 1 * 24 * 60 * 60 * 1000;
 	private static final String UPDATE_BUTTON_LOCATION = "main_toolbar_update";
 	private static final String UPDATE_BUTTON_PATH = UPDATE_BUTTON_LOCATION + "/checkUpdate";
-	/**
-	 * the url where to download the newest version
-	 */
-	private static final String WEB_DOWNLOAD_LOCATION_KEY = "webDownloadLocation";
+//	/**
+//	 * the url where to download the newest version
+//	 */
+//	private static final String WEB_DOWNLOAD_LOCATION_KEY = "webDownloadLocation";
 	/**
 	 * the url to check the local version against
 	 */
@@ -154,19 +151,19 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}
 		final String history;
 		final FreeplaneVersion lastVersion;
-		final boolean connectSuccesfull;
+		final boolean connectSuccessfull;
 		if (!language.equals(DEFAULT_LANGUAGE)) {
 			final String defaultWebUpdate = getWebUpdateUrl(DEFAULT_LANGUAGE);
 			final HttpVersionClient defaultVersionClient = new HttpVersionClient(defaultWebUpdate,
 			    lastTranslatedVersion);
 			lastVersion = defaultVersionClient.getRemoteVersion();
 			history = defaultVersionClient.getHistory() + translatedVersionClient.getHistory();
-			connectSuccesfull = defaultVersionClient.isSuccessful();
+			connectSuccessfull = defaultVersionClient.isSuccessful();
 		}
 		else {
 			lastVersion = lastTranslatedVersion;
 			history = translatedVersionClient.getHistory();
-			connectSuccesfull = translatedVersionClient.isSuccessful();
+			connectSuccessfull = translatedVersionClient.isSuccessful();
 		}
 		
 		checkForAddonsUpdates();
@@ -176,7 +173,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 				if (autoRun) {
 					return;
 				}
-				showUpdateDialog(connectSuccesfull, localVersion, lastVersion, history);
+				showUpdateDialog(connectSuccessfull, localVersion, lastVersion, history);
 			}
 		});
 	}
@@ -187,20 +184,16 @@ class UpdateCheckAction extends AFreeplaneAction {
 	private void checkForAddonsUpdates() {
 		// loop on add-ons
 		List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
+		LogUtils.info("checking for updates of " + installedAddOns.size() + " add-ons");
 		for (AddOnProperties addOnProperties : installedAddOns) {
-			FreeplaneVersion addOnLocalVersion;
-			try {
-				// strip the "v" in some old version numbers "v0.x.y" => "0.x.y"
-				addOnLocalVersion = FreeplaneVersion.getVersion((addOnProperties.getVersion().replace("v", "")));
-			} catch (IllegalArgumentException e) {
-				addOnLocalVersion = FreeplaneVersion.getVersion("0.0.0");
-			}
+			FreeplaneVersion addOnLocalVersion = toFreeplaneVersion(addOnProperties.getVersion());
 			// get the update-url for this add-on
 			// append the current add-on version for
 			// - statistics (appending a freeplane installation unique id would enable building add-on usage statistics) 
 			// - handling special cases ? (maybe we could send the freeplane version too)			
-			if (addOnProperties.getUpdateUrl() != null) {
-				final String addOnUpdateRequest = addOnProperties.getUpdateUrl().toString() + "?v=" + addOnLocalVersion.toString();
+			final URL updateUrl = addOnProperties.getUpdateUrl();
+            if (updateUrl != null) {
+				final String addOnUpdateRequest = updateUrl + "?v=" + addOnLocalVersion.toString();
 				final HttpVersionClient versionClient = new HttpVersionClient(addOnUpdateRequest, addOnLocalVersion);
 				final boolean connectSuccesfull;
 				final FreeplaneVersion latestVersion = versionClient.getRemoteVersion();
@@ -219,7 +212,7 @@ class UpdateCheckAction extends AFreeplaneAction {
         }
 	}
 
-	private String getWebUpdateUrl(final String language) {
+    private String getWebUpdateUrl(final String language) {
 		{
 			final String webUpdateUrl = ResourceController.getResourceController().getProperty(WEB_UPDATE_LOCATION_KEY);
 			final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
@@ -341,10 +334,8 @@ class UpdateCheckAction extends AFreeplaneAction {
 		c.gridx = 4;
 		gridPane.add(emptyLabel, c);
         
-		
 		// first row : freeplane
         c.gridy = 1;
-		
         
 		final JLabel freeplaneLabel = new JLabel("Freeplane");
 		final FreeplaneVersion freeplaneLocalVersion = FreeplaneVersion.getVersion();
@@ -372,7 +363,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 			} else {
 				needsUpdate = Boolean.FALSE;
 			}
-
 			freeplaneLatestVersionLabel = new JLabel(freeplaneLatestVersion.toString(), SwingConstants.CENTER);
 		} else {
 			freeplaneLatestVersionLabel = new JLabel(TextUtils.getText("updater.version.unknown"), SwingConstants.CENTER);
@@ -381,8 +371,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 		changelogButton.setEnabled(needsUpdate);
 		updateButton.setEnabled(needsUpdate);
 
-
-		
 		c.gridx = 0;
 		gridPane.add(freeplaneLabel, c);
 		c.gridx = 1;
@@ -398,42 +386,27 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
 		gridRow = 3;
 		for (AddOnProperties addOnProperties : installedAddOns) {
-			FreeplaneVersion addOnLocalVersion;
-			FreeplaneVersion addOnLatestVersion;
-			try {
-				addOnLocalVersion = FreeplaneVersion.getVersion((addOnProperties.getVersion().replace("v", "")));
-			} catch (IllegalArgumentException e) {
-				addOnLocalVersion = FreeplaneVersion.getVersion("0.0.0");
-			}
-			try {
-				addOnLatestVersion = FreeplaneVersion.getVersion((addOnProperties.getLatestVersion()));
-			} catch (IllegalArgumentException e) {
-				addOnLatestVersion = FreeplaneVersion.getVersion("0.0.0");
-			}
-
-			final JLabel addOnLabel, addOnInstalledVersionLabel, addOnLatestVersionLabel;
+			FreeplaneVersion addOnLocalVersion = toFreeplaneVersion(addOnProperties.getVersion());
+			FreeplaneVersion addOnLatestVersion = toFreeplaneVersion(addOnProperties.getLatestVersion());
 			
-			
-			addOnInstalledVersionLabel = new JLabel(addOnLocalVersion.toString(), SwingConstants.CENTER);
-			
+			final JLabel addOnInstalledVersionLabel = new JLabel(addOnLocalVersion.toString(), SwingConstants.CENTER);
+			final JLabel addOnLatestVersionLabel;
 			needsUpdate = Boolean.FALSE;
 			if (addOnLatestVersion != null) {
 				if (addOnLocalVersion.compareTo(addOnLatestVersion) < 0) {
 					needsUpdate = Boolean.TRUE;
-				} else {
-					
 				}
 				addOnLatestVersionLabel = new JLabel(addOnLatestVersion.toString(), SwingConstants.CENTER);
 			} else {
 				addOnLatestVersionLabel = new JLabel(TextUtils.getText("updater.version.unknown"), SwingConstants.CENTER);
 				if (addOnProperties.getUpdateUrl() != null) {
-					addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.unreachable") + " " + addOnProperties.getUpdateUrl().toString());
+					addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.unreachable") + " " + addOnProperties.getUpdateUrl());
 				} else {
 					addOnLatestVersionLabel.setToolTipText(TextUtils.getText("updater.version.noUpdateUrl"));
 				}
 			}
 			
-			addOnLabel = new JLabel(TextUtils.getText("addons." + addOnProperties.getName()));
+			final JLabel addOnLabel = new JLabel(TextUtils.getText("addons." + addOnProperties.getName()));
 			c.gridx = 0;
 			c.gridy = gridRow;
 			gridPane.add(addOnLabel, c);
@@ -453,7 +426,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			if (addOnProperties.getLatestVersionChangelogUrl() != null) {
 				changelogButton.setActionCommand(addOnProperties.getLatestVersionChangelogUrl().toString());
 			} else if (addOnProperties.getUpdateUrl() != null) {
-				changelogButton.setActionCommand(addOnProperties.getUpdateUrl().toString());
+				changelogButton.setActionCommand(String.valueOf(addOnProperties.getUpdateUrl()));
 			}
 			gridPane.add(changelogButton,c );
 			changelogButton.setEnabled(needsUpdate);
@@ -494,6 +467,15 @@ class UpdateCheckAction extends AFreeplaneAction {
 		    Boolean.toString(updateAutomatically.isSelected()));
 		return choice;
 	}
+
+	// note: FreeplaneVersion.getVersion() handles leading 'v' gracefully
+    private FreeplaneVersion toFreeplaneVersion(String versionString) {
+        try {
+        	return FreeplaneVersion.getVersion(versionString);
+        } catch (Exception e) {
+        	return FreeplaneVersion.getVersion("0.0.0");
+        }
+    }
 
 
 	private ActionListener openUrlListener = new ActionListener() {
