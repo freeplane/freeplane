@@ -50,10 +50,15 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		return VERSION;
 	}
 
+    /**
+     * Parses a version string as FreeplaneVersion.
+     * Ignores leading 'v' (e.g. "v1.2.6") and accept '.' and ' ' as separator.
+     * @throws IllegalArgumentException on parse errors
+     */
 	public static FreeplaneVersion getVersion(final String pString) throws IllegalArgumentException {
 		if (pString == null)
 			return null;
-		final StringTokenizer t = new StringTokenizer(pString, ". ", false);
+		final StringTokenizer t = new StringTokenizer(pString, "v. ", false);
 		final String[] info = new String[t.countTokens()];
 		int i = 0;
 		while (t.hasMoreTokens()) {
