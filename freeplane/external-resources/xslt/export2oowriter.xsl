@@ -57,6 +57,10 @@ Formatting rules used in this style-sheet
 
 * If the node does not have a style set, it will become "Text body".
 
+* The note and details of a node will get a style named after the
+  node's style with " Node" resp. " Details" appended. This style
+  will the the node's style as parent-style.
+
 Please note: Formats applied on a node-level (using the "Format"
 panel), will not be transferred to the Open Document Format.
 
