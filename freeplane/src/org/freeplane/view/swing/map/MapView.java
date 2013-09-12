@@ -95,6 +95,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
@@ -1077,7 +1078,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		if (property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)
 		        || property.equals(ModelessAttributeController.ATTRIBUTE_VIEW_TYPE)
-		        || property.equals(Filter.class)) {
+		        || property.equals(Filter.class)
+		        || property.equals(UrlManager.MAP_URL)) {
 			setBackground(requiredBackground());
 			getRoot().updateAll();
 			return;
