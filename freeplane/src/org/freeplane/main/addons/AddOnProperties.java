@@ -400,7 +400,7 @@ public class AddOnProperties {
 		final XMLElement addonElement = new XMLElement("addon");
 		addonElement.setAttribute("name", name);
 		addonElement.setAttribute("version", version);
-		addonElement.setAttribute("latestVersion", latestVersion);
+		addonElement.setAttribute("latestVersion", latestVersion == null ? "" : latestVersion);
 		addonElement.setAttribute("freeplaneVersionFrom", freeplaneVersionFrom.toString());
 		if (freeplaneVersionTo != null)
 			addonElement.setAttribute("freeplaneVersionTo", freeplaneVersionTo.toString());
