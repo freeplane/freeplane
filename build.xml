@@ -49,14 +49,13 @@
 	  <echo>Press enter to tag '${tag.release}'</echo>
 	  <input/>
 
-	  <echo>Running git tag ${tag.release}</echo>
+	  <echo>Running git tag -m '' ${tag.release}</echo>
 
-	  <!--
 	  <exec executable="git" failonerror="true">
 	    <arg value="tag"/>
+            <arg value="-m ''"/>
 	    <arg value="${tag.release}"/>
 	  </exec>
-	  -->
 	</target>
 
 </project>
