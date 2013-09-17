@@ -30,4 +30,32 @@
 	<target name="cleandist" depends="clean, dist">
 	</target>
 
+	<target name="tag_release">
+	  <property file="freeplane/viewer-resources/version.properties"/>
+
+	  <condition property="tag.release" value="release-${freeplane_version}">
+	    <equals arg1="${freeplane_version_status}" arg2=""/>
+	  </condition>
+	  <condition property="tag.release" value="beta-${freeplane_version}">
+	    <or>
+	      <equals arg1="${freeplane_version_status}" arg2="beta"/>
+	      <equals arg1="${freeplane_version_status}" arg2="rc"/>
+	    </or>
+	  </condition>
+	  <condition property="tag.release" value="preview-${freeplane_version}">
+	    <equals arg1="${freeplane_version_status}" arg2="alpha"/>
+	  </condition>
+	  
+	  <echo>Press enter to tag '${tag.release}'</echo>
+	  <input/>
+
+	  <echo>Running git tag -m '' ${tag.release}</echo>
+
+	  <exec executable="git" failonerror="true">
+	    <arg value="tag"/>
+            <arg value="-m ''"/>
+	    <arg value="${tag.release}"/>
+	  </exec>
+	</target>
+
 </project>

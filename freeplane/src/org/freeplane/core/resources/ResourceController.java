@@ -21,6 +21,7 @@ package org.freeplane.core.resources;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -183,6 +184,15 @@ public abstract class ResourceController {
 
 	public URL getResource(final String name) {
 		return getClass().getResource(name);
+	}
+
+	public InputStream getResourceStream(final String resFileName) throws IOException {
+		final URL resUrl = getResource(resFileName);
+		if (resUrl == null) {
+			LogUtils.severe("Can't find " + resFileName + " as resource.");
+			throw new IllegalArgumentException("Can't find " + resFileName + " as resource.");
+		}
+		return new BufferedInputStream(resUrl.openStream());
 	}
 
 	public String getResourceBaseDir() {

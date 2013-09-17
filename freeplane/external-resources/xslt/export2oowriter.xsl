@@ -57,6 +57,10 @@ Formatting rules used in this style-sheet
 
 * If the node does not have a style set, it will become "Text body".
 
+* The note and details of a node will get a style named after the
+  node's style with " Node" resp. " Details" appended. This style
+  will the the node's style as parent-style.
+
 Please note: Formats applied on a node-level (using the "Format"
 panel), will not be transferred to the Open Document Format.
 
@@ -156,6 +160,11 @@ Not implemented
 					<style:paragraph-properties
 						fo:text-align="justify" style:justify-single-word="false" />
 				</style:style>
+				<!-- automatic list and numbering styles for all style s in the map -->
+				<xsl:apply-templates select="//stylenode" mode="automatic-list-style" />
+				<xsl:call-template name="gen-automatic-list-style">
+				  <xsl:with-param name="style">Text_20_body</xsl:with-param>
+				</xsl:call-template>
 				<!-- T1 = bold text -->
 				<style:style style:name="T1" style:family="text">
 					<style:text-properties fo:font-weight="bold"
@@ -195,9 +204,83 @@ Not implemented
 		</office:document-content>
 	</xsl:template>
 
+	<!--== generate automatic list and numbering styles for all styles in the map ==-->
+	<xsl:template match="stylenode[@TEXT]"
+		  mode="automatic-list-style">
+	  <!-- a custom style -->
+	  <xsl:call-template name="gen-automatic-list-style">
+	    <xsl:with-param name="style" select="translate(@TEXT, ' ', '_')" />
+	  </xsl:call-template>
+	  <xsl:call-template name="gen-automatic-list-style">
+	    <xsl:with-param name="style" select="translate(concat(@TEXT, ' Details'), ' ', '_')" />
+	  </xsl:call-template>
+	  <xsl:call-template name="gen-automatic-list-style">
+	    <xsl:with-param name="style" select="translate(concat(@TEXT, ' Note'), ' ', '_')" />
+	  </xsl:call-template>
+	</xsl:template>
+
+	<xsl:template match="stylenode[starts-with(@LOCALIZED_TEXT,'defaultstyle.')]"
+		  mode="automatic-list-style">
+	  <!-- one of the Freeplane pre-defined styles -->
+	  <xsl:call-template name="gen-automatic-list-style">
+	    <xsl:with-param name="style" select="translate(substring-after(@LOCALIZED_TEXT,'defaultstyle.'), ' ', '_')" />
+	  </xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="gen-automatic-list-style">
+	  <!-- for each style in the map generate then automatic list styles -->
+	  <xsl:param name="style" />
+
+	  <!-- P1 = unnumbered list item -->
+	  <style:style style:family="paragraph" style:list-style-name="List_20_1">
+	    <xsl:attribute name="style:name"><xsl:value-of select="concat($style, '_P1')" /></xsl:attribute>
+	    <xsl:attribute name="style:parent-style-name"><xsl:value-of select="$style" /></xsl:attribute>
+	  </style:style>
+	  <!-- P2 = numbered list item -->
+	  <style:style style:family="paragraph" style:list-style-name="Numbering_20_1">
+	    <xsl:attribute name="style:name"><xsl:value-of select="concat($style, '_P2')" /></xsl:attribute>
+	    <xsl:attribute name="style:parent-style-name"><xsl:value-of select="$style" /></xsl:attribute>
+	  </style:style>
+	  <!-- P3 = center -->
+	  <style:style style:family="paragraph">
+	    <xsl:attribute name="style:name"><xsl:value-of select="concat($style, '_P3')" /></xsl:attribute>
+	    <xsl:attribute name="style:parent-style-name"><xsl:value-of select="$style" /></xsl:attribute>
+	    <style:paragraph-properties
+		fo:text-align="center" style:justify-single-word="false" />
+	  </style:style>
+	  <!-- P4 = align right -->
+	  <style:style style:family="paragraph">
+	    <xsl:attribute name="style:name"><xsl:value-of select="concat($style, '_P4')" /></xsl:attribute>
+	    <xsl:attribute name="style:parent-style-name"><xsl:value-of select="$style" /></xsl:attribute>
+	    <style:paragraph-properties
+		fo:text-align="end" style:justify-single-word="false" />
+	  </style:style>
+	  <!-- P5 = justify -->
+	  <style:style style:family="paragraph">
+	    <xsl:attribute name="style:name"><xsl:value-of select="concat($style, '_P5')" /></xsl:attribute>
+	    <xsl:attribute name="style:parent-style-name"><xsl:value-of select="$style" /></xsl:attribute>
+	    <style:paragraph-properties
+		fo:text-align="justify" style:justify-single-word="false" />
+	  </style:style>
+	</xsl:template>
+
+	<xsl:template name="canonical-list-style-name">
+	    <xsl:param name="style" />
+	    <xsl:param name="type" />
+	    <xsl:choose>
+	      <xsl:when test="(substring($style, string-length($style)-2, 2) = '_P') and (substring($style, string-length($style)) &lt; 6)">
+		<xsl:value-of select="concat(substring($style, 1, string-length($style)-2), $type, substring($style, string-length($style)-2))"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="concat($style, '_', $type)"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	</xsl:template>
+
 	<xsl:template name="output-all-nodecontent">
 	  <xsl:param name="style"/>
 	  <xsl:param name="heading_level" select="-1"/>
+	  <!-- dump the node core -->
 	  <xsl:choose>
 	    <xsl:when test="$heading_level &gt; 0">
 	      <text:h>
@@ -214,9 +297,26 @@ Not implemented
 	      </xsl:call-template>
 	    </xsl:otherwise>
 	  </xsl:choose>
+	  <!-- dump the details and note -->
 	  <xsl:apply-templates select="hook|@LINK" />
-	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
-	  <xsl:call-template name="output-notecontent"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
+	  <xsl:call-template name="output-notecontent">
+	    <xsl:with-param name="contentType" select="'DETAILS'"/>
+	    <xsl:with-param name="style">
+	      <xsl:call-template name="canonical-list-style-name">
+		<xsl:with-param name="style" select="$style" />
+		<xsl:with-param name="type" select="'Details'" />
+	      </xsl:call-template>
+	    </xsl:with-param>
+	  </xsl:call-template>
+	  <xsl:call-template name="output-notecontent">
+	    <xsl:with-param name="contentType" select="'NOTE'"/>
+	    <xsl:with-param name="style">
+	      <xsl:call-template name="canonical-list-style-name">
+		<xsl:with-param name="style" select="$style" />
+		<xsl:with-param name="type" select="'Note'" />
+	      </xsl:call-template>
+	    </xsl:with-param>
+	  </xsl:call-template>
 	  <!-- walk the sub-nodes -->
 	  <xsl:choose>
 	    <xsl:when test="./node[@NUMBERED='true']">
@@ -250,6 +350,9 @@ Not implemented
 		<xsl:variable name="depth">
 			<xsl:apply-templates select=".." mode="depthMesurement" />
 		</xsl:variable>
+		<xsl:variable name="style">
+			<xsl:apply-templates select="." mode="get-node-style" />
+		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$depth=0"><!-- Root Node becomes 'Title' -->
 				<xsl:call-template name="output-all-nodecontent">
@@ -260,7 +363,7 @@ Not implemented
 			  <text:list-item>
 			    <xsl:call-template name="output-all-nodecontent">
 			      <!-- :todo: need to remove numbers added by Freeplane -->
-			      <xsl:with-param name="style">P2</xsl:with-param>
+			      <xsl:with-param name="style" select="concat($style, '_P2')" />
 			    </xsl:call-template>
 			  </text:list-item>
 			</xsl:when>
@@ -270,7 +373,7 @@ Not implemented
 			<xsl:when test="ancestor::node[@FOLDED='true']">
 			    <text:list-item>
 			      <xsl:call-template name="output-all-nodecontent">
-				<xsl:with-param name="style">P1</xsl:with-param>
+				<xsl:with-param name="style" select="concat($style, '_P1')" />
 			      </xsl:call-template>
 			    </text:list-item>
 			</xsl:when>
@@ -297,6 +400,25 @@ Not implemented
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+
+	<xsl:template mode="get-node-style"
+		  match="node[@STYLE_REF]">
+	  <!-- a custom style -->
+	  <xsl:value-of select="translate(@STYLE_REF, ' ', '_')" />
+	</xsl:template>
+
+	<xsl:template mode="get-node-style"
+		  match="node[starts-with(@LOCALIZED_STYLE_REF,'defaultstyle.')]">
+	  <!-- one of the Freeplane pre-defined styles -->
+	  <xsl:value-of select="substring-after(./@LOCALIZED_STYLE_REF,'defaultstyle.')" />
+	</xsl:template>
+
+	<xsl:template mode="get-node-style"
+		  match="node"> <!-- no style defined -->
+	  <xsl:text>Text_20_body</xsl:text>
+	</xsl:template>
+
 
 	<xsl:template mode="normal-node-with-style"
 		  match="node[@STYLE_REF]">
@@ -396,13 +518,12 @@ Not implemented
 	</xsl:template> <!-- xsl:template name="output-nodecontent" -->
 
 	<xsl:template name="output-notecontent">
-	<xsl:param name="contentType"/>
+	  <xsl:param name="style">Text_20_body</xsl:param>
+	  <xsl:param name="contentType"/>
 		<xsl:if test="richcontent[@TYPE=$contentType]">
 			<xsl:apply-templates select="richcontent[@TYPE=$contentType]/html/body"
 				mode="richcontent">
-				<xsl:with-param name="style">
-					Text_20_body
-				</xsl:with-param>
+				<xsl:with-param name="style" select="$style" />
 			</xsl:apply-templates>
 		</xsl:if>
 	</xsl:template> <!-- xsl:template name="output-note" -->
@@ -464,21 +585,30 @@ Not implemented
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:when test="@style='text-align: center'">
-				<text:p text:style-name="P3">
+				<text:p>
+					<xsl:attribute name="text:style-name">
+						<xsl:value-of select="concat($style, '_P4')" />
+					</xsl:attribute>
 					<xsl:apply-templates select="text()|*" mode="richcontent">
 						<xsl:with-param name="style" select="$style"></xsl:with-param>
 					</xsl:apply-templates>
 				</text:p>
 			</xsl:when>
 			<xsl:when test="@style='text-align: right'">
-				<text:p text:style-name="P4">
+				<text:p>
+					<xsl:attribute name="text:style-name">
+						<xsl:value-of select="concat($style, '_P4')" />
+					</xsl:attribute>
 					<xsl:apply-templates select="text()|*" mode="richcontent">
 						<xsl:with-param name="style" select="$style"></xsl:with-param>
 					</xsl:apply-templates>
 				</text:p>
 			</xsl:when>
 			<xsl:when test="@style='text-align: justify'">
-				<text:p text:style-name="P5">
+				<text:p>
+					<xsl:attribute name="text:style-name">
+						<xsl:value-of select="concat($style, '_P5')" />
+					</xsl:attribute>
 					<xsl:apply-templates select="text()|*" mode="richcontent">
 						<xsl:with-param name="style" select="$style"></xsl:with-param>
 					</xsl:apply-templates>
@@ -535,7 +665,9 @@ Not implemented
 		<xsl:param name="itemstyle"/>
 		<text:list-item>
 			<text:p>
-			  <xsl:attribute name="text:style-name"><xsl:value-of select="$itemstyle" /></xsl:attribute>
+				<xsl:attribute name="text:style-name">
+					<xsl:value-of select="concat($style, '_', $itemstyle)" />
+				</xsl:attribute>
 				<xsl:apply-templates select="text()|*" mode="richcontent">
 					<xsl:with-param name="style" select="$style"></xsl:with-param>
 				</xsl:apply-templates>
@@ -578,7 +710,7 @@ Not implemented
 		</text:list-item>
 	</xsl:template>
 
-	
+
 	<xsl:template match="a" mode="richcontent">
 		<text:a>
 			<xsl:attribute name="xlink:type">simple</xsl:attribute>
@@ -588,7 +720,7 @@ Not implemented
 			<xsl:apply-templates select="text()" />
 		</text:a>
 	</xsl:template>
-	
+
 
 	<!--
 		<text:list-item> <text:p text:style-name="P1">b</text:p></text:list-item>

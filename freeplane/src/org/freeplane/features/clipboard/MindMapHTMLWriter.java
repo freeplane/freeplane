@@ -26,7 +26,9 @@ import java.io.Writer;
 import java.util.Collection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.link.NodeLinks;
@@ -39,6 +41,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
+
 
 class MindMapHTMLWriter {
 	private static String el = System.getProperty("line.separator");
@@ -373,67 +376,9 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeJavaScript() throws IOException {
-		fileout.write("" + MindMapHTMLWriter.el + "<script type=\"text/javascript\">" + MindMapHTMLWriter.el
-		        + "   // Here we implement folding. It works fine with MSIE5.5, MSIE6.0 and" + MindMapHTMLWriter.el
-		        + "   // Mozilla 0.9.6." + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "   if (document.layers) {" + MindMapHTMLWriter.el + "      //Netscape 4 specific code"
-		        + MindMapHTMLWriter.el + "      pre = 'document.';" + MindMapHTMLWriter.el + "      post = ''; }"
-		        + MindMapHTMLWriter.el + "   if (document.getElementById) {" + MindMapHTMLWriter.el
-		        + "      //Netscape 6 specific code" + MindMapHTMLWriter.el
-		        + "      pre = 'document.getElementById(\"';" + MindMapHTMLWriter.el + "      post = '\").style'; }"
-		        + MindMapHTMLWriter.el + "   if (document.all) {" + MindMapHTMLWriter.el + "      //IE4+ specific code"
-		        + MindMapHTMLWriter.el + "      pre = 'document.all.';" + MindMapHTMLWriter.el
-		        + "      post = '.style'; }" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "function layer_exists(layer) {" + MindMapHTMLWriter.el + "   try {" + MindMapHTMLWriter.el
-		        + "      eval(pre + layer + post);" + MindMapHTMLWriter.el + "      return true; }"
-		        + MindMapHTMLWriter.el + "   catch (error) {" + MindMapHTMLWriter.el + "      return false; }}"
-		        + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el + "function show_layer(layer) {"
-		        + MindMapHTMLWriter.el + "   eval(pre + layer + post).position = 'relative'; " + MindMapHTMLWriter.el
-		        + "   eval(pre + layer + post).visibility = 'visible'; }" + MindMapHTMLWriter.el + ""
-		        + MindMapHTMLWriter.el + "function hide_layer(layer) {" + MindMapHTMLWriter.el
-		        + "   eval(pre + layer + post).visibility = 'hidden';" + MindMapHTMLWriter.el
-		        + "   eval(pre + layer + post).position = 'absolute'; }" + MindMapHTMLWriter.el + ""
-		        + MindMapHTMLWriter.el + "function hide_folder(folder) {" + MindMapHTMLWriter.el
-		        + "    hide_folding_layer(folder)" + MindMapHTMLWriter.el + "    show_layer('show'+folder);"
-		        + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)"
-		        + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "function show_folder(folder) {" + MindMapHTMLWriter.el
-		        + "    // Precondition: all subfolders are folded" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "    show_layer('hide'+folder);" + MindMapHTMLWriter.el + "    hide_layer('show'+folder);"
-		        + MindMapHTMLWriter.el + "    show_layer('fold'+folder);" + MindMapHTMLWriter.el + ""
-		        + MindMapHTMLWriter.el
-		        + "    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)"
-		        + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el + "    var i;" + MindMapHTMLWriter.el
-		        + "    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {" + MindMapHTMLWriter.el
-		        + "       show_layer('show'+folder+'_'+i); }" + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + ""
-		        + "function show_folder_completely(folder) {" + MindMapHTMLWriter.el
-		        + "    // Precondition: all subfolders are folded" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "    show_layer('hide'+folder);" + MindMapHTMLWriter.el + "    hide_layer('show'+folder);"
-		        + MindMapHTMLWriter.el + "    show_layer('fold'+folder);" + MindMapHTMLWriter.el + ""
-		        + MindMapHTMLWriter.el
-		        + "    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)"
-		        + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el + "    var i;" + MindMapHTMLWriter.el
-		        + "    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {" + MindMapHTMLWriter.el
-		        + "       show_folder_completely(folder+'_'+i); }" + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el
-		        + "" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "function hide_folding_layer(folder) {" + MindMapHTMLWriter.el + "   var i;" + MindMapHTMLWriter.el
-		        + "   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {" + MindMapHTMLWriter.el
-		        + "       hide_folding_layer(folder+'_'+i); }" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "   hide_layer('hide'+folder);" + MindMapHTMLWriter.el + "   hide_layer('show'+folder);"
-		        + MindMapHTMLWriter.el + "   hide_layer('fold'+folder);" + MindMapHTMLWriter.el + ""
-		        + MindMapHTMLWriter.el
-		        + "   scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)"
-		        + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
-		        + "function fold_document() {" + MindMapHTMLWriter.el + "   var i;" + MindMapHTMLWriter.el
-		        + "   var folder = '1';" + MindMapHTMLWriter.el
-		        + "   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {" + MindMapHTMLWriter.el
-		        + "       hide_folder(folder+'_'+i); }" + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + ""
-		        + MindMapHTMLWriter.el + "function unfold_document() {" + MindMapHTMLWriter.el + "   var i;"
-		        + MindMapHTMLWriter.el + "   var folder = '1';" + MindMapHTMLWriter.el
-		        + "   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {" + MindMapHTMLWriter.el
-		        + "       show_folder_completely(folder+'_'+i); }" + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el
-		        + "" + MindMapHTMLWriter.el + "</script>" + MindMapHTMLWriter.el);
+		fileout.write("<script type=\"text/javascript\">" + MindMapHTMLWriter.el);
+		fileout.write(FileUtils.slurpResource("/html/folding.js"));
+		fileout.write(MindMapHTMLWriter.el + "</script>" + MindMapHTMLWriter.el);
 	}
 
 	private void writeModelContent(final String string) throws IOException {
@@ -468,45 +413,9 @@ class MindMapHTMLWriter {
 		fileout.write("    body {");
 		writeDefaultFontStyle();
 		fileout.write("}" + MindMapHTMLWriter.el);
-		fileout.write("    li { list-style: none;  margin: 0; }" + MindMapHTMLWriter.el);
-		fileout.write("    p { margin: 0; }" + MindMapHTMLWriter.el);
-		if (writeFoldingCode) {
-			fileout
-			    .write("    span.foldopened { color: white; font-size: xx-small;"
-			            + MindMapHTMLWriter.el
-			            + "    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;"
-			            + MindMapHTMLWriter.el
-			            + "    VISIBILITY: visible;"
-			            + MindMapHTMLWriter.el
-			            + "    cursor:pointer; }"
-			            + MindMapHTMLWriter.el
-			            + ""
-			            + MindMapHTMLWriter.el
-			            + ""
-			            + MindMapHTMLWriter.el
-			            + "    span.foldclosed { color: #666666; font-size: xx-small;"
-			            + MindMapHTMLWriter.el
-			            + "    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;"
-			            + MindMapHTMLWriter.el
-			            + "    VISIBILITY: hidden;"
-			            + MindMapHTMLWriter.el
-			            + "    cursor:pointer; }"
-			            + MindMapHTMLWriter.el
-			            + ""
-			            + MindMapHTMLWriter.el
-			            + "    span.foldspecial { color: #666666; font-size: xx-small; border-style: none solid solid none;"
-			            + MindMapHTMLWriter.el
-			            + "    border-color: #CCCCCC; border-width: 1; font-family: sans-serif; padding: 0em 0.1em 0em 0.1em; background: #e0e0e0;"
-			            + MindMapHTMLWriter.el + "    cursor:pointer; }" + MindMapHTMLWriter.el);
-		}
-		fileout.write(MindMapHTMLWriter.el + "    span.l { color: red; font-weight: bold; }" + MindMapHTMLWriter.el
-		        + "" + MindMapHTMLWriter.el + "    a.mapnode:link {text-decoration: none; color: black; }"
-		        + MindMapHTMLWriter.el + "    a.mapnode:visited {text-decoration: none; color: black; }"
-		        + MindMapHTMLWriter.el + "    a.mapnode:active {text-decoration: none; color: black; }"
-		        + MindMapHTMLWriter.el
-		        + "    a.mapnode:hover {text-decoration: none; color: black; background: #eeeee0; }"
-		        + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el + "</style>" + MindMapHTMLWriter.el
-		        + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
+		fileout.write(FileUtils.slurpResource("/html/folding.css"));
+		fileout.write(MindMapHTMLWriter.el + MindMapHTMLWriter.el + "</style>" + MindMapHTMLWriter.el
+			      + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
 	}
 
 	private void writeDefaultFontStyle() throws IOException {

@@ -120,6 +120,14 @@
 			<style:paragraph-properties fo:margin-top="0cm"
 				fo:margin-bottom="0.212cm" />
 		</style:style>
+		<call-template name="child-paragraph-style">
+		  <with-param name="parentname" >Text_20_body</with-param>
+		  <with-param name="stylename" >Text body Note</with-param>
+		</call-template>
+		<call-template name="child-paragraph-style">
+		  <with-param name="parentname" >Text_20_body</with-param>
+		  <with-param name="stylename" >Text body Details</with-param>
+		</call-template>
 		<style:style style:name="Heading" style:family="paragraph"
 			style:parent-style-name="Standard"
 			style:next-style-name="Text_20_body" style:class="text">
@@ -330,6 +338,15 @@
       </office:document-styles>
    </template>
 
+   <template name="child-paragraph-style">
+    <param name="stylename" />
+    <param name="parentname" />
+    <style:style style:family="paragraph" style:class="text">
+      <attribute name="style:parent-style-name"><value-of select="translate($parentname, ' ', '_')"/></attribute>
+      <attribute name="style:name"><value-of select="translate($stylename, ' ', '_')"/></attribute>
+      <attribute name="style:display-name"><value-of select="$stylename"/></attribute>
+    </style:style>
+   </template>
 
    <template name="paragraph-style">
     <param name="stylename" />
@@ -351,6 +368,15 @@
 	<attribute name="fo:background-color"><value-of select="@BACKGROUND_COLOR"/></attribute>
       </style:paragraph-properties>
     </style:style>
+    <!-- Declare child-styles for Details and Note -->
+    <call-template name="child-paragraph-style">
+      <with-param name="parentname" ><value-of select="$stylename"/></with-param>
+      <with-param name="stylename" ><value-of select="concat($stylename, ' Details')"/></with-param>
+    </call-template>
+    <call-template name="child-paragraph-style">
+      <with-param name="parentname" ><value-of select="$stylename"/></with-param>
+      <with-param name="stylename" ><value-of select="concat($stylename, ' Note')"/></with-param>
+    </call-template>
    </template>
 
    <template match="stylenode[@TEXT]">

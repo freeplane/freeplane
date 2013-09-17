@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,10 +34,21 @@ public class AddOnProperties {
 	private boolean active = true;
 	private String name;
 	private String author;
+	// installed version
 	private String version;
+	// latest known version
+	// filled by the updater to use it either in the updater
+	// or in the add-on manager
+	private String latestVersion;
 	private FreeplaneVersion freeplaneVersionFrom;
 	private FreeplaneVersion freeplaneVersionTo;
 	private URL homepage;
+	// the URL source to fetch the latest version
+	private URL updateUrl;
+	// extra URL where to download the latest version and changelog
+	// these are not stored in the xml file, they are only updated dynamically during update check
+	private URL latestVersionDownloadUrl;
+	private URL latestVersionChangelogUrl;
 	private String description;
 	private String license;
 	private Map<String, Map<String, String>> translations;
@@ -54,10 +66,12 @@ public class AddOnProperties {
 		this(addOnType);
 		this.setName(addOnElement.getAttribute("name", null));
 		this.setVersion(addOnElement.getAttribute("version", null));
+		this.setLatestVersion(addOnElement.getAttribute("latestVersion", null));
 		this.setFreeplaneVersionFrom(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionFrom",
 		    null)));
 		this.setFreeplaneVersionTo(FreeplaneVersion.getVersion(addOnElement.getAttribute("freeplaneVersionTo", null)));
-		this.setHomepage(parseHomepage(addOnElement.getAttribute("homepage", null)));
+		this.setHomepage(parseUrl(addOnElement.getAttribute("homepage", null)));
+		this.setUpdateUrl(parseUrl(addOnElement.getAttribute("updateUrl", null)));
 		this.setActive(Boolean.parseBoolean(addOnElement.getAttribute("active", "true")));
 		this.setDescription(getContentOfFirstElement(addOnElement.getChildrenNamed("description")));
 		this.setLicense(getContentOfFirstElement(addOnElement.getChildrenNamed("license")));
@@ -70,9 +84,9 @@ public class AddOnProperties {
 		validate();
 	}
 
-    private URL parseHomepage(String homepage) {
+    private URL parseUrl(String url) {
 		try {
-			return new URL(homepage);
+			return new URL(url);
 		}
 		catch (Exception e) {
 			return null;
@@ -185,8 +199,32 @@ public class AddOnProperties {
 		return version;
 	}
 
+	public String getLatestVersion() {
+		return latestVersion;
+	}
+
+	public URL getLatestVersionDownloadUrl() {
+		return latestVersionDownloadUrl;
+	}
+
+	public URL getLatestVersionChangelogUrl() {
+		return latestVersionChangelogUrl;
+	}
+
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public void setLatestVersionDownloadUrl(URL latestVersionDownloadUrl) {
+		this.latestVersionDownloadUrl = latestVersionDownloadUrl;
+	}
+
+	public void setLatestVersionChangelogUrl(URL latestVersionChangelogUrl) {
+		this.latestVersionChangelogUrl = latestVersionChangelogUrl;
+	}
+
+	public void setLatestVersion(String latestVersion) {
+		this.latestVersion = latestVersion;
 	}
 
 	public FreeplaneVersion getFreeplaneVersionFrom() {
@@ -208,11 +246,36 @@ public class AddOnProperties {
 	public URL getHomepage() {
 		return homepage;
 	}
+	
+    // If the updateUrl is not set, the default is $homepage/version.txt
+    // This will help to update old add-ons.
+    public URL getUpdateUrl() {
+        if (updateUrl != null)
+            return updateUrl;
+        else if (homepage != null && !homepage.getPath().isEmpty())
+            return homepagePlusLatestVersionFile();
+        else
+            return null;
+    }
 
+    private URL homepagePlusLatestVersionFile() {
+        try {
+            final File file = new File(homepage.getPath(), AddOnsController.LATEST_VERSION_FILE);
+            return new URL(homepage.getProtocol(), homepage.getHost(), homepage.getPort(), file.getPath());
+        }
+        catch (MalformedURLException e) {
+            return null;
+        }
+    }
+	
 	public void setHomepage(URL homepage) {
 		this.homepage = homepage;
 	}
 
+	public void setUpdateUrl(URL updateUrl) {
+		this.updateUrl = updateUrl;
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -337,11 +400,14 @@ public class AddOnProperties {
 		final XMLElement addonElement = new XMLElement("addon");
 		addonElement.setAttribute("name", name);
 		addonElement.setAttribute("version", version);
+		addonElement.setAttribute("latestVersion", latestVersion == null ? "" : latestVersion);
 		addonElement.setAttribute("freeplaneVersionFrom", freeplaneVersionFrom.toString());
 		if (freeplaneVersionTo != null)
 			addonElement.setAttribute("freeplaneVersionTo", freeplaneVersionTo.toString());
 		if (homepage != null)
 			addonElement.setAttribute("homepage", homepage.toString());
+		if (updateUrl != null)
+			addonElement.setAttribute("updateUrl", updateUrl.toString());
 		if (author != null)
 			addonElement.setAttribute("author", author);
 		addonElement.setAttribute("active", Boolean.toString(active));
