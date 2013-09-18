@@ -20,7 +20,11 @@
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
 
-	<condition property="ver" value="${freeplane_version}-${freeplane_version_status}_pre${minor}" else="${freeplane_version}-${freeplane_version_status}">
+	<condition property="freeplane_version_status_suffix" value="" else="-${freeplane_version_status}">
+		<equals arg1="${freeplane_version_status}" arg2=""/>
+	</condition>
+
+	<condition property="ver" value="${freeplane_version}${freeplane_version_status_suffix}_pre${minor}" else="${freeplane_version}${freeplane_version_status_suffix}">
 		<isset property="minor" />
 	</condition>
 
