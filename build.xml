@@ -30,19 +30,25 @@
 	<target name="cleandist" depends="clean, dist">
 	</target>
 
-	<target name="tag_release">
+  <target name="release" depends="clean, dist, tag-release"/>
+
+	<target name="tag-release">
 	  <property file="freeplane/viewer-resources/version.properties"/>
+
+    <condition property="minor_suffix" value="_${minor}" else="">
+      <isset property="minor" />
+    </condition>
 
 	  <condition property="tag.release" value="release-${freeplane_version}">
 	    <equals arg1="${freeplane_version_status}" arg2=""/>
 	  </condition>
-	  <condition property="tag.release" value="beta-${freeplane_version}">
+	  <condition property="tag.release" value="beta-${freeplane_version}${minor_suffix}">
 	    <or>
 	      <equals arg1="${freeplane_version_status}" arg2="beta"/>
 	      <equals arg1="${freeplane_version_status}" arg2="rc"/>
 	    </or>
 	  </condition>
-	  <condition property="tag.release" value="preview-${freeplane_version}">
+	  <condition property="tag.release" value="preview-${freeplane_version}${minor_suffix}">
 	    <equals arg1="${freeplane_version_status}" arg2="alpha"/>
 	  </condition>
 	  
@@ -53,7 +59,7 @@
 
 	  <exec executable="git" failonerror="true">
 	    <arg value="tag"/>
-            <arg value="-m ''"/>
+      <arg value="-m ''"/>
 	    <arg value="${tag.release}"/>
 	  </exec>
 	</target>
