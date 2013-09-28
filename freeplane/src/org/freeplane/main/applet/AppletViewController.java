@@ -113,7 +113,7 @@ class AppletViewController extends FrameController {
 			/* new handling for relative urls. fc, 29.10.2003. */
 			try {
 				URI uri = applet.getDocumentBase().toURI().resolve(new URI(null, null, initialMapName, null));
-				URL documentBase = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+				URL documentBase = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
 				initialMapName = documentBase.toString();
 			}
 			catch (final Exception e) {
