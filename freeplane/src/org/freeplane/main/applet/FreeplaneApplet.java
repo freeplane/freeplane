@@ -131,7 +131,8 @@ public class FreeplaneApplet extends JApplet {
 			Controller.setCurrentController(controller);
 			final Container contentPane = getContentPane();
 			contentPane.setLayout(new BorderLayout());
-			appletViewController = new AppletViewController(this, controller, new MapViewController(controller));
+			MapViewController mapViewController = new MapViewController(controller);
+			appletViewController = new AppletViewController(this, controller, mapViewController);
 			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
 			FilterController.install();
 			PrintController.install();
