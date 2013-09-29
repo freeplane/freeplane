@@ -61,7 +61,7 @@ import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
-	private static final String MM2XML = "/xslt/mm2menu.xsl";
+	private static final String MENU_MM2XML = "/xslt/mm2menu.xsl";
 // // 	final private Controller controller;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
@@ -78,9 +78,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
-	private final MenuXmlCreator  menuXmlCreator = new MenuXmlCreator(MM2XML);
+	private final MenuXmlCreator  menuXmlCreator;
 
 	public UserInputListenerFactory(final ModeController modeController) {
+		menuXmlCreator = new MenuXmlCreator(MENU_MM2XML);
 		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
 		menuBuilder = new MenuBuilder(modeController);

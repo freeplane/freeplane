@@ -46,7 +46,7 @@ public class MenuXmlCreator {
 	    this.xslt = xslt;
     }
 
-	URL menuResource(String menuStructureXmlPath) {
+	public URL menuResource(String menuStructureXmlPath) {
 		try {
 	        updateXml(menuStructureXmlPath);
         }
