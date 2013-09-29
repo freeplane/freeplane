@@ -77,23 +77,23 @@
 
 	<target name="build-ui-xml">
 		<xslt in="${resources}/xml/preferences.mm"
-		      style="ant/mm2preferences.xsl"
+		      style="${resources}/xslt/mm2preferences.xsl"
 		      out="${resources}/xml/preferences.xml"/>
 
 		<xslt in="${resources}/xml/filemodemenu.mm"
-		      style="ant/mm2menu.xsl"
+		      style="${resources}/xslt/mm2menu.xsl"
 		      out="${resources}/xml/filemodemenu.xml"/>
 		<xslt in="${resources}/xml/stylemodemenu.mm"
-		      style="ant/mm2menu.xsl"
+		      style="${resources}/xslt/mm2menu.xsl"
 		      out="${resources}/xml/stylemodemenu.xml"/>
 		<xslt in="${resources}/xml/mindmapmodemenu.mm"
-		      style="ant/mm2menu.xsl"
+		      style="${resources}/xslt/mm2menu.xsl"
 		      out="${resources}/xml/mindmapmodemenu.xml"/>
 		<xslt in="${resources}/xml/browsemodemenu.mm"
-		      style="ant/mm2menu.xsl"
+		      style="${resources}/xslt/mm2menu.xsl"
 		      out="${resources}/xml/browsemodemenu.xml"/>
 		<xslt in="${viewer-resources}/xml/appletMenu.mm"
-		      style="ant/mm2menu.xsl"
+		      style="${resources}/xslt/mm2menu.xsl"
 		      out="${viewer-resources}/xml/appletMenu.xml"/>
 	</target>
 

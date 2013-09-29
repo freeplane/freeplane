@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!---
 
-xsltproc freeplane/ant/mm2menu.xsl \
+xsltproc freeplane/resources/xslt/mm2menu.xsl \
     freeplane/resources/xml/mindmapmodemenu.mm \
     > freeplane/resources/xml/mindmapmodemenu.xml
 
