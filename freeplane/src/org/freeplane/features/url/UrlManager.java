@@ -24,22 +24,15 @@ import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -50,16 +43,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -85,81 +70,9 @@ public class UrlManager implements IExtension {
 	private static File lastCurrentDir = null;
 	public static final String MAP_URL = "map_url";
 
-	/**
-	 * Creates a default reader that just reads the given file.
-	 *
-	 * @throws FileNotFoundException
-	 */
-	protected static Reader getActualReader(final InputStream file) throws FileNotFoundException {
-		return new InputStreamReader(file, FileUtils.defaultCharset());
-	}
-
 	public static UrlManager getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return modeController.getExtension(UrlManager.class);
-	}
-
-	/**
-	 * Creates a reader that pipes the input file through a XSLT-Script that
-	 * updates the version to the current.
-	 *
-	 * @throws IOException
-	 */
-	public static Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
-	        IOException {
-		try {
-			final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
-			if (updaterUrl == null) {
-				throw new IllegalArgumentException(xsltScript + " not found.");
-			}
-			final StringWriter writer = new StringWriter();
-			final Result result = new StreamResult(writer);
-			class TransformerRunnable implements Runnable {
-				private Throwable thrownException = null;
-
-				public void run() {
-					final TransformerFactory transFact = TransformerFactory.newInstance();
-					InputStream xsltInputStream = null;
-					InputStream input = null;
-					try {
-						xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
-						final Source xsltSource = new StreamSource(xsltInputStream);
-						input = new BufferedInputStream(new FileInputStream(file));
-						final CleaningInputStream cleanedInput = new CleaningInputStream(input);
-						final Reader reader = new InputStreamReader(cleanedInput, cleanedInput.isUtf8() ? Charset.forName("UTF-8") : FileUtils.defaultCharset());
-						final Transformer trans = transFact.newTransformer(xsltSource);
-						trans.transform(new StreamSource(reader), result);
-					}
-					catch (final Exception ex) {
-						LogUtils.warn(ex);
-						thrownException = ex;
-					}
-					finally {
-						FileUtils.silentlyClose(input, xsltInputStream);
-					}
-				}
-
-				public Throwable thrownException() {
-					return thrownException;
-				}
-			}
-			final TransformerRunnable transformer = new TransformerRunnable();
-			final Thread transformerThread = new Thread(transformer, "XSLT");
-			transformerThread.start();
-			transformerThread.join();
-			final Throwable thrownException = transformer.thrownException();
-			if (thrownException != null) {
-				throw new TransformerException(thrownException);
-			}
-			return new StringReader(writer.getBuffer().toString());
-		}
-		catch (final Exception ex) {
-			final String message = ex.getMessage();
-			UITools.errorMessage(TextUtils.format("update_failed", String.valueOf(message)));
-			LogUtils.warn(ex);
-			final InputStream input = new BufferedInputStream(new FileInputStream(file));
-			return UrlManager.getActualReader(input);
-		}
 	}
 
 	public static void install( final UrlManager urlManager) {
