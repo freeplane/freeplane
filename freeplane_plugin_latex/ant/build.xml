@@ -3,7 +3,7 @@
 	<property name="src" value="src" />
 	<property name="root" value="."/>
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />
-	<property name="xslt.base" value="${workspace}/freeplane/ant" />
+	<property name="xslt.base" value="${workspace}/freeplane/resources/xslt" />
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
