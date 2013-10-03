@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.features.time.mindmapmode;
+package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import java.awt.Color;
 import java.awt.Component;

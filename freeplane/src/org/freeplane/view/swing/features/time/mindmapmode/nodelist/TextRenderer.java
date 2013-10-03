@@ -1,6 +1,6 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2009 Dimitry
+ *  Copyright (C) 2013 Dimitry
  *
  *  This file author is Dimitry
  *
@@ -17,29 +17,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.features.time.mindmapmode;
+package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
-import java.awt.event.ActionEvent;
-
-import org.freeplane.core.ui.AFreeplaneAction;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * @author Dimitry Polivaev
- * 01.09.2009
+ * 03.10.2013
  */
-class NodeListAction extends AFreeplaneAction {
+class TextRenderer extends DefaultTableCellRenderer {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private final NodeList nodeList;
 
-	public NodeListAction() {
-		super("NodeListAction");
-		nodeList = new NodeList(true, false);
+	public TextRenderer() {
+		super();
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		nodeList.startup();
+	@Override
+	public void setValue(final Object value) {
+		setText((value == null) ? "" : ((TextHolder) value).getUntaggedNotesText());
 	}
 }

@@ -1,4 +1,4 @@
-package org.freeplane.view.swing.features.time.mindmapmode;
+package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import org.freeplane.n3.nanoxml.XMLElement;
 

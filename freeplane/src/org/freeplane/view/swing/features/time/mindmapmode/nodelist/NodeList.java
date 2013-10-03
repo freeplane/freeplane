@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.features.time.mindmapmode;
+package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -32,9 +32,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.List;
@@ -64,7 +62,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.JTextComponent;
@@ -74,13 +71,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
-import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
@@ -92,16 +86,15 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
 
 /**
  * @author foltin
  */
-class NodeList {
+public class NodeList {
 	private final class MapChangeListener implements IMapChangeListener, INodeChangeListener, IMapSelectionListener {
 	    public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
 	    	disposeDialog();
@@ -140,26 +133,6 @@ class NodeList {
 			disposeDialog();
         }
     }
-
-	static class DateRenderer extends DefaultTableCellRenderer {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		DateFormat formatter;
-
-		public DateRenderer() {
-			super();
-		}
-
-		@Override
-		public void setValue(final Object value) {
-			if (formatter == null) {
-				formatter = DateFormat.getDateTimeInstance();
-			}
-			setText((value == null) ? "" : formatter.format(value));
-		}
-	}
 
 	final private class FilterTextDocumentListener implements DocumentListener,  ChangeListener, ActionListener {
 		private Timer mTypeDelayTimer = null;
@@ -209,7 +182,7 @@ class NodeList {
 
 	final private class FlatNodeTable extends JTable {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -219,11 +192,8 @@ class NodeList {
 			if (object instanceof Date) {
 				return dateRenderer;
 			}
-			if (object instanceof NodeHolder) {
-				return nodeRenderer;
-			}
-			if (object instanceof NotesHolder) {
-				return notesRenderer;
+			if (object instanceof TextHolder) {
+				return textRenderer;
 			}
 			if (object instanceof IconsHolder) {
 				return iconsRenderer;
@@ -282,201 +252,31 @@ class NodeList {
 		}
 	}
 
-	static class IconsHolder implements Comparable<IconsHolder> {
-		final private String iconNames;
-		List<MindIcon> icons = new ArrayList<MindIcon>();
-
-		public IconsHolder(final NodeModel node) {
-			icons.addAll(IconController.getController().getIcons(node));
-			if (icons.size() > 0) {
-				final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
-				Collections.sort(toSort);
-				final StringBuilder builder = new StringBuilder();
-				for (final MindIcon icon : toSort) {
-					builder.append(icon.getName()).append(" ");
-				}
-				iconNames = builder.toString();
-			}
-			else {
-				iconNames = "";
-			}
-		}
-
-		public int compareTo(final IconsHolder compareToObject) {
-			return toString().compareTo(compareToObject.toString());
-		}
-
-		public List<MindIcon> getIcons() {
-			return icons;
-		}
-
-		/** Returns a sorted list of icon names. */
-		@Override
-		public String toString() {
-			return iconNames;
-		}
-	}
-
-	static class IconsRenderer extends DefaultTableCellRenderer {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public IconsRenderer() {
-			super();
-		}
-
-		@Override
-		public void setValue(final Object value) {
-			if (value instanceof IconsHolder) {
-				final IconsHolder iconsHolder = (IconsHolder) value;
-				final MultipleImage iconImages = new MultipleImage();
-				for (final MindIcon icon : iconsHolder.getIcons()) {
-					iconImages.addImage(icon.getIcon());
-				}
-				if (iconImages.getImageCount() > 0) {
-					setIcon(iconImages);
-				}
-				else {
-					setIcon(null);
-				}
-			}
-		}
-	}
-
-	public interface IReplaceInputInformation {
-		void changeString(NodeHolder holder, String newText);
-
-		int getLength();
-
-		NodeHolder getNodeHolderAt(int i);
-	}
-
-	/** removes html in nodes before comparison. */
-	public static class NodeHolder implements Comparable<NodeHolder> {
-		final private NodeModel node;
-		private String originalNodeText = null;
-		private String untaggedNodeText = null;
-
-		/**
-		 *
-		 */
-		public NodeHolder(final NodeModel node) {
-			this.node = node;
-		}
-
-		public int compareTo(final NodeHolder compareToObject) {
-			return toString().compareTo(compareToObject.toString());
-		}
-
-		public String getUntaggedNodeText() {
-			final String nodeText = node.getText();
-			if (untaggedNodeText == null || (originalNodeText != null && !originalNodeText.equals(nodeText))) {
-				originalNodeText = nodeText;
-				untaggedNodeText = HtmlUtils.removeHtmlTagsFromString(nodeText).replaceAll("\\s+", " ");
-			}
-			return untaggedNodeText;
-		}
-
-		@Override
-		public String toString() {
-			return getUntaggedNodeText();
-		}
-	}
-
-	static class NodeRenderer extends DefaultTableCellRenderer {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public NodeRenderer() {
-			super();
-		}
-
-		@Override
-		public void setValue(final Object value) {
-			setText((value == null) ? "" : ((NodeHolder) value).getUntaggedNodeText());
-		}
-	}
-
-	/** removes html in notes before comparison. */
-	public static class NotesHolder implements Comparable<NotesHolder> {
-		final private NodeModel node;
-		private String originalNotesText = null;
-		private String untaggedNotesText = null;
-
-		/**
-		 *
-		 */
-		public NotesHolder(final NodeModel node) {
-			this.node = node;
-		}
-
-		public int compareTo(final NotesHolder compareToObject) {
-			return toString().compareTo(compareToObject.toString());
-		}
-
-		public String getUntaggedNotesText() {
-			final String notesText = NoteModel.getNoteText(node);
-			if (notesText == null) {
-				return "";
-			}
-			if (untaggedNotesText == null || (originalNotesText != null && !originalNotesText.equals(notesText))) {
-				originalNotesText = notesText;
-				untaggedNotesText = HtmlUtils.removeHtmlTagsFromString(notesText).replaceAll("\\s+", " ");
-			}
-			return untaggedNotesText;
-		}
-
-		@Override
-		public String toString() {
-			return getUntaggedNotesText();
-		}
-	}
-
-	static class NotesRenderer extends DefaultTableCellRenderer {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public NotesRenderer() {
-			super();
-		}
-
-		@Override
-		public void setValue(final Object value) {
-			setText((value == null) ? "" : ((NotesHolder) value).getUntaggedNotesText());
-		}
-	}
-
 	private class ReplaceAllInfo implements IReplaceInputInformation {
-		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController()).setNodeText(nodeHolder.node, newText);
+		public void changeString(final TextHolder textHolder, final String newText) {
+			textHolder.setText(newText);
 		}
 
 		public int getLength() {
 			return mFlatNodeTableFilterModel.getRowCount();
 		}
 
-		public NodeHolder getNodeHolderAt(final int i) {
-			return (NodeHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_TEXT_COLUMN);
+		public TextHolder getNodeHolderAt(final int i) {
+			return (TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_TEXT_COLUMN);
 		}
 	}
 
 	private class ReplaceSelectedInfo implements IReplaceInputInformation {
-		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController()).setNodeText(nodeHolder.node, newText);
+		public void changeString(final TextHolder textHolder, final String newText) {
+			textHolder.setText(newText);
 		}
 
 		public int getLength() {
 			return timeTable.getSelectedRowCount();
 		}
 
-		public NodeHolder getNodeHolderAt(final int i) {
-			return (NodeHolder) sorter.getValueAt(timeTable.getSelectedRows()[i], NodeList.NODE_TEXT_COLUMN);
+		public TextHolder getNodeHolderAt(final int i) {
+			return (TextHolder) sorter.getValueAt(timeTable.getSelectedRows()[i], NodeList.NODE_TEXT_COLUMN);
 		}
 	}
 
@@ -520,10 +320,9 @@ class NodeList {
 	private FlatNodeTableFilterModel mFlatNodeTableFilterModel;
 // 	final private ModeController modeController;
 	private JLabel mTreeLabel;
-	private NodeRenderer nodeRenderer;
-	private NotesRenderer notesRenderer;
+	private TextRenderer textRenderer;
 	private boolean showAllNodes = false;
-	private org.freeplane.view.swing.features.time.mindmapmode.TableSorter sorter;
+	private org.freeplane.view.swing.features.time.mindmapmode.nodelist.TableSorter sorter;
 	private JTable timeTable;
 	private DefaultTableModel timeTableModel;
 	private final boolean searchInAllMaps;
@@ -536,7 +335,7 @@ class NodeList {
 	    this(false, showAllNodes, searchInAllMaps);
     }
 
-	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {		
+	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.modal = modal;
@@ -625,8 +424,8 @@ class NodeList {
 	/**
 	 */
 	private NodeModel getMindMapNode(final int focussedRow) {
-		final NodeModel selectedNode = ((NodeHolder) timeTable.getModel().getValueAt(focussedRow,
-		    NodeList.NODE_TEXT_COLUMN)).node;
+		final NodeModel selectedNode = ((TextHolder) timeTable.getModel().getValueAt(focussedRow,
+		    NodeList.NODE_TEXT_COLUMN)).getNode();
 		return selectedNode;
 	}
 
@@ -652,8 +451,8 @@ class NodeList {
 		final String replacement = replaceString == null ? "" : replaceString;
 		final int length = info.getLength();
 		for (int i = 0; i < length; i++) {
-			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
-			final String text = nodeHolder.node.getText();
+			final TextHolder textHolder = info.getNodeHolderAt(i);
+			final String text = textHolder.getText();
 			final String replaceResult;
 			final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
 			try {
@@ -669,7 +468,7 @@ class NodeList {
             	return;
             }
 			if (!StringUtils.equals(text, replaceResult)) {
-				info.changeString(nodeHolder, replaceResult);
+				info.changeString(textHolder, replaceResult);
 			}
 		}
 		timeTableModel.fireTableDataChanged();
@@ -735,7 +534,7 @@ class NodeList {
 		dialog.setTitle(TextUtils.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		final WindowAdapter windowListener = new WindowAdapter() {
-			
+
 			@Override
             public void windowGainedFocus(WindowEvent e) {
 				mFilterTextSearchField.getEditor().selectAll();
@@ -750,7 +549,7 @@ class NodeList {
 		dialog.addWindowFocusListener(windowListener);
 		UITools.addEscapeActionToDialog(dialog, new AbstractAction() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -803,8 +602,7 @@ class NodeList {
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), layoutConstraints);
 		dateRenderer = new DateRenderer();
-		nodeRenderer = new NodeRenderer();
-		notesRenderer = new NotesRenderer();
+		textRenderer = new TextRenderer();
 		iconsRenderer = new IconsRenderer();
 		timeTable = new FlatNodeTable();
 		timeTable.addKeyListener(new FlatNodeTableKeyListener());
@@ -841,7 +639,7 @@ class NodeList {
 		contentPane.add(scrollPane, treeConstraints);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Export")) {
 			/**
-			     * 
+			     *
 			     */
 			private static final long serialVersionUID = 1L;
 
@@ -853,7 +651,7 @@ class NodeList {
 		final AbstractAction replaceAllAction = new AbstractAction(TextUtils
 		    .getText("plugins/TimeManagement.xml_Replace_All")) {
 			/**
-			     * 
+			     *
 			     */
 			private static final long serialVersionUID = 1L;
 
@@ -865,7 +663,7 @@ class NodeList {
 		final AbstractAction replaceSelectedAction = new AbstractAction(TextUtils
 		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
 			/**
-			     * 
+			     *
 			     */
 			private static final long serialVersionUID = 1L;
 
@@ -876,7 +674,7 @@ class NodeList {
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
 		final AbstractAction gotoAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Goto")) {
 			/**
-			     * 
+			     *
 			     */
 			private static final long serialVersionUID = 1L;
 
@@ -887,7 +685,7 @@ class NodeList {
 		final JButton gotoButton = new JButton(gotoAction);
 		final AbstractAction disposeAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_CLOSE)) {
 			/**
-			     * 
+			     *
 			     */
 			private static final long serialVersionUID = 1L;
 
@@ -967,7 +765,7 @@ class NodeList {
 				column++;
 			}
 		}
-		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(), 
+		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(),
 			matchCase.isSelected(), useRegexInFind.isSelected());
 		dialog.setVisible(true);
 	}
@@ -978,7 +776,7 @@ class NodeList {
 	private DefaultTableModel updateModel() {
 		final DefaultTableModel model = new DefaultTableModel() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -994,11 +792,11 @@ class NodeList {
 					case NODE_MODIFIED_COLUMN:
 						return Date.class;
 					case NODE_TEXT_COLUMN:
-						return NodeHolder.class;
+						return TextHolder.class;
 					case NODE_ICON_COLUMN:
 						return IconsHolder.class;
 					case NODE_NOTES_COLUMN:
-						return NotesHolder.class;
+						return TextHolder.class;
 					default:
 						return Object.class;
 				}
@@ -1031,9 +829,9 @@ class NodeList {
 			date = new Date(hook.getRemindUserAt());
 		}
 		if (showAllNodes && node.isVisible() || hook != null) {
-			model.addRow(new Object[] { date, new NodeHolder(node), new IconsHolder(node),
+			model.addRow(new Object[] { date, new TextHolder(new CoreTextAccessor(node)), new IconsHolder(node),
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
-			        new NotesHolder(node) });
+			        new TextHolder(new NoteTextAccessor(node)) });
 		}
 		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			updateModel(model, child);

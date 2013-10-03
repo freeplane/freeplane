@@ -100,7 +100,7 @@ public class NoteController implements IExtension {
 	}
 
 	/**
-	 * @param node
+	 * @param data.node
 	 */
 	protected void onWrite(final MapModel map) {
 	}

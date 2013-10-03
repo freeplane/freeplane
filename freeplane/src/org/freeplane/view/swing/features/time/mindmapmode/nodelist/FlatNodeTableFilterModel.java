@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.features.time.mindmapmode;
+package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -27,8 +27,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
-
-import org.freeplane.view.swing.features.time.mindmapmode.NodeList.NodeHolder;
 
 /**
  * @author foltin
@@ -133,7 +131,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	private void updateIndexArray() {
 		final ArrayList<Integer> newIndexArray = new ArrayList<Integer>();
 		for (int i = 0; i < mTableModel.getRowCount(); i++) {
-			final NodeHolder nodeContent = (NodeHolder) mTableModel.getValueAt(i, mNodeTextColumn);
+			final TextHolder nodeContent = (TextHolder) mTableModel.getValueAt(i, mNodeTextColumn);
 			if(mFilterRegexp == null){
 				newIndexArray.add(new Integer(i));
 				continue;
