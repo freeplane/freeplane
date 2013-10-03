@@ -48,17 +48,17 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	/**
 	 * The column that contains the NodeHolder items
 	 */
-	final private int mNodeTextColumn;
+	final private int[] mNodeTextColumns;
 	final private TableModel mTableModel;
 	private boolean matchCase;
 
 	/**
 	 * @param node_text_column
 	 */
-	public FlatNodeTableFilterModel(final TableModel tableModel, final int node_text_column) {
+	public FlatNodeTableFilterModel(final TableModel tableModel, final int[] node_text_column) {
 		super();
 		mTableModel = tableModel;
-		mNodeTextColumn = node_text_column;
+		mNodeTextColumns = node_text_column;
 		tableModel.addTableModelListener(new TableModelHandler());
 		resetFilter();
 	}
@@ -131,27 +131,20 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	private void updateIndexArray() {
 		final ArrayList<Integer> newIndexArray = new ArrayList<Integer>();
 		for (int i = 0; i < mTableModel.getRowCount(); i++) {
-			final TextHolder nodeContent = (TextHolder) mTableModel.getValueAt(i, mNodeTextColumn);
 			if(mFilterRegexp == null){
 				newIndexArray.add(new Integer(i));
 				continue;
 			}
-			if(mPattern == null){
-				if(matchCase){
-					if(nodeContent.toString().contains(mFilterRegexp)){
-						newIndexArray.add(new Integer(i));
-					}
-				}
-				else{
-					if(nodeContent.toString().toLowerCase().contains(mFilterRegexp)){
-						newIndexArray.add(new Integer(i));
-					}
-				}
-				continue;
-			}
-			if (mPattern.matcher(nodeContent.toString()).find()) {
-				newIndexArray.add(new Integer(i));
-				continue;
+			for(int nodeTextColumn : mNodeTextColumns){
+				final TextHolder nodeContent = (TextHolder) mTableModel.getValueAt(i, nodeTextColumn);
+				if(mPattern == null && (
+						matchCase && nodeContent.toString().contains(mFilterRegexp)
+						|| ! matchCase && nodeContent.toString().toLowerCase().contains(mFilterRegexp))
+					|| mPattern != null && mPattern.matcher(nodeContent.toString()).find()
+				) {
+	                newIndexArray.add(new Integer(i));
+	                break;
+                }
 			}
 		}
 		mIndexArray = newIndexArray;

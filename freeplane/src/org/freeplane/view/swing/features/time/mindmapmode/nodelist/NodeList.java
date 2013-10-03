@@ -246,13 +246,19 @@ public class NodeList {
 		public void mouseClicked(final MouseEvent e) {
 			if (e.getClickCount() == 2) {
 				final Point p = e.getPoint();
-				final int row = timeTable.rowAtPoint(p);
+				final int row = tableView.rowAtPoint(p);
 				gotoNodesAndClose(row, new int[] { row });
 			}
 		}
 	}
 
-	private class ReplaceAllInfo implements IReplaceInputInformation {
+	private class HolderAccessor{
+		final private boolean selectedOnly;
+		private HolderAccessor(boolean selectedOnly) {
+	        super();
+	        this.selectedOnly = selectedOnly;
+        }
+
 		public void changeString(final TextHolder textHolder, final String newText) {
 			textHolder.setText(newText);
 		}
@@ -261,23 +267,20 @@ public class NodeList {
 			return mFlatNodeTableFilterModel.getRowCount();
 		}
 
-		public TextHolder getNodeHolderAt(final int i) {
-			return (TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_TEXT_COLUMN);
+		public TextHolder[] getNodeHoldersAt(final int row) {
+			return selectedOnly ? getSelectedNodeHoldersAt(row):getAnyNodeHoldersAt(row);
 		}
-	}
+		public TextHolder[] getAnyNodeHoldersAt(final int i) {
+			return new TextHolder[]{
+					(TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_TEXT_COLUMN),
+					(TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_DETAILS_COLUMN),
+					(TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_NOTES_COLUMN)
+			};
+		}
+		public TextHolder[] getSelectedNodeHoldersAt(final int i) {
+			return new TextHolder[]{(TextHolder) sorter.getValueAt(tableView.getSelectedRows()[i], NodeList.NODE_TEXT_COLUMN)};
+		}
 
-	private class ReplaceSelectedInfo implements IReplaceInputInformation {
-		public void changeString(final TextHolder textHolder, final String newText) {
-			textHolder.setText(newText);
-		}
-
-		public int getLength() {
-			return timeTable.getSelectedRowCount();
-		}
-
-		public TextHolder getNodeHolderAt(final int i) {
-			return (TextHolder) sorter.getValueAt(timeTable.getSelectedRows()[i], NodeList.NODE_TEXT_COLUMN);
-		}
 	}
 
 	private static String COLUMN_CREATED = "Created";
@@ -286,17 +289,21 @@ public class NodeList {
 	private static String COLUMN_MODIFIED = "Modified";
 	private static String COLUMN_NOTES = "Notes";
 	private static String COLUMN_TEXT = "Text";
+	private static String COLUMN_DETAILS = "Details";
 	private static final int DATE_COLUMN = 0;
 	protected static final int NODE_CREATED_COLUMN = 3;
 	protected static final int NODE_ICON_COLUMN = 2;
 	protected static final int NODE_MODIFIED_COLUMN = 4;
-	protected static final int NODE_NOTES_COLUMN = 5;
+	protected static final int NODE_DETAILS_COLUMN = 5;
+	protected static final int NODE_NOTES_COLUMN = 6;
 	public static final int NODE_TEXT_COLUMN = 1;
 	private static final String PLUGINS_TIME_LIST_XML_CREATED = "plugins/TimeList.xml_Created";
 	private static final String PLUGINS_TIME_LIST_XML_DATE = "plugins/TimeList.xml_Date";
 	private static final String PLUGINS_TIME_LIST_XML_ICONS = "plugins/TimeList.xml_Icons";
 	private static final String PLUGINS_TIME_LIST_XML_MODIFIED = "plugins/TimeList.xml_Modified";
 	private static final String PLUGINS_TIME_LIST_XML_NOTES = "plugins/TimeList.xml_Notes";
+	private static final String PLUGINS_TIME_LIST_XML_DETAILS = "plugins/TimeList.xml_Details";
+
 	private static final String PLUGINS_TIME_LIST_XML_TEXT = "plugins/TimeList.xml_Text";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_CLOSE = "plugins/TimeManagement.xml_closeButton";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
@@ -323,8 +330,8 @@ public class NodeList {
 	private TextRenderer textRenderer;
 	private boolean showAllNodes = false;
 	private org.freeplane.view.swing.features.time.mindmapmode.nodelist.TableSorter sorter;
-	private JTable timeTable;
-	private DefaultTableModel timeTableModel;
+	private JTable tableView;
+	private DefaultTableModel tableModel;
 	private final boolean searchInAllMaps;
 	private final JCheckBox useRegexInReplace;
 	private final JCheckBox useRegexInFind;
@@ -361,7 +368,7 @@ public class NodeList {
 			@Override
 			public void keyPressed(final KeyEvent pEvent) {
 				if (pEvent.getKeyCode() == KeyEvent.VK_DOWN) {
-					timeTable.requestFocusInWindow();
+					tableView.requestFocusInWindow();
 				}
 				else if (pEvent.getKeyCode() == KeyEvent.VK_UP) {
 					mFilterTextSearchField.requestFocusInWindow();
@@ -390,9 +397,9 @@ public class NodeList {
     		return;
     	}
 		final TimeWindowConfigurationStorage storage = new TimeWindowConfigurationStorage();
-		for (int i = 0; i < timeTable.getColumnCount(); i++) {
+		for (int i = 0; i < tableView.getColumnCount(); i++) {
 			final TimeWindowColumnSetting setting = new TimeWindowColumnSetting();
-			setting.setColumnWidth(timeTable.getColumnModel().getColumn(i).getWidth());
+			setting.setColumnWidth(tableView.getColumnModel().getColumn(i).getWidth());
 			setting.setColumnSorting(sorter.getSortingStatus(i));
 			storage.addTimeWindowColumnSetting(setting);
 		}
@@ -403,7 +410,7 @@ public class NodeList {
 	}
 
 	protected void exportSelectedRowsAndClose() {
-		final int[] selectedRows = timeTable.getSelectedRows();
+		final int[] selectedRows = tableView.getSelectedRows();
 		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>();
 		for (int i = 0; i < selectedRows.length; i++) {
 			final int row = selectedRows[i];
@@ -424,7 +431,7 @@ public class NodeList {
 	/**
 	 */
 	private NodeModel getMindMapNode(final int focussedRow) {
-		final NodeModel selectedNode = ((TextHolder) timeTable.getModel().getValueAt(focussedRow,
+		final NodeModel selectedNode = ((TextHolder) tableView.getModel().getValueAt(focussedRow,
 		    NodeList.NODE_TEXT_COLUMN)).getNode();
 		return selectedNode;
 	}
@@ -434,7 +441,7 @@ public class NodeList {
 		disposeDialog();
 	}
 
-	private void replace(final IReplaceInputInformation info) {
+	private void replace(final HolderAccessor holderAccessor) {
 		final String searchString = (String) mFilterTextSearchField.getSelectedItem();
 		if(searchString == null)
 			return;
@@ -449,29 +456,31 @@ public class NodeList {
 			return;
 		}
 		final String replacement = replaceString == null ? "" : replaceString;
-		final int length = info.getLength();
+		final int length = holderAccessor.getLength();
 		for (int i = 0; i < length; i++) {
-			final TextHolder textHolder = info.getNodeHolderAt(i);
-			final String text = textHolder.getText();
-			final String replaceResult;
-			final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
-			try {
-	            if (HtmlUtils.isHtmlNode(text)) {
-	            	replaceResult = NodeList.replace(p, text,literalReplacement);
-	            }
-	            else {
-	            	replaceResult = p.matcher(text).replaceAll(literalReplacement);
-	            }
-            }
-            catch (Exception e) {
-    			UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, e.getMessage()));
-            	return;
-            }
-			if (!StringUtils.equals(text, replaceResult)) {
-				info.changeString(textHolder, replaceResult);
+			TextHolder[] textHolders = holderAccessor.getNodeHoldersAt(i);
+			for(final TextHolder textHolder:textHolders){
+				final String text = textHolder.getText();
+				final String replaceResult;
+				final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
+				try {
+					if (HtmlUtils.isHtmlNode(text)) {
+						replaceResult = NodeList.replace(p, text,literalReplacement);
+					}
+					else {
+						replaceResult = p.matcher(text).replaceAll(literalReplacement);
+					}
+				}
+				catch (Exception e) {
+					UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, e.getMessage()));
+					return;
+				}
+				if (!StringUtils.equals(text, replaceResult)) {
+					holderAccessor.changeString(textHolder, replaceResult);
+				}
 			}
 		}
-		timeTableModel.fireTableDataChanged();
+		tableModel.fireTableDataChanged();
 		mFlatNodeTableFilterModel.resetFilter();
 		mFilterTextSearchField.insertItemAt(mFilterTextSearchField.getSelectedItem(), 0);
 		mFilterTextReplaceField.insertItemAt(mFilterTextReplaceField.getSelectedItem(), 0);
@@ -509,7 +518,7 @@ public class NodeList {
 	}
 
 	private void selectSelectedRows() {
-		selectNodes(timeTable.getSelectedRow(), timeTable.getSelectedRows());
+		selectNodes(tableView.getSelectedRow(), tableView.getSelectedRows());
 	}
 
 	public void startup() {
@@ -521,6 +530,7 @@ public class NodeList {
 		NodeList.COLUMN_CREATED = TextUtils.getText(PLUGINS_TIME_LIST_XML_CREATED);
 		NodeList.COLUMN_ICONS = TextUtils.getText(PLUGINS_TIME_LIST_XML_ICONS);
 		NodeList.COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
+		NodeList.COLUMN_DETAILS= TextUtils.getText(PLUGINS_TIME_LIST_XML_DETAILS);
 		NodeList.COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
 		NodeList.COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), modal /* modal */);
@@ -604,20 +614,22 @@ public class NodeList {
 		dateRenderer = new DateRenderer();
 		textRenderer = new TextRenderer();
 		iconsRenderer = new IconsRenderer();
-		timeTable = new FlatNodeTable();
-		timeTable.addKeyListener(new FlatNodeTableKeyListener());
-		timeTable.addMouseListener(new FlatNodeTableMouseAdapter());
-		timeTable.getTableHeader().setReorderingAllowed(false);
-		timeTableModel = updateModel();
-		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(timeTableModel, NodeList.NODE_TEXT_COLUMN);
+		tableView = new FlatNodeTable();
+		tableView.addKeyListener(new FlatNodeTableKeyListener());
+		tableView.addMouseListener(new FlatNodeTableMouseAdapter());
+		tableView.getTableHeader().setReorderingAllowed(false);
+		tableModel = updateModel();
+		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
+			new int[]{NodeList.NODE_TEXT_COLUMN, NodeList.NODE_DETAILS_COLUMN, NodeList.NODE_NOTES_COLUMN}
+		);
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
-		timeTable.setModel(sorter);
-		sorter.setTableHeader(timeTable.getTableHeader());
+		tableView.setModel(sorter);
+		sorter.setTableHeader(tableView.getTableHeader());
 		sorter.setColumnComparator(Date.class, TableSorter.COMPARABLE_COMPARATOR);
 		sorter.setColumnComparator(NodeModel.class, TableSorter.LEXICAL_COMPARATOR);
 		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMPARATOR);
 		sorter.setSortingStatus(NodeList.DATE_COLUMN, TableSorter.ASCENDING);
-		final JScrollPane pane = new JScrollPane(timeTable);
+		final JScrollPane pane = new JScrollPane(tableView);
 		UITools.setScrollbarIncrement(pane);
 		layoutConstraints.gridy++;
 		GridBagConstraints tableConstraints = (GridBagConstraints) layoutConstraints.clone();
@@ -656,7 +668,7 @@ public class NodeList {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
-				replace(new ReplaceAllInfo());
+				replace(new HolderAccessor(false));
 			}
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
@@ -668,7 +680,7 @@ public class NodeList {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
-				replace(new ReplaceSelectedInfo());
+				replace(new HolderAccessor(true));
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
@@ -719,7 +731,7 @@ public class NodeList {
 		}
 		menuBar.add(menu);
 		dialog.setJMenuBar(menuBar);
-		final ListSelectionModel rowSM = timeTable.getSelectionModel();
+		final ListSelectionModel rowSM = tableView.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(final ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
@@ -756,11 +768,11 @@ public class NodeList {
 		final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(marshalled, dialog);
 		final WindowConfigurationStorage storage = result;
 		if (storage != null) {
-			timeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			tableView.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;
 			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage)
 			    .getListTimeWindowColumnSettingList()) {
-				timeTable.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
+				tableView.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
 				sorter.setSortingStatus(column, setting.getColumnSorting());
 				column++;
 			}
@@ -792,11 +804,11 @@ public class NodeList {
 					case NODE_MODIFIED_COLUMN:
 						return Date.class;
 					case NODE_TEXT_COLUMN:
+					case NODE_NOTES_COLUMN:
+					case NODE_DETAILS_COLUMN:
 						return TextHolder.class;
 					case NODE_ICON_COLUMN:
 						return IconsHolder.class;
-					case NODE_NOTES_COLUMN:
-						return TextHolder.class;
 					default:
 						return Object.class;
 				}
@@ -807,6 +819,7 @@ public class NodeList {
 		model.addColumn(NodeList.COLUMN_ICONS);
 		model.addColumn(NodeList.COLUMN_CREATED);
 		model.addColumn(NodeList.COLUMN_MODIFIED);
+		model.addColumn(NodeList.COLUMN_DETAILS);
 		model.addColumn(NodeList.COLUMN_NOTES);
 		if (searchInAllMaps == false) {
 			final NodeModel node = Controller.getCurrentController().getMap().getRootNode();
@@ -829,8 +842,13 @@ public class NodeList {
 			date = new Date(hook.getRemindUserAt());
 		}
 		if (showAllNodes && node.isVisible() || hook != null) {
-			model.addRow(new Object[] { date, new TextHolder(new CoreTextAccessor(node)), new IconsHolder(node),
-			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
+			model.addRow(new Object[] {
+					date,
+					new TextHolder(new CoreTextAccessor(node)),
+					new IconsHolder(node),
+			        node.getHistoryInformation().getCreatedAt(),
+			        node.getHistoryInformation().getLastModifiedAt(),
+			        new TextHolder(new DetailTextAccessor(node)) ,
 			        new TextHolder(new NoteTextAccessor(node)) });
 		}
 		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {

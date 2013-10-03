@@ -28,7 +28,7 @@ import org.freeplane.features.note.mindmapmode.MNoteController;
 /**
  * @author  Dimitry Polivaev 03.10.2013
  */
-public class NoteTextAccessor implements TextAccessor {
+class NoteTextAccessor implements TextAccessor {
 	final private NodeModel node;
 
 	public NoteTextAccessor(NodeModel node) {
@@ -37,7 +37,7 @@ public class NoteTextAccessor implements TextAccessor {
 
 	public String getText() {
 	    final String notesText = NoteModel.getNoteText(node);
-	    return notesText;
+	    return notesText != null ? notesText : "";
 	}
 
 	public void setText(String newText) {

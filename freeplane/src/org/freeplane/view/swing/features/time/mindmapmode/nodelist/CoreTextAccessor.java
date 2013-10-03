@@ -26,7 +26,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 /**
  * @author  Dimitry Polivaev 03.10.2013
  */
-public class CoreTextAccessor implements TextAccessor {
+class CoreTextAccessor implements TextAccessor {
 	final private NodeModel node;
 
 	public CoreTextAccessor(NodeModel node) {

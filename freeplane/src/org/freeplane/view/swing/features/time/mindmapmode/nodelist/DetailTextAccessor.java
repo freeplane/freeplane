@@ -19,15 +19,31 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.MTextController;
 
 /**
- * @author Dimitry Polivaev
- * 03.10.2013
+ * @author  Dimitry Polivaev 03.10.2013
  */
-public interface IReplaceInputInformation {
-	void changeString(TextHolder holder, String newText);
+class DetailTextAccessor implements TextAccessor {
+	final private NodeModel node;
 
-	int getLength();
+	public DetailTextAccessor(NodeModel node) {
+		this.node = node;
+	}
 
-	TextHolder getNodeHolderAt(int i);
+	public String getText() {
+	    String details = DetailTextModel.getDetailTextText(node);
+		return details != null ? details : "";
+	}
+
+	public void setText(String newText) {
+		((MTextController) TextController.getController()).setDetails(node, newText);
+    }
+
+	public NodeModel getNode() {
+	    return node;
+    }
 }
