@@ -379,18 +379,18 @@ public class MLinkController extends LinkController {
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 	private String anchorID;
-	private ModeController modeController;
+	private final ModeController modeController;
 
-	public MLinkController() {
+	public MLinkController(ModeController modeController) {
 		super();
+		this.modeController = modeController;
+		this.anchorID = "";
 	}
 
 	@Override
     protected void init() {
 		super.init();
-		modeController = Controller.getCurrentModeController();
 		createActions();
-		anchorID = null;
 		modeController.registerExtensionCopier(new StyleCopier());
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
@@ -427,7 +427,6 @@ public class MLinkController extends LinkController {
 	 *
 	 */
 	private void createActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
 		setLinkByFileChooser = new SetLinkByFileChooserAction();
 		modeController.addAction(setLinkByFileChooser);
 		final AddConnectorAction addArrowLinkAction = new AddConnectorAction();
@@ -1061,7 +1060,6 @@ public class MLinkController extends LinkController {
 
 	@Override
 	protected void loadURL(final NodeModel node, final ActionEvent e) {
-		ModeController modeController = Controller.getCurrentModeController();
 		// load as documentation map if the node belongs to a documentation map
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
 				&& ! modeController.containsExtension(DocuMapAttribute.class);
@@ -1137,8 +1135,8 @@ public class MLinkController extends LinkController {
 		}
 	    return link;
     }
+	
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
-		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeLinks links = NodeLinks.createLinkExtension(node);
 		IActor actor = new IActor() {
 			final Boolean old = links.formatNodeAsHyperlink();
