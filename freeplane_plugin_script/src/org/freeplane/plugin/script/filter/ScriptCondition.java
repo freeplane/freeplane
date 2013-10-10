@@ -32,6 +32,17 @@ public class ScriptCondition extends ASelectableCondition {
 		return new ScriptCondition(element.getAttribute(SCRIPT, null));
 	}
 
+	@Override
+    public void fillXML(final XMLElement child) {
+		super.fillXML(child);
+		child.setAttribute(SCRIPT, script.getScript().toString());
+	}
+
+	@Override
+    protected String getName() {
+	    return NAME;
+    }
+
 	public ScriptCondition(final String script) {
 		super();
 		final ScriptingPermissions formulaPermissions = ScriptingPermissions.getFormulaPermissions();
@@ -93,15 +104,4 @@ public class ScriptCondition extends ASelectableCondition {
 		return renderer;
     }
 
-
-	@Override
-    public void fillXML(final XMLElement child) {
-		super.fillXML(child);
-		child.setAttribute(SCRIPT, script.getScript().toString());
-	}
-
-	@Override
-    protected String getName() {
-	    return NAME;
-    }
 }
