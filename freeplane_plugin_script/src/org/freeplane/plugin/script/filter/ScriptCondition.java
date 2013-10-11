@@ -33,9 +33,9 @@ public class ScriptCondition extends ASelectableCondition {
 	}
 
 	@Override
-    public void fillXML(final XMLElement child) {
-		super.fillXML(child);
-		child.setAttribute(SCRIPT, script.getScript().toString());
+    public void fillXML(final XMLElement element) {
+		super.fillXML(element);
+		element.setAttribute(SCRIPT, script.getScript().toString());
 	}
 
 	@Override
