@@ -24,18 +24,27 @@ public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
 	private static final String SCRIPT_FILTER_ERROR_RESOURCE = "plugins/script_filter_error";
 	static final String NAME = "script_condition";
-	static final String SCRIPT = "SCRIPT";
+	static final String TAG_NAME = "script";
+	static final String ATTRIB_NAME = "SCRIPT"; // for backward compatibility
 	final private IScript script;
 	private boolean errorReported = false;
 
 	static ASelectableCondition load(final XMLElement element) {
-		return new ScriptCondition(element.getAttribute(SCRIPT, null));
+	    final XMLElement child = element.getFirstChildNamed(TAG_NAME);
+	    if (child != null) {
+		return new ScriptCondition(child.getContent());
+	    } else {
+		// read attribute for backward compatibility
+		return new ScriptCondition(element.getAttribute(ATTRIB_NAME, null));
+	    }
 	}
 
 	@Override
     public void fillXML(final XMLElement element) {
+		final XMLElement child = new XMLElement(TAG_NAME);
 		super.fillXML(element);
-		element.setAttribute(SCRIPT, script.getScript().toString());
+		child.setContent(script.getScript().toString());
+		element.addChild(child);
 	}
 
 	@Override

@@ -119,8 +119,7 @@ public class ScriptConditionController implements IElementaryConditionController
 	public ASelectableCondition loadCondition(final XMLElement element) {
 		try {
 			if (element.getName().equalsIgnoreCase(ScriptCondition.NAME)) {
-				final String script = element.getAttribute(ScriptCondition.SCRIPT, null);
-				return new ScriptCondition(script);
+			    return ScriptCondition.load(element);
 			}
 		}
 		catch (final Exception e) {
