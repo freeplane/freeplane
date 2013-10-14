@@ -111,6 +111,17 @@
 		</javac>
 	</target>
 
+	<target name="signjar" depends="jar" if="signApplet">
+		<echo>create a self-signed applet</echo>
+		<echo>this requires having created a key with password 'abcdef':
+         keytool -genkey -keystore ~/.keystore -alias fp
+         keytool -selfcert -keystore ~/.keystore -alias fp
+		</echo>
+    
+		<signjar jar="${freeplaneviewer.jar}" keystore="${user.home}/.keystore"
+             alias="fp" storepass="abcdef"/>
+		<!-- <input/> -->
+	</target>
 
 	<target name="jar" depends="build">
 		<mkdir dir="${freeplane.dist.lib}" />
@@ -153,7 +164,7 @@
 		<ant antfile="ant/build.xml" target="dist" dir="${workspace}/freeplane_mac" inheritall="false" />
 	</target>	
 
-	<target name="osgi_jar" depends="jar, osgi_build">
+	<target name="osgi_jar" depends="signjar, osgi_build">
 		<jar jarfile="${freeplaneosgi.jar}">
 			<fileset dir="${build}">
 				<include name="**/osgi/**" />
@@ -161,7 +172,7 @@
 		</jar>
 	</target>
 	
-	<target name="dist" depends="jar, buildmac">
+	<target name="dist" depends="signjar, buildmac">
 		<!-- third party libs -->
 		<mkdir dir="${freeplane.dist.lib}" />
 		<copy todir="${freeplane.dist.lib}">
