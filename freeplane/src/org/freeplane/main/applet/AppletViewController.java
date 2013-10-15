@@ -25,6 +25,7 @@ import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.JComponent;
@@ -118,9 +119,7 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		if (initialMapName != null && initialMapName.startsWith(".")) {
 			/* new handling for relative urls. fc, 29.10.2003. */
 			try {
-				URI uri = applet.getDocumentBase().toURI().resolve(new URI(null, null, initialMapName, null));
-				URL documentBase = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
-				initialMapName = documentBase.toString();
+				initialMapName = computeAbsoluteMapUrl(initialMapName);
 			}
 			catch (final Exception e) {
 				UITools.errorMessage(TextUtils.format("map_load_error", initialMapName));
@@ -138,6 +137,31 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 				LogUtils.severe(e);
 			}
 		}
+	}
+
+	private String computeAbsoluteMapUrl(String initialMapName) throws URISyntaxException,
+			MalformedURLException {
+		URL appletBase = computeAppletBase();
+		URL mapUrl;
+		if (applet.getDocumentBase() == null) // a local applet
+		{
+			mapUrl = appletBase;
+		}
+		else
+		{
+			URI uri = appletBase.toURI().resolve(new URI(null, null, initialMapName, null));
+			mapUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
+		}
+		initialMapName = mapUrl.toString();
+		return initialMapName;
+	}
+
+	private URL computeAppletBase() throws MalformedURLException {
+		URL appletBase = applet.getDocumentBase();
+		if(appletBase == null){
+			appletBase = new URL(getController().getResourceController().getResource(ResourceController.FREEPLANE_PROPERTIES).toString().replaceAll("^jar:", "").replaceAll("freeplaneviewer\\.jar!.*", "") + "map.mm");
+		}
+		return appletBase;
 	}
 
 	@Override
