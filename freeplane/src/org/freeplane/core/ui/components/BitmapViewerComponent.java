@@ -38,6 +38,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.JComponent;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
@@ -49,13 +50,13 @@ import com.thebuzzmedia.imgscalr.AsyncScalr;
  */
 public class BitmapViewerComponent extends JComponent {
 	/**
-	 * 
+	 *
 	 */
 	static{
 //		System.setProperty("imgscalr.debug", "true");
 		AsyncScalr.setServiceThreadCount(1);
 	}
-	
+
 	enum CacheType{IC_DISABLE, IC_FILE, IC_RAM};
 	private static final long serialVersionUID = 1L;
 	private File cacheFile;
@@ -96,13 +97,13 @@ public class BitmapViewerComponent extends JComponent {
 
 	private Dimension readOriginalSize() throws IOException {
 		InputStream inputStream = null;
-		ImageInputStream in = null; 
+		ImageInputStream in = null;
 		try {
 				inputStream = url.openStream();
 				in = ImageIO.createImageInputStream(inputStream);
 		        final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
 		        if (readers.hasNext()) {
-		                ImageReader reader = (ImageReader) readers.next();
+		                ImageReader reader = readers.next();
 		                try {
 		                        reader.setInput(in);
 		                        return new Dimension(reader.getWidth(0), reader.getHeight(0));
@@ -111,10 +112,10 @@ public class BitmapViewerComponent extends JComponent {
 		                }
 		        }
 		        else{
-		        	throw new IOException("can not create image"); 
+		        	throw new IOException("can not create image");
 		        }
 		} finally {
-		        if (in != null) 
+		        if (in != null)
 		        	in.close();
 		        if(inputStream != null)
 		        	inputStream.close();
@@ -180,7 +181,7 @@ public class BitmapViewerComponent extends JComponent {
 					if(getCacheType().equals(CacheType.IC_FILE))
 						writeCacheFile();
 					EventQueue.invokeLater(new Runnable() {
-						
+
 						public void run() {
 							processing = false;
 							repaint();
@@ -210,13 +211,16 @@ public class BitmapViewerComponent extends JComponent {
 		return ResourceController.getResourceController().getEnumProperty("image_cache", CacheType.IC_DISABLE);
 	}
 
+	private final static Object LOCK = new Object();
 	private void writeCacheFile() {
 		File tempDir = new File (System.getProperty("java.io.tmpdir"), "freeplane");
 		tempDir.mkdirs();
 		try {
-			cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
+			synchronized(LOCK) {
+				cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
+			}
 			ImageIO.write(cachedImage, "jpg", cacheFile);
-			
+
 		} catch (IOException e) {
 			cacheFile.delete();
 			cacheFile = null;
@@ -224,8 +228,8 @@ public class BitmapViewerComponent extends JComponent {
 	}
 
 	private boolean isCachedImageValid() {
-		return cachedImage != null && 
-				(! scaleEnabled 
+		return cachedImage != null &&
+				(! scaleEnabled
 					|| 1 >= Math.abs(getWidth() -  cachedImage.getWidth()) && getHeight() >= cachedImage.getHeight()
 				    || getWidth() >=  cachedImage.getWidth() && 1 >= Math.abs(getHeight() - cachedImage.getHeight())
 				 );
@@ -250,6 +254,6 @@ public class BitmapViewerComponent extends JComponent {
 			cacheFile = null;
 		}
 	}
-	
-	
+
+
 }
