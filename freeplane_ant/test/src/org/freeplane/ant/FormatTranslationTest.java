@@ -7,7 +7,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Translator.java is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.tools.ant.Project;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class FormatTranslationTest {
@@ -164,5 +166,15 @@ public class FormatTranslationTest {
 		formatTranslation.setIncludes("Resources_*.properties");
 		formatTranslation.execute();
 		System.out.println("done");
+	}
+
+	@Test
+	public void convertsUnicodeToLowerCase(){
+		final FormatTranslation formatTranslation = new FormatTranslation();
+		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("u"), CoreMatchers.equalTo("u"));
+		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\\\u"), CoreMatchers.equalTo("\\\\u"));
+		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\Uabcde"), CoreMatchers.equalTo("\\uABCDe"));
+		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\uabcde"), CoreMatchers.equalTo("\\uABCDe"));
+		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("1\\Uabcde"), CoreMatchers.equalTo("1\\uABCDe"));
 	}
 }
