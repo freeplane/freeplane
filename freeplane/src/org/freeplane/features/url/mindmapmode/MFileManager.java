@@ -133,7 +133,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					final String name = f.getName();
 					return pattern.matcher(name).matches() && f.isFile()
 					        // && (f.lastModified() > (file.lastModified() - DEBUG_OFFSET) || name.endsWith(BACKUP_EXTENSION))
-							&&(mode == AlternativeFileMode.ALL || f.lastModified() > (file.lastModified() - DEBUG_OFFSET)); 
+							&&(mode == AlternativeFileMode.ALL || f.lastModified() > (file.lastModified() - DEBUG_OFFSET));
 				}
 			});
 			return fileList;
@@ -289,7 +289,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return filefilter;
 	};
 
-	protected JComponent createDirectorySelector(final JFileChooser chooser) {
+	@Override
+    protected JComponent createDirectorySelector(final JFileChooser chooser) {
 		final JComboBox box = new JComboBox();
 		box.setEditable(false);
 		final File dir = getLastCurrentDir() != null ? getLastCurrentDir() : chooser.getCurrentDirectory();
@@ -357,7 +358,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         }
         chooser.setAcceptAllFileFilterUsed(true);
         chooser.setFileFilter(chooser.getAcceptAllFileFilter());
-        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); 
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
             .getContentPane());
         if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -555,7 +556,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return map;
 	}
 
-	public File defaultTemplateFile() {
+	@Override
+    public File defaultTemplateFile() {
 		final String userDefinedTemplateFile = getStandardTemplateName();
 		final File absolute = new File(userDefinedTemplateFile);
 		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
@@ -786,19 +788,28 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	@Deprecated
 	public void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
 		final FileOutputStream out = new FileOutputStream(file);
-		final FileLock lock = out.getChannel().tryLock();
-		if (lock == null) {
-			throw new IOException("can not obtain file lock for " + file);
-		}
-		try {
+		FileLock lock = null;
+		try{
+			boolean lockedByOtherApplication = false;
+			try {
+				lock = out.getChannel().tryLock();
+				lockedByOtherApplication = lock == null;
+			}
+			catch (Exception e) {
+				LogUtils.warn(e.getMessage());
+			}
+			if (lockedByOtherApplication) {
+				throw new IOException("can not obtain file lock for " + file);
+			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
 			Controller.getCurrentModeController().getMapController().getMapWriter()
-			    .writeMapAsXml(map, fileout, Mode.FILE, true, false);
+			.writeMapAsXml(map, fileout, Mode.FILE, true, false);
 		}
-		finally {
-			if (lock.isValid()) {
-				lock.release();
-			}
+		finally{
+			if (lock != null && lock.isValid())
+	            lock.release();
+			if(out != null)
+				out.close();
 		}
 	}
 
@@ -820,7 +831,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * @throws Exception
 	 *             , when the locking failed for other reasons than that the
 	 *             file is being edited.
-	 *             
+	 *
 	 * @deprecated -- use MMapIO
 	 */
 	@Deprecated
