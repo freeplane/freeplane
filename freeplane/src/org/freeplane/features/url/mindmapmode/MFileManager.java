@@ -796,19 +796,28 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	@Deprecated
 	public void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
 		final FileOutputStream out = new FileOutputStream(file);
-		final FileLock lock = out.getChannel().tryLock();
-		if (lock == null) {
-			throw new IOException("can not obtain file lock for " + file);
-		}
-		try {
+		FileLock lock = null;
+		try{
+			boolean lockedByOtherApplication = false;
+			try {
+				lock = out.getChannel().tryLock();
+				lockedByOtherApplication = lock == null;
+			}
+			catch (Exception e) {
+				LogUtils.warn(e.getMessage());
+			}
+			if (lockedByOtherApplication) {
+				throw new IOException("can not obtain file lock for " + file);
+			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
 			Controller.getCurrentModeController().getMapController().getMapWriter()
-			    .writeMapAsXml(map, fileout, Mode.FILE, true, false);
+			.writeMapAsXml(map, fileout, Mode.FILE, true, false);
 		}
-		finally {
-			if (lock.isValid()) {
-				lock.release();
-			}
+		finally{
+			if (lock != null && lock.isValid())
+	            lock.release();
+			if(out != null)
+				out.close();
 		}
 	}
 
