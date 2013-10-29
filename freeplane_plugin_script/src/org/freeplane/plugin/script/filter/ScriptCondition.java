@@ -78,7 +78,7 @@ public class ScriptCondition extends ASelectableCondition {
         catch (ExecuteScriptException e) {
         	printStream.close();
 			final String info = TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
-			    node.toString(), out.toString());
+			    node.toString(), e.getMessage());
 			setErrorStatus(info);
         }
         return false;
