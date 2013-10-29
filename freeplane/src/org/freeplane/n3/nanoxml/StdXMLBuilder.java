@@ -114,7 +114,9 @@ class StdXMLBuilder implements IXMLBuilder {
 	 * @param lineNr
 	 *            the line in the source where the element starts.
 	 */
-	public void addPCData(final Reader reader, final String systemID, final int lineNr) {
+	public void addPCData(final Reader reader, final String systemID, final int lineNr)
+	throws XMLParseException
+	{
 		int bufSize = 2048;
 		int sizeRead = 0;
 		final StringBuilder str = new StringBuilder(bufSize);
@@ -129,6 +131,10 @@ class StdXMLBuilder implements IXMLBuilder {
 				size = reader.read(buf);
 			}
 			catch (final IOException e) {
+				// was caused by a XML syntax error in the data, e.g "x&;"
+				if (e.getCause() instanceof XMLParseException) {
+					throw (XMLParseException)e.getCause();
+				}
 				break;
 			}
 			if (size < 0) {
