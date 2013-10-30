@@ -150,6 +150,9 @@ public class GenericScript implements IScript {
         }
         catch (final ScriptException e) {
             handleScriptRuntimeException(e);
+            // :fixme: This throw is only reached, if handleScriptRuntimeException
+            // does not raise an exception. Should it be here at all?
+            // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         }
         catch (final Throwable e) {
