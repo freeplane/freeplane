@@ -10,6 +10,7 @@
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
+	<property file="${workspace}/freeplane/ant/signjar.properties" />
 	<property file="ant/ant.properties" />
 	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
 	<property name="google.translator.jar" value="${workspace}/freeplane_framework/ant/lib/google-api-translate-java-0.92.jar" />
@@ -111,21 +112,14 @@
 		</javac>
 	</target>
 
-	<target name="signjar" depends="jar" if="signApplet">
-		<echo>create a self-signed applet</echo>
-		<echo>this requires having created a key with password 'abcdef':
-         keytool -genkey -keystore ~/.keystore -alias fp
-         keytool -selfcert -keystore ~/.keystore -alias fp
-		</echo>
-    
-		<signjar jar="${freeplaneviewer.jar}" keystore="${user.home}/.keystore"
-             alias="fp" storepass="abcdef"/>
-		<!-- <input/> -->
-	</target>
-
 	<target name="jar" depends="build">
 		<mkdir dir="${freeplane.dist.lib}" />
 		<jar jarfile="${freeplaneviewer.jar}">
+			<manifest>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Codebase" value="*"/>
+				<attribute name="Application-Name" value="Freeplane Viewer Applet"/>
+			</manifest>
 			<fileset dir="${build}">
 				<exclude name="**/*.jar" />
 				<exclude name="**/application/**" />
@@ -160,6 +154,10 @@
 		</jar>
 	</target>
 	
+	<target name="signjar" depends ="jar" if = "signjar.alias">
+		<signjar jar="${freeplaneviewer.jar}" alias="${signjar.alias}" storepass="${signjar.storepass}" keypass="${signjar.keypass}"/>
+	</target>
+	
 	<target name="buildmac" if="isMacOs">
 		<ant antfile="ant/build.xml" target="dist" dir="${workspace}/freeplane_mac" inheritall="false" />
 	</target>	
@@ -172,7 +170,7 @@
 		</jar>
 	</target>
 	
-	<target name="dist" depends="signjar, buildmac">
+	<target name="dist" depends="jar, signjar, buildmac">
 		<!-- third party libs -->
 		<mkdir dir="${freeplane.dist.lib}" />
 		<copy todir="${freeplane.dist.lib}">

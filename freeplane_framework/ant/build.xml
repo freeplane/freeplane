@@ -256,6 +256,7 @@
 					<include name="build.xml" />
 					<exclude name=".*/**" />
 					<exclude name="**/~*" />
+					<exclude name="**/signjar.properties"/>
 					<exclude name="**/backups/**" />
 					<exclude name="bin/**" />
 					<exclude name="build/**" />
