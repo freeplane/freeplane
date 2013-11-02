@@ -129,6 +129,12 @@
 		<signjar jar="${freeplaneviewer.jar}" alias="${signjar.alias}" storepass="${signjar.storepass}" keypass="${signjar.keypass}"/>
 	</target>
 	
+	<target name="signjarinfo" depends ="jar" unless = "signjar.alias">
+		<echo>No ${workspace}/freeplane/ant/signjar.properties found</echo>
+		<echo>Applet not signed</echo>
+		<echo>See ${workspace}/freeplane/ant/signjar-example.properties for more info</echo>
+	</target>
+	
 	<target name="buildmac" if="isMacOs">
 		<ant antfile="ant/build.xml" target="dist" dir="${workspace}/freeplane_mac" inheritall="false" />
 	</target>	
@@ -141,7 +147,7 @@
 		</jar>
 	</target>
 	
-	<target name="dist" depends="jar, signjar, buildmac">
+	<target name="dist" depends="jar, signjar, signjarinfo, buildmac">
 		<!-- third party libs -->
 		<mkdir dir="${freeplane.dist.lib}" />
 		<copy todir="${freeplane.dist.lib}">
