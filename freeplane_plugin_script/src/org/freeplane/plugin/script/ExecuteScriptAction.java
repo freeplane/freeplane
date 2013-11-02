@@ -89,7 +89,15 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 					}
                 }
 				catch (ExecuteScriptException ex) {
-				    LogUtils.warn("error executing script " + script + " - giving up", ex);
+					final String cause;
+					// The ExecuteScriptException should have a cause. Print
+					// that, it is what we want to know.
+					if (ex.getCause() != null) {
+						cause = ex.getCause().toString();
+					} else {
+						cause = ex.toString();
+					};
+					LogUtils.warn("error executing script " + script + " - giving up\n" + cause);
 				    modeController.delayedRollback();
 					ScriptingEngine.showScriptExceptionErrorMessage(ex);
                 	return;

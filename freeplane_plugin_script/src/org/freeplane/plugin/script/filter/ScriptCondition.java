@@ -23,6 +23,7 @@ import org.freeplane.plugin.script.ScriptingPermissions;
 public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
 	private static final String SCRIPT_FILTER_ERROR_RESOURCE = "plugins/script_filter_error";
+	private static final String SCRIPT_FILTER_EXECUTE_ERROR_RESOURCE = "plugins/script_filter_execute_error";
 	static final String NAME = "script_condition";
 	static final String TAG_NAME = "script";
 	static final String ATTRIB_NAME = "SCRIPT"; // for backward compatibility
@@ -77,8 +78,8 @@ public class ScriptCondition extends ASelectableCondition {
         }
         catch (ExecuteScriptException e) {
         	printStream.close();
-			final String info = TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
-			    node.toString(), out.toString());
+			final String info = TextUtils.format(SCRIPT_FILTER_EXECUTE_ERROR_RESOURCE, createDescription(),
+			    node.toString(), e.getMessage());
 			setErrorStatus(info);
         }
         return false;
