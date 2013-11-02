@@ -40,8 +40,8 @@ public class FileUtils {
 		}
 	}
 
-	public static void copyFromResource(final String prefix, final String fileName, final File destinationDirectory) {
-		final String pathToResource = prefix + fileName;
+	public static void copyFromResource(final String path, final String fileName, final File destinationDirectory) {
+		final String pathToResource = path + fileName;
 		InputStream in = null;
 		OutputStream out = null;
 		try {

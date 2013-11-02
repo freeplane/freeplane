@@ -30,6 +30,8 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -63,6 +65,8 @@ import org.freeplane.features.url.UrlManager;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends AExportEngine {
+
+	private static final Pattern propertyReferenceEpression = Pattern.compile("\\$\\{[^}]+\\}");
 
 	/**
 	 * @param map
@@ -98,13 +102,16 @@ public class ExportWithXSLT extends AExportEngine {
 
 	/**
 	 */
-	private void copyFilesFromResourcesToDirectory(final String directoryName, final String files,
-	                                               final String filePrefix) {
+	private void copyFilesFromResourcesToDirectory(final String targetDirectoryName, final String sourceDirectoryPath,
+	                                               final String files) {
 		final StringTokenizer tokenizer = new StringTokenizer(files, ",");
-		final File destinationDirectory = new File(directoryName);
+		final File destinationDirectory = new File(targetDirectoryName);
 		while (tokenizer.hasMoreTokens()) {
-			final String next = tokenizer.nextToken();
-			FileUtils.copyFromResource(filePrefix, next, destinationDirectory);
+			final String sourceFile = tokenizer.nextToken();
+			int nameStartPosition = sourceFile.lastIndexOf('/') + 1;
+			String sourceFileDirectory = nameStartPosition > 0 ? sourceFile.substring(0, nameStartPosition) : "";
+			String sourceFileName = nameStartPosition > 0 ? sourceFile.substring(nameStartPosition) : sourceFile;
+			FileUtils.copyFromResource(sourceDirectoryPath + sourceFileDirectory, sourceFileName, destinationDirectory);
 		}
 	}
 
@@ -184,10 +191,23 @@ public class ExportWithXSLT extends AExportEngine {
 
 	String getProperty(final String key) {
 		final String property = getProperty(key, null);
-		if (property == null || !property.startsWith("$")) {
-			return property;
+		if (property == null)
+	        return property;
+		Matcher r = propertyReferenceEpression.matcher(property);
+		r.reset();
+		boolean result = r.find();
+		if (result) {
+		    StringBuffer sb = new StringBuffer();
+		    do {
+		        String propertyReference = r.group();
+		        String propertyName = propertyReference.substring(2, propertyReference.length() - 1);
+				r.appendReplacement(sb, System.getProperty(propertyName, propertyReference));
+		        result = r.find();
+		    } while (result);
+		    r.appendTail(sb);
+		    return sb.toString();
 		}
-		return System.getProperty(property.substring(1), null);
+		return property;
 	}
 
 	String getProperty(final String key, final String value) {
@@ -221,7 +241,7 @@ public class ExportWithXSLT extends AExportEngine {
 				if (success) {
 					final String files = getProperty("files_to_copy");
 					final String filePrefix = getProperty("file_prefix");
-					copyFilesFromResourcesToDirectory(directoryName, files, filePrefix);
+					copyFilesFromResourcesToDirectory(directoryName, filePrefix, files);
 				}
 				if (success && StringUtils.equals(getProperty("copy_icons"), "true")) {
 					success = copyIcons(map, directoryName);
