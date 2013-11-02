@@ -55,11 +55,13 @@ html { height:100% }
 /*]]>*/ 
           </style>
       </head>
-		<body>
+        <body>
         <xsl:element name="applet">
             <xsl:attribute name="code">org.freeplane.main.applet.FreeplaneApplet.class</xsl:attribute>
-            <xsl:attribute name="archive">
-            	./<xsl:value-of select="$destination_dir"/>freeplaneviewer.jar,
+            <xsl:attribute name="jnlp_href">
+            <xsl:text>./</xsl:text>
+            <xsl:value-of select="$destination_dir"/>
+            <xsl:text>./freeplane_applet.jnlp</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="width">100%</xsl:attribute>
             <xsl:attribute name="height">100%</xsl:attribute>
@@ -69,13 +71,17 @@ html { height:100% }
                 <xsl:attribute name="name">browsemode_initial_map</xsl:attribute>
                 <xsl:attribute name="value">./<xsl:value-of select="$destination_dir"/>map.mm</xsl:attribute>
             </xsl:element>
+            <xsl:element name="script">
+            <xsl:text>document.write("</xsl:text>
+            <xsl:text disable-output-escaping="yes">&lt;param name=&apos;location_href&apos; value=&apos;" + window.location.href +"&apos;/&gt;</xsl:text>
+            <xsl:text>");</xsl:text>
+            </xsl:element>
             <xsl:call-template name="appletParameters">
                 <xsl:with-param name="propertyList" select="$propertyList"/>
             </xsl:call-template>
-             
             <param name="selection_method" value="selection_method_direct"/>
         </xsl:element>
-   		</body>
+       </body>
     </html>
   </xsl:template>
 
