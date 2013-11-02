@@ -30,6 +30,8 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -39,6 +41,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -63,8 +66,10 @@ import org.freeplane.features.url.UrlManager;
  */
 public class ExportWithXSLT implements IExportEngine {
 
+	private static final Pattern propertyReferenceEpression = Pattern.compile("\\$\\{[^}]+\\}");
+
 	/**
-	 * @param map 
+	 * @param map
 	 */
 	static void copyIconsToDirectory(final MapModel map, final String directoryName) {
 		final ListModel icons = map.getIconRegistry().getIconsAsListModel();
@@ -88,7 +93,7 @@ public class ExportWithXSLT implements IExportEngine {
 	 */
 	private boolean mTransformResultWithoutError = false;
 	final private Properties properties;
-	private String name;
+	private final String name;
 
 	public ExportWithXSLT(final String name, final Properties properties) {
 		this.name = name;
@@ -97,18 +102,21 @@ public class ExportWithXSLT implements IExportEngine {
 
 	/**
 	 */
-	private void copyFilesFromResourcesToDirectory(final String directoryName, final String files,
-	                                               final String filePrefix) {
+	private void copyFilesFromResourcesToDirectory(final String targetDirectoryName, final String sourceDirectoryPath,
+	                                               final String files) {
 		final StringTokenizer tokenizer = new StringTokenizer(files, ",");
-		final File destinationDirectory = new File(directoryName);
+		final File destinationDirectory = new File(targetDirectoryName);
 		while (tokenizer.hasMoreTokens()) {
-			final String next = tokenizer.nextToken();
-			FileUtils.copyFromResource(filePrefix, next, destinationDirectory);
+			final String sourceFile = tokenizer.nextToken();
+			int nameStartPosition = sourceFile.lastIndexOf('/') + 1;
+			String sourceFileDirectory = nameStartPosition > 0 ? sourceFile.substring(0, nameStartPosition) : "";
+			String sourceFileName = nameStartPosition > 0 ? sourceFile.substring(nameStartPosition) : sourceFile;
+			FileUtils.copyFromResource(sourceDirectoryPath + sourceFileDirectory, sourceFileName, destinationDirectory);
 		}
 	}
 
 	/**
-	 * @param map 
+	 * @param map
 	 */
 	private boolean copyIcons(final MapModel map, final String directoryName) {
 		boolean success;
@@ -138,7 +146,7 @@ public class ExportWithXSLT implements IExportEngine {
 	    return ResourceController.getResourceController().getIntProperty("exported_image_resolution_dpi", 300);
     }
 	/**
-	 * @param map 
+	 * @param map
 	 */
 	private boolean createImageFromMap(MapModel map, final String directoryName) {
 		if (Controller.getCurrentController().getMapViewManager().getMapViewComponent() == null) {
@@ -172,7 +180,7 @@ public class ExportWithXSLT implements IExportEngine {
 	}
 
 	/**
-	 * @param mode 
+	 * @param mode
 	 * @throws IOException
 	 */
 	private String getMapXml(final Mode mode) throws IOException {
@@ -186,10 +194,23 @@ public class ExportWithXSLT implements IExportEngine {
 
 	String getProperty(final String key) {
 		final String property = getProperty(key, null);
-		if (property == null || !property.startsWith("$")) {
-			return property;
+		if (property == null)
+	        return property;
+		Matcher r = propertyReferenceEpression.matcher(property);
+		r.reset();
+		boolean result = r.find();
+		if (result) {
+		    StringBuffer sb = new StringBuffer();
+		    do {
+		        String propertyReference = r.group();
+		        String propertyName = propertyReference.substring(2, propertyReference.length() - 1);
+				r.appendReplacement(sb, System.getProperty(propertyName, propertyReference));
+		        result = r.find();
+		    } while (result);
+		    r.appendTail(sb);
+		    return sb.toString();
 		}
-		return System.getProperty(property.substring(1), null);
+		return property;
 	}
 
 	String getProperty(final String key, final String value) {
@@ -209,7 +230,9 @@ public class ExportWithXSLT implements IExportEngine {
 			final boolean create_image = StringUtils.equals(getProperty("create_html_linked_image"), "true");
 			final String areaCode = getAreaCode(create_image);
 			final String xsltFileName = getProperty("xslt_file");
-			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
+			final Mode mode = Mode.valueOf(getProperty("mode", Mode.EXPORT.name()));
+			String[] parameters = getProperty("set_properties", "").split(",\\s*");
+			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode, mode, parameters);
 			if (!success) {
 				JOptionPane.showMessageDialog(UITools.getFrame(), getProperty("error_applying_template"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
@@ -221,13 +244,17 @@ public class ExportWithXSLT implements IExportEngine {
 				if (success) {
 					final String files = getProperty("files_to_copy");
 					final String filePrefix = getProperty("file_prefix");
-					copyFilesFromResourcesToDirectory(directoryName, files, filePrefix);
+					copyFilesFromResourcesToDirectory(directoryName, filePrefix, files);
 				}
 				if (success && StringUtils.equals(getProperty("copy_icons"), "true")) {
 					success = copyIcons(map, directoryName);
 				}
 				if (success && StringUtils.equals(getProperty("copy_map"), "true")) {
-					success = copyMap(map, directoryName);
+	                String copyМapХsltFile = getProperty("copy_map_xslt_file");
+					if (copyМapХsltFile != null)
+	                    success = transformMapWithXslt(copyМapХsltFile, new File(directoryName, "map.mm"), "", Mode.EXPORT, new String[]{});
+                    else
+						success = copyMap(map, directoryName);
 				}
 				if (success && create_image) {
 					success = createImageFromMap(map, directoryName);
@@ -248,13 +275,10 @@ public class ExportWithXSLT implements IExportEngine {
 		}
 	}
 
-	/**
-	 * @throws IOException
-	 */
-	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode)
-	        throws IOException {
-		final Mode mode = Mode.valueOf(getProperty("mode", Mode.EXPORT.name()));
-		final String map = getMapXml(mode);
+	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode,
+                                         final Mode mode, String[] parameters) throws IOException,
+            TransformerFactoryConfigurationError {
+	    final String map = getMapXml(mode);
 		final StringReader reader = new StringReader(map);
 		ResourceController resourceController = ResourceController.getResourceController();
 		final URL xsltUrl = resourceController.getResource(xsltFileName);
@@ -272,7 +296,6 @@ public class ExportWithXSLT implements IExportEngine {
 			trans.setParameter("area_code", areaCode);
 			trans.setParameter("folding_type", resourceController.getProperty(
 			"html_export_folding"));
-			String[] parameters = getProperty("set_properties", "").split(",\\s*");
 			StringBuilder sb = new StringBuilder();
 			for(String p : parameters){
 				String value = resourceController.getProperty(p, null);
@@ -282,7 +305,7 @@ public class ExportWithXSLT implements IExportEngine {
 					sb.append(value);
 					sb.append("$$$");
 				}
-					
+
 			}
 			trans.setParameter("propertyList", sb.toString());
 			trans.transform(new StreamSource(reader), result);
@@ -295,7 +318,7 @@ public class ExportWithXSLT implements IExportEngine {
 			FileUtils.silentlyClose(xsltFile);
 		}
 		return true;
-	}
+    }
 
 	public FileFilter getFileFilter() {
 		return new ExampleFileFilter(getProperty("file_type"), TextUtils.getText(name + ".text"));

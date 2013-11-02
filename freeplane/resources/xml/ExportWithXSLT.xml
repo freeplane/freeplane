@@ -33,9 +33,10 @@
             file_type="html"
             xslt_file="/xslt/freeplane2applet.xsl"
             create_dir="true"
-            files_to_copy="freeplaneviewer.jar"
-            file_prefix="$org.freeplane.core.dir.lib"
+            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,/html/freeplane_applet.jnlp"
+            file_prefix=""
             copy_map="true"
+            copy_map_xslt_file="/xslt/exportmm2appletmm.xsl"
             copymode="FILE"
             load_file="true" 
             set_properties="show_note_icons,

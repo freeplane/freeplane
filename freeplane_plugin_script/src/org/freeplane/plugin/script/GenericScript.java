@@ -150,6 +150,9 @@ public class GenericScript implements IScript {
         }
         catch (final ScriptException e) {
             handleScriptRuntimeException(e);
+            // :fixme: This throw is only reached, if handleScriptRuntimeException
+            // does not raise an exception. Should it be here at all?
+            // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         }
         catch (final Throwable e) {
@@ -252,6 +255,9 @@ public class GenericScript implements IScript {
         int lineNumber = e.getLineNumber();
         outStream.print("Line number: " + lineNumber);
         errorHandler.gotoLine(lineNumber);
-        throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber, e);
+        throw new ExecuteScriptException(e.getMessage() + " at line " + lineNumber,
+				// The ScriptException should have a cause. Use
+				// that, it is what we want to know.
+                (e.getCause() == null) ? e : e.getCause());
     }
 }

@@ -256,6 +256,7 @@
 					<include name="build.xml" />
 					<exclude name=".*/**" />
 					<exclude name="**/~*" />
+					<exclude name="**/signjar.properties"/>
 					<exclude name="**/backups/**" />
 					<exclude name="bin/**" />
 					<exclude name="build/**" />
@@ -354,7 +355,7 @@
 				<include name="*.paf.exe" />
 			</fileset>
 		</move>
-
+<!--
 		<mkdir dir="${workingdir}/App/Freeplane/resources/images" />
 		<copy file="${root}/portableApps/Splash.png"  
 			tofile="${workingdir}/App/Freeplane/resources/images/Freeplane_splash.png"/>
@@ -367,7 +368,7 @@
 				<include name="*.paf.exe" />
 			</fileset>
 		</move>
-
+-->
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="${workingdir}/.." />
 		</delete>
@@ -472,7 +473,7 @@
 	<target name="zip4mac" depends="git_version_info, macosxapp">
 		<zip destfile="${dist}/freeplane_macos_bin-${ver}.zip" compress="true">
 			<zipfileset dir="${build4mac}" prefix="freeplane-${ver}">
-				<exclude name="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub"/>
+				<exclude name="**/FreeplaneJavaApplicationStub" />
 			</zipfileset>
 			<zipfileset file="${macappfullpath}/Contents/MacOS/FreeplaneJavaApplicationStub" filemode="775"
             	prefix="freeplane-${ver}/Freeplane.app/Contents/MacOS"/>

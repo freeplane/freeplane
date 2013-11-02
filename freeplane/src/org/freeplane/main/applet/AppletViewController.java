@@ -116,10 +116,10 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		getController().selectMode(BModeController.MODENAME);
 		String initialMapName = ResourceController.getResourceController().getProperty("browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
-			/* new handling for relative urls. fc, 29.10.2003. */
+			final String locationUrl = applet.getParameter("location_href");
 			try {
-				URI uri = applet.getDocumentBase().toURI().resolve(new URI(null, null, initialMapName, null));
-				URL documentBase = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
+				URI uri = new URI(locationUrl).resolve(new URI(null, null, initialMapName, null));
+				URL documentBase = new URL(uri.getScheme(), uri.getHost(),  uri.getPort(), uri.getPath());
 				initialMapName = documentBase.toString();
 			}
 			catch (final Exception e) {
