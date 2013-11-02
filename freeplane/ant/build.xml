@@ -93,6 +93,11 @@
 	<target name="jar" depends="build">
 		<mkdir dir="${freeplane.dist.lib}" />
 		<jar jarfile="${freeplaneviewer.jar}">
+			<manifest>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Codebase" value="*"/>
+				<attribute name="Application-Name" value="Freeplane Viewer Applet"/>
+			</manifest>
 			<fileset dir="${build}">
 				<exclude name="**/*.jar" />
 				<exclude name="**/application/**" />
