@@ -112,7 +112,7 @@ class AppletViewController extends ViewController {
 			final String locationUrl = applet.getParameter("location_href");
 			try {
 				URI uri = new URI(locationUrl).resolve(new URI(null, null, initialMapName, null));
-				URL documentBase = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+				URL documentBase = new URL(uri.getScheme(), uri.getHost(),  uri.getPort(), uri.getPath());
 				initialMapName = documentBase.toString();
 			}
 			catch (final Exception e) {
