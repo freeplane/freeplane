@@ -58,6 +58,11 @@ html { height:100% }
         <body>
         <xsl:element name="applet">
             <xsl:attribute name="code">org.freeplane.main.applet.FreeplaneApplet.class</xsl:attribute>
+            <xsl:attribute name="archive">
+            <xsl:text>./</xsl:text>
+            <xsl:value-of select="$destination_dir"/>
+            <xsl:text>./freeplaneviewer.jar</xsl:text>
+            </xsl:attribute>
             <xsl:attribute name="jnlp_href">
             <xsl:text>./</xsl:text>
             <xsl:value-of select="$destination_dir"/>
