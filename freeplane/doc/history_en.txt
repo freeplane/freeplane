@@ -1,4 +1,8 @@
 ===============================
+1.2.24
+===============================
+Use signed applet and jnlp descriptors so that local applets can run with the latest java
+===============================
 1.2.23
 ===============================
 Bug fix for dragging of nodes when node tool tip is shown
