@@ -319,10 +319,10 @@ public class UrlManager implements IExtension {
 		try {
 			resolvedURI = uri.toURL().openConnection().getURL().toURI();
 		} catch (IOException ex) {
-			LogUtils.warn(ex);
+			LogUtils.severe(ex);
 			return null;
 		} catch (URISyntaxException ex) {
-			LogUtils.warn(ex);
+			LogUtils.severe(ex);
 			return null;
 		} catch (IllegalArgumentException ex) {
 			resolvedURI = uri;
@@ -340,7 +340,7 @@ public class UrlManager implements IExtension {
 			return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
 		}
 		catch (final URISyntaxException e) {
-			LogUtils.warn(e);
+			LogUtils.severe(e);
 			return null;
 		}
 	}
