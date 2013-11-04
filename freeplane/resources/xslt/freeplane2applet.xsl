@@ -56,36 +56,28 @@ html { height:100% }
           </style>
       </head>
         <body>
-        <xsl:element name="applet">
-            <xsl:attribute name="code">org.freeplane.main.applet.FreeplaneApplet.class</xsl:attribute>
-            <xsl:attribute name="archive">
-            <xsl:text>./</xsl:text>
-            <xsl:value-of select="$destination_dir"/>
-            <xsl:text>./freeplaneviewer.jar</xsl:text>
-            </xsl:attribute>
-            <xsl:attribute name="jnlp_href">
-            <xsl:text>./</xsl:text>
-            <xsl:value-of select="$destination_dir"/>
-            <xsl:text>./freeplane_applet.jnlp</xsl:text>
-            </xsl:attribute>
-            <xsl:attribute name="width">100%</xsl:attribute>
-            <xsl:attribute name="height">100%</xsl:attribute>
-            <param name="type" value="application/x-java-applet;version=1.5"/>
-            <param name="scriptable" value="false"/>
-            <xsl:element name="param">
-                <xsl:attribute name="name">browsemode_initial_map</xsl:attribute>
-                <xsl:attribute name="value">./<xsl:value-of select="$destination_dir"/>map.mm</xsl:attribute>
-            </xsl:element>
-            <xsl:element name="script">
-            <xsl:text>document.write("</xsl:text>
-            <xsl:text disable-output-escaping="yes">&lt;param name=&apos;location_href&apos; value=&apos;" + window.location.href +"&apos;/&gt;</xsl:text>
-            <xsl:text>");</xsl:text>
-            </xsl:element>
-            <xsl:call-template name="appletParameters">
+        <xsl:text disable-output-escaping="yes">&lt;script src="</xsl:text>
+        <xsl:value-of select="$destination_dir"/>
+        <xsl:text disable-output-escaping="yes">deployJava.js"&gt;&lt;/script&gt;</xsl:text>
+	     <script><xsl:text disable-output-escaping="yes">
+	        var attributes = {
+	            code:"org.freeplane.main.applet.FreeplaneApplet",  width:"100%", height:"100%"} ;
+	        var parameters = {
+	        jnlp_href: "</xsl:text>
+	        <xsl:value-of select="$destination_dir"/>
+	        <xsl:text disable-output-escaping="yes">freeplane_applet.jnlp",
+	        browsemode_initial_map:"./</xsl:text>
+	        <xsl:value-of select="$destination_dir"/>
+	        <xsl:text disable-output-escaping="yes">map.mm",
+	        selection_method:"selection_method_direct"
+	        } ;
+	        parameters["location_href"] = window.location.href;
+	    </xsl:text>
+	    <xsl:call-template name="appletParameters">
                 <xsl:with-param name="propertyList" select="$propertyList"/>
-            </xsl:call-template>
-            <param name="selection_method" value="selection_method_direct"/>
-        </xsl:element>
+        </xsl:call-template>
+	        deployJava.runApplet(attributes, parameters, "1.5");
+	    </script>
        </body>
     </html>
   </xsl:template>
@@ -125,16 +117,19 @@ html { height:100% }
             </xsl:call-template>
        </xsl:if>
     </xsl:template>
+	
 	<xsl:template name="appletParam">
        <xsl:param name="name"/>
        <xsl:param name="value"/>
             <xsl:if test="$value">
-                <xsl:element name="param">
-                    <xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
-                    <xsl:attribute name="value"><xsl:value-of select="$value"/></xsl:attribute>
-                </xsl:element>
+            	<xsl:text disable-output-escaping="yes">parameters["</xsl:text>
+            	<xsl:value-of select="$name"/>
+            	<xsl:text disable-output-escaping="yes">"] = "</xsl:text>
+            	<xsl:value-of select="$value"/>
+            	<xsl:text disable-output-escaping="yes">"</xsl:text>;
             </xsl:if>
 	</xsl:template>
+	
 	<xsl:template match="text()|@*"  mode="strip-tags">
 		  <xsl:value-of select="string(.)"/>
 	</xsl:template>
