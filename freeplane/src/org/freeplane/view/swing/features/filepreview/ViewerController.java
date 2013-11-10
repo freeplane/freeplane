@@ -30,6 +30,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.INodeView;
@@ -90,7 +91,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 		public void setDraftViewerSize(JComponent viewer, Dimension size) {
 			factory.setDraftViewerSize(viewer, size);
-			
+
 		}
 		public boolean accept(final URI uri) {
 			return getViewerFactory(uri) != null;
@@ -437,7 +438,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
-		final UrlManager urlManager = (UrlManager) controller.getModeController().getExtension(UrlManager.class);
+		final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
 		final JFileChooser chooser = urlManager.getFileChooser(null, false);
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (factories.size() > 1) {
@@ -461,17 +462,32 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		if (input == null) {
 			return null;
 		}
-		URI uri = input.toURI();
+		URI uri = uriOf(input);
 		if (uri == null) {
 			return null;
 		}
-		if (useRelativeUri) {
+		if (useRelativeUri && uri.getScheme().equals("file")) {
 			uri = LinkController.toLinkTypeDependantURI(map.getFile(), input);
 		}
 		final ExternalResource preview = new ExternalResource(uri);
 		ProgressIcons.updateExtendedProgressIcons(node, input.getName());
 		return preview;
 	}
+
+	private URI uriOf(final File input) {
+		String path = input.getPath();
+		try {
+	        for (String protocol : new String[]{"http:" + File.separatorChar, "https:" + File.separatorChar}){
+	        	int uriStart = path.indexOf(protocol);
+	        	if(uriStart != -1)
+	        		return new URI(protocol.substring(0, protocol.length() - 1) + "//" + path.substring(uriStart + protocol.length()).replace('\\', '/'));
+	        }
+        }
+        catch (URISyntaxException e) {
+        	LogUtils.warn(e);
+        }
+	    return input.toURI();
+    }
 
 	private IViewerFactory getViewerFactory(final URI uri) {
 		for (final IViewerFactory factory : factories) {
@@ -541,7 +557,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	public void onViewCreated(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final ExternalResource previewUri = (ExternalResource) nodeView.getModel().getExtension(ExternalResource.class);
+		final ExternalResource previewUri = nodeView.getModel().getExtension(ExternalResource.class);
 		if (previewUri == null) {
 			return;
 		}
@@ -550,7 +566,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	public void onViewRemoved(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final ExternalResource previewUri = (ExternalResource) nodeView.getModel().getExtension(ExternalResource.class);
+		final ExternalResource previewUri = nodeView.getModel().getExtension(ExternalResource.class);
 		if (previewUri == null) {
 			return;
 		}
@@ -629,47 +645,54 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	 * @return : true if successful, false otherwise
 	 */
 	public boolean paste(final URI uri, final NodeModel node) {
-		
+
 		if (uri == null || getViewerFactory(uri) == null) {
 			return false;
 		}
-		
+
 		final ExternalResource preview = new ExternalResource(uri);
 		undoableDeactivateHook(node);
 		undoableActivateHook(node, preview);
 		ProgressIcons.updateExtendedProgressIcons(node, uri.getPath());
 		return true;
 	}
-	
+
 	public static enum PasteMode{
 		AS_SIBLING, AS_CHILD, INSIDE;
 		public static PasteMode valueOf(boolean asSibling){
 			return asSibling ? AS_SIBLING : AS_CHILD;
 		}
 	}
-	
-	public boolean paste(final File file, final NodeModel node, final boolean isLeft) {
-		return paste(file, node, PasteMode.INSIDE, isLeft);
+
+	public boolean paste(URI uri, final NodeModel node, final boolean isLeft) {
+		return pasteImage(uri, node, PasteMode.INSIDE, isLeft);
 	}
 
 	public boolean paste(final File file, final NodeModel targetNode, final PasteMode mode, final boolean isLeft) {
-		if (!file.exists()) {
+		URI uri = uriOf(file);
+		return pasteImage(uri, targetNode, mode, isLeft);
+	}
+
+	public boolean pasteImage(URI uri, final NodeModel targetNode, final PasteMode mode, final boolean isLeft) {
+	    if (uri == null || getViewerFactory(uri) == null) {
 			return false;
 		}
-		URI uri = file.toURI();
-		if (uri == null || getViewerFactory(uri) == null) {
-			return false;
-		}
-		
-		final File mapFile = targetNode.getMap().getFile();
-		if (mapFile == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
-			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
-			    TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
-			return false;
-		}
-		if (LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
-			uri = LinkController.toLinkTypeDependantURI(mapFile, file);
-		}
+		File file = new File(uri.getPath());
+		boolean isFile = uri.getScheme().equals("file");
+		if (isFile) {
+	        if (!file.exists()) {
+	        	return false;
+	        }
+	        final File mapFile = targetNode.getMap().getFile();
+	        if (mapFile == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
+	        	JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
+	        		TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+	        	return false;
+	        }
+	        if (LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
+	        	uri = LinkController.toLinkTypeDependantURI(mapFile, file);
+	        }
+        }
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node;
 		if (mode.equals(PasteMode.INSIDE)) {
@@ -684,5 +707,5 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		undoableActivateHook(node, preview);
 		ProgressIcons.updateExtendedProgressIcons(node, file.getName());
 		return true;
-	}
+    }
 }

@@ -81,10 +81,10 @@ public class MExternalImageDropListener implements DropTargetListener {
 		            final Component target = ev.getDropTargetContext().getComponent();
 		            NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, target);
 		            final File file = transferData.get(0);
-		    		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
+		    		final ViewerController vc = (Controller.getCurrentController().getModeController()
 		    			    .getExtension(ViewerController.class));
 		    		final NodeModel node = nodeView.getModel();
-					vc.paste(file, node, node.isLeft());
+					vc.paste(file.toURI(), node, node.isLeft());
 	            }
 	            catch (Exception e) {
 	            	LogUtils.warn(e);
