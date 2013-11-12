@@ -154,10 +154,21 @@
 		</jar>
 	</target>
 	
-	<target name="signjar" depends ="jar" if = "signjar.alias">
-		<signjar jar="${freeplaneviewer.jar}" alias="${signjar.alias}" storepass="${signjar.storepass}" keypass="${signjar.keypass}"/>
+	<target name="signjar" depends ="jar, signjar-tsa, signjar-no-tsa" if = "signjar.alias"/>
+	
+	<target name="signjar-tsa" depends ="jar" if = "signjar.tsaurl">
+		<signjar jar="${freeplaneviewer.jar}" 
+			alias="${signjar.alias}" 
+			storepass="${signjar.storepass}" keypass="${signjar.keypass}"
+			tsaurl="${signjar.tsaurl}"/>
 	</target>
 	
+	<target name="signjar-no-tsa" depends ="jar"  if = "signjar.alias" unless="signjar.tsaurl">
+		<signjar jar="${freeplaneviewer.jar}" 
+			alias="${signjar.alias}" 
+			storepass="${signjar.storepass}" keypass="${signjar.keypass}"/>
+	</target>
+				
 	<target name="signjarinfo" depends ="jar" unless = "signjar.alias">
 		<echo>No ${workspace}/freeplane/ant/signjar.properties found</echo>
 		<echo>Applet not signed</echo>
