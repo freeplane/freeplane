@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
+import java.net.URI;
 import java.util.Collection;
 
 import javax.swing.JMenuItem;
@@ -41,12 +41,12 @@ import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Stefan Ott
- * 
+ *
  * This class shows a popup menu for the external image.
  */
 class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private NodeModel node = null;
@@ -76,7 +76,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 			remove = new JMenuItem(TextUtils.getText("ExternalImage_popupMenu_Remove"));
 			remove.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
-					final ExternalResource extRes = (ExternalResource) node.getExtension(ExternalResource.class);
+					final ExternalResource extRes = node.getExtension(ExternalResource.class);
 					if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 						viewer.remove(node, extRes);
 						NodeView nv = null;
@@ -107,10 +107,10 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 			open = new JMenuItem(TextUtils.getText("ExternalImage_popupMenu_Open"));
 			open.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
-					final ExternalResource extRes = (ExternalResource) node.getExtension(ExternalResource.class);
+					final ExternalResource extRes = node.getExtension(ExternalResource.class);
 					if(extRes == null)
 						return;
-					final UrlManager urlManager = (UrlManager) Controller.getCurrentModeController().getExtension(
+					final UrlManager urlManager = Controller.getCurrentModeController().getExtension(
 					    UrlManager.class);
 					urlManager.loadURL(extRes.getUri());
 				}
@@ -130,10 +130,10 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 				public void actionPerformed(final ActionEvent e) {
 					final ExternalResource extRes = (ExternalResource) viewer.createExtension(node);
 					if (extRes != null) {
-						final File file = new File(extRes.getAbsoluteUri(node.getMap()));
+						URI uri = extRes.getAbsoluteUri(node.getMap());
 						if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 							viewer.undoableDeactivateHook(node);
-							viewer.paste(file, node, node.isLeft());
+							viewer.paste(uri, node, node.isLeft());
 						}
 					}
 				}
@@ -147,7 +147,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getResetZoom() {
 		resetZoom = new JMenuItem(TextUtils.getText("ExternalImage_popupMenu_ResetZoom"));
-		final ExternalResource extRes = (ExternalResource) node.getExtension(ExternalResource.class);
+		final ExternalResource extRes = node.getExtension(ExternalResource.class);
 		if ((extRes != null) && (extRes.getZoom() != 1.0f)) {
 			resetZoom.setEnabled(true);
 		}
@@ -188,7 +188,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 				if (cmp instanceof MainView) {
 					mv = (MainView) cmp;
 					node = mv.getNodeView().getModel();
-					viewer = ((ViewerController) Controller.getCurrentController().getModeController().getExtension(
+					viewer = (Controller.getCurrentController().getModeController().getExtension(
 					    ViewerController.class));
 					break;
 				}
