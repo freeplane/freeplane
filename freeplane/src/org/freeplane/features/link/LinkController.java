@@ -406,7 +406,12 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 				final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
 				final Action action = menuItem.getAction();
-				action.actionPerformed(e);
+				
+				if (action != null) {
+					action.actionPerformed(e);
+				} else {
+					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
+				}
 			}
 			else {
 				loadURI(link);
