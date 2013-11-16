@@ -9,7 +9,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See theGNU General Public License for
  * more details.You should have received a copy of the GNU General Public
  * Licensealong with this program; if not, write to the Free SoftwareFoundation,
- * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 /* $Id: JTripleCalendar.java,v 1.1.2.2 2007/02/25 21:12:50 christianfoltin Exp $ */
 package org.freeplane.core.ui.components.calendar;
