@@ -372,7 +372,7 @@ public class MenuBuilder extends UIBuilder {
 		private ButtonGroup buttonGroup;
 		final private ReadManager readManager;
 
-		MenuStructureReader() {
+		public MenuStructureReader() {
 			readManager = new ReadManager();
 			readManager.addElementHandler("menu_structure", new StructureCreator());
 			readManager.addElementHandler("menu_category", new CategoryCreator());
