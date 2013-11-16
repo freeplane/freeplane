@@ -83,19 +83,25 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 			public ValidationResult validate(Properties properties) {
 				final ValidationResult result = new ValidationResult();
 				try {
-	                createDateFormat(properties.getProperty(RESOURCES_DATE_FORMAT));
+                    createDateFormat(properties.getProperty(RESOURCES_DATE_FORMAT));
+                    if (properties.getProperty(RESOURCES_DATE_FORMAT).isEmpty())
+                        throw new Exception();
                 }
                 catch (Exception e) {
                 	result.addError(TextUtils.getText("OptionPanel.validate_invalid_date_format"));
                 }
                 try {
-                	createDefaultDateTimeFormat(properties.getProperty(RESOURCES_DATETIME_FORMAT));
+                    createDefaultDateTimeFormat(properties.getProperty(RESOURCES_DATETIME_FORMAT));
+                    if (properties.getProperty(RESOURCES_DATETIME_FORMAT).isEmpty())
+                        throw new Exception();
                 }
                 catch (Exception e) {
                 	result.addError(TextUtils.getText("OptionPanel.validate_invalid_datetime_format"));
                 }
                 try {
-                	getDecimalFormat(properties.getProperty(RESOURCES_NUMBER_FORMAT));
+                    getDecimalFormat(properties.getProperty(RESOURCES_NUMBER_FORMAT));
+                    if (properties.getProperty(RESOURCES_NUMBER_FORMAT).isEmpty())
+                        throw new Exception();
                 }
                 catch (Exception e) {
                 	result.addError(TextUtils.getText("OptionPanel.validate_invalid_number_format"));
@@ -384,9 +390,28 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		if (defaultDateFormat != null)
 			return defaultDateFormat;
 		final ResourceController resourceController = ResourceController.getResourceController();
+
+		// DateFormatParser cannot handle empty date format!
+		fixEmptyDataFormatProperty(resourceController, RESOURCES_DATE_FORMAT, "SHORT");
+
 		String datePattern = resourceController.getProperty(RESOURCES_DATE_FORMAT);
 		defaultDateFormat = createDateFormat(datePattern);
 		return defaultDateFormat;
+	}
+
+	/**
+	 * Fix old invalid values (empty data format properties) on startup.
+	 * For new configurations, this is forced by the Validator on top of this file!
+	 * @param resourceController
+	 * @param resourceProperty
+	 * @param defaultValue
+	 */
+	private void fixEmptyDataFormatProperty(final ResourceController resourceController,
+			final String resourceProperty, final String defaultValue)
+	{
+		if (resourceController.getProperty(resourceProperty).isEmpty()) {
+			resourceController.setProperty(resourceProperty, defaultValue);
+		}
 	}
 
 	private static SimpleDateFormat createDateFormat(final String datePattern) {
@@ -401,6 +426,10 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		if (defaultDateTimeFormat != null)
 			return defaultDateTimeFormat;
 		final ResourceController resourceController = ResourceController.getResourceController();
+
+		// DateFormatParser cannot handle empty date format!
+		fixEmptyDataFormatProperty(resourceController, RESOURCES_DATETIME_FORMAT, "SHORT,SHORT");
+
 		String datetimePattern = resourceController.getProperty(RESOURCES_DATETIME_FORMAT);
 		defaultDateTimeFormat = createDefaultDateTimeFormat(datetimePattern);
 		return defaultDateTimeFormat;
@@ -431,7 +460,11 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		if (defaultNumberFormat != null)
 			return defaultNumberFormat;
 	    final ResourceController resourceController = ResourceController.getResourceController();
-	    defaultNumberFormat = getDecimalFormat(resourceController.getProperty(RESOURCES_NUMBER_FORMAT));
+
+		// an empty number format does not make sense!
+		fixEmptyDataFormatProperty(resourceController, RESOURCES_NUMBER_FORMAT, "#0.####");
+
+		defaultNumberFormat = getDecimalFormat(resourceController.getProperty(RESOURCES_NUMBER_FORMAT));
 	    return defaultNumberFormat;
     }
 
