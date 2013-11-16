@@ -23,6 +23,7 @@ import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -694,6 +695,19 @@ public class MapController extends SelectionController implements IExtension{
         }
 	}
 
+
+	public void openMapSelectReferencedNode(final URL url) throws FileNotFoundException,
+	        XMLParseException, IOException, URISyntaxException, XMLException, MalformedURLException {
+	    String nodeReference = url.getRef();
+	    if(nodeReference != null){
+	    	newMap(new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
+	    	select(getNodeFromID(nodeReference));
+	    }
+	    else{
+	    	newMap(url);
+	    }
+	}
+
 	public void newMapView(final MapModel mapModel) {
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 	}
@@ -945,4 +959,5 @@ public class MapController extends SelectionController implements IExtension{
 	public void toggleFolded(final NodeModel node) {
 		setFolded(node, ! node.isFolded());
 	}
+
 }

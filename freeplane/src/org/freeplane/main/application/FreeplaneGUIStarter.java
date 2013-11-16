@@ -306,33 +306,35 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         frame.requestFocus();
     }
 
+
     private boolean loadMaps(final Controller controller, final String[] args) {
         boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
-			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-				try {
-					final URL url;
-					if(fileArgument.startsWith("http://")){
-						url = new URL(fileArgument);
-					}
-					else{
-						if (!FileUtils.isAbsolutePath(fileArgument)) {
-							fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-						}
-						url = Compat.fileToUrl(new File(fileArgument));
-					}
-					if (!fileLoaded) {
-						controller.selectMode(MModeController.MODENAME);
-					}
-					final MModeController modeController = (MModeController) controller.getModeController();
-					modeController.getMapController().newMap(url);
-					fileLoaded = true;
+			try {
+				final URL url;
+				if(fileArgument.startsWith("http://")){
+					url = new URL(fileArgument);
 				}
-				catch (final Exception ex) {
-					System.err.println("File " + fileArgument + " not loaded");
+				else{
+					if (!FileUtils.isAbsolutePath(fileArgument)) {
+						fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
+					}
+					url = Compat.fileToUrl(new File(fileArgument));
 				}
+				if (url.getPath().toLowerCase().endsWith(
+				    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+    				if (!fileLoaded) {
+    					controller.selectMode(MModeController.MODENAME);
+    				}
+    				final MModeController modeController = (MModeController) controller.getModeController();
+    				MapController mapController = modeController.getMapController();
+    				mapController.openMapSelectReferencedNode(url);
+    				fileLoaded = true;
+				}
+			}
+			catch (final Exception ex) {
+				System.err.println("File " + fileArgument + " not loaded");
 			}
 		}
         return fileLoaded;
