@@ -114,7 +114,7 @@
 <attribute NAME="name" VALUE="language"/>
 </node>
 </node>
-<node TEXT="Files" FOLDED="true" ID="ID_1398818983" CREATED="1370183720025" MODIFIED="1370183720025">
+<node TEXT="Files" ID="ID_1398818983" CREATED="1370183720025" MODIFIED="1370183720025">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="files"/>
 <node TEXT="Last opened list length" ID="ID_1451739024" CREATED="1370183720025" MODIFIED="1370183720025">
@@ -139,8 +139,8 @@
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="experimental_file_locking_on"/>
 </node>
-<node TEXT="Standard template file" ID="ID_396156987" CREATED="1370183720025" MODIFIED="1370183720025">
-<attribute NAME="type" VALUE="path"/>
+<node TEXT="Standard template file" ID="ID_396156987" CREATED="1370183720025" MODIFIED="1384808649400">
+<attribute NAME="type" VALUE="string"/>
 <attribute NAME="name" VALUE="standard_template"/>
 </node>
 </node>

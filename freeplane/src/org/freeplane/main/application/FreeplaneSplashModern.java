@@ -27,6 +27,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
@@ -60,6 +61,11 @@ public class FreeplaneSplashModern extends JWindow {
 		super(frame);
 		splashResource = ResourceController.getResourceController().getResource("/images/Freeplane_splash.png");
 		splashImage = new ImageIcon(splashResource);
+		try {
+			getClass().getClassLoader().loadClass("com.sun.awt.AWTUtilities").getMethod("setWindowOpaque", Window.class, boolean.class).invoke(null, this, false);
+		}
+		catch (Exception e) {}
+		setBackground(new Color(0x57, 0xbf, 0x5e,0));
 		getRootPane().setOpaque(false);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
