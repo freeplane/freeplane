@@ -292,23 +292,46 @@
 			</tarfileset>
 		</tar>
 
-		<tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset prefix="freeplane-${ver}" dir="${workspace}" mode="664">
-				<patternset refid="freeplane.sources"/>
-				<!-- this file is built from latex.flex using jflex! -->
-				<exclude name="freeplane_plugin_script/src-jsyntaxpane/jsyntaxpane/lexers/LaTeXLexer.java"/>
-				<exclude name="**/*.exe" />
-				<exclude name="**/*.res" />
-				<exclude name="**/*.jar" />
-				<exclude name="**/*.dll" />
-				<exclude name="**/*JavaApplicationStub*" />
-			</tarfileset>
-			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
-				<include name="${license}" />
-				<include name="${readme_src}" />
-			</tarfileset>
-		</tar>
-	</target>
+    <!-- build srcpure tarball which does not contain any non-source files
+         for Linux packages -->
+    <tempfile property="srcpure.temp.dir" destDir="${java.io.tmpdir}" prefix="build-srcpure"/>
+    <mkdir dir="${srcpure.temp.dir}"/>
+    <copy todir="${srcpure.temp.dir}" overwrite="true">
+      <fileset dir="${workspace}">
+        <patternset refid="freeplane.sources"/>
+        <!-- this file is built from latex.flex using jflex! -->
+        <exclude name="freeplane_plugin_script/src-jsyntaxpane/jsyntaxpane/lexers/LaTeXLexer.java"/>
+        <exclude name="**/*.exe" />
+        <exclude name="**/*.res" />
+        <exclude name="**/*.jar" />
+        <exclude name="**/*.dll" />
+        <exclude name="**/*JavaApplicationStub*" />
+      </fileset>
+    </copy>
+    <!-- fix crlf->lf so that the Linux package patches apply, no matter whether this is
+         built on Windows or UNIX -->
+    <echo>Normalizing line endings to LF in ${srcpure.temp.dir}</echo>
+    <fixcrlf srcDir="${srcpure.temp.dir}" eol="lf" eof="asis" fixlast="false">
+      <include name="**/*.java"/>
+      <include name="**/*.xml"/>
+      <include name="**/*.xsl"/>
+      <include name="**/*.mm"/>
+      <include name="**/*.MF"/>
+      <include name="**/*.properties"/>
+    </fixcrlf>
+    <!-- build the tar file with the normalized files -->
+    <tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
+      <tarfileset prefix="freeplane-${ver}" dir="${srcpure.temp.dir}" mode="664">
+        <include name="**"/>
+      </tarfileset>
+      <tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
+        <include name="${license}" />
+        <include name="${readme_src}" />
+      </tarfileset>
+    </tar>
+    <delete dir="${srcpure.temp.dir}"/>
+    
+  </target>
 
 	<target name="installer" depends="build, mkdistdir">
 		<exec osfamily="windows" dir="${workspace}/freeplane_framework/windows-installer" executable="iscc.exe" failifexecutionfails="false" failonerror="true">

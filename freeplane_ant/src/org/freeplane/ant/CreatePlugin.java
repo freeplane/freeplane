@@ -7,7 +7,7 @@
  * modify it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * FormatTranslation.java is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -29,12 +31,12 @@ import org.apache.tools.ant.Task;
 public class CreatePlugin extends Task {
 	private static final String FREEPLANE_PLUGIN_PREFIX = "freeplane_plugin_";
 	private String pluginName;
-	private Boolean hasAction;
 	private File newPluginDir;
 	private File pluginTemplateDir;
 	private File baseDir;
 
-	public void execute() {
+	@Override
+    public void execute() {
 		// Freeplane has no build.xml on root level but only in projects -> use parentDir
 		baseDir = (baseDir == null) ? getProject().getBaseDir().getParentFile() : baseDir;
 		readAndValidateParameters();
@@ -63,10 +65,6 @@ public class CreatePlugin extends Task {
 		pluginName = pluginName.replaceAll(FREEPLANE_PLUGIN_PREFIX, "").toLowerCase();
 		if (!pluginName.matches("[a-z]+"))
 			fatal("plugin name may only contain letters from the range [a-z]");
-		if (hasAction == null)
-			hasAction = String.valueOf(
-			    TaskUtils.multipleChoice(getProject(), "=> Optional: Does this plugin contribute to the GUI?", "yes,no", "yes"))
-			    .equalsIgnoreCase("yes");
 	}
 
 	private void createDirs() {
@@ -87,76 +85,20 @@ public class CreatePlugin extends Task {
 	}
 
 	private void createSources() throws IOException {
-		if (hasAction)
-			createAction();
+		createAction();
 		createActivator();
 	}
 
 	private void createAction() throws IOException {
 		final String capPluginName = TaskUtils.firstToUpper(pluginName);
-		String source = "" //
-		        + "package " + packageName() + ";\n" //
-		        + "\n" //
-		        + "import java.awt.event.ActionEvent;\n" //
-		        + "\n" //
-		        + "import org.freeplane.core.controller.Controller;\n" //
-		        + "import org.freeplane.core.ui.AFreeplaneAction;\n" //
-		        + "import org.freeplane.core.ui.components.UITools;\n" //
-		        + "\n" //
-		        + "public class " + capPluginName + "Action extends AFreeplaneAction {\n" //
-		        + "	private static final long serialVersionUID = 1L;\n" //
-		        + "\n" //
-		        + "	public " + capPluginName + "Action() {\n" //
-		        + "		super(\"" + capPluginName + "\", controller, \"" + capPluginName + "\", null);\n" //
-		        + "	}\n" //
-		        + "\n" //
-		        + "	public void actionPerformed(final ActionEvent e) {\n" //
-		        + "		/*TODO: enter your GUI code here*/\n" //
-		        + "		UITools.informationMessage(\"Hi!\\n\\tThis is plugin " + capPluginName + "\");\n" //
-		        + "	}\n" //
-		        + "}\n";
+		String source = "package " + packageName() + ";\n"
+			+ new Scanner(getClass().getResourceAsStream("/$$$$Action.java"), "UTF-8").useDelimiter("\\A").next().replaceAll(Pattern.quote("$$$$"), TaskUtils.firstToUpper(pluginName));
 		write(new File(sourceDir(), capPluginName + "Action.java"), source);
 	}
 
 	private void createActivator() throws IOException {
-		final String registerAction = hasAction ? "				    "
-		        + "final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();\n"
-		        + "				    menuBuilder.addAnnotatedAction(new " + TaskUtils.firstToUpper(pluginName)
-		        + "Action(modeController.getController()));\n" : "";
-		String source = "" //
-		        + "package " + packageName() + ";\n" //
-		        + "\n" //
-		        + "import java.util.Hashtable;\n" //
-		        + "\n" //
-		        + "import org.freeplane.core.ui.MenuBuilder;\n" //
-		        + "import org.freeplane.features.common.map.ModeController;\n" //
-		        + "import org.freeplane.features.mindmapmode.MModeController;\n" //
-		        + "import org.freeplane.main.osgi.IModeControllerExtensionProvider;\n" //
-		        + "import org.osgi.framework.BundleActivator;\n" //
-		        + "import org.osgi.framework.BundleContext;\n" //
-		        + "\n" //
-		        + "public class Activator implements BundleActivator {\n" //
-		        + "	/*\n" //
-		        + "	 * (non-Javadoc)\n" //
-		        + "	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)\n" //
-		        + "	 */\n" //
-		        + "	public void start(final BundleContext context) throws Exception {\n" //
-		        + "		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();\n" //
-		        + "		props.put(\"mode\", new String[] { MModeController.MODENAME /*TODO: other modes too?*/});\n" //
-		        + "		context.registerService(IModeControllerExtensionProvider.class.getName(),\n" //
-		        + "		    new IModeControllerExtensionProvider() {\n" //
-		        + "			    public void installExtension() {\n" //
-		        + registerAction + "			    }\n" //
-		        + "		    /*TODO: further initializations*/}, props);\n" //
-		        + "	}\n" //
-		        + "\n" //
-		        + "	/*\n" //
-		        + "	 * (non-Javadoc)\n" //
-		        + "	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)\n" //
-		        + "	 */\n" //
-		        + "	public void stop(final BundleContext context) throws Exception {\n" //
-		        + "	}\n" //
-		        + "}\n";
+		String source = "package " + packageName() + ";\n"
+		   + new Scanner(getClass().getResourceAsStream("/Activator.java"), "UTF-8").useDelimiter("\\A").next().replaceAll(Pattern.quote("$$$$"), TaskUtils.firstToUpper(pluginName));
 		write(new File(sourceDir(), "Activator.java"), source);
 	}
 
@@ -263,16 +205,8 @@ public class CreatePlugin extends Task {
 	public void setBaseDir(File baseDir) {
 		this.baseDir = baseDir;
 	}
-	
+
 	public void setBaseDir(String baseDir) {
 		setBaseDir(new File(baseDir));
-	}
-	
-	public Boolean getHasAction() {
-		return hasAction;
-	}
-
-	public void setHasAction(Boolean hasAction) {
-		this.hasAction = hasAction;
 	}
 }
