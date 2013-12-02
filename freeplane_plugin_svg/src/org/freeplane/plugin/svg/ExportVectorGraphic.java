@@ -94,7 +94,8 @@ abstract class ExportVectorGraphic implements IExportEngine {
 
 			Frame frame = JOptionPane.getFrameForComponent(view.getRoot().getRootPane());
 			SwingUtilities.updateComponentTreeUI(frame);
-			frame.pack();
+			// this is recommended but causes the root node to be shifted to the bottom right corner :-(
+			// frame.pack();
 		}
 		catch(Exception ex)
 		{
