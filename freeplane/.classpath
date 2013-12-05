@@ -15,6 +15,11 @@
 	<classpathentry kind="lib" path="lib/jortho.jar"/>
 	<classpathentry kind="lib" path="lib/idw-gpl.jar" sourcepath="C:/Users/Dimitry/Downloads/idw-gpl-1.6.1-src/idw-gpl-1.6.1/src"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/flamingo-6.3.jar"/>
+	<classpathentry kind="lib" path="lib/substance-6.3.jar"/>
+	<classpathentry kind="lib" path="lib/substance-flamingo-6.3.jar"/>
+	<classpathentry kind="lib" path="lib/substance-swingx-6.3.jar"/>
+	<classpathentry kind="lib" path="lib/trident.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

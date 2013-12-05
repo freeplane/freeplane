@@ -25,7 +25,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
 
 /** This closes only the current map */
-class CloseAction extends AFreeplaneAction {
+public class CloseAction extends AFreeplaneAction {
 	static final String NAME = "close";
 	/**
 	 * 

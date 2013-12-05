@@ -128,7 +128,7 @@ public class HeadlessMModeControllerFactory {
 		NoteController.install(new MNoteController(modeController));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
-		LinkController.install(new MLinkController(modeController));
+		LinkController.install(new MLinkController());
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());
 		LocationController.install(new MLocationController());

@@ -23,10 +23,14 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+@SelectableAction(checkOnPopup = true)
+@EnabledAction(checkOnNodeChange = true)
 class ToggleDetailsAction extends AMultipleNodeAction {
 	/**
 	 * 
@@ -74,5 +78,29 @@ class ToggleDetailsAction extends AMultipleNodeAction {
             }
         }
     }
+    
+    @Override
+	public void setSelected() {
+    	try {
+    		NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+    		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+    		if (detailText == null) {
+    			setSelected(false);
+    			setEnabled(false);
+    			return;
+    		}
+    		setEnabled(true);
+    		setSelected(detailText.isHidden());
+    	}
+    	catch(Exception e) {
+    		setSelected(false);
+    		setEnabled(false);
+    	}
+	}
+   
+    @Override
+	public void setEnabled() {
+		setSelected();		
+	}
 
 }

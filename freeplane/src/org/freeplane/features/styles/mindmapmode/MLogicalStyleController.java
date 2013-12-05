@@ -211,7 +211,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 		if(! modeController.getController().getViewController().isHeadless()){
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
+			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder(MenuBuilder.class);
+			//TODO RIBBONS - apply to ribbons as well
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 				public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 					removeStyleMenu(menuBuilder, "main_menu_styles");

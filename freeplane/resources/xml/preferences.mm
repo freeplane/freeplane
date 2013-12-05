@@ -1,7 +1,7 @@
 <map version="freeplane 1.3.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry SHOW_ATTRIBUTES="hide"/>
-<node TEXT="Preferences" FOLDED="false" ID="ID_1942740593" CREATED="1370183720004" MODIFIED="1370183720004"><hook NAME="MapStyle">
+<node TEXT="Preferences" ID="ID_1942740593" CREATED="1370183720004" MODIFIED="1370183720004"><hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="true" STYLE_REF="boolean" LAST="false">
             <attribute_contains_condition ATTRIBUTE="type" VALUE="boolean" MATCH_CASE="true" MATCH_APPROXIMATELY="false"/>
@@ -94,7 +94,7 @@
 <node TEXT="Environment" POSITION="right" ID="ID_723831545" CREATED="1370183720024" MODIFIED="1370183720024">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="Environment"/>
-<node TEXT="Single program instance" FOLDED="true" ID="ID_1840688670" CREATED="1370183720024" MODIFIED="1370183720024">
+<node TEXT="Single program instance" ID="ID_1840688670" CREATED="1370183720024" MODIFIED="1370183720024">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="single_instance_mode"/>
 <node TEXT="Open files in a running instance" ID="ID_885109739" CREATED="1370183720025" MODIFIED="1370183720025">
@@ -106,7 +106,7 @@
 <attribute NAME="name" VALUE="single_instance_force"/>
 </node>
 </node>
-<node TEXT="Language" FOLDED="true" ID="ID_768814664" CREATED="1370183720025" MODIFIED="1370183720025">
+<node TEXT="Language" ID="ID_768814664" CREATED="1370183720025" MODIFIED="1370183720025">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="language"/>
 <node TEXT="Language" ID="ID_212812785" CREATED="1370183720025" MODIFIED="1370183720025">
@@ -144,10 +144,10 @@
 <attribute NAME="name" VALUE="standard_template"/>
 </node>
 </node>
-<node TEXT="Load" FOLDED="true" ID="ID_1577638913" CREATED="1370183720025" MODIFIED="1370183720025">
+<node TEXT="Load" ID="ID_1577638913" CREATED="1370183720025" MODIFIED="1370183720025">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="load"/>
-<node TEXT="On load" FOLDED="true" ID="ID_410599" CREATED="1370183720025" MODIFIED="1370183720025">
+<node TEXT="On load" ID="ID_410599" CREATED="1370183720025" MODIFIED="1370183720025">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="load_folding"/>
 <node TEXT="Fold all" ID="ID_477016346" CREATED="1370183720033" MODIFIED="1370183720033">
@@ -173,10 +173,10 @@
 <attribute NAME="min" VALUE="1"/>
 </node>
 </node>
-<node TEXT="Save" FOLDED="true" ID="ID_124150095" CREATED="1370183720034" MODIFIED="1370183720034">
+<node TEXT="Save" ID="ID_124150095" CREATED="1370183720034" MODIFIED="1370183720034">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="save"/>
-<node TEXT="Save folding" FOLDED="true" ID="ID_416087882" CREATED="1370183720034" MODIFIED="1370183720034">
+<node TEXT="Save folding" ID="ID_416087882" CREATED="1370183720034" MODIFIED="1370183720034">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="save_folding"/>
 <node TEXT="Never" ID="ID_256325781" CREATED="1370183720034" MODIFIED="1370183720034">
@@ -197,7 +197,7 @@
 <attribute NAME="name" VALUE="save_modification_times"/>
 </node>
 </node>
-<node TEXT="Automatic save" FOLDED="true" ID="ID_852360897" CREATED="1370183720034" MODIFIED="1370183720034">
+<node TEXT="Automatic save" ID="ID_852360897" CREATED="1370183720034" MODIFIED="1370183720034">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="automatic_save"/>
 <node TEXT="Time for automatic save" ID="ID_1498208772" CREATED="1370183720034" MODIFIED="1370183720034">
@@ -231,7 +231,7 @@
 <attribute NAME="max" VALUE="25"/>
 </node>
 </node>
-<node TEXT="Export" FOLDED="true" ID="ID_954161030" CREATED="1370183720037" MODIFIED="1370183720037">
+<node TEXT="Export" ID="ID_954161030" CREATED="1370183720037" MODIFIED="1370183720037">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="export"/>
 <node TEXT="Exported image resolution (in DPI)" ID="ID_697646517" CREATED="1370183720037" MODIFIED="1370183720037">
@@ -241,10 +241,10 @@
 <attribute NAME="max" VALUE="2400"/>
 </node>
 </node>
-<node TEXT="Hyperlink types" FOLDED="true" ID="ID_1473490330" CREATED="1370183720037" MODIFIED="1370183720037">
+<node TEXT="Hyperlink types" ID="ID_1473490330" CREATED="1370183720037" MODIFIED="1370183720037">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="hyperlink_types"/>
-<node TEXT="Links" FOLDED="true" ID="ID_311928787" CREATED="1370183720037" MODIFIED="1370183720037">
+<node TEXT="Links" ID="ID_311928787" CREATED="1370183720037" MODIFIED="1370183720037">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="links"/>
 <node TEXT="Relative" ID="ID_509696639" CREATED="1370183720037" MODIFIED="1370183720037">
@@ -257,10 +257,10 @@
 </node>
 </node>
 </node>
-<node TEXT="Cache" FOLDED="true" ID="ID_1505774869" CREATED="1370183720037" MODIFIED="1370183720037">
+<node TEXT="Cache" ID="ID_1505774869" CREATED="1370183720037" MODIFIED="1370183720037">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="cache"/>
-<node TEXT="for images" FOLDED="true" ID="ID_964050006" CREATED="1370183720037" MODIFIED="1370183720037">
+<node TEXT="for images" ID="ID_964050006" CREATED="1370183720037" MODIFIED="1370183720037">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="image_cache"/>
 <node TEXT="Disable" ID="ID_1260513076" CREATED="1370183720037" MODIFIED="1370183720037">
@@ -277,7 +277,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Program updates" FOLDED="true" ID="ID_378448205" CREATED="1370183720037" MODIFIED="1370183720037">
+<node TEXT="Program updates" ID="ID_378448205" CREATED="1370183720037" MODIFIED="1370183720037">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="updates"/>
 <node TEXT="Check for updates on program start" ID="ID_456905076" CREATED="1370183720037" MODIFIED="1370183720037">
@@ -285,10 +285,10 @@
 <attribute NAME="name" VALUE="check_updates_automatically"/>
 </node>
 </node>
-<node TEXT="Policy" FOLDED="true" ID="ID_363428684" CREATED="1370183720037" MODIFIED="1370183720037">
+<node TEXT="Policy" ID="ID_363428684" CREATED="1370183720037" MODIFIED="1370183720037">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="org.freeplane.plugin.bugreport"/>
-<node TEXT="Policy" FOLDED="true" ID="ID_915122560" CREATED="1370183720038" MODIFIED="1370183720038">
+<node TEXT="Policy" ID="ID_915122560" CREATED="1370183720038" MODIFIED="1370183720038">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="org.freeplane.plugin.bugreport"/>
 <node TEXT="Always send" ID="ID_471506559" CREATED="1370183720038" MODIFIED="1370183720038">
@@ -310,10 +310,10 @@
 </node>
 </node>
 </node>
-<node TEXT="Appearance" FOLDED="true" POSITION="right" ID="ID_37070726" CREATED="1370183720038" MODIFIED="1370183720038">
+<node TEXT="Appearance" POSITION="right" ID="ID_37070726" CREATED="1370183720038" MODIFIED="1370183720038">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="Appearance"/>
-<node TEXT="Look and feel" FOLDED="true" ID="ID_844594313" CREATED="1370183720038" MODIFIED="1370183720038">
+<node TEXT="Look and feel" ID="ID_844594313" CREATED="1370183720038" MODIFIED="1370183720038">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="look_and_feel"/>
 <node TEXT="Look and Feel" ID="ID_1265760042" CREATED="1370183720038" MODIFIED="1370183720038">
@@ -330,6 +330,10 @@
 <attribute NAME="min" VALUE="72"/>
 <attribute NAME="max" VALUE="1200"/>
 </node>
+<node TEXT="Use Ribbon menu" ID="ID_943610131" CREATED="1386237652948" MODIFIED="1386237745731">
+<attribute NAME="type" VALUE="boolean"/>
+<attribute NAME="name" VALUE="menu.ribbons"/>
+</node>
 <node TEXT="Use default font for notes too" ID="ID_733638596" CREATED="1370183720038" MODIFIED="1370183720038">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="resources_use_default_font_for_notes_too"/>
@@ -344,7 +348,7 @@
 <attribute NAME="min" VALUE="10"/>
 </node>
 </node>
-<node TEXT="Status line" FOLDED="true" ID="ID_646613151" CREATED="1370183720038" MODIFIED="1370183720038">
+<node TEXT="Status line" ID="ID_646613151" CREATED="1370183720038" MODIFIED="1370183720038">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="status"/>
 <node TEXT="Display node ID" ID="ID_108835084" CREATED="1370183720038" MODIFIED="1370183720038">
@@ -352,7 +356,7 @@
 <attribute NAME="name" VALUE="display_node_id"/>
 </node>
 </node>
-<node TEXT="Default colors" FOLDED="true" ID="ID_1557885832" CREATED="1370183720038" MODIFIED="1370183720038">
+<node TEXT="Default colors" ID="ID_1557885832" CREATED="1370183720038" MODIFIED="1370183720038">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="default_colors"/>
 <node TEXT="Revision color" ID="ID_259628453" CREATED="1370183720038" MODIFIED="1370183720038">
@@ -374,7 +378,7 @@
 <attribute NAME="max" VALUE="255"/>
 </node>
 </node>
-<node TEXT="Selection colors" FOLDED="true" ID="ID_1579556482" CREATED="1370183720045" MODIFIED="1370183720045">
+<node TEXT="Selection colors" ID="ID_1579556482" CREATED="1370183720045" MODIFIED="1370183720045">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="selection_colors"/>
 <node TEXT="Display selected nodes in bubbles" ID="ID_1336656688" CREATED="1370183720045" MODIFIED="1370183720045">
@@ -390,7 +394,7 @@
 <attribute NAME="name" VALUE="standardselectednodecolor"/>
 </node>
 </node>
-<node TEXT="Root node appearance" FOLDED="true" ID="ID_185289096" CREATED="1370183720045" MODIFIED="1370183720045">
+<node TEXT="Root node appearance" ID="ID_185289096" CREATED="1370183720045" MODIFIED="1370183720045">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="root_node_appearance"/>
 <node TEXT="Edges start from one point at root node" ID="ID_562395828" CREATED="1370183720045" MODIFIED="1370183720045">
@@ -398,10 +402,10 @@
 <attribute NAME="name" VALUE="use_common_out_point_for_root_node"/>
 </node>
 </node>
-<node TEXT="Antialias" FOLDED="true" ID="ID_90204332" CREATED="1370183720045" MODIFIED="1370183720045">
+<node TEXT="Antialias" ID="ID_90204332" CREATED="1370183720045" MODIFIED="1370183720045">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="anti_alias"/>
-<node TEXT="Antialias" FOLDED="true" ID="ID_1892518977" CREATED="1370183720045" MODIFIED="1370183720045">
+<node TEXT="Antialias" ID="ID_1892518977" CREATED="1370183720045" MODIFIED="1370183720045">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="antialias"/>
 <node TEXT="Antialias edges" ID="ID_801698319" CREATED="1370183720046" MODIFIED="1370183720046">
@@ -418,7 +422,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Size limits" FOLDED="true" ID="ID_887796087" CREATED="1370183720046" MODIFIED="1370183720046">
+<node TEXT="Size limits" ID="ID_887796087" CREATED="1370183720046" MODIFIED="1370183720046">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="size_limits"/>
 <node TEXT="Maximum shortened text width" ID="ID_1080402416" CREATED="1370183720046" MODIFIED="1370183720046">
@@ -444,7 +448,7 @@
 <attribute NAME="min" VALUE="10"/>
 </node>
 </node>
-<node TEXT="Connectors" FOLDED="true" ID="ID_908110780" CREATED="1370183720046" MODIFIED="1370183720046">
+<node TEXT="Connectors" ID="ID_908110780" CREATED="1370183720046" MODIFIED="1370183720046">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="connectors"/>
 <node TEXT="Standard link color" ID="ID_965690541" CREATED="1370183720046" MODIFIED="1370183720046">
@@ -458,7 +462,7 @@
 <attribute NAME="min" VALUE="20"/>
 <attribute NAME="max" VALUE="255"/>
 </node>
-<node TEXT="connector_shape" FOLDED="true" ID="ID_1605623486" CREATED="1370183720046" MODIFIED="1370183720046">
+<node TEXT="connector_shape" ID="ID_1605623486" CREATED="1370183720046" MODIFIED="1370183720046">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="connector_shape"/>
 <attribute NAME="text" VALUE="connector_shapes"/>
@@ -505,7 +509,7 @@
 <attribute NAME="name" VALUE="paint_connectors_behind"/>
 </node>
 </node>
-<node TEXT="Edit in dialog" FOLDED="true" ID="ID_1513160130" CREATED="1370183720047" MODIFIED="1370183720047">
+<node TEXT="Edit in dialog" ID="ID_1513160130" CREATED="1370183720047" MODIFIED="1370183720047">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="edit_long_node_window"/>
 <node TEXT="Buttons at the top" ID="ID_952752518" CREATED="1370183720047" MODIFIED="1370183720047">
@@ -533,7 +537,7 @@
 <attribute NAME="name" VALUE="el__max_default_window_width"/>
 </node>
 </node>
-<node TEXT="Outline view" FOLDED="true" ID="ID_1390048143" CREATED="1370183720047" MODIFIED="1370183720047">
+<node TEXT="Outline view" ID="ID_1390048143" CREATED="1370183720047" MODIFIED="1370183720047">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="outline_view"/>
 <node TEXT="Vertical distance" ID="ID_1110006236" CREATED="1370183720047" MODIFIED="1370183720047">
@@ -547,7 +551,7 @@
 <attribute NAME="min" VALUE="1"/>
 </node>
 </node>
-<node TEXT="Icons" FOLDED="true" ID="ID_277900726" CREATED="1370183720047" MODIFIED="1370183720047">
+<node TEXT="Icons" ID="ID_277900726" CREATED="1370183720047" MODIFIED="1370183720047">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="icon_properties"/>
 <node TEXT="Structured icon toolbar" ID="ID_510627650" CREATED="1370183720047" MODIFIED="1370183720047">
@@ -564,7 +568,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Keystrokes" FOLDED="true" POSITION="right" ID="ID_618364125" CREATED="1370183720048" MODIFIED="1370183720048">
+<node TEXT="Keystrokes" POSITION="right" ID="ID_618364125" CREATED="1370183720048" MODIFIED="1370183720048">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="Keystrokes"/>
 <attribute NAME="layout" VALUE="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu"/>
@@ -581,13 +585,13 @@
 <attribute NAME="name" VALUE="icons"/>
 </node>
 </node>
-<node TEXT="Behaviour" FOLDED="true" POSITION="right" ID="ID_630037237" CREATED="1370183720048" MODIFIED="1370183720048">
+<node TEXT="Behaviour" POSITION="right" ID="ID_630037237" CREATED="1370183720048" MODIFIED="1370183720048">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="Behaviour"/>
-<node TEXT="Behaviour" FOLDED="true" ID="ID_1310182301" CREATED="1370183720048" MODIFIED="1370183720048">
+<node TEXT="Behaviour" ID="ID_1310182301" CREATED="1370183720048" MODIFIED="1370183720048">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="behaviour"/>
-<node TEXT="Place new branches" FOLDED="true" ID="ID_877092297" CREATED="1370183720048" MODIFIED="1370183720048">
+<node TEXT="Place new branches" ID="ID_877092297" CREATED="1370183720048" MODIFIED="1370183720048">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="placenewbranches"/>
 <node TEXT="First" ID="ID_199036669" CREATED="1370183720048" MODIFIED="1370183720048">
@@ -634,7 +638,7 @@
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="goto_note_end_on_edit"/>
 </node>
-<node TEXT="On key type" FOLDED="true" ID="ID_564669547" CREATED="1370183720053" MODIFIED="1370183720053">
+<node TEXT="On key type" ID="ID_564669547" CREATED="1370183720053" MODIFIED="1370183720053">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="key_type_action"/>
 <node TEXT="Overwrite content" ID="ID_1153246997" CREATED="1370183720053" MODIFIED="1370183720053">
@@ -655,7 +659,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Data formatting and parsing" FOLDED="true" ID="ID_1442063739" CREATED="1370183720053" MODIFIED="1370183720053">
+<node TEXT="Data formatting and parsing" ID="ID_1442063739" CREATED="1370183720053" MODIFIED="1370183720053">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="data_formats"/>
 <node TEXT="Recognize input of numbers and date-time" ID="ID_910768774" CREATED="1370183720053" MODIFIED="1370183720053">
@@ -679,7 +683,7 @@
 <attribute NAME="name" VALUE="format_locale"/>
 </node>
 </node>
-<node TEXT="Search" FOLDED="true" ID="ID_1984074531" CREATED="1370183720053" MODIFIED="1370183720053">
+<node TEXT="Search" ID="ID_1984074531" CREATED="1370183720053" MODIFIED="1370183720053">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="search"/>
 <node TEXT="Compare as numbers" ID="ID_1362174029" CREATED="1370183720053" MODIFIED="1370183720053">
@@ -694,7 +698,7 @@
 <attribute NAME="step" VALUE="0.05"/>
 </node>
 </node>
-<node TEXT="In-line node editor" FOLDED="true" ID="ID_557632654" CREATED="1370183720053" MODIFIED="1370183720053">
+<node TEXT="In-line node editor" ID="ID_557632654" CREATED="1370183720053" MODIFIED="1370183720053">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="inline_editor"/>
 <node TEXT="Display inline editor for all new nodes" ID="ID_1014770406" CREATED="1370183720053" MODIFIED="1370183720053">
@@ -717,7 +721,7 @@
 <attribute NAME="step" VALUE="40"/>
 </node>
 </node>
-<node TEXT="Spell checker options" FOLDED="true" ID="ID_1278191355" CREATED="1370183720054" MODIFIED="1370183720054">
+<node TEXT="Spell checker options" ID="ID_1278191355" CREATED="1370183720054" MODIFIED="1370183720054">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="spelling"/>
 <node TEXT="Case sensitive" ID="ID_1306174035" CREATED="1370183720054" MODIFIED="1370183720054">
@@ -747,7 +751,7 @@
 <attribute NAME="min" VALUE="0"/>
 </node>
 </node>
-<node TEXT="Confirmations" FOLDED="true" ID="ID_1302130978" CREATED="1370183720054" MODIFIED="1370183720054">
+<node TEXT="Confirmations" ID="ID_1302130978" CREATED="1370183720054" MODIFIED="1370183720054">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="notifications"/>
 <node TEXT="Use rich text for pasted nodes" ID="ID_815038150" CREATED="1370183720054" MODIFIED="1370183720054">
@@ -767,10 +771,10 @@
 <attribute NAME="name" VALUE="remove_notes_without_question"/>
 </node>
 </node>
-<node TEXT="Selection method" FOLDED="true" ID="ID_503444195" CREATED="1370183720054" MODIFIED="1370183720054">
+<node TEXT="Selection method" ID="ID_503444195" CREATED="1370183720054" MODIFIED="1370183720054">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="selection_method"/>
-<node TEXT="Selection method" FOLDED="true" ID="ID_1686471954" CREATED="1370183720055" MODIFIED="1370183720055">
+<node TEXT="Selection method" ID="ID_1686471954" CREATED="1370183720055" MODIFIED="1370183720055">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="selection_method"/>
 <node TEXT="Direct" ID="ID_168679294" CREATED="1370183720055" MODIFIED="1370183720055">
@@ -795,7 +799,7 @@
 <attribute NAME="name" VALUE="center_selected_node"/>
 </node>
 </node>
-<node TEXT="Mouse wheel" FOLDED="true" ID="ID_503866131" CREATED="1370183720055" MODIFIED="1370183720055">
+<node TEXT="Mouse wheel" ID="ID_503866131" CREATED="1370183720055" MODIFIED="1370183720055">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="mouse_wheel"/>
 <node TEXT="Speed" ID="ID_1770927331" CREATED="1370183720055" MODIFIED="1370183720055">
@@ -803,7 +807,7 @@
 <attribute NAME="name" VALUE="wheel_velocity"/>
 </node>
 </node>
-<node TEXT="Scrollbar" FOLDED="true" ID="ID_1893063596" CREATED="1370183720055" MODIFIED="1370183720055">
+<node TEXT="Scrollbar" ID="ID_1893063596" CREATED="1370183720055" MODIFIED="1370183720055">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="scrollbar"/>
 <node TEXT="Speed" ID="ID_107891399" CREATED="1370183720055" MODIFIED="1370183720055">
@@ -811,7 +815,7 @@
 <attribute NAME="name" VALUE="scrollbar_increment"/>
 </node>
 </node>
-<node TEXT="Tooltip times" FOLDED="true" ID="ID_460104421" CREATED="1370183720055" MODIFIED="1370183720055">
+<node TEXT="Tooltip times" ID="ID_460104421" CREATED="1370183720055" MODIFIED="1370183720055">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="tooltip"/>
 <node TEXT="Display tool tips" ID="ID_816419280" CREATED="1370183720055" MODIFIED="1370183720055">
@@ -838,7 +842,7 @@
 <attribute NAME="name" VALUE="show_styles_in_tooltip"/>
 </node>
 </node>
-<node TEXT="Undo" FOLDED="true" ID="ID_1519744325" CREATED="1370183720059" MODIFIED="1370183720059">
+<node TEXT="Undo" ID="ID_1519744325" CREATED="1370183720059" MODIFIED="1370183720059">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="undo"/>
 <node TEXT="Undo levels" ID="ID_165120822" CREATED="1370183720059" MODIFIED="1370183720059">
@@ -846,10 +850,10 @@
 <attribute NAME="name" VALUE="undo_levels"/>
 </node>
 </node>
-<node TEXT="Rich-Text Editor" FOLDED="true" ID="ID_104180183" CREATED="1370183720059" MODIFIED="1370183720059">
+<node TEXT="Rich-Text Editor" ID="ID_104180183" CREATED="1370183720059" MODIFIED="1370183720059">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="RichTextEditor"/>
-<node TEXT="Default paste mode" FOLDED="true" ID="ID_802213301" CREATED="1370183720060" MODIFIED="1370183720060">
+<node TEXT="Default paste mode" ID="ID_802213301" CREATED="1370183720060" MODIFIED="1370183720060">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="simplyhtml.default_paste_mode"/>
 <node TEXT="Paste as HTML" ID="ID_579434040" CREATED="1370183720060" MODIFIED="1370183720060">
@@ -863,10 +867,10 @@
 </node>
 </node>
 </node>
-<node TEXT="HTML" FOLDED="true" POSITION="right" ID="ID_1401105906" CREATED="1370183720060" MODIFIED="1370183720060">
+<node TEXT="HTML" POSITION="right" ID="ID_1401105906" CREATED="1370183720060" MODIFIED="1370183720060">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="HTML"/>
-<node TEXT="Browser" FOLDED="true" ID="ID_479521225" CREATED="1370183720060" MODIFIED="1370183720060">
+<node TEXT="Browser" ID="ID_479521225" CREATED="1370183720060" MODIFIED="1370183720060">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="browser"/>
 <node TEXT="Default browser command Windows Nt" ID="ID_154419270" CREATED="1370183720060" MODIFIED="1370183720060">
@@ -886,10 +890,10 @@
 <attribute NAME="name" VALUE="default_browser_command_mac"/>
 </node>
 </node>
-<node TEXT="Html Export" FOLDED="true" ID="ID_572384290" CREATED="1370183720060" MODIFIED="1370183720060">
+<node TEXT="Html Export" ID="ID_572384290" CREATED="1370183720060" MODIFIED="1370183720060">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="html_export"/>
-<node TEXT="Html export folding" FOLDED="true" ID="ID_122608747" CREATED="1370183720060" MODIFIED="1370183720060">
+<node TEXT="Html export folding" ID="ID_122608747" CREATED="1370183720060" MODIFIED="1370183720060">
 <attribute NAME="type" VALUE="combo"/>
 <attribute NAME="name" VALUE="html_export_folding"/>
 <node TEXT="No folding" ID="ID_1569400510" CREATED="1370183720060" MODIFIED="1370183720060">
@@ -914,7 +918,7 @@
 <attribute NAME="name" VALUE="export_icons_in_html"/>
 </node>
 </node>
-<node TEXT="Html Import" FOLDED="true" ID="ID_1883761755" CREATED="1370183720060" MODIFIED="1370183720060">
+<node TEXT="Html Import" ID="ID_1883761755" CREATED="1370183720060" MODIFIED="1370183720060">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="html_import"/>
 <node TEXT="Import HTML as node structure" ID="ID_1958637376" CREATED="1370183720060" MODIFIED="1370183720060">

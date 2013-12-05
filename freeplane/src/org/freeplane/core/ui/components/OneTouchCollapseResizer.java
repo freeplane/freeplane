@@ -28,7 +28,7 @@ public class OneTouchCollapseResizer extends JResizer {
 	public static final String COLLAPSED = OneTouchCollapseResizer.class.getPackage().getName()+".collapsed";
 	private static final String ALREADY_IN_PAINT = OneTouchCollapseResizer.class.getPackage().getName()+".ALREADY_PAINTING";
 	
-	public enum CollapseDirection {COLLAPSE_LEFT, COLLAPSE_RIGHT};
+	public enum CollapseDirection {COLLAPSE_LEFT, COLLAPSE_RIGHT, COLLAPSE_UP, COLLAPSE_DOWN};
 	
 	private Dimension lastComponentSize;
 	protected boolean expanded = true;
@@ -89,15 +89,14 @@ public class OneTouchCollapseResizer extends JResizer {
 				if(e.getComponent() == getHotSpot()) {
 					getHotSpot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				}
-				if(!isExpanded()) {
+				if(!isExpanded() || sliderLock) {
 					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				}
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				final JComponent parent = (JComponent) getParent();
 				final Component resizedComponent = getResizedParent();
-				if(e.getComponent() == getHotSpot()) {					
+				if((e.getComponent() == getHotSpot()) || sliderLock) {					
 					final Dimension size = new Dimension(resizedComponent.getPreferredSize());
 					
 					if (isExpanded()) {
@@ -107,15 +106,11 @@ public class OneTouchCollapseResizer extends JResizer {
 					}
 					else {						
 						setExpanded(true);
-					}				
-					parent.revalidate();
-					parent.repaint();
+					}
 				} 
 				else {
 					if (!isExpanded()) {	
 						setExpanded(true);
-						parent.revalidate();
-						parent.repaint();
 					}
 				}
 			}
@@ -124,8 +119,14 @@ public class OneTouchCollapseResizer extends JResizer {
 		addMouseListener(listener);
 		
 		add(getHotSpot());
+		initDefaults();
 	}
 	
+	protected void initDefaults() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
@@ -167,6 +168,7 @@ public class OneTouchCollapseResizer extends JResizer {
 	
 	public void setExpanded(boolean enabled) {
 		if(this.expanded != enabled) {
+			this.expanded = enabled;
 			try {
 				Component resizedComponent = getResizedParent();
 				if(resizedComponent instanceof JComponent) {
@@ -182,12 +184,14 @@ public class OneTouchCollapseResizer extends JResizer {
 				}
 				
 				fireCollapseStateChanged(resizedComponent, enabled);
+				
+				recalibrate();
 			}
 			catch (Exception e) {
-				// just ignore
+				LogUtils.warn("Exception in org.freeplane.core.ui.components.OneTouchCollapseResizer.setExpanded(enabled): "+e);
 			}
 		}
-		this.expanded = enabled;
+		
 	}
 	
 	private Component getResizedParent() {
@@ -205,9 +209,16 @@ public class OneTouchCollapseResizer extends JResizer {
 		}
 		putClientProperty(ALREADY_IN_PAINT, "true");
 		super.paint(g);
-		int center_y = getHeight()/2;
-		int divSize = getDividerSize();
-		getHotSpot().setBounds(0, center_y-15, divSize, 30);
+		if((direction.equals(Direction.RIGHT) || direction.equals(Direction.LEFT))) {
+			int center_y = getHeight()/2;
+			int divSize = getDividerSize();
+			getHotSpot().setBounds(0, center_y-15, divSize, 30);
+		}
+		else {
+			int center_x = getWidth()/2;
+			int divSize = getDividerSize();
+			getHotSpot().setBounds(center_x-15, 0, 30, divSize);
+		}
 		Dimension size = getResizedParent().getPreferredSize();
 		if((direction.equals(Direction.RIGHT) || direction.equals(Direction.LEFT)) && size.width <= getDividerSize()) {
 			setExpanded(false);
@@ -240,25 +251,43 @@ public class OneTouchCollapseResizer extends JResizer {
 						drawExpandLabel(g);			
 					}
 				}
+				
+				public void updateUI() {
+					try {
+						super.updateUI();
+					}
+					catch (Exception e) {
+					}
+				}
 			};
+			hotspot.setBackground(Color.BLUE);
 		}
 		return hotspot;
 	}
 	
 	private void drawCollapseLabel(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
-		int half_length = Math.round(g.getClipBounds().height*0.2f);
+		int half_length = Math.round(size.height*0.2f);
 		int center_y = size.height / 2;
-
+		
+		int half_width = Math.round(size.width*0.2f);
+		int center_x = size.width / 2;
+		
 		g.setColor(getBackground());
-		g.fillRect(0, 0, size.width, size.height-0);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		//g.setColor();
 		if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_LEFT)) {
-			arrowLeft(g, size, half_length, center_y);
+			arrowLeft(g, half_length, center_y);
 		} 
 		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_RIGHT)) {
 			arrowRight(g, half_length, center_y);
+		}
+		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_UP)) {
+			arrowUp(g, half_width, center_x);
+		} 
+		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_DOWN)) {
+			arrowDown(g, half_width, center_x);
 		}
 	}
 
@@ -266,38 +295,46 @@ public class OneTouchCollapseResizer extends JResizer {
 	
 	private void drawExpandLabel(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
-		int half_length = (g.getClipBounds().height-(inset*6))/2;
+		int half_length = (size.height-(inset*6))/2;
 		int center_y = size.height / 2;
 		
-		g.setColor(getBackground());
-		g.fillRect(0, 0, size.width, size.height-0);
+		int half_width = (size.width-(inset*6))/2;
+		int center_x = size.width / 2;
 		
-		if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_LEFT)) {			
+		g.setColor(getBackground());
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_LEFT)) {
 			arrowRight(g, half_length, center_y);
 		} 
 		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_RIGHT)) {
-			arrowLeft(g, size, half_length, center_y);
+			arrowLeft(g, half_length, center_y);
+		}
+		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_UP)) {
+			arrowDown(g, half_width, center_x);
+		} 
+		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_DOWN)) {
+			arrowUp(g, half_width, center_x);
 		}
 	}
 	
 	
 	/**
 	 * @param g
-	 * @param size
 	 * @param half_length
 	 * @param center_y
 	 */
-	private void arrowLeft(Graphics g, Dimension size, int half_length, int center_y) {
-		int[] x = new int[]{inset, size.width - inset, size.width - inset};
+	private void arrowLeft(Graphics g, int half_length, int center_y) {
+		int[] x = new int[]{inset, getSize().width - inset, getSize().width - inset};
 		int[] y = new int[]{center_y, center_y-half_length, center_y + half_length};
 		g.setColor(Color.DARK_GRAY);
 		g.fillPolygon(x, y, 3);
 		g.setColor(Color.DARK_GRAY);
-		g.drawLine(inset, center_y, size.width - inset, center_y - half_length);
+		g.drawLine(inset, center_y, getSize().width - inset, center_y - half_length);
 		g.setColor(Color.GRAY);
-		g.drawLine( size.width - inset, center_y + half_length, inset, center_y);
+		g.drawLine( getSize().width - inset, center_y + half_length, inset, center_y);
 		g.setColor(Color.GRAY);
-		g.drawLine( size.width - inset, center_y - half_length, size.width - inset, center_y + half_length);
+		g.drawLine( getSize().width - inset, center_y - half_length, getSize().width - inset, center_y + half_length);
 	}
 
 	/**
@@ -317,6 +354,37 @@ public class OneTouchCollapseResizer extends JResizer {
 		g.drawLine( inset, center_y - half_length, getSize().width - inset, center_y);
 		g.setColor( Color.LIGHT_GRAY);
 		g.drawLine( getSize().width - inset, center_y, inset, center_y + half_length);
+	}
+	
+	private void arrowUp(Graphics g, int half_length, int center_x) {
+		int[] y = new int[]{inset, getSize().height - inset, getSize().height - inset};
+		int[] x = new int[]{center_x, center_x-half_length, center_x + half_length};
+		
+		g.setColor(Color.DARK_GRAY);
+		g.fillPolygon(x, y, 3);
+		
+		g.setColor(Color.GRAY);
+		g.drawLine(center_x + half_length, getSize().height - inset, center_x, inset);		
+		g.setColor(Color.DARK_GRAY);
+		g.drawLine(center_x, inset, center_x - half_length, getSize().height - inset);
+		g.setColor(Color.LIGHT_GRAY);
+		g.drawLine(center_x - half_length, getSize().height - inset, center_x + half_length, getSize().height - inset);
+		
+	}
+	
+	private void arrowDown(Graphics g, int half_length, int center_x) {
+		int[] y = new int[]{inset, inset, getSize().height - inset};
+		int[] x = new int[]{center_x+half_length, center_x-half_length, center_x};
+		
+		g.setColor( Color.DARK_GRAY);
+		g.fillPolygon(x,y,3);
+		
+		g.setColor(Color.GRAY);
+		g.drawLine( center_x - half_length, inset, center_x, getSize().height- inset);
+		g.setColor( Color.DARK_GRAY);
+		g.drawLine( center_x + half_length, inset, center_x - half_length, inset);
+		g.setColor( Color.LIGHT_GRAY);
+		g.drawLine(center_x,  getSize().height - inset, center_x + half_length, inset);
 	}
 	
 	private int getIndex() {
@@ -357,8 +425,8 @@ public class OneTouchCollapseResizer extends JResizer {
 		}		
 	}
 	
-	private void fireCollapseStateChanged(Component resizedComponent, boolean expanded) {
-		ResizeEvent event = new ResizeEvent(resizedComponent);
+	protected void fireCollapseStateChanged(Component resizedComponent, boolean expanded) {
+		ResizeEvent event = new ResizeEvent(this, resizedComponent);
 		synchronized (this.collapseListener) {
 			for(ComponentCollapseListener listener : collapseListener) {
 				try {
@@ -377,8 +445,36 @@ public class OneTouchCollapseResizer extends JResizer {
 		
 	}
 	
+	public static OneTouchCollapseResizer findResizerFor(Component component) {
+		if(component != null) {
+			Component parent = component.getParent();
+			if(parent != null) {
+				if(parent instanceof Container) {
+					Component[] children = ((Container) parent).getComponents();
+					for (Component child : children) {
+						if(child instanceof OneTouchCollapseResizer) {
+							return (OneTouchCollapseResizer) child;
+						}
+					}
+				}
+				return findResizerFor(parent);
+			}
+		}
+		return null;
+	}
+	
 	public interface ComponentCollapseListener {
 		public void componentCollapsed(ResizeEvent event);
 		public void componentExpanded(ResizeEvent event);
+	}
+
+	public void recalibrate() {
+		if(getClientProperty(ALREADY_IN_PAINT) == null) {
+			final JComponent parent = (JComponent) getParent();
+			if(parent != null) {
+				parent.revalidate();
+				parent.repaint();
+			}
+		}
 	}
 }

@@ -43,7 +43,6 @@ import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 
 /**
@@ -372,7 +371,7 @@ public class ModeController extends AController {
 	public void updateMenus(String menuStructure, final Set<String> plugins) {
 		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
 		userInputListenerFactory.updateMenus(menuStructure, plugins);
-		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
+		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder(MenuBuilder.class);
 		final Iterator<IMenuContributor> iterator = menuContributors.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().updateMenus(this, menuBuilder);

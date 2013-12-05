@@ -105,7 +105,7 @@ public class LinkController extends SelectionController implements IExtension {
 	public static void install( final LinkController linkController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LinkController.class, linkController);
-		linkController.init();
+		linkController.init(modeController);
 	}
 
 	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
@@ -118,9 +118,8 @@ public class LinkController extends SelectionController implements IExtension {
 //		this.modeController = modeController;
 	}
 
-	protected void init() {
+	protected void init(ModeController modeController) {
 		createActions();
-		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -345,7 +344,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return model.getWidth();
 	}
 
-	void loadLink(final NodeModel node, String link) {
+	public void loadLink(final NodeModel node, String link) {
 		NodeLinks links = NodeLinks.getLinkExtension(node);
 		if (links == null) {
 			links = NodeLinks.createLinkExtension(node);
@@ -398,7 +397,7 @@ public class LinkController extends SelectionController implements IExtension {
 				if (e == null) {
 					throw new IllegalArgumentException("ActionEvent is needed for menu item links");
 				}
-				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
 				final DefaultMutableTreeNode treeNode = menuBuilder.get(LinkController.parseMenuItemLink(link));
 				if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
 					LogUtils.warn("node " + link + " should have been an executable action");

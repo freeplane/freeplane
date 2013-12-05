@@ -529,8 +529,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyFilter(false);
 		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
 		filterMenuBuilder.updateMenus(modeController, menuBuilder);
+		//TODO RIBBONS: apply to ribbons as well, if necessary
 	}
 
 	private void updateSettingsFromFilter(final Filter filter) {

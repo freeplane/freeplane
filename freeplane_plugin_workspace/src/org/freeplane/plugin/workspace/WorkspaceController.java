@@ -251,7 +251,7 @@ public final class WorkspaceController implements IExtension {
 	}
 	
 	public static URI getApplicationSettingsHome() {
-		File home = new File(Compat.getFreeplaneUserDirectory());
+		File home = new File(Compat.getApplicationUserDirectory());
 		return home.toURI();
 	}
 

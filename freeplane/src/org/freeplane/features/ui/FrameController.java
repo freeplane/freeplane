@@ -66,7 +66,14 @@ import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.JResizer.Direction;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer.CollapseDirection;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer.ComponentCollapseListener;
+import org.freeplane.core.ui.components.ResizeEvent;
+import org.freeplane.core.ui.components.ResizerListener;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
@@ -175,6 +182,7 @@ abstract public class FrameController implements ViewController {
 //		this.controller = controller;
 		controller.setViewController(this);
 		controller.addAction(new ToggleFullScreenAction(this));
+		controller.addAction(new ToggleRibbonAction());
 		controller.addAction(new CloseAction());
 		
 		controller.addAction(new ToggleMenubarAction(this));
@@ -227,7 +235,46 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public void init(Controller controller) {
-		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
+		//RIBBONS impl: find ribbon in layout
+		final Component comp = ((BorderLayout)getContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
+		if(comp == null) {
+			getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
+		}
+		else {
+			JPanel northPanel = new JPanel();
+			northPanel.setLayout(new BorderLayout());
+			
+			Box resizableTabs = Box.createVerticalBox();
+			resizableTabs.add(comp);
+			final OneTouchCollapseResizer otcr = new OneTouchCollapseResizer(Direction.UP, CollapseDirection.COLLAPSE_UP);
+			otcr.setSliderLocked(true);
+			resizableTabs.add(otcr);
+			otcr.addResizerListener(new ResizerListener() {
+				
+				public void componentResized(ResizeEvent event) {
+					if(comp.getHeight() > 151) {
+						comp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 151));
+						comp.setPreferredSize(new Dimension(comp.getWidth(), 151));
+					}
+				}
+			});
+			otcr.addCollapseListener(new ComponentCollapseListener() {
+				public void componentExpanded(ResizeEvent event) {
+					comp.setPreferredSize(null);
+					otcr.recalibrate();
+				}
+				
+				public void componentCollapsed(ResizeEvent event) {
+				}
+			});
+			
+			northPanel.add(resizableTabs, BorderLayout.NORTH);
+			northPanel.add(toolbarPanel[TOP], BorderLayout.CENTER);
+			
+			getContentPane().add(northPanel, BorderLayout.NORTH);
+		}
+		
+//		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
 		getContentPane().add(toolbarPanel[LEFT], BorderLayout.WEST);
 		getContentPane().add(toolbarPanel[RIGHT], BorderLayout.EAST);
 		getContentPane().add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
@@ -372,12 +419,18 @@ abstract public class FrameController implements ViewController {
 				toolbarPanel[j].repaint();
 			}
 		}
-		setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
-		setUIComponentsVisible(newModeController.getController().getMapViewManager());
+		if(newUserInputListenerFactory.useRibbonMenu()) {
+			newUserInputListenerFactory.getMenuBuilder(RibbonBuilder.class).buildRibbon();
+		}
+		else {
+			setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
+			setUIComponentsVisible(newModeController.getController().getMapViewManager(), isMenubarVisible());
+		}
+		
 	}
 
-	private void setUIComponentsVisible(IMapViewManager iMapViewManager) {
-	    getFreeplaneMenuBar().setVisible(isMenubarVisible());
+	private void setUIComponentsVisible(IMapViewManager iMapViewManager, boolean visible) {
+	    getFreeplaneMenuBar().setVisible(visible);
     }
 
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
@@ -434,7 +487,7 @@ abstract public class FrameController implements ViewController {
 			frame.setBounds(0, 0, screenSize.width, screenSize.height);
 			frame.setUndecorated(true);
 			frame.setResizable(false);
-			setUIComponentsVisible(controller.getMapViewManager());
+			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
 				    .getToolBars(j);
@@ -450,7 +503,7 @@ abstract public class FrameController implements ViewController {
 			frame.setResizable(true);
 			frame.setBounds(frameSize);
 			frame.setExtendedState(winState);
-			setUIComponentsVisible(controller.getMapViewManager());
+			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
 				    .getToolBars(j);
@@ -482,6 +535,9 @@ abstract public class FrameController implements ViewController {
     }
 
 	boolean isToolbarVisible(final JComponent toolBar) {
+		if(toolBar == null) {
+			return false;
+		}
 		final String completeKeyString = completeVisiblePropertyKey(toolBar);
 		if (completeKeyString == null) {
 			return true;
@@ -490,6 +546,9 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public String completeVisiblePropertyKey(final JComponent toolBar) {
+		if(toolBar == null) {
+			return null;
+		}
 		final Object key = toolBar.getClientProperty(VISIBLE_PROPERTY_KEY);
 		if (key == null) {
 			return null;

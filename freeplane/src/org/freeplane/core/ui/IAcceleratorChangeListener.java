@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.ui;
 
-import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 /**
@@ -27,5 +26,5 @@ import javax.swing.KeyStroke;
  * 03.07.2009
  */
 public interface IAcceleratorChangeListener {
-	void acceleratorChanged(JMenuItem action, KeyStroke oldStroke, KeyStroke newStroke);
+	void acceleratorChanged(AFreeplaneAction action, KeyStroke oldStroke, KeyStroke newStroke);
 }

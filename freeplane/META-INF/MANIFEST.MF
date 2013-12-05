@@ -14,7 +14,12 @@ Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/SimplyHTML.jar,
  lib/jortho.jar,
  lib/idw-gpl.jar,
- lib/commons-codec-1.7.jar
+ lib/commons-codec-1.7.jar,
+ lib/flamingo-6.3.jar,
+ lib/substance-6.3.jar,
+ lib/substance-flamingo-6.3.jar,
+ lib/substance-swingx-6.3.jar,
+ lib/trident.jar
 Bundle-Activator: org.freeplane.main.osgi.Activator
 Import-Package: org.osgi.framework,
  org.osgi.service.url;version="1.0.0"
@@ -119,5 +124,11 @@ Export-Package: com.inet.jortho,
  org.freeplane.view.swing.map.link,
  org.freeplane.view.swing.map.mindmapmode,
  org.freeplane.view.swing.ui,
- org.freeplane.view.swing.ui.mindmapmode
+ org.freeplane.view.swing.ui.mindmapmode,
+ org.pushingpixels.flamingo.api.common,
+ org.pushingpixels.flamingo.api.common.icon,
+ org.pushingpixels.flamingo.api.common.model,
+ org.pushingpixels.flamingo.api.common.popup,
+ org.pushingpixels.flamingo.api.ribbon,
+ org.pushingpixels.flamingo.api.ribbon.resize
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

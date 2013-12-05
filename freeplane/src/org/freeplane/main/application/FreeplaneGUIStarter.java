@@ -74,6 +74,7 @@ import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 	public static String getResourceBaseDir() {
@@ -112,6 +113,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	final private boolean firstRun;
 	private static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String LOAD_LAST_MAP = "load_last_map";
+	public static Boolean USE_RIBBONS_MENU;
 	public FreeplaneGUIStarter() {
 		super();
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
@@ -136,7 +138,14 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
 			FrameController.setLookAndFeel(lookandfeel);
-			final JFrame frame = new JFrame("Freeplane");
+			final JFrame frame;
+			USE_RIBBONS_MENU = UITools.useRibbonsMenu();
+			if(USE_RIBBONS_MENU) {
+				frame = new JRibbonFrame("Freeplane");
+			}
+			else {
+				frame = new JFrame("Freeplane");
+			}
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
@@ -212,6 +221,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			public void run() {
 			    final Options options = CommandLineParser.parse(args);
 				viewController.init(Controller.getCurrentController());
+				splash.toBack();
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
 				Container contentPane = viewController.getContentPane();

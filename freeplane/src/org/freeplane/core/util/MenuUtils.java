@@ -288,7 +288,7 @@ public class MenuUtils {
 
     private static MenuBuilder getMenuBuilder() {
         final ModeController modeController = Controller.getCurrentModeController();
-        final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+        final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
         return menuBuilder;
     }
 

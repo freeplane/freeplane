@@ -14,7 +14,6 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.workspace.URIUtils;
 import org.freeplane.plugin.workspace.WorkspaceController;
@@ -27,17 +26,18 @@ public class MModeWorkspaceLinkController extends MLinkController {
 	
 	private static MModeWorkspaceLinkController self;
 	
-	public MModeWorkspaceLinkController(ModeController modeController) {
-		super(modeController);
+	public MModeWorkspaceLinkController() {
+		super();
 	}
 
-	protected void init() {
+	protected void init(ModeController modeController) {
+		//super.init(modeController);
+		setModeController(modeController);
 	}
 	
 	public static MModeWorkspaceLinkController getController() {
-     	final ModeController modeController = Controller.getCurrentModeController();
-		if(self == null) {
-			self = new MModeWorkspaceLinkController(modeController);
+     	if(self == null) {
+			self = new MModeWorkspaceLinkController();
 		}
 		return self;
 	}

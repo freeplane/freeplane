@@ -116,7 +116,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final Set<String> modes = controller.getModes();
 		for (final String mode : modes) {
 			final MenuBuilder menuBuilder = controller.getModeController(mode).getUserInputListenerFactory()
-			    .getMenuBuilder();
+			    .getMenuBuilder(MenuBuilder.class);
 			if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
 				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
 				if (menuBuilder.get(UPDATE_BUTTON_PATH) != null) {

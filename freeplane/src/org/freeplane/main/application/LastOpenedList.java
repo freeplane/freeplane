@@ -263,7 +263,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private void updateMenus() {
 		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
 		menuBuilder.removeChildElements(MENU_CATEGORY);
 		int i = 0;
 		int maxEntries = getMaxMenuEntries();

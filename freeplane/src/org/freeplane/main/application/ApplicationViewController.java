@@ -21,10 +21,15 @@ package org.freeplane.main.application;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -34,6 +39,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -52,9 +58,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.url.mindmapmode.FileOpener;
-import org.freeplane.view.swing.map.MapViewScrollPane;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class ApplicationViewController extends FrameController {
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
@@ -136,7 +139,7 @@ class ApplicationViewController extends FrameController {
 
 	@Override
 	public FreeplaneMenuBar getFreeplaneMenuBar() {
-		return (FreeplaneMenuBar) frame.getJMenuBar();
+		return Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBar();
 	}
 
 	/*
@@ -463,10 +466,28 @@ class ApplicationViewController extends FrameController {
 		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", -1);
 		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
 		setFrameSize(frame.getBounds());
+		
+		applyFrameSize(frame, win_x, win_y);
+		
 		int win_state = Integer
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
+	}
+ 
+	private void applyFrameSize(final JFrame frame, int win_x, int win_y) {
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Rectangle r = env.getMaximumWindowBounds();
+		for(GraphicsDevice device : env.getScreenDevices()) {
+			if(!device.equals(env.getDefaultScreenDevice())) {
+				Rectangle bounds = device.getDefaultConfiguration().getBounds();
+				r.add(bounds);
+			}
+		}
+		frame.applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
+		frame.setPreferredSize(new Dimension(Math.min(r.width, frame.getBounds().width), Math.min(r.height, frame.getBounds().height)));
+//		frame.setLocation(Math.max(r.x, frame.getBounds().x), Math.max(r.y, frame.getBounds().y));
+		frame.setLocation(Math.max(r.x, win_x), Math.max(r.y, win_y));
 	}
 
 	public void openMapsOnStart() {

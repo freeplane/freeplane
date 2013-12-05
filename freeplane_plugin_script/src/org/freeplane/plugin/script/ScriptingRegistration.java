@@ -194,7 +194,7 @@ class ScriptingRegistration {
 		if(! modeController.getController().getViewController().isHeadless()){
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			addPropertiesToOptionPanel();
-			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
+			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder(MenuBuilder.class);
 			modeController.addAction(new ScriptEditor());
 			modeController.addAction(new ExecuteScriptForAllNodes());
 			modeController.addAction(new ExecuteScriptForSelectionAction());
@@ -214,6 +214,7 @@ class ScriptingRegistration {
 				}
 			});
 			createUserScriptsDirectory();
+			//TODO - impl. ribbon contribution
 		}
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, 
 			new ScriptConditionController());

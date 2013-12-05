@@ -616,5 +616,9 @@ public class UITools {
 			frame.toFront();
 		}
     }
+
+	public static boolean useRibbonsMenu() {
+		return Boolean.parseBoolean(ResourceController.getResourceController().getProperty("menu.ribbons", "true"));
+	}
 	
 }
