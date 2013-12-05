@@ -618,7 +618,12 @@ public class UITools {
     }
 
 	public static boolean useRibbonsMenu() {
-		return Boolean.parseBoolean(ResourceController.getResourceController().getProperty("menu.ribbons", "true"));
+		String bool = ResourceController.getResourceController().getProperty("menu.ribbons", null);
+		if(bool == null) {
+			bool = "true";
+			ResourceController.getResourceController().setProperty("menu.ribbons", bool);
+		}
+		return Boolean.parseBoolean(bool);
 	}
 	
 }

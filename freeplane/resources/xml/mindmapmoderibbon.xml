@@ -513,7 +513,8 @@
 			</ribbon_band>
 			<ribbon_band name="toolbars" resize_policies="Mirror">
 				<ribbon_action action="ToggleFBarAction" />
-				<ribbon_action action="ToggleLeftToolbarAction" priority="top"/>
+				<ribbon_action action="ToggleLeftToolbarAction" priority="top"/>				
+				<ribbon_action action="ShowFormatPanel" priority="top"/>
 				<ribbon_action action="ToggleStatusAction" />
 				<ribbon_action action="ToggleScrollbarsAction"/>
 			</ribbon_band>			

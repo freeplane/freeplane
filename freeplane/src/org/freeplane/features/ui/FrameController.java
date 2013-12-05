@@ -256,6 +256,10 @@ abstract public class FrameController implements ViewController {
 						comp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 151));
 						comp.setPreferredSize(new Dimension(comp.getWidth(), 151));
 					}
+					else if(otcr.isExpanded() && comp.getHeight() < 151) {
+						comp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 151));
+						comp.setPreferredSize(new Dimension(comp.getWidth(), 151));
+					}
 				}
 			});
 			otcr.addCollapseListener(new ComponentCollapseListener() {
