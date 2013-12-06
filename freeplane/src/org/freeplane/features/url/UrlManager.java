@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.url;
 
+import static java.util.Arrays.asList;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.HeadlessException;
@@ -265,7 +267,7 @@ public class UrlManager implements IExtension {
 				uri = absoluteUri;
 			}
 			//DOCEAR: mindmaps can be linked in a mindmap --> therefore project-relative-paths are possible
-			if(!"file".equals(uri.getScheme())) {
+			if(! asList("file", "smb").contains(uri.getScheme())) {
 				try {
 					uri = uri.toURL().openConnection().getURL().toURI().normalize();
 				}
