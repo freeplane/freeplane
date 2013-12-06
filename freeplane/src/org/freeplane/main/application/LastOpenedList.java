@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +35,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -263,29 +261,31 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private void updateMenus() {
 		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-		menuBuilder.removeChildElements(MENU_CATEGORY);
-		int i = 0;
-		int maxEntries = getMaxMenuEntries();
-		for (final String key : lastOpenedList) {
-			if (i == 0
-			        && (!modeController.getModeName().equals(MModeController.MODENAME) || controller.getMap() == null || controller
-			            .getMap().getURL() == null)) {
-				i++;
-				maxEntries++;
+		if(!modeController.getUserInputListenerFactory().useRibbonMenu()) {
+			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
+			menuBuilder.removeChildElements(MENU_CATEGORY);
+			int i = 0;
+			int maxEntries = getMaxMenuEntries();
+			for (final String key : lastOpenedList) {
+				if (i == 0
+				        && (!modeController.getModeName().equals(MModeController.MODENAME) || controller.getMap() == null || controller
+				            .getMap().getURL() == null)) {
+					i++;
+					maxEntries++;
+				}
+				if (i == maxEntries) {
+					break;
+				}
+				final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, this);
+				final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
+				final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
+				item.setActionCommand(key);
+				String text = createOpenMapItemName(key);						
+				item.setText(text);
+				item.setMnemonic(0);
+				menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(),
+				    UIBuilder.AS_CHILD);
 			}
-			if (i == maxEntries) {
-				break;
-			}
-			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, this);
-			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
-			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
-			item.setActionCommand(key);
-			String text = createOpenMapItemName(key);						
-			item.setText(text);
-			item.setMnemonic(0);
-			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(),
-			    UIBuilder.AS_CHILD);
 		}
 	}
 

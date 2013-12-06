@@ -192,7 +192,7 @@ public class MModeControllerFactory {
 //		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
-		initRibbonMenu();
+		//initRibbonMenu();
 		return modeController;
 	}
 
