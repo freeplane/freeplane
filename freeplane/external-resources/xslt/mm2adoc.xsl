@@ -31,9 +31,6 @@
 	</xsl:template>
 
 	<xsl:template match="richcontent">
-		<xsl:if test="@TYPE='DETAILS'">
-			<xsl:text></xsl:text>
-		</xsl:if>
 		<xsl:if test="@TYPE='NOTE'">
 			<xsl:text>NOTE: </xsl:text>
 		</xsl:if>
