@@ -114,7 +114,7 @@ public class SModeControllerFactory {
 		modeController.addAction(new DeleteUserStyleAction());
 		modeController.addAction(new NewLevelStyleAction());
 		modeController.addAction(new DeleteLevelStyleAction());
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController, false);
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener());
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());

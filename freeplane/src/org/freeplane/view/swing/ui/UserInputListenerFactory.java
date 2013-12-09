@@ -85,8 +85,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
 
-	public UserInputListenerFactory(final ModeController modeController) {
-		useRibbonMenu = UITools.useRibbonsMenu();
+	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
+		useRibbonMenu = useRibbons;
 		menuXmlCreator = new MenuXmlCreator(MENU_MM2XML);
 		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);

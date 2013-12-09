@@ -218,7 +218,7 @@ public class MModeControllerFactory {
 	private void createStandardControllers() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController, UITools.useRibbonsMenu());
 		
         final IMouseListener nodeMouseMotionListener = new MNodeMotionListener();
         userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
@@ -273,9 +273,9 @@ public class MModeControllerFactory {
 		toolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
 		if(!userInputListenerFactory.useRibbonMenu()) {
 			userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
-			userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
-			    controller).getFilterToolbar());
 		}
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
+			    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
 		final JTabbedPane tabs = new JTabbedPane();

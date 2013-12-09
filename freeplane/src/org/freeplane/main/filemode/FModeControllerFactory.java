@@ -56,7 +56,7 @@ public class FModeControllerFactory {
 	static public FModeController createModeController() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new FModeController(controller);
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController, false);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
