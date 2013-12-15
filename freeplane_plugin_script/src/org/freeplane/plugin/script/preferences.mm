@@ -1,7 +1,7 @@
 <map version="freeplane 1.3.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry SHOW_ATTRIBUTES="hide"/>
-<node TEXT="Script Preferences" ID="ID_776863743" CREATED="1370289521201" MODIFIED="1370289551128"><hook NAME="MapStyle">
+<node TEXT="Script Preferences" FOLDED="false" ID="ID_776863743" CREATED="1370289521201" MODIFIED="1370289551128"><hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="true" STYLE_REF="boolean" LAST="false">
             <attribute_contains_condition ATTRIBUTE="type" VALUE="boolean" MATCH_CASE="true" MATCH_APPROXIMATELY="false"/>
@@ -128,10 +128,6 @@
 <node TEXT="File extensions not to be compiled" ID="ID_181914556" CREATED="1370289521206" MODIFIED="1374873088786">
 <attribute NAME="type" VALUE="string"/>
 <attribute NAME="name" VALUE="script_compilation_disabled_extensions"/>
-</node>
-<node TEXT="Cache compiled scripts" ID="ID_627773658" CREATED="1370289521205" MODIFIED="1374883956619">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="script_cache_compiled_scripts"/>
 </node>
 <node TEXT="Script search path" ID="ID_425351509" CREATED="1370289521206" MODIFIED="1370290984647">
 <attribute NAME="type" VALUE="string"/>
