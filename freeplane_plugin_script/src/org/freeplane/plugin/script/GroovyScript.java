@@ -162,40 +162,40 @@ public class GroovyScript implements IScript {
         return binding;
     }
 
-    private Script compileAndCache() throws Throwable {
-        if (compileTimeStrategy.canUseOldCompiledScript())
-            return compiledScript;
-        removeOldScript();
-        if (errorsInScript != null)
-            throw errorsInScript;
-        else if (script instanceof Script)
-            return (Script) script;
-        else
-            try {
-                final Binding binding = createBindingForCompilation();
-                final ClassLoader classLoader = GroovyScript.class.getClassLoader();
-                final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
-                if (script instanceof String)
-                    compiledScript = shell.parse((String) script);
-                else if (script instanceof File)
-                    compiledScript = shell.parse((File) script);
-                else
-                    throw new IllegalArgumentException();
-                compileTimeStrategy.scriptCompiled();
-                return compiledScript;
-            }
-            catch (Throwable e) {
-                errorsInScript = e;
-                throw e;
-            }
-    }
+	private Script compileAndCache() throws Throwable {
+		if (compileTimeStrategy.canUseOldCompiledScript())
+			return compiledScript;
+		removeOldScript();
+		if (errorsInScript != null)
+			throw errorsInScript;
+		else if (script instanceof Script)
+			return (Script) script;
+		else
+			try {
+				final Binding binding = createBindingForCompilation();
+				final ClassLoader classLoader = GroovyScript.class.getClassLoader();
+				final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
+				if (script instanceof String)
+					compiledScript = shell.parse((String) script);
+				else if (script instanceof File)
+					compiledScript = shell.parse((File) script);
+				else
+					throw new IllegalArgumentException();
+				compileTimeStrategy.scriptCompiled();
+				return compiledScript;
+			}
+			catch (Throwable e) {
+				errorsInScript = e;
+				throw e;
+			}
+	}
 
 	private void removeOldScript() {
-		if(compiledScript != null){
+		if (compiledScript != null) {
 			InvokerHelper.removeClass(compiledScript.getClass());
 			compiledScript = null;
 		}
-    }
+	}
 
 	private Binding createBindingForCompilation() {
         final Binding binding = new Binding();

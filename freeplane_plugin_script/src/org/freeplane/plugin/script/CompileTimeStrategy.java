@@ -27,41 +27,41 @@ import java.util.Date;
  * 15.12.2013
  */
 public class CompileTimeStrategy {
-
 	private static final long FILE_CHECK_PERIOD = 100;
 	private static final long NEVER = 0;
 	private final File scriptFile;
 	private long compileTime;
 	private long fileModificationTime;
 	private long lastFileStampCheckTime;
+
 	public CompileTimeStrategy(File scriptFile) {
 		this.scriptFile = scriptFile;
 		compileTime = NEVER;
 		fileModificationTime = NEVER;
 		lastFileStampCheckTime = NEVER;
-    }
+	}
 
-	public void scriptCompiled(){
+	public void scriptCompiled() {
 		compileTime = now();
 	}
 
 	private long now() {
-	    return new Date().getTime();
-    }
+		return new Date().getTime();
+	}
 
 	public boolean canUseOldCompiledScript() {
-		if(compileTime == NEVER)
+		if (compileTime == NEVER)
 			return false;
-		if(scriptFile == null)
+		if (scriptFile == null)
 			return true;
 		long now = now();
-		if(now - lastFileStampCheckTime < FILE_CHECK_PERIOD)
+		if (now - lastFileStampCheckTime < FILE_CHECK_PERIOD)
 			return true;
 		lastFileStampCheckTime = now;
-		if(! scriptFile.canRead())
+		if (!scriptFile.canRead())
 			return false;
 		fileModificationTime = scriptFile.lastModified();
 		boolean canUseOldCompiledScript = compileTime >= fileModificationTime;
 		return canUseOldCompiledScript;
-    }
+	}
 }

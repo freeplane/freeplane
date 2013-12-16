@@ -66,7 +66,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	}
 
 	@Override
-    public void actionPerformed(final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
@@ -89,21 +89,22 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 					else {
 						script.execute(node);
 					}
-                }
+				}
 				catch (ExecuteScriptException ex) {
 					final String cause;
 					// The ExecuteScriptException should have a cause. Print
 					// that, it is what we want to know.
 					if (ex.getCause() != null) {
 						cause = ex.getCause().toString();
-					} else {
+					}
+					else {
 						cause = ex.toString();
 					};
 					LogUtils.warn("error executing script " + scriptFile + " - giving up\n" + cause);
-				    modeController.delayedRollback();
+					modeController.delayedRollback();
 					ScriptingEngine.showScriptExceptionErrorMessage(ex);
-                	return;
-                }
+					return;
+				}
 			}
 			modeController.delayedCommit();
 		}
