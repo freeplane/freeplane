@@ -31,6 +31,7 @@ import java.util.regex.Matcher;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -164,7 +165,7 @@ public class GroovyScript implements IScript {
     private Script compileAndCache() throws Throwable {
         if (compileTimeStrategy.canUseOldCompiledScript())
             return compiledScript;
-        compiledScript = null;
+        removeOldScript();
         if (errorsInScript != null)
             throw errorsInScript;
         else if (script instanceof Script)
@@ -187,6 +188,13 @@ public class GroovyScript implements IScript {
                 errorsInScript = e;
                 throw e;
             }
+    }
+
+	private void removeOldScript() {
+		if(compiledScript != null){
+			InvokerHelper.removeClass(compiledScript.getClass());
+			compiledScript = null;
+		}
     }
 
 	private Binding createBindingForCompilation() {
@@ -233,4 +241,12 @@ public class GroovyScript implements IScript {
         }
         return lineNumber;
     }
+
+	@Override
+    protected void finalize() throws Throwable {
+	    removeOldScript();
+	    super.finalize();
+    }
+
+
 }
