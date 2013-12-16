@@ -51,15 +51,14 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	private final File scriptFile;
 	private final ExecutionMode mode;
-	private final ScriptingPermissions permissions;
-	private IScript script;
+	private final IScript script;
 
-	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String script,
+	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String scriptFile,
 	                           final ExecutionMode mode, final boolean cacheContent, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
-		this.scriptFile = new File(script);
+		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
-		this.permissions = permissions;
+		script = ScriptingEngine.createScriptForFile(this.scriptFile, permissions);
 	}
 
 	public static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
@@ -70,7 +69,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
     public void actionPerformed(final ActionEvent e) {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
-			initializeScript();
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			if (mode == ExecutionMode.ON_SINGLE_NODE) {
 				nodes.add(Controller.getCurrentController().getSelection().getSelected());
@@ -113,11 +111,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
-
-	private void initializeScript() {
-		if(script == null)
-			script = ScriptingEngine.createScriptForFile(scriptFile, permissions);
-    }
 
 	private void executeScriptRecursive(final NodeModel node) {
 		ModeController modeController = Controller.getCurrentModeController();
