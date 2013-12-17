@@ -6,6 +6,8 @@ Allow to enter external http and https urls in add / change external image dialo
 Use signed jar so that local jar files work with the latest java versions
 Export improvements
 Update groovy to 2.1.9
+Performance: cache compiled scripts
+
 ===============================
 1.3.5
 ===============================
