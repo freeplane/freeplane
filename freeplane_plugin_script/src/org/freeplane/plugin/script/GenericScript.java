@@ -49,7 +49,7 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
  */
 public class GenericScript implements IScript {
     final private String script;
-    private ScriptingPermissions specificPermissions;
+    private final ScriptingPermissions specificPermissions;
     private CompiledScript compiledScript;
     private Throwable errorsInScript;
     private IFreeplaneScriptErrorHandler errorHandler;
@@ -60,6 +60,7 @@ public class GenericScript implements IScript {
     private static URLClassLoader classLoader;
     private final ScriptEngine engine;
     private boolean compilationEnabled = true;
+	private CompileTimeStrategy compileTimeStrategy;
 
     public GenericScript(String script, ScriptEngine engine, ScriptingPermissions permissions) {
         this.script = script;
@@ -70,6 +71,7 @@ public class GenericScript implements IScript {
         errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
         outStream = System.out;
         scriptContext = null;
+        compileTimeStrategy = new CompileTimeStrategy(null);
     }
 
     public GenericScript(String script, String scriptEngineName, ScriptingPermissions permissions) {
@@ -80,6 +82,7 @@ public class GenericScript implements IScript {
         this(slurpFile(scriptFile), findScriptEngine(scriptFile), permissions);
         engine.put(ScriptEngine.FILENAME, scriptFile.toString());
         compilationEnabled = !disableScriptCompilation(scriptFile);
+        compileTimeStrategy = new CompileTimeStrategy(scriptFile);
     }
 
     private static String slurpFile(File scriptFile) {
@@ -139,9 +142,6 @@ public class GenericScript implements IScript {
                 }
             }
             finally {
-                if (compiledScript != null && !ScriptResources.CACHE_COMPILED_SCRIPTS) {
-                    compiledScript = null;
-                }
                 if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
                     securityManager.removeFinalSecurityManager(scriptingSecurityManager);
                 /* restore preferences (and assure that the values are unchanged!). */
@@ -219,13 +219,15 @@ public class GenericScript implements IScript {
     }
 
     private void compileAndCache(Compilable engine) throws Throwable {
-        if (compiledScript != null)
+        if (compileTimeStrategy.canUseOldCompiledScript())
             return;
-        else if (errorsInScript != null)
+        compiledScript = null;
+        if (errorsInScript != null)
             throw errorsInScript;
         else
             try {
                 compiledScript = engine.compile(script);
+                compileTimeStrategy.scriptCompiled();
             }
             catch (Throwable e) {
                 errorsInScript = e;
@@ -243,7 +245,7 @@ public class GenericScript implements IScript {
         final String extension = FilenameUtils.getExtension(scriptFile.getName());
         return checkNotNull(manager.getEngineByExtension(extension), "extension", extension);
     }
-    
+
     private static ScriptEngine checkNotNull(final ScriptEngine motor, String what, String detail) {
         if (motor == null)
             throw new RuntimeException("can't load script engine by " + what + ": " + detail);

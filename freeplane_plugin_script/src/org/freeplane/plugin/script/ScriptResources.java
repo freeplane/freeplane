@@ -9,6 +9,7 @@ import org.freeplane.core.util.LogUtils;
 
 public class ScriptResources {
     static final IFreeplaneScriptErrorHandler IGNORING_SCRIPT_ERROR_HANDLER = new IFreeplaneScriptErrorHandler() {
+        @Override
         public void gotoLine(final int pLineNumber) {
         }
     };
@@ -18,8 +19,6 @@ public class ScriptResources {
     static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
     static final String[] SCRIPT_COMPILATION_DISABLED_EXTENSIONS = ResourceController.getResourceController()
         .getProperty(RESOURCES_SCRIPT_COMPILATION_DISABLED_EXTENSIONS, "").split("\\W+");
-    static final boolean CACHE_COMPILED_SCRIPTS = ResourceController.getResourceController().getBooleanProperty(
-        RESOURCE_SCRIPT_CACHE_COMPILED_SCRIPTS);
     private static final String USER_SCRIPTS_DIR = "scripts";
     private static final String BUILTIN_SCRIPTS_DIR = "scripts";
     private static List<String> classpath;

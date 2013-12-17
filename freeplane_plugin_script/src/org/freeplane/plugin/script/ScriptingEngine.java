@@ -50,7 +50,7 @@ public class ScriptingEngine {
     		.execute(node);
 
     }
-    
+
     static Object executeScript(final NodeModel node, final File script, final IFreeplaneScriptErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
@@ -60,7 +60,7 @@ public class ScriptingEngine {
             .setScriptContext(scriptContext) //
             .execute(node);
     }
-    
+
 	public static int findLineNumberInString(final String resultString, int lineNumber) {
 		final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*@ line ([0-9]+).*",
 		    java.util.regex.Pattern.DOTALL);
@@ -79,7 +79,7 @@ public class ScriptingEngine {
     	return createScriptForFile(script, permissions).execute(node);
 	}
 
-    private static IScript createScriptForFile(File script, ScriptingPermissions permissions) {
+	public static IScript createScriptForFile(File script, ScriptingPermissions permissions) {
         final boolean isGroovy = script.getName().endsWith(".groovy");
         return isGroovy ? new GroovyScript(script, permissions) : new GenericScript(script, permissions);
     }
@@ -88,7 +88,7 @@ public class ScriptingEngine {
         return new GroovyScript(script, permissions) //
             .execute(node);
 	}
-	
+
     public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
         return new GroovyScript(script) //
             .setOutStream(printStream) //
@@ -101,17 +101,6 @@ public class ScriptingEngine {
             .setScriptContext(scriptContext) //
             .execute(node);
     }
-
-	static Object executeScriptRecursive(final NodeModel node, final File script,
-	                                     final ScriptingPermissions permissions) {
-		ModeController modeController = Controller.getCurrentModeController();
-		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node)
-		    .toArray(new NodeModel[] {});
-		for (final NodeModel child : children) {
-			executeScriptRecursive(child, script, permissions);
-		}
-		return executeScript(node, script, permissions);
-	}
 
 	static void performScriptOperationRecursive(final NodeModel node) {
 		ModeController modeController = Controller.getCurrentModeController();
@@ -140,6 +129,7 @@ public class ScriptingEngine {
 	}
 
 	/** @deprecated use ScriptResources.getUserScriptDir() instead. */
+    @Deprecated
     static public File getUserScriptDir() {
         return ScriptResources.getUserScriptDir();
     }

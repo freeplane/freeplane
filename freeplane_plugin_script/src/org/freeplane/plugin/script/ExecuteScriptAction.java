@@ -28,11 +28,12 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * Action that executes a script defined by filename.
- * 
+ *
  * @author vboerchers
  */
 public class ExecuteScriptAction extends AFreeplaneAction {
@@ -48,22 +49,23 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		ON_SELECTED_NODE_RECURSIVELY
 	}
 
-	private final File script;
+	private final File scriptFile;
 	private final ExecutionMode mode;
-	private ScriptingPermissions permissions;
+	private final IScript script;
 
-	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String script,
+	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String scriptFile,
 	                           final ExecutionMode mode, final boolean cacheContent, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
-		this.script = new File(script);
+		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
-		this.permissions = permissions;
+		script = ScriptingEngine.createScriptForFile(this.scriptFile, permissions);
 	}
 
 	public static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
 		return scriptName + "_" + mode.toString().toLowerCase();
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
@@ -82,31 +84,42 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						// TODO: ensure that a script is invoked only once on every node?
 						// (might be a problem with recursive actions if parent and child
 						// are selected.)
-						ScriptingEngine.executeScriptRecursive(node, script, permissions);
+						executeScriptRecursive(node);
 					}
 					else {
-						ScriptingEngine.executeScript(node, script, permissions);
+						script.execute(node);
 					}
-                }
+				}
 				catch (ExecuteScriptException ex) {
 					final String cause;
 					// The ExecuteScriptException should have a cause. Print
 					// that, it is what we want to know.
 					if (ex.getCause() != null) {
 						cause = ex.getCause().toString();
-					} else {
+					}
+					else {
 						cause = ex.toString();
 					};
-					LogUtils.warn("error executing script " + script + " - giving up\n" + cause);
-				    modeController.delayedRollback();
+					LogUtils.warn("error executing script " + scriptFile + " - giving up\n" + cause);
+					modeController.delayedRollback();
 					ScriptingEngine.showScriptExceptionErrorMessage(ex);
-                	return;
-                }
+					return;
+				}
 			}
 			modeController.delayedCommit();
 		}
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
+	}
+
+	private void executeScriptRecursive(final NodeModel node) {
+		ModeController modeController = Controller.getCurrentModeController();
+		final NodeModel[] children = modeController.getMapController().childrenUnfolded(node)
+		    .toArray(new NodeModel[] {});
+		for (final NodeModel child : children) {
+			executeScriptRecursive(child);
+		}
+		script.execute(node);
 	}
 }

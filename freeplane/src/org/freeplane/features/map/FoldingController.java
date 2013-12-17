@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -39,10 +40,10 @@ import org.freeplane.features.mode.ModeController;
  * @author foltin
  */
 public class FoldingController implements IMouseWheelEventHandler, IExtension {
-	
+
 	@SuppressWarnings("serial")
 	private class FoldAllAction extends AMultipleNodeAction {
-		
+
 
 		public FoldAllAction() {
 			super("FoldAllAction");
@@ -53,10 +54,10 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 			foldAll(node);
 		}
 	}
-	
+
 	@SuppressWarnings("serial")
 	private class FoldOneLevelAction extends AMultipleNodeAction {
-		
+
 
 		public FoldOneLevelAction() {
 			super("FoldOneLevelAction");
@@ -70,7 +71,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 	@SuppressWarnings("serial")
 	private class UnfoldAllAction extends AMultipleNodeAction {
-		
+
 
 		public UnfoldAllAction() {
 			super("UnfoldAllAction");
@@ -94,9 +95,9 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 			unfoldOneStage(node);
 		}
 	}
-	
+
 	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
-	
+
 	@SuppressWarnings("serial")
 	private class FoldingPopupMenu extends JPopupMenu{
 		final private NodeModel node;
@@ -107,7 +108,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 			addAction(new UnfoldAllPopupAction());
 			addAction(new FoldAllPopupAction());
 		}
-		
+
         private JButton addAction(Action a) {
 	        final JButton menuItem = new JButton(a);
 	        menuItem.setToolTipText(menuItem.getText());
@@ -119,7 +120,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@SuppressWarnings("serial")
 		private class FoldAllPopupAction extends FoldAllAction{
-			@Override 
+			@Override
 			public void actionPerformed(final ActionEvent e){
 				actionPerformed(e, node);
 			}
@@ -127,7 +128,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@SuppressWarnings("serial")
 		private class FoldOneLevelPopupAction extends FoldOneLevelAction{
-			@Override 
+			@Override
 			public void actionPerformed(final ActionEvent e){
 				actionPerformed(e, node);
 			}
@@ -135,7 +136,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@SuppressWarnings("serial")
 		private class UnfoldAllPopupAction extends UnfoldAllAction{
-			@Override 
+			@Override
 			public void actionPerformed(final ActionEvent e){
 				actionPerformed(e, node);
 			}
@@ -143,14 +144,14 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@SuppressWarnings("serial")
 		private class UnfoldOneLevelPopupAction extends UnfoldOneLevelAction{
-			@Override 
+			@Override
 			public void actionPerformed(final ActionEvent e){
 				actionPerformed(e, node);
 		}
 	}
 	}
-	
-	
+
+
 
 // // 	final private Controller controller;
 
@@ -180,10 +181,10 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 	protected void foldAll(final NodeModel node) {
 		final MapController modeController = Controller.getCurrentModeController().getMapController();
+		setFolded(node, true);
 		for (NodeModel child : modeController.childrenUnfolded(node)) {
 			foldAll(child);
 		}
-		setFolded(node, true);
 	}
 
 	/**
@@ -329,7 +330,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		else
 			return parentDepth + 1;
 	}
-	
+
 	public JPopupMenu createFoldingPopupMenu(NodeModel node){
 		return new FoldingPopupMenu(node);
 	}
