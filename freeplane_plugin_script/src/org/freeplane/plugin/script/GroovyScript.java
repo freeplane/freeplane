@@ -49,6 +49,7 @@ public class GroovyScript implements IScript {
     private IFreeplaneScriptErrorHandler errorHandler;
     private PrintStream outStream;
     private ScriptContext scriptContext;
+    private CompileTimeStrategy compileTimeStrategy;
 
     public GroovyScript(String script) {
         this((Object) script);
@@ -56,6 +57,7 @@ public class GroovyScript implements IScript {
 
     public GroovyScript(File script) {
         this((Object) script);
+        compileTimeStrategy = new CompileTimeStrategy(script);
     }
 
     public GroovyScript(String script, ScriptingPermissions permissions) {
@@ -64,6 +66,7 @@ public class GroovyScript implements IScript {
 
     public GroovyScript(File script, ScriptingPermissions permissions) {
         this((Object) script, permissions);
+        compileTimeStrategy = new CompileTimeStrategy(script);
     }
 
     private GroovyScript(Object script, ScriptingPermissions permissions) {
@@ -75,6 +78,7 @@ public class GroovyScript implements IScript {
         errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
         outStream = System.out;
         scriptContext = null;
+        compileTimeStrategy = new CompileTimeStrategy(null);
     }
 
     private GroovyScript(Object script) {
@@ -129,10 +133,6 @@ public class GroovyScript implements IScript {
                 return compiledScript.run();
             }
             finally {
-                if (compiledScript != null && !ScriptResources.CACHE_COMPILED_SCRIPTS) {
-                    InvokerHelper.removeClass(compiledScript.getClass());
-                    compiledScript = null;
-                }
                 if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
                     securityManager.removeFinalSecurityManager(scriptingSecurityManager);
                 System.setOut(oldOut);
@@ -162,33 +162,42 @@ public class GroovyScript implements IScript {
         return binding;
     }
 
-    private Script compileAndCache() throws Throwable {
-        if (compiledScript != null)
-            return compiledScript;
-        else if (errorsInScript != null)
-            throw errorsInScript;
-        else if (script instanceof Script)
-            return (Script) script;
-        else
-            try {
-                final Binding binding = createBindingForCompilation();
-                final ClassLoader classLoader = GroovyScript.class.getClassLoader();
-                final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
-                if (script instanceof String)
-                    compiledScript = shell.parse((String) script);
-                else if (script instanceof File)
-                    compiledScript = shell.parse((File) script);
-                else
-                    throw new IllegalArgumentException();
-                return compiledScript;
-            }
-            catch (Throwable e) {
-                errorsInScript = e;
-                throw e;
-            }
-    }
+	private Script compileAndCache() throws Throwable {
+		if (compileTimeStrategy.canUseOldCompiledScript())
+			return compiledScript;
+		removeOldScript();
+		if (errorsInScript != null)
+			throw errorsInScript;
+		else if (script instanceof Script)
+			return (Script) script;
+		else
+			try {
+				final Binding binding = createBindingForCompilation();
+				final ClassLoader classLoader = GroovyScript.class.getClassLoader();
+				final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
+				if (script instanceof String)
+					compiledScript = shell.parse((String) script);
+				else if (script instanceof File)
+					compiledScript = shell.parse((File) script);
+				else
+					throw new IllegalArgumentException();
+				compileTimeStrategy.scriptCompiled();
+				return compiledScript;
+			}
+			catch (Throwable e) {
+				errorsInScript = e;
+				throw e;
+			}
+	}
 
-    private Binding createBindingForCompilation() {
+	private void removeOldScript() {
+		if (compiledScript != null) {
+			InvokerHelper.removeClass(compiledScript.getClass());
+			compiledScript = null;
+		}
+	}
+
+	private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
         binding.setVariable("c", null);
         binding.setVariable("node", null);
@@ -232,4 +241,12 @@ public class GroovyScript implements IScript {
         }
         return lineNumber;
     }
+
+	@Override
+    protected void finalize() throws Throwable {
+	    removeOldScript();
+	    super.finalize();
+    }
+
+
 }
