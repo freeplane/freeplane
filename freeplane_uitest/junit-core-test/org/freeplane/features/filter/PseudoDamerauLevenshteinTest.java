@@ -3,7 +3,7 @@ package org.freeplane.features.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.freeplane.features.filter.PseudoDamerauLevenshtein.Alignment;
 import org.junit.Before;
