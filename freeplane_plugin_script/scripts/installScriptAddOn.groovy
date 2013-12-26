@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Toolkit
+import java.awt.event.KeyEvent
 import java.util.zip.ZipInputStream
 
 import javax.swing.BoxLayout
@@ -183,6 +184,18 @@ def parseZips(Map childNodeMap) {
 	println property + ': ' + configMap[property].dump()
 }
 
+def parseLib(Map childNodeMap) {
+	def property = 'lib'
+	Proxy.Node propertyNode = childNodeMap[property]
+	if (!propertyNode)
+		return
+	configMap[property] = propertyNode.children.inject([:]){ map, child ->
+		map[child.plainText] = ensureNoHtml(theOnlyChild(child)).binary
+		return map
+	}
+	println property + ': ' + configMap[property].dump()
+}
+
 def parseImages(Map childNodeMap) {
     def property = 'images'
     Proxy.Node propertyNode = childNodeMap[property]
@@ -220,6 +233,19 @@ def installImages() {
     }
 }
 
+def installLib() {
+	File destDir = new File(privateAddonDir(), 'lib')
+	destDir.mkdirs()
+	configMap['lib'].each{ filename, libData ->
+		try {
+			new File(destDir, expandVariables(filename)).bytes = libData
+		} catch (Exception e) {
+			e.printStackTrace()
+			installationAssert(false, e.message);
+		}
+	}
+}
+
 void unpack(File destDir, byte[] zipData) {
     mapStructureAssert(zipData, textUtils.getText('addons.installer.no.zipdata'))
 	ZipInputStream result = new ZipInputStream(new ByteArrayInputStream(zipData))
@@ -242,14 +268,14 @@ void unpack(File destDir, byte[] zipData) {
 	}
 }
 
-/** ensures that parent has exactly one non-HTML child node. */
+/** ensures that 'parent' has exactly one child node. */
 Proxy.Node theOnlyChild(Proxy.Node parent) {
 	mapStructureAssert(parent.children.size() == 1,
 		textUtils.format('addons.installer.one.child.expected', parent.plainText, parent.children.size()))
 	return parent.children.first()
 }
 
-/** ensures that parent has exactly one non-HTML child node. */
+/** ensures that 'first' has non-HTML text. */
 Proxy.Node ensureNoHtml(Proxy.Node first) {
 	mapStructureAssert( ! htmlUtils.isHtmlNode(first.text), textUtils.getText('addons.installer.html.script'))
 	return first
@@ -377,22 +403,21 @@ def handlePermissions() {
 	}
 }
 
-def scriptDir() {
-	File dir = new File(installationbase, 'scripts')
-	installationAssert(dir.exists(), null)
-	return dir
-}
-
 def addOnDir() {
 	File dir = new File(installationbase, 'addons')
 	installationAssert(dir.exists(), null)
 	return dir
 }
 
-def createScripts() {
-	List<ScriptAddOnProperties.Script> scripts = configMap['scripts']
-	scripts.each { script ->
-		File file = new File(ScriptResources.getUserScriptDir(), script.name)
+def privateAddonDir() {
+	new File(addOnDir(), configMap['properties']['name'])
+}
+
+def installScripts() {
+	File destDir = new File(privateAddonDir(), 'scripts')
+	destDir.mkdirs()
+	configMap['scripts'].each { script ->
+		File file = new File(destDir, script.name)
 		try {
 			file.text = script.scriptBody
 		}
@@ -421,6 +446,7 @@ AddOnProperties parse() {
 		'zips',
 		'deinstall',
 		'images',
+		'lib',
 	]
 	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
 		map[key] = node.map.root.find{ it.plainText == key }[0]
@@ -431,6 +457,7 @@ AddOnProperties parse() {
 	}
     // note: images came after the first beta
     missingChildNodes.remove('images')
+	missingChildNodes.remove('lib')
 	mapStructureAssert( ! missingChildNodes, textUtils.format('addons.installer.missing.child.nodes', missingChildNodes.keySet()))
 
 	parseProperties(childNodeMap)
@@ -443,6 +470,7 @@ AddOnProperties parse() {
 	parseScripts(childNodeMap)
 	parseZips(childNodeMap)
 	parseImages(childNodeMap)
+	parseLib(childNodeMap)
 	parseDeinstallationRules(childNodeMap)
 
 	def addOn = new ScriptAddOnProperties(configMap['properties']['name'])
@@ -459,6 +487,7 @@ AddOnProperties parse() {
 	addOn.defaultProperties = configMap['default.properties']
 	addOn.deinstallationRules = configMap['deinstall']
     addOn.images = configMap['images'] ? configMap['images'].keySet() : []
+	addOn.lib = configMap['lib'] ? configMap['lib'].keySet() : []
 	addOn.scripts = configMap['scripts']
 
 	return addOn
@@ -518,9 +547,10 @@ boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties instal
 }
 
 def install(AddOnProperties addOn) {
-	createScripts()
+	installScripts()
 	installZips()
 	installImages()
+	installLib()
 	new File(addOnDir(), expandVariables('${name}.script.xml')).text = addOn.toXmlString()
 }
 
