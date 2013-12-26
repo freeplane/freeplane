@@ -130,10 +130,10 @@ public class ScriptingEngine {
 
 	/** @deprecated use ScriptResources.getUserScriptDir() instead. */
     @Deprecated
-    static public File getUserScriptDir() {
+    public static File getUserScriptDir() {
         return ScriptResources.getUserScriptDir();
     }
-
+    
     static void showScriptExceptionErrorMessage(ExecuteScriptException ex) {
         if (ex.getCause() instanceof SecurityException) {
         	final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);

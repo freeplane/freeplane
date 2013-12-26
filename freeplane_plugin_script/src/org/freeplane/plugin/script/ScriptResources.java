@@ -14,19 +14,29 @@ public class ScriptResources {
         }
     };
     private static final String RESOURCES_SCRIPT_COMPILATION_DISABLED_EXTENSIONS = "script_compilation_disabled_extensions";
-    private static final String RESOURCE_SCRIPT_CACHE_COMPILED_SCRIPTS = "script_cache_compiled_scripts";
     static final String RESOURCES_SCRIPT_DIRECTORIES = "script_directories";
     static final String RESOURCES_SCRIPT_CLASSPATH = "script_classpath";
     static final String[] SCRIPT_COMPILATION_DISABLED_EXTENSIONS = ResourceController.getResourceController()
         .getProperty(RESOURCES_SCRIPT_COMPILATION_DISABLED_EXTENSIONS, "").split("\\W+");
     private static final String USER_SCRIPTS_DIR = "scripts";
+    private static final String USER_LIB_DIR = "lib";
     private static final String BUILTIN_SCRIPTS_DIR = "scripts";
     private static List<String> classpath;
     private static final File builtinScriptsDir = buildBuiltinScriptsDir();
-    private static final File userScriptDir = buildUserScriptsDir();
+    private static final File userScriptsDir = buildUserScriptsDir(ScriptResources.USER_SCRIPTS_DIR);
+    private static final File userLibDir = buildUserScriptsDir(ScriptResources.USER_LIB_DIR);
 
-    static public File getUserScriptDir() {
-        return userScriptDir;
+    /** @deprecated use {@link #getUserScriptDir()} instead. */
+    public static File getUserScriptDir() {
+        return getUserScriptsDir();
+    }
+
+    public static File getUserScriptsDir() {
+        return userScriptsDir;
+    }
+    
+    public static File getUserLibDir() {
+        return userLibDir;
     }
 
     static File getBuiltinScriptsDir() {
@@ -51,8 +61,8 @@ public class ScriptResources {
         return new File(ResourceController.getResourceController().getInstallationBaseDir(), BUILTIN_SCRIPTS_DIR);
     }
 
-    private static File buildUserScriptsDir() {
+    private static File buildUserScriptsDir(String userDir) {
         return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
-            ScriptResources.USER_SCRIPTS_DIR);
+            userDir);
     }
 }
