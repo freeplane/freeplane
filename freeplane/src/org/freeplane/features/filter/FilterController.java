@@ -460,19 +460,21 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	public void loadDefaultConditions() {
 	    try {
-			loadConditions(getFilterConditions(), pathToFilterFile);
+			loadConditions(getFilterConditions(), pathToFilterFile, false);
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
 		}
     }
 
-	void loadConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
+	void loadConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile,
+			final boolean showPopupOnError)
 	        throws IOException {
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFilterFile)));
 			parser.setReader(reader);
+			reader.setSystemID(pathToFilterFile);
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector<XMLElement> conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {
@@ -488,7 +490,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 		catch (final Exception e) {
 			LogUtils.warn(e);
-			UITools.errorMessage(TextUtils.getText("filters_not_loaded"));
+			if (showPopupOnError) {
+				UITools.errorMessage(TextUtils.getText("filters_not_loaded"));
+			}
 		}
 	}
 
