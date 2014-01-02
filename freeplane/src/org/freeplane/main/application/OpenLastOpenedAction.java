@@ -25,18 +25,19 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 class OpenLastOpenedAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private LastOpenedList list;
+	final private String restoreable;
 
-	public OpenLastOpenedAction(final int i, final LastOpenedList list) {
+	public OpenLastOpenedAction(final int i, final LastOpenedList list, String restoreable) {
 		super("OpenLastOpenedAction_" + i, null, null);
 		this.list = list;
+		this.restoreable = restoreable;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String restoreable = e.getActionCommand();
 		list.safeOpen(restoreable);
 	}
 

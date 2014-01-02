@@ -21,8 +21,6 @@ package org.freeplane.main.mindmapmode;
 
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.net.MalformedURLException;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -34,7 +32,6 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.KeyBindingProcessor;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
@@ -47,8 +44,6 @@ import org.freeplane.core.ui.components.ResizeEvent;
 import org.freeplane.core.ui.components.ResizerListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
-import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.mindmapmode.AddAttributeAction;
@@ -192,34 +187,14 @@ public class MModeControllerFactory {
 //		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
-		//initRibbonMenu();
 		return modeController;
-	}
-
-	private void initRibbonMenu() {
-		IUserInputListenerFactory userInputFactory = modeController.getUserInputListenerFactory();
-		if(userInputFactory.useRibbonMenu()) {
-			File file = new File(Compat.getApplicationUserDirectory(), "mindmapmoderibbon.xml");		
-			if (file.exists()) {
-				LogUtils.info("using alternative ribbon configuration file: "+file.getAbsolutePath());
-				try {				
-					userInputFactory.getMenuBuilder(RibbonBuilder.class).updateRibbon(file.toURI().toURL());
-				}
-				catch (MalformedURLException e) {				
-					LogUtils.severe("MModeControllerFactory.createStandardControllers(): "+e.getMessage());
-				}
-			}
-			else {
-				userInputFactory.getMenuBuilder(RibbonBuilder.class).updateRibbon(ResourceController.getResourceController().getResource("/xml/mindmapmoderibbon.xml"));
-			}
-		}
 	}
 
 	private void createStandardControllers() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController, UITools.useRibbonsMenu());
-		
+
         final IMouseListener nodeMouseMotionListener = new MNodeMotionListener();
         userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
 		final JPopupMenu popupmenu = new JPopupMenu();
@@ -290,19 +265,19 @@ public class MModeControllerFactory {
 		catch (Exception e) {
 			// ignore -> default is true
 		}
-		
+
 		OneTouchCollapseResizer otcr = new OneTouchCollapseResizer(Direction.RIGHT, CollapseDirection.COLLAPSE_RIGHT);
 		resisableTabs.add(otcr);
 		//resisableTabs.add(new JResizer(Direction.RIGHT));
 		resisableTabs.add(tabs);
-		otcr.addResizerListener(new ResizerListener() {			
+		otcr.addResizerListener(new ResizerListener() {
 			public void componentResized(ResizeEvent event) {
 				if(event.getComponent().equals(tabs)) {
 					ResourceController.getResourceController().setProperty(TABBEDPANE_VIEW_WIDTH, String.valueOf(((JComponent) event.getComponent()).getPreferredSize().width));
 				}
 			}
 		});
-		otcr.addCollapseListener(new ComponentCollapseListener() {			
+		otcr.addCollapseListener(new ComponentCollapseListener() {
 			public void componentCollapsed(ResizeEvent event) {
 				if(event.getComponent().equals(tabs)) {
 					ResourceController.getResourceController().setProperty(TABBEDPANE_VIEW_COLLAPSED, "true");
@@ -346,7 +321,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
 		new RevisionPlugin();
 		FoldingController.install(new FoldingController());
-		
+
 		uiFactory = new MUIFactory();
 		mapController.addNodeChangeListener(uiFactory);
 		mapController.addNodeSelectionListener(uiFactory);
@@ -356,7 +331,7 @@ public class MModeControllerFactory {
 		modeController.addExtension(MUIFactory.class, uiFactory);
 		modeController.addMenuContributor(menuContributor);
 
-//		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {			
+//		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
 //			public UIIcon getStateIcon(NodeModel node) {
 //				final URI link = NodeLinks.getLink(node);
 //				return wrapIcon(LinkController.getLinkIcon(link, node));

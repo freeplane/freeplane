@@ -26,6 +26,7 @@
 					<ribbon_action action="OpenURLMapAction" mandatory="true" />			        
 			    </entry_group>
 			</primary_entry>
+			<ribbon_contributor name="lastOpenedMaps"/>
 			<primary_entry name="save">
 				<entry_group name="save">
 					<ribbon_action action="SaveAction" accelerator="control S" />

@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
@@ -200,13 +201,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         resourceController.setDefaultProperty("NodeUpAction.icon", "/images/ribbons/nodes/nodes-MoveUp.png");
         resourceController.setDefaultProperty("NodeDownAction.icon", "/images/ribbons/nodes/nodes-MoveDown.png");
         resourceController.setDefaultProperty("AlwaysUnfoldedNodeAction.icon", "/images/ribbons/nodes/nodes-AlwaysUnfolded.png");
-        
+
         resourceController.setDefaultProperty("ToggleFoldedAction.icon", "/images/ribbons/navigate/navigate-NodesUn-fold.png");
-        
+
         resourceController.setDefaultProperty("LatexEditLatexAction.icon", "/images/ribbons/resources/Resources-LaTeXFormulaEdit.png");
         resourceController.setDefaultProperty("LatexDeleteLatexAction.icon", "/images/ribbons/resources/Resources-LaTeXFormulaRemove.png");
         resourceController.setDefaultProperty("ExternalImageAddAction.icon", "/images/ribbons/resources/Resources-AddImage.png");
-        
+
         resourceController.setDefaultProperty("freeplaneAddOnLocationAction.icon", "/images/ribbons/tools/ToolsAndSettings-DocearAddOns.png");
         resourceController.setDefaultProperty("SetAcceleratorOnNextClickAction.icon", "/images/ribbons/tools/Tools-AssignHotkey.png");
         resourceController.setDefaultProperty("OpenMapsAddLocation.icon", "/images/ribbons/tools/tools-AddOpenMaps.png");
@@ -216,7 +217,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         resourceController.setDefaultProperty("menu_encryption.icon", "/images/ribbons/tools/tools-PasswordProtection.png");
         resourceController.setDefaultProperty("menu_time.icon", "/images/ribbons/tools/tools-TimeManagement.png");
         resourceController.setDefaultProperty("scripting.icon", "/images/ribbons/tools/tools-Scripting.png");
-        
+
         resourceController.setDefaultProperty("attribute_options.icon", "/images/ribbons/view/view-AttributeOptions.png");
         resourceController.setDefaultProperty("ShowHideNoteAction.icon", "/images/ribbons/view/view-showNotePanel.png");
         resourceController.setDefaultProperty("ToggleDetailsAction.icon", "/images/ribbons/view/view-hideNoteDetails.png");
@@ -232,8 +233,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         resourceController.setDefaultProperty("ToggleFullScreenAction.icon", "/images/ribbons/view/view-FullScreen.png");
         resourceController.setDefaultProperty("ToggleRibbonAction.icon", "/images/ribbons/view/view-MinimizeRibbon.png");
         resourceController.setDefaultProperty("SetBooleanPropertyAction.presentation_mode.icon", "/images/ribbons/view/view-PresentationMode.png");
-                        
-        
+
+
         resourceController.setDefaultProperty("OpenFreeplaneSiteAction.icon", "/images/ribbons/help/help-Homepage.png");
         resourceController.setDefaultProperty("AboutAction.icon", "/images/ribbons/help/help-about.png");
         resourceController.setDefaultProperty("AskForHelp.icon", "/images/ribbons/help/help-ask4help.png");
@@ -243,18 +244,22 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         resourceController.setDefaultProperty("UpdateCheckAction.icon", "/images/ribbons/help/help-check4updates.png");
         resourceController.setDefaultProperty("OpenUserDirAction.icon", "/images/ribbons/help/help-openUserDirectory.png");
         resourceController.setDefaultProperty("GettingStartedAction.icon", "/images/ribbons/help/help-tutorial.png");
-        
+
         resourceController.setDefaultProperty("OpenLogsFolderAction.icon", "/images/ribbons/help/help-showSystemLog.png");
         resourceController.setDefaultProperty("ManualAction.icon", "/images/ribbons/help/help-Manual.png");
         resourceController.setDefaultProperty("ContactAction.icon", "/images/ribbons/help/help-contact.png");
         resourceController.setDefaultProperty("FAQAction.icon", "/images/ribbons/help/help-faq.png");
-		
+
 	}
 
 	public void createModeControllers(final Controller controller) {
 		MModeControllerFactory.createModeController();
 		final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
-		mindMapModeController.getMapController().addMapChangeListener(applicationResourceController.getLastOpenedList());
+		LastOpenedList lastOpenedList = applicationResourceController.getLastOpenedList();
+		mindMapModeController.getMapController().addMapChangeListener(lastOpenedList);
+		LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
+		RibbonBuilder menuBuilder = mindMapModeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
+		menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
 		mindMapModeController.addMenuContributor(FilterController.getController(controller).getMenuContributor());
 		BModeControllerFactory.createModeController();
 		FModeControllerFactory.createModeController();

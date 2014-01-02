@@ -38,9 +38,9 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationM
 
 
 public class RibbonBuilder {
-	
+
 	private final HashMap<String, IRibbonContributorFactory> contributorFactories = new HashMap<String, IRibbonContributorFactory>();
-	
+
 	final StructureTree structure;
 	private final RootContributor rootContributor;
 	private final RibbonStructureReader reader;
@@ -54,7 +54,7 @@ public class RibbonBuilder {
 	private RibbonMapChangeAdapter changeAdapter;
 
 	private RibbonActionEventHandler raeHandler;
-	
+
 	public RibbonBuilder(ModeController mode, ActionAcceleratorManager acceleratorManager) {
 		structure = new StructureTree();
 		Frame frame = UITools.getFrame();
@@ -66,7 +66,7 @@ public class RibbonBuilder {
 			this.ribbon = new JRibbon();
 		}
 		this.rootContributor = new RootContributor(ribbon);
-		
+
 		this.mode = mode;
 		this.accelManager = acceleratorManager;
 		reader = new RibbonStructureReader(this);
@@ -80,13 +80,13 @@ public class RibbonBuilder {
 		registerContributorFactory("ribbon_band", new RibbonBandContributorFactory());
 		registerContributorFactory("ribbon_action", new RibbonActionContributorFactory(this));
 		registerContributorFactory("fontStyleContributor", new FontStyleContributorFactory());
-		registerContributorFactory("edgeStyleContributor", new EdgeStyleContributorFactory());		
+		registerContributorFactory("edgeStyleContributor", new EdgeStyleContributorFactory());
 		registerContributorFactory("ribbon_flowband", new FlowRibbonBandContributorFactory());
-		
-		registerContributorFactory("zoomContributor", new ZoomContributorFactory(this));		
+
+		registerContributorFactory("zoomContributor", new ZoomContributorFactory(this));
 		registerContributorFactory("viewSettingsContributor", new ViewSettingsContributorFactory());
 		registerContributorFactory("filterConditionsContributor", new FilterConditionsContributorFactory());
-		
+
 		updateApplicationMenuButton(ribbon);
 	}
 
@@ -103,7 +103,7 @@ public class RibbonBuilder {
 			}
 		}
 	}
-	
+
 	public void add(ARibbonContributor contributor, StructurePath path, int position) {
 		if(contributor == null || path == null) {
 			throw new IllegalArgumentException("NULL");
@@ -112,30 +112,30 @@ public class RibbonBuilder {
 			structure.insert(path, contributor, position);
 		}
 	}
-	
+
 	public void registerContributorFactory(String key, IRibbonContributorFactory factory) {
 		synchronized (contributorFactories) {
 			this.contributorFactories.put(key, factory);
 		}
 
 	}
-	
+
 	public IRibbonContributorFactory getContributorFactory(String key) {
 		return this.contributorFactories.get(key);
 	}
-	
+
 	public void buildRibbon() {
 		Window f = SwingUtilities.getWindowAncestor(ribbon);
 		if(!isEnabled()) {
 			return;
 		}
-		
+
 		try {
 			getAcceleratorManager().loadAcceleratorPresets(new FileInputStream(getAcceleratorManager().getPresetsFile()));
 		}
 		catch (IOException ex) {
 		}
-		
+
 		getMapChangeAdapter().clear();
 		synchronized (structure) {
 			final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
@@ -149,17 +149,17 @@ public class RibbonBuilder {
 		}
 		f.setMinimumSize(new Dimension(640,240));
 		f.pack();
-		
+
 	}
-	
+
 	public boolean isEnabled() {
 		return enabled ;
 	}
-	
+
 	public void setEnabled(boolean b) {
 		enabled = b;
 	}
-	
+
 	public void setMinimized(boolean b) {
 		ribbon.setMinimized(b);
 		OneTouchCollapseResizer otcr = OneTouchCollapseResizer.findResizerFor(ribbon);
@@ -167,11 +167,11 @@ public class RibbonBuilder {
 			otcr.recalibrate();
 		}
 	}
-	
+
 	public boolean isMinimized() {
 		return ribbon.isMinimized();
 	}
-	
+
 	public void updateRibbon(URL xmlResource) {
 		//final URL xmlSource = ResourceController.getResourceController().getResource(xmlResource);
 		if (xmlResource != null) {
@@ -195,9 +195,9 @@ public class RibbonBuilder {
 	public boolean containsPath(StructurePath path) {
 		synchronized (structure) {
 			return structure.contains(path);
-		}		
+		}
 	}
-	
+
 	public ModeController getMode() {
 		return mode;
 	}
@@ -205,7 +205,7 @@ public class RibbonBuilder {
 	public ActionAcceleratorManager getAcceleratorManager() {
 		return accelManager;
 	}
-	
+
 	public RibbonMapChangeAdapter getMapChangeAdapter() {
 		if(changeAdapter == null) {
 			changeAdapter = new RibbonMapChangeAdapter();
@@ -219,10 +219,10 @@ public class RibbonBuilder {
 		}
 		return raeHandler;
 	}
-	
+
 	public static class RibbonActionEventHandler {
-		
-		private List<IActionEventListener> listeners = new ArrayList<IActionEventListener>();
+
+		private final List<IActionEventListener> listeners = new ArrayList<IActionEventListener>();
 
 		public void fireAboutToPerformEvent(AboutToPerformEvent event) {
     		synchronized (listeners) {
@@ -230,9 +230,9 @@ public class RibbonBuilder {
     			for(int i=aListeners.length-1; i >= 0; i--) {
     				aListeners[i].aboutToPerform(event);
     			}
- 			}	
+ 			}
 		}
-		
+
 		public void addListener(IActionEventListener listener) {
 			synchronized (listeners) {
 				if(!listeners.contains(listener)) {
@@ -240,7 +240,7 @@ public class RibbonBuilder {
 				}
 			}
 		}
-		
+
 		public void removeListener(IActionEventListener listener) {
 			synchronized (listeners) {
 				listeners.remove(listener);
@@ -252,7 +252,4 @@ public class RibbonBuilder {
 	public JRibbon getRibbonRootComponent() {
 		return ribbon;
 	}
-
-	
-
 }

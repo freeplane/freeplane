@@ -759,10 +759,10 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 		if (null == getMenuBar(get(category)) || Controller.getCurrentController().getViewController().isApplet()) {
 			return action;
 		}
-		return decorateAction(action);
+		return acceleratableAction(action);
 	}
 
-	public IFreeplaneAction decorateAction(final AFreeplaneAction action) {
+	public IFreeplaneAction acceleratableAction(final AFreeplaneAction action) {
 		return new AccelerateableAction(acceleratorManager, action);
 	}
 
