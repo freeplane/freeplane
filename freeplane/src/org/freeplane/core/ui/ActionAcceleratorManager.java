@@ -4,6 +4,7 @@ import java.awt.Event;
 import java.awt.event.KeyEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,24 +36,32 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAcceleratorChangeListener {
-	
+
 	private static final String SHORTCUT_PROPERTY_PREFIX = "acceleratorFor.";
-	
+
 	private final Map<KeyStroke, AFreeplaneAction> accelerators = new HashMap<KeyStroke, AFreeplaneAction>();
 	private final Map<String, KeyStroke> actionMap = new HashMap<String, KeyStroke>();
 	private final List<IAcceleratorChangeListener> changeListeners = new ArrayList<IAcceleratorChangeListener>();
-	
+
 	private final Properties keysetProps = new Properties();
 	private final Properties defaultProps = new Properties();
 
-	
+
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
-	
+
  	public ActionAcceleratorManager() {
  	}
- 	
+
+	public void loadDefaultAcceleratorPresets() {
+	    try {
+			loadAcceleratorPresets(new FileInputStream(getPresetsFile()));
+		}
+		catch (IOException ex) {
+		}
+    }
+
 	/***********************************************************************************
 	 * METHODS
 	 **********************************************************************************/
@@ -61,7 +70,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  		if(action == null) {
  			return;
  		}
- 		if(keyStroke != null) { 		
+ 		if(keyStroke != null) {
     		final AFreeplaneAction oldAction = accelerators.put(keyStroke, action);
     		if(action == oldAction || (oldAction != null && action.getKey().equals(oldAction.getKey()))) {
     			return;
@@ -70,7 +79,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
     			UITools.errorMessage(TextUtils.removeTranslateComment(TextUtils.format("action_keystroke_in_use_error", keyStroke, getActionTitle(action.getKey()), getActionTitle(oldAction.getKey()))));
     			accelerators.put(keyStroke, oldAction);
     			final String shortcutKey = getPropertyKey(action.getKey());
-    			
+
     			keysetProps.setProperty(shortcutKey, "");
     			return;
     		}
@@ -84,7 +93,16 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 		fireAcceleratorChanged(action, removedAccelerator, keyStroke);
 	}
- 	
+
+	public KeyStroke getAcceleratorKeyStroke(AFreeplaneAction action) {
+		final String shortcutKey = getPropertyKey(action.getKey());
+		final String shortcut = getProperty(shortcutKey);
+		if(shortcut != null){
+			return UITools.getKeyStroke(shortcut);
+		}
+		return null;
+    }
+
  	private String getActionTitle(String key) {
  		String title = TextUtils.getText(key+".text");
 		if(title == null || title.isEmpty()) {
@@ -92,7 +110,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 		return TextUtils.removeTranslateComment(title);
  	}
- 	
+
  	public void setDefaultAccelerator(final String itemKey, final String accelerator) {
 		final String shortcutKey = getPropertyKey(itemKey);
 		if (null == getProperty(shortcutKey)) {
@@ -101,9 +119,9 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
 		AFreeplaneAction action = Controller.getCurrentModeController().getAction(itemKey);
 		setAccelerator(action, ks);
-		
+
 	}
- 	
+
  	public KeyStroke removeAccelerator(final AFreeplaneAction action) throws AssertionError {
  		if(action == null) {
  			return null;
@@ -117,16 +135,16 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 		return oldAccelerator;
 	}
- 	
+
  	public String getPropertyKey(final String key) {
 		return SHORTCUT_PROPERTY_PREFIX + Controller.getCurrentModeController().getModeName() + "/" + key;
 	}
- 	
+
  	public KeyStroke getAccelerator(String actionKey) {
  		KeyStroke ks = actionMap.get(actionKey);
  		return ks;
  	}
- 	
+
  	public void addAcceleratorChangeListener(IAcceleratorChangeListener changeListener) {
 		synchronized (changeListeners) {
 			if(!changeListeners.contains(changeListener)) {
@@ -134,7 +152,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			}
 		}
 	}
- 	
+
  	protected void fireAcceleratorChanged(AFreeplaneAction action, KeyStroke oldStroke, KeyStroke newStroke) {
  		synchronized (changeListeners) {
 			for (IAcceleratorChangeListener listener : changeListeners) {
@@ -142,11 +160,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			}
 		}
 	}
- 	
+
  	private String getProperty(String key) {
  		return keysetProps.getProperty(key, defaultProps.getProperty(key, null));
  	}
- 	
+
  	public void newAccelerator(final AFreeplaneAction action, final KeyStroke newAccelerator) {
 		final String shortcutKey = getPropertyKey(action.getKey());
 		final String oldShortcut = getProperty(shortcutKey);
@@ -177,14 +195,14 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 		try {
 			if(!getPresetsFile().exists()) {
-					getPresetsFile().createNewFile();	
+					getPresetsFile().createNewFile();
 			}
 			storeAcceleratorPreset(new FileOutputStream(getPresetsFile()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
- 	
+
  	public File getPresetsFile() {
  		File ribbonsDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory());
 		if(!ribbonsDir.exists()) {
@@ -192,7 +210,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 		return new File(ribbonsDir, "accelerator.properties");
  	}
- 	
+
  	public void loadAcceleratorPresets(final InputStream in) {
 		final Properties prop = new Properties();
 		try {
@@ -213,30 +231,28 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 				final String itemKey = shortcutKey.substring(pos + 1);
 				Controller controller = Controller.getCurrentController();
 				final ModeController modeController = controller.getModeController(modeName);
-				if (modeController == null) {
-					LogUtils.warn("unknown mode name in " + shortcutKey);
-					continue;
+				if (modeController != null) {
+    				final AFreeplaneAction action = modeController.getAction(itemKey);
+    				if (action == null) {
+    					LogUtils.warn("wrong key in " + shortcutKey);
+    					continue;
+    				}
+    				final KeyStroke keyStroke;
+    				if (!keystrokeString.equals("")) {
+    					keyStroke = UITools.getKeyStroke(parseKeyStroke(keystrokeString).toString());
+    					final AFreeplaneAction oldAction = accelerators.get(keyStroke);
+    					if (oldAction != null) {
+    						setAccelerator(oldAction, null);
+    						final Object key = oldAction.getKey();
+    						final String oldShortcutKey = getPropertyKey(key.toString());
+    						keysetProps.setProperty(oldShortcutKey, "");
+    					}
+    				}
+    				else {
+    					keyStroke = null;
+    				}
+    				setAccelerator(action, keyStroke);
 				}
-				final AFreeplaneAction action = modeController.getAction(itemKey);
-				if (action == null) {
-					LogUtils.warn("wrong key in " + shortcutKey);
-					continue;
-				}
-				final KeyStroke keyStroke;
-				if (!keystrokeString.equals("")) {
-					keyStroke = UITools.getKeyStroke(parseKeyStroke(keystrokeString).toString());
-					final AFreeplaneAction oldAction = accelerators.get(keyStroke);
-					if (oldAction != null) {
-						setAccelerator(oldAction, null);
-						final Object key = oldAction.getKey();
-						final String oldShortcutKey = getPropertyKey(key.toString());
-						keysetProps.setProperty(oldShortcutKey, "");
-					}
-				}
-				else {
-					keyStroke = null;
-				}
-				setAccelerator(action, keyStroke);
 				keysetProps.setProperty(shortcutKey, keystrokeString);
 			}
 		}
@@ -244,7 +260,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			LogUtils.warn("shortcut presets not stored: "+e.getMessage());
 		}
 	}
- 	
+
  	public void storeAcceleratorPreset(OutputStream out) {
  		try {
  			final OutputStream output = new BufferedOutputStream(out);
@@ -255,13 +271,13 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  			UITools.errorMessage(TextUtils.removeTranslateComment(TextUtils.getText("can_not_save_key_set")));
  		}
  	}
- 	
+
 	private static String toString(final KeyStroke newAccelerator) {
 		return newAccelerator.toString().replaceFirst("pressed ", "");
 	}
-	
+
 	private static boolean askForReplaceShortcutViaDialog(String oldMenuItemTitle) {
-		final int replace = JOptionPane.showConfirmDialog(UITools.getFrame(), 
+		final int replace = JOptionPane.showConfirmDialog(UITools.getFrame(),
 				TextUtils.removeTranslateComment(TextUtils.format("replace_shortcut_question", oldMenuItemTitle)),
 				TextUtils.removeTranslateComment(TextUtils.format("replace_shortcut_title")), JOptionPane.YES_NO_OPTION);
 		return replace == JOptionPane.YES_OPTION;
@@ -289,10 +305,10 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		KeyStroke ks = actionMap.put(action.getKey(), newStroke);
 		if(ks != null) {
 			accelerators.remove(ks);
-		}		
+		}
 		accelerators.put(newStroke, action);
 	}
-	
+
 	/***********************************************************************************
 	 * NESTED TYPE DECLARATIONS
 	 **********************************************************************************/
@@ -347,7 +363,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	public static KeyStroke parseKeyStroke(String accelerator) {
-		if (accelerator != null) {				
+		if (accelerator != null) {
 			if (Compat.isMacOsX()) {
 				accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 			}
@@ -360,6 +376,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	public Map<KeyStroke, AFreeplaneAction> getAcceleratorMap() {
-		return Collections.unmodifiableMap(this.accelerators);		
+		return Collections.unmodifiableMap(this.accelerators);
 	}
+
 }

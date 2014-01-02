@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Window;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,12 +128,7 @@ public class RibbonBuilder {
 			return;
 		}
 
-		try {
-			getAcceleratorManager().loadAcceleratorPresets(new FileInputStream(getAcceleratorManager().getPresetsFile()));
-		}
-		catch (IOException ex) {
-		}
-
+		getAcceleratorManager().loadDefaultAcceleratorPresets();
 		getMapChangeAdapter().clear();
 		synchronized (structure) {
 			final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
