@@ -19,28 +19,56 @@
  */
 package org.freeplane.main.application;
 
+import java.awt.BorderLayout;
 import java.util.List;
 import java.util.Properties;
 
 import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ribbon.ARibbonContributor;
 import org.freeplane.core.ui.ribbon.IRibbonContributorFactory;
 import org.freeplane.core.ui.ribbon.RibbonBuildContext;
+import org.freeplane.core.util.TextUtils;
+import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
+import org.pushingpixels.flamingo.api.common.CommandButtonDisplayState;
+import org.pushingpixels.flamingo.api.common.CommandButtonLayoutManager;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
+import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonPopupOrientationKind;
+import org.pushingpixels.flamingo.api.common.JCommandButtonPanel;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback;
+import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.CommandButtonLayoutManagerMenuTileLevel2;
 
 /**
  * @author Dimitry Polivaev
  * 02.01.2014
  */
 public class LastOpenedMapsRibbonContributorFactory implements IRibbonContributorFactory {
+	public static class RibbonMenuLastOpenedMapsPanel extends JCommandButtonPanel {
+
+		private static final long serialVersionUID = 1L;
+		protected final static CommandButtonDisplayState MENU_TILE_LEVEL_2 = new CommandButtonDisplayState(
+				"Ribbon application menu tile level 2", 32) {
+			@Override
+			public CommandButtonLayoutManager createLayoutManager(
+					AbstractCommandButton commandButton) {
+				return new CommandButtonLayoutManagerMenuTileLevel2();
+			}
+		};
+		
+		public RibbonMenuLastOpenedMapsPanel() {
+			super(MENU_TILE_LEVEL_2);
+			this.setMaxButtonColumns(1);
+		}
+	}
+
 	private PrimaryRolloverCallback rolloverCallback;
 	private final LastOpenedList lastOpenedList;
+	private String menuName = TextUtils.getText("most_recent_files");
 
 	public LastOpenedMapsRibbonContributorFactory(LastOpenedList lastOpenedList) {
 		this.lastOpenedList = lastOpenedList;
@@ -48,38 +76,48 @@ public class LastOpenedMapsRibbonContributorFactory implements IRibbonContributo
 
 	public ARibbonContributor getContributor(final Properties attributes) {
 		return new ARibbonContributor() {
-			int counter = 0;
-			@Override
+			
 			public String getKey() {
 				return "lastOpenedMaps";
 			}
 
 			@Override
 			public void contribute(RibbonBuildContext context, ARibbonContributor parent) {
-				RibbonApplicationMenuEntryPrimary primeEntry = new RibbonApplicationMenuEntryPrimary(null, "LastOpendText", null, CommandButtonKind.POPUP_ONLY);
+				RibbonApplicationMenuEntryPrimary primeEntry = new RibbonApplicationMenuEntryPrimary(null, menuName, null, CommandButtonKind.POPUP_ONLY);
 				primeEntry.setRolloverCallback(getCallback());
 				parent.addChild(primeEntry, new ChildProperties(parseOrderSettings(attributes.getProperty("orderPriority", ""))));
 			}
 
 			@Override
 			public void addChild(Object child, ChildProperties properties) {
-				// TODO Auto-generated method stub
 			}
 		};
 	}
-
+	
 	private PrimaryRolloverCallback getCallback() {
 		if(rolloverCallback == null) {
 			rolloverCallback = new PrimaryRolloverCallback() {
 				public void menuEntryActivated(JPanel targetPanel) {
+					targetPanel.removeAll();
+					targetPanel.setLayout(new BorderLayout());
+					JCommandButtonPanel secondary = new RibbonMenuLastOpenedMapsPanel();
+					
+					String groupDesc = menuName;
+					secondary.addButtonGroup(groupDesc);
 					List<AFreeplaneAction> openActions = lastOpenedList.createOpenLastMapActionList();
 					for (AFreeplaneAction action : openActions) {
-						JCommandButton openMapButton = new JCommandButton((String) action.getValue(Action.NAME));
-						openMapButton.addActionListener(action);
-						targetPanel.add(openMapButton);
-			        }
-					targetPanel.revalidate();
-					targetPanel.repaint();
+						String text = (String) action.getValue(Action.NAME);
+						JCommandButton openMapButton = new JCommandButton(text);
+						openMapButton.addActionListener(action);						
+						openMapButton.setCommandButtonKind(CommandButtonKind.ACTION_ONLY);
+						openMapButton.setHorizontalAlignment(SwingUtilities.LEADING);
+						openMapButton.setPopupOrientationKind(CommandButtonPopupOrientationKind.SIDEWARD);
+						openMapButton.setEnabled(true);
+						openMapButton.setActionKeyTip(text);
+						
+						secondary.addButtonToLastGroup(openMapButton);
+					}
+					targetPanel.add(secondary, BorderLayout.CENTER);
 				}
 			};
 		}
