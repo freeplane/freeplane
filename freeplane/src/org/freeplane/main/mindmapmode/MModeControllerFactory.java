@@ -249,7 +249,7 @@ public class MModeControllerFactory {
 		if(!userInputListenerFactory.useRibbonMenu()) {
 			userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
 		}
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.BOTTOM, FilterController.getController(
 			    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
