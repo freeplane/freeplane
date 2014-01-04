@@ -261,15 +261,19 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		RibbonBuilder menuBuilder = mindMapModeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
 		menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
 		mindMapModeController.addMenuContributor(FilterController.getController(controller).getMenuContributor());
-		BModeControllerFactory.createModeController();
-		FModeControllerFactory.createModeController();
+		if(! USE_RIBBONS_MENU){
+			BModeControllerFactory.createModeController();
+			FModeControllerFactory.createModeController();
+		}
     }
 
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
 	    LoadAcceleratorPresetsAction.install();
-	    buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
-	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
+	    if(! USE_RIBBONS_MENU){
+	    	buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
+	    	buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
+	    }
     }
 
 	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {
