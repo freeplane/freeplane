@@ -315,9 +315,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapsPopupMenu = new JPopupMenu();
 		getMenuBuilder(MenuBuilder.class).addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		getMenuBuilder(MenuBuilder.class).addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
+		final URL popupStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "popup.xml"));
+		loadStructure(plugins, popupStructure);
 		if(useRibbonMenu()) {
-			final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "popup.xml"));
-			loadStructure(plugins, menuStructure);
 			final URL ribbonStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.xml"));
 			if (ribbonStructure != null) {
 				getMenuBuilder(RibbonBuilder.class).updateRibbon(ribbonStructure);
