@@ -64,7 +64,6 @@ import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
-	private static final String MENU_MM2XML = "/xslt/mm2menu.xsl";
 // // 	final private Controller controller;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
@@ -81,13 +80,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
-	private final MenuXmlCreator  menuXmlCreator;
 	private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
 
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
 		useRibbonMenu = useRibbons;
-		menuXmlCreator = new MenuXmlCreator(MENU_MM2XML);
 		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
 		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));
@@ -107,7 +104,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			toolbarLists[j] = new LinkedList<JComponent>();
 		}
 	}
-	
+
 	public <T> T getMenu(Class<T> clazz) {
 		return null;
 	}
@@ -319,9 +316,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		getMenuBuilder(MenuBuilder.class).addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		getMenuBuilder(MenuBuilder.class).addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
 		if(useRibbonMenu()) {
-			final URL menuStructure = menuXmlCreator.menuResource(menuStructureResource.replace("menu.xml", "popup.xml"));
+			final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "popup.xml"));
 			loadStructure(plugins, menuStructure);
-			final URL ribbonStructure = menuXmlCreator.menuResource(menuStructureResource.replace("menu.xml", "ribbon.xml"));
+			final URL ribbonStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.xml"));
 			if (ribbonStructure != null) {
 				getMenuBuilder(RibbonBuilder.class).updateRibbon(ribbonStructure);
 			}
@@ -330,7 +327,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final FreeplaneMenuBar menuBar = getMenuBar();
 			getMenuBuilder(MenuBuilder.class).addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
 			getMenuBuilder(MenuBuilder.class).addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
-			final URL menuStructure = menuXmlCreator.menuResource(menuStructureResource);
+			final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
 			loadStructure(plugins, menuStructure);
 			final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 			viewController.updateMenus(getMenuBuilder(MenuBuilder.class));

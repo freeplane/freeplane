@@ -65,6 +65,7 @@ public class ApplicationResourceController extends ResourceController {
 		if (resourceBaseDir != null) {
 			try {
 				final File userResourceDir = new File(userDir, "resources");
+				userResourceDir.mkdirs();
 				if (userResourceDir.exists()) {
 					final URL userResourceUrl = Compat.fileToUrl(userResourceDir);
 					urls.add(userResourceUrl);
