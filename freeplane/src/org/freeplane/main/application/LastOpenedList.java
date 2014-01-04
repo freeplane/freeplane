@@ -188,16 +188,23 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			return;
 		final String mode = tokens.nextToken();
 		Controller.getCurrentController().selectMode(mode);
-		String fileName = tokens.nextToken(";").substring(1);
-		if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
-			fileName = USER_DRIVE + fileName.substring(1);
-		}
+		File file = createFileFromRestorable(tokens.nextToken());
 		if(!changedToMapView)
-			Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
+			Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(file));
 		else{
 			final MapModel map = Controller.getCurrentController().getMap();
 			Controller.getCurrentModeController().getMapController().newMapView(map);
 		}
+	}
+
+	public File createFileFromRestorable(String restoreable) {
+		final StringTokenizer tokens = new StringTokenizer(restoreable, ";");
+		String fileName = tokens.nextToken().substring(1);
+		if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
+			fileName = USER_DRIVE + fileName.substring(1);
+		}
+		File file = new File(fileName);
+		return file;
 	}
 
 	public void openMapsOnStart() {
@@ -300,24 +307,31 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	    	if (i == maxEntries) {
 	    		break;
 	    	}
-	    	String text = createOpenMapItemName(key);
+	    	
 	    	final AFreeplaneAction openMapAction = new OpenLastOpenedAction(i++, this, key);
-	    	openMapAction.putValue(Action.NAME, text);
+	    	createOpenMapItemName(openMapAction, key);
 	    	openMapActions.add(openMapAction);
 	    }
 	    return openMapActions;
     }
 
-	private String createOpenMapItemName(final String restorable) {
+	private void createOpenMapItemName(AFreeplaneAction openMapAction, final String restorable) {
 		final int separatorIndex = restorable.indexOf(':');
 		if(separatorIndex == -1)
-			return restorable;
+			openMapAction.putValue(Action.NAME, restorable);
+		
 		String key = restorable.substring(0, separatorIndex);
 		String fileName = restorable.substring(separatorIndex);
+		String keyName = TextUtils.getText("open_as" + key, key);
+		openMapAction.putValue(Action.SHORT_DESCRIPTION, keyName);
+		openMapAction.putValue(Action.DEFAULT, fileName);
 		if(fileName.startsWith("::"))
-			return TextUtils.getText("open_as" + key, key) + " " + fileName.substring(2);
+			fileName = fileName.substring(2);
 		else
-			return TextUtils.getText("open_as" + key, key) + " " + fileName.substring(1);
+			fileName = fileName.substring(1);
+		
+		openMapAction.putValue(Action.NAME, keyName + " " + fileName);
+		
     }
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,

@@ -20,6 +20,7 @@
 package org.freeplane.main.application;
 
 import java.awt.BorderLayout;
+import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
@@ -39,9 +40,13 @@ import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonPopupOrientationKind;
 import org.pushingpixels.flamingo.api.common.JCommandButtonPanel;
+import org.pushingpixels.flamingo.api.common.JScrollablePanel;
+import org.pushingpixels.flamingo.api.common.JScrollablePanel.ScrollType;
+import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback;
 import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.CommandButtonLayoutManagerMenuTileLevel2;
+import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationMenuPopupPanelSecondary;
 
 /**
  * @author Dimitry Polivaev
@@ -84,7 +89,7 @@ public class LastOpenedMapsRibbonContributorFactory implements IRibbonContributo
 			@Override
 			public void contribute(RibbonBuildContext context, ARibbonContributor parent) {
 				RibbonApplicationMenuEntryPrimary primeEntry = new RibbonApplicationMenuEntryPrimary(null, menuName, null, CommandButtonKind.POPUP_ONLY);
-				primeEntry.setRolloverCallback(getCallback());
+				primeEntry.setRolloverCallback(getCallback(primeEntry));
 				parent.addChild(primeEntry, new ChildProperties(parseOrderSettings(attributes.getProperty("orderPriority", ""))));
 			}
 
@@ -94,30 +99,32 @@ public class LastOpenedMapsRibbonContributorFactory implements IRibbonContributo
 		};
 	}
 	
-	private PrimaryRolloverCallback getCallback() {
+	private PrimaryRolloverCallback getCallback(final RibbonApplicationMenuEntryPrimary primeEntry) {
 		if(rolloverCallback == null) {
 			rolloverCallback = new PrimaryRolloverCallback() {
 				public void menuEntryActivated(JPanel targetPanel) {
 					targetPanel.removeAll();
 					targetPanel.setLayout(new BorderLayout());
-					JCommandButtonPanel secondary = new RibbonMenuLastOpenedMapsPanel();
+					JCommandButtonPanel secondary = new JRibbonApplicationMenuPopupPanelSecondary(primeEntry);
+					secondary.setToShowGroupLabels(false);
 					
 					String groupDesc = menuName;
 					secondary.addButtonGroup(groupDesc);
 					List<AFreeplaneAction> openActions = lastOpenedList.createOpenLastMapActionList();
 					for (AFreeplaneAction action : openActions) {
-						String text = (String) action.getValue(Action.NAME);
-						JCommandButton openMapButton = new JCommandButton(text);
+						File file = lastOpenedList.createFileFromRestorable((String) action.getValue(Action.DEFAULT));
+						JCommandButton openMapButton = new JCommandButton(file.getName());
 						openMapButton.addActionListener(action);						
 						openMapButton.setCommandButtonKind(CommandButtonKind.ACTION_ONLY);
 						openMapButton.setHorizontalAlignment(SwingUtilities.LEADING);
 						openMapButton.setPopupOrientationKind(CommandButtonPopupOrientationKind.SIDEWARD);
 						openMapButton.setEnabled(true);
-						openMapButton.setActionKeyTip(text);
+						openMapButton.setActionRichTooltip(new RichTooltip((String) action.getValue(Action.SHORT_DESCRIPTION), file.toString()));
 						
 						secondary.addButtonToLastGroup(openMapButton);
 					}
-					targetPanel.add(secondary, BorderLayout.CENTER);
+					JScrollablePanel<JCommandButtonPanel> scrollPanel = new JScrollablePanel<JCommandButtonPanel>(secondary, ScrollType.VERTICALLY);
+					targetPanel.add(scrollPanel, BorderLayout.CENTER);
 				}
 			};
 		}
