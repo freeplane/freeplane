@@ -602,6 +602,11 @@
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="notes"/>
 <attribute NAME="name_ref" VALUE="menu_notes"/>
+<node TEXT="SelectNoteAction">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="SelectNoteAction"/>
+<attribute NAME="accelerator" VALUE="control LESS"/>
+</node>
 <node TEXT="Edit note in dialog" ID="ID_1125575353" CREATED="1370194798701" MODIFIED="1370194798701">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditNoteInDialogAction"/>
