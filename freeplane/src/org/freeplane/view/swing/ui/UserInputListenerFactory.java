@@ -329,6 +329,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			getMenuBuilder(MenuBuilder.class).addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
 			final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
 			loadStructure(plugins, menuStructure);
+			final URL toolbarStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "toolbar.xml"));
+			loadStructure(plugins, toolbarStructure);
 			final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 			viewController.updateMenus(getMenuBuilder(MenuBuilder.class));
 		}
