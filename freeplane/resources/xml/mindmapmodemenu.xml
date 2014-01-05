@@ -131,6 +131,7 @@
 				<menu_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex"/>
 			</menu_submenu>			
 			<menu_submenu name="notes" name_ref="menu_notes">
+				<menu_action action="SelectNoteAction" accelerator="control LESS"/>
 				<menu_action action="EditNoteInDialogAction" />
 				<menu_action action="RemoveNoteAction" />				
 			</menu_submenu>		
