@@ -292,6 +292,7 @@
 			</ribbon_band>
 
 			<ribbon_band name="notes" resize_policies="Mirror">
+				<ribbon_action action="SelectNoteAction" accelerator="control LESS"/>
 				<ribbon_action action="EditNoteInDialogAction" />
                 <ribbon_action action="ShowHideNoteAction" accelerator="control GREATER" priority="medium" />
 				<ribbon_action action="RemoveNoteAction" />
