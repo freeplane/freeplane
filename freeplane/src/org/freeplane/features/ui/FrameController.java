@@ -90,7 +90,7 @@ abstract public class FrameController implements ViewController {
 
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -110,15 +110,15 @@ abstract public class FrameController implements ViewController {
 			if (getWidth() == 0) {
 				return;
 			}
-			int lastComponent = getComponentCount() - 1;
-			while (lastComponent >= 0 && !getComponent(lastComponent).isVisible()) {
-				lastComponent--;
-			}
 			final Dimension oldPreferredSize = getPreferredSize();
 			final Dimension preferredSize;
-			if (lastComponent >= 0) {
-				final Component component = getComponent(lastComponent);
-				preferredSize = new Dimension(getWidth(), component.getY() + component.getHeight());
+			int maxHeight = 0;
+			for(Component component : getComponents()){
+				if(component.isVisible())
+					maxHeight = Math.max(maxHeight, component.getY() + component.getHeight());
+			}
+			if (maxHeight > 0) {
+				preferredSize = new Dimension(getWidth(), maxHeight);
 			}
 			else {
 				preferredSize = new Dimension(0, 0);
@@ -184,7 +184,7 @@ abstract public class FrameController implements ViewController {
 		controller.addAction(new ToggleFullScreenAction(this));
 		controller.addAction(new ToggleRibbonAction());
 		controller.addAction(new CloseAction());
-		
+
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleScrollbarsAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
@@ -192,7 +192,7 @@ abstract public class FrameController implements ViewController {
 		toolbarPanel = new JComponent[4];
 
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		toolbarPanel[BOTTOM] = Box.createHorizontalBox();
+		toolbarPanel[BOTTOM] = Box.createVerticalBox();
 		toolbarPanel[LEFT] = Box.createHorizontalBox();
 		toolbarPanel[RIGHT] = Box.createVerticalBox();
 	}
@@ -208,7 +208,7 @@ abstract public class FrameController implements ViewController {
 	 * @return
 	 */
 	abstract public RootPaneContainer getRootPaneContainer();
-	
+
 	public Container getContentPane(){
 		return getRootPaneContainer().getContentPane();
 	}
@@ -243,14 +243,14 @@ abstract public class FrameController implements ViewController {
 		else {
 			JPanel northPanel = new JPanel();
 			northPanel.setLayout(new BorderLayout());
-			
+
 			Box resizableTabs = Box.createVerticalBox();
 			resizableTabs.add(comp);
 			final OneTouchCollapseResizer otcr = new OneTouchCollapseResizer(Direction.UP, CollapseDirection.COLLAPSE_UP);
 			otcr.setSliderLocked(true);
 			resizableTabs.add(otcr);
 			otcr.addResizerListener(new ResizerListener() {
-				
+
 				public void componentResized(ResizeEvent event) {
 					if(comp.getHeight() > 151) {
 						comp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 151));
@@ -267,17 +267,17 @@ abstract public class FrameController implements ViewController {
 					comp.setPreferredSize(null);
 					otcr.recalibrate();
 				}
-				
+
 				public void componentCollapsed(ResizeEvent event) {
 				}
 			});
-			
+
 			northPanel.add(resizableTabs, BorderLayout.NORTH);
 			northPanel.add(toolbarPanel[TOP], BorderLayout.CENTER);
-			
+
 			getContentPane().add(northPanel, BorderLayout.NORTH);
 		}
-		
+
 //		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
 		getContentPane().add(toolbarPanel[LEFT], BorderLayout.WEST);
 		getContentPane().add(toolbarPanel[RIGHT], BorderLayout.EAST);
@@ -339,15 +339,15 @@ abstract public class FrameController implements ViewController {
 	public void addStatusInfo(final String key, final String info) {
 		addStatusInfo(key, info, null, null);
 	}
-	
+
 	public void addStatusInfo(final String key, Icon icon) {
 		addStatusInfo(key, null, icon, null);
 	}
-	
+
 	public void addStatusInfo(final String key, final String info, Icon icon) {
 		addStatusInfo(key, info, icon, null);
 	}
-	
+
 	public void addStatusInfo(final String key, final String info, Icon icon, final String tooltip) {
 		JLabel label = (JLabel) statusInfos.get(key);
 		if (label == null) {
@@ -387,7 +387,7 @@ abstract public class FrameController implements ViewController {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	abstract public void removeSplitPane();
 
@@ -430,7 +430,7 @@ abstract public class FrameController implements ViewController {
 			setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
 			setUIComponentsVisible(newModeController.getController().getMapViewManager(), isMenubarVisible());
 		}
-		
+
 	}
 
 	private void setUIComponentsVisible(IMapViewManager iMapViewManager, boolean visible) {
@@ -457,7 +457,7 @@ abstract public class FrameController implements ViewController {
 		else {
 			property = componentName+"Visible";
 		}
-		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);		
+		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
     }
 
 	/**
@@ -525,7 +525,7 @@ abstract public class FrameController implements ViewController {
 		if(! window.isVisible())
 			return Collections.emptyList();
 		Window[] ownedWindows = window.getOwnedWindows();
-		ArrayList<Window> visibleWindows = new ArrayList(ownedWindows.length+ 1); 
+		ArrayList<Window> visibleWindows = new ArrayList(ownedWindows.length+ 1);
 		visibleWindows.add(window);
 		for(Window child : ownedWindows){
 			visibleWindows.addAll(collectVisibleFrames(child));
@@ -585,11 +585,11 @@ abstract public class FrameController implements ViewController {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
 				boolean setLnF = false;
 				for(LookAndFeelInfo lafInfo : lafInfos){
-					if(lafInfo.getName().equalsIgnoreCase(lookAndFeel)){										
-						UIManager.setLookAndFeel(lafInfo.getClassName());						
+					if(lafInfo.getName().equalsIgnoreCase(lookAndFeel)){
+						UIManager.setLookAndFeel(lafInfo.getClassName());
 						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", lafInfo.getClassName());
 						setLnF = true;
-						break;										
+						break;
 					}
 					if(lafInfo.getClassName().equals(lookAndFeel)){
 						UIManager.setLookAndFeel(lafInfo.getClassName());
@@ -606,9 +606,9 @@ abstract public class FrameController implements ViewController {
 		catch (final Exception ex) {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
-		
+
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
-		
+
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
 		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created
@@ -656,7 +656,7 @@ abstract public class FrameController implements ViewController {
 		final NamedObject keyText = new NamedObject("text", "1Ab");
 		final BasicComboBoxEditor textEditor = new FixedBasicComboBoxEditor(){
 			private Object oldItem;
-	
+
 			@Override
 	        public void setItem(Object object) {
 				oldItem = object;
@@ -665,7 +665,7 @@ abstract public class FrameController implements ViewController {
 				else
 					super.setItem(object);
 	        }
-	
+
 			@Override
 	        public Object getItem() {
 	            final Object item = super.getItem();
@@ -673,18 +673,18 @@ abstract public class FrameController implements ViewController {
 				this.oldItem = null;
 	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
 	            	return oldItem;
-	            if(ResourceController.getResourceController().getBooleanProperty("parse_data") 
+	            if(ResourceController.getResourceController().getBooleanProperty("parse_data")
 	            		&& item instanceof String){
 	                final Object scannedObject = ScannerController.getController().parse((String)item);
 	                return scannedObject;
 	            }
 				return item;
 	        }
-			
+
 		};
 		editor.put(keyText, textEditor);
-		
-		final NamedObject keyDate = new NamedObject("date", ""); 
+
+		final NamedObject keyDate = new NamedObject("date", "");
 		keyDate.setIcon(dateIcon);
 		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
 			@Override
@@ -695,11 +695,11 @@ abstract public class FrameController implements ViewController {
 					super.setItem(null);
 	        }
 		};
-		
+
 		dateComboBoxEditor.setItem();
 		editor.put(keyDate, dateComboBoxEditor);
-	
-		final NamedObject keyDateTime = new NamedObject("date_time", ""); 
+
+		final NamedObject keyDateTime = new NamedObject("date_time", "");
 		keyDateTime.setIcon(dateTimeIcon);
 		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
 			@Override
@@ -712,7 +712,7 @@ abstract public class FrameController implements ViewController {
 		};
 		dateTimeComboBoxEditor.setItem();
 		editor.put(keyDateTime, dateTimeComboBoxEditor);
-	
+
 		return editor;
 	}
 
@@ -731,9 +731,9 @@ abstract public class FrameController implements ViewController {
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 		EventQueue.invokeAndWait(runnable);
     }
-	
+
 	public boolean isHeadless() {
 	    return false;
     }
-	
+
 }
