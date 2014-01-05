@@ -188,7 +188,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			return;
 		final String mode = tokens.nextToken();
 		Controller.getCurrentController().selectMode(mode);
-		File file = createFileFromRestorable(tokens.nextToken());
+		File file = createFileFromRestorable(tokens);
 		if(!changedToMapView)
 			Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(file));
 		else{
@@ -197,9 +197,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		}
 	}
 
-	public File createFileFromRestorable(String restoreable) {
-		final StringTokenizer tokens = new StringTokenizer(restoreable, ";");
-		String fileName = tokens.nextToken().substring(1);
+	public File createFileFromRestorable(StringTokenizer tokens) {
+		String fileName = tokens.nextToken(";").substring(1);
 		if (PORTABLE_APP && fileName.startsWith(":") && USER_DRIVE.endsWith(":")) {
 			fileName = USER_DRIVE + fileName.substring(1);
 		}
@@ -307,7 +306,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	    	if (i == maxEntries) {
 	    		break;
 	    	}
-	    	
+
 	    	final AFreeplaneAction openMapAction = new OpenLastOpenedAction(i++, this, key);
 	    	createOpenMapItemName(openMapAction, key);
 	    	openMapActions.add(openMapAction);
@@ -319,7 +318,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		final int separatorIndex = restorable.indexOf(':');
 		if(separatorIndex == -1)
 			openMapAction.putValue(Action.NAME, restorable);
-		
+
 		String key = restorable.substring(0, separatorIndex);
 		String fileName = restorable.substring(separatorIndex);
 		String keyName = TextUtils.getText("open_as" + key, key);
@@ -329,9 +328,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			fileName = fileName.substring(2);
 		else
 			fileName = fileName.substring(1);
-		
+
 		openMapAction.putValue(Action.NAME, keyName + " " + fileName);
-		
+
     }
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,

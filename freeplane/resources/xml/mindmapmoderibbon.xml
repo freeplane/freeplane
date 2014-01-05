@@ -1,18 +1,4 @@
-<!-- WARNING: main_menu_modes not found -->
-<!-- WARNING: main_menu_most_recent_files not found -->
-<!-- WARNING: main_menu_scripting not found -->
-
-<!-- menu_key="main_menu_most_recent_files"   -->
-<!-- menu_key="main_menu_icons"   -->
-<!-- menu_key="main_menu_styles"   -->
-<!-- menu_key="menu_navigate">   -->
-<!-- menu_key="menu_goto_links"   -->
-<!-- menu_key="menu_user_defined_filters"   -->
 <!-- menu_key="main_menu_new_load_accelerator_presets"   -->
-<!-- menu_key="main_menu_scripting"   -->
-<!-- menu_key="main_menu_modes"   -->
-<!-- menu_key="main_menu_navigate_maps"   -->
-<!-- menu_key="main_menu_mindmaps"   -->
 
 <menu_structure>
 	<menu_category name="ribbon">
@@ -42,7 +28,7 @@
 					<ribbon_action action="OpenURLMapAction" mandatory="true" />			        
 			    </entry_group>
 			</primary_entry>
-			<ribbon_contributor name="lastOpenedMaps" menu_key="main_menu_most_recent_files"/>
+			<ribbon_contributor name="lastOpenedMaps" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>
 			<primary_entry name="save">
 				<entry_group name="save">
 					<ribbon_action action="SaveAction" accelerator="control S" />
@@ -277,6 +263,7 @@
 				    <ribbon_action action="MakeLinkToAnchorAction" />
 				    <ribbon_action action="ClearLinkAnchorAction" />										
                 </ribbon_action>
+                <ribbon_contributor name="linkList" menu_key="menu_goto_links" />
 			</ribbon_band>
 			<ribbon_band name="icons" resize_policies="Mirror">
                 <ribbon_action action="IconSelectionPlugin" />
@@ -326,6 +313,7 @@
 		<!-- FORMATTING -->
 		<ribbon_task name="formatting">
             <ribbon_contributor name="fontStyleContributor" />
+            <ribbon_contributor name="styleContributor" name_ref="styles" menu_key="main_menu_styles"/>
 
 			<ribbon_band name="manage_styles" resize_policies="Mirror">
 				<ribbon_action action="NewUserStyleAction" priority="medium">
@@ -376,7 +364,8 @@
 		</ribbon_task>
 		
 		<!-- SEARCH & FILTER -->
-		<ribbon_task name="search_and_filter">
+		<ribbon_task name="filter">
+			<ribbon_contributor name="userDefinedFilters" name_ref="user_defined_filters" menu_key="menu_user_defined_filters" />
 			<ribbon_band name="filter" resize_policies="Mirror, High2Low">
 			    <ribbon_action action="EditFilterAction" priority="top"/>	
                 <ribbon_action action="FindAction" accelerator="control G" priority="top" />
@@ -410,7 +399,9 @@
 				<ribbon_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" priority="Top">
 				    <ribbon_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
                 </ribbon_action>
-			</ribbon_band>		   			
+			</ribbon_band>		
+			<ribbon_contributor name="navigate_maps" name_ref="mindmaps" menu_key="main_menu_mindmaps"/>   			
+			<ribbon_contributor name="navigate_modes" name_ref="modes" menu_key="main_menu_modes"/>   			
 			<ribbon_band name="goto" resize_policies="Mirror">
 				<ribbon_action action="MoveToRootAction" accelerator="ESCAPE" priority="Top"/>
 				<ribbon_action action="FollowLinkAction" accelerator="control ENTER" />
@@ -448,11 +439,14 @@
 					<ribbon_action action="EnterPassword" />
 					<ribbon_action action="RemoveEncryption" />
 				</ribbon_action>
+				<ribbon_contributor name="loadAcceleratorPresets" name_ref="acceleratorPresets"
+							menu_key="main_menu_new_load_accelerator_presets" />
 				<ribbon_action action="SetAcceleratorOnNextClickAction" priority="Top" />								
 				<ribbon_action name="scripting" plugin="org.freeplane.plugin.script">				    
 					<ribbon_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
 					<ribbon_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
-					<ribbon_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>					
+					<ribbon_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>	
+					<ribbon_contributor name="userScripts" menu_key="main_menu_scripting"  plugin="org.freeplane.plugin.script"/>				
 				</ribbon_action>
 				<ribbon_action name="formula.menuname" plugin="org.freeplane.plugin.formula">
 					<ribbon_action action="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula"/>

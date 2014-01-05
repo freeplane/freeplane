@@ -666,7 +666,11 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 
 	public void addPopupMenuListener(final Object key, final PopupMenuListener listener) {
 		final DefaultMutableTreeNode node = get(key);
-		assert (node != null);
+		addPopupMenuListener(node, listener);
+	}
+
+	public void addPopupMenuListener(final DefaultMutableTreeNode node, final PopupMenuListener listener) {
+	    assert (node != null);
 		final JPopupMenu popup;
 		if (node.getUserObject() instanceof JMenu) {
 			popup = ((JMenu) node.getUserObject()).getPopupMenu();
@@ -688,7 +692,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 		}
 		final Object userObject = node.getUserObject();
 		popup.addPopupMenuListener(new DelegatingPopupMenuListener(listener, userObject));
-	}
+    }
 
 	public JMenuItem addRadioItem(final String category, final AFreeplaneAction action, final boolean isSelected) {
 		assert action != null;
