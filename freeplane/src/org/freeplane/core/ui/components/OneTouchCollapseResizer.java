@@ -28,11 +28,8 @@ public class OneTouchCollapseResizer extends JResizer {
 	public static final String COLLAPSED = OneTouchCollapseResizer.class.getPackage().getName()+".collapsed";
 	private static final String ALREADY_IN_PAINT = OneTouchCollapseResizer.class.getPackage().getName()+".ALREADY_PAINTING";
 
-	public enum CollapseDirection {COLLAPSE_LEFT, COLLAPSE_RIGHT, COLLAPSE_UP, COLLAPSE_DOWN};
-
 	protected boolean expanded = true;
 	private JPanel hotspot;
-	private final CollapseDirection collapseDirection;
 	private final int inset = 2;
 	private final Direction direction;
 	private Integer resizeComponentIndex;
@@ -47,11 +44,10 @@ public class OneTouchCollapseResizer extends JResizer {
 	/**
 	 * @param d
 	 */
-	public OneTouchCollapseResizer(final Direction d, final CollapseDirection collapseDirection) {
+	public OneTouchCollapseResizer(final Direction d) {
 		super(d);
 		direction = d;
 		this.setDividerSize(7);
-		this.collapseDirection = collapseDirection;
 
 		MouseListener listener = new MouseListener() {
 			private void resetCursor() {
@@ -266,16 +262,16 @@ public class OneTouchCollapseResizer extends JResizer {
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		//g.setColor();
-		if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_LEFT)) {
+		if(this.direction.equals(Direction.LEFT)) {
 			arrowLeft(g, half_length, center_y);
 		}
-		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_RIGHT)) {
+		else if(this.direction.equals(Direction.RIGHT)) {
 			arrowRight(g, half_length, center_y);
 		}
-		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_UP)) {
+		else if(this.direction.equals(Direction.UP)) {
 			arrowUp(g, half_width, center_x);
 		}
-		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_DOWN)) {
+		else if(this.direction.equals(Direction.DOWN)) {
 			arrowDown(g, half_width, center_x);
 		}
 	}
@@ -293,16 +289,16 @@ public class OneTouchCollapseResizer extends JResizer {
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_LEFT)) {
+		if(this.direction.equals(Direction.LEFT)) {
 			arrowRight(g, half_length, center_y);
 		}
-		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_RIGHT)) {
+		else if(this.direction.equals(Direction.RIGHT)) {
 			arrowLeft(g, half_length, center_y);
 		}
-		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_UP)) {
+		else if(this.direction.equals(Direction.UP)) {
 			arrowDown(g, half_width, center_x);
 		}
-		else if(this.collapseDirection.equals(CollapseDirection.COLLAPSE_DOWN)) {
+		else if(this.direction.equals(Direction.DOWN)) {
 			arrowUp(g, half_width, center_x);
 		}
 	}
