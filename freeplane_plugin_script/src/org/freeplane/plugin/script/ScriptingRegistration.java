@@ -214,6 +214,7 @@ class ScriptingRegistration {
 				}
 			});
 			createUserScriptsDirectory();
+			createUserLibDirectory();
 		}
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, 
 			new ScriptConditionController());
@@ -246,10 +247,18 @@ class ScriptingRegistration {
 	}
 
 	private void createUserScriptsDirectory() {
-		final File scriptDir = ScriptResources.getUserScriptDir();
+		final File scriptDir = ScriptResources.getUserScriptsDir();
 		if (!scriptDir.exists()) {
 			LogUtils.info("creating user scripts directory " + scriptDir);
 			scriptDir.mkdirs();
+		}
+	}
+
+	private void createUserLibDirectory() {
+		final File libDir = ScriptResources.getUserLibDir();
+		if (!libDir.exists()) {
+			LogUtils.info("creating user lib directory " + libDir);
+			libDir.mkdirs();
 		}
 	}
 
@@ -259,14 +268,14 @@ class ScriptingRegistration {
 			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
 			addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
 			registeredLocations.add(scriptsLocation);
-			if (configuration.getNameScriptMap().isEmpty()) {
+			if (configuration.getMenuTitleToPathMap().isEmpty()) {
 				final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
 				        + "</em></body></html>";
 				menuBuilder.addElement(scriptsLocation, new JMenuItem(message), 0);
 			}
-			for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+			for (final Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 				final String scriptName = entry.getKey();
-				final ScriptMetaData metaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
 				// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 				// that one script is used in multiple modes by the same user
 				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {

@@ -121,13 +121,13 @@ class ScriptingConfiguration {
 
 	private static final String[] MENU_BAR_SCRIPTS_PARENT_LOCATIONS = {"main_menu_scripting", "node_popup_scripting"};
 	private static final String JAR_REGEX = ".+\\.jar$";
-	private final TreeMap<String, String> nameScriptMap = new TreeMap<String, String>();
-	private final TreeMap<String, ScriptMetaData> nameScriptMetaDataMap = new TreeMap<String, ScriptMetaData>();
+	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
+	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();
 
 	ScriptingConfiguration() {
 	    ScriptResources.setClasspath(buildClasspath());
 		addPluginDefaults();
-		initNameScriptMap();
+		initMenuTitleToPathMap();
 	}
 
 	private void addPluginDefaults() {
@@ -137,28 +137,61 @@ class ScriptingConfiguration {
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 
-	private void initNameScriptMap() {
-		final Map<File, Script> addOnScriptMap = getAddOnScriptMap();
-		final FilenameFilter scriptFilenameFilter = createFilenameFilter(createScriptRegExp());
-		for (File dir : getScriptDirs()) {
-            addScripts(dir, addOnScriptMap, scriptFilenameFilter);
-		}
+	private void initMenuTitleToPathMap() {
+		final Map<File, Script> addOnScriptMap = createAddOnScriptMap();
+		addAddOnScripts(addOnScriptMap);
+		addNonAddOnScripts(addOnScriptMap);
 	}
 
-	public Map<File, Script> getAddOnScriptMap() {
-		List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
+    private void addAddOnScripts(Map<File, Script> addOnScriptMap) {
+        for (File file : addOnScriptMap.keySet()) {
+            addScript(file, addOnScriptMap);
+        }
+    }
+
+    private void addNonAddOnScripts(final Map<File, Script> addOnScriptMap) {
+        final FilenameFilter scriptFilenameFilter = createFilenameFilter(createScriptRegExp());
+		for (File dir : getScriptDirs()) {
+            addNonAddOnScripts(dir, addOnScriptMap, scriptFilenameFilter);
+		}
+    }
+
+	private Map<File, Script> createAddOnScriptMap() {
 		Map<File, Script> result = new LinkedHashMap<File, Script>();
-		for (AddOnProperties addOnProperties : installedAddOns) {
+		for (ScriptAddOnProperties scriptAddOnProperties : getInstalledScriptAddOns()) {
+            final List<Script> scripts = scriptAddOnProperties.getScripts();
+            for (Script script : scripts) {
+                script.active = scriptAddOnProperties.isActive();
+                result.put(findScriptFile(scriptAddOnProperties, script), script);
+            }
+		}
+		return result;
+    }
+
+    private List<ScriptAddOnProperties> getInstalledScriptAddOns() {
+        final List<ScriptAddOnProperties> installedAddOns = new ArrayList<ScriptAddOnProperties>();
+		for (AddOnProperties addOnProperties : AddOnsController.getController().getInstalledAddOns()) {
 	        if (addOnProperties.getAddOnType() == AddOnType.SCRIPT) {
-	        	final ScriptAddOnProperties scriptAddOnProperties = (ScriptAddOnProperties) addOnProperties;
-	        	final List<Script> scripts = scriptAddOnProperties.getScripts();
-	        	for (Script script : scripts) {
-	        		script.active = addOnProperties.isActive();
-	        		result.put(new File(ScriptResources.getUserScriptDir(), script.name), script);
-                }
+	        	installedAddOns.add((ScriptAddOnProperties) addOnProperties);
 	        }
         }
-		return result;
+        return installedAddOns;
+    }
+
+    private File findScriptFile(AddOnProperties addOnProperties, Script script) {
+        final File dir = new File(getPrivateAddOnDirectory(addOnProperties), "scripts");
+        final File result = new File(dir, script.name);
+        return result.exists() ? result : findScriptFile_pre_1_3_x_final(script);
+    }
+
+    private File getPrivateAddOnDirectory(AddOnProperties addOnProperties) {
+        return new File(AddOnsController.getController().getAddOnsDir(), addOnProperties.getName());
+    }
+
+    // add-on scripts are installed in a add-on-private directory since 1.3.x_beta
+    @Deprecated
+    private File findScriptFile_pre_1_3_x_final(Script script) {
+        return new File(ScriptResources.getUserScriptsDir(), script.name);
     }
 
 	private TreeSet<File> getScriptDirs() {
@@ -171,7 +204,7 @@ class ScriptingConfiguration {
             }
 		}
 		dirs.add(ScriptResources.getBuiltinScriptsDir());
-		dirs.add(ScriptResources.getUserScriptDir());
+		dirs.add(ScriptResources.getUserScriptsDir());
 		return dirs;
 	}
 
@@ -188,13 +221,16 @@ class ScriptingConfiguration {
 	}
 
     /** scans <code>dir</code> for script files matching a given rexgex. */
-    private void addScripts(final File dir, final Map<File, Script> addOnScriptMap,
+    private void addNonAddOnScripts(final File dir, final Map<File, Script> addOnScriptMap,
                             FilenameFilter filenameFilter) {
+        // add all addOn scripts
+        // find further scripts in configured directories
         if (dir.isDirectory()) {
             final File[] files = dir.listFiles(filenameFilter);
             if (files != null) {
                 for (final File file : files) {
-                    addScript(file, addOnScriptMap);
+                    if (addOnScriptMap.get(file) == null)
+                        addScript(file, addOnScriptMap);
                 }
             }
         }
@@ -228,28 +264,31 @@ class ScriptingConfiguration {
 			LogUtils.info("skipping deactivated " + scriptConfig);
 			return;
 		}
-		final String scriptName = getScriptName(file, scriptConfig);
-		String name = scriptName;
-		// add suffix if the same script exists in multiple dirs
-		for (int i = 2; nameScriptMap.containsKey(name); ++i) {
-			name = scriptName + i;
-		}
+		final String menuTitle = disambiguateMenuTitle(getOrCreateMenuTitle(file, scriptConfig));
 		try {
-			nameScriptMap.put(name, file.getAbsolutePath());
-			final ScriptMetaData metaData = createMetaData(file, name, scriptConfig);
-			nameScriptMetaDataMap.put(name, metaData);
+			menuTitleToPathMap.put(menuTitle, file.getAbsolutePath());
+			final ScriptMetaData metaData = createMetaData(file, menuTitle, scriptConfig);
+			menuTitleToMetaDataMap.put(menuTitle, metaData);
 			final File parentFile = file.getParentFile();
 			if (parentFile.equals(ScriptResources.getBuiltinScriptsDir())) {
 				metaData.setPermissions(ScriptingPermissions.getPermissiveScriptingPermissions());
-//				metaData.setCacheContent(true);
 			}
 		}
 		catch (final IOException e) {
 			LogUtils.warn("problems with script " + file.getAbsolutePath(), e);
-			nameScriptMap.remove(name);
-			nameScriptMetaDataMap.remove(name);
+			menuTitleToPathMap.remove(menuTitle);
+			menuTitleToMetaDataMap.remove(menuTitle);
 		}
 	}
+
+    private String disambiguateMenuTitle(final String menuTitleOrig) {
+        String menuTitle = menuTitleOrig;
+		// add suffix if the same script exists in multiple dirs
+		for (int i = 2; menuTitleToPathMap.containsKey(menuTitle); ++i) {
+			menuTitle = menuTitleOrig + i;
+		}
+        return menuTitle;
+    }
 
     private ScriptMetaData createMetaData(final File file, final String scriptName,
                                           final Script scriptConfig) throws IOException {
@@ -320,7 +359,7 @@ class ScriptingConfiguration {
 	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
-	private String getScriptName(final File file, Script scriptConfig) {
+	private String getOrCreateMenuTitle(final File file, Script scriptConfig) {
 		if (scriptConfig != null)
 			return scriptConfig.menuTitleKey;
 		// TODO: we could add mnemonics handling here! (e.g. by reading '_' as '&')
@@ -334,28 +373,54 @@ class ScriptingConfiguration {
 		return Pattern.compile(regexp, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	}
 
-	SortedMap<String, String> getNameScriptMap() {
-		return Collections.unmodifiableSortedMap(nameScriptMap);
+	SortedMap<String, String> getMenuTitleToPathMap() {
+		return Collections.unmodifiableSortedMap(menuTitleToPathMap);
 	}
 
-	SortedMap<String, ScriptMetaData> getNameScriptMetaDataMap() {
-		return Collections.unmodifiableSortedMap(nameScriptMetaDataMap);
+	SortedMap<String, ScriptMetaData> getMenuTitleToMetaDataMap() {
+		return Collections.unmodifiableSortedMap(menuTitleToMetaDataMap);
 	}
 
 	private ArrayList<String> buildClasspath() {
-        final ResourceController resourceController = ResourceController.getResourceController();
-		final ArrayList<String> classpath = new ArrayList<String>();
-		final String classpathElements = resourceController.getProperty(ScriptResources.RESOURCES_SCRIPT_CLASSPATH);
-		if (classpathElements != null) {
-			for (String classpathElement : ConfigurationUtils.decodeListValue(classpathElements, false)) {
-				addClasspathElement(classpath, classpathElement);
-			}
-		}
+	    final ArrayList<String> classpath = new ArrayList<String>();
+        addClasspathForConfiguredEntries(classpath);
+        addClasspathForAddOns(classpath);
         return classpath;
     }
 
-    private void addClasspathElement(final ArrayList<String> classpath, String classpathElement) {
-        final File file = createFile(classpathElement);
+    private void addClasspathForAddOns(final ArrayList<String> classpath) {
+        final List<ScriptAddOnProperties> installedScriptAddOns = getInstalledScriptAddOns();
+        for (ScriptAddOnProperties scriptAddOnProperties : installedScriptAddOns) {
+            final List<String> lib = scriptAddOnProperties.getLib();
+            if (lib != null) {
+                for (String libEntry : lib) {
+                    final File dir = new File(getPrivateAddOnDirectory(scriptAddOnProperties), "lib");
+                    classpath.add(new File(dir, libEntry).getAbsolutePath());
+                }
+            }
+        }
+    }
+
+    private void addClasspathForConfiguredEntries(final ArrayList<String> classpath) {
+        for (File classpathElement : uniqueClassPathElements(ResourceController.getResourceController())) {
+            addClasspathElement(classpath, classpathElement);
+        }
+    }
+
+    private Set<File> uniqueClassPathElements(final ResourceController resourceController) {
+        final String classpathString = resourceController.getProperty(ScriptResources.RESOURCES_SCRIPT_CLASSPATH);
+        final TreeSet<File> classpathElements = new TreeSet<File>();
+        if (classpathString != null) {
+            for (String string : ConfigurationUtils.decodeListValue(classpathString, false)) {
+                classpathElements.add(createFile(string));
+            }
+        }
+        classpathElements.add(ScriptResources.getUserLibDir());
+        return classpathElements;
+    }
+
+    private void addClasspathElement(final ArrayList<String> classpath, File classpathElement) {
+        final File file = classpathElement;
         if (!file.exists()) {
             LogUtils.warn("classpath entry '" + classpathElement + "' doesn't exist. (Use " + File.pathSeparator
                     + " to separate entries.)");

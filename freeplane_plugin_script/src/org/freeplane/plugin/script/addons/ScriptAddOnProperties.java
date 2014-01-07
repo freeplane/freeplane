@@ -1,6 +1,7 @@
 package org.freeplane.plugin.script.addons;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Vector;
@@ -29,15 +30,17 @@ public class ScriptAddOnProperties extends AddOnProperties {
 	}
 
 	private List<Script> scripts;
+	private List<String> lib;
 
 	public ScriptAddOnProperties(String name) {
 		super(AddOnType.SCRIPT);
 		setName(name);
 	}
 
-	public ScriptAddOnProperties(final XMLElement addOnelement) {
-		super(AddOnType.SCRIPT, addOnelement);
-		this.scripts = parseScripts(addOnelement.getChildrenNamed("scripts"));
+	public ScriptAddOnProperties(final XMLElement addOnElement) {
+		super(AddOnType.SCRIPT, addOnElement);
+		this.scripts = parseScripts(addOnElement.getChildrenNamed("scripts"));
+        this.setLib(parseBinaries(addOnElement.getChildrenNamed("libs")));
 		validate();
 	}
 
@@ -97,6 +100,14 @@ public class ScriptAddOnProperties extends AddOnProperties {
     	return scripts;
     }
 
+    public List<String> getLib() {
+        return lib;
+    }
+
+    public void setLib(Collection<String> lib) {
+        this.lib = new ArrayList<String>(lib);
+    }
+
 	public static String getNameKey(final String name) {
         return "addons." + name;
     }
@@ -104,6 +115,7 @@ public class ScriptAddOnProperties extends AddOnProperties {
 	public XMLElement toXml() {
 		final XMLElement xmlElement = super.toXml();
 		addScriptsAsChild(xmlElement);
+        addLibAsChild(xmlElement);
 		return xmlElement;
 	}
 
@@ -123,6 +135,18 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		}
 		parent.addChild(xmlElement);
 	}
+
+    private void addLibAsChild(XMLElement parent) {
+        final XMLElement xmlElement = new XMLElement("libs");
+        if (lib != null) {
+            for (String l : lib) {
+                final XMLElement libElement = new XMLElement("lib");
+                libElement.setAttribute("name", l);
+                xmlElement.addChild(libElement);
+            }
+        }
+        parent.addChild(xmlElement);
+    }
 
 	@Override
     public boolean supportsOperation(String opName) {
