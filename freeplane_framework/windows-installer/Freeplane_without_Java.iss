@@ -87,10 +87,14 @@ Root: "HKCR"; Subkey: ".mm"; Flags: deletekey; Tasks: associate
 Root: "HKLM"; Subkey: "SOFTWARE\Classes\.mm"; Flags: deletekey; Tasks: associate
 Root: "HKCU"; Subkey: "Software\Classes\Applications\freeplane.exe"; Flags: deletekey; Tasks: associate
 Root: "HKCU"; Subkey: "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.mm"; Flags: deletekey; Tasks: associate
-Root: "HKCR"; Subkey: ".mm"; ValueType: string; ValueData: "Freeplane"; Flags: uninsdeletekey; Tasks: associate
-Root: "HKCR"; Subkey: "Freeplane"; ValueType: string; ValueData: "Freeplane mind map"; Flags: uninsdeletekey; Tasks: associate
-Root: "HKCR"; Subkey: "Freeplane\Shell\Open\Command"; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
-Root: "HKCR"; Subkey: "Freeplane\DefaultIcon"; ValueType: string; ValueData: "{app}\freeplaneIcons.dll,0"; Flags: uninsdeletevalue; Tasks: associate
+Root: "HKCR"; Subkey: ".mm"; ValueType: string; ValueData: "FreeplaneApplication"; Flags: uninsdeletekey; Tasks: associate
+Root: "HKCR"; Subkey: "freeplane"; ValueType: string; ValueData: "URL:Freeplane protocol"; Flags: uninsdeletekey; Tasks: associate
+Root: "HKCR"; Subkey: "freeplane"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekey; Tasks: associate
+Root: "HKCR"; Subkey: "freeplane\Shell\Open\Command"; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
+Root: "HKCR"; Subkey: "freeplane\DefaultIcon"; ValueType: string; ValueData: "{app}\freeplaneIcons.dll,0"; Flags: uninsdeletevalue; Tasks: associate
+Root: "HKCR"; Subkey: "FreeplaneApplication"; ValueType: string; ValueData: "Freeplane mind map"; Flags: uninsdeletekey; Tasks: associate
+Root: "HKCR"; Subkey: "FreeplaneApplication\Shell\Open\Command"; ValueType: string; ValueData: """{app}\freeplane.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
+Root: "HKCR"; Subkey: "FreeplaneApplication\DefaultIcon"; ValueType: string; ValueData: "{app}\freeplaneIcons.dll,0"; Flags: uninsdeletevalue; Tasks: associate
 
 [InstallDelete]
 Name: {app}\core; Type: filesandordirs

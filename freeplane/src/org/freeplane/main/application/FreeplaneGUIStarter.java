@@ -65,6 +65,7 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
@@ -321,7 +322,10 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				if(fileArgument.startsWith("http://")){
 					url = new URL(fileArgument);
 				}
-				else{
+                else if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
+					url = new URL(UrlManager.FILE_SCHEME + fileArgument.substring(UrlManager.FREEPLANE_SCHEME.length()));
+				}
+                else {
 					if (!FileUtils.isAbsolutePath(fileArgument)) {
 						fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 					}

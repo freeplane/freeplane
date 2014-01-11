@@ -100,6 +100,7 @@ class CommandLineParser {
     }
 
     public static CommandLineParser.Options parse(String[] args) {
+for(String arg:args) System.out.println(arg);
         CommandLineParser.Options result = new CommandLineParser.Options();
         if (args == null || args.length == 0 || !args[0].startsWith("-")) {
             result.setFilesToOpen(args);
