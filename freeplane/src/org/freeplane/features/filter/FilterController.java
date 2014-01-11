@@ -153,7 +153,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private static final ASelectableCondition NO_FILTERING = NoFilteringCondition.createCondition();
 
 	public static FilterController getController(Controller controller) {
-		return (FilterController) controller.getExtension(FilterController.class);
+		return controller.getExtension(FilterController.class);
 	}
 
 	public static FilterController getCurrentFilterController() {
@@ -183,7 +183,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final ButtonModel highlightNodes;
 	private ASelectableCondition highlightCondition;
 	private JComboBox activeFilterConditionComboBox;
-	private FilterConditionEditor quickEditor;
+	private final FilterConditionEditor quickEditor;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
@@ -204,7 +204,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		approximateMatchingButtonModel.setSelected(false);
 		caseSensitiveButtonModel = new JToggleButton.ToggleButtonModel();
 		caseSensitiveButtonModel.setSelected(false);
-		
+
 		controller.getMapViewManager().addMapSelectionListener(this);
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
@@ -216,7 +216,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 					setHighlightCondition( quickEditor.getCondition());
 				}
 			}
-			
+
 		}
 		);
 		controller.addAction(showFilterToolbar);
@@ -308,7 +308,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	private Filter createFilter(final ASelectableCondition selectedCondition) {
-			
+
 		final ASelectableCondition filterCondition;
 		if (selectedCondition == null || selectedCondition.equals(NO_FILTERING)) {
 			filterCondition = null;
@@ -348,8 +348,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JButton applyFindNextBtn = new JButton(controller.getAction("QuickFindAction.FORWARD"));
 		final JButton applyQuickFilterBtn = new JButton(controller.getAction("QuickFilterAction"));
 		final JButton applyQuickSelectBtn = new JButton(controller.getAction("QuickFindAllAction"));
-		final JToggleButton applyQuickHighlightBtn = new JAutoToggleButton(controller.getAction("QuickHighlightAction"));		
-		
+		final JToggleButton applyQuickHighlightBtn = new JAutoToggleButton(controller.getAction("QuickHighlightAction"));
+
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
 		filterToolbar.add(redoBtn);
@@ -425,7 +425,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public ButtonModel getShowAncestors() {
 		return showAncestors;
 	}
-	
+
 	public ButtonModel getShowDescendants() {
 		return showDescendants;
 	}
@@ -450,7 +450,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		if(mapViewComponent != null)
 			mapViewComponent.repaint();
 	}
-	
+
 	private void initConditions() {
 		filterConditions = new DefaultComboBoxModel();
 		addStandardConditions();
@@ -472,9 +472,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	        throws IOException {
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(pathToFilterFile)));
+			File filterFile = new File(pathToFilterFile);
+			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(filterFile)));
 			parser.setReader(reader);
-			reader.setSystemID(pathToFilterFile);
+			reader.setSystemID(filterFile.toURL().toString());
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector<XMLElement> conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {

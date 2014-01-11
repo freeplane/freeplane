@@ -66,6 +66,9 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class UrlManager implements IExtension {
+	public static final String SMB_SCHEME = "smb";
+	public static final String FREEPLANE_SCHEME = "freeplane";
+	public static final String FILE_SCHEME = "file";
 	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 	public static final String FREEPLANE_ADD_ON_FILE_EXTENSION = ".addon." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
@@ -267,7 +270,7 @@ public class UrlManager implements IExtension {
 				uri = absoluteUri;
 			}
 			//DOCEAR: mindmaps can be linked in a mindmap --> therefore project-relative-paths are possible
-			if(! asList("file", "smb").contains(uri.getScheme())) {
+			if(! asList(FILE_SCHEME, SMB_SCHEME, FREEPLANE_SCHEME).contains(urlProtocol(uri))) {
 				try {
 					uri = uri.toURL().openConnection().getURL().toURI().normalize();
 				}
@@ -279,7 +282,7 @@ public class UrlManager implements IExtension {
 			try {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+					final URL url = new URL(urlProtocol(uri), uri.getHost(), uri.getPath());
 					final ModeController modeController = Controller.getCurrentModeController();
 					modeController.getMapController().newMap(url);
 					final String ref = uri.getFragment();
@@ -303,6 +306,13 @@ public class UrlManager implements IExtension {
 			UITools.errorMessage(TextUtils.format("link_not_found", uriString));
 		}
 	}
+
+	public String urlProtocol(URI uri) {
+	    String scheme = uri.getScheme();
+	    if(FREEPLANE_SCHEME.equals(scheme))
+	    	return FILE_SCHEME;
+		return scheme;
+    }
 
 	private URI getAbsoluteUri(final URI uri) throws MalformedURLException {
 		if (uri.isAbsolute()) {
@@ -354,10 +364,10 @@ public class UrlManager implements IExtension {
 		try {
 			URLConnection urlConnection;
 			// windows drive letters are interpreted as uri schemes -> make a file from the scheme-less uri string and use this to resolve the path
-			if(Compat.isWindowsOS() && (uri.getScheme() != null && uri.getScheme().length() == 1)) {
+			if(Compat.isWindowsOS() && (urlProtocol(uri) != null && urlProtocol(uri).length() == 1)) {
 				urlConnection = (new File(uri.toString())).toURI().toURL().openConnection();
 			}
-			else if(uri.getScheme() == null && !uri.getPath().startsWith(File.separator)) {
+			else if(urlProtocol(uri) == null && !uri.getPath().startsWith(File.separator)) {
 				if(map != null) {
 					urlConnection = (new File(uri.toString())).toURI().toURL().openConnection();
 				}
@@ -374,7 +384,7 @@ public class UrlManager implements IExtension {
 			}
 			else {
 				URI absoluteUri = urlConnection.getURL().toURI().normalize();
-				if("file".equalsIgnoreCase(absoluteUri.getScheme())){
+				if(FILE_SCHEME.equalsIgnoreCase(urlProtocol(absoluteUri))){
 					return new File(absoluteUri);
 				}
 			}
@@ -405,15 +415,15 @@ public class UrlManager implements IExtension {
 			sb.append('#');
 			sb.append(fragment);
 		}
-		if (!uri.isAbsolute() || uri.isOpaque() || uri.getScheme().length()>0) {
+		if (!uri.isAbsolute() || uri.isOpaque() || urlProtocol(uri).length()>0) {
 			final URL mapUrl = map.getURL();
-			final String scheme = uri.getScheme();
+			final String scheme = urlProtocol(uri);
 			if (scheme == null || mapUrl.getProtocol().equals(scheme)) {
 				final URL url = new URL(mapUrl, sb.toString());
 				return url;
 			}
 		}
-		final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
+		final URL url = new URL(urlProtocol(uri), uri.getHost(), uri.getPort(), sb.toString());
 		return url;
 	}
 
@@ -430,15 +440,15 @@ public class UrlManager implements IExtension {
 			sb.append('#');
 			sb.append(fragment);
 		}
-		if (!uri.isAbsolute() || uri.isOpaque() || uri.getScheme().length()>0) {
+		if (!uri.isAbsolute() || uri.isOpaque() || urlProtocol(uri).length()>0) {
 			final URL baseUrl = base.toURL();
-			final String scheme = uri.getScheme();
+			final String scheme = urlProtocol(uri);
 			if (scheme == null || baseUrl.getProtocol().equals(scheme)) {
 				final URL url = new URL(baseUrl, sb.toString());
 				return url;
 			}
 		}
-		final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
+		final URL url = new URL(urlProtocol(uri), uri.getHost(), uri.getPort(), sb.toString());
 		return url;
 	}
 

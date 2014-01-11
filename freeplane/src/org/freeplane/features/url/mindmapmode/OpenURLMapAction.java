@@ -21,6 +21,7 @@ package org.freeplane.features.url.mindmapmode;
 
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
@@ -32,10 +33,11 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.UrlManager;
 
 class OpenURLMapAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -51,7 +53,7 @@ class OpenURLMapAction extends AFreeplaneAction {
 		if(urlText != null){
 			URL url;
 			try {
-				url = new URL(urlText);
+				url = url(urlText);
 				mapController.newMap(url);
 			}
 			catch (Exception ex) {
@@ -60,6 +62,15 @@ class OpenURLMapAction extends AFreeplaneAction {
 			}
 		}
 	}
+
+	public URL url(String urlText) throws MalformedURLException {
+		if(urlText.startsWith(UrlManager.FREEPLANE_SCHEME)) {
+	        String fileUrl = UrlManager.FILE_SCHEME + urlText.substring(UrlManager.FREEPLANE_SCHEME.length());
+	        return new URL(fileUrl);
+        }
+        else
+			return new URL(urlText);
+    }
 
 	@Override
 	public void afterMapChange(final Object newMap) {
