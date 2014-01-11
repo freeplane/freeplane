@@ -7,6 +7,8 @@ Use signed jar so that local jar files work with the latest java versions
 Export improvements
 Update groovy to 2.1.9
 Performance: cache compiled scripts
+Add-on jar libraries
+Install url handler for protocol "freeplane" for windows and mac 
 
 ===============================
 1.3.5
