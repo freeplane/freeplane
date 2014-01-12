@@ -90,11 +90,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 			if(viewController == null) {
 				// restore at startup:
 				loadedMapCounter++;
-				String url = "freeplane:" + uri.getPath();
-				String nodeId = uri.getFragment();
-				if(nodeId != null)
-					url = url + "#" + nodeId;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, url);				
+				System.setProperty("org.freeplane.param" + loadedMapCounter, uri.toString());				
 			} else {
 				// Direct loading
 				LinkController.getController().loadURI(uri);
