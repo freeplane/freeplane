@@ -1,7 +1,7 @@
 package org.freeplane.uispec4j.framework;
 import javax.swing.JFrame;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.freeplane.features.mode.Controller;
 import org.uispec4j.Panel;
