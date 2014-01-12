@@ -21,8 +21,7 @@ package org.freeplane.features.url.mindmapmode;
 
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 
 import javax.swing.JOptionPane;
 
@@ -30,10 +29,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapController;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.FreeplaneUriConverter;
 
 class OpenURLMapAction extends AFreeplaneAction {
 	/**
@@ -47,14 +46,13 @@ class OpenURLMapAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		Controller.getCurrentController().selectMode(MModeController.MODENAME);
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		String urlText = JOptionPane.showInputDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
 			TextUtils.getText("enter_map_url"), "http://");
 		if(urlText != null){
-			URL url;
 			try {
-				url = url(urlText);
-				mapController.newMap(url);
+				String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(urlText);
+				URI uri = new URI(fixedUri);
+				LinkController.getController().loadURI(uri);
 			}
 			catch (Exception ex) {
 				UITools.errorMessage(TextUtils.format("url_open_error", urlText));
@@ -62,15 +60,6 @@ class OpenURLMapAction extends AFreeplaneAction {
 			}
 		}
 	}
-
-	public URL url(String urlText) throws MalformedURLException {
-		if(urlText.startsWith(UrlManager.FREEPLANE_SCHEME)) {
-	        String fileUrl = UrlManager.FILE_SCHEME + urlText.substring(UrlManager.FREEPLANE_SCHEME.length());
-	        return new URL(fileUrl);
-        }
-        else
-			return new URL(urlText);
-    }
 
 	@Override
 	public void afterMapChange(final Object newMap) {

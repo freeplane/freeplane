@@ -9,7 +9,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.FreeplaneUriConverter;
 
 public class CopyNodeURIAction extends AFreeplaneAction {
 	public CopyNodeURIAction() {
@@ -20,7 +20,6 @@ public class CopyNodeURIAction extends AFreeplaneAction {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel node = controller.getSelection().getSelected();
@@ -38,6 +37,7 @@ public class CopyNodeURIAction extends AFreeplaneAction {
 
 	public String uri(final NodeModel node, File mindmapFile) {
 	    final String fileBasedUri = mindmapFile.toURI().toString() + '#' + node.createID();
-		return UrlManager.FREEPLANE_SCHEME + fileBasedUri.substring(UrlManager.FILE_SCHEME.length());
+		final FreeplaneUriConverter freeplaneUriConverter = new FreeplaneUriConverter();
+		return freeplaneUriConverter.freeplaneUriForFile(fileBasedUri);
     }
 }

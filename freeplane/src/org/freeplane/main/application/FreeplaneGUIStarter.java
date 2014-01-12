@@ -24,6 +24,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
@@ -65,6 +66,7 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.url.FreeplaneUriConverter;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
@@ -252,7 +254,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
 			loadLastMaps();
 		}
-		if (loadMaps(controller, args)) {
+		loadMaps(controller, args);
+		if(controller.getMap() != null) {
 			return;
 		}
 		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
@@ -313,40 +316,36 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     }
 
 
-    private boolean loadMaps(final Controller controller, final String[] args) {
-        boolean fileLoaded = false;
+    private void loadMaps(final Controller controller, final String[] args) {
+		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			try {
 				final URL url;
-				if(fileArgument.startsWith("http://")){
-					url = new URL(fileArgument);
+				if(fileArgument.startsWith("http://")) {
+					LinkController.getController().loadURI(new URI(fileArgument));
 				}
                 else if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
-					url = new URL(UrlManager.FILE_SCHEME + fileArgument.substring(UrlManager.FREEPLANE_SCHEME.length()));
+					String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
+					LinkController.getController().loadURI(new URI(fixedUri));
 				}
                 else {
 					if (!FileUtils.isAbsolutePath(fileArgument)) {
 						fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 					}
 					url = Compat.fileToUrl(new File(fileArgument));
-				}
-				if (url.getPath().toLowerCase().endsWith(
-				    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-    				if (!fileLoaded) {
-    					controller.selectMode(MModeController.MODENAME);
-    				}
-    				final MModeController modeController = (MModeController) controller.getModeController();
-    				MapController mapController = modeController.getMapController();
-    				mapController.openMapSelectReferencedNode(url);
-    				fileLoaded = true;
+					if (url.getPath().toLowerCase().endsWith(
+						org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+						final MModeController modeController = (MModeController) controller.getModeController();
+						MapController mapController = modeController.getMapController();
+						mapController.openMapSelectReferencedNode(url);
+					}
 				}
 			}
 			catch (final Exception ex) {
 				System.err.println("File " + fileArgument + " not loaded");
 			}
 		}
-        return fileLoaded;
     }
 
 	/**
