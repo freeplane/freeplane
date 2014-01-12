@@ -96,10 +96,23 @@
 <node TEXT="Latex" ID="ID_1783515461" CREATED="1370289419958" MODIFIED="1375536911261">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="latex"/>
-<node TEXT="Common Macros" ID="ID_11961549" CREATED="1370289419960" MODIFIED="1375536896131">
+<node TEXT="Common Macros" ID="ID_11961549" CREATED="1370289419960" MODIFIED="1389550054992">
+<attribute_layout NAME_WIDTH="38" VALUE_WIDTH="85"/>
 <attribute NAME="type" VALUE="textbox"/>
 <attribute NAME="name" VALUE="latex_macros"/>
 <attribute NAME="lines" VALUE="5" OBJECT="org.freeplane.features.format.FormattedNumber|5"/>
+</node>
+<node TEXT="LaTeX Editor Font" ID="ID_121453512" CREATED="1370289419960" MODIFIED="1389550028152">
+<attribute_layout NAME_WIDTH="38" VALUE_WIDTH="107"/>
+<attribute NAME="type" VALUE="font"/>
+<attribute NAME="name" VALUE="latex_editor_font"/>
+</node>
+<node TEXT="LaTeX Editor Font Size" ID="ID_302068721" CREATED="1370289419960" MODIFIED="1389552331205">
+<attribute_layout NAME_WIDTH="38" VALUE_WIDTH="136"/>
+<attribute NAME="type" VALUE="number"/>
+<attribute NAME="name" VALUE="latex_editor_font_size"/>
+<attribute NAME="min" VALUE="4" OBJECT="org.freeplane.features.format.FormattedNumber|4"/>
+<attribute NAME="max" VALUE="216" OBJECT="org.freeplane.features.format.FormattedNumber|216"/>
 </node>
 </node>
 </node>

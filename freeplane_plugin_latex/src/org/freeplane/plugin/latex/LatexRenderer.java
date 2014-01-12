@@ -1,11 +1,13 @@
 package org.freeplane.plugin.latex;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Icon;
 import javax.swing.JEditorPane;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -25,6 +27,8 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 
 public class LatexRenderer extends AbstractContentTransformer implements IEditBaseCreator {
 
+	private static final String LATEX_EDITOR_FONT_SIZE = "latex_editor_font_size";
+	private static final String LATEX_EDITOR_FONT = "latex_editor_font";
 	private static final String LATEX = "\\latex";
 
 	public LatexRenderer() {
@@ -88,6 +92,11 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			final EditNodeDialog editNodeDialog = new LatexEditor(node, latexText, firstKeyEvent, editControl, false, textEditor);
 			editNodeDialog.setTitle(TextUtils.getText("latex_editor"));
 			textEditor.setContentType("text/latex");
+
+			final String fontName = ResourceController.getResourceController().getProperty(LATEX_EDITOR_FONT);
+			final int fontSize = ResourceController.getResourceController().getIntProperty(LATEX_EDITOR_FONT_SIZE);
+			textEditor.setFont(new Font(fontName, Font.PLAIN, fontSize));
+
 			return editNodeDialog;
 		}
 		return null;
