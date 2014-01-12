@@ -123,10 +123,10 @@ public class ClipboardController implements IExtension {
 		final int size = source.size();
 		final Vector<NodeModel> target = new Vector<NodeModel>(size);
 		target.setSize(size);
-		int i = size - 1;
+		int i = 0;
 		for (NodeModel node : source) {
 			target.set(i, new SingleCopySource(node));
-			i--;
+			i++;
 		}
 		return copy(target, false);
 	}
