@@ -89,7 +89,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		final List<NodeModel> children = parentNode.getChildren();
 		int counter = 1;
 		for (NodeModel child : children) {
-			if(child.equals(node))
+			if(child.getID().equals(node.getID()))
 				break;
 			if(textController.getNodeNumbering(child))
 				counter++;
