@@ -35,6 +35,8 @@ public class FreeplaneUriConverter{
 	private static final String ENCODED_SPACE = "/%20";
 	private static final String ENCODED_FREEPLANE_URI_PREFIX = FREEPLANE_SCHEME + ":" + ENCODED_SPACE;
 	private static final String INTERNET_EXPLORER_FREEPLANE_URI_PREFIX = FREEPLANE_SCHEME + ":" + "/ ";
+	private static final String MS_OFFICE_FREEPLANE_URI_PREFIX = FREEPLANE_SCHEME + ":" + "// ";
+	private static final String[] MICROSOFT_URI_PREFIXES = new String[] {INTERNET_EXPLORER_FREEPLANE_URI_PREFIX, MS_OFFICE_FREEPLANE_URI_PREFIX};
 
 	public String freeplaneUriForFile(final String fileBasedUri) {
 		return ENCODED_FREEPLANE_URI_PREFIX + fileBasedUri.substring(UrlManager.FILE_SCHEME.length() + 1);
@@ -50,23 +52,23 @@ public class FreeplaneUriConverter{
     }
 
 	public String fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(String uriCandidate) {
-		if(uriCandidate.startsWith(INTERNET_EXPLORER_FREEPLANE_URI_PREFIX)){
-			int referenceStart = uriCandidate.indexOf('#');
-			if(referenceStart == -1)
-				referenceStart = uriCandidate.length();
-			URI uri;
-            try {
-	            String path = uriCandidate.substring(INTERNET_EXPLORER_FREEPLANE_URI_PREFIX.length(), referenceStart);
-				uri = new URI(FREEPLANE_SCHEME, path, null);
-	            String encodedPath = uri.getRawPath();
-				return ENCODED_FREEPLANE_URI_PREFIX + encodedPath + uriCandidate.substring(referenceStart);
-            }
-            catch (URISyntaxException e) {
-            	return uriCandidate;
-            }
-		}
-		else
-			return uriCandidate;
+		for (String microsoftPrefix : MICROSOFT_URI_PREFIXES)
+			if(uriCandidate.startsWith(microsoftPrefix)){
+				int referenceStart = uriCandidate.indexOf('#');
+				if(referenceStart == -1)
+					referenceStart = uriCandidate.length();
+				URI uri;
+				try {
+					String path = uriCandidate.substring(microsoftPrefix.length(), referenceStart);
+					uri = new URI(FREEPLANE_SCHEME, path, null);
+					String encodedPath = uri.getRawPath();
+					return ENCODED_FREEPLANE_URI_PREFIX + encodedPath + uriCandidate.substring(referenceStart);
+				}
+				catch (URISyntaxException e) {
+					return uriCandidate;
+				}
+			}
+		return uriCandidate;
 
     }
 
