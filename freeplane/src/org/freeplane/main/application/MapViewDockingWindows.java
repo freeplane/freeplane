@@ -243,13 +243,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			try {
 				loadingLayoutFromObjectInpusStream = true;
 				rootWindow.read(new ObjectInputStream(byteStream));
-				selectMapViewLater();
 			}
 			catch (Exception e) {
 				LogUtils.severe(e);
 				try {
 	                rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(emptyConfigurations)));
-	                selectMapViewLater();
                 }
                 catch (IOException e1) {
                 }
@@ -261,21 +259,12 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
 	}
 
-	private void selectMapViewLater() {
+	public void selectMapViewLater(final MapView mapView) {
 		Timer timer = new Timer(40, new ActionListener() {
-			MapView mapView = null;
 			int retryCount = 5;
 		    public void actionPerformed(ActionEvent e) {
-		    	if(mapView == null){
-		    		for(Component mapView : mapViews){
-		    			if(mapView.isShowing()){
-		    				this.mapView = (MapView) mapView;
-		    				break;
-		    			}
-		    		}
-		    	}
 
-		    	if(mapView != null){
+		    	if(mapView.isShowing()){
 		    		mapView.select();
 		    		mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
 		    	}
