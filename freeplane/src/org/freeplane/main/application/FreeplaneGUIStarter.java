@@ -293,8 +293,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    final boolean loadLastMaps = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAPS);
 	    if(loadLastMaps)
 	    	viewController.openMapsOnStart();
-	    else if(loadLastMap)
-	    	applicationResourceController.getLastOpenedList().openMapsOnStart();
+	    if(loadLastMaps || loadLastMap)
+	    	applicationResourceController.getLastOpenedList().openLastMapOnStart();
     }
 
 	public void loadMapsLater(final String[] args){
