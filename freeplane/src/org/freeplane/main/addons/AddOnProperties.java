@@ -79,7 +79,7 @@ public class AddOnProperties {
 		this.setTranslations(parseTranslations(addOnElement.getChildrenNamed("translations")));
 		this.setPreferencesXml(getContentOfFirstElement(addOnElement.getChildrenNamed("preferences.xml")));
 		this.setDefaultProperties(parseAttributesToProperties(addOnElement.getChildrenNamed("default.properties")));
-		this.setImages(parseImages(addOnElement.getChildrenNamed("images")));
+		this.setImages(parseBinaries(addOnElement.getChildrenNamed("images")));
 		this.setDeinstallationRules(parseDeinstallationRules(addOnElement.getChildrenNamed("deinstall")));
 		validate();
 	}
@@ -127,7 +127,7 @@ public class AddOnProperties {
 		return result;
 	}
 
-    private List<String> parseImages(Vector<XMLElement> xmlElements) {
+    protected List<String> parseBinaries(Vector<XMLElement> xmlElements) {
         final List<String> result = new ArrayList<String>();
         if (xmlElements != null && !xmlElements.isEmpty()) {
             for (XMLElement xmlElement : xmlElements.get(0).getChildren()) {

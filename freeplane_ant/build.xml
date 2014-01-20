@@ -2,6 +2,7 @@
   <property name="src" location="src" />
   <property name="lib" location="lib" />
   <property name="bin" location="bin" />
+  <property name="template" location="template" />
   <property name="dist" location="dist" />
   <property name="debug" value="on" />
   <property name="java_source_version" value="1.5" />
@@ -21,6 +22,7 @@
         <exclude name="**/*.jar" />
         <exclude name="**/*Test.class" />
       </fileset>
+      <fileset dir="${template}"/>
     </jar>
   </target>
 

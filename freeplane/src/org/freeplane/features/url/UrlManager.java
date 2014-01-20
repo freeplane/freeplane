@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.url;
 
+import static java.util.Arrays.asList;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.HeadlessException;
@@ -64,6 +66,9 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class UrlManager implements IExtension {
+	public static final String SMB_SCHEME = "smb";
+	public static final String FREEPLANE_SCHEME = "freeplane";
+	public static final String FILE_SCHEME = "file";
 	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 	public static final String FREEPLANE_ADD_ON_FILE_EXTENSION = ".addon." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
@@ -265,7 +270,7 @@ public class UrlManager implements IExtension {
 				uri = absoluteUri;
 			}
 			//DOCEAR: mindmaps can be linked in a mindmap --> therefore project-relative-paths are possible
-			if(!"file".equals(uri.getScheme())) {
+			if(! asList(FILE_SCHEME, SMB_SCHEME, FREEPLANE_SCHEME).contains(uri.getScheme())) {
 				try {
 					uri = uri.toURL().openConnection().getURL().toURI().normalize();
 				}
@@ -277,7 +282,8 @@ public class UrlManager implements IExtension {
 			try {
 				if ((extension != null)
 				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+					FreeplaneUriConverter freeplaneUriConverter = new FreeplaneUriConverter();
+					final URL url = freeplaneUriConverter.freeplaneUrl(uri);
 					final ModeController modeController = Controller.getCurrentModeController();
 					modeController.getMapController().newMap(url);
 					final String ref = uri.getFragment();

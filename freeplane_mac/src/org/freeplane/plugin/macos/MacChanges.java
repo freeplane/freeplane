@@ -21,20 +21,23 @@ package org.freeplane.plugin.macos;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.net.URI;
+
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 
-import com.apple.eawt.Application;
-import com.apple.eawt.ApplicationAdapter;
-import com.apple.eawt.ApplicationEvent;
+import com.apple.eawt.*;
+import com.apple.eawt.AppEvent.AboutEvent;
+import com.apple.eawt.AppEvent.OpenFilesEvent;
+import com.apple.eawt.AppEvent.OpenURIEvent;
+import com.apple.eawt.AppEvent.PreferencesEvent;
+import com.apple.eawt.AppEvent.QuitEvent;
 
-/** This plugin changes some things for mac users.
- * @author foltin
- */
-public class MacChanges extends ApplicationAdapter  {
+public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesHandler, OpenURIHandler, QuitHandler{
 
 	private static Application fmMacApplication;
 
@@ -51,10 +54,10 @@ public class MacChanges extends ApplicationAdapter  {
 		if(fmMacApplication==null){
 			// if a handleOpen comes here, directly, we know that FM is currently starting.
 			fmMacApplication = Application.getApplication();
-			fmMacApplication.addApplicationListener(this);
-			fmMacApplication.addPreferencesMenuItem();
-			fmMacApplication.addAboutMenuItem();
-			fmMacApplication.setEnabledPreferencesMenu(true);
+			fmMacApplication.setAboutHandler(this);
+			fmMacApplication.setPreferencesHandler(this);
+			fmMacApplication.setOpenFileHandler(this);
+			fmMacApplication.setOpenURIHandler(this);
 			// wait until handleOpenFile finishes if it was called in event thread
 			try {
 				EventQueue.invokeAndWait(new Runnable() {
@@ -68,40 +71,68 @@ public class MacChanges extends ApplicationAdapter  {
 	}
 
 
-	public void handleQuit(ApplicationEvent event) {
+	private MModeController getModeController() {
+		return (MModeController) controller.getModeController(MModeController.MODENAME);
+	}
+	
+	@Override
+	public void handleQuitRequestWith(QuitEvent event, QuitResponse response) {
 		getModeController().getController().quit();
-		event.setHandled(false);
+		response.cancelQuit();
 	}
 
-	public void handleAbout(ApplicationEvent event) {
-		getModeController().getController().getAction("AboutAction").actionPerformed(null);
-		event.setHandled(true);
-	}
-
-
-	public void handleOpenFile(final ApplicationEvent event) {
+	@Override
+	public void openURI(OpenURIEvent event) {
+		URI uri = event.getURI();
+		
 		try {
 			ViewController viewController = controller.getViewController();
 			if(viewController == null) {
 				// restore at startup:
 				loadedMapCounter++;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, event.getFilename());				
+				System.setProperty("org.freeplane.param" + loadedMapCounter, uri.toString());				
 			} else {
 				// Direct loading
-				getModeController().getMapController().newMap(Compat.fileToUrl(new File(event.getFilename())));
+				LinkController.getController().loadURI(uri);
 			}
-			event.setHandled(true);
 		} catch (Exception e) {
 			LogUtils.warn(e);
 		}
 	}
-	
-	public void handlePreferences(ApplicationEvent event) {
+
+	@Override
+	public void handlePreferences(PreferencesEvent event) {
 		getModeController().getAction("PropertyAction").actionPerformed(null);
-		event.setHandled(true);
+		
 	}
 
-	private MModeController getModeController() {
-		return (MModeController) controller.getModeController(MModeController.MODENAME);
+	@Override
+	public void openFiles(OpenFilesEvent event) {
+		for(File file : event.getFiles()){
+			String filePath = file.getPath();
+			openFile(filePath);
+		}
+	}
+
+	private void openFile(String filePath) {
+		try {
+			ViewController viewController = controller.getViewController();
+			if(viewController == null) {
+				// restore at startup:
+				loadedMapCounter++;
+				System.setProperty("org.freeplane.param" + loadedMapCounter, filePath);				
+			} else {
+				// Direct loading
+				getModeController().getMapController().newMap(Compat.fileToUrl(new File(filePath)));
+			}
+		} catch (Exception e) {
+			LogUtils.warn(e);
+		}
+	}
+
+	@Override
+	public void handleAbout(AboutEvent event) {
+		getModeController().getController().getAction("AboutAction").actionPerformed(null);
+		
 	}
 }

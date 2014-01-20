@@ -51,7 +51,7 @@
 	  <condition property="tag.release" value="preview-${freeplane_version}${minor_suffix}">
 	    <equals arg1="${freeplane_version_status}" arg2="alpha"/>
 	  </condition>
-	  
+
 	  <echo>Press enter to tag '${tag.release}'</echo>
 	  <input/>
 
@@ -64,4 +64,7 @@
 	  </exec>
 	</target>
 
+	<target name="create-plugin">
+		<ant antfile="freeplane_framework/ant/build.xml"  target="create-plugin" inheritAll="false" />
+	</target>
 </project>

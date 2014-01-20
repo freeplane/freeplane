@@ -79,24 +79,28 @@ class ScriptingRegistration {
 			mOriginalScript = pScript;
 		}
 
-		public int addNewScript() {
+		@Override
+        public int addNewScript() {
 			return 0;
 		}
 
-		public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
+		@Override
+        public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
 			final String marshalled = ResourceController.getResourceController().getProperty(
 			    pWindow_preference_storage_property);
 			return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled, pPanel);
 		}
 
-		public void endDialog(final boolean pIsCanceled) {
+		@Override
+        public void endDialog(final boolean pIsCanceled) {
 			if (pIsCanceled) {
 				mScript = mOriginalScript;
 			}
 		}
 
-		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IFreeplaneScriptErrorHandler pErrorHandler) {
+		@Override
+        public Object executeScript(final int pIndex, final PrintStream pOutStream, final IFreeplaneScriptErrorHandler pErrorHandler) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			// the script is completely in the hand of the user -> no security issues.
 			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getPermissiveScriptingPermissions();
@@ -104,7 +108,8 @@ class ScriptingRegistration {
 			    pErrorHandler, pOutStream, null, restrictedPermissions);
 		}
 
-		public int getAmountOfScripts() {
+		@Override
+        public int getAmountOfScripts() {
 			return 1;
 		}
 
@@ -112,19 +117,23 @@ class ScriptingRegistration {
 			return mScript;
 		}
 
-		public ScriptHolder getScript(final int pIndex) {
+		@Override
+        public ScriptHolder getScript(final int pIndex) {
 			return new ScriptHolder("Script", mScript);
 		}
 
-		public boolean isDirty() {
+		@Override
+        public boolean isDirty() {
 			return !StringUtils.equals(mScript, mOriginalScript);
 		}
 
-		public void setScript(final int pIndex, final ScriptHolder pScript) {
+		@Override
+        public void setScript(final int pIndex, final ScriptHolder pScript) {
 			mScript = pScript.getScript();
 		}
 
-		public void storeDialogPositions(final ScriptEditorPanel pPanel,
+		@Override
+        public void storeDialogPositions(final ScriptEditorPanel pPanel,
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
 			pStorage.storeDialogPositions(pPanel, pWindow_preference_storage_property);
@@ -142,7 +151,8 @@ class ScriptingRegistration {
 		if (preferences == null)
 			throw new RuntimeException("cannot open preferences");
 		Controller.getCurrentController().addOptionValidator(new IValidator() {
-			public ValidationResult validate(Properties properties) {
+			@Override
+            public ValidationResult validate(Properties properties) {
 				final ValidationResult result = new ValidationResult();
 				final String readAccessString = properties
 				    .getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
@@ -171,14 +181,16 @@ class ScriptingRegistration {
 
 	private void register(ModeController modeController) {
 		modeController.addExtension(IScriptEditorStarter.class, new IScriptEditorStarter() {
-			public String startEditor(final String pScriptInput) {
+			@Override
+            public String startEditor(final String pScriptInput) {
 				final ScriptModel scriptModel = new ScriptModel(pScriptInput);
 				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(scriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return scriptModel.getScript();
 			}
 
-			public ComboBoxEditor createComboBoxEditor(Dimension minimumSize) {
+			@Override
+            public ComboBoxEditor createComboBoxEditor(Dimension minimumSize) {
 	            final ScriptComboBoxEditor scriptComboBoxEditor = new ScriptComboBoxEditor();
 	            if(minimumSize != null)
 	            	scriptComboBoxEditor.setMinimumSize(minimumSize);
@@ -186,7 +198,8 @@ class ScriptingRegistration {
             }
 		});
 		modeController.addExtension(IScriptStarter.class, new IScriptStarter() {
-			public void executeScript(NodeModel node, String script) {
+			@Override
+            public void executeScript(NodeModel node, String script) {
 				ScriptingEngine.executeScript(node, script);
 			}
 		});
@@ -201,7 +214,8 @@ class ScriptingRegistration {
 			final ManageAddOnsAction manageAddOnsAction = new ManageAddOnsAction();
 			modeController.addAction(manageAddOnsAction);
 			modeController.addExtension(AddOnInstaller.class, new AddOnInstaller() {
-				public void install(final URL url) {
+				@Override
+                public void install(final URL url) {
 					final ManageAddOnsDialog dialog = manageAddOnsAction.getDialog();
 					dialog.install(url);
 				}
@@ -209,20 +223,23 @@ class ScriptingRegistration {
 			final ScriptingConfiguration configuration = new ScriptingConfiguration();
 			ScriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 			modeController.addMenuContributor(new IMenuContributor() {
-				public void updateMenus(ModeController modeController, MenuBuilder builder) {
+				@Override
+                public void updateMenus(ModeController modeController, MenuBuilder builder) {
 					registerScripts(menuBuilder, configuration);
 				}
 			});
 			createUserScriptsDirectory();
 			//TODO - impl. ribbon contribution
+			createUserLibDirectory();
 		}
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, 
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10,
 			new ScriptConditionController());
 	}
 
     private void registerScriptAddOns() {
 		File[] addonXmlFiles = AddOnsController.getController().getAddOnsDir().listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
+			@Override
+            public boolean accept(File dir, String name) {
 				return name.endsWith(".script.xml");
 			}
 		});
@@ -247,10 +264,18 @@ class ScriptingRegistration {
 	}
 
 	private void createUserScriptsDirectory() {
-		final File scriptDir = ScriptResources.getUserScriptDir();
+		final File scriptDir = ScriptResources.getUserScriptsDir();
 		if (!scriptDir.exists()) {
 			LogUtils.info("creating user scripts directory " + scriptDir);
 			scriptDir.mkdirs();
+		}
+	}
+
+	private void createUserLibDirectory() {
+		final File libDir = ScriptResources.getUserLibDir();
+		if (!libDir.exists()) {
+			LogUtils.info("creating user lib directory " + libDir);
+			libDir.mkdirs();
 		}
 	}
 
@@ -260,14 +285,14 @@ class ScriptingRegistration {
 			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
 			addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
 			registeredLocations.add(scriptsLocation);
-			if (configuration.getNameScriptMap().isEmpty()) {
+			if (configuration.getMenuTitleToPathMap().isEmpty()) {
 				final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
 				        + "</em></body></html>";
 				menuBuilder.addElement(scriptsLocation, new JMenuItem(message), 0);
 			}
-			for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+			for (final Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 				final String scriptName = entry.getKey();
-				final ScriptMetaData metaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
 				// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 				// that one script is used in multiple modes by the same user
 				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
