@@ -21,6 +21,7 @@ package org.freeplane.plugin.script;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -78,6 +80,11 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 		scrollPane.setMinimumSize(minimumSize);
 		textEditor.setContentType("text/groovy");
+
+		final String fontName = ResourceController.getResourceController().getProperty(ScriptEditorPanel.GROOVY_EDITOR_FONT);
+		final int fontSize = ResourceController.getResourceController().getIntProperty(ScriptEditorPanel.GROOVY_EDITOR_FONT_SIZE);
+		textEditor.setFont(new Font(fontName, Font.PLAIN, fontSize));
+
 		textEditor.setText(script);
 		if(selectAll){
 			textEditor.selectAll();
