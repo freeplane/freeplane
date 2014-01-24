@@ -1,7 +1,9 @@
 package org.freeplane.plugin.latex;
 
+import java.net.URL;
 import java.util.Hashtable;
 
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -10,6 +12,9 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
+
+	private static final String PREFERENCES_RESOURCE = "preferences.xml";
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
@@ -26,7 +31,17 @@ public class Activator implements BundleActivator {
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(final ModeController modeController) {
 				    new LatexRegistration();
+				    addPreferencesToOptionPanel();
 			    }
+
+				private void addPreferencesToOptionPanel() {
+					final URL preferences = this.getClass().getResource(PREFERENCES_RESOURCE);
+					if (preferences == null)
+						throw new RuntimeException("cannot open preferences");
+					final Controller controller = Controller.getCurrentController();
+					MModeController modeController = (MModeController) controller.getModeController();
+					modeController.getOptionPanelBuilder().load(preferences);
+				}
 		    }, props);
 	}
 

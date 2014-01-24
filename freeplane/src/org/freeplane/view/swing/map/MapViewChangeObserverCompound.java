@@ -19,6 +19,9 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.EventQueue;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.util.HashSet;
 
 import org.freeplane.features.map.IMapSelectionListener;
@@ -78,10 +81,43 @@ class MapViewChangeObserverCompound {
 	}
 
 	void mapViewCreated(final MapView mapView) {
-        for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
-			observer.afterViewCreated(mapView);
+		if(! mapView.isShowing())
+		{
+			fireMapViewCreatedAfterItIsDisplayed(mapView);
+		}
+		else if (!mapView.isLayoutCompleted()) {
+			fireMapViewCreatedLater(mapView);
+		}
+		else {
+			fireMapViewCreated(mapView);
 		}
 	}
+
+	private void fireMapViewCreatedLater(final MapView view) {
+	    EventQueue.invokeLater(new Runnable() {
+	    	public void run() {
+	    		mapViewCreated(view);
+	    	}
+	    });
+    }
+
+	private void fireMapViewCreatedAfterItIsDisplayed(final MapView view) {
+		HierarchyListener retryEventListener = new HierarchyListener() {
+			public void hierarchyChanged(HierarchyEvent e) {
+				if (view.isShowing()) {
+					view.removeHierarchyListener(this);
+					mapViewCreated(view);
+				}
+			}
+		};
+		view.addHierarchyListener(retryEventListener);
+	}
+
+	private void fireMapViewCreated(final MapView mapView) {
+	    for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
+			observer.afterViewCreated(mapView);
+		}
+    }
 
 	void removeListener(final IMapSelectionListener listener) {
 		mapListeners.remove(listener);

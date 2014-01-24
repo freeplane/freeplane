@@ -105,8 +105,17 @@ output_debug_info() {
 ########## START MAIN PART #############################################
 
 #--------- Put the environment together --------------------------------
+__move_old_userfpdir_to_XDG_CONFIG_HOME() {
+    if [ -d "$old_userfpdir/1.3.x" -a ! -d "$userfpdir" ] ; then
+    	mkdir "$userfpdir"
+		mv "$old_userfpdir/1.3.x" "$userfpdir/1.3.x"
+		ln -s "$userfpdir/1.3.x" "$old_userfpdir/1.3.x"
+    fi
+}
 
-userfpdir="${HOME}/.freeplane"
+old_userfpdir="${HOME}/.freeplane"
+userfpdir="${XDG_CONFIG_HOME:-$HOME/.config}/freeplane"
+__move_old_userfpdir_to_XDG_CONFIG_HOME
 _source /etc/freeplane/freeplanerc
 _source "${userfpdir}/freeplanerc"
 
@@ -153,8 +162,12 @@ fi
 
 #--------- Call (at last) Freeplane -------------------------------------
 if [ "${JAVA_TYPE}" != "sun" ]; then
-	# non-Sun environments don't work currently but we try anyway, who knows.
-	JAVA_OPTS="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_OPTS"
+  # OpenJDK(7) fixes (don't use OpenJDK6!!)
+  JAVA_OPTS="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_OPTS"
+
+  # this sometimes helps with visual mindmap distortions
+  # (but it can also create trouble so it's disabled by default):
+  #JAVA_OPTS="-Dsun.java2d.xrender=True $JAVA_OPTS"
 fi
 
 _debug "Calling: "\
@@ -163,10 +176,12 @@ _debug "Calling: "\
  "-Dorg.freeplane.param2=$2"\
  "-Dorg.freeplane.param3=$3"\
  "-Dorg.freeplane.param4=$4"\
- "-Dorg.freeplane.param4=$5"\
- "-Dorg.freeplane.param4=$6"\
- "-Dorg.freeplane.param4=$7"\
- "-Dorg.freeplane.param4=$8"\
+ "-Dorg.freeplane.param5=$5"\
+ "-Dorg.freeplane.param6=$6"\
+ "-Dorg.freeplane.param7=$7"\
+ "-Dorg.freeplane.param8=$8"\
+ "-Dorg.freeplane.userfpdir=$userfpdir"\
+ "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
@@ -183,10 +198,12 @@ _debug "Calling: "\
  "-Dorg.freeplane.param2=$2"\
  "-Dorg.freeplane.param3=$3"\
  "-Dorg.freeplane.param4=$4"\
- "-Dorg.freeplane.param4=$5"\
- "-Dorg.freeplane.param4=$6"\
- "-Dorg.freeplane.param4=$7"\
- "-Dorg.freeplane.param4=$8"\
+ "-Dorg.freeplane.param5=$5"\
+ "-Dorg.freeplane.param6=$6"\
+ "-Dorg.freeplane.param7=$7"\
+ "-Dorg.freeplane.param8=$8"\
+ "-Dorg.freeplane.userfpdir=$userfpdir"\
+ "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
  "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\

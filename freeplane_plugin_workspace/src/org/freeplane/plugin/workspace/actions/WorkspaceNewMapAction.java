@@ -33,7 +33,7 @@ public class WorkspaceNewMapAction extends AFreeplaneAction {
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	/**
-	 * 
+	 *
 	 */
 	public WorkspaceNewMapAction() {
 		super(KEY);
@@ -45,7 +45,7 @@ public class WorkspaceNewMapAction extends AFreeplaneAction {
 	public static MapModel createNewMap() {
 		return createNewMap(null, null, false);
 	}
-	
+
 	public static MapModel createNewMap(final URI uri, String name, boolean save) {
 		if (uri == null) {
 			save = false;
@@ -66,11 +66,11 @@ public class WorkspaceNewMapAction extends AFreeplaneAction {
 
 		if (name != null) {
 			//WORKSPACE - fixme: the updates do not show in mapview (ask dimitry)
-			//String oldName = map.getRootNode().getText(); 
+			//String oldName = map.getRootNode().getText();
 			map.getRootNode().setText(name);
 			Controller.getCurrentController().getMapViewManager().getMapViewComponent().repaint();
 		}
-		
+
 		if (save) {
 			mapIO.save(map, f);
 		}
@@ -84,8 +84,8 @@ public class WorkspaceNewMapAction extends AFreeplaneAction {
 			}
 			Controller.getCurrentModeController().getMapController().setSaved(map, false);
 		}
-		
-			
+
+
 		//WORKSPACE - todo: remove the following when the "fixme" above has been fixed
 		if(f != null) {
 			Controller.getCurrentController().close(true);
@@ -94,7 +94,7 @@ public class WorkspaceNewMapAction extends AFreeplaneAction {
 			} catch (Exception e) {
 				LogUtils.severe(e);
 			}
-		}		
+		}
 		return map;
 	}
 
@@ -110,10 +110,15 @@ public class WorkspaceNewMapAction extends AFreeplaneAction {
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 	/**
-	 * 
+	 *
 	 */
-	public void actionPerformed(ActionEvent e) {
+	@Override
+    public void actionPerformed(ActionEvent e) {
 		createNewMap();
-		
+
+	}
+
+	@Override
+	public void afterMapChange(final Object newMap) {
 	}
 }

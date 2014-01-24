@@ -21,6 +21,7 @@ package org.freeplane.features.encrypt.mindmapmode;
 
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.encrypt.EncryptionController;
+import org.freeplane.features.encrypt.PasswordStrategy;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -44,13 +45,13 @@ public class MEncryptionController extends EncryptionController {
 		modeController.addAction(encryptedMapAction);
 	}
 	
-	public void removeEncryption(final NodeModel node) {
+	public void removeEncryption(final NodeModel node, final PasswordStrategy passwordStrategy) {
 		final EncryptionModel encryptedMindMapNode = EncryptionModel.getModel(node);
 		if (encryptedMindMapNode == null) {
 			return;
 		}
 		if(! encryptedMindMapNode.isAccessible())
-			toggleCryptState(node);
+			toggleCryptState(node, passwordStrategy);
 		if(! encryptedMindMapNode.isAccessible())
 			return;
 		final IActor actor = new IActor() {

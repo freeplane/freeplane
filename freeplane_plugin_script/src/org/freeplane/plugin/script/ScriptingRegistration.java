@@ -64,7 +64,6 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
-import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 import org.freeplane.plugin.script.addons.ManageAddOnsAction;
 import org.freeplane.plugin.script.addons.ManageAddOnsDialog;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
@@ -97,7 +96,7 @@ class ScriptingRegistration {
 			}
 		}
 
-		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
+		public Object executeScript(final int pIndex, final PrintStream pOutStream, final IFreeplaneScriptErrorHandler pErrorHandler) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			// the script is completely in the hand of the user -> no security issues.
 			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getPermissiveScriptingPermissions();
@@ -149,7 +148,7 @@ class ScriptingRegistration {
 				    .getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
 				final String writeAccessString = properties
 				.getProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
-				final String classpath = properties.getProperty(ScriptingEngine.RESOURCES_SCRIPT_CLASSPATH);
+				final String classpath = properties.getProperty(ScriptResources.RESOURCES_SCRIPT_CLASSPATH);
 				final boolean readAccess = readAccessString != null && Boolean.parseBoolean(readAccessString);
 				final boolean writeAccess = writeAccessString != null && Boolean.parseBoolean(writeAccessString);
 				final boolean classpathIsSet = classpath != null && classpath.length() > 0;
@@ -208,14 +207,14 @@ class ScriptingRegistration {
 				}
 			});
 			final ScriptingConfiguration configuration = new ScriptingConfiguration();
-			ScriptingEngine.setClasspath(configuration.getClasspath());
-			ScriptCompiler.compileScriptsOnPath(configuration.getClasspath());
+			ScriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 			modeController.addMenuContributor(new IMenuContributor() {
 				public void updateMenus(ModeController modeController, MenuBuilder builder) {
 					registerScripts(menuBuilder, configuration);
 				}
 			});
 			createUserScriptsDirectory();
+			createUserLibDirectory();
 		}
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10, 
 			new ScriptConditionController());
@@ -248,10 +247,18 @@ class ScriptingRegistration {
 	}
 
 	private void createUserScriptsDirectory() {
-		final File scriptDir = ScriptingEngine.getUserScriptDir();
+		final File scriptDir = ScriptResources.getUserScriptsDir();
 		if (!scriptDir.exists()) {
 			LogUtils.info("creating user scripts directory " + scriptDir);
 			scriptDir.mkdirs();
+		}
+	}
+
+	private void createUserLibDirectory() {
+		final File libDir = ScriptResources.getUserLibDir();
+		if (!libDir.exists()) {
+			LogUtils.info("creating user lib directory " + libDir);
+			libDir.mkdirs();
 		}
 	}
 
@@ -261,14 +268,14 @@ class ScriptingRegistration {
 			final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
 			addSubMenu(menuBuilder, scriptsParentLocation, scriptsLocation, TextUtils.getText("ExecuteScripts.text"));
 			registeredLocations.add(scriptsLocation);
-			if (configuration.getNameScriptMap().isEmpty()) {
+			if (configuration.getMenuTitleToPathMap().isEmpty()) {
 				final String message = "<html><body><em>" + TextUtils.getText("ExecuteScripts.noScriptsAvailable")
 				        + "</em></body></html>";
 				menuBuilder.addElement(scriptsLocation, new JMenuItem(message), 0);
 			}
-			for (final Entry<String, String> entry : configuration.getNameScriptMap().entrySet()) {
+			for (final Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 				final String scriptName = entry.getKey();
-				final ScriptMetaData metaData = configuration.getNameScriptMetaDataMap().get(scriptName);
+				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
 				// in the worst case three actions will cache a script - should not matter that much since it's unlikely
 				// that one script is used in multiple modes by the same user
 				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {

@@ -7,7 +7,19 @@
 <xsl:template match="/plist/dict">
   <xsl:copy>
     <xsl:apply-templates select="@* | node()"/>
-    <key>NSHighResolutionCapable</key><true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+	    <dict>
+	        <key>CFBundleURLName</key>
+	        <string>Freeplane Mind Map</string>
+	        <key>CFBundleURLSchemes</key>
+	        <array>
+	            <string>freeplane</string>
+	        </array>
+	    </dict>
+	</array>    
   </xsl:copy>
 </xsl:template>
 

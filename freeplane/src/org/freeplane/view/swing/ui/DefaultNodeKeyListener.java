@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
@@ -30,6 +31,8 @@ public class DefaultNodeKeyListener implements KeyListener {
 	public void keyPressed(final KeyEvent e) {
 		final boolean checkForScrollMap = e.isShiftDown() && e.isControlDown()&& e.isAltDown();
 		final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		if (mapView == null || SwingUtilities.isDescendingFrom(mapView, e.getComponent()))
+			return;
 		if(checkForScrollMap){
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
@@ -66,27 +69,27 @@ public class DefaultNodeKeyListener implements KeyListener {
 		final boolean continious = e.isShiftDown();
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
-				if (mapView.selectUp(continious)) 
+				if (mapView.selectUp(continious))
 					e.consume();
 				return;
 			case KeyEvent.VK_DOWN:
-				if (mapView.selectDown(continious)) 
+				if (mapView.selectDown(continious))
 					e.consume();
 				return;
 			case KeyEvent.VK_LEFT:
-				if (mapView.selectLeft(continious)) 
+				if (mapView.selectLeft(continious))
 					e.consume();
 				return;
 			case KeyEvent.VK_RIGHT:
-				if (mapView.selectRight(continious)) 
+				if (mapView.selectRight(continious))
 					e.consume();
 				return;
 			case KeyEvent.VK_PAGE_UP:
-				if (mapView.selectPageUp(continious)) 
+				if (mapView.selectPageUp(continious))
 					e.consume();
 				return;
 			case KeyEvent.VK_PAGE_DOWN:
-				if (mapView.selectPageDown(continious)) 
+				if (mapView.selectPageDown(continious))
 					e.consume();
 				return;
 			case KeyEvent.VK_HOME:

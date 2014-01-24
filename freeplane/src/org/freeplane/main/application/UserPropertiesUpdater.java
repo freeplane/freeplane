@@ -22,7 +22,6 @@ package org.freeplane.main.application;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -50,9 +49,10 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
  * Nov 1, 2010
  */
 public class UserPropertiesUpdater {
-	
-	final private static String[] PREVIOUS_VERSION_DIRS = {"1.2.x"};
-	
+
+
+	private static final String ORG_FREEPLANE_OLD_USERFPDIR = "org.freeplane.old_userfpdir";
+
 	void importOldProperties(){
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		if(userPreferencesFile.exists()){
@@ -73,21 +73,26 @@ public class UserPropertiesUpdater {
 
 	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
 		final File parentDirectory = targetDirectory.getParentFile();
-		if(! parentDirectory.exists())
-			return;
-		for(String previousDirName : PREVIOUS_VERSION_DIRS){
-			if(previousDirName.equals(targetDirectory.getName()))
-				return;
-			File sourceDirectory = new File(parentDirectory, previousDirName);
-			if(sourceDirectory.exists()){
-				try {
-	                org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
-                }
-                catch (IOException e) {
-                }
-				return;
+		final String previousDirName = "1.2.x";
+		final File sourceDirectory;
+		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
+		if (isDefined(old_userfpdir))
+			sourceDirectory = new File(old_userfpdir, previousDirName);
+		else
+			sourceDirectory = new File(parentDirectory, previousDirName);
+		if (sourceDirectory.exists() && !sourceDirectory.getAbsolutePath().equals(targetDirectory.getAbsolutePath())) {
+			try {
+				parentDirectory.mkdirs();
+				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
 			}
+			catch (IOException e) {
+			}
+			return;
 		}
+    }
+
+	private boolean isDefined(String old_userfpdir) {
+	    return old_userfpdir != null;
     }
 
 	private void importOldPreferences(final File userPreferencesFile,
@@ -104,7 +109,7 @@ public class UserPropertiesUpdater {
         catch (IOException e) {
         }
 	}
-	
+
 	private void removeOpenedMaps(File userPreferencesFile) {
 		try {
 			Properties userProp = loadProperties(userPreferencesFile);
@@ -154,10 +159,10 @@ public class UserPropertiesUpdater {
         catch (NumberFormatException e) {
         }
     }
-	
+
 	void importOldDefaultStyle() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
-		MFileManager fm = (MFileManager) MFileManager.getController(modeController);
+		MFileManager fm = MFileManager.getController(modeController);
 		final String standardTemplateName = fm.getStandardTemplateName();
 		final File userDefault;
 		final File absolute = new File(standardTemplateName);
@@ -199,7 +204,7 @@ public class UserPropertiesUpdater {
         }
         catch (IOException e) {
         }
-        
+
 
 	}
    private void updateDefaultStyle(final NodeStyleController nodeStyleController, MapModel defaultStyleMap) {
@@ -219,11 +224,11 @@ public class UserPropertiesUpdater {
 		nodeStyleModel.setShape(nodeStyleController.getShape(styleNode));
 
 		styleNode.addExtension(nodeStyleModel);
-		
+
 		final NodeSizeModel nodeSizeModel = new NodeSizeModel();
 		nodeSizeModel.setMaxNodeWidth(nodeStyleController.getMaxWidth(styleNode));
 		nodeSizeModel.setMinNodeWidth(nodeStyleController.getMinWidth(styleNode));
-		
+
 		final EdgeModel standardEdgeModel = EdgeModel.getModel(styleNode);
 		if(standardEdgeModel != null){
 			final EdgeModel edgeModel = new EdgeModel();

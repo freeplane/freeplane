@@ -373,4 +373,14 @@ public class ConvertibleTest {
 		// the result of Convertible.toString(Xyz) must be a valid input to Convertible.getXyz()
 		assertEquals(toConvert, convertible(expected).getProperty(propertyName));
 	}
+
+    @Test
+    public void testGetBool() {
+        assertTrue(new Convertible("true").getBool());
+        assertTrue(new Convertible("True").getBool());
+        assertTrue(new Convertible("TRUE").getBool());
+        assertFalse(new Convertible("false").getBool());
+        assertFalse(new Convertible("something").getBool());
+        assertFalse(new Convertible(null).getBool());
+    }
 }

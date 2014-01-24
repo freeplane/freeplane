@@ -3,6 +3,7 @@ package org.freeplane.core.util;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -17,7 +18,7 @@ import org.freeplane.features.mode.Controller;
 
 /**
  * Provides methods and constants which are dependend on the underlying java version
- * 
+ *
  * @author robert.ladstaetter
  */
 public class Compat {
@@ -34,7 +35,7 @@ public class Compat {
 	        "com", "vbs", "bat", "lnk", "cmd" }));
 
 	public static boolean isWindowsExecutable(final URI link) {
-		if (link == null 
+		if (link == null
 				|| !"file".equalsIgnoreCase(link.getScheme())) {
 			return false;
 		}
@@ -131,6 +132,28 @@ public class Compat {
 		}
 	}
 
+	public static void fixMousePointerForLinux(){
+        if (isX11WindowManager()) {
+        try {
+            Class<?> xwm = Class.forName("sun.awt.X11.XWM");
+            Field awt_wmgr = xwm.getDeclaredField("awt_wmgr");
+            awt_wmgr.setAccessible(true);
+            Field other_wm = xwm.getDeclaredField("OTHER_WM");
+            other_wm.setAccessible(true);
+            if (awt_wmgr.get(null).equals(other_wm.get(null))) {
+                Field metacity_wm = xwm.getDeclaredField("METACITY_WM");
+                metacity_wm.setAccessible(true);
+                awt_wmgr.set(null, metacity_wm.get(null));
+            }
+        }
+        catch (Exception x) {
+        }
+    }	}
+
+	public static boolean isX11WindowManager() {
+	    return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
+    }
+
 	public static void macMenuChanges() {
 		if (!Compat.isMacOsX()) {
 			return;
@@ -140,12 +163,12 @@ public class Compat {
 		for (final String mode : modes) {
 			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
 			    .getMenuBuilder();
-			final String[] keys = { 
-					"MB_ToggleMenubarAction", 
-					"MP_ToggleMenubarAction", 
+			final String[] keys = {
+					"MB_ToggleMenubarAction",
+					"MP_ToggleMenubarAction",
 					"MB_QuitAction",
-			        "MB_PropertyAction", 
-			        "MB_AboutAction" 
+			        "MB_PropertyAction",
+			        "MB_AboutAction"
 			};
 			for (final String key : keys) {
 				if (builder.contains(key)) {
@@ -165,8 +188,7 @@ public class Compat {
 		return userFpDir + CURRENT_VERSION_DIR;
 	}
 
-	/** the default FP directory *excluding* the version directory. */
-    public static String getDefaultFreeplaneUserDirectory() {
+	private static String getDefaultFreeplaneUserDirectory() {
         return System.getProperty("user.home")+ File.separator + ".freeplane";
     }
 
@@ -185,8 +207,8 @@ public class Compat {
     }
 
 	private static int getModifiers(final MouseEvent e) {
-	    return e.getModifiersEx() & 
-        		(InputEvent.CTRL_DOWN_MASK 
+	    return e.getModifiersEx() &
+        		(InputEvent.CTRL_DOWN_MASK
         				| InputEvent.META_DOWN_MASK
         				| InputEvent.SHIFT_DOWN_MASK
         				| InputEvent.ALT_DOWN_MASK
@@ -200,11 +222,11 @@ public class Compat {
 	public static boolean isCtrlShiftEvent(MouseEvent e) {
 		return isExtendedCtrlEvent(e, InputEvent.SHIFT_DOWN_MASK);
     }
-	
+
 	public static boolean isCtrlAltEvent(MouseEvent e) {
 		return isExtendedCtrlEvent(e, InputEvent.ALT_DOWN_MASK);
     }
-	
+
 	static private boolean isExtendedCtrlEvent(final MouseEvent e, int otherModifiers) {
         final int modifiers = getModifiers(e);
 		if (isMacOsX())

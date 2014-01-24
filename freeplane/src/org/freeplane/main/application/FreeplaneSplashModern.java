@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package org.freeplane.main.application;
 
@@ -27,9 +27,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -48,11 +48,11 @@ import org.freeplane.features.mode.Controller;
  * Class that displays a splash screen
  * Is run in a separate thread so that the applet continues to load in the background
  * @author Karsten Pawlik
- * 
+ *
  */
 public class FreeplaneSplashModern extends JWindow {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Font versionTextFont = null;
@@ -61,6 +61,11 @@ public class FreeplaneSplashModern extends JWindow {
 		super(frame);
 		splashResource = ResourceController.getResourceController().getResource("/images/Freeplane_splash.png");
 		splashImage = new ImageIcon(splashResource);
+		try {
+			getClass().getClassLoader().loadClass("com.sun.awt.AWTUtilities").getMethod("setWindowOpaque", Window.class, boolean.class).invoke(null, this, false);
+		}
+		catch (Exception e) {}
+		setBackground(new Color(0x57, 0xbf, 0x5e,0));
 		getRootPane().setOpaque(false);
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
@@ -90,13 +95,17 @@ public class FreeplaneSplashModern extends JWindow {
     }
 
 	private final ImageIcon splashImage;
-	private URL splashResource;
-	
+	private final URL splashResource;
+
 	@SuppressWarnings("serial")
     private class RootPane extends JRootPane{
 
+		public RootPane() {
+			setDoubleBuffered(false);
+		}
+
 		@Override
-		public void paint(final Graphics g) {
+		public void paintComponent(final Graphics g) {
 			final Graphics2D g2 = (Graphics2D) g;
 			splashImage.paintIcon(this, g2, 0, 0);
 			if(splashResource.getProtocol().equals("file"))
@@ -104,20 +113,24 @@ public class FreeplaneSplashModern extends JWindow {
 			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			final FreeplaneVersion version = FreeplaneVersion.getVersion();
 			final String versionString = getVersionText(version);
-			g2.setColor(Color.BLACK);
-			final int xCoordinate = 164;
-			final int yCoordinate = 194;
+			g2.setColor(Color.WHITE);
 			createVersionTextFont();
-			final float versionFontSize;
-			versionFontSize = 15;
+			final float versionFontSize= 20;
 			g2.setFont(versionTextFont.deriveFont(versionFontSize));
+			int versionStringWidth = g2.getFontMetrics().stringWidth(versionString);
+			final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - 20;
+			final int yCoordinate = 20;
 			g2.drawString(versionString, xCoordinate, yCoordinate);
+		}
+
+		@Override
+		public void paintChildren(final Graphics g) {
 		}
 	}
 
 	private String getVersionText(final FreeplaneVersion version) {
 	    final String freeplaneNumber = version.numberToString();
-		final String status = version.getType().toUpperCase();
+		final String status = version.getType().toLowerCase();
 		if("".equals(status))
 			return freeplaneNumber;
 		else{
@@ -137,7 +150,7 @@ public class FreeplaneSplashModern extends JWindow {
 	public void paintImmediately() {
 	    ((JComponent) getRootPane()).paintImmediately(0, 0, getWidth(), getHeight());
     }
-	
+
 	static public void main(String[] args){
 		ApplicationResourceController applicationResourceController = new ApplicationResourceController();
 		Controller controller = new Controller(applicationResourceController);

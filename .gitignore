@@ -1,13 +1,26 @@
+# editor artefacts
+*~
+.#*
+\#*#
+.*.swp
+
+# OS generated files
+*.DS_[sS]Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.pid
+._.**~
+
 *.diff
 */bin
 */build
 */dist
 backups
-.DS_Store
 .backup
 .metadata
 freeplane/lib/jortho.jar
-freeplane_framework/windows-icons/Objects
+freeplane_framework/windows-icons/build
 freeplane_framework/windows-icons/*.layout
 freeplane_framework/windows-icons/Makefile.win
 freeplane_framework/launcher_build
@@ -20,3 +33,10 @@ freeplane_ant/test/freeplane_plugin_*
 freeplane_plugin_script/build-nodehighlighter
 freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
 freeplane_framework/temp
+
+freeplane/resources/xml/browsemodemenu.xml
+freeplane/resources/xml/filemodemenu.xml
+freeplane/resources/xml/mindmapmodemenu.xml
+freeplane/resources/xml/preferences.xml
+freeplane/resources/xml/stylemodemenu.xml
+freeplane/viewer-resources/xml/appletMenu.xml

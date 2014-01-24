@@ -21,10 +21,8 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
@@ -45,7 +43,6 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
@@ -88,7 +85,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	final private Vector<MapView> mapViewVector = new Vector<MapView>();
 	private float zoom;
 	private boolean setZoomComboBoxRun;
-	private Controller controller;
+	private final Controller controller;
 
 	/**
 	 * Reference to the current mode as the mapView may be null.
@@ -110,10 +107,10 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		zoomModel.addListDataListener(new  ListDataListener() {
 			public void intervalRemoved(ListDataEvent e) {
 			}
-			
+
 			public void intervalAdded(ListDataEvent e) {
 			}
-			
+
 			public void contentsChanged(ListDataEvent e) {
 				if (!setZoomComboBoxRun && e.getIndex0() == -1) {
 					EventQueue.invokeLater(new Runnable() {
@@ -254,7 +251,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		MapView mapView = (MapView) mapViewComponent;
 		final MapController mapController = mapView.getModeController().getMapController();
-		final boolean closingNotCancelled = mapController.close(force);
+		final boolean closingNotCancelled = mapController.close(mapView.getModel(), force);
 		if (!closingNotCancelled) {
 			return false;
 		}
@@ -296,12 +293,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		innerBounds.y -= BOUND;
 		innerBounds.width += 2 * BOUND;
 		innerBounds.height += 2 * BOUND;
-		
+
 		double scaleFactor = (double) dpi / (double) UITools.getScreenResolution();
 
 		int imageWidth = (int) Math.ceil(innerBounds.width * scaleFactor);
 		int imageHeight = (int) Math.ceil(innerBounds.height * scaleFactor);
-		
+
 		final BufferedImage myImage = (BufferedImage) view.createImage(imageWidth, imageHeight);
 		final Graphics2D g = (Graphics2D) myImage.getGraphics();
 		g.scale(scaleFactor, scaleFactor);
@@ -556,7 +553,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return;
 		}
 		final MapModel map = mapView.getModel();
-		final MapStyle mapStyle = (MapStyle) mapView.getModeController().getExtension(MapStyle.class);
+		final MapStyle mapStyle = mapView.getModeController().getExtension(MapStyle.class);
 		if(mapView.getZoom() == zoom){
 			return;
 		}
@@ -685,7 +682,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	final private ZoomInAction zoomIn;
 	private final DefaultComboBoxModel zoomModel;
 	final private ZoomOutAction zoomOut;
-	
+
 	private float getCurrentZoomIndex() {
 		final int selectedIndex = zoomModel.getIndexOf(zoomModel.getSelectedItem());
 		final int itemCount = zoomModel.getSize();

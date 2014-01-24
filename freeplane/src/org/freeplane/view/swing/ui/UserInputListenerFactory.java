@@ -61,6 +61,7 @@ import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
+	private static final String MENU_MM2XML = "/xslt/mm2menu.xsl";
 // // 	final private Controller controller;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
@@ -77,8 +78,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
+	private final MenuXmlCreator  menuXmlCreator;
 
 	public UserInputListenerFactory(final ModeController modeController) {
+		menuXmlCreator = new MenuXmlCreator(MENU_MM2XML);
 		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
 		menuBuilder = new MenuBuilder(modeController);
@@ -296,7 +299,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
 		menuBuilder.addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
-		final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
+		final URL menuStructure = menuXmlCreator.menuResource(menuStructureResource);
 		if (menuStructure != null) {
 			final boolean isUserDefined = menuStructure.getProtocol().equalsIgnoreCase("file");
 			try{

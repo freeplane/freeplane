@@ -20,8 +20,9 @@
 package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.net.URI;
 import java.util.Collection;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.MapController;
@@ -30,7 +31,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.features.progress.mindmapmode.ProgressUtilities;
 
 /**
- * 
+ *
  * @author Stefan Ott
  *
  *This action adds an external image to a node
@@ -43,20 +44,24 @@ public class AddExternalImageAction extends AFreeplaneAction {
 		super("ExternalImageAddAction");
 	}
 
-	public void actionPerformed(final ActionEvent arg0) {
+	public void actionPerformed(final ActionEvent event) {
 		final ProgressUtilities progUtil = new ProgressUtilities();
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final Collection<NodeModel> nodes = mapController.getSelectedNodes();
-		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
-		    .getExtension(ViewerController.class));
+		final ViewerController vc = Controller.getCurrentController().getModeController()
+		    .getExtension(ViewerController.class);
 		final NodeModel selectedNode = mapController.getSelectedNode();
+		if (selectedNode == null)
+			return;
 		final ExternalResource extRes = (ExternalResource) vc.createExtension(selectedNode);
-		if (extRes != null) {
-			final File file = new File(extRes.getAbsoluteUri(selectedNode.getMap()));
-			for (final NodeModel node : nodes) {
-				if (!progUtil.hasExternalResource(node)) {
-					vc.paste(file, node, node.isLeft());
-				}
+		if (extRes == null)
+			return;
+		URI absoluteUri = extRes.getAbsoluteUri(selectedNode.getMap());
+		if (absoluteUri == null)
+			return;
+		for (final NodeModel node : nodes) {
+			if (!progUtil.hasExternalResource(node)) {
+				vc.paste(absoluteUri, node, node.isLeft());
 			}
 		}
 	}

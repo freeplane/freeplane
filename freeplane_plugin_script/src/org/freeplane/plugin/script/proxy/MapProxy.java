@@ -188,4 +188,9 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	public void undoFilter() {
 		FilterController.getCurrentFilterController().undo();
     }
+
+    // Map: RO
+    public Proxy.Properties getStorage() {
+        return new PropertiesProxy(getDelegate(), getScriptContext());
+    }
 }

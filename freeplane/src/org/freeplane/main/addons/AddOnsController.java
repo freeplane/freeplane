@@ -39,6 +39,7 @@ public class AddOnsController {
 	private static AddOnsController addOnsController;
 	private List<AddOnProperties> installedAddOns = new ArrayList<AddOnProperties>();
 	private boolean autoInstall;
+    public static final String LATEST_VERSION_FILE = "version.properties";
 
 	public AddOnsController() {
 		createAddOnsDirIfNecessary();

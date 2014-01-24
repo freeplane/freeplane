@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;

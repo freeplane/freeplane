@@ -80,7 +80,7 @@ public abstract class MainView extends ZoomableLabel {
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	static Dimension minimumSize = new Dimension(0,0);
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
@@ -195,7 +195,7 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
 		return xCoord < getSize().width * p;
 	}
-	
+
 	@Override
 	final public void paint(Graphics g){
 		final PaintingMode paintingMode = getMap().getPaintingMode();
@@ -321,7 +321,7 @@ public abstract class MainView extends ZoomableLabel {
 
 
 	private void paintDragRectangle(final Graphics g) {
-		if (! MouseArea.MOTION.equals(mouseArea)) 
+		if (! MouseArea.MOTION.equals(mouseArea))
 			return;
 		final Graphics2D g2 = (Graphics2D) g;
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
@@ -447,7 +447,7 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isEdited() {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
 	}
-	
+
 	static enum TextModificationState{NONE, HIGHLIGHT, FAILURE};
 
 	public void updateText(NodeModel nodeModel) {
@@ -546,7 +546,7 @@ public abstract class MainView extends ZoomableLabel {
     }
 
     static public enum ConnectorLocation{LEFT, RIGHT, TOP, BOTTOM, CENTER};
-    
+
     public ConnectorLocation getConnectorLocation(Point relativeLocation) {
         if(relativeLocation.x > getWidth())
             return ConnectorLocation.RIGHT;
@@ -595,6 +595,8 @@ public abstract class MainView extends ZoomableLabel {
 
 	private String createToolTipText() {
 		final NodeView nodeView = getNodeView();
+		if (nodeView == null)
+			return "";
 		final ModeController modeController = nodeView.getMap().getModeController();
 		final NodeModel node = nodeView.getModel();
 		return modeController.createToolTip(node, this);
@@ -607,7 +609,7 @@ public abstract class MainView extends ZoomableLabel {
 	    	return toolTipText;
 	    return createToolTipText();
     }
-	
+
 	@Override
 	public boolean contains(int x, int y) {
 		final Point p = new Point(x, y);
@@ -628,7 +630,7 @@ public abstract class MainView extends ZoomableLabel {
 				return p.x >= -draggingWidth && p.x < 0;
 		}
 		return false;
-		
+
 	}
 
 	public boolean isInFoldingRegion(Point p) {
@@ -671,11 +673,11 @@ public abstract class MainView extends ZoomableLabel {
 		if(mouseArea.equals(this.mouseArea))
 			return;
 		final boolean repaintDraggingRectangle = isVisible()
-				&& (mouseArea.equals(MouseArea.MOTION) 
+				&& (mouseArea.equals(MouseArea.MOTION)
 						|| this.mouseArea.equals(MouseArea.MOTION)
 						);
 		final boolean repaintFoldingRectangle = isVisible()
-				&& (mouseArea.equals(MouseArea.OUT) 
+				&& (mouseArea.equals(MouseArea.OUT)
 						|| mouseArea.equals(MouseArea.FOLDING)
 						|| this.mouseArea.equals(MouseArea.OUT)
 						|| this.mouseArea.equals(MouseArea.FOLDING));

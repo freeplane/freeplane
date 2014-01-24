@@ -27,11 +27,13 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
+
 import javax.swing.JScrollPane;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DoubleClickTimer;
-import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.FreeNode;
@@ -134,7 +136,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			}
 			else {
 				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e)) {
-					final MTextController textController = (MTextController) MTextController.getController();
+					final MTextController textController = MTextController.getController();
 					textController.getEventQueue().activate(e);
 					textController.edit(FirstAction.EDIT_CURRENT, false);
 				}
@@ -143,7 +145,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		super.mouseClicked(e);
 	}
 
-	public void mouseMoved(final MouseEvent e) {
+	@Override
+    public void mouseMoved(final MouseEvent e) {
 		if (isDragActive())
 			return;
 		final MainView v = (MainView) e.getSource();
@@ -169,7 +172,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		setClickDelay();
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
-				stopTimerForDelayedSelection();
+				nodeSelector.stopTimerForDelayedSelection();
 				final NodeView nodeV = getNodeView(e);
 				final Point point = e.getPoint();
 				findGridPoint(point);
@@ -181,7 +184,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			super.mousePressed(e);
 	}
 
-	public void mouseDragged(final MouseEvent e) {
+	@Override
+    public void mouseDragged(final MouseEvent e) {
 		if (!isDragActive())
 			return;
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
@@ -375,7 +379,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private void stopDrag() {
 		setDragStartingPoint(null, null);
 	}
-	
+
 	private void setClickDelay() {
 	    if (ResourceController.getResourceController().getBooleanProperty(EDIT_ON_DOUBLE_CLICK))
 	        doubleClickTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);

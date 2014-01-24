@@ -24,15 +24,14 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
@@ -67,6 +66,8 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.url.FreeplaneUriConverter;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
@@ -78,6 +79,11 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
+
+	static{
+		Compat.fixMousePointerForLinux();
+	}
+
 	public static String getResourceBaseDir() {
 		return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
 		    FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
@@ -88,7 +94,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		info.append("freeplane_version = ");
 		info.append(FreeplaneVersion.getVersion());
 		String revision = FreeplaneVersion.getVersion().getRevision();
-		
+
 		info.append("; freeplane_xml_version = ");
 		info.append(FreeplaneVersion.XML_VERSION);
 		if(! revision.equals("")){
@@ -104,7 +110,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		LogUtils.info(info.toString());
 	}
 
-	private ApplicationResourceController applicationResourceController;
+	private final ApplicationResourceController applicationResourceController;
 // // 	private Controller controller;
 	private FreeplaneSplashModern splash = null;
     private boolean startupFinished = false;
@@ -214,20 +220,18 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			public void run() {
 			    final Options options = CommandLineParser.parse(args);
 				viewController.init(Controller.getCurrentController());
-				splash.toBack();
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
 				Container contentPane = viewController.getContentPane();
 				contentPane.setVisible(false);
+				splash.dispose();
+				splash = null;
 				frame.setVisible(true);
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
-				splash.paintImmediately();
 				loadMaps(options.getFilesToOpenAsArray());
 				viewController.getContentPane().setVisible(true);
-				splash.dispose();
-				splash = null;
 				frame.toFront();
 				startupFinished = true;
 		        System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
@@ -241,7 +245,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
             }
 		});
 	}
-	
+
 	private void loadMaps( final String[] args) {
 		final Controller controller = Controller.getCurrentController();
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
@@ -250,7 +254,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
 			loadLastMaps();
 		}
-		if (loadMaps(controller, args)) {
+		loadMaps(controller, args);
+		if(controller.getMap() != null) {
 			return;
 		}
 		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
@@ -282,10 +287,10 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    else if(loadLastMap)
 	    	applicationResourceController.getLastOpenedList().openMapsOnStart();
     }
-	
+
 	public void loadMapsLater(final String[] args){
 	    EventQueue.invokeLater(new Runnable() {
- 
+
             public void run() {
                 if(startupFinished && EventQueue.isDispatchThread()){
                     loadMaps(Controller.getCurrentController(), args);
@@ -309,37 +314,38 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         frame.toFront();
         frame.requestFocus();
     }
-    
-    private boolean loadMaps(final Controller controller, final String[] args) {
-        boolean fileLoaded = false;
+
+
+    private void loadMaps(final Controller controller, final String[] args) {
+		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
-			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-				try {
-					final URL url;
-					if(fileArgument.startsWith("http://")){
-						url = new URL(fileArgument);
-					}
-					else{
-						if (!FileUtils.isAbsolutePath(fileArgument)) {
-							fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-						}
-						url = Compat.fileToUrl(new File(fileArgument));
-					}
-					if (!fileLoaded) {
-						controller.selectMode(MModeController.MODENAME);
-					}
-					final MModeController modeController = (MModeController) controller.getModeController();
-					modeController.getMapController().newMap(url);
-					fileLoaded = true;
+			try {
+				final URL url;
+				if(fileArgument.startsWith("http://")) {
+					LinkController.getController().loadURI(new URI(fileArgument));
 				}
-				catch (final Exception ex) {
-					System.err.println("File " + fileArgument + " not loaded");
+                else if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
+					String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
+					LinkController.getController().loadURI(new URI(fixedUri));
+				}
+                else {
+					if (!FileUtils.isAbsolutePath(fileArgument)) {
+						fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
+					}
+					url = Compat.fileToUrl(new File(fileArgument));
+					if (url.getPath().toLowerCase().endsWith(
+						org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+						final MModeController modeController = (MModeController) controller.getModeController();
+						MapController mapController = modeController.getMapController();
+						mapController.openMapSelectReferencedNode(url);
+					}
 				}
 			}
+			catch (final Exception ex) {
+				System.err.println("File " + fileArgument + " not loaded");
+			}
 		}
-        return fileLoaded;
     }
 
 	/**

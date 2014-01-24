@@ -13,6 +13,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
+import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */
@@ -51,7 +52,8 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	}
 	
 	public void mapChanged(MapChangeEvent event) {
-		
+		if (UrlManager.MAP_URL.equals(event.getProperty()))
+		    FormulaUtils.clearCache(event.getMap());
 	}
 
 	/** in case of insert we look for dependencies of the parent. But the parent is not actually changed in this case.

@@ -5,6 +5,7 @@ import groovy.lang.GroovyClassLoader;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.groovy.control.CompilationUnit;
@@ -13,7 +14,7 @@ import org.codehaus.groovy.tools.FileSystemCompiler;
 import org.freeplane.core.util.LogUtils;
 
 public class ScriptCompiler {
-    public static void compileScriptsOnPath(ArrayList<String> pathElements) {
+    public static void compileScriptsOnPath(List<String> pathElements) {
         for (String pathElement : pathElements) {
             final File dir = new File(pathElement);
             if (dir.isDirectory())
@@ -22,6 +23,7 @@ public class ScriptCompiler {
     }
 
     private static void compileScriptsInDirectory(File dir) {
+        // FIXME: compile .js and the like too
         final Collection<File> files = FileUtils.listFiles(dir, new String[] { ".groovy" }, true);
         if (!files.isEmpty())
             compile(dir, files);
@@ -33,7 +35,8 @@ public class ScriptCompiler {
 
     private static void compile(File dir, File[] files) {
         try {
-            final CompilerConfiguration compilerConfiguration = ScriptingEngine.createCompilerConfiguration();
+			final CompilerConfiguration compilerConfiguration = GroovyScript
+			    .createCompilerConfiguration();
             compilerConfiguration.setTargetDirectory(dir);
             final CompilationUnit unit = new CompilationUnit(compilerConfiguration, null, new GroovyClassLoader(
                 ScriptingEngine.class.getClassLoader()));

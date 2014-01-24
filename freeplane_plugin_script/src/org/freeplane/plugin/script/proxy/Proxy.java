@@ -441,6 +441,18 @@ public interface Proxy {
 		/** returns false if the system 'nonInteractive' is set. This can be used in actions to not open dialogs etc.
 		 * @since 1.2 */
 		boolean isInteractive();
+
+		List<String> getExportTypeDescriptions();
+
+        /** exports map to destination file, example:
+         * <pre>
+         *   println c.getExportTypeDescriptions.join('\n')
+         *   boolean overwriteExistingFile = true
+         *   c.export(node.map, new File('/tmp/t.png'), 'Portable Network Graphic (PNG) (.png)', overwriteExistingFile)
+         * </pre>
+         * @param exportTypeDescription Use {@link #getExportTypeDescriptions()} to look up available exportTypes
+         * @since 1.3.5 */
+        void export(Map map, File destinationFile, String exportTypeDescription, boolean overwriteExisting);
 	}
 
 	/** Access to global state: <code>c</code> - read-write. */
@@ -454,7 +466,7 @@ public interface Proxy {
 		/** opens the appropriate popup text editor. Does not block until edit has finished.
 		 * @since 1.2.2 */
 		void editInPopup(Node node);
-
+		
 		void select(Node toSelect);
 
 		/** selects branchRoot and all children */
@@ -665,6 +677,10 @@ public interface Proxy {
 
 		/** @deprecated since 1.2 - use {@link #remove(String)} instead. */
 		boolean removeIcon(String name);
+		
+		/** removes all icons.
+		 * @since 1.2 */
+		void clear();
 	}
 
 	/** Node's link: <code>node.link</code> - read-only.
@@ -836,6 +852,10 @@ public interface Proxy {
 		 * Note: undo/redo for filters is separate to the undo/redo for other map state.
 		 *  @since 1.2 */
 		public void undoFilter();
+
+		/** returns an accessor to the map specific storage. The value is never null
+		 *  @since 1.3.6 */
+		public Proxy.Properties getStorage();
 	}
 
 	/** The currently selected node: <code>node</code> - read-only. */
@@ -1315,6 +1335,26 @@ public interface Proxy {
 		void setAttributes(java.util.Map<String, Object> attributes);
 
 		void setLeft(boolean isLeft);
+
+        /** Returns true if the node is password protected, no matter if currently accessible (password entered) or not.
+         * @since 1.3.6 */
+		boolean hasEncryption();
+        
+        /** decrypts a node and remove the password protection.
+         * @since 1.3.6 */
+        void removeEncryption(String password);
+		
+		/** Returns true if the node has password protection and is currently unaccessible (password has to be entered).
+		 * @since 1.3.6 */
+		boolean isEncrypted();
+		
+		/** encrypts a node. If the node has child nodes the branch is folded.
+		 * @since 1.3.6 */
+		void encrypt(String password);
+
+		/** decrypts a node without removing the encryption.
+         * @since 1.3.6 */
+		void decrypt(String password);
 	}
 
 	/** Node's style: <code>node.style</code> - read-only. */
@@ -1398,6 +1438,28 @@ public interface Proxy {
         /** @since 1.2.20 */
         void setMaxNodeWidth(int width);
 	}
+
+    public interface Properties {
+        /** Provides map-like access to properties. Note that the returned type is a
+         * {@link Convertible}, not a String as in the basic storage. Nevertheless it behaves like a String in almost
+         * all respects, that is, in Groovy scripts it understands all String methods like lenght(), matches() etc.
+         * <br>
+         * Note that unlike Attributes.getAt() this method will return <em>null</em> if the property is not set!
+         * @since 1.3.6 */
+        Convertible getAt(String key);
+
+        /**
+         * Allows to set and to change properties.
+         * @param value An object for conversion to String. Works well for all types that {@link Convertible}
+         *        handles, particularly {@link Convertible}s itself. Use null to unset an attribute.
+         * @return the new value
+         * @since 1.3.6 */
+        Convertible putAt(String key, Object value);
+
+        /** returns the names of all attributes.
+         * @since 1.3.6 */
+        java.util.Set<String> keySet();
+    }
 
 	/** Reminder: <code>node.reminder</code> - read-only.
 	 * <pre>

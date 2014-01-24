@@ -1,211 +1,211 @@
-<html>
-
-<head>
-<meta name="keywords" content="user.properties,language,locking,default font,node color,colors,look and feel,keystrokes,autosave">
-<meta http-equiv="Content-Language" content="en-us">
-<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-<meta name="ProgId" content="FrontPage.Editor.Document">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>user.properties</title>
-</head>
-
-<body>
-
-<h3><font color="#669900" face="Arial">The user.properties file </font></h3>
-<p><font face="Arial">The user.properties file has many useful options. 
-Unfortunately, it can be scary for novices. Here's a selective look at some of 
-the choices you might want to adjust. </font></p>
-<blockquote>
-  <p><font face="Arial">To change the options, you'll copy the file &quot;user.properties&quot; 
-  from Freeplane's program directory to the folder &quot;freeplane&quot; in your home 
-  directory and edit it using a text editor. You surely know your home directory 
-  if you're working on Linux. On Windows 2000, it's typically &quot;C:\Documents and 
-  Settings\&lt;UserName&gt;\&quot;, on Windows 95, it's &quot;C:\WINDOWS\&quot;. Edit &quot;user.properties&quot; 
-  in the folder &quot;freeplane&quot; of your home directory. </font></p>
-  <p><font face="Arial">When you start out, all of the options are commented out 
-  with a single &quot;#&quot; symbol. To change an option, remove the &quot;#&quot; and edit the 
-  line. Then save the file and restart Freeplane. (Comments in the file are 
-  marked by &quot;##&quot;. You should not remove the comment symbols from those lines.)</font></p>
-  <p><font face="Arial">These notes apply to version 0.7.1. The file is likely 
-  to be different in future versions.</font></p>
-</blockquote>
-<p><font face="Arial">The value shown in the examples is the default value, the 
-one you'll get if you leave the line commented out.</font></p>
-<p><font face="Arial"><i>Language. Supported are &quot;en&quot;, &quot;de&quot; and &quot;fr&quot;:<br>
-</i><b>language = en</b></font></p>
-<p><font face="Arial"><i>Experimental file locking (&quot;true&quot; or &quot;false&quot;):<br>
-</i><b>experimental_file_locking_on = false</b></font></p>
-<p><font face="Arial"><i>Default node style -- &quot;fork&quot; or &quot;bubble&quot;:<br>
-</i><b>standardnodestyle = fork</b></font></p>
-<p><font face="Arial"><i>Standard node color in HTML #RRGGBB notation:<br>
-</i><b>standardnodecolor = #000000</b></font></p>
-<ul>
-  <li><font face="Arial">All color references here are in HTML notation. Many 
-  references to HTML color codes are on the Internet. A handy chart, and links 
-  to some color tools, is at <a href="http://www.lissaexplains.com/color.shtml">
-  http://www.lissaexplains.com/color.shtml</a>.</font></li>
-</ul>
-<p><i><font face="Arial">Default node font. This will only work if the font (TrueTypeFont) 
-is available on the system:</font></i><font face="Arial"><br>
-<b>defaultfont = SansSerif<br>
-defaultfontstyle = 0<br>
-defaultfontsize = 12</b></font></p>
-<p><font face="Arial"><i>Default maximal node width in pixels:<br>
-</i><b>max_node_width = 600</b></font></p>
-<p><font face="Arial"><i>Standard edge color:<br>
-</i><b>standardedgecolor = #808080</b></font></p>
-<p><font face="Arial"><i>Standard edge style -- &quot;linear&quot; or &quot;bezier&quot;:<br>
-</i><b>standardedgestyle = bezier</b></font></p>
-<p><font face="Arial"><i>Standard cloud color:<br>
-</i><b>standardcloudcolor = #f0f0f0</b></font></p>
-<p><font face="Arial"><i>Standard link color:<br>
-</i><b>standardlinkcolor = #b0b0b0</b></font></p>
-<p><font face="Arial"><i>Standard background color:<br>
-</i><b>standardbackgroundcolor = #ffffff</b></font></p>
-<p><font face="Arial"><i>Look &amp; Feel to use. &quot;metal&quot;, &quot;windows&quot;, &quot;motif&quot; are 
-supported on all platforms; &quot;mac&quot; is available only on MacOS. default means that 
-the default look and feel is used.&nbsp; If there are problems with the look and 
-feel, then choose &quot;nothing&quot; here. It work for applets.<br>
-</i><b>lookandfeel = windows</b></font></p>
-<p><font face="Arial"><i>Initial map size:<br>
-</i><b>mapxsize = 1000<br>
-mapysize = 3200</b></font></p>
-<p><font face="Arial"><i>How many items to keep in the recent-files list:</i><b><i><br>
-</i>last_opened_list_length = 25</b></font></p>
-<p><i><font face="Arial">Options for the window that opens up to edit long 
-nodes:</font></i><font face="Arial"><br>
-<b>el__buttons_position = above<br>
-el__position_window_below_node = true<br>
-el__min_default_window_height = 150<br>
-el__max_default_window_height = 500<br>
-el__min_default_window_width = 600<br>
-el__max_default_window_width = 600<br>
-el__enter_confirms_by_default = true</b></font></p>
-<p><i><font face="Arial">Next comes a long section of keystroke definitions. 
-Valid modifiers are: <br>
-&nbsp;shift | control | alt | meta | button1 | button2 | button3 </font></i></p>
-<blockquote>
-  <p><font face="Arial"><i>Menu accelerators:<br>
-  </i><b>keystroke_newMap = control N<br>
-  keystroke_open = control O<br>
-  keystroke_save = control S<br>
-  keystroke_saveAs = control A<br>
-  keystroke_print = control P<br>
-  keystroke_close = control W <br>
-  keystroke_quit = control Q<br>
-  keystroke_export_to_html = control E <br>
-  keystroke_export_branch_to_html = control H<br>
-  keystroke_open_first_in_history = control shift W<br>
-&nbsp;</b></font></p>
-  <p><font face="Arial"><i>Map and mode switching:<br>
-  </i></font><b><font face="Arial">keystroke_previousMap = control LEFT <br>
-  keystroke_nextMap = control RIGHT </font></b></p>
-  <p><b><font face="Arial">keystroke_mode_MindMap = alt 1<br>
-  keystroke_mode_Browse = alt 2 <br>
-  keystroke_mode_File = alt 3</font></b></p>
-  <p><font face="Arial"><i>Node editing commands:<br>
-  </i></font><b><font face="Arial">keystroke_node_toggle_italic = control I<br>
-  keystroke_node_toggle_boldface = control B<br>
-  keystroke_node_toggle_cloud = control shift B</font></b></p>
-  <p><font face="Arial"><b>keystroke_cut = control X<br>
-  keystroke_copy = control C<br>
-  keystroke_copy_single = control Y<br>
-  keystroke_paste = control V </b></font></p>
-  <p><font face="Arial"><i>(You can change the following key to DELETE, but it's 
-  disabled because of the lack of an Undo function:)<br>
-  </i><b>keystroke_remove = none</b></font></p>
-  <p><font face="Arial"><b>keystroke_edit = F2<br>
-  keystroke_edit_long_node = alt ENTER<br>
-  keystroke_join_nodes = control J<br>
-  keystroke_toggle_folded = SPACE<br>
-  keystroke_toggle_children_folded = control SPACE<br>
-  keystroke_set_link_by_filechooser = control shift K<br>
-  keystroke_set_link_by_textfield = control K<br>
-  keystroke_set_image_by_filechooser = alt K<br>
-  keystroke_node_up = control UP<br>
-  keystroke_node_down = control DOWN<br>
-  keystroke_node_increase_font_size = control L<br>
-  keystroke_node_decrease_font_size = control M<br>
-  keystroke_branch_increase_font_size = control shift L<br>
-  keystroke_branch_decrease_font_size = control shift M<br>
-  keystroke_export_branch = alt A</b></font></p>
-  <p><b><font face="Arial">keystroke_node_color = alt C<br>
-  keystroke_node_color_blend = alt B<br>
-  keystroke_edge_color = alt E</font></b></p>
-  <p><font face="Arial"><i>Node navigation commands:<br>
-  </i><b>keystroke_moveToRoot = ESCAPE<br>
-  keystroke_move_up = E<br>
-  keystroke_move_down = D<br>
-  keystroke_move_left = S<br>
-  keystroke_move_right = F<br>
-  keystroke_follow_link = control ENTER</b></font></p>
-  <p><font face="Arial"><i><a name="newnode"></a>New node commands:<br>
-  </i><b>keystroke_add = ENTER<br>
-  keystroke_add_child = INSERT</b></font></p>
-  <p><i>(Mac users may want to edit this to control ENTER. Don't forget to 
-  remove the # from the beginning of the line.)</i></p>
-  <p><font face="Arial"><b><br>
-  keystroke_add_sibling_before = shift ENTER</b></font></p>
-  <p><font face="Arial"><i>Search:</i></font><b><font face="Arial"><br>
-  keystroke_find = ctrl F<br>
-  keystroke_find_next = ctrl G</font></b></p>
-  <p><font face="Arial"><i>Apply patterns. There is no limiting number of the 
-  pattern, you can have as many keystrokes for patterns as you want. F10 and 
-  beyond aren't used in the default because F10 has a special function on 
-  Windows.<br>
-  </i><b>keystroke_apply_pattern_1 = F1<br>
-  keystroke_apply_pattern_2 = control shift N<br>
-  keystroke_apply_pattern_3 = F3<br>
-  keystroke_apply_pattern_4 = F4<br>
-  keystroke_apply_pattern_5 = F5<br>
-  keystroke_apply_pattern_6 = F6<br>
-  keystroke_apply_pattern_7 = F7<br>
-  keystroke_apply_pattern_8 = F8<br>
-  keystroke_apply_pattern_9 = F9<br>
-  keystroke_apply_pattern_10 = control F1<br>
-  keystroke_apply_pattern_11 = control F2<br>
-  keystroke_apply_pattern_12 = control F3<br>
-  keystroke_apply_pattern_13 = control F4<br>
-  keystroke_apply_pattern_14 = control F5<br>
-  keystroke_apply_pattern_15 = control F6<br>
-  keystroke_apply_pattern_16 = control F7<br>
-  keystroke_apply_pattern_17 = control F8<br>
-  keystroke_apply_pattern_18 = control F9</b></font></p>
-  <p><b><font face="Arial">keystroke_zoom_out = alt UP<br>
-  keystroke_zoom_in = alt DOWN</font></b></p>
-</blockquote>
-<p><font face="Arial"><i>Key typing: if enabled enters node editing. Default is 
-to enable this mode:<br>
-</i><b>disable_key_type = false</b></font></p>
-<p><font face="Arial"><i>Key typing: overwrites content (false) / creates new 
-sibling (true). (Requires: disable_key_type = false):<br>
-</i><b>key_type_adds_new = false</b></font></p>
-<p><font face="Arial"><i>Tell if HTML exported from Freeplane should contain 
-icons. The trouble with icons is that quite often the links to icons will not be 
-found in the exported HTML.<br>
-</i><b>export_icons_in_html = false</b></font></p>
-<p><font face="Arial"><i>Selection time delay of nodes when mouse is over (in 
-msec). Change this value to 1 if you want direct selection on mouse over.<br>
-</i><b>time_for_delayed_selection=500</b></font></p>
-<p><font face="Arial"><i>Autosave options:</i></font></p>
-<blockquote>
-  <p><font face="Arial"><i>Time between two consecutive automatic saving actions 
-  (in msec). To disable automatic saving set this number to 2000000000.<br>
-  </i><b>time_for_automatic_save=60000</b></font></p>
-  <p><font face="Arial"><i>If the autosave files should be deleted automatically 
-  on a normal shutdown of Freeplane set the following variable to true: <br>
-  </i><b>delete_automatic_saves_at_exit=true</b></font></p>
-  <p><font face="Arial"><i>Number of different files to store the autosave maps 
-  into. The first automatic save is done in the first file, and so on, up to the 
-  n+1 save, which is again stored in the first file (cyclic):<br>
-  </i><b>number_of_different_files_for_automatic_save=10</b></font></p>
-  <p><font face="Arial"><i>Autosave path. To change the default path (this is &quot;java.io.tmpdir&quot; 
-  of Java), enter a directory path here.&nbsp; freeplane_home stands for the 
-  directory where the auto.properties are. ( * default points to java.io.tmpdir):<br>
-  </i><b>path_to_automatic_saves=freeplane_home</b></font></p>
-  <p>&nbsp;</p>
-</blockquote>
-
-</body>
-
-</html>
+<html>
+
+<head>
+<meta name="keywords" content="user.properties,language,locking,default font,node color,colors,look and feel,keystrokes,autosave">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>user.properties</title>
+</head>
+
+<body>
+
+<h3><font color="#669900" face="Arial">The user.properties file </font></h3>
+<p><font face="Arial">The user.properties file has many useful options.
+Unfortunately, it can be scary for novices. Here's a selective look at some of
+the choices you might want to adjust. </font></p>
+<blockquote>
+  <p><font face="Arial">To change the options, you'll copy the file &quot;user.properties&quot;
+  from Freeplane's program directory to the folder &quot;freeplane&quot; in your home
+  directory and edit it using a text editor. You surely know your home directory
+  if you're working on Linux. On Windows 2000, it's typically &quot;C:\Documents and
+  Settings\&lt;UserName&gt;\&quot;, on Windows 95, it's &quot;C:\WINDOWS\&quot;. Edit &quot;user.properties&quot;
+  in the folder &quot;freeplane&quot; of your home directory. </font></p>
+  <p><font face="Arial">When you start out, all of the options are commented out
+  with a single &quot;#&quot; symbol. To change an option, remove the &quot;#&quot; and edit the
+  line. Then save the file and restart Freeplane. (Comments in the file are
+  marked by &quot;##&quot;. You should not remove the comment symbols from those lines.)</font></p>
+  <p><font face="Arial">These notes apply to version 0.7.1. The file is likely
+  to be different in future versions.</font></p>
+</blockquote>
+<p><font face="Arial">The value shown in the examples is the default value, the
+one you'll get if you leave the line commented out.</font></p>
+<p><font face="Arial"><i>Language. Supported are &quot;en&quot;, &quot;de&quot; and &quot;fr&quot;:<br>
+</i><b>language = en</b></font></p>
+<p><font face="Arial"><i>Experimental file locking (&quot;true&quot; or &quot;false&quot;):<br>
+</i><b>experimental_file_locking_on = false</b></font></p>
+<p><font face="Arial"><i>Default node style -- &quot;fork&quot; or &quot;bubble&quot;:<br>
+</i><b>standardnodestyle = fork</b></font></p>
+<p><font face="Arial"><i>Standard node color in HTML #RRGGBB notation:<br>
+</i><b>standardnodecolor = #000000</b></font></p>
+<ul>
+  <li><font face="Arial">All color references here are in HTML notation. Many
+  references to HTML color codes are on the Internet. A handy chart, and links
+  to some color tools, is at <a href="http://www.lissaexplains.com/color.shtml">
+  http://www.lissaexplains.com/color.shtml</a>.</font></li>
+</ul>
+<p><i><font face="Arial">Default node font. This will only work if the font (TrueTypeFont)
+is available on the system:</font></i><font face="Arial"><br>
+<b>defaultfont = SansSerif<br>
+defaultfontstyle = 0<br>
+defaultfontsize = 12</b></font></p>
+<p><font face="Arial"><i>Default maximal node width in pixels:<br>
+</i><b>max_node_width = 600</b></font></p>
+<p><font face="Arial"><i>Standard edge color:<br>
+</i><b>standardedgecolor = #808080</b></font></p>
+<p><font face="Arial"><i>Standard edge style -- &quot;linear&quot; or &quot;bezier&quot;:<br>
+</i><b>standardedgestyle = bezier</b></font></p>
+<p><font face="Arial"><i>Standard cloud color:<br>
+</i><b>standardcloudcolor = #f0f0f0</b></font></p>
+<p><font face="Arial"><i>Standard link color:<br>
+</i><b>standardlinkcolor = #b0b0b0</b></font></p>
+<p><font face="Arial"><i>Standard background color:<br>
+</i><b>standardbackgroundcolor = #ffffff</b></font></p>
+<p><font face="Arial"><i>Look &amp; Feel to use. &quot;metal&quot;, &quot;windows&quot;, &quot;motif&quot; are
+supported on all platforms; &quot;mac&quot; is available only on MacOS. default means that
+the default look and feel is used.&nbsp; If there are problems with the look and
+feel, then choose &quot;nothing&quot; here. It work for applets.<br>
+</i><b>lookandfeel = windows</b></font></p>
+<p><font face="Arial"><i>Initial map size:<br>
+</i><b>mapxsize = 1000<br>
+mapysize = 3200</b></font></p>
+<p><font face="Arial"><i>How many items to keep in the recent-files list:</i><b><i><br>
+</i>last_opened_list_length = 25</b></font></p>
+<p><i><font face="Arial">Options for the window that opens up to edit long
+nodes:</font></i><font face="Arial"><br>
+<b>el__buttons_position = above<br>
+el__position_window_below_node = true<br>
+el__min_default_window_height = 150<br>
+el__max_default_window_height = 500<br>
+el__min_default_window_width = 600<br>
+el__max_default_window_width = 600<br>
+el__enter_confirms_by_default = true</b></font></p>
+<p><i><font face="Arial">Next comes a long section of keystroke definitions.
+Valid modifiers are: <br>
+&nbsp;shift | control | alt | meta | button1 | button2 | button3 </font></i></p>
+<blockquote>
+  <p><font face="Arial"><i>Menu accelerators:<br>
+  </i><b>keystroke_newMap = control N<br>
+  keystroke_open = control O<br>
+  keystroke_save = control S<br>
+  keystroke_saveAs = control A<br>
+  keystroke_print = control P<br>
+  keystroke_close = control W <br>
+  keystroke_quit = control Q<br>
+  keystroke_export_to_html = control E <br>
+  keystroke_export_branch_to_html = control H<br>
+  keystroke_open_first_in_history = control shift W<br>
+&nbsp;</b></font></p>
+  <p><font face="Arial"><i>Map and mode switching:<br>
+  </i></font><b><font face="Arial">keystroke_previousMap = control LEFT <br>
+  keystroke_nextMap = control RIGHT </font></b></p>
+  <p><b><font face="Arial">keystroke_mode_MindMap = alt 1<br>
+  keystroke_mode_Browse = alt 2 <br>
+  keystroke_mode_File = alt 3</font></b></p>
+  <p><font face="Arial"><i>Node editing commands:<br>
+  </i></font><b><font face="Arial">keystroke_node_toggle_italic = control I<br>
+  keystroke_node_toggle_boldface = control B<br>
+  keystroke_node_toggle_cloud = control shift B</font></b></p>
+  <p><font face="Arial"><b>keystroke_cut = control X<br>
+  keystroke_copy = control C<br>
+  keystroke_copy_single = control Y<br>
+  keystroke_paste = control V </b></font></p>
+  <p><font face="Arial"><i>(You can change the following key to DELETE, but it's
+  disabled because of the lack of an Undo function:)<br>
+  </i><b>keystroke_remove = none</b></font></p>
+  <p><font face="Arial"><b>keystroke_edit = F2<br>
+  keystroke_edit_long_node = alt ENTER<br>
+  keystroke_join_nodes = control J<br>
+  keystroke_toggle_folded = SPACE<br>
+  keystroke_toggle_children_folded = control SPACE<br>
+  keystroke_set_link_by_filechooser = control shift K<br>
+  keystroke_set_link_by_textfield = control K<br>
+  keystroke_set_image_by_filechooser = alt K<br>
+  keystroke_node_up = control UP<br>
+  keystroke_node_down = control DOWN<br>
+  keystroke_node_increase_font_size = control L<br>
+  keystroke_node_decrease_font_size = control M<br>
+  keystroke_branch_increase_font_size = control shift L<br>
+  keystroke_branch_decrease_font_size = control shift M<br>
+  keystroke_export_branch = alt A</b></font></p>
+  <p><b><font face="Arial">keystroke_node_color = alt C<br>
+  keystroke_node_color_blend = alt B<br>
+  keystroke_edge_color = alt E</font></b></p>
+  <p><font face="Arial"><i>Node navigation commands:<br>
+  </i><b>keystroke_moveToRoot = ESCAPE<br>
+  keystroke_move_up = E<br>
+  keystroke_move_down = D<br>
+  keystroke_move_left = S<br>
+  keystroke_move_right = F<br>
+  keystroke_follow_link = control ENTER</b></font></p>
+  <p><font face="Arial"><i><a name="newnode"></a>New node commands:<br>
+  </i><b>keystroke_add = ENTER<br>
+  keystroke_add_child = INSERT</b></font></p>
+  <p><i>(Mac users may want to edit this to control ENTER. Don't forget to
+  remove the # from the beginning of the line.)</i></p>
+  <p><font face="Arial"><b><br>
+  keystroke_add_sibling_before = shift ENTER</b></font></p>
+  <p><font face="Arial"><i>Search:</i></font><b><font face="Arial"><br>
+  keystroke_find = ctrl F<br>
+  keystroke_find_next = ctrl G</font></b></p>
+  <p><font face="Arial"><i>Apply patterns. There is no limiting number of the
+  pattern, you can have as many keystrokes for patterns as you want. F10 and
+  beyond aren't used in the default because F10 has a special function on
+  Windows.<br>
+  </i><b>keystroke_apply_pattern_1 = F1<br>
+  keystroke_apply_pattern_2 = control shift N<br>
+  keystroke_apply_pattern_3 = F3<br>
+  keystroke_apply_pattern_4 = F4<br>
+  keystroke_apply_pattern_5 = F5<br>
+  keystroke_apply_pattern_6 = F6<br>
+  keystroke_apply_pattern_7 = F7<br>
+  keystroke_apply_pattern_8 = F8<br>
+  keystroke_apply_pattern_9 = F9<br>
+  keystroke_apply_pattern_10 = control F1<br>
+  keystroke_apply_pattern_11 = control F2<br>
+  keystroke_apply_pattern_12 = control F3<br>
+  keystroke_apply_pattern_13 = control F4<br>
+  keystroke_apply_pattern_14 = control F5<br>
+  keystroke_apply_pattern_15 = control F6<br>
+  keystroke_apply_pattern_16 = control F7<br>
+  keystroke_apply_pattern_17 = control F8<br>
+  keystroke_apply_pattern_18 = control F9</b></font></p>
+  <p><b><font face="Arial">keystroke_zoom_out = alt UP<br>
+  keystroke_zoom_in = alt DOWN</font></b></p>
+</blockquote>
+<p><font face="Arial"><i>Key typing: if enabled enters node editing. Default is
+to enable this mode:<br>
+</i><b>disable_key_type = false</b></font></p>
+<p><font face="Arial"><i>Key typing: overwrites content (false) / creates new
+sibling (true). (Requires: disable_key_type = false):<br>
+</i><b>key_type_adds_new = false</b></font></p>
+<p><font face="Arial"><i>Tell if HTML exported from Freeplane should contain
+icons. The trouble with icons is that quite often the links to icons will not be
+found in the exported HTML.<br>
+</i><b>export_icons_in_html = false</b></font></p>
+<p><font face="Arial"><i>Selection time delay of nodes when mouse is over (in
+msec). Change this value to 1 if you want direct selection on mouse over.<br>
+</i><b>time_for_delayed_selection=500</b></font></p>
+<p><font face="Arial"><i>Autosave options:</i></font></p>
+<blockquote>
+  <p><font face="Arial"><i>Time between two consecutive automatic saving actions
+  (in msec). To disable automatic saving set this number to 2000000000.<br>
+  </i><b>time_for_automatic_save=60000</b></font></p>
+  <p><font face="Arial"><i>If the autosave files should be deleted automatically
+  on a normal shutdown of Freeplane set the following variable to true: <br>
+  </i><b>delete_automatic_saves_at_exit=true</b></font></p>
+  <p><font face="Arial"><i>Number of different files to store the autosave maps
+  into. The first automatic save is done in the first file, and so on, up to the
+  n+1 save, which is again stored in the first file (cyclic):<br>
+  </i><b>number_of_different_files_for_automatic_save=10</b></font></p>
+  <p><font face="Arial"><i>Autosave path. To change the default path (this is &quot;java.io.tmpdir&quot;
+  of Java), enter a directory path here.&nbsp; freeplane_home stands for the
+  directory where the auto.properties are. ( * default points to java.io.tmpdir):<br>
+  </i><b>path_to_automatic_saves=freeplane_home</b></font></p>
+  <p>&nbsp;</p>
+</blockquote>
+
+</body>
+
+</html>

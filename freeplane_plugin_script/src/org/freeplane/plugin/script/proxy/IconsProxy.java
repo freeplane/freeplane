@@ -136,6 +136,10 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	public boolean removeIcon(final String iconID) {
 		return remove(iconID);
 	}
+	
+	public void clear() {
+	    getIconController().removeAllIcons(getDelegate());
+	}
 
     /** make <code>if (node.icons) println "has some icon"</code> work. */
     public boolean asBoolean() {

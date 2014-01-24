@@ -21,13 +21,15 @@ package org.freeplane.view.swing.ui;
 
 import java.awt.event.MouseEvent;
 
-import javax.swing.SwingUtilities;
+import javax.swing.JPopupMenu;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
 
@@ -36,22 +38,41 @@ import org.freeplane.view.swing.map.ZoomableLabel;
  * Oct 1, 2011
  */
 public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
-    @Override
+	protected final NodeSelector nodeSelector;
+
+	public DetailsViewMouseListener() {
+		nodeSelector = new NodeSelector();
+	}
+
+	@Override
     public void mouseClicked(MouseEvent e) {
-    	final NodeView nodeView = (NodeView)SwingUtilities.getAncestorOfClass(NodeView.class, e.getComponent());
-    	if(nodeView == null)
-    		return;
-    	MapView mapView = nodeView.getMap();
-    	mapView.select();
-    	final NodeModel model = nodeView.getModel();
+		final ModeController mc = Controller.getCurrentController().getModeController();
+		if (Compat.isMacOsX()) {
+			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+			if (popupmenu.isShowing()) {
+				return;
+			}
+		}
+		final NodeView nodeView = nodeSelector.getRelatedNodeView(e);
+		if (nodeView == null)
+			return;
+		final NodeModel model = nodeView.getModel();
     	TextController controller = TextController.getController();
-    	final ZoomableLabel component = (ZoomableLabel) e.getComponent();
-    	if(e.getX() < component.getIconWidth())
+		if (eventFromHideDisplayArea(e))
     		controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
-    	else if(canEdit(controller) && isEditingStartEventt(e)){
-    		((MTextController) controller).editDetails(model, e, e.isAltDown());
-    	}
-    	else super.mouseClicked(e);
+		else {
+			nodeSelector.extendSelection(e);
+			if (canEdit(controller) && isEditingStartEvent(e)) {
+				((MTextController) controller).editDetails(model, e, e.isAltDown());
+			}
+			else
+				super.mouseClicked(e);
+		}
+    }
+
+	protected boolean eventFromHideDisplayArea(MouseEvent e) {
+		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
+	    return e.getX() < component.getIconWidth();
     }
 
 	private boolean canEdit(TextController controller) {
@@ -62,7 +83,51 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 		}
 	}
 
-	private boolean isEditingStartEventt(MouseEvent e) {
+	private boolean isEditingStartEvent(MouseEvent e) {
 		return e.getClickCount() == 2;
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		new NodePopupMenuDisplayer().showNodePopupMenu(e);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		new NodePopupMenuDisplayer().showNodePopupMenu(e);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		super.mouseMoved(e);
+		if (!eventFromHideDisplayArea(e) && nodeSelector.isRelevant(e))
+			nodeSelector.createTimer(e);
+		else
+			nodeSelector.stopTimerForDelayedSelection();
+	}
+
+	/**
+	 * Invoked when a mouse button is pressed on a component and then
+	 * dragged.
+	 */
+	@Override
+	public void mouseDragged(final MouseEvent e) {
+		nodeSelector.stopTimerForDelayedSelection();
+		nodeSelector.selectSingleNode(e);
+	}
+
+	@Override
+	public void mouseEntered(final MouseEvent e) {
+		if (!eventFromHideDisplayArea(e) && nodeSelector.isRelevant(e)) {
+			mouseMoved(e);
+		}
+		else
+			nodeSelector.stopTimerForDelayedSelection();
+	}
+
+	@Override
+	public void mouseExited(final MouseEvent e) {
+		nodeSelector.stopTimerForDelayedSelection();
+		nodeSelector.trackWindowForComponent(e.getComponent());
 	}
 }
