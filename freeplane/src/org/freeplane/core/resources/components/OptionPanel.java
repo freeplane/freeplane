@@ -1,3 +1,20 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2003 -2013 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.freeplane.core.resources.components;
 
 import java.awt.BorderLayout;
@@ -40,6 +57,7 @@ public class OptionPanel {
 		void writeProperties(Properties props);
 	}
 
+	final static private String OPTION_PANEL_RESOURCE_PREFIX = "OptionPanel.";
 	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
@@ -172,7 +190,7 @@ public class OptionPanel {
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
-		storage.setPanel("OptionPanel." + selectedPanel);
+		storage.setPanel(OPTION_PANEL_RESOURCE_PREFIX + selectedPanel);
 		storage.storeDialogPositions(topDialog, OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		topDialog.setVisible(false);
 		topDialog.dispose();
@@ -204,8 +222,8 @@ public class OptionPanel {
 	}
 
 	void setSelectedPanel(final String panel) {
-		if (panel.startsWith("OptionPanel.")) {
-			selectedPanel = panel.substring(12); // 12 Letters in OptionPanel.
+		if (panel.startsWith(OPTION_PANEL_RESOURCE_PREFIX)) {
+			selectedPanel = panel.substring(OPTION_PANEL_RESOURCE_PREFIX.length());
 		}
 	}
 }
