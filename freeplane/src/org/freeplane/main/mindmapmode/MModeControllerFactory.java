@@ -265,18 +265,18 @@ public class MModeControllerFactory {
 			// ignore -> default is true
 		}
 
-		OneTouchCollapseResizer otcr = new OneTouchCollapseResizer(Direction.RIGHT);
-		resisableTabs.add(otcr);
+		OneTouchCollapseResizer propertyPanelResizer = new OneTouchCollapseResizer(Direction.RIGHT);
+		resisableTabs.add(propertyPanelResizer);
 		//resisableTabs.add(new JResizer(Direction.RIGHT));
 		resisableTabs.add(tabs);
-		otcr.addResizerListener(new ResizerListener() {
+		propertyPanelResizer.addResizerListener(new ResizerListener() {
 			public void componentResized(ResizeEvent event) {
 				if(event.getComponent().equals(tabs)) {
 					ResourceController.getResourceController().setProperty(TABBEDPANE_VIEW_WIDTH, String.valueOf(((JComponent) event.getComponent()).getPreferredSize().width));
 				}
 			}
 		});
-		otcr.addCollapseListener(new ComponentCollapseListener() {
+		propertyPanelResizer.addCollapseListener(new ComponentCollapseListener() {
 			public void componentCollapsed(ResizeEvent event) {
 				if(event.getComponent().equals(tabs)) {
 					ResourceController.getResourceController().setProperty(TABBEDPANE_VIEW_COLLAPSED, "true");
@@ -299,7 +299,7 @@ public class MModeControllerFactory {
 		catch (Exception e) {
 			// blindly accept
 		}
-		otcr.setExpanded(expanded);
+		propertyPanelResizer.setExpanded(expanded);
 		resisableTabs.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "styleScrollPaneVisible");
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		KeyBindingProcessor keyProcessor = new KeyBindingProcessor();
