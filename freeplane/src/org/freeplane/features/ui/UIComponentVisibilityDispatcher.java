@@ -24,6 +24,7 @@ import java.awt.Container;
 import javax.swing.JComponent;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.OneTouchCollapseResizer;
 
 /**
  * @author Dimitry Polivaev
@@ -67,12 +68,24 @@ public class UIComponentVisibilityDispatcher {
     }
 
 	public void setVisible(final boolean visible) {
-	    final ResourceController resourceController = ResourceController.getResourceController();
-	    resourceController.setProperty(getPropertyName(), visible);
-		component.setVisible(visible);
+	    setProperty(visible);
+		makeComponentVisible(visible);
 		final Container parent = component.getParent();
 		if(parent != null)
 			((JComponent) parent).revalidate();
+    }
+
+	public void setProperty(final boolean visible) {
+	    final ResourceController resourceController = ResourceController.getResourceController();
+	    resourceController.setProperty(getPropertyName(), visible);
+    }
+
+	private void makeComponentVisible(final boolean visible) {
+		final OneTouchCollapseResizer resizer = OneTouchCollapseResizer.findResizerFor(component);
+		if(resizer == null)
+			component.setVisible(visible);
+		else
+			resizer.setExpanded(visible);
     }
 
 	public String getPropertyName() {

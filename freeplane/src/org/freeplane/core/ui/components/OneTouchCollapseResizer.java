@@ -431,21 +431,18 @@ public class OneTouchCollapseResizer extends JResizer {
 	}
 
 	public static OneTouchCollapseResizer findResizerFor(Component component) {
-		if(component != null) {
-			Component parent = component.getParent();
-			if(parent != null) {
-				if(parent instanceof Container) {
-					Component[] children = ((Container) parent).getComponents();
+				if(component instanceof Container) {
+					Component[] children = ((Container) component).getComponents();
 					for (Component child : children) {
 						if(child instanceof OneTouchCollapseResizer) {
 							return (OneTouchCollapseResizer) child;
 						}
 					}
 				}
+				if(component == null)
+					return null;
+				Component parent = component.getParent();
 				return findResizerFor(parent);
-			}
-		}
-		return null;
 	}
 
 	public interface ComponentCollapseListener {

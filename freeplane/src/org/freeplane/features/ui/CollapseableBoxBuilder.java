@@ -44,15 +44,10 @@ public class CollapseableBoxBuilder {
 	}
 	public Box createBox(final JTabbedPane component) {
 	    Box resisableComponent = Box.createHorizontalBox();
-		final String TABBEDPANE_VIEW_COLLAPSED = "tabbed_pane.collapsed";
+		UIComponentVisibilityDispatcher.install(frameController, resisableComponent, "styleScrollPaneVisible");
+		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.dispatcher(resisableComponent);
 		final String TABBEDPANE_VIEW_WIDTH = "tabbed_pane.width";
-		boolean expanded = true;
-		try {
-			expanded = !Boolean.parseBoolean(ResourceController.getResourceController().getProperty(TABBEDPANE_VIEW_COLLAPSED, "false"));
-		}
-		catch (Exception e) {
-			// ignore -> default is true
-		}
+		final boolean expanded = dispatcher.isVisible();
 
 		OneTouchCollapseResizer propertyPanelResizer = new OneTouchCollapseResizer(Direction.RIGHT);
 		resisableComponent.add(propertyPanelResizer);
@@ -68,13 +63,13 @@ public class CollapseableBoxBuilder {
 		propertyPanelResizer.addCollapseListener(new ComponentCollapseListener() {
 			public void componentCollapsed(ResizeEvent event) {
 				if(event.getComponent().equals(component)) {
-					ResourceController.getResourceController().setProperty(TABBEDPANE_VIEW_COLLAPSED, "true");
+					dispatcher.setProperty(false);
 				}
 			}
 
 			public void componentExpanded(ResizeEvent event) {
 				if(event.getComponent().equals(component)) {
-					ResourceController.getResourceController().setProperty(TABBEDPANE_VIEW_COLLAPSED, "false");
+					dispatcher.setProperty(true);
 				}
 			}
 		});
@@ -89,7 +84,6 @@ public class CollapseableBoxBuilder {
 			// blindly accept
 		}
 		propertyPanelResizer.setExpanded(expanded);
-		UIComponentVisibilityDispatcher.install(frameController, resisableComponent, "styleScrollPaneVisible");
 	    return resisableComponent;
     }
 }
