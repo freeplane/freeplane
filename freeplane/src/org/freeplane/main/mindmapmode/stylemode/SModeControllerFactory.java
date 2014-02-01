@@ -73,6 +73,7 @@ import org.freeplane.features.styles.mindmapmode.StyleEditorPanel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ToggleToolbarAction;
+import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MapViewController;
@@ -143,7 +144,7 @@ public class SModeControllerFactory {
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
-		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(viewController, toolBar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
 		    .getController()).getIconToolBarScrollPane());
@@ -183,12 +184,12 @@ public class SModeControllerFactory {
 					}
 				});
 			}
-			
+
 
 			public void onDeselect(final NodeModel node) {
 			}
 		});
-		
+
 		mapController.addNodeChangeListener(new INodeChangeListener() {
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();
@@ -197,8 +198,8 @@ public class SModeControllerFactory {
 				}
 			}
 		});
-		
-		
+
+
 		final JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);

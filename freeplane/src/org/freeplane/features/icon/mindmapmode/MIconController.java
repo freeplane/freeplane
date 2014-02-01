@@ -64,7 +64,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 
 /**
  * @author Dimitry Polivaev
@@ -138,7 +139,8 @@ public class MIconController extends IconController {
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
-		iconToolBarScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "leftToolbarVisible");
+		FrameController frameController = (FrameController) modeController.getController().getViewController();
+		UIComponentVisibilityDispatcher.install(frameController, iconToolBarScrollPane, "leftToolbarVisible");
 		createIconActions(modeController);
 		createPreferences();
 		modeController.addMenuContributor(new IMenuContributor() {
@@ -243,7 +245,7 @@ public class MIconController extends IconController {
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
-		
+
 		for (final AFreeplaneAction iconAction : actions) {
 			final IIconInformation info = (IIconInformation) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {

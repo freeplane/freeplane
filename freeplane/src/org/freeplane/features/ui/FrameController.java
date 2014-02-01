@@ -169,7 +169,7 @@ abstract public class FrameController implements ViewController {
 		}
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-		statusPanel.putClientProperty(VISIBLE_PROPERTY_KEY, "status_visible");
+		UIComponentVisibilityDispatcher.install(this, statusPanel, "toolbarVisible");
 		status = new JLabel();
 		status.setBorder(BorderFactory.createEtchedBorder());
 		statusPanel.add(status);
@@ -392,7 +392,7 @@ abstract public class FrameController implements ViewController {
 			if (newToolBars != null) {
 				int i = 0;
 				for (final JComponent toolBar : newToolBars) {
-					toolBar.setVisible(isToolbarVisible(toolBar));
+					UIComponentVisibilityDispatcher.dispatcher(toolBar).resetVisible();
 					toolbarPanel[j].add(toolBar, i++);
 				}
 				toolbarPanel[j].revalidate();
@@ -472,7 +472,7 @@ abstract public class FrameController implements ViewController {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
 				    .getToolBars(j);
 				for (final JComponent toolBar : toolBars) {
-					toolBar.setVisible(isToolbarVisible(toolBar));
+					UIComponentVisibilityDispatcher.dispatcher(toolBar).resetVisible();
 				}
 			}
 			showWindows(visibleFrames);
@@ -488,7 +488,7 @@ abstract public class FrameController implements ViewController {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
 				    .getToolBars(j);
 				for (final JComponent toolBar : toolBars) {
-					toolBar.setVisible(isToolbarVisible(toolBar));
+					UIComponentVisibilityDispatcher.dispatcher(toolBar).resetVisible();
 				}
 			}
 			showWindows(visibleFrames);
@@ -514,34 +514,11 @@ abstract public class FrameController implements ViewController {
 	    	child.setVisible(true);
     }
 
-	boolean isToolbarVisible(final JComponent toolBar) {
-		if(toolBar == null) {
-			return false;
-		}
-		final String completeKeyString = completeVisiblePropertyKey(toolBar);
-		if (completeKeyString == null) {
-			return true;
-		}
-		return !"false".equals(ResourceController.getResourceController().getProperty(completeKeyString, "true"));
-	}
-
 	public String completeVisiblePropertyKey(final JComponent toolBar) {
 		if(toolBar == null) {
 			return null;
 		}
-		final Object key = toolBar.getClientProperty(VISIBLE_PROPERTY_KEY);
-		if (key == null) {
-			return null;
-		}
-		final String keyString = key.toString();
-		final String completeKeyString;
-		if (isFullScreenEnabled()) {
-			completeKeyString = keyString + ".fullscreen";
-		}
-		else {
-			completeKeyString = keyString;
-		}
-		return getPropertyKeyPrefix() + completeKeyString;
+		return UIComponentVisibilityDispatcher.dispatcher(toolBar).completeVisiblePropertyKey();
 	}
 
 	public boolean isFullScreenEnabled() {
