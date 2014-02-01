@@ -426,7 +426,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	}
 
 	@Override
-	protected IExtension createExtension(final NodeModel node) {
+    public IExtension createExtension(final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
 		final MapModel map = node.getMap();
