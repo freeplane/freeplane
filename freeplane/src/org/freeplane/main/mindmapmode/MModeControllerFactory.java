@@ -35,6 +35,7 @@ import org.freeplane.core.ui.KeyBindingProcessor;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.TextUtils;
@@ -250,7 +251,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, frameController
 		    .getStatusBar());
 		final JTabbedPane formattingPanel = new JTabbedPane();
-		Box resisableTabs = new CollapseableBoxBuilder(frameController).createBox(formattingPanel);
+		Box resisableTabs = new CollapseableBoxBuilder(frameController).setPropertyNameBase("styleScrollPaneVisible").createBox(formattingPanel, Direction.RIGHT);
 		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		KeyBindingProcessor keyProcessor = new KeyBindingProcessor();
 		modeController.addExtension(KeyBindingProcessor.class, keyProcessor);

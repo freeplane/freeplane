@@ -67,7 +67,6 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JResizer.Direction;
-import org.freeplane.core.ui.components.OneTouchCollapseResizer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
@@ -154,6 +153,7 @@ abstract public class FrameController implements ViewController {
 	public static Icon dateTimeIcon;
 	public static Icon linkIcon;
 	public static Icon localLinkIcon;
+	private Box ribbonBox;
 
 	public FrameController(Controller controller,  final IMapViewManager mapViewManager,
 	                      final String propertyKeyPrefix) {
@@ -238,13 +238,9 @@ abstract public class FrameController implements ViewController {
 		else {
 			JPanel northPanel = new JPanel();
 			northPanel.setLayout(new BorderLayout());
-
-			Box resizableTabs = Box.createVerticalBox();
-			resizableTabs.add(ribbon);
-			final OneTouchCollapseResizer ribbonCollapser = new OneTouchCollapseResizer(Direction.UP);
-			ribbonCollapser.setSliderLocked(true);
-			resizableTabs.add(ribbonCollapser);
-			northPanel.add(resizableTabs, BorderLayout.NORTH);
+			FrameController frameController = (FrameController) controller.getViewController();
+			ribbonBox = new CollapseableBoxBuilder(frameController).setPropertyNameBase("menubarVisible").setResizeable(false).createBox(ribbon, Direction.UP);
+			northPanel.add(ribbonBox, BorderLayout.NORTH);
 			northPanel.add(toolbarPanel[TOP], BorderLayout.CENTER);
 
 			getContentPane().add(northPanel, BorderLayout.NORTH);
@@ -410,15 +406,20 @@ abstract public class FrameController implements ViewController {
 	}
 
 	private void setUIComponentsVisible(IMapViewManager iMapViewManager, boolean visible) {
-	    getFreeplaneMenuBar().setVisible(visible);
+	    setMenubarVisible(visible);
     }
 
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setMenubarVisible(final boolean visible) {
-		final FreeplaneMenuBar freeplaneMenuBar = getFreeplaneMenuBar();
 		setComponentVisibleProperty("menubar", visible);
-		freeplaneMenuBar.setVisible(visible);
+		if(UITools.useRibbonsMenu()){
+			UIComponentVisibilityDispatcher.dispatcher(ribbonBox).setVisible(visible);
+		}
+		else{
+			final Component freeplaneMenuBar = getFreeplaneMenuBar();
+			freeplaneMenuBar.setVisible(visible);
+		}
 	}
 
 	public void setScrollbarsVisible(final boolean visible) {

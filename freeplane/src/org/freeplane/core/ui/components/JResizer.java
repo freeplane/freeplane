@@ -31,6 +31,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
@@ -44,8 +45,41 @@ public class JResizer extends JComponent {
 	protected boolean sliderLock = false;
 	protected Point point;
 	private int index;
-	public enum Direction {RIGHT, LEFT, UP, DOWN}
-	private Set<ResizerListener> resizeListener = new LinkedHashSet<ResizerListener>();
+	public enum Direction {RIGHT, LEFT, UP, DOWN;
+		public Box createBox() {
+			switch (this) {
+				case RIGHT:
+				case LEFT:
+					return Box.createHorizontalBox();
+				default:
+					return Box.createVerticalBox();
+			}
+		}
+
+		public int getPreferredSize(final Component component) {
+			final Dimension preferredSize = component.getPreferredSize();
+			switch (this) {
+				case RIGHT:
+				case LEFT:
+					return preferredSize.width;
+				default:
+					return preferredSize.height;
+			}
+		}
+
+		public void setPreferredSize(Component component, int size) {
+			switch (this) {
+				case RIGHT:
+				case LEFT:
+					component.setPreferredSize(new Dimension(size, 1));
+					return;
+				default:
+					component.setPreferredSize(new Dimension(1, size));
+			}
+        }
+	}
+
+	private final Set<ResizerListener> resizeListener = new LinkedHashSet<ResizerListener>();
 
 	public JResizer(final Direction d) {
 		setOpaque(true);
@@ -71,7 +105,7 @@ public class JResizer extends JComponent {
 			w = CONTROL_SIZE;
 			setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
 		}
-		
+
 		setPreferredSize(new Dimension(w, h));
 		addMouseListener(new MouseAdapter() {
 
@@ -86,7 +120,7 @@ public class JResizer extends JComponent {
             public void mouseReleased(MouseEvent e) {
 				point = null;
             }
-			
+
 		});
 		addMouseMotionListener(new MouseMotionAdapter() {
 
@@ -112,6 +146,7 @@ public class JResizer extends JComponent {
             }
 
 
+            @Override
             public void mouseDragged(MouseEvent e) {
             	if(sliderLock) {
             		return;
@@ -146,32 +181,32 @@ public class JResizer extends JComponent {
             }
 		});
     }
-	
+
 	public void addResizerListener(ResizerListener listener) {
 		if(listener == null) return;
-		
+
 		synchronized (resizeListener) {
 			resizeListener.add(listener);
 		}
-		
+
 	}
-	
+
 	public void removeResizerListener(ComponentListener listener) {
 		if(listener == null) return;
-		
+
 		synchronized (resizeListener) {
 			resizeListener.remove(listener);
-		}		
+		}
 	}
-	
+
 	public void setSliderLocked(boolean enabled) {
 		this.sliderLock = enabled;
 	}
-	
+
 	public boolean isSliderLocked() {
 		return this.sliderLock;
 	}
-	
+
 	private void fireSizeChanged(Component resizedComponent) {
 		ResizeEvent event = new ResizeEvent(this, resizedComponent);
 		synchronized (this.resizeListener) {
@@ -179,7 +214,7 @@ public class JResizer extends JComponent {
 				listener.componentResized(event);
 			}
 		}
-		
+
 	}
-	
+
 }

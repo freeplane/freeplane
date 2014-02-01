@@ -35,6 +35,11 @@ public class UIComponentVisibilityDispatcher {
 	private final FrameController frameController;
 	private final String key;
 	private final JComponent component;
+	private OneTouchCollapseResizer resizer;
+
+	public void setResizer(OneTouchCollapseResizer resizer) {
+		this.resizer = resizer;
+	}
 
 	public static void install(FrameController frameController, JComponent component, String key){
 		component.putClientProperty(KEY, new UIComponentVisibilityDispatcher(frameController, component, key));
@@ -81,7 +86,6 @@ public class UIComponentVisibilityDispatcher {
     }
 
 	private void makeComponentVisible(final boolean visible) {
-		final OneTouchCollapseResizer resizer = OneTouchCollapseResizer.findResizerFor(component);
 		if(resizer == null)
 			component.setVisible(visible);
 		else

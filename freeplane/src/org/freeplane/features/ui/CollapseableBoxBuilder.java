@@ -19,11 +19,9 @@
  */
 package org.freeplane.features.ui;
 
-import java.awt.Dimension;
+import java.awt.Component;
 
 import javax.swing.Box;
-import javax.swing.JComponent;
-import javax.swing.JTabbedPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JResizer.Direction;
@@ -37,30 +35,65 @@ import org.freeplane.core.ui.components.ResizerListener;
  * 01.02.2014
  */
 public class CollapseableBoxBuilder {
+	private static final int DEFAULT_SIZE = 350;
 	private final FrameController frameController;
+	private String propertyNameBase;
+	private boolean resizeable = true;
+	public CollapseableBoxBuilder setResizeable(boolean resizeable) {
+		this.resizeable = resizeable;
+		return this;
+	}
 	public CollapseableBoxBuilder(final FrameController frameController){
 		this.frameController = frameController;
 
 	}
-	public Box createBox(final JTabbedPane component) {
-	    Box resisableComponent = Box.createHorizontalBox();
-		UIComponentVisibilityDispatcher.install(frameController, resisableComponent, "styleScrollPaneVisible");
+	public CollapseableBoxBuilder setPropertyNameBase(String name) {
+	    this.propertyNameBase = name;
+	    return this;
+    }
+	public Box createBox(final Component component, final Direction direction) {
+	    Box resisableComponent = direction.createBox();
+		UIComponentVisibilityDispatcher.install(frameController, resisableComponent, propertyNameBase);
 		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.dispatcher(resisableComponent);
-		final String TABBEDPANE_VIEW_WIDTH = "tabbed_pane.width";
+		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
 		final boolean expanded = dispatcher.isVisible();
 
-		OneTouchCollapseResizer propertyPanelResizer = new OneTouchCollapseResizer(Direction.RIGHT);
-		resisableComponent.add(propertyPanelResizer);
-		//resisableTabs.add(new JResizer(Direction.RIGHT));
-		resisableComponent.add(component);
-		propertyPanelResizer.addResizerListener(new ResizerListener() {
-			public void componentResized(ResizeEvent event) {
-				if(event.getComponent().equals(component)) {
-					ResourceController.getResourceController().setProperty(TABBEDPANE_VIEW_WIDTH, String.valueOf(((JComponent) event.getComponent()).getPreferredSize().width));
+		OneTouchCollapseResizer resizer = new OneTouchCollapseResizer(direction);
+		dispatcher.setResizer(resizer);
+		switch(direction){
+			case RIGHT:
+			case DOWN:
+				resisableComponent.add(resizer);
+				resisableComponent.add(component);
+				break;
+			default:
+				resisableComponent.add(component);
+				resisableComponent.add(resizer);
+				break;
+		}
+		if(resizeable){
+			try {
+				int size = ResourceController.getResourceController().getIntProperty(sizePropertyName, DEFAULT_SIZE);
+				if(size <= 10) {
+					size = DEFAULT_SIZE;
 				}
+				direction.setPreferredSize(component, size);
 			}
-		});
-		propertyPanelResizer.addCollapseListener(new ComponentCollapseListener() {
+			catch (Exception e) {
+				// blindly accept
+			}
+			resizer.addResizerListener(new ResizerListener() {
+				public void componentResized(ResizeEvent event) {
+					if(event.getComponent().equals(component)) {
+						ResourceController.getResourceController().setProperty(sizePropertyName, String.valueOf(direction.getPreferredSize(component)));
+					}
+				}
+
+			});
+		}
+		else
+			resizer.setSliderLocked(true);
+		resizer.addCollapseListener(new ComponentCollapseListener() {
 			public void componentCollapsed(ResizeEvent event) {
 				if(event.getComponent().equals(component)) {
 					dispatcher.setProperty(false);
@@ -73,17 +106,7 @@ public class CollapseableBoxBuilder {
 				}
 			}
 		});
-		try {
-			int width = Integer.parseInt(ResourceController.getResourceController().getProperty(TABBEDPANE_VIEW_WIDTH, "350"));
-			if(width <= 10) {
-				width = 350;
-			}
-			component.setPreferredSize(new Dimension(width, 40));
-		}
-		catch (Exception e) {
-			// blindly accept
-		}
-		propertyPanelResizer.setExpanded(expanded);
+		resizer.setExpanded(expanded);
 	    return resisableComponent;
     }
 }
