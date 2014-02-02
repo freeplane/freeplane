@@ -48,6 +48,7 @@ import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
 import net.infonode.docking.properties.RootWindowProperties;
+import net.infonode.docking.properties.ViewProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.util.Direction;
@@ -75,9 +76,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public MapViewDockingWindows() {
 		viewSerializer = new MapViewSerializer();
 		rootWindow = new RootWindow(viewSerializer);
+		new ViewProperties(ViewProperties.PROPERTIES.getDefaultMap()).setAlwaysShowTitle(false);
+		RootWindowProperties.createDefault().getViewProperties().setAlwaysShowTitle(false);
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
-		rootWindowProperties.getViewProperties().setAlwaysShowTitle(false);
 		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
 		try {
