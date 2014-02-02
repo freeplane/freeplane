@@ -71,6 +71,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
+	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
+	public static final String CLEAR_BACKGROUND_IMAGE = "clear the background image";
 	public static final String MAP_STYLES = "MAP_STYLES";
 	
 	public static void install(boolean persistent){
@@ -514,8 +516,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public void setProperty(final MapModel model, final String key, final String newValue) {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(model);
 		final String oldValue = styleModel.getProperty(key);
-		if(oldValue == newValue || oldValue != null && oldValue.equals(newValue))
+		if(oldValue == newValue || oldValue != null && oldValue.equals(newValue)) {
 			return;
+		}
 		IActor actor = new  IActor() {
 			public void undo() {
 				setPropertyWithoutUndo(model, key, oldValue);

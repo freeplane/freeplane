@@ -397,6 +397,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
+	private BufferedImage backgroundImage = null;
 	private Rectangle boundingRectangle = null;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
@@ -1078,10 +1079,41 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		if (property.equals(AttributeController.SHOW_ICON_FOR_ATTRIBUTES)
-		        || property.equals(NoteController.SHOW_NOTE_ICONS))
+		        || property.equals(NoteController.SHOW_NOTE_ICONS)) {
 			updateStateIconsRecursively(getRoot());
-		if (property.equals(NoteController.SHOW_NOTES_IN_MAP))
+		}
+		if (property.equals(NoteController.SHOW_NOTES_IN_MAP)) {
 			setShowNotes();
+		}
+		/**
+		 * Loads the background image from the URI stored 
+		 * in the MapStyle.RESOURCES_BACKGROUND_IMAGE property.
+		 */
+		if (property.equals(MapStyle.RESOURCES_BACKGROUND_IMAGE)) {
+			final Controller controller = Controller.getCurrentController();
+			MapStyle mapStyle = (MapStyle) controller.getModeController().getExtension(MapStyle.class);
+			final MapModel model = controller.getMap();
+			String file = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
+			if (file == MapStyle.CLEAR_BACKGROUND_IMAGE) {
+				backgroundImage = null;
+				return;
+			}
+			URI uri = null;
+			try {
+				uri = new URI(file);
+			}
+			catch (URISyntaxException e) {
+				LogUtils.severe(e);
+				return;
+			}
+			try {
+				backgroundImage = ImageIO.read(uri.toURL());
+			}
+			catch (IOException e) {
+				LogUtils.severe(e);
+				return;
+			}
+		}
 	}
 
 	private void updateStateIconsRecursively(NodeView node) {
@@ -1236,36 +1268,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	/**
-	 * Used to draw background image.
+	 * Used to render the background image which may have been stored
+	 * as a buffered image in backgroundImage.
 	 */
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
-		final Controller controller = Controller.getCurrentController();
-		MapStyle mapStyle = (MapStyle) controller.getModeController().getExtension(MapStyle.class);
-		final MapModel model = controller.getMap();
-		String file = mapStyle.getProperty(model, "backgroundImageURI");
-		System.out.println("File name: " + file);
-		if (file == null) {
-			return;
+		if (backgroundImage != null) {
+		g.drawImage(backgroundImage, (getWidth() - backgroundImage.getWidth()) / 2, 
+			(getHeight() - backgroundImage.getHeight()) / 2, null);
 		}
-		URI uri = null;
-		try {
-			uri = new URI(file);
-		}
-		catch (URISyntaxException e) {
-			LogUtils.severe(e);
-			return;
-		}
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(uri.toURL());
-		}
-		catch (IOException e) {
-			LogUtils.severe(e);
-			return;
-		}
-		MainView mainView = this.getRoot().getMainView();
-		g.drawImage(image, (getWidth() - image.getWidth())/2, (getHeight() - image.getHeight())/2, null);
 	}
 
 	@Override

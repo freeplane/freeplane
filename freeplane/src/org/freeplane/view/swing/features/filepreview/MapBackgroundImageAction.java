@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.styles.mindmapmode;
+package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
 import java.net.URI;
@@ -28,16 +28,14 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
-import org.freeplane.view.swing.features.filepreview.ExternalResource;
-import org.freeplane.view.swing.features.filepreview.ViewerController;
 
 /**
  * Feb 1, 2014
  */
-class MapBackgroundImageAction extends AFreeplaneAction {
+public class MapBackgroundImageAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
-	MapBackgroundImageAction() {
+	public MapBackgroundImageAction() {
 		super("MapBackgroundImageAction");
 	}
 
@@ -49,17 +47,19 @@ class MapBackgroundImageAction extends AFreeplaneAction {
 		if (selectedNode == null) {
 			return;
 		}
-		final ExternalResource extRes = (ExternalResource) vc.createExtension(selectedNode);
-		if (extRes == null) {
-			return;
-		}
-		final URI absoluteUri = extRes.getAbsoluteUri(selectedNode.getMap());
-		if (absoluteUri == null) {
-			return;
-		}
 		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapModel model = controller.getMap();
-		mapStyle.setProperty(model, "backgroundImageURI", absoluteUri.toString());
+		final ExternalResource extRes = (ExternalResource) vc.createExtension(selectedNode);
+		/**
+		 * If no image was selected clear the current background image
+		 */
+		if (extRes == null) {
+			mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, MapStyle.CLEAR_BACKGROUND_IMAGE);
+		}
+		else {
+			final URI absoluteUri = extRes.getAbsoluteUri(selectedNode.getMap());
+			mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, absoluteUri.toString());
+		}
 	}
 }

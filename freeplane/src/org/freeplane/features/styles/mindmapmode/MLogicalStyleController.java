@@ -56,6 +56,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
 
 /**
  * @author Dimitry Polivaev
