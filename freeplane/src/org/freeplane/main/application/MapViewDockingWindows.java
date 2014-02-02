@@ -115,9 +115,25 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					if(SwingUtilities.isDescendingFrom(mapViewComponent, window))
 					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent, false))
 						throw new OperationAbortedException("can not close view");
-	            super.windowClosing(window);
             }
 
+			@Override
+            public void windowUndocking(DockingWindow window) {
+				setAlwaysShowTitle(window, true);
+            }
+
+			private void setAlwaysShowTitle(DockingWindow window, boolean showTitle) {
+				for(int i = 0; i < window.getChildWindowCount(); i++){
+					setAlwaysShowTitle(window.getChildWindow(i), showTitle);
+				}
+	            if(window instanceof View)
+	                ((View)window).getViewProperties().setAlwaysShowTitle(showTitle);
+            }
+
+			@Override
+            public void windowDocking(DockingWindow window) {
+				setAlwaysShowTitle(window, false);
+            }
 		});
 
 		new InternalFrameAdapter() {
