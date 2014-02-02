@@ -22,6 +22,7 @@ package org.freeplane.plugin.script;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -55,6 +56,7 @@ import javax.swing.text.JTextComponent;
 
 import jsyntaxpane.actions.ActionUtils;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
@@ -67,6 +69,10 @@ import org.freeplane.plugin.script.IFreeplaneScriptErrorHandler;
 /**
  */
 class ScriptEditorPanel extends JDialog {
+
+	static final String GROOVY_EDITOR_FONT = "groovy_editor_font";
+	static final String GROOVY_EDITOR_FONT_SIZE = "groovy_editor_font_size";
+
 	private static final String internalCharset = "UTF-16BE";
 
 	final private class CancelAction extends AbstractAction {
@@ -336,6 +342,11 @@ class ScriptEditorPanel extends JDialog {
 		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, new JScrollPane(mScriptTextField));
 		try {
 			editorPane.setContentType("text/groovy");
+
+			final String fontName = ResourceController.getResourceController().getProperty(GROOVY_EDITOR_FONT);
+			final int fontSize = ResourceController.getResourceController().getIntProperty(GROOVY_EDITOR_FONT_SIZE);
+			editorPane.setFont(new Font(fontName, Font.PLAIN, fontSize));
+
 		} catch (Exception e) {
 			LogUtils.warn(e);
 			editorPane.setContentType("text/plain");

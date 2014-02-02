@@ -1,7 +1,7 @@
 <map version="freeplane 1.3.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry SHOW_ATTRIBUTES="hide"/>
-<node TEXT="Script Preferences" FOLDED="false" ID="ID_776863743" CREATED="1370289521201" MODIFIED="1370289551128"><hook NAME="MapStyle">
+<node TEXT="Script Preferences" FOLDED="false" ID="ID_776863743"><hook NAME="MapStyle">
     <conditional_styles>
         <conditional_style ACTIVE="true" STYLE_REF="boolean" LAST="false">
             <attribute_contains_condition ATTRIBUTE="type" VALUE="boolean" MATCH_CASE="true" MATCH_APPROXIMATELY="false"/>
@@ -91,51 +91,63 @@
 </stylenode>
 </map_styles>
 </hook>
-<node TEXT="Plugins" POSITION="right" ID="ID_1156983468" CREATED="1370289521201" MODIFIED="1370290786048">
+<node TEXT="Plugins" POSITION="right" ID="ID_1156983468">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="plugins"/>
-<node TEXT="Scripting" ID="ID_301669529" CREATED="1370289521201" MODIFIED="1370290789400">
+<node TEXT="Scripting" ID="ID_301669529">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="scripting"/>
-<node TEXT="Script Execution enabled" ID="ID_1919787107" CREATED="1370289521202" MODIFIED="1370290835206">
+<node TEXT="Script Execution enabled" ID="ID_1919787107">
 <attribute NAME="type" VALUE="remind_value"/>
 <attribute NAME="name" VALUE="execute_scripts_without_asking"/>
 </node>
-<node TEXT="Permit file/read operations" ID="ID_670476941" CREATED="1370289521202" MODIFIED="1370290940640">
+<node TEXT="Permit file/read operations" ID="ID_670476941">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="execute_scripts_without_file_restriction"/>
 </node>
-<node TEXT="Permit file/write operations" ID="ID_357965285" CREATED="1370289521203" MODIFIED="1370290936639">
+<node TEXT="Permit file/write operations" ID="ID_357965285">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="execute_scripts_without_write_restriction"/>
 </node>
-<node TEXT="Permit network operations" ID="ID_195127580" CREATED="1370289521203" MODIFIED="1374872139163">
+<node TEXT="Permit network operations" ID="ID_195127580">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="execute_scripts_without_network_restriction"/>
 </node>
-<node TEXT="Permit to execute other applications" ID="ID_1113896850" CREATED="1370289521204" MODIFIED="1370290863922">
+<node TEXT="Permit to execute other applications" ID="ID_1113896850">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="execute_scripts_without_exec_restriction"/>
 </node>
-<node TEXT="Trust signed scripts" ID="ID_1220206880" CREATED="1370289521205" MODIFIED="1370291042560">
+<node TEXT="Trust signed scripts" ID="ID_1220206880">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="signed_script_are_trusted"/>
 </node>
-<node TEXT="Optional user key alias for signing" ID="ID_613870876" CREATED="1370289521205" MODIFIED="1370291019630">
+<node TEXT="Optional user key alias for signing" ID="ID_613870876">
 <attribute NAME="type" VALUE="string"/>
 <attribute NAME="name" VALUE="script_user_key_name_for_signing"/>
 </node>
-<node TEXT="File extensions not to be compiled" ID="ID_181914556" CREATED="1370289521206" MODIFIED="1374873088786">
+<node TEXT="File extensions not to be compiled" ID="ID_181914556">
 <attribute NAME="type" VALUE="string"/>
 <attribute NAME="name" VALUE="script_compilation_disabled_extensions"/>
 </node>
-<node TEXT="Script search path" ID="ID_425351509" CREATED="1370289521206" MODIFIED="1370290984647">
+<node TEXT="Script search path" ID="ID_425351509">
 <attribute NAME="type" VALUE="string"/>
 <attribute NAME="name" VALUE="script_directories"/>
 </node>
-<node TEXT="Script Classpath" ID="ID_1675835784" CREATED="1370289521206" MODIFIED="1370290990320">
+<node TEXT="Script Classpath" ID="ID_1675835784">
 <attribute NAME="type" VALUE="string"/>
 <attribute NAME="name" VALUE="script_classpath"/>
+</node>
+<node TEXT="Groovy Editor Font" ID="ID_890021469">
+<icon BUILTIN="edit"/>
+<attribute NAME="type" VALUE="font"/>
+<attribute NAME="name" VALUE="groovy_editor_font"/>
+</node>
+<node TEXT="Groovy Editor Font Size" ID="ID_1178357305">
+<icon BUILTIN="edit"/>
+<attribute NAME="type" VALUE="number"/>
+<attribute NAME="name" VALUE="groovy_editor_font_size"/>
+<attribute NAME="min" VALUE="4" OBJECT="org.freeplane.features.format.FormattedNumber|4"/>
+<attribute NAME="max" VALUE="216" OBJECT="org.freeplane.features.format.FormattedNumber|216"/>
 </node>
 </node>
 </node>

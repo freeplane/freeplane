@@ -52,9 +52,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.url.mindmapmode.FileOpener;
-import org.freeplane.view.swing.map.MapViewScrollPane;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
+import org.freeplane.view.swing.map.MapView;
 
 class ApplicationViewController extends FrameController {
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
@@ -111,7 +109,7 @@ class ApplicationViewController extends FrameController {
 	}
 
 	/**
-	 * Called from the Controller, when the Location of the Note Window is changed on the Menu->View->Note Window Location 
+	 * Called from the Controller, when the Location of the Note Window is changed on the Menu->View->Note Window Location
 	 */
 	@Override
 	public void changeNoteWindowLocation() {
@@ -243,7 +241,7 @@ class ApplicationViewController extends FrameController {
                     if(scheme.equals("smb")){
                         uriString = Compat.smbUri2unc(uri);
                     }
-					if (System.getProperty("os.name").startsWith("Windows 2000")) 
+					if (System.getProperty("os.name").startsWith("Windows 2000"))
 						command = new String[] { "rundll32", "shell32.dll,ShellExec_RunDLL", uriString };
 					else
 	                    command = new String[] { "rundll32", "url.dll,FileProtocolHandler", uriString };
@@ -432,7 +430,7 @@ class ApplicationViewController extends FrameController {
 	}
 
 	public void initFrame(final JFrame frame) {
-		// Preserve the existing icon image under Mac OS X 
+		// Preserve the existing icon image under Mac OS X
 		if (!Compat.isMacOsX()) {
 			final ImageIcon mWindowIcon;
 			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
@@ -471,6 +469,11 @@ class ApplicationViewController extends FrameController {
 
 	public void openMapsOnStart() {
 	    mapViewWindows.loadLayout();
+    }
+
+	public void focusTo(MapView currentMapView) {
+	    mapViewWindows.selectMapViewLater(currentMapView);
+
     }
 
 }
