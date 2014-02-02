@@ -77,6 +77,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		rootWindow = new RootWindow(viewSerializer);
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
+		rootWindowProperties.getViewProperties().setAlwaysShowTitle(false);
 		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
 		try {
