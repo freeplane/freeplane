@@ -48,6 +48,7 @@ import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
 import net.infonode.docking.properties.RootWindowProperties;
+import net.infonode.docking.properties.ViewProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.util.Direction;
@@ -75,6 +76,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public MapViewDockingWindows() {
 		viewSerializer = new MapViewSerializer();
 		rootWindow = new RootWindow(viewSerializer);
+		new ViewProperties(ViewProperties.PROPERTIES.getDefaultMap()).setAlwaysShowTitle(false);
+		RootWindowProperties.createDefault().getViewProperties().setAlwaysShowTitle(false);
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
 		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
@@ -112,9 +115,25 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					if(SwingUtilities.isDescendingFrom(mapViewComponent, window))
 					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent, false))
 						throw new OperationAbortedException("can not close view");
-	            super.windowClosing(window);
             }
 
+			@Override
+            public void windowUndocking(DockingWindow window) {
+				setAlwaysShowTitle(window, true);
+            }
+
+			private void setAlwaysShowTitle(DockingWindow window, boolean showTitle) {
+				for(int i = 0; i < window.getChildWindowCount(); i++){
+					setAlwaysShowTitle(window.getChildWindow(i), showTitle);
+				}
+	            if(window instanceof View)
+	                ((View)window).getViewProperties().setAlwaysShowTitle(showTitle);
+            }
+
+			@Override
+            public void windowDocking(DockingWindow window) {
+				setAlwaysShowTitle(window, false);
+            }
 		});
 
 		new InternalFrameAdapter() {
@@ -243,13 +262,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			try {
 				loadingLayoutFromObjectInpusStream = true;
 				rootWindow.read(new ObjectInputStream(byteStream));
-				selectMapViewLater();
 			}
 			catch (Exception e) {
 				LogUtils.severe(e);
 				try {
 	                rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(emptyConfigurations)));
-	                selectMapViewLater();
                 }
                 catch (IOException e1) {
                 }
@@ -261,21 +278,12 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
 	}
 
-	private void selectMapViewLater() {
+	public void selectMapViewLater(final MapView mapView) {
 		Timer timer = new Timer(40, new ActionListener() {
-			MapView mapView = null;
 			int retryCount = 5;
 		    public void actionPerformed(ActionEvent e) {
-		    	if(mapView == null){
-		    		for(Component mapView : mapViews){
-		    			if(mapView.isShowing()){
-		    				this.mapView = (MapView) mapView;
-		    				break;
-		    			}
-		    		}
-		    	}
 
-		    	if(mapView != null){
+		    	if(mapView.isShowing()){
 		    		mapView.select();
 		    		mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
 		    	}

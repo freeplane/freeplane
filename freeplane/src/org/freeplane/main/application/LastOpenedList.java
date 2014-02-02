@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +35,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -82,10 +80,11 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	 * Contains Restore string => map name (map.toString()).
 	 */
 	final private Map<String, String> mRestorableToMapName = new HashMap<String, String>();
+	private String mapSelectedOnStart;
 
 	LastOpenedList() {
 //		this.controller = controller;
-		restoreList(LAST_OPENED, lastOpenedList);
+		restoreList(LAST_OPENED);
 	}
 
 	public void afterViewChange(final Component oldView, final Component newView) {
@@ -176,7 +175,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		final StringTokenizer tokens = new StringTokenizer(restoreable, ":");
 		if (!tokens.hasMoreTokens())
 			return;
-		final boolean changedToMapView;  
+		final boolean changedToMapView;
 			changedToMapView = tryToChangeToMapView(restoreable);
 		if (changedToMapView)
 			return;
@@ -194,12 +193,10 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		}
 	}
 
-	public void openMapsOnStart() {
-		if (!lastOpenedList.isEmpty()) {
-			final String lastMap;
-			lastMap = lastOpenedList.get(0);
-			if(!tryToChangeToMapView(lastMap))
-				safeOpen(lastMap);
+	void openLastMapOnStart() {
+		if (mapSelectedOnStart != null) {
+			if(!tryToChangeToMapView(mapSelectedOnStart))
+				safeOpen(mapSelectedOnStart);
 		}
 	}
 
@@ -208,10 +205,13 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		updateMenus();
 	}
 
-	private void restoreList(final String key, final List<String> list) {
+	private void restoreList(final String key) {
 		final String restored = ResourceController.getResourceController().getProperty(key, null);
 		if (restored != null && !restored.equals("")) {
-			list.addAll(ConfigurationUtils.decodeListValue(restored, true));
+			lastOpenedList.addAll(ConfigurationUtils.decodeListValue(restored, true));
+			if (!lastOpenedList.isEmpty()) {
+				mapSelectedOnStart = lastOpenedList.get(0);
+			}
 		}
 	}
 
@@ -281,7 +281,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			final IFreeplaneAction decoratedAction = menuBuilder.decorateAction(lastOpenedActionListener);
 			final JMenuItem item = new JFreeplaneMenuItem(decoratedAction);
 			item.setActionCommand(key);
-			String text = createOpenMapItemName(key);						
+			String text = createOpenMapItemName(key);
 			item.setText(text);
 			item.setMnemonic(0);
 			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(),

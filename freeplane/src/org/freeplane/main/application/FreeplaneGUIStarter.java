@@ -75,6 +75,7 @@ import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
@@ -231,6 +232,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 					frame.setExtendedState(extendedState);
 				}
 				loadMaps(options.getFilesToOpenAsArray());
+				focusCurrentView();
 				viewController.getContentPane().setVisible(true);
 				frame.toFront();
 				startupFinished = true;
@@ -242,6 +244,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
                     e.printStackTrace();
                 }
                 MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
+            }
+
+			private void focusCurrentView() {
+				final MapView currentMapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+				if(currentMapView != null){
+					viewController.focusTo(currentMapView);
+				}
             }
 		});
 	}
@@ -284,8 +293,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    final boolean loadLastMaps = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAPS);
 	    if(loadLastMaps)
 	    	viewController.openMapsOnStart();
-	    else if(loadLastMap)
-	    	applicationResourceController.getLastOpenedList().openMapsOnStart();
+	    if(loadLastMaps || loadLastMap)
+	    	applicationResourceController.getLastOpenedList().openLastMapOnStart();
     }
 
 	public void loadMapsLater(final String[] args){
