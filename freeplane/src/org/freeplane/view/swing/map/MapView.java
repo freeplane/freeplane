@@ -1274,8 +1274,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		if (backgroundImage != null) {
-		g.drawImage(backgroundImage, (getWidth() - backgroundImage.getWidth()) / 2, 
-			(getHeight() - backgroundImage.getHeight()) / 2, null);
+			Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2,
+			    getRoot().getMainView().getHeight() / 2);
+			UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
+			g.drawImage(backgroundImage, centerPoint.x - (backgroundImage.getWidth() / 2), centerPoint.y
+			        - (backgroundImage.getHeight() / 2), null);
 		}
 	}
 
