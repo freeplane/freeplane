@@ -35,7 +35,7 @@ public class MapBackgroundClearAction extends AFreeplaneAction {
 		super("MapBackgroundClearAction");
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapModel model = controller.getMap();
