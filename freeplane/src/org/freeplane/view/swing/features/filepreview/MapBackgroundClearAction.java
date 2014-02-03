@@ -20,43 +20,25 @@
 package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
-import java.net.URI;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
 
 /**
- * Feb 1, 2014
+ * @author Dimitry Polivaev
+ * Feb 3, 2014
  */
-public class MapBackgroundImageAction extends AFreeplaneAction {
-	private static final long serialVersionUID = 1L;
-
-	public MapBackgroundImageAction() {
-		super("MapBackgroundImageAction");
+public class MapBackgroundClearAction extends AFreeplaneAction {
+	public MapBackgroundClearAction() {
+		super("MapBackgroundClearAction");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		final ViewerController vc = Controller.getCurrentController().getModeController()
-		    .getExtension(ViewerController.class);
-		final NodeModel selectedNode = mapController.getSelectedNode();
-		if (selectedNode == null) {
-			return;
-		}
+	public void actionPerformed(ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapModel model = controller.getMap();
-		final ExternalResource extRes = (ExternalResource) vc.createExtension(selectedNode);
-		if (extRes == null) {
-			return;
-		}
-		else {
-			final URI absoluteUri = extRes.getAbsoluteUri(selectedNode.getMap());
-			mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, absoluteUri.toString());
-		}
+		mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, MapStyle.CLEAR_BACKGROUND_IMAGE);
 	}
 }

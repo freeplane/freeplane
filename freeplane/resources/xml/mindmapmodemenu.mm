@@ -1020,16 +1020,25 @@
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="map_background"/>
 <attribute NAME="name_ref" VALUE="map_background"/>
-<node TEXT="Color" ID="ID_1099674767" CREATED="1391262812922" MODIFIED="1391262938714">
+<node TEXT="Background Color" ID="ID_1099674767" CREATED="1391262812922" MODIFIED="1391392894866">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="MapBackgroundColorAction"/>
 </node>
-<node TEXT="Image" ID="ID_1314085915" CREATED="1391262940440" MODIFIED="1391262979710">
+<node TEXT="Background Image" ID="ID_1314085915" CREATED="1391262940440" MODIFIED="1391392890667">
+<attribute NAME="type" VALUE="submenu"/>
+<attribute NAME="name" VALUE="map_background_image"/>
+<attribute NAME="name_ref" VALUE="map_background_image"/>
+<node TEXT="Change" ID="ID_1517751753" CREATED="1391392791723" MODIFIED="1391392885150">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="MapBackgroundImageAction"/>
 </node>
+<node TEXT="Clear" ID="ID_1539337557" CREATED="1391392805808" MODIFIED="1391392848827">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="MapBackgroundClearAction"/>
 </node>
-<node TEXT="Node core" ID="ID_305696182" CREATED="1370194798822" MODIFIED="1370194798822">
+</node>
+</node>
+<node TEXT="Node core" ID="ID_305696182" CREATED="1370194798822" MODIFIED="1391392906370">
 <attribute NAME="type" VALUE="submenu"/>
 <attribute NAME="name" VALUE="menu_coreFormat"/>
 <attribute NAME="name_ref" VALUE="menu_coreFormat"/>

@@ -56,6 +56,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.features.filepreview.MapBackgroundClearAction;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
 
 /**
@@ -209,6 +210,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		if (modeController.getModeName().equals("MindMap")) {
 			modeController.addAction(new MapBackgroundColorAction());
 			modeController.addAction(new MapBackgroundImageAction());
+			modeController.addAction(new MapBackgroundClearAction());
 			modeController.addAction(new CopyMapStylesAction());
 		}
 		if(! modeController.getController().getViewController().isHeadless()){
