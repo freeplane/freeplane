@@ -1280,21 +1280,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 	
-	/**
-	 * Used to render the background image which may have been stored
-	 * as a buffered image in backgroundImage.
-	 */
 	@Override
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		if (backgroundImage != null) {
-			final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2, getRoot().getMainView()
-			    .getHeight() / 2);
-			UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
-			g.drawImage(backgroundImage, centerPoint.x - (backgroundImage.getWidth() / 2), centerPoint.y
-			        - (backgroundImage.getHeight() / 2), null);
+			drawBackgroundImage(g);
 		}
 	}
+
+	private void drawBackgroundImage(final Graphics g) {
+	    final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2, getRoot().getMainView()
+	        .getHeight() / 2);
+	    UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
+	    g.drawImage(backgroundImage, centerPoint.x - (backgroundImage.getWidth() / 2), centerPoint.y
+	            - (backgroundImage.getHeight() / 2), null);
+    }
 
 	@Override
 	protected void paintChildren(final Graphics g) {
