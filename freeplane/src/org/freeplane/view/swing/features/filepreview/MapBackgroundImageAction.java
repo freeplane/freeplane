@@ -20,9 +20,11 @@
 package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
 import java.net.URI;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -50,12 +52,14 @@ public class MapBackgroundImageAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapModel model = controller.getMap();
-		final ExternalResource extRes = (ExternalResource) vc.createExtension(selectedNode);
-		if (extRes == null) {
-			return;
+		URI absoluteUri = null;
+		try {
+			absoluteUri = vc.createURI(selectedNode, controller);
 		}
-		else {
-			final URI absoluteUri = extRes.getAbsoluteUri(selectedNode.getMap());
+		catch (final MalformedURLException e1) {
+			LogUtils.severe(e1.getMessage());
+		}
+		if (absoluteUri != null) {
 			mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, absoluteUri.toString());
 		}
 	}
