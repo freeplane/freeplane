@@ -1097,36 +1097,37 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			updateStateIconsRecursively(getRoot());
 		if(property.equals(NoteController.SHOW_NOTES_IN_MAP))
 			setShowNotes();
-		/**
-		 * Loads the background image from the URI stored 
-		 * in the MapStyle.RESOURCES_BACKGROUND_IMAGE property.
-		 */
 		if (property.equals(MapStyle.RESOURCES_BACKGROUND_IMAGE)) {
-			final Controller controller = Controller.getCurrentController();
-			final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
-			final MapModel model = controller.getMap();
-			final String file = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
-			if (file == MapStyle.CLEAR_BACKGROUND_IMAGE) {
-				backgroundImage = null;
-				return;
-			}
-			URI uri = null;
-			try {
-				uri = new URI(file);
-			}
-			catch (final URISyntaxException e) {
-				LogUtils.severe(e);
-				return;
-			}
-			try {
-				backgroundImage = ImageIO.read(uri.toURL());
-			}
-			catch (final IOException e) {
-				LogUtils.severe(e);
-				return;
-			}
+			loadBackgroundImage();
+			repaint();
 		}
 	}
+
+	private void loadBackgroundImage() {
+	    final Controller controller = Controller.getCurrentController();
+	    final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
+	    final MapModel model = controller.getMap();
+	    final String file = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
+	    if (file == MapStyle.CLEAR_BACKGROUND_IMAGE) {
+	    	backgroundImage = null;
+	    	return;
+	    }
+	    URI uri = null;
+	    try {
+	    	uri = new URI(file);
+	    }
+	    catch (final URISyntaxException e) {
+	    	LogUtils.severe(e);
+	    	return;
+	    }
+	    try {
+	    	backgroundImage = ImageIO.read(uri.toURL());
+	    }
+	    catch (final IOException e) {
+	    	LogUtils.severe(e);
+	    	return;
+	    }
+    }
 
     private void updateStateIconsRecursively(NodeView node) {
     	final MainView mainView = node.getMainView();
@@ -1285,6 +1286,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super.paintComponent(g);
 		if (backgroundImage != null) {
 			drawBackgroundImage(g);
+		} else {
+			g.clearRect(0, 0, getWidth(), getHeight());
 		}
 	}
 
