@@ -63,7 +63,7 @@ public class MapBackgroundImageAction extends AFreeplaneAction {
 	        absoluteUri = urlManager.getAbsoluteUri(model, relativeUri);
         }
         catch (MalformedURLException e1) {
-	        e1.printStackTrace();
+        	LogUtils.severe(e1.getMessage());
         }
 			mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, absoluteUri.toString());
 		
