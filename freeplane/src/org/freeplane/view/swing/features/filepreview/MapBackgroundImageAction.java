@@ -30,6 +30,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.url.UrlManager;
 
 /**
  * Feb 1, 2014
@@ -52,15 +53,19 @@ public class MapBackgroundImageAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapModel model = controller.getMap();
+		URI relativeUri = vc.createURI(selectedNode);
+		if (relativeUri == null) {
+			return;
+		}
+		final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
 		URI absoluteUri = null;
-		try {
-			absoluteUri = vc.createURI(selectedNode, controller);
-		}
-		catch (final MalformedURLException e1) {
-			LogUtils.severe(e1.getMessage());
-		}
-		if (absoluteUri != null) {
+        try {
+	        absoluteUri = urlManager.getAbsoluteUri(model, relativeUri);
+        }
+        catch (MalformedURLException e1) {
+	        e1.printStackTrace();
+        }
 			mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, absoluteUri.toString());
-		}
+		
 	}
 }
