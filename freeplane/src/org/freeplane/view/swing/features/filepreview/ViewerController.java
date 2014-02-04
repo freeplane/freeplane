@@ -427,6 +427,14 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	@Override
 	protected IExtension createExtension(final NodeModel node) {
+		URI uri = createURI(node);
+		File input = new File(uri.getPath());
+		final ExternalResource preview = new ExternalResource(uri);
+		ProgressIcons.updateExtendedProgressIcons(node, input.getName());
+		return preview;
+	}
+	
+	protected URI createURI(final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
 		final MapModel map = node.getMap();
@@ -438,52 +446,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
-	    final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
+		final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
 		final JFileChooser chooser = urlManager.getFileChooser(null, false);
-		final File input = retrieveInput(controller, chooser);
-		if (input == null) {
-			return null;
-		}
-		URI uri = uriOf(input);
-		if (uri == null) {
-			return null;
-		}
-		if (useRelativeUri && uri.getScheme().equals("file")) {
-			uri = LinkController.toLinkTypeDependantURI(map.getFile(), input);
-		}
-		final ExternalResource preview = new ExternalResource(uri);
-		ProgressIcons.updateExtendedProgressIcons(node, input.getName());
-		return preview;
-	}
-	
-	protected URI createURI(final NodeModel node, final Controller controller) throws MalformedURLException {
-		final ViewController viewController = controller.getViewController();
-		final MapModel map = node.getMap();
-		final File file = map.getFile();
-		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
-		    "relative");
-		if (file == null && useRelativeUri) {
-			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
-			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
-			return null;
-		}
-	    final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
-		final JFileChooser chooser = urlManager.getFileChooser(null, false);
-		final File input = retrieveInput(controller, chooser);
-		if (input == null) {
-			return null;
-		}
-		URI uri = uriOf(input);
-		if (uri == null) {
-			return null;
-		}
-		if (useRelativeUri && uri.getScheme().equals("file")) {
-			uri = LinkController.toLinkTypeDependantURI(map.getFile(), input);
-		}
-		return urlManager.getAbsoluteUri(map, uri);
-	}
-
-	private File retrieveInput(final Controller controller, JFileChooser chooser) {
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (factories.size() > 1) {
 			final FileFilter combiFileFilter = getCombiFileFilter();
@@ -503,9 +467,19 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return null;
 		}
 		final File input = chooser.getSelectedFile();
-	    return input;
-    }
-	
+		if (input == null) {
+			return null;
+		}
+		URI uri = uriOf(input);
+		if (uri == null) {
+			return null;
+		}
+		if (useRelativeUri && uri.getScheme().equals("file")) {
+			uri = LinkController.toLinkTypeDependantURI(map.getFile(), input);
+		}
+		return uri;
+	}
+
 
 	private URI uriOf(final File input) {
 		String path = input.getPath();
