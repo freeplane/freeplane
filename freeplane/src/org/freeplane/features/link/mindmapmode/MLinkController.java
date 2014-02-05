@@ -1098,14 +1098,14 @@ public class MLinkController extends LinkController {
 	}
 
 	public boolean isAnchored() {
-		return anchorID != null;
+		return anchorID != null && !anchorID.isEmpty();
 	}
 
 	public String getAnchorIDforNode(final NodeModel node) {
 	    String targetID = getAnchorID();
 	    final String link;
 		// check if anchorID is valid, then set link in current node
-		if (targetID != null && ! targetID.matches("\\w+://")) {
+		if (isAnchored() && ! targetID.matches("\\w+://")) {
 
 			// extract fileName from target map
 			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.indexOf("#") );
