@@ -74,14 +74,10 @@ public class NodeModel{
 	private NodeModel preferredChild;
 	private Collection<INodeView> views = null;
 
-	private final ExtensionContainer extensionContainer;
-	private HistoryInformationModel historyInformation = null;
-	final private NodeIconSetModel icons;
-	private Object userObject = null;
-	private String xmlText = null;
+	private final SharedNodeData sharedData = new SharedNodeData();
 
 	public Object getUserObject() {
-		return userObject;
+		return sharedData.getUserObject();
 	}
 
 	public NodeModel(final MapModel map) {
@@ -89,10 +85,10 @@ public class NodeModel{
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {
-		extensionContainer = new ExtensionContainer(new SmallExtensionMap());
+		sharedData.setExtensionContainer(new ExtensionContainer(new SmallExtensionMap()));
 		init(userObject);
 		this.map = map;
-		icons = new NodeIconSetModel();
+		sharedData.setIcons(new NodeIconSetModel());
 	}
 
 	protected void init(final Object userObject) {
@@ -245,7 +241,7 @@ public class NodeModel{
 	}
 
 	public HistoryInformationModel getHistoryInformation() {
-		return historyInformation;
+		return sharedData.getHistoryInformation();
 	}
 
 	public MindIcon getIcon(final int position) {
@@ -310,7 +306,7 @@ public class NodeModel{
 	}
 
 	public final String getXmlText() {
-		return xmlText;
+		return sharedData.getXmlText();
 	}
 
 	public boolean hasChildren() {
@@ -477,7 +473,7 @@ public class NodeModel{
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
-		this.historyInformation = historyInformation;
+		this.sharedData.setHistoryInformation(historyInformation);
 	}
 
 	public void setID(final String value) {
@@ -525,13 +521,13 @@ public class NodeModel{
 			setText(data.toString());
 			return;
 		}
-		userObject = data;
+		sharedData.setUserObject(data);
 		setXmlText(null);
 	}
 
 	public final void setXmlText(final String pXmlText) {
-		xmlText = XmlUtils.makeValidXml(pXmlText);
-		setUserObject(HtmlUtils.toHtml(xmlText));
+		sharedData.setXmlText(XmlUtils.makeValidXml(pXmlText));
+		setUserObject(HtmlUtils.toHtml(sharedData.getXmlText()));
 	}
 
 	@Override
@@ -560,10 +556,10 @@ public class NodeModel{
 	}
 
 	private ExtensionContainer getExtensionContainer() {
-	    return extensionContainer;
+	    return sharedData.getExtensionContainer();
     }
 
 	private NodeIconSetModel getIconModel() {
-	    return icons;
+	    return sharedData.getIcons();
     }
 }
