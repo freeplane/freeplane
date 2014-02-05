@@ -28,8 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -44,13 +42,13 @@ import org.freeplane.features.ui.INodeViewVisitor;
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
- * 
+ *
  * Note that this class does not and must not know anything about its extensions,
  * otherwise this class would become too big.
  * Extension methods that add functionality to nodes are in the extension packages
  * and get NodeModel as an argument.
  */
-public class NodeModel implements MutableTreeNode {
+public class NodeModel{
 	public enum NodeChangeType {
 		FOLDING, REFRESH
 	}
@@ -141,7 +139,7 @@ public class NodeModel implements MutableTreeNode {
 	protected List<NodeModel> getChildrenInternal() {
 	    return children;
     }
-	
+
 	public Enumeration<NodeModel> children() {
 		final Iterator<NodeModel> i = getChildrenInternal().iterator();
 		return new Enumeration<NodeModel>() {
@@ -200,7 +198,7 @@ public class NodeModel implements MutableTreeNode {
 		return NodeModel.ALLOWSCHILDREN;
 	};
 
-	public TreeNode getChildAt(final int childIndex) {
+	public NodeModel getChildAt(final int childIndex) {
 		return getChildrenInternal().get(childIndex);
 	}
 
@@ -234,7 +232,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
     public <T extends IExtension> T getExtension(final Class<T> clazz) {
-		return (T) extensionContainer.getExtension(clazz);
+		return extensionContainer.getExtension(clazz);
 	}
 
 	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
@@ -261,7 +259,7 @@ public class NodeModel implements MutableTreeNode {
 		return id;
 	}
 
-	public int getIndex(final TreeNode node) {
+	public int getIndex(final NodeModel node) {
 		return getChildrenInternal().indexOf(node);
 	}
 
@@ -280,7 +278,7 @@ public class NodeModel implements MutableTreeNode {
 		return level;
 	}
 
-	public TreeNode getParent() {
+	public NodeModel getParent() {
 		return parent;
 	}
 
@@ -326,17 +324,17 @@ public class NodeModel implements MutableTreeNode {
 		return id != null;
 	}
 
-	public void insert(final MutableTreeNode child, int index) {
+	public void insert(final NodeModel child, int index) {
 		if (!isAccessible()) {
 			throw new IllegalArgumentException("Trying to insert nodes into a ciphered node.");
 		}
-		final NodeModel childNode = (NodeModel) child;
+		final NodeModel childNode = child;
 		if (index < 0) {
 			index = getChildCount();
-			getChildrenInternal().add(index, (NodeModel) child);
+			getChildrenInternal().add(index, child);
 		}
 		else {
-			getChildrenInternal().add(index, (NodeModel) child);
+			getChildrenInternal().add(index, child);
 			preferredChild = childNode;
 		}
 		child.setParent(this);
@@ -388,7 +386,7 @@ public class NodeModel implements MutableTreeNode {
 		}
 		int rightChildrenCount = 0;
 		for (int i = 0; i < getChildCount(); i++) {
-			if (!((NodeModel) getChildAt(i)).isLeft()) {
+			if (!getChildAt(i).isLeft()) {
 				rightChildrenCount++;
 			}
 			if (rightChildrenCount > getChildCount() / 2) {
@@ -408,11 +406,11 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void remove(final int index) {
-		final MutableTreeNode node = getChildrenInternal().get(index);
+		final NodeModel node = getChildrenInternal().get(index);
 		remove(node);
 	}
 
-	public void remove(final MutableTreeNode node) {
+	public void remove(final NodeModel node) {
 		if (node == preferredChild) {
 			final int index = getChildrenInternal().indexOf(node);
 			if (getChildrenInternal().size() > index + 1) {
@@ -425,7 +423,7 @@ public class NodeModel implements MutableTreeNode {
 		final int index = getIndex(node);
 		node.setParent(null);
 		getChildrenInternal().remove(node);
-		fireNodeRemoved((NodeModel) node, index);
+		fireNodeRemoved(node, index);
 	}
 
 	public <T extends IExtension> T removeExtension(final Class<T> clazz){
@@ -442,7 +440,7 @@ public class NodeModel implements MutableTreeNode {
 
 	/**
 	 * remove last icon
-	 * 
+	 *
 	 * @return the number of remaining icons.
 	 */
 	public int removeIcon() {
@@ -451,7 +449,7 @@ public class NodeModel implements MutableTreeNode {
 
 	/**
 	 * @param remove icons with given position
-	 *  
+	 *
 	 * @return the number of remaining icons
 	 */
 	public int removeIcon(final int position) {
@@ -494,7 +492,7 @@ public class NodeModel implements MutableTreeNode {
 		position = isLeft ? NodeModel.LEFT_POSITION : NodeModel.RIGHT_POSITION;
 		if (!isRoot()) {
 			for (int i = 0; i < getChildCount(); i++) {
-				final NodeModel child = (NodeModel) getChildAt(i);
+				final NodeModel child = getChildAt(i);
 				if (child.position != position) {
 					child.setLeft(isLeft);
 				}
@@ -509,10 +507,6 @@ public class NodeModel implements MutableTreeNode {
 		for (final NodeModel child : getChildrenInternal()) {
 			child.setMap(map);
 		}
-	}
-
-	public void setParent(final MutableTreeNode newParent) {
-		parent = (NodeModel) newParent;
 	}
 
 	public void setParent(final NodeModel newParent) {
