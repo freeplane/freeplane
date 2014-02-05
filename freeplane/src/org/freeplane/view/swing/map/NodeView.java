@@ -810,7 +810,7 @@ public class NodeView extends JComponent implements INodeView {
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		// is node is deleted, skip the rest.
-		if (!node.isRoot() && node.getParent() == null) {
+		if (!node.isRoot() && node.getParentNode() == null) {
 			return;
 		}
 		final Object property = event.getProperty();
@@ -845,7 +845,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		update();
 		if (!isRoot())
-			getParentView().numberingChanged(node.getParent().getIndex(node) + 1);
+			getParentView().numberingChanged(node.getParentNode().getIndex(node) + 1);
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {

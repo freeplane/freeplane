@@ -278,10 +278,6 @@ public class NodeModel{
 		return level;
 	}
 
-	public NodeModel getParent() {
-		return parent;
-	}
-
 	public NodeModel getParentNode() {
 		return parent;
 	}

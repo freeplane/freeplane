@@ -660,7 +660,7 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-		if(parent.getParent() != null){
+		if(parent.getParentNode() != null){
 			newNode.setLeft(parent.isLeft());
 		}
 		parent.insert(newNode, index);

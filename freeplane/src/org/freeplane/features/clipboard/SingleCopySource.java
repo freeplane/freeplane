@@ -206,11 +206,6 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public NodeModel getParent() {
-	    return delegate.getParent();
-    }
-
-	@Override
     public NodeModel getParentNode() {
 	    return delegate.getParentNode();
     }

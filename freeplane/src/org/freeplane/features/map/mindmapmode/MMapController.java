@@ -413,7 +413,7 @@ public class MMapController extends MapController {
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
 	                            final boolean changeSide) {
 		int position = selectedParent.getChildCount();
-		if (node.getParent() == selectedParent) {
+		if (node.getParentNode() == selectedParent) {
 			position--;
 		}
 		FreeNode r = Controller.getCurrentModeController().getExtension(FreeNode.class);
@@ -475,7 +475,7 @@ public class MMapController extends MapController {
             final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
             final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
             for (final NodeModel node : movedNodes) {
-                if (node.getParent() != parent) {
+                if (node.getParentNode() != parent) {
                     LogUtils.warn("Not all selected nodes have the same parent.");
                     return;
                 }
