@@ -63,25 +63,26 @@ public class NodeModel{
 	public static final String NODE_ICON = "icon";
 	//DOCEAR - fixed: new property type for node link changes
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
+
 	private final List<NodeModel> children = new ArrayList<NodeModel>();
-	private final ExtensionContainer extensionContainer;
+	private NodeModel parent;
 	final private FilterInfo filterInfo = new FilterInfo();
 	private boolean folded;
-	private HistoryInformationModel historyInformation = null;
-	final private NodeIconSetModel icons;
 	private String id;
 	private MapModel map = null;
-	private NodeModel parent;
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
+	private Collection<INodeView> views = null;
+
+	private final ExtensionContainer extensionContainer;
+	private HistoryInformationModel historyInformation = null;
+	final private NodeIconSetModel icons;
 	private Object userObject = null;
+	private String xmlText = null;
 
 	public Object getUserObject() {
 		return userObject;
 	}
-
-	private Collection<INodeView> views = null;
-	private String xmlText = null;
 
 	public NodeModel(final MapModel map) {
 		this("", map);
@@ -109,22 +110,22 @@ public class NodeModel{
 	}
 
 	public void addExtension(final IExtension extension) {
-		extensionContainer.addExtension(extension);
+		getExtensionContainer().addExtension(extension);
 	}
 
 	public IExtension putExtension(final IExtension extension) {
-		return extensionContainer.putExtension(extension);
+		return getExtensionContainer().putExtension(extension);
 	}
 
 	public void addIcon(final MindIcon icon) {
-		icons.addIcon(icon);
+		getIconModel().addIcon(icon);
 		if (map != null) {
 			map.getIconRegistry().addIcon(icon);
 		}
 	}
 
 	public void addIcon(final MindIcon icon, final int position) {
-		icons.addIcon(icon, position);
+		getIconModel().addIcon(icon, position);
 		getMap().getIconRegistry().addIcon(icon);
 	}
 
@@ -154,7 +155,7 @@ public class NodeModel{
 	}
 
 	public boolean containsExtension(final Class<? extends IExtension> clazz) {
-		return extensionContainer.containsExtension(clazz);
+		return getExtensionContainer().containsExtension(clazz);
 	}
 
 	public String createID() {
@@ -232,11 +233,11 @@ public class NodeModel{
 	}
 
     public <T extends IExtension> T getExtension(final Class<T> clazz) {
-		return extensionContainer.getExtension(clazz);
+		return getExtensionContainer().getExtension(clazz);
 	}
 
 	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
-		return extensionContainer.getExtensions();
+		return getExtensionContainer().getExtensions();
 	};
 
 	public FilterInfo getFilterInfo() {
@@ -248,11 +249,11 @@ public class NodeModel{
 	}
 
 	public MindIcon getIcon(final int position) {
-		return icons.getIcon(position);
+		return getIconModel().getIcon(position);
 	}
 
 	public List<MindIcon> getIcons() {
-		return icons.getIcons();
+		return getIconModel().getIcons();
 	}
 
 	public String getID() {
@@ -295,8 +296,8 @@ public class NodeModel{
 
 	public String getText() {
 		String string = "";
-		if (userObject != null) {
-			string = userObject.toString();
+		if (getUserObject() != null) {
+			string = getUserObject().toString();
 		}
 		return string;
 	}
@@ -423,11 +424,11 @@ public class NodeModel{
 	}
 
 	public <T extends IExtension> T removeExtension(final Class<T> clazz){
-		return extensionContainer.removeExtension(clazz);
+		return getExtensionContainer().removeExtension(clazz);
 	}
 
 	public boolean removeExtension(final IExtension extension) {
-		return extensionContainer.removeExtension(extension);
+		return getExtensionContainer().removeExtension(extension);
 	}
 
 	public void removeFromParent() {
@@ -440,7 +441,7 @@ public class NodeModel{
 	 * @return the number of remaining icons.
 	 */
 	public int removeIcon() {
-		return icons.removeIcon();
+		return getIconModel().removeIcon();
 	}
 
 	/**
@@ -449,7 +450,7 @@ public class NodeModel{
 	 * @return the number of remaining icons
 	 */
 	public int removeIcon(final int position) {
-		return icons.removeIcon(position);
+		return getIconModel().removeIcon(position);
 	}
 
 	public void removeViewer(final INodeView viewer) {
@@ -511,11 +512,11 @@ public class NodeModel{
 
 
 	public final void setText(final String text) {
-		userObject = XmlUtils.makeValidXml(text);
-		xmlText = HtmlUtils.toXhtml(text);
-		if (xmlText != null && !xmlText.startsWith("<")) {
-			userObject = " " + text;
-			xmlText = null;
+		setUserObject(XmlUtils.makeValidXml(text));
+		setXmlText(HtmlUtils.toXhtml(text));
+		if (getXmlText() != null && !getXmlText().startsWith("<")) {
+			setUserObject(" " + text);
+			setXmlText(null);
 		}
 	}
 
@@ -525,12 +526,12 @@ public class NodeModel{
 			return;
 		}
 		userObject = data;
-		xmlText = null;
+		setXmlText(null);
 	}
 
 	public final void setXmlText(final String pXmlText) {
 		xmlText = XmlUtils.makeValidXml(pXmlText);
-		userObject = HtmlUtils.toHtml(xmlText);
+		setUserObject(HtmlUtils.toHtml(xmlText));
 	}
 
 	@Override
@@ -557,4 +558,12 @@ public class NodeModel{
 		}
 		return node;
 	}
+
+	private ExtensionContainer getExtensionContainer() {
+	    return extensionContainer;
+    }
+
+	private NodeIconSetModel getIconModel() {
+	    return icons;
+    }
 }
