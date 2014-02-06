@@ -161,8 +161,8 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public Map<Class<? extends IExtension>, IExtension> getExtensions() {
-	    return delegate.getExtensions();
+    public Map<Class<? extends IExtension>, IExtension> getSharedExtensions() {
+	    return delegate.getSharedExtensions();
     }
 
 	@Override

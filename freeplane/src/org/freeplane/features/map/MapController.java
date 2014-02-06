@@ -253,12 +253,12 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 // 	final private Controller controller;
-	protected final Collection<IMapChangeListener> mapChangeListeners;
+	final private Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
 	final private MapWriter mapWriter;
 // 	final private ModeController modeController;
-	final private LinkedList<INodeChangeListener> nodeChangeListeners;
+	final LinkedList<INodeChangeListener> nodeChangeListeners;
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
@@ -380,7 +380,7 @@ public class MapController extends SelectionController implements IExtension{
 		boolean visibleFound = false;
 		boolean unfolded = false;
 		for(int i = 0; i < node.getChildCount(); i++){
-			final NodeModel child = (NodeModel) node.getChildAt(i);
+			final NodeModel child = node.getChildAt(i);
 			if(child.isVisible())
 				visibleFound = true;
 			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){
@@ -500,11 +500,8 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	private void fireNodeChanged(final NodeModel node, final NodeChangeEvent nodeChangeEvent) {
-		final INodeChangeListener[] list = nodeChangeListeners.toArray(new INodeChangeListener[]{});
-		for (final INodeChangeListener next : list) {
-			next.nodeChanged(nodeChangeEvent);
-		}
-		node.fireNodeChanged(nodeChangeEvent);
+		final INodeChangeListener[] nodeChangeListeners = this.nodeChangeListeners.toArray(new INodeChangeListener[]{});
+	    node.fireNodeChanged(nodeChangeListeners, nodeChangeEvent);
 	}
 
 	protected void fireNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {

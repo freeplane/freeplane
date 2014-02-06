@@ -115,12 +115,12 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node
 			    .getHistoryInformation().getLastModifiedAt()));
 		}
-		writer.addExtensionAttributes(node, node.getExtensions().values());
+		writer.addExtensionAttributes(node, node.getSharedExtensions().values());
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object content, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) content;
-		writer.addExtensionNodes(node, node.getExtensions().values());
+		writer.addExtensionNodes(node, node.getSharedExtensions().values());
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}

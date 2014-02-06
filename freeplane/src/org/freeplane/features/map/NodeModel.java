@@ -232,7 +232,7 @@ public class NodeModel{
 		return getExtensionContainer().getExtension(clazz);
 	}
 
-	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
+	public Map<Class<? extends IExtension>, IExtension> getSharedExtensions() {
 		return getExtensionContainer().getExtensions();
 	};
 
@@ -562,4 +562,11 @@ public class NodeModel{
 	private NodeIconSetModel getIconModel() {
 	    return sharedData.getIcons();
     }
+
+	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
+		for (final INodeChangeListener listener : nodeChangeListeners) {
+			listener.nodeChanged(nodeChangeEvent);
+		}
+		fireNodeChanged(nodeChangeEvent);
+	}
 }
