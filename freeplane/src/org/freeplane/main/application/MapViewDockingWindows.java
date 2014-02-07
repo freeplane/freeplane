@@ -21,9 +21,12 @@ package org.freeplane.main.application;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Frame;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,6 +37,7 @@ import java.util.Vector;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -60,6 +64,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
@@ -281,17 +286,35 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public void selectMapViewLater(final MapView mapView) {
 		Timer timer = new Timer(40, new ActionListener() {
 			int retryCount = 5;
-		    public void actionPerformed(ActionEvent e) {
-
-		    	if(mapView.isShowing()){
+		    public void actionPerformed(final ActionEvent event) {
+		    	final Timer eventTimer = (Timer)event.getSource();
+		    	focusMapLater(mapView, eventTimer);
+		    }
+			private void focusMapLater(final MapView mapView, final Timer eventTimer) {
+	            if(mapView.isShowing()){
 		    		mapView.select();
-		    		mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
+		    		final NodeView selected = mapView.getSelected();
+		    		if(selected != null){
+		    			final Frame frame = JOptionPane.getFrameForComponent(mapView);
+						if (frame.isFocused())
+		    				selected.requestFocusInWindow();
+						else
+							frame.addWindowFocusListener(new WindowAdapter() {
+								@Override
+                                public void windowGainedFocus(WindowEvent e) {
+									frame.removeWindowFocusListener(this);
+									selected.requestFocusInWindow();
+									retryCount = 2;
+									eventTimer.start();
+                                }
+							});
+		    		}
 		    	}
 				if(retryCount > 1){
 					retryCount--;
-					((Timer)e.getSource()).start();
+					eventTimer.start();
 				}
-		    }
+            }
 		  });
 		timer.setRepeats(false);
 		timer.start();
