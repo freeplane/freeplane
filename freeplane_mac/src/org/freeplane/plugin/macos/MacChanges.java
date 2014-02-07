@@ -58,6 +58,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 			fmMacApplication.setPreferencesHandler(this);
 			fmMacApplication.setOpenFileHandler(this);
 			fmMacApplication.setOpenURIHandler(this);
+			fmMacApplication.setQuitHandler(this);
 			// wait until handleOpenFile finishes if it was called in event thread
 			try {
 				EventQueue.invokeAndWait(new Runnable() {
