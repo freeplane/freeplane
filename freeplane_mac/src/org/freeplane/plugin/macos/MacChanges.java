@@ -77,7 +77,11 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	
 	@Override
 	public void handleQuitRequestWith(QuitEvent event, QuitResponse response) {
-		getModeController().getController().quit();
+		try {
+			controller.quit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		response.cancelQuit();
 	}
 
