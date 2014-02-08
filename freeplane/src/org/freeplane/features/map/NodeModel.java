@@ -73,6 +73,7 @@ public class NodeModel{
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
 	private Collection<INodeView> views = null;
+	final private ExtensionContainer nodeExtensionContainer;
 
 	private final SharedNodeData sharedData = new SharedNodeData();
 
@@ -85,10 +86,9 @@ public class NodeModel{
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {
-		sharedData.setExtensionContainer(new ExtensionContainer(new SmallExtensionMap()));
 		init(userObject);
 		this.map = map;
-		sharedData.setIcons(new NodeIconSetModel());
+		nodeExtensionContainer = new ExtensionContainer(new SmallExtensionMap());
 	}
 
 	protected void init(final Object userObject) {

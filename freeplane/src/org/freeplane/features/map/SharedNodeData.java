@@ -20,26 +20,25 @@
 package org.freeplane.features.map;
 
 import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.extension.SmallExtensionMap;
 
 /**
  * @author  Dimitry Polivaev 05.02.2014
  */
 public class SharedNodeData {
-	private ExtensionContainer extensionContainer;
+	final private ExtensionContainer extensionContainer;
 	private HistoryInformationModel historyInformation;
-	private NodeIconSetModel icons;
+	final private NodeIconSetModel icons;
 	private Object userObject;
 	private String xmlText;
 
 	public SharedNodeData() {
+		extensionContainer = new ExtensionContainer(new SmallExtensionMap());
+		icons = new NodeIconSetModel();
 	}
 
 	public ExtensionContainer getExtensionContainer() {
 		return extensionContainer;
-	}
-
-	public void setExtensionContainer(ExtensionContainer extensionContainer) {
-		this.extensionContainer = extensionContainer;
 	}
 
 	public HistoryInformationModel getHistoryInformation() {
@@ -52,10 +51,6 @@ public class SharedNodeData {
 
 	public NodeIconSetModel getIcons() {
 		return icons;
-	}
-
-	public void setIcons(NodeIconSetModel icons) {
-		this.icons = icons;
 	}
 
 	public Object getUserObject() {
