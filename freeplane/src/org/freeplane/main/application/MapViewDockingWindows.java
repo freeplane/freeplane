@@ -52,9 +52,10 @@ import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
 import net.infonode.docking.properties.RootWindowProperties;
-import net.infonode.docking.properties.ViewProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
+import net.infonode.tabbedpanel.TabAreaProperties;
+import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
@@ -81,8 +82,6 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public MapViewDockingWindows() {
 		viewSerializer = new MapViewSerializer();
 		rootWindow = new RootWindow(viewSerializer);
-		new ViewProperties(ViewProperties.PROPERTIES.getDefaultMap()).setAlwaysShowTitle(false);
-		RootWindowProperties.createDefault().getViewProperties().setAlwaysShowTitle(false);
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
 		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
@@ -122,22 +121,17 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 						throw new OperationAbortedException("can not close view");
             }
 
-			@Override
-            public void windowUndocking(DockingWindow window) {
-				setAlwaysShowTitle(window, true);
-            }
 
-			private void setAlwaysShowTitle(DockingWindow window, boolean showTitle) {
-				for(int i = 0; i < window.getChildWindowCount(); i++){
-					setAlwaysShowTitle(window.getChildWindow(i), showTitle);
-				}
-	            if(window instanceof View)
-	                ((View)window).getViewProperties().setAlwaysShowTitle(showTitle);
-            }
 
 			@Override
-            public void windowDocking(DockingWindow window) {
-				setAlwaysShowTitle(window, false);
+            public void windowAdded(DockingWindow addedToWindow, DockingWindow addedWindow) {
+				if(addedWindow instanceof TabWindow) {
+					final TabAreaProperties tabAreaProperties = ((TabWindow)addedWindow).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
+	                if (addedToWindow == rootWindow)
+	                    tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.MORE_THAN_ONE_TAB);
+                    else
+	                	tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.ALWAYS);
+                }
             }
 		});
 
