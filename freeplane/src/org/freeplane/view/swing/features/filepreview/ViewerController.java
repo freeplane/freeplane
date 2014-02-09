@@ -715,4 +715,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		ProgressIcons.updateExtendedProgressIcons(node, file.getName());
 		return true;
     }
+
+	public IViewerFactory getCombiFactory() {
+	    return new CombiFactory();
+    }
 }

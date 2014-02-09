@@ -46,6 +46,7 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.AbstractList;
@@ -72,6 +73,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.BitmapViewerComponent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
@@ -102,6 +104,8 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.view.swing.features.filepreview.IViewerFactory;
+import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
@@ -408,6 +412,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
 	private BufferedImage backgroundImage = null;
+	private JComponent backgroundComponent;
 	private Rectangle boundingRectangle = null;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
@@ -1104,32 +1109,52 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void loadBackgroundImage() {
-	    final Controller controller = Controller.getCurrentController();
-	    final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
-	    final MapModel model = controller.getMap();
-	    final String file = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
-	    if (file == MapStyle.CLEAR_BACKGROUND_IMAGE) {
-	    	backgroundImage = null;
-	    	return;
-	    }
-	    URI uri = null;
-	    try {
-	    	uri = new URI(file);
-	    }
-	    catch (final URISyntaxException e) {
-	    	LogUtils.severe(e);
-	    	return;
-	    }
-	    try {
-	    	backgroundImage = ImageIO.read(uri.toURL());
-	    }
-	    catch (final IOException e) {
-	    	LogUtils.severe(e);
-	    	return;
-	    }
-    }
+		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+		final ViewerController vc = getModeController().getExtension(ViewerController.class);
+		final IViewerFactory factory = vc.getCombiFactory();
+		final String uriString = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
+		if (uriString == null) {
+			return;
+		}
+		URI uri = assignURI(uriString);
+		JComponent oldBackgroundComponent = backgroundComponent;
+		if (uri != null) {
+			assignViewerToBackgroundComponent(factory, uri);
+			if (oldBackgroundComponent != null && oldBackgroundComponent != backgroundComponent) {
+				this.remove(oldBackgroundComponent);
+			}
+		}
+		if (backgroundComponent instanceof BitmapViewerComponent)
+			backgroundComponent.setSize(((BitmapViewerComponent) backgroundComponent).getOriginalSize());
+		this.add(backgroundComponent, new Integer(-1));
+		backgroundComponent.revalidate();
+		backgroundComponent.repaint();
+	}
 
-    private void updateStateIconsRecursively(NodeView node) {
+	private URI assignURI(final String uriString) {
+		URI uri = null;
+		try {
+			uri = new URI(uriString);
+		}
+		catch (final URISyntaxException e) {
+			LogUtils.severe(e);
+		}
+		return uri;
+	}
+
+	private void assignViewerToBackgroundComponent(final IViewerFactory factory, URI uri) {
+		try {
+			backgroundComponent = factory.createViewer(uri, getPreferredSize());
+		}
+		catch (final MalformedURLException e1) {
+			LogUtils.severe(e1);
+		}
+		catch (final IOException e1) {
+			LogUtils.severe(e1);
+		}
+	}
+    
+	private void updateStateIconsRecursively(NodeView node) {
     	final MainView mainView = node.getMainView();
     	if(mainView == null)
     		return;
@@ -1284,20 +1309,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
-		if (backgroundImage != null) {
-			drawBackgroundImage(g);
-		} else {
-			g.clearRect(0, 0, getWidth(), getHeight());
+		if (backgroundComponent != null) {
+			setBackgroundComponentLocation(g);
 		}
 	}
 
-	private void drawBackgroundImage(final Graphics g) {
-	    final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2, getRoot().getMainView()
-	        .getHeight() / 2);
-	    UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
-	    g.drawImage(backgroundImage, centerPoint.x - (backgroundImage.getWidth() / 2), centerPoint.y
-	            - (backgroundImage.getHeight() / 2), null);
-    }
+	private void setBackgroundComponentLocation(final Graphics g) {
+		final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2,
+		    getRoot().getMainView().getHeight() / 2);
+		UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
+		backgroundComponent.setLocation(centerPoint.x - (backgroundComponent.getWidth() / 2), centerPoint.y
+		        - (backgroundComponent.getHeight() / 2));
+	}
 
 	@Override
 	protected void paintChildren(final Graphics g) {
