@@ -39,7 +39,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class MapWriter implements IElementWriter, IAttributeWriter {
 
 	public enum WriterHint {
-		FORCE_FORMATTING
+		FORCE_FORMATTING, ALREADY_WRITTEN
 	}
 	private static final String USAGE_COMMENT = "<!--To view this file,"
 	        + " download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->"

@@ -26,6 +26,7 @@ import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.text.NodeTextBuilder;
 import org.freeplane.features.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -42,6 +43,8 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
+		if(! NodeWriter.shouldWriteSharedContent(writer))
+			return;
 		noteManager.onWrite((MapModel) userObject);
 	}
 

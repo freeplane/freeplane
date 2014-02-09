@@ -37,6 +37,7 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeWriter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
@@ -142,7 +143,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "NUMBERED", nodenumberingHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "NUMBERED", nodenumberingHandler);
-		
+
 		final IAttributeHandler formatHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -156,7 +157,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEMPLATE", formatHandler);
 			reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", formatHandler);
 		}
-		
+
 		final IAttributeHandler nodeMaxNodeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -165,7 +166,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
-		
+
 		final IAttributeHandler nodeMinWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -174,7 +175,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH", nodeMinWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MIN_WIDTH", nodeMinWidthHandler);
-		
+
 	}
 
 	/**
@@ -219,7 +220,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			writeAttributes(writer, null, size, false);
 			return;
 		}
-		
+
 	}
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeStyleModel style,
@@ -252,7 +253,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (maxTextWidth != NodeSizeModel.NOT_SET) {
 			writer.addAttribute("MAX_WIDTH", Integer.toString(maxTextWidth));
 		}
-		
+
 		final int minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
 		if (minTextWidth != NodeSizeModel.NOT_SET) {
 			writer.addAttribute("MIN_WIDTH", Integer.toString(minTextWidth));
@@ -279,6 +280,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 
 	private void writeContent(final ITreeWriter writer, final NodeModel node, final NodeStyleModel style,
 	                          final boolean forceFormatting) throws IOException {
+		if(! NodeWriter.shouldWriteSharedContent(writer))
+			return;
 		if (forceFormatting || style != null) {
 			final XMLElement fontElement = new XMLElement();
 			fontElement.setName("font");

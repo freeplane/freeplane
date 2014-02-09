@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -567,7 +568,7 @@ public class NodeModel{
 			fireSingleNodeChanged(nodeChangeListeners, nodeChangeEvent);
 		else{
 			for(NodeModel node : nodes.all()){
-				final NodeChangeEvent cloneEvent = new NodeChangeEvent(node, nodeChangeEvent.getProperty(), nodeChangeEvent.getOldValue(), nodeChangeEvent.getNewValue());
+				final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
 				node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
 			}
 		}
@@ -597,6 +598,17 @@ public class NodeModel{
 	    final NodeModel clone = new NodeModel(this);
 	    clone.nodes = nodes = nodes.add(clone);
 		return clone;
+    }
+
+	public SharedNodeData getSharedData() {
+	    return sharedData;
+    }
+
+	public Collection<IExtension> getIndividualExtensionValues() {
+		if(nodeLinks == null)
+			return Collections.emptyList();
+		else
+			return Arrays.<IExtension>asList(nodeLinks);
     }
 
 }
