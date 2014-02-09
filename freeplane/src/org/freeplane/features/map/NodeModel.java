@@ -75,6 +75,7 @@ public class NodeModel{
 	private NodeLinks nodeLinks = null;
 
 	private final SharedNodeData sharedData;
+	private NodeList nodes;
 
 	public Object getUserObject() {
 		return sharedData.getUserObject();
@@ -90,11 +91,12 @@ public class NodeModel{
 		this.map = map;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
+		nodes = new SingleNodeList(this);
 	}
 
-	private NodeModel(final SharedNodeData sharedData, final MapModel map){
-		this.map = map;
-		this.sharedData = sharedData;
+	private NodeModel(NodeModel toBeCloned){
+		this.map = toBeCloned.map;
+		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
 	}
@@ -561,11 +563,23 @@ public class NodeModel{
     }
 
 	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
-		for (final INodeChangeListener listener : nodeChangeListeners) {
+		if(nodes.size() == 1)
+			fireSingleNodeChanged(nodeChangeListeners, nodeChangeEvent);
+		else{
+			for(NodeModel node : nodes.all()){
+				final NodeChangeEvent cloneEvent = new NodeChangeEvent(node, nodeChangeEvent.getProperty(), nodeChangeEvent.getOldValue(), nodeChangeEvent.getNewValue());
+				node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
+			}
+		}
+
+	}
+
+	private void fireSingleNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
+	    for (final INodeChangeListener listener : nodeChangeListeners) {
 			listener.nodeChanged(nodeChangeEvent);
 		}
 		fireNodeChanged(nodeChangeEvent);
-	}
+    }
 	public NodeLinks getNodeLinks() {
 		return nodeLinks;
 	}
@@ -580,7 +594,9 @@ public class NodeModel{
 	}
 
 	protected NodeModel cloneNode() {
-	    return new NodeModel(sharedData, map);
+	    final NodeModel clone = new NodeModel(this);
+	    clone.nodes = nodes = nodes.add(clone);
+		return clone;
     }
 
 }
