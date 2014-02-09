@@ -31,11 +31,11 @@ import java.util.Map;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -72,7 +72,7 @@ public class NodeModel{
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
 	private Collection<INodeView> views = null;
-	final private ExtensionContainer nodeExtensionContainer;
+	private NodeLinks nodeLinks = null;
 
 	private final SharedNodeData sharedData = new SharedNodeData();
 
@@ -87,7 +87,6 @@ public class NodeModel{
 	public NodeModel(final Object userObject, final MapModel map) {
 		init(userObject);
 		this.map = map;
-		nodeExtensionContainer = new ExtensionContainer(new SmallExtensionMap());
 	}
 
 	protected void init(final Object userObject) {
@@ -556,5 +555,12 @@ public class NodeModel{
 			listener.nodeChanged(nodeChangeEvent);
 		}
 		fireNodeChanged(nodeChangeEvent);
+	}
+	public NodeLinks getNodeLinks() {
+		return nodeLinks;
+	}
+
+	public void setNodeLinks(NodeLinks nodeLinks) {
+		this.nodeLinks = nodeLinks;
 	}
 }

@@ -38,13 +38,13 @@ public class NodeLinks implements IExtension {
 	 * @return
 	 */
 	public static NodeLinks createLinkExtension(final NodeModel node) {
-		NodeLinks linkExtension = NodeLinks.getLinkExtension(node);
-		if (linkExtension != null) {
-			return linkExtension;
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
+		if (nodeLinks != null) {
+			return nodeLinks;
 		}
-		linkExtension = new NodeLinks();
-		node.addExtension(linkExtension);
-		return linkExtension;
+		nodeLinks = new NodeLinks();
+		node.setNodeLinks(nodeLinks);
+		return nodeLinks;
 	}
 
 	public static URI getLink(final NodeModel node) {
@@ -67,7 +67,7 @@ public class NodeLinks implements IExtension {
 	 * @return
 	 */
 	public static NodeLinks getLinkExtension(final NodeModel node) {
-		return node.getExtension(NodeLinks.class);
+		return node.getNodeLinks();
 	}
 
 	public static Collection<LinkModel> getLinks(final NodeModel node) {
