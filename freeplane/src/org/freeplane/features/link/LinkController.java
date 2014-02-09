@@ -826,7 +826,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	private Boolean ownFormatNodeAsHyperlink(final NodeModel node){
-		final NodeLinks linkModel = NodeLinks.getModel(node);
+		final NodeLinks linkModel = NodeLinks.getLinkExtension(node);
 		if(linkModel == null){
 			return null;
 		}

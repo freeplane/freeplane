@@ -111,7 +111,7 @@ public class MLinkController extends LinkController {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
-			final NodeLinks model = NodeLinks.getModel(from);
+			final NodeLinks model = NodeLinks.getLinkExtension(from);
 			if(model != null)
 				model.setFormatNodeAsHyperlink(null);
         }
@@ -138,11 +138,7 @@ public class MLinkController extends LinkController {
 		}
 
 		public void act() {
-			NodeLinks nodeLinks = source.getExtension(NodeLinks.class);
-			if (nodeLinks == null) {
-				nodeLinks = new NodeLinks();
-				source.addExtension(nodeLinks);
-			}
+			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			arrowLink = new ConnectorModel(source, targetID,
 				getStandardConnectorColor(), getStandardConnectorAlpha(),
 				getStandardConnectorShape(), getStandardConnectorWidth(),
@@ -156,7 +152,7 @@ public class MLinkController extends LinkController {
 		}
 
 		public void undo() {
-			final NodeLinks nodeLinks = source.getExtension(NodeLinks.class);
+			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
 			nodeLinks.removeArrowlink(arrowLink);
 			Controller.getCurrentModeController().getMapController().nodeChanged(source);
 		}
@@ -394,7 +390,7 @@ public class MLinkController extends LinkController {
 		modeController.registerExtensionCopier(new StyleCopier());
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
-	 
+
 	protected void setModeController(ModeController modeController) {
 		this.modeController = modeController;
 	}
@@ -906,7 +902,7 @@ public class MLinkController extends LinkController {
 		final IActor actor = new IActor() {
 			public void act() {
 				final NodeModel source = arrowLink.getSource();
-				final NodeLinks nodeLinks = source.getExtension(NodeLinks.class);
+				final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
 				nodeLinks.removeArrowlink(arrowLink);
 				Controller.getCurrentModeController().getMapController().nodeChanged(source);
 			}
@@ -917,11 +913,7 @@ public class MLinkController extends LinkController {
 
 			public void undo() {
 				final NodeModel source = arrowLink.getSource();
-				NodeLinks nodeLinks = source.getExtension(NodeLinks.class);
-				if (nodeLinks == null) {
-					nodeLinks = new NodeLinks();
-					source.addExtension(nodeLinks);
-				}
+				NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 				nodeLinks.addArrowlink(arrowLink);
 				Controller.getCurrentModeController().getMapController().nodeChanged(source);
 			}
@@ -1139,7 +1131,7 @@ public class MLinkController extends LinkController {
 		}
 	    return link;
     }
-	
+
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
 		final NodeLinks links = NodeLinks.createLinkExtension(node);
 		IActor actor = new IActor() {
