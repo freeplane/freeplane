@@ -472,7 +472,7 @@ class ApplicationViewController extends FrameController {
     }
 
 	public void focusTo(MapView currentMapView) {
-	    mapViewWindows.selectMapViewLater(currentMapView);
+	    mapViewWindows.focusMapViewLater(currentMapView);
 
     }
 

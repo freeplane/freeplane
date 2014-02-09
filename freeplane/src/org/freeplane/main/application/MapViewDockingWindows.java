@@ -124,13 +124,23 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 
 			@Override
-            public void windowAdded(DockingWindow addedToWindow, DockingWindow addedWindow) {
+            public void windowAdded(final DockingWindow addedToWindow, final DockingWindow addedWindow) {
 				if(addedWindow instanceof TabWindow) {
 					final TabAreaProperties tabAreaProperties = ((TabWindow)addedWindow).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
 	                if (addedToWindow == rootWindow)
 	                    tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.MORE_THAN_ONE_TAB);
                     else
 	                	tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.ALWAYS);
+                }
+            }
+
+			@Override
+            public void windowRemoved(DockingWindow removedFromWindow, DockingWindow removedWindow) {
+				if(removedWindow instanceof TabWindow) {
+	                if (removedFromWindow == rootWindow) {
+	                	final TabAreaProperties tabAreaProperties = ((TabWindow)removedWindow).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
+	                    tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.ALWAYS);
+                    }
                 }
             }
 		});
@@ -166,7 +176,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			for (int i = 0; i < mapViews.size(); ++i) {
 				if (mapViews.get(i) == pNewMap) {
 					View dockedView = getContainingDockedWindow(pNewMap);
-					dockedView.restoreFocus();
+					if(dockedView.isMinimized())
+						dockedView.restore();
+					else
+						dockedView.restoreFocus();
+					focusMapViewLater((MapView) pNewMap);
 					return;
 				}
 			}
@@ -277,7 +291,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
 	}
 
-	public void selectMapViewLater(final MapView mapView) {
+	public void focusMapViewLater(final MapView mapView) {
 		Timer timer = new Timer(40, new ActionListener() {
 			int retryCount = 5;
 		    public void actionPerformed(final ActionEvent event) {
@@ -285,8 +299,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		    	focusMapLater(mapView, eventTimer);
 		    }
 			private void focusMapLater(final MapView mapView, final Timer eventTimer) {
-	            if(mapView.isShowing()){
-		    		mapView.select();
+	            if(mapView.isShowing() && Controller.getCurrentController().getMapViewManager().getMapViewComponent() == mapView){
 		    		final NodeView selected = mapView.getSelected();
 		    		if(selected != null){
 		    			final Frame frame = JOptionPane.getFrameForComponent(mapView);
