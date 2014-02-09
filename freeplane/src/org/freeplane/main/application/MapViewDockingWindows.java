@@ -51,6 +51,7 @@ import net.infonode.docking.OperationAbortedException;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
+import net.infonode.docking.properties.DockingWindowProperties;
 import net.infonode.docking.properties.RootWindowProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
@@ -126,6 +127,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			@Override
             public void windowAdded(final DockingWindow addedToWindow, final DockingWindow addedWindow) {
 				if(addedWindow instanceof TabWindow) {
+					final DockingWindowProperties windowProperties = addedWindow.getWindowProperties();
+					windowProperties.setDockEnabled(false);
+					windowProperties.setUndockEnabled(false);
 					final TabAreaProperties tabAreaProperties = ((TabWindow)addedWindow).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
 	                if (addedToWindow == rootWindow)
 	                    tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.MORE_THAN_ONE_TAB);
