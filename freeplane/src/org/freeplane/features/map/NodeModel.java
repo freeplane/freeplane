@@ -63,9 +63,9 @@ public class NodeModel{
 	//DOCEAR - fixed: new property type for node link changes
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
-	private final List<NodeModel> children = new ArrayList<NodeModel>();
+	private final List<NodeModel> children;
 	private NodeModel parent;
-	final private FilterInfo filterInfo = new FilterInfo();
+	final private FilterInfo filterInfo;
 	private boolean folded;
 	private String id;
 	private MapModel map = null;
@@ -74,7 +74,7 @@ public class NodeModel{
 	private Collection<INodeView> views = null;
 	private NodeLinks nodeLinks = null;
 
-	private final SharedNodeData sharedData = new SharedNodeData();
+	private final SharedNodeData sharedData;
 
 	public Object getUserObject() {
 		return sharedData.getUserObject();
@@ -85,8 +85,18 @@ public class NodeModel{
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {
+		sharedData = new SharedNodeData();
 		init(userObject);
 		this.map = map;
+		children = new ArrayList<NodeModel>();
+		filterInfo = new FilterInfo();
+	}
+
+	private NodeModel(final SharedNodeData sharedData, final MapModel map){
+		this.map = map;
+		this.sharedData = sharedData;
+		children = new ArrayList<NodeModel>();
+		filterInfo = new FilterInfo();
 	}
 
 	protected void init(final Object userObject) {
@@ -563,4 +573,14 @@ public class NodeModel{
 	public void setNodeLinks(NodeLinks nodeLinks) {
 		this.nodeLinks = nodeLinks;
 	}
+
+    public NodeModel cloneTree(){
+		final NodeModel clone = new Cloner(this).cloneTree();
+		return clone;
+	}
+
+	protected NodeModel cloneNode() {
+	    return new NodeModel(sharedData, map);
+    }
+
 }

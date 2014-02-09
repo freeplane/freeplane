@@ -191,11 +191,11 @@ public class MMapController extends MapController {
 		final SummaryNode summary = modeController.getExtension(SummaryNode.class);
 		summary.undoableActivateHook(newNode, summary);
 		final FirstGroupNode firstGroup = modeController.getExtension(FirstGroupNode.class);
-		final NodeModel firstNode = (NodeModel) parentNode.getChildAt(start);
+		final NodeModel firstNode = parentNode.getChildAt(start);
 		firstGroup.undoableActivateHook(firstNode, firstGroup);
 		int level = summaryLevel;
 		for(int i = start+1; i < end; i++){
-			NodeModel node = (NodeModel) parentNode.getChildAt(i);
+			NodeModel node = parentNode.getChildAt(i);
 			if(isLeft != node.isLeft())
 				continue;
 			if(SummaryNode.isSummaryNode(node))
@@ -278,6 +278,7 @@ public class MMapController extends MapController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new NewMapViewAction());
 		modeController.addAction(new NewSiblingAction());
+		modeController.addAction(new NewCloneAction());
 		modeController.addAction(new NewPreviousSiblingAction());
 		modeController.addAction(new NewChildAction());
 		modeController.addAction(new NewSummaryAction());
@@ -780,6 +781,25 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
+
+	public void addNewClone() {
+		stopEditing();
+		final NodeModel clonedNode = getSelectedNode();
+		final NodeModel clone;
+		if (!clonedNode.isRoot()) {
+			final NodeModel parent = clonedNode.getParentNode();
+			int childPosition = parent.getChildPosition(clonedNode);
+			childPosition++;
+			if (!isWriteable(parent)) {
+				UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
+				return;
+			}
+			clone = clonedNode.cloneTree();
+			if(addNewNode(clone, parent, childPosition, clonedNode.isLeft())){
+				select(clone);
+			}
+		}
+    }
 
 
 }
