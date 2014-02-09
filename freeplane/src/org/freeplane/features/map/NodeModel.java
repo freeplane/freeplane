@@ -33,7 +33,6 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.XmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
@@ -508,26 +507,15 @@ public class NodeModel{
 
 
 	public final void setText(final String text) {
-		setUserObject(XmlUtils.makeValidXml(text));
-		setXmlText(HtmlUtils.toXhtml(text));
-		if (getXmlText() != null && !getXmlText().startsWith("<")) {
-			setUserObject(" " + text);
-			setXmlText(null);
-		}
+		sharedData.setText(text);
 	}
 
 	public final void setUserObject(final Object data) {
-		if (data instanceof String) {
-			setText(data.toString());
-			return;
-		}
 		sharedData.setUserObject(data);
-		setXmlText(null);
 	}
 
 	public final void setXmlText(final String pXmlText) {
-		sharedData.setXmlText(XmlUtils.makeValidXml(pXmlText));
-		setUserObject(HtmlUtils.toHtml(sharedData.getXmlText()));
+		sharedData.setXmlText(pXmlText);
 	}
 
 	@Override

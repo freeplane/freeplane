@@ -21,6 +21,8 @@ package org.freeplane.features.map;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.SmallExtensionMap;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.XmlUtils;
 
 /**
  * @author  Dimitry Polivaev 05.02.2014
@@ -57,8 +59,14 @@ public class SharedNodeData {
 		return userObject;
 	}
 
-	public void setUserObject(Object userObject) {
-		this.userObject = userObject;
+	public void setUserObject(Object data) {
+		if (data instanceof String) {
+			setText(data.toString());
+		}
+		else{
+			xmlText = null;
+			this.userObject = data;
+		}
 	}
 
 	public String getXmlText() {
@@ -66,6 +74,16 @@ public class SharedNodeData {
 	}
 
 	public void setXmlText(String xmlText) {
-		this.xmlText = xmlText;
+		xmlText = XmlUtils.makeValidXml(xmlText);
+		userObject = HtmlUtils.toHtml(getXmlText());
+	}
+
+	public void setText(String text) {
+		userObject = XmlUtils.makeValidXml(text);
+		xmlText = HtmlUtils.toXhtml(text);
+		if (xmlText != null && !xmlText.startsWith("<")) {
+			userObject = " " + text;
+			xmlText = null;
+		}
 	}
 }
