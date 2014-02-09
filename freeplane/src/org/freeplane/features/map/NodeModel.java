@@ -75,7 +75,7 @@ public class NodeModel{
 	private Collection<INodeView> views = null;
 	private NodeLinks nodeLinks = null;
 
-	private final SharedNodeData sharedData;
+	private SharedNodeData sharedData;
 	private NodeList nodes;
 
 	public Object getUserObject() {
@@ -609,6 +609,11 @@ public class NodeModel{
 			return Collections.emptyList();
 		else
 			return Arrays.<IExtension>asList(nodeLinks);
+    }
+
+	public void convertToClone(NodeModel node) {
+		sharedData = node.sharedData;
+		node.nodes = nodes = node.nodes.add(this);
     }
 
 }

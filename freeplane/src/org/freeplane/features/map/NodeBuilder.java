@@ -212,6 +212,13 @@ public class NodeBuilder implements IElementDOMHandler {
 				}
 			}
 		});
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "REFERENCE_ID", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String proposedReferenceId) {
+				final NodeModel node = (NodeModel) userObject;
+				final String realReference = mapReader.getCurrentNodeTreeCreator().substitutedID(proposedReferenceId);
+				node.convertToClone(getMap().getNodeForID(realReference));
+			}
+		});
 	}
 
 	/**
