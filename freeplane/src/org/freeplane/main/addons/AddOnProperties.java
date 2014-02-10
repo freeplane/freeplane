@@ -3,8 +3,8 @@ package org.freeplane.main.addons;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.CdataContentXmlWriter;
@@ -435,7 +436,7 @@ public class AddOnProperties {
 			for (Entry<String, String> translationEntry : localeEntry.getValue().entrySet()) {
 				final XMLElement translationElement = new XMLElement("entry");
 				translationElement.setAttribute("key", translationEntry.getKey());
-				translationElement.setContent(translationEntry.getValue());
+				translationElement.setContent(StringEscapeUtils.escapeJava(translationEntry.getValue()));
 				localeElement.addChild(translationElement);
 			}
 			translationsElement.addChild(localeElement);
