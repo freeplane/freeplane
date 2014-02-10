@@ -29,6 +29,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 	private static final String LATEX_EDITOR_FONT_SIZE = "latex_editor_font_size";
 	private static final String LATEX_EDITOR_FONT = "latex_editor_font";
+	private static final String LATEX_EDITOR_DISABLE = "latex_disable_editor";
 	private static final String LATEX = "\\latex";
 
 	public LatexRenderer() {
@@ -84,6 +85,11 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 		String nodeFormat = textController.getNodeFormat(node);
 		final String latexText = getLatexNode(text, nodeFormat, true);
+		
+		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
+		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
+			return null;
+		
 		if(latexText != null){
 			JEditorPane textEditor = new JEditorPane();
 			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
