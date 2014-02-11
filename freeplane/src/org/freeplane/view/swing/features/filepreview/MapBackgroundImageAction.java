@@ -20,17 +20,14 @@
 package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
-import java.net.MalformedURLException;
 import java.net.URI;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
-import org.freeplane.features.url.UrlManager;
 
 /**
  * Feb 1, 2014
@@ -43,20 +40,19 @@ public class MapBackgroundImageAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		final Controller controller = Controller.getCurrentController();
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		final ViewerController vc = Controller.getCurrentController().getModeController()
-		    .getExtension(ViewerController.class);
+		final ViewerController vc = controller.getModeController().getExtension(ViewerController.class);
 		final NodeModel selectedNode = mapController.getSelectedNode();
 		if (selectedNode == null) {
 			return;
 		}
-		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
-		final MapModel model = controller.getMap();
 		final URI uri = vc.createURI(selectedNode);
 		if (uri == null) {
 			return;
 		}
+		final MapModel model = controller.getMap();
 		mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, uri.toString());
 	}
 }
