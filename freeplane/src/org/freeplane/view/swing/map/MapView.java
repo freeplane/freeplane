@@ -398,9 +398,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
 	static Color standardSelectColor;
@@ -664,7 +661,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * to minimize calculation efforts
 	 */
 	public void endPrinting() {
-		if (isPreparedForPrinting == false)
+		if (!isPreparedForPrinting)
 			return;
 		isPreparedForPrinting = false;
 		isPrinting = false;
@@ -1117,18 +1114,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		URI uri = assignURI(uriString);
-		JComponent oldBackgroundComponent = backgroundComponent;
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
-			if (oldBackgroundComponent != null && oldBackgroundComponent != backgroundComponent) {
-				this.remove(oldBackgroundComponent);
-			}
 		}
 		if (backgroundComponent instanceof BitmapViewerComponent)
 			backgroundComponent.setSize(((BitmapViewerComponent) backgroundComponent).getOriginalSize());
-		this.add(backgroundComponent, new Integer(-1));
-		backgroundComponent.revalidate();
-		backgroundComponent.repaint();
 	}
 
 	private URI assignURI(final String uriString) {
@@ -1305,21 +1295,28 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			g2.dispose();
 		}
 	}
-	
+
 	@Override
 	protected void paintComponent(final Graphics g) {
-		super.paintComponent(g);
 		if (backgroundComponent != null) {
-			setBackgroundComponentLocation(g);
+			Graphics backgroundGraphics = g.create();
+			try {
+				setBackgroundComponentLocation(backgroundGraphics);
+				backgroundComponent.paint(backgroundGraphics);
+				repaint();
+			}
+			finally {
+				backgroundGraphics.dispose();
+			}
 		}
 	}
 
-	private void setBackgroundComponentLocation(final Graphics g) {
+	private void setBackgroundComponentLocation(Graphics g) {
 		final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2,
 		    getRoot().getMainView().getHeight() / 2);
 		UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
-		backgroundComponent.setLocation(centerPoint.x - (backgroundComponent.getWidth() / 2), centerPoint.y
-		        - (backgroundComponent.getHeight() / 2));
+		g.translate(centerPoint.x - (backgroundComponent.getWidth() / 2),
+		    centerPoint.y - (backgroundComponent.getHeight() / 2));
 	}
 
 	@Override
@@ -1335,7 +1332,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    else
 	    	paintModes = new PaintingMode[]{
 	    		PaintingMode.CLOUDS,
-	    		PaintingMode.NODES,PaintingMode.SELECTED_NODES, PaintingMode.LINKS
+	    		PaintingMode.NODES, PaintingMode.SELECTED_NODES, PaintingMode.LINKS
 	    		};
 	    Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
@@ -1352,9 +1349,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		case LINKS:
 	    			paintLinks(g2);
 	    			break;
-	    		default:
-	    			super.paintChildren(g2);
-	    	}
+				default:
+					super.paintChildren(g2);
+			}
 	    }
     };
 
@@ -1544,7 +1541,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	public void preparePrinting() {
 		isPrinting = true;
-		if (isPreparedForPrinting == false) {
+		if (!isPreparedForPrinting) {
 			if (zoom == 1f) {
 				getRoot().updateAll();
 				synchronized (getTreeLock()) {
