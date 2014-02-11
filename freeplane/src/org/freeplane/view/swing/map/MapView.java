@@ -1143,18 +1143,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
-		
-				try {
-					backgroundComponent = factory.createViewer(uri, getPreferredSize());
-				}
-				catch (final MalformedURLException e1) {
-					LogUtils.severe(e1);
-				}
-				catch (final IOException e1) {
-					LogUtils.severe(e1);
-				}
-		
-		
+		try {
+			backgroundComponent = factory.createViewer(uri, getPreferredSize());
+		}
+		catch (final MalformedURLException e1) {
+			LogUtils.severe(e1);
+		}
+		catch (final IOException e1) {
+			LogUtils.severe(e1);
+		}
 	}
     
 	private void updateStateIconsRecursively(NodeView node) {
