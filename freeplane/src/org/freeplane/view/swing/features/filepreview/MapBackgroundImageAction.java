@@ -53,18 +53,10 @@ public class MapBackgroundImageAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapModel model = controller.getMap();
-		final URI relativeUri = vc.createURI(selectedNode);
-		if (relativeUri == null) {
+		final URI uri = vc.createURI(selectedNode);
+		if (uri == null) {
 			return;
 		}
-		final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
-		URI absoluteUri = null;
-		try {
-			absoluteUri = urlManager.getAbsoluteUri(model, relativeUri);
-		}
-		catch (final MalformedURLException e1) {
-			LogUtils.severe(e1);
-		}
-		mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, absoluteUri.toString());
+		mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, uri.toString());
 	}
 }

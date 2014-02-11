@@ -1118,7 +1118,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			backgroundComponent = null;
 			return;
 		}
-		URI uri = assignURI(uriString);
+		URI uri = assignAbsoluteURI(uriString);
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
 		}
@@ -1127,14 +1127,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		repaint();
 	}
 
-	private URI assignURI(final String uriString) {
+	private URI assignAbsoluteURI(final String uriString) {
+		final UrlManager urlManager = getModeController().getExtension(UrlManager.class);
 		URI uri = null;
 		try {
-			uri = new URI(uriString);
+			uri = urlManager.getAbsoluteUri(model, new URI(uriString));
 		}
 		catch (final URISyntaxException e) {
 			LogUtils.severe(e);
 		}
+        catch (MalformedURLException e) {
+			LogUtils.severe(e);
+        }
 		return uri;
 	}
 
