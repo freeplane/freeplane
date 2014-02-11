@@ -478,6 +478,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 		addHierarchyBoundsListener(new Resizer());
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				loadBackgroundImage();	            
+            }
+		});
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -1101,7 +1106,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			setShowNotes();
 		if (property.equals(MapStyle.RESOURCES_BACKGROUND_IMAGE)) {
 			loadBackgroundImage();
-			repaint();
 		}
 	}
 
@@ -1120,6 +1124,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		if (backgroundComponent instanceof BitmapViewerComponent)
 			backgroundComponent.setSize(((BitmapViewerComponent) backgroundComponent).getOriginalSize());
+		repaint();
 	}
 
 	private URI assignURI(final String uriString) {
@@ -1133,16 +1138,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return uri;
 	}
 
-	private void assignViewerToBackgroundComponent(final IViewerFactory factory, URI uri) {
-		try {
-			backgroundComponent = factory.createViewer(uri, getPreferredSize());
-		}
-		catch (final MalformedURLException e1) {
-			LogUtils.severe(e1);
-		}
-		catch (final IOException e1) {
-			LogUtils.severe(e1);
-		}
+	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
+		
+				try {
+					backgroundComponent = factory.createViewer(uri, getPreferredSize());
+				}
+				catch (final MalformedURLException e1) {
+					LogUtils.severe(e1);
+				}
+				catch (final IOException e1) {
+					LogUtils.severe(e1);
+				}
+		
+		
 	}
     
 	private void updateStateIconsRecursively(NodeView node) {
