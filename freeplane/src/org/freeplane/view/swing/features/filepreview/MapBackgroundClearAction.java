@@ -39,6 +39,6 @@ public class MapBackgroundClearAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapModel model = controller.getMap();
-		mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, MapStyle.CLEAR_BACKGROUND_IMAGE);
+		mapStyle.setProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE, null);
 	}
 }

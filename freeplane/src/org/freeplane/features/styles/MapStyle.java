@@ -72,7 +72,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
-	public static final String CLEAR_BACKGROUND_IMAGE = "clear the background image";
 	public static final String MAP_STYLES = "MAP_STYLES";
 	
 	public static void install(boolean persistent){

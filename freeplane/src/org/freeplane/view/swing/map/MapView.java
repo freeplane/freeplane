@@ -1111,6 +1111,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final IViewerFactory factory = vc.getCombiFactory();
 		final String uriString = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
 		if (uriString == null) {
+			backgroundComponent = null;
 			return;
 		}
 		URI uri = assignURI(uriString);
