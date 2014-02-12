@@ -410,6 +410,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Color background = null;
 	private BufferedImage backgroundImage = null;
 	private JComponent backgroundComponent;
+	private ViewerController vc;
+	private IViewerFactory factory;
 	private Rectangle boundingRectangle = null;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
@@ -465,6 +467,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		showNotes= noteController != null && noteController.showNotesInMap(getModel());
         updateContentStyle();
         initRoot();
+        createCombiFactory();
 		setBackground(requiredBackground());
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
 		zoom = mapStyleModel.getZoom();
@@ -1059,6 +1062,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), this, this, 0);
 		anchor = rootView;
 	}
+	
+	private void createCombiFactory() {
+		vc = getModeController().getExtension(ViewerController.class);
+		factory = vc.getCombiFactory();
+	}
 
 	public boolean isPrinting() {
 		return isPrinting;
@@ -1111,8 +1119,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void loadBackgroundImage() {
 		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
-		final ViewerController vc = getModeController().getExtension(ViewerController.class);
-		final IViewerFactory factory = vc.getCombiFactory();
 		final String uriString = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
 		if (uriString == null) {
 			backgroundComponent = null;
@@ -1122,8 +1128,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
 		}
-		if (backgroundComponent instanceof BitmapViewerComponent)
-			backgroundComponent.setSize(((BitmapViewerComponent) backgroundComponent).getOriginalSize());
+		if (backgroundComponent instanceof BitmapViewerComponent) {
+			scaleBitmapViewer();
+		}
 		repaint();
 	}
 
@@ -1886,18 +1893,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	//	@Override
-	//    public void repaint(int x, int y, int width, int height) {
-	//		final JViewport vp = (JViewport) getParent();
-	//		final Rectangle viewRect = vp.getViewRect();
-	//		super.repaint(viewRect.x, viewRect.y, viewRect.width, viewRect.height);
-	////	    super.repaint(x, y, width, height);
-	//    }
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
 		anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
 		getRoot().updateAll();
+		if (backgroundComponent != null && backgroundComponent instanceof BitmapViewerComponent) {
+			scaleBitmapViewer();
+		}
 		revalidate();
+	}
+
+	private void scaleBitmapViewer() {
+		Dimension backgroundDimension = ((BitmapViewerComponent) backgroundComponent).getOriginalSize();
+		int backgroundScaleWidth = getZoomed((int) backgroundDimension.getWidth());
+		int backgroundScaleHeight = getZoomed((int) backgroundDimension.getHeight());
+		backgroundComponent.setSize(new Dimension(backgroundScaleWidth, backgroundScaleHeight));
 	}
 
 	/**
