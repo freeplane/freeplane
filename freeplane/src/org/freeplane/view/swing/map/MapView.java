@@ -1628,7 +1628,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		double userZoomFactor = ResourceController.getResourceController().getDoubleProperty("user_zoom", 1);
 		userZoomFactor = Math.max(0, userZoomFactor);
 		userZoomFactor = Math.min(2, userZoomFactor);
-		if (fitMap == FitMap.PAGE && pageIndex > 0) {
+		if ((fitMap == FitMap.PAGE || fitMap == FitMap.BACKGROUND) && pageIndex > 0) {
 			return Printable.NO_SUCH_PAGE;
 		}
 		final Graphics2D g2 = (Graphics2D) graphics.create();
