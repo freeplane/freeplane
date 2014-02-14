@@ -1279,7 +1279,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	public void paint(final Graphics g) {
-		if(isPrinting == false && isPreparedForPrinting == true){
+		if (!isPrinting && isPreparedForPrinting){
 			isPreparedForPrinting = false;
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
