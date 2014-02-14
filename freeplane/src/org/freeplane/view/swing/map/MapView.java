@@ -42,7 +42,6 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.io.IOException;
@@ -63,7 +62,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
@@ -306,13 +304,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return selectedSet.contains(node);
 		}
 
-		/**
-		 * @return
-		 */
 		public Set<NodeView> getSelection() {
 			return Collections.unmodifiableSet(selectedSet);
 		}
-
 
 		private boolean deselect(final NodeView node) {
 			final boolean selectedChanged = selectedNode != null && selectedNode.equals(node);
@@ -408,10 +402,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
-	private BufferedImage backgroundImage = null;
 	private JComponent backgroundComponent;
-	private ViewerController vc;
-	private IViewerFactory factory;
 	private Rectangle boundingRectangle = null;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
@@ -467,7 +458,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		showNotes= noteController != null && noteController.showNotesInMap(getModel());
         updateContentStyle();
         initRoot();
-        createCombiFactory();
 		setBackground(requiredBackground());
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
 		zoom = mapStyleModel.getZoom();
@@ -481,11 +471,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 		addHierarchyBoundsListener(new Resizer());
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				loadBackgroundImage();	            
-            }
-		});
+		loadBackgroundImageLater();
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -1063,10 +1049,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		anchor = rootView;
 	}
 	
-	private void createCombiFactory() {
-		vc = getModeController().getExtension(ViewerController.class);
-		factory = vc.getCombiFactory();
-	}
+	private void loadBackgroundImageLater() {
+	    EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				loadBackgroundImage();	            
+            }
+		});
+    }
 
 	public boolean isPrinting() {
 		return isPrinting;
@@ -1125,6 +1114,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		URI uri = assignAbsoluteURI(uriString);
+		final ViewerController vc = getModeController().getExtension(ViewerController.class);
+		final IViewerFactory factory = vc.getCombiFactory();
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
 		}
@@ -1329,11 +1320,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void setBackgroundComponentLocation(Graphics g) {
+		final Point centerPoint = getRootCenterPoint();
+		final Point backgroundImageTopLeft = getBackgroundImageTopLeft(centerPoint);
+		g.translate(backgroundImageTopLeft.x, backgroundImageTopLeft.y);
+	}
+
+	private Point getRootCenterPoint() {
 		final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2,
 		    getRoot().getMainView().getHeight() / 2);
 		UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
-		g.translate(centerPoint.x - (backgroundComponent.getWidth() / 2),
-		    centerPoint.y - (backgroundComponent.getHeight() / 2));
+		return centerPoint;
+	}
+
+	private Point getBackgroundImageTopLeft(Point centerPoint) {
+		int x = centerPoint.x - (backgroundComponent.getWidth() / 2);
+		int y = centerPoint.y - (backgroundComponent.getHeight() / 2);
+		return new Point(x, y);
 	}
 
 	@Override
@@ -1569,10 +1571,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				background = getBackground();
 				setBackground(Color.WHITE);
 			}
-			boundingRectangle = getInnerBounds();
 			fitMap = FitMap.valueOf();
+			if (backgroundComponent != null && fitMap == FitMap.BACKGROUND) {
+				boundingRectangle = getBackgroundImageInnerBounds();
+			}
+			else {
+				boundingRectangle = getInnerBounds();
+			}
 			isPreparedForPrinting = true;
 		}
+	}
+
+	private Rectangle getBackgroundImageInnerBounds() {
+		final Point centerPoint = getRootCenterPoint();
+		final Point backgroundImageTopLeft = getBackgroundImageTopLeft(centerPoint);
+		backgroundComponent.setLocation(backgroundImageTopLeft);
+		return backgroundComponent.getBounds();
 	}
 
 	@Override
@@ -1627,7 +1641,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		g2.clipRect((int)imageableX, (int)imageableY, (int)imageableWidth, (int)imageableHeight);
 		final double mapWidth = boundingRectangle.getWidth();
 		final double mapHeight = boundingRectangle.getHeight();
-		if (fitMap == FitMap.PAGE) {
+		if (fitMap == FitMap.PAGE || fitMap == FitMap.BACKGROUND) {
 			final double zoomFactorX = imageableWidth / mapWidth;
 			final double zoomFactorY = imageableHeight / mapHeight;
 			zoomFactor = Math.min(zoomFactorX, zoomFactorY) * 0.99;
@@ -1897,17 +1911,60 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.zoom = zoom;
 		anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
 		getRoot().updateAll();
-		if (backgroundComponent != null && backgroundComponent instanceof BitmapViewerComponent) {
-			scaleBitmapViewer();
+		if (backgroundComponent != null) {
+			scaleViewerComponent();
 		}
 		revalidate();
 	}
+
+	private void scaleViewerComponent() {
+	    if (backgroundComponent instanceof BitmapViewerComponent) {
+	    	scaleBitmapViewer();
+	    }
+	    else {
+	    	scaleSVGViewer();
+	    }
+    }
 
 	private void scaleBitmapViewer() {
 		Dimension backgroundDimension = ((BitmapViewerComponent) backgroundComponent).getOriginalSize();
 		int backgroundScaleWidth = getZoomed((int) backgroundDimension.getWidth());
 		int backgroundScaleHeight = getZoomed((int) backgroundDimension.getHeight());
-		backgroundComponent.setSize(new Dimension(backgroundScaleWidth, backgroundScaleHeight));
+		if (scaledImageIsLargerThanCanvas(backgroundScaleWidth, backgroundScaleHeight)) {
+			int fitCanvasWidth;
+			int fitCanvasHeight;
+			double scale;
+			if (backgroundScaleWidth >= backgroundScaleHeight) {
+				scale = getPreferredSize().getWidth() / backgroundDimension.width;
+				fitCanvasWidth = getPreferredSize().width;
+				fitCanvasHeight = (int) (backgroundDimension.height * scale);
+			}
+			else {
+				scale = getPreferredSize().height / backgroundDimension.height;
+				fitCanvasWidth = (int) (backgroundDimension.width * scale);
+				fitCanvasHeight = getPreferredSize().height;
+			}
+			backgroundComponent.setSize(new Dimension(fitCanvasWidth, fitCanvasHeight));
+		}
+		else {
+			backgroundComponent.setSize(new Dimension(backgroundScaleWidth, backgroundScaleHeight));
+		}
+	}
+
+	private boolean scaledImageIsLargerThanCanvas(int backgroundScaleWidth, int backgroundScaleHeight) {
+	    return backgroundScaleWidth >= getPreferredSize().width || backgroundScaleHeight >= getPreferredSize().height;
+    }
+
+	private void scaleSVGViewer() {
+		Dimension backgroundDimension = getPreferredSize();
+		int backgroundScaleWidth = getZoomed((int) backgroundDimension.getWidth());
+		int backgroundScaleHeight = getZoomed((int) backgroundDimension.getHeight());
+		if (scaledImageIsLargerThanCanvas(backgroundScaleWidth, backgroundScaleHeight)) {
+			backgroundComponent.setSize(getPreferredSize());
+		}
+		else {
+			backgroundComponent.setSize(new Dimension(backgroundScaleWidth, backgroundScaleHeight));
+		}
 	}
 
 	/**
