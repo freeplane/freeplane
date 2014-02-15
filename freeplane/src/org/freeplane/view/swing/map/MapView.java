@@ -1306,6 +1306,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	protected void paintComponent(final Graphics g) {
+		super.paintComponent(g);
 		if (backgroundComponent != null) {
 			Graphics backgroundGraphics = g.create();
 			try {
