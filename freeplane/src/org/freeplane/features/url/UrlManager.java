@@ -317,24 +317,10 @@ public class UrlManager implements IExtension {
 	}
 
 
-	public URI getAbsoluteUri(final MapModel map, final URI uri) throws MalformedURLException {
-
-
-		//DOCEAR - added project relative uri resolution
-		URI resolvedURI;
-		try {
-			resolvedURI = uri.toURL().openConnection().getURL().toURI();
-		} catch (IOException ex) {
-			LogUtils.severe(ex);
-			return null;
-		} catch (URISyntaxException ex) {
-			LogUtils.severe(ex);
-			return null;
-		} catch (IllegalArgumentException ex) {
-			resolvedURI = uri;
-		}
-
-		if (resolvedURI.isAbsolute()) {
+	public URI getAbsoluteUri(final MapModel map, URI uri) throws MalformedURLException {
+//		final URI resolvedURI = resolveProjectUri(uri);
+		final URI resolvedURI = uri;
+		if (resolvedURI == null  || resolvedURI.isAbsolute()) {
 			return resolvedURI;
 		}
 		final String path = resolvedURI.getPath();
@@ -350,6 +336,24 @@ public class UrlManager implements IExtension {
 			return null;
 		}
 	}
+
+    //DOCEAR - added project relative uri resolution
+	@SuppressWarnings("unused")
+    private URI resolveWorkspaceRelatedUri(final URI uri) {
+		URI resolvedURI;
+		try {
+			resolvedURI = uri.toURL().openConnection().getURL().toURI();
+		} catch (IOException ex) {
+			LogUtils.severe(ex);
+			return null;
+		} catch (URISyntaxException ex) {
+			LogUtils.severe(ex);
+			return null;
+		} catch (IllegalArgumentException ex) {
+			resolvedURI = uri;
+		}
+	    return resolvedURI;
+    }
 
 	public File getAbsoluteFile(final MapModel map, final URI uri) {
 		if(uri == null) {
