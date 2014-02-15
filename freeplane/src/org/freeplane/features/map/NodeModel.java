@@ -409,11 +409,6 @@ public class NodeModel{
 		return filter == null || filter.isVisible(this);
 	}
 
-	public void remove(final int index) {
-		final NodeModel node = getChildrenInternal().get(index);
-		remove(node);
-	}
-
 	public void remove(final NodeModel node) {
 		if (node == preferredChild) {
 			final int index = getChildrenInternal().indexOf(node);
@@ -436,10 +431,6 @@ public class NodeModel{
 
 	public boolean removeExtension(final IExtension extension) {
 		return getExtensionContainer().removeExtension(extension);
-	}
-
-	public void removeFromParent() {
-		parent.remove(this);
 	}
 
 	/**

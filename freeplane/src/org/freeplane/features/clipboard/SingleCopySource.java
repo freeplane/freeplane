@@ -274,11 +274,6 @@ class SingleCopySource extends NodeModel {
 	    return delegate.isVisible();
     }
 
-	@Override
-    public void remove(int index) {
-		   throw new RuntimeException(METHOD_NOT_SUPPORTED);
-    }
-
 	public void remove(MutableTreeNode node) {
 		   throw new RuntimeException(METHOD_NOT_SUPPORTED);
     }
@@ -291,11 +286,6 @@ class SingleCopySource extends NodeModel {
 	@Override
     public boolean removeExtension(IExtension extension) {
 		throw new RuntimeException(METHOD_NOT_SUPPORTED);
-    }
-
-	@Override
-    public void removeFromParent() {
-		   throw new RuntimeException(METHOD_NOT_SUPPORTED);
     }
 
 	@Override
