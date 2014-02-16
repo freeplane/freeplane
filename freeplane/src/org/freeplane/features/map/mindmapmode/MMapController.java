@@ -227,8 +227,13 @@ public class MMapController extends MapController {
 			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
 			return false;
 		}
+		insertNewNode(newNode, parent, index, newNodeIsLeft);
+		return true;
+    }
 
-		boolean needsClone = false;
+	private void insertNewNode(final NodeModel newNode, final NodeModel parent, final int index,
+                               final boolean newNodeIsLeft) {
+	    boolean needsClone = false;
 		for(NodeModel parentClone : parent.clones()){
 			final boolean newCloneIsLeft = parentClone.isRoot() ? newNodeIsLeft :  parentClone.isLeft();
 			final NodeModel childClone;
@@ -238,12 +243,11 @@ public class MMapController extends MapController {
 				childClone = newNode;
 				needsClone = true;
 			}
-			addSingleNewNode(childClone, parentClone, index, newCloneIsLeft);
+			insertSingleNewNode(childClone, parentClone, index, newCloneIsLeft);
 		}
-		return true;
     }
 
-	private void addSingleNewNode(final NodeModel newNode, final NodeModel parent, final int index,
+	private void insertSingleNewNode(final NodeModel newNode, final NodeModel parent, final int index,
                                   final boolean newNodeIsLeft) {
 	    final MapModel map = parent.getMap();
 		newNode.setLeft(newNodeIsLeft);
@@ -377,20 +381,7 @@ public class MMapController extends MapController {
 	}
 
 	public void insertNode(final NodeModel node, final NodeModel parentNode, final int index) {
-		final IActor actor = new IActor() {
-			public void act() {
-				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
-			}
-
-			public String getDescription() {
-				return "insertNode";
-			}
-
-			public void undo() {
-				((MMapController) Controller.getCurrentModeController().getMapController()).deleteWithoutUndo(node);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		insertNewNode(node, parentNode, index, node.isLeft());
 	}
 
 	@Override
