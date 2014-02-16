@@ -71,7 +71,6 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.components.BitmapViewerComponent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
@@ -103,6 +102,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
+import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
@@ -1119,9 +1119,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
 		}
-		if (backgroundComponent instanceof BitmapViewerComponent) {
-			scaleBitmapViewer();
-		}
 		repaint();
 	}
 
@@ -1142,8 +1139,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
 		try {
-			backgroundComponent = (JComponent) factory.createViewer(uri,
-					getPreferredSize());
+			backgroundComponent = (JComponent) factory.createViewer(uri, this.getZoom());
 		}
 		catch (final MalformedURLException e1) {
 			LogUtils.severe(e1);
@@ -1914,59 +1910,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
 		getRoot().updateAll();
 		if (backgroundComponent != null) {
-			scaleViewerComponent();
+			((ScalableComponent) backgroundComponent).setFinalViewerSize(zoom);
 		}
 		revalidate();
-	}
-
-	private void scaleViewerComponent() {
-	    if (backgroundComponent instanceof BitmapViewerComponent) {
-	    	scaleBitmapViewer();
-	    }
-	    else {
-	    	scaleSVGViewer();
-	    }
-    }
-
-	private void scaleBitmapViewer() {
-		Dimension backgroundDimension = ((BitmapViewerComponent) backgroundComponent).getOriginalSize();
-		int backgroundScaleWidth = getZoomed((int) backgroundDimension.getWidth());
-		int backgroundScaleHeight = getZoomed((int) backgroundDimension.getHeight());
-		if (scaledImageIsLargerThanCanvas(backgroundScaleWidth, backgroundScaleHeight)) {
-			int fitCanvasWidth;
-			int fitCanvasHeight;
-			double scale;
-			if (backgroundScaleWidth >= backgroundScaleHeight) {
-				scale = getPreferredSize().getWidth() / backgroundDimension.width;
-				fitCanvasWidth = getPreferredSize().width;
-				fitCanvasHeight = (int) (backgroundDimension.height * scale);
-			}
-			else {
-				scale = getPreferredSize().height / backgroundDimension.height;
-				fitCanvasWidth = (int) (backgroundDimension.width * scale);
-				fitCanvasHeight = getPreferredSize().height;
-			}
-			backgroundComponent.setSize(new Dimension(fitCanvasWidth, fitCanvasHeight));
-		}
-		else {
-			backgroundComponent.setSize(new Dimension(backgroundScaleWidth, backgroundScaleHeight));
-		}
-	}
-
-	private boolean scaledImageIsLargerThanCanvas(int backgroundScaleWidth, int backgroundScaleHeight) {
-	    return backgroundScaleWidth >= getPreferredSize().width || backgroundScaleHeight >= getPreferredSize().height;
-    }
-
-	private void scaleSVGViewer() {
-		Dimension backgroundDimension = getPreferredSize();
-		int backgroundScaleWidth = getZoomed((int) backgroundDimension.getWidth());
-		int backgroundScaleHeight = getZoomed((int) backgroundDimension.getHeight());
-		if (scaledImageIsLargerThanCanvas(backgroundScaleWidth, backgroundScaleHeight)) {
-			backgroundComponent.setSize(getPreferredSize());
-		}
-		else {
-			backgroundComponent.setSize(new Dimension(backgroundScaleWidth, backgroundScaleHeight));
-		}
 	}
 
 	/**

@@ -77,7 +77,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 	public ScalableComponent createViewer(final URI uri,
 			final Dimension preferredSize) throws MalformedURLException,
 	        IOException {
-		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
+		bitmapViewerComponent = new BitmapViewerComponent(uri);
 		bitmapViewerComponent.setFinalViewerSize(preferredSize);
 		return bitmapViewerComponent;
 	}
@@ -87,6 +87,13 @@ public class BitmapViewerFactory implements IViewerFactory {
 	}
 
 	public ScalableComponent getComponent() {
+		return bitmapViewerComponent;
+	}
+
+	public ScalableComponent createViewer(URI uri, float zoom)
+			throws MalformedURLException, IOException {
+		bitmapViewerComponent = new BitmapViewerComponent(uri);
+		bitmapViewerComponent.setFinalViewerSize(zoom);
 		return bitmapViewerComponent;
 	}
 

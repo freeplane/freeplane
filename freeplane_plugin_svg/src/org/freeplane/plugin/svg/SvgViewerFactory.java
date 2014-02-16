@@ -1,6 +1,8 @@
 package org.freeplane.plugin.svg;
 
 import java.awt.Dimension;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 
 import org.apache.batik.swing.JSVGCanvas;
@@ -18,10 +20,10 @@ import org.w3c.dom.svg.SVGLength;
 import org.w3c.dom.svg.SVGSVGElement;
 
 public class SvgViewerFactory implements IViewerFactory {
+
 	private ViewerComponent canvas;
 
-	private final class ViewerComponent extends JSVGCanvas implements
-			ScalableComponent {
+	private final class ViewerComponent extends JSVGCanvas implements ScalableComponent {
 
 		private static final long serialVersionUID = 1L;
 		private Dimension originalSize = null;
@@ -33,10 +35,17 @@ public class SvgViewerFactory implements IViewerFactory {
 		public void setFinalViewerSize(final Dimension size) {
 			final JSVGCanvas canvas = (JSVGCanvas) this;
 			canvas.setMySize(size);
+			canvas.setSize(size);
 		}
 
 		public void setDraftViewerSize(final Dimension size) {
 			setFinalViewerSize(size);
+		}
+
+		public void setFinalViewerSize(final float zoom) {
+			int scaledWidth = (int) (originalSize.width * zoom);
+			int scaledHeight = (int) (originalSize.height * zoom);
+			setFinalViewerSize(new Dimension(scaledWidth, scaledHeight));
 		}
 
 		public ViewerComponent(final URI uri) {
@@ -139,6 +148,21 @@ public class SvgViewerFactory implements IViewerFactory {
 	}
 
 	public ScalableComponent getComponent() {
+		return canvas;
+	}
+
+
+	public ScalableComponent createViewer(URI uri, final float zoom)
+			throws MalformedURLException, IOException {
+		canvas = new ViewerComponent(uri);
+		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
+			@Override
+			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
+				canvas.setFinalViewerSize(zoom);
+				canvas.revalidate();
+				canvas.removeGVTTreeRendererListener(this);
+			}
+		});
 		return canvas;
 	}
 

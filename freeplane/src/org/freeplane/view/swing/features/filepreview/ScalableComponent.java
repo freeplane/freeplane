@@ -32,6 +32,7 @@ public interface ScalableComponent {
 	 * released
 	 */
 	void setFinalViewerSize(Dimension size);
+	void setFinalViewerSize(float zoom);
 
 	/**
 	 * Adjusts size of the given viewer component inside resize operation by

@@ -96,6 +96,14 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return component;
 		}
 
+		public ScalableComponent createViewer(URI uri, float zoom)
+				throws MalformedURLException, IOException {
+			factory = getViewerFactory(uri);
+			component = (factory == null ? null : factory.createViewer(uri,
+					zoom));
+			return component;
+		}
+
 	}
 
 	static final class FactoryFileFilter extends FileFilter {

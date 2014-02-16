@@ -56,7 +56,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	enum CacheType {
 		IC_DISABLE, IC_FILE, IC_RAM
-	};
+	}
 
 	private static final long serialVersionUID = 1L;
 	private File cacheFile;
@@ -156,7 +156,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			}
 			processing = true;
 			final Future<BufferedImage> result = AsyncScalr.resize(image,
-					getWidth(), getHeight());
+					(int) getWidth(), (int) getHeight());
 			AsyncScalr.getService().submit(new Runnable() {
 				public void run() {
 					BufferedImage scaledImage = null;
@@ -165,8 +165,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					} catch (final Exception e) {
 						LogUtils.severe(e);
 						return;
-					}
- finally {
+					} finally {
 						image.flush();
 					}
 					final int scaledImageHeight = scaledImage.getHeight();
@@ -298,11 +297,18 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		setScaleEnabled(true);
 	}
 
-	public void setDraftViewerSize(Dimension size) {
+	public void setDraftViewerSize(final Dimension size) {
 		setPreferredSize(size);
 		setSize(size);
 		setScaleEnabled(false);
 	}
+
+	public void setFinalViewerSize(final float zoom) {
+		int scaledWidth = (int) (originalSize.width * zoom);
+		int scaledHeight = (int) (originalSize.height * zoom);
+		setFinalViewerSize(new Dimension(scaledWidth, scaledHeight));
+	}
+
 }
 
 

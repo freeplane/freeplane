@@ -18,6 +18,12 @@ public interface IViewerFactory {
 			throws MalformedURLException, IOException;
 
 	/**
+	 * Creates viewer component for given URI with given zoom
+	 */
+	ScalableComponent createViewer(URI uri, float zoom) throws MalformedURLException,
+			IOException;
+
+	/**
 	 * Creates viewer component for given URI calculating its preferred size from the zoom of the resource
 	 */
 	ScalableComponent createViewer(ExternalResource resource, URI absoluteUri,
