@@ -461,25 +461,8 @@ public class MMapController extends MapController {
         moveNode(node, newParent, newIndex, isLeft, changeSide);
 	}
 
-	public void moveNodes(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
+	public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
 		final List<NodeModel> mySelecteds = new ArrayList<NodeModel>(movedNodes);
-        final IActor actor = new IActor() {
-            public void act() {
-				_moveNodes(mySelecteds, direction);
-            }
-
-            public String getDescription() {
-                return "moveNodes";
-            }
-
-            public void undo() {
-				_moveNodes(mySelecteds, -direction);
-            }
-        };
-        Controller.getCurrentModeController().execute(actor, selected.getMap());
-	}
-
-	private void _moveNodes(final List<NodeModel> movedNodes, final int direction) {
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
             public int compare(final Object o1, final Object o2) {
                 final int i1 = ((Integer) o1).intValue();
@@ -487,15 +470,14 @@ public class MMapController extends MapController {
                 return i2 - i1;
             }
         };
-		if (movedNodes.size() == 0)
+		if (mySelecteds.size() == 0)
 			return;
-		NodeModel selected = getSelectedNode();
 		Collection<NodeModel> selectedNodes = new ArrayList<NodeModel>(getSelectedNodes());
-		final NodeModel parent = movedNodes.get(0).getParentNode();
+		final NodeModel parent = mySelecteds.get(0).getParentNode();
         if (parent != null) {
             final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
             final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
-            for (final NodeModel node : movedNodes) {
+            for (final NodeModel node : mySelecteds) {
                 if (node.getParentNode() != parent) {
                     LogUtils.warn("Not all selected nodes have the same parent.");
                     return;
@@ -512,7 +494,7 @@ public class MMapController extends MapController {
             }
             for (final Integer position : range) {
                 final NodeModel node = sortedChildren.get(position.intValue());
-                moveNodeTo(node, direction);
+                moveSingleNodeInGivenDirection(node, direction);
             }
             final IMapSelection selection = Controller.getCurrentController().getSelection();
             selection.selectAsTheOnlyOneSelected(selected);
@@ -521,7 +503,8 @@ public class MMapController extends MapController {
             }
         }
     }
-    private int moveNodeTo(final NodeModel child, final int direction) {
+
+    private int moveSingleNodeInGivenDirection(final NodeModel child, final int direction) {
         final NodeModel parent = child.getParentNode();
         final int index = parent.getIndex(child);
         int newIndex = index;
@@ -536,8 +519,7 @@ public class MMapController extends MapController {
         }
         final NodeModel destinationNode = sortedNodesIndices.get(newPositionInVector);
         newIndex = parent.getIndex(destinationNode);
-        ((MMapController) Controller.getCurrentModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex, false,
-            false);
+        ((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(child, parent, newIndex, false, false);
         return newIndex;
     }
     /**
@@ -581,7 +563,7 @@ public class MMapController extends MapController {
 	 *
 	 * @return returns the new index.
 	 */
-	int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex,
+	private int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex,
 	                          final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);

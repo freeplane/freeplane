@@ -37,7 +37,7 @@ class NodeDownAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		((MMapController) modeController.getMapController()).moveNodes(modeController.getMapController()
+		((MMapController) modeController.getMapController()).moveNodesInGivenDirection(modeController.getMapController()
 		    .getSelectedNode(), modeController.getMapController().getSelectedNodes(), 1);
 	}
 }
