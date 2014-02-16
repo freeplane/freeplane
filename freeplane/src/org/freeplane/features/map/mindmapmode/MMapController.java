@@ -415,7 +415,13 @@ public class MMapController extends MapController {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, newParent.getMap());
+		for(NodeModel oldParentClone : oldParent.clones())
+			if(oldParentClone != oldParent)
+				deleteSingleNode(oldParentClone, oldIndex);
 
+		for(NodeModel newParentClone : newParent.clones())
+			if(newParentClone != newParent)
+				insertSingleNewNode(child.cloneTree(), newParentClone, newIndex, newParentClone.isLeft());
 	}
 
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
