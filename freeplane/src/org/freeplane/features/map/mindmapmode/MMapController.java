@@ -233,17 +233,12 @@ public class MMapController extends MapController {
 
 	private void insertNewNode(final NodeModel newNode, final NodeModel parent, final int index,
                                final boolean newNodeIsLeft) {
-	    boolean needsClone = false;
+		insertSingleNewNode(newNode, parent, index, newNodeIsLeft);
 		for(NodeModel parentClone : parent.clones()){
-			final boolean newCloneIsLeft = parentClone.isRoot() ? newNodeIsLeft :  parentClone.isLeft();
-			final NodeModel childClone;
-			if(needsClone)
-	            childClone = newNode.cloneTree();
-            else{
-				childClone = newNode;
-				needsClone = true;
-			}
-			insertSingleNewNode(childClone, parentClone, index, newCloneIsLeft);
+			if(parentClone != parent) {
+				final NodeModel childClone = newNode.cloneTree();
+				insertSingleNewNode(childClone, parentClone, index, parentClone.isLeft());
+            }
 		}
     }
 
@@ -261,7 +256,7 @@ public class MMapController extends MapController {
 			}
 
 			public void undo() {
-				deleteWithoutUndo(newNode);
+				deleteWithoutUndo(parent, index);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);
@@ -333,14 +328,6 @@ public class MMapController extends MapController {
         };
 		Controller.getCurrentModeController().execute(actor, parentNode.getMap());
     }
-
-	/**
-	 */
-	public void deleteWithoutUndo(final NodeModel node) {
-		final NodeModel oldParent = node.getParentNode();
-		final int index = oldParent.getIndex(node);
-		deleteWithoutUndo(oldParent, index);
-	}
 
 	private void deleteWithoutUndo(final NodeModel parent, final int index) {
 	    final NodeModel child = parent.getChildAt(index);
