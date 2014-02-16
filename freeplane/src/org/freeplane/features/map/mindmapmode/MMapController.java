@@ -227,6 +227,24 @@ public class MMapController extends MapController {
 			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
 			return false;
 		}
+
+		boolean needsClone = false;
+		for(NodeModel parentClone : parent.clones()){
+			final boolean newCloneIsLeft = parentClone.isRoot() ? newNodeIsLeft :  parentClone.isLeft();
+			final NodeModel childClone;
+			if(needsClone)
+	            childClone = newNode.cloneTree();
+            else{
+				childClone = newNode;
+				needsClone = true;
+			}
+			addSingleNewNode(childClone, parentClone, index, newCloneIsLeft);
+		}
+		return true;
+    }
+
+	private void addSingleNewNode(final NodeModel newNode, final NodeModel parent, final int index,
+                                  final boolean newNodeIsLeft) {
 	    final MapModel map = parent.getMap();
 		newNode.setLeft(newNodeIsLeft);
 		final IActor actor = new IActor() {
@@ -243,7 +261,6 @@ public class MMapController extends MapController {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);
-		return true;
     }
 
 	/**
