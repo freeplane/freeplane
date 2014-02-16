@@ -637,4 +637,14 @@ public class NodeModel{
 	    return clones;
     }
 
+	public boolean subtreeContainsCloneOf(NodeModel node) {
+		for(NodeModel clone : node.clones())
+			if(equals(clone))
+				return true;
+		for(NodeModel child : children)
+			if(child.subtreeContainsCloneOf(node))
+				return true;
+		return false;
+    }
+
 }

@@ -233,6 +233,10 @@ public class MMapController extends MapController {
 
 	private void insertNewNode(final NodeModel newNode, final NodeModel parent, final int index,
                                final boolean newNodeIsLeft) {
+		if(newNode.subtreeContainsCloneOf(parent)){
+			UITools.errorMessage("not allowed");
+			return;
+		}
 		insertSingleNewNode(newNode, parent, index, newNodeIsLeft);
 		for(NodeModel parentClone : parent.clones()){
 			if(parentClone != parent) {
@@ -395,6 +399,10 @@ public class MMapController extends MapController {
 
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
 	                     final boolean changeSide) {
+		if(child.subtreeContainsCloneOf(newParent)){
+			UITools.errorMessage("not allowed");
+			return;
+		}
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
 		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
