@@ -273,7 +273,7 @@ public class NodeModel{
 	}
 
 	public int getIndex(final NodeModel node) {
-		return getChildrenInternal().indexOf(node);
+		return children.indexOf(node);
 	}
 
 	public MapModel getMap() {
@@ -414,9 +414,9 @@ public class NodeModel{
 		return filter == null || filter.isVisible(this);
 	}
 
-	public void remove(final NodeModel node) {
-		if (node == preferredChild) {
-			final int index = getChildrenInternal().indexOf(node);
+	public void remove(final int index) {
+	    final NodeModel child = children.get(index);
+		if (child == preferredChild) {
 			if (getChildrenInternal().size() > index + 1) {
 				preferredChild = (getChildrenInternal().get(index + 1));
 			}
@@ -424,11 +424,10 @@ public class NodeModel{
 				preferredChild = (index > 0) ? (NodeModel) (getChildrenInternal().get(index - 1)) : null;
 			}
 		}
-		final int index = getIndex(node);
-		node.setParent(null);
-		getChildrenInternal().remove(node);
-		fireNodeRemoved(node, index);
-	}
+		child.setParent(null);
+		children.remove(index);
+		fireNodeRemoved(child, index);
+    }
 
 	public <T extends IExtension> T removeExtension(final Class<T> clazz){
 		return getExtensionContainer().removeExtension(clazz);

@@ -289,11 +289,17 @@ public class MMapController extends MapController {
 	}
 
 	public void deleteNode(final NodeModel node) {
-		final NodeModel parentNode = node.getParentNode();
+	    final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
+		for(NodeModel parentClone : parentNode.clones())
+			deleteSingleNode(parentClone, index);
+	}
+
+	private void deleteSingleNode(final NodeModel parentNode, final int index) {
+		final NodeModel node = parentNode.getChildAt(index);
 		final IActor actor = new IActor() {
         	public void act() {
-        		deleteWithoutUndo(node);
+        		deleteWithoutUndo(parentNode, index);
         	}
 
         	public String getDescription() {
@@ -301,22 +307,28 @@ public class MMapController extends MapController {
         	}
 
         	public void undo() {
-        		(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
+				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
         	}
         };
-		Controller.getCurrentModeController().execute(actor, node.getMap());
-	}
+		Controller.getCurrentModeController().execute(actor, parentNode.getMap());
+    }
 
 	/**
 	 */
-	public void deleteWithoutUndo(final NodeModel selectedNode) {
-		final NodeModel oldParent = selectedNode.getParentNode();
-		firePreNodeDelete(oldParent, selectedNode, oldParent.getIndex(selectedNode));
-		final MapModel map = selectedNode.getMap();
-		setSaved(map, false);
-		oldParent.remove(selectedNode);
-		fireNodeDeleted(oldParent, selectedNode, oldParent.getIndex(selectedNode));
+	public void deleteWithoutUndo(final NodeModel node) {
+		final NodeModel oldParent = node.getParentNode();
+		final int index = oldParent.getIndex(node);
+		deleteWithoutUndo(oldParent, index);
 	}
+
+	private void deleteWithoutUndo(final NodeModel parent, final int index) {
+	    final NodeModel child = parent.getChildAt(index);
+		firePreNodeDelete(parent, child, index);
+		final MapModel map = parent.getMap();
+		setSaved(map, false);
+		parent.remove(index);
+		fireNodeDeleted(parent, child, index);
+    }
 
 	public MModeController getMModeController() {
 		return (MModeController) Controller.getCurrentModeController();
@@ -566,7 +578,7 @@ public class MMapController extends MapController {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
 		firePreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
-		oldParent.remove(child);
+		oldParent.remove(oldParent.getIndex(child));
 		if (changeSide) {
 			child.setParent(newParent);
 			child.setLeft(isLeft);
