@@ -41,6 +41,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 
 import com.thebuzzmedia.imgscalr.AsyncScalr;
 
@@ -48,7 +49,8 @@ import com.thebuzzmedia.imgscalr.AsyncScalr;
  * @author Dimitry Polivaev
  * 22.08.2009
  */
-public class BitmapViewerComponent extends JComponent {
+public class BitmapViewerComponent extends JComponent implements
+		ScalableComponent {
 	/**
 	 *
 	 */
@@ -255,5 +257,16 @@ public class BitmapViewerComponent extends JComponent {
 		}
 	}
 
+	public void setFinalViewerSize(final Dimension size) {
+		setPreferredSize(size);
+		setSize(size);
+		setScaleEnabled(true);
+	}
+
+	public void setDraftViewerSize(Dimension size) {
+		setPreferredSize(size);
+		setSize(size);
+		setScaleEnabled(false);
+	}
 
 }

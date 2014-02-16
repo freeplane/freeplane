@@ -57,17 +57,24 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
+		private ScalableComponent component;
 
-		public JComponent createViewer(final URI uri, final Dimension preferredSize) throws MalformedURLException,
-		        IOException {
+		public ScalableComponent createViewer(final URI uri,
+				final Dimension preferredSize) throws MalformedURLException,
+				IOException {
 			factory = getViewerFactory(uri);
-			return factory == null ? null : factory.createViewer(uri, preferredSize);
+			component = (factory == null ? null : factory.createViewer(uri,
+					preferredSize));
+			return component;
 		}
 
-		public JComponent createViewer(final ExternalResource resource, final URI absoluteUri, final int maximumWidth)
+		public ScalableComponent createViewer(final ExternalResource resource,
+				final URI absoluteUri, final int maximumWidth)
 		        throws MalformedURLException, IOException {
 			factory = getViewerFactory(absoluteUri);
-			return factory.createViewer(resource, absoluteUri, maximumWidth);
+			component = factory.createViewer(resource, absoluteUri,
+					maximumWidth);
+			return component;
 		}
 
 		public String getDescription() {
@@ -81,20 +88,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return sb.toString();
 		}
 
-		public Dimension getOriginalSize(final JComponent viewer) {
-			return factory.getOriginalSize(viewer);
-		}
-
-		public void setFinalViewerSize(final JComponent viewer, final Dimension size) {
-			factory.setFinalViewerSize(viewer, size);
-		}
-
-		public void setDraftViewerSize(JComponent viewer, Dimension size) {
-			factory.setDraftViewerSize(viewer, size);
-
-		}
 		public boolean accept(final URI uri) {
 			return getViewerFactory(uri) != null;
+		}
+
+		public ScalableComponent getComponent() {
+			return component;
 		}
 
 	}
@@ -300,9 +299,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				final JComponent component = (JComponent) e.getComponent();
 				final int x = component.getWidth();
 				final int y = component.getHeight();
-				final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
 				final double r = Math.sqrt(x * x + y * y);
-				final Dimension originalSize = factory.getOriginalSize(component);
+				final Dimension originalSize = ((ScalableComponent) component).getOriginalSize();
 				final int w = originalSize.width;
 				final int h = originalSize.height;
 				final double r0 = Math.sqrt(w * w + h * h);
@@ -333,10 +331,6 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			}
 			final JComponent component = (JComponent) e.getComponent();
 			final int cursorType = component.getCursor().getType();
-			final IViewerFactory factory = (IViewerFactory) component.getClientProperty(IViewerFactory.class);
-			if (factory == null) {
-				return true;
-			}
 			sizeChanged = true;
 			final Dimension size;
 			switch (cursorType) {
@@ -348,7 +342,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 						return true;
 					}
 					final double r = Math.sqrt(x * x + y * y);
-					final Dimension preferredSize = factory.getOriginalSize(component);
+					final Dimension preferredSize = ((ScalableComponent) component).getOriginalSize();
 					final int width = preferredSize.width;
 					final int height = preferredSize.height;
 					final double r0 = Math.sqrt(width * width + height * height);
@@ -359,7 +353,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 						return true;
 					}
 					size = new Dimension(x, y);
-					factory.setDraftViewerSize(component, size);
+					((ScalableComponent) component).setDraftViewerSize(size);
 					component.revalidate();
 					break;
 				default:
@@ -617,7 +611,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		JComponent viewer = null;
 		try {
 			final int maxWidth = ResourceController.getResourceController().getIntProperty("max_image_width");
-			viewer = factory.createViewer(model, absoluteUri, maxWidth);
+			viewer = (JComponent) factory.createViewer(model, absoluteUri, maxWidth);
 		}
 		catch (final Exception e) {
 			final String info = HtmlUtils.combineTextWithExceptionInfo(uri.toString(), e);

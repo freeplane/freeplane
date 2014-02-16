@@ -1142,7 +1142,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
 		try {
-			backgroundComponent = factory.createViewer(uri, getPreferredSize());
+			backgroundComponent = (JComponent) factory.createViewer(uri,
+					getPreferredSize());
 		}
 		catch (final MalformedURLException e1) {
 			LogUtils.severe(e1);
