@@ -49,17 +49,15 @@ import com.thebuzzmedia.imgscalr.AsyncScalr;
  * @author Dimitry Polivaev
  * 22.08.2009
  */
-public class BitmapViewerComponent extends JComponent implements
-		ScalableComponent {
-	/**
-	 *
-	 */
-	static{
-//		System.setProperty("imgscalr.debug", "true");
+public class BitmapViewerComponent extends JComponent implements ScalableComponent {
+	static {
 		AsyncScalr.setServiceThreadCount(1);
 	}
 
-	enum CacheType{IC_DISABLE, IC_FILE, IC_RAM};
+	enum CacheType {
+		IC_DISABLE, IC_FILE, IC_RAM
+	};
+
 	private static final long serialVersionUID = 1L;
 	private File cacheFile;
 	private int hint;
@@ -71,24 +69,10 @@ public class BitmapViewerComponent extends JComponent implements
 	private int imageY;
 	private boolean processing;
 	private boolean scaleEnabled;
+	private final static Object LOCK = new Object();
 
-	public boolean isScaleEnabled() {
-		return scaleEnabled;
-	}
-
-	public void setScaleEnabled(boolean scaleEnabled) {
-		this.scaleEnabled = scaleEnabled;
-	}
-
-	protected int getHint() {
-		return hint;
-	}
-
-	public void setHint(final int hint) {
-		this.hint = hint;
-	}
-
-	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
+	public BitmapViewerComponent(final URI uri) throws MalformedURLException,
+			IOException {
 		url = uri.toURL();
 		originalSize = readOriginalSize();
 		hint = Image.SCALE_SMOOTH;
@@ -101,28 +85,46 @@ public class BitmapViewerComponent extends JComponent implements
 		InputStream inputStream = null;
 		ImageInputStream in = null;
 		try {
-				inputStream = url.openStream();
-				in = ImageIO.createImageInputStream(inputStream);
-		        final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
-		        if (readers.hasNext()) {
-		                ImageReader reader = readers.next();
-		                try {
-		                        reader.setInput(in);
-		                        return new Dimension(reader.getWidth(0), reader.getHeight(0));
-		                } finally {
-		                        reader.dispose();
-		                }
-		        }
-		        else{
-		        	throw new IOException("can not create image");
-		        }
+			inputStream = url.openStream();
+			in = ImageIO.createImageInputStream(inputStream);
+			final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
+			if (readers.hasNext()) {
+				final ImageReader reader = readers.next();
+				try {
+					reader.setInput(in);
+					return new Dimension(reader.getWidth(0),
+							reader.getHeight(0));
+				} finally {
+					reader.dispose();
+				}
+			} else {
+				throw new IOException("can not create image");
+			}
 		} finally {
-		        if (in != null)
-		        	in.close();
-		        if(inputStream != null)
-		        	inputStream.close();
+			if (in != null) {
+				in.close();
+			}
+			if (inputStream != null) {
+				inputStream.close();
+			}
 		}
-    }
+	}
+
+	public boolean isScaleEnabled() {
+		return scaleEnabled;
+	}
+
+	public void setScaleEnabled(final boolean scaleEnabled) {
+		this.scaleEnabled = scaleEnabled;
+	}
+
+	protected int getHint() {
+		return hint;
+	}
+
+	public void setHint(final int hint) {
+		this.hint = hint;
+	}
 
 	public Dimension getOriginalSize() {
 		return new Dimension(originalSize);
@@ -130,47 +132,60 @@ public class BitmapViewerComponent extends JComponent implements
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		if(processing)
-			return;
-		if (getWidth() == 0 || getHeight() == 0) {
+		if (processing || componentHasNoArea()) {
 			return;
 		}
-		if(cachedImage == null && cachedImageWeakRef != null){
+		if (cachedImage == null && cachedImageWeakRef != null) {
 			cachedImage = cachedImageWeakRef.get();
 			cachedImageWeakRef = null;
 		}
-		if(cachedImage == null && cacheFile != null)
+		if (cachedImage == null && cacheFile != null) {
 			loadImageFromCacheFile();
-		if(! isCachedImageValid()){
-			BufferedImage tempImage;
-	        try {
-	        	tempImage = ImageIO.read(url);
-	        }
-	        catch (IOException e) {
-				return;
-	        }
-	        final BufferedImage image = tempImage;
-			final int imageWidth = image.getWidth();
-			final int imageHeight = image.getHeight();
-			if(imageWidth == 0 || imageHeight == 0){
+			if (!isCachedImageValid()) {
+				cacheFile.delete();
+				cacheFile = null;
+			}
+		}
+		if (isCachedImageValid()) {
+			g.drawImage(cachedImage, imageX, imageY, null);
+			flushImage();
+		} else {
+			final BufferedImage image = loadImageFromURL();
+			if (image == null || hasNoArea(image)) {
 				return;
 			}
 			processing = true;
-			final Future<BufferedImage> result = AsyncScalr.resize(image, getWidth(),getHeight());
+			final Future<BufferedImage> result = AsyncScalr.resize(image,
+					getWidth(), getHeight());
 			AsyncScalr.getService().submit(new Runnable() {
 				public void run() {
 					BufferedImage scaledImage = null;
 					try {
 						scaledImage = result.get();
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						LogUtils.severe(e);
 						return;
 					}
-					finally{
+ finally {
 						image.flush();
 					}
 					final int scaledImageHeight = scaledImage.getHeight();
 					final int scaledImageWidth = scaledImage.getWidth();
+					centerImagePosition(scaledImageHeight, scaledImageWidth);
+					cachedImage = scaledImage;
+					if (getCacheType().equals(CacheType.IC_FILE)) {
+						writeCacheFile();
+					}
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							processing = false;
+							repaint();
+						}
+					});
+				}
+
+				private void centerImagePosition(final int scaledImageHeight,
+						final int scaledImageWidth) {
 					if (scaledImageHeight > getHeight()) {
 						imageX = 0;
 						imageY = (getHeight() - scaledImageHeight) / 2;
@@ -179,31 +194,71 @@ public class BitmapViewerComponent extends JComponent implements
 						imageX = (getWidth() - scaledImageWidth) / 2;
 						imageY = 0;
 					}
-					cachedImage = scaledImage;
-					if(getCacheType().equals(CacheType.IC_FILE))
-						writeCacheFile();
-					EventQueue.invokeLater(new Runnable() {
-
-						public void run() {
-							processing = false;
-							repaint();
-						}
-					});
 				}
 			});
 		}
-		else{
-			g.drawImage(cachedImage, imageX, imageY, null);
-			flushImage();
+	}
+
+	private boolean componentHasNoArea() {
+		return getWidth() == 0 || getHeight() == 0;
+	}
+
+	private boolean hasNoArea(final BufferedImage image) {
+		final int imageWidth = image.getWidth();
+		final int imageHeight = image.getHeight();
+		if (imageWidth == 0 || imageHeight == 0) {
+			return true;
 		}
+		return false;
+	}
+
+	private void loadImageFromCacheFile() {
+		try {
+			cachedImage = ImageIO.read(cacheFile);
+		} catch (final IOException e) {
+			LogUtils.severe(e);
+		}
+	}
+
+	private boolean isCachedImageValid() {
+		return cachedImage != null
+				&& (!scaleEnabled || componentHasAlmostSameWidthAsCachedImage()
+						&& componentHasLargerHeightThanCachedImage() || componentHasLargerWidthThanCachedImage()
+						&& componentHasAlmostSameHeightAsCachedImage());
+	}
+
+	private boolean componentHasAlmostSameHeightAsCachedImage() {
+		return 1 >= Math.abs(getHeight() - cachedImage.getHeight());
+	}
+
+	private boolean componentHasLargerWidthThanCachedImage() {
+		return getWidth() >= cachedImage.getWidth();
+	}
+
+	private boolean componentHasLargerHeightThanCachedImage() {
+		return getHeight() >= cachedImage.getHeight();
+	}
+
+	private boolean componentHasAlmostSameWidthAsCachedImage() {
+		return 1 >= Math.abs(getWidth() - cachedImage.getWidth());
+	}
+
+	private BufferedImage loadImageFromURL() {
+		BufferedImage tempImage = null;
+		try {
+			tempImage = ImageIO.read(url);
+		} catch (final IOException e) {
+			LogUtils.severe(e);
+		}
+		return tempImage;
 	}
 
 	private void flushImage() {
 		final CacheType cacheType = getCacheType();
-		if(CacheType.IC_RAM.equals(cacheType)){
+		if (CacheType.IC_RAM.equals(cacheType)) {
 			cachedImage.flush();
 		}
-		else{
+ else {
 			cachedImageWeakRef = new WeakReference<BufferedImage>(cachedImage);
 			cachedImage = null;
 		}
@@ -213,45 +268,25 @@ public class BitmapViewerComponent extends JComponent implements
 		return ResourceController.getResourceController().getEnumProperty("image_cache", CacheType.IC_DISABLE);
 	}
 
-	private final static Object LOCK = new Object();
 	private void writeCacheFile() {
-		File tempDir = new File (System.getProperty("java.io.tmpdir"), "freeplane");
+		final File tempDir = new File(System.getProperty("java.io.tmpdir"),
+				"freeplane");
 		tempDir.mkdirs();
 		try {
-			synchronized(LOCK) {
+			synchronized (LOCK) {
 				cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
 			}
 			ImageIO.write(cachedImage, "jpg", cacheFile);
-
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			cacheFile.delete();
 			cacheFile = null;
 		}
 	}
 
-	private boolean isCachedImageValid() {
-		return cachedImage != null &&
-				(! scaleEnabled
-					|| 1 >= Math.abs(getWidth() -  cachedImage.getWidth()) && getHeight() >= cachedImage.getHeight()
-				    || getWidth() >=  cachedImage.getWidth() && 1 >= Math.abs(getHeight() - cachedImage.getHeight())
-				 );
-	}
-
-	private void loadImageFromCacheFile() {
-		try {
-			cachedImage = ImageIO.read(cacheFile);
-			if(isCachedImageValid())
-				return;
-		} catch (IOException e) {
-		}
-		cacheFile.delete();
-		cacheFile = null;
-	}
-
 	@Override
 	public void removeNotify() {
 		super.removeNotify();
-		if(cacheFile != null){
+		if (cacheFile != null) {
 			cacheFile.delete();
 			cacheFile = null;
 		}
@@ -268,5 +303,6 @@ public class BitmapViewerComponent extends JComponent implements
 		setSize(size);
 		setScaleEnabled(false);
 	}
-
 }
+
+
