@@ -397,10 +397,23 @@ public class MMapController extends MapController {
 	                     final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
-		final boolean wasLeft = child.isLeft();
-		if (oldParent == newParent && oldIndex == newIndex && changeSide == false) {
-			return;
+		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
+			moveSingleNode(child, newParent, newIndex, isLeft, changeSide);
+			for(NodeModel oldParentClone : oldParent.clones())
+				if(oldParentClone != oldParent)
+					deleteSingleNode(oldParentClone, oldIndex);
+
+			for(NodeModel newParentClone : newParent.clones())
+				if(newParentClone != newParent)
+					insertSingleNewNode(child.cloneTree(), newParentClone, newIndex, newParentClone.isLeft());
 		}
+	}
+
+	private void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex,
+                                final boolean isLeft, final boolean changeSide) {
+		final NodeModel oldParent = child.getParentNode();
+		final int oldIndex = oldParent.getChildPosition(child);
+		final boolean wasLeft = child.isLeft();
 		final IActor actor = new IActor() {
 			public void act() {
 				moveNodeToWithoutUndo(child, newParent, newIndex, isLeft, changeSide);
@@ -415,14 +428,7 @@ public class MMapController extends MapController {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, newParent.getMap());
-		for(NodeModel oldParentClone : oldParent.clones())
-			if(oldParentClone != oldParent)
-				deleteSingleNode(oldParentClone, oldIndex);
-
-		for(NodeModel newParentClone : newParent.clones())
-			if(newParentClone != newParent)
-				insertSingleNewNode(child.cloneTree(), newParentClone, newIndex, newParentClone.isLeft());
-	}
+    }
 
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
 	                            final boolean changeSide) {
