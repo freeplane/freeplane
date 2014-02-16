@@ -19,20 +19,21 @@
  */
 package org.freeplane.features.map;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
  * @author Dimitry Polivaev
  * 09.02.2014
  */
-public class MultipleNodeList implements NodeList {
+public class MultipleNodeList implements Clones {
 	LinkedList<NodeModel> nodes = new LinkedList<NodeModel>();
-	public NodeList add(NodeModel nodeModel) {
+	public Clones add(NodeModel nodeModel) {
 		nodes.add(nodeModel);
 		return this;
 	}
 
-	public NodeList remove(NodeModel nodeModel) {
+	public Clones remove(NodeModel nodeModel) {
 		nodes.remove(nodeModel);
 		if(nodes.size() == 1)
 			return new SingleNodeList(nodes.get(0));
@@ -45,7 +46,23 @@ public class MultipleNodeList implements NodeList {
 		return nodes;
 	}
 
+	public Iterator<NodeModel> iterator() {
+	    return nodes.iterator();
+    }
 	public int size() {
 	    return nodes.size();
+    }
+
+	public void attach() {
+		throw new IllegalStateException();
+
+    }
+
+	public void detach(NodeModel nodeModel) {
+		final Clones reducedClones = remove(nodeModel);
+		final NodeModel head = nodes.get(0);
+		nodeModel.setClones(new DetachedNodeList(nodeModel, head));
+		if(reducedClones != this)
+			head.setClones(reducedClones);
     }
 }

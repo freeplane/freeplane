@@ -19,44 +19,49 @@
  */
 package org.freeplane.features.map;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
  * @author Dimitry Polivaev
- * 09.02.2014
+ * 16.02.2014
  */
-public class SingleNodeList implements Clones{
-	private final NodeModel nodeModel;
+public class DetachedNodeList implements Clones {
+	private final NodeModel clonedNode;
+	private final NodeModel clone;
 
-	SingleNodeList(NodeModel nodeModel) {
-		this.nodeModel = nodeModel;
-	}
+	public DetachedNodeList(NodeModel clonedNode) {
+		this.clone = this.clonedNode = clonedNode;
+    }
 
-	public Clones add(NodeModel nodeModel) {
-		final MultipleNodeList multipleNodeList = new MultipleNodeList();
-		multipleNodeList.add(this.nodeModel);
-		multipleNodeList.add(nodeModel);
-		return multipleNodeList;
-	}
-
-	public Clones remove(NodeModel nodeModel) {
-		return null;
-	}
-
-	public int size() {
-	    return 1;
+	public DetachedNodeList(NodeModel clone, NodeModel clonedNode) {
+		this.clone = clone;
+		this.clonedNode = clonedNode;
     }
 
 	public Iterator<NodeModel> iterator() {
-	    return Arrays.asList(nodeModel).iterator();
-    }
+		return Collections.<NodeModel>emptyList().iterator();
+	}
+
+	public int size() {
+		return 0;
+	}
 
 	public void attach() {
-		throw new IllegalStateException();
+		if(clonedNode == clone)
+			clonedNode.setClones(new SingleNodeList(clonedNode));
+        else {
+	        final Clones clonesWithNewClone = clonedNode.clones().add(clone);
+	        clonedNode.setClones(clonesWithNewClone);
+	        clone.setClones(clonesWithNewClone);
+        }
     }
 
 	public void detach(NodeModel nodeModel) {
-	    nodeModel.setClones(new DetachedNodeList(nodeModel));
+		throw new IllegalStateException();
+    }
+
+	public Clones add(NodeModel clone) {
+		throw new IllegalStateException();
     }
 }

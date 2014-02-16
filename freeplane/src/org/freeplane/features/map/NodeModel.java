@@ -76,7 +76,11 @@ public class NodeModel{
 	private NodeLinks nodeLinks = null;
 
 	private SharedNodeData sharedData;
-	private NodeList nodes;
+	private Clones clones;
+
+	void setClones(Clones clones) {
+		this.clones = clones;
+	}
 
 	public Object getUserObject() {
 		return sharedData.getUserObject();
@@ -92,7 +96,7 @@ public class NodeModel{
 		this.map = map;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
-		nodes = new SingleNodeList(this);
+		clones = new DetachedNodeList(this);
 	}
 
 	private NodeModel(NodeModel toBeCloned){
@@ -100,6 +104,7 @@ public class NodeModel{
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
+		clones = new DetachedNodeList(this, toBeCloned);
 	}
 
 	protected void init(final Object userObject) {
@@ -335,10 +340,10 @@ public class NodeModel{
 		final NodeModel childNode = child;
 		if (index < 0) {
 			index = getChildCount();
-			getChildrenInternal().add(index, child);
+			children.add(index, child);
 		}
 		else {
-			getChildrenInternal().add(index, child);
+			children.add(index, child);
 			preferredChild = childNode;
 		}
 		child.setParent(this);
@@ -505,9 +510,29 @@ public class NodeModel{
 	}
 
 	public void setParent(final NodeModel newParent) {
+		if(parent == null && newParent != null && newParent.isAttached())
+	        attach();
+		else if(parent != null && parent.isAttached() &&  (newParent == null || !newParent.isAttached()))
+	        detach();
 		parent = newParent;
 	}
 
+	void attach() {
+	    clones.attach();
+	    for(NodeModel child : children)
+	    	child.attach();
+    }
+
+	private void detach() {
+	    clones.detach(this);
+	    for(NodeModel child : children)
+	    	child.detach();
+    }
+
+
+	private boolean isAttached() {
+	    return clones.size() != 0;
+    }
 
 	public final void setText(final String text) {
 		sharedData.setText(text);
@@ -555,10 +580,10 @@ public class NodeModel{
     }
 
 	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
-		if(nodes.size() == 1)
+		if(clones.size() == 1)
 			fireSingleNodeChanged(nodeChangeListeners, nodeChangeEvent);
 		else{
-			for(NodeModel node : nodes.all()){
+			for(NodeModel node : clones){
 				final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
 				node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
 			}
@@ -587,7 +612,6 @@ public class NodeModel{
 
 	protected NodeModel cloneNode() {
 	    final NodeModel clone = new NodeModel(this);
-	    clone.nodes = nodes = nodes.add(clone);
 		return clone;
     }
 
@@ -604,7 +628,11 @@ public class NodeModel{
 
 	public void convertToClone(NodeModel node) {
 		sharedData = node.sharedData;
-		node.nodes = nodes = node.nodes.add(this);
+		clones = new DetachedNodeList(this, node);
+    }
+
+	public  Clones clones() {
+	    return clones;
     }
 
 }

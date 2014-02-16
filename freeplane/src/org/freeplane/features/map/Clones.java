@@ -23,9 +23,9 @@ package org.freeplane.features.map;
  * @author Dimitry Polivaev
  * 09.02.2014
  */
-public interface NodeList {
-	NodeList add(NodeModel nodeModel);
-	NodeList remove(NodeModel nodeModel);
-	Iterable<NodeModel> all();
+public interface Clones extends Iterable<NodeModel>{
 	int size();
+	void attach();
+	void detach(NodeModel nodeModel);
+	Clones add(NodeModel clone);
 }
