@@ -37,9 +37,11 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
@@ -509,33 +511,35 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		        - MapView.margin, 1 + 2 * MapView.margin, 1 + 2 * MapView.margin);
 		scrollRectToVisible(r);
 	}
+	private static FocusListener nodeCenterer = new FocusAdapter() {
+
+		@Override
+        public void focusGained(FocusEvent e) {
+			final Component mainView = e.getComponent();
+			mainView.removeFocusListener(this);
+			NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, mainView);
+			MapView mapView = nodeView.getMap();
+			mapView.centerNode(nodeView, false);
+        }
+
+	};
 
 	public void centerNode(final NodeView node, boolean slowScroll) {
 		if (node != null) {
 			this.slowScroll = slowScroll;
 			nodeToBeVisible = null;
-			if (!isShowing()) {
-				centerNodeAfterMapIsDisplayed(node);
+			if(nodeToBeCentered != null){
+				final MainView oldMainView = nodeToBeCentered.getMainView();
+				oldMainView.removeFocusListener(nodeCenterer);
 			}
-			else {
-				nodeToBeCentered = node;
-				if (!isLayoutCompleted()) {
-					centerNodeLater();
-				}
-				else {
-					centerNodeNow(slowScroll);
-				}
-			}
+			nodeToBeCentered = node;
+			final MainView mainView = nodeToBeCentered.getMainView();
+			if (mainView.hasFocus())
+				centerNodeNow(slowScroll);
+			else
+				mainView.addFocusListener(nodeCenterer);
 		}
 	}
-
-	private void centerNodeLater() {
-	    EventQueue.invokeLater(new Runnable() {
-	    	public void run() {
-	    		centerNode(nodeToBeCentered, MapView.this.slowScroll);
-	    	}
-	    });
-    }
 
 	private void centerNodeNow(boolean slowScroll) {
 	    final JViewport viewPort = (JViewport) getParent();
@@ -555,23 +559,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		nodeToBeCentered = null;
 		this.slowScroll = false;
-    }
-
-	private void centerNodeAfterMapIsDisplayed(final NodeView node) {
-	    boolean isRetryEventListenerAlreadySet = null != nodeToBeCentered;
-	    if (!isRetryEventListenerAlreadySet) {
-	    	HierarchyListener retryEventListener = new HierarchyListener() {
-	    		public void hierarchyChanged(HierarchyEvent e) {
-	    			if (isShowing()) {
-	    				removeHierarchyListener(this);
-	    				if (nodeToBeCentered != null)
-	    					centerNode(nodeToBeCentered, MapView.this.slowScroll);
-	    			}
-	    		}
-	    	};
-	    	addHierarchyListener(retryEventListener);
-	    }
-	    nodeToBeCentered = node;
     }
 
 	boolean isLayoutCompleted() {
