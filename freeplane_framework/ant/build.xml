@@ -274,6 +274,7 @@
         <exclude name="freeplane_framework/windows-icons/Objects/**" />
         <exclude name="freeplane_framework/windows-icons/*.layout" />
         <exclude name="freeplane_framework/windows-icons/Makefile.win" />
+        <exclude name="freeplane_framework/windows-icons/build/*"/>
 
         <!-- these are generated using mm2menu.xsl/mm2preferences.xsl! -->
         <exclude name="freeplane/resources/xml/browsemodemenu.xml"/>
