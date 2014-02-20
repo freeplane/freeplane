@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -150,7 +151,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		}
 		if (isCachedImageValid()) {
 			if (clip != null) {
-				g.setClip(clip);
+				Rectangle clipRect = (Rectangle) clip;
+				g.clipRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
 			}
 			g.drawImage(cachedImage, imageX, imageY, null);
 			flushImage();
