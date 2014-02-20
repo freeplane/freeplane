@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.Dimension;
+import java.awt.Shape;
 
 public interface ScalableComponent {
 	/**
@@ -39,4 +40,6 @@ public interface ScalableComponent {
 	 * mouse drag
 	 */
 	void setDraftViewerSize(Dimension size);
+
+	void setClip(Shape clip);
 }

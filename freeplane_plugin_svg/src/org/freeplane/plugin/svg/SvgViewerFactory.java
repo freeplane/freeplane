@@ -1,6 +1,7 @@
 package org.freeplane.plugin.svg;
 
 import java.awt.Dimension;
+import java.awt.Shape;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -94,6 +95,9 @@ public class SvgViewerFactory implements IViewerFactory {
 				return new Dimension(1, 1);
 			}
 			return super.getPreferredSize();
+		}
+
+		public void setClip(Shape clip) {
 		}
 	}
 
