@@ -23,7 +23,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -150,10 +149,11 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			}
 		}
 		if (isCachedImageValid()) {
-			if (clip != null) {
-				Rectangle clipRect = (Rectangle) clip;
-				g.clipRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
-			}
+			//			if (clip != null) {
+			//				g.setClip(clip);
+			//				//							Rectangle clipRect = (Rectangle) clip;
+			//				//							g.clipRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
+			//			}
 			g.drawImage(cachedImage, imageX, imageY, null);
 			flushImage();
 		} else {
@@ -161,6 +161,11 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			if (image == null || hasNoArea(image)) {
 				return;
 			}
+			//			Graphics imageGraphics = image.getGraphics();
+			//			if (clip != null) {
+			//				Rectangle clipRect = (Rectangle) clip;
+			//				imageGraphics.clipRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
+			//			}
 			processing = true;
 			final Future<BufferedImage> result = AsyncScalr.resize(image, getWidth(), getHeight());
 			AsyncScalr.getService().submit(new Runnable() {
@@ -233,8 +238,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private boolean componentHasAlmostSameHeightAsCachedImage() {
-//		return 1 >= Math.abs(getHeight() - cachedImage.getHeight());
-		return true;
+		return 1 >= Math.abs(getHeight() - cachedImage.getHeight());
 	}
 
 	private boolean componentHasLargerWidthThanCachedImage() {
@@ -246,8 +250,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private boolean componentHasAlmostSameWidthAsCachedImage() {
-//		return 1 >= Math.abs(getWidth() - cachedImage.getWidth());
-		return true;
+		return 1 >= Math.abs(getWidth() - cachedImage.getWidth());
 	}
 
 	private BufferedImage loadImageFromURL() {

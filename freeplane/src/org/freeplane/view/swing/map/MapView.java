@@ -391,6 +391,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
+	private static final String FIT_TO_SCREEN = "fit_to_screen";
 
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
@@ -426,6 +427,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private Color detailBackground;
 	private boolean slowScroll;
 	private static boolean presentationModeEnabled;
+	private static boolean fitToScreen;
 	private static int transparency;
 
 	public MapView(final MapModel model, final ModeController modeController) {
@@ -449,6 +451,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
 			MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
+			MapView.fitToScreen = ResourceController.getResourceController().getBooleanProperty(FIT_TO_SCREEN);
 
 			createPropertyChangeListener();
 		}
@@ -590,12 +593,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				if (!(mapView instanceof MapView)) {
 					return;
 				}
-				if (propertyName.equals(MapView.RESOURCES_SELECTED_NODE_COLOR)) {
+				if (propertyName.equals(RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 					return;
 				}
-				if (propertyName.equals(MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
+				if (propertyName.equals(RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 					return;
@@ -619,7 +622,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					((MapView) mapView).repaint();
 					return;
 				}
-
+				if (propertyName.equals(FIT_TO_SCREEN)) {
+					MapView.fitToScreen = ResourceController.getResourceController().getBooleanProperty(FIT_TO_SCREEN);
+					((MapView) mapView).adjustBackgroundComponentScale();
+					((MapView) mapView).repaint();
+					return;
+				}
 			}
 		};
 		ResourceController.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
@@ -1119,6 +1127,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
 		}
+		setBackgroundComponentClip();
 		repaint();
 	}
 
@@ -1139,7 +1148,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
 		try {
-			backgroundComponent = (JComponent) factory.createViewer(uri, this.getZoom());
+			if (MapView.fitToScreen) {
+				backgroundComponent = (JComponent) factory.createViewer(uri, getPreferredSize());
+			}
+			else {
+				backgroundComponent = (JComponent) factory.createViewer(uri, this.getZoom());
+			}
 		}
 		catch (final MalformedURLException e1) {
 			LogUtils.severe(e1);
@@ -1149,6 +1163,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
     
+	private void setBackgroundComponentClip() {
+		final Rectangle viewRect = new Rectangle(0, 0, getWidth(), getHeight());
+		((ScalableComponent) backgroundComponent).setClip(viewRect);
+	}
+
 	private void updateStateIconsRecursively(NodeView node) {
     	final MainView mainView = node.getMainView();
     	if(mainView == null)
@@ -1909,10 +1928,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.zoom = zoom;
 		anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
 		getRoot().updateAll();
-		if (backgroundComponent != null) {
-			((ScalableComponent) backgroundComponent).setFinalViewerSize(zoom);
-		}
+		adjustBackgroundComponentScale();
 		revalidate();
+	}
+
+	private void adjustBackgroundComponentScale() {
+		if (backgroundComponent != null) {
+			if (MapView.fitToScreen) {
+				((ScalableComponent) backgroundComponent).setFinalViewerSize(getPreferredSize());
+			}
+			else {
+				((ScalableComponent) backgroundComponent).setFinalViewerSize(zoom);
+			}
+		}
 	}
 
 	/**
