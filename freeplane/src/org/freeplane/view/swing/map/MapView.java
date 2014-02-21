@@ -1127,7 +1127,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
 		}
-		setBackgroundComponentClip();
+		((ScalableComponent) backgroundComponent).setMaximumComponentSize(getPreferredSize());
 		repaint();
 	}
 
@@ -1161,11 +1161,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		catch (final IOException e1) {
 			LogUtils.severe(e1);
 		}
-	}
-    
-	private void setBackgroundComponentClip() {
-		final Rectangle viewRect = new Rectangle(0, 0, getWidth(), getHeight());
-		((ScalableComponent) backgroundComponent).setClip(viewRect);
 	}
 
 	private void updateStateIconsRecursively(NodeView node) {
@@ -1934,10 +1929,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void adjustBackgroundComponentScale() {
 		if (backgroundComponent != null) {
-			if (MapView.fitToScreen) {
+			if (fitToScreen) {
 				((ScalableComponent) backgroundComponent).setFinalViewerSize(getPreferredSize());
 			}
 			else {
+				((ScalableComponent) backgroundComponent).setMaximumComponentSize(getPreferredSize());
 				((ScalableComponent) backgroundComponent).setFinalViewerSize(zoom);
 			}
 		}

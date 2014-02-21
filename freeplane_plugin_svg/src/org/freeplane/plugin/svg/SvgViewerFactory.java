@@ -1,7 +1,6 @@
 package org.freeplane.plugin.svg;
 
 import java.awt.Dimension;
-import java.awt.Shape;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -28,6 +27,7 @@ public class SvgViewerFactory implements IViewerFactory {
 
 		private static final long serialVersionUID = 1L;
 		private Dimension originalSize = null;
+		private Dimension maximumSize = null;
 
 		public Dimension getOriginalSize() {
 			return new Dimension(originalSize);
@@ -35,8 +35,40 @@ public class SvgViewerFactory implements IViewerFactory {
 
 		public void setFinalViewerSize(final Dimension size) {
 			final JSVGCanvas canvas = (JSVGCanvas) this;
-			canvas.setMySize(size);
-			canvas.setSize(size);
+			Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
+			canvas.setPreferredSize(sizeWithScaleCorrection);
+			canvas.setMySize(sizeWithScaleCorrection);
+			canvas.setSize(sizeWithScaleCorrection);
+		}
+
+		private Dimension fitToMaximumSize(final Dimension size) {
+			if (maximumSize == null || isUnderMaximumSize(size)) {
+				return size;
+			}
+			else {
+				return correctDimension(maximumSize);
+			}
+		}
+
+		private boolean isUnderMaximumSize(final Dimension size) {
+			return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
+		}
+
+		private Dimension correctDimension(final Dimension size) {
+			int scaledWidth;
+			int scaledHeight;
+			double scale;
+			if (getOriginalSize().width >= getOriginalSize().height) {
+				scale = size.getWidth() / getOriginalSize().width;
+				scaledWidth = size.width;
+				scaledHeight = (int) (getOriginalSize().height * scale);
+			}
+			else {
+				scale = size.height / getOriginalSize().height;
+				scaledWidth = (int) (getOriginalSize().width * scale);
+				scaledHeight = getPreferredSize().height;
+			}
+			return new Dimension(scaledWidth, scaledHeight);
 		}
 
 		public void setDraftViewerSize(final Dimension size) {
@@ -97,7 +129,8 @@ public class SvgViewerFactory implements IViewerFactory {
 			return super.getPreferredSize();
 		}
 
-		public void setClip(Shape clip) {
+		public void setMaximumComponentSize(Dimension size) {
+			this.maximumSize = size;
 		}
 	}
 

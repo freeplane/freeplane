@@ -23,7 +23,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -70,11 +69,10 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private int imageY;
 	private boolean processing;
 	private boolean scaleEnabled;
-	private Shape clip = null;
+	private Dimension maximumSize = null;
 	private final static Object LOCK = new Object();
 
-	public BitmapViewerComponent(final URI uri) throws MalformedURLException,
-			IOException {
+	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
 		url = uri.toURL();
 		originalSize = readOriginalSize();
 		hint = Image.SCALE_SMOOTH;
@@ -94,15 +92,17 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 				final ImageReader reader = readers.next();
 				try {
 					reader.setInput(in);
-					return new Dimension(reader.getWidth(0),
-							reader.getHeight(0));
-				} finally {
+					return new Dimension(reader.getWidth(0), reader.getHeight(0));
+				}
+				finally {
 					reader.dispose();
 				}
-			} else {
+			}
+			else {
 				throw new IOException("can not create image");
 			}
-		} finally {
+		}
+		finally {
 			if (in != null) {
 				in.close();
 			}
@@ -149,23 +149,14 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			}
 		}
 		if (isCachedImageValid()) {
-			//			if (clip != null) {
-			//				g.setClip(clip);
-			//				//							Rectangle clipRect = (Rectangle) clip;
-			//				//							g.clipRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
-			//			}
 			g.drawImage(cachedImage, imageX, imageY, null);
 			flushImage();
-		} else {
+		}
+		else {
 			final BufferedImage image = loadImageFromURL();
 			if (image == null || hasNoArea(image)) {
 				return;
 			}
-			//			Graphics imageGraphics = image.getGraphics();
-			//			if (clip != null) {
-			//				Rectangle clipRect = (Rectangle) clip;
-			//				imageGraphics.clipRect(clipRect.x, clipRect.y, clipRect.width, clipRect.height);
-			//			}
 			processing = true;
 			final Future<BufferedImage> result = AsyncScalr.resize(image, getWidth(), getHeight());
 			AsyncScalr.getService().submit(new Runnable() {
@@ -173,10 +164,12 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					BufferedImage scaledImage = null;
 					try {
 						scaledImage = result.get();
-					} catch (final Exception e) {
+					}
+					catch (final Exception e) {
 						LogUtils.severe(e);
 						return;
-					} finally {
+					}
+					finally {
 						image.flush();
 					}
 					final int scaledImageHeight = scaledImage.getHeight();
@@ -194,8 +187,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					});
 				}
 
-				private void centerImagePosition(final int scaledImageHeight,
-						final int scaledImageWidth) {
+				private void centerImagePosition(final int scaledImageHeight, final int scaledImageWidth) {
 					if (scaledImageHeight > getHeight()) {
 						imageX = 0;
 						imageY = (getHeight() - scaledImageHeight) / 2;
@@ -225,16 +217,17 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private void loadImageFromCacheFile() {
 		try {
 			cachedImage = ImageIO.read(cacheFile);
-		} catch (final IOException e) {
+		}
+		catch (final IOException e) {
 			LogUtils.severe(e);
 		}
 	}
 
 	private boolean isCachedImageValid() {
 		return cachedImage != null
-				&& (!scaleEnabled 
-						|| componentHasAlmostSameWidthAsCachedImage() && componentHasLargerHeightThanCachedImage() 
-						|| componentHasLargerWidthThanCachedImage() && componentHasAlmostSameHeightAsCachedImage());
+		        && (!scaleEnabled || componentHasAlmostSameWidthAsCachedImage()
+		                && componentHasLargerHeightThanCachedImage() || componentHasLargerWidthThanCachedImage()
+		                && componentHasAlmostSameHeightAsCachedImage());
 	}
 
 	private boolean componentHasAlmostSameHeightAsCachedImage() {
@@ -257,7 +250,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		BufferedImage tempImage = null;
 		try {
 			tempImage = ImageIO.read(url);
-		} catch (final IOException e) {
+		}
+		catch (final IOException e) {
 			LogUtils.severe(e);
 		}
 		return tempImage;
@@ -279,15 +273,15 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private void writeCacheFile() {
-		final File tempDir = new File(System.getProperty("java.io.tmpdir"),
-				"freeplane");
+		final File tempDir = new File(System.getProperty("java.io.tmpdir"), "freeplane");
 		tempDir.mkdirs();
 		try {
 			synchronized (LOCK) {
 				cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
 			}
 			ImageIO.write(cachedImage, "jpg", cacheFile);
-		} catch (final IOException e) {
+		}
+		catch (final IOException e) {
 			cacheFile.delete();
 			cacheFile = null;
 		}
@@ -303,10 +297,17 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	public void setFinalViewerSize(final Dimension size) {
-		setPreferredSize(size);
-		setSize(size);
-		//		correctRatioAndSetSize(size);
+		final Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
+		final Dimension sizeWithRatioCorrection = correctRatio(sizeWithScaleCorrection);
+		setPreferredSize(sizeWithRatioCorrection);
+		setSize(sizeWithRatioCorrection);
 		setScaleEnabled(true);
+	}
+
+	public void setFinalViewerSize(final float zoom) {
+		final int scaledWidth = (int) (originalSize.width * zoom);
+		final int scaledHeight = (int) (originalSize.height * zoom);
+		setFinalViewerSize(new Dimension(scaledWidth, scaledHeight));
 	}
 
 	public void setDraftViewerSize(final Dimension size) {
@@ -315,25 +316,57 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		setScaleEnabled(false);
 	}
 
-	public void setFinalViewerSize(final float zoom) {
-		int scaledWidth = (int) (originalSize.width * zoom);
-		int scaledHeight = (int) (originalSize.height * zoom);
-		setFinalViewerSize(new Dimension(scaledWidth, scaledHeight));
+	public void setMaximumComponentSize(final Dimension size) {
+		maximumSize = size;
 	}
 
-	public void setClip(final Shape clip) {
-		this.clip = clip;
+	private Dimension fitToMaximumSize(final Dimension size) {
+		if (maximumSize == null || isUnderMaximumSize(size)) {
+			return size;
+		}
+		else {
+			return correctDimension(maximumSize);
+		}
 	}
 
-	//	private void correctRatioAndSetSize(final Dimension size) {
-	//		int originalRatio = getOriginalSize().width / getOriginalSize().height;
-	//		int currentRatio = size.width / size.height;
-	//		if (originalRatio != currentRatio) {
-	//
-	//		}
-	//		setSize(size);
-	//	}
+	private boolean isUnderMaximumSize(final Dimension size) {
+		return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
+	}
 
+	private Dimension correctRatio(final Dimension size) {
+		if (isCorrectRatio(size)) {
+			return size;
+		}
+		else {
+			return correctDimension(size);
+		}
+	}
+
+	private boolean isCorrectRatio(final Dimension size) {
+		final double widthRatio = getOriginalSize().getWidth() / size.width;
+		final int height = (int) (widthRatio * size.height);
+		if (Math.abs(height - getOriginalSize().getHeight()) <= 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	private Dimension correctDimension(final Dimension size) {
+		int scaledWidth;
+		int scaledHeight;
+		double scale;
+		if (getOriginalSize().width >= getOriginalSize().height) {
+			scale = size.getWidth() / getOriginalSize().width;
+			scaledWidth = size.width;
+			scaledHeight = (int) (getOriginalSize().height * scale);
+		}
+		else {
+			scale = size.height / getOriginalSize().height;
+			scaledWidth = (int) (getOriginalSize().width * scale);
+			scaledHeight = getPreferredSize().height;
+		}
+		return new Dimension(scaledWidth, scaledHeight);
+	}
 }
-
-
