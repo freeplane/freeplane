@@ -325,7 +325,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			return size;
 		}
 		else {
-			return correctDimension(maximumSize);
+			return UITools.scaleProportionallyFromTo(getOriginalSize(), maximumSize);
 		}
 	}
 
@@ -338,7 +338,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			return size;
 		}
 		else {
-			return correctDimension(size);
+			return UITools.scaleProportionallyFromTo(getOriginalSize(), size);
 		}
 	}
 
@@ -353,20 +353,4 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		}
 	}
 
-	private Dimension correctDimension(final Dimension size) {
-		int scaledWidth;
-		int scaledHeight;
-		double scale;
-		if (getOriginalSize().width >= getOriginalSize().height) {
-			scale = size.getWidth() / getOriginalSize().width;
-			scaledWidth = size.width;
-			scaledHeight = (int) (getOriginalSize().height * scale);
-		}
-		else {
-			scale = size.height / getOriginalSize().height;
-			scaledWidth = (int) (getOriginalSize().width * scale);
-			scaledHeight = getPreferredSize().height;
-		}
-		return new Dimension(scaledWidth, scaledHeight);
-	}
 }

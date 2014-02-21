@@ -10,6 +10,7 @@ import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
@@ -46,29 +47,12 @@ public class SvgViewerFactory implements IViewerFactory {
 				return size;
 			}
 			else {
-				return correctDimension(maximumSize);
+				return UITools.scaleProportionallyFromTo(originalSize, maximumSize);
 			}
 		}
 
 		private boolean isUnderMaximumSize(final Dimension size) {
 			return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
-		}
-
-		private Dimension correctDimension(final Dimension size) {
-			int scaledWidth;
-			int scaledHeight;
-			double scale;
-			if (getOriginalSize().width >= getOriginalSize().height) {
-				scale = size.getWidth() / getOriginalSize().width;
-				scaledWidth = size.width;
-				scaledHeight = (int) (getOriginalSize().height * scale);
-			}
-			else {
-				scale = size.height / getOriginalSize().height;
-				scaledWidth = (int) (getOriginalSize().width * scale);
-				scaledHeight = getPreferredSize().height;
-			}
-			return new Dimension(scaledWidth, scaledHeight);
 		}
 
 		public void setDraftViewerSize(final Dimension size) {
