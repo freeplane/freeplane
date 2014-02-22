@@ -73,7 +73,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";
-	public static final String FIT_TO_SCREEN = "fit_to_screen";
+	public static final String FIT_TO_VIEWPORT = "fit_to_viewport";
 	
 	public static void install(boolean persistent){
 		new MapStyle(persistent);

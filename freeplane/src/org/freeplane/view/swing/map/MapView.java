@@ -426,7 +426,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private Color detailBackground;
 	private boolean slowScroll;
 	private static boolean presentationModeEnabled;
-	private static boolean fitToScreen;
+	private static boolean fitToViewport;
 	private static int transparency;
 
 	public MapView(final MapModel model, final ModeController modeController) {
@@ -451,8 +451,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
 			MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
 			final String fitToScreenAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
-			    MapStyle.FIT_TO_SCREEN);
-			MapView.fitToScreen = Boolean.parseBoolean(fitToScreenAsString);
+			    MapStyle.FIT_TO_VIEWPORT);
+			MapView.fitToViewport = Boolean.parseBoolean(fitToScreenAsString);
 
 			createPropertyChangeListener();
 		}
@@ -1107,10 +1107,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (property.equals(MapStyle.RESOURCES_BACKGROUND_IMAGE)) {
 			loadBackgroundImage();
 		}
-		if (property.equals(MapStyle.FIT_TO_SCREEN)) {
+		if (property.equals(MapStyle.FIT_TO_VIEWPORT)) {
 			final String fitToScreenAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
-			    MapStyle.FIT_TO_SCREEN);
-			MapView.fitToScreen = Boolean.parseBoolean(fitToScreenAsString);
+			    MapStyle.FIT_TO_VIEWPORT);
+			MapView.fitToViewport = Boolean.parseBoolean(fitToScreenAsString);
 			adjustBackgroundComponentScale();
 			repaint();
 			return;
@@ -1151,7 +1151,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
 		try {
-			if (MapView.fitToScreen) {
+			if (MapView.fitToViewport) {
 				final JViewport vp = (JViewport) getParent();
 				final Dimension viewSize = vp.getVisibleRect().getSize();
 				backgroundComponent = (JComponent) factory.createViewer(uri, viewSize);
@@ -1337,7 +1337,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void setBackgroundComponentLocation(Graphics g) {
-		if (fitToScreen) {
+		if (fitToViewport) {
 			final JViewport vp = (JViewport) getParent();
 			final Point viewPosition = vp.getViewPosition();
 			int widthOffset = (int) ((vp.getVisibleRect().getWidth() - backgroundComponent.getWidth()) / 2);
@@ -1943,7 +1943,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void adjustBackgroundComponentScale() {
 		if (backgroundComponent != null) {
-			if (fitToScreen) {
+			if (fitToViewport) {
 				final JViewport vp = (JViewport) getParent();
 				final Dimension viewSize = vp.getVisibleRect().getSize();
 				((ScalableComponent) backgroundComponent).setFinalViewerSize(viewSize);
