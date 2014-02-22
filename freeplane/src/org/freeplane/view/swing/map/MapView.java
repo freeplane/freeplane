@@ -1340,7 +1340,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (fitToScreen) {
 			final JViewport vp = (JViewport) getParent();
 			final Point viewPosition = vp.getViewPosition();
-			g.translate(viewPosition.x, viewPosition.y);
+			int widthOffset = (int) ((vp.getVisibleRect().getWidth() - backgroundComponent.getWidth()) / 2);
+			int heightOffset = (int) ((vp.getVisibleRect().getHeight() - backgroundComponent.getHeight()) / 2);
+			g.translate(viewPosition.x + widthOffset, viewPosition.y + heightOffset);
 		}
 		else {
 			final Point centerPoint = getRootCenterPoint();
