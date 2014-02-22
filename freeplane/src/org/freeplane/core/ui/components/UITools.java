@@ -223,15 +223,17 @@ public class UITools {
 		int scaledWidth;
 		int scaledHeight;
 		double scale;
-		if (originalSize.width >= originalSize.height) {
-			scale = size.getWidth() / originalSize.width;
+		double originalRatio = originalSize.getWidth() / originalSize.getHeight();
+		double currentRatio = size.getWidth() / size.getHeight();
+		if (originalRatio > currentRatio) {
+			scale = size.getWidth() / originalSize.getWidth();
 			scaledWidth = size.width;
-			scaledHeight = (int) (originalSize.height * scale);
+			scaledHeight = (int) (originalSize.getHeight() * scale);
 		}
 		else {
-			scale = size.height / originalSize.height;
-			scaledWidth = (int) (originalSize.width * scale);
-			scaledHeight = originalSize.height;
+			scale = size.getHeight() / originalSize.getHeight();
+			scaledWidth = (int) (originalSize.getWidth() * scale);
+			scaledHeight = size.height;
 		}
 		return new Dimension(scaledWidth, scaledHeight);
 	}
