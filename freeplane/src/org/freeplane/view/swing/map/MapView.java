@@ -450,9 +450,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
 			MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
-			final String fitToScreenAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
+			final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
 			    MapStyle.FIT_TO_VIEWPORT);
-			MapView.fitToViewport = Boolean.parseBoolean(fitToScreenAsString);
+			MapView.fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 
 			createPropertyChangeListener();
 		}
@@ -1108,9 +1108,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			loadBackgroundImage();
 		}
 		if (property.equals(MapStyle.FIT_TO_VIEWPORT)) {
-			final String fitToScreenAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
+			final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
 			    MapStyle.FIT_TO_VIEWPORT);
-			MapView.fitToViewport = Boolean.parseBoolean(fitToScreenAsString);
+			MapView.fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 			adjustBackgroundComponentScale();
 			repaint();
 			return;
