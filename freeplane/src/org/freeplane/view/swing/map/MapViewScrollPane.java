@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +44,9 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
 		@Override
         public void doLayout() {
-	        getView().invalidate();
+	        final Component view = getView();
+	        if(view != null)
+	        	view.invalidate();
 	        super.doLayout();
         }
 
@@ -138,7 +141,11 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
 	@Override
     public void doLayout() {
-        getViewport().getView().invalidate();
+		if(viewport != null){
+			final Component view = viewport.getView();
+			if(view != null)
+				view.invalidate();
+		}
         super.doLayout();
     }
 }
