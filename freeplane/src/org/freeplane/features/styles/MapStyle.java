@@ -24,9 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -53,8 +53,8 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
@@ -73,6 +73,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";
+	public static final String FIT_TO_SCREEN = "fit_to_screen";
 	
 	public static void install(boolean persistent){
 		new MapStyle(persistent);

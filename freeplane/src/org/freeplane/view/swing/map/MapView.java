@@ -391,7 +391,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
-	private static final String FIT_TO_SCREEN = "fit_to_screen";
 
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
@@ -451,7 +450,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
 			MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
-			MapView.fitToScreen = ResourceController.getResourceController().getBooleanProperty(FIT_TO_SCREEN);
+			final String fitToScreenAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
+			    MapStyle.FIT_TO_SCREEN);
+			MapView.fitToScreen = Boolean.parseBoolean(fitToScreenAsString);
 
 			createPropertyChangeListener();
 		}
@@ -619,12 +620,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 				if (propertyName.equals(PRESENTATION_MODE_ENABLED)) {
 					MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
-					((MapView) mapView).repaint();
-					return;
-				}
-				if (propertyName.equals(FIT_TO_SCREEN)) {
-					MapView.fitToScreen = ResourceController.getResourceController().getBooleanProperty(FIT_TO_SCREEN);
-					((MapView) mapView).adjustBackgroundComponentScale();
 					((MapView) mapView).repaint();
 					return;
 				}
@@ -1112,6 +1107,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (property.equals(MapStyle.RESOURCES_BACKGROUND_IMAGE)) {
 			loadBackgroundImage();
 		}
+		if (property.equals(MapStyle.FIT_TO_SCREEN)) {
+			final String fitToScreenAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
+			    MapStyle.FIT_TO_SCREEN);
+			MapView.fitToScreen = Boolean.parseBoolean(fitToScreenAsString);
+			adjustBackgroundComponentScale();
+			repaint();
+			return;
+		}
 	}
 
 	private void loadBackgroundImage() {
@@ -1149,7 +1152,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
 		try {
 			if (MapView.fitToScreen) {
-				backgroundComponent = (JComponent) factory.createViewer(uri, getPreferredSize());
+				final JViewport vp = (JViewport) getParent();
+				final Dimension viewSize = vp.getVisibleRect().getSize();
+				backgroundComponent = (JComponent) factory.createViewer(uri, viewSize);
 			}
 			else {
 				backgroundComponent = (JComponent) factory.createViewer(uri, this.getZoom());
@@ -1332,9 +1337,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void setBackgroundComponentLocation(Graphics g) {
-		final Point centerPoint = getRootCenterPoint();
-		final Point backgroundImageTopLeft = getBackgroundImageTopLeft(centerPoint);
-		g.translate(backgroundImageTopLeft.x, backgroundImageTopLeft.y);
+		if (fitToScreen) {
+			final JViewport vp = (JViewport) getParent();
+			final Point viewPosition = vp.getViewPosition();
+			g.translate(viewPosition.x, viewPosition.y);
+		}
+		else {
+			final Point centerPoint = getRootCenterPoint();
+			final Point backgroundImageTopLeft = getBackgroundImageTopLeft(centerPoint);
+			g.translate(backgroundImageTopLeft.x, backgroundImageTopLeft.y);
+		}
 	}
 
 	private Point getRootCenterPoint() {
@@ -1930,7 +1942,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void adjustBackgroundComponentScale() {
 		if (backgroundComponent != null) {
 			if (fitToScreen) {
-				((ScalableComponent) backgroundComponent).setFinalViewerSize(getPreferredSize());
+				final JViewport vp = (JViewport) getParent();
+				final Dimension viewSize = vp.getVisibleRect().getSize();
+				((ScalableComponent) backgroundComponent).setFinalViewerSize(viewSize);
 			}
 			else {
 				((ScalableComponent) backgroundComponent).setMaximumComponentSize(getPreferredSize());

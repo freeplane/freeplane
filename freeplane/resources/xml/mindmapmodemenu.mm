@@ -19,7 +19,7 @@
             <attribute_contains_condition ATTRIBUTE="type" VALUE="submenu" MATCH_CASE="true" MATCH_APPROXIMATELY="false"/>
         </conditional_style>
     </conditional_styles>
-    <properties show_icon_for_attributes="false" show_note_icons="true"/>
+    <properties show_icon_for_attributes="false" show_note_icons="true" fit_to_screen="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -1041,7 +1041,7 @@
 </node>
 <node TEXT="Fit to Screen" ID="ID_373283278" CREATED="1392880716443" MODIFIED="1392880860259">
 <attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="SetBooleanPropertyAction.fit_to_screen"/>
+<attribute NAME="action" VALUE="SetBooleanMapPropertyAction.fit_to_screen"/>
 </node>
 </node>
 </node>
@@ -1769,7 +1769,7 @@
 </node>
 <node TEXT="Fit to Screen" ID="ID_991826831" CREATED="1392880716443" MODIFIED="1392880860259">
 <attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="SetBooleanPropertyAction.fit_to_screen"/>
+<attribute NAME="action" VALUE="SetBooleanMapPropertyAction.fit_to_screen"/>
 </node>
 </node>
 </node>

@@ -47,13 +47,13 @@ import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.ConditionalStyleModel;
+import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundClearAction;
@@ -211,6 +211,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new MapBackgroundColorAction());
 			modeController.addAction(new MapBackgroundImageAction());
 			modeController.addAction(new MapBackgroundClearAction());
+			modeController.addAction(new SetBooleanMapPropertyAction(MapStyle.FIT_TO_SCREEN));
 			modeController.addAction(new CopyMapStylesAction());
 		}
 		if(! modeController.getController().getViewController().isHeadless()){
