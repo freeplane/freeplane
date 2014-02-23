@@ -1130,7 +1130,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
 		}
-		((ScalableComponent) backgroundComponent).setMaximumComponentSize(getPreferredSize());
+		revalidate();
+		adjustBackgroundComponentScale();
 		repaint();
 	}
 
