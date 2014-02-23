@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -58,5 +59,9 @@ public class SingleNodeList implements Clones{
 
 	public void detach(NodeModel nodeModel) {
 	    nodeModel.setClones(new DetachedNodeList(nodeModel));
+    }
+
+	public Collection<NodeModel> toCollection() {
+	    return Arrays.asList(nodeModel);
     }
 }

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.map;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -63,5 +64,9 @@ public class DetachedNodeList implements Clones {
 
 	public Clones add(NodeModel clone) {
 		throw new IllegalStateException();
+    }
+
+	public Collection<NodeModel> toCollection() {
+	    return Collections.<NodeModel>emptyList();
     }
 }

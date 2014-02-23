@@ -33,7 +33,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
@@ -55,6 +57,7 @@ import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -403,16 +406,30 @@ public class MMapController extends MapController {
 			UITools.errorMessage("not allowed");
 			return;
 		}
+
+
+
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
 		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
-			moveSingleNode(child, newParent, newIndex, isLeft, changeSide);
-			for(NodeModel oldParentClone : oldParent.clones())
-				if(oldParentClone != oldParent)
+			final Set<NodeModel> oldParentClones = new HashSet<NodeModel>(oldParent.clones().toCollection());
+			final Set<NodeModel> newParentClones = new HashSet<NodeModel>(newParent.clones().toCollection());
+
+			final NodeRelativePath nodeRelativePath = new NodeRelativePath(oldParent, newParent);
+
+			final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
+			for (NodeModel commonAncestorClone: commonAncestor.clones()){
+					NodeModel oldParentClone = nodeRelativePath.pathBegin(commonAncestorClone);
+					NodeModel newParentClone = nodeRelativePath.pathEnd(commonAncestorClone);
+					moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex, isLeft, changeSide);
+					oldParentClones.remove(oldParentClone);
+					newParentClones.remove(newParentClone);
+			}
+
+			for(NodeModel oldParentClone : oldParentClones)
 					deleteSingleNode(oldParentClone, oldIndex);
 
-			for(NodeModel newParentClone : newParent.clones())
-				if(newParentClone != newParent)
+			for(NodeModel newParentClone : newParentClones)
 					insertSingleNewNode(child.cloneTree(), newParentClone, newIndex, newParentClone.isLeft());
 		}
 	}

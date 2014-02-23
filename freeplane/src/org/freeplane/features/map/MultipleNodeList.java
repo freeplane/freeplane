@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.map;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -64,5 +65,9 @@ public class MultipleNodeList implements Clones {
 		nodeModel.setClones(new DetachedNodeList(nodeModel, head));
 		if(reducedClones != this)
 			head.setClones(reducedClones);
+    }
+
+	public Collection<NodeModel> toCollection() {
+	    return nodes;
     }
 }

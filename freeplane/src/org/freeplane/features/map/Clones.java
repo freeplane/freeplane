@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.map;
 
+import java.util.Collection;
+
 /**
  * @author Dimitry Polivaev
  * 09.02.2014
@@ -28,4 +30,5 @@ public interface Clones extends Iterable<NodeModel>{
 	void attach();
 	void detach(NodeModel nodeModel);
 	Clones add(NodeModel clone);
+	Collection<NodeModel> toCollection();
 }
