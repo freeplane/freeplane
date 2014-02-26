@@ -494,7 +494,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			this.slowScroll = slowScroll;
 			nodeToBeVisible = null;
 			nodeToBeCentered = node;
-			if (isShowing())
+			if (isDisplayable())
 				centerNodeNow(slowScroll);
 		}
 	}
@@ -607,7 +607,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private Point getAnchorCenterPoint() {
-		if (! isShowing()) {
+		if (! isDisplayable()) {
 			return new Point();
 		}
 		final MainView mainView = anchor.getMainView();
@@ -1855,7 +1855,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public void setSize(int width, int height) {
 		super.setSize(width, height);
 	    validate();
-		if(isShowing())
+		if(isDisplayable())
 	    	scrollView();
     }
 
