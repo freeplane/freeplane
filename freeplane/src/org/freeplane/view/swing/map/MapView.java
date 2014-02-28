@@ -118,7 +118,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	private class Resizer extends HierarchyBoundsAdapter{
-
 		@Override
 		public void ancestorResized(HierarchyEvent e) {
 			if (! isAncorPositionSet()) {
@@ -1159,8 +1158,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		try {
 			if (fitToViewport) {
 				final JViewport vp = (JViewport) getParent();
-				final Dimension viewSize = vp.getVisibleRect().getSize();
-				backgroundComponent = (JComponent) factory.createViewer(uri, viewSize);
+				final Dimension viewPortSize = vp.getVisibleRect().getSize();
+				backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize);
 			}
 			else {
 				backgroundComponent = (JComponent) factory.createViewer(uri, this.getZoom());
@@ -1330,25 +1329,27 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		if (backgroundComponent != null) {
-			Graphics backgroundGraphics = g.create();
-			try {
-				setBackgroundComponentLocation(backgroundGraphics);
-				backgroundComponent.paint(backgroundGraphics);
-				repaint();
-			}
-			finally {
-				backgroundGraphics.dispose();
-			}
+			setAndPaintBackgroundComponent(g);
 		}
 	}
+
+	private void setAndPaintBackgroundComponent(final Graphics g) {
+	    Graphics backgroundGraphics = g.create();
+	    try {
+	    	setBackgroundComponentLocation(backgroundGraphics);
+	    	backgroundComponent.paint(backgroundGraphics);
+	    	repaint();
+	    }
+	    finally {
+	    	backgroundGraphics.dispose();
+	    }
+    }
 
 	private void setBackgroundComponentLocation(Graphics g) {
 		if (fitToViewport) {
 			final JViewport vp = (JViewport) getParent();
 			final Point viewPosition = vp.getViewPosition();
-			int widthOffset = (int) ((vp.getVisibleRect().getWidth() - backgroundComponent.getWidth()) / 2);
-			int heightOffset = (int) ((vp.getVisibleRect().getHeight() - backgroundComponent.getHeight()) / 2);
-			g.translate(viewPosition.x + widthOffset, viewPosition.y + heightOffset);
+			g.translate(viewPosition.x, viewPosition.y);
 		}
 		else {
 			final Point centerPoint = getRootCenterPoint();
@@ -1950,14 +1951,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (backgroundComponent != null) {
 			if (fitToViewport) {
 				final JViewport vp = (JViewport) getParent();
-				final Dimension viewSize = vp.getVisibleRect().getSize();
-				((ScalableComponent) backgroundComponent).setFinalViewerSize(viewSize);
+				final Dimension viewPortSize = vp.getVisibleRect().getSize();
+				((ScalableComponent) backgroundComponent).setFinalViewerSize(viewPortSize);
 			}
 			else {
 				((ScalableComponent) backgroundComponent).setMaximumComponentSize(getPreferredSize());
 				((ScalableComponent) backgroundComponent).setFinalViewerSize(zoom);
 			}
-			revalidate();
 		}
 	}
 

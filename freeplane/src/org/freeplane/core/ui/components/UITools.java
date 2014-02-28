@@ -219,25 +219,6 @@ public class UITools {
 		JOptionPane.showMessageDialog(frame, text, string, type);
 	}
 
-	public static Dimension scaleProportionallyFromTo(final Dimension originalSize, final Dimension size) {
-		int scaledWidth;
-		int scaledHeight;
-		double scale;
-		double originalRatio = originalSize.getWidth() / originalSize.getHeight();
-		double currentRatio = size.getWidth() / size.getHeight();
-		if (originalRatio > currentRatio) {
-			scale = size.getWidth() / originalSize.getWidth();
-			scaledWidth = size.width;
-			scaledHeight = (int) (originalSize.getHeight() * scale);
-		}
-		else {
-			scale = size.getHeight() / originalSize.getHeight();
-			scaledWidth = (int) (originalSize.getWidth() * scale);
-			scaledHeight = size.height;
-		}
-		return new Dimension(scaledWidth, scaledHeight);
-	}
-
 	static public void setBounds(final Component frame, int win_x, int win_y, int win_width, int win_height) {
 		final Rectangle desktopBounds = getDesktopBounds(frame);
 		int screenWidth = desktopBounds.width;

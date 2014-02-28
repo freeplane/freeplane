@@ -44,15 +44,13 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 
 import com.thebuzzmedia.imgscalr.AsyncScalr;
+import com.thebuzzmedia.imgscalr.Scalr;
 
 /**
  * @author Dimitry Polivaev
  * 22.08.2009
  */
 public class BitmapViewerComponent extends JComponent implements ScalableComponent {
-	static {
-		AsyncScalr.setServiceThreadCount(1);
-	}
 
 	enum CacheType {
 		IC_DISABLE, IC_FILE, IC_RAM
@@ -158,7 +156,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 				return;
 			}
 			processing = true;
-			final Future<BufferedImage> result = AsyncScalr.resize(image, getWidth(), getHeight());
+			final Future<BufferedImage> result = AsyncScalr.resize(image, Scalr.Mode.BEST_FIT_BOTH, getWidth(),
+			    getHeight());
 			AsyncScalr.getService().submit(new Runnable() {
 				public void run() {
 					BufferedImage scaledImage = null;
@@ -224,25 +223,26 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private boolean isCachedImageValid() {
-		return cachedImage != null
-		        && (!scaleEnabled || componentHasAlmostSameWidthAsCachedImage()
-		                && componentHasLargerHeightThanCachedImage() || componentHasLargerWidthThanCachedImage()
-		                && componentHasAlmostSameHeightAsCachedImage());
+		boolean valid = cachedImage != null
+		        && (!scaleEnabled || componentHasSameWidthAsCachedImage()
+		                && cachedImageHeightFitsComponentHeight() || cachedImageWidthFitsComponentWidth()
+		                && componentHasSameHeightAsCachedImage());
+		return valid;
 	}
 
-	private boolean componentHasAlmostSameHeightAsCachedImage() {
+	private boolean componentHasSameHeightAsCachedImage() {
 		return 1 >= Math.abs(getHeight() - cachedImage.getHeight());
 	}
 
-	private boolean componentHasLargerWidthThanCachedImage() {
+	private boolean cachedImageWidthFitsComponentWidth() {
 		return getWidth() >= cachedImage.getWidth();
 	}
 
-	private boolean componentHasLargerHeightThanCachedImage() {
+	private boolean cachedImageHeightFitsComponentHeight() {
 		return getHeight() >= cachedImage.getHeight();
 	}
 
-	private boolean componentHasAlmostSameWidthAsCachedImage() {
+	private boolean componentHasSameWidthAsCachedImage() {
 		return 1 >= Math.abs(getWidth() - cachedImage.getWidth());
 	}
 
@@ -298,9 +298,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	public void setFinalViewerSize(final Dimension size) {
 		final Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
-		final Dimension sizeWithRatioCorrection = correctRatio(sizeWithScaleCorrection);
-		setPreferredSize(sizeWithRatioCorrection);
-		setSize(sizeWithRatioCorrection);
+		setPreferredSize(sizeWithScaleCorrection);
+		setSize(sizeWithScaleCorrection);
 		setScaleEnabled(true);
 	}
 
@@ -325,32 +324,12 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			return size;
 		}
 		else {
-			return UITools.scaleProportionallyFromTo(getOriginalSize(), maximumSize);
+			return maximumSize;
 		}
 	}
 
 	private boolean isUnderMaximumSize(final Dimension size) {
 		return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
-	}
-
-	private Dimension correctRatio(final Dimension size) {
-		if (isCorrectRatio(size)) {
-			return size;
-		}
-		else {
-			return UITools.scaleProportionallyFromTo(getOriginalSize(), size);
-		}
-	}
-
-	private boolean isCorrectRatio(final Dimension size) {
-		final double widthRatio = getOriginalSize().getWidth() / size.width;
-		final int height = (int) (widthRatio * size.height);
-		if (Math.abs(height - getOriginalSize().getHeight()) <= 1) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 
 }
