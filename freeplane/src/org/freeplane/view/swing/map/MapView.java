@@ -117,7 +117,7 @@ import org.freeplane.view.swing.map.link.ILinkView;
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener {
 
 
-	private class Resizer extends HierarchyBoundsAdapter{
+	private class Resizer extends HierarchyBoundsAdapter {
 		@Override
 		public void ancestorResized(HierarchyEvent e) {
 			if (! isAncorPositionSet()) {
@@ -461,7 +461,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		showNotes= noteController != null && noteController.showNotesInMap(getModel());
         updateContentStyle();
         initRoot();
-		loadBackgroundImageLater();
 		setBackground(requiredBackground());
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
 		zoom = mapStyleModel.getZoom();
@@ -477,8 +476,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		addHierarchyBoundsListener(new Resizer());
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
-				adjustBackgroundComponentScale();
-				repaint();
+				if (fitToViewport) {
+					adjustBackgroundComponentScale();
+					repaint();
+				}
 			}
 		});
 	}
@@ -576,6 +577,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		public void hierarchyChanged(HierarchyEvent e) {
 	    			if (isShowing()) {
 	    				removeHierarchyListener(this);
+						loadBackgroundImageLater();
 	    				if (nodeToBeCentered != null)
 	    					centerNode(nodeToBeCentered, MapView.this.slowScroll);
 	    			}
