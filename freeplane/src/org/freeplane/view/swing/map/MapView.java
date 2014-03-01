@@ -461,6 +461,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		showNotes= noteController != null && noteController.showNotesInMap(getModel());
         updateContentStyle();
         initRoot();
+		loadBackgroundImageLater();
 		setBackground(requiredBackground());
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(model);
 		zoom = mapStyleModel.getZoom();
@@ -1112,6 +1113,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(property.equals(NoteController.SHOW_NOTES_IN_MAP))
 			setShowNotes();
 		if (property.equals(MapStyle.RESOURCES_BACKGROUND_IMAGE)) {
+			final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
+			    MapStyle.FIT_TO_VIEWPORT);
+			fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 			loadBackgroundImage();
 		}
 		if (property.equals(MapStyle.FIT_TO_VIEWPORT)) {
