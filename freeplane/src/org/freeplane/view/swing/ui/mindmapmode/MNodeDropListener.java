@@ -27,11 +27,14 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -47,9 +50,13 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MouseArea;
 import org.freeplane.view.swing.map.NodeView;
 
 public class MNodeDropListener implements DropTargetListener {
+private static final int UNFOLD_DELAY_MILLISECONDS = 500;
+private Timer timer;
+
 // 	final private ModeController modeController;
 
 	public MNodeDropListener() {
@@ -64,6 +71,7 @@ public class MNodeDropListener implements DropTargetListener {
 	 * item.
 	 */
 	public void dragEnter(final DropTargetDragEvent dtde) {
+		supportFolding(dtde);
 		if (isDragAcceptable(dtde)) {
 			dtde.acceptDrag(DnDConstants.ACTION_MOVE);
 		}
@@ -72,22 +80,72 @@ public class MNodeDropListener implements DropTargetListener {
 		}
 	}
 
-	public void dragExit(final DropTargetEvent e) {
-		final Component draggedNode = e.getDropTargetContext().getComponent();
-		((MainView) draggedNode).setDraggedOver(NodeView.DRAGGED_OVER_NO);
-		draggedNode.repaint();
+	private void supportFolding(final DropTargetDragEvent dtde) {
+		final MainView node = getNode(dtde);
+		if(isInFoldingRegion(dtde)){
+			node.setMouseArea(MouseArea.FOLDING);
+			startUnfoldTimer(node);
+		}
+		else{
+			node.setMouseArea(MouseArea.DEFAULT);
+			stopUnfoldTimer();
+		}
+    }
+
+	private boolean isInFoldingRegion(DropTargetDragEvent dtde) {
+		final MainView node = getNode(dtde);
+		return node.isInFoldingRegion(dtde.getLocation());
 	}
 
-	public void dragOver(final DropTargetDragEvent e) {
-		final MainView draggedNode = (MainView) e.getDropTargetContext().getComponent();
+	public void dragExit(final DropTargetEvent e) {
+		getNode(e).setMouseArea(MouseArea.OUT);
+		stopUnfoldTimer();
+		final MainView mainView = getNode(e);
+		mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
+		mainView.repaint();
+	}
+
+	private MainView getNode(final DropTargetEvent e) {
+	    final Component draggedNode = e.getDropTargetContext().getComponent();
+		final MainView mainView = (MainView) draggedNode;
+	    return mainView;
+    }
+
+	public void dragOver(final DropTargetDragEvent dtde) {
+		supportFolding(dtde);
+
+		final MainView draggedNode = (MainView) dtde.getDropTargetContext().getComponent();
 		final int oldDraggedOver = draggedNode.getDraggedOver();
-		draggedNode.setDraggedOver(e.getLocation());
+		draggedNode.setDraggedOver(dtde.getLocation());
 		final int newDraggedOver = draggedNode.getDraggedOver();
 		final boolean repaint = newDraggedOver != oldDraggedOver;
 		if (repaint) {
 			draggedNode.repaint();
 		}
 	}
+
+	private void startUnfoldTimer(final MainView mainView) {
+		if(timer == null){
+			timer = new Timer(UNFOLD_DELAY_MILLISECONDS, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(mainView.isDisplayable()){
+						final NodeModel node = mainView.getNodeView().getModel();
+						Controller.getCurrentModeController().getMapController().setFolded(node, !node.isFolded());
+					}
+				}
+			});
+			timer.setRepeats(false);
+			timer.start();
+		}
+    }
+
+	private void stopUnfoldTimer() {
+	    if(timer != null){
+	    	timer.stop();
+	    	timer = null;
+	    }
+
+    }
 
 	public void dragScroll(final DropTargetDragEvent e) {
 	}
