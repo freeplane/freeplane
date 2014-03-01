@@ -30,7 +30,7 @@ public class ImagePreview extends BitmapImagePreview {
 		size.height -= 2 * BORDER_WIDTH;
 		JComponent viewer;
 		try {
-			viewer = filter.getFactory().createViewer(file.getAbsoluteFile().toURI(), size);
+			viewer = (JComponent) filter.getFactory().createViewer(file.getAbsoluteFile().toURI(), size);
 		}
 		catch (final MalformedURLException e) {
 			LogUtils.warn(e);

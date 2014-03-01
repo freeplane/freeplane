@@ -19,7 +19,7 @@
             <attribute_contains_condition ATTRIBUTE="type" VALUE="submenu" MATCH_CASE="true" MATCH_APPROXIMATELY="false"/>
         </conditional_style>
     </conditional_styles>
-    <properties show_icon_for_attributes="false" show_note_icons="true"/>
+    <properties show_icon_for_attributes="false" show_note_icons="true" fit_to_viewport="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node">
@@ -1016,9 +1016,34 @@
 <node TEXT="---" ID="ID_1154977018" CREATED="1370194798822" MODIFIED="1370194798822">
 <attribute NAME="type" VALUE="separator"/>
 </node>
-<node TEXT="Map background color" ID="ID_727314892" CREATED="1370194798822" MODIFIED="1370194798822">
+<node TEXT="Map Background" ID="ID_727314892" CREATED="1370194798822" MODIFIED="1391262892234">
+<attribute NAME="type" VALUE="submenu"/>
+<attribute NAME="name" VALUE="map_background"/>
+<attribute NAME="name_ref" VALUE="map_background"/>
+<node TEXT="Background Color" ID="ID_1099674767" CREATED="1391262812922" MODIFIED="1391392894866">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="MapBackgroundColorAction"/>
+</node>
+<node TEXT="Background Image" ID="ID_1314085915" CREATED="1391262940440" MODIFIED="1391392890667">
+<attribute NAME="type" VALUE="submenu"/>
+<attribute NAME="name" VALUE="map_background_image"/>
+<attribute NAME="name_ref" VALUE="map_background_image"/>
+<node TEXT="Change" ID="ID_1517751753" CREATED="1391392791723" MODIFIED="1391392885150">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="MapBackgroundImageAction"/>
+</node>
+<node TEXT="Clear" ID="ID_1539337557" CREATED="1391392805808" MODIFIED="1391392848827">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="MapBackgroundClearAction"/>
+</node>
+<node TEXT="---" ID="ID_1104797241" CREATED="1370194798830" MODIFIED="1370194798830">
+<attribute NAME="type" VALUE="separator"/>
+</node>
+<node TEXT="Fit to Screen" ID="ID_373283278" CREATED="1392880716443" MODIFIED="1392880860259">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="SetBooleanMapPropertyAction.fit_to_viewport"/>
+</node>
+</node>
 </node>
 <node TEXT="Node core" FOLDED="true" ID="ID_305696182" CREATED="1370194798822" MODIFIED="1370194798822">
 <attribute NAME="type" VALUE="submenu"/>
@@ -1719,9 +1744,34 @@
 <node TEXT="---" ID="ID_899379662" CREATED="1370194798919" MODIFIED="1370194798919">
 <attribute NAME="type" VALUE="separator"/>
 </node>
-<node TEXT="Map background color" ID="ID_1982484281" CREATED="1370194798919" MODIFIED="1370194798919">
+<node TEXT="Map Background" ID="ID_624265351" CREATED="1370194798822" MODIFIED="1391262892234">
+<attribute NAME="type" VALUE="submenu"/>
+<attribute NAME="name" VALUE="map_background"/>
+<attribute NAME="name_ref" VALUE="map_background"/>
+<node TEXT="Background Color" ID="ID_201769335" CREATED="1391262812922" MODIFIED="1391392894866">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="MapBackgroundColorAction"/>
+</node>
+<node TEXT="Background Image" ID="ID_1024952161" CREATED="1391262940440" MODIFIED="1391392890667">
+<attribute NAME="type" VALUE="submenu"/>
+<attribute NAME="name" VALUE="map_background_image"/>
+<attribute NAME="name_ref" VALUE="map_background_image"/>
+<node TEXT="Change" ID="ID_1088554248" CREATED="1391392791723" MODIFIED="1391392885150">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="MapBackgroundImageAction"/>
+</node>
+<node TEXT="Clear" ID="ID_1558679549" CREATED="1391392805808" MODIFIED="1391392848827">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="MapBackgroundClearAction"/>
+</node>
+<node TEXT="---" ID="ID_990818616" CREATED="1370194798830" MODIFIED="1370194798830">
+<attribute NAME="type" VALUE="separator"/>
+</node>
+<node TEXT="Fit to Screen" ID="ID_991826831" CREATED="1392880716443" MODIFIED="1392880860259">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="SetBooleanMapPropertyAction.fit_to_viewport"/>
+</node>
+</node>
 </node>
 <node TEXT="---" ID="ID_1222660568" CREATED="1370194798919" MODIFIED="1370194798919">
 <attribute NAME="type" VALUE="separator"/>
