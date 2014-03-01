@@ -174,7 +174,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					}
 					final int scaledImageHeight = scaledImage.getHeight();
 					final int scaledImageWidth = scaledImage.getWidth();
-					centerImagePosition(scaledImageHeight, scaledImageWidth);
+					centerImagePosition(scaledImageWidth, scaledImageHeight);
 					cachedImage = scaledImage;
 					if (getCacheType().equals(CacheType.IC_FILE)) {
 						writeCacheFile();
@@ -187,14 +187,20 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					});
 				}
 
-				private void centerImagePosition(final int scaledImageHeight, final int scaledImageWidth) {
-					if (center ? getWidth() < getHeight() : scaledImageWidth > getHeight()) {
-						imageX = 0;
+				private void centerImagePosition(final int scaledImageWidth, final int scaledImageHeight) {
+					if (center) {
+						imageX = (getWidth() - scaledImageWidth) / 2;
 						imageY = (getHeight() - scaledImageHeight) / 2;
 					}
 					else {
-						imageX = (getWidth() - scaledImageWidth) / 2;
-						imageY = 0;
+						if (scaledImageWidth > getHeight()) {
+							imageX = 0;
+							imageY = (getHeight() - scaledImageHeight) / 2;
+						}
+						else {
+							imageX = (getWidth() - scaledImageWidth) / 2;
+							imageY = 0;
+						}
 					}
 				}
 			});
@@ -224,11 +230,10 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private boolean isCachedImageValid() {
-		boolean valid = cachedImage != null
+		return cachedImage != null
 		        && (!scaleEnabled || componentHasSameWidthAsCachedImage()
 		                && cachedImageHeightFitsComponentHeight() || cachedImageWidthFitsComponentWidth()
 		                && componentHasSameHeightAsCachedImage());
-		return valid;
 	}
 
 	private boolean componentHasSameHeightAsCachedImage() {
