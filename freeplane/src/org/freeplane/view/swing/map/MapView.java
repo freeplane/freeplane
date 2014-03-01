@@ -1135,6 +1135,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final IViewerFactory factory = vc.getCombiFactory();
 		if (uri != null) {
 			assignViewerToBackgroundComponent(factory, uri);
+			((ScalableComponent) backgroundComponent).setCenter(true);
 		}
 		repaint();
 	}
@@ -1162,7 +1163,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize);
 			}
 			else {
-				backgroundComponent = (JComponent) factory.createViewer(uri, this.getZoom());
+				backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
 			}
 		}
 		catch (final MalformedURLException e1) {

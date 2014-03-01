@@ -35,6 +35,7 @@ public class SvgViewerFactory implements IViewerFactory {
 		public void setFinalViewerSize(final Dimension size) {
 			final JSVGCanvas canvas = (JSVGCanvas) this;
 			Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
+			canvas.setRenderingTransform(initialTransform);
 			canvas.setPreferredSize(sizeWithScaleCorrection);
 			canvas.setMySize(sizeWithScaleCorrection);
 			canvas.setSize(sizeWithScaleCorrection);
@@ -69,7 +70,6 @@ public class SvgViewerFactory implements IViewerFactory {
 			super(null, false, false);
 			setDocumentState(ALWAYS_STATIC);
 			setSize(1, 1);
-			setRecenterOnResize(true);
 			addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 				@Override
 				public void gvtRenderingStarted(final GVTTreeRendererEvent e) {
@@ -108,6 +108,9 @@ public class SvgViewerFactory implements IViewerFactory {
 
 		public void setMaximumComponentSize(Dimension size) {
 			this.maximumSize = size;
+		}
+
+		public void setCenter(boolean center) {
 		}
 	}
 

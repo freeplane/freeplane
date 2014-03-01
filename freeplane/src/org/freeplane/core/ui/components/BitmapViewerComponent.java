@@ -68,6 +68,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private boolean processing;
 	private boolean scaleEnabled;
 	private Dimension maximumSize = null;
+	private boolean center;
 	private final static Object LOCK = new Object();
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
@@ -187,7 +188,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 				}
 
 				private void centerImagePosition(final int scaledImageHeight, final int scaledImageWidth) {
-					if (scaledImageHeight > getHeight()) {
+					if (center ? getWidth() < getHeight() : scaledImageWidth > getHeight()) {
 						imageX = 0;
 						imageY = (getHeight() - scaledImageHeight) / 2;
 					}
@@ -332,4 +333,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
 	}
 
+	public void setCenter(boolean center) {
+		this.center = center;
+	}
 }
