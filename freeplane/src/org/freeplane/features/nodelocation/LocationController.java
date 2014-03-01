@@ -23,6 +23,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -36,9 +37,9 @@ public class LocationController implements IExtension {
 	}
 
 	public static LocationController getController(ModeController modeController) {
-		return (LocationController) modeController.getExtension(LocationController.class);
+		return modeController.getExtension(LocationController.class);
 	}
-	
+
 	public static void install( final LocationController locationController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LocationController.class, locationController);
@@ -57,4 +58,15 @@ public class LocationController implements IExtension {
 		locationBuilder.registerBy(readManager, writeManager);
 	}
 
+	public int getHorizontalShift(NodeModel node){
+		return LocationModel.getModel(node).getHGap();
+	}
+
+	public int getVerticalShift(NodeModel node){
+		return LocationModel.getModel(node).getShiftY();
+	}
+
+	public int getMinimalDistanceBetweenChildren(NodeModel node){
+		return LocationModel.getModel(node).getVGap();
+	}
 }
