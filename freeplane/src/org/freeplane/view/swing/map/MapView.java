@@ -128,7 +128,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				extraWidth = 0;
 			}
 			setViewPositionAfterValidate();
-			loadBackgroundImageLater();
 		}
 
 	}
@@ -430,6 +429,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static boolean presentationModeEnabled;
 	private boolean fitToViewport;
 	private static int transparency;
+	final private ComponentAdapter backgroundImageResizer;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -474,14 +474,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 		addHierarchyBoundsListener(new Resizer());
-		addComponentListener(new ComponentAdapter() {
+		backgroundImageResizer = new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				if (fitToViewport) {
 					adjustBackgroundComponentScale();
 					repaint();
 				}
 			}
-		});
+		};
+		addComponentListener(backgroundImageResizer);
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -577,7 +578,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		public void hierarchyChanged(HierarchyEvent e) {
 	    			if (isShowing()) {
 	    				removeHierarchyListener(this);
-						loadBackgroundImageLater();
 	    				if (nodeToBeCentered != null)
 	    					centerNode(nodeToBeCentered, MapView.this.slowScroll);
 	    			}
@@ -586,6 +586,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	addHierarchyListener(retryEventListener);
 	    }
 	    nodeToBeCentered = node;
+    }
+	
+	
+
+	@Override
+    public void addNotify() {
+	    super.addNotify();
+	    loadBackgroundImageLater();
+	    getParent().addComponentListener(backgroundImageResizer);
+    }
+
+	@Override
+    public void removeNotify() {
+		getParent().removeComponentListener(backgroundImageResizer);
+	    super.removeNotify();
     }
 
 	boolean isLayoutCompleted() {
