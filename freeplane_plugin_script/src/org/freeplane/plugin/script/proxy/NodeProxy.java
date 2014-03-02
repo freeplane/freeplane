@@ -37,6 +37,8 @@ import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.note.NoteController;
@@ -770,4 +772,29 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
     private EncryptionModel getEncryptionModel() {
         return EncryptionModel.getModel(getDelegate());
     }
+
+
+	public int getHorizontalShift(){
+		return LocationController.getController().getHorizontalShift(getDelegate());
+	}
+
+	public void setHorizontalShift(final int horizontalShift){
+		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), horizontalShift);
+	}
+
+	public int getVerticalShift(){
+		return LocationController.getController().getVerticalShift(getDelegate());
+	}
+
+	public void setVerticalShift(final int verticalShift){
+		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShift);
+	}
+
+	public int getMinimalDistanceBetweenChildren(){
+		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate());
+	}
+
+	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
+		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+	}
 }

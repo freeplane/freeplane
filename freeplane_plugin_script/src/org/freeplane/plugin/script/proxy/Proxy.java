@@ -1089,6 +1089,16 @@ public interface Proxy {
 		Date getLastModifiedAt();
 
 		Date getCreatedAt();
+
+        /**@since 1.3.7 */
+		int getHorizontalShift();
+
+        /**@since 1.3.7 */
+		int getVerticalShift();
+
+        /**@since 1.3.7 */
+		int getMinimalDistanceBetweenChildren();
+
 	}
 
 	/** The currently selected node: <code>node</code> - read-write. */
@@ -1355,6 +1365,15 @@ public interface Proxy {
 		/** decrypts a node without removing the encryption.
          * @since 1.3.6 */
 		void decrypt(String password);
+
+        /**@since 1.3.7 */
+    	void setHorizontalShift(final int horizontalShift);
+
+        /**@since 1.3.7 */
+    	void setVerticalShift(final int verticalShift);
+
+        /**@since 1.3.7 */
+    	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
 	}
 
 	/** Node's style: <code>node.style</code> - read-only. */

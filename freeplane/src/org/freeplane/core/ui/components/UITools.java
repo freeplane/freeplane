@@ -41,6 +41,7 @@ import java.net.URI;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -76,7 +77,7 @@ import org.freeplane.main.application.FreeplaneSplashModern;
  * ui.informationMessage("Hello World!")
  * ui.informationMessage(ui.frame, "Hello World!") // longer version, equivalent
  * </pre>
- * 
+ *
  * @author Dimitry Polivaev
  * @since 29.12.2008
  */
@@ -136,7 +137,7 @@ public class UITools {
 		r.x = p.x;
 		r.y = p.y;
 	}
-		
+
 	public static void convertPointToAncestor(final Component from, final Point p, final Component destination) {
 		int x, y;
 		for (Component c = from; c != destination && c != null; c = c.getParent()) {
@@ -350,7 +351,7 @@ public class UITools {
 		SwingUtilities.convertPointToScreen(location, c);
 		UITools.setBounds(dialog, location.x, location.y, dialog.getWidth(), dialog.getHeight());
 	}
-	
+
 	/**
 	 * Shows the error message  "attributes_adding_empty_attribute_error"
 	 */
@@ -358,12 +359,12 @@ public class UITools {
 		JOptionPane.showMessageDialog(null, TextUtils.getText("attributes_adding_empty_attribute_error"),
 		    TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	static public void showMessage(String message, int messageType) {
 		backOtherWindows();
 		JTextArea infoPane = new JTextArea();
 		infoPane.setEditable(false);
-		infoPane.setMargin(new Insets(5,5,5,5));  
+		infoPane.setMargin(new Insets(5,5,5,5));
 		infoPane.setLineWrap(true);
 		infoPane.setWrapStyleWord(true);
 		infoPane.setText(message);
@@ -467,10 +468,10 @@ public class UITools {
 		component.addAncestorListener(new AncestorListener() {
 			public void ancestorRemoved(AncestorEvent event) {
 			}
-			
+
 			public void ancestorMoved(AncestorEvent event) {
 			}
-			
+
 			public void ancestorAdded(AncestorEvent event) {
 				final JComponent component = event.getComponent();
 				EventQueue.invokeLater(new Runnable() {
@@ -556,7 +557,7 @@ public class UITools {
     	button.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
     			final ModeController modeController = Controller.getCurrentModeController();
-    			final UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
+    			final UrlManager urlManager = modeController.getExtension(UrlManager.class);
     			urlManager.loadURL(uri);
     		}
     	});
@@ -577,7 +578,7 @@ public class UITools {
 
 	public static final float FONT_SCALE_FACTOR;
 	static {
-		float factor = 1f; 
+		float factor = 1f;
 		try {
 	        factor = UITools.getScreenResolution()  / 72f;
         }
@@ -585,7 +586,7 @@ public class UITools {
         }
 		FONT_SCALE_FACTOR = factor;
 	}
-	
+
 	public static int getScreenResolution() {
 		final int systemScreenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
 		if(ResourceController.getResourceController().getBooleanProperty("apply_system_screen_resolution")){
@@ -594,7 +595,7 @@ public class UITools {
 		else
 			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution);
     }
-	
+
 	public static Font scale(Font font) {
 		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
 	}
@@ -616,5 +617,11 @@ public class UITools {
 			frame.toFront();
 		}
     }
-	
+
+	public static boolean isEditingText() {
+	    final Component focusOwner = FocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		final boolean isTextComponentFocused = focusOwner instanceof JTextComponent;
+		return isTextComponentFocused && ((JTextComponent)focusOwner).isEditable();
+    }
+
 }

@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -128,6 +129,7 @@ class NodeViewFactory {
 	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
 		final NodeView newView = new NodeView(model, map, parent);
 		parent.add(newView, index);
+		newView.setMainView(newMainView(newView));
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else
@@ -157,7 +159,6 @@ class NodeViewFactory {
 	private void updateNewView(final NodeView newView) {
 		newView.getModel().addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
-		newView.setMainView(newMainView(newView));
 		updateNoteViewer(newView);
 		newView.update();
         fireNodeViewCreated(newView);
@@ -165,10 +166,10 @@ class NodeViewFactory {
 	}
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
-	private Icon coloredIcon = createColoredIcon();
+	private final Icon coloredIcon = createColoredIcon();
 	private static final IMouseListener DETAILS_MOUSE_LISTENER = new DetailsViewMouseListener();
 	private static final LinkNavigatorMouseListener LINK_MOUSE_LISTENER = new LinkNavigatorMouseListener();
-	
+
 	public ZoomableLabel createNoteViewer() {
 		final ZoomableLabel label = new ZoomableLabel();
 		label.addMouseListener(LINK_MOUSE_LISTENER);
@@ -187,11 +188,11 @@ class NodeViewFactory {
 				final Color iconColor =  nodeView.getEdgeColor();
 				createColoredIcon(iconColor).paintIcon(c, g, x, y);
 			}
-			
+
 			public int getIconWidth() {
 				return createColoredIcon(Color.BLACK).getIconWidth();
 			}
-			
+
 			public int getIconHeight() {
 				return createColoredIcon(Color.BLACK).getIconHeight();
 			}
@@ -264,7 +265,7 @@ class NodeViewFactory {
 		}
 		view.setFont(nodeView.getMap().getDefaultNoteFont());
 		view.updateText(newText);
-		
+
 	}
 	private String colorize(final String text, String color) {
 		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";

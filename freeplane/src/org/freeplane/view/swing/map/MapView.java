@@ -39,9 +39,6 @@ import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.HierarchyBoundsAdapter;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
@@ -115,22 +112,6 @@ import org.freeplane.view.swing.map.link.ILinkView;
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener {
-
-
-	private class Resizer extends HierarchyBoundsAdapter {
-		@Override
-		public void ancestorResized(HierarchyEvent e) {
-			if (! isAncorPositionSet()) {
-				return;
-			}
-			if (nodeToBeVisible == null) {
-				nodeToBeVisible = getSelected();
-				extraWidth = 0;
-			}
-			setViewPositionAfterValidate();
-		}
-
-	}
 
 	private MapViewLayout layoutType;
 
@@ -473,7 +454,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
-		addHierarchyBoundsListener(new Resizer());
 		backgroundImageResizer = new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				if (fitToViewport) {
@@ -506,7 +486,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			anchor = view;
 			anchorHorizontalPoint = horizontalPoint;
 			anchorVerticalPoint = verticalPoint;
-			anchorContentLocation = getAnchorCenterPoint();
+			setAnchorContentLocation(getAnchorCenterPoint());
 			if (nodeToBeVisible == null) {
 				nodeToBeVisible = anchor;
 				extraWidth = 0;
@@ -528,28 +508,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (node != null) {
 			this.slowScroll = slowScroll;
 			nodeToBeVisible = null;
-			if (!isShowing()) {
-				centerNodeAfterMapIsDisplayed(node);
-			}
-			else {
-				nodeToBeCentered = node;
-				if (!isLayoutCompleted()) {
-					centerNodeLater();
-				}
-				else {
-					centerNodeNow(slowScroll);
-				}
-			}
+			nodeToBeCentered = node;
+			if (isDisplayable())
+				centerNodeNow(slowScroll);
 		}
 	}
-
-	private void centerNodeLater() {
-	    EventQueue.invokeLater(new Runnable() {
-	    	public void run() {
-	    		centerNode(nodeToBeCentered, MapView.this.slowScroll);
-	    	}
-	    });
-    }
 
 	private void centerNodeNow(boolean slowScroll) {
 	    final JViewport viewPort = (JViewport) getParent();
@@ -559,33 +522,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final JComponent content = nodeToBeCentered.getContent();
 		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
 		        / 2, d.width, d.height);
-		final Point oldAnchorContentLocation = anchorContentLocation;
-		anchorContentLocation = new Point();
-		final Point oldViewPosition = viewPort.getViewPosition();
 		content.scrollRectToVisible(rect);
-		final Point newViewPosition = viewPort.getViewPosition();
-		if (oldViewPosition.equals(newViewPosition)) {
-			anchorContentLocation = oldAnchorContentLocation;
-		}
 		nodeToBeCentered = null;
 		this.slowScroll = false;
-    }
-
-	private void centerNodeAfterMapIsDisplayed(final NodeView node) {
-	    boolean isRetryEventListenerAlreadySet = null != nodeToBeCentered;
-	    if (!isRetryEventListenerAlreadySet) {
-	    	HierarchyListener retryEventListener = new HierarchyListener() {
-	    		public void hierarchyChanged(HierarchyEvent e) {
-	    			if (isShowing()) {
-	    				removeHierarchyListener(this);
-	    				if (nodeToBeCentered != null)
-	    					centerNode(nodeToBeCentered, MapView.this.slowScroll);
-	    			}
-	    		}
-	    	};
-	    	addHierarchyListener(retryEventListener);
-	    }
-	    nodeToBeCentered = node;
+		setAnchorContentLocation(getAnchorCenterPoint());
     }
 	
 	
@@ -696,22 +636,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private Point getAnchorCenterPoint() {
+		if (! isDisplayable()) {
+			return new Point();
+		}
 		final MainView mainView = anchor.getMainView();
 		final Point anchorCenterPoint = new Point((int) (mainView.getWidth() * anchorHorizontalPoint), (int) (mainView
 		    .getHeight() * anchorVerticalPoint));
 		final JViewport parent = (JViewport) getParent();
-		if (parent == null) {
-			return new Point();
-		}
-		try {
-			UITools.convertPointToAncestor(mainView, anchorCenterPoint, parent);
-		}
-		catch (final NullPointerException e) {
-			return new Point();
-		}
-		final Point viewPosition = parent.getViewPosition();
-		anchorCenterPoint.x += viewPosition.x - parent.getWidth() / 2;
-		anchorCenterPoint.y += viewPosition.y - parent.getHeight() / 2;
+		UITools.convertPointToAncestor(mainView, anchorCenterPoint, this);
+		anchorCenterPoint.x += - parent.getWidth() / 2;
+		anchorCenterPoint.y += - parent.getHeight() / 2;
 		return anchorCenterPoint;
 	}
 
@@ -792,11 +726,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		if (!getParent().isValid()) {
-			final Dimension preferredLayoutSize = getLayout().preferredLayoutSize(this);
-			return preferredLayoutSize;
-		}
-		return super.getPreferredSize();
+		return getLayout().preferredLayoutSize(this);
 	}
 
 	public NodeView getRoot() {
@@ -1069,7 +999,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void initRoot() {
-		anchorContentLocation = new Point();
+		setAnchorContentLocation(new Point());
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), this, this, 0);
 		anchor = rootView;
 	}
@@ -1332,9 +1262,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			});
 			return;
 		}
-		if (isValid()) {
-			anchorContentLocation = getAnchorCenterPoint();
-		}
+
 		final Graphics2D g2 = (Graphics2D) g.create();
 		try {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -1921,7 +1849,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		siblingMaxLevel = level;
 	}
 
-	private void setViewPositionAfterValidate() {
+	private void scrollView() {
 		if(nodeToBeCentered != null){
 			centerNode(nodeToBeCentered, slowScroll);
 			return;
@@ -1935,10 +1863,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
 		if (anchor != getRoot()) {
 			anchor = getRoot();
-			anchorContentLocation = getAnchorCenterPoint();
-		}
-		else {
-			anchorContentLocation = newAnchorContentLocation;
 		}
 		final int deltaX = newAnchorContentLocation.x - oldAnchorContentLocation.x;
 		final int deltaY = newAnchorContentLocation.y - oldAnchorContentLocation.y;
@@ -2046,7 +1970,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		validateSelecteds();
 		getRoot().validateTree();
 		super.validateTree();
-		setViewPositionAfterValidate();
 	}
 
 	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
@@ -2094,10 +2017,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectAsTheOnlyOneSelected(nodeView);
     }
 
-	private boolean isAncorPositionSet() {
-	    return anchorContentLocation.getX() != 0 || anchorContentLocation.getY() != 0;
-    }
-
 	public static MapView getMapView(final Component component) {
     	if(component instanceof MapView)
     		return (MapView) component;
@@ -2108,4 +2027,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		getModeController().getController().getMapViewManager().changeToMapView(this);
     }
 
+	@Override
+    public void setSize(int width, int height) {
+		super.setSize(width, height);
+	    validate();
+		if(isDisplayable())
+	    	scrollView();
+    }
+
+	@Override
+    public void setLocation(int x, int y) {
+	    if(isValid()){
+	    	super.setLocation(x, y);
+	    	setAnchorContentLocation(getAnchorCenterPoint());
+	    }
+    }
+
+	private void setAnchorContentLocation(Point anchorContentLocation) {
+	    this.anchorContentLocation = anchorContentLocation;
+    }
 }
