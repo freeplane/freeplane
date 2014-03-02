@@ -383,8 +383,8 @@ class ScriptingConfiguration {
 
 	private ArrayList<String> buildClasspath() {
 	    final ArrayList<String> classpath = new ArrayList<String>();
+	    addClasspathForAddOns(classpath);
         addClasspathForConfiguredEntries(classpath);
-        addClasspathForAddOns(classpath);
         return classpath;
     }
 

@@ -12,7 +12,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
 	<xsl:strip-space elements="*" />
-	<xsl:output method="xml" indent="yes" encoding="UTF-8" />
+	<xsl:output method="xml" indent="yes" encoding="us-ascii" />
 
 	<xsl:template match="/ap:Map">
 		<map version="0.9.0">

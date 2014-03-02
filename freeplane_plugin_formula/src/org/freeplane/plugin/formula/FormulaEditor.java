@@ -35,6 +35,9 @@ import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
  */
 class FormulaEditor extends EditNodeDialog implements INodeSelector {
 	
+	static final String GROOVY_EDITOR_FONT = "groovy_editor_font";
+	static final String GROOVY_EDITOR_FONT_SIZE = "groovy_editor_font_size";
+
 	private JEditorPane textEditor;
 
 	FormulaEditor(NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,

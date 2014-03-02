@@ -31,9 +31,7 @@ import org.freeplane.view.swing.map.MapView;
 class Preview extends JComponent {
 	final private static int DEFAULT_PREVIEW_SIZE = 300;
 	final private static double MINIMUM_ZOOM_FACTOR = 0.1;
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Graphics2D imageGraphics;
 	protected int index = 0;

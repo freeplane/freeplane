@@ -24,9 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -53,8 +53,8 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
@@ -71,7 +71,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
+	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";
+	public static final String FIT_TO_VIEWPORT = "fit_to_viewport";
 	
 	public static void install(boolean persistent){
 		new MapStyle(persistent);
@@ -514,8 +516,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public void setProperty(final MapModel model, final String key, final String newValue) {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(model);
 		final String oldValue = styleModel.getProperty(key);
-		if(oldValue == newValue || oldValue != null && oldValue.equals(newValue))
+		if(oldValue == newValue || oldValue != null && oldValue.equals(newValue)) {
 			return;
+		}
 		IActor actor = new  IActor() {
 			public void undo() {
 				setPropertyWithoutUndo(model, key, oldValue);

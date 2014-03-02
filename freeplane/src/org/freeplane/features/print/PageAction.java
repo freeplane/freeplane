@@ -66,16 +66,21 @@ class PageAction extends AbstractPrintAction {
 		MenuBuilder.setLabelAndMnemonic(fitToPage, TextUtils.getRawText("fit_map_to_page"));
 		fitToPage.setSelected(fitMap == FitMap.PAGE);
 		fitButtons.add(fitToPage);
+		//Fit background image to page
+		final JRadioButton fitBackgroundImageToPage = new JRadioButton();
+		MenuBuilder.setLabelAndMnemonic(fitBackgroundImageToPage, TextUtils.getRawText("fit_background_to_page"));
+		fitBackgroundImageToPage.setSelected(fitMap == FitMap.BACKGROUND);
+		fitButtons.add(fitBackgroundImageToPage);
 		//Fit width
 		final JRadioButton fitToWidth = new JRadioButton();
 		MenuBuilder.setLabelAndMnemonic(fitToWidth, TextUtils.getRawText("fit_map_to_page_width"));
 		fitToWidth.setSelected(fitMap == FitMap.WIDTH);
 		fitButtons.add(fitToWidth);
 		//Fit to heighth
-		final JRadioButton fitToHeighth = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitToHeighth, TextUtils.getRawText("fit_map_to_page_height"));
-		fitToHeighth.setSelected(fitMap == FitMap.HEIGHT);
-		fitButtons.add(fitToHeighth);
+		final JRadioButton fitToHeight = new JRadioButton();
+		MenuBuilder.setLabelAndMnemonic(fitToHeight, TextUtils.getRawText("fit_map_to_page_height"));
+		fitToHeight.setSelected(fitMap == FitMap.HEIGHT);
+		fitButtons.add(fitToHeight);
 		//User defined
 		final JRadioButton userDefaultScale = new JRadioButton();
 		MenuBuilder.setLabelAndMnemonic(userDefaultScale, TextUtils.getRawText("user_defined_scale"));
@@ -100,7 +105,7 @@ class PageAction extends AbstractPrintAction {
 		final GridBagLayout gridbag = new GridBagLayout();
 		panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
 		    BorderFactory.createEmptyBorder(10, 0, 10, 0)));
-		//Action listener if user defined zoom is selected/ deselected
+		//Action listener if user defined zoom is selected/deselected
 		userDefaultScale.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
 				final boolean selected = e.getStateChange() == ItemEvent.SELECTED;
@@ -111,7 +116,6 @@ class PageAction extends AbstractPrintAction {
 				}
 			}
 		});
-		//GridbagLayout
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -124,13 +128,17 @@ class PageAction extends AbstractPrintAction {
 		gridbag.setConstraints(fitToPage, c);
 		panel.add(fitToPage);
 		c.gridy++;
+		//fit background image to page
+		gridbag.setConstraints(fitBackgroundImageToPage, c);
+		panel.add(fitBackgroundImageToPage);
+		c.gridy++;
 		//fit to width
 		gridbag.setConstraints(fitToWidth, c);
 		panel.add(fitToWidth);
 		c.gridy++;
-		//fit to heigth
-		gridbag.setConstraints(fitToHeighth, c);
-		panel.add(fitToHeighth);
+		//fit to height
+		gridbag.setConstraints(fitToHeight, c);
+		panel.add(fitToHeight);
 		c.gridy++;
 		//user defined
 		gridbag.setConstraints(userDefaultScale, c);
@@ -168,10 +176,13 @@ class PageAction extends AbstractPrintAction {
 			if (fitToPage.isSelected()) {
 				fitMapDecision = FitMap.PAGE;
 			}
+			else if (fitBackgroundImageToPage.isSelected()) {
+				fitMapDecision = FitMap.BACKGROUND;
+			}
 			else if (fitToWidth.isSelected()) {
 				fitMapDecision = FitMap.WIDTH;
 			}
-			else if (fitToHeighth.isSelected()) {
+			else if (fitToHeight.isSelected()) {
 				fitMapDecision = FitMap.HEIGHT;
 			}
 			else {

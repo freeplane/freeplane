@@ -449,7 +449,7 @@ public class MLinkController extends LinkController {
 	@Override
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		addAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
+		addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
 
 		addSeparator(arrowLinkPopup);
 		addAction(arrowLinkPopup, new ConnectorColorAction(this, link));
@@ -534,8 +534,6 @@ public class MLinkController extends LinkController {
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
 			sizesBox.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
-					if(arrowLinkPopup.isVisible())
-						arrowLinkPopup.setVisible(false);
 					final Object item = e.getItem();
 					if(item != null){
 						final int size;
@@ -638,7 +636,6 @@ public class MLinkController extends LinkController {
                 AFreeplaneAction item = (AFreeplaneAction)e.getItem();
                 final JComboBox box = (JComboBox) e.getSource();
                 item.actionPerformed(new ActionEvent(box, ActionEvent.ACTION_PERFORMED, null));
-                SwingUtilities.getWindowAncestor(box).setVisible(false);
             }
         });
         return box;
@@ -1102,14 +1099,14 @@ public class MLinkController extends LinkController {
 	}
 
 	public boolean isAnchored() {
-		return anchorID != null;
+		return anchorID != null && !anchorID.isEmpty();
 	}
 
 	public String getAnchorIDforNode(final NodeModel node) {
 	    String targetID = getAnchorID();
 	    final String link;
 		// check if anchorID is valid, then set link in current node
-		if (targetID != null && ! targetID.matches("\\w+://")) {
+		if (isAnchored() && ! targetID.matches("\\w+://")) {
 
 			// extract fileName from target map
 			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.indexOf("#") );
@@ -1139,7 +1136,7 @@ public class MLinkController extends LinkController {
 		}
 	    return link;
     }
-	
+
 	public void setFormatNodeAsHyperlink(final NodeModel node, final Boolean enabled){
 		final NodeLinks links = NodeLinks.createLinkExtension(node);
 		IActor actor = new IActor() {

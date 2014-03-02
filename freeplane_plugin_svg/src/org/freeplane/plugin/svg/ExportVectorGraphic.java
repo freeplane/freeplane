@@ -55,7 +55,7 @@ abstract class ExportVectorGraphic implements IExportEngine {
 	protected SVGGraphics2D fillSVGGraphics2D(final MapView view) {
 
 		// work around svg/pdf-Export problems when exporting with Gtk or Nimbus L&Fs
-		final String previousLnF = Controller.getCurrentController().getResourceController().getProperty("lookandfeel");
+		final String previousLnF = UIManager.getLookAndFeel().getClass().getName();
 		setLnF(view, UIManager.getCrossPlatformLookAndFeelClassName());
 
 		try

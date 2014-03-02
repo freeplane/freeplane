@@ -76,8 +76,6 @@ public class MindMapLayout implements LayoutManager {
 		final int calcYBorderSize = calcYBorderSize(mapView);
 		getRoot(mapView).validate();
 		getRoot(mapView).setLocation(calcXBorderSize, calcYBorderSize);
-		mapView.setSize(calcXBorderSize * 2 + getRoot(mapView).getWidth(), calcYBorderSize * 2
-		        + getRoot(mapView).getHeight());
 	}
 
 	public Dimension minimumLayoutSize(final Container parent) {

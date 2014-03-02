@@ -22,6 +22,7 @@ import javax.swing.JOptionPane
 import javax.swing.KeyStroke
 import javax.swing.tree.DefaultMutableTreeNode
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils
 import org.freeplane.core.resources.ResourceController
 import org.freeplane.core.ui.MenuBuilder
@@ -52,6 +53,9 @@ configMap = [:]
 //
 // == methods ==
 //
+def debugPrintln(String message) {
+    // println message
+}
 
 def terminate(String message) {
 	throw new Exception(textUtils.getText('addons.installer.canceled') + ': ' + message)
@@ -101,7 +105,7 @@ def parseProperties(Map childNodeMap) {
 	mapStructureAssert( ! missingProperties, textUtils.format('addons.installer.missing.properties', missingProperties))
 	configMap[property]['homepage'] = propertyNode.link.text ?
 		propertyNode.link.uri.toURL() : new URL(expandVariables(addonsUrl + '/${name}'))
-	println property + ': ' + configMap[property]
+    debugPrintln property + ': ' + configMap[property]
 }
 
 def checkFreeplaneVersion(Map configMap) {
@@ -130,14 +134,14 @@ def parseDescription(Map childNodeMap) {
 	def property = 'description'
 	Proxy.Node propertyNode = childNodeMap[property]
 	configMap[property] = theOnlyChild(propertyNode).text
-	println property + ': ' + configMap[property]
+	debugPrintln property + ': ' + configMap[property]
 }
 
 def parseLicence(Map childNodeMap) {
 	def property = 'license'
 	Proxy.Node propertyNode = childNodeMap[property]
 	configMap[property] = theOnlyChild(propertyNode).text
-	println property + ': ' + configMap[property]
+	debugPrintln property + ': ' + configMap[property]
 }
 
 def parseTranslations(Map childNodeMap) {
@@ -157,14 +161,14 @@ def parseTranslations(Map childNodeMap) {
 		return map
 	}
 	configMap[property] = translationsMap
-	println property + ': ' + configMap[property]
+	debugPrintln property + ': ' + configMap[property]
 }
 
 def parsePreferencesXml(Map childNodeMap) {
 	def property = 'preferences.xml'
 	Proxy.Node propertyNode = childNodeMap[property]
 	configMap[property] = propertyNode.isLeaf() ? null : propertyNode.children[0].text
-	println property + ': ' + configMap[property]
+	debugPrintln property + ': ' + configMap[property]
 }
 
 def parseDefaultProperties(Map childNodeMap) {
@@ -174,14 +178,14 @@ def parseDefaultProperties(Map childNodeMap) {
 		map[expandVariables(k)] = expandVariables(v)
 		return map
 	}
-	println property + ': ' + configMap[property]
+	debugPrintln property + ': ' + configMap[property]
 }
 
 def parseZips(Map childNodeMap) {
 	def property = 'zips'
 	Proxy.Node propertyNode = childNodeMap[property]
 	configMap[property] = propertyNode.children.collect{ ensureNoHtml(theOnlyChild(it)).binary }
-	println property + ': ' + configMap[property].dump()
+	debugPrintln property + ': ' + configMap[property].dump()
 }
 
 def parseLib(Map childNodeMap) {
@@ -193,7 +197,7 @@ def parseLib(Map childNodeMap) {
 		map[child.plainText] = ensureNoHtml(theOnlyChild(child)).binary
 		return map
 	}
-	println property + ': ' + configMap[property].dump()
+	debugPrintln property + ': ' + configMap[property].dump()
 }
 
 def parseImages(Map childNodeMap) {
@@ -205,7 +209,7 @@ def parseImages(Map childNodeMap) {
         map[child.plainText] = ensureNoHtml(theOnlyChild(child)).binary
         return map
     }
-    println property + ': ' + configMap[property].dump()
+    debugPrintln property + ': ' + configMap[property].dump()
 }
 
 def installZips() {
@@ -270,8 +274,11 @@ void unpack(File destDir, byte[] zipData) {
 
 /** ensures that 'parent' has exactly one child node. */
 Proxy.Node theOnlyChild(Proxy.Node parent) {
+    if (parent.children.size() != 1)
+        logger.warn(StringUtils.abbreviate(parent.plainText, 32), new RuntimeException("dummy"))
 	mapStructureAssert(parent.children.size() == 1,
-		textUtils.format('addons.installer.one.child.expected', parent.plainText, parent.children.size()))
+		textUtils.format('addons.installer.one.child.expected',
+            StringUtils.abbreviate(parent.plainText, 32), parent.children.size()))
 	return parent.children.first()
 }
 
@@ -305,7 +312,7 @@ def parseScripts(Map childNodeMap) {
 		return scripts
 	}
 //	mapStructureAssert(configMap[property], textUtils.getText('addons.installer.no.scripts'))
-	println property + ': ' + configMap[property].dump()
+	debugPrintln property + ': ' + configMap[property].dump()
 }
 
 void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
@@ -341,7 +348,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 			}
 		}
 	}
-	println "set keyboardShortcut $shortcutKey to $newShortcut"
+	debugPrintln "set keyboardShortcut $shortcutKey to $newShortcut"
 	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
 }
 
@@ -386,7 +393,7 @@ def parseDeinstallationRules(Map childNodeMap) {
 	]
 	def unknownDeinstallationRules = attribs.names.findAll{ k -> ! knownDeinstallationRules.contains(k) }
 	mapStructureAssert( ! unknownDeinstallationRules, textUtils.format('addons.installer.unknown.deinstallation.rules', unknownDeinstallationRules))
-	println property + ': ' + configMap[property]
+	debugPrintln property + ': ' + configMap[property]
 }
 
 def handlePermissions() {
@@ -448,8 +455,8 @@ AddOnProperties parse() {
 		'images',
 		'lib',
 	]
-	Map<String, Proxy.Node> childNodeMap = propertyNames.inject([:]) { map, key ->
-		map[key] = node.map.root.find{ it.plainText == key }[0]
+	Map<String, Proxy.Node> childNodeMap = node.map.root.children.inject([:]) { map, child ->
+		map[child.plainText] = child
 		return map
 	}
 	def Map<String, Proxy.Node> missingChildNodes = childNodeMap.findAll{ k,v->
