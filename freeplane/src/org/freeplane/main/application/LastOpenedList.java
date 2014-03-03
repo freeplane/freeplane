@@ -88,9 +88,11 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		return lastOpenedMapsRibbonContributorFactory;
 	}
 
+	private String mapSelectedOnStart;
+
 	LastOpenedList() {
 //		this.controller = controller;
-		restoreList(LAST_OPENED, lastOpenedList);
+		restoreList(LAST_OPENED);
 		lastOpenedMapsRibbonContributorFactory = new LastOpenedMapsRibbonContributorFactory(this);
 	}
 
@@ -206,12 +208,10 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		return file;
 	}
 
-	public void openMapsOnStart() {
-		if (!lastOpenedList.isEmpty()) {
-			final String lastMap;
-			lastMap = lastOpenedList.get(0);
-			if(!tryToChangeToMapView(lastMap))
-				safeOpen(lastMap);
+	void openLastMapOnStart() {
+		if (mapSelectedOnStart != null) {
+			if(!tryToChangeToMapView(mapSelectedOnStart))
+				safeOpen(mapSelectedOnStart);
 		}
 	}
 
@@ -220,10 +220,13 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		updateMenus();
 	}
 
-	private void restoreList(final String key, final List<String> list) {
+	private void restoreList(final String key) {
 		final String restored = ResourceController.getResourceController().getProperty(key, null);
 		if (restored != null && !restored.equals("")) {
-			list.addAll(ConfigurationUtils.decodeListValue(restored, true));
+			lastOpenedList.addAll(ConfigurationUtils.decodeListValue(restored, true));
+			if (!lastOpenedList.isEmpty()) {
+				mapSelectedOnStart = lastOpenedList.get(0);
+			}
 		}
 	}
 

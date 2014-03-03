@@ -35,9 +35,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 
 class RootMainView extends MainView {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private String shape;
 

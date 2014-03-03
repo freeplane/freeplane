@@ -1,8 +1,6 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
- *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  Copyright (C) 2003 -2013 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,8 +18,7 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -37,7 +34,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
@@ -54,39 +53,17 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
-	final private class ChangeTabAction implements ActionListener {
-		final private CardLayout cardLayout;
-		final private JPanel centralPanel;
-		final private String tabName;
-
-		private ChangeTabAction(final CardLayout cardLayout, final JPanel centralPanel, final String tabName) {
-			super();
-			this.cardLayout = cardLayout;
-			this.centralPanel = centralPanel;
-			this.tabName = tabName;
-		}
-
-		public void actionPerformed(final ActionEvent arg0) {
-			cardLayout.show(centralPanel, tabName);
-			for (final JButton button : tabButtonMap.values()) {
-				button.setForeground(null);
-			}
-			getTabButton(tabName).setForeground(OptionPanel.MARKED_BUTTON_COLOR);
-			selectedPanel = tabName;
-		}
-	}
-
 	public interface IOptionPanelFeedback {
 		void writeProperties(Properties props);
 	}
 
-	private static final Color MARKED_BUTTON_COLOR = Color.BLUE;
+	final static private String OPTION_PANEL_RESOURCE_PREFIX = "OptionPanel.";
 	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
+	final private HashMap<String, Integer> tabStringToIndexMap = new HashMap<String, Integer>();
+	final private HashMap<Integer, String> tabIndexToStringMap = new HashMap<Integer, String>();
 	private String selectedPanel;
-	final private HashMap<String, ChangeTabAction> tabActionMap = new HashMap<String, ChangeTabAction>();
-	final private HashMap<String, JButton> tabButtonMap = new HashMap<String, JButton>();
 	final private JDialog topDialog;
 
 	/**
@@ -99,45 +76,56 @@ public class OptionPanel {
 		new OptionPanelBuilder();
 	}
 
+	/**
+	 * This method builds the preferences panel.
+	 * A list of IPropertyControl is iterated through and
+	 * if the IPropertyControl is an instance of TabProperty,
+	 * it creates a new "tab" that can be clicked to reveal the appropriate panel.
+	 * If the previous selected tab was saved on close,
+	 * the appropriate tab is reopened.
+	 *
+	 * @param controlsTree  This is the data that needs to be built
+	 */
 	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
-		final FormLayout leftLayout = new FormLayout("max(80dlu;p):grow", "");
-		final DefaultFormBuilder leftBuilder = new DefaultFormBuilder(leftLayout);
-		final CardLayout cardLayout = new VariableSizeCardLayout();
-		final JPanel rightStack = new JPanel(cardLayout);
-		FormLayout rightLayout = null;
-		DefaultFormBuilder rightBuilder = null;
-		String lastTabName = null;
+		final JPanel centralPanel = new JPanel();
+		centralPanel.setLayout(new GridLayout(1, 1));
+		final JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		FormLayout bottomLayout = null;
+		DefaultFormBuilder bottomBuilder = null;
 		initControls(controlsTree);
 		final Iterator<IPropertyControl> iterator = controls.iterator();
+		int tabIndex = 0;
 		while (iterator.hasNext()) {
 			final IPropertyControl control = iterator.next();
 			if (control instanceof TabProperty) {
 				final TabProperty newTab = (TabProperty) control;
-				if (rightBuilder != null) {
-					rightStack.add(rightBuilder.getPanel(), lastTabName);
-				}
-				rightLayout = new FormLayout(newTab.getDescription(), "");
-				rightBuilder = new DefaultFormBuilder(rightLayout);
-				rightBuilder.setDefaultDialogBorder();
-				lastTabName = newTab.getLabel();
-				final JButton tabButton = new JButton(TextUtils.getOptionalText(lastTabName));
-				final ChangeTabAction changeTabAction = new ChangeTabAction(cardLayout, rightStack, lastTabName);
-				tabButton.addActionListener(changeTabAction);
-				registerTabButton(tabButton, lastTabName, changeTabAction);
-				leftBuilder.append(tabButton);
+				bottomLayout = new FormLayout(newTab.getDescription(), "");
+				bottomBuilder = new DefaultFormBuilder(bottomLayout);
+				bottomBuilder.setDefaultDialogBorder();
+				final JScrollPane bottomComponent = new JScrollPane(bottomBuilder.getPanel());
+				UITools.setScrollbarIncrement(bottomComponent);
+				final String tabName = TextUtils.getOptionalText(newTab.getLabel());
+				tabStringToIndexMap.put(tabName, tabIndex);
+				tabIndexToStringMap.put(tabIndex, tabName);
+				tabbedPane.addTab(tabName, bottomComponent);
+				tabIndex++;
 			}
 			else {
-				control.layout(rightBuilder);
+				control.layout(bottomBuilder);
 			}
 		}
-		rightStack.add(rightBuilder.getPanel(), lastTabName);
-		if (selectedPanel != null && tabActionMap.containsKey(selectedPanel)) {
-			(tabActionMap.get(selectedPanel)).actionPerformed(null);
+		tabbedPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(final ChangeEvent event) {
+				final JTabbedPane c = (JTabbedPane) event.getSource();
+				selectedPanel = tabIndexToStringMap.get(c.getSelectedIndex());
+			}
+		});
+		centralPanel.add(tabbedPane);
+		if (selectedPanel != null && tabStringToIndexMap.containsKey(selectedPanel)) {
+			// Without the containsKey call the loading of the tab "behaviour"/"behavior" gives a nullpointer exception
+			tabbedPane.setSelectedIndex(tabStringToIndexMap.get(selectedPanel));
 		}
-		final JScrollPane rightComponent = new JScrollPane(rightStack);
-		UITools.setScrollbarIncrement(rightComponent);
-		final JSplitPane centralPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftBuilder.getPanel(),
-		    rightComponent);
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
@@ -159,11 +147,11 @@ public class OptionPanel {
 		topDialog.getRootPane().setDefaultButton(okButton);
 		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
 	}
-	
+
 	private boolean validate() {
 		final Properties properties = getOptionProperties();
 		final ValidationResult result = new ValidationResult();
-		for (IValidator validator : Controller.getCurrentController().getOptionValidators()) {
+		for (final IValidator validator : Controller.getCurrentController().getOptionValidators()) {
 			result.add(validator.validate(properties));
 		}
 		if (!result.isValid()) {
@@ -177,15 +165,19 @@ public class OptionPanel {
 		return result.isValid();
 	}
 
-	private String formatErrors(String key, ArrayList<String> errors) {
+	private String formatErrors(final String key, final ArrayList<String> errors) {
 		// TextUtils.format() xml escapes the format arguments - we don't want that
 		final MessageFormat formatter = new MessageFormat(TextUtils.getText(key));
 		return formatter.format(new Object[] { StringUtils.join(errors.iterator(), "<br>") });
 	}
 
 	@SuppressWarnings("unchecked")
-    private void initControls(final DefaultMutableTreeNode controlsTree) {
-	    controls = new Vector<IPropertyControl>();
+	/**
+	 * This is where the controls are added to the "controls" IProperty Vector
+	 * @param controlsTree This is the tree that gets built
+	 */
+	private void initControls(final DefaultMutableTreeNode controlsTree) {
+		controls = new Vector<IPropertyControl>();
 		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
 			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement().getUserObject();
 			if (creator == null) {
@@ -194,11 +186,11 @@ public class OptionPanel {
 			final IPropertyControl control = creator.createControl();
 			controls.add(control);
 		}
-    }
+	}
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
-		storage.setPanel(selectedPanel);
+		storage.setPanel(OPTION_PANEL_RESOURCE_PREFIX + selectedPanel);
 		storage.storeDialogPositions(topDialog, OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		topDialog.setVisible(false);
 		topDialog.dispose();
@@ -218,18 +210,6 @@ public class OptionPanel {
 		return p;
 	}
 
-	private JButton getTabButton(final String name) {
-		return tabButtonMap.get(name);
-	}
-
-	private void registerTabButton(final JButton tabButton, final String name, final ChangeTabAction changeTabAction) {
-		tabButtonMap.put(name, tabButton);
-		tabActionMap.put(name, changeTabAction);
-		if (selectedPanel == null) {
-			selectedPanel = name;
-		}
-	}
-
 	public void setProperties() {
 		for (final IPropertyControl control : controls) {
 			if (control instanceof PropertyBean) {
@@ -242,6 +222,8 @@ public class OptionPanel {
 	}
 
 	void setSelectedPanel(final String panel) {
-		selectedPanel = panel;
+		if (panel.startsWith(OPTION_PANEL_RESOURCE_PREFIX)) {
+			selectedPanel = panel.substring(OPTION_PANEL_RESOURCE_PREFIX.length());
+		}
 	}
 }

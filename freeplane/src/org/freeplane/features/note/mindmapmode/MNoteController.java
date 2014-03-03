@@ -31,6 +31,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.net.URI;
+
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JEditorPane;
@@ -95,7 +96,7 @@ public class MNoteController extends NoteController {
 
 	private static class SouthPanel extends JPanel {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -122,7 +123,7 @@ public class MNoteController extends NoteController {
 	 * content. The typical content will be empty, so this state is saved here.
 	 */
 	private boolean mLastContentEmpty = true;
-	private NoteManager noteManager;
+	private final NoteManager noteManager;
 	private SHTMLPanel noteViewerComponent;
 
 	/**
@@ -151,7 +152,7 @@ public class MNoteController extends NoteController {
 			return htmlEditorPanel;
 		}
 		htmlEditorPanel = MTextController.getController().createSHTMLPanel(NoteModel.EDITING_PURPOSE);
-		
+
 		// make sure that SHTML gets notified of relevant config changes!
 	   	ResourceController.getResourceController().addPropertyChangeListener(
     			new FreeplaneToSHTMLPropertyChangeAdapter(htmlEditorPanel));
@@ -164,7 +165,7 @@ public class MNoteController extends NoteController {
 			inputMap.remove(KeyStroke.getKeyStroke("ctrl shift pressed T"));
 			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed SPACE"));
 		}
-		
+
 		editorPane.addFocusListener(new FocusListener() {
 			private SpellCheckerController spellCheckerController = null;
 			private boolean enabled = false;
@@ -312,7 +313,7 @@ public class MNoteController extends NoteController {
 	    styleSheet.removeStyle("body");
 	    styleSheet.removeStyle("p");
 	    // set default font for notes:
-	    final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+	    final NodeStyleController style = Controller.getCurrentModeController().getExtension(
 	        NodeStyleController.class);
 	    MapModel map = Controller.getCurrentModeController().getController().getMap();
 	    if(map != null){
@@ -369,25 +370,7 @@ public class MNoteController extends NoteController {
 	public void startupController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (shouldUseSplitPane()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				int count = 10;
-				public void run() {
-					if(count == 0){
-						showNotesPanel(false);
-						final IMapSelection selection = Controller.getCurrentController().getSelection();
-						if(selection != null){
-							final NodeModel selected = selection.getSelected();
-							if(selected != null){
-								selection.centerNode(selected);
-							}
-						}
-					}
-					else{
-						count--;
-						SwingUtilities.invokeLater(this);
-					}
-				}
-			});
+			showNotesPanel(false);
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();

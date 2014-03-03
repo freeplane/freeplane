@@ -1,9 +1,9 @@
 package org.freeplane.plugin.svg;
 
 import java.awt.Dimension;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
-
-import javax.swing.JComponent;
 
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
@@ -13,21 +13,57 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
+import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerLayoutManager;
 import org.w3c.dom.svg.SVGDocument;
 import org.w3c.dom.svg.SVGLength;
 import org.w3c.dom.svg.SVGSVGElement;
 
 public class SvgViewerFactory implements IViewerFactory {
-	private final class ViewerComponent extends JSVGCanvas {
-		/**
-		 * 
-		 */
+
+	private ViewerComponent canvas;
+
+	private final class ViewerComponent extends JSVGCanvas implements ScalableComponent {
 		private static final long serialVersionUID = 1L;
 		private Dimension originalSize = null;
+		private Dimension maximumSize = null;
 
-		protected Dimension getOriginalSize() {
+		public Dimension getOriginalSize() {
 			return new Dimension(originalSize);
+		}
+
+		public void setFinalViewerSize(final Dimension size) {
+			final JSVGCanvas canvas = (JSVGCanvas) this;
+			Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
+			canvas.setRenderingTransform(initialTransform);
+			canvas.setPreferredSize(sizeWithScaleCorrection);
+			canvas.setMySize(sizeWithScaleCorrection);
+			canvas.setSize(sizeWithScaleCorrection);
+		}
+
+		private Dimension fitToMaximumSize(final Dimension size) {
+			if (maximumSize == null || isUnderMaximumSize(size)) {
+				return size;
+			}
+			else {
+				return maximumSize;
+			}
+		}
+
+		private boolean isUnderMaximumSize(final Dimension size) {
+			return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
+		}
+
+		public void setDraftViewerSize(final Dimension size) {
+			setFinalViewerSize(size);
+		}
+
+		public void setFinalViewerSize(final float zoom) {
+			if (originalSize != null) {
+				int scaledWidth = (int) (originalSize.width * zoom);
+				int scaledHeight = (int) (originalSize.height * zoom);
+				setFinalViewerSize(new Dimension(scaledWidth, scaledHeight));
+			}
 		}
 
 		public ViewerComponent(final URI uri) {
@@ -69,6 +105,13 @@ public class SvgViewerFactory implements IViewerFactory {
 			}
 			return super.getPreferredSize();
 		}
+
+		public void setMaximumComponentSize(Dimension size) {
+			this.maximumSize = size;
+		}
+
+		public void setCenter(boolean center) {
+		}
 	}
 
 	public boolean accept(final URI uri) {
@@ -79,15 +122,15 @@ public class SvgViewerFactory implements IViewerFactory {
 		return TextUtils.getText("svg");
 	};
 
-	public JComponent createViewer(final ExternalResource resource, final URI uri, final int maximumWidth) {
-		final ViewerComponent canvas = new ViewerComponent(uri);
+	public ScalableComponent createViewer(final ExternalResource resource, final URI uri, final int maximumWidth) {
+		canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
 				final Dimension preferredSize = canvas.getOriginalSize();
 				float r = resource.getZoom();
 				final int originalWidth = preferredSize.width;
-				if(r == -1){
+				if (r == -1) {
 					r = resource.setZoom(originalWidth, maximumWidth);
 				}
 				preferredSize.width = (int) (Math.rint(originalWidth * r));
@@ -97,20 +140,16 @@ public class SvgViewerFactory implements IViewerFactory {
 				canvas.revalidate();
 				canvas.removeGVTTreeRendererListener(this);
 			}
-
 		});
 		return canvas;
 	}
 
-	public JComponent createViewer(final URI uri, final Dimension preferredSize) {
-		final ViewerComponent canvas = new ViewerComponent(uri);
-		canvas.setPreferredSize(preferredSize);
-		canvas.setSize(preferredSize);
+	public ScalableComponent createViewer(final URI uri, final Dimension preferredSize) {
+		canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
-				canvas.setMySize(preferredSize);
-				canvas.setSize(preferredSize);
+				canvas.setFinalViewerSize(preferredSize);
 				canvas.revalidate();
 				canvas.removeGVTTreeRendererListener(this);
 			}
@@ -118,17 +157,20 @@ public class SvgViewerFactory implements IViewerFactory {
 		return canvas;
 	}
 
-	public Dimension getOriginalSize(final JComponent viewer) {
-		final ViewerComponent canvas = (ViewerComponent) viewer;
-		return canvas.getOriginalSize();
+	public ScalableComponent getComponent() {
+		return canvas;
 	}
 
-	public void setFinalViewerSize(final JComponent viewer, final Dimension size) {
-		final JSVGCanvas canvas = (JSVGCanvas) viewer;
-		canvas.setMySize(size);
-	}
-
-	public void setDraftViewerSize(JComponent viewer, Dimension size) {
-		setFinalViewerSize(viewer, size);
+	public ScalableComponent createViewer(URI uri, final float zoom) throws MalformedURLException, IOException {
+		canvas = new ViewerComponent(uri);
+		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
+			@Override
+			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
+				canvas.setFinalViewerSize(zoom);
+				canvas.revalidate();
+				canvas.removeGVTTreeRendererListener(this);
+			}
+		});
+		return canvas;
 	}
 }

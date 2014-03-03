@@ -360,6 +360,15 @@
 				</ribbon_action>
 				<ribbon_action action="NodeWidthAction" />
 			</ribbon_band>
+			
+			<ribbon_band name="map_background" resize_policies="Mirror">
+				<ribbon_action action="MapBackgroundColorAction"/>
+				<ribbon_action action="MapBackgroundImageAction">
+					<ribbon_action action="MapBackgroundClearAction"/>
+					<ribbon_action action="SetBooleanMapPropertyAction.fit_to_viewport"/>
+				</ribbon_action>
+				<menu_separator/>
+			</ribbon_band>
 		</ribbon_task>
 		
 		<!-- SEARCH & FILTER -->
