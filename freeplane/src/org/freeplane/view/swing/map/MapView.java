@@ -1080,16 +1080,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void loadBackgroundImage() {
 		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
 		final String uriString = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
-		if (uriString == null) {
-			backgroundComponent = null;
-			return;
-		}
-		URI uri = assignAbsoluteURI(uriString);
-		final ViewerController vc = getModeController().getExtension(ViewerController.class);
-		final IViewerFactory factory = vc.getCombiFactory();
-		if (uri != null) {
-			assignViewerToBackgroundComponent(factory, uri);
-			((ScalableComponent) backgroundComponent).setCenter(true);
+		backgroundComponent = null;
+		if (uriString != null) {
+			URI uri = assignAbsoluteURI(uriString);
+			final ViewerController vc = getModeController().getExtension(ViewerController.class);
+			final IViewerFactory factory = vc.getCombiFactory();
+			if (uri != null) {
+				assignViewerToBackgroundComponent(factory, uri);
+			}
 		}
 		adjustViewportScrollMode();
 		repaint();
@@ -1117,9 +1115,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				final Dimension viewPortSize = vp.getVisibleRect().getSize();
 				backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize);
 			}
-			else {
-				backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
-			}
+            else
+	            backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
+			((ScalableComponent) backgroundComponent).setCenter(true);
 			((ScalableComponent)backgroundComponent).setImageLoadingListener(new ImageLoadingListener() {
 				public void imageLoaded() {
 					repaint();
