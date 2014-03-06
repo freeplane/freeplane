@@ -464,6 +464,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		};
 		addComponentListener(backgroundImageResizer);
+		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
+		    MapStyle.FIT_TO_VIEWPORT);
+		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
+
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -534,7 +538,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
     public void addNotify() {
 	    super.addNotify();
-	    loadBackgroundImageLater();
+	    loadBackgroundImage();
 	    getParent().addComponentListener(backgroundImageResizer);
     }
 
@@ -1012,17 +1016,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		anchor = rootView;
 	}
 	
-	private void loadBackgroundImageLater() {
-		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
-		    MapStyle.FIT_TO_VIEWPORT);
-		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				loadBackgroundImage();
-			}
-		});
-    }
-
 	public boolean isPrinting() {
 		return isPrinting;
 	}
