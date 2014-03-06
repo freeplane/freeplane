@@ -10,7 +10,6 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.components.BitmapImagePreview;
-import org.freeplane.core.ui.components.BitmapViewerComponent;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.view.swing.features.filepreview.ViewerController.FactoryFileFilter;
 

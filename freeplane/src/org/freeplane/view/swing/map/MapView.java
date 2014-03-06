@@ -101,6 +101,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
+import org.freeplane.view.swing.features.filepreview.ImageLoadingListener;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.link.ConnectorView;
@@ -463,6 +464,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		};
 		addComponentListener(backgroundImageResizer);
+		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
+		    MapStyle.FIT_TO_VIEWPORT);
+		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
+
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -533,8 +538,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
     public void addNotify() {
 	    super.addNotify();
-	    loadBackgroundImageLater();
+	    loadBackgroundImage();
 	    getParent().addComponentListener(backgroundImageResizer);
+    }
+
+	private void adjustViewportScrollMode() {
+	    if(fitToViewport && backgroundComponent != null)
+	    	((JViewport) getParent()).setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
+	    else
+	    	((JViewport) getParent()).setScrollMode(JViewport.BLIT_SCROLL_MODE);
     }
 
 	@Override
@@ -1004,17 +1016,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		anchor = rootView;
 	}
 	
-	private void loadBackgroundImageLater() {
-		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
-		    MapStyle.FIT_TO_VIEWPORT);
-		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				loadBackgroundImage();
-			}
-		});
-    }
-
 	public boolean isPrinting() {
 		return isPrinting;
 	}
@@ -1064,11 +1065,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			    MapStyle.FIT_TO_VIEWPORT);
 			fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 			loadBackgroundImage();
+			adjustViewportScrollMode();
 		}
 		if (property.equals(MapStyle.FIT_TO_VIEWPORT)) {
 			final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
 			    MapStyle.FIT_TO_VIEWPORT);
 			fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
+			adjustViewportScrollMode();
 			adjustBackgroundComponentScale();
 			repaint();
 		}
@@ -1088,6 +1091,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			assignViewerToBackgroundComponent(factory, uri);
 			((ScalableComponent) backgroundComponent).setCenter(true);
 		}
+		adjustViewportScrollMode();
 		repaint();
 	}
 
@@ -1116,6 +1120,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			else {
 				backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
 			}
+			((ScalableComponent)backgroundComponent).setImageLoadingListener(new ImageLoadingListener() {
+				public void imageLoaded() {
+					repaint();
+				}
+			});
 		}
 		catch (final MalformedURLException e1) {
 			LogUtils.severe(e1);
@@ -1279,16 +1288,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		if (backgroundComponent != null) {
-			setAndPaintBackgroundComponent(g);
+			paintBackgroundComponent(g);
 		}
 	}
 
-	private void setAndPaintBackgroundComponent(final Graphics g) {
+	private void paintBackgroundComponent(final Graphics g) {
 	    Graphics backgroundGraphics = g.create();
 	    try {
 	    	setBackgroundComponentLocation(backgroundGraphics);
 	    	backgroundComponent.paint(backgroundGraphics);
-	    	repaint();
 	    }
 	    finally {
 	    	backgroundGraphics.dispose();
@@ -1568,8 +1576,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Rectangle getBackgroundImageInnerBounds() {
 		final Point centerPoint = getRootCenterPoint();
 		final Point backgroundImageTopLeft = getBackgroundImageTopLeft(centerPoint);
-		backgroundComponent.setLocation(backgroundImageTopLeft);
-		return backgroundComponent.getBounds();
+		return new Rectangle(backgroundImageTopLeft.x, backgroundImageTopLeft.y, backgroundComponent.getWidth(), backgroundComponent.getHeight());
 	}
 
 	@Override

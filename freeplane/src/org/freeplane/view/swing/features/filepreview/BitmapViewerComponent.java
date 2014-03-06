@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.ui.components;
+package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -41,7 +41,6 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 
 import com.thebuzzmedia.imgscalr.AsyncScalr;
 import com.thebuzzmedia.imgscalr.Scalr;
@@ -70,6 +69,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private Dimension maximumSize = null;
 	private boolean center;
 	private final static Object LOCK = new Object();
+	private ImageLoadingListener imageLoadinglistener;
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
 		url = uri.toURL();
@@ -182,6 +182,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							processing = false;
+							if(imageLoadinglistener != null)
+								imageLoadinglistener.imageLoaded();
 							repaint();
 						}
 					});
@@ -341,4 +343,9 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	public void setCenter(boolean center) {
 		this.center = center;
 	}
+
+	public void setImageLoadingListener(ImageLoadingListener listener) {
+		this.imageLoadinglistener = listener;
+	    
+    }
 }
