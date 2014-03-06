@@ -43,4 +43,6 @@ public interface ScalableComponent {
 	void setMaximumComponentSize(Dimension size);
 
 	void setCenter(boolean center);
+	
+	void setImageLoadingListener(ImageLoadingListener listener);
 }

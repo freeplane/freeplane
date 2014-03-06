@@ -13,6 +13,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
+import org.freeplane.view.swing.features.filepreview.ImageLoadingListener;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerLayoutManager;
 import org.w3c.dom.svg.SVGDocument;
@@ -112,6 +113,15 @@ public class SvgViewerFactory implements IViewerFactory {
 
 		public void setCenter(boolean center) {
 		}
+
+		public void setImageLoadingListener(final ImageLoadingListener listener) {
+			addGVTTreeRendererListener(new GVTTreeRendererAdapter(){
+				@Override
+                public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
+					listener.imageLoaded();
+               }
+			});
+        }
 	}
 
 	public boolean accept(final URI uri) {

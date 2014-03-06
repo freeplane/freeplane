@@ -41,6 +41,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.view.swing.features.filepreview.ImageLoadingListener;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 
 import com.thebuzzmedia.imgscalr.AsyncScalr;
@@ -70,6 +71,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private Dimension maximumSize = null;
 	private boolean center;
 	private final static Object LOCK = new Object();
+	private ImageLoadingListener imageLoadinglistener;
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
 		url = uri.toURL();
@@ -182,6 +184,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							processing = false;
+							if(imageLoadinglistener != null)
+								imageLoadinglistener.imageLoaded();
 							repaint();
 						}
 					});
@@ -341,4 +345,9 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	public void setCenter(boolean center) {
 		this.center = center;
 	}
+
+	public void setImageLoadingListener(ImageLoadingListener listener) {
+		this.imageLoadinglistener = listener;
+	    
+    }
 }
