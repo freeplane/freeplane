@@ -31,7 +31,6 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.swing.JComponent;
 
-import org.freeplane.core.ui.components.BitmapViewerComponent;
 import org.freeplane.core.util.TextUtils;
 
 /**

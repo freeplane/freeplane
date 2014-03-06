@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.ui.components;
+package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -41,8 +41,6 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.view.swing.features.filepreview.ImageLoadingListener;
-import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 
 import com.thebuzzmedia.imgscalr.AsyncScalr;
 import com.thebuzzmedia.imgscalr.Scalr;
