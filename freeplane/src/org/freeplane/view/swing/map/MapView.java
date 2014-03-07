@@ -532,27 +532,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		this.slowScroll = false;
 		setAnchorContentLocation(getAnchorCenterPoint());
     }
-	
-	
-
-	@Override
-    public void addNotify() {
-	    super.addNotify();
-	    loadBackgroundImage();
-	    getParent().addComponentListener(backgroundImageResizer);
-    }
 
 	private void adjustViewportScrollMode() {
 	    if(fitToViewport && backgroundComponent != null)
 	    	((JViewport) getParent()).setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
 	    else
 	    	((JViewport) getParent()).setScrollMode(JViewport.BLIT_SCROLL_MODE);
-    }
-
-	@Override
-    public void removeNotify() {
-		getParent().removeComponentListener(backgroundImageResizer);
-	    super.removeNotify();
     }
 
 	boolean isLayoutCompleted() {
