@@ -467,7 +467,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
 		    MapStyle.FIT_TO_VIEWPORT);
 		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
-
+		loadBackgroundImage();
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -538,8 +538,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
     public void addNotify() {
 	    super.addNotify();
-	    loadBackgroundImage();
 	    getParent().addComponentListener(backgroundImageResizer);
+		adjustViewportScrollMode();
     }
 
 	private void adjustViewportScrollMode() {
@@ -1089,7 +1089,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				assignViewerToBackgroundComponent(factory, uri);
 			}
 		}
-		adjustViewportScrollMode();
 		repaint();
 	}
 
@@ -1112,8 +1111,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		try {
 			if (fitToViewport) {
 				final JViewport vp = (JViewport) getParent();
-				final Dimension viewPortSize = vp.getVisibleRect().getSize();
-				backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize);
+				if(vp != null){
+					final Dimension viewPortSize = vp.getVisibleRect().getSize();
+					backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize);
+				}
+				else
+					backgroundComponent = (JComponent) factory.createViewer(uri, new Dimension());
 			}
             else
 	            backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
