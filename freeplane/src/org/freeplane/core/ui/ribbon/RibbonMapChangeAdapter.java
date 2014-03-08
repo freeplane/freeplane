@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
@@ -14,7 +14,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.ui.CloseAction;
 import org.freeplane.features.url.mindmapmode.OpenAction;
 
-public class RibbonMapChangeAdapter implements INodeSelectionListener, INodeChangeListener, IMapChangeListener, IMapLifeCycleListener {
+public class RibbonMapChangeAdapter implements INodeSelectionListener, INodeChangeListener, IMapChangeListener, IMapSelectionListener {
 	private List<IChangeObserver> listeners = new ArrayList<IChangeObserver>();
 	
 	public void clear() {
@@ -78,25 +78,6 @@ public class RibbonMapChangeAdapter implements INodeSelectionListener, INodeChan
 		
 	}
 
-	public void onCreate(MapModel map) {
-		CurrentState state = new CurrentState();
-		state.set(OpenAction.class, map);
-		fireStateChanged(state);
-	}
-
-	public void onRemove(MapModel map) {
-		CurrentState state = new CurrentState();
-		state.set(CloseAction.class, map);
-		fireStateChanged(state);
-		
-	}
-
-	public void onSavedAs(MapModel map) {
-	}
-
-	public void onSaved(MapModel map) {		
-	}
-
 	public void nodeChanged(NodeChangeEvent event) {
 		CurrentState state = new CurrentState();
 		state.set(NodeModel.class, event.getNode());
@@ -120,4 +101,20 @@ public class RibbonMapChangeAdapter implements INodeSelectionListener, INodeChan
 			}
 		}
 	}
+
+	public void afterMapChange(MapModel oldMap, MapModel newMap) {
+		if(newMap != null){
+			CurrentState state = new CurrentState();
+			state.set(OpenAction.class, newMap);
+			fireStateChanged(state);
+		}
+		else{
+			CurrentState state = new CurrentState();
+			state.set(CloseAction.class, oldMap);
+			fireStateChanged(state);
+		}
+    }
+
+	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+    }
 }
