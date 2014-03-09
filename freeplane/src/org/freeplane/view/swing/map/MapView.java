@@ -1116,7 +1116,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize);
 				}
 				else
-					backgroundComponent = (JComponent) factory.createViewer(uri, new Dimension());
+					backgroundComponent = (JComponent) factory.createViewer(uri, new Dimension(1,1));
 			}
             else
 	            backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
