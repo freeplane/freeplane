@@ -57,6 +57,8 @@ import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.tabbedpanel.TabAreaProperties;
 import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
+import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
+import net.infonode.tabbedpanel.TabLayoutPolicy;
 import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
@@ -84,6 +86,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		viewSerializer = new MapViewSerializer();
 		rootWindow = new RootWindow(viewSerializer);
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
+		rootWindowProperties.getTabWindowProperties().getTabbedPanelProperties().setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION).setTabDropDownListVisiblePolicy(TabDropDownListVisiblePolicy.MORE_THAN_ONE_TAB);
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
 		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
