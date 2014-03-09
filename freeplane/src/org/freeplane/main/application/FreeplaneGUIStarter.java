@@ -36,6 +36,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
@@ -78,6 +79,7 @@ import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 
@@ -121,6 +123,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	final private boolean firstRun;
 	private static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String LOAD_LAST_MAP = "load_last_map";
+	public static Boolean USE_RIBBONS_MENU;
 	public FreeplaneGUIStarter() {
 		super();
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
@@ -145,7 +148,15 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
 			FrameController.setLookAndFeel(lookandfeel);
-			final JFrame frame = new JFrame("Freeplane");
+			final JFrame frame;
+			USE_RIBBONS_MENU = UITools.useRibbonsMenu();
+			if(USE_RIBBONS_MENU) {
+				frame = new JRibbonFrame("Freeplane");
+				initIcons(applicationResourceController);
+			}
+			else {
+				frame = new JFrame("Freeplane");
+			}
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
@@ -188,20 +199,90 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
 	}
 
+	private void initIcons(ResourceController resourceController) {
+        resourceController.setDefaultProperty("ResetNodeLocationAction.icon", "/images/ribbons/nodes/NodesSettings-ResetPosition.png");
+        resourceController.setDefaultProperty("SetBooleanPropertyAction.edit_on_double_click.icon", "/images/ribbons/nodes/Nodes-EditOnDblClick.png");
+        resourceController.setDefaultProperty("NewFreeNodeAction.icon", "/images/ribbons/nodes/Nodes-NewFreenode.png");
+        resourceController.setDefaultProperty("FreeNodeAction.icon", "/images/ribbons/nodes/NodesSettings-Freenode.png");
+        resourceController.setDefaultProperty("NewSummaryAction.icon", "/images/ribbons/nodes/Nodes-NewSummaryNode.png");
+        resourceController.setDefaultProperty("ChangeNodeLevelLeftsAction.icon", "/images/ribbons/nodes/Nodes-MoveLeft.png");
+        resourceController.setDefaultProperty("ChangeNodeLevelRightsAction.icon", "/images/ribbons/nodes/nodes-MoveRight.png");
+        resourceController.setDefaultProperty("NodeUpAction.icon", "/images/ribbons/nodes/nodes-MoveUp.png");
+        resourceController.setDefaultProperty("NodeDownAction.icon", "/images/ribbons/nodes/nodes-MoveDown.png");
+        resourceController.setDefaultProperty("AlwaysUnfoldedNodeAction.icon", "/images/ribbons/nodes/nodes-AlwaysUnfolded.png");
+
+        resourceController.setDefaultProperty("ToggleFoldedAction.icon", "/images/ribbons/navigate/navigate-NodesUn-fold.png");
+
+        resourceController.setDefaultProperty("LatexEditLatexAction.icon", "/images/ribbons/resources/Resources-LaTeXFormulaEdit.png");
+        resourceController.setDefaultProperty("LatexDeleteLatexAction.icon", "/images/ribbons/resources/Resources-LaTeXFormulaRemove.png");
+        resourceController.setDefaultProperty("ExternalImageAddAction.icon", "/images/ribbons/resources/Resources-AddImage.png");
+
+        resourceController.setDefaultProperty("freeplaneAddOnLocationAction.icon", "/images/ribbons/tools/ToolsAndSettings-DocearAddOns.png");
+        resourceController.setDefaultProperty("SetAcceleratorOnNextClickAction.icon", "/images/ribbons/tools/Tools-AssignHotkey.png");
+        resourceController.setDefaultProperty("OpenMapsAddLocation.icon", "/images/ribbons/tools/tools-AddOpenMaps.png");
+        resourceController.setDefaultProperty("OpenMapsRemoveLocation.icon", "/images/ribbons/tools/tools-RemoveOpenMaps.png");
+        resourceController.setDefaultProperty("OpenMapsViewLocation.icon", "/images/ribbons/tools/tools-ViewOpenMaps.png");
+        resourceController.setDefaultProperty("formula.menuname.icon", "/images/ribbons/tools/tools-formulas.png");
+        resourceController.setDefaultProperty("menu_encryption.icon", "/images/ribbons/tools/tools-PasswordProtection.png");
+        resourceController.setDefaultProperty("menu_time.icon", "/images/ribbons/tools/tools-TimeManagement.png");
+        resourceController.setDefaultProperty("scripting.icon", "/images/ribbons/tools/tools-Scripting.png");
+
+        resourceController.setDefaultProperty("attribute_options.icon", "/images/ribbons/view/view-AttributeOptions.png");
+        resourceController.setDefaultProperty("ShowHideNoteAction.icon", "/images/ribbons/view/view-showNotePanel.png");
+        resourceController.setDefaultProperty("ToggleDetailsAction.icon", "/images/ribbons/view/view-hideNoteDetails.png");
+        resourceController.setDefaultProperty("note_window_location.icon", "/images/ribbons/view/view-NotePanelPosition.png");
+        resourceController.setDefaultProperty("menu_noteView.icon", "/images/ribbons/view/view-NotesSettings.png");
+        resourceController.setDefaultProperty("SetBooleanPropertyAction.highlight_formulas.icon", "/images/ribbons/view/view-HighlightFormulas.png");
+        resourceController.setDefaultProperty("SetBooleanPropertyAction.show_node_tooltips.icon", "/images/ribbons/view/view-DisplayTooltips.png");
+        resourceController.setDefaultProperty("SetBooleanPropertyAction.show_styles_in_tooltip.icon", "/images/ribbons/view/view-displayNodeStylesTooltips.png");
+        resourceController.setDefaultProperty("ToggleFBarAction.icon", "/images/ribbons/view/view-FBar.png");
+        resourceController.setDefaultProperty("ToggleStatusAction.icon", "/images/ribbons/view/view-Statusline.png");
+        resourceController.setDefaultProperty("ToggleScrollbarsAction.icon", "/images/ribbons/view/view-Scrollbars.png");
+        resourceController.setDefaultProperty("ToggleLeftToolbarAction.icon", "/images/ribbons/view/view-IconToolbar.png");
+        resourceController.setDefaultProperty("ToggleFullScreenAction.icon", "/images/ribbons/view/view-FullScreen.png");
+        resourceController.setDefaultProperty("ToggleRibbonAction.icon", "/images/ribbons/view/view-MinimizeRibbon.png");
+        resourceController.setDefaultProperty("SetBooleanPropertyAction.presentation_mode.icon", "/images/ribbons/view/view-PresentationMode.png");
+
+
+        resourceController.setDefaultProperty("OpenFreeplaneSiteAction.icon", "/images/ribbons/help/help-Homepage.png");
+        resourceController.setDefaultProperty("AboutAction.icon", "/images/ribbons/help/help-about.png");
+        resourceController.setDefaultProperty("AskForHelp.icon", "/images/ribbons/help/help-ask4help.png");
+        resourceController.setDefaultProperty("RequestFeatureAction.icon", "/images/ribbons/help/help-requestFeature.png");
+        resourceController.setDefaultProperty("ReportBugAction.icon", "/images/ribbons/help/help-bugReport.png");
+        resourceController.setDefaultProperty("HotKeyInfoAction.icon", "/images/ribbons/help/help-keyReference.png");
+        resourceController.setDefaultProperty("UpdateCheckAction.icon", "/images/ribbons/help/help-check4updates.png");
+        resourceController.setDefaultProperty("OpenUserDirAction.icon", "/images/ribbons/help/help-openUserDirectory.png");
+        resourceController.setDefaultProperty("GettingStartedAction.icon", "/images/ribbons/help/help-tutorial.png");
+
+        resourceController.setDefaultProperty("OpenLogsFolderAction.icon", "/images/ribbons/help/help-showSystemLog.png");
+        resourceController.setDefaultProperty("ManualAction.icon", "/images/ribbons/help/help-Manual.png");
+        resourceController.setDefaultProperty("ContactAction.icon", "/images/ribbons/help/help-contact.png");
+        resourceController.setDefaultProperty("FAQAction.icon", "/images/ribbons/help/help-faq.png");
+
+	}
+
 	public void createModeControllers(final Controller controller) {
 		MModeControllerFactory.createModeController();
 		final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
-		mindMapModeController.getMapController().addMapChangeListener(applicationResourceController.getLastOpenedList());
+		LastOpenedList lastOpenedList = applicationResourceController.getLastOpenedList();
+		mindMapModeController.getMapController().addMapChangeListener(lastOpenedList);
+		LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
+		RibbonBuilder menuBuilder = mindMapModeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
+		menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
 		mindMapModeController.addMenuContributor(FilterController.getController(controller).getMenuContributor());
-		BModeControllerFactory.createModeController();
-		FModeControllerFactory.createModeController();
+		if(! USE_RIBBONS_MENU){
+			BModeControllerFactory.createModeController();
+			FModeControllerFactory.createModeController();
+		}
     }
 
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
 	    LoadAcceleratorPresetsAction.install();
-	    buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
-	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
+	    if(! USE_RIBBONS_MENU){
+	    	buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
+	    	buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
+	    }
     }
 
 	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {
@@ -221,6 +302,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			public void run() {
 			    final Options options = CommandLineParser.parse(args);
 				viewController.init(Controller.getCurrentController());
+				splash.toBack();
 				final Frame frame = viewController.getFrame();
 				final int extendedState = frame.getExtendedState();
 				Container contentPane = viewController.getContentPane();

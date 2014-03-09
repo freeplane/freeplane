@@ -45,7 +45,6 @@ import org.freeplane.features.mode.ModeController;
 public interface ViewController {
 	public static final String FULLSCREEN_ENABLED_PROPERTY = "fullscreen_enabled";
 	public static final String STANDARD_STATUS_INFO_KEY = "standard";
-	public static final String VISIBLE_PROPERTY_KEY = "VISIBLE_PROPERTY_KEY";
 	public static final int BOTTOM = 3;
 	public static final int LEFT = 1;
 	public static final int RIGHT = 2;

@@ -40,7 +40,6 @@ import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.view.swing.ui.MenuXmlCreator;
 
 public class MModeController extends ModeController {
 	private static final String LOOKANDFEEL_PROPERTY = "lookandfeel";
@@ -107,7 +106,7 @@ public class MModeController extends ModeController {
 	private void createOptionPanelControls() {
 		optionPanelBuilder = new OptionPanelBuilder();
 		final ResourceController resourceController = ResourceController.getResourceController();
-		URL preferences = new MenuXmlCreator(PREF_MM2XML).menuResource("/xml/preferences.xml");
+		URL preferences = resourceController.getResource("/xml/preferences.xml");
 		optionPanelBuilder.load(preferences);
 		addAction(createPropertyAction(optionPanelBuilder));
 	}

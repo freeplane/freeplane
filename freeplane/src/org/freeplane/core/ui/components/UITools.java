@@ -618,6 +618,15 @@ public class UITools {
 		}
     }
 
+	public static boolean useRibbonsMenu() {
+		String bool = ResourceController.getResourceController().getProperty("menu.ribbons", null);
+		if(bool == null) {
+			bool = "true";
+			ResourceController.getResourceController().setProperty("menu.ribbons", bool);
+		}
+		return Boolean.parseBoolean(bool);
+	}
+	
 	public static boolean isEditingText() {
 	    final Component focusOwner = FocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		final boolean isTextComponentFocused = focusOwner instanceof JTextComponent;

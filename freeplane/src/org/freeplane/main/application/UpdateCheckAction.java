@@ -32,6 +32,7 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
@@ -115,23 +116,26 @@ class UpdateCheckAction extends AFreeplaneAction {
 		Controller controller = Controller.getCurrentController();
 		final Set<String> modes = controller.getModes();
 		for (final String mode : modes) {
-			final MenuBuilder menuBuilder = controller.getModeController(mode).getUserInputListenerFactory()
-			    .getMenuBuilder();
-			if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
-				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
-				if (menuBuilder.get(UPDATE_BUTTON_PATH) != null) {
-					menuBuilder.removeElement(UPDATE_BUTTON_PATH);
+			ModeController modeController = controller.getModeController(mode);
+			if(!modeController.getUserInputListenerFactory().useRibbonMenu()) {	
+				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
+				    .getMenuBuilder(MenuBuilder.class);
+				if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
+					ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
+					if (menuBuilder.get(UPDATE_BUTTON_PATH) != null) {
+						menuBuilder.removeElement(UPDATE_BUTTON_PATH);
+					}
+					continue;
 				}
-				continue;
-			}
-			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
-			final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
-			controller.getViewController().out(updateAvailable);
-			putValue(SHORT_DESCRIPTION, updateAvailable);
-			putValue(LONG_DESCRIPTION, updateAvailable);
-			if (menuBuilder.get(UPDATE_BUTTON_PATH) == null) {
-				menuBuilder.addAction(UPDATE_BUTTON_LOCATION, UPDATE_BUTTON_PATH, UpdateCheckAction.this,
-				    MenuBuilder.AS_CHILD);
+				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
+				final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
+				controller.getViewController().out(updateAvailable);
+				putValue(SHORT_DESCRIPTION, updateAvailable);
+				putValue(LONG_DESCRIPTION, updateAvailable);
+				if (menuBuilder.get(UPDATE_BUTTON_PATH) == null) {
+					menuBuilder.addAction(UPDATE_BUTTON_LOCATION, UPDATE_BUTTON_PATH, UpdateCheckAction.this,
+					    MenuBuilder.AS_CHILD);
+				}
 			}
 		}
 	}

@@ -162,7 +162,7 @@ public class Compat {
 		final Set<String> modes = controller .getModes();
 		for (final String mode : modes) {
 			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
-			    .getMenuBuilder();
+			    .getMenuBuilder(MenuBuilder.class);
 			final String[] keys = {
 					"MB_ToggleMenubarAction",
 					"MP_ToggleMenubarAction",
@@ -182,7 +182,7 @@ public class Compat {
 
 
 	/** the directory *including* the version directory. */
-	public static String getFreeplaneUserDirectory() {
+	public static String getApplicationUserDirectory() {
 		String userFpDir = System.getProperty(PROPERTY_FREEPLANE_USERDIR);
 		if(userFpDir == null){
 			userFpDir = getDefaultFreeplaneUserDirectory();

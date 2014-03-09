@@ -89,9 +89,10 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			    keysetFile.toURL(), key, title);
 			if (null == Controller.getCurrentController().getAction(loadAcceleratorPresetsAction.getKey())) {
 				Controller.getCurrentController().addAction(loadAcceleratorPresetsAction);
-				Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
+				Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class).addAction(
 				    "main_menu_new_load_accelerator_presets", key, loadAcceleratorPresetsAction,
 				    MenuBuilder.AS_CHILD);
+				//TODO RIBBONS - maybe sth for ribbons as well
 			}
 		}
 		catch (final IOException e1) {

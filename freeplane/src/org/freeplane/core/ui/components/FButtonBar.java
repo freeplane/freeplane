@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -40,7 +41,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
@@ -49,11 +49,14 @@ import javax.swing.Timer;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
+import org.freeplane.core.ui.KeyBindingProcessor;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 
 /**
  * @author Dimitry Polivaev
@@ -75,32 +78,68 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			onModifierChangeImpl();
 		}
 	});
+	private final KeyBindingProcessor keyProcessor;
 	
 	@SuppressWarnings("serial")
     private class ContentPane extends JPanel{
 		@Override
         protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-			if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+			if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT) {
+				if(keyProcessor.processKeyBinding(ks, e, condition, pressed)) {
+					return true;
+				}
 				return processFKey(e);
+			}
 			return false;
         }
 	}
 
-	public FButtonBar(JRootPane rootPane) {
+	public FButtonBar(JRootPane rootPane, KeyBindingProcessor proc) {
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		final Container oldContentPane = rootPane.getContentPane();
 		final ContentPane newContentPane = new ContentPane();
 		final LayoutManager layoutManager = oldContentPane.getLayout();
 		oldContentPane.setLayout(null);
 		newContentPane.setLayout(layoutManager);
-		for (Component c : oldContentPane.getComponents())
-			newContentPane.add(c);
+		//RIBBONS impl: if ribbon found add it to NORTH
+		for (Component c : oldContentPane.getComponents()) {
+			if(c instanceof JRibbon) {
+				newContentPane.add(c, BorderLayout.NORTH);
+			}
+			else {
+				newContentPane.add(c);
+			}
+		}
 		rootPane.setContentPane(newContentPane);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();
+		this.keyProcessor = proc;
 	}
 
-	public void acceleratorChanged(final JMenuItem action, final KeyStroke oldStroke, final KeyStroke newStroke) {
+//	public void acceleratorChanged(final JMenuItem action, final KeyStroke oldStroke, final KeyStroke newStroke) {
+//		final int oldButtonNumber = oldStroke != null ? oldStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
+//		final int newButtonNumber = newStroke != null ? newStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
+//		if (oldButtonNumber >= 0 && oldButtonNumber < BUTTON_NUMBER) {
+//			final int modifiers = oldStroke.getModifiers()
+//			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
+//			final JButton[] buttonRow = buttons.get(modifiers);
+//			final JButton button = buttonRow[oldButtonNumber];
+//			setAcceleratorAction(button, oldStroke);
+//		}
+//		if (newButtonNumber >= 0 && newButtonNumber < BUTTON_NUMBER) {
+//			final int modifiers = newStroke.getModifiers()
+//			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
+//			final JButton[] buttonRow = createButtons(modifiers);
+//			final JButton button = buttonRow[newButtonNumber];
+//			final String text = action.getActionCommand();
+//			button.setText(text);
+//			button.setToolTipText(text);
+//			button.setAction(action.getAction());
+//			button.setEnabled(action.isEnabled());
+//		}
+//	}
+	 
+	public void acceleratorChanged(final AFreeplaneAction action, final KeyStroke oldStroke, final KeyStroke newStroke) {
 		final int oldButtonNumber = oldStroke != null ? oldStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
 		final int newButtonNumber = newStroke != null ? newStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
 		if (oldButtonNumber >= 0 && oldButtonNumber < BUTTON_NUMBER) {
@@ -115,13 +154,14 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
 			final JButton[] buttonRow = createButtons(modifiers);
 			final JButton button = buttonRow[newButtonNumber];
-			final String text = action.getActionCommand();
+			final String text = TextUtils.getText(action.getTextKey());
 			button.setText(text);
 			button.setToolTipText(text);
-			button.setAction(action.getAction());
+			button.setAction(action);
 			button.setEnabled(action.isEnabled());
 		}
 	}
+
 
     private void setAcceleratorAction(final JButton button, final KeyStroke ks) {
         final SetAcceleratorOnNextClickAction setAcceleratorAction = new SetAcceleratorOnNextClickAction(ks);
@@ -186,7 +226,8 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			ownWindowAncestor.addWindowFocusListener(this);
 		}
 		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
-		if (windowAncestor == ownWindowAncestor && ownWindowAncestor.getJMenuBar().isEnabled()) {
+		
+		if (windowAncestor == ownWindowAncestor && ownWindowAncestor.getJMenuBar() != null && ownWindowAncestor.getJMenuBar().isEnabled()) {
 			processDispatchedKeyEvent(e);
 		}
 		else {
@@ -275,7 +316,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		if(e.getID() != KeyEvent.KEY_PRESSED)
 			return false;
 		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
-		if (windowAncestor != ownWindowAncestor || !ownWindowAncestor.getJMenuBar().isEnabled()) {
+		if (windowAncestor != ownWindowAncestor /*|| !ownWindowAncestor.getJMenuBar().isEnabled()*/) {
 			resetModifiers();
 			return false;
 		}

@@ -10,7 +10,7 @@ import org.freeplane.features.ui.ViewController;
 
 /** Select Note Window at the position action */
 @SelectableAction(checkOnPopup = true)
-class SetNoteWindowPosition extends AFreeplaneAction {
+public class SetNoteWindowPosition extends AFreeplaneAction {
 	/**
 	 * 
 	 */

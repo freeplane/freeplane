@@ -18,19 +18,13 @@
 	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${jsyntaxpane.jar}" />
 	<property name="apidocdir" value="dist/doc/api" />
 
-	<target name="build" depends="build-ui-xml">
+	<target name="build">
 		<mkdir dir="build" />
 		<javac srcdir="src" destdir="build" classpath="${classpath}" debug="${debug}" source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 			<exclude name="**/*Test.*" />
 		</javac>
 		<javac srcdir="src-jsyntaxpane" destdir="build" classpath="${classpath}" debug="${debug}" source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 		</javac>
-	</target>
-
-	<target name="build-ui-xml">
-		<xslt in="${src.pluginclass}/preferences.mm"
-		      style="${xslt.base}/mm2preferences.xsl"
-		      out="${src.pluginclass}/preferences.xml"/>
 	</target>
 
 	<target name="dist" depends="build">
@@ -110,7 +104,6 @@
 			<fileset defaultexcludes="no" dir="src" includes="**/*~" />
 		</delete>
 		<delete file="lib/jsyntaxpane/nodehighlighter.jar" quiet="true"/>
-		<delete file="${src.pluginclass}/preferences.xml" quiet="true"/>
 	</target>
 
 </project>

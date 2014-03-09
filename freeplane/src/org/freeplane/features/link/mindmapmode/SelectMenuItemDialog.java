@@ -155,7 +155,7 @@ public class SelectMenuItemDialog extends JDialog {
 
 	private JTree createTree() {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
 		final DefaultMutableTreeNode treeRoot = MenuUtils.createMenuEntryTree(SELECTION_ROOT_KEY, menuBuilder);
 		if (treeRoot.getUserObject() == null)
 			treeRoot.setUserObject(new MenuEntry(null, TextUtils.getText("select_menu_item_root_node")));

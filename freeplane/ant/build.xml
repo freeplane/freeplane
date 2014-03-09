@@ -14,7 +14,7 @@
 	<property file="ant/ant.properties" />
 	<property name="freeplaneant.jar" value="${workspace}/freeplane_ant/dist/freeplaneant.jar" />
 	<property name="google.translator.jar" value="${workspace}/freeplane_framework/ant/lib/google-api-translate-java-0.92.jar" />
-	<property name="external.jars" value="${commons-lang.jar}:${commons-io.jar}:${commons-codec.jar}:${imgscalr.jar}:${forms.jar}:${SimplyHTML.jar}:${jortho.jar}:${idwgpl.jar}" />
+	<property name="external.jars" value="${commons-lang.jar}:${commons-io.jar}:${commons-codec.jar}:${imgscalr.jar}:${forms.jar}:${SimplyHTML.jar}:${jortho.jar}:${idwgpl.jar}:${insubstantial.jars}" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/dist" />
     <property name="dist.resources" value="${dist}/resources" />
@@ -37,7 +37,7 @@
 		<ant antfile="${workspace}/freeplane_ant/build.xml" target="jar"
 			dir="${workspace}/freeplane_ant"  inheritAll="false" />
 	</target>
-	
+
 	<target name="prepare_jortho" depends="prepare_freeplaneant">
 		<ant antfile="${workspace}/JOrtho_0.4_freeplane/build.xml" target="jar"
 			 dir="${workspace}/JOrtho_0.4_freeplane" inheritAll="false"/>
@@ -59,54 +59,38 @@
 		<mkdir dir="${build}/translations" />
 		<echo file="${build}/translations/locales.txt">${locales}</echo>
 	</target>
-	
+
 	<target name="build" depends="prepare_jortho,localelist,build-ui-xml">
 		<antcall target="check-translation" />
 		<mkdir dir="${build}" />
-		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
+		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}"
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 			<exclude name="org/freeplane/main/application/FreeplaneMain.java" />
 			<exclude name="**/osgi/**" />
 		</javac>
 		<!-- Starter should work with java 1.1, too as it checks the java version.-->
 		<delete failonerror="false" file="${build}/org/freeplane/main/application/FreeplaneMain.class"/>
-		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}" 
+		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}"
 			debug="${debug}" source="1.3" target="1.1" encoding="utf8">
 			<include name="org/freeplane/main/application/FreeplaneMain.java" />
 		</javac>
 	</target>
 
 	<target name="build-ui-xml">
-		<xslt in="${resources}/xml/preferences.mm"
-		      style="${resources}/xslt/mm2preferences.xsl"
-		      out="${resources}/xml/preferences.xml"/>
-
-		<xslt in="${resources}/xml/filemodemenu.mm"
-		      style="${resources}/xslt/mm2menu.xsl"
-		      out="${resources}/xml/filemodemenu.xml"/>
-		<xslt in="${resources}/xml/stylemodemenu.mm"
-		      style="${resources}/xslt/mm2menu.xsl"
-		      out="${resources}/xml/stylemodemenu.xml"/>
-		<xslt in="${resources}/xml/mindmapmodemenu.mm"
-		      style="${resources}/xslt/mm2menu.xsl"
+		<xslt in="${resources}/xml/mindmapmoderibbon.xml"
+		      style="${resources}/xslt/ribbons2menu.xsl"
 		      out="${resources}/xml/mindmapmodemenu.xml"/>
-		<xslt in="${resources}/xml/browsemodemenu.mm"
-		      style="${resources}/xslt/mm2menu.xsl"
-		      out="${resources}/xml/browsemodemenu.xml"/>
-		<xslt in="${viewer-resources}/xml/appletMenu.mm"
-		      style="${resources}/xslt/mm2menu.xsl"
-		      out="${viewer-resources}/xml/appletMenu.xml"/>
 	</target>
 
 	<target name="osgi_build" depends="build">
-		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" 
-			debug="${debug}" 
+		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}"
+			debug="${debug}"
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 			<include name="**/osgi/**" />
 			<exclude name="org/freeplane/main/osgi/Activator.java" />
 		</javac>
 		<delete failonerror="false" file="${build}/org/freeplane/main/osgi/Activator.class"/>
-		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}" 
+		<javac verbose="no" srcdir="${src}" destdir="${build}" classpath="${classpath}"
 			debug="${debug}" source="1.3" target="1.2" encoding="utf8">
 			<include name="org/freeplane/main/osgi/Activator.java" />
 		</javac>
@@ -153,31 +137,31 @@
 			</fileset>
 		</jar>
 	</target>
-	
+
 	<target name="signjar" depends ="jar, signjar-tsa, signjar-no-tsa" if = "signjar.alias"/>
-	
+
 	<target name="signjar-tsa" depends ="jar" if = "signjar.tsaurl">
-		<signjar jar="${freeplaneviewer.jar}" 
-			alias="${signjar.alias}" 
+		<signjar jar="${freeplaneviewer.jar}"
+			alias="${signjar.alias}"
 			storepass="${signjar.storepass}" keypass="${signjar.keypass}"
 			tsaurl="${signjar.tsaurl}"/>
 	</target>
-	
+
 	<target name="signjar-no-tsa" depends ="jar"  if = "signjar.alias" unless="signjar.tsaurl">
-		<signjar jar="${freeplaneviewer.jar}" 
-			alias="${signjar.alias}" 
+		<signjar jar="${freeplaneviewer.jar}"
+			alias="${signjar.alias}"
 			storepass="${signjar.storepass}" keypass="${signjar.keypass}"/>
 	</target>
-				
+
 	<target name="signjarinfo" depends ="jar" unless = "signjar.alias">
 		<echo>No ${workspace}/freeplane/ant/signjar.properties found</echo>
 		<echo>Applet not signed</echo>
 		<echo>See ${workspace}/freeplane/ant/signjar-example.properties for more info</echo>
 	</target>
-	
+
 	<target name="buildmac" if="isMacOs">
 		<ant antfile="ant/build.xml" target="dist" dir="${workspace}/freeplane_mac" inheritall="false" />
-	</target>	
+	</target>
 
 	<target name="osgi_jar" depends="signjar, osgi_build">
 		<jar jarfile="${freeplaneosgi.jar}">
@@ -186,7 +170,7 @@
 			</fileset>
 		</jar>
 	</target>
-	
+
 	<target name="dist" depends="jar, signjar, signjarinfo, buildmac">
 		<!-- third party libs -->
 		<mkdir dir="${freeplane.dist.lib}" />
@@ -204,7 +188,7 @@
             <fileset dir="doc"/>
         </copy>
 	</target>
-	
+
 	<target name="clean_dist" depends="clean, dist"/>
 
 	<!-- for maven integration -->
@@ -256,7 +240,7 @@
 			</fileset>
 		</jar>
 	</target>
-	
+
 	<target name="check-translation">
 		<check-translation dir="${root}/resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
 		<check-translation dir="${root}/viewer-resources/translations" includes="*.properties" eolstyle="${eolstyle}" />
@@ -282,15 +266,7 @@
 		<delete>
 			<fileset defaultexcludes="no" dir="${src}" includes="**/*~" />
 			<fileset dir="${resources}">
-				<include name="**/preferences.xml" />
-				<include name="**/browsemodemenu.xml" />
 				<include name="**/mindmapmodemenu.xml" />
-				<include name="**/filemodemenu.xml" />
-				<include name="**/stylemodemenu.xml" />
-				<include name="**/appletMenu.xml" />
-			</fileset>
-			<fileset dir="${viewer-resources}">
-				<include name="**/appletMenu.xml" />
 			</fileset>
 		</delete>
 	</target>
