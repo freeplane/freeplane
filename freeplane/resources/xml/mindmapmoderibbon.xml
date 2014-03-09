@@ -17,13 +17,13 @@
 					<ribbon_action action="NewMapAction" accelerator="control N" mandatory="true"/>
 					<ribbon_action action="new_map_from_user_templates" mandatory="true"/>
 					<ribbon_action action="EncryptedMap" mandatory="true"/>					
-					<ribbon_action action="RevertAction" mandatory="true"/>	
 				</entry_group>
 			</primary_entry>
 			<primary_entry name="open">
 			    <entry_group name="open">
 			        <ribbon_action action="OpenAction" accelerator="control O" mandatory="true" />
 					<ribbon_action action="OpenURLMapAction" mandatory="true" />			        
+					<ribbon_action action="RevertAction" mandatory="true"/>	
 			    </entry_group>
 			</primary_entry>
 			<ribbon_contributor name="lastOpenedMaps" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>
