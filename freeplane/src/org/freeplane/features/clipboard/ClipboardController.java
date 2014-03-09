@@ -87,7 +87,7 @@ public class ClipboardController implements IExtension {
 		}
 	}
 
-	public Transferable copy(final Collection<NodeModel> selectedNodes, final boolean copyInvisible) {
+	public MindMapNodesSelection copy(final Collection<NodeModel> selectedNodes, final boolean copyInvisible) {
 		try {
 			final String forNodesFlavor = createForNodesFlavor(selectedNodes, copyInvisible);
 			final String plainText = getAsPlainText(selectedNodes);

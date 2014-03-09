@@ -25,18 +25,22 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.ByteArrayInputStream;
+import java.util.List;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.NodeModel;
 
 public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	public static DataFlavor dropActionFlavor = null;
 	public static DataFlavor fileListFlavor = null;
 	public static DataFlavor htmlFlavor = null;
 	public static DataFlavor mindMapNodesFlavor = null;
+	public static DataFlavor mindMapNodeObjectsFlavor = null;
 	public static DataFlavor rtfFlavor = null;
 	static {
 		try {
 			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
+			MindMapNodesSelection.mindMapNodeObjectsFlavor = new DataFlavor("application/freeplane-nodes; class=java.util.List");
 			MindMapNodesSelection.rtfFlavor = new DataFlavor("text/rtf; class=java.io.InputStream");
 			MindMapNodesSelection.htmlFlavor = new DataFlavor("text/html; class=java.lang.String");
 			MindMapNodesSelection.fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
@@ -51,6 +55,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	final private String rtfContent;
 	final private String stringContent;
 	private String dropActionContent;
+	private List<NodeModel> nodes;
 
 	public MindMapNodesSelection(final String nodesContent, final String stringContent, final String rtfContent,
 	                             final String htmlContent) {
@@ -116,4 +121,8 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	public void setDropAction(final String dropActionContent) {
 		this.dropActionContent = dropActionContent;
 	}
+
+	public void setNodeObjects(List<NodeModel> collection) {
+	    nodes = collection;
+    }
 }
