@@ -2040,7 +2040,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    validate();
 		if (isDisplayable()) {
 	    	scrollView();
-			loadBackgroundImage();
 		}
     }
 
