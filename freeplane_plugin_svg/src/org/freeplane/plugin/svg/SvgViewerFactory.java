@@ -34,12 +34,11 @@ public class SvgViewerFactory implements IViewerFactory {
 		}
 
 		public void setFinalViewerSize(final Dimension size) {
-			final JSVGCanvas canvas = (JSVGCanvas) this;
 			Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
-			canvas.setRenderingTransform(initialTransform);
-			canvas.setPreferredSize(sizeWithScaleCorrection);
-			canvas.setMySize(sizeWithScaleCorrection);
-			canvas.setSize(sizeWithScaleCorrection);
+			setRenderingTransform(initialTransform);
+			setPreferredSize(sizeWithScaleCorrection);
+			setMySize(sizeWithScaleCorrection);
+			setSize(sizeWithScaleCorrection);
 		}
 
 		private Dimension fitToMaximumSize(final Dimension size) {
