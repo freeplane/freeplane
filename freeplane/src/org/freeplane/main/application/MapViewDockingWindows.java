@@ -21,9 +21,12 @@ package org.freeplane.main.application;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Frame;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,6 +37,7 @@ import java.util.Vector;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -47,9 +51,12 @@ import net.infonode.docking.OperationAbortedException;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
+import net.infonode.docking.properties.DockingWindowProperties;
 import net.infonode.docking.properties.RootWindowProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
+import net.infonode.tabbedpanel.TabAreaProperties;
+import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
@@ -59,6 +66,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.FileOpener;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
@@ -112,9 +120,33 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					if(SwingUtilities.isDescendingFrom(mapViewComponent, window))
 					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent, false))
 						throw new OperationAbortedException("can not close view");
-	            super.windowClosing(window);
             }
 
+
+
+			@Override
+            public void windowAdded(final DockingWindow addedToWindow, final DockingWindow addedWindow) {
+				if(addedWindow instanceof TabWindow) {
+					final DockingWindowProperties windowProperties = addedWindow.getWindowProperties();
+					windowProperties.setDockEnabled(false);
+					windowProperties.setUndockEnabled(false);
+					final TabAreaProperties tabAreaProperties = ((TabWindow)addedWindow).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
+	                if (addedToWindow == rootWindow)
+	                    tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.MORE_THAN_ONE_TAB);
+                    else
+	                	tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.ALWAYS);
+                }
+            }
+
+			@Override
+            public void windowRemoved(DockingWindow removedFromWindow, DockingWindow removedWindow) {
+				if(removedWindow instanceof TabWindow) {
+	                if (removedFromWindow == rootWindow) {
+	                	final TabAreaProperties tabAreaProperties = ((TabWindow)removedWindow).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
+	                    tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.ALWAYS);
+                    }
+                }
+            }
 		});
 
 		new InternalFrameAdapter() {
@@ -148,7 +180,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			for (int i = 0; i < mapViews.size(); ++i) {
 				if (mapViews.get(i) == pNewMap) {
 					View dockedView = getContainingDockedWindow(pNewMap);
-					dockedView.restoreFocus();
+					if(dockedView.isMinimized())
+						dockedView.restore();
+					else
+						dockedView.restoreFocus();
+					focusMapViewLater((MapView) pNewMap);
 					return;
 				}
 			}
@@ -243,13 +279,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			try {
 				loadingLayoutFromObjectInpusStream = true;
 				rootWindow.read(new ObjectInputStream(byteStream));
-				selectMapViewLater();
 			}
 			catch (Exception e) {
 				LogUtils.severe(e);
 				try {
 	                rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(emptyConfigurations)));
-	                selectMapViewLater();
                 }
                 catch (IOException e1) {
                 }
@@ -261,29 +295,37 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
 	}
 
-	private void selectMapViewLater() {
+	public void focusMapViewLater(final MapView mapView) {
 		Timer timer = new Timer(40, new ActionListener() {
-			MapView mapView = null;
 			int retryCount = 5;
-		    public void actionPerformed(ActionEvent e) {
-		    	if(mapView == null){
-		    		for(Component mapView : mapViews){
-		    			if(mapView.isShowing()){
-		    				this.mapView = (MapView) mapView;
-		    				break;
-		    			}
+		    public void actionPerformed(final ActionEvent event) {
+		    	final Timer eventTimer = (Timer)event.getSource();
+		    	focusMapLater(mapView, eventTimer);
+		    }
+			private void focusMapLater(final MapView mapView, final Timer eventTimer) {
+	            if(mapView.isShowing() && Controller.getCurrentController().getMapViewManager().getMapViewComponent() == mapView){
+		    		final NodeView selected = mapView.getSelected();
+		    		if(selected != null){
+		    			final Frame frame = JOptionPane.getFrameForComponent(mapView);
+						if (frame.isFocused())
+		    				selected.requestFocusInWindow();
+						else
+							frame.addWindowFocusListener(new WindowAdapter() {
+								@Override
+                                public void windowGainedFocus(WindowEvent e) {
+									frame.removeWindowFocusListener(this);
+									selected.requestFocusInWindow();
+									retryCount = 2;
+									eventTimer.start();
+                                }
+							});
 		    		}
-		    	}
-
-		    	if(mapView != null){
-		    		mapView.select();
-		    		mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
 		    	}
 				if(retryCount > 1){
 					retryCount--;
-					((Timer)e.getSource()).start();
+					eventTimer.start();
 				}
-		    }
+            }
 		  });
 		timer.setRepeats(false);
 		timer.start();

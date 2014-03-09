@@ -3,9 +3,12 @@ package org.freeplane.core.ui.ribbon;
 import java.awt.event.ActionListener;
 import java.util.Properties;
 
+import javax.swing.KeyStroke;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
+import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryFooter;
 
@@ -54,6 +57,13 @@ public class RibbonMenuFooterContributorFactory implements IRibbonContributorFac
 						ResizableIcon icon = ActionUtils.getActionIcon(action);
 						ActionListener listener = new RibbonActionContributorFactory.RibbonActionListener(action);
 						final RibbonApplicationMenuEntryFooter entry = new RibbonApplicationMenuEntryFooter(icon, title, listener);
+						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(key);
+						if(ks != null) {
+							RichTooltip tip = RibbonActionContributorFactory.getRichTooltip(action, ks);
+							if(tip != null) {
+								entry.setActionRichTooltip(tip);
+							}
+						}
 						parent.addChild(entry, new ChildProperties(parseOrderSettings(attributes.getProperty("orderPriority", ""))));
 					}
 				}

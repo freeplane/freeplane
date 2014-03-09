@@ -11,7 +11,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:strip-space elements="*" />
-	<xsl:output method="xml" indent="yes" encoding="UTF-8" />
+	<xsl:output method="xml" indent="yes" encoding="us-ascii" />
 
 	<xsl:template match="/xbel">
 		<map>

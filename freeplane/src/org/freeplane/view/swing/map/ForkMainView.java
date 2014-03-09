@@ -32,11 +32,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 
 class ForkMainView extends MainView {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-
 
 	@Override
     public

@@ -38,6 +38,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
+import org.freeplane.core.ui.ribbon.RibbonMapChangeAdapter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.mindmapmode.AddAttributeAction;
@@ -206,10 +207,11 @@ public class MModeControllerFactory {
 		new MMapController(modeController);
 		if(userInputListenerFactory.useRibbonMenu()) {
 			RibbonBuilder builder = userInputListenerFactory.getMenuBuilder(RibbonBuilder.class);
-			modeController.getMapController().addNodeSelectionListener(builder.getMapChangeAdapter());
-			modeController.getMapController().addNodeChangeListener(builder.getMapChangeAdapter());
-			modeController.getMapController().addMapChangeListener(builder.getMapChangeAdapter());
-			modeController.getMapController().addMapLifeCycleListener(builder.getMapChangeAdapter());
+			final RibbonMapChangeAdapter mapChangeAdapter = builder.getMapChangeAdapter();
+			modeController.getMapController().addNodeSelectionListener(mapChangeAdapter);
+			modeController.getMapController().addNodeChangeListener(mapChangeAdapter);
+			modeController.getMapController().addMapChangeListener(mapChangeAdapter);
+			controller.getMapViewManager().addMapSelectionListener(mapChangeAdapter);
 		}
 		final MFileManager fileManager = new MFileManager();
 		UrlManager.install(fileManager);

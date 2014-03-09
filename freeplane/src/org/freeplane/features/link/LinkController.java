@@ -147,7 +147,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
 			GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
-            addAction(arrowLinkPopup, gotoLinkNodeAction);
+			addAction(arrowLinkPopup, gotoLinkNodeAction);
 		}
 	}
 
@@ -170,15 +170,20 @@ public class LinkController extends SelectionController implements IExtension {
         arrowLinkPopup.add(componentBox);
     }
 
-    protected void addAction(final JComponent arrowLinkPopup, Action action) {
-        JButton comp = new JButton(action);
-        comp.setHorizontalAlignment(JButton.LEFT);
+    protected void addClosingAction(final JComponent arrowLinkPopup, Action action) {
+        JButton comp = addAction(arrowLinkPopup, action);
         comp.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
-            }
+        	public void actionPerformed(ActionEvent e) {
+        		SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
+        	}
         });
+    }
+
+    protected JButton addAction(final JComponent arrowLinkPopup, Action action) {
+	    JButton comp = new JButton(action);
+        comp.setHorizontalAlignment(JButton.LEFT);
         addPopupComponent (arrowLinkPopup, null, comp);
+	    return comp;
     }
 
 	/**

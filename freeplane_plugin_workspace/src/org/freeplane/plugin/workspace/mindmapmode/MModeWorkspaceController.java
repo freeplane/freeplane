@@ -27,7 +27,6 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.OneTouchCollapseResizer;
-import org.freeplane.core.ui.components.OneTouchCollapseResizer.CollapseDirection;
 import org.freeplane.core.ui.components.OneTouchCollapseResizer.ComponentCollapseListener;
 import org.freeplane.core.ui.components.ResizeEvent;
 import org.freeplane.core.ui.components.ResizerListener;
@@ -245,7 +244,7 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 			// ignore -> default is true
 		}
 		
-		OneTouchCollapseResizer otcr = new OneTouchCollapseResizer(Direction.LEFT, CollapseDirection.COLLAPSE_LEFT);
+		OneTouchCollapseResizer otcr = new OneTouchCollapseResizer(Direction.LEFT);
 		otcr.addCollapseListener(getWorkspaceView());
 		ResizerEventAdapter adapter = new ResizerEventAdapter() {
 			
