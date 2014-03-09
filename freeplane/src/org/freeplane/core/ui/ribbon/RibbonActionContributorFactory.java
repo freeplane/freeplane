@@ -46,6 +46,7 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 public class RibbonActionContributorFactory implements IRibbonContributorFactory {
 
 	public static final String ACTION_KEY_PROPERTY = "ACTION_KEY";
+	public static final String ACTION_ACCELERATOR = "ACTION_ACCELERATOR";
 	public static final String ACTION_NAME_PROPERTY = "ACTION_NAME";
 	public static final String ACTION_CHANGE_LISTENER = "ACTION_CHANGE_LISTENER";
 	public static final String MANDATORY_PROPERTY = "MANDATORY";
@@ -146,6 +147,16 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 	}
 	
 	public static void updateRichTooltip(final AbstractCommandButton button, AFreeplaneAction action, KeyStroke ks) {
+		RichTooltip tip = getRichTooltip(action, ks);
+		if(tip != null) {
+			button.setActionRichTooltip(tip);
+		}
+		else {
+			button.setActionRichTooltip(null);
+		}
+	}
+	
+	public static RichTooltip getRichTooltip(AFreeplaneAction action, KeyStroke ks) {
 		RichTooltip tip = null;
 		final String tooltip = TextUtils.getRawText(action.getTooltipKey(), null);
 		if (tooltip != null && !"".equals(tooltip)) {
@@ -157,12 +168,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 			}
 			tip.addFooterSection(formatShortcut(ks));
 		}
-		if(tip != null) {
-			button.setActionRichTooltip(tip);
-		}
-		else {
-			button.setActionRichTooltip(null);
-		}
+		return tip;
 	}
 
 	public static String formatShortcut(KeyStroke ks) {
@@ -258,7 +264,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 							if(context.hasChildren(context.getCurrentPath())) {
 								StructurePath path = context.getCurrentPath();
 								((JCommandButton)button).setPopupCallback(getPopupPanelCallBack(path, context));
-								((JCommandButton)button).setCommandButtonKind(CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);								
+								((JCommandButton)button).setCommandButtonKind(CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);
 								KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(actionKey);
 								updateRichTooltip(button, action, ks);
 								updateActionState(action, button);
@@ -268,6 +274,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 						
 						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(actionKey);
 						if(ks != null) {
+							button.putClientProperty(ACTION_ACCELERATOR, ks);
 							updateRichTooltip(button, action, ks);
 						}
 						getAccelChangeListener().addAction(actionKey, button);
