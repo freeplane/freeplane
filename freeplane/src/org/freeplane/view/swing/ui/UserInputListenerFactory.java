@@ -27,6 +27,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -43,6 +44,7 @@ import javax.swing.JToolBar;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -50,6 +52,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -61,14 +64,13 @@ import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
-	private static final String MENU_MM2XML = "/xslt/mm2menu.xsl";
 // // 	final private Controller controller;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
 	final private ActionListener mapsMenuActionListener;
 	private JPopupMenu mapsPopupMenu;
 	private FreeplaneMenuBar menuBar;
-	private final MenuBuilder menuBuilder;
+	private final Map<Class<? extends Object>, Object> menuBuilderList = new HashMap<Class<? extends Object>, Object>();
 	final private HashSet<IMouseWheelEventHandler> mRegisteredMouseWheelEventHandler = new HashSet<IMouseWheelEventHandler>();
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
@@ -78,17 +80,19 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
-	private final MenuXmlCreator  menuXmlCreator;
+	private ActionAcceleratorManager acceleratorManager;
+	private final boolean useRibbonMenu;
 
-	public UserInputListenerFactory(final ModeController modeController) {
-		menuXmlCreator = new MenuXmlCreator(MENU_MM2XML);
+	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
+		useRibbonMenu = useRibbons;
 		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
-		menuBuilder = new MenuBuilder(modeController);
+		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));
+		menuBuilderList.put(RibbonBuilder.class, new RibbonBuilder(modeController, getAcceleratorManager()));
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				if(modeController.equals(Controller.getCurrentModeController()))
-					menuBuilder.afterMapChange(newMap);
+					getMenuBuilder(MenuBuilder.class).afterMapChange(newMap);
 			}
 
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -99,6 +103,22 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		for (int j = 0; j < 4; j++) {
 			toolbarLists[j] = new LinkedList<JComponent>();
 		}
+	}
+
+	public <T> T getMenu(Class<T> clazz) {
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getMenuBuilder(Class<T> clazz) {
+		return (T) menuBuilderList.get(clazz);
+	}
+
+	public ActionAcceleratorManager getAcceleratorManager() {
+		if(acceleratorManager == null) {
+			acceleratorManager = new ActionAcceleratorManager();
+		}
+		return acceleratorManager;
 	}
 
 	// isolate unchecked stuff in this method
@@ -141,9 +161,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return menuBar;
 	}
 
-	public MenuBuilder getMenuBuilder() {
-		return menuBuilder;
-	}
+//	public MenuBuilder getMenuBuilder() {
+//		return menuBuilder;
+//	}
 
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers() {
 		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
@@ -262,9 +282,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	private void updateMapList(final String mapsMenuPosition) {
-		if(! menuBuilder.contains(mapsMenuPosition))
+		if(! getMenuBuilder(MenuBuilder.class).contains(mapsMenuPosition))
 			return;
-		menuBuilder.removeChildElements(mapsMenuPosition);
+		getMenuBuilder(MenuBuilder.class).removeChildElements(mapsMenuPosition);
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final List<? extends Component> mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
@@ -287,23 +307,41 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					newItem.setSelected(true);
 				}
 			}
-			menuBuilder.addMenuItem(mapsMenuPosition, newItem, mapsMenuPosition + '-' + i++, UIBuilder.AS_CHILD);
+			getMenuBuilder(MenuBuilder.class).addMenuItem(mapsMenuPosition, newItem, mapsMenuPosition + '-' + i++, UIBuilder.AS_CHILD);
 		}
 	}
 
 	public void updateMenus(String menuStructureResource, Set<String> plugins) {
-		final FreeplaneMenuBar menuBar = getMenuBar();
-		menuBuilder.addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
 		mapsPopupMenu = new JPopupMenu();
-		menuBuilder.addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
-		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
-		menuBuilder.addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
+		getMenuBuilder(MenuBuilder.class).addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
+		getMenuBuilder(MenuBuilder.class).addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
+		final URL popupStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "popup.xml"));
+		loadStructure(plugins, popupStructure);
+		if(useRibbonMenu()) {
+			final URL ribbonStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.xml"));
+			if (ribbonStructure != null) {
+				getMenuBuilder(RibbonBuilder.class).updateRibbon(ribbonStructure);
+			}
+		}
+		else {
+			final FreeplaneMenuBar menuBar = getMenuBar();
+			getMenuBuilder(MenuBuilder.class).addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
+			getMenuBuilder(MenuBuilder.class).addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
+			final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
+			loadStructure(plugins, menuStructure);
+			final URL toolbarStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "toolbar.xml"));
+			loadStructure(plugins, toolbarStructure);
+			final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
+			viewController.updateMenus(getMenuBuilder(MenuBuilder.class));
+		}
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
-		final URL menuStructure = menuXmlCreator.menuResource(menuStructureResource);
+	}
+
+	private void loadStructure(Set<String> plugins, final URL menuStructure) {
 		if (menuStructure != null) {
 			final boolean isUserDefined = menuStructure.getProtocol().equalsIgnoreCase("file");
 			try{
-			menuBuilder.processMenuCategory(menuStructure, plugins);
+				getMenuBuilder(MenuBuilder.class).processMenuCategory(menuStructure, plugins);
 			}
 			catch (RuntimeException e){
 				if(isUserDefined){
@@ -316,25 +354,29 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				throw e;
 			}
 		}
-		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
-		viewController.updateMenus(menuBuilder);
 	}
 
 	private void updateModeMenu() {
-		menuBuilder.removeChildElements(FreeplaneMenuBar.MODES_MENU);
-		Controller controller = Controller.getCurrentController();
-		for (final String key : new LinkedList<String>(controller.getModes())) {
-			final AFreeplaneAction modesMenuActionListener = new ModesMenuActionListener(key, controller);
-			final ModeController modeController = controller.getModeController();
-			final boolean isSelected;
-			if (modeController != null) {
-				isSelected = modeController.getModeName().equals(key);
+		if(!useRibbonMenu()) {
+			getMenuBuilder(MenuBuilder.class).removeChildElements(FreeplaneMenuBar.MODES_MENU);
+			Controller controller = Controller.getCurrentController();
+			for (final String key : new LinkedList<String>(controller.getModes())) {
+				final AFreeplaneAction modesMenuActionListener = new ModesMenuActionListener(key, controller);
+				final ModeController modeController = controller.getModeController();
+				final boolean isSelected;
+				if (modeController != null) {
+					isSelected = modeController.getModeName().equals(key);
+				}
+				else {
+					isSelected = false;
+				}
+				getMenuBuilder(MenuBuilder.class).addRadioItem(FreeplaneMenuBar.MODES_MENU, modesMenuActionListener, isSelected);
+				ResourceController.getResourceController().getProperty(("keystroke_mode_" + key));
 			}
-			else {
-				isSelected = false;
-			}
-			menuBuilder.addRadioItem(FreeplaneMenuBar.MODES_MENU, modesMenuActionListener, isSelected);
-			ResourceController.getResourceController().getProperty(("keystroke_mode_" + key));
 		}
+	}
+
+	public boolean useRibbonMenu() {
+		return useRibbonMenu;
 	}
 }

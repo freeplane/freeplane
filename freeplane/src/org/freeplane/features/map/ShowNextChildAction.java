@@ -46,9 +46,14 @@ public class ShowNextChildAction extends AFreeplaneAction {
 	@Override
     public void setEnabled() {
 		final Controller controller = Controller.getCurrentController();
-		final NodeModel selected = controller.getSelection().getSelected();
-		final MapController mapController = controller.getModeController().getMapController();
-	    super.setEnabled(mapController.hasHiddenChildren(selected));
+		if(controller.getSelection() != null) {
+			final NodeModel selected = controller.getSelection().getSelected();
+			final MapController mapController = controller.getModeController().getMapController();
+		    super.setEnabled(mapController.hasHiddenChildren(selected));
+		}
+		else {
+			super.setEnabled(false);
+		}
     }
 	
 	

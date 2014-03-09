@@ -21,7 +21,7 @@ public class Activator implements BundleActivator {
 		    new IModeControllerExtensionProvider() {
 			    @Override
                 public void installExtension(ModeController modeController) {
-				    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+				    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
 				    final $$$$Action action = new $$$$Action();
 					modeController.addAction(action);
 				    modeController.addMenuContributor(new IMenuContributor() {

@@ -34,12 +34,11 @@ public class SvgViewerFactory implements IViewerFactory {
 		}
 
 		public void setFinalViewerSize(final Dimension size) {
-			final JSVGCanvas canvas = (JSVGCanvas) this;
 			Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
-			canvas.setRenderingTransform(initialTransform);
-			canvas.setPreferredSize(sizeWithScaleCorrection);
-			canvas.setMySize(sizeWithScaleCorrection);
-			canvas.setSize(sizeWithScaleCorrection);
+			setRenderingTransform(initialTransform);
+			setPreferredSize(sizeWithScaleCorrection);
+			setMySize(sizeWithScaleCorrection);
+			setSize(sizeWithScaleCorrection);
 		}
 
 		private Dimension fitToMaximumSize(final Dimension size) {
@@ -68,10 +67,6 @@ public class SvgViewerFactory implements IViewerFactory {
 		}
 
 		public ViewerComponent(final URI uri) {
-			this(uri, null);
-		}
-		
-		public ViewerComponent(final URI uri, final Dimension size) {
 			super(null, false, false);
 			setDocumentState(ALWAYS_STATIC);
 			setSize(1, 1);
@@ -95,12 +90,6 @@ public class SvgViewerFactory implements IViewerFactory {
 					if ("".equals(rootElement.getAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE))) {
 						rootElement.setAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE, "0 0 " + defaultWidth
 						        + " " + defaultHeigth);
-					}
-					if (size == null) {
-						setSize(originalSize);
-					}
-					else {
-						setSize(size);
 					}
 					removeGVTTreeRendererListener(this);
 				}
@@ -164,11 +153,12 @@ public class SvgViewerFactory implements IViewerFactory {
 	}
 
 	public ScalableComponent createViewer(final URI uri, final Dimension preferredSize) {
-		canvas = new ViewerComponent(uri, preferredSize);
+		canvas = new ViewerComponent(uri);
+		canvas.setFinalViewerSize(preferredSize);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
-				canvas.setFinalViewerSize(preferredSize);
+				canvas.setFinalViewerSize(canvas.getSize());
 				canvas.revalidate();
 				canvas.removeGVTTreeRendererListener(this);
 			}

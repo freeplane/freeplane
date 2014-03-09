@@ -33,10 +33,4 @@ freeplane_ant/test/freeplane_plugin_*
 freeplane_plugin_script/build-nodehighlighter
 freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
 freeplane_framework/temp
-
-freeplane/resources/xml/browsemodemenu.xml
-freeplane/resources/xml/filemodemenu.xml
 freeplane/resources/xml/mindmapmodemenu.xml
-freeplane/resources/xml/preferences.xml
-freeplane/resources/xml/stylemodemenu.xml
-freeplane/viewer-resources/xml/appletMenu.xml

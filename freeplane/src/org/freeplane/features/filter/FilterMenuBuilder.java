@@ -39,6 +39,7 @@ public class FilterMenuBuilder implements IMenuContributor {
 	FilterMenuBuilder(FilterController filtercontroller){
 		this.filterController = filtercontroller;
 	}
+	//TODO RIBBONS: also impl ribbons version
 	public void updateMenus(ModeController modeController, MenuBuilder builder) {
 		if(builder.get(MENU_USER_DEFINED_FILTERS) == null)
 			return;

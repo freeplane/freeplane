@@ -41,9 +41,13 @@ public interface IUserInputListenerFactory {
 
 	JPopupMenu getMapPopup();
 
-	FreeplaneMenuBar getMenuBar();
+	public FreeplaneMenuBar getMenuBar();
 
-	MenuBuilder getMenuBuilder();
+	<T> T getMenuBuilder(final Class<T> clazz);
+	
+	public ActionAcceleratorManager getAcceleratorManager();
+	
+	public boolean useRibbonMenu();
 
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers();
 

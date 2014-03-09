@@ -34,10 +34,10 @@ import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
-import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.browsemode.BModeController;
@@ -48,6 +48,8 @@ import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
@@ -62,7 +64,7 @@ public class BModeControllerFactory {
 	static public BModeController createModeController() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new BModeController(controller);
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController, false);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
@@ -93,9 +95,10 @@ public class BModeControllerFactory {
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
-		toolBar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "toolbarVisible");
+		FrameController frameController = (FrameController) controller.getViewController();
+		UIComponentVisibilityDispatcher.install(frameController, toolBar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.TOP, FilterController.getController(
+		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.BOTTOM, FilterController.getController(
 		    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());

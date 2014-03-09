@@ -65,6 +65,7 @@ public class ApplicationResourceController extends ResourceController {
 		if (resourceBaseDir != null) {
 			try {
 				final File userResourceDir = new File(userDir, "resources");
+				userResourceDir.mkdirs();
 				if (userResourceDir.exists()) {
 					final URL userResourceUrl = Compat.fileToUrl(userResourceDir);
 					urls.add(userResourceUrl);
@@ -117,7 +118,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getFreeplaneUserDirectory() {
-		return Compat.getFreeplaneUserDirectory();
+		return Compat.getApplicationUserDirectory();
 	}
 
 	public LastOpenedList getLastOpenedList() {
@@ -184,7 +185,7 @@ public class ApplicationResourceController extends ResourceController {
     }
 
 	public static File getUserPreferencesFile() {
-		final String freeplaneDirectory = Compat.getFreeplaneUserDirectory();
+		final String freeplaneDirectory = Compat.getApplicationUserDirectory();
 		final File userPropertiesFolder = new File(freeplaneDirectory);
 		final File autoPropertiesFile = new File(userPropertiesFolder, "auto.properties");
 		return autoPropertiesFile;

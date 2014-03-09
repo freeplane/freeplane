@@ -74,8 +74,9 @@ import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ToggleToolbarAction;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -96,14 +97,19 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	    @Override
 		public void actionPerformed(ActionEvent event) {
-	    	if(isVisible() && ! quickEditor.isInputFieldFocused() && (EventQueue.getCurrentEvent() instanceof KeyEvent))
+	    	final JComponent toolbar = getToolbar();
+	    	if(toolbar == null)
+	    		return;
+	    	final boolean visible = isVisible();
+			if(visible && ! quickEditor.isInputFieldFocused() && (EventQueue.getCurrentEvent() instanceof KeyEvent))
 	    		quickEditor.focusInputField(true);
-	    	else
+	    	else {
+	    		changeFocusWhenVisibilityChanges(toolbar);
 	    		super.actionPerformed(event);
+	    	}
 		}
 
-		@Override
-	    protected void setVisible(final JComponent toolBar, final boolean visible) {
+	    private void changeFocusWhenVisibilityChanges(final JComponent toolBar) {
 	    	quickEditor.addAncestorListener(new AncestorListener() {
 	    		public void ancestorAdded(final AncestorEvent event) {
 	    			quickEditor.focusInputField(true);
@@ -118,7 +124,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	    			quickEditor.removeAncestorListener(this);
 	    		}
 	    	});
-	    	super.setVisible(toolBar, visible);
 	    }
     }
 
@@ -328,8 +333,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JToolBar filterToolbar = new FreeplaneToolBar("filter_toolbar", SwingConstants.HORIZONTAL);
 		filterToolbar.setVisible(ResourceController.getResourceController()
 		    .getBooleanProperty("filter_toolbar_visible"));
-		filterToolbar.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "filter_toolbar_visible");
 		Controller controller = Controller.getCurrentController();
+		FrameController frameController = (FrameController) controller.getViewController();
+		UIComponentVisibilityDispatcher.install(frameController, filterToolbar, "filter_toolbar_visible");
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
 		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"),
@@ -534,8 +540,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyFilter(false);
 		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
 		filterMenuBuilder.updateMenus(modeController, menuBuilder);
+		//TODO RIBBONS: apply to ribbons as well, if necessary
 	}
 
 	private void updateSettingsFromFilter(final Filter filter) {

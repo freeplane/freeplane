@@ -430,6 +430,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	@Override
 	protected IExtension createExtension(final NodeModel node) {
 		URI uri = createURI(node);
+		if(uri == null)
+			return null;
 		File input = new File(uri.getPath());
 		final ExternalResource preview = new ExternalResource(uri);
 		ProgressIcons.updateExtendedProgressIcons(node, input.getName());

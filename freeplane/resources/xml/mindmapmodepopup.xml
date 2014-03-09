@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu_structure xmlns="http://freeplane.sf.net/ui/menu/1.0">
+<menu_category name="map_popup">
+<menu_category name="mindmaps" menu_key="popup_menu_mindmaps"/>
+<menu_separator/>
+<menu_action action="ToggleFullScreenAction"/>
+<menu_action action="ToggleMenubarAction" menu_key="MP_ToggleMenubarAction"/>
+<menu_action action="ToggleToolbarAction"/>
+<menu_action action="ShowFilterToolbarAction"/>
+<menu_action action="ToggleFBarAction"/>
+<menu_action action="ToggleLeftToolbarAction"/>
+<menu_action action="ToggleStatusAction"/>
+<menu_action action="ToggleScrollbarsAction"/>
+<menu_separator/>
+<menu_action action="ShowFormatPanel"/>
+<menu_action action="ShowHideNoteAction" accelerator="control GREATER"/>
+<menu_separator/>
+<menu_action action="MapBackgroundColorAction"/>
+<menu_separator/>
+<menu_action action="ViewLayoutTypeAction.OUTLINE"/>
+<menu_action action="FitToPage"/>
+<menu_action action="CenterSelectedNodeAction"/>
+<menu_action action="MoveToRootAction" accelerator="ESCAPE"/>
+<menu_action action="GotoNodeAction"/>
+</menu_category>
+<menu_category name="node_popup">
+<menu_action action="EditLongAction" accelerator="alt ENTER"/>
+<menu_action action="EditDetailsInDialogAction"/>
+<menu_action action="EditDetailsAction"/>
+<menu_action action="DeleteDetailsAction"/>
+<menu_action action="SetShortenerStateAction"/>
+<menu_action action="EditNoteInDialogAction"/>
+<menu_action action="ExternalImageAddAction"/>
+<menu_action action="EditAttributesAction" accelerator="alt F9"/>
+<menu_separator/>
+<menu_action action="NewSummaryAction" accelerator="alt shift INSERT"/>
+<menu_action action="SummaryNodeAction" accelerator="alt shift S"/>
+<menu_action action="AlwaysUnfoldedNodeAction"/>
+<menu_action action="FreeNodeAction"/>
+<menu_action action="CloudAction" accelerator="control shift B"/>
+<menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
+<menu_action action="AddConnectorAction" accelerator="control L"/>
+<menu_submenu name="links" name_ref="menu_links" menu_key="popup_navigate">
+<menu_action action="SetLinkByFileChooserAction" accelerator="control shift K"/>
+<menu_action action="SetLinkByTextFieldAction" accelerator="control K"/>
+<menu_action action="ExtractLinkFromTextAction"/>
+<menu_separator/>
+<menu_action action="AddLocalLinkAction" accelerator="alt shift L"/>
+<menu_action action="AddMenuItemLinkAction" accelerator=""/>
+<menu_separator/>
+<menu_action action="SetLinkAnchorAction" accelerator=""/>
+<menu_action action="MakeLinkFromAnchorAction" accelerator=""/>
+<menu_action action="MakeLinkToAnchorAction" accelerator=""/>
+<menu_action action="ClearLinkAnchorAction" accelerator=""/>
+<menu_category menu_key="popup_goto_links"/>
+</menu_submenu>
+<menu_separator/>
+<menu_action action="EnterPassword"/>
+<menu_category name="scripting" plugin="org.freeplane.plugin.script" menu_key="node_popup_scripting"/>
+<menu_separator/>
+<menu_action action="CutAction" accelerator="control X"/>
+<menu_action action="CopyAction" accelerator="control C"/>
+<menu_action action="CopySingleAction" accelerator="control shift C"/>
+<menu_action action="CopyIDAction"/>
+<menu_action action="CopyNodeURIAction"/>
+<menu_action action="PasteAction" accelerator="control V"/>
+<menu_action action="SortNodes"/>
+<menu_action action="UndoAction"/>
+<menu_action action="RedoAction"/>
+</menu_category>
+</menu_structure>
