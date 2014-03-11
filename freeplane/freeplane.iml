@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/lib/flamingo-7.2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/substance-7.2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/substance-flamingo-7.2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/substance-swingx-7.2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/trident-7.2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/commons-lang-2.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/forms-1.2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/gnu-regexp-1.1.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/SimplyHTML.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/freeplanemac.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/commons-io-2.4.jar!/" />
+    <libelement value="file://lib/jortho.jar" />
+    <libelement value="jar://$MODULE_DIR$/lib/idw-gpl.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/commons-codec-1.7.jar!/" />
+    <src_description expected_position="7">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="7" />
+      <src_folder value="file://$MODULE_DIR$/resources" expected_position="8" />
+      <src_folder value="file://$MODULE_DIR$/viewer-resources" expected_position="9" />
+      <src_folder value="file://$MODULE_DIR$/external-resources" expected_position="10" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/bin/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/viewer-resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/external-resources" isTestSource="false" />
+    </content>
+    <orderEntry type="module-library" exported="">
+      <library name="flamingo-7.2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/flamingo-7.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="substance-7.2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/substance-7.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="substance-flamingo-7.2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/substance-flamingo-7.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="substance-swingx-7.2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/substance-swingx-7.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="trident-7.2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/trident-7.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" name="ECLIPSE" level="application" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library name="commons-lang-2.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/commons-lang-2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="forms-1.2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/forms-1.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://lib/forms-1_2_1.zip" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="gnu-regexp-1.1.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/gnu-regexp-1.1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="SimplyHTML.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/SimplyHTML.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file:///simplyHtml/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="freeplanemac.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/freeplanemac.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../freeplane_mac/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="commons-io-2.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/commons-io-2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jortho.jar">
+        <CLASSES>
+          <root url="file://lib/jortho.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="idw-gpl.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/idw-gpl.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://C:/Users/Dimitry/Downloads/idw-gpl-1.6.1-src/idw-gpl-1.6.1/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-codec-1.7.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/commons-codec-1.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="JOrtho_0.4_freeplane" />
+  </component>
+</module>
+

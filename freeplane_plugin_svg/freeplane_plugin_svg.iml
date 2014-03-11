@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/lib/batik-awt-util.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-bridge.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-css.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-dom.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-ext.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-extension.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-gui-util.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-gvt.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-parser.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-script.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-svg-dom.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-svggen.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-swing.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-transcoder.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-util.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-xml.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/js.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/pdf-transcoder.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/xerces_2_5_0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/xml-apis.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/xml-apis-ext.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-anim.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/batik-codec.jar!/" />
+    <src_description expected_position="25">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="25" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-awt-util.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-awt-util.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-bridge.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-bridge.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-css.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-css.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-dom.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-dom.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-ext.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-ext.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-extension.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-extension.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-gui-util.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-gui-util.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-gvt.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-gvt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-parser.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-parser.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-script.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-script.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-svg-dom.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-svg-dom.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-svggen.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-svggen.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-swing.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-swing.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-transcoder.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-transcoder.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-util.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-util.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="batik-xml.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-xml.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="js.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/js.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="pdf-transcoder.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/pdf-transcoder.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="xerces_2_5_0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/xerces_2_5_0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="xml-apis.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/xml-apis.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xml-apis-ext.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/xml-apis-ext.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="batik-anim.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-anim.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="batik-codec.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/batik-codec.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" name="ECLIPSE" level="application" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="freeplane" />
+  </component>
+</module>
+

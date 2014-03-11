@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JOrtho_0.4_freeplane/JOrtho_0.4_freeplane.iml" filepath="$PROJECT_DIR$/JOrtho_0.4_freeplane/JOrtho_0.4_freeplane.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane/freeplane.iml" filepath="$PROJECT_DIR$/freeplane/freeplane.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_ant/freeplane_ant.iml" filepath="$PROJECT_DIR$/freeplane_ant/freeplane_ant.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_devresources/freeplane_devresources.iml" filepath="$PROJECT_DIR$/freeplane_devresources/freeplane_devresources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_framework/freeplane_framework.iml" filepath="$PROJECT_DIR$/freeplane_framework/freeplane_framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_bugreport/freeplane_plugin_bugreport.iml" filepath="$PROJECT_DIR$/freeplane_plugin_bugreport/freeplane_plugin_bugreport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_formula/freeplane_plugin_formula.iml" filepath="$PROJECT_DIR$/freeplane_plugin_formula/freeplane_plugin_formula.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_help/freeplane_plugin_help.iml" filepath="$PROJECT_DIR$/freeplane_plugin_help/freeplane_plugin_help.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_latex/freeplane_plugin_latex.iml" filepath="$PROJECT_DIR$/freeplane_plugin_latex/freeplane_plugin_latex.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_openmaps/freeplane_plugin_openmaps.iml" filepath="$PROJECT_DIR$/freeplane_plugin_openmaps/freeplane_plugin_openmaps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_script/freeplane_plugin_script.iml" filepath="$PROJECT_DIR$/freeplane_plugin_script/freeplane_plugin_script.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_script_test/freeplane_plugin_script_test.iml" filepath="$PROJECT_DIR$/freeplane_plugin_script_test/freeplane_plugin_script_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_svg/freeplane_plugin_svg.iml" filepath="$PROJECT_DIR$/freeplane_plugin_svg/freeplane_plugin_svg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_uispec4j/freeplane_plugin_uispec4j.iml" filepath="$PROJECT_DIR$/freeplane_plugin_uispec4j/freeplane_plugin_uispec4j.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_plugin_workspace/freeplane_plugin_workspace.iml" filepath="$PROJECT_DIR$/freeplane_plugin_workspace/freeplane_plugin_workspace.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freeplane_uitest/freeplane_uitest.iml" filepath="$PROJECT_DIR$/freeplane_uitest/freeplane_uitest.iml" />
+    </modules>
+  </component>
+</project>
+
