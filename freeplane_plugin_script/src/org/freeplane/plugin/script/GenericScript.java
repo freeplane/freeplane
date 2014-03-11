@@ -128,21 +128,25 @@ public class GenericScript implements IScript {
                 .getResourceController().getProperties());
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
             final boolean needToSetFinalSecurityManager = securityManager.needToSetFinalSecurityManager();
+            final PrintStream oldOut = System.out;
             try {
                 final SimpleScriptContext context = createScriptContext(node);
                 if (compilationEnabled && engine instanceof Compilable) {
                     compileAndCache((Compilable) engine);
                     if (needToSetFinalSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
+                    System.setOut(outStream);
                     return compiledScript.eval(context);
                 }
                 else {
                     if (needToSetFinalSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
+                    System.setOut(outStream);
                     return engine.eval(script, context);
                 }
             }
             finally {
+                System.setOut(oldOut);
                 if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
                     securityManager.removeFinalSecurityManager(scriptingSecurityManager);
                 /* restore preferences (and assure that the values are unchanged!). */
