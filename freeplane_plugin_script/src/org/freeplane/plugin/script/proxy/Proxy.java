@@ -754,7 +754,7 @@ public interface Proxy {
 		/** returns the node if the map contains it or null otherwise. */
 		Node node(String id);
 
-		/** returns the physical location of the map if available or null otherwise. */
+		/** returns the filenname of the map as a java.io.File object if available or null otherwise. */
 		File getFile();
 
 		/** returns the title of the MapView.
