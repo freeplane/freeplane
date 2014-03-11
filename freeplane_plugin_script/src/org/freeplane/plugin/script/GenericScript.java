@@ -177,9 +177,9 @@ public class GenericScript implements IScript {
 
     private SimpleScriptContext createScriptContext(final NodeModel node) {
         final SimpleScriptContext context = new SimpleScriptContext();
-        // FIXME: two writer for one stream?
-        context.setWriter(new OutputStreamWriter(outStream));
-        context.setErrorWriter(new OutputStreamWriter(outStream));
+        final OutputStreamWriter outWriter = new OutputStreamWriter(outStream);
+        context.setWriter(outWriter);
+        context.setErrorWriter(outWriter);
         context.setBindings(createBinding(node), javax.script.ScriptContext.ENGINE_SCOPE);
         return context;
     }
