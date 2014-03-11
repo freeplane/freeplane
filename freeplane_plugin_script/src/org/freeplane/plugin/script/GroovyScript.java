@@ -134,9 +134,9 @@ public class GroovyScript implements IScript {
                 return compiledScript.run();
             }
             finally {
+                System.setOut(oldOut);
                 if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
                     securityManager.removeFinalSecurityManager(scriptingSecurityManager);
-                System.setOut(oldOut);
                 /* restore preferences (and assure that the values are unchanged!). */
                 originalScriptingPermissions.restorePermissions();
             }
