@@ -120,7 +120,7 @@ public class GenericScript implements IScript {
     @Override
     public Object execute(final NodeModel node) {
         try {
-            if (errorsInScript != null)
+            if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript())
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
@@ -222,10 +222,9 @@ public class GenericScript implements IScript {
         if (compileTimeStrategy.canUseOldCompiledScript())
             return;
         compiledScript = null;
-        if (errorsInScript != null)
-            throw errorsInScript;
-        else
+        errorsInScript = null;
             try {
+                compileTimeStrategy.scriptCompileStart();
                 compiledScript = engine.compile(script);
                 compileTimeStrategy.scriptCompiled();
             }

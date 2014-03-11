@@ -115,8 +115,9 @@ public class GroovyScript implements IScript {
     @Override
     public Object execute(final NodeModel node) {
         try {
-            if (errorsInScript != null)
+            if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
+            }
             final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
@@ -166,15 +167,15 @@ public class GroovyScript implements IScript {
 		if (compileTimeStrategy.canUseOldCompiledScript())
 			return compiledScript;
 		removeOldScript();
-		if (errorsInScript != null)
-			throw errorsInScript;
-		else if (script instanceof Script)
+		errorsInScript = null;
+		if (script instanceof Script)
 			return (Script) script;
 		else
 			try {
 				final Binding binding = createBindingForCompilation();
 				final ClassLoader classLoader = GroovyScript.class.getClassLoader();
 				final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
+				compileTimeStrategy.scriptCompileStart();
 				if (script instanceof String)
 					compiledScript = shell.parse((String) script);
 				else if (script instanceof File)
