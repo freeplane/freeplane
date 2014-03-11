@@ -223,15 +223,15 @@ public class GenericScript implements IScript {
             return;
         compiledScript = null;
         errorsInScript = null;
-            try {
-                compileTimeStrategy.scriptCompileStart();
-                compiledScript = engine.compile(script);
-                compileTimeStrategy.scriptCompiled();
-            }
-            catch (Throwable e) {
-                errorsInScript = e;
-                throw e;
-            }
+        try {
+            compileTimeStrategy.scriptCompileStart();
+            compiledScript = engine.compile(script);
+            compileTimeStrategy.scriptCompiled();
+        }
+        catch (Throwable e) {
+            errorsInScript = e;
+            throw e;
+        }
     }
 
     private static ScriptEngine findScriptEngine(String scriptEngineName) {
