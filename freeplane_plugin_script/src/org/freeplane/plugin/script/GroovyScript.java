@@ -156,13 +156,6 @@ public class GroovyScript implements IScript {
         return new ScriptSecurity(script, specificPermissions, outStream).getScriptingSecurityManager();
     }
 
-    private Binding createBinding(final NodeModel node) {
-        final Binding binding = new Binding();
-        binding.setVariable("c", ProxyFactory.createController(scriptContext));
-        binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
-        return binding;
-    }
-
 	private Script compileAndCache() throws Throwable {
 		if (compileTimeStrategy.canUseOldCompiledScript())
 			return compiledScript;
@@ -197,6 +190,13 @@ public class GroovyScript implements IScript {
 			compiledScript = null;
 		}
 	}
+
+    private Binding createBinding(final NodeModel node) {
+        final Binding binding = new Binding();
+        binding.setVariable("c", ProxyFactory.createController(scriptContext));
+        binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
+        return binding;
+    }
 
 	private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
