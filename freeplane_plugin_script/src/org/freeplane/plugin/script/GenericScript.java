@@ -153,11 +153,12 @@ public class GenericScript implements IScript {
     @Override
     public Object execute(final NodeModel node) {
         try {
-            if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript())
+            if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
+            }
+            final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
-            final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
             final boolean needToSetFinalSecurityManager = securityManager.needToSetFinalSecurityManager();
             try {
