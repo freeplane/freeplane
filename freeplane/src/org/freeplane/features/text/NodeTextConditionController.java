@@ -19,20 +19,13 @@
  */
 package org.freeplane.features.text;
 
-import java.util.regex.PatternSyntaxException;
-
-import javax.swing.ComboBoxEditor;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
@@ -40,6 +33,9 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.n3.nanoxml.XMLElement;
+
+import javax.swing.*;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * @author Dimitry Polivaev
@@ -59,6 +55,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 		final NamedObject namedObject = (NamedObject) selectedItem;
 		return namedObject.objectEquals(TextController.FILTER_NODE)
 		|| namedObject.objectEquals(TextController.FILTER_PARENT)
+        || namedObject.objectEquals(TextController.FILTER_ATTRIBUTES)
 		|| namedObject.objectEquals(TextController.FILTER_DETAILS)
 		|| namedObject.objectEquals(TextController.FILTER_NOTE)
 		|| namedObject.objectEquals(TextController.FILTER_ANYTEXT);
@@ -127,7 +124,8 @@ class NodeTextConditionController implements IElementaryConditionController {
 		final DefaultListModel list = new DefaultListModel();
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_ANYTEXT));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NODE));
-		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_DETAILS));
+        list.addElement(TextUtils.createTranslatedString(TextController.FILTER_ATTRIBUTES));
+        list.addElement(TextUtils.createTranslatedString(TextController.FILTER_DETAILS));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NOTE));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT));
 		return list;
@@ -177,7 +175,8 @@ class NodeTextConditionController implements IElementaryConditionController {
 	public static Object[] getItemsForComparison(Object nodeItem, final NodeModel node) {
 		if (nodeItem.equals(TextController.FILTER_ANYTEXT)) {
 			return new Object[] { 
-					getItemForComparison(TextController.FILTER_NODE, node), 
+					getItemForComparison(TextController.FILTER_NODE, node),
+                    getItemForComparison(TextController.FILTER_ATTRIBUTES, node),
 					getItemForComparison(TextController.FILTER_DETAILS, node),
 			        getItemForComparison(TextController.FILTER_NOTE, node) };
 		}
@@ -197,6 +196,9 @@ class NodeTextConditionController implements IElementaryConditionController {
 			else
 				result = TextController.getController().getTransformedObjectNoThrow(parentNode);
 		}
+        else if(nodeItem.equals(TextController.FILTER_ATTRIBUTES)){
+            result = NodeAttributeTableModel.getModel(node).getAttributes();
+        }
 		else if(nodeItem.equals(TextController.FILTER_DETAILS)){
 			result = DetailTextModel.getDetailTextText(node);
 		}

@@ -19,23 +19,25 @@
  */
 package org.freeplane.features.filter.condition;
 
+import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.n3.nanoxml.XMLElement;
+
+import javax.swing.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
-import org.freeplane.core.resources.NamedObject;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.n3.nanoxml.XMLElement;
-
 /**
  * @author Dimitry Polivaev
  */
 public class ConditionFactory {
-	public static final String FILTER_CONTAINS = "filter_contains";
+    // If there was an enum of filter operators then the filtering code could use a command/ dispatcher pattern
+    // and be more concise.  These Resource key names can be an constructor argument to each enum items...
+
+    // These Strings are property/resource key names in Resource*.properties
+    public static final String FILTER_CONTAINS = "filter_contains";
 	public static final String FILTER_DOES_NOT_EXIST = "filter_does_not_exist";
 	public static final String FILTER_EXIST = "filter_exist";
 	public static final String FILTER_GE = ">=";

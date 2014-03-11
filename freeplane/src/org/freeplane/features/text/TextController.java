@@ -19,16 +19,6 @@
  */
 package org.freeplane.features.text;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.Icon;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -50,16 +40,29 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
-	public static final String FILTER_NODE = "filter_node";
+    // If there was an enum of the parts of a Node then the filtering code could use a command/ dispatcher pattern
+    // and be more concise.  These Resource key names can be an constructor argument to each enum items...
+
+    // These Strings are property/resource key names in Resource*.properties
+    public static final String FILTER_NODE = "filter_node";
 	public static final String FILTER_ANYTEXT = "filter_any_text";
+    public static final String FILTER_ATTRIBUTES = "filter_attributes";
 	public static final String FILTER_NOTE = "filter_note";
 	public static final String FILTER_PARENT = "filter_parent";
 	public static final String FILTER_DETAILS = "filter_details";
+
 	private static final Integer NODE_TOOLTIP = 1;
 	private static final Integer DETAILS_TOOLTIP = 2;
 	private final List<IContentTransformer> textTransformers;
