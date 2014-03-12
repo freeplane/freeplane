@@ -216,6 +216,7 @@ public class GenericScript implements IScript {
         final Bindings binding = engine.createBindings();
         binding.put("c", ProxyFactory.createController(scriptContext));
         binding.put("node", ProxyFactory.createNode(node, scriptContext));
+        binding.putAll(ScriptingConfiguration.getStaticProperties());
         return binding;
     }
 
