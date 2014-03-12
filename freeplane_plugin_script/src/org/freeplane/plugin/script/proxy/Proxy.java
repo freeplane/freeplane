@@ -472,8 +472,8 @@ public interface Proxy {
 		/** selects branchRoot and all children */
 		void selectBranch(Node branchRoot);
 
-		/** toSelect is a List<Node> of Node objects */
-		void selectMultipleNodes(List<Node> toSelect);
+		/** toSelect is a Collection<Node> of Node objects */
+		void selectMultipleNodes(Collection<Node> toSelect);
 
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
