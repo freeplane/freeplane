@@ -48,7 +48,36 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
  * Implements scripting via JSR233 implementation for all other languages except Groovy.
  */
 public class GenericScript implements IScript {
-    final private String script;
+    public static final class ScriptSource {
+        private final File file;
+        private final String script;
+        private String cachedFileContent;
+
+        public ScriptSource(String script) {
+            this.script = script;
+            this.file = null;
+        }
+
+        public ScriptSource(File file) {
+            this.script = null;
+            this.file = file;
+            this.cachedFileContent = slurpFile(file);
+        }
+
+        public boolean isFile() {
+            return file != null;
+        }
+
+        public String rereadFile() {
+            cachedFileContent = slurpFile(file);
+            return cachedFileContent;
+        }
+
+        public String getScript() {
+            return isFile() ? cachedFileContent : script;
+        }
+    }
+    final private ScriptSource scriptSource;
     private final ScriptingPermissions specificPermissions;
     private CompiledScript compiledScript;
     private Throwable errorsInScript;
@@ -62,8 +91,8 @@ public class GenericScript implements IScript {
     private boolean compilationEnabled = true;
 	private CompileTimeStrategy compileTimeStrategy;
 
-    public GenericScript(String script, ScriptEngine engine, ScriptingPermissions permissions) {
-        this.script = script;
+    private GenericScript(ScriptSource scriptSource, ScriptEngine engine, ScriptingPermissions permissions) {
+        this.scriptSource = scriptSource;
         this.specificPermissions = permissions;
         this.engine = engine;
         compiledScript = null;
@@ -71,6 +100,10 @@ public class GenericScript implements IScript {
         errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
         outStream = System.out;
         scriptContext = null;
+    }
+
+    public GenericScript(String script, ScriptEngine engine, ScriptingPermissions permissions) {
+        this(new ScriptSource(script), engine, permissions);
         compileTimeStrategy = new CompileTimeStrategy(null);
     }
 
@@ -79,7 +112,7 @@ public class GenericScript implements IScript {
     }
 
     public GenericScript(File scriptFile, ScriptingPermissions permissions) {
-        this(slurpFile(scriptFile), findScriptEngine(scriptFile), permissions);
+        this(new ScriptSource(scriptFile), findScriptEngine(scriptFile), permissions);
         engine.put(ScriptEngine.FILENAME, scriptFile.toString());
         compilationEnabled = !disableScriptCompilation(scriptFile);
         compileTimeStrategy = new CompileTimeStrategy(scriptFile);
@@ -114,7 +147,7 @@ public class GenericScript implements IScript {
 
     @Override
     public Object getScript() {
-        return script;
+        return scriptSource;
     }
 
     @Override
@@ -138,7 +171,7 @@ public class GenericScript implements IScript {
                 else {
                     if (needToSetFinalSecurityManager)
                         securityManager.setFinalSecurityManager(scriptingSecurityManager);
-                    return engine.eval(script, context);
+                    return engine.eval(scriptSource.getScript(), context);
                 }
             }
             finally {
@@ -163,7 +196,7 @@ public class GenericScript implements IScript {
     }
 
     private ScriptingSecurityManager createScriptingSecurityManager() {
-        return new ScriptSecurity(script, specificPermissions, outStream).getScriptingSecurityManager();
+        return new ScriptSecurity(scriptSource, specificPermissions, outStream).getScriptingSecurityManager();
     }
 
     private boolean disableScriptCompilation(File scriptFile) {
@@ -226,7 +259,8 @@ public class GenericScript implements IScript {
             throw errorsInScript;
         else
             try {
-                compiledScript = engine.compile(script);
+                scriptSource.rereadFile();
+                compiledScript = engine.compile(scriptSource.getScript());
                 compileTimeStrategy.scriptCompiled();
             }
             catch (Throwable e) {
