@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -70,11 +71,12 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
-			if (mode == ExecutionMode.ON_SINGLE_NODE) {
-				nodes.add(Controller.getCurrentController().getSelection().getSelected());
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+            if (mode == ExecutionMode.ON_SINGLE_NODE) {
+				nodes.add(selection.getSelected());
 			}
 			else {
-				nodes.addAll(Controller.getCurrentController().getSelection().getSelection());
+				nodes.addAll(selection.getSelection());
 			}
 			final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 			modeController.startTransaction();
