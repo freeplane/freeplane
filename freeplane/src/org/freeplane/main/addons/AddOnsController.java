@@ -91,7 +91,7 @@ public class AddOnsController {
 	}
 
 	public List<AddOnProperties> getInstalledAddOns() {
-		return Collections.unmodifiableList(installedAddOns);
+		return Collections.unmodifiableList(new ArrayList<AddOnProperties>(installedAddOns));
 	}
 
 	public void registerInstalledAddOn(final AddOnProperties addOn) {
