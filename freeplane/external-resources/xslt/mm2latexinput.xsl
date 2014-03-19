@@ -77,8 +77,9 @@
 <xsl:otherwise>
 
 <xsl:choose>
-<xsl:when test="starts-with(@TEXT, '\latex ')">
-  <xsl:value-of select="substring-after(@TEXT, '\latex ')"/>
+<xsl:when test="starts-with(@TEXT, '\latex ') or starts-with(@TEXT, '\latex&#10;')">
+
+  <xsl:value-of select="substring-after(@TEXT, '\latex')"/>
   <xsl:text>
 
 </xsl:text>    
