@@ -28,7 +28,7 @@
 
 	<xsl:template match="map">
 		<xsl:apply-templates select="node/node" />
-    </xsl:template>
+  </xsl:template>
 
 <!-- ======= Body ====== -->
 
@@ -77,6 +77,9 @@
 <xsl:otherwise>
 
 <xsl:choose>
+<xsl:when test="starts-with(@TEXT, '\latexinput{') and substring(@TEXT, string-length(@TEXT))='}'">
+  <xsl:value-of select="document(substring-before(substring-after(@TEXT, '\latexinput{'), '}'))/*"/>
+</xsl:when>
 <xsl:when test="starts-with(@TEXT, '\latex ') or starts-with(@TEXT, '\latex&#10;')">
 
   <xsl:value-of select="substring-after(@TEXT, '\latex')"/>
