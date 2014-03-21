@@ -8,7 +8,8 @@ Export improvements
 Update groovy to 2.1.9
 Performance: cache compiled scripts
 Add-on jar libraries
-Install url handler for protocol "freeplane" for windows and mac 
+Install url handler for protocol "freeplane" for windows and mac
+Scripting API: node.style.numberingEnabled, node shifts, node.minimalDistanceBetweenChildren
 
 ===============================
 1.3.5
