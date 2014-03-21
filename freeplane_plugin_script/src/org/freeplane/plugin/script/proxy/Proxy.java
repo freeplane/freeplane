@@ -1420,6 +1420,9 @@ public interface Proxy {
         
         /** @since 1.2.20 */
         int getMaxNodeWidth();
+
+        /** @since 1.3.8 */
+        boolean isNumberingEnabled();
 	}
 
 	/** Node's style: <code>node.style</code> - read-write. */
@@ -1462,6 +1465,9 @@ public interface Proxy {
         
         /** @since 1.2.20 */
         void setMaxNodeWidth(int width);
+
+        /** @since 1.3.8 */
+        void setNumberingEnabled(boolean enabled);
 	}
 
     public interface Properties {

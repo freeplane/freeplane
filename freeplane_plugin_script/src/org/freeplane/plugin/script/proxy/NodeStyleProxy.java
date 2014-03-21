@@ -11,6 +11,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -170,5 +171,13 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 
     public void setMaxNodeWidth(int width) {
         getStyleController().setMaxNodeWidth(getDelegate(), width);
+    }
+
+    public boolean isNumberingEnabled() {
+        return NodeStyleModel.getNodeNumbering(getDelegate());
+    }
+
+    public void setNumberingEnabled(boolean enabled) {
+        getStyleController().setNodeNumbering(getDelegate(), enabled);
     }
 }
