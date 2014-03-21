@@ -1218,8 +1218,8 @@ public interface Proxy {
 		 */
 		void setNote(Object value);
 
-		/** @deprecated since 1.2 - use {@link #setNote(Object)} instead. */
-		void setNoteText(String text);
+		/** Sets the raw (HTML) note text. */
+		void setNoteText(String html);
 
 		/** If <code>value</code> is a String the node object is set to it verbatim. For all other argument types it's
 		 * an alias for {@link #setObject(Object)}.
