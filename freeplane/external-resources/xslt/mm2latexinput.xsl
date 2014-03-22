@@ -28,7 +28,7 @@
 
 	<xsl:template match="map">
 		<xsl:apply-templates select="node/node" />
-    </xsl:template>
+  </xsl:template>
 
 <!-- ======= Body ====== -->
 
@@ -77,19 +77,38 @@
 <xsl:otherwise>
 
 <xsl:choose>
-<xsl:when test="starts-with(@TEXT, '\latex ')">
-  <xsl:value-of select="substring-after(@TEXT, '\latex ')"/>
+<!-- read a latex file from the file system (export only) -->
+<xsl:when test="starts-with(@TEXT, '\latexinput{') and substring(@TEXT, string-length(@TEXT))='}'">
+  <xsl:value-of select="document(substring-before(substring-after(@TEXT, '\latexinput{'), '}'))/*"/>
+</xsl:when>
+
+<!-- treat a node as latex when '\latex[ \n]' prefix is present -->
+<xsl:when test="starts-with(@TEXT, '\latex ') or starts-with(@TEXT, '\latex&#10;')">
+
+  <xsl:value-of select="substring-after(@TEXT, '\latex')"/>
   <xsl:text>
 
 </xsl:text>    
 </xsl:when>
-<xsl:when test="@FORMAT='latexPatternFormat'">
+
+<!-- treat a node as latex when '\unparsedlatex[ \n]' prefix is present (export only) -->
+<xsl:when test="starts-with(@TEXT, '\unparsedlatex ') or starts-with(@TEXT, '\unparsedlatex&#10;')">
+
+  <xsl:value-of select="substring-after(@TEXT, '\unparsedlatex')"/>
+  <xsl:text>
+
+</xsl:text>    
+</xsl:when>
+
+<!-- treat a node as latex with format=(LaTeX|Unparsed LaTeX) -->
+<xsl:when test="@FORMAT='latexPatternFormat' or @FORMAT='unparsedLatexPatternFormat'">
   <!--<xsl:apply-templates select="@TEXT|richcontent"  mode="rawLatex"/>-->
   <xsl:value-of select="@TEXT"/>
   <xsl:text>
 
   </xsl:text>    
 </xsl:when>
+<!-- non-latex content: escape! -->
 <xsl:otherwise>
   <xsl:apply-templates select="@TEXT|richcontent"  mode="addEol"/>
 </xsl:otherwise>

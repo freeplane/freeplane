@@ -213,6 +213,7 @@
 				</combo>
 				<number name="time_for_delayed_selection" />
 				<boolean name="center_selected_node" />
+				<boolean name="slow_scroll_selected_node" />
 			</separator>
 			<separator name="mouse_wheel">
 				<number name="wheel_velocity" />

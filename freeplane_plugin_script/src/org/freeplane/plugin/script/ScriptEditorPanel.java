@@ -205,6 +205,8 @@ class ScriptEditorPanel extends JDialog {
 						getErrorHandler());
                 }
                 catch (Throwable e2) {
+				// make sure the complete stack trace is logged!
+				LogUtils.warn(e2);
         			Throwable cause = e2.getCause();
 					String causeMessage = "";
 					if(cause != null && cause.getMessage()!= null)
