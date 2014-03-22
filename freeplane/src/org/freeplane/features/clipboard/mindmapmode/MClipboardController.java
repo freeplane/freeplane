@@ -62,6 +62,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.MapReader.NodeTreeCreator;
@@ -493,18 +494,27 @@ public class MClipboardController extends ClipboardController {
 		modeController.addAction(new PasteAction());
 		modeController.addAction(new SelectedPasteAction());
 	}
+	
+	
+
+	@Override
+    public Transferable copy(IMapSelection selection) {
+	    final List<NodeModel> collection = selection.getSortedSelection(true);
+		final MindMapNodesSelection transferable = copy(collection, false);
+		transferable.setNodeObjects(collection);
+		return transferable;
+    }
 
 	Transferable cut(final List<NodeModel> collection) {
 		Controller.getCurrentModeController().getMapController().sortNodesByDepth(collection);
-		final Transferable totalCopy = ((ClipboardController) Controller.getCurrentModeController().getExtension(
-		    ClipboardController.class)).copy(collection, true);
+		final MindMapNodesSelection transferable = copy(collection, true);
 		for (final NodeModel node : collection) {
 			if (node.getParentNode() != null) {
 				((MMapController) Controller.getCurrentModeController().getMapController()).deleteNode(node);
 			}
 		}
-		setClipboardContents(totalCopy);
-		return totalCopy;
+		setClipboardContents(transferable);
+		return transferable;
 	}
 
 	private IDataFlavorHandler getFlavorHandler(final Transferable t) {
