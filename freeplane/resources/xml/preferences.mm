@@ -794,6 +794,10 @@
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="center_selected_node"/>
 </node>
+<node TEXT="Slow scrolling to selected node">
+<attribute NAME="type" VALUE="boolean"/>
+<attribute NAME="name" VALUE="slow_scroll_selected_node"/>
+</node>
 </node>
 <node TEXT="Mouse wheel" FOLDED="true" ID="ID_503866131" CREATED="1370183720055" MODIFIED="1370183720055">
 <attribute NAME="type" VALUE="separator"/>
