@@ -22,6 +22,7 @@ package org.freeplane.features.link.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
 
@@ -30,12 +31,12 @@ class RemoveConnectorAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private NodeLinkModel mArrowLink;
+	private ConnectorModel mArrowLink;
 
 	/**
 	 * can be null can be null.
 	 */
-	public RemoveConnectorAction(final MLinkController linkController, final NodeLinkModel arrowLink) {
+	public RemoveConnectorAction(final MLinkController linkController, final ConnectorModel arrowLink) {
 		super("RemoveConnectorAction");
 		setArrowLink(arrowLink);
 	}
@@ -55,7 +56,7 @@ class RemoveConnectorAction extends AFreeplaneAction {
 	/**
 	 * The arrowLink to set.
 	 */
-	public void setArrowLink(final NodeLinkModel arrowLink) {
+	public void setArrowLink(final ConnectorModel arrowLink) {
 		mArrowLink = arrowLink;
 	}
 }

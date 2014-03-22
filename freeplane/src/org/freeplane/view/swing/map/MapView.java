@@ -76,10 +76,12 @@ import org.freeplane.features.link.LinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
@@ -405,6 +407,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean slowScroll;
 	private static boolean presentationModeEnabled;
 	private static int transparency;
+	private INodeChangeListener connectorChangeListener;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -448,7 +451,26 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
+		connectorChangeListener = new INodeChangeListener() {
+			public void nodeChanged(NodeChangeEvent event) {
+				if(NodeLinks.CONNECTOR.equals(event.getProperty()) &&
+						event.getNode().getMap().equals(getModel()))
+					repaint();
+			}
+		};
 	}
+
+	@Override
+    public void addNotify() {
+	    super.addNotify();
+		modeController.getMapController().addNodeChangeListener(connectorChangeListener);
+    }
+
+	@Override
+    public void removeNotify() {
+		modeController.getMapController().removeNodeChangeListener(connectorChangeListener);
+	    super.removeNotify();
+    }
 
 	public void replaceSelection(NodeView[] views) {
         selection.replace(views);

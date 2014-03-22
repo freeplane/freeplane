@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -39,6 +40,7 @@ import org.freeplane.core.util.XmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -64,7 +66,7 @@ public class NodeModel implements MutableTreeNode {
 	static public final Object UNKNOWN_PROPERTY = new Object();
 	public static final String NODE_ICON = "icon";
 	//DOCEAR - fixed: new property type for node link changes
-	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
+	static public final Object HYPERLINK_CHANGED = NodeLinks.HYPERLINK_CHANGED;
 	private final List<NodeModel> children = new ArrayList<NodeModel>();
 	private final ExtensionContainer extensionContainer;
 	final private FilterInfo filterInfo = new FilterInfo();
