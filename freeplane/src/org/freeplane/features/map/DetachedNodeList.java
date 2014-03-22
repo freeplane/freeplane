@@ -69,4 +69,8 @@ public class DetachedNodeList implements Clones {
 	public Collection<NodeModel> toCollection() {
 	    return Collections.<NodeModel>emptyList();
     }
+
+	public boolean contains(NodeModel node) {
+	    return false;
+    }
 }

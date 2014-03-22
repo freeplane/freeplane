@@ -64,4 +64,8 @@ public class SingleNodeList implements Clones{
 	public Collection<NodeModel> toCollection() {
 	    return Arrays.asList(nodeModel);
     }
+
+	public boolean contains(NodeModel node) {
+	    return nodeModel.equals(node);
+    }
 }

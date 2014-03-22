@@ -106,6 +106,8 @@
 				</ribbon_action>
 				<ribbon_action action="PasteAction" accelerator="control V"	priority="medium">
 					<ribbon_action action="SelectedPasteAction"/>
+					<ribbon_action action="MoveAction" />
+					<ribbon_action action="CloneAction" />
 				</ribbon_action>
 				<ribbon_action action="UndoAction" accelerator="control Z" priority="medium" >
 					<ribbon_action action="RedoAction" accelerator="control Y" />			
@@ -120,7 +122,6 @@
 				<ribbon_action action="NewChildAction" accelerator="INSERT"	priority="top"/>
 					<ribbon_action action="NewSiblingAction" accelerator="ENTER">
 					<ribbon_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
-					<ribbon_action action="NewCloneAction" />
 				</ribbon_action>
 				<ribbon_action action="EditAction" priority="Medium" >
 					<ribbon_action action="EditLongAction" priority="Top" accelerator="alt ENTER" />

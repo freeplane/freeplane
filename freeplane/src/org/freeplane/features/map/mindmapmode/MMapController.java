@@ -240,6 +240,7 @@ public class MMapController extends MapController {
 			UITools.errorMessage("not allowed");
 			return;
 		}
+		stopEditing();
 		insertSingleNewNode(newNode, parent, index, newNodeIsLeft);
 		for(NodeModel parentClone : parent.clones()){
 			if(parentClone != parent) {
@@ -301,7 +302,6 @@ public class MMapController extends MapController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new NewMapViewAction());
 		modeController.addAction(new NewSiblingAction());
-		modeController.addAction(new NewCloneAction());
 		modeController.addAction(new NewPreviousSiblingAction());
 		modeController.addAction(new NewChildAction());
 		modeController.addAction(new NewSummaryAction());
@@ -396,8 +396,8 @@ public class MMapController extends MapController {
 		   moveNode(node, node.getParentNode(), i);
 	}
 
-	public void moveNode(final NodeModel child, final NodeModel newParent, final int childCount) {
-		moveNode(child, newParent, childCount, false, false);
+	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex) {
+		moveNode(child, newParent, newIndex, false, false);
 	}
 
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
@@ -426,11 +426,11 @@ public class MMapController extends MapController {
 					newParentClones.remove(newParentClone);
 			}
 
+			for(NodeModel newParentClone : newParentClones)
+				insertSingleNewNode(child.cloneTree(), newParentClone, newIndex, newParentClone.isLeft());
+
 			for(NodeModel oldParentClone : oldParentClones)
 					deleteSingleNode(oldParentClone, oldIndex);
-
-			for(NodeModel newParentClone : newParentClones)
-					insertSingleNewNode(child.cloneTree(), newParentClone, newIndex, newParentClone.isLeft());
 		}
 	}
 
@@ -458,7 +458,7 @@ public class MMapController extends MapController {
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
 	                            final boolean changeSide) {
 		int position = selectedParent.getChildCount();
-		if (node.getParentNode() == selectedParent) {
+		if (selectedParent.clones().contains(node.getParentNode())) {
 			position--;
 		}
 		FreeNode r = Controller.getCurrentModeController().getExtension(FreeNode.class);
@@ -807,25 +807,4 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
-
-	public void addNewClone() {
-		stopEditing();
-		final NodeModel clonedNode = getSelectedNode();
-		final NodeModel clone;
-		if (!clonedNode.isRoot()) {
-			final NodeModel parent = clonedNode.getParentNode();
-			int childPosition = parent.getChildPosition(clonedNode);
-			childPosition++;
-			if (!isWriteable(parent)) {
-				UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
-				return;
-			}
-			clone = clonedNode.cloneTree();
-			if(addNewNode(clone, parent, childPosition, clonedNode.isLeft())){
-				select(clone);
-			}
-		}
-    }
-
-
 }

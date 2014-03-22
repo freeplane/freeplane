@@ -237,9 +237,9 @@ private Timer timer;
                         	mapController.moveNodeAsChild(node, targetNode, isLeft, changeSide);
                         }
 					}
-					if(dropAsSibling || ! targetNode.isFolded())
-					    controller.getSelection().replaceSelection(array);
-					else
+//					if(dropAsSibling || ! targetNode.isFolded())
+//					    controller.getSelection().replaceSelection(array);
+//					else
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 				else {

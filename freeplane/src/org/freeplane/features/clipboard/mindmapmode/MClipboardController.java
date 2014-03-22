@@ -493,6 +493,8 @@ public class MClipboardController extends ClipboardController {
 		modeController.addAction(new CutAction());
 		modeController.addAction(new PasteAction());
 		modeController.addAction(new SelectedPasteAction());
+		modeController.addAction(new CloneAction());
+		modeController.addAction(new MoveAction());
 	}
 	
 	
@@ -794,5 +796,42 @@ public class MClipboardController extends ClipboardController {
 			}
 		}
 	}
+	
+	private enum Operation{CLONE, MOVE};
+	
+	public void addClone(final Transferable transferable, final NodeModel target) {
+		processTransferable(transferable, target, Operation.CLONE);
+    }
 
+	public void move(final Transferable transferable, final NodeModel target) {
+		processTransferable(transferable, target, Operation.MOVE);
+    }
+	
+	private void processTransferable(final Transferable transferable, final NodeModel target, Operation operation) {
+	    if(!transferable.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeObjectsFlavor))
+			return;
+		try {
+	        @SuppressWarnings("unchecked")
+	        final List<NodeModel> clonedNodes = (List<NodeModel>) transferable.getTransferData(MindMapNodesSelection.mindMapNodeObjectsFlavor);
+	        for(NodeModel clonedNode:clonedNodes){
+	        	if(clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))
+	        		return;
+	        	final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+	        	if (!clonedNode.isRoot() && ! clonedNode.subtreeContainsCloneOf(target)) {
+	        		switch(operation){
+	        			case CLONE:
+	        				final NodeModel clone = clonedNode.cloneTree();
+	        				mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
+	        				break;
+	        			case MOVE:
+	        				mapController.moveNodeAsChild(clonedNode, target, target.isNewChildLeft(), target.isNewChildLeft()!=clonedNode.isLeft());
+	        				break;
+	        		}
+	        	}
+	        }
+        }
+        catch (Exception e) {
+	        LogUtils.severe(e);
+        }
+    }
 }

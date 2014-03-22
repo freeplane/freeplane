@@ -70,4 +70,8 @@ public class MultipleNodeList implements Clones {
 	public Collection<NodeModel> toCollection() {
 	    return nodes;
     }
+
+	public boolean contains(NodeModel node) {
+	    return nodes.contains(node);
+    }
 }

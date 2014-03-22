@@ -31,4 +31,5 @@ public interface Clones extends Iterable<NodeModel>{
 	void detach(NodeModel nodeModel);
 	Clones add(NodeModel clone);
 	Collection<NodeModel> toCollection();
+	boolean contains(NodeModel node);
 }

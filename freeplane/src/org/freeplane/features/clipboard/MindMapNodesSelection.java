@@ -87,13 +87,16 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return htmlContent;
 		}
+		if (flavor.equals(MindMapNodesSelection.mindMapNodeObjectsFlavor)) {
+			return nodes;
+		}
 		throw new UnsupportedFlavorException(flavor);
 	}
 
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[] { DataFlavor.stringFlavor, MindMapNodesSelection.mindMapNodesFlavor,
 		        MindMapNodesSelection.rtfFlavor, MindMapNodesSelection.htmlFlavor,
-		        MindMapNodesSelection.dropActionFlavor };
+		        MindMapNodesSelection.dropActionFlavor, MindMapNodesSelection.mindMapNodeObjectsFlavor };
 	}
 
 	public boolean isDataFlavorSupported(final DataFlavor flavor) {
@@ -110,6 +113,9 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 			return true;
 		}
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
+			return true;
+		}
+		if (flavor.equals(MindMapNodesSelection.mindMapNodeObjectsFlavor) && nodes != null) {
 			return true;
 		}
 		return false;
