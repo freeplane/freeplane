@@ -496,16 +496,15 @@ public class MClipboardController extends ClipboardController {
 
 	Transferable cut(final List<NodeModel> collection) {
 		Controller.getCurrentModeController().getMapController().sortNodesByDepth(collection);
-		final MindMapNodesSelection transferable = ((ClipboardController) Controller.getCurrentModeController().getExtension(
+		final Transferable totalCopy = ((ClipboardController) Controller.getCurrentModeController().getExtension(
 		    ClipboardController.class)).copy(collection, true);
-		transferable.setNodeObjects(collection);
 		for (final NodeModel node : collection) {
 			if (node.getParentNode() != null) {
 				((MMapController) Controller.getCurrentModeController().getMapController()).deleteNode(node);
 			}
 		}
-		setClipboardContents(transferable);
-		return transferable;
+		setClipboardContents(totalCopy);
+		return totalCopy;
 	}
 
 	private IDataFlavorHandler getFlavorHandler(final Transferable t) {
