@@ -42,6 +42,7 @@ class LatexRegistration {
 			modeController.addAction(new DeleteLatexAction(nodeHook));
 			modeController.getExtension(TextController.class).addTextTransformer(new LatexRenderer());
 			modeController.getController().getExtension(FormatController.class).addPatternFormat(new LatexFormat());
+			modeController.getController().getExtension(FormatController.class).addPatternFormat(new UnparsedLatexFormat());
 		}
 	}
 }

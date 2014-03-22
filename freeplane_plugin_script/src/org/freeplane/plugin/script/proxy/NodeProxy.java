@@ -491,9 +491,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// Node: R/W
-	public void setNoteText(final String text) {
+	public void setNoteText(final String html) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
-		noteController.setNoteText(getDelegate(), text);
+		noteController.setNoteText(getDelegate(), html);
 	}
 
 	// Node: R/W

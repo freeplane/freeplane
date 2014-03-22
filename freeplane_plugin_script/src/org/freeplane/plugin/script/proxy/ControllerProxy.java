@@ -8,6 +8,7 @@ import groovy.lang.Closure;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -100,7 +101,7 @@ class ControllerProxy implements Proxy.Controller {
         }
     }
 
-	public void selectMultipleNodes(final List<Node> toSelect) {
+	public void selectMultipleNodes(final Collection<Node> toSelect) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final Iterator<Node> it = toSelect.iterator();
 		if (!it.hasNext()) {

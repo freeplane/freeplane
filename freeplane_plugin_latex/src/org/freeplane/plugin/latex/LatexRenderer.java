@@ -31,7 +31,9 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	private static final String LATEX_EDITOR_FONT = "latex_editor_font";
 	private static final String LATEX_EDITOR_DISABLE = "latex_disable_editor";
 	private static final String LATEX = "\\latex";
-
+	private static final String UNPARSED_LATEX = "\\unparsedlatex";
+	
+	
 	public LatexRenderer() {
 		super(20);
 	}
@@ -41,14 +43,28 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			throws TransformationException {
 		return content;
 	}
-
-	private String getLatexNode(final String nodeText, final String nodeFormat, final boolean includePrefix)
+	
+	private static boolean checkForLatexPrefix(final String nodeText, final String prefix)
 	{
-		int startLength = LATEX.length() + 1;
-		if(nodeText.length() > startLength && nodeText.startsWith(LATEX) && Character.isWhitespace(nodeText.charAt(startLength - 1))){
-			return includePrefix ? nodeText : nodeText.substring(startLength);
+		int startLength = prefix.length() + 1; 
+		return nodeText.length() > startLength && nodeText.startsWith(prefix) &&
+			 Character.isWhitespace(nodeText.charAt(startLength - 1));
+	}
+	
+	private static enum TargetMode { FOR_ICON, FOR_EDITOR };
+
+	private String getLatexNode(final String nodeText, final String nodeFormat, final TargetMode mode)
+	{
+		boolean includePrefix = mode == TargetMode.FOR_EDITOR;
+		
+		if(checkForLatexPrefix(nodeText, LATEX)){
+			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
 		}
 		else if(LatexFormat.LATEX_FORMAT.equals(nodeFormat)){
+			return nodeText;
+		} else if(checkForLatexPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
+			return nodeText;
+		} else if(UnparsedLatexFormat.UNPARSED_LATEX_FORMAT.equals(nodeFormat) && mode == TargetMode.FOR_EDITOR) {
 			return nodeText;
 		} else {
 			return null;
@@ -64,7 +80,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			if (PatternFormat.IDENTITY_PATTERN.equals(nodeFormat))
 				return null;
 
-			final String latext = getLatexNode(string, nodeFormat, false);
+			final String latext = getLatexNode(string, nodeFormat, TargetMode.FOR_ICON);
 			if (latext == null)
 				return null;
 			final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
@@ -84,7 +100,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			return null;
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 		String nodeFormat = textController.getNodeFormat(node);
-		final String latexText = getLatexNode(text, nodeFormat, true);
+		final String latexText = getLatexNode(text, nodeFormat, TargetMode.FOR_EDITOR);
 		
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
@@ -107,5 +123,4 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		}
 		return null;
 	}
-
 }

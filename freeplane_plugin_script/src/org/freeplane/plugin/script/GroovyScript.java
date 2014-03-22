@@ -115,8 +115,9 @@ public class GroovyScript implements IScript {
     @Override
     public Object execute(final NodeModel node) {
         try {
-            if (errorsInScript != null)
+            if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
+            }
             final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
                 .getResourceController().getProperties());
@@ -133,15 +134,18 @@ public class GroovyScript implements IScript {
                 return compiledScript.run();
             }
             finally {
+                System.setOut(oldOut);
                 if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
                     securityManager.removeFinalSecurityManager(scriptingSecurityManager);
-                System.setOut(oldOut);
                 /* restore preferences (and assure that the values are unchanged!). */
                 originalScriptingPermissions.restorePermissions();
             }
         }
         catch (final GroovyRuntimeException e) {
             handleScriptRuntimeException(e);
+            // :fixme: This throw is only reached, if handleScriptRuntimeException
+            // does not raise an exception. Should it be here at all?
+            // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         }
         catch (final Throwable e) {
@@ -155,26 +159,19 @@ public class GroovyScript implements IScript {
         return new ScriptSecurity(script, specificPermissions, outStream).getScriptingSecurityManager();
     }
 
-    private Binding createBinding(final NodeModel node) {
-        final Binding binding = new Binding();
-        binding.setVariable("c", ProxyFactory.createController(scriptContext));
-        binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
-        return binding;
-    }
-
 	private Script compileAndCache() throws Throwable {
 		if (compileTimeStrategy.canUseOldCompiledScript())
 			return compiledScript;
 		removeOldScript();
-		if (errorsInScript != null)
-			throw errorsInScript;
-		else if (script instanceof Script)
+		errorsInScript = null;
+		if (script instanceof Script)
 			return (Script) script;
 		else
 			try {
 				final Binding binding = createBindingForCompilation();
 				final ClassLoader classLoader = GroovyScript.class.getClassLoader();
 				final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
+				compileTimeStrategy.scriptCompileStart();
 				if (script instanceof String)
 					compiledScript = shell.parse((String) script);
 				else if (script instanceof File)
@@ -196,6 +193,13 @@ public class GroovyScript implements IScript {
 			compiledScript = null;
 		}
 	}
+
+    private Binding createBinding(final NodeModel node) {
+        final Binding binding = new Binding();
+        binding.setVariable("c", ProxyFactory.createController(scriptContext));
+        binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
+        return binding;
+    }
 
 	private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
