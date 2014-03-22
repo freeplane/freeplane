@@ -33,6 +33,8 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class NodeLinks implements IExtension {
+	public static final Object CONNECTOR = "connector";
+
 	/**
 	 * @param source2
 	 * @return
@@ -83,6 +85,8 @@ public class NodeLinks implements IExtension {
 	private URI hyperlink;
 	private Boolean formatNodeAsHyperlink;
 	final private LinkedList<LinkModel> links;
+	//DOCEAR - fixed: new property type for node link changes
+	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
 	public NodeLinks() {
 		links = new LinkedList<LinkModel>();

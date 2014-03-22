@@ -83,10 +83,12 @@ import org.freeplane.features.link.LinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
@@ -412,6 +414,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean fitToViewport;
 	private static int transparency;
 	final private ComponentAdapter backgroundImageResizer;
+	private INodeChangeListener connectorChangeListener;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -468,6 +471,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		    MapStyle.FIT_TO_VIEWPORT);
 		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 		loadBackgroundImage();
+		connectorChangeListener = new INodeChangeListener() {
+			public void nodeChanged(NodeChangeEvent event) {
+				if(NodeLinks.CONNECTOR.equals(event.getProperty()) &&
+						event.getNode().getMap().equals(getModel()))
+					repaint();
+			}
+		};
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -538,6 +548,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
     public void addNotify() {
 	    super.addNotify();
+	    modeController.getMapController().addNodeChangeListener(connectorChangeListener);
 	    getParent().addComponentListener(backgroundImageResizer);
 		adjustViewportScrollMode();
     }
@@ -549,8 +560,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	((JViewport) getParent()).setScrollMode(JViewport.BLIT_SCROLL_MODE);
     }
 
+
 	@Override
     public void removeNotify() {
+		modeController.getMapController().removeNodeChangeListener(connectorChangeListener);
 		getParent().removeComponentListener(backgroundImageResizer);
 	    super.removeNotify();
     }
