@@ -68,4 +68,8 @@ public class SingleNodeList implements Clones{
 	public boolean contains(NodeModel node) {
 	    return nodeModel.equals(node);
     }
+
+	public NodeModel otherThan(NodeModel node) {
+		throw new IllegalStateException();
+    }
 }

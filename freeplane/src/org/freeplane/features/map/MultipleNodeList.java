@@ -74,4 +74,11 @@ public class MultipleNodeList implements Clones {
 	public boolean contains(NodeModel node) {
 	    return nodes.contains(node);
     }
+
+	public NodeModel otherThan(NodeModel node) {
+	    final NodeModel head = nodes.get(0);
+	    if(head.equals(node))
+	    	return nodes.get(1);
+		return head;
+    }
 }

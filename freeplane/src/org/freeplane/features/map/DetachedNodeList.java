@@ -73,4 +73,8 @@ public class DetachedNodeList implements Clones {
 	public boolean contains(NodeModel node) {
 	    return false;
     }
+
+	public NodeModel otherThan(NodeModel node) {
+		throw new IllegalStateException();
+    }
 }

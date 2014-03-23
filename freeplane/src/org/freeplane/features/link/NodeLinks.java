@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
@@ -187,6 +188,15 @@ public class NodeLinks implements IExtension {
 
 	public void setFormatNodeAsHyperlink(Boolean formatNodeAsHyperlink) {
     	this.formatNodeAsHyperlink = formatNodeAsHyperlink;
+    }
+
+	public void setSource(NodeModel newSource) {
+		final ListIterator<NodeLinkModel> listIterator = links.listIterator();
+		while(listIterator.hasNext()){
+			final NodeLinkModel link = listIterator.next();
+			listIterator.remove();
+			listIterator.add(link.cloneForSource(newSource));
+		}
     }
 
 }

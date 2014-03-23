@@ -69,7 +69,6 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.HyperTextLinkModel;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.MapLinks;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
@@ -247,7 +246,7 @@ public class MLinkController extends LinkController {
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-			if (((MModeController) Controller.getCurrentModeController()).isUndoAction()) {
+			if (((MModeController) Controller.getCurrentModeController()).isUndoAction() || child.clones().size() > 1) {
 				return;
 			}
 			EventQueue.invokeLater(new Runnable() {
@@ -274,63 +273,67 @@ public class MLinkController extends LinkController {
 			if (links == null) {
 				return;
 			}
-			removeLinksForDeletedSource(links, model, delete);
-			removeLinksForDeletedTarget(links, model);
+			updateMapLinksForSourceTree(links, model, delete);
+			updateMapLinksForTargetTree(links, model);
 		}
 
-		private void removeLinksForDeletedSource(final MapLinks links, final NodeModel model, final boolean delete) {
+		private void updateMapLinksForSourceTree(final MapLinks links, final NodeModel model, final boolean delete) {
 			final List<NodeModel> children = model.getChildren();
 			for (final NodeModel child : children) {
-				removeLinksForDeletedSource(links, child, delete);
+				updateMapLinksForSourceTree(links, child, delete);
 			}
-			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
-			if (nodeLinks == null) {
-				return;
-			}
-			for (final NodeLinkModel link : nodeLinks.getLinks()) {
-				if (!(link instanceof NodeLinkModel)) {
-					continue;
-				}
-				final IActor actor = new IActor() {
-					public void act() {
-						if (delete) {
-							delete();
-						}
-						else {
-							insert();
-						}
-					}
-
-					public void undo() {
-						if (delete) {
-							insert();
-						}
-						else {
-							delete();
-						}
-					}
-
-					private void delete() {
-						links.remove(link);
-					}
-
-					public String getDescription() {
-						return null;
-					}
-
-					private void insert() {
-						links.add(link);
-					}
-				};
-				final MapModel map = model.getMap();
-				Controller.getCurrentModeController().execute(actor, map);
-			}
+			if(model.clones().size() == 1)
+				updateMapLinksForSourceNodeWithoutClones(links, model, delete);
+			else
+				updateMapLinksForDeletedSourceClone(links, model);
 		}
 
-		private void removeLinksForDeletedTarget(final MapLinks links, final NodeModel model) {
+		private void updateMapLinksForDeletedSourceClone(MapLinks links, NodeModel model) {
+	        final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
+	        if (nodeLinks != null) {
+	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
+	        		links.remove(link);
+	        	}
+	        	nodeLinks.setSource(model.clones().otherThan(model));
+	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
+	        		links.add(link);
+	        	}
+	        }
+        }
+
+		private void updateMapLinksForSourceNodeWithoutClones(final MapLinks links, final NodeModel model, final boolean delete) {
+	        final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
+	        if (nodeLinks != null) {
+	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
+	        		final IActor actor = new IActor() {
+	        			public void act() {
+	        				if (delete)
+	        					links.remove(link);
+	        				else
+	        					links.add(link);
+	        			}
+
+	        			public void undo() {
+	        				if (delete)
+	        					links.add(link);
+	        				else
+	        					links.remove(link);
+	        			}
+
+	        			public String getDescription() {
+	        				return null;
+	        			}
+	        		};
+	        		final MapModel map = model.getMap();
+	        		Controller.getCurrentModeController().execute(actor, map);
+	        	}
+	        }
+        }
+
+		private void updateMapLinksForTargetTree(final MapLinks links, final NodeModel model) {
 			final List<NodeModel> children = model.getChildren();
 			for (final NodeModel child : children) {
-				removeLinksForDeletedTarget(links, child);
+				updateMapLinksForTargetTree(links, child);
 			}
 			final String id = model.getID();
 			if (id == null) {
