@@ -34,12 +34,19 @@ public class NodeRelativePath {
 		final NodeAbsolutePath absoluteBeginPath = new NodeAbsolutePath(begin);
 		final NodeAbsolutePath absoluteEndPath = new NodeAbsolutePath(end);
 		NodeModel commonAncestor = null;
-		NodeModel nodeOnBeginPath = null;
-		while(absoluteBeginPath.hasNext() && absoluteEndPath.hasNext() && (nodeOnBeginPath = absoluteBeginPath.next()).equals(absoluteEndPath.next())){
-			commonAncestor = nodeOnBeginPath;
+		while(absoluteBeginPath.hasNext() && absoluteEndPath.hasNext()){
+			 NodeModel nextNodeOnBeginPath = absoluteBeginPath.next();
+			 if(nextNodeOnBeginPath.equals(absoluteEndPath.next())){
+				 commonAncestor = nextNodeOnBeginPath;
+			 }
+			 else{
+				 absoluteBeginPath.previous();
+				 absoluteEndPath.previous();
+				 break;
+			 }
 		}
-		int commonAncestorIndex = absoluteBeginPath.lastIndex();
 		this.commonAncestor = commonAncestor;
+		int commonAncestorIndex = absoluteBeginPath.lastIndex();
 		beginPath = path(absoluteBeginPath, commonAncestorIndex);
 		endPath = path(absoluteEndPath, commonAncestorIndex);
     }
