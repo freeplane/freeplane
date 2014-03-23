@@ -19,13 +19,18 @@
  */
 package org.freeplane.features.link;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.freeplane.features.map.Clones;
 import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  * 08.08.2009
  */
-public class NodeLinkModel extends LinkModel {
+public abstract class NodeLinkModel extends LinkModel {
 	final private NodeModel source;
 
 	public NodeLinkModel(final NodeModel source, final String targetID) {
@@ -44,5 +49,16 @@ public class NodeLinkModel extends LinkModel {
 	public boolean isSelfLink() {
 		return getSource().createID().equals(getTargetID());
 	}
+	
+    public Collection<NodeLinkModel> clones() {
+	    final Clones sourceNodeClones = getSource().clones();
+	    if(sourceNodeClones.size() == 1)
+	    	return Arrays.<NodeLinkModel>asList(this);
+	    ArrayList<NodeLinkModel> clones = new ArrayList<NodeLinkModel>(sourceNodeClones.size());
+	    for(NodeModel sourceClone : sourceNodeClones)
+	    	clones.add(cloneForSource(sourceClone));
+	    return clones;
+    }
 
+	public abstract NodeLinkModel cloneForSource(NodeModel sourceClone);
 }

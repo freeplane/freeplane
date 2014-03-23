@@ -20,6 +20,7 @@
 package org.freeplane.features.link;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -74,7 +75,16 @@ public class NodeLinks implements IExtension {
 
 	public static Collection<LinkModel> getLinks(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
-		return links != null ? links.getLinks() : Collections.<LinkModel> emptyList();
+		if (links != null) {
+	        final Collection<LinkModel> sharedLinks = links.getLinks();
+	        final ArrayList<LinkModel> clones = new ArrayList<LinkModel>(sharedLinks.size());
+	        for(LinkModel sharedLink : sharedLinks){
+	        	clones.add(((NodeLinkModel)sharedLink).cloneForSource(node));
+	        }
+	        return clones;
+        }
+        else 
+			return Collections.<LinkModel> emptyList();
 	}
 
 	private URI hyperlink;

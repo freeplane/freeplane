@@ -30,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -320,7 +321,11 @@ public class LinkController extends SelectionController implements IExtension {
 		if (set == null) {
 			return Collections.emptySet();
 		}
-		return set;
+		ArrayList<LinkModel> clonedLinks = new ArrayList<LinkModel>(set.size() * 3);
+		for(LinkModel sharedLink : set){
+			clonedLinks.addAll(((NodeLinkModel)sharedLink).clones());
+		}
+		return clonedLinks;
 	}
 
 	/**

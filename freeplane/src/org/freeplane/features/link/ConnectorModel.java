@@ -35,9 +35,13 @@ public class ConnectorModel extends NodeLinkModel {
 	public ConnectorModel(final NodeModel source, final String targetID, final Color color,
 	                      final int alpha, final Shape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
+		this(source, targetID, new ConnectorProperties(color, alpha, shape, width, labelFontFamily, labelFontSize));
+	}
+
+	private ConnectorModel(final NodeModel source, final String targetID, final ConnectorProperties connectorProperties) {
 		super(source, targetID);
 		assert source != null;
-		connectorProperties = new ConnectorProperties(color, alpha, shape, width, labelFontFamily, labelFontSize);
+		this.connectorProperties = connectorProperties;
 	}
 
 	public Shape getShape() {
@@ -183,5 +187,9 @@ public class ConnectorModel extends NodeLinkModel {
 		    return false;
 	    ConnectorModel other = (ConnectorModel) obj;
 	    return connectorProperties.equals(other.connectorProperties) && getSource().equals(other.getSource());
+    }
+
+	public NodeLinkModel cloneForSource(NodeModel sourceClone) {
+	    return new ConnectorModel(sourceClone, getTargetID(), connectorProperties);
     }
 }
