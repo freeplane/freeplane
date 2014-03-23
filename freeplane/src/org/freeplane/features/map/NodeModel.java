@@ -78,7 +78,8 @@ public class NodeModel{
 	void setClones(Clones clones) {
 		if(this.clones != clones){
 			this.clones = clones;
-			fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
+			for(NodeModel clone : clones)
+				clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
 		}
 	}
 

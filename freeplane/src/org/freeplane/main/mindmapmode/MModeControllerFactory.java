@@ -313,6 +313,7 @@ public class MModeControllerFactory {
 //		});
 	}
 	private static UIIcon cloneIcon;
+	private static UIIcon cloneRootIcon;
 	private void registerStateIconProvider() {
 	    IconController.getController().addStateIconProvider(new IStateIconProvider() {
 
@@ -320,10 +321,17 @@ public class MModeControllerFactory {
 				if (node.clones().size() <= 1) {
 					return null;
 				}
-				if (cloneIcon == null) {
-					cloneIcon = IconStoreFactory.create().getUIIcon("clone.png");
+				final NodeModel parentNode = node.getParentNode();
+				if(parentNode != null && parentNode.clones().size() == node.clones().size()){
+					if (cloneIcon == null) {
+						cloneIcon = IconStoreFactory.create().getUIIcon("clone.png");
+					}
+					return cloneIcon;
 				}
-				return cloneIcon;
+				if (cloneRootIcon == null) {
+					cloneRootIcon = IconStoreFactory.create().getUIIcon("cloneroot.png");
+				}
+				return cloneRootIcon;
 			}
 		});
     }
