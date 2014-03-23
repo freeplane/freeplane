@@ -30,11 +30,13 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * 08.08.2009
  */
-public abstract class NodeLinkModel extends LinkModel {
+public abstract class NodeLinkModel{
+
+	private String targetID;
 	final private NodeModel source;
 
 	public NodeLinkModel(final NodeModel source, final String targetID) {
-		super(targetID);
+		this.targetID = targetID;
 		this.source = source;
 	}
 
@@ -44,6 +46,14 @@ public abstract class NodeLinkModel extends LinkModel {
 
 	public NodeModel getTarget() {
 		return getSource().getMap().getNodeForID(getTargetID());
+	}
+	
+	public String getTargetID() {
+		return targetID;
+	}
+
+	void setTargetID(final String targetID) {
+		this.targetID = targetID;
 	}
 	
 	public boolean isSelfLink() {

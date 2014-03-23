@@ -346,9 +346,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
 		final NodeLinks links = (NodeLinks) extension;
-		final Iterator<LinkModel> iterator = links.getLinks().iterator();
+		final Iterator<NodeLinkModel> iterator = links.getLinks().iterator();
 		while (iterator.hasNext()) {
-			final LinkModel linkModel = iterator.next();
+			final NodeLinkModel linkModel = iterator.next();
 			if (linkModel instanceof ConnectorModel) {
 				final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel;
 				save(writer, arrowLinkModel);

@@ -79,7 +79,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.LinkModel;
+import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
@@ -1414,13 +1414,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return paintingMode;
 	}
 
-	private void paintLinks(final Collection<LinkModel> links, final Graphics2D graphics,
+	private void paintLinks(final Collection<NodeLinkModel> links, final Graphics2D graphics,
 	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
 		final Font font = graphics.getFont();
 		try {
-			final Iterator<LinkModel> linkIterator = links.iterator();
+			final Iterator<NodeLinkModel> linkIterator = links.iterator();
 			while (linkIterator.hasNext()) {
-				final LinkModel next = linkIterator.next();
+				final NodeLinkModel next = linkIterator.next();
 				if (!(next instanceof ConnectorModel)) {
 					continue;
 				}
@@ -1463,9 +1463,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void paintLinks(final NodeView source, final Graphics2D graphics,
 	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
 		final NodeModel node = source.getModel();
-		final Collection<LinkModel> outLinks = NodeLinks.getLinks(node);
+		final Collection<NodeLinkModel> outLinks = NodeLinks.getLinks(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
-		final Collection<LinkModel> inLinks = LinkController.getController(getModeController()).getLinksTo(node);
+		final Collection<NodeLinkModel> inLinks = LinkController.getController(getModeController()).getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
 		final int nodeViewCount = source.getComponentCount();
 		for (int i = 0; i < nodeViewCount; i++) {

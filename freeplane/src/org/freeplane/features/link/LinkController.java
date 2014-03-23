@@ -212,12 +212,12 @@ public class LinkController extends SelectionController implements IExtension {
 	            			if(selection == null)
 	            				return;
 							final NodeModel node = selection.getSelected();
-	            			Set<LinkModel> links = new LinkedHashSet<LinkModel>( NodeLinks.getLinks(node));
+	            			Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>( NodeLinks.getLinks(node));
 	            			links.addAll(getLinksTo(node));
 	            			if(links.isEmpty())
 	            				return;
 	            			builder.addSeparator(key, MenuBuilder.AS_CHILD);
-	            			for(LinkModel link : links){
+	            			for(NodeLinkModel link : links){
 	            				final String targetID = link.getTargetID();
 	            				final NodeModel target;
 	            				if(node.getID().equals(targetID)){
@@ -309,7 +309,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return adaptedText;
 	}
 
-	public Collection<LinkModel> getLinksTo(final NodeModel target) {
+	public Collection<NodeLinkModel> getLinksTo(final NodeModel target) {
 		if (target.hasID() == false) {
 			return Collections.emptySet();
 		}
@@ -317,13 +317,13 @@ public class LinkController extends SelectionController implements IExtension {
 		if (links == null) {
 			return Collections.emptySet();
 		}
-		final Set<LinkModel> set = links.get(target.createID());
+		final Set<NodeLinkModel> set = links.get(target.createID());
 		if (set == null) {
 			return Collections.emptySet();
 		}
-		ArrayList<LinkModel> clonedLinks = new ArrayList<LinkModel>(set.size() * 3);
-		for(LinkModel sharedLink : set){
-			clonedLinks.addAll(((NodeLinkModel)sharedLink).clones());
+		ArrayList<NodeLinkModel> clonedLinks = new ArrayList<NodeLinkModel>(set.size() * 3);
+		for(NodeLinkModel sharedLink : set){
+			clonedLinks.addAll(sharedLink.clones());
 		}
 		return clonedLinks;
 	}

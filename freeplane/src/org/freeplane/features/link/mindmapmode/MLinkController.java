@@ -69,7 +69,7 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.HyperTextLinkModel;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.LinkModel;
+import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.MapLinks;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
@@ -287,7 +287,7 @@ public class MLinkController extends LinkController {
 			if (nodeLinks == null) {
 				return;
 			}
-			for (final LinkModel link : nodeLinks.getLinks()) {
+			for (final NodeLinkModel link : nodeLinks.getLinks()) {
 				if (!(link instanceof NodeLinkModel)) {
 					continue;
 				}
@@ -336,7 +336,7 @@ public class MLinkController extends LinkController {
 			if (id == null) {
 				return;
 			}
-			final Set<LinkModel> linkModels = links.get(id);
+			final Set<NodeLinkModel> linkModels = links.get(id);
 			if (linkModels == null || linkModels.isEmpty()) {
 				return;
 			}
@@ -350,7 +350,7 @@ public class MLinkController extends LinkController {
 				}
 
 				private void refresh() {
-					for (final LinkModel link : linkModels) {
+					for (final NodeLinkModel link : linkModels) {
 						if (link instanceof HyperTextLinkModel) {
 							final NodeModel source = ((HyperTextLinkModel) link).getSource();
 							Controller.getCurrentModeController().getMapController().delayedNodeRefresh(source, NodeModel.NODE_ICON,

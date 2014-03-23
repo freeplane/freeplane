@@ -31,13 +31,13 @@ import org.freeplane.features.map.MapModel;
  * @author Dimitry Polivaev
  */
 public class MapLinks implements IExtension {
-	final private HashMap<String, Set<LinkModel>> links = new HashMap<String, Set<LinkModel>>();
+	final private HashMap<String, Set<NodeLinkModel>> links = new HashMap<String, Set<NodeLinkModel>>();
 
-	public boolean add(final LinkModel link) {
+	public boolean add(final NodeLinkModel link) {
 		final String targetID = link.getTargetID();
-		Set<LinkModel> set = links.get(targetID);
+		Set<NodeLinkModel> set = links.get(targetID);
 		if (set == null) {
-			set = new HashSet<LinkModel>();
+			set = new HashSet<NodeLinkModel>();
 			set.add(link);
 			links.put(targetID, set);
 			return true;
@@ -53,17 +53,17 @@ public class MapLinks implements IExtension {
 		return links.containsKey(targetID);
 	}
 
-	public Set<LinkModel> get(final String targetID) {
+	public Set<NodeLinkModel> get(final String targetID) {
 		if (targetID == null) {
 			return null;
 		}
-		final Set<LinkModel> set = links.get(targetID);
+		final Set<NodeLinkModel> set = links.get(targetID);
 		return set == null ? null : Collections.unmodifiableSet(set);
 	}
 
-	public boolean remove(final LinkModel link) {
+	public boolean remove(final NodeLinkModel link) {
 		final String targetID = link.getTargetID();
-		final Set<LinkModel> set = links.get(targetID);
+		final Set<NodeLinkModel> set = links.get(targetID);
 		if (set == null) {
 			return false;
 		}
@@ -76,7 +76,7 @@ public class MapLinks implements IExtension {
 		return false;
 	}
 
-	public void set(final String targetID, final Set<LinkModel> set) {
+	public void set(final String targetID, final Set<NodeLinkModel> set) {
 		links.put(targetID, set);
 	}
 
