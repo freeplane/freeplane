@@ -20,7 +20,6 @@
 package org.freeplane.features.map;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -36,7 +35,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -73,7 +71,6 @@ public class NodeModel{
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
 	private Collection<INodeView> views = null;
-	private NodeLinks nodeLinks = null;
 
 	private SharedNodeData sharedData;
 	private Clones clones;
@@ -599,14 +596,7 @@ public class NodeModel{
 		}
 		fireNodeChanged(nodeChangeEvent);
     }
-	public NodeLinks getNodeLinks() {
-		return nodeLinks;
-	}
-
-	public void setNodeLinks(NodeLinks nodeLinks) {
-		this.nodeLinks = nodeLinks;
-	}
-
+	
     public NodeModel cloneTree(){
 		final NodeModel clone = new Cloner(this).cloneTree();
 		return clone;
@@ -622,10 +612,7 @@ public class NodeModel{
     }
 
 	public Collection<IExtension> getIndividualExtensionValues() {
-		if(nodeLinks == null)
-			return Collections.emptyList();
-		else
-			return Arrays.<IExtension>asList(nodeLinks);
+		return Collections.emptyList();
     }
 
 	public void convertToClone(NodeModel node) {

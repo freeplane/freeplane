@@ -45,7 +45,7 @@ public class NodeLinks implements IExtension {
 			return nodeLinks;
 		}
 		nodeLinks = new NodeLinks();
-		node.setNodeLinks(nodeLinks);
+		node.addExtension(nodeLinks);
 		return nodeLinks;
 	}
 
@@ -69,7 +69,7 @@ public class NodeLinks implements IExtension {
 	 * @return
 	 */
 	public static NodeLinks getLinkExtension(final NodeModel node) {
-		return node.getNodeLinks();
+		return node.getExtension(NodeLinks.class);
 	}
 
 	public static Collection<LinkModel> getLinks(final NodeModel node) {
