@@ -174,7 +174,11 @@ public class ConnectorModel extends NodeLinkModel {
 	    int result = 1;
 	    result = prime * result + connectorProperties.hashCode();
 	    result = prime * result + getSource().hashCode();
-	    return result;
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return result;
+		result = prime * result + targetID.hashCode();
+		return result;
     }
 
 	@Override
@@ -186,7 +190,13 @@ public class ConnectorModel extends NodeLinkModel {
 	    if (getClass() != obj.getClass())
 		    return false;
 	    ConnectorModel other = (ConnectorModel) obj;
-	    return connectorProperties.equals(other.connectorProperties) && getSource().equals(other.getSource());
+	    if (!connectorProperties.equals(other.connectorProperties) || !getSource().equals(other.getSource()))
+	        return false;
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return other.getTargetID() == null;
+	    else
+	    	return targetID.equals(other.getTargetID());
     }
 
 	public NodeLinkModel cloneForSource(NodeModel sourceClone) {
