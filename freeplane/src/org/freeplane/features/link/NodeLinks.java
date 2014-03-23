@@ -125,15 +125,14 @@ public class NodeLinks implements IExtension {
 
 	public void removeArrowlink(final NodeLinkModel link) {
 		final NodeModel node = link.getSource();
-		final Iterator<NodeLinkModel> iterator = NodeLinks.getLinkExtension(node).links.iterator();
-		while (iterator.hasNext()) {
-			final NodeLinkModel i = iterator.next();
-			if (i == link) {
-				iterator.remove();
+		for (final NodeLinkModel i : NodeLinks.getLinkExtension(node).links) {
+			if (i.cloneForSource(link.getSource()).equals(link)) {
+				links.remove(i);
+				final MapModel map = link.getSource().getMap();
+				removeLinkFromMap(map, i);
+				return;
 			}
 		}
-		final MapModel map = link.getSource().getMap();
-		removeLinkFromMap(map, link);
 	}
 
 	private void removeLinkFromMap(final MapModel map, final NodeLinkModel link) {
