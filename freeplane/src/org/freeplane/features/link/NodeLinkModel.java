@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import org.freeplane.features.map.Clones;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 
 /**
  * @author Dimitry Polivaev
@@ -70,5 +71,21 @@ public abstract class NodeLinkModel{
 	    return clones;
     }
 
-	public abstract NodeLinkModel cloneForSource(NodeModel sourceClone);
+    public NodeLinkModel cloneForSource(NodeModel sourceClone) {
+    	final NodeModel source = getSource();
+    	if(sourceClone == source)
+    		return this;
+    	final NodeModel target = getTarget();
+    	String targetID = getTargetID();
+    	final NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
+    	final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
+    	final NodeModel ancestorClone = nodeRelativePath.ancestorForBegin(sourceClone);
+    	if(commonAncestor.isCloneOf(ancestorClone)){
+    		final NodeModel targetClone = nodeRelativePath.pathEnd(ancestorClone);
+    		targetID = targetClone.createID();
+    	}
+		return cloneForSource(sourceClone, targetID);
+    }
+
+	public abstract NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId);
 }

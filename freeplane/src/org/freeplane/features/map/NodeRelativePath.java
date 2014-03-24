@@ -80,4 +80,20 @@ public class NodeRelativePath {
 	    	relativeNode = relativeNode.getChildAt(childNumber);
 	    return relativeNode;
     }
+
+	public NodeModel ancestorForBegin(NodeModel begin) {
+		final int backLevelNumber = beginPath.length;
+		return ancestor(begin, backLevelNumber);
+	    
+    }
+
+	private NodeModel ancestor(NodeModel source, final int backLevelNumber) {
+	    NodeModel ancestor = source;
+		for(int i = 0; i < backLevelNumber; i++){
+			if(ancestor == null)
+				return ancestor;
+	    	ancestor = ancestor.getParentNode();
+		}
+	    return ancestor;
+    }
 }

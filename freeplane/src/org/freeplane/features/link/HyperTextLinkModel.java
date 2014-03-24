@@ -32,8 +32,9 @@ public class HyperTextLinkModel extends NodeLinkModel {
 	public HyperTextLinkModel(final NodeModel source, final String targetID) {
 		super(source, targetID);
 	}
-	public NodeLinkModel cloneForSource(NodeModel sourceClone) {
-	    return new HyperTextLinkModel(sourceClone, getTargetID());
+	
+	public NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId) {
+	    return new HyperTextLinkModel(sourceClone, targetId);
     }
 	
 	@Override

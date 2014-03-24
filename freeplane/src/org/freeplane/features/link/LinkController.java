@@ -323,7 +323,10 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		ArrayList<NodeLinkModel> clonedLinks = new ArrayList<NodeLinkModel>(set.size() * 3);
 		for(NodeLinkModel sharedLink : set){
-			clonedLinks.addAll(sharedLink.clones());
+			final Collection<NodeLinkModel> linkClones = sharedLink.clones();
+			for(NodeLinkModel linkClone : linkClones)
+				if(target.equals(linkClone.getTarget()))
+					clonedLinks.add(linkClone);
 		}
 		return clonedLinks;
 	}

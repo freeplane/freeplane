@@ -199,7 +199,7 @@ public class ConnectorModel extends NodeLinkModel {
 	    	return targetID.equals(other.getTargetID());
     }
 
-	public NodeLinkModel cloneForSource(NodeModel sourceClone) {
-	    return new ConnectorModel(sourceClone, getTargetID(), connectorProperties);
+	public NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId) {
+	    return new ConnectorModel(sourceClone, targetId, connectorProperties);
     }
 }

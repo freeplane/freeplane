@@ -635,4 +635,8 @@ public class NodeModel{
 		return false;
     }
 
+	public boolean isCloneOf(NodeModel ancestorClone) {
+	    return clones().contains(ancestorClone);
+    }
+
 }
