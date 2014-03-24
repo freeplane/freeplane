@@ -363,17 +363,19 @@ public class LinkController extends SelectionController implements IExtension {
 		if (link != null && link.startsWith("#")) {
 			links.setLocalHyperlink(node, link.substring(1));
 		}
-		try {
-			if (link.startsWith("\"") && link.endsWith("\"")) {
-				link = link.substring(1, link.length() - 1);
+		else {
+			try {
+				if (link.startsWith("\"") && link.endsWith("\"")) {
+					link = link.substring(1, link.length() - 1);
+				}
+				final URI hyperlink = LinkController.createURI(link);
+				links.setHyperLink(hyperlink);
 			}
-			final URI hyperlink = LinkController.createURI(link);
-			links.setHyperLink(hyperlink);
-		}
-		catch (final URISyntaxException e1) {
-			LogUtils.warn(e1);
-			UITools.errorMessage(TextUtils.format("link_error", link));
-			return;
+			catch (final URISyntaxException e1) {
+				LogUtils.warn(e1);
+				UITools.errorMessage(TextUtils.format("link_error", link));
+				return;
+			}
 		}
 	}
 

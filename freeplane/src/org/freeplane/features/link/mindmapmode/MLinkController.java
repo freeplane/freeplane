@@ -811,7 +811,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				NodeLinks links = NodeLinks.getLinkExtension(node);
 				if (links != null) {
-					oldlink = links.getHyperLink();
+					oldlink = links.getHyperLink(node);
 					oldTargetID = links.removeLocalHyperLink(node);
 				}
 				else {
@@ -820,12 +820,9 @@ public class MLinkController extends LinkController {
 				if (uri != null && uri.toString().startsWith("#")) {
 					links.setLocalHyperlink(node, uri.toString().substring(1));
 				}
-
-				//DOCEAR - replaced old nodeChanged event and use new LinkChanged property
-				URI oldHyperLink = links.getHyperLink();
-				links.setHyperLink(uri);
-				//Controller.getCurrentModeController().getMapController().nodeChanged(node);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeLinks.HYPERLINK_CHANGED, oldHyperLink, uri);
+				else
+					links.setHyperLink(uri);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeLinks.HYPERLINK_CHANGED, oldlink, uri);
 
 			}
 
@@ -835,7 +832,7 @@ public class MLinkController extends LinkController {
 
 			public void undo() {
 				final NodeLinks links = NodeLinks.getLinkExtension(node);
-				URI undoneLink = links.getHyperLink();
+				URI undoneLink = links.getHyperLink(node);
 				links.setLocalHyperlink(node, oldTargetID);
 				links.setHyperLink(oldlink);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeLinks.HYPERLINK_CHANGED, undoneLink, oldlink);

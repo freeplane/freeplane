@@ -20,6 +20,7 @@
 package org.freeplane.features.link;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -53,7 +55,7 @@ public class NodeLinks implements IExtension {
 
 	public static URI getLink(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
-		return links != null ? links.getHyperLink() : null;
+		return links != null ? links.getHyperLink(node) : null;
 	}
 
 	public static Boolean formatNodeAsHyperlink(final NodeModel node) {
@@ -88,7 +90,7 @@ public class NodeLinks implements IExtension {
 			return Collections.<NodeLinkModel> emptyList();
 	}
 
-	private URI hyperlink;
+	private URI nonLocalHyperlink;
 	private Boolean formatNodeAsHyperlink;
 	final private LinkedList<NodeLinkModel> links;
 	//DOCEAR - fixed: new property type for node link changes
@@ -116,8 +118,22 @@ public class NodeLinks implements IExtension {
 	/**
 	 * @return
 	 */
-	public URI getHyperLink() {
-		return hyperlink;
+	public URI getHyperLink(NodeModel clone) {
+		if(nonLocalHyperlink != null)
+			return nonLocalHyperlink;
+		final Iterator<NodeLinkModel> iterator = links.iterator();
+		while (iterator.hasNext()) {
+			final NodeLinkModel link = iterator.next();
+			if (link instanceof HyperTextLinkModel) {
+				try {
+	                return new URI("#" + link.cloneForSource(clone).getTargetID());
+                }
+                catch (URISyntaxException e) {
+	                LogUtils.severe(e);
+                } 
+			}
+		}
+		return null;
 	}
 
 	public Collection<NodeLinkModel> getLinks() {
@@ -155,10 +171,11 @@ public class NodeLinks implements IExtension {
 	}
 
 	public void setHyperLink(final URI hyperlink) {
-		this.hyperlink = hyperlink;
+		this.nonLocalHyperlink = hyperlink;
 	}
 
 	public void setLocalHyperlink(final NodeModel node, final String targetID) {
+		this.nonLocalHyperlink = null;
 		removeLocalHyperLink(node);
 		if (targetID != null) {
 			final HyperTextLinkModel link = new HyperTextLinkModel(node, targetID);

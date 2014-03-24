@@ -325,13 +325,13 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
+	public void writeAttributes(final ITreeWriter writer, final Object node, final IExtension extension) {
 		final NodeLinks links = (NodeLinks) extension;
-		final URI link = links.getHyperLink();
+		final URI link = links.getHyperLink((NodeModel) node);
 		if (link != null) {
 			final String string = link.toString();
 			if (string.startsWith("#")) {
-				if (((NodeModel) userObject).getMap().getNodeForID(string.substring(1)) == null) {
+				if (((NodeModel) node).getMap().getNodeForID(string.substring(1)) == null) {
 					return;
 				}
 			}
