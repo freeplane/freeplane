@@ -77,4 +77,8 @@ public class DetachedNodeList implements Clones {
 	public NodeModel otherThan(NodeModel node) {
 		throw new IllegalStateException();
     }
+
+	public NodeModel head() {
+		throw new IllegalStateException();
+    }
 }

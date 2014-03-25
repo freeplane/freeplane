@@ -72,4 +72,8 @@ public class SingleNodeList implements Clones{
 	public NodeModel otherThan(NodeModel node) {
 		throw new IllegalStateException();
     }
+
+	public NodeModel head() {
+	    return nodeModel;
+    }
 }
