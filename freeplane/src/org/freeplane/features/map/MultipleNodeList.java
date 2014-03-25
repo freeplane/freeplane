@@ -37,7 +37,7 @@ public class MultipleNodeList implements Clones {
 	public Clones remove(NodeModel nodeModel) {
 		nodes.remove(nodeModel);
 		if(nodes.size() == 1)
-			return new SingleNodeList(nodes.get(0));
+			return new SingleNodeList(head());
 		else
 			return this;
 
@@ -61,7 +61,7 @@ public class MultipleNodeList implements Clones {
 
 	public void detach(NodeModel nodeModel) {
 		final Clones reducedClones = remove(nodeModel);
-		final NodeModel head = nodes.get(0);
+		final NodeModel head = head();
 		nodeModel.setClones(new DetachedNodeList(nodeModel, head));
 		if(reducedClones != this)
 			head.setClones(reducedClones);
@@ -76,7 +76,7 @@ public class MultipleNodeList implements Clones {
     }
 
 	public NodeModel otherThan(NodeModel node) {
-	    final NodeModel head = nodes.get(0);
+	    final NodeModel head = head();
 	    if(head.equals(node))
 	    	return nodes.get(1);
 		return head;
