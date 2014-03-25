@@ -226,11 +226,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         public void replaceSelection(NodeModel[] nodes) {
             if(nodes.length == 0)
                 return;
-            NodeView views[] = new NodeView[nodes.length];
-            int i = 0;
-            for(NodeModel node : nodes)
-                views[i++] = getNodeView(node);
-            MapView.this.replaceSelection(views);
+            ArrayList<NodeView> views = new ArrayList<NodeView>(nodes.length);
+            for(NodeModel node : nodes) {
+	            final NodeView nodeView = getNodeView(node);
+	            if(nodeView != null)
+	            	views.add(nodeView);
+            }
+            MapView.this.replaceSelection(views.toArray(new NodeView[]{}));
         }
 
 	}

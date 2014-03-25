@@ -77,7 +77,7 @@ public abstract class NodeLinkModel{
     		return this;
     	String targetID = getTargetID();
     	final NodeModel target = getTarget();
-    	if(target != null && target.getParentNode() != null){
+    	if(target != null && target.getParentNode() != null && source.getParentNode() != null){
     		final NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
     		final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
     		final NodeModel ancestorClone = nodeRelativePath.ancestorForBegin(sourceClone);
