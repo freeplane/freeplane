@@ -53,6 +53,13 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
+	private final class TabbedPaneChangeListener implements ChangeListener {
+	    public void stateChanged(final ChangeEvent event) {
+	    	final JTabbedPane c = (JTabbedPane) event.getSource();
+	    	selectedPanel = tabIndexToStringMap.get(c.getSelectedIndex());
+	    }
+    }
+
 	public interface IOptionPanelFeedback {
 		void writeProperties(Properties props);
 	}
@@ -87,7 +94,12 @@ public class OptionPanel {
 	 * @param controlsTree  This is the data that needs to be built
 	 */
 	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
-		final JPanel centralPanel = new JPanel();
+		buildCentralPanel(controlsTree);
+		buildButtonBar();
+	}
+
+	private void buildCentralPanel(final DefaultMutableTreeNode controlsTree) {
+	    final JPanel centralPanel = new JPanel();
 		centralPanel.setLayout(new GridLayout(1, 1));
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -115,19 +127,16 @@ public class OptionPanel {
 				control.layout(bottomBuilder);
 			}
 		}
-		tabbedPane.addChangeListener(new ChangeListener() {
-			public void stateChanged(final ChangeEvent event) {
-				final JTabbedPane c = (JTabbedPane) event.getSource();
-				selectedPanel = tabIndexToStringMap.get(c.getSelectedIndex());
-			}
-		});
+		tabbedPane.addChangeListener(new TabbedPaneChangeListener());
 		centralPanel.add(tabbedPane);
 		if (selectedPanel != null && tabStringToIndexMap.containsKey(selectedPanel)) {
-			// Without the containsKey call the loading of the tab "behaviour"/"behavior" gives a nullpointer exception
 			tabbedPane.setSelectedIndex(tabStringToIndexMap.get(selectedPanel));
 		}
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
-		final JButton cancelButton = new JButton();
+    }
+
+	private void buildButtonBar() {
+	    final JButton cancelButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
@@ -146,7 +155,7 @@ public class OptionPanel {
 		});
 		topDialog.getRootPane().setDefaultButton(okButton);
 		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
-	}
+    }
 
 	private boolean validate() {
 		final Properties properties = getOptionProperties();
