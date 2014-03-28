@@ -94,18 +94,18 @@ public class OptionPanel {
 	 * @param controlsTree  This is the data that needs to be built
 	 */
 	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
-		buildCentralPanel(controlsTree);
+		initControls(controlsTree);
+		buildCentralPanel();
 		buildButtonBar();
 	}
 
-	private void buildCentralPanel(final DefaultMutableTreeNode controlsTree) {
+	private void buildCentralPanel() {
 	    final JPanel centralPanel = new JPanel();
 		centralPanel.setLayout(new GridLayout(1, 1));
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		FormLayout bottomLayout = null;
 		DefaultFormBuilder bottomBuilder = null;
-		initControls(controlsTree);
 		final Iterator<IPropertyControl> iterator = controls.iterator();
 		int tabIndex = 0;
 		while (iterator.hasNext()) {
