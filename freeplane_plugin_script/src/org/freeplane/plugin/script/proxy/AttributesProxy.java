@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
+import java.util.function.Consumer;
 
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
@@ -300,6 +302,11 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
             public void remove() {
                 iterator.remove();
             }
+
+			@Override
+			public void forEachRemaining(Consumer<? super Entry<String, Object>> action) {
+				// TODO Auto-generated method stub
+			}
         };
     }
 }

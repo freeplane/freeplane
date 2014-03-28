@@ -8,12 +8,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
@@ -40,6 +46,45 @@ public class ProxyUtils {
 			@Override
 			public int size() {
 				return nodeModels.size();
+			}
+
+			@Override
+			public void replaceAll(UnaryOperator<Node> operator) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void sort(Comparator<? super Node> c) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public Spliterator<Node> spliterator() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public boolean removeIf(Predicate<? super Node> filter) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public Stream<Node> stream() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Stream<Node> parallelStream() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void forEach(Consumer<? super Node> action) {
+				// TODO Auto-generated method stub
 			}
 		};
 	}
@@ -112,6 +157,45 @@ public class ProxyUtils {
     		public int size() {
     			return nodeModel.getChildCount();
     		}
+
+			@Override
+			public void replaceAll(UnaryOperator<Node> operator) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void sort(Comparator<? super Node> c) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public Spliterator<Node> spliterator() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public boolean removeIf(Predicate<? super Node> filter) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public Stream<Node> stream() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Stream<Node> parallelStream() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void forEach(Consumer<? super Node> action) {
+				// TODO Auto-generated method stub
+			}
     	});
     }
 
@@ -201,6 +285,45 @@ public class ProxyUtils {
             public int size() {
 	            return collection.size();
             }
+
+			@Override
+			public void replaceAll(UnaryOperator<T> operator) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void sort(Comparator<? super T> c) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public Spliterator<T> spliterator() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public boolean removeIf(Predicate<? super T> filter) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public Stream<T> stream() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Stream<T> parallelStream() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void forEach(Consumer<? super T> action) {
+				// TODO Auto-generated method stub
+			}
 		};		
     }
 
