@@ -21,7 +21,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -73,9 +72,6 @@ public class OptionPanel {
 	private String selectedPanel;
 	final private JDialog topDialog;
 
-	/**
-	 * @throws IOException
-	 */
 	public OptionPanel(final JDialog d, final IOptionPanelFeedback feedback) {
 		super();
 		topDialog = d;
@@ -83,16 +79,6 @@ public class OptionPanel {
 		new OptionPanelBuilder();
 	}
 
-	/**
-	 * This method builds the preferences panel.
-	 * A list of IPropertyControl is iterated through and
-	 * if the IPropertyControl is an instance of TabProperty,
-	 * it creates a new "tab" that can be clicked to reveal the appropriate panel.
-	 * If the previous selected tab was saved on close,
-	 * the appropriate tab is reopened.
-	 *
-	 * @param controlsTree  This is the data that needs to be built
-	 */
 	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
 		initControls(controlsTree);
 		buildCentralPanel();
@@ -181,10 +167,6 @@ public class OptionPanel {
 	}
 
 	@SuppressWarnings("unchecked")
-	/**
-	 * This is where the controls are added to the "controls" IProperty Vector
-	 * @param controlsTree This is the tree that gets built
-	 */
 	private void initControls(final DefaultMutableTreeNode controlsTree) {
 		controls = new Vector<IPropertyControl>();
 		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
