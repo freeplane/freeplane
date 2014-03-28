@@ -5,7 +5,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/substance-flamingo-7.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/substance-swingx-7.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/trident-7.2.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
@@ -21,5 +20,7 @@
 	<classpathentry kind="lib" path="lib/idw-gpl.jar" sourcepath="C:/Users/Dimitry/Downloads/idw-gpl-1.6.1-src/idw-gpl-1.6.1/src"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jfxrt.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
