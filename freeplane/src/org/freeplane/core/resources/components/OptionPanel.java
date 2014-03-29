@@ -93,9 +93,9 @@ public class OptionPanel {
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 	}
 
-	private void initFX(JFXPanel fxPanel) {
+	private void initFX(JFXPanel panel) {
 		Scene scene = createScene();
-		fxPanel.setScene(scene);
+		panel.setScene(scene);
 	}
 
 	private Scene createScene() {
@@ -104,35 +104,44 @@ public class OptionPanel {
 		for (ArrayList<IPropertyControl> tabGroup : controls) {
 			SwingNode swingNode = new SwingNode();
 			createSwingNode(tabGroup, swingNode);
-			Tab newTab = new Tab();
-			newTab.setText(TextUtils.getOptionalText(((TabProperty) tabGroup.get(0)).getLabel()));
-			ScrollPane scrollPane = new ScrollPane();
-			scrollPane.setContent(swingNode);
-			scrollPane.setFitToWidth(true);
-			scrollPane.setFitToHeight(true);
-			newTab.setContent(scrollPane);
+			// First element in tabGroup will always be a TabProperty; see initControls method
+			String tabName = TextUtils.getOptionalText(((TabProperty) tabGroup.get(0)).getLabel());
+			Tab newTab = buildTab(tabName, swingNode);
 			tabPane.getTabs().add(newTab);
 		}
 		handleTabSelection(tabPane);
-		Scene scene = new Scene(tabPane);
-		return (scene);
+		handleTabChangeListener(tabPane);
+		return new Scene(tabPane);
+	}
+
+	private Tab buildTab(String tabName, SwingNode swingNode) {
+		Tab newTab = new Tab();
+		newTab.setText(tabName);
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setContent(swingNode);
+		scrollPane.setFitToWidth(true);
+		scrollPane.setFitToHeight(true);
+		newTab.setContent(scrollPane);
+		return newTab;
 	}
 
 	private void createSwingNode(ArrayList<IPropertyControl> tabGroup, SwingNode swingNode) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				FormLayout bottomLayout = new FormLayout(tabGroup.get(0).getDescription(), "");
-				final DefaultFormBuilder bottomBuilder = new DefaultFormBuilder(bottomLayout);
-				bottomBuilder.setDefaultDialogBorder();
-				for (IPropertyControl control : tabGroup) {
-					if (control instanceof TabProperty) {
-						continue;
-					}
-					control.layout(bottomBuilder);
-				}
-				swingNode.setContent(bottomBuilder.getPanel());
+		SwingUtilities.invokeLater(() -> {
+			FormLayout bottomLayout = new FormLayout(tabGroup.get(0).getDescription(), "");
+			final DefaultFormBuilder bottomBuilder = new DefaultFormBuilder(bottomLayout);
+			bottomBuilder.setDefaultDialogBorder();
+			for (IPropertyControl control : tabGroup) {
+				layoutControlOnPanel(bottomBuilder, control);
 			}
+			swingNode.setContent(bottomBuilder.getPanel());
 		});
+    }
+
+	private void layoutControlOnPanel(final DefaultFormBuilder bottomBuilder, IPropertyControl control) {
+	    if (control instanceof TabProperty) {
+	    	return;
+	    }
+	    control.layout(bottomBuilder);
     }
 
 	private void handleTabSelection(TabPane tabPane) {
@@ -144,6 +153,9 @@ public class OptionPanel {
 				}
 			}
 		}
+	}
+
+	private void handleTabChangeListener(TabPane tabPane) {
 		tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 			public void changed(ObservableValue<? extends Tab> arg0, Tab oldValue, Tab newValue) {
 				selectedTab = newValue;
@@ -152,6 +164,12 @@ public class OptionPanel {
 	}
 
 	private void buildButtonBar() {
+	    final JButton cancelButton = buildCancelButton();
+		final JButton okButton = buildOkButton();
+		handleAttachmentToDialog(cancelButton, okButton);
+    }
+
+	private JButton buildCancelButton() {
 	    final JButton cancelButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
@@ -159,7 +177,11 @@ public class OptionPanel {
 				closeWindow();
 			}
 		});
-		final JButton okButton = new JButton();
+	    return cancelButton;
+    }
+
+	private JButton buildOkButton() {
+	    final JButton okButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
@@ -169,7 +191,11 @@ public class OptionPanel {
 				}
 			}
 		});
-		topDialog.getRootPane().setDefaultButton(okButton);
+	    return okButton;
+    }
+
+	private void handleAttachmentToDialog(final JButton cancelButton, final JButton okButton) {
+	    topDialog.getRootPane().setDefaultButton(okButton);
 		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
     }
 
@@ -199,7 +225,7 @@ public class OptionPanel {
 
 	@SuppressWarnings("unchecked")
 	private void initControls(final DefaultMutableTreeNode controlsTree) {
-		controls = new ArrayList<ArrayList<IPropertyControl>>();
+		controls = new ArrayList<>();
 		ArrayList<IPropertyControl> tabGroup = null;
 		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
 			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement().getUserObject();
@@ -220,8 +246,7 @@ public class OptionPanel {
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
-		String selectedTabName = selectedTab.getText();
-		storage.setPanel(OPTION_PANEL_RESOURCE_PREFIX + selectedTabName);
+		storage.setPanel(OPTION_PANEL_RESOURCE_PREFIX + selectedTab.getText());
 		storage.storeDialogPositions(topDialog, OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		topDialog.setVisible(false);
 		topDialog.dispose();
@@ -259,9 +284,8 @@ public class OptionPanel {
 
 	void setSelectedPanel(final String panelName) {
 		if (panelName.startsWith(OPTION_PANEL_RESOURCE_PREFIX)) {
-			selectedTab = new Tab();
 			String panelNameWithoutPrefix = panelName.substring(OPTION_PANEL_RESOURCE_PREFIX.length());
-			selectedTab.setText(panelNameWithoutPrefix);
+			selectedTab = new Tab(panelNameWithoutPrefix);
 		}
 	}
 }
