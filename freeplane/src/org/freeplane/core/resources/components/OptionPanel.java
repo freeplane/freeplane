@@ -150,11 +150,12 @@ public class OptionPanel {
 			result.add(validator.validate(properties));
 		}
 		if (!result.isValid()) {
-			UITools.errorMessage(formatErrors("OptionPanel.validation_error", result.getErrors()));
+			UITools.errorMessage(formatErrors(OPTION_PANEL_RESOURCE_PREFIX + "validation_error", result.getErrors()));
 			LogUtils.severe(result.toString());
 		}
 		else if (result.hasWarnings()) {
-			UITools.informationMessage(formatErrors("OptionPanel.validation_warning", result.getWarnings()));
+			UITools.informationMessage(formatErrors(OPTION_PANEL_RESOURCE_PREFIX + "validation_warning",
+			    result.getWarnings()));
 			LogUtils.warn(result.toString());
 		}
 		return result.isValid();
