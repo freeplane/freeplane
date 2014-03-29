@@ -40,7 +40,6 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -68,7 +67,7 @@ public class OptionPanel {
 	private ArrayList<ArrayList<IPropertyControl>> controls;
 	final private IOptionPanelFeedback feedback;
 	private Tab selectedTab;
-	final private JDialog topDialog;
+	private JDialog topDialog;
 
 	public OptionPanel(final JDialog d, final IOptionPanelFeedback feedback) {
 		super();
@@ -84,16 +83,14 @@ public class OptionPanel {
 	}
 
 	private void buildCentralPanel() {
-		final JFXPanel centralPanel = new JFXPanel();
-		final JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(1, 1));
+		JFXPanel centralPanel = new JFXPanel();
 		Platform.runLater(new Runnable() {
 			public void run() {
 				initFX(centralPanel);
 			}
 		});
-		panel.add(centralPanel);
-		topDialog.getContentPane().add(panel, BorderLayout.CENTER);
+		centralPanel.setLayout(new GridLayout(1, 1));
+		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 	}
 
 	private void initFX(JFXPanel fxPanel) {
@@ -141,7 +138,11 @@ public class OptionPanel {
 	private void handleTabSelection(TabPane tabPane) {
 		if (selectedTab != null) {
 			SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-			selectionModel.select(selectedTab);
+			for (Tab tab : tabPane.getTabs()) {
+				if (tab.getText().equals(selectedTab.getText())) {
+					selectionModel.select(tab);
+				}
+			}
 		}
 		tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 			public void changed(ObservableValue<? extends Tab> arg0, Tab oldValue, Tab newValue) {
@@ -219,10 +220,12 @@ public class OptionPanel {
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
-		storage.setPanel(OPTION_PANEL_RESOURCE_PREFIX + selectedTab.getText());
+		String selectedTabName = selectedTab.getText();
+		storage.setPanel(OPTION_PANEL_RESOURCE_PREFIX + selectedTabName);
 		storage.storeDialogPositions(topDialog, OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		topDialog.setVisible(false);
 		topDialog.dispose();
+		Platform.setImplicitExit(false); // Without this line, the JFXPanel does not show on future openings
 	}
 
 	private Properties getOptionProperties() {
@@ -254,10 +257,11 @@ public class OptionPanel {
 		}
 	}
 
-	void setSelectedPanel(final String panel) {
-		if (panel.startsWith(OPTION_PANEL_RESOURCE_PREFIX)) {
+	void setSelectedPanel(final String panelName) {
+		if (panelName.startsWith(OPTION_PANEL_RESOURCE_PREFIX)) {
 			selectedTab = new Tab();
-			selectedTab.setText(panel.substring(OPTION_PANEL_RESOURCE_PREFIX.length()));
+			String panelNameWithoutPrefix = panelName.substring(OPTION_PANEL_RESOURCE_PREFIX.length());
+			selectedTab.setText(panelNameWithoutPrefix);
 		}
 	}
 }
