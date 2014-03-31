@@ -69,9 +69,9 @@ public class OptionPanel {
 	private Tab selectedTab;
 	private JDialog topDialog;
 
-	public OptionPanel(final JDialog d, final IOptionPanelFeedback feedback) {
+	public OptionPanel(final JDialog topDialog, final IOptionPanelFeedback feedback) {
 		super();
-		topDialog = d;
+		this.topDialog = topDialog;
 		this.feedback = feedback;
 		new OptionPanelBuilder();
 	}
