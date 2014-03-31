@@ -19,8 +19,6 @@ package org.freeplane.core.resources.components;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -31,14 +29,18 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.embed.swing.SwingNode;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -46,14 +48,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator.ValidationResult;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
@@ -78,19 +78,12 @@ public class OptionPanel {
 
 	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
 		initControls(controlsTree);
-		buildCentralPanel();
-		buildButtonBar();
-	}
-
-	private void buildCentralPanel() {
-		JFXPanel centralPanel = new JFXPanel();
-		Platform.runLater(new Runnable() {
-			public void run() {
-				initFX(centralPanel);
-			}
+		JFXPanel topPanel = new JFXPanel();
+		Platform.runLater(() -> {
+			initFX(topPanel);
 		});
-		centralPanel.setLayout(new GridLayout(1, 1));
-		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
+		topPanel.setLayout(new GridLayout(1, 1));
+		topDialog.getContentPane().add(topPanel, BorderLayout.CENTER);
 	}
 
 	private void initFX(JFXPanel panel) {
@@ -99,6 +92,13 @@ public class OptionPanel {
 	}
 
 	private Scene createScene() {
+		BorderPane pane = new BorderPane();
+		buildCentralPanel(pane);
+		buildButtonBar(pane);
+		return new Scene(pane);
+	}
+
+	private void buildCentralPanel(BorderPane pane) {
 		TabPane tabPane = new TabPane();
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		for (ArrayList<IPropertyControl> tabGroup : controls) {
@@ -111,18 +111,7 @@ public class OptionPanel {
 		}
 		handleTabSelection(tabPane);
 		handleTabChangeListener(tabPane);
-		return new Scene(tabPane);
-	}
-
-	private Tab buildTab(String tabName, SwingNode swingNode) {
-		Tab newTab = new Tab();
-		newTab.setText(tabName);
-		ScrollPane scrollPane = new ScrollPane();
-		scrollPane.setContent(swingNode);
-		scrollPane.setFitToWidth(true);
-		scrollPane.setFitToHeight(true);
-		newTab.setContent(scrollPane);
-		return newTab;
+		pane.setCenter(tabPane);
 	}
 
 	private void createSwingNode(ArrayList<IPropertyControl> tabGroup, SwingNode swingNode) {
@@ -144,6 +133,17 @@ public class OptionPanel {
 	    control.layout(bottomBuilder);
     }
 
+	private Tab buildTab(String tabName, SwingNode swingNode) {
+		Tab newTab = new Tab();
+		newTab.setText(tabName);
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setContent(swingNode);
+		scrollPane.setFitToWidth(true);
+		scrollPane.setFitToHeight(true);
+		newTab.setContent(scrollPane);
+		return newTab;
+	}
+
 	private void handleTabSelection(TabPane tabPane) {
 		if (selectedTab != null) {
 			SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
@@ -163,41 +163,48 @@ public class OptionPanel {
 		});
 	}
 
-	private void buildButtonBar() {
-	    final JButton cancelButton = buildCancelButton();
-		final JButton okButton = buildOkButton();
-		handleAttachmentToDialog(cancelButton, okButton);
+	private void buildButtonBar(BorderPane pane) {
+		final Button cancelButton = buildCancelButton();
+		final Button okButton = buildOkButton();
+		final HBox buttonBar = buildButtonBarHBox(cancelButton, okButton);
+		pane.setBottom(buttonBar);
     }
 
-	private JButton buildCancelButton() {
-	    final JButton cancelButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
-				closeWindow();
-			}
+	private Button buildCancelButton() {
+		final Button cancelButton = new Button();
+		//		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+		cancelButton.setText(TextUtils.getRawText("cancel").replace("&", "_"));
+		cancelButton.setMnemonicParsing(true);
+		cancelButton.setOnAction(actionEvent -> {
+			closeWindow();
 		});
 	    return cancelButton;
     }
 
-	private JButton buildOkButton() {
-	    final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
+	private Button buildOkButton() {
+	    final Button okButton = new Button();
+		//		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
+		okButton.setText(TextUtils.getRawText("ok").replace("&", "_"));
+		okButton.setMnemonicParsing(true);
+		okButton.setOnAction(actionEvent -> {
+			SwingUtilities.invokeLater(() -> {
 				if (validate()) {
 					closeWindow();
 					feedback.writeProperties(getOptionProperties());
 				}
-			}
+			});
 		});
 	    return okButton;
     }
 
-	private void handleAttachmentToDialog(final JButton cancelButton, final JButton okButton) {
-	    topDialog.getRootPane().setDefaultButton(okButton);
-		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
-    }
+	private HBox buildButtonBarHBox(final Button cancelButton, final Button okButton) {
+		HBox hbox = new HBox();
+		hbox.setAlignment(Pos.CENTER_RIGHT);
+		hbox.setPadding(new Insets(5, 5, 5, 5));
+		hbox.setSpacing(10);
+		hbox.getChildren().addAll(cancelButton, okButton);
+		return hbox;
+	}
 
 	private boolean validate() {
 		final Properties properties = getOptionProperties();
