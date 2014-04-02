@@ -32,6 +32,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -39,6 +41,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
+import java.text.AttributedCharacterIterator;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Icon;
@@ -104,6 +107,8 @@ import com.lightdev.app.shtm.SHTMLWriter;
  * @author foltin
  */
 public class EditNodeTextField extends EditNodeBase {
+	public IMEListener myIMEListener = null;
+
     private class MyNavigationFilter extends NavigationFilter {
     	private final JEditorPane textfield;
         public MyNavigationFilter(JEditorPane textfield) {
@@ -228,6 +233,10 @@ public class EditNodeTextField extends EditNodeBase {
 
 	private void setLineWrap() {
 		if(null != textfield.getClientProperty("EditNodeTextField.linewrap")){
+			return;
+		}
+		//++ if the IME is in use then immediately return.
+		if(myIMEListener != null && myIMEListener.isIMEInUse()){
 			return;
 		}
 	    final HTMLDocument document = (HTMLDocument) textfield.getDocument();
@@ -640,6 +649,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
+		myIMEListener = new IMEListener();
+		textfield.addInputMethodListener(myIMEListener);
 		mapViewChangeListener = new MapViewChangeListener();
 		Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(mapViewChangeListener);
 		SpellCheckerController.getController().enableAutoSpell(textfield, true);
@@ -703,5 +714,36 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.repaint();
 		textfield.requestFocusInWindow();
+	}
+
+	private class IMEListener implements InputMethodListener {
+		private int inputLen = -1;
+		private int committedLen = -1;
+
+		public void inputMethodTextChanged(InputMethodEvent event) {
+			AttributedCharacterIterator aci = event.getText();
+			if(aci == null){
+				inputLen = committedLen = -1;
+				return;
+			}
+			inputLen = aci.getEndIndex();
+			committedLen = event.getCommittedCharacterCount();
+		}
+
+		public void caretPositionChanged(InputMethodEvent event) {
+			return;
+		}
+
+		public boolean isIMEInUse(){
+			if(inputLen == -1){
+				// not inputs by IME
+				return false;
+			}
+			if(inputLen == committedLen){
+				// not exists composed text
+				return false;
+			}
+			return true;
+		}
 	}
 }
