@@ -1,22 +1,22 @@
-<project name="GlobalFreeplane" default="dist" basedir=".">
+<project name="GlobalFreeplane" default="ant-dist" basedir=".">
 
-	<target name="build">
+	<target name="ant-build">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="build"
 			inheritAll="false" />
 	</target>
 
-	<target name="dist">
+	<target name="ant-dist">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="dist"
 			inheritAll="false" />
 	</target>
-	<target name="format-translation">
+	<target name="ant-format-translation">
 		<ant antfile="JOrtho_0.4_freeplane/build.xml"  target="format-translation"
 			inheritAll="false" />
 		<ant antfile="freeplane_framework/ant/build.xml"  target="format-translation"
 			inheritAll="false" />
 	</target>
 
-	<target name="clean">
+	<target name="ant-clean">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="clean"
 			inheritAll="false" />
 
@@ -27,12 +27,12 @@
 		inheritAll="false" />
 	</target>
 
-	<target name="cleandist" depends="clean, dist">
+	<target name="ant-cleandist" depends="clean, dist">
 	</target>
 
-  <target name="release" depends="clean, dist, tag-release"/>
+  <target name="ant-release" depends="clean, dist, tag-release"/>
 
-	<target name="tag-release">
+	<target name="ant-tag-release">
 	  <property file="freeplane/viewer-resources/version.properties"/>
 
     <condition property="minor_suffix" value="_${minor}" else="">
@@ -64,7 +64,7 @@
 	  </exec>
 	</target>
 
-	<target name="create-plugin">
+	<target name="ant-create-plugin">
 		<ant antfile="freeplane_framework/ant/build.xml"  target="create-plugin" inheritAll="false" />
 	</target>
 </project>
