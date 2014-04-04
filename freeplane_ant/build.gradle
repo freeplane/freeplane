@@ -1,0 +1,18 @@
+dependencies {
+    compile group: 'org.apache.ant', name: 'ant', version: '1.9.3'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "./src"
+        }
+        resources {
+            srcDir "./template"
+        }
+    }
+
+jar {
+    baseName "freeplaneant"
+    destinationDir file("./dist")
+}
