@@ -9,13 +9,13 @@
   <property name="java_target_version" value="1.5" />
   <property name="jar" value="${dist}/freeplaneant.jar" />
 
-  <target name="compile">
+  <target name="ant_compile">
     <mkdir dir="${bin}" />
     <javac srcdir="${src}" destdir="${bin}" debug="${debug}" 
     	source="${java_source_version}" target="${java_target_version}" />
   </target>
 
-  <target name="jar" depends="compile">
+  <target name="ant_jar" depends="compile">
     <mkdir dir="${dist}" />
     <jar jarfile="${jar}">
       <fileset dir="${bin}">
@@ -26,11 +26,11 @@
     </jar>
   </target>
 
-  <target name="test" depends="jar">
+  <target name="ant_test" depends="jar">
     <ant dir="test" target="test" />
   </target>
 
-  <target name="clean">
+  <target name="ant_clean">
     <!-- would fail unless freeplaneant.jar exists:
 	 <ant dir="test" target="clean" />
     -->
