@@ -12,6 +12,9 @@ Thumbs.db
 *.pid
 ._.**~
 
+#Build System files
+.gradle/
+
 *.diff
 */bin
 */build
