@@ -131,9 +131,12 @@ public class OptionPanel {
 		});
 	}
 
+	/**
+	 * In the future, this BorderPane would display a progress bar in the center 
+	 * as the loading of the form will take some time.
+	 */
 	private BorderPane buildProgressPane() {
 		BorderPane borderPane = new BorderPane();
-//		borderPane.setCenter(new ProgressIndicator());
 		return borderPane;
 	}
 
