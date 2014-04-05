@@ -28,18 +28,17 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
-import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
@@ -53,11 +52,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
-
 public class OptionPanel {
-
 	public interface IOptionPanelFeedback {
 		void writeProperties(Properties props);
 	}
@@ -79,8 +74,11 @@ public class OptionPanel {
 	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
 		initControls(controlsTree);
 		JFXPanel topPanel = new JFXPanel();
-		Platform.runLater(() -> {
-			initFX(topPanel);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				initFX(topPanel);
+			}
 		});
 		topPanel.setLayout(new GridLayout(1, 1));
 		topDialog.getContentPane().add(topPanel, BorderLayout.CENTER);
@@ -93,55 +91,25 @@ public class OptionPanel {
 
 	private Scene createScene() {
 		BorderPane pane = new BorderPane();
-		buildCentralPanel(pane);
-		buildButtonBar(pane);
+		pane.setCenter(buildCentralPanel());
+		pane.setBottom(buildButtonBar());
 		return new Scene(pane);
 	}
 
-	private void buildCentralPanel(BorderPane pane) {
-		TabPane tabPane = new TabPane();
-		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		for (ArrayList<IPropertyControl> tabGroup : controls) {
-			SwingNode swingNode = new SwingNode();
-			createSwingNode(tabGroup, swingNode);
-			// First element in tabGroup will always be a TabProperty; see initControls method
-			String tabName = TextUtils.getOptionalText(((TabProperty) tabGroup.get(0)).getLabel());
-			Tab newTab = buildTab(tabName, swingNode);
-			tabPane.getTabs().add(newTab);
-		}
-		handleTabSelection(tabPane);
-		handleTabChangeListener(tabPane);
-		pane.setCenter(tabPane);
+	private StackPane buildCentralPanel() {
+		TabPane tabPane = buildTabPane();
+		BorderPane borderPane = buildProgressPane();
+		StackPane stackPane = buildStackPane(tabPane, borderPane);
+		asynchronouslyLoadTabPane(borderPane, stackPane);
+		return stackPane;
 	}
 
-	private void createSwingNode(ArrayList<IPropertyControl> tabGroup, SwingNode swingNode) {
-		SwingUtilities.invokeLater(() -> {
-			FormLayout bottomLayout = new FormLayout(tabGroup.get(0).getDescription(), "");
-			final DefaultFormBuilder bottomBuilder = new DefaultFormBuilder(bottomLayout);
-			bottomBuilder.setDefaultDialogBorder();
-			for (IPropertyControl control : tabGroup) {
-				layoutControlOnPanel(bottomBuilder, control);
-			}
-			swingNode.setContent(bottomBuilder.getPanel());
-		});
-    }
-
-	private void layoutControlOnPanel(final DefaultFormBuilder bottomBuilder, IPropertyControl control) {
-	    if (control instanceof TabProperty) {
-	    	return;
-	    }
-	    control.layout(bottomBuilder);
-    }
-
-	private Tab buildTab(String tabName, SwingNode swingNode) {
-		Tab newTab = new Tab();
-		newTab.setText(tabName);
-		ScrollPane scrollPane = new ScrollPane();
-		scrollPane.setContent(swingNode);
-		scrollPane.setFitToWidth(true);
-		scrollPane.setFitToHeight(true);
-		newTab.setContent(scrollPane);
-		return newTab;
+	private TabPane buildTabPane() {
+		TabPane tabPane = new TabPane();
+		handleTabSelection(tabPane);
+		handleTabChangeListener(tabPane);
+		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+		return tabPane;
 	}
 
 	private void handleTabSelection(TabPane tabPane) {
@@ -163,12 +131,38 @@ public class OptionPanel {
 		});
 	}
 
-	private void buildButtonBar(BorderPane pane) {
+	private BorderPane buildProgressPane() {
+		BorderPane borderPane = new BorderPane();
+//		borderPane.setCenter(new ProgressIndicator());
+		return borderPane;
+	}
+
+	private StackPane buildStackPane(TabPane tabPane, BorderPane borderPane) {
+		StackPane stackPane = new StackPane();
+		stackPane.getChildren().addAll(tabPane, borderPane);
+		return stackPane;
+	}
+
+	private void asynchronouslyLoadTabPane(BorderPane borderPane, StackPane stackPane) {
+		OptionPanelTabPaneLoader task = new OptionPanelTabPaneLoader(controls, stackPane);
+		final Thread thread = new Thread(task, "OptionPanelTabPaneLoader");
+		thread.start();
+		task.setOnSucceeded(workerStateEvent -> {
+			Platform.runLater(new Runnable() {
+				public void run() {
+					System.out.println("Done with task");
+					stackPane.getChildren().remove(borderPane);
+				}
+			});
+		});
+	}
+
+	private HBox buildButtonBar() {
 		final Button cancelButton = buildCancelButton();
 		final Button okButton = buildOkButton();
 		final HBox buttonBar = buildButtonBarHBox(cancelButton, okButton);
-		pane.setBottom(buttonBar);
-    }
+		return buttonBar;
+	}
 
 	private Button buildCancelButton() {
 		final Button cancelButton = new Button();
@@ -178,11 +172,11 @@ public class OptionPanel {
 		cancelButton.setOnAction(actionEvent -> {
 			closeWindow();
 		});
-	    return cancelButton;
-    }
+		return cancelButton;
+	}
 
 	private Button buildOkButton() {
-	    final Button okButton = new Button();
+		final Button okButton = new Button();
 		//		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
 		okButton.setText(TextUtils.getRawText("ok").replace("&", "_"));
 		okButton.setMnemonicParsing(true);
@@ -194,8 +188,8 @@ public class OptionPanel {
 				}
 			});
 		});
-	    return okButton;
-    }
+		return okButton;
+	}
 
 	private HBox buildButtonBarHBox(final Button cancelButton, final Button okButton) {
 		HBox hbox = new HBox();
