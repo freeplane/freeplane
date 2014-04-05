@@ -46,40 +46,50 @@ import org.freeplane.core.util.TextUtils;
  * @author foltin
  */
 public class PropertyAction extends AFreeplaneAction {
-	/**
-	 *
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private final DefaultMutableTreeNode controls;
 
-	/**
-	 * @param controls
-	 *
-	 */
 	public PropertyAction( final DefaultMutableTreeNode controls) {
 		super("PropertyAction");
 		this.controls = controls;
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	public void actionPerformed(final ActionEvent event) {
 		JDialog dialog = null;
-		if(e != null){
+		dialog = createNewDialog(event, dialog);
+		final OptionPanel options = buildOptionPanel(dialog);
+		final String marshalled = ResourceController.getResourceController().getProperty(
+		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
+		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
+		    marshalled, dialog);
+		setSelectedPanel(options, storage);
+		options.buildPanel(controls);
+		options.setProperties();
+		addDialogListeners(dialog, options);
+		setDialogProperties(dialog, storage);
+	}
+
+	private JDialog createNewDialog(final ActionEvent e, JDialog dialog) {
+		if (e != null) {
 			final Object source = e.getSource();
-			if(source instanceof Component){
+			if (source instanceof Component) {
 				final Window window = SwingUtilities.getWindowAncestor((Component) source);
-				if(window instanceof Dialog){
-					dialog= new JDialog((Dialog)window, true /* modal */);
+				if (window instanceof Dialog) {
+					dialog = new JDialog((Dialog) window, true /* modal */);
 				}
-				else if(window instanceof Frame){
-					dialog= new JDialog((Frame)window, true /* modal */);
+				else if (window instanceof Frame) {
+					dialog = new JDialog((Frame) window, true /* modal */);
 				}
 			}
 		}
-		if(dialog == null)
-			dialog= new JDialog(UITools.getFrame(), true /* modal */);
-		dialog.setResizable(true);
-		dialog.setUndecorated(false);
-		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
+		if (dialog == null)
+			dialog = new JDialog(UITools.getFrame(), true /* modal */);
+		return dialog;
+    }
+
+	private OptionPanel buildOptionPanel(JDialog dialog) {
+	    final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
 			public void writeProperties(final Properties props) {
 				boolean propertiesChanged = false;
 				for (final Object keyObject : props.keySet()) {
@@ -96,28 +106,24 @@ public class PropertyAction extends AFreeplaneAction {
 				}
 			}
 		});
-		final String marshalled = ResourceController.getResourceController().getProperty(
-		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
-		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
-		    marshalled, dialog);
+	    return options;
+    }
+
+	private void setSelectedPanel(final OptionPanel options, final OptionPanelWindowConfigurationStorage storage) {
 		if (storage != null) {
-			options.setSelectedPanel(storage.getPanel());
+			String storagePanelName = storage.getPanel();
+			options.setSelectedPanel(storagePanelName);
 		}
-		options.buildPanel(controls);
-		options.setProperties();
-		final String title = TextUtils.getText("PropertyAction.dialog");
-		dialog.setTitle(title);
-		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		dialog.addWindowListener(new WindowAdapter() {
+    }
+
+	private void addDialogListeners(JDialog dialog, final OptionPanel options) {
+	    dialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent event) {
 				options.closeWindow();
 			}
 		});
 		final Action action = new AbstractAction() {
-			/**
-			 *
-			 */
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
@@ -125,10 +131,26 @@ public class PropertyAction extends AFreeplaneAction {
 			}
 		};
 		UITools.addEscapeActionToDialog(dialog, action);
+    }
+
+	private void setDialogProperties(JDialog dialog, final OptionPanelWindowConfigurationStorage storage) {
+		setDialogTitle(dialog);
+		setDialogBounds(dialog, storage);
+		dialog.setResizable(true);
+		dialog.setUndecorated(false);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);
+	}
+
+	private void setDialogTitle(JDialog dialog) {
+		final String title = TextUtils.getText("PropertyAction.dialog");
+		dialog.setTitle(title);
+	}
+
+	private void setDialogBounds(JDialog dialog, final OptionPanelWindowConfigurationStorage storage) {
 		if (storage == null) {
 			UITools.setBounds(dialog, -1, -1, dialog.getPreferredSize().width + 50, -1);
 		}
-		dialog.setVisible(true);
 	}
 
 	@Override
