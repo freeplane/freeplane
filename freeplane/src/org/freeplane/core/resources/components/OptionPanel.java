@@ -150,7 +150,6 @@ public class OptionPanel {
 		task.setOnSucceeded(workerStateEvent -> {
 			Platform.runLater(new Runnable() {
 				public void run() {
-					System.out.println("Done with task");
 					stackPane.getChildren().remove(borderPane);
 				}
 			});
