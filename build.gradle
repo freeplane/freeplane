@@ -7,3 +7,11 @@ subprojects {
 }
 
 ant.importBuild 'build.xml'
+
+ant_build {
+    dependsOn ":freeplane_ant:assemble"
+}
+
+ant_dist {
+    dependsOn ":freeplane_ant:assemble"
+}
