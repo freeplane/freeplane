@@ -7,13 +7,11 @@ sourceSets {
         java {
             srcDir "./src"
         }
-        resources {
-            srcDir "./template"
-        }
     }
 }
 
 jar {
     baseName "freeplaneant"
+    includes += "./template"
     destinationDir file("./dist")
 }
