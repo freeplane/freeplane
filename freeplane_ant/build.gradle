@@ -11,7 +11,7 @@ sourceSets {
 }
 
 jar {
+    from "./template"
     baseName "freeplaneant"
-    includes += "./template"
     destinationDir file("./dist")
 }
