@@ -1,0 +1,15 @@
+sourceSets {
+    main {
+        java {
+            srcDir "./src/com/inet/jortho"
+        }
+    }
+}
+
+//TODO: This will be refactored at some point once we have a consistent folder structure
+jar {
+    baseName "jortho-0.4+fp1.1.1"
+    destinationDir file("./dist/lib")
+}
+
+ant.importBuild 'build.xml'
