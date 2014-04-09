@@ -39,6 +39,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
+
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Icon;
@@ -59,9 +60,9 @@ import javax.swing.text.DefaultEditorKit.PasteAction;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.NavigationFilter;
+import javax.swing.text.Position.Bias;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.text.Position.Bias;
 import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 import javax.swing.text.StyledEditorKit.ItalicAction;
@@ -495,9 +496,14 @@ public class EditNodeTextField extends EditNodeBase {
 			nodeView.update();
 		if(nodeView.isRoot() && parent instanceof MainView)
 		    parent.setHorizontalAlignment(JLabel.CENTER);
+		final Dimension textFieldSize = textfield.getSize();
+		final Point textFieldCoordinate = new Point();
+		final MapView mapView = nodeView.getMap();
+		UITools.convertPointToAncestor(textfield, textFieldCoordinate, mapView);
 		textfield.getParent().remove(textfield);
 		parent.revalidate();
 		parent.repaint();
+		mapView.repaint(textFieldCoordinate.x, textFieldCoordinate.y, textFieldSize.width, textFieldSize.height);
 		textfield = null;
 	}
 

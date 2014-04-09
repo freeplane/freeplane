@@ -22,6 +22,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.plugin.script.proxy.ConversionException;
 import org.freeplane.plugin.script.proxy.Convertible;
+import org.freeplane.plugin.script.proxy.ConvertibleHtmlText;
 import org.freeplane.plugin.script.proxy.ConvertibleNoteText;
 import org.freeplane.plugin.script.proxy.ConvertibleText;
 import org.junit.BeforeClass;
@@ -41,8 +42,9 @@ public class ConvertibleTest {
 	public static void initStatics() {
 		// we have to start Freeplane to create a Controller for script execution could we avoid that?
 		System.setProperty("org.freeplane.nosplash", "true");
-		final Controller controller = new FreeplaneGUIStarter().createController();
-		new FreeplaneGUIStarter().createModeControllers(controller);
+		final FreeplaneGUIStarter freeplaneGUIStarter = new FreeplaneGUIStarter();
+        final Controller controller = freeplaneGUIStarter.createController();
+		freeplaneGUIStarter.createModeControllers(controller);
 		ResourceController.getResourceController().setProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
 	}
 
@@ -330,7 +332,7 @@ public class ConvertibleTest {
 	public void testConvertibleNodeTextMayNotBeNull() throws ConversionException {
 		boolean exceptionThrown = false;
 		try {
-			final NodeModel nodeModel = new NodeModel(null);
+			final NodeModel nodeModel = newNodeModel();
 			nodeModel.setText(null);
 			// not reached: new ConvertibleNodeText(nodeModel);
 		}
@@ -342,19 +344,76 @@ public class ConvertibleTest {
 
 	@Test
 	public void testConvertibleAttributeValuesMayBeNull() throws ConversionException, ExecuteScriptException {
-		new ConvertibleText(new NodeModel(null), null, null);
+		new ConvertibleText(newNodeModel(), null, null);
 	}
 
 	@Test
-	public void testOtherConvertibleNoteTextMayBeNull() throws ConversionException {
+	public void testConvertibleNoteTextMayBeNull() throws ConversionException {
 		try {
 			// by default there are no notes, i.e. they are null
-			assertNull(new ConvertibleNoteText(new NodeModel(null), null).getText());
+			assertNull(new ConvertibleNoteText(newNodeModel(), null, null).getText());
 		}
 		catch (Exception e) {
-			fail("null texts are allowed for other Convertibles");
+			fail("null texts are allowed for other Convertibles, but got " + e);
 		}
 	}
+
+    @Test
+    public void no_exception_on_invalid_formulas_in_ConvertibleHtmlText() throws ConversionException {
+        try {
+            assertEquals("===ERROR",
+                new ConvertibleHtmlText(newNodeModel(), null, e("html", e("body", "===ERROR"))).getPlain());
+            assertEquals("=hurz!",
+                new ConvertibleHtmlText(newNodeModel(), null, e("html", e("body", "=hurz!"))).getPlain());
+        }
+        catch (Exception e) {
+            fail("formula evaluation may not fail for ConvertibleHtmlText, but got " + e);
+        }
+    }
+
+    @Test
+    public void to_plain_and_text_return_evaluated_ConvertibleHtmlText() throws ConversionException {
+        try {
+            final String html = e("html", e("body", "=1+2"));
+            assertEquals("3", new ConvertibleHtmlText(newNodeModel(), null, html).getPlain());
+            assertEquals("3", new ConvertibleHtmlText(newNodeModel(), null, html).getText());
+        }
+        catch (Exception e) {
+            fail("formula evaluation may not fail for ConvertibleHtmlText, but got " + e);
+        }
+    }
+    
+    @Test
+    public void to_html_and_string_return_original_html_ConvertibleHtmlText() throws ConversionException {
+        try {
+            final String html = e("html", e("body", "=1+2"));
+            assertEquals(html, new ConvertibleHtmlText(newNodeModel(), null, html).getHtml());
+            assertEquals(html, new ConvertibleHtmlText(newNodeModel(), null, html).getString());
+        }
+        catch (Exception e) {
+            fail("formula evaluation may not fail for ConvertibleHtmlText, but got " + e);
+        }
+    }
+
+    private NodeModel newNodeModel() {
+        final MapModel mapModel = Controller.getCurrentModeController().getMapController().newModel();
+        return new NodeModel(mapModel);
+    }
+	
+    @Test
+    public void to_plain_evaluates_formulas_in_ConvertibleHtmlText() throws ConversionException {
+        try {
+            assertEquals("3",
+                new ConvertibleHtmlText(newNodeModel(), null, e("html", e("body", "=1+2"))).getText());
+        }
+        catch (Exception e) {
+            fail("formula evaluation may not fail for ConvertibleHtmlText, but got " + e);
+        }
+    }
+
+    private String e(String tag, String content) {
+        return String.format("<%s>%s</%s>", tag, content, tag);
+    }
 
 	@Test
 	public void testSomethingToString() throws ConversionException, ExecuteScriptException {
