@@ -15,3 +15,5 @@ jar {
     baseName "freeplaneant"
     destinationDir file("./dist")
 }
+
+ant.importBuild 'build.xml'
