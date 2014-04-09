@@ -1,3 +1,9 @@
+ant.importBuild 'build.xml'
+
+dependencies {
+    compile project(':freeplane_ant')
+}
+
 sourceSets {
     main {
         java {
@@ -8,8 +14,8 @@ sourceSets {
 
 //TODO: This will be refactored at some point once we have a consistent folder structure
 jar {
+    dependsOn ant_check_translation
+    from "./src/com/inet/jortho/i18n/"
     baseName "jortho-0.4+fp1.1.1"
     destinationDir file("./dist/lib")
 }
-
-ant.importBuild 'build.xml'
