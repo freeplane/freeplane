@@ -5,5 +5,3 @@ dependencies {
 jar {
     baseName "freeplaneant"
 }
-
-ant.importBuild 'build.xml'
