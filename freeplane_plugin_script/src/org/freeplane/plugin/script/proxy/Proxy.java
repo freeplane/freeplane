@@ -910,7 +910,14 @@ public interface Proxy {
 		 * @since 1.2 */
 		String getDetailsText();
 
-		/** returns the text of the details as a Convertible like {@link #getNote()} for notes.
+		/** returns the text of the details as a Convertible like {@link #getNote()} for notes:
+		 * <ul>
+		 * <li>node.details.to.plain plain text of the node, possibly after formula evaluation
+		 * <li>node.details.plain the same.
+		 * <li>node.details.string the same.
+		 * <li>node.details.html the raw html text. No formula evaluation is applied.
+		 * <li>node.details.text the same.
+		 * </ul>
 		 * @since 1.2 */
 		Convertible getDetails();
 
@@ -940,10 +947,16 @@ public interface Proxy {
 		 * current filter are counted. */
 		int getNodeLevel(boolean countHidden);
 
-		/**
-		 * Returns a Convertible object for the plain not text. Convertibles behave like Strings in most respects.
+		/** returns the text of the details as a Convertible. Convertibles behave like Strings in most respects.
 		 * Additionally String methods are overridden to handle Convertible arguments as if the argument were the
 		 * result of Convertible.getText().
+         * <ul>
+         * <li>node.note.to.plain plain text of the node, possibly after formula evaluation
+         * <li>node.note.plain the same.
+         * <li>node.note.text the same.
+         * <li>node.note.html the raw html text. No formula evaluation is applied.
+         * <li>node.note.string the same.
+         * </ul>
 		 * @return Convertible getString(), getText() and toString() will return plain text instead of the HTML.
 		 *         Use {@link #getNoteText()} to get the HTML text.
 		 * @throws ExecuteScriptException 
@@ -1164,6 +1177,9 @@ public interface Proxy {
 		 * @since 1.2
 		 */
 		void setDetails(Object details);
+
+        /** Sets the raw (HTML) note text. */
+        void setDetailsText(String html);
 
 		/** use node.hideDetails = true/false to control visibility of details.
 		 * @since 1.2 */
