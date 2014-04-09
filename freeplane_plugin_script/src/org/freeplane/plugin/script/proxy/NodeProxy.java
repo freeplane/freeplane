@@ -160,16 +160,21 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	public void setDetails(Object details) {
-		final MTextController textController = (MTextController) TextController.getController();
-		if (details == null) {
+		setDetailsText(convertConvertibleToHtml(details));
+	}
+
+	// Node: R/W
+    public void setDetailsText(String html) {
+        final MTextController textController = (MTextController) TextController.getController();
+		if (html == null) {
 			textController.setDetailsHidden(getDelegate(), false);
 			textController.setDetails(getDelegate(), null);
 		}
 		else{
-			textController.setDetails(getDelegate(), convertConvertibleToHtml(details));
+			textController.setDetails(getDelegate(), html);
 		}
-	}
-
+    }
+	
 	// Node: R/W
 	public void setHideDetails(boolean hide) {
 		MTextController controller = (MTextController) MTextController.getController();
@@ -205,7 +210,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public Convertible getDetails() {
 		final String detailsText = DetailTextModel.getDetailTextText(getDelegate());
-		return (detailsText == null) ? null : new ConvertibleText(getDelegate(), getScriptContext(), detailsText);
+		return (detailsText == null) ? null : new ConvertibleHtmlText(getDelegate(), getScriptContext(), detailsText);
 	}
 	
 	// NodeRO: R
@@ -269,7 +274,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public Convertible getNote() {
 		final String noteText = getNoteText();
-		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext());
+		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext(), noteText);
 	}
 
 	// NodeRO: R
