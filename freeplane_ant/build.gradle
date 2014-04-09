@@ -2,18 +2,8 @@ dependencies {
     compile group: 'org.apache.ant', name: 'ant', version: '1.9.3'
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir "./src"
-        }
-    }
-}
-
 jar {
-    from "./template"
     baseName "freeplaneant"
-    destinationDir file("./dist")
 }
 
 ant.importBuild 'build.xml'
