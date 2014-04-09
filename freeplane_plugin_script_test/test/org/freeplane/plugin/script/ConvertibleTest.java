@@ -42,8 +42,9 @@ public class ConvertibleTest {
 	public static void initStatics() {
 		// we have to start Freeplane to create a Controller for script execution could we avoid that?
 		System.setProperty("org.freeplane.nosplash", "true");
-		final Controller controller = new FreeplaneGUIStarter().createController();
-		new FreeplaneGUIStarter().createModeControllers(controller);
+		final FreeplaneGUIStarter freeplaneGUIStarter = new FreeplaneGUIStarter();
+        final Controller controller = freeplaneGUIStarter.createController();
+		freeplaneGUIStarter.createModeControllers(controller);
 		ResourceController.getResourceController().setProperty(ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
 	}
 
