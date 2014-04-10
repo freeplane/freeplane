@@ -1,5 +1,6 @@
 package org.freeplane;
 
+import org.freeplane.core.util.HtmlUtilsTest;
 import org.freeplane.features.format.FormattedFormulaTest;
 import org.freeplane.features.format.FormattedNumberTest;
 import org.freeplane.features.format.FormattedObjectTest;
@@ -15,7 +16,9 @@ import org.junit.runners.Suite;
         , FormattedFormulaTest.class //
         , PatternFormatTest.class //
         , ParserTest.class //
-        , ScannerTest.class })
+        , ScannerTest.class //
+        , HtmlUtilsTest.class //
+})
 public class AllFreeplaneUnitTests {
 	//nothing
 }
