@@ -1,9 +1,42 @@
+configurations {
+    ant_tasks
+}
+
 dependencies {
-    compile project(':freeplane_ant')
+    ant_tasks project(':freeplane_ant')
 }
 
 jar {
+    dependsOn 'check_translation'
     baseName "jortho"
 }
 
-ant.importBuild 'build.xml'
+task format_translation(dependsOn: configurations.ant_tasks) << {
+    ant.taskdef(
+    name: "format_translation",
+    classname: "org.freeplane.ant.FormatTranslation",
+    classpath: configurations.ant_tasks.asPath
+    )
+
+    //TODO: Refer to resources in a better way. Should be able to get this from
+    //the source sets.
+    ant.format_translation(
+        dir: file("./src/main/resources/com/inet/jortho/i18n"),
+        includes: "*.properties",
+        eolstyle: "unix"
+    )
+}
+
+task check_translation(dependsOn: configurations.ant_tasks) << {
+    ant.taskdef(
+    name: "check_translation",
+    classname: "org.freeplane.ant.FormatTranslationCheck",
+    classpath: configurations.ant_tasks.asPath
+    )
+
+    ant.check_translation(
+        dir: file("./src/main/resources/com/inet/jortho/i18n"),
+        includes: "*.properties",
+        eolstyle: "unix"
+    )
+}
