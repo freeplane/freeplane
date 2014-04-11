@@ -39,7 +39,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -48,7 +47,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
-import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
 import org.freeplane.view.swing.ui.LinkNavigatorMouseListener;
@@ -230,22 +228,10 @@ class NodeViewFactory {
 		String oldText = note != null ? note.getText() : null;
 		String newText  = null;
 		if (nodeView.getMap().showNotes()) {
-			final TextController textController = TextController.getController();
 			final NodeModel model = nodeView.getModel();
 			final NoteModel extension = NoteModel.getNote(model);
-			if(extension != null){
-				final String originalText = extension.getHtml();
-				try {
-					newText = textController.getTransformedTextNoThrow(originalText, model, extension);
-					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
-					if (markTransformedText && newText != originalText)
-						newText = colorize(newText, "green");
-				}
-				catch (Exception e) {
-					newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
-						.replace("\n", "<br>"), "red");
-				}
-			}
+            if (extension != null)
+                newText = extension.getHtml();
 		}
 		if (oldText == null && newText == null) {
 			return;
@@ -266,9 +252,6 @@ class NodeViewFactory {
 		view.setFont(nodeView.getMap().getDefaultNoteFont());
 		view.updateText(newText);
 
-	}
-	private String colorize(final String text, String color) {
-		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
 	}
 
 	void updateDetails(NodeView nodeView) {
