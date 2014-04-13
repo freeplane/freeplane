@@ -881,13 +881,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	ArrayList<NodeModel> getSelectedNodesSortedByY(final boolean differentSubtrees) {
 		validateSelecteds();
 		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap<Integer, LinkedList<NodeModel>>();
-		iteration: for (final NodeView view : selection.getSelectedSet()) {
+		for (final NodeView view : selection.getSelectedSet()) {
 			if (differentSubtrees) {
-				for (Component parent = view.getParent(); parent != null; parent = parent.getParent()) {
-					if (selection.getSelectedSet().contains(parent)) {
-						continue iteration;
-					}
-				}
+				if(viewBelongsToSelectedSubtreeOrItsClone(view))
+					continue;
 			}
 			final Point point = new Point();
 			UITools.convertPointToAncestor(view.getParent(), point, this);
@@ -910,6 +907,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		return selectedNodes;
 	}
+
+	private boolean viewBelongsToSelectedSubtreeOrItsClone(final NodeView view) {
+		HashSet<NodeModel> selectedNodesWithClones = new HashSet<NodeModel>();
+		for (NodeView selectedView : selection.getSelectedList())
+			for(NodeModel clone : selectedView.getModel().clones())
+				selectedNodesWithClones.add(clone);
+			
+	    for (Component parent = view.getParent(); parent instanceof NodeView; parent = parent.getParent()) {
+	    	if (selectedNodesWithClones.contains(((NodeView)parent).getModel())) {
+	    		return true;
+	    	}
+	    }
+	    return false;
+    }
 
 	/**
 	 * @return
