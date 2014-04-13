@@ -1,0 +1,15 @@
+dependencies {
+    compile project(':JOrtho_0.4_freeplane')
+
+    compile 'commons-lang:commons-lang:2.6',
+            'commons-io:commons-io:2.4',
+            'commons-codec:commons-codec:1.7',
+            'com.jgoodies:forms:1.2.1',
+            'com.github.insubstantial:flamingo:7.2.1',
+            'com.github.insubstantial:substance:7.2.1',
+            'com.github.insubstantial:substance-flamingo:7.2.1',
+            'com.github.insubstantial:substance-swingx:7.2.1',
+            'com.github.insubstantial:trident:7.2.1'
+
+    compile files('./lib/SimplyHTML.jar','./lib/idw-gpl.jar')
+}

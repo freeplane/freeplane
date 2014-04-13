@@ -5,19 +5,14 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven {
+            url 'http://www.knopflerfish.org/maven2/'
+        }
     }
 
     dependencies {
         testCompile group: 'junit', name: 'junit', version: '4.11'
+        //This is really only for the plugins?
+        compile     group: 'org.knopflerfish', name:'frameworkbundle', version: '4.1.10'
     }
-}
-
-ant.importBuild 'build.xml'
-
-ant_build {
-    dependsOn ":freeplane_ant:assemble"
-}
-
-ant_dist {
-    dependsOn ":freeplane_ant:assemble"
 }
