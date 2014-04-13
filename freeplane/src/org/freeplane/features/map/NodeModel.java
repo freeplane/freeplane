@@ -530,7 +530,7 @@ public class NodeModel{
     }
 
 
-	private boolean isAttached() {
+	boolean isAttached() {
 	    return clones.size() != 0;
     }
 
