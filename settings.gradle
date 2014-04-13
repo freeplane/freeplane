@@ -1,1 +1,7 @@
-include 'freeplane', 'freeplane_ant', 'freeplane_framework', 'JOrtho_0.4_freeplane'
+include 'freeplane',
+        'freeplane_ant',
+        'freeplane_framework',
+
+        'freeplane_plugin_bugreport',
+
+        'JOrtho_0.4_freeplane'
