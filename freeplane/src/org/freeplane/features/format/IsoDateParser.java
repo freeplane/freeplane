@@ -35,6 +35,8 @@ public class IsoDateParser extends Parser {
 			if (string == null)
 				return null;
 			final FormattedDate date = FormattedDate.toDateISO(string);
+			if(date == null)
+				return null;
 			final String type = date.containsTime() ? IFormattedObject.TYPE_DATETIME : IFormattedObject.TYPE_DATE;
 			return FormattedDate.createDefaultFormattedDate(date.getTime(), type);
 		}
