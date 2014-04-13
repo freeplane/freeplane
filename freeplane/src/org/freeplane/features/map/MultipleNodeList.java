@@ -75,13 +75,6 @@ public class MultipleNodeList implements Clones {
 	    return node != null && head().equals(node.clones().head());
     }
 
-	public NodeModel otherThan(NodeModel node) {
-	    final NodeModel head = head();
-	    if(head.equals(node))
-	    	return nodes.get(1);
-		return head;
-    }
-
 	public NodeModel head() {
 	    return nodes.get(0);
     }

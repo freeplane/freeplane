@@ -37,6 +37,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -239,6 +240,8 @@ public class MLinkController extends LinkController {
 	 * @author Dimitry Polivaev
 	 */
 	private final class NodeDeletionListener implements IMapChangeListener {
+		private HashSet<NodeModel> deletedSources;
+
 		public void mapChanged(final MapChangeEvent event) {
 		}
 
@@ -261,7 +264,9 @@ public class MLinkController extends LinkController {
 		}
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
+			deletedSources = new HashSet<NodeModel>();
 			onChange(model, true);
+			deletedSources = null;
 		}
 
 		private void onChange(final NodeModel model, final boolean delete) {
@@ -289,16 +294,27 @@ public class MLinkController extends LinkController {
 		}
 
 		private void updateMapLinksForDeletedSourceClone(MapLinks links, NodeModel model) {
+			deletedSources.add(model);
 	        final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
 	        if (nodeLinks != null) {
 	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
 	        		links.remove(link);
 	        	}
-	        	nodeLinks.setSource(model.clones().otherThan(model));
-	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
-	        		links.add(link);
+	        	final NodeModel notDeletedClone = notDeletedClone(model);
+	        	if(notDeletedClone != null){
+	        		nodeLinks.setSource(notDeletedClone);
+	        		for (final NodeLinkModel link : nodeLinks.getLinks()) {
+	        			links.add(link);
+	        		}
 	        	}
 	        }
+        }
+
+		private NodeModel notDeletedClone(NodeModel model) {
+			for(NodeModel clone :model.clones())
+				if(! deletedSources.contains(clone))
+					return clone;
+	        return null;
         }
 
 		private void updateMapLinksForSourceNodeWithoutClones(final MapLinks links, final NodeModel model, final boolean delete) {

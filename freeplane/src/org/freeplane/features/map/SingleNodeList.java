@@ -69,10 +69,6 @@ public class SingleNodeList implements Clones{
 	    return nodeModel.equals(node);
     }
 
-	public NodeModel otherThan(NodeModel node) {
-		throw new IllegalStateException();
-    }
-
 	public NodeModel head() {
 	    return nodeModel;
     }
