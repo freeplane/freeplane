@@ -751,7 +751,8 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #getRoot()} instead. */
 		Node getRootNode();
 
-		/** returns the node if the map contains it or null otherwise. */
+		/** get node by id.
+		 * @return the node if the map contains it or null otherwise. */
 		Node node(String id);
 
 		/** returns the filenname of the map as a java.io.File object if available or null otherwise. */
