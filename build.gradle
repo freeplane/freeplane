@@ -12,9 +12,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/}) {
-    apply plugin: 'osgi'
-
+configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/, /^freeplane_framework$/]}){
     repositories {
         maven {
             url 'http://www.knopflerfish.org/maven2/'
@@ -22,6 +20,10 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/})
     }
 
     dependencies {
-        compile     group: 'org.knopflerfish', name:'frameworkbundle', version: '4.1.10'
+        compile group: 'org.knopflerfish', name:'frameworkbundle', version: '4.1.10'
     }
+}
+
+configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/]}) {
+    apply plugin: 'osgi'
 }
