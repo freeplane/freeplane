@@ -289,8 +289,12 @@ public class MapController extends SelectionController implements IExtension{
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
 		createActions();
 	}
+	
 
-	public void setFolded(final NodeModel node, final boolean folded) {
+	/**
+	 * Don't call me directly!!! The basic folding method. Without undo.
+	 */
+	public void _setFolded(final NodeModel node, final boolean folded) {
 		if (node == null) {
 			throw new IllegalArgumentException("setFolded was called with a null node.");
 		}
@@ -310,6 +314,10 @@ public class MapController extends SelectionController implements IExtension{
 		}
 		else if(childShown)
 	        fireNodeUnfold(node);
+	}
+
+	public void setFolded(final NodeModel node, final boolean folded) {
+		_setFolded(node, folded);
 	}
 
 	public boolean showNextChild(final NodeModel node) {

@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -41,6 +42,7 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -56,6 +58,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryNode;
@@ -806,5 +809,59 @@ public class MMapController extends MapController {
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
+	}
+	
+
+	/**
+	 */
+	@Override
+	public void setFolded(final NodeModel node, final boolean folded) {
+		if (node.getChildCount() == 0) {
+			return;
+		}
+		if (node.isFolded() == folded) {
+			return;
+		}
+		toggleFolded(node);
+	}
+
+	@Override
+	public void toggleFolded() {
+		toggleFolded(getSelectedNodes());
+	}
+
+	@Override
+	public void toggleFolded(final Collection<NodeModel> collection) {
+		Iterator<NodeModel> iterator = collection.iterator();
+		while (iterator.hasNext()) {
+			toggleFolded((NodeModel) iterator.next());
+		}
+	}
+
+	public void toggleFolded(final NodeModel node) {
+		if (!getMModeController().getMapController().hasChildren(node)
+		        && !StringUtils.equals(ResourceController.getResourceController().getProperty("enable_leaves_folding"),
+		            "true")) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				_setFolded(node, !node.isFolded());
+				final ResourceController resourceController = ResourceController.getResourceController();
+				if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+					setSaved(node.getMap(), false);
+				}
+				nodeRefresh(node);
+			}
+
+			public String getDescription() {
+				return "toggleFolded";
+			}
+
+			public void undo() {
+				act();
+			}
+		};
+		getMModeController().execute(actor, node.getMap());
 	}
 }
