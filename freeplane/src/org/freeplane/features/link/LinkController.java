@@ -148,7 +148,7 @@ public class LinkController extends SelectionController implements IExtension {
 	private void addLinks(final JComponent arrowLinkPopup, final NodeModel source) {
 		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
-			GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
+			GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, arrowLinkPopup, source);
 			addAction(arrowLinkPopup, gotoLinkNodeAction);
 		}
 	}
@@ -233,11 +233,12 @@ public class LinkController extends SelectionController implements IExtension {
 	            				}
 	            				else
 	            					target = node.getMap().getNodeForID(targetID);
-	            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
-	            				if(!(link instanceof ConnectorModel)){
-	            					gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
-	            				}
-	            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
+	            				// TODO: couldn't figure out what this does
+//	            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, , target);
+//	            				if(!(link instanceof ConnectorModel)){
+//	            					gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
+//	            				}
+//	            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
 	            			}
 	            		}
 

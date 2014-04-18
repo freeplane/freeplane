@@ -22,6 +22,8 @@ package org.freeplane.features.link;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
@@ -37,11 +39,13 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final LinkController linkController;
 	private final NodeModel target;
+	private final JComponent arrowLinkPopup;
 
-	public GotoLinkNodeAction(final LinkController linkController, final NodeModel target) {
+	public GotoLinkNodeAction(final LinkController linkController, final JComponent arrowLinkPopup, final NodeModel target) {
 		super("GotoLinkNodeAction");
 		this.target = target;
 		this.linkController = linkController;
+		this.arrowLinkPopup = arrowLinkPopup;
 		if (target != null) {
 			final String adaptedText = TextController.getController().getShortText(target);
 			putValue(Action.NAME, TextUtils.getText("follow_graphical_link") + adaptedText);
@@ -53,5 +57,6 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 		linkController.onDeselect(Controller.getCurrentModeController().getMapController().getSelectedNode());
 		Controller.getCurrentModeController().getMapController().select(target);
 		linkController.onSelect(target);
+		SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
 	}
 }
