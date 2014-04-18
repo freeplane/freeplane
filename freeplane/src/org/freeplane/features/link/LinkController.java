@@ -49,6 +49,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
@@ -338,7 +339,7 @@ public class LinkController extends SelectionController implements IExtension {
 	public Component getPopupForModel(final java.lang.Object obj) {
 		if (obj instanceof ConnectorModel) {
 			final ConnectorModel link = (ConnectorModel) obj;
-			final Box arrowLinkPopup = Box.createVerticalBox();
+			final JPopupMenu arrowLinkPopup = new JPopupMenu();
 			arrowLinkPopup.setName(TextUtils.getText("connector"));
 			createArrowLinkPopup(link, arrowLinkPopup);
 			return arrowLinkPopup;
