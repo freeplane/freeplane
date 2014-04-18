@@ -554,14 +554,6 @@
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="structured_icon_toolbar"/>
 </node>
-<node TEXT="Show note icons" ID="ID_1965269499" CREATED="1370183720047" MODIFIED="1370183720047">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="show_note_icons"/>
-</node>
-<node TEXT="Show icon for attributes" ID="ID_339796640" CREATED="1370183720047" MODIFIED="1370183720047">
-<attribute NAME="type" VALUE="boolean"/>
-<attribute NAME="name" VALUE="show_icon_for_attributes"/>
-</node>
 </node>
 </node>
 <node TEXT="Keystrokes" FOLDED="true" POSITION="right" ID="ID_618364125" CREATED="1370183720048" MODIFIED="1370183720048">
