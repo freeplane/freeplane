@@ -88,7 +88,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					return;
 				}
 
-				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
+				if(inside && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
 					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
