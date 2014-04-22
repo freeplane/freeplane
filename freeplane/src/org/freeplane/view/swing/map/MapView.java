@@ -1241,35 +1241,66 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return selectSibling(continious, false, false);
 	}
 
-	private boolean selectSibling(boolean continious, boolean page, boolean down) {
-		NodeView nextSelected = getSelected();
-		do {
+	private boolean selectSibling(final boolean continious, final boolean page, final boolean down) {
+		final NodeView oldSelectionEnd = selection.getSelectionEnd();
+		if(oldSelectionEnd == null)
+			return false;
+		NodeView nextSelected = oldSelectionEnd;
+		{
 			final NodeView nextVisibleSibling = getNextVisibleSibling(nextSelected, down);
-			if(nextSelected == null || nextSelected == nextVisibleSibling)
+			if (nextSelected == nextVisibleSibling)
 				return false;
 			nextSelected = nextVisibleSibling;
-		} while (nextSelected.isSelected());
+		}
 		if(page){
 			NodeView sibling = nextSelected;
 			for(;;)  {
 				sibling = getNextVisibleSibling(sibling, down);
-				if(sibling == nextSelected || sibling.getParentView() != nextSelected.getParentView())
+				final boolean noNextNodeFound = sibling == nextSelected;
+				if(noNextNodeFound 
+						|| sibling.getParentView() != nextSelected.getParentView()
+						|| sibling.isSelected() && sibling.getParentView() != oldSelectionEnd.getParentView()
+						)
 					break;
 				nextSelected = sibling;
 			}
+			if(nextSelected.isSelected() && nextSelected.getParentView() == oldSelectionEnd.getParentView())
+				nextSelected = getNextVisibleSibling(nextSelected, down);
 		}
 		if(continious){
-			selectAsTheOnlyOneSelected(getSelected());
-			NodeView node = getSelected();
-			do{
-				node = getNextVisibleSibling(node, down);
-				addSelected(node, false);
-			}while(node != nextSelected);
-			scrollNodeToVisible(nextSelected);
+			final NodeView selectionStart = selection.getSelectionStart();
+			selectAsTheOnlyOneSelected(selectionStart);
+			Boolean selectsDown = selectsDown(selectionStart, nextSelected);
+			if(selectsDown != null){
+				NodeView node = selectionStart;
+				do{
+					node = getNextVisibleSibling(node, selectsDown);
+					addSelected(node, false);
+				}while(node != nextSelected);
+				selection.setSelectionEnd(nextSelected);
+				scrollNodeToVisible(nextSelected);
+			}
 		}
 		else
 			selectAsTheOnlyOneSelected(nextSelected);
 		return true;
+    }
+
+	private Boolean selectsDown(NodeView first, NodeView second) {
+		if(first == second)
+			return null;
+		NodeView node = first;
+		for(boolean down : new boolean[]{true, false}){
+			for(;;){
+				final NodeView nextVisibleSibling = getNextVisibleSibling(node, down);
+				if(node == nextVisibleSibling)
+					break;
+				node = nextVisibleSibling;
+				if(node == second)
+					return down;
+			};
+		}
+		return null;
     }
 
 	public NodeView getNextVisibleSibling(NodeView node, boolean down) {
