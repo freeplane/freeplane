@@ -103,6 +103,7 @@ public class NodeModel{
 	private NodeModel(NodeModel toBeCloned){
 		this.map = toBeCloned.map;
 		this.sharedData = toBeCloned.sharedData;
+		this.folded = toBeCloned.folded;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
 		clones = new DetachedNodeList(this, toBeCloned);
