@@ -24,7 +24,7 @@ public class ScriptCompiler {
 
     private static void compileScriptsInDirectory(File dir) {
         // FIXME: compile .js and the like too
-        final Collection<File> files = FileUtils.listFiles(dir, new String[] { ".groovy" }, true);
+        final Collection<File> files = FileUtils.listFiles(dir, new String[] { "groovy" }, true);
         if (!files.isEmpty())
             compile(dir, files);
     }
