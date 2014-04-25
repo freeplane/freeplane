@@ -232,7 +232,7 @@ class ScriptingRegistration {
 			//TODO - impl. ribbon contribution
 			createUserLibDirectory();
 		}
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(10,
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(100,
 			new ScriptConditionController());
 	}
 

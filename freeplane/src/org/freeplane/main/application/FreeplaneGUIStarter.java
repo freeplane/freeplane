@@ -186,7 +186,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			controller.addAction(new NextPresentationItemAction());
 			controller.addAction(new ShowSelectionAsRectangleAction());
 			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
-			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(7,
+			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
 			    new LogicalStyleFilterController());
 			MapController.install();
 

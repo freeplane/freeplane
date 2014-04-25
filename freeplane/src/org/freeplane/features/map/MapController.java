@@ -49,6 +49,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
 import org.freeplane.features.mode.AController.IActionOnChange;
@@ -191,8 +192,9 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(8,
-		    new NodeLevelConditionController());
+		final ConditionFactory conditionFactory = FilterController.getCurrentFilterController().getConditionFactory();
+		conditionFactory.addConditionController(80, new NodeLevelConditionController());
+		conditionFactory.addConditionController(75, new CloneConditionController());
 	}
 
 

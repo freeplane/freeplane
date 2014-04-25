@@ -81,7 +81,7 @@ public class TextController implements IExtension {
     }
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(0,
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(5,
 		    new NodeTextConditionController());
 	}
 

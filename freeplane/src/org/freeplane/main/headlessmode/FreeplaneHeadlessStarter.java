@@ -19,8 +19,6 @@
  */
 package org.freeplane.main.headlessmode;
 
-import java.awt.EventQueue;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.Set;
 
@@ -37,7 +35,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.print.PrintController;
 import org.freeplane.features.styles.LogicalStyleFilterController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
@@ -45,9 +42,6 @@ import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneSecurityManager;
 import org.freeplane.main.application.FreeplaneStarter;
-import org.freeplane.main.browsemode.BModeControllerFactory;
-import org.freeplane.main.filemode.FModeControllerFactory;
-import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 
 public class FreeplaneHeadlessStarter implements FreeplaneStarter {
@@ -85,7 +79,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			LinkController.install();
 			IconController.install();
 			HelpController.install();
-			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(7,
+			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
 			    new LogicalStyleFilterController());
 			MapController.install();
 

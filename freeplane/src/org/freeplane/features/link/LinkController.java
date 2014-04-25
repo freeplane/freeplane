@@ -100,7 +100,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(3, new LinkConditionController());
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(30, new LinkConditionController());
 	}
 
 	public static void install( final LinkController linkController) {
