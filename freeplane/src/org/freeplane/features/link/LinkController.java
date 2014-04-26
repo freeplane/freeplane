@@ -72,6 +72,7 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.map.CloneStateIconSupplier;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -148,6 +149,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
 			GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
+			gotoLinkNodeAction.configureText("follow_graphical_link", source);
 			addAction(arrowLinkPopup, gotoLinkNodeAction);
 		}
 	}
@@ -214,9 +216,7 @@ public class LinkController extends SelectionController implements IExtension {
 							final NodeModel node = selection.getSelected();
 	            			Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>( NodeLinks.getLinks(node));
 	            			links.addAll(getLinksTo(node));
-	            			if(links.isEmpty())
-	            				return;
-	            			builder.addSeparator(key, MenuBuilder.AS_CHILD);
+	            			boolean firstAction = true;
 	            			for(NodeLinkModel link : links){
 	            				final String targetID = link.getTargetID();
 	            				final NodeModel target;
@@ -233,10 +233,32 @@ public class LinkController extends SelectionController implements IExtension {
 	            				else
 	            					target = node.getMap().getNodeForID(targetID);
 	            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
+	            				gotoLinkNodeAction.configureText("follow_graphical_link", target);
 	            				if(!(link instanceof ConnectorModel)){
 	            					gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
 	            				}
+	            				if(firstAction){
+	            					builder.addSeparator(key, MenuBuilder.AS_CHILD);
+	            					firstAction = false;
+	            				}
 	            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
+	            			}
+	            			final NodeModel parentNode = node.getParentNode();
+	            			firstAction = true;
+	            			if(parentNode != null){
+	            				for(NodeModel clone : node.clones()){
+									if(!clone.equals(node)){
+			            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
+			            				NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
+										gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
+			            				gotoLinkNodeAction.putValue(Action.SMALL_ICON, CloneStateIconSupplier.CLONEROOT_ICON.getIcon());
+			            				if(firstAction){
+			            					builder.addSeparator(key, MenuBuilder.AS_CHILD);
+			            					firstAction = false;
+			            				}
+			            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
+									}
+	            				}
 	            			}
 	            		}
 

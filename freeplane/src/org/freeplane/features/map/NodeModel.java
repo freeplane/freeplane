@@ -640,4 +640,16 @@ public class NodeModel{
 	    return clones().contains(ancestorClone);
     }
 
+	public NodeModel getSubtreeRoot() {
+		if(isSubtreeRoot())
+			return this;
+		else
+			return getParentNode().getSubtreeRoot();
+			
+    }
+
+	public boolean isSubtreeRoot() {
+	    return parent == null || parent.clones.size() < clones.size();
+    }
+
 }

@@ -34,6 +34,7 @@ import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.CloneStateIconSupplier;
 import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
@@ -106,6 +107,7 @@ public class BModeControllerFactory {
 		new ViewerController();
 		EncryptionController.install(new EncryptionController(modeController));
 		new AutomaticLayoutController();
+		new CloneStateIconSupplier().registerStateIconProvider();
 		return modeController;
 	}
 }
