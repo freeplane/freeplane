@@ -263,6 +263,7 @@
 				    <ribbon_action action="ClearLinkAnchorAction" />										
                 </ribbon_action>
                 <ribbon_contributor name="linkList" menu_key="menu_goto_links" />
+                <ribbon_contributor name="linkList" menu_key="menu_goto_clones" />
 			</ribbon_band>
 			<ribbon_band name="icons" resize_policies="Mirror">
                 <ribbon_action action="IconSelectionPlugin" />

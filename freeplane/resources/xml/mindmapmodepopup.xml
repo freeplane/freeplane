@@ -40,7 +40,7 @@
 <menu_action action="CloudAction" accelerator="control shift B"/>
 <menu_submenu name="menu_applyStyle" name_ref="menu_applyStyle" menu_key="node_popup_styles"/>
 <menu_action action="AddConnectorAction" accelerator="control L"/>
-<menu_submenu name="links" name_ref="menu_links" menu_key="popup_navigate">
+<menu_submenu name="links" name_ref="menu_links" menu_key="popup_links">
 <menu_action action="SetLinkByFileChooserAction" accelerator="control shift K"/>
 <menu_action action="SetLinkByTextFieldAction" accelerator="control K"/>
 <menu_action action="ExtractLinkFromTextAction"/>
@@ -53,6 +53,7 @@
 <menu_action action="MakeLinkToAnchorAction" accelerator=""/>
 <menu_action action="ClearLinkAnchorAction" accelerator=""/>
 <menu_category menu_key="popup_goto_links"/>
+<menu_category menu_key="popup_goto_clones"/>
 </menu_submenu>
 <menu_separator/>
 <menu_action action="EnterPassword"/>

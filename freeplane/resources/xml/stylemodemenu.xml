@@ -123,7 +123,7 @@
 			</menu_category>
 			<menu_action action="NodeWidthAction" />
 		</menu_submenu>
-		<menu_submenu name="navigate" name_ref="menu_navigate">
+		<menu_submenu name="navigate" name_ref="menu_links">
 			<menu_category name="navigate">
 				<menu_category name="folding">
 					<menu_action accelerator="SPACE" action="ToggleFoldedAction" />

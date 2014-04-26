@@ -195,8 +195,10 @@ public class LinkController extends SelectionController implements IExtension {
 	private void createActions() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new FollowLinkAction());
-		modeController.addMenuContributor(new LinkMenuContributor("menu_navigate", "menu_goto_links"));
-		modeController.addMenuContributor(new LinkMenuContributor("popup_navigate", "popup_goto_links"));
+		modeController.addMenuContributor(new LinkMenuContributor("menu_links", "menu_goto_links"));
+		modeController.addMenuContributor(new LinkMenuContributor("popup_links", "popup_goto_links"));
+		modeController.addMenuContributor(new ClonesMenuContributor("menu_links", "menu_goto_clones"));
+		modeController.addMenuContributor(new ClonesMenuContributor("popup_links", "popup_goto_clones"));
 	}
 
     private class LinkMenuContributor implements IMenuContributor {
@@ -243,9 +245,37 @@ public class LinkController extends SelectionController implements IExtension {
 	            				}
 	            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
 	            			}
-	            			final NodeModel parentNode = node.getParentNode();
-	            			firstAction = true;
-	            			if(parentNode != null){
+	            		}
+
+	            		public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+	            			builder.removeChildElements(key);
+	            		}
+
+	            		public void popupMenuCanceled(PopupMenuEvent e) {
+	            		}
+	            	});
+            }
+	    }
+    }
+
+    private class ClonesMenuContributor implements IMenuContributor {
+    	final String key;
+	    public ClonesMenuContributor(String menuKey, String key) {
+	        super();
+	        this.key = key;
+        }
+		public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
+			if(builder.contains(key)) {
+				builder.addPopupMenuListener((DefaultMutableTreeNode)builder.get(key).getParent(), new PopupMenuListener(
+	            		) {
+	            		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+	            			final IMapSelection selection = modeController.getController().getSelection();
+	            			if(selection == null)
+	            				return;
+							final NodeModel node = selection.getSelected();
+	            			boolean firstAction = true;
+	            			NodeModel parentNode = node.getParentNode();
+							if(parentNode != null){
 	            				for(NodeModel clone : node.clones()){
 									if(!clone.equals(node)){
 			            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
@@ -272,7 +302,7 @@ public class LinkController extends SelectionController implements IExtension {
             }
 	    }
     }
-	@SuppressWarnings("serial")
+    @SuppressWarnings("serial")
     public static final class ClosePopupAction extends AbstractAction {
         final private String reason;
 
