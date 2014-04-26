@@ -62,11 +62,11 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ConditionSnapshotFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
-import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
@@ -318,8 +318,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		if (selectedCondition == null || selectedCondition.equals(NO_FILTERING)) {
 			filterCondition = null;
 		}
-		else if (selectedCondition.equals(selectedViewCondition)) {
-			filterCondition = new SelectedViewSnapshotCondition();
+		else if (selectedCondition instanceof ConditionSnapshotFactory) {
+			filterCondition =  ((ConditionSnapshotFactory)selectedCondition).createSnapshotCondition();
 		}
 		else {
 			filterCondition = selectedCondition;

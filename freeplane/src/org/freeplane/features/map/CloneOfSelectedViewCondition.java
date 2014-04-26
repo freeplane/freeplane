@@ -21,10 +21,11 @@ package org.freeplane.features.map;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ConditionSnapshotFactory;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class CloneOfSelectedViewCondition extends ASelectableCondition {
+public class CloneOfSelectedViewCondition extends ASelectableCondition implements ConditionSnapshotFactory{
 	static final String NAME = "clone_condition";
 	private static String description;
 
@@ -62,5 +63,9 @@ public class CloneOfSelectedViewCondition extends ASelectableCondition {
 
 	public static ASelectableCondition load(XMLElement element) {
 	    return new CloneOfSelectedViewCondition();
+    }
+
+	public ASelectableCondition createSnapshotCondition() {
+	    return new CloneOfSelectedViewSnapshotCondition(Controller.getCurrentController().getSelection().getSelection());
     }
 }

@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Dimitry Polivaev
+ *  Copyright (C) 2014 Dimitry
  *
- *  This file author is Dimitry Polivaev
+ *  This file author is Dimitry
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,37 +17,44 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.filter.condition;
+package org.freeplane.features.map;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class SelectedViewSnapshotCondition extends ASelectableCondition {
-	private static final String NAME = "selected_view_snapshot";
+/**
+ * @author Dimitry Polivaev
+ * 26.04.2014
+ */
+public class CloneOfSelectedViewSnapshotCondition extends ASelectableCondition {
+	private static final String NAME = "clone_snapshot";
 	private static String description;
 
 	HashSet<NodeModel> selectedNodes;
 
-	public SelectedViewSnapshotCondition(Collection<NodeModel> selectedNodes) {
+	public CloneOfSelectedViewSnapshotCondition(Collection<NodeModel> selectedNodes) {
 		super();
 		this.selectedNodes = new HashSet<NodeModel>();
 		this.selectedNodes.addAll(selectedNodes);
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		return selectedNodes.contains(node);
+		for(NodeModel clone : node.clones())
+			if (selectedNodes.contains(clone))
+				return true;
+		return false;
 	}
 
 	@Override
     protected String createDescription() {
-		if (SelectedViewSnapshotCondition.description == null) {
-			SelectedViewSnapshotCondition.description = TextUtils.getText("filter_selected_node_view_snapshot");
+		if (CloneOfSelectedViewSnapshotCondition.description == null) {
+			CloneOfSelectedViewSnapshotCondition.description = TextUtils.getText("filter_clone_snapshot");
 		}
-		return SelectedViewSnapshotCondition.description;
+		return CloneOfSelectedViewSnapshotCondition.description;
     }
 
 	@Override
