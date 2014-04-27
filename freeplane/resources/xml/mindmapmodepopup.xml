@@ -52,8 +52,10 @@
 <menu_action action="MakeLinkFromAnchorAction" accelerator=""/>
 <menu_action action="MakeLinkToAnchorAction" accelerator=""/>
 <menu_action action="ClearLinkAnchorAction" accelerator=""/>
-<menu_category menu_key="popup_goto_links"/>
-<menu_category menu_key="popup_goto_clones"/>
+</menu_submenu>
+<menu_submenu name="goto" name_ref="ribbon.band.goto" menu_key="popup_goto">
+	<menu_category menu_key="popup_goto_links"/>
+	<menu_category menu_key="popup_goto_clones"/>
 </menu_submenu>
 <menu_separator/>
 <menu_action action="EnterPassword"/>

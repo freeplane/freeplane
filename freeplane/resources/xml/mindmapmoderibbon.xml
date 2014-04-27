@@ -262,8 +262,6 @@
 				    <ribbon_action action="MakeLinkToAnchorAction" />
 				    <ribbon_action action="ClearLinkAnchorAction" />										
                 </ribbon_action>
-                <ribbon_contributor name="linkList" menu_key="menu_goto_links" />
-                <ribbon_contributor name="linkList" menu_key="menu_goto_clones" />
 			</ribbon_band>
 			<ribbon_band name="icons" resize_policies="Mirror">
                 <ribbon_action action="IconSelectionPlugin" />
@@ -415,8 +413,10 @@
 			<ribbon_band name="goto" resize_policies="Mirror">
 				<ribbon_action action="MoveToRootAction" accelerator="ESCAPE" priority="Top"/>
 				<ribbon_action action="FollowLinkAction" accelerator="control ENTER" />
-				<ribbon_action action="GotoNodeAction"/>					
-				</ribbon_band>		   
+				<ribbon_action action="GotoNodeAction" />
+				<ribbon_contributor name="linkList" menu_key="menu_goto_links" />
+				<ribbon_contributor name="cloneList" menu_key="menu_goto_clones" />
+			</ribbon_band>		   
 			<ribbon_band name="navigate_nodes" resize_policies="Mirror">
                 <ribbon_action action="ToggleFoldedAction" accelerator="SPACE" priority="top" >
 				<ribbon_action action="ToggleChildrenFoldedAction" accelerator="control SPACE" />
