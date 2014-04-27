@@ -373,12 +373,25 @@
 		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="${workingdir.path}" />
 		</exec>
+		<move todir="${workingdir}/..">
+			<fileset dir="${workingdir}/..">
+				<include name="*.paf.exe" />
+			</fileset>
+			<mapper type="regexp" from="^(.*)_(.*)$" to="\1-\2"/>
+		</move>
+		<move todir="${workingdir}/..">
+			<fileset dir="${workingdir}/..">
+				<include name="*.paf.exe" />
+			</fileset>
+			<mapper type="regexp" from="^(.*)_(.*)$" to="\1-\2"/>
+		</move>
 		<move todir="${dist}">
 			<fileset dir="${workingdir}/..">
 				<include name="*.paf.exe" />
 			</fileset>
 		</move>
-		<!--
+		
+<!--
 		<mkdir dir="${workingdir}/App/Freeplane/resources/images" />
 		<copy file="${root}/portableApps/Splash.png"  
 			tofile="${workingdir}/App/Freeplane/resources/images/Freeplane_splash.png"/>
@@ -514,6 +527,12 @@
 				<include name="*${freeplane_version}.*"/>
 			</fileset>
 			<mapper type="regexp" from="^(.*[-_])${freeplane_version}(\..*)$" to="\1${ver}\2"/>
+		</move>
+		<move todir="${dist}" includeemptydirs="false">
+		    <fileset dir="${dist}">
+		      <include name="*${freeplane_version}${freeplane_version_status_suffix}.*"/>
+		    </fileset>
+			<mapper type="regexp" from="^(.*[-_])${freeplane_version}${freeplane_version_status_suffix}(\..*)$" to="\1${ver}\2"/>
 		</move>
 	</target>
 
