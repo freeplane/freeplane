@@ -14,7 +14,7 @@
 	<property name="launcher_manifest" value="${root}/META-INF/LAUNCHER_MANIFEST.MF" />
 	<property name="launcher_build" value="${root}/launcher_build" />
 	<property name="launcher_classpath" value="${framework.jar}" />
-	
+
 	<property name="debug" value="on" />
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
@@ -34,7 +34,7 @@
 	<property name="build.doc" value="${build}/doc" />
 	<property name="build.scripts" value="${build}/scripts" />
 	<property name="script" value="${root}/script" />
-	
+
 	<property name="skip_workspace" value="true" />
 
 	<!-- Mac OS X -->
@@ -152,17 +152,17 @@
             <param name="pluginname" value="org.freeplane.plugin.workspace"/>
         </antcall>
     </target>
-	
+
 	<target name="build_launcher" depends="build_core">
 		<mkdir dir="${launcher_build}" />
-		<javac srcdir="${launcher_src}" destdir="${launcher_build}" classpath="${launcher_classpath}" 
+		<javac srcdir="${launcher_src}" destdir="${launcher_build}" classpath="${launcher_classpath}"
 			debug="${debug}" source="${java_source_version}" target="${java_target_version}" encoding="utf8"/>
 		<jar jarfile="${freeplanelauncher.jar}" manifest="${launcher_manifest}">
 			<fileset dir="${launcher_build}">
 				<include name="**" />
 			</fileset>
 		</jar>
-		
+
 		<copy todir="${build}">
 			<fileset dir="${script}" />
 			<fileset file="${framework.jar}" />
@@ -309,7 +309,7 @@
         <include name="${readme_src}" />
       </tarfileset>
     </tar>
-    <!-- build the srcpure tar file with the normalized files 
+    <!-- build the srcpure tar file with the normalized files
          (this is used for linux packages)
     -->
     <tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
@@ -322,7 +322,7 @@
         <exclude name="freeplane_plugin_latex/lib/LICENSE"/>
         <!-- the flash files don't have a source in the freeplane-distrib,
              which is a problem for Debian,
-             see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736106 
+             see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736106
              (the source is here: https://github.com/freeplane/misc/tree/master/flash-browser)
         -->
         <exclude name="freeplane/resources/flash/visorFreeplane.swf"/>
@@ -373,24 +373,37 @@
 				<exclude name="*.sh" />
 			</fileset>
 		</copy>
-		<copy file="${root}/portableApps/portable.ini"  
+		<copy file="${root}/portableApps/portable.ini"
 			tofile="${workingdir}/App/Freeplane/freeplane.l4j.ini"/>
 
-		<copy file="${root}/portableApps/portable.ini"  
+		<copy file="${root}/portableApps/portable.ini"
 			tofile="${workingdir}/App/Freeplane/freeplaneConsole.l4j.ini"/>
 
 		<dirname property="workingdir.path" file="${workingdir}/file" />
 		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="${workingdir.path}" />
 		</exec>
+		<move todir="${workingdir}/..">
+			<fileset dir="${workingdir}/..">
+				<include name="*.paf.exe" />
+			</fileset>
+			<mapper type="regexp" from="^(.*)_(.*)$" to="\1-\2"/>
+		</move>
+		<move todir="${workingdir}/..">
+			<fileset dir="${workingdir}/..">
+				<include name="*.paf.exe" />
+			</fileset>
+			<mapper type="regexp" from="^(.*)_(.*)$" to="\1-\2"/>
+		</move>
 		<move todir="${dist}">
 			<fileset dir="${workingdir}/..">
 				<include name="*.paf.exe" />
 			</fileset>
 		</move>
+		
 <!--
 		<mkdir dir="${workingdir}/App/Freeplane/resources/images" />
-		<copy file="${root}/portableApps/Splash.png"  
+		<copy file="${root}/portableApps/Splash.png"
 			tofile="${workingdir}/App/Freeplane/resources/images/Freeplane_splash.png"/>
 		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="${workingdir.path}" />
@@ -517,17 +530,23 @@
 			<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${ver}.dmg"/>
 		</exec>
 	</target>
-	
+
 	<target name="renameDistFiles" if="minor">
 		<move todir="${dist}" includeemptydirs="false">
 		    <fileset dir="${dist}">
 		      <include name="*${freeplane_version}.*"/>
 		    </fileset>
 			<mapper type="regexp" from="^(.*[-_])${freeplane_version}(\..*)$" to="\1${ver}\2"/>
-		  </move>
+		</move>
+		<move todir="${dist}" includeemptydirs="false">
+		    <fileset dir="${dist}">
+		      <include name="*${freeplane_version}${freeplane_version_status_suffix}.*"/>
+		    </fileset>
+			<mapper type="regexp" from="^(.*[-_])${freeplane_version}${freeplane_version_status_suffix}(\..*)$" to="\1${ver}\2"/>
+		</move>
 	</target>
-	
-	
+
+
 	<target name="dist" depends="copyDistFiles, renameDistFiles">
 		<checksum>
 		  <fileset dir="${dist}">
