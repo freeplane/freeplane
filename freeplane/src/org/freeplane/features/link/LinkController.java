@@ -256,6 +256,10 @@ public class LinkController extends SelectionController implements IExtension {
 	            	});
             }
 	    }
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "(" + key + ")";
+        }
     }
 
     private class ClonesMenuContributor implements IMenuContributor {
@@ -301,6 +305,10 @@ public class LinkController extends SelectionController implements IExtension {
 	            	});
             }
 	    }
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "(" + key + ")";
+        }
     }
     @SuppressWarnings("serial")
     public static final class ClosePopupAction extends AbstractAction {
