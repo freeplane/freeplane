@@ -20,6 +20,9 @@
  */
 package org.freeplane.plugin.script;
 
+import static org.freeplane.plugin.script.ScriptingConfiguration.CONTEXT_MENU_SCRIPTS_LOCATIONS;
+import static org.freeplane.plugin.script.ScriptingConfiguration.MENU_SCRIPTS_LOCATION;
+
 import java.awt.Dimension;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -227,12 +230,16 @@ class ScriptingRegistration {
         if (UITools.useRibbonsMenu()) {
             final RibbonBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(
                 RibbonBuilder.class);
-            menuBuilder.registerContributorFactory("main_menu_scripting", new ScriptingRibbonsContributorFactory());
+            menuBuilder.registerContributorFactory(MENU_SCRIPTS_LOCATION, new ScriptingRibbonsContributorFactory(
+                modeController, configuration));
             menuBuilder.updateRibbon(getClass().getResource("ribbons.xml"));
         }
         else {
-            modeController.addMenuContributor(new ScriptingMenuContributor(modeController, configuration));
+            modeController.addMenuContributor(new ScriptingMenuContributor(modeController, configuration,
+                MENU_SCRIPTS_LOCATION));
         }
+        modeController.addMenuContributor(new ScriptingMenuContributor(modeController, configuration,
+            CONTEXT_MENU_SCRIPTS_LOCATIONS));
     }
 
     private void registerScriptAddOns() {

@@ -1,6 +1,8 @@
 package org.freeplane.plugin.script;
 
+import static org.freeplane.plugin.script.ScriptingMenuUtils.LABEL_SCRIPTS_MENU;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.makeMenuTitle;
+import static org.freeplane.plugin.script.ScriptingMenuUtils.noScriptsAvailableMessage;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.parentLocation;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.scriptNameToMenuTitle;
 
@@ -21,25 +23,24 @@ class ScriptingMenuContributor implements IMenuContributor {
     private final MenuBuilder menuBuilder;
     private final ScriptingConfiguration configuration;
     private final HashSet<String> registeredLocations = new HashSet<String>();
+    private final String parentLocation;
 
-    ScriptingMenuContributor(ModeController modeController, ScriptingConfiguration configuration) {
+    ScriptingMenuContributor(ModeController modeController, ScriptingConfiguration configuration, String parentLocation) {
         this.menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
         this.configuration = configuration;
+        this.parentLocation = parentLocation;
     }
 
     @Override
     public void updateMenus(ModeController modeController, MenuBuilder builder) {
-        // e.g. Tools + context menu
-        for (final String scriptsParentLocation : ScriptingConfiguration.getScriptsParentLocations()) {
-            final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(scriptsParentLocation);
-            addSubMenu(scriptsParentLocation, scriptsLocation, TextUtils.getText(ScriptingMenuUtils.LABEL_SCRIPTS_MENU));
-            registerScriptsForLocation(scriptsLocation);
-        }
+        final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(parentLocation);
+        addSubMenu(parentLocation, scriptsLocation, TextUtils.getText(LABEL_SCRIPTS_MENU));
+        registerScriptsForLocation(scriptsLocation);
     }
 
     private void registerScriptsForLocation(final String scriptsLocation) {
         if (configuration.getMenuTitleToPathMap().isEmpty()) {
-            menuBuilder.addElement(scriptsLocation, new JMenuItem(ScriptingMenuUtils.noScriptsAvailableMessage()), 0);
+            menuBuilder.addElement(scriptsLocation, new JMenuItem(noScriptsAvailableMessage()), 0);
         }
         else {
             for (final Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
@@ -90,5 +91,10 @@ class ScriptingMenuContributor implements IMenuContributor {
             menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, makeMenuTitle(scriptName, titleKey),
                 scriptPath, executionMode, metaData.cacheContent(), metaData.getPermissions()), MenuBuilder.AS_CHILD);
         }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" + parentLocation + ")";
     }
 }

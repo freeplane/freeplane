@@ -123,7 +123,8 @@ class ScriptingConfiguration {
         }
 	}
 
-	private static final String[] MENU_BAR_SCRIPTS_PARENT_LOCATIONS = {"main_menu_scripting", "node_popup_scripting"};
+	static final String MENU_SCRIPTS_LOCATION = "main_menu_scripting";
+	static final String CONTEXT_MENU_SCRIPTS_LOCATIONS = "node_popup_scripting";
 	private static final String JAR_REGEX = ".+\\.jar$";
 	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();
@@ -471,10 +472,6 @@ class ScriptingConfiguration {
 			default:
 				throw new AssertionError("unknown ExecutionMode " + executionMode);
 		}
-	}
-
-	public static String[] getScriptsParentLocations() {
-		return MENU_BAR_SCRIPTS_PARENT_LOCATIONS;
 	}
 
 	public static String getScriptsLocation(String parentKey) {
