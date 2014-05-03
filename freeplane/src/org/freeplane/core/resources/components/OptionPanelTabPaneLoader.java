@@ -22,18 +22,15 @@ package org.freeplane.core.resources.components;
 import java.util.ArrayList;
 
 import javafx.concurrent.Task;
-import javafx.embed.swing.SwingNode;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.util.TextUtils;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 public final class OptionPanelTabPaneLoader extends Task<Void> {
 	private ArrayList<ArrayList<IPropertyControl>> controls;
@@ -48,43 +45,46 @@ public final class OptionPanelTabPaneLoader extends Task<Void> {
 	@Override
 	protected Void call() throws Exception {
 		for (ArrayList<IPropertyControl> tabGroup : controls) {
-			SwingNode swingNode = new SwingNode();
-			createSwingNode(tabGroup, swingNode);
+			GridPane formPane = new GridPane();
+			createSwingNode(tabGroup, formPane);
 			// First element in tabGroup should always be a TabProperty
 			String tabName = TextUtils.getOptionalText(((TabProperty) tabGroup.get(0)).getLabel());
-			Tab newTab = buildTab(tabName, swingNode);
+			Tab newTab = buildTab(tabName, formPane);
 			TabPane tabPane = (TabPane) stackPane.getChildren().get(0);
 			tabPane.getTabs().add(newTab);
 		}
 		return null;
 	}
 
-	private void createSwingNode(ArrayList<IPropertyControl> tabGroup, SwingNode swingNode) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				FormLayout bottomLayout = new FormLayout(tabGroup.get(0).getDescription(), "");
-				final DefaultFormBuilder bottomBuilder = new DefaultFormBuilder(bottomLayout);
-				bottomBuilder.setDefaultDialogBorder();
-				for (IPropertyControl control : tabGroup) {
-					layoutControlOnPanel(bottomBuilder, control);
-				}
-				swingNode.setContent(bottomBuilder.getPanel());
-			}
-		});
-	}
-
-	private void layoutControlOnPanel(final DefaultFormBuilder bottomBuilder, IPropertyControl control) {
-		if (control instanceof TabProperty) {
-			return;
+	private void createSwingNode(ArrayList<IPropertyControl> tabGroup, GridPane formPane) {
+		for (IPropertyControl control : tabGroup) {
+			formPane.addColumn(0, new Label(control.getName()), new TextField());
 		}
-		control.layout(bottomBuilder);
+		//		SwingUtilities.invokeLater(new Runnable() {
+		//			public void run() {
+		//				FormLayout bottomLayout = new FormLayout(tabGroup.get(0).getDescription(), "");
+		//				final DefaultFormBuilder bottomBuilder = new DefaultFormBuilder(bottomLayout);
+		//				bottomBuilder.setDefaultDialogBorder();
+		//				for (IPropertyControl control : tabGroup) {
+		//					layoutControlOnPanel(bottomBuilder, control);
+		//				}
+		//				swingNode.setContent(bottomBuilder.getPanel());
+		//			}
+		//		});
 	}
 
-	private Tab buildTab(String tabName, SwingNode swingNode) {
+	//	private void layoutControlOnPanel(final DefaultFormBuilder bottomBuilder, IPropertyControl control) {
+	//		if (control instanceof TabProperty) {
+	//			return;
+	//		}
+	//		control.layout(bottomBuilder);
+	//	}
+
+	private Tab buildTab(String tabName, GridPane formPane) {
 		Tab newTab = new Tab();
 		newTab.setText(tabName);
 		ScrollPane scrollPane = new ScrollPane();
-		scrollPane.setContent(swingNode);
+		scrollPane.setContent(formPane);
 		scrollPane.setFitToWidth(true);
 		scrollPane.setFitToHeight(true);
 		newTab.setContent(scrollPane);
