@@ -20,6 +20,7 @@
 package freeplane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -32,6 +33,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.components.BooleanFXProperty;
 import org.freeplane.core.resources.components.ColorFXProperty;
+import org.freeplane.core.resources.components.ComboFXProperty;
 import org.freeplane.core.resources.components.IPropertyFXControl;
 import org.freeplane.core.resources.components.PropertyFXBean;
 import org.freeplane.core.util.ColorFXUtils;
@@ -73,6 +75,7 @@ public class OptionPanelTest {
 	    ArrayList<IPropertyFXControl> controls = new ArrayList<>();
 		addBooleanProperty(controls);
 		addColorProperty(controls);
+		addComboProperty(controls);
 	    return controls;
     }
 
@@ -80,10 +83,21 @@ public class OptionPanelTest {
 		IPropertyFXControl booleanProperty = new BooleanFXProperty("Boolean Property");
 		controls.add(booleanProperty);
 	}
-
+	
 	private static void addColorProperty(ArrayList<IPropertyFXControl> controls) {
-		PropertyFXBean colorProperty = new ColorFXProperty("Color Property", ColorFXUtils.colorToString(Color.BLACK));
+	    PropertyFXBean colorProperty = new ColorFXProperty("Color Property", ColorFXUtils.colorToString(Color.BLACK));
 		colorProperty.setValue(ColorFXUtils.colorToString(Color.BLACK));
 		controls.add((IPropertyFXControl) colorProperty);
+    }
+
+	private static void addComboProperty(ArrayList<IPropertyFXControl> controls) {
+		String[] possiblesArray = { "always_fold_all_after_load", "load_folding_from_map_default_fold_all",
+		        "load_folding_from_map_default_unfold_all", "always_unfold_all_after_load" };
+		String[] possiblesTranslationArray = { "Fold all", "Load from map or fold all", "Load from map or unfold all",
+		        "Unfold all" };
+		ArrayList<String> possibles = new ArrayList<>(Arrays.asList(possiblesArray));
+		ArrayList<String> possiblesTranslation = new ArrayList<>(Arrays.asList(possiblesTranslationArray));
+		IPropertyFXControl comboProperty = new ComboFXProperty("Combo Property", possibles, possiblesTranslation);
+		controls.add(comboProperty);
 	}
 }
