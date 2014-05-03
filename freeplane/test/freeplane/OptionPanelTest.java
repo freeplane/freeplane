@@ -29,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.components.BooleanFXProperty;
 import org.freeplane.core.resources.components.IPropertyFXControl;
 
 public class OptionPanelTest {
@@ -66,7 +67,12 @@ public class OptionPanelTest {
 
 	private static ArrayList<IPropertyFXControl> createControls() {
 	    ArrayList<IPropertyFXControl> controls = new ArrayList<>();
+		addBooleanProperty(controls);
 	    return controls;
     }
 
+	private static void addBooleanProperty(ArrayList<IPropertyFXControl> controls) {
+		IPropertyFXControl booleanProperty = new BooleanFXProperty("Boolean Property");
+		controls.add(booleanProperty);
+	}
 }
