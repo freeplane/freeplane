@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.components.BooleanFXProperty;
 import org.freeplane.core.resources.components.ColorFXProperty;
 import org.freeplane.core.resources.components.ComboFXProperty;
+import org.freeplane.core.resources.components.FontFXProperty;
 import org.freeplane.core.resources.components.IPropertyFXControl;
 import org.freeplane.core.resources.components.PropertyFXBean;
 import org.freeplane.core.util.ColorFXUtils;
@@ -76,6 +77,7 @@ public class OptionPanelTest {
 		addBooleanProperty(controls);
 		addColorProperty(controls);
 		addComboProperty(controls);
+		addFontProperty(controls);
 	    return controls;
     }
 
@@ -99,5 +101,11 @@ public class OptionPanelTest {
 		ArrayList<String> possiblesTranslation = new ArrayList<>(Arrays.asList(possiblesTranslationArray));
 		IPropertyFXControl comboProperty = new ComboFXProperty("Combo Property", possibles, possiblesTranslation);
 		controls.add(comboProperty);
+	}
+
+	private static void addFontProperty(ArrayList<IPropertyFXControl> controls) {
+		PropertyFXBean fontProperty = new FontFXProperty("Font Property");
+		fontProperty.setValue("Serif");
+		controls.add((IPropertyFXControl) fontProperty);
 	}
 }
