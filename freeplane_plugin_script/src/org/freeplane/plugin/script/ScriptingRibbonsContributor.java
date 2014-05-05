@@ -21,6 +21,7 @@ import org.freeplane.core.ui.ribbon.RibbonBuildContext;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
+import org.pushingpixels.flamingo.api.common.CommandButtonDisplayState;
 import org.pushingpixels.flamingo.api.common.CommandToggleButtonGroup;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
@@ -60,13 +61,20 @@ class ScriptingRibbonsContributor extends ARibbonContributor {
     }
 
     private void addToggleButtons(ARibbonContributor parent) {
-        JCommandButtonStrip alignStrip = new JCommandButtonStrip();
+        JCommandButtonStrip alignStrip = new JCommandButtonStrip(JCommandButtonStrip.StripOrientation.HORIZONTAL);
+        alignStrip.setDisplayState(CommandButtonDisplayState.MEDIUM);
+        
         execModes = new CommandToggleButtonGroup();
         toggleOnSingleNode = createAndAddToggleButton(alignStrip, execModes, "on_single_node");
         toggleOnSingleNode.getActionModel().setSelected(true);
+        parent.addChild(toggleOnSingleNode, getDefaultProps(RibbonElementPriority.MEDIUM));
         toggleOnSelectedNodes = createAndAddToggleButton(alignStrip, execModes, "on_selected_nodes");
+        parent.addChild(toggleOnSelectedNodes, getDefaultProps(RibbonElementPriority.MEDIUM));
         toggleOnSelectedNodesRecursive = createAndAddToggleButton(alignStrip, execModes, "on_selected_nodes_recursive");
-        parent.addChild(alignStrip, getDefaultProps(RibbonElementPriority.TOP));
+        parent.addChild(toggleOnSelectedNodesRecursive, getDefaultProps(RibbonElementPriority.MEDIUM));
+        //seems not to work
+//        parent.addChild(alignStrip, getDefaultProps(RibbonElementPriority.TOP));
+
     }
 
     private JCommandToggleButton createAndAddToggleButton(JCommandButtonStrip alignStrip,
@@ -78,7 +86,7 @@ class ScriptingRibbonsContributor extends ARibbonContributor {
     }
 
     private ResizableIcon getIcon(String fileName) {
-        String path = "images/" + fileName;
+        String path = "/images/" + fileName;
         URL url = ResourceController.getResourceController().getResource(path);
         if (url == null)
             throw new RuntimeException("cannot resolve icon " + path);

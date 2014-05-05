@@ -230,8 +230,8 @@ class ScriptingRegistration {
         if (UITools.useRibbonsMenu()) {
             final RibbonBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(
                 RibbonBuilder.class);
-//            menuBuilder.registerContributorFactory(MENU_SCRIPTS_LOCATION, new ScriptingRibbonsContributorFactory(
-//                modeController, configuration));
+            menuBuilder.registerContributorFactory(MENU_SCRIPTS_LOCATION, new ScriptingRibbonsContributorFactory(
+                modeController, configuration));
             menuBuilder.updateRibbon(getClass().getResource("ribbons.xml"));
         }
         else {
