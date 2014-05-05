@@ -3,6 +3,8 @@ package org.freeplane.plugin.script;
 import java.text.MessageFormat;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
+import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 
 public class ScriptingMenuUtils {
     static final String LABEL_NO_SCRIPTS_AVAILABLE = "ExecuteScripts.noScriptsAvailable";
@@ -28,5 +30,24 @@ public class ScriptingMenuUtils {
     public static String noScriptsAvailableMessage() {
         return "<html><body><em>" + TextUtils.getText(ScriptingMenuUtils.LABEL_NO_SCRIPTS_AVAILABLE)
                 + "</em></body></html>";
+    }
+
+    public static String getTitle(ScriptMetaData metaData, ExecutionMode executionMode) {
+        final String specialLocation = metaData.getMenuLocation(executionMode);
+        if (specialLocation == null) {
+            return scriptNameToMenuTitle(metaData.getScriptName());
+        }
+        else {
+            return getTitleForLocation(specialLocation);
+        }
+    }
+
+    // location might be something like /menu_bar/edit/editGoodies.
+    // Use the last path element for label lookup
+    // Try to find text by 1. direct match or 2. with "addons." prefix or 3. use it verbatim
+    public static String getTitleForLocation(final String location) {
+        int index = location.lastIndexOf('/');
+        final String lastKey = location.substring(index + 1);
+        return TextUtils.getText(lastKey, TextUtils.getText("addons." + lastKey, lastKey));
     }
 }

@@ -1,10 +1,10 @@
 package org.freeplane.plugin.script;
 
 import static org.freeplane.plugin.script.ScriptingMenuUtils.LABEL_SCRIPTS_MENU;
+import static org.freeplane.plugin.script.ScriptingMenuUtils.getTitle;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.makeMenuTitle;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.noScriptsAvailableMessage;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.parentLocation;
-import static org.freeplane.plugin.script.ScriptingMenuUtils.scriptNameToMenuTitle;
 
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -24,56 +24,45 @@ class ScriptingMenuContributor implements IMenuContributor {
     private final ScriptingConfiguration configuration;
     private final HashSet<String> registeredLocations = new HashSet<String>();
     private final String parentLocation;
+    // the location containing the list of scripts
+    private String scriptsLocation;
 
     ScriptingMenuContributor(ModeController modeController, ScriptingConfiguration configuration, String parentLocation) {
         this.menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
         this.configuration = configuration;
         this.parentLocation = parentLocation;
+        scriptsLocation = ScriptingConfiguration.getScriptsLocation(parentLocation);
     }
 
     @Override
     public void updateMenus(ModeController modeController, MenuBuilder builder) {
-        final String scriptsLocation = ScriptingConfiguration.getScriptsLocation(parentLocation);
         addSubMenu(parentLocation, scriptsLocation, TextUtils.getText(LABEL_SCRIPTS_MENU));
-        registerScriptsForLocation(scriptsLocation);
+        registerScripts();
     }
 
-    private void registerScriptsForLocation(final String scriptsLocation) {
+    private void registerScripts() {
         if (configuration.getMenuTitleToPathMap().isEmpty()) {
             menuBuilder.addElement(scriptsLocation, new JMenuItem(noScriptsAvailableMessage()), 0);
         }
         else {
             for (final Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-                registerScriptForLocation(scriptsLocation, entry.getKey(), entry.getValue());
+                registerScript(entry.getKey(), entry.getValue());
             }
         }
     }
 
-    private void registerScriptForLocation(final String scriptsLocation, final String scriptName,
-                                           final String scriptPath) {
+    private void registerScript(final String scriptName, final String scriptPath) {
         final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
         for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
-            final String title;
-            String location = metaData.getMenuLocation(executionMode);
-            if (location == null) {
-                location = scriptsLocation + "/" + scriptName;
-                title = scriptNameToMenuTitle(metaData.getScriptName());
-            }
-            else {
-                title = getTitleForScript(location);
-            }
-            addSubMenu(parentLocation(location), location, title);
+            final String location = getLocation(scriptName, metaData, executionMode);
+            addSubMenu(parentLocation(location), location, getTitle(metaData, executionMode));
             addMenuItem(location, scriptName, scriptPath, executionMode, metaData);
         }
     }
 
-    // location might be something like /menu_bar/edit/editGoodies.
-    // Use the last path element for label lookup
-    // Try to find text by 1. direct match or 2. with "addons." prefix or 3. use it verbatim
-    private String getTitleForScript(final String location) {
-        int index = location.lastIndexOf('/');
-        final String lastKey = location.substring(index + 1);
-        return TextUtils.getText(lastKey, TextUtils.getText("addons." + lastKey, lastKey));
+    private String getLocation(String scriptName, ScriptMetaData metaData, ExecutionMode executionMode) {
+        final String specialLocation = metaData.getMenuLocation(executionMode);
+        return (specialLocation == null) ? scriptsLocation + "/" + scriptName : specialLocation;
     }
 
     private void addSubMenu(final String parentLocation, final String location, String menuTitle) {
