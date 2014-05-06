@@ -43,7 +43,7 @@ class SetShortenerStateAction extends AMultipleNodeAction {
 	public void actionPerformed(final ActionEvent e) {
 		setShortened = !isShortened();
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.keepNodePosition(selection.getSelected(), 0.5f, 0.5f);
+		selection.keepNodePosition(selection.getSelected(), 0.0f, 0.0f);
 		super.actionPerformed(e);
 	}
 	

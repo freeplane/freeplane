@@ -525,7 +525,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			anchor = view;
 			anchorHorizontalPoint = horizontalPoint;
 			anchorVerticalPoint = verticalPoint;
-			setAnchorContentLocation(getAnchorCenterPoint());
+			this.anchorContentLocation = getAnchorCenterPoint();
 			if (nodeToBeVisible == null) {
 				nodeToBeVisible = anchor;
 				extraWidth = 0;
@@ -564,7 +564,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		content.scrollRectToVisible(rect);
 		nodeToBeCentered = null;
 		this.slowScroll = false;
-		setAnchorContentLocation(getAnchorCenterPoint());
+		this.anchorContentLocation = getAnchorCenterPoint();
     }
 	
 	
@@ -689,8 +689,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return new Point();
 		}
 		final MainView mainView = anchor.getMainView();
-		final Point anchorCenterPoint = new Point((int) (mainView.getWidth() * anchorHorizontalPoint), (int) (mainView
-		    .getHeight() * anchorVerticalPoint));
+		final int mainViewWidth = mainView.getWidth();
+		final int mainViewHeight = mainView.getHeight();
+		final Point anchorCenterPoint = new Point((int) (mainViewWidth * anchorHorizontalPoint), (int) (mainViewHeight * anchorVerticalPoint));
 		final JViewport parent = (JViewport) getParent();
 		UITools.convertPointToAncestor(mainView, anchorCenterPoint, this);
 		anchorCenterPoint.x += - parent.getWidth() / 2;
@@ -1059,7 +1060,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void initRoot() {
-		setAnchorContentLocation(new Point());
+		this.anchorContentLocation = new Point();
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), this, this, 0);
 		anchor = rootView;
 	}
@@ -1943,9 +1944,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
-		if (anchor != getRoot()) {
-			anchor = getRoot();
-		}
 		final int deltaX = newAnchorContentLocation.x - oldAnchorContentLocation.x;
 		final int deltaY = newAnchorContentLocation.y - oldAnchorContentLocation.y;
 		if (deltaX != 0 || deltaY != 0) {
@@ -1966,6 +1964,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			vp.setScrollMode(scrollMode);
 			nodeToBeVisible = null;
 		}
+		anchor = getRoot();
+		anchorHorizontalPoint = anchorVerticalPoint = 0;
+		this.anchorContentLocation = getAnchorCenterPoint();
 	}
 
 	public void setZoom(final float zoom) {
@@ -2122,11 +2123,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public void setLocation(int x, int y) {
 	    if(isValid()){
 	    	super.setLocation(x, y);
-	    	setAnchorContentLocation(getAnchorCenterPoint());
+	    	this.anchorContentLocation = getAnchorCenterPoint();
 	    }
-    }
-
-	private void setAnchorContentLocation(Point anchorContentLocation) {
-	    this.anchorContentLocation = anchorContentLocation;
     }
 }

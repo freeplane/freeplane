@@ -265,6 +265,7 @@ class NodeViewFactory {
 			detailContent = createDetailView();
 			nodeView.addContent(detailContent, NodeView.DETAIL_VIEWER_POSITION);
 		}
+		final MapView map = nodeView.getMap();
 		if (detailText.isHidden()) {
 			final ArrowIcon icon = new ArrowIcon(nodeView, true);
 			detailContent.setIcon(icon);
@@ -273,7 +274,6 @@ class NodeViewFactory {
 			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
-			final MapView map = nodeView.getMap();
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			detailContent.updateText(detailText.getHtml());
@@ -281,6 +281,8 @@ class NodeViewFactory {
 			detailContent.setBackground(nodeView.getDetailBackground());
 			detailContent.setPreferredSize(null);
 		}
+		detailContent.revalidate();
+		map.repaint();
 	}
 
 	private DetailsView createDetailView() {
