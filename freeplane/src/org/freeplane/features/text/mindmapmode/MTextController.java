@@ -596,7 +596,7 @@ public class MTextController extends TextController {
 				final DetailTextModel details = DetailTextModel.createDetailText(node);
 				details.setHidden(isHidden);
 				node.addExtension(details);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, ! isHidden, isHidden);
 			}
 
 			public void undo() {
