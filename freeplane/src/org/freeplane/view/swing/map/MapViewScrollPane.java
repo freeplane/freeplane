@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,6 +62,19 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 			}
 			else
 				super.setViewPosition(p);
+        }
+
+		@Override
+        public void setViewSize(Dimension newSize) {
+			Component view = getView();
+	        if (view != null) {
+	            Dimension oldSize = view.getSize();
+	            if (newSize.equals(oldSize)) {
+	            	view.setSize(newSize);
+	            }
+	            else
+	            	super.setViewSize(newSize);
+	        }
         }
 
 		private void slowSetViewPosition(final Point p) {
