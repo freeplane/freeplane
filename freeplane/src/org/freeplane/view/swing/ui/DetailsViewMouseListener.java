@@ -24,6 +24,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -58,8 +59,11 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 			return;
 		final NodeModel model = nodeView.getModel();
     	TextController controller = TextController.getController();
-		if (eventFromHideDisplayArea(e))
+		if (eventFromHideDisplayArea(e)){
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			selection.keepNodePosition(model, 0.0f, 0.0f);
     		controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+		}
 		else {
 			nodeSelector.extendSelection(e);
 			if (canEdit(controller) && isEditingStartEvent(e)) {
