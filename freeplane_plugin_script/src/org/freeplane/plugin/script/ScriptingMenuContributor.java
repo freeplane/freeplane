@@ -1,8 +1,8 @@
 package org.freeplane.plugin.script;
 
 import static org.freeplane.plugin.script.ScriptingMenuUtils.LABEL_SCRIPTS_MENU;
-import static org.freeplane.plugin.script.ScriptingMenuUtils.getTitle;
-import static org.freeplane.plugin.script.ScriptingMenuUtils.makeMenuTitle;
+import static org.freeplane.plugin.script.ScriptingMenuUtils.getMenuTitle;
+import static org.freeplane.plugin.script.ScriptingMenuUtils.getMenuItemTitle;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.noScriptsAvailableMessage;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.parentLocation;
 
@@ -55,7 +55,7 @@ class ScriptingMenuContributor implements IMenuContributor {
         final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
         for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
             final String location = getLocation(scriptName, metaData, executionMode);
-            addSubMenu(parentLocation(location), location, getTitle(metaData, executionMode));
+            addSubMenu(parentLocation(location), location, getMenuTitle(metaData, executionMode));
             addMenuItem(location, scriptName, scriptPath, executionMode, metaData);
         }
     }
@@ -75,10 +75,10 @@ class ScriptingMenuContributor implements IMenuContributor {
 
     private void addMenuItem(final String location, final String scriptName, final String scriptPath,
                              final ExecutionMode executionMode, ScriptMetaData metaData) {
-        final String titleKey = metaData.getTitleKey(executionMode);
-        if (registeredLocations.add(location + "/" + titleKey)) {
-            menuBuilder.addAction(location, new ExecuteScriptAction(scriptName, makeMenuTitle(scriptName, titleKey),
-                scriptPath, executionMode, metaData.cacheContent(), metaData.getPermissions()), MenuBuilder.AS_CHILD);
+        if (registeredLocations.add(location + "/" + metaData.getTitleKey(executionMode))) {
+            final ExecuteScriptAction action = new ExecuteScriptAction(scriptName, getMenuItemTitle(metaData,
+                executionMode), scriptPath, executionMode, metaData.cacheContent(), metaData.getPermissions());
+            menuBuilder.addAction(location, action, MenuBuilder.AS_CHILD);
         }
     }
 

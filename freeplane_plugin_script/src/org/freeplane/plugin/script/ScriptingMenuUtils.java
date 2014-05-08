@@ -7,21 +7,25 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 
 public class ScriptingMenuUtils {
+    static final String LABEL_AVAILABLE_MODES_TOOLTIP = "ExecuteScript.available_modes_tooltip";
     static final String LABEL_NO_SCRIPTS_AVAILABLE = "ExecuteScripts.noScriptsAvailable";
+    static final String LABEL_SCRIPT = "ExecuteScript.script";
     static final String LABEL_SCRIPTS_MENU = "ExecuteScripts.text";
 
     public static String parentLocation(String location) {
         return location.replaceFirst("/[^/]*$", "");
     }
 
-    public static String makeMenuTitle(final String scriptName, final String titleKey) {
+    public static String getMenuItemTitle(ScriptMetaData metaData, ExecutionMode executionMode) {
+        final String titleKey = metaData.getTitleKey(executionMode);
+        final String scriptName = metaData.getScriptName();
         final String translation = TextUtils.getText(titleKey, titleKey.replace('_', ' '));
-        return translation.contains("{0}") ? MessageFormat.format(translation, scriptNameToMenuTitle(scriptName))
+        return translation.contains("{0}") ? MessageFormat.format(translation, scriptNameToMenuItemTitle(scriptName))
                 : translation;
     }
 
     /** menuTitle may either be a scriptName or a translation key. */
-    public static String scriptNameToMenuTitle(final String scriptName) {
+    public static String scriptNameToMenuItemTitle(final String scriptName) {
         final String translation = TextUtils.getText(scriptName, null);
         // convert CamelCase to Camel Case
         return translation != null ? translation : scriptName.replaceAll("([a-z])([A-Z])", "$1 $2");
@@ -32,10 +36,10 @@ public class ScriptingMenuUtils {
                 + "</em></body></html>";
     }
 
-    public static String getTitle(ScriptMetaData metaData, ExecutionMode executionMode) {
+    public static String getMenuTitle(ScriptMetaData metaData, ExecutionMode executionMode) {
         final String specialLocation = metaData.getMenuLocation(executionMode);
         if (specialLocation == null) {
-            return scriptNameToMenuTitle(metaData.getScriptName());
+            return scriptNameToMenuItemTitle(metaData.getScriptName());
         }
         else {
             return getTitleForLocation(specialLocation);
