@@ -5,10 +5,12 @@ package org.freeplane.plugin.script.proxy;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.proxy.Proxy.Connector;
 
 class ConnectorIterator implements Iterator<Proxy.Connector> {
 	private final ScriptContext scriptContext;
@@ -46,5 +48,10 @@ class ConnectorIterator implements Iterator<Proxy.Connector> {
 
 	public void remove() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void forEachRemaining(Consumer<? super Connector> action) {
+		// TODO Auto-generated method stub
 	}
 }

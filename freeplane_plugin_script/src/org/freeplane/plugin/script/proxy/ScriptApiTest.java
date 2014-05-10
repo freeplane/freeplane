@@ -9,6 +9,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.HtmlUtils;
@@ -29,6 +33,49 @@ public class ScriptApiTest {
 		public int compare(NodeProxy o1, NodeProxy o2) {
 			return new Integer(System.identityHashCode(o1.getDelegate())).compareTo(System.identityHashCode(o2
 			    .getDelegate()));
+		}
+
+		@Override
+		public Comparator<NodeProxy> reversed() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Comparator<NodeProxy> thenComparing(Comparator<? super NodeProxy> other) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public <U> Comparator<NodeProxy> thenComparing(Function<? super NodeProxy, ? extends U> keyExtractor,
+		                                               Comparator<? super U> keyComparator) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public <U extends Comparable<? super U>> Comparator<NodeProxy> thenComparing(Function<? super NodeProxy, ? extends U> keyExtractor) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Comparator<NodeProxy> thenComparingInt(ToIntFunction<? super NodeProxy> keyExtractor) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Comparator<NodeProxy> thenComparingLong(ToLongFunction<? super NodeProxy> keyExtractor) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Comparator<NodeProxy> thenComparingDouble(ToDoubleFunction<? super NodeProxy> keyExtractor) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	};
 

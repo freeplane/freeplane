@@ -3,6 +3,8 @@ package org.freeplane.plugin.script;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /** A minimal implementation of a stack that may contain an element only once - not threadsafe.
  * The stack may contains null but note that null is used by {@link #pop()} to signal an empty stack. */
@@ -57,5 +59,16 @@ public class UniqueStack<T> implements Iterable<T> {
 
 	public String toString() {
 		return stack.toString();
+	}
+
+	@Override
+	public void forEach(Consumer<? super T> action) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public Spliterator<T> spliterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

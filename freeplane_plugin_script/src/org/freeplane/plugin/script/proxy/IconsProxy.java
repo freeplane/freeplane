@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
@@ -112,6 +113,11 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
             public void remove() {
                 throw new UnsupportedOperationException("icons iterator is read-only");
             }
+
+			@Override
+			public void forEachRemaining(Consumer<? super String> action) {
+				// TODO Auto-generated method stub
+			}
         };
     }
 
