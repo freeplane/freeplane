@@ -287,10 +287,10 @@ public class MLinkController extends LinkController {
 			for (final NodeModel child : children) {
 				updateMapLinksForSourceTree(links, child, delete);
 			}
-			if(model.clones().size() == 1)
-				updateMapLinksForSourceNodeWithoutClones(links, model, delete);
-			else
-				updateMapLinksForDeletedSourceClone(links, model);
+			if(delete)
+	            updateMapLinksForDeletedSourceClone(links, model);
+            else
+	            updateMapLinksForSourceNode(links, model, delete);
 		}
 
 		private void updateMapLinksForDeletedSourceClone(MapLinks links, NodeModel model) {
@@ -317,7 +317,7 @@ public class MLinkController extends LinkController {
 	        return null;
         }
 
-		private void updateMapLinksForSourceNodeWithoutClones(final MapLinks links, final NodeModel model, final boolean delete) {
+		private void updateMapLinksForSourceNode(final MapLinks links, final NodeModel model, final boolean delete) {
 	        final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
 	        if (nodeLinks != null) {
 	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
