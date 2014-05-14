@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -102,6 +103,8 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				linkController.loadLink(node, value);
+				final Collection<NodeLinkModel> links = NodeLinks.getLinks(node);
+				arrowLinks.addAll(links);
 			}
 		});
 		
