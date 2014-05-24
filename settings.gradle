@@ -3,5 +3,6 @@ include 'freeplane',
         'freeplane_framework',
 
         'freeplane_plugin_bugreport',
+        'freeplane_plugin_script',
 
         'JOrtho_0.4_freeplane'
