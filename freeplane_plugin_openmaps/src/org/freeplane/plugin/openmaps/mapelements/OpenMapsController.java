@@ -11,6 +11,7 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
+import org.openstreetmap.gui.jmapviewer.OsmMercator;
 
 /**
  * @author Blair Archibald
@@ -70,13 +71,19 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 	private void addMarkerToLocation(final Coordinate locationChoosen) {
 		map.addMapMarker(new MapMarkerDot(locationChoosen.getLat(), locationChoosen.getLon()));
 	}
-
+	
 	public void zoomToLocation(Coordinate location, int zoom) {
 		if(locationCount == 0) {
 			addMarkerToLocation(location);
 			locationCount++;
-		} 
-		map.setDisplayPositionByLatLon(new Point(map.getWidth() / 2, map.getHeight() / 2), location.getLat(), location.getLon(), zoom);
+		}
+		
+		// this method is not available in JMapViewer >= 1.03!
+//		map.setDisplayPositionByLatLon(new Point(map.getWidth() / 2, map.getHeight() / 2), location.getLat(), location.getLon(), zoom);
+		
+        int x = (int)OsmMercator.LonToX(location.getLon(), zoom);
+        int y = (int)OsmMercator.LatToY(location.getLat(), zoom);
+		map.setDisplayPosition(new Point(map.getWidth() / 2, map.getHeight() / 2), x, y, zoom);
 	}
 
 }
