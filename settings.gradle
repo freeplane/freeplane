@@ -4,5 +4,6 @@ include 'freeplane',
 
         'freeplane_plugin_bugreport',
         'freeplane_plugin_script',
+        'freeplane_plugin_formula',
 
         'JOrtho_0.4_freeplane'

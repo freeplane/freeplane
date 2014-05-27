@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':freeplane')
+    compile project(':freeplane_plugin_script')
+}
