@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':freeplane')
+    compile group:'com.sun.woodstock.dependlibs', name:'jhall', version:'2.0'
+}
