@@ -41,13 +41,15 @@ import javax.swing.RootPaneContainer;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * @author Dimitry Polivaev
  * 24.12.2012
  */
-public class HeadlessUIController implements ViewController {
+public class HeadlessUIController extends FrameController {	
+	
 	final private AtomicLong workingThreadId = new AtomicLong();
 	final private ExecutorService worker = Executors.newSingleThreadExecutor(new ThreadFactory() {
 		public Thread newThread(Runnable r) {
@@ -56,6 +58,11 @@ public class HeadlessUIController implements ViewController {
 			return thread;
 		}
 	}) ;
+	
+	public HeadlessUIController(Controller controller, IMapViewManager mapViewManager, String propertyKeyPrefix) {
+		super(controller, mapViewManager, propertyKeyPrefix);		
+	}
+
 	public Rectangle getFrameSize() {
 		throw new RuntimeException("Method not implemented");
 	}
@@ -196,9 +203,11 @@ public class HeadlessUIController implements ViewController {
 		worker.execute(runnable);
     }
 
-	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException, ExecutionException {
-	    worker.submit(runnable).get();
-	    
+	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
+	    try {
+			worker.submit(runnable).get();
+		} catch (ExecutionException e) {			
+		}	    
     }
 
 	public boolean isHeadless() {
@@ -215,6 +224,10 @@ public class HeadlessUIController implements ViewController {
 	public boolean isFullScreenEnabled() {
 	    return false;
     }
-	
+
+	@Override
+	protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar) {
+		throw new RuntimeException("Method not implemented");
+	}	
 	
 }
