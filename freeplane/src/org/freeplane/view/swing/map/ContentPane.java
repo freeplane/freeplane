@@ -9,9 +9,6 @@ import javax.swing.JComponent;
 
 class ContentPane extends JComponent {
 	static private LayoutManager layoutManager = new ContentPaneLayout();
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	ContentPane() {

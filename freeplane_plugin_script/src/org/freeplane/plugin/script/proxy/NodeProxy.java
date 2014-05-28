@@ -37,6 +37,8 @@ import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.note.NoteController;
@@ -158,16 +160,21 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	public void setDetails(Object details) {
-		final MTextController textController = (MTextController) TextController.getController();
-		if (details == null) {
+		setDetailsText(convertConvertibleToHtml(details));
+	}
+
+	// Node: R/W
+    public void setDetailsText(String html) {
+        final MTextController textController = (MTextController) TextController.getController();
+		if (html == null) {
 			textController.setDetailsHidden(getDelegate(), false);
 			textController.setDetails(getDelegate(), null);
 		}
 		else{
-			textController.setDetails(getDelegate(), convertConvertibleToHtml(details));
+			textController.setDetails(getDelegate(), html);
 		}
-	}
-
+    }
+	
 	// Node: R/W
 	public void setHideDetails(boolean hide) {
 		MTextController controller = (MTextController) MTextController.getController();
@@ -203,7 +210,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public Convertible getDetails() {
 		final String detailsText = DetailTextModel.getDetailTextText(getDelegate());
-		return (detailsText == null) ? null : new ConvertibleText(getDelegate(), getScriptContext(), detailsText);
+		return (detailsText == null) ? null : new ConvertibleHtmlText(getDelegate(), getScriptContext(), detailsText);
 	}
 	
 	// NodeRO: R
@@ -267,7 +274,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public Convertible getNote() {
 		final String noteText = getNoteText();
-		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext());
+		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext(), noteText);
 	}
 
 	// NodeRO: R
@@ -489,9 +496,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// Node: R/W
-	public void setNoteText(final String text) {
+	public void setNoteText(final String html) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
-		noteController.setNoteText(getDelegate(), text);
+		noteController.setNoteText(getDelegate(), html);
 	}
 
 	// Node: R/W
@@ -770,4 +777,29 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
     private EncryptionModel getEncryptionModel() {
         return EncryptionModel.getModel(getDelegate());
     }
+
+
+	public int getHorizontalShift(){
+		return LocationController.getController().getHorizontalShift(getDelegate());
+	}
+
+	public void setHorizontalShift(final int horizontalShift){
+		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), horizontalShift);
+	}
+
+	public int getVerticalShift(){
+		return LocationController.getController().getVerticalShift(getDelegate());
+	}
+
+	public void setVerticalShift(final int verticalShift){
+		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShift);
+	}
+
+	public int getMinimalDistanceBetweenChildren(){
+		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate());
+	}
+
+	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
+		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+	}
 }

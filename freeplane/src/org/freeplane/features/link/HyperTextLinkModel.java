@@ -32,4 +32,38 @@ public class HyperTextLinkModel extends NodeLinkModel {
 	public HyperTextLinkModel(final NodeModel source, final String targetID) {
 		super(source, targetID);
 	}
+	
+	public NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId) {
+	    return new HyperTextLinkModel(sourceClone, targetId);
+    }
+	
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + getSource().hashCode();
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return result;
+		result = prime * result + targetID.hashCode();
+		return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    ConnectorModel other = (ConnectorModel) obj;
+	    if (!getSource().equals(other.getSource()))
+	        return false;
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return other.getTargetID() == null;
+	    else
+	    	return targetID.equals(other.getTargetID());
+    }
 }

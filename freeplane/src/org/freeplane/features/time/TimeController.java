@@ -27,7 +27,7 @@ import org.freeplane.features.filter.FilterController;
  */
 public class TimeController {
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(4,
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(40,
 		    new TimeConditionController());
 	}
 }

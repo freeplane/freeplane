@@ -45,6 +45,11 @@ public class SetBooleanPropertyAction extends AFreeplaneAction{
 		ResourceController.getResourceController().setProperty(propertyName, ! isPropertySet());
 	    
     }
+	
+	public String getTextKey() {
+		return "OptionPanel." + propertyName;
+	}
+	
 	@Override
 	public void setSelected() {
 		setSelected(isPropertySet());

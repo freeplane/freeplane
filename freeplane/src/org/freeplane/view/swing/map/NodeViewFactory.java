@@ -37,8 +37,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -47,7 +47,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
-import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
 import org.freeplane.view.swing.ui.LinkNavigatorMouseListener;
@@ -128,6 +127,7 @@ class NodeViewFactory {
 	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
 		final NodeView newView = new NodeView(model, map, parent);
 		parent.add(newView, index);
+		newView.setMainView(newMainView(newView));
 		if(map.isDisplayable())
 			updateNewView(newView);
 		else
@@ -157,7 +157,6 @@ class NodeViewFactory {
 	private void updateNewView(final NodeView newView) {
 		newView.getModel().addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
-		newView.setMainView(newMainView(newView));
 		updateNoteViewer(newView);
 		newView.update();
         fireNodeViewCreated(newView);
@@ -165,10 +164,10 @@ class NodeViewFactory {
 	}
 
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
-	private Icon coloredIcon = createColoredIcon();
+	private final Icon coloredIcon = createColoredIcon();
 	private static final IMouseListener DETAILS_MOUSE_LISTENER = new DetailsViewMouseListener();
 	private static final LinkNavigatorMouseListener LINK_MOUSE_LISTENER = new LinkNavigatorMouseListener();
-	
+
 	public ZoomableLabel createNoteViewer() {
 		final ZoomableLabel label = new ZoomableLabel();
 		label.addMouseListener(LINK_MOUSE_LISTENER);
@@ -187,11 +186,11 @@ class NodeViewFactory {
 				final Color iconColor =  nodeView.getEdgeColor();
 				createColoredIcon(iconColor).paintIcon(c, g, x, y);
 			}
-			
+
 			public int getIconWidth() {
 				return createColoredIcon(Color.BLACK).getIconWidth();
 			}
-			
+
 			public int getIconHeight() {
 				return createColoredIcon(Color.BLACK).getIconHeight();
 			}
@@ -229,22 +228,10 @@ class NodeViewFactory {
 		String oldText = note != null ? note.getText() : null;
 		String newText  = null;
 		if (nodeView.getMap().showNotes()) {
-			final TextController textController = TextController.getController();
 			final NodeModel model = nodeView.getModel();
 			final NoteModel extension = NoteModel.getNote(model);
-			if(extension != null){
-				final String originalText = extension.getHtml();
-				try {
-					newText = textController.getTransformedTextNoThrow(originalText, model, extension);
-					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
-					if (markTransformedText && newText != originalText)
-						newText = colorize(newText, "green");
-				}
-				catch (Exception e) {
-					newText = colorize(TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage())
-						.replace("\n", "<br>"), "red");
-				}
-			}
+            if (extension != null)
+                newText = extension.getHtml();
 		}
 		if (oldText == null && newText == null) {
 			return;
@@ -264,10 +251,7 @@ class NodeViewFactory {
 		}
 		view.setFont(nodeView.getMap().getDefaultNoteFont());
 		view.updateText(newText);
-		
-	}
-	private String colorize(final String text, String color) {
-		return "<span style=\"color:" + color + ";font-style:italic;\">" + text + "</span>";
+
 	}
 
 	void updateDetails(NodeView nodeView) {
@@ -281,6 +265,7 @@ class NodeViewFactory {
 			detailContent = createDetailView();
 			nodeView.addContent(detailContent, NodeView.DETAIL_VIEWER_POSITION);
 		}
+		final MapView map = nodeView.getMap();
 		if (detailText.isHidden()) {
 			final ArrowIcon icon = new ArrowIcon(nodeView, true);
 			detailContent.setIcon(icon);
@@ -289,7 +274,6 @@ class NodeViewFactory {
 			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
-			final MapView map = nodeView.getMap();
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			detailContent.updateText(detailText.getHtml());
@@ -297,6 +281,8 @@ class NodeViewFactory {
 			detailContent.setBackground(nodeView.getDetailBackground());
 			detailContent.setPreferredSize(null);
 		}
+		detailContent.revalidate();
+		map.repaint();
 	}
 
 	private DetailsView createDetailView() {

@@ -146,14 +146,14 @@ class ExportBranchAction extends AFreeplaneAction {
 				Controller.getCurrentModeController().execute(actor, parentMap);
 			}
 			final MapModel map = existingNode.getMap();
-			IExtension[] oldExtensions = map.getRootNode().getExtensions().values().toArray(new IExtension[]{});
+			IExtension[] oldExtensions = map.getRootNode().getSharedExtensions().values().toArray(new IExtension[]{});
 			for(final IExtension extension : oldExtensions){
 				final Class<? extends IExtension> clazz = extension.getClass();
 				if(PersistentNodeHook.isMapExtension(clazz)){
 					existingNode.removeExtension(clazz);
 				}
 			}
-			final Collection<IExtension> newExtensions = parentMap.getRootNode().getExtensions().values();
+			final Collection<IExtension> newExtensions = parentMap.getRootNode().getSharedExtensions().values();
 			for(final IExtension extension : newExtensions){
 				final Class<? extends IExtension> clazz = extension.getClass();
 				if(PersistentNodeHook.isMapExtension(clazz)){

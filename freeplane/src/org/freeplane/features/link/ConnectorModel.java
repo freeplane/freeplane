@@ -25,199 +25,181 @@ import java.awt.Point;
 import org.freeplane.features.map.NodeModel;
 
 public class ConnectorModel extends NodeLinkModel {
+
 	public static enum Shape {
 		LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE
 	};
-
-	private Color color;
-	private int alpha;
-	private ArrowType endArrow;
-	private int[] dash;
-	private Point endInclination;
-	private String middleLabel;
-	private String sourceLabel;
-	private ArrowType startArrow;
-	private Point startInclination;
-	private String targetLabel;
-	private int width;
-	private Shape shape;
 	
-	private String labelFontFamily;
-	private int labelFontSize;
-
-
-	public Shape getShape() {
-		return shape;
-	}
-
-	public void setShape(final Shape shape) {
-		assert shape != null;
-		this.shape = shape;
-	}
-
-	public int[] getDash() {
-		return dash;
-	}
-
-	public void setDash(int[] dash) {
-		this.dash = dash;
-	}
-
+	final private ConnectorProperties connectorProperties;
+	
 	public ConnectorModel(final NodeModel source, final String targetID, final Color color,
 	                      final int alpha, final Shape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
+		this(source, targetID, new ConnectorProperties(color, alpha, shape, width, labelFontFamily, labelFontSize));
+	}
+
+	private ConnectorModel(final NodeModel source, final String targetID, final ConnectorProperties connectorProperties) {
 		super(source, targetID);
 		assert source != null;
-		assert color != null;
-		assert shape != null;
-		this.color = color;
-		this.setAlpha(alpha);
-		this.width = width;
-		this.shape = shape;
-		this.labelFontFamily = labelFontFamily;
-		this.labelFontSize = labelFontSize;
-		startArrow = ArrowType.NONE;
-		endArrow = ArrowType.DEFAULT;
+		this.connectorProperties = connectorProperties;
 	}
 
-	public void changeInclination(int deltaX, final int deltaY, final NodeModel linkedNodeView,
-	                              final Point changedInclination) {
-		if (linkedNodeView.isLeft()) {
-			deltaX = -deltaX;
-		}
-		changedInclination.translate(deltaX, deltaY);
-		if (changedInclination.x != 0 && Math.abs((double) changedInclination.y / changedInclination.x) < 0.015) {
-			changedInclination.y = 0;
-		}
-		final double k = changedInclination.distance(0, 0);
-		if (k < 10) {
-			if (k > 0) {
-				changedInclination.x = (int) (changedInclination.x * 10 / k);
-				changedInclination.y = (int) (changedInclination.y * 10 / k);
-			}
-			else {
-				changedInclination.x = 10;
-			}
-		}
-	}
+	public Shape getShape() {
+	    return connectorProperties.getShape();
+    }
 
-	private String empty2null(final String label) {
-		return "".equals(label) ? null : label;
-	}
+	public void setShape(Shape shape) {
+	    connectorProperties.setShape(shape);
+    }
+
+	public int[] getDash() {
+	    return connectorProperties.getDash();
+    }
+
+	public void setDash(int[] dash) {
+	    connectorProperties.setDash(dash);
+    }
 
 	public Color getColor() {
-		return color;
-	}
+	    return connectorProperties.getColor();
+    }
 
 	public ArrowType getEndArrow() {
-		return endArrow;
-	}
+	    return connectorProperties.getEndArrow();
+    }
 
 	public Point getEndInclination() {
-		if (endInclination == null) {
-			return null;
-		}
-		return new Point(endInclination);
-	}
+	    return connectorProperties.getEndInclination();
+    }
 
 	public String getMiddleLabel() {
-		return middleLabel;
-	}
+	    return connectorProperties.getMiddleLabel();
+    }
 
 	public String getSourceLabel() {
-		return sourceLabel;
-	}
+	    return connectorProperties.getSourceLabel();
+    }
 
 	public ArrowType getStartArrow() {
-		return startArrow;
-	}
+	    return connectorProperties.getStartArrow();
+    }
 
 	public Point getStartInclination() {
-		if (startInclination == null) {
-			return null;
-		}
-		return new Point(startInclination);
-	}
+	    return connectorProperties.getStartInclination();
+    }
 
 	public String getTargetLabel() {
-		return targetLabel;
-	}
+	    return connectorProperties.getTargetLabel();
+    }
 
 	public int getWidth() {
-		return width;
-	}
+	    return connectorProperties.getWidth();
+    }
 
-	public void setColor(final Color color) {
-		assert color != null;
-		this.color = color;
-	}
+	public void setColor(Color color) {
+	    connectorProperties.setColor(color);
+    }
 
-	public void setEndArrow(final ArrowType endArrow) {
-		assert endArrow != null;
-		this.endArrow = endArrow;
-	}
+	public void setEndArrow(ArrowType endArrow) {
+	    connectorProperties.setEndArrow(endArrow);
+    }
 
-	public void setEndInclination(final Point endInclination) {
-		assert endInclination != null;
-		this.endInclination = endInclination;
-	}
+	public void setEndInclination(Point endInclination) {
+	    connectorProperties.setEndInclination(endInclination);
+    }
 
-	public void setMiddleLabel(final String middleLabel) {
-		this.middleLabel = empty2null(middleLabel);
-	}
-
-	private boolean showControlPointsFlag;
+	public void setMiddleLabel(String middleLabel) {
+	    connectorProperties.setMiddleLabel(middleLabel);
+    }
 
 	public boolean getShowControlPointsFlag() {
-		return showControlPointsFlag;
-	}
+	    return connectorProperties.getShowControlPointsFlag();
+    }
 
-	public void setShowControlPoints(final boolean bShowControlPointsFlag) {
-		showControlPointsFlag = bShowControlPointsFlag;
-	}
+	public void setShowControlPoints(boolean bShowControlPointsFlag) {
+	    connectorProperties.setShowControlPoints(bShowControlPointsFlag);
+    }
 
-	public void setSourceLabel(final String label) {
-		sourceLabel = empty2null(label);
-	}
+	public void setSourceLabel(String label) {
+	    connectorProperties.setSourceLabel(label);
+    }
 
-	public void setStartArrow(final ArrowType startArrow) {
-		assert startArrow != null;
-		this.startArrow = startArrow;
-	}
+	public void setStartArrow(ArrowType startArrow) {
+	    connectorProperties.setStartArrow(startArrow);
+    }
 
-	public void setStartInclination(final Point startInclination) {
-		this.startInclination = startInclination;
-	}
+	public void setStartInclination(Point startInclination) {
+	    connectorProperties.setStartInclination(startInclination);
+    }
 
-	public void setTargetLabel(final String targetLabel) {
-		this.targetLabel = empty2null(targetLabel);
-	}
+	public void setTargetLabel(String targetLabel) {
+	    connectorProperties.setTargetLabel(targetLabel);
+    }
 
-	public void setWidth(final int width) {
-		this.width = width;
-	}
+	public void setWidth(int width) {
+	    connectorProperties.setWidth(width);
+    }
 
 	public void setAlpha(int alpha) {
-	    this.alpha = alpha;
+	    connectorProperties.setAlpha(alpha);
     }
 
 	public int getAlpha() {
-	    return alpha;
+	    return connectorProperties.getAlpha();
     }
+
 	public String getLabelFontFamily() {
-    	return labelFontFamily;
+	    return connectorProperties.getLabelFontFamily();
     }
 
 	public void setLabelFontFamily(String labelFontFamily) {
-    	this.labelFontFamily = labelFontFamily;
+	    connectorProperties.setLabelFontFamily(labelFontFamily);
     }
 
 	public int getLabelFontSize() {
-    	return labelFontSize;
+	    return connectorProperties.getLabelFontSize();
     }
 
 	public void setLabelFontSize(int labelFontSize) {
-    	this.labelFontSize = labelFontSize;
+	    connectorProperties.setLabelFontSize(labelFontSize);
     }
 
+	public void changeInclination(int deltaX, int deltaY, NodeModel linkedNodeView, Point changedInclination) {
+	    connectorProperties.changeInclination(deltaX, deltaY, linkedNodeView, changedInclination);
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + connectorProperties.hashCode();
+	    result = prime * result + getSource().hashCode();
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return result;
+		result = prime * result + targetID.hashCode();
+		return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    ConnectorModel other = (ConnectorModel) obj;
+	    if (!connectorProperties.equals(other.connectorProperties) || !getSource().equals(other.getSource()))
+	        return false;
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return other.getTargetID() == null;
+	    else
+	    	return targetID.equals(other.getTargetID());
+    }
+
+	public NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId) {
+	    return new ConnectorModel(sourceClone, targetId, connectorProperties);
+    }
 }

@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.MapModel;
@@ -73,13 +74,12 @@ public class UserPropertiesUpdater {
 
 	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
 		final File parentDirectory = targetDirectory.getParentFile();
-		final String previousDirName = "1.2.x";
 		final File sourceDirectory;
 		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
 		if (isDefined(old_userfpdir))
-			sourceDirectory = new File(old_userfpdir, previousDirName);
+			sourceDirectory = new File(old_userfpdir, Compat.PREVIOUS_VERSION_DIR_NAME);
 		else
-			sourceDirectory = new File(parentDirectory, previousDirName);
+			sourceDirectory = new File(parentDirectory, Compat.PREVIOUS_VERSION_DIR_NAME);
 		if (sourceDirectory.exists() && !sourceDirectory.getAbsolutePath().equals(targetDirectory.getAbsolutePath())) {
 			try {
 				parentDirectory.mkdirs();

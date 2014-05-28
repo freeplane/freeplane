@@ -148,7 +148,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return key;
 	}
 
-	final String getTextKey() {
+	public String getTextKey() {
 		return key + ".text";
 	}
 

@@ -49,6 +49,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
 import org.freeplane.features.mode.AController.IActionOnChange;
@@ -191,8 +192,9 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(8,
-		    new NodeLevelConditionController());
+		final ConditionFactory conditionFactory = FilterController.getCurrentFilterController().getConditionFactory();
+		conditionFactory.addConditionController(80, new NodeLevelConditionController());
+		conditionFactory.addConditionController(75, new CloneConditionController());
 	}
 
 
@@ -253,12 +255,12 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 // 	final private Controller controller;
-	protected final Collection<IMapChangeListener> mapChangeListeners;
+	final private Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
 	final private MapWriter mapWriter;
 // 	final private ModeController modeController;
-	final private LinkedList<INodeChangeListener> nodeChangeListeners;
+	final LinkedList<INodeChangeListener> nodeChangeListeners;
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
@@ -380,7 +382,7 @@ public class MapController extends SelectionController implements IExtension{
 		boolean visibleFound = false;
 		boolean unfolded = false;
 		for(int i = 0; i < node.getChildCount(); i++){
-			final NodeModel child = (NodeModel) node.getChildAt(i);
+			final NodeModel child = node.getChildAt(i);
 			if(child.isVisible())
 				visibleFound = true;
 			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){
@@ -500,11 +502,8 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	private void fireNodeChanged(final NodeModel node, final NodeChangeEvent nodeChangeEvent) {
-		final INodeChangeListener[] list = nodeChangeListeners.toArray(new INodeChangeListener[]{});
-		for (final INodeChangeListener next : list) {
-			next.nodeChanged(nodeChangeEvent);
-		}
-		node.fireNodeChanged(nodeChangeEvent);
+		final INodeChangeListener[] nodeChangeListeners = this.nodeChangeListeners.toArray(new INodeChangeListener[]{});
+	    node.fireNodeChanged(nodeChangeListeners, nodeChangeEvent);
 	}
 
 	protected void fireNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
@@ -660,7 +659,7 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-		if(parent.getParent() != null){
+		if(parent.getParentNode() != null){
 			newNode.setLeft(parent.isLeft());
 		}
 		parent.insert(newNode, index);

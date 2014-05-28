@@ -97,7 +97,7 @@ public class NodeView extends JComponent implements INodeView {
 	public static final int MAIN_VIEWER_POSITION = 1;
 	public static final int NOTE_VIEWER_POSITION = 10;
 	final static boolean PAINT_DEBUG_BORDER;
-	static{
+	static {
 		boolean paintDebugBorder = false;
 		try{
 			paintDebugBorder = Boolean.getBoolean("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_BORDER");
@@ -105,7 +105,7 @@ public class NodeView extends JComponent implements INodeView {
 		catch(Exception e){
 		}
 		PAINT_DEBUG_BORDER = paintDebugBorder;
-	};
+	}
 	static private int maxToolTipWidth;
 	private AttributeView attributeView;
 	private JComponent contentPane;
@@ -157,6 +157,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public static int ADDITIONAL_MOUSE_SENSITIVE_AREA = 50;
+	
 	@Override
 	public boolean contains(final int x, final int y) {
 		final int space = getMap().getZoomed(NodeView.SPACE_AROUND);
@@ -186,8 +187,6 @@ public class NodeView extends JComponent implements INodeView {
 		return mainView.hasFocus();
 	}
 
-	/**
-	 */
 	public AttributeView getAttributeView() {
 		if (attributeView == null) {
 			AttributeController.getController(getMap().getModeController()).createAttributeTableModel(model);
@@ -323,9 +322,6 @@ public class NodeView extends JComponent implements INodeView {
 		return mainView.getDeltaY();
 	}
 
-	/**
-	 * @param startAfter
-	 */
 	NodeView getFirst(Component startAfter, final boolean leftOnly, final boolean rightOnly) {
 		final Component[] components = getComponents();
 		for (int i = 0; i < components.length; i++) {
@@ -810,7 +806,7 @@ public class NodeView extends JComponent implements INodeView {
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		// is node is deleted, skip the rest.
-		if (!node.isRoot() && node.getParent() == null) {
+		if (!node.isRoot() && node.getParentNode() == null) {
 			return;
 		}
 		final Object property = event.getProperty();
@@ -845,7 +841,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		update();
 		if (!isRoot())
-			getParentView().numberingChanged(node.getParent().getIndex(node) + 1);
+			getParentView().numberingChanged(node.getParentNode().getIndex(node) + 1);
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
@@ -949,16 +945,16 @@ public class NodeView extends JComponent implements INodeView {
 					}
                     paintClouds(g2);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-			}
-			switch (paintingMode) {
+					break;
 				case NODES:
 					g2.setStroke(BubbleMainView.DEF_STROKE);
 					modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
                     paintEdges(g2, this);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+					break;
 			}
 		}
-		if (PAINT_DEBUG_BORDER && isSelected()&& paintingMode.equals(PaintingMode.SELECTED_NODES)){
+		if (PAINT_DEBUG_BORDER && isSelected() && paintingMode.equals(PaintingMode.SELECTED_NODES)){
 			final int spaceAround = getZoomed(SPACE_AROUND);
 			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			g.drawRect(spaceAround - 1, spaceAround - 1, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);

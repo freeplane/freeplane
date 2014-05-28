@@ -20,11 +20,10 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -44,6 +43,14 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	@SuppressWarnings("serial")
     static class MapViewPort extends JViewport{
 
+		@Override
+        public void doLayout() {
+	        final Component view = getView();
+	        if(view != null)
+	        	view.invalidate();
+	        super.doLayout();
+        }
+
 		private Timer timer;
 
 		@Override
@@ -55,6 +62,19 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 			}
 			else
 				super.setViewPosition(p);
+        }
+
+		@Override
+        public void setViewSize(Dimension newSize) {
+			Component view = getView();
+	        if (view != null) {
+	            Dimension oldSize = view.getSize();
+	            if (newSize.equals(oldSize)) {
+	            	view.setSize(newSize);
+	            }
+	            else
+	            	super.setViewSize(newSize);
+	        }
         }
 
 		private void slowSetViewPosition(final Point p) {
@@ -91,7 +111,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         }
 	}
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -114,15 +134,6 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		ResourceController.getResourceController().removePropertyChangeListener(MapViewScrollPane.this);
     }
 
-	@Override
-	protected void validateTree() {
-		final Component view = getViewport().getView();
-		if (view != null) {
-			view.validate();
-		}
-		super.validateTree();
-	}
-
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		if(ViewController.FULLSCREEN_ENABLED_PROPERTY.equals(propertyName)
 				|| propertyName.startsWith("scrollbarsVisible")){
@@ -140,5 +151,15 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	    boolean areScrollbarsVisible = Controller.getCurrentController().getViewController().areScrollbarsVisible();
 	    setHorizontalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS : JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	    setVerticalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.VERTICAL_SCROLLBAR_ALWAYS : JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    }
+
+	@Override
+    public void doLayout() {
+		if(viewport != null){
+			final Component view = viewport.getView();
+			if(view != null)
+				view.invalidate();
+		}
+        super.doLayout();
     }
 }

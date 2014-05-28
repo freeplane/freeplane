@@ -20,6 +20,9 @@
 package org.freeplane.features.map;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
@@ -27,9 +30,10 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.MapWriter.WriterHint;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class NodeWriter implements IElementWriter, IAttributeWriter {
+public class NodeWriter implements IElementWriter, IAttributeWriter {
 	private boolean mayWriteChildren;
 	final private MapController mapController;
 	final private boolean shouldWriteChildren;
@@ -38,8 +42,18 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	private XMLElement xmlNode;
 	final private String nodeTag;
 
+	public static boolean shouldWriteSharedContent(ITreeWriter writer){
+		if (! Boolean.TRUE.equals(writer.getHint(WriterHint.ALREADY_WRITTEN)))
+			return true;
+		final Object mode = writer.getHint(Hint.MODE);
+		return Mode.EXPORT.equals(mode);
+	}
+
+	private final Map<SharedNodeData, NodeModel> alreadyWrittenSharedContent;
+
 	public NodeWriter(final MapController mapController, final String nodeTag, final boolean writeChildren,
 	                  final boolean writeInvisible) {
+		alreadyWrittenSharedContent = new HashMap<SharedNodeData, NodeModel>();
 		this.mapController = mapController;
 		this.shouldWriteChildren = writeChildren;
 		this.mayWriteChildren = true;
@@ -54,6 +68,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
 		for (final NodeModel child: mapController.childrenUnfolded(node)) {
 			if (writeInvisible || child.isVisible()) {
+				writer.setHint(WriterHint.ALREADY_WRITTEN, isAlreadyWritten(child));
 				writer.addElement(child, nodeTag);
 			}
 			else {
@@ -81,15 +96,17 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		xmlNode = new XMLElement();
 		EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		mayWriteChildren = true;
-		final Object mode = writer.getHint(Hint.MODE);
-		if (encryptionModel != null && !(encryptionModel.isAccessible() && Mode.EXPORT.equals(mode))) {
+		final Object mode = mode(writer);
+		final boolean isNodeAlreadyWritten = isAlreadyWritten(node);
+		if (encryptionModel != null && !(encryptionModel.isAccessible() && Mode.EXPORT.equals(mode)) && ! isNodeAlreadyWritten) {
         	final String enctyptedContent = encryptionModel.getEncryptedContent(mapController);
         	if(enctyptedContent != null){
         		writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, enctyptedContent);
         		mayWriteChildren = false;
+        		registerWrittenNode(node);
         	}
         }
-		if (mayWriteChildren && (writeFolded || !writer.getHint(Hint.MODE).equals(Mode.FILE))) {
+		if (mayWriteChildren && (writeFolded || !mode(writer).equals(Mode.FILE))) {
 			if(mapController.isFolded(node)){
 				writer.addAttribute("FOLDED", "true");
 			}
@@ -105,30 +122,59 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);
+			writeReferenceNodeId(writer, node);
 		}
-		if (!mode.equals(Mode.STYLE)
-		        && node.getHistoryInformation() != null
-		        && ResourceController.getResourceController().getBooleanProperty(
-		            NodeBuilder.RESOURCES_SAVE_MODIFICATION_TIMES)) {
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
-			    .getHistoryInformation().getCreatedAt()));
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node
-			    .getHistoryInformation().getLastModifiedAt()));
+		if(! isNodeAlreadyWritten){
+			if (!mode.equals(Mode.STYLE)
+					&& node.getHistoryInformation() != null
+					&& ResourceController.getResourceController().getBooleanProperty(
+						NodeBuilder.RESOURCES_SAVE_MODIFICATION_TIMES)) {
+				writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
+					.getHistoryInformation().getCreatedAt()));
+				writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node
+					.getHistoryInformation().getLastModifiedAt()));
+			}
 		}
-		writer.addExtensionAttributes(node, node.getExtensions().values());
+		if(! isNodeAlreadyWritten || Mode.EXPORT.equals(mode))
+			writer.addExtensionAttributes(node, node.getSharedExtensions().values());
+		writer.addExtensionAttributes(node, node.getIndividualExtensionValues());
 	}
+
+	private void writeReferenceNodeId(ITreeWriter writer, NodeModel node) {
+	    final NodeModel referenceNode = alreadyWrittenSharedContent.get(node.getSharedData());
+	    if(referenceNode != null)
+	    	writer.addAttribute("REFERENCE_ID", referenceNode.createID());
+
+    }
+
+	private boolean isAlreadyWritten(final NodeModel node) {
+	    return alreadyWrittenSharedContent.containsKey(node.getSharedData());
+    }
+
+	private void registerWrittenNode(final NodeModel node) {
+	    alreadyWrittenSharedContent.put(node.getSharedData(), node);
+    }
 
 	public void writeContent(final ITreeWriter writer, final Object content, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) content;
-		writer.addExtensionNodes(node, node.getExtensions().values());
-		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
-			writer.addElement(null, xmlNode.getChildAtIndex(i));
+		writer.addExtensionNodes(node, node.getIndividualExtensionValues());
+		final boolean isNodeContentWrittenFirstTime = ! isAlreadyWritten(node);
+		if(isNodeContentWrittenFirstTime)
+			registerWrittenNode(node);
+		if(isNodeContentWrittenFirstTime || Mode.EXPORT.equals(mode(writer))){
+			writer.addExtensionNodes(node, node.getSharedExtensions().values());
+			for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
+				writer.addElement(null, xmlNode.getChildAtIndex(i));
+			}
 		}
 		if (mayWriteChildren && shouldWriteChildren && mapController.childrenUnfolded(node).size()>0) {
 			saveChildren(writer, node);
 		}
-		return;
 	}
+
+	private Object mode(final ITreeWriter writer) {
+	    return writer.getHint(Hint.MODE);
+    }
 
 	String getNodeTag() {
 		return nodeTag;

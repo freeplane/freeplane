@@ -20,6 +20,7 @@
 package org.freeplane.features.text;
 
 import java.io.IOException;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -38,6 +39,7 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.styles.StyleFactory;
 import org.freeplane.features.styles.StyleNamedObject;
 import org.freeplane.features.styles.StyleString;
@@ -78,7 +80,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		else if (NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
 			final DetailTextModel note = new DetailTextModel("true".equals(attributes.getAttribute("HIDDEN", "false")));
 			note.setXml(xmlText);
-			nodeModel.addExtension((IExtension) note);
+			nodeModel.addExtension(note);
 		}
 	}
 
@@ -96,7 +98,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				final Object newInstance = TypeReference.create(value);
-				// work around for old maps : 
+				// work around for old maps :
 				// actually we do not need IFormattedObject as user objects
 				// because formatting is saved as an extra attribute
 				if(newInstance instanceof IFormattedObject)
@@ -139,7 +141,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	}
 
 	/**
-	 * @param writeManager 
+	 * @param writeManager
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writeManager) {
 		registerAttributeHandlers(reader);
@@ -159,6 +161,8 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
         }
 	}
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
+		if(! NodeWriter.shouldWriteSharedContent(writer))
+			return;
 		final NodeModel node = (NodeModel) userObject;
 		final Object data = node.getUserObject();
 		if(data == null)
@@ -194,8 +198,10 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
+		if(! NodeWriter.shouldWriteSharedContent(writer))
+			return;
 		final NodeModel node = (NodeModel) element;
-		final TransformedXMLExtension transformedXML = (TransformedXMLExtension) node.getExtension(TransformedXMLExtension.class);
+		final TransformedXMLExtension transformedXML = node.getExtension(TransformedXMLExtension.class);
 		if (transformedXML != null || node.getXmlText() != null) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);

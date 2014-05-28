@@ -28,20 +28,19 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.NodeModel;
 
 public class MindMapNodesSelection implements Transferable, ClipboardOwner {
-	/**
-	 * fc, 7.8.2004: This is a quite interisting flavor, but how does it
-	 * works???
-	 */
 	public static DataFlavor dropActionFlavor = null;
 	public static DataFlavor fileListFlavor = null;
 	public static DataFlavor htmlFlavor = null;
 	public static DataFlavor mindMapNodesFlavor = null;
+	public static DataFlavor mindMapNodeObjectsFlavor = null;
 	public static DataFlavor rtfFlavor = null;
 	static {
 		try {
 			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
+			MindMapNodesSelection.mindMapNodeObjectsFlavor = new DataFlavor("application/freeplane-nodes; class=java.util.List");
 			MindMapNodesSelection.rtfFlavor = new DataFlavor("text/rtf; class=java.io.InputStream");
 			MindMapNodesSelection.htmlFlavor = new DataFlavor("text/html; class=java.lang.String");
 			MindMapNodesSelection.fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
@@ -51,23 +50,25 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 			LogUtils.severe(e);
 		}
 	}
-	private String dropActionContent;
-	final private List<?> fileList;
 	final private String htmlContent;
 	final private String nodesContent;
 	final private String rtfContent;
 	final private String stringContent;
+	private String dropActionContent;
+	private List<NodeModel> nodes;
 
-	// FIXME: dropActionContent, fileList are never set to something else than null
 	public MindMapNodesSelection(final String nodesContent, final String stringContent, final String rtfContent,
-	                             final String htmlContent, final String dropActionContent, final List<?> fileList) {
+	                             final String htmlContent) {
 		this.nodesContent = nodesContent;
 		this.rtfContent = rtfContent;
 		this.stringContent = stringContent;
-		this.dropActionContent = dropActionContent;
 		this.htmlContent = htmlContent;
-		this.fileList = fileList;
+		this.dropActionContent = null;
 	}
+
+	public MindMapNodesSelection(final String nodesContent) {
+	    this(nodesContent, null, null, null);
+    }
 
 	public Object getTransferData(final DataFlavor flavor) throws UnsupportedFlavorException {
 		if (flavor.equals(DataFlavor.stringFlavor)) {
@@ -86,8 +87,8 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return htmlContent;
 		}
-		if (flavor.equals(MindMapNodesSelection.fileListFlavor)) {
-			return fileList;
+		if (flavor.equals(MindMapNodesSelection.mindMapNodeObjectsFlavor)) {
+			return nodes;
 		}
 		throw new UnsupportedFlavorException(flavor);
 	}
@@ -95,7 +96,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[] { DataFlavor.stringFlavor, MindMapNodesSelection.mindMapNodesFlavor,
 		        MindMapNodesSelection.rtfFlavor, MindMapNodesSelection.htmlFlavor,
-		        MindMapNodesSelection.dropActionFlavor };
+		        MindMapNodesSelection.dropActionFlavor, MindMapNodesSelection.mindMapNodeObjectsFlavor };
 	}
 
 	public boolean isDataFlavorSupported(final DataFlavor flavor) {
@@ -114,7 +115,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.fileListFlavor) && (fileList != null) && fileList.size() > 0) {
+		if (flavor.equals(MindMapNodesSelection.mindMapNodeObjectsFlavor) && nodes != null) {
 			return true;
 		}
 		return false;
@@ -126,4 +127,8 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	public void setDropAction(final String dropActionContent) {
 		this.dropActionContent = dropActionContent;
 	}
+
+	public void setNodeObjects(List<NodeModel> collection) {
+	    nodes = collection;
+    }
 }

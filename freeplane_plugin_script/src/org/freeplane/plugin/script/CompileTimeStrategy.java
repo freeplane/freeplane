@@ -41,7 +41,14 @@ public class CompileTimeStrategy {
 		lastFileStampCheckTime = NEVER;
 	}
 
+	/** mark the beginning of a script compile run */
+	public void scriptCompileStart() {
+		compileTime = NEVER;
+	}
+
+	/** mark the end of a successful script compile run */
 	public void scriptCompiled() {
+		assert (compileTime == NEVER);
 		compileTime = now();
 	}
 

@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
@@ -72,6 +73,18 @@ public class XsltPipeReaderFactory {
 	}
 
 	public String transform(final File file, final String xsltScript) throws InterruptedException, TransformerException {
+		URL inputUrl;
+        try {
+	        inputUrl = file.toURL();
+        }
+        catch (MalformedURLException e) {
+        	throw new IllegalArgumentException(e);
+        }
+	    return transform(inputUrl, xsltScript);
+    }
+
+	public String transform(final URL inputUrl, final String xsltScript) throws InterruptedException,
+            TransformerException {
 	    final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
 	    if (updaterUrl == null) {
 	    	throw new IllegalArgumentException(xsltScript + " not found.");
@@ -88,7 +101,7 @@ public class XsltPipeReaderFactory {
 	    		try {
 	    			xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
 	    			final Source xsltSource = new StreamSource(xsltInputStream);
-	    			input = new BufferedInputStream(new FileInputStream(file));
+	    			input = new BufferedInputStream(inputUrl.openStream());
 	    			final CleaningInputStream cleanedInput = new CleaningInputStream(input);
 	    			final Reader reader = new InputStreamReader(cleanedInput, cleanedInput.isUtf8() ? Charset.forName("UTF-8") : FileUtils.defaultCharset());
 	    			final Transformer trans = transFact.newTransformer(xsltSource);

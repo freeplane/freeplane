@@ -170,6 +170,9 @@ if [ "${JAVA_TYPE}" != "sun" ]; then
   #JAVA_OPTS="-Dsun.java2d.xrender=True $JAVA_OPTS"
 fi
 
+# enable this in order to turn off the splash screen:
+#JAVA_OPTS="-Dorg.freeplane.nosplash=true $JAVA_OPTS"
+
 _debug "Calling: "\
 "${JAVACMD}" -Xmx512m\
  "-Dorg.freeplane.param1=$1"\

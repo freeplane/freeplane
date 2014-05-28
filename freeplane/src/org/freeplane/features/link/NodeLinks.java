@@ -20,12 +20,16 @@
 package org.freeplane.features.link;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -33,27 +37,29 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class NodeLinks implements IExtension {
+	public static final Object CONNECTOR = "connector";
+
 	/**
 	 * @param source2
 	 * @return
 	 */
 	public static NodeLinks createLinkExtension(final NodeModel node) {
-		NodeLinks linkExtension = NodeLinks.getLinkExtension(node);
-		if (linkExtension != null) {
-			return linkExtension;
+		NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
+		if (nodeLinks != null) {
+			return nodeLinks;
 		}
-		linkExtension = new NodeLinks();
-		node.addExtension(linkExtension);
-		return linkExtension;
+		nodeLinks = new NodeLinks();
+		node.addExtension(nodeLinks);
+		return nodeLinks;
 	}
 
 	public static URI getLink(final NodeModel node) {
-		final NodeLinks links = NodeLinks.getModel(node);
-		return links != null ? links.getHyperLink() : null;
+		final NodeLinks links = NodeLinks.getLinkExtension(node);
+		return links != null ? links.getHyperLink(node) : null;
 	}
 
 	public static Boolean formatNodeAsHyperlink(final NodeModel node) {
-		final NodeLinks links = NodeLinks.getModel(node);
+		final NodeLinks links = NodeLinks.getLinkExtension(node);
 		return links != null ? links.formatNodeAsHyperlink() : null;
 	}
 
@@ -67,25 +73,31 @@ public class NodeLinks implements IExtension {
 	 * @return
 	 */
 	public static NodeLinks getLinkExtension(final NodeModel node) {
-		return (NodeLinks) node.getExtension(NodeLinks.class);
+		return node.getExtension(NodeLinks.class);
 	}
 
-	public static Collection<LinkModel> getLinks(final NodeModel node) {
+	public static Collection<NodeLinkModel> getLinks(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
-		return links != null ? links.getLinks() : Collections.<LinkModel> emptyList();
+		if (links != null) {
+	        final Collection<NodeLinkModel> sharedLinks = links.getLinks();
+	        final ArrayList<NodeLinkModel> clones = new ArrayList<NodeLinkModel>(sharedLinks.size());
+	        for(NodeLinkModel sharedLink : sharedLinks){
+	        	clones.add(sharedLink.cloneForSource(node));
+	        }
+	        return clones;
+        }
+        else 
+			return Collections.<NodeLinkModel> emptyList();
 	}
 
-	public static NodeLinks getModel(final NodeModel node) {
-		final NodeLinks links = (NodeLinks) node.getExtension(NodeLinks.class);
-		return links;
-	}
-
-	private URI hyperlink;
+	private URI nonLocalHyperlink;
 	private Boolean formatNodeAsHyperlink;
-	final private LinkedList<LinkModel> links;
+	final private LinkedList<NodeLinkModel> links;
+	//DOCEAR - fixed: new property type for node link changes
+	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
 	public NodeLinks() {
-		links = new LinkedList<LinkModel>();
+		links = new LinkedList<NodeLinkModel>();
 	}
 
 	public void addArrowlink(final NodeLinkModel newLink) {
@@ -94,7 +106,7 @@ public class NodeLinks implements IExtension {
 		addLinkToMap(map, newLink);
 	}
 
-	private void addLinkToMap(final MapModel map, final LinkModel newLink) {
+	private void addLinkToMap(final MapModel map, final NodeLinkModel newLink) {
 		MapLinks mapLinks = MapLinks.getLinks(map);
 		if (mapLinks == null) {
 			mapLinks = new MapLinks();
@@ -106,36 +118,49 @@ public class NodeLinks implements IExtension {
 	/**
 	 * @return
 	 */
-	public URI getHyperLink() {
-		return hyperlink;
+	public URI getHyperLink(NodeModel clone) {
+		if(nonLocalHyperlink != null)
+			return nonLocalHyperlink;
+		final Iterator<NodeLinkModel> iterator = links.iterator();
+		while (iterator.hasNext()) {
+			final NodeLinkModel link = iterator.next();
+			if (link instanceof HyperTextLinkModel) {
+				try {
+	                return new URI("#" + link.cloneForSource(clone).getTargetID());
+                }
+                catch (URISyntaxException e) {
+	                LogUtils.severe(e);
+                } 
+			}
+		}
+		return null;
 	}
 
-	public Collection<LinkModel> getLinks() {
+	public Collection<NodeLinkModel> getLinks() {
 		return Collections.unmodifiableCollection(links);
 	}
 
 	public void removeArrowlink(final NodeLinkModel link) {
 		final NodeModel node = link.getSource();
-		final Iterator<LinkModel> iterator = NodeLinks.getLinkExtension(node).links.iterator();
-		while (iterator.hasNext()) {
-			final LinkModel i = iterator.next();
-			if (i == link) {
-				iterator.remove();
+		for (final NodeLinkModel i : NodeLinks.getLinkExtension(node).links) {
+			if (i.cloneForSource(link.getSource()).equals(link)) {
+				links.remove(i);
+				final MapModel map = link.getSource().getMap();
+				removeLinkFromMap(map, i);
+				return;
 			}
 		}
-		final MapModel map = link.getSource().getMap();
-		removeLinkFromMap(map, link);
 	}
 
-	private void removeLinkFromMap(final MapModel map, final LinkModel link) {
+	private void removeLinkFromMap(final MapModel map, final NodeLinkModel link) {
 		final MapLinks mapLinks = MapLinks.getLinks(map);
 		mapLinks.remove(link);
 	}
 
 	public String removeLocalHyperLink(final NodeModel node) {
-		final Iterator<LinkModel> iterator = links.iterator();
+		final Iterator<NodeLinkModel> iterator = links.iterator();
 		while (iterator.hasNext()) {
-			final LinkModel link = iterator.next();
+			final NodeLinkModel link = iterator.next();
 			if (link instanceof HyperTextLinkModel) {
 				iterator.remove();
 				removeLinkFromMap(node.getMap(), link);
@@ -146,10 +171,11 @@ public class NodeLinks implements IExtension {
 	}
 
 	public void setHyperLink(final URI hyperlink) {
-		this.hyperlink = hyperlink;
+		this.nonLocalHyperlink = hyperlink;
 	}
 
 	public void setLocalHyperlink(final NodeModel node, final String targetID) {
+		this.nonLocalHyperlink = null;
 		removeLocalHyperLink(node);
 		if (targetID != null) {
 			final HyperTextLinkModel link = new HyperTextLinkModel(node, targetID);
@@ -172,13 +198,22 @@ public class NodeLinks implements IExtension {
 		}
 		return link;
 	}
-	
+
 	public Boolean formatNodeAsHyperlink() {
     	return formatNodeAsHyperlink;
     }
 
 	public void setFormatNodeAsHyperlink(Boolean formatNodeAsHyperlink) {
     	this.formatNodeAsHyperlink = formatNodeAsHyperlink;
+    }
+
+	public void setSource(NodeModel newSource) {
+		final ListIterator<NodeLinkModel> listIterator = links.listIterator();
+		while(listIterator.hasNext()){
+			final NodeLinkModel link = listIterator.next();
+			listIterator.remove();
+			listIterator.add(link.cloneForSource(newSource));
+		}
     }
 
 }

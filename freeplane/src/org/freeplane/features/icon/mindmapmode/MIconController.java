@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -51,6 +52,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.icon.IIconInformation;
@@ -64,7 +66,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.ui.CollapseableBoxBuilder;
+import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev
@@ -126,7 +129,7 @@ public class MIconController extends IconController {
 	private final Map<MindIcon, AFreeplaneAction> iconActions = new LinkedHashMap<MindIcon, AFreeplaneAction>();
 	private final IconStore STORE = IconStoreFactory.create();
 	private final JToolBar iconToolBar;
-	private final JAutoScrollBarPane iconToolBarScrollPane;
+	private final Box iconBox;
 
 	/**
 	 * @param modeController
@@ -135,10 +138,11 @@ public class MIconController extends IconController {
 		super(modeController);
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		iconToolBar = new FreeplaneToolBar("icon_toolbar", SwingConstants.VERTICAL);
-		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
+		JAutoScrollBarPane iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
-		iconToolBarScrollPane.putClientProperty(ViewController.VISIBLE_PROPERTY_KEY, "leftToolbarVisible");
+		FrameController frameController = (FrameController) modeController.getController().getViewController();
+		iconBox = new CollapseableBoxBuilder(frameController).setPropertyNameBase("leftToolbarVisible").setResizeable(false).createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
 		createPreferences();
 		modeController.addMenuContributor(new IMenuContributor() {
@@ -243,7 +247,7 @@ public class MIconController extends IconController {
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
-		
+
 		for (final AFreeplaneAction iconAction : actions) {
 			final IIconInformation info = (IIconInformation) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
@@ -266,7 +270,7 @@ public class MIconController extends IconController {
 	 * @return
 	 */
 	public JComponent getIconToolBarScrollPane() {
-		return iconToolBarScrollPane;
+		return iconBox;
 	}
 
 	public Collection<MindIcon> getMindIcons() {

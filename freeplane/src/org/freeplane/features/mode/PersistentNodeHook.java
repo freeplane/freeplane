@@ -411,7 +411,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	public static void removeMapExtensions(NodeModel node) {
-		final IExtension[] extensionArray = node.getExtensions().values().toArray(new IExtension[]{});
+		final IExtension[] extensionArray = node.getSharedExtensions().values().toArray(new IExtension[]{});
 		for(IExtension extension : extensionArray){
 			if(PersistentNodeHook.isMapExtension(extension.getClass())){
 				node.removeExtension(extension);

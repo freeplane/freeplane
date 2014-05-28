@@ -26,7 +26,7 @@ import java.awt.AWTEvent;
  */
 public class NodeChangeEvent extends AWTEvent {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private Object newValue;
@@ -58,4 +58,8 @@ public class NodeChangeEvent extends AWTEvent {
 	public Object getProperty() {
 		return property;
 	}
+
+	public NodeChangeEvent forNode(NodeModel node) {
+		return new NodeChangeEvent(node, getProperty(), getOldValue(), getNewValue());
+    }
 }

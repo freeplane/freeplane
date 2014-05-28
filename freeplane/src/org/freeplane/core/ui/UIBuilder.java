@@ -175,6 +175,9 @@ public abstract class UIBuilder extends IndexedTree {
 	@Override
 	public void removeChildElements(final Object key) {
 		final DefaultMutableTreeNode node = getNode(key);
+		if(node == null) {
+			return;
+		}
 		final Container parentComponent = getContainer(node, Container.class);
 		final Enumeration<?> children = node.children();
 		while (children.hasMoreElements()) {

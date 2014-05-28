@@ -156,7 +156,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		registerTooltipProvider();
 		registerStateIconProvider();
 
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(9,
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(90,
 			new ReminderConditionController());
 	}
 	private static final IconStore STORE = IconStoreFactory.create();

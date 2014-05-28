@@ -55,6 +55,7 @@ import org.freeplane.features.styles.MapStyleModel;
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
+	public static final String DETAILS_HIDDEN = "DETAILS_HIDDEN";
 	public static final String FILTER_NODE = "filter_node";
 	public static final String FILTER_ANYTEXT = "filter_any_text";
 	public static final String FILTER_NOTE = "filter_note";
@@ -81,7 +82,7 @@ public class TextController implements IExtension {
     }
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(0,
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(5,
 		    new NodeTextConditionController());
 	}
 
@@ -239,7 +240,7 @@ public class TextController implements IExtension {
 		}
 		details.setHidden(isHidden);
 		node.addExtension(details);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node, "DETAILS_HIDDEN", ! isHidden, isHidden);    
+		Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, ! isHidden, isHidden);    
 	}
 
 	private void registerDetailsTooltip() {

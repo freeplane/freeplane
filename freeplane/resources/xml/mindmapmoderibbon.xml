@@ -1,0 +1,561 @@
+<menu_structure>
+	<menu_category name="ribbon">
+		<ribbon_taskbar>
+			<ribbon_action action="NewMapAction" accelerator="control N" mandatory="true"/>
+			<ribbon_action action="EncryptedMap" mandatory="true"/>	
+			<separator />
+			<ribbon_action action="OpenAction" accelerator="control O" mandatory="true"/>
+			<separator />
+			<ribbon_action action="SaveAction" accelerator="control S" />
+			<ribbon_action action="SaveAsAction" accelerator="control shift S" />
+			<ribbon_action action="SaveAll" />
+		</ribbon_taskbar>
+		
+		<ribbon_menu>
+			<primary_entry name="new">
+				<entry_group name="new">
+					<ribbon_action action="NewMapAction" accelerator="control N" mandatory="true"/>
+					<ribbon_action action="new_map_from_user_templates" mandatory="true"/>
+					<ribbon_action action="EncryptedMap" mandatory="true"/>					
+				</entry_group>
+			</primary_entry>
+			<primary_entry name="open">
+			    <entry_group name="open">
+			        <ribbon_action action="OpenAction" accelerator="control O" mandatory="true" />
+					<ribbon_action action="OpenURLMapAction" mandatory="true" />			        
+					<ribbon_action action="RevertAction" mandatory="true"/>	
+			    </entry_group>
+			</primary_entry>
+			<ribbon_contributor name="lastOpenedMaps" name_ref="most_recent_files" menu_key="main_menu_most_recent_files"/>
+			<primary_entry name="save">
+				<entry_group name="save">
+					<ribbon_action action="SaveAction" accelerator="control S" />
+					<ribbon_action action="SaveAsAction" accelerator="control shift S" />
+					<ribbon_action action="SaveAll" />
+				</entry_group>				
+			</primary_entry>
+			<primary_entry name="import_export">
+			    <entry_group name="export">
+					<ribbon_action action="ExportAction"/>
+					<ribbon_action action="ExportBranchAction" accelerator="alt shift A" />
+				</entry_group>
+			    <entry_group name="import">
+					<ribbon_action action="ImportBranchAction" />
+					<ribbon_action action="ImportLinkedBranchAction"/>
+					<ribbon_action action="ImportLinkedBranchWithoutRootAction"/>
+					
+					<ribbon_action action="ImportExplorerFavoritesAction"/>
+					<ribbon_action action="ImportFolderStructureAction"/>
+					<ribbon_action action="ImportMindmanagerFiles"/>
+				</entry_group>				
+			</primary_entry>
+			<primary_entry name="print">
+			   	<entry_group name="print">
+			    	<ribbon_action action="PageAction" />				
+					<ribbon_action action="PrintPreviewAction" />
+					<ribbon_action action="PrintAction" accelerator="control P" />
+				</entry_group>
+			</primary_entry>
+			<primary_entry action="OpenUserDirAction" mandatory="true"/>
+			<primary_entry action="PropertyAction" mandatory="true"/>
+			<primary_entry action="AboutAction" mandatory="true"/> 
+			<primary_entry name="help">
+			    <entry_group name="help">
+			        <ribbon_action action="OpenFreeplaneSiteAction" mandatory="true"/>					
+					<ribbon_action action="GettingStartedAction" accelerator="F1" mandatory="true"/>
+				    <ribbon_action action="AskForHelp" mandatory="true"/>
+				    <ribbon_action action="RequestFeatureAction" mandatory="true"/>
+				    <ribbon_action action="ReportBugAction" mandatory="true"/>
+					<ribbon_action action="HotKeyInfoAction" mandatory="true"/>  
+				</entry_group>
+			</primary_entry>
+			<!-- primary_entry name="web_resources">
+				<entry_group name="web_resources">				    
+					<ribbon_action action="OpenFreeplaneSiteAction" mandatory="true"/>
+					<ribbon_action action="AskForHelp" mandatory="true"/>
+					<ribbon_action action="ReportBugAction" mandatory="true"/>
+					<ribbon_action action="RequestFeatureAction" mandatory="true"/>
+				</entry_group>			    
+			</primary_entry -->					
+			<footer_entry action="CloseAction" accelerator="control W" mandatory="true"/>
+			<footer_entry action="QuitAction" mandatory="true" accelerator="alt F4"/>			
+		</ribbon_menu>		
+		
+		<!-- HOME -->
+ 		<ribbon_task name="home" orderPriority="first">
+		   <ribbon_band name="basics" resize_policies="Mirror">
+				<ribbon_action action="NewMapAction" accelerator="control N" mandatory="true" >
+                    <ribbon_action action="EncryptedMap" mandatory="true"/> 
+                </ribbon_action>
+                <ribbon_action action="OpenAction" accelerator="control O" mandatory="true">
+                    <ribbon_action action="OpenURLMapAction" mandatory="true"/>
+                    <ribbon_action action="RevertAction" mandatory="true"/>	     
+                </ribbon_action>
+                <ribbon_action action="SaveAction" accelerator="control S" >
+                    <ribbon_action action="SaveAsAction" accelerator="control shift S" />
+                    <ribbon_action action="SaveAll" />
+                </ribbon_action>
+			    <ribbon_action action="CloseAction" accelerator="control W" />
+				<ribbon_action action="CutAction" accelerator="control X" priority="medium" />
+				<ribbon_action action="CopyAction" accelerator="control C" priority="medium">
+					<ribbon_action action="CopySingleAction" accelerator="control shift C" />
+					<ribbon_action action="CopyIDAction" />
+					<ribbon_action action="CopyNodeURIAction" />
+				</ribbon_action>
+				<ribbon_action action="PasteAction" accelerator="control V"	priority="medium">
+					<ribbon_action action="SelectedPasteAction"/>
+					<ribbon_action action="MoveAction" />
+					<ribbon_action action="CloneAction" />
+				</ribbon_action>
+				<ribbon_action action="UndoAction" accelerator="control Z" priority="medium" >
+					<ribbon_action action="RedoAction" accelerator="control Y" />			
+				</ribbon_action>				
+			</ribbon_band>
+		   <ribbon_band name="nodes" resize_policies="Mirror">
+                <ribbon_action action="ToggleFoldedAction" accelerator="SPACE" priority="top" >
+					<ribbon_action action="ToggleChildrenFoldedAction" accelerator="control SPACE" />
+					<ribbon_action action="UnfoldAllAction" accelerator="alt END" />
+					<ribbon_action action="FoldAllAction" accelerator="alt HOME" />
+				</ribbon_action>
+				<ribbon_action action="NewChildAction" accelerator="INSERT"	priority="top"/>
+					<ribbon_action action="NewSiblingAction" accelerator="ENTER">
+					<ribbon_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				</ribbon_action>
+				<ribbon_action action="EditAction" priority="Medium" >
+					<ribbon_action action="EditLongAction" priority="Top" accelerator="alt ENTER" />
+				</ribbon_action>
+				<ribbon_action action="BackAction" accelerator="alt LEFT" priority="Medium"/>
+				<ribbon_action action="ForwardAction" accelerator="alt RIGHT" priority="Medium"/>
+           </ribbon_band>
+		   <ribbon_contributor name="fontStyleContributor" />		   	
+			<ribbon_band name="resources" resize_policies="Mirror">	
+				<ribbon_action action="ExternalImageAddAction" accelerator="alt shift K" priority="Top">
+					<ribbon_action action="ExternalImageChangeAction" />
+					<ribbon_action action="ExternalImageRemoveAction" />
+				</ribbon_action>
+				<ribbon_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" >
+					<ribbon_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
+				</ribbon_action>
+				<ribbon_action action="EditAttributesAction" accelerator="alt F9" priority="medium">
+					<ribbon_action action="attributes_AddAttributeAction" />
+					<ribbon_action action="AssignAttributesAction" />
+					<ribbon_action action="CopyAttributes" />
+					<ribbon_action action="PasteAttributes" />
+					<ribbon_action action="attributes_RemoveAllAttributesAction"/>
+					<ribbon_action action="attributes_RemoveFirstAttributeAction"/>
+					<ribbon_action action="attributes_RemoveLastAttributeAction" />
+					<ribbon_action action="ShowSelectedAttributesAction" />
+					<ribbon_action action="ShowAllAttributesAction" />
+					<ribbon_action action="HideAllAttributesAction" />
+					<ribbon_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+					<ribbon_action action="ShowAttributeDialogAction" />
+				</ribbon_action>
+				<ribbon_action action="AddConnectorAction">
+					<ribbon_action action="AddLocalLinkAction" accelerator="alt shift L" />				    
+					<ribbon_action action="SetLinkByFileChooserAction" />
+					<ribbon_action action="SetLinkByTextFieldAction" />
+					<ribbon_action action="ExtractLinkFromTextAction" />
+				</ribbon_action>
+				<ribbon_action action="IconSelectionPlugin" >
+					<ribbon_action action="RemoveAllIconsAction"/>
+					<ribbon_action action="RemoveIcon_0_Action" />
+					<ribbon_action action="RemoveIconAction" />
+				</ribbon_action>
+				<ribbon_action action="CloudAction" />
+				<ribbon_action action="CloudColorAction" />				
+				<ribbon_action action="EditNoteInDialogAction" >
+					<ribbon_action action="RemoveNoteAction" />
+				</ribbon_action>
+			</ribbon_band>
+		   
+		</ribbon_task>
+				
+		
+		<!-- NODE -->
+		<ribbon_task name="nodes" orderPriority="0">
+			<ribbon_band name="add_node" resize_policies="Mirror">
+				<ribbon_action action="NewChildAction" accelerator="INSERT"	priority="top"/>
+				<ribbon_action action="NewSiblingAction" accelerator="ENTER" priority="top">
+					<ribbon_action action="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				</ribbon_action>	
+				<ribbon_action action="NewSummaryAction" >					
+    				<ribbon_action action="FirstGroupNodeAction" accelerator="alt shift B" priority="medium" />				
+					<ribbon_action action="SummaryNodeAction" accelerator="alt shift S" />
+				</ribbon_action>
+				<ribbon_action action="NewFreeNodeAction" />					
+				<ribbon_action action="NewParentNode" accelerator="shift INSERT" />
+			</ribbon_band>
+		    <ribbon_band name="edit_node" resize_policies="Mirror">
+				<ribbon_action action="EditAction" priority="Top" />
+				<ribbon_action action="EditLongAction" priority="Top" accelerator="alt ENTER" />
+				<ribbon_action action="DeleteAction" accelerator="DELETE" priority="medium"/>
+				<ribbon_action action="NodeUpAction" accelerator="control UP" />
+				<ribbon_action action="NodeDownAction" accelerator="control DOWN" />
+				<ribbon_action action="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
+				<ribbon_action action="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
+			</ribbon_band>			
+			<ribbon_band name="node_details" resize_policies="Mirror">
+				<ribbon_action action="EditDetailsAction" priority="medium"/>
+				<ribbon_action action="EditDetailsInDialogAction" />
+				<ribbon_action action="DeleteDetailsAction" />
+                <ribbon_action action="ToggleDetailsAction" accelerator="alt F2" />
+			</ribbon_band>
+			<ribbon_band name="node_settings" resize_policies="Mirror">
+				<ribbon_action action="JoinNodesAction" accelerator="control J"	priority="medium" />
+				<ribbon_action action="SplitNode" />
+			    <ribbon_action action="AlwaysUnfoldedNodeAction"/>
+				<ribbon_action action="ResetNodeLocationAction" />
+                <ribbon_action action="SetShortenerStateAction" />
+				<ribbon_action action="FreeNodeAction" />				
+			</ribbon_band>
+			<ribbon_band name="general_settings" resize_policies="Mirror">
+				<ribbon_action action="RevisionPluginAction"  />
+				<ribbon_action action="SetBooleanPropertyAction.edit_on_double_click"  />
+			</ribbon_band>		   
+			<ribbon_band name="sort" resize_policies="Mirror">
+				<ribbon_action action="SortNodes" />
+				<!--ribbon_action name="Sort by Time" /-->
+			</ribbon_band>		   		   
+		</ribbon_task>
+		
+		<!-- RESOURCES -->
+		<ribbon_task name="resources" orderPriority="4000">
+		   <ribbon_band name="images" resize_policies="Mirror">
+				<ribbon_action action="ExternalImageAddAction" accelerator="alt shift K" />
+				<!--ribbon_action action="SetImageByFileChooserAction"	accelerator="alt shift K" /-->
+				<ribbon_action action="ExternalImageChangeAction" />
+				<ribbon_action action="ExternalImageRemoveAction" />
+			</ribbon_band>
+			<ribbon_band name="formula_latex" resize_policies="Mirror">				
+				<ribbon_action action="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
+				<ribbon_action action="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
+			</ribbon_band>
+			<ribbon_band name="attributes" resize_policies="Mirror">
+				<ribbon_action action="EditAttributesAction" accelerator="alt F9" priority="medium">
+    				<ribbon_action action="attributes_AddAttributeAction" />
+                </ribbon_action>
+				<ribbon_action action="AssignAttributesAction" />
+				<!--ribbon_action action="CopyStyleExtensionsAction" /-->
+				<ribbon_action action="CopyAttributes" />
+				<ribbon_action action="PasteAttributes" />
+				<!--ribbon_action action="AddStyleAttributes" /-->
+				<ribbon_action action="attributes_RemoveAllAttributesAction">
+    				<ribbon_action action="attributes_RemoveFirstAttributeAction"/>
+    				<ribbon_action action="attributes_RemoveLastAttributeAction" />
+                </ribbon_action>
+				<ribbon_action name="menu_displayAttributes">
+					<ribbon_action action="ShowSelectedAttributesAction" />
+					<ribbon_action action="ShowAllAttributesAction" />
+					<ribbon_action action="HideAllAttributesAction" />
+					<ribbon_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+				</ribbon_action>
+				<ribbon_action action="ShowAttributeDialogAction" />					
+			</ribbon_band>
+			<ribbon_band name="links" resize_policies="Mirror">
+				<ribbon_action action="AddConnectorAction"/>
+				<ribbon_action action="AddLocalLinkAction" accelerator="alt shift L" />				    
+				<ribbon_action action="SetLinkByFileChooserAction" />
+				<ribbon_action action="SetLinkByTextFieldAction" />
+				<ribbon_action action="ExtractLinkFromTextAction" />
+				<ribbon_action action="SetLinkAnchorAction" >
+				    <ribbon_action action="MakeLinkFromAnchorAction" />
+				    <ribbon_action action="MakeLinkToAnchorAction" />
+				    <ribbon_action action="ClearLinkAnchorAction" />										
+                </ribbon_action>
+			</ribbon_band>
+			<ribbon_band name="icons" resize_policies="Mirror">
+                <ribbon_action action="IconSelectionPlugin" />
+			    <ribbon_action action="HierarchicalIconsAction" />
+    			<ribbon_action action="HierarchicalIcons2Action" />
+				<ribbon_action action="RemoveAllIconsAction">
+    				<ribbon_action action="RemoveIcon_0_Action" />
+	    			<ribbon_action action="RemoveIconAction" />
+                </ribbon_action>
+                <ribbon_contributor name="IconList" menu_key="main_menu_icons" />
+				<ribbon_action action="IconProgressIconUpAction" accelerator="alt LESS" >
+    				<ribbon_action action="IconProgressIconDownAction" accelerator="alt shift LESS" />					
+    				<ribbon_action action="IconProgressExtended10Action" />
+    				<ribbon_action action="IconProgressExtended25Action" />					
+    				<ribbon_action action="IconProgressRemoveAction" />
+                </ribbon_action>
+			</ribbon_band>
+
+			<ribbon_band name="cloud" resize_policies="Mirror">
+                <ribbon_action action="CloudAction" />
+    			<ribbon_action name="cloud_shapes">
+        			<ribbon_action action="CloudShapeAction.ARC" />
+    				<ribbon_action action="CloudShapeAction.STAR" />
+    				<ribbon_action action="CloudShapeAction.RECT" />
+    				<ribbon_action action="CloudShapeAction.ROUND_RECT" />
+                </ribbon_action>
+    			<ribbon_action action="CloudColorAction" />
+			</ribbon_band>
+
+			<ribbon_band name="notes" resize_policies="Mirror">
+				<ribbon_action action="SelectNoteAction" accelerator="control LESS"/>
+				<ribbon_action action="EditNoteInDialogAction" />
+                <ribbon_action action="ShowHideNoteAction" accelerator="control GREATER" priority="medium" />
+				<ribbon_action action="RemoveNoteAction" />
+				<ribbon_action action="ShowNotesInMapAction"/>
+				<ribbon_action action="ShowHideNoteAction" accelerator="control GREATER" />
+				<ribbon_action action="SetBooleanMapPropertyAction.show_note_icons" />
+                <ribbon_action name="note_window_location">
+					<ribbon_action action="SetNoteWindowPosition.top" />
+					<ribbon_action action="SetNoteWindowPosition.left" />
+					<ribbon_action action="SetNoteWindowPosition.right" />
+					<ribbon_action action="SetNoteWindowPosition.bottom" />
+				</ribbon_action>
+			</ribbon_band>
+		   
+		</ribbon_task>
+
+		<!-- FORMATTING -->
+		<ribbon_task name="formatting">
+            <ribbon_contributor name="fontStyleContributor" />
+            <ribbon_contributor name="styleContributor" name_ref="styles" menu_key="main_menu_styles"/>
+
+			<ribbon_band name="manage_styles" resize_policies="Mirror">
+				<ribbon_action action="NewUserStyleAction" priority="medium">
+					<ribbon_action action="RedefineStyleAction" />
+					<ribbon_action action="ManageConditionalStylesAction" />
+					<ribbon_action action="ManageNodeConditionalStylesAction" />
+				</ribbon_action>
+
+                <ribbon_action action="CopyMapStylesAction" />
+                <ribbon_action action="CopyStyleExtensionsAction" />	
+
+				<ribbon_action action="EditStylesAction" />
+
+				<ribbon_action action="FormatCopy" accelerator="alt shift C" priority="medium" />
+				<ribbon_action action="FormatPaste" accelerator="alt shift V" priority="medium" />
+
+                <ribbon_action name="automatic_layout">
+				    <ribbon_action action="AutomaticLayoutControllerAction.HEADINGS" />
+					<ribbon_action action="AutomaticLayoutControllerAction.ALL" />
+					<ribbon_action action="AutomaticLayoutControllerAction.null" />
+				</ribbon_action>
+			</ribbon_band>
+
+
+			<ribbon_band name="EdgeProperties" resize_policies="Mirror">			    
+				<ribbon_action name="format_menu_edge_styles">
+					<ribbon_action action="EdgeStyleAsParentAction" />
+					<ribbon_action action="EdgeStyleAction.linear" />
+					<ribbon_action action="EdgeStyleAction.bezier" />
+					<ribbon_action action="EdgeStyleAction.sharp_linear" />
+					<ribbon_action action="EdgeStyleAction.sharp_bezier" />
+					<ribbon_action action="EdgeStyleAction.horizontal" />
+					<ribbon_action action="EdgeStyleAction.hide_edge" />
+				</ribbon_action>
+				<ribbon_action name="format_menu_edge_widths">
+					<ribbon_action action="EdgeWidthAction_width_parent" />
+					<ribbon_action action="EdgeWidthAction_width_thin" />
+					<ribbon_action action="EdgeWidthAction_1" />
+					<ribbon_action action="EdgeWidthAction_2" />
+					<ribbon_action action="EdgeWidthAction_4" />
+					<ribbon_action action="EdgeWidthAction_8" />
+				</ribbon_action>
+				<ribbon_action action="EdgeColorAction" accelerator="alt shift E" >
+					<ribbon_action action="AutomaticEdgeColorHookAction" />
+				</ribbon_action>
+				<ribbon_action action="NodeWidthAction" />
+			</ribbon_band>
+			
+			<ribbon_band name="map_background" resize_policies="Mirror">
+				<ribbon_action action="MapBackgroundColorAction"/>
+				<ribbon_action action="MapBackgroundImageAction">
+					<ribbon_action action="MapBackgroundClearAction"/>
+					<ribbon_action action="SetBooleanMapPropertyAction.fit_to_viewport"/>
+				</ribbon_action>
+				<menu_separator/>
+			</ribbon_band>
+		</ribbon_task>
+		
+		<!-- SEARCH & FILTER -->
+		<ribbon_task name="filter">
+			<ribbon_contributor name="userDefinedFilters" name_ref="user_defined_filters" menu_key="menu_user_defined_filters" />
+			<ribbon_band name="filter" resize_policies="Mirror, High2Low">
+			    <ribbon_action action="EditFilterAction" priority="top"/>	
+                <ribbon_action action="FindAction" accelerator="control G" priority="top" />
+                <!--ribbon_action action="QuickFindAction.FORWARD" />
+                <ribbon_action action="QuickFindAction.BACK" /-->
+				<ribbon_action action="NodeListAction" accelerator="control shift F">
+    				<ribbon_action action="AllMapsNodeListAction" />
+                </ribbon_action>
+                <ribbon_action action="UndoFilterAction" priority="medium"/>
+				<ribbon_action action="RedoFilterAction"/>
+				<ribbon_action action="ReapplyFilterAction" priority="medium"/>				
+				<!--uses quick filter bar -> not applicable for ribbonsi 
+				<menu_action action="QuickFilterAction" /-->
+				<ribbon_action action="ApplySelectedViewConditionAction" priority="medium"/>
+				<ribbon_action action="QuickFindAllAction" priority="medium"/>
+				<ribbon_action action="ApplyNoFilteringAction" priority="medium"/>				
+				<ribbon_contributor name="filterConditionsContributor" />
+			</ribbon_band>
+		</ribbon_task>		
+		
+		<!-- NAVIGATE -->
+		<ribbon_task name="navigate">
+			<ribbon_band name="navigate_main" resize_policies="Mirror">
+				<ribbon_action action="NavigationPreviousMapAction"	accelerator="control shift TAB" priority="Top" />
+				<ribbon_action action="NavigationNextMapAction" accelerator="control TAB" priority="Top" />
+				<ribbon_action action="BackAction" accelerator="alt LEFT" priority="Top"/>
+				<ribbon_action action="ForwardAction" accelerator="alt RIGHT" priority="Top"/>
+				<ribbon_action action="NextNodeAction.BACK" accelerator="control alt LEFT" priority="Top">
+				    <ribbon_action action="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT"  />
+                </ribbon_action>
+				<ribbon_action action="NextNodeAction.FORWARD" accelerator="control alt RIGHT" priority="Top">
+				    <ribbon_action action="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+                </ribbon_action>
+			</ribbon_band>		
+			<ribbon_contributor name="navigate_maps" name_ref="mindmaps" menu_key="main_menu_mindmaps"/>   			
+			<ribbon_contributor name="navigate_modes" name_ref="modes" menu_key="main_menu_modes"/>   			
+			<ribbon_band name="goto" resize_policies="Mirror">
+				<ribbon_action action="MoveToRootAction" accelerator="ESCAPE" priority="Top"/>
+				<ribbon_action action="FollowLinkAction" accelerator="control ENTER" />
+				<ribbon_action action="GotoNodeAction" />
+				<ribbon_contributor name="linkList" menu_key="menu_goto_links" />
+				<ribbon_contributor name="cloneList" menu_key="menu_goto_clones" />
+			</ribbon_band>		   
+			<ribbon_band name="navigate_nodes" resize_policies="Mirror">
+                <ribbon_action action="ToggleFoldedAction" accelerator="SPACE" priority="top" >
+				<ribbon_action action="ToggleChildrenFoldedAction" accelerator="control SPACE" />
+				</ribbon_action>
+				<ribbon_action action="UnfoldAllAction" accelerator="alt END" priority="top" />
+				<ribbon_action action="FoldAllAction" accelerator="alt HOME" priority="top" />
+   				<ribbon_action action="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
+                <ribbon_action action="FoldOneLevelAction" accelerator="alt PAGE_UP" />
+				<ribbon_action action="NextPresentationItemAction"  accelerator="control shift SPACE"/>
+			</ribbon_band>		   
+			<ribbon_band name="navigate_select" resize_policies="Mirror">
+				<ribbon_action action="SelectAllAction" accelerator="control A" priority="medium"/>
+				<ribbon_action action="SelectBranchAction" accelerator="control shift A" />
+			</ribbon_band>		   
+	
+		</ribbon_task>		
+		
+		<!-- TOOLS & Extras-->
+		<ribbon_task name="tools_and_settings">
+			<ribbon_band name="tools_misc" resize_policies="Mirror">
+				<ribbon_action action="OpenUserDirAction" priority="top"/>							
+				<ribbon_action action="PropertyAction" accelerator="control COMMA" priority="top"/>
+				<!--ribbon_action action="AddMenuItemLinkAction" /-->
+				<ribbon_action name="menu_time" priority="medium">
+					<ribbon_action action="TimeManagementAction" accelerator="control T" />
+					<ribbon_action action="TimeListAction" />
+					<ribbon_action action="ReminderHookAction" />
+				</ribbon_action>
+				<ribbon_action name="menu_encryption" priority="medium">
+					<ribbon_action action="EnterPassword" />
+					<ribbon_action action="RemoveEncryption" />
+				</ribbon_action>
+				<ribbon_contributor name="loadAcceleratorPresets" name_ref="acceleratorPresets"
+							menu_key="main_menu_new_load_accelerator_presets" />
+				<ribbon_action action="SetAcceleratorOnNextClickAction" priority="Top" />								
+				<ribbon_action name="scripting" plugin="org.freeplane.plugin.script">				    
+					<ribbon_action action="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
+					<ribbon_action action="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>					
+					<ribbon_action action="ScriptEditor" plugin="org.freeplane.plugin.script"/>	
+					<ribbon_contributor name="userScripts" menu_key="main_menu_scripting"  plugin="org.freeplane.plugin.script"/>				
+				</ribbon_action>
+				<ribbon_action name="formula.menuname" plugin="org.freeplane.plugin.formula">
+					<ribbon_action action="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula"/>
+				</ribbon_action>
+				
+				<ribbon_action name="export">
+					<ribbon_action action="ExportAction"/>
+					<ribbon_action action="ExportBranchAction" accelerator="alt shift A" />
+				</ribbon_action>
+				<ribbon_action name="import">
+					<ribbon_action action="ImportBranchAction" />
+					<ribbon_action action="ImportLinkedBranchAction"/>
+					<ribbon_action action="ImportLinkedBranchWithoutRootAction"/>
+						
+					<ribbon_action action="ImportExplorerFavoritesAction"/>
+					<ribbon_action action="ImportFolderStructureAction"/>
+					<ribbon_action action="ImportMindmanagerFiles"/>
+				</ribbon_action>								
+			</ribbon_band>
+
+			<ribbon_band name="maps" resize_policies="Mirror">
+				<ribbon_action action="OpenMapsAddLocation" plugin="org.freeplane.plugin.openmaps" />
+				<ribbon_action action="OpenMapsRemoveLocation" plugin="org.freeplane.plugin.openmaps" />
+				<ribbon_action action="OpenMapsViewLocation" plugin="org.freeplane.plugin.openmaps" />
+			</ribbon_band>
+		</ribbon_task>
+
+		<!-- VIEW -->
+		<ribbon_task name="view">
+		    <ribbon_contributor	name="zoomContributor" />
+		    <ribbon_band name="view_mode" resize_policies="Mirror">
+			    <ribbon_action action="ToggleRibbonAction" priority="top"/>
+			    <ribbon_action action="CenterSelectedNodeAction" priority="top" >
+			        <ribbon_action action="SetBooleanPropertyAction.center_selected_node" />
+			    </ribbon_action>
+				<ribbon_action action="ViewLayoutTypeAction.OUTLINE" />
+				<ribbon_action action="ToggleFullScreenAction"/>
+                <ribbon_action action="SetBooleanPropertyAction.presentation_mode" />
+			</ribbon_band>	
+			<ribbon_band name="elements" resize_policies="Mirror">
+                <ribbon_action action="ToggleDetailsAction" accelerator="alt F2" />
+				<ribbon_action name="attribute_options" priority="top">
+					<ribbon_action action="ShowSelectedAttributesAction" />
+					<ribbon_action action="ShowAllAttributesAction" />
+					<ribbon_action action="HideAllAttributesAction" />
+					<ribbon_action action="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+					<ribbon_action action="ShowAttributeDialogAction" />					
+				</ribbon_action>
+				<ribbon_action action="ShowHideNoteAction" accelerator="control GREATER" priority="top" />
+				<ribbon_action name="menu_noteView">
+					<ribbon_action action="ShowNotesInMapAction"/>
+					<ribbon_action action="SetBooleanMapPropertyAction.show_note_icons" />
+				</ribbon_action>
+				<ribbon_action name="note_window_location" name_ref="note_window_location">
+					<ribbon_action action="SetNoteWindowPosition.top" />
+					<ribbon_action action="SetNoteWindowPosition.left" />
+					<ribbon_action action="SetNoteWindowPosition.right" />
+					<ribbon_action action="SetNoteWindowPosition.bottom" />
+				</ribbon_action>
+				<!--ribbon_action name="Show/Hide Workspace Panel" />
+				<ribbon_action name="Show/Hide Reference Panel" /-->
+			</ribbon_band>
+			<ribbon_band name="tooltips" resize_policies="Mirror">
+				<ribbon_action action="SetBooleanPropertyAction.show_node_tooltips" />	
+				<ribbon_action action="SetBooleanPropertyAction.show_styles_in_tooltip" />
+				<ribbon_action action="CreationModificationPluginAction" />
+			</ribbon_band>
+			<ribbon_band name="toolbars" resize_policies="Mirror">
+				<ribbon_action action="ToggleFBarAction" />
+				<ribbon_action action="ToggleLeftToolbarAction" priority="top"/>				
+				<ribbon_action action="ShowFormatPanel" priority="top"/>
+				<ribbon_action action="ShowFilterToolbarAction" priority="top" accelerator="control F"/>
+				<ribbon_action action="ToggleStatusAction" />
+				<ribbon_action action="ToggleScrollbarsAction"/>
+			</ribbon_band>			
+			<ribbon_band name="view_misc" resize_policies="Mirror">
+				<ribbon_action action="ShowSelectionAsRectangleAction" />
+				<ribbon_action action="SetBooleanPropertyAction.highlight_formulas" />
+			</ribbon_band>
+		</ribbon_task>
+		
+		<!-- HELP -->
+		<ribbon_task name="help" orderPriority="last">
+			<ribbon_band name="help_misc" resize_policies="Mirror" orderPriority="0">
+                <ribbon_action action="OpenUserDirAction" priority="top" mandatory="true"/>
+				<ribbon_action action="UpdateCheckAction" priority="top" mandatory="true"/>
+			    <ribbon_action action="GettingStartedAction" accelerator="F1" mandatory="true"/>
+			    <ribbon_action action="HotKeyInfoAction" mandatory="true"/>  
+			</ribbon_band>			
+			<ribbon_band name="contact" resize_policies="Mirror" orderPriority="2000">				
+				<ribbon_action action="AskForHelp" mandatory="true"/>
+				<ribbon_action action="RequestFeatureAction" mandatory="true"/>
+				<ribbon_action action="ReportBugAction" mandatory="true"/>
+			</ribbon_band>
+			<ribbon_band name="about" resize_policies="Mirror" orderPriority="last" >
+				<ribbon_action action="OpenFreeplaneSiteAction" priority="top" mandatory="true"/>
+				<ribbon_action action="AboutAction" priority="top" mandatory="true"/>
+			</ribbon_band>
+		</ribbon_task>	
+		
+	</menu_category>
+</menu_structure>

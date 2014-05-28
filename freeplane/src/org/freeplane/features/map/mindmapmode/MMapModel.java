@@ -92,9 +92,13 @@ public class MMapModel extends MapModel {
 		final URL url = getURL();
 		if (url != null) {
 			final File file = getFile();
-			if(file != null)
-				return file.getName();
-			else
+			if(file != null) {
+	            final String fileName = file.getName();
+	            if(fileName.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION))
+	            	return fileName.substring(0, fileName.length() - UrlManager.FREEPLANE_FILE_EXTENSION.length());
+	            return fileName;
+            }
+            else
 				return url.toString();
 		}
 		if (titleNumber == 0) {

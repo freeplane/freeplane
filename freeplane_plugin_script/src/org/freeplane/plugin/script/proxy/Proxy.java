@@ -138,27 +138,33 @@ public interface Proxy {
      *   node["attribute name"] = "a value"
      *   assert node["attribute name"] == "a value"
      *   assert node.attributes.getFirst("attribute name") == "a value" // the same
+     *
      *   // == numbers and others
      *   // converts numbers and other stuff with toString()
      *   node["a number"] = 1.2
      *   assert node["a number"].text == "1.2"
      *   assert node["a number"].num == 1.2d
-     *   // == dates
+     *
+     *     *   // == dates
      *   def date = new Date()
      *   node["a date"] = date
      *   assert node["a date"].object.getClass().simpleName == "FormattedDate"
      *   assert node["a date"].date == format(date)
+     *
      *   // == enforce formats on attribute values
      *   node["another date"] = format(date, 'yyyy|MM|dd')
      *   assert node["another date"].date == format(date, 'yyyy|MM|dd')
+     *
      *   // change the date while keeping the silly format
      *   def index = node.attributes.findAttribute("another date")
      *   node.attributes.set(index, new Date(0L))
+     *
      *   // == URIs
      *   def uri = new URI("http://www.freeplane.org")
      *   node["uri"] = uri
      *   assert node["uri"].object.getClass().simpleName == "URI"
      *   assert node["uri"].object == uri
+     *
      *   // == remove an attribute
      *   node["removed attribute"] = "to be removed"
      *   assert node["removed attribute"] == "to be removed"
@@ -340,7 +346,7 @@ public interface Proxy {
         void setInclination(final List<Integer> startPoint, final List<Integer> endPoint);
 	}
 
-	/** Access to global state: <code>c</code> - read-only. */
+	/** Access to global state: in scripts, this is available as global variable <code>c</code> - read-only. */
 	interface ControllerRO {
 		/** if multiple nodes are selected returns one (arbitrarily chosen)
 		 * selected node or the selected node for a single node selection. */
@@ -455,7 +461,7 @@ public interface Proxy {
         void export(Map map, File destinationFile, String exportTypeDescription, boolean overwriteExisting);
 	}
 
-	/** Access to global state: <code>c</code> - read-write. */
+	/** Access to global state: in scripts, this is available as global variable <code>c</code> - read-write. */
 	interface Controller extends ControllerRO {
 		void centerOnNode(Node center);
 
@@ -472,8 +478,8 @@ public interface Proxy {
 		/** selects branchRoot and all children */
 		void selectBranch(Node branchRoot);
 
-		/** toSelect is a List<Node> of Node objects */
-		void selectMultipleNodes(List<Node> toSelect);
+		/** toSelect is a Collection<Node> of Node objects */
+		void selectMultipleNodes(Collection<Node> toSelect);
 
 		/** reset undo / redo lists and deactivate Undo for current script */
 		void deactivateUndo();
@@ -745,10 +751,11 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #getRoot()} instead. */
 		Node getRootNode();
 
-		/** returns the node if the map contains it or null otherwise. */
+		/** get node by id.
+		 * @return the node if the map contains it or null otherwise. */
 		Node node(String id);
 
-		/** returns the physical location of the map if available or null otherwise. */
+		/** returns the filenname of the map as a java.io.File object if available or null otherwise. */
 		File getFile();
 
 		/** returns the title of the MapView.
@@ -904,7 +911,14 @@ public interface Proxy {
 		 * @since 1.2 */
 		String getDetailsText();
 
-		/** returns the text of the details as a Convertible like {@link #getNote()} for notes.
+		/** returns the text of the details as a Convertible like {@link #getNote()} for notes:
+		 * <ul>
+		 * <li>node.details.to.plain plain text of the node, possibly after formula evaluation
+		 * <li>node.details.plain the same.
+		 * <li>node.details.string the same.
+		 * <li>node.details.html the raw html text. No formula evaluation is applied.
+		 * <li>node.details.text the same.
+		 * </ul>
 		 * @since 1.2 */
 		Convertible getDetails();
 
@@ -934,10 +948,16 @@ public interface Proxy {
 		 * current filter are counted. */
 		int getNodeLevel(boolean countHidden);
 
-		/**
-		 * Returns a Convertible object for the plain not text. Convertibles behave like Strings in most respects.
+		/** returns the text of the details as a Convertible. Convertibles behave like Strings in most respects.
 		 * Additionally String methods are overridden to handle Convertible arguments as if the argument were the
 		 * result of Convertible.getText().
+         * <ul>
+         * <li>node.note.to.plain plain text of the node, possibly after formula evaluation
+         * <li>node.note.plain the same.
+         * <li>node.note.text the same.
+         * <li>node.note.html the raw html text. No formula evaluation is applied.
+         * <li>node.note.string the same.
+         * </ul>
 		 * @return Convertible getString(), getText() and toString() will return plain text instead of the HTML.
 		 *         Use {@link #getNoteText()} to get the HTML text.
 		 * @throws ExecuteScriptException 
@@ -1089,6 +1109,16 @@ public interface Proxy {
 		Date getLastModifiedAt();
 
 		Date getCreatedAt();
+
+        /**@since 1.3.7 */
+		int getHorizontalShift();
+
+        /**@since 1.3.7 */
+		int getVerticalShift();
+
+        /**@since 1.3.7 */
+		int getMinimalDistanceBetweenChildren();
+
 	}
 
 	/** The currently selected node: <code>node</code> - read-write. */
@@ -1149,6 +1179,9 @@ public interface Proxy {
 		 */
 		void setDetails(Object details);
 
+        /** Sets the raw (HTML) note text. */
+        void setDetailsText(String html);
+
 		/** use node.hideDetails = true/false to control visibility of details.
 		 * @since 1.2 */
 		void setHideDetails(boolean hide);
@@ -1202,8 +1235,8 @@ public interface Proxy {
 		 */
 		void setNote(Object value);
 
-		/** @deprecated since 1.2 - use {@link #setNote(Object)} instead. */
-		void setNoteText(String text);
+		/** Sets the raw (HTML) note text. */
+		void setNoteText(String html);
 
 		/** If <code>value</code> is a String the node object is set to it verbatim. For all other argument types it's
 		 * an alias for {@link #setObject(Object)}.
@@ -1355,6 +1388,15 @@ public interface Proxy {
 		/** decrypts a node without removing the encryption.
          * @since 1.3.6 */
 		void decrypt(String password);
+
+        /**@since 1.3.7 */
+    	void setHorizontalShift(final int horizontalShift);
+
+        /**@since 1.3.7 */
+    	void setVerticalShift(final int verticalShift);
+
+        /**@since 1.3.7 */
+    	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
 	}
 
 	/** Node's style: <code>node.style</code> - read-only. */
@@ -1395,6 +1437,9 @@ public interface Proxy {
         
         /** @since 1.2.20 */
         int getMaxNodeWidth();
+
+        /** @since 1.3.8 */
+        boolean isNumberingEnabled();
 	}
 
 	/** Node's style: <code>node.style</code> - read-write. */
@@ -1437,6 +1482,9 @@ public interface Proxy {
         
         /** @since 1.2.20 */
         void setMaxNodeWidth(int width);
+
+        /** @since 1.3.8 */
+        void setNumberingEnabled(boolean enabled);
 	}
 
     public interface Properties {

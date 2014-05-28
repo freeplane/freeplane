@@ -47,15 +47,17 @@ import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.ConditionalStyleModel;
+import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.view.swing.features.filepreview.MapBackgroundClearAction;
+import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
 
 /**
  * @author Dimitry Polivaev
@@ -207,11 +209,15 @@ public class MLogicalStyleController extends LogicalStyleController {
 		modeController.addAction(new CopyStyleExtensionsAction());
 		if (modeController.getModeName().equals("MindMap")) {
 			modeController.addAction(new MapBackgroundColorAction());
+			modeController.addAction(new MapBackgroundImageAction());
+			modeController.addAction(new MapBackgroundClearAction());
+			modeController.addAction(new SetBooleanMapPropertyAction(MapStyle.FIT_TO_VIEWPORT));
 			modeController.addAction(new CopyMapStylesAction());
 		}
 		if(! modeController.getController().getViewController().isHeadless()){
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
+			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder(MenuBuilder.class);
+			//TODO RIBBONS - apply to ribbons as well
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 				public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 					removeStyleMenu(menuBuilder, "main_menu_styles");

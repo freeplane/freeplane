@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.freeplane.features.link.LinkModel;
+import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.MapLinks;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
@@ -24,11 +24,11 @@ class ConnectorInListProxy extends AbstractCollection<Proxy.Connector> {
 		this.scriptContext = nodeProxy.getScriptContext();
 	}
 
-	List<LinkModel> getConnectorSet() {
+	List<NodeLinkModel> getConnectorSet() {
 		final MapLinks allLinks = MapLinks.getLinks(node.getMap());
-        final Set<LinkModel> links = allLinks == null ? null : allLinks.get(node.getID());
-		return links == null ? Collections.<LinkModel> emptyList() : Collections
-		    .unmodifiableList(new ArrayList<LinkModel>(links));
+        final Set<NodeLinkModel> links = allLinks == null ? null : allLinks.get(node.getID());
+		return links == null ? Collections.<NodeLinkModel> emptyList() : Collections
+		    .unmodifiableList(new ArrayList<NodeLinkModel>(links));
 	}
 
 	@Override

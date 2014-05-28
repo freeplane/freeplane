@@ -71,9 +71,9 @@ public abstract class ConnectorLabelCondition extends ASelectableCondition {
 	abstract protected boolean checkLink(final ConnectorModel connector);
 
 	public boolean checkNode(final NodeModel node) {
-		final NodeLinks nodeLinks = NodeLinks.getModel(node);
+		final NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
 		if (nodeLinks != null) {
-			for (final LinkModel l : nodeLinks.getLinks()) {
+			for (final NodeLinkModel l : nodeLinks.getLinks()) {
 				if (!(l instanceof ConnectorModel)) {
 					continue;
 				}
@@ -89,11 +89,11 @@ public abstract class ConnectorLabelCondition extends ASelectableCondition {
 		if (mapLinks == null) {
 			return false;
 		}
-		final Set<LinkModel> targetLinks = mapLinks.get(node.getID());
+		final Set<NodeLinkModel> targetLinks = mapLinks.get(node.getID());
 		if (targetLinks == null) {
 			return false;
 		}
-		for (final LinkModel l : targetLinks) {
+		for (final NodeLinkModel l : targetLinks) {
 			if (!(l instanceof ConnectorModel)) {
 				continue;
 			}

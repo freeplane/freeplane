@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -102,6 +103,8 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				linkController.loadLink(node, value);
+				final Collection<NodeLinkModel> links = NodeLinks.getLinks(node);
+				arrowLinks.addAll(links);
 			}
 		});
 		
@@ -325,13 +328,13 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
+	public void writeAttributes(final ITreeWriter writer, final Object node, final IExtension extension) {
 		final NodeLinks links = (NodeLinks) extension;
-		final URI link = links.getHyperLink();
+		final URI link = links.getHyperLink((NodeModel) node);
 		if (link != null) {
 			final String string = link.toString();
 			if (string.startsWith("#")) {
-				if (((NodeModel) userObject).getMap().getNodeForID(string.substring(1)) == null) {
+				if (((NodeModel) node).getMap().getNodeForID(string.substring(1)) == null) {
 					return;
 				}
 			}
@@ -346,9 +349,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
 		final NodeLinks links = (NodeLinks) extension;
-		final Iterator<LinkModel> iterator = links.getLinks().iterator();
+		final Iterator<NodeLinkModel> iterator = links.getLinks().iterator();
 		while (iterator.hasNext()) {
-			final LinkModel linkModel = iterator.next();
+			final NodeLinkModel linkModel = iterator.next();
 			if (linkModel instanceof ConnectorModel) {
 				final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel;
 				save(writer, arrowLinkModel);

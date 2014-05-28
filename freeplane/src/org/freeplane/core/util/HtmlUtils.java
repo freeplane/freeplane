@@ -183,6 +183,8 @@ public class HtmlUtils {
 		return HtmlUtils.HTML_PATTERN.matcher(text).matches();
 	}
 
+	/** transforms {@code &, <, >, \n} and whitespace by their HTML counterpart and
+	 * encloses the whole text in {@code <html><body><p>...</p></body></html>}. */
 	public static String plainToHTML(final String text) {
 		char myChar;
 		final String textTabsExpanded = text.replaceAll("\t", "         ");
@@ -746,4 +748,37 @@ public class HtmlUtils {
 	public static String toHTMLEscapedText(String s) {
 		return toXMLEscapedText(s).replaceAll("\n", "<br>\n");
 	}
+
+	private static Pattern htmlBodyPattern = Pattern.compile("^\\s*(?:<html>|<body>)+\\s*(.*?)"
+            + "\\s*(?:</body>|</html>)+\\s*$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
+    /**
+     * Join arbitrary texts to html. Plain text arguments will be transformed via
+     * {@link #plainToHTML(String)}, i.e. newlines and other special characters will
+     * be translated to their HTML counterpart and wrapped in a paragraph (&lt;p&gt;&lt;/p&gt;).
+     * <pre>{@code
+     *   // plain + html -> <html><body><p>text1</p>text2</body></html>
+     *   HtmlUtils.join("text1", "", "<html><body>text2</body></html>");
+     *   // insert an empty paragraph (<p></p>) between two strings:
+     *   HtmlUtils.join("text1", "", "text2");
+     *   // this will insert two paragraphs:
+     *   HtmlUtils.join("text1", "\n", "text2");
+     * }</pre>
+     * @param texts either html (starting with <HTML> or <html>) or plain text.
+     * @return html
+     */
+    public static String join(String... texts) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<html><body>");
+        for (int i = 0; i < texts.length; i++) {
+            String string = texts[i];
+            if (i > 0)
+                builder.append('\n');
+            if (!isHtmlNode(string))
+                string = plainToHTML(string);
+            builder.append(htmlBodyPattern.matcher(string).replaceFirst("$1"));
+        }
+        builder.append("</body></html>");
+        return builder.toString();
+    }
 }
