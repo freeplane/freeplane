@@ -76,11 +76,9 @@ public class NodeModel{
 	private Clones clones;
 
 	void setClones(Clones clones) {
-		if(this.clones != clones){
-			this.clones = clones;
-			for(NodeModel clone : clones)
-				clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
-		}
+		this.clones = clones;
+		for(NodeModel clone : clones)
+			clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
 	}
 
 	public Object getUserObject() {

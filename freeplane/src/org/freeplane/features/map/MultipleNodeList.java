@@ -63,8 +63,7 @@ public class MultipleNodeList implements Clones {
 		final Clones reducedClones = remove(nodeModel);
 		final NodeModel head = head();
 		nodeModel.setClones(new DetachedNodeList(nodeModel, head));
-		if(reducedClones != this)
-			head.setClones(reducedClones);
+		head.setClones(reducedClones);
     }
 
 	public Collection<NodeModel> toCollection() {
