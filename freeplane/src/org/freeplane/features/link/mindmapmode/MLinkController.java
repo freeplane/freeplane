@@ -239,6 +239,7 @@ public class MLinkController extends LinkController {
 	 */
 	private final class NodeDeletionListener implements IMapChangeListener {
 
+		private NodeModel deletedNodeParent;
 		private NodeModel deletedNodeRoot;
 		private int deletedNodeindex;
 
@@ -261,9 +262,11 @@ public class MLinkController extends LinkController {
 		}
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
+			deletedNodeParent = oldParent;
 			deletedNodeRoot = model;
 			deletedNodeindex = oldIndex;
 			onChange(model, true);
+			deletedNodeParent = null;
 			deletedNodeRoot = null;
 		}
 
@@ -324,7 +327,10 @@ public class MLinkController extends LinkController {
 		private NodeModel notDeletedClone(NodeModel model) {
 			CLONES: for (NodeModel clone : model.clones()) {
 				for (NodeModel deletedClone : deletedNodeRoot.clones()) {
-					final boolean cloneShallBeDeleted = deletedClone.getParentNode().getIndex(deletedClone) == deletedNodeindex;
+					final NodeModel parentClone = deletedClone.getParentNode();
+					final boolean cloneShallBeDeleted = deletedNodeParent.clones().contains(parentClone) 
+							&& deletedNodeParent.getChildCount() == parentClone.getChildCount()
+							&& parentClone.getIndex(deletedClone) == deletedNodeindex;
 					if (cloneShallBeDeleted && clone.isDescendantOf(deletedClone))
 						continue CLONES;
 				}
