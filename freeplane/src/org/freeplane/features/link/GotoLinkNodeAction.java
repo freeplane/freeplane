@@ -52,7 +52,19 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 	    if (target != null) {
 			final String adaptedText = TextController.getController().getShortText(target);
 			putValue(Action.NAME, TextUtils.format(actionName, adaptedText));
-			putValue(Action.SHORT_DESCRIPTION, target.toString());
+			StringBuilder path = new StringBuilder();
+			appendPath(path, target.getParentNode());
+			path.append(target);
+			putValue(Action.SHORT_DESCRIPTION, path.toString());
+		}
+    }
+
+	private void appendPath(StringBuilder path, final NodeModel target) {
+		if(target != null){
+			appendPath(path, target.getParentNode());
+			final String shortText = TextController.getController().getShortText(target);
+			path.append(shortText);
+			path.append(" -> ");
 		}
     }
 
