@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.time;
 
-import java.util.Date;
-
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -96,7 +94,7 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
-		values.setSelectedItem(FormattedDate.createDefaultFormattedDate(new Date().getTime(), IFormattedObject.TYPE_DATETIME));
+		values.setSelectedItem(FormattedDate.createDefaultFormattedDate(System.currentTimeMillis(), IFormattedObject.TYPE_DATETIME));
 		return values;
 	}
 
