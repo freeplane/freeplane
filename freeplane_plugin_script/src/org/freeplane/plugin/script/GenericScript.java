@@ -301,4 +301,12 @@ public class GenericScript implements IScript {
 				// that, it is what we want to know.
                 (e.getCause() == null) ? e : e.getCause());
     }
+
+    @Override
+    public boolean permissionsEquals(ScriptingPermissions permissions) {
+        if (this.specificPermissions == null)
+            return this.specificPermissions == permissions;
+        else
+            return this.specificPermissions.equals(permissions);
+    }
 }
