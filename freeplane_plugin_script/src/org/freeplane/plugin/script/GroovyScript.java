@@ -252,5 +252,11 @@ public class GroovyScript implements IScript {
 	    super.finalize();
     }
 
-
+    @Override
+    public boolean permissionsEquals(ScriptingPermissions permissions) {
+        if (this.specificPermissions == null)
+            return this.specificPermissions == permissions;
+        else
+            return this.specificPermissions.equals(permissions);
+    }
 }

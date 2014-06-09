@@ -37,4 +37,6 @@ public interface IScript {
 	public Object getScript();
 
 	public Object execute(final NodeModel node);
+
+    public boolean permissionsEquals(ScriptingPermissions permissions);
 }

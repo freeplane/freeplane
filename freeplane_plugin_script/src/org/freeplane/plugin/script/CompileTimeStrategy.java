@@ -20,7 +20,6 @@
 package org.freeplane.plugin.script;
 
 import java.io.File;
-import java.util.Date;
 
 /**
  * @author Dimitry Polivaev
@@ -53,7 +52,7 @@ public class CompileTimeStrategy {
 	}
 
 	private long now() {
-		return new Date().getTime();
+		return System.currentTimeMillis();
 	}
 
 	public boolean canUseOldCompiledScript() {
