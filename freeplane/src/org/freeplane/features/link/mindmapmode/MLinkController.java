@@ -316,7 +316,7 @@ public class MLinkController extends LinkController {
 	        	}
 	        	final NodeModel notDeletedClone = notDeletedClone(model);
 	        	if(notDeletedClone != null){
-	        		nodeLinks.setSource(notDeletedClone);
+	        		nodeLinks.replaceSource(model, notDeletedClone);
 	        		for (final NodeLinkModel link : nodeLinks.getLinks()) {
 	        			links.add(link);
 	        		}
