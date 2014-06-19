@@ -21,7 +21,6 @@ package org.freeplane.features.filter.condition;
 
 import java.util.Date;
 
-
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
@@ -119,7 +118,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		child.setAttribute(CompareConditionAdapter.MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
 	}
 
-	protected void compareTo(final Object transformedContent) throws NumberFormatException {
+	protected void compareTo(final Object transformedContent){
 		error = false;
 		comparisonResult = Integer.signum(compareToData(transformedContent));
 	}

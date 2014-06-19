@@ -27,10 +27,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.collection.DoubleListModel;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -47,6 +49,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class AttributeConditionController implements IElementaryConditionController {
+private static final String ATTRIBUTE_NAME_OR_VALUE = "attribute_name_or_value";
+static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(ATTRIBUTE_NAME_OR_VALUE);
 // // 	final private Controller controller;
 	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
 
@@ -60,7 +64,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		return selectedItem.getClass().equals(String.class);
+		return ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT.equals(selectedItem) || selectedItem.getClass().equals(String.class);
 	}
 
 	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
@@ -70,7 +74,7 @@ class AttributeConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
 	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
-		final String attribute = (String) selectedItem;
+		final Object attribute = selectedItem;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
 			return new AttributeExistsCondition(attribute);
 		}
@@ -119,10 +123,12 @@ class AttributeConditionController implements IElementaryConditionController {
 
 	public ListModel getFilteredProperties() {
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(Controller.getCurrentController().getMap());
+		final DefaultListModel anyAttributeList = new DefaultListModel();
+		anyAttributeList.addElement(ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT);
 		if (registry != null) {
-			return registry.getListBoxModel();
+			return new DoubleListModel(anyAttributeList, registry.getListBoxModel());
 		}
-		return new DefaultListModel();
+		return anyAttributeList;
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
@@ -182,5 +188,10 @@ class AttributeConditionController implements IElementaryConditionController {
             return null;
 	    return new TypedListCellRenderer();
     }
+
+	static Object toAttributeObject(final String attribute) {
+	    final Object xmlElementAttribute = attribute != null ? attribute : ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT;
+	    return xmlElementAttribute;
+	}
 
 }

@@ -28,7 +28,7 @@ import javax.swing.event.ListDataListener;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-class DoubleListModel extends AbstractListModel implements ListModel {
+public class DoubleListModel extends AbstractListModel implements ListModel {
 	/**
 	 * 
 	 */

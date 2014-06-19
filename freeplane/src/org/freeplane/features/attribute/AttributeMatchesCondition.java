@@ -42,18 +42,18 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new AttributeMatchesCondition(
-            element.getAttribute(AttributeMatchesCondition.ATTRIBUTE, null),
-            element.getAttribute(AttributeMatchesCondition.VALUE, null),
-            Boolean.valueOf(element.getAttribute(AttributeMatchesCondition.MATCH_CASE, null))
+			AttributeConditionController.toAttributeObject(element.getAttribute(ATTRIBUTE, null)),
+            element.getAttribute(VALUE, null),
+            Boolean.valueOf(element.getAttribute(MATCH_CASE, null))
 		    );
 	}
 
-	final private String attribute;
+	final private Object attribute;
 	final private String value;
 	final private Pattern searchPattern;
 	/**
 	 */
-	public AttributeMatchesCondition(final String attribute,final String value, final boolean matchCase) {
+	public AttributeMatchesCondition(final Object attribute,final String value, final boolean matchCase) {
 		super();
         this.attribute = attribute;
         this.value = value;
@@ -74,28 +74,37 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		final TextController textController = TextController.getController();
 		for (int i = 0; i < attributes.getRowCount(); i++) {
-            if(! attributes.getValueAt(i, 0).equals(attribute)) {
+			if(attribute.equals(AttributeConditionController.ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT)){
+				if (checkText(attributes.getValueAt(i, 0).toString()))
+					return true;
+				
+			}
+			else if(! attributes.getValueAt(i, 0).equals(attribute)) {
                 continue;
             }
             final Object originalContent = attributes.getValueAt(i, 1);
             String text = textController.getTransformedTextNoThrow(originalContent, node, null);
-            if(searchPattern.matcher(text).find())
+            if(checkText(text))
                 return true;
 		}
 		return false;
 	}
 
+	private boolean checkText(String text) {
+	    return searchPattern.matcher(text).find();
+    }
+
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(attribute, simpleCondition, null, isMatchCase(), false);
+		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, null, isMatchCase(), false);
 	}
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		child.setAttribute(AttributeMatchesCondition.ATTRIBUTE, attribute);
-        child.setAttribute(AttributeMatchesCondition.VALUE, value);
-        child.setAttribute(AttributeMatchesCondition.MATCH_CASE, Boolean.toString(isMatchCase()));
+		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
+        child.setAttribute(VALUE, value);
+        child.setAttribute(MATCH_CASE, Boolean.toString(isMatchCase()));
 	}
 
 	@Override
