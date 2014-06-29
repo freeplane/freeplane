@@ -16457,7 +16457,7 @@ elements from the styles activated by conditions are copied.</pre>
 <node TEXT="See Wiki Page" STYLE_REF="Refine" ID="ID_29057214" LINK="http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
-<node TEXT="See example Mind Map" STYLE_REF="Refine" ID="ID_1169480912" LINK="../../freeplane_plugin_latex/doc/Freeplane_LaTeX.mm">
+<node TEXT="See example Mind Map" STYLE_REF="Refine" ID="ID_1169480912" LINK="./Freeplane_LaTeX.mm">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>
 </node>
