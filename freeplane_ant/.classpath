@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="template"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.apache.ant_1.8.2.v20120109-1030/lib/ant.jar"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.apache.ant_1.9.2.v201404171502/lib/ant.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freeplane"/>
 	<classpathentry kind="lib" path="/freeplane_framework/lib/knopflerfish/framework.jar"/>
 	<classpathentry kind="output" path="build"/>
