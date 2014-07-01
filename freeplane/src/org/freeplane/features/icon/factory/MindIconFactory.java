@@ -19,15 +19,10 @@
  */
 package org.freeplane.features.icon.factory;
 
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.MindIcon;
 
 /**
- * 
- * Factory for MindIcons.
- * 
  * @author Tamas Eppel
- *
  */
 public class MindIconFactory {
 	private static final String DESC_KEY = "icon_%s";
@@ -35,12 +30,9 @@ public class MindIconFactory {
 	/**
 	 * Constructs a MindIcon with the given name from the property file.
 	 * The name of the icon is the file name without the extension.
-	 * 
-	 * @param name of the icon
-	 * @return
 	 */
 	public static MindIcon create(final String name) {
-		final String description = name.indexOf('/') > 0 ? "" : TextUtils.getText(String.format(DESC_KEY, name), "");
-		return new MindIcon(name, name + ".png", description);
+		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : String.format(DESC_KEY, name);
+		return new MindIcon(name, name + ".png", translationKeyLabel);
 	}
 }

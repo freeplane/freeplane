@@ -100,7 +100,7 @@ public class OptionPanel {
 			final IPropertyControl control = iterator.next();
 			if (control instanceof TabProperty) {
 				final TabProperty newTab = (TabProperty) control;
-				bottomLayout = new FormLayout(newTab.getDescription(), "");
+				bottomLayout = new FormLayout(newTab.getName(), "");
 				bottomBuilder = new DefaultFormBuilder(bottomLayout);
 				bottomBuilder.setDefaultDialogBorder();
 				final JScrollPane bottomComponent = new JScrollPane(bottomBuilder.getPanel());

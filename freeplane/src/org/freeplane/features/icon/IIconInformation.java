@@ -22,8 +22,10 @@ package org.freeplane.features.icon;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
-public interface IIconInformation {
-	String getDescription();
+public interface IIconInformation {	
+	String getTranslationKeyLabel();
+	
+	String getTranslationValueLabel();
 
 	Icon getIcon();
 

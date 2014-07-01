@@ -36,7 +36,7 @@ public class ZoomedIcon extends UIIcon {
 	private ImageIcon zoomedIcon;
 
 	public ZoomedIcon(final UIIcon uiIcon, final float zoom) {
-		super(uiIcon.getName(), uiIcon.getFileName(), uiIcon.getDescription(), uiIcon.getShortcutKey());
+		super(uiIcon.getName(), uiIcon.getFileName(), uiIcon.getTranslationValueLabel(), uiIcon.getShortcutKey());
 		this.uiIcon = uiIcon;
 		this.zoom = zoom;
 	}

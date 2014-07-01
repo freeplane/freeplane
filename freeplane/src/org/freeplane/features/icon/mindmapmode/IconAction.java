@@ -35,26 +35,28 @@ import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.map.NodeModel;
 
 class IconAction extends AMultipleNodeAction implements IIconInformation {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	final private MindIcon icon;
 
 	public IconAction( final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), _icon.getDescription(), ImageIconFactory.getInstance()
+		super("IconAction." + _icon.getName(), _icon.getTranslationValueLabel(), ImageIconFactory.getInstance()
 		    .getImageIcon(_icon));
 		icon = _icon;
-		putValue(Action.SHORT_DESCRIPTION, getDescription());
+		putValue(Action.SHORT_DESCRIPTION, getTranslationValueLabel());
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {
 		((MIconController) IconController.getController()).addIcon(node, icon);
 	}
+	
+	public String getTranslationKeyLabel() {
+		return icon.getTranslationKeyLabel();
+	}
 
-	public String getDescription() {
-		return icon.getDescription();
+	public String getTranslationValueLabel() {
+		return icon.getTranslationValueLabel();
 	}
 
 	public Icon getIcon() {

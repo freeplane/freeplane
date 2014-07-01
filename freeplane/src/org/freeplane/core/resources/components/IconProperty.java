@@ -54,7 +54,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 		final List<String> descriptions = new ArrayList<String>();
 		for (final MindIcon icon : mIcons) {
 			icons.add(icon);
-			descriptions.add(icon.getDescription());
+			descriptions.add(icon.getTranslationValueLabel());
 		}
 		final IconSelectionPopupDialog dialog = new IconSelectionPopupDialog(JOptionPane
 		    .getFrameForComponent((Component) e.getSource()), icons);
@@ -84,7 +84,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 
 	private void setIcon(final MindIcon actualIcon) {
 		mButton.setIcon(actualIcon.getIcon());
-		mButton.setToolTipText(actualIcon.getDescription());
+		mButton.setToolTipText(actualIcon.getTranslationValueLabel());
 	}
 
 	@Override
