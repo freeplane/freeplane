@@ -37,18 +37,14 @@ import org.freeplane.features.map.NodeModel;
  * @author foltin
  */
 class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	final private int position;
 
-	/**
-	 */
 	public RemoveIconAction( final int position) {
 		super(position == -1 ? "RemoveIconAction" : "RemoveIcon_" + position + "_Action");
 		this.position = position;
-		putValue(Action.SHORT_DESCRIPTION, getDescription());
+		putValue(Action.SHORT_DESCRIPTION, getTranslationValueLabel());
 	}
 
 	@Override
@@ -57,8 +53,12 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 		iconController.removeIcon(node, position);
 		return;
 	}
+	
+	public String getTranslationKeyLabel() {
+		return null;
+	}
 
-	public String getDescription() {
+	public String getTranslationValueLabel() {
 		return (String) getValue(Action.NAME);
 	}
 

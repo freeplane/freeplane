@@ -40,7 +40,7 @@ public class TabProperty implements IPropertyControl {
 		this.layoutFormat = layoutFormat;
 	}
 
-	public String getDescription() {
+	public String getTooltip() {
 		return layoutFormat;
 	}
 

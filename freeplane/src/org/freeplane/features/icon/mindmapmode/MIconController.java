@@ -252,8 +252,7 @@ public class MIconController extends IconController {
 			final IIconInformation info = (IIconInformation) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
 				public IPropertyControl createControl() {
-					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey());
-					keyProperty.setLabelText(info.getDescription());
+					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslationKeyLabel());
 					keyProperty.setImageIcon(info.getIcon());
 					keyProperty.disableModifiers();
 					return keyProperty;

@@ -51,6 +51,10 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		super(name);
 	}
 
+	public KeyProperty(String shortcutKey, String translationKeyLabel) {
+		super(shortcutKey, translationKeyLabel, null);
+	}
+
 	public void disableModifiers() {
 		modifierMask = KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK | KeyEvent.META_MASK;
 	}
@@ -72,10 +76,10 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 			}
 		});
 		if (labelText == null) {
-			labelText = TextUtils.getOptionalText(getLabel());
+			labelText = TextUtils.getOptionalText(getTranslationKeyLabel());
 		}
 		final JLabel label = new JLabel(labelText, icon, JLabel.RIGHT);
-		String tooltip = TextUtils.getOptionalText(getDescription());
+		String tooltip = TextUtils.getOptionalText(getTooltip());
 		label.setToolTipText(tooltip);
 		if (KeyProperty.rowSpec == null) {
 			KeyProperty.rowSpec = new RowSpec(RowSpec.FILL, Sizes.dluX(20), 0.0);
@@ -100,10 +104,6 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 
 	public void setImageIcon(final Icon icon) {
 		this.icon = icon;
-	}
-
-	public void setLabelText(final String labelText) {
-		this.labelText = labelText;
 	}
 
 	@Override

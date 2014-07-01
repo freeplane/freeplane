@@ -32,35 +32,35 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * 26.12.2008
  */
 public class PropertyAdapter {
-	private String description;
-	private String label;
-	void setLabel(String label) {
-    	this.label = label;
+	private String tooltip;
+	private String translationKeyLabel;
+	void setLabel(String translationKeyLabel) {
+    	this.translationKeyLabel = translationKeyLabel;
     }
 
 	private final String name;
 
 	public PropertyAdapter(final String name) {
 		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
-		if (ResourceController.getResourceController().getText(description, null) == null) {
-			description = null;
+		if (ResourceController.getResourceController().getText(tooltip, null) == null) {
+			tooltip = null;
 		}
 	}
 
-	public PropertyAdapter(final String name, final String label, final String description) {
+	public PropertyAdapter(final String name, final String translatedKeyabel, final String tooltip) {
 		super();
 		assert name != null;
 		this.name = name;
-		this.label = label;
-		this.description = description;
+		this.translationKeyLabel = translatedKeyabel;
+		this.tooltip = tooltip;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getTooltip() {
+		return tooltip;
 	}
 
-	public String getLabel() {
-		return label;
+	public String getTranslationKeyLabel() {
+		return translationKeyLabel;
 	}
 
 	public String getName() {
@@ -68,8 +68,8 @@ public class PropertyAdapter {
 	}
 	
 	protected void layout(DefaultFormBuilder builder, JComponent component){
-		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), component);
-		String tooltip = TextUtils.getOptionalText(getDescription());
+		final JLabel label = builder.append(TextUtils.getOptionalText(getTranslationKeyLabel()), component);
+		String tooltip = TextUtils.getOptionalText(getTooltip());
 		label.setToolTipText(tooltip);
 		component.setToolTipText(tooltip);
 	}
