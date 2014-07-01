@@ -371,7 +371,7 @@ class MindMapHTMLWriter {
 		final Collection<MindIcon> icons = IconController.getController().getIcons(model);
 		for (MindIcon icon : icons) {
 			final String iconFileName = icon.getFileName();
-			fileout.write("<img src=\"" + iconFileName + "\" alt=\"" + icon.getDescription() + "\">");
+			fileout.write("<img src=\"" + iconFileName + "\" alt=\"" + icon.getTranslationValueLabel() + "\">");
 		}
 	}
 

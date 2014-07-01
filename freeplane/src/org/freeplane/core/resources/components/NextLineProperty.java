@@ -24,7 +24,7 @@ public class NextLineProperty implements IPropertyControl {
 		super();
 	}
 
-	public String getDescription() {
+	public String getTooltip() {
 		return null;
 	}
 

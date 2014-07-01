@@ -40,8 +40,8 @@ public class TabProperty implements IPropertyControl {
 		this.layoutFormat = layoutFormat;
 	}
 
-	public String getDescription() {
-		return layoutFormat;
+	public String getTooltip() {
+		return null;
 	}
 
 	public String getLabel() {
@@ -49,7 +49,7 @@ public class TabProperty implements IPropertyControl {
 	}
 
 	public String getName() {
-		return null;
+		return layoutFormat;
 	}
 
 	public void layout(final DefaultFormBuilder builder) {

@@ -31,7 +31,7 @@ public class SeparatorProperty implements IPropertyControl {
 		this.label = label;
 	}
 
-	public String getDescription() {
+	public String getTooltip() {
 		return null;
 	}
 
