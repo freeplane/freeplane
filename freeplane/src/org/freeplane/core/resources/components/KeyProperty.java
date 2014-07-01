@@ -76,7 +76,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 			}
 		});
 		if (labelText == null) {
-			labelText = TextUtils.getOptionalText(getTranslationKeyLabel());
+			labelText = TextUtils.getOptionalText(getLabel());
 		}
 		final JLabel label = new JLabel(labelText, icon, JLabel.RIGHT);
 		String tooltip = TextUtils.getOptionalText(getTooltip());

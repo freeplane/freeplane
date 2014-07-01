@@ -33,10 +33,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  */
 public class PropertyAdapter {
 	private String tooltip;
-	private String translationKeyLabel;
-	void setLabel(String translationKeyLabel) {
-    	this.translationKeyLabel = translationKeyLabel;
-    }
+	private String label;
 
 	private final String name;
 
@@ -47,11 +44,11 @@ public class PropertyAdapter {
 		}
 	}
 
-	public PropertyAdapter(final String name, final String translatedKeyabel, final String tooltip) {
+	public PropertyAdapter(final String name, final String label, final String tooltip) {
 		super();
 		assert name != null;
 		this.name = name;
-		this.translationKeyLabel = translatedKeyabel;
+		this.label = label;
 		this.tooltip = tooltip;
 	}
 
@@ -59,16 +56,20 @@ public class PropertyAdapter {
 		return tooltip;
 	}
 
-	public String getTranslationKeyLabel() {
-		return translationKeyLabel;
+	public String getLabel() {
+		return label;
 	}
+	
+	void setLabel(String label) {
+    	this.label = label;
+    }
 
 	public String getName() {
 		return name;
 	}
 	
 	protected void layout(DefaultFormBuilder builder, JComponent component){
-		final JLabel label = builder.append(TextUtils.getOptionalText(getTranslationKeyLabel()), component);
+		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), component);
 		String tooltip = TextUtils.getOptionalText(getTooltip());
 		label.setToolTipText(tooltip);
 		component.setToolTipText(tooltip);
