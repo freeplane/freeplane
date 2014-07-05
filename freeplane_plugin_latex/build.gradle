@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':freeplane')
+    compile group: 'org.scilab.forge', name: 'jlatexmath', version:'1.0.2'
+}

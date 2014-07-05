@@ -6,5 +6,6 @@ include 'freeplane',
         'freeplane_plugin_script',
         'freeplane_plugin_formula',
         'freeplane_plugin_help',
+        'freeplane_plugin_latex',
 
         'JOrtho_0.4_freeplane'
