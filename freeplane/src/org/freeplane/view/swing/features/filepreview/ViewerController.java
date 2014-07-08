@@ -420,9 +420,11 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		final ExternalResource preview = (ExternalResource) extension;
-		for (final INodeView iNodeView : node.getViewers()) {
-			final NodeView view = (NodeView) iNodeView;
-			createViewer(preview, view);
+		for(NodeModel nodeClone : node.clones()){
+			for (final INodeView iNodeView : nodeClone.getViewers()) {
+				final NodeView view = (NodeView) iNodeView;
+				createViewer(preview, view);
+			}
 		}
 		super.add(node, extension);
 	}
@@ -586,8 +588,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
-		final ExternalResource latexExtension = (ExternalResource) extension;
-		latexExtension.removeViewers();
+		final ExternalResource resource = (ExternalResource) extension;
+		resource.removeViewers();
 		super.remove(node, extension);
 	}
 
