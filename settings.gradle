@@ -7,5 +7,6 @@ include 'freeplane',
         'freeplane_plugin_formula',
         'freeplane_plugin_help',
         'freeplane_plugin_latex',
+        'freeplane_plugin_openmaps',
 
         'JOrtho_0.4_freeplane'

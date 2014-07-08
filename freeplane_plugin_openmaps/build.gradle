@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':freeplane')
+    compile files('lib/JMapViewer.jar')
+}
