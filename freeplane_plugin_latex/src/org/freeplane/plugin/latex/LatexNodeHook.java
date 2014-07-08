@@ -56,9 +56,11 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	@Override
 	public void add(final NodeModel node, final IExtension extension) {
 		final LatexExtension latexExtension = (LatexExtension) extension;
-		for (final INodeView iNodeView : node.getViewers()) {
-			final NodeView view = (NodeView) iNodeView;
-			createViewer(latexExtension, view);
+		for(NodeModel nodeClone : node.clones()){
+			for (final INodeView iNodeView : nodeClone.getViewers()) {
+				final NodeView view = (NodeView) iNodeView;
+				createViewer(latexExtension, view);
+			}
 		}
 		super.add(node, extension);
 	}
