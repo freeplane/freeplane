@@ -48,19 +48,23 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	}
 	
 
-	//Called when a location is chosen in the OpenMapsDialog - Only one location may be chosen at a time
+	//Called when a location is chosen in the OpenMapsDialog
 	public void locationChoosenAction(Coordinate locationChoosen, int zoom) {
 		addChoosenLocationToSelectedNode(locationChoosen, zoom); 
-		map.getController().removeLocationChoosenListener(this);
+//		map.getController().removeLocationChoosenListener(this);
 	}
 	
-	public void viewCurrentlySelectedLocation() {
-		final NodeModel node = getCurrentlySelectedNode();
-		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
+	public void viewCurrentlySelectedLocation(final NodeModel targetNode) {
+		OpenMapsExtension openMapsExtension;
+		if (targetNode == null)
+			openMapsExtension = (OpenMapsExtension) getCurrentlySelectedNode().getExtension(OpenMapsExtension.class);
+		else
+			openMapsExtension = (OpenMapsExtension) targetNode.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension != null) {
 			map = new OpenMapsDialog();
 			map.showZoomToLocation(openMapsExtension.getLocation(), openMapsExtension.getZoom());
+			map.getController().addLocationChoosenListener(this);
 		}
 		
 	}

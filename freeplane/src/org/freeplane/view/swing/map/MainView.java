@@ -178,11 +178,16 @@ public abstract class MainView extends ZoomableLabel {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
 	}
 
-	public boolean isInFollowLinkRegion(final double xCoord) {
+	public boolean isClickableLink(final double xCoord) {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
 		if (NodeLinks.getValidLink(model) == null)
 			return false;
+		return isInIconRegion(xCoord);
+	}
+	
+	public boolean isInIconRegion(final double xCoord)
+	{
 		Rectangle iconR = ((ZoomableLabelUI)getUI()).getIconR(this);
 		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
@@ -663,7 +668,7 @@ public abstract class MainView extends ZoomableLabel {
 			return MouseArea.MOTION;
 		if(isInFoldingRegion(point))
 			return MouseArea.FOLDING;
-		if(isInFollowLinkRegion(x))
+		if(isClickableLink(x))
 			return MouseArea.LINK;
 		return MouseArea.DEFAULT;
 	}

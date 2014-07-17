@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
@@ -10,6 +11,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.AutoHide;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
@@ -71,12 +73,17 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
 			if(plainEvent){
-				if (component.isInFollowLinkRegion(e.getX())) {
+				if (component.isClickableLink(e.getX())) {
 					LinkController.getController(mc).loadURL(node, e);
 					e.consume();
 					return;
 				}
-
+				
+				if (component.isInIconRegion(e.getX())) {
+					// this action is a no-op if there is no OpenMapsExtension on the clicked node
+					mc.getAction("OpenMapsViewLocation").actionPerformed(new ActionEvent(node, 0, ""));
+				}
+				
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
 					doubleClickTimer.start(new Runnable() {
@@ -163,7 +170,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		boolean followLink = link != null;
 		Controller currentController = Controller.getCurrentController();
         if(! followLink){
-        	followLink = node.isInFollowLinkRegion(e.getX());
+        	followLink = node.isClickableLink(e.getX());
         	if(followLink){
 				link = LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel());
         	}
