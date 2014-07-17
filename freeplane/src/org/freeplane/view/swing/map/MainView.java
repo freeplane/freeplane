@@ -188,7 +188,8 @@ public abstract class MainView extends ZoomableLabel {
 	
 	public boolean isInIconRegion(final double xCoord)
 	{
-		Rectangle iconR = ((ZoomableLabelUI)getUI()).getIconR(this);
+		ZoomableLabelUI zoomableLabelUI = (ZoomableLabelUI)getUI();
+		Rectangle iconR = zoomableLabelUI.getIconR(this);
 		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
 	}
 
