@@ -1,4 +1,22 @@
 dependencies {
     compile project(':freeplane')
-    compile fileTree(dir: 'lib', include: ['*.jar'])
+
+    compile 'org.apache.xmlgraphics:batik-anim:1.7',
+            'org.apache.xmlgraphics:batik-awt-util:1.7',
+            'org.apache.xmlgraphics:batik-bridge:1.7',
+            'org.apache.xmlgraphics:batik-codec:1.7',
+            'org.apache.xmlgraphics:batik-css:1.7',
+            'org.apache.xmlgraphics:batik-dom:1.7',
+            'org.apache.xmlgraphics:batik-extension:1.7',
+            'org.apache.xmlgraphics:batik-ext:1.7',
+            'org.apache.xmlgraphics:batik-gui-util:1.7',
+            'org.apache.xmlgraphics:batik-gvt:1.7',
+            'org.apache.xmlgraphics:batik-parser:1.7',
+            'org.apache.xmlgraphics:batik-script:1.7',
+            'org.apache.xmlgraphics:batik-svg-dom:1.7',
+            'org.apache.xmlgraphics:batik-svggen:1.7',
+            'org.apache.xmlgraphics:batik-swing:1.7',
+            'org.apache.xmlgraphics:batik-transcoder:1.7',
+            'org.apache.xmlgraphics:batik-util:1.7',
+            'org.apache.xmlgraphics:batik-xml:1.7'
 }
