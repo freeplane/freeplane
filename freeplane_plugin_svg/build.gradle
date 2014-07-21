@@ -1,3 +1,4 @@
 dependencies {
     compile project(':freeplane')
+    compile fileTree(dir: 'lib', include: ['*.jar'])
 }
