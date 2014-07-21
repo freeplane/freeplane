@@ -8,5 +8,6 @@ include 'freeplane',
         'freeplane_plugin_help',
         'freeplane_plugin_latex',
         'freeplane_plugin_openmaps',
+        'freeplane_plugin_svg',
 
         'JOrtho_0.4_freeplane'
