@@ -44,7 +44,7 @@ class IconsRenderer extends DefaultTableCellRenderer {
 			final IconsHolder iconsHolder = (IconsHolder) value;
 			final MultipleImage iconImages = new MultipleImage();
 			for (final MindIcon icon : iconsHolder.getIcons()) {
-				iconImages.addImage(icon);
+				iconImages.addIcon(icon);
 			}
 			if (iconImages.getImageCount() > 0) {
 				setIcon(iconImages);

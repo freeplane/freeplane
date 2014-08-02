@@ -36,8 +36,12 @@ public class MultipleImage implements Icon {
 	public MultipleImage() {
 	}
 
-	public void addImage(final UIIcon icon) {
-		mIcons.add(icon.getIcon());
+	public void addIcon(final UIIcon uiIcon) {
+		addIcon(uiIcon.getIcon());
+	}
+
+	public void addIcon(Icon icon) {
+		mIcons.add(icon);
 	};
 
 	public int getIconHeight() {
@@ -93,7 +97,7 @@ public class MultipleImage implements Icon {
 		}
 		
 		if(oldIcon == null) {
-			mIcons.add(newIcon);
+			addIcon(newIcon);
 		}
 		else {
     		int index = mIcons.indexOf(oldIcon);
@@ -102,7 +106,7 @@ public class MultipleImage implements Icon {
     			mIcons.add(index, newIcon);
     		}
     		else {
-    			mIcons.add(newIcon);
+    			addIcon(newIcon);
     		}
 		}
 	}

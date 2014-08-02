@@ -61,7 +61,7 @@ public class UIIconSet extends UIIcon {
 		if (compoundIcon == null) {
 			compoundIcon = new MultipleImage();
 			for (final UIIcon icon : imageIcons) {
-				compoundIcon.addImage(icon);
+				compoundIcon.addIcon(icon);
 			}
 		}
 		return compoundIcon;

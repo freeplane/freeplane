@@ -427,18 +427,22 @@ public abstract class MainView extends ZoomableLabel {
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
 		for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
-			iconImages.addImage(icon);
+			iconImages.addIcon(icon);
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Collection<MindIcon> icons = IconController.getController(modeController).getIcons(model);
 		for (final MindIcon myIcon : icons) {
-			iconImages.addImage(myIcon);
+			iconImages.addIcon(myIcon);
 		}
+		addOwnIcons(iconImages, model);
 		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
 	}
-	
-	void addIconMouseListenerForIcon(Icon icon, IconMouseListener listener){
-		
+
+	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
+		final URI link = NodeLinks.getLink(model);
+			final Icon icon = LinkController.getLinkIcon(link, model);
+			if(icon != null)
+				iconImages.addIcon(icon);
 	}
 
 	void updateTextColor(final NodeView node) {
