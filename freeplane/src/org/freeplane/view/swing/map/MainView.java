@@ -67,6 +67,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.ui.IconMouseListener;
 
 
 /**
@@ -426,22 +427,18 @@ public abstract class MainView extends ZoomableLabel {
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
 		for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
-			iconImages.addImage(icon.getIcon());
+			iconImages.addImage(icon);
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Collection<MindIcon> icons = IconController.getController(modeController).getIcons(model);
 		for (final MindIcon myIcon : icons) {
-			iconImages.addImage(myIcon.getIcon());
+			iconImages.addImage(myIcon);
 		}
-		addOwnIcons(iconImages, model);
 		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
 	}
-
-	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
-		final URI link = NodeLinks.getLink(model);
-			final Icon icon = LinkController.getLinkIcon(link, model);
-			if(icon != null)
-				iconImages.addImage(icon);
+	
+	void addIconMouseListenerForIcon(Icon icon, IconMouseListener listener){
+		
 	}
 
 	void updateTextColor(final NodeView node) {

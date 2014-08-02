@@ -21,11 +21,14 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
+
+import org.freeplane.features.icon.UIIcon;
 
 public class MultipleImage implements Icon {
 	final private List<Icon> mIcons = new ArrayList<Icon>();
@@ -33,8 +36,8 @@ public class MultipleImage implements Icon {
 	public MultipleImage() {
 	}
 
-	public void addImage(final Icon icon) {
-		mIcons.add(icon);
+	public void addImage(final UIIcon icon) {
+		mIcons.add(icon.getIcon());
 	};
 
 	public int getIconHeight() {
@@ -68,7 +71,10 @@ public class MultipleImage implements Icon {
 		}
 	}
 	
-
+	public Icon getIconAt(Point coordinate){
+		return null;
+	}
+	
 	//DOCEAR - get a rect relative to this image for a specific icon  
 	public Rectangle getIconR(Icon icon) {
 		int myX = 0;
