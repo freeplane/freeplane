@@ -61,12 +61,7 @@ public class FreeplaneSplashModern extends JWindow {
 		super(frame);
 		splashResource = ResourceController.getResourceController().getResource("/images/Freeplane_splash.png");
 		splashImage = new ImageIcon(splashResource);
-		try {
-			getClass().getClassLoader().loadClass("com.sun.awt.AWTUtilities").getMethod("setWindowOpaque", Window.class, boolean.class).invoke(null, this, false);
-		}
-		catch (Exception e) {}
-		setBackground(new Color(0x57, 0xbf, 0x5e,0));
-		getRootPane().setOpaque(false);
+		setBackground(new Color(0x57, 0xbf, 0x5e));
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
 		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));
