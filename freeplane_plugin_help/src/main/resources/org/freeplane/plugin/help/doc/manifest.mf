@@ -1,4 +1,0 @@
-Main-Class: sunw.demo.jhdemo.Runner
-Run-Class: sunw.demo.jhdemo.JHLauncher
-Class-Path: hsviewer.jar jhall.jar doc
-Arguments: -helpset .doc/freemind.hs
