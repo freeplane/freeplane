@@ -3,11 +3,10 @@ include 'freeplane',
         'freeplane_framework',
 
         'freeplane_plugin_bugreport',
-        'freeplane_plugin_script',
         'freeplane_plugin_formula',
-        'freeplane_plugin_help',
         'freeplane_plugin_latex',
         'freeplane_plugin_openmaps',
+        'freeplane_plugin_script',
         'freeplane_plugin_svg',
 
         'JOrtho_0.4_freeplane'
