@@ -29,7 +29,9 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -223,10 +225,25 @@ public class UrlManager implements IExtension {
 			throws IOException, XMLException {
 		InputStreamReader urlStreamReader;
 		setURL(map, url);
-		urlStreamReader = new InputStreamReader(url.openStream());
+		InputStream inputStream = getLocation(url).openStream();
+		urlStreamReader = new InputStreamReader(inputStream);
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
 		return urlStreamReader;
+	}
+
+	private URL getLocation(final URL url) throws IOException {
+		URLConnection connection = url.openConnection();
+		if(connection instanceof HttpURLConnection){
+			int responseCode = ((HttpURLConnection)connection).getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+				|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
+					|| responseCode == HttpURLConnection.HTTP_SEE_OTHER){
+				String redirectUrl = connection.getHeaderField("Location");
+				return getLocation(new URL(redirectUrl));
+			}
+		}
+		return url;
 	}
 
     /**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */

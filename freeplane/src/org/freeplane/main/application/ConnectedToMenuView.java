@@ -19,8 +19,16 @@
  */
 package org.freeplane.main.application;
 
+import static java.awt.event.KeyEvent.VK_ALT;
+import static java.awt.event.KeyEvent.VK_CONTROL;
+import static java.awt.event.KeyEvent.VK_META;
+import static java.awt.event.KeyEvent.VK_SHIFT;
+import static java.awt.event.KeyEvent.VK_WINDOWS;
+
 import java.awt.Component;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -50,8 +58,15 @@ final class ConnectedToMenuView extends View {
     	if (super.processKeyBinding(ks, e, condition, pressed)) {
     		return true;
     	}
+    	if(containsModifierKeyCode(ks))
+    		return false;
     	final FreeplaneMenuBar freeplaneMenuBar = Controller.getCurrentController().getViewController()
     	    .getFreeplaneMenuBar();
     	return freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed);
     }
+
+    private static final List<Integer> modifierKeyCodes = Arrays.asList(VK_CONTROL, VK_ALT, VK_SHIFT, VK_META, VK_WINDOWS);
+	private boolean containsModifierKeyCode(final KeyStroke ks) {
+		return modifierKeyCodes.contains(ks.getKeyCode());
+	}
 }
