@@ -21,6 +21,7 @@ package org.freeplane.main.application;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
@@ -60,6 +61,7 @@ import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
 import net.infonode.tabbedpanel.TabLayoutPolicy;
 import net.infonode.tabbedpanel.TabbedPanelProperties;
+import net.infonode.tabbedpanel.titledtab.TitledTabProperties;
 import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
@@ -86,9 +88,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public MapViewDockingWindows() {
 		viewSerializer = new MapViewSerializer();
 		rootWindow = new RootWindow(viewSerializer);
-		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
-		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
-		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
+		configureDefaultDockingWindowProperties();
+
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
 		try {
 	        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -173,6 +174,22 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		};
 
 
+	}
+
+	private void configureDefaultDockingWindowProperties() {
+		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
+		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
+		
+		RootWindowProperties overwrittenProperties = new RootWindowProperties();
+		overwrittenProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
+		TabbedPanelProperties tabbedPanelProperties = overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties();
+		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
+		tabbedPanelProperties.setTabDropDownListVisiblePolicy(TabDropDownListVisiblePolicy.MORE_THAN_ONE_TAB);
+		Font tabFont = new Font("Dialog", 0, 11);
+		TitledTabProperties titledTabProperties = overwrittenProperties.getTabWindowProperties().getTabProperties().getTitledTabProperties();
+		titledTabProperties.getHighlightedProperties().getComponentProperties().setFont(tabFont);
+		titledTabProperties.getNormalProperties().getComponentProperties().setFont(tabFont);
+		rootWindowProperties.addSuperObject(overwrittenProperties);
 	}
 
 	private void removeDesktopPaneAccelerators() {
