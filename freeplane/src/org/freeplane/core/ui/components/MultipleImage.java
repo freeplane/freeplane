@@ -32,16 +32,19 @@ import org.freeplane.features.icon.UIIcon;
 
 public class MultipleImage implements Icon {
 	final private List<Icon> mIcons = new ArrayList<Icon>();
+	final private List<UIIcon> mUIIcons = new ArrayList<UIIcon>();
 
 	public MultipleImage() {
 	}
 
 	public void addIcon(final UIIcon uiIcon) {
-		addIcon(uiIcon.getIcon());
+		mIcons.add(uiIcon.getIcon());
+		mUIIcons.add(uiIcon);
 	}
 
-	public void addIcon(Icon icon) {
+	public void addLinkIcon(Icon icon) {
 		mIcons.add(icon);
+		mUIIcons.add(null);
 	};
 
 	public int getIconHeight() {
@@ -75,7 +78,17 @@ public class MultipleImage implements Icon {
 		}
 	}
 	
-	public Icon getIconAt(Point coordinate){
+	public UIIcon getUIIconAt(Point coordinate){
+		if(coordinate.x < 0 || coordinate.y < 0)
+			return null;
+		int iconX = 0;
+		for (int iconIndex = 0; iconIndex < mIcons.size(); iconIndex++)
+		{
+			iconX += mIcons.get(iconIndex).getIconWidth();
+			if(coordinate.x <= iconX){
+				return mUIIcons.get(iconIndex);
+			}
+		}
 		return null;
 	}
 	
@@ -97,7 +110,7 @@ public class MultipleImage implements Icon {
 		}
 		
 		if(oldIcon == null) {
-			addIcon(newIcon);
+			addLinkIcon(newIcon);
 		}
 		else {
     		int index = mIcons.indexOf(oldIcon);
@@ -106,7 +119,7 @@ public class MultipleImage implements Icon {
     			mIcons.add(index, newIcon);
     		}
     		else {
-    			addIcon(newIcon);
+    			addLinkIcon(newIcon);
     		}
 		}
 	}

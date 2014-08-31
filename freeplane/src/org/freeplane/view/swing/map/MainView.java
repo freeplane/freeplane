@@ -54,6 +54,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconMouseListener;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
@@ -67,7 +68,6 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
-import org.freeplane.view.swing.ui.IconMouseListener;
 
 
 /**
@@ -189,9 +189,14 @@ public abstract class MainView extends ZoomableLabel {
 	
 	public boolean isInIconRegion(final double xCoord)
 	{
+		Rectangle iconR = getIconRectangle();
+		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
+	}
+
+	private Rectangle getIconRectangle() {
 		ZoomableLabelUI zoomableLabelUI = (ZoomableLabelUI)getUI();
 		Rectangle iconR = zoomableLabelUI.getIconR(this);
-		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
+		return iconR;
 	}
 
 	/**
@@ -442,7 +447,7 @@ public abstract class MainView extends ZoomableLabel {
 		final URI link = NodeLinks.getLink(model);
 			final Icon icon = LinkController.getLinkIcon(link, model);
 			if(icon != null)
-				iconImages.addIcon(icon);
+				iconImages.addLinkIcon(icon);
 	}
 
 	void updateTextColor(final NodeView node) {
@@ -744,4 +749,17 @@ public abstract class MainView extends ZoomableLabel {
 		return getNodeView().getZoomed(DRAG_OVAL_WIDTH);
 	}
 
+	public UIIcon getUIIconAt(Point coordinate){
+		Icon icon = getIcon();
+		if(icon instanceof MultipleImage){
+			Rectangle iconRectangle = getIconRectangle();
+			Point transformedToIconCoordinate = new Point(coordinate);
+			transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
+			return ((MultipleImage)icon).getUIIconAt(transformedToIconCoordinate);
+			
+		}
+		else
+			return null;
+	}
+	
 }
