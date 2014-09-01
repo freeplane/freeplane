@@ -44,6 +44,7 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.FormattedFormula;
+import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.INodeChangeListener;
@@ -164,9 +165,15 @@ public class AttributePanelManager{
 	                    if(actualObject != objectToBeFormatted)
 	                    	return formatValue(newFormat, table, actualObject);
                     }
-                    if (objectToBeFormatted instanceof String && ((String)objectToBeFormatted).startsWith("="))
+                    if (newFormat == PatternFormat.getIdentityPatternFormat())
+                        return makeFormattedObjectForIdentityFormat(objectToBeFormatted);
+                    if (objectToBeFormatted instanceof String && ((String) objectToBeFormatted).startsWith("="))
                         return new FormattedFormula((String) objectToBeFormatted, newFormat.getPattern());
                     return newFormat.formatObject(objectToBeFormatted);
+                }
+
+                private FormattedObject makeFormattedObjectForIdentityFormat(final Object objectToBeFormatted) {
+                    return new FormattedObject(String.valueOf(objectToBeFormatted), PatternFormat.IDENTITY_PATTERN);
                 }
             });
 

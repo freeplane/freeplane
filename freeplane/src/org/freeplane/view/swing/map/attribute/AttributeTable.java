@@ -69,7 +69,9 @@ import org.freeplane.features.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -82,7 +84,6 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -824,13 +825,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		       // Take in the new value
 	        TableCellEditor editor = getCellEditor();
 	        if (editor != null) {
-	            Object value = editor.getCellEditorValue();
+	            final Object value = editor.getCellEditorValue();
 				if (value != null) {
-					final MTextController textController = (MTextController) TextController.getController();
-					final Object oldValue = getValueAt(editingRow, editingColumn);
-					final String pattern  = oldValue instanceof IFormattedObject
-					        ? ((IFormattedObject) oldValue).getPattern() : null;
-					setValueAt(textController.guessObjectOrURI(value, pattern), editingRow, editingColumn);
+					final String pattern = extractPatternIfAvailable(getValueAt(editingRow, editingColumn));
+                    final Object newValue = enforceFormattedObjectForIdentityPattern(value, pattern);
+                    setValueAt(newValue, editingRow, editingColumn);
 				}
 	            removeEditor();
 	        }
@@ -838,6 +837,18 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		finally{
 			putClientProperty(EDITING_STOPPED, null);
 		}
+    }
+
+    private String extractPatternIfAvailable(final Object oldValue) {
+        return oldValue instanceof IFormattedObject ? ((IFormattedObject) oldValue).getPattern() : null;
+    }
+
+    // unfortunately we have to handle IDENTITY_PATTERN explicitely since (only) attributes
+    // have no place for the format except for the value itself - so we need a FormattedObject here
+    private Object enforceFormattedObjectForIdentityPattern(Object value, final String pattern) {
+        final MTextController textController = (MTextController) TextController.getController();
+        return PatternFormat.IDENTITY_PATTERN.equals(pattern) ? new FormattedObject(value, pattern) : textController
+            .guessObjectOrURI(value, pattern);
     }
 
 	@Override
