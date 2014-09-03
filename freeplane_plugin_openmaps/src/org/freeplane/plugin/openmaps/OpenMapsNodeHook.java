@@ -22,6 +22,8 @@ import org.freeplane.plugin.openmaps.LocationChoosenListener;
 @NodeHookDescriptor(hookName = "plugins/openmaps/OpenMapsNodeHook.propterties", onceForMap = false)
 public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoosenListener {
 	
+	static final String ICON_NAME = "internet";
+
 	private OpenMapsDialog map;
 
 	public OpenMapsNodeHook() {
@@ -178,8 +180,6 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	private void registerStateIconProvider() {
 		Controller.getCurrentModeController().getExtension(IconController.class).addStateIconProvider
 		(new IStateIconProvider () {
-			private static final String ICON_NAME = "internet";
-			
 			public UIIcon getStateIcon(NodeModel node) {
 				if (node.getExtension(OpenMapsExtension.class) != null)
 					return IconStoreFactory.create().getUIIcon(ICON_NAME);
