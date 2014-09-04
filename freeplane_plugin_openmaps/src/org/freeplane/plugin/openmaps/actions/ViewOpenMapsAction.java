@@ -3,6 +3,7 @@ package org.freeplane.plugin.openmaps.actions;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.openmaps.OpenMapsNodeHook;
 
 /**
@@ -18,8 +19,11 @@ public class ViewOpenMapsAction extends AFreeplaneAction {
 		super(actionIdentifier);
 		nodeHookReference = nodeHook;
 	}
-
+	
 	public void actionPerformed(ActionEvent event) {
-		nodeHookReference.viewCurrentlySelectedLocation();
+		if (event.getSource() == null || !(event.getSource() instanceof NodeModel))
+			nodeHookReference.viewCurrentlySelectedLocation(null); // use currently selected node!
+		else
+			nodeHookReference.viewCurrentlySelectedLocation((NodeModel)(event.getSource())); // use node that was clicked!
 	}
 }
