@@ -216,7 +216,7 @@
 			<arg value="-DartifactId=forms"/>
 			<arg value="-Dversion=1.0.5"/>
 			<arg value="-Dpackaging=jar"/>
-			<arg value="-Dfile=lib/forms-1.2.1.jar"/>
+			<arg value="-Dfile=lib/forms-1.6.0.jar"/>
 		</exec>
 	</target>
 
