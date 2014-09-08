@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -182,7 +183,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 				if(sb.length() > 0) {
 					sb.append(" + ");
 				}
-				sb.append(s.substring(0, 1).toUpperCase());
+				sb.append(s.substring(0, 1).toUpperCase(Locale.ENGLISH));
 				sb.append(s.substring(1));
 			}
 		}
