@@ -15,10 +15,7 @@ class LayoutData{
     boolean rightDataSet;
     boolean leftDataSet;
     public LayoutData(NodeView view) {
-    	this(view.getComponentCount() - 1);
-    }
-    public LayoutData(int childCount) {
-        super();
+    	int childCount = view.getComponentCount() - 1;
         this.lx = new int[childCount];
         this.ly = new int[childCount];
         this.free = new boolean[childCount];
