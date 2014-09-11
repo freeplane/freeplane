@@ -58,7 +58,7 @@ public class NodeViewLayoutAdapter{
             }
         }
 
-    private static Dimension minDimension;
+    final static Dimension minDimension = new Dimension(0, 0);;
     private int childCount;
     private JComponent content;
     protected Point location = new Point();
@@ -69,9 +69,6 @@ public class NodeViewLayoutAdapter{
     private int contentWidth;
     private int contentHeight;
     private int cloudHeight;
-
-    public void addLayoutComponent(final String arg0, final Component arg1) {
-    }
     /**
      * @return Returns the childCount.
      */
@@ -114,18 +111,7 @@ public class NodeViewLayoutAdapter{
         return view;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.awt.LayoutManager#minimumLayoutSize(java.awt.Container)
-     */
-    public Dimension minimumLayoutSize(final Container arg0) {
-        if (NodeViewLayoutAdapter.minDimension == null) {
-            NodeViewLayoutAdapter.minDimension = new Dimension(0, 0);
-        }
-        return NodeViewLayoutAdapter.minDimension;
-    }
-
-    /*
+     /*
      * (non-Javadoc)
      * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
      */
@@ -134,13 +120,6 @@ public class NodeViewLayoutAdapter{
             c.validate();
         }
         return c.getSize();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.awt.LayoutManager#removeLayoutComponent(java.awt.Component)
-     */
-    public void removeLayoutComponent(final Component arg0) {
     }
 
     protected boolean setUp(final Container c) {

@@ -19,12 +19,14 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 
 /**
  * @author Dimitry Polivaev
  */
-public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter implements INodeViewLayout {
+public class VerticalRootNodeViewLayout implements INodeViewLayout {
 	static private INodeViewLayout instance = null;
 
 	static INodeViewLayout getInstance() {
@@ -35,16 +37,31 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter implements
 	}
 
     public void layoutContainer(final Container c) {
-        if(setUp(c)){
+        if(implementation.setUp(c)){
         	layout();
         }
-    	shutDown();
+        implementation.shutDown();
     }
 
 	private void layout() {
-		final LayoutData layoutData = new LayoutData(getChildCount());
-		calcLayout(true, layoutData);
-		calcLayout(false, layoutData);
-		placeChildren(layoutData);
+		final NodeViewLayoutAdapter.LayoutData layoutData = new NodeViewLayoutAdapter.LayoutData(implementation.getChildCount());
+		implementation.calcLayout(true, layoutData);
+		implementation.calcLayout(false, layoutData);
+		implementation.placeChildren(layoutData);
+	}
+
+	private NodeViewLayoutAdapter implementation = new NodeViewLayoutAdapter();
+	public void addLayoutComponent(String name, Component comp) {
+	}
+
+	public void removeLayoutComponent(Component comp) {
+	}
+
+	public Dimension preferredLayoutSize(Container parent) {
+		return implementation.preferredLayoutSize(parent);
+	}
+
+	public Dimension minimumLayoutSize(Container parent) {
+		return NodeViewLayoutAdapter.minDimension;
 	}
 }
