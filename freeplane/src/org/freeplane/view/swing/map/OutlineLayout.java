@@ -45,17 +45,11 @@ public class OutlineLayout implements INodeViewLayout {
         
         if(content == null)
         	return;
+        content.setVisible(view.isContentVisible());
 		final int x = view.getSpaceAround();
 		final int y = x;
-		if (view.isContentVisible()) {
-			content.setVisible(true);
-			final Dimension contentProfSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
-			content.setBounds(x, y, contentProfSize.width, contentProfSize.height);
-		}
-		else {
-			content.setVisible(false);
-			content.setBounds(x, y, 0, 0);
-		}
+		final Dimension contentProfSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
+		content.setBounds(x, y, contentProfSize.width, contentProfSize.height);
 		placeChildren(view);
 	}
 

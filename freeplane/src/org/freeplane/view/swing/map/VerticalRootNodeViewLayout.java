@@ -44,10 +44,10 @@ public class VerticalRootNodeViewLayout implements INodeViewLayout {
     }
 
 	private void layout() {
-		final LayoutData layoutData = new LayoutData(implementation.getChildCount());
+		final LayoutData layoutData = new LayoutData(implementation.getView());
 		implementation.calcLayout(true, layoutData);
 		implementation.calcLayout(false, layoutData);
-		implementation.placeChildren(layoutData);
+		layoutData.placeChildren(implementation.getView());
 	}
 
 	private NodeViewLayoutAdapter implementation = new NodeViewLayoutAdapter();

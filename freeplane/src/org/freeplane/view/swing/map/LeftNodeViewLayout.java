@@ -44,9 +44,9 @@ public class LeftNodeViewLayout implements INodeViewLayout{
     }
 
 	private void layout() {
-		final LayoutData layoutData = new LayoutData(implementation.getChildCount());
+		final LayoutData layoutData = new LayoutData(implementation.getView());
 		implementation.calcLayout(true, layoutData);
-		implementation.placeChildren(layoutData);
+		layoutData.placeChildren(implementation.getView());
 	}
 
 	private NodeViewLayoutAdapter implementation = new NodeViewLayoutAdapter();

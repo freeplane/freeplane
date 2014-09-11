@@ -41,9 +41,9 @@ public class RightNodeViewLayout implements INodeViewLayout{
     }
 
 	private void layout() {
-		final LayoutData layoutData = new LayoutData(implementation.getChildCount());
+		final LayoutData layoutData = new LayoutData(implementation.getView());
 		implementation.calcLayout(false, layoutData);
-		implementation.placeChildren(layoutData);
+		layoutData.placeChildren(implementation.getView());
 	}
 	private NodeViewLayoutAdapter implementation = new NodeViewLayoutAdapter();
 	public void addLayoutComponent(String name, Component comp) {
