@@ -113,7 +113,7 @@ public class NodeViewLayoutAdapter{
 			final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
         	contentWidth = contentSize.width;
             contentHeight = contentSize.height;
-            cloudHeight = getAdditionalCloudHeigth(view);
+			cloudHeight = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(view);
 		}
         else {
         	contentHeight = 0;
@@ -134,22 +134,6 @@ public class NodeViewLayoutAdapter{
 
     public void setVGap(final int vGap) {
         this.vGap = vGap;
-    }
-
-    /**
-     * Calculates the tree height increment because of the clouds.
-     */
-    public int getAdditionalCloudHeigth(final NodeView node) {
-        if (!node.isContentVisible()) {
-            return 0;
-        }
-        final CloudModel cloud = node.getCloudModel();
-        if (cloud != null) {
-            return CloudView.getAdditionalHeigth(cloud, node);
-        }
-        else {
-            return 0;
-        }
     }
 
     protected void calcLayout(final boolean isLeft, final LayoutData data) {
@@ -203,7 +187,7 @@ public class NodeViewLayoutAdapter{
             }
                 
             
-            final int childCloudHeigth = getAdditionalCloudHeigth(child);
+            final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
             final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
             final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
             final int childContentShift = child.getContent().getY() -childCloudHeigth/2 - getSpaceAround();

@@ -32,11 +32,6 @@ import org.freeplane.core.resources.ResourceController;
  * 29.08.2009
  */
 public class OutlineLayout implements INodeViewLayout {
-	private int hGap;
-
-	protected int getHGap() {
-		return hGap;
-	}
 
 	static private final INodeViewLayout instance = new OutlineLayout();
 
@@ -45,19 +40,15 @@ public class OutlineLayout implements INodeViewLayout {
     }
     
     public void layoutContainer(final Container c) {
-        if(setUp(c)){
-        	layout();
-        }
-        implementation.shutDown();
-    }
-
-	private void layout() {
-		final int x = implementation.getSpaceAround();
+ 		final NodeView view = (NodeView) c;
+ 		JComponent content = view.getContent();
+        
+        if(content == null)
+        	return;
+		final int x = view.getSpaceAround();
 		final int y = x;
-		final JComponent content = implementation.getContent();
-		final NodeView view = implementation.getView();
 		if (view.isContentVisible()) {
-			implementation.getContent().setVisible(true);
+			content.setVisible(true);
 			final Dimension contentProfSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 			content.setBounds(x, y, contentProfSize.width, contentProfSize.height);
 		}
@@ -65,53 +56,55 @@ public class OutlineLayout implements INodeViewLayout {
 			content.setVisible(false);
 			content.setBounds(x, y, 0, 0);
 		}
-		placeChildren();
+		placeChildren(view);
 	}
 
-	private void placeChildren() {
-		int baseX = implementation.getContent().getX();
-		int y = implementation.getContent().getY() + implementation.getContent().getHeight() - implementation.getSpaceAround();
-		if (implementation.getContent().isVisible()) {
-			baseX += getHGap();
-			y += implementation.getVGap();
+	private void placeChildren(NodeView view) {
+        final int childCount = view.getComponentCount() - 1;
+        for (int i = 0; i < childCount; i++) {
+            final Component component = view.getComponent(i);
+            ((NodeView) component).validateTree();
+        }
+        int spaceAround = view.getSpaceAround();
+		final int hgapProperty = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
+		int hgap = view.getMap().getZoomed(hgapProperty);
+		final int vgapPropertyValue = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
+		int vgap = view.getMap().getZoomed(vgapPropertyValue);
+		JComponent content = view.getContent();
+		int baseX = content.getX();
+		int y = content.getY() + content.getHeight() - spaceAround;
+		if (content.isVisible()) {
+			baseX += hgap;
+			y += vgap;
 		}
-		int right = baseX + implementation.getContent().getWidth() + implementation.getSpaceAround();
+		int right = baseX + content.getWidth() + spaceAround;
 		NodeView child = null;
-		for (int i = 0; i < implementation.getChildCount(); i++) {
-			final NodeView component = (NodeView) implementation.getView().getComponent(i);
+		for (int i = 0; i < childCount; i++) {
+			final NodeView component = (NodeView) view.getComponent(i);
 			child = component;
-			final int additionalCloudHeigth = implementation.getAdditionalCloudHeigth(child) / 2;
+			final int additionalCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child) / 2;
 			y += additionalCloudHeigth;
-			final int childHGap = child.getContent().isVisible() ? getHGap() : 0;
+			final int childHGap = child.getContent().isVisible() ? hgap : 0;
 			final int x = baseX + childHGap - child.getContent().getX();
 			child.setLocation(x, y);
-			final int childHeight = child.getHeight() - 2 * implementation.getSpaceAround();
+			final int childHeight = child.getHeight() - 2 * spaceAround;
 			if (childHeight != 0) {
-				y += childHeight + implementation.getVGap() + additionalCloudHeigth;
+				y += childHeight + vgap + additionalCloudHeigth;
 			}
 			right = Math.max(right, x + child.getWidth() + additionalCloudHeigth);
 		}
-		final int bottom = implementation.getContent().getY() + implementation.getContent().getHeight() + implementation.getSpaceAround();
+		final int bottom = content.getY() + content.getHeight() + spaceAround;
 		if (child != null) {
-			implementation.getView().setSize(right,
-			    Math.max(bottom, child.getY() + child.getHeight() + implementation.getAdditionalCloudHeigth(child) / 2));
+			final NodeView node = child;
+			view.setSize(right,
+			    Math.max(bottom, child.getY() + child.getHeight() + CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(node) / 2));
 		}
 		else {
-			implementation.getView().setSize(right, bottom);
+			view.setSize(right, bottom);
 		}
 	}
 
-	protected boolean setUp(final Container c) {
-		if (! implementation.setUp(c)){
-			return false;
-		}
-		final int vgap = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
-		final int hgap = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
-		implementation.setVGap(implementation.getView().getMap().getZoomed(vgap));
-		hGap = implementation.getView().getMap().getZoomed(hgap);
-		return true;
-	}
-	private NodeViewLayoutAdapter implementation = new NodeViewLayoutAdapter();
+	
 	public void addLayoutComponent(String name, Component comp) {
 	}
 
