@@ -59,6 +59,6 @@ public class RightNodeViewLayout implements INodeViewLayout{
 	}
 
 	public Dimension minimumLayoutSize(Container parent) {
-		return NodeViewLayoutAdapter.minDimension;
+		return INodeViewLayout.ZERO_DIMENSION;
 	}
 }

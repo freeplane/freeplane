@@ -27,7 +27,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodelocation.LocationModel;
 
 public class NodeViewLayoutAdapter{
-    final static Dimension minDimension = new Dimension(0, 0);
     private int childCount;
     protected Point location = new Point();
     private NodeModel model;

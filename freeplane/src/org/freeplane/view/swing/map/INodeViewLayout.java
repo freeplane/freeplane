@@ -19,7 +19,9 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Dimension;
 import java.awt.LayoutManager;
 
 public interface INodeViewLayout extends LayoutManager {
+	final static Dimension ZERO_DIMENSION = new Dimension(0, 0);
 }
