@@ -100,7 +100,14 @@ class VerticalNodeViewLayoutStrategy {
 		level = highestSummaryLevel;
 		return level;
 	}
-
+	
+	private void calcFree(final boolean isLeft) {
+		for (int i = 0; i < childViewCount; i++) {
+			final NodeView child = (NodeView) view.getComponent(i);
+			if (child.isLeft() == isLeft)
+				this.free[i] = child.isFree();
+		}
+	}
 	private void calcLevels(final boolean isLeft, int highestSummaryLevel) {
 		int level = highestSummaryLevel;
 		boolean useSummaryAsItem = true;
@@ -125,24 +132,24 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
 	private void calcLayout(final boolean isLeft) {
+		calcFree(isLeft);
+		final int highestSummaryLevel = calcHighestSummaryLevel(isLeft);
+		calcLevels(isLeft, highestSummaryLevel);
+		
 		int left = 0;
 		int y = 0;
-
-		final Dimension contentSize = ContentSizeCalculator.INSTANCE
-				.calculateContentSize(view);
+		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int visibleChildCounter = 0;
 		int top = 0;
-
-		final int highestSummaryLevel = calcHighestSummaryLevel(isLeft);
+		
+		int level = highestSummaryLevel;
 		final int[] groupStart = new int[highestSummaryLevel];
 		final int[] groupStartContentHeightSum = new int[highestSummaryLevel];
 		final int[] groupStartY = new int[highestSummaryLevel];
 		final int[] groupEndY = new int[highestSummaryLevel];
 
 		final int summaryBaseX[] = new int[highestSummaryLevel];
-		calcLevels(isLeft, highestSummaryLevel);
-		int level = highestSummaryLevel;
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeView child = (NodeView) view.getComponent(i);
 			if (child.isLeft() != isLeft) {
@@ -171,7 +178,6 @@ class VerticalNodeViewLayoutStrategy {
 				childHGap = 0;
 
 			boolean isFreeNode = child.isFree();
-			this.free[i] = isFreeNode;
 
 			if (isItem) {
 				if (isFreeNode) {
