@@ -39,6 +39,7 @@ class VerticalNodeViewLayoutStrategy {
 	private final int[] ly;
 	private final boolean[] free;
 	private final boolean[] summary;
+	private final int[] levels;
 	private int left;
 	private int childContentHeight;
 	private int top;
@@ -58,6 +59,7 @@ class VerticalNodeViewLayoutStrategy {
 		this.ly = new int[childViewCount];
 		this.free = new boolean[childViewCount];
 		this.summary = new boolean[childViewCount];
+		this.levels = new int[childViewCount];
 		model = view.getModel();
 		if (model.isVisible()) {
 			this.vGap = view.getVGap();
@@ -82,6 +84,49 @@ class VerticalNodeViewLayoutStrategy {
 		calcLayout(false);
 	}
 
+	private int calcHighestSummaryLevel(final boolean isLeft) {
+		int highestSummaryLevel = 1;
+		int level = 1;
+		for (int i = 0; i < childViewCount; i++) {
+			final NodeView child = (NodeView) view.getComponent(i);
+			if (child.isLeft() != isLeft) {
+				continue;
+			}
+			if (child.isSummary()) {
+				level++;
+				highestSummaryLevel = Math.max(highestSummaryLevel, level);
+			} else {
+				level = 1;
+			}
+		}
+		level = highestSummaryLevel;
+		return level;
+	}
+
+	private void calcLevels(final boolean isLeft, int highestSummaryLevel) {
+		int level = highestSummaryLevel;
+		boolean useSummaryAsItem = true;
+		for (int i = 0; i < childViewCount; i++) {
+			final NodeView child = (NodeView) view.getComponent(i);
+			if (child.isLeft() == isLeft) {
+				final int childHeight = child.getHeight() - 2 * spaceAround;
+				final boolean isItem = !child.isSummary() || useSummaryAsItem;
+				if (isItem) {
+					if (level > 0)
+						useSummaryAsItem = true;
+					level = 0;
+					if (childHeight != 0) {
+						useSummaryAsItem = false;
+					}
+				} else {
+					level++;
+				}
+				levels[i] = level;
+				summary[i] = !isItem;
+			}
+		}
+	}
+
 	private void calcLayout(final boolean isLeft) {
 		int left = 0;
 		int y = 0;
@@ -90,7 +135,6 @@ class VerticalNodeViewLayoutStrategy {
 				.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int visibleChildCounter = 0;
-		boolean useSummaryAsItem = true;
 		int top = 0;
 
 		final int highestSummaryLevel = calcHighestSummaryLevel(isLeft);
@@ -100,7 +144,7 @@ class VerticalNodeViewLayoutStrategy {
 		final int[] groupEndY = new int[highestSummaryLevel];
 
 		final int summaryBaseX[] = new int[highestSummaryLevel];
-
+		calcLevels(isLeft, highestSummaryLevel);
 		int level = highestSummaryLevel;
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeView child = (NodeView) view.getComponent(i);
@@ -108,16 +152,10 @@ class VerticalNodeViewLayoutStrategy {
 				continue;
 			}
 
-			final boolean isSummary = child.isSummary();
-			final boolean isItem = !isSummary || useSummaryAsItem;
+			final int childHeight = child.getHeight() - 2 * spaceAround;
 			final int oldLevel = level;
-			if (isItem) {
-				if (level > 0)
-					useSummaryAsItem = true;
-				level = 0;
-			} else {
-				level++;
-			}
+			level = levels[i];
+			boolean isItem = level == 0;
 
 			final int childCloudHeigth = CloudHeightCalculator.INSTANCE
 					.getAdditionalCloudHeigth(child);
@@ -134,11 +172,10 @@ class VerticalNodeViewLayoutStrategy {
 				childHGap = child.getZoomed(LocationModel.HGAP);
 			else
 				childHGap = 0;
-			final int childHeight = child.getHeight() - 2 * spaceAround;
 
 			boolean isFreeNode = child.isFree();
 			this.free[i] = isFreeNode;
-			this.summary[i] = !isItem;
+
 			if (isItem) {
 				if (isFreeNode) {
 					this.ly[i] = childShiftY - childContentShift
@@ -183,10 +220,8 @@ class VerticalNodeViewLayoutStrategy {
 							childContentHeightSum += vGap;
 					}
 				}
-				if (childHeight != 0) {
+				if (childHeight != 0)
 					visibleChildCounter++;
-					useSummaryAsItem = false;
-				}
 			} else {
 				final int itemLevel = level - 1;
 				if (child.isFirstGroupNode()) {
@@ -267,25 +302,6 @@ class VerticalNodeViewLayoutStrategy {
 
 		top += (contentSize.height - childContentHeightSum) / 2;
 		finalizeDataSet(view, isLeft, left, childContentHeightSum, top);
-	}
-
-	private int calcHighestSummaryLevel(final boolean isLeft) {
-		int highestSummaryLevel = 1;
-		int level = 1;
-		for (int i = 0; i < childViewCount; i++) {
-			final NodeView child = (NodeView) view.getComponent(i);
-			if (child.isLeft() != isLeft) {
-				continue;
-			}
-			if (child.isSummary()) {
-				level++;
-				highestSummaryLevel = Math.max(highestSummaryLevel, level);
-			} else {
-				level = 1;
-			}
-		}
-		level = highestSummaryLevel;
-		return level;
 	}
 
 	private void finalizeDataSet(NodeView view, boolean isLeft, int left,
