@@ -30,7 +30,39 @@ class LayoutData{
         leftDataSet = false;
     }
     
-    public void placeChildren(final NodeView view) {
+    public void finalizeDataSet(NodeView view, boolean isLeft, int left, int childContentHeight, int top) {
+    	if(!isLeft && this.leftDataSet || isLeft && this.rightDataSet){
+		    this.left = Math.min(this.left, left);
+		    this.childContentHeight = Math.max(this.childContentHeight, childContentHeight);
+		    int deltaTop = top - this.top;
+		    final boolean changeLeft;
+		    if(deltaTop < 0){
+		        this.top = top;
+		        changeLeft = !isLeft;
+		        deltaTop = - deltaTop;
+		    }
+		    else{
+		        changeLeft = isLeft;
+		    }
+		    for(int i = 0; i < view.getComponentCount() - 1; i++){
+		        NodeView child = (NodeView) view.getComponent(i);
+		        if(child.isLeft() == changeLeft && (this.summary[i] || !this.free[i])){
+		            this.ly[i] += deltaTop;
+		        }
+		    }
+		}
+		else{
+		    this.left = left;
+		    this.childContentHeight = childContentHeight;
+		    this.top = top;
+		}
+		if(isLeft)
+		    this.leftDataSet = true;
+		else
+		    this.rightDataSet = true;
+    }
+    
+   public void placeChildren(final NodeView view) {
     	JComponent content = view.getContent();
 		int spaceAround = view.getSpaceAround();
 		final int contentX = Math.max(spaceAround, -this.left);
@@ -39,9 +71,9 @@ class LayoutData{
 		
 		content.setVisible(view.isContentVisible());
 		
+		int childViewCount = view.getComponentCount() - 1;
 		int baseY = contentY - spaceAround + this.top;
 		int minY = 0;
-		int childViewCount = view.getComponentCount() - 1;
 		for (int i = 0; i < childViewCount; i++) {
 		    if(!this.summary[i] && this.free[i]){
 		    	minY = Math.min(minY, contentY + this.ly[i]);

@@ -279,38 +279,6 @@ public class NodeViewLayoutAdapter{
         }
         
         top += (contentSize.height - childContentHeightSum) / 2;
-        setData(data, isLeft, left, childContentHeightSum, top);
-    }
-    
-    private void setData(final LayoutData data, boolean isLeft, int left, int childContentHeight, int top) {
-        if(!isLeft && data.leftDataSet || isLeft && data.rightDataSet){
-            data.left = Math.min(data.left, left);
-            data.childContentHeight = Math.max(data.childContentHeight, childContentHeight);
-            int deltaTop = top - data.top;
-            final boolean changeLeft;
-            if(deltaTop < 0){
-                data.top = top;
-                changeLeft = !isLeft;
-                deltaTop = - deltaTop;
-            }
-            else{
-                changeLeft = isLeft;
-            }
-            for(int i = 0; i < childCount; i++){
-                NodeView child = (NodeView) getView().getComponent(i);
-                if(child.isLeft() == changeLeft && (data.summary[i] || !data.free[i])){
-                    data.ly[i] += deltaTop;
-                }
-            }
-        }
-        else{
-            data.left = left;
-            data.childContentHeight = childContentHeight;
-            data.top = top;
-        }
-        if(isLeft)
-            data.leftDataSet = true;
-        else
-            data.rightDataSet = true;
+        data.finalizeDataSet(view, isLeft, left, childContentHeightSum, top);
     }
 }
