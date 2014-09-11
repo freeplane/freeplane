@@ -19,21 +19,29 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Container;
+
 /**
  * @author Dimitry Polivaev
  */
-public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
+public class LeftNodeViewLayout extends NodeViewLayoutAdapter implements INodeViewLayout{
 	static private LeftNodeViewLayout instance = null;
 
-	static LeftNodeViewLayout getInstance() {
+	static INodeViewLayout getInstance() {
 		if (LeftNodeViewLayout.instance == null) {
 			LeftNodeViewLayout.instance = new LeftNodeViewLayout();
 		}
 		return LeftNodeViewLayout.instance;
 	}
 
-	@Override
-	protected void layout() {
+    public void layoutContainer(final Container c) {
+        if(setUp(c)){
+        	layout();
+        }
+    	shutDown();
+    }
+
+	private void layout() {
 		final LayoutData layoutData = new LayoutData(getChildCount());
 		calcLayout(true, layoutData);
 		placeChildren(layoutData);

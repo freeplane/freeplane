@@ -30,21 +30,27 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  * 29.08.2009
  */
-public class OutlineLayout extends NodeViewLayoutAdapter {
+public class OutlineLayout extends NodeViewLayoutAdapter implements INodeViewLayout {
 	private int hGap;
 
 	protected int getHGap() {
 		return hGap;
 	}
 
-	static private final NodeViewLayoutAdapter instance = new OutlineLayout();
+	static private final INodeViewLayout instance = new OutlineLayout();
 
-    static NodeViewLayoutAdapter getInstance() {
+    static INodeViewLayout getInstance() {
         return OutlineLayout.instance;
     }
     
-	@Override
-	protected void layout() {
+    public void layoutContainer(final Container c) {
+        if(setUp(c)){
+        	layout();
+        }
+    	shutDown();
+    }
+
+	private void layout() {
 		final int x = getSpaceAround();
 		final int y = x;
 		final JComponent content = getContent();

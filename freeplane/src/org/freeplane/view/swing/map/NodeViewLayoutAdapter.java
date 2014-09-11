@@ -33,7 +33,7 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.view.swing.map.cloud.CloudView;
 
-abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
+public class NodeViewLayoutAdapter{
     protected static class LayoutData{
             final int[] lx;
             final int[] ly;
@@ -112,15 +112,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
      */
     protected NodeView getView() {
         return view;
-    }
-
-    abstract protected void layout();
-
-    public void layoutContainer(final Container c) {
-        if(setUp(c)){
-        	layout();
-        }
-    	shutDown();
     }
 
     /*
