@@ -58,7 +58,7 @@ public class OutlineLayout implements INodeViewLayout {
 		final NodeView view = implementation.getView();
 		if (view.isContentVisible()) {
 			implementation.getContent().setVisible(true);
-			final Dimension contentProfSize = implementation.calculateContentSize(view);
+			final Dimension contentProfSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 			content.setBounds(x, y, contentProfSize.width, contentProfSize.height);
 		}
 		else {

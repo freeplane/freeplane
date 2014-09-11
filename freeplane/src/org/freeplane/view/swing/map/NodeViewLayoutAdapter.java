@@ -110,7 +110,7 @@ public class NodeViewLayoutAdapter{
         }
         spaceAround = view.getSpaceAround();
 		if (view.isContentVisible()) {
-			final Dimension contentSize = calculateContentSize(view);
+			final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
         	contentWidth = contentSize.width;
             contentHeight = contentSize.height;
             cloudHeight = getAdditionalCloudHeigth(view);
@@ -121,25 +121,6 @@ public class NodeViewLayoutAdapter{
         	cloudHeight = 0;
         }
 		return true;
-    }
-
-	protected Dimension calculateContentSize(final NodeView view) {
-    	final JComponent content = view.getContent();
-        final ModeController modeController = view.getMap().getModeController();
-        final NodeStyleController nsc = NodeStyleController.getController(modeController);
-        Dimension contentSize;
-        if (content instanceof ZoomableLabel){
-        	int maxNodeWidth = nsc.getMaxWidth(view.getModel());
-        	contentSize=  ((ZoomableLabel)content).getPreferredSize(maxNodeWidth);
-        }
-        else{
-        	contentSize=  content.getPreferredSize();
-        }
-        int minNodeWidth = nsc.getMinWidth(view.getModel());
-        int contentWidth = Math.max(view.getZoomed(minNodeWidth),contentSize.width);
-        int contentHeight = contentSize.height;
-        final Dimension contentProfSize = new Dimension(contentWidth, contentHeight);
-        return contentProfSize;
     }
 
 	protected void shutDown() {
