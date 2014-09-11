@@ -26,12 +26,8 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
-import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.view.swing.map.cloud.CloudView;
 
 public class NodeViewLayoutAdapter{
     final static Dimension minDimension = new Dimension(0, 0);;
