@@ -36,8 +36,8 @@ public class RightNodeViewLayout implements INodeViewLayout{
     public void layoutContainer(final Container c) {
         NodeView view = (NodeView) c;
  		if(view.getContent() != null){
-        	final LayoutData layoutData = new LayoutData(view);
-        	layoutData.calcLayout(false);
+        	final VerticalNodeViewLayoutStrategy layoutData = new VerticalNodeViewLayoutStrategy(view);
+        	layoutData.calcRightLayout();
 			layoutData.placeChildren(view);
         }
     }

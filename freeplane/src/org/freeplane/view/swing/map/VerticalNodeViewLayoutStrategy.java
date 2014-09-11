@@ -28,8 +28,14 @@ import javax.swing.JComponent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodelocation.LocationModel;
 
-class LayoutData{
-	private final int[] lx;
+class VerticalNodeViewLayoutStrategy{
+    private final int childViewCount;
+    private final NodeModel model;
+    private final int spaceAround;
+    private final int vGap;
+    private final NodeView view;
+
+    private final int[] lx;
 	private final int[] ly;
 	private final boolean[] free;
 	private final boolean[] summary;
@@ -39,49 +45,47 @@ class LayoutData{
 	private boolean rightDataSet;
 	private boolean leftDataSet;
 
-    private int childCount;
-    private NodeModel model;
-    private int spaceAround;
-    private int vGap;
-    private NodeView view;
-
-    public LayoutData(NodeView view) {
-    	int childCount = view.getComponentCount() - 1;
-        this.lx = new int[childCount];
-        this.ly = new int[childCount];
-        this.free = new boolean[childCount];
-        this.summary = new boolean[childCount];
+    public VerticalNodeViewLayoutStrategy(NodeView view) {
+    	this.view = view;
+    	childViewCount = view.getComponentCount() - 1;
+    	layoutChildViews(view);
         this.left = 0;
         this.childContentHeight = 0;
         this.top = 0;
         rightDataSet = false;
         leftDataSet = false;
-        if(view.getContent() != null)
-        	setUp(view);
-    }
-    
-	private void setUp( final NodeView localView) {
-       final int localChildCount = localView.getComponentCount() - 1;
-       for (int i = 0; i < localChildCount; i++) {
-           final Component component = localView.getComponent(i);
-           ((NodeView) component).validateTree();
-       }
-       view = localView;
-       model = localView.getModel();
-       childCount = localChildCount;
+        this.lx = new int[childViewCount];
+        this.ly = new int[childViewCount];
+        this.free = new boolean[childViewCount];
+        this.summary = new boolean[childViewCount];
+        model = view.getModel();
         if (model.isVisible()) {
-           this.vGap = view.getVGap();
-       }
-       else {
-           this.vGap = view.getVisibleParentView().getVGap();
-       }
-       spaceAround = view.getSpaceAround();
-   }
+        	this.vGap = view.getVGap();
+        }
+        else {
+        	this.vGap = view.getVisibleParentView().getVGap();
+        }
+        spaceAround = view.getSpaceAround();
+    }
 
-	public void calcLayout(final boolean isLeft) {
+	private void layoutChildViews(NodeView view) {
+		for (int i = 0; i < childViewCount; i++) {
+    		final Component component = view.getComponent(i);
+    		((NodeView) component).validateTree();
+    	}
+	}
+    
+	public void calcLeftLayout() {
+		calcLayout(true);
+	}
+	public void calcRightLayout() {
+		calcLayout(false);
+	}
+	
+	private void calcLayout(final boolean isLeft) {
 		int highestSummaryLevel = 1;
 		   int level = 1;
-		   for (int i = 0; i < childCount; i++) {
+		   for (int i = 0; i < childViewCount; i++) {
 		       final NodeView child = (NodeView) view.getComponent(i);
 		       if (child.isLeft() != isLeft) {
 		           continue;
@@ -111,7 +115,7 @@ class LayoutData{
 		   final int summaryBaseX[] = new int[highestSummaryLevel];
 		
 		   level = highestSummaryLevel;
-		   for (int i = 0; i < childCount; i++) {
+		   for (int i = 0; i < childViewCount; i++) {
 		       final NodeView child = (NodeView) view.getComponent(i);
 		       if (child.isLeft() != isLeft) {
 		           continue;
@@ -263,9 +267,10 @@ class LayoutData{
 		   }
 		
 		   top += (contentSize.height - childContentHeightSum) / 2;
-		   this.finalizeDataSet(view, isLeft, left, childContentHeightSum, top);
+		   finalizeDataSet(view, isLeft, left, childContentHeightSum, top);
 	}
-    public void finalizeDataSet(NodeView view, boolean isLeft, int left, int childContentHeight, int top) {
+	
+    private void finalizeDataSet(NodeView view, boolean isLeft, int left, int childContentHeight, int top) {
     	if(!isLeft && this.leftDataSet || isLeft && this.rightDataSet){
 		    this.left = Math.min(this.left, left);
 		    this.childContentHeight = Math.max(this.childContentHeight, childContentHeight);
@@ -279,7 +284,7 @@ class LayoutData{
 		    else{
 		        changeLeft = isLeft;
 		    }
-		    for(int i = 0; i < view.getComponentCount() - 1; i++){
+		    for(int i = 0; i < childViewCount; i++){
 		        NodeView child = (NodeView) view.getComponent(i);
 		        if(child.isLeft() == changeLeft && (this.summary[i] || !this.free[i])){
 		            this.ly[i] += deltaTop;
@@ -306,7 +311,6 @@ class LayoutData{
 		
 		content.setVisible(view.isContentVisible());
 		
-		int childViewCount = view.getComponentCount() - 1;
 		int baseY = contentY - spaceAround + this.top;
 		int minY = 0;
 		for (int i = 0; i < childViewCount; i++) {
