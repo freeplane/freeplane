@@ -106,7 +106,7 @@ public class OutlineLayout implements INodeViewLayout {
 	}
 
 	public Dimension preferredLayoutSize(Container parent) {
-		return NodeViewLayoutAdapter.immediatelyValidatingPreferredSizeCalculator.preferredLayoutSize(parent);
+		return ImmediatelyValidatingPreferredSizeCalculator.INSTANCE.preferredLayoutSize(parent);
 	}
 
 	public Dimension minimumLayoutSize(Container parent) {

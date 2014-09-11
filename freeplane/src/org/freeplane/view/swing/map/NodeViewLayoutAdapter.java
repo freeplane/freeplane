@@ -20,11 +20,8 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
-
-import javax.swing.JComponent;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodelocation.LocationModel;
@@ -37,8 +34,7 @@ public class NodeViewLayoutAdapter{
     private int spaceAround;
     private int vGap;
     private NodeView view;
-	public static final ImmediatelyValidatingPreferredSizeCalculator immediatelyValidatingPreferredSizeCalculator  = new ImmediatelyValidatingPreferredSizeCalculator();
-    /**
+	/**
      * @return Returns the model.
      */
     protected NodeModel getModel() {
@@ -59,11 +55,7 @@ public class NodeViewLayoutAdapter{
         return view;
     }
 
-     protected boolean setUp(final Container c) {
-        final NodeView localView = (NodeView) c;
-        JComponent content = localView.getContent();
-        if(content == null)
-        	return false;
+     protected void setUp( final NodeView localView) {
         final int localChildCount = localView.getComponentCount() - 1;
         for (int i = 0; i < localChildCount; i++) {
             final Component component = localView.getComponent(i);
@@ -79,7 +71,6 @@ public class NodeViewLayoutAdapter{
             setVGap(getView().getVisibleParentView().getVGap());
         }
         spaceAround = view.getSpaceAround();
-		return true;
     }
 
 	protected void shutDown() {

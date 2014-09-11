@@ -4,7 +4,9 @@ import java.awt.Container;
 import java.awt.Dimension;
 
 public class ImmediatelyValidatingPreferredSizeCalculator {
-    /*
+    public static final ImmediatelyValidatingPreferredSizeCalculator INSTANCE  = new ImmediatelyValidatingPreferredSizeCalculator();
+
+/*
     * (non-Javadoc)
     * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
     */

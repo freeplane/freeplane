@@ -37,10 +37,12 @@ public class VerticalRootNodeViewLayout implements INodeViewLayout {
 	}
 
     public void layoutContainer(final Container c) {
-        if(implementation.setUp(c)){
+        NodeView view = (NodeView) c;
+		if(view.getContent() != null){
+			implementation.setUp(view);
         	layout();
+        	implementation.shutDown();
         }
-        implementation.shutDown();
     }
 
 	private void layout() {
@@ -58,7 +60,7 @@ public class VerticalRootNodeViewLayout implements INodeViewLayout {
 	}
 
 	public Dimension preferredLayoutSize(Container parent) {
-		return NodeViewLayoutAdapter.immediatelyValidatingPreferredSizeCalculator.preferredLayoutSize(parent);
+		return ImmediatelyValidatingPreferredSizeCalculator.INSTANCE.preferredLayoutSize(parent);
 	}
 
 	public Dimension minimumLayoutSize(Container parent) {
