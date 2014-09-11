@@ -38,7 +38,6 @@ class VerticalNodeViewLayoutStrategy {
 	private final int[] lx;
 	private final int[] ly;
 	private final boolean[] free;
-	private final boolean[] summary;
 	private final int[] levels;
 	private int left;
 	private int childContentHeight;
@@ -58,7 +57,6 @@ class VerticalNodeViewLayoutStrategy {
 		this.lx = new int[childViewCount];
 		this.ly = new int[childViewCount];
 		this.free = new boolean[childViewCount];
-		this.summary = new boolean[childViewCount];
 		this.levels = new int[childViewCount];
 		model = view.getModel();
 		if (model.isVisible()) {
@@ -122,7 +120,6 @@ class VerticalNodeViewLayoutStrategy {
 					level++;
 				}
 				levels[i] = level;
-				summary[i] = !isItem;
 			}
 		}
 	}
@@ -247,7 +244,7 @@ class VerticalNodeViewLayoutStrategy {
 							NodeView groupItem = (NodeView) view
 									.getComponent(j);
 							if (groupItem.isLeft() == isLeft
-									&& (this.summary[j] || !this.free[j]))
+									&& (this.levels[j] > 0 || !this.free[j]))
 								this.ly[j] -= deltaY;
 						}
 					}
@@ -322,7 +319,7 @@ class VerticalNodeViewLayoutStrategy {
 			for (int i = 0; i < childViewCount; i++) {
 				NodeView child = (NodeView) view.getComponent(i);
 				if (child.isLeft() == changeLeft
-						&& (this.summary[i] || !this.free[i])) {
+						&& (this.levels[i] > 0 || !this.free[i])) {
 					this.ly[i] += deltaTop;
 				}
 			}
@@ -350,7 +347,7 @@ class VerticalNodeViewLayoutStrategy {
 		int baseY = contentY - spaceAround + this.top;
 		int minY = 0;
 		for (int i = 0; i < childViewCount; i++) {
-			if (!this.summary[i] && this.free[i]) {
+			if (this.levels[i] == 0 && this.free[i]) {
 				minY = Math.min(minY, contentY + this.ly[i]);
 			} else
 				minY = Math.min(minY, baseY + this.ly[i]);
@@ -371,7 +368,7 @@ class VerticalNodeViewLayoutStrategy {
 		for (int i = 0; i < childViewCount; i++) {
 			NodeView child = (NodeView) view.getComponent(i);
 			final int y;
-			if (!this.summary[i] && this.free[i]) {
+			if (this.levels[i] == 0 && this.free[i]) {
 				y = contentY + this.ly[i];
 			} else {
 				y = baseY + this.ly[i];
