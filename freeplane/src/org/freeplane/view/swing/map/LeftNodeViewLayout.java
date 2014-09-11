@@ -57,7 +57,7 @@ public class LeftNodeViewLayout implements INodeViewLayout{
 	}
 
 	public Dimension preferredLayoutSize(Container parent) {
-		return implementation.preferredLayoutSize(parent);
+		return NodeViewLayoutAdapter.immediatelyValidatingPreferredSizeCalculator.preferredLayoutSize(parent);
 	}
 
 	public Dimension minimumLayoutSize(Container parent) {

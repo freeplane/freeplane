@@ -69,6 +69,7 @@ public class NodeViewLayoutAdapter{
     private int contentWidth;
     private int contentHeight;
     private int cloudHeight;
+	public static final ImmediatelyValidatingPreferredSizeCalculator immediatelyValidatingPreferredSizeCalculator  = new ImmediatelyValidatingPreferredSizeCalculator();
     /**
      * @return Returns the childCount.
      */
@@ -111,18 +112,7 @@ public class NodeViewLayoutAdapter{
         return view;
     }
 
-     /*
-     * (non-Javadoc)
-     * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
-     */
-    public Dimension preferredLayoutSize(final Container c) {
-        if (!c.isValid()) {
-            c.validate();
-        }
-        return c.getSize();
-    }
-
-    protected boolean setUp(final Container c) {
+     protected boolean setUp(final Container c) {
         final NodeView localView = (NodeView) c;
         JComponent content = localView.getContent();
         if(content == null)
