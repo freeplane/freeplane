@@ -96,14 +96,13 @@ class VerticalNodeViewLayoutStrategy {
 		int level = 1;
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeView child = (NodeView) view.getComponent(i);
-			if (child.isLeft() != isLeft) {
-				continue;
-			}
-			if (child.isSummary()) {
-				level++;
-				highestSummaryLevel = Math.max(highestSummaryLevel, level);
-			} else {
-				level = 1;
+			if (child.isLeft() == isLeft) {
+				if (child.isSummary()) {
+					level++;
+					highestSummaryLevel = Math.max(highestSummaryLevel, level);
+				} else {
+					level = 1;
+				}
 			}
 		}
 	}
@@ -161,105 +160,103 @@ class VerticalNodeViewLayoutStrategy {
 
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeView child = (NodeView) view.getComponent(i);
-			if (child.isLeft() != isLeft) {
-				continue;
-			}
+			if (child.isLeft() == isLeft) {
+				final int childHeight = child.getHeight() - 2 * spaceAround;
+				final int oldLevel = level;
+				level = levels[i];
+				boolean isFreeNode = child.isFree();
+				boolean isItem = level == 0;
 
-			final int childHeight = child.getHeight() - 2 * spaceAround;
-			final int oldLevel = level;
-			level = levels[i];
-			boolean isFreeNode = child.isFree();
-			boolean isItem = level == 0;
+				final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
+				final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
+				final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
+				final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
 
-			final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
-			final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
-			final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
-			final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
+				if (isItem) {
+					if (isFreeNode)
+						this.yCoordinates[i] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
+					else {
+						if (childShiftY < 0 || visibleChildCounter == 0)
+							top += childShiftY;
 
-			if (isItem) {
-				if (isFreeNode)
-					this.yCoordinates[i] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
-				else {
-					if (childShiftY < 0 || visibleChildCounter == 0)
-						top += childShiftY;
+						top += - childContentShift + child.getTopOverlap();
+						y -= child.getTopOverlap();
+						if (childShiftY < 0) {
+							this.yCoordinates[i] = y;
+							y -= childShiftY;
+						} else {
+							if (visibleChildCounter > 0)
+								y += childShiftY;
+							this.yCoordinates[i] = y;
+						}
+						if (childHeight != 0)
+							y += childHeight + vGap - child.getBottomOverlap();
 
-					top += - childContentShift + child.getTopOverlap();
-					y -= child.getTopOverlap();
-					if (childShiftY < 0) {
-						this.yCoordinates[i] = y;
-						y -= childShiftY;
-					} else {
-						if (visibleChildCounter > 0)
-							y += childShiftY;
-						this.yCoordinates[i] = y;
+						childContentHeightSum += childContentHeight;
+						if (oldLevel > 0) {
+							for (int j = 0; j < oldLevel; j++) {
+								groupStartIndex[j] = i;
+								groupUpperYCoordinate[j] = Integer.MAX_VALUE;
+								groupLowerYCoordinate[j] = Integer.MIN_VALUE;
+								contentHeightSumAtGroupStart[j] = childContentHeightSum;
+							}
+						} else if (child.isFirstGroupNode()) {
+							contentHeightSumAtGroupStart[0] = childContentHeightSum;
+							groupStartIndex[0] = i;
+						}
+						if (childHeight != 0) {
+							if (visibleChildCounter > 0)
+								childContentHeightSum += vGap;
+						}
 					}
 					if (childHeight != 0)
-						y += childHeight + vGap - child.getBottomOverlap();
-
-					childContentHeightSum += childContentHeight;
-					if (oldLevel > 0) {
-						for (int j = 0; j < oldLevel; j++) {
-							groupStartIndex[j] = i;
-							groupUpperYCoordinate[j] = Integer.MAX_VALUE;
-							groupLowerYCoordinate[j] = Integer.MIN_VALUE;
-							contentHeightSumAtGroupStart[j] = childContentHeightSum;
-						}
-					} else if (child.isFirstGroupNode()) {
-						contentHeightSumAtGroupStart[0] = childContentHeightSum;
-						groupStartIndex[0] = i;
-					}
-					if (childHeight != 0) {
-						if (visibleChildCounter > 0)
-							childContentHeightSum += vGap;
-					}
-				}
-				if (childHeight != 0)
-					visibleChildCounter++;
-			} else {
-				final int itemLevel = level - 1;
-				if (child.isFirstGroupNode()) {
-					contentHeightSumAtGroupStart[level] = contentHeightSumAtGroupStart[itemLevel];
-					groupStartIndex[level] = groupStartIndex[itemLevel];
-				}
-				int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2 
-						- childContentHeight / 2 + childShiftY
-						- (child.getContent().getY() - childCloudHeigth / 2 - spaceAround);
-				this.yCoordinates[i] = summaryY;
-				if (!isFreeNode) {
-					final int deltaY = summaryY - groupUpperYCoordinate[itemLevel]
-							+ child.getTopOverlap();
-					if (deltaY < 0) {
-						top += deltaY;
-						y -= deltaY;
-						summaryY -= deltaY;
-						for (int j = groupStartIndex[itemLevel]; j <= i; j++) {
-							NodeView groupItem = (NodeView) view.getComponent(j);
-							if (groupItem.isLeft() == isLeft
-									&& (this.levels[j] > 0 || !this.isChildFreeNode[j]))
-								this.yCoordinates[j] -= deltaY;
-						}
-					}
-					if (childHeight != 0) {
-						summaryY += childHeight + vGap
-								- child.getBottomOverlap();
-					}
-					y = Math.max(y, summaryY);
-					final int summaryContentHeight = contentHeightSumAtGroupStart[itemLevel] + childContentHeight;
-					if (childContentHeightSum < summaryContentHeight) {
-						childContentHeightSum = summaryContentHeight;
-					}
-				}
-			}
-			if (!isItem || !isFreeNode) {
-				if (child.isFirstGroupNode()) {
-					groupUpperYCoordinate[level] = this.yCoordinates[i] + child.getTopOverlap();
-					groupLowerYCoordinate[level] = this.yCoordinates[i] + childHeight
-							- child.getBottomOverlap();
+						visibleChildCounter++;
 				} else {
-					groupUpperYCoordinate[level] = Math.min(groupUpperYCoordinate[level],
-							this.yCoordinates[i] + child.getTopOverlap());
-					groupLowerYCoordinate[level] = Math.max(this.yCoordinates[i] + childHeight
-							- child.getBottomOverlap(), groupLowerYCoordinate[level]);
+					final int itemLevel = level - 1;
+					if (child.isFirstGroupNode()) {
+						contentHeightSumAtGroupStart[level] = contentHeightSumAtGroupStart[itemLevel];
+						groupStartIndex[level] = groupStartIndex[itemLevel];
+					}
+					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2 
+							- childContentHeight / 2 + childShiftY
+							- (child.getContent().getY() - childCloudHeigth / 2 - spaceAround);
+					this.yCoordinates[i] = summaryY;
+					if (!isFreeNode) {
+						final int deltaY = summaryY - groupUpperYCoordinate[itemLevel]
+								+ child.getTopOverlap();
+						if (deltaY < 0) {
+							top += deltaY;
+							y -= deltaY;
+							summaryY -= deltaY;
+							for (int j = groupStartIndex[itemLevel]; j <= i; j++) {
+								NodeView groupItem = (NodeView) view.getComponent(j);
+								if (groupItem.isLeft() == isLeft
+										&& (this.levels[j] > 0 || !this.isChildFreeNode[j]))
+									this.yCoordinates[j] -= deltaY;
+							}
+						}
+						if (childHeight != 0) {
+							summaryY += childHeight + vGap
+									- child.getBottomOverlap();
+						}
+						y = Math.max(y, summaryY);
+						final int summaryContentHeight = contentHeightSumAtGroupStart[itemLevel] + childContentHeight;
+						if (childContentHeightSum < summaryContentHeight) {
+							childContentHeightSum = summaryContentHeight;
+						}
+					}
+				}
+				if (!isItem || !isFreeNode) {
+					if (child.isFirstGroupNode()) {
+						groupUpperYCoordinate[level] = this.yCoordinates[i] + child.getTopOverlap();
+						groupLowerYCoordinate[level] = this.yCoordinates[i] + childHeight
+								- child.getBottomOverlap();
+					} else {
+						groupUpperYCoordinate[level] = Math.min(groupUpperYCoordinate[level],
+								this.yCoordinates[i] + child.getTopOverlap());
+						groupLowerYCoordinate[level] = Math.max(this.yCoordinates[i] + childHeight
+								- child.getBottomOverlap(), groupLowerYCoordinate[level]);
+					}
 				}
 			}
 		}
@@ -273,50 +270,48 @@ class VerticalNodeViewLayoutStrategy {
 		final int summaryBaseX[] = new int[highestSummaryLevel];
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeView child = (NodeView) view.getComponent(i);
-			if (child.isLeft() != isLeft) {
-				continue;
-			}
+			if (child.isLeft() == isLeft) {
+				final int oldLevel = level;
+				level = levels[i];
+				boolean isFreeNode = child.isFree();
+				boolean isItem = level == 0;
+				int childHGap;
+				if (child.isContentVisible())
+					childHGap = child.getHGap();
+				else if (child.isSummary())
+					childHGap = child.getZoomed(LocationModel.HGAP);
+				else
+					childHGap = 0;
 
-			final int oldLevel = level;
-			level = levels[i];
-			boolean isFreeNode = child.isFree();
-			boolean isItem = level == 0;
-			int childHGap;
-			if (child.isContentVisible())
-				childHGap = child.getHGap();
-			else if (child.isSummary())
-				childHGap = child.getZoomed(LocationModel.HGAP);
-			else
-				childHGap = 0;
+				if (isItem) {
+					if (!isFreeNode && (oldLevel > 0 || child.isFirstGroupNode()))
+						summaryBaseX[0] = 0;
+				} 
+				else if (child.isFirstGroupNode())
+					summaryBaseX[level] = 0;
 
-			if (isItem) {
-				if (!isFreeNode && (oldLevel > 0 || child.isFirstGroupNode()))
-					summaryBaseX[0] = 0;
-			} 
-			else if (child.isFirstGroupNode())
-				summaryBaseX[level] = 0;
-			
 
-			final int x;
-			final int baseX;
-			if (level > 0)
-				baseX = summaryBaseX[level - 1];
-			else {
-				if (child.isLeft() != (isItem && isFreeNode)) {
-					baseX = 0;
-				} else {
-					baseX = contentSize.width;
+				final int x;
+				final int baseX;
+				if (level > 0)
+					baseX = summaryBaseX[level - 1];
+				else {
+					if (child.isLeft() != (isItem && isFreeNode)) {
+						baseX = 0;
+					} else {
+						baseX = contentSize.width;
+					}
 				}
+				if (child.isLeft()) {
+					x = baseX - childHGap - child.getContent().getX() - child.getContent().getWidth();
+					summaryBaseX[level] = Math.min(summaryBaseX[level], x + spaceAround);
+				} else {
+					x = baseX + childHGap - child.getContent().getX();
+					summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - spaceAround);
+				}
+				left = Math.min(left, x);
+				this.xCoordinates[i] = x;
 			}
-			if (child.isLeft()) {
-				x = baseX - childHGap - child.getContent().getX() - child.getContent().getWidth();
-				summaryBaseX[level] = Math.min(summaryBaseX[level], x + spaceAround);
-			} else {
-				x = baseX + childHGap - child.getContent().getX();
-				summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - spaceAround);
-			}
-			left = Math.min(left, x);
-			this.xCoordinates[i] = x;
 		}
 	}
 
