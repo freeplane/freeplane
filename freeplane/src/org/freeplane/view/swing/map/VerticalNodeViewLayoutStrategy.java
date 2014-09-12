@@ -44,6 +44,7 @@ class VerticalNodeViewLayoutStrategy {
 	private int top;
 	private boolean rightDataSet;
 	private boolean leftDataSet;
+	private int highestSummaryLevel;
 
 	public VerticalNodeViewLayoutStrategy(NodeView view) {
 		this.view = view;
@@ -108,7 +109,7 @@ class VerticalNodeViewLayoutStrategy {
 				this.free[i] = child.isFree();
 		}
 	}
-	private void calcLevels(final boolean isLeft, int highestSummaryLevel) {
+	private void calcLevels(final boolean isLeft) {
 		int level = highestSummaryLevel;
 		boolean useSummaryAsItem = true;
 		for (int i = 0; i < childViewCount; i++) {
@@ -133,23 +134,25 @@ class VerticalNodeViewLayoutStrategy {
 
 	private void calcLayout(final boolean isLeft) {
 		calcFree(isLeft);
-		final int highestSummaryLevel = calcHighestSummaryLevel(isLeft);
-		calcLevels(isLeft, highestSummaryLevel);
-		
-		int left = 0;
-		int y = 0;
+		highestSummaryLevel = calcHighestSummaryLevel(isLeft);
+		calcLevels(isLeft);
+		layoutY(isLeft);
+		layoutX(isLeft);
+
+	}
+
+	private void layoutY(final boolean isLeft) {
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
-		int visibleChildCounter = 0;
 		int top = 0;
-		
 		int level = highestSummaryLevel;
+		int y = 0;
+		int visibleChildCounter = 0;
 		final int[] groupStart = new int[highestSummaryLevel];
 		final int[] groupStartContentHeightSum = new int[highestSummaryLevel];
 		final int[] groupStartY = new int[highestSummaryLevel];
 		final int[] groupEndY = new int[highestSummaryLevel];
 
-		final int summaryBaseX[] = new int[highestSummaryLevel];
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeView child = (NodeView) view.getComponent(i);
 			if (child.isLeft() != isLeft) {
@@ -159,37 +162,22 @@ class VerticalNodeViewLayoutStrategy {
 			final int childHeight = child.getHeight() - 2 * spaceAround;
 			final int oldLevel = level;
 			level = levels[i];
+			boolean isFreeNode = child.isFree();
 			boolean isItem = level == 0;
 
-			final int childCloudHeigth = CloudHeightCalculator.INSTANCE
-					.getAdditionalCloudHeigth(child);
-			final int childContentHeight = child.getContent().getHeight()
-					+ childCloudHeigth;
-			final int childShiftY = child.isContentVisible() ? child.getShift()
-					: 0;
-			final int childContentShift = child.getContent().getY()
-					- childCloudHeigth / 2 - spaceAround;
-			int childHGap;
-			if (child.isContentVisible())
-				childHGap = child.getHGap();
-			else if (child.isSummary())
-				childHGap = child.getZoomed(LocationModel.HGAP);
-			else
-				childHGap = 0;
-
-			boolean isFreeNode = child.isFree();
+			final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
+			final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
+			final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
+			final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
 
 			if (isItem) {
-				if (isFreeNode) {
-					this.ly[i] = childShiftY - childContentShift
-							- childCloudHeigth / 2 - spaceAround;
-				} else {
-					if (childShiftY < 0 || visibleChildCounter == 0) {
+				if (isFreeNode)
+					this.ly[i] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
+				else {
+					if (childShiftY < 0 || visibleChildCounter == 0)
 						top += childShiftY;
-					}
-					top -= childContentShift;
 
-					top += child.getTopOverlap();
+					top += - childContentShift + child.getTopOverlap();
 					y -= child.getTopOverlap();
 					if (childShiftY < 0) {
 						this.ly[i] = y;
@@ -199,14 +187,11 @@ class VerticalNodeViewLayoutStrategy {
 							y += childShiftY;
 						this.ly[i] = y;
 					}
-					if (childHeight != 0) {
-						y += childHeight + vGap;
-						y -= child.getBottomOverlap();
-					}
+					if (childHeight != 0)
+						y += childHeight + vGap - child.getBottomOverlap();
 
 					childContentHeightSum += childContentHeight;
 					if (oldLevel > 0) {
-						summaryBaseX[0] = 0;
 						for (int j = 0; j < oldLevel; j++) {
 							groupStart[j] = i;
 							groupStartY[j] = Integer.MAX_VALUE;
@@ -215,7 +200,6 @@ class VerticalNodeViewLayoutStrategy {
 						}
 					} else if (child.isFirstGroupNode()) {
 						groupStartContentHeightSum[0] = childContentHeightSum;
-						summaryBaseX[0] = 0;
 						groupStart[0] = i;
 					}
 					if (childHeight != 0) {
@@ -229,14 +213,10 @@ class VerticalNodeViewLayoutStrategy {
 				final int itemLevel = level - 1;
 				if (child.isFirstGroupNode()) {
 					groupStartContentHeightSum[level] = groupStartContentHeightSum[itemLevel];
-					summaryBaseX[level] = 0;
 					groupStart[level] = groupStart[itemLevel];
 				}
-				int summaryY = (groupStartY[itemLevel] + groupEndY[itemLevel])
-						/ 2
-						- childContentHeight
-						/ 2
-						+ childShiftY
+				int summaryY = (groupStartY[itemLevel] + groupEndY[itemLevel]) / 2 
+						- childContentHeight / 2 + childShiftY
 						- (child.getContent().getY() - childCloudHeigth / 2 - spaceAround);
 				this.ly[i] = summaryY;
 				if (!isFreeNode) {
@@ -247,8 +227,7 @@ class VerticalNodeViewLayoutStrategy {
 						y -= deltaY;
 						summaryY -= deltaY;
 						for (int j = groupStart[itemLevel]; j <= i; j++) {
-							NodeView groupItem = (NodeView) view
-									.getComponent(j);
+							NodeView groupItem = (NodeView) view.getComponent(j);
 							if (groupItem.isLeft() == isLeft
 									&& (this.levels[j] > 0 || !this.free[j]))
 								this.ly[j] -= deltaY;
@@ -278,6 +257,41 @@ class VerticalNodeViewLayoutStrategy {
 							- child.getBottomOverlap(), groupEndY[level]);
 				}
 			}
+		}
+		top += (contentSize.height - childContentHeightSum) / 2;
+		finalizeDataSet(view, isLeft, childContentHeightSum, top);
+	}
+
+	private void layoutX(final boolean isLeft) {
+		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
+		int level = highestSummaryLevel;
+		final int summaryBaseX[] = new int[highestSummaryLevel];
+		for (int i = 0; i < childViewCount; i++) {
+			final NodeView child = (NodeView) view.getComponent(i);
+			if (child.isLeft() != isLeft) {
+				continue;
+			}
+
+			final int oldLevel = level;
+			level = levels[i];
+			boolean isFreeNode = child.isFree();
+			boolean isItem = level == 0;
+			int childHGap;
+			if (child.isContentVisible())
+				childHGap = child.getHGap();
+			else if (child.isSummary())
+				childHGap = child.getZoomed(LocationModel.HGAP);
+			else
+				childHGap = 0;
+
+			if (isItem) {
+				if (!isFreeNode && (oldLevel > 0 || child.isFirstGroupNode()))
+					summaryBaseX[0] = 0;
+			} 
+			else if (child.isFirstGroupNode())
+				summaryBaseX[level] = 0;
+			
+
 			final int x;
 			final int baseX;
 			if (level > 0)
@@ -290,27 +304,19 @@ class VerticalNodeViewLayoutStrategy {
 				}
 			}
 			if (child.isLeft()) {
-				x = baseX - childHGap - child.getContent().getX()
-						- child.getContent().getWidth();
-				summaryBaseX[level] = Math.min(summaryBaseX[level], x
-						+ spaceAround);
+				x = baseX - childHGap - child.getContent().getX() - child.getContent().getWidth();
+				summaryBaseX[level] = Math.min(summaryBaseX[level], x + spaceAround);
 			} else {
 				x = baseX + childHGap - child.getContent().getX();
-				summaryBaseX[level] = Math.max(summaryBaseX[level],
-						x + child.getWidth() - spaceAround);
+				summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - spaceAround);
 			}
 			left = Math.min(left, x);
 			this.lx[i] = x;
 		}
-
-		top += (contentSize.height - childContentHeightSum) / 2;
-		finalizeDataSet(view, isLeft, left, childContentHeightSum, top);
 	}
 
-	private void finalizeDataSet(NodeView view, boolean isLeft, int left,
-			int childContentHeight, int top) {
+	private void finalizeDataSet(NodeView view, boolean isLeft,  int childContentHeight, int top) {
 		if (!isLeft && this.leftDataSet || isLeft && this.rightDataSet) {
-			this.left = Math.min(this.left, left);
 			this.childContentHeight = Math.max(this.childContentHeight,
 					childContentHeight);
 			int deltaTop = top - this.top;
@@ -330,7 +336,6 @@ class VerticalNodeViewLayoutStrategy {
 				}
 			}
 		} else {
-			this.left = left;
 			this.childContentHeight = childContentHeight;
 			this.top = top;
 		}
@@ -394,4 +399,5 @@ class VerticalNodeViewLayoutStrategy {
 		view.setTopOverlap(topOverlap);
 		view.setBottomOverlap(height - heigthWithoutOverlap);
 	}
+
 }
