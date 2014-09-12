@@ -40,9 +40,7 @@ public class VerticalRootNodeViewLayout implements INodeViewLayout {
         NodeView view = (NodeView) c;
 		if(view.getContent() != null){
         	final VerticalNodeViewLayoutStrategy layoutData = new VerticalNodeViewLayoutStrategy(view);
-			layoutData.calcLeftLayout();
-			layoutData.calcRightLayout();
-			layoutData.placeChildren(view);
+			layoutData.layoutLeftAndRightSide();
         }
     }
 
