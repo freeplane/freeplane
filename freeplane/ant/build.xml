@@ -118,6 +118,7 @@
 			<manifest>
 				<attribute name="Permissions" value="all-permissions"/>
 				<attribute name="Codebase" value="*"/>
+				<attribute name="Application-Library-Allowable-Codebase" value="*"/>
 				<attribute name="Application-Name" value="Freeplane Viewer Applet"/>
 			</manifest>
 			<fileset dir="${build}">
