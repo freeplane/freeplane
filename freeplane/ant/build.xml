@@ -158,6 +158,8 @@
 	
 	<target name="signjar-tsa" depends ="jar" if = "signjar.tsaurl">
 		<signjar jar="${freeplaneviewer.jar}" 
+			keystore="${signjar.keystore}" 
+			storetype="${signjar.storetype}" 
 			alias="${signjar.alias}" 
 			storepass="${signjar.storepass}" keypass="${signjar.keypass}"
 			tsaurl="${signjar.tsaurl}"/>
@@ -165,6 +167,8 @@
 	
 	<target name="signjar-no-tsa" depends ="jar"  if = "signjar.alias" unless="signjar.tsaurl">
 		<signjar jar="${freeplaneviewer.jar}" 
+			keystore="${signjar.keystore}" 
+			storetype="${signjar.storetype}" 
 			alias="${signjar.alias}" 
 			storepass="${signjar.storepass}" keypass="${signjar.keypass}"/>
 	</target>
