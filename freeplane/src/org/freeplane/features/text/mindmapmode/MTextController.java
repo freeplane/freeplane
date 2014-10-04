@@ -951,4 +951,9 @@ public class MTextController extends TextController {
 		return text;
 	}
 
+	@Override
+	public boolean canEdit() {
+		return true;
+	}
+
 }

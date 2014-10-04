@@ -373,4 +373,8 @@ public class TextController implements IExtension {
     	return modeController;
     }
 
+	public boolean canEdit() {
+		return false;
+	}
+
 }
