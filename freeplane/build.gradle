@@ -13,3 +13,21 @@ dependencies {
 
     compile files('./lib/SimplyHTML.jar','./lib/idw-gpl.jar')
 }
+
+jar {
+    // TODO: manifest!
+    baseName = 'freeplaneviewer'
+    dependsOn classes
+    from (sourceSets.main.output) {
+        exclude('**/application/**')
+        exclude('**/osgi/**')
+        exclude('**/mindmapmode/**')
+        exclude('**/filemode/**')
+        exclude('**/ortho/**')
+        exclude('**/core/resources/ui/**')
+        exclude('translations/**')
+    }
+    from ('./viewer-resources') {
+        exclude('**/appletMenu.mm')
+    }
+}
