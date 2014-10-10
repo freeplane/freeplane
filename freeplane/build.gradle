@@ -15,7 +15,15 @@ dependencies {
 }
 
 jar {
-    // TODO: manifest!
+    // use '= project.manifest' to avoid that an OSGi manifest is created!
+    manifest = project.manifest {
+        attributes("Manifest-Version": "1.0",
+                   "Permissions": "all-permissions",
+                   "Codebase": "*",
+                   "Application-Library-Allowable-Codebase": "*",
+                   "Application-Name": "Freeplane Viewer Applet")
+    }
+
     baseName = 'freeplaneviewer'
     dependsOn classes
     from (sourceSets.main.output) {
