@@ -32,8 +32,11 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/})
          from ('build/libs') {
               include("*.jar")
          }
-         // TODO: differentiate between plugins and the freeplane project ("core")!
-         into('../DIST/plugins')
+         if (project.name.equals("freeplane")) {
+           into('../DIST/core')
+         } else {
+           into('../DIST/plugins')
+         }
     }
 
     copy_plugin_jars.dependsOn(jar)
