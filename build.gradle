@@ -12,7 +12,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/, /^freeplane_framework$/]}){
+configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
     repositories {
         maven {
             url 'http://www.knopflerfish.org/maven2/'
@@ -24,7 +24,7 @@ configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/, /^freeplane_
     }
 }
 
-configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/]}) {
+configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/}) {
     apply plugin: 'osgi'
 
     // copy the plugin jars to <toplevel>/DIST:
@@ -32,7 +32,8 @@ configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/]}) {
          from ('build/libs') {
               include("*.jar")
          }
-         into('../DIST')
+         // TODO: differentiate between plugins and the freeplane project ("core")!
+         into('../DIST/plugins')
     }
 
     copy_plugin_jars.dependsOn(jar)
