@@ -38,6 +38,7 @@ task viewerJar(type: Jar) {
     from ('./viewer-resources') {
         exclude('**/appletMenu.mm')
     }
+    includeEmptyDirs = false
 }
 
 task editorJar(type: Jar) {
@@ -64,7 +65,22 @@ task editorJar(type: Jar) {
 				exclude("**/filemodemenu.mm")
 				exclude("**/stylemodemenu.mm")
     }
+    includeEmptyDirs = false
+}
+
+task osgiJar(type: Jar) {
+    // use '= project.manifest' to avoid that an OSGi manifest is created!
+    manifest = project.manifest {
+        attributes("Manifest-Version": "1.0")
+    }
+    baseName = 'freeplaneosgi'
+    dependsOn classes
+    from (sourceSets.main.output) {
+         include("**/osgi/**")         
+    }
+    includeEmptyDirs = false
 }
 
 jar.dependsOn viewerJar
 jar.dependsOn editorJar
+jar.dependsOn osgiJar
