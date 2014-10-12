@@ -26,4 +26,20 @@ configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/, /^freeplane_
 
 configure(subprojects.findAll {it.name =~ [/plugin/, /^freeplane$/]}) {
     apply plugin: 'osgi'
+
+    // copy the plugin jars to <toplevel>/DIST:
+    task copy_plugin_jars(type: Copy) {
+         from ('build/libs') {
+              include("*.jar")
+         }
+         into('../DIST')
+    }
+
+    copy_plugin_jars.dependsOn(jar)
+    build.dependsOn(copy_plugin_jars) // TODO: make 'check' depend on it instead of 'build'?
 }
+
+// this doesn't seem to work :-/
+//task listJars << {
+//    configurations.compile.each { File file -> println file.name }
+//}
