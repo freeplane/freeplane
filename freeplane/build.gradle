@@ -14,7 +14,7 @@ dependencies {
     compile files('./lib/SimplyHTML.jar','./lib/idw-gpl.jar')
 }
 
-jar {
+task viewerJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
     manifest = project.manifest {
         attributes("Manifest-Version": "1.0",
@@ -39,3 +39,32 @@ jar {
         exclude('**/appletMenu.mm')
     }
 }
+
+task editorJar(type: Jar) {
+    // use '= project.manifest' to avoid that an OSGi manifest is created!
+    manifest = project.manifest {
+        attributes("Manifest-Version": "1.0",
+                   "Main-Class": "org.freeplane.main.application.FreeplaneMain")
+    }
+    baseName = 'freeplaneeditor'
+    dependsOn classes
+    from (sourceSets.main.output) {
+				include("**/application/**")
+				include("**/mindmapmode/**")
+				include("**/ortho/**")
+				include("**/filemode/**")
+				include("**/core/resources/ui/**")
+				include("translations/**")
+				exclude("**/*.jar") // probably not necessary
+    }
+    from ('./resources') {
+				exclude("**/preferences.mm")
+				exclude("**/browsemodemenu.mm")
+				exclude("**/mindmapmodemenu.mm")
+				exclude("**/filemodemenu.mm")
+				exclude("**/stylemodemenu.mm")
+    }
+}
+
+jar.dependsOn viewerJar
+jar.dependsOn editorJar
