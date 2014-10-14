@@ -81,6 +81,16 @@ task osgiJar(type: Jar) {
     includeEmptyDirs = false
 }
 
+// This task calls out to ant to perform an xslt task since it is an easier
+// dependency to satisfy than a seperate gradle plugin. We may wish to change
+// this in the future
+task build_ui_xml {
+ ant.xslt(in   : file('resources/xml/mindmapmoderibbon.xml'),
+          style: file('resources/xslt/ribbons2menu.xsl'),
+          out  : new File('resources/xml', 'mindmapmodemenu.xml')
+         )
+}
+
 jar.dependsOn viewerJar
 jar.dependsOn editorJar
 jar.dependsOn osgiJar
