@@ -47,3 +47,11 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/})
 //task listJars << {
 //    configurations.compile.each { File file -> println file.name }
 //}
+
+apply plugin: 'base' // necessary to get the global 'clean' task
+
+// remove DIST/**
+task cleanDIST(type: Delete) {
+    delete './DIST'
+}
+clean.dependsOn(cleanDIST)
