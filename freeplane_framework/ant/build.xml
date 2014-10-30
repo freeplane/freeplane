@@ -451,18 +451,13 @@
                 jvmversion="1.2+"
                 vmoptions="${debugparams} -Xmx512m"
                 arguments="-xargs ./props.xargs -xargs ./init.xargs"
-                jar="${build}/freeplanelauncher.jar"
                 icon="${mac-jarbundler}/freeplane.icns"
                 stubfile="${mac-jarbundler}/universalJavaApplicationStub"
                 signature="FP"
                 >
-			<!-- For OSGI we want the entire build/ tree except WIndows-related stuff
-             Commented out to allow testing jar=framework.jar
-      <jarfileset dir="${macosgidir}">
-        <exclude name="**/*.bat" />
-        <exclude name="**/*.exe" />
+      <jarfileset dir="${build}">
+        <include name="*.jar" />
       </jarfileset>
-      -->
 
 			<!-- Commenting out the document icon until we get an appropriate image
                     iconfile="${mac-jarbundler}/Banner.icns"
