@@ -429,7 +429,6 @@
             Disabled "command-line" parameters because the "$1" syntax is probably incorrect here:
     <property name="macparams" value="-Dorg.freeplane.param1=$1 -Dorg.freeplane.param2=$2 -Dorg.freeplane.param3=$3 -Dorg.freeplane.param4=$4" />
     -->
-		<property name="macdefines" value="-Dorg.knopflerfish.framework.bundlestorage=memory -Dorg.freeplane.globalresourcedir=./resources -Dorg.knopflerfish.gosg.jars=reference:file:./core/" />
 
 		<!-- uncomment to start remote debug session for the app
 	<property name="debugparams" value="-Xdebug -Xrunjdwp:transport=dt_socket,address=localhost:8000"/>
@@ -444,15 +443,15 @@
 		<delete dir="${build4mac}/Freeplane.app"/>
 		<jarbundler dir="${build4mac}"
                 name="Freeplane"
-                mainclass="org.knopflerfish.framework.Main"
+                mainclass="org.freeplane.launcher.Launcher"
                 version="${ver}"
                 infostring="Freeplane ${ver}"
                 shortname="Freeplane"
                 bundleid="org.freeplane.core"
                 jvmversion="1.2+"
-                vmoptions="${debugparams} -Xmx512m ${macdefines}"
+                vmoptions="${debugparams} -Xmx512m"
                 arguments="-xargs ./props.xargs -xargs ./init.xargs"
-                jar="${build}/framework.jar"
+                jar="${build}/freeplanelauncher.jar"
                 icon="${mac-jarbundler}/freeplane.icns"
                 stubfile="${mac-jarbundler}/universalJavaApplicationStub"
                 signature="FP"
