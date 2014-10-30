@@ -690,7 +690,10 @@ public class MMapController extends MapController {
 					final MFileManager fileManager = MFileManager.getController(getMModeController());
 					File alternativeFile = fileManager.getAlternativeFile(file, AlternativeFileMode.AUTOSAVE);
 					if(alternativeFile != null){
-						alternativeURL = Compat.fileToUrl(alternativeFile);
+						if (alternativeFile.getAbsoluteFile().equals(file.getAbsoluteFile()) )
+							alternativeURL =  url;
+						else
+							alternativeURL = Compat.fileToUrl(alternativeFile);
 					}
 					else
 						return false;
