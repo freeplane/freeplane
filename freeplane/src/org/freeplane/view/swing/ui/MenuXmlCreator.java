@@ -73,7 +73,7 @@ public class MenuXmlCreator {
 	private void transformMindMapToXml(File mmFile) throws IOException {
 		Writer out = null;
 		try {
-	        String xml = new XsltPipeReaderFactory().transform(mmFile, xslt);
+	        String xml = new XsltPipeReaderFactory().transformToString(mmFile, xslt);
 	        String mmPath = mmFile.getPath();
 	        String xmlPath = mmPath.substring(0, mmPath.length() - MM.length()) + XML;
 	        out = new BufferedWriter(new OutputStreamWriter(

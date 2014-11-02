@@ -26,11 +26,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PipedReader;
+import java.io.PipedWriter;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -42,7 +42,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.url.CleaningInputStream;
 
 /**
  * @author Dimitry Polivaev
@@ -59,8 +58,7 @@ public class XsltPipeReaderFactory {
 	public Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
 	        IOException {
 		try {
-			String updatedXml = transform(file, xsltScript);
-			return new StringReader(updatedXml);
+			return transformToReader(file, xsltScript);
 		}
 		catch (final Exception ex) {
 			final String message = ex.getMessage();
@@ -71,53 +69,86 @@ public class XsltPipeReaderFactory {
 		}
 	}
 
-	public String transform(final File file, final String xsltScript) throws InterruptedException, TransformerException {
-	    final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
-	    if (updaterUrl == null) {
-	    	throw new IllegalArgumentException(xsltScript + " not found.");
-	    }
+	public String transformToString(final File file, final String xsltScript) throws InterruptedException, TransformerException {
 	    final StringWriter writer = new StringWriter();
 	    final Result result = new StreamResult(writer);
-	    class TransformerRunnable implements Runnable {
-	    	private Throwable thrownException = null;
-
-	    	public void run() {
-	    		final TransformerFactory transFact = TransformerFactory.newInstance();
-	    		InputStream xsltInputStream = null;
-	    		InputStream input = null;
-	    		try {
-	    			xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
-	    			final Source xsltSource = new StreamSource(xsltInputStream);
-	    			input = new BufferedInputStream(new FileInputStream(file));
-	    			final CleaningInputStream cleanedInput = new CleaningInputStream(input);
-	    			final Reader reader = new InputStreamReader(cleanedInput, cleanedInput.isUtf8() ? Charset.forName("UTF-8") : FileUtils.defaultCharset());
-	    			final Transformer trans = transFact.newTransformer(xsltSource);
-	    			trans.transform(new StreamSource(reader), result);
-	    		}
-	    		catch (final Exception ex) {
-	    			LogUtils.warn(ex);
-	    			thrownException = ex;
-	    		}
-	    		finally {
-	    			FileUtils.silentlyClose(input, xsltInputStream);
-	    		}
-	    	}
-
-	    	public Throwable thrownException() {
-	    		return thrownException;
-	    	}
-	    }
-	    final TransformerRunnable transformer = new TransformerRunnable();
-	    final Thread transformerThread = new Thread(transformer, "XSLT");
-	    transformerThread.start();
-	    transformerThread.join();
-	    final Throwable thrownException = transformer.thrownException();
-	    if (thrownException != null) {
-	    	throw new TransformerException(thrownException);
-	    }
+	    final TransformerRunnable transformer = transformer(file, xsltScript, result);
+		final Thread transformerThread = new Thread(transformer, "XSLT");
+		transformerThread.start();
+		transformerThread.join();
+		final Throwable thrownException = transformer.thrownException();
+		if (thrownException != null) {
+			throw new TransformerException(thrownException);
+		}
 	    String updatedXml = writer.getBuffer().toString();
 	    return updatedXml;
     }
+
+	public Reader transformToReader(final File file, final String xsltScript) throws InterruptedException, TransformerException, IOException {
+		final PipedReader pipedReader = new PipedReader();
+	    final PipedWriter writer = new PipedWriter(pipedReader);
+	    final Result result = new StreamResult(writer);
+	    final TransformerRunnable transformer = transformer(file, xsltScript, result);
+		final Thread transformerThread = new Thread(new Runnable() {
+			
+			public void run() {
+				transformer.run();
+				try {
+					writer.close();
+				} catch (IOException e) {
+				}
+			}
+		}, "XSLT");
+		transformerThread.start();
+	    return pipedReader;
+    }
+
+	static class TransformerRunnable implements Runnable {
+    	private Throwable thrownException = null;
+		final private URL updaterUrl;
+		final private File file;
+		final private Result result;
+
+    	public TransformerRunnable(URL updaterUrl, File file, Result result) {
+			super();
+			this.updaterUrl = updaterUrl;
+			this.file = file;
+			this.result = result;
+		}
+
+		public void run() {
+    		final TransformerFactory transFact = TransformerFactory.newInstance();
+    		InputStream xsltInputStream = null;
+    		InputStream input = null;
+    		try {
+    			xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
+    			final Source xsltSource = new StreamSource(xsltInputStream);
+    			input = new BufferedInputStream(new FileInputStream(file));
+    			final Transformer trans = transFact.newTransformer(xsltSource);
+    			trans.transform(new StreamSource(input), result);
+    		}
+    		catch (final Exception ex) {
+    			LogUtils.warn(ex);
+    			thrownException = ex;
+    		}
+    		finally {
+    			FileUtils.silentlyClose(input, xsltInputStream);
+    		}
+    	}
+
+    	public Throwable thrownException() {
+    		return thrownException;
+    	}
+    }
+	private TransformerRunnable transformer(final File file,
+			final String xsltScript, final Result result) {
+		final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
+	    if (updaterUrl == null) {
+	    	throw new IllegalArgumentException(xsltScript + " not found.");
+	    }
+	    final TransformerRunnable transformer = new TransformerRunnable(updaterUrl, file, result);
+		return transformer;
+	}
 
 	/**
 	 * Creates a default reader that just reads the given file.
