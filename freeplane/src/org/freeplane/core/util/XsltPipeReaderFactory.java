@@ -26,9 +26,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PipedReader;
-import java.io.PipedWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 
@@ -58,7 +57,7 @@ public class XsltPipeReaderFactory {
 	public Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
 	        IOException {
 		try {
-			return transformToReader(file, xsltScript);
+			return new StringReader (transformToString(file, xsltScript));
 		}
 		catch (final Exception ex) {
 			final String message = ex.getMessage();
@@ -82,25 +81,6 @@ public class XsltPipeReaderFactory {
 		}
 	    String updatedXml = writer.getBuffer().toString();
 	    return updatedXml;
-    }
-
-	public Reader transformToReader(final File file, final String xsltScript) throws InterruptedException, TransformerException, IOException {
-		final PipedReader pipedReader = new PipedReader();
-	    final PipedWriter writer = new PipedWriter(pipedReader);
-	    final Result result = new StreamResult(writer);
-	    final TransformerRunnable transformer = transformer(file, xsltScript, result);
-		final Thread transformerThread = new Thread(new Runnable() {
-			
-			public void run() {
-				transformer.run();
-				try {
-					writer.close();
-				} catch (IOException e) {
-				}
-			}
-		}, "XSLT");
-		transformerThread.start();
-	    return pipedReader;
     }
 
 	static class TransformerRunnable implements Runnable {
