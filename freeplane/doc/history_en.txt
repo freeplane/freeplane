@@ -1,4 +1,13 @@
 ===============================
+1.3.14
+===============================
+Use oracle launcher for MacOS
+===============================
+1.3.13
+===============================
+Update knopflerfish due to problems with Java 1.8 on MacOS
+Use xslt transformation if map starts with XML directive
+===============================
 1.3.12
 ===============================
 Use universal java launcher script for MacOS
