@@ -186,7 +186,6 @@ _debug "Calling: "\
 
 # now actually launch Freeplane
 "${JAVACMD}" -Xmx512m\
-"${JAVACMD}" -Xmx512m\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
