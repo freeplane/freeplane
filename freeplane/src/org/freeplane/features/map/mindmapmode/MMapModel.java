@@ -60,7 +60,7 @@ public class MMapModel extends MapModel {
 
 	@Override
     public boolean isSaved() {
-	    return super.isSaved() || containsExtension(DocuMapAttribute.class);
+	    return super.isSaved();
     }
 
 	/**
