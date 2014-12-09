@@ -45,7 +45,8 @@ class SaveAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		if (Controller.getCurrentController().getMap().isReadOnly()) {
-			JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog(Controller.getCurrentController()
+				    .getMapViewManager().getMapViewComponent(),
 					TextUtils.getText("SaveAction_readonlyMsg"),
 					TextUtils.getText("SaveAction_readonlyTitle"),
 				    JOptionPane.WARNING_MESSAGE);
