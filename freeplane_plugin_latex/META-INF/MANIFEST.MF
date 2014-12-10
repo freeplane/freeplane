@@ -9,5 +9,5 @@ Import-Package: org.freeplane.plugin.script,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.freeplane.core;bundle-version="1.0.1",
  org.freeplane.plugin.script;bundle-version="1.0.1"
-Bundle-ClassPath: lib/plugin.jar,
+Bundle-ClassPath: lib/freeplane_plugin_latex.jar,
  lib/jlatexmath.jar

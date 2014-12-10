@@ -29,5 +29,5 @@ Bundle-ClassPath: lib/batik-awt-util.jar,
  lib/pdf-transcoder.jar,
  lib/xerces_2_5_0.jar,
  lib/xml-apis.jar,
- lib/plugin.jar,
+ lib/freeplane_plugin_svg.jar,
  lib/xml-apis-ext.jar

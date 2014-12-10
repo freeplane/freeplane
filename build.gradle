@@ -24,23 +24,30 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
     }
 }
 
-configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/}) {
+// /*|| it.name =~ /^freeplane$/*/
+configure(subprojects.findAll {it.name =~ /plugin/}) {
     apply plugin: 'osgi'
 
-    // copy the plugin jars to <toplevel>/DIST:
+    ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
+
     task copy_plugin_jars(type: Copy) {
          from ('build/libs') {
               include("*.jar")
          }
-         if (project.name.equals("freeplane")) {
-           into('../DIST/core')
-         } else {
-           into('../DIST/plugins')
-         }
+         into('../DIST/plugins/' + pluginid + '/lib')
     }
+
+    task copy_plugin_manifest(type: Copy) {
+         from ('META-INF') {
+              include("*.MF")
+         }
+         into('../DIST/plugins/' + pluginid + '/META-INF')
+    }
+
 
     copy_plugin_jars.dependsOn(jar)
     build.dependsOn(copy_plugin_jars) // TODO: make 'check' depend on it instead of 'build'?
+    build.dependsOn(copy_plugin_manifest)
 }
 
 // this doesn't seem to work :-/
