@@ -251,7 +251,7 @@ public class MMapController extends MapController {
 	 */
 	@Override
 	public boolean close(final MapModel map, final boolean force) {
-		if (!force && (!map.isSaved() || map.isReadOnly())) {
+		if (!force && !map.isSaved()) {
 			final List<Component> views = Controller.getCurrentController().getMapViewManager().getViews(map);
 			if (views.size() == 1) {
 				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
@@ -741,6 +741,7 @@ public class MMapController extends MapController {
         	newModel.setReadOnly(true);
         	fireMapCreated(newModel);
         	newMapView(newModel);
+        	newModel.setSaved(true);
         	return true;
         }
         finally {
