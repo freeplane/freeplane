@@ -81,6 +81,10 @@ task osgiJar(type: Jar) {
     includeEmptyDirs = false
 }
 
+// do NOT build 'freeplane.jar' => this is currently REQUIRED to
+// build the other projects :-(
+//jar.enabled = false
+
 // This task calls out to ant to perform an xslt task since it is an easier
 // dependency to satisfy than a seperate gradle plugin. We may wish to change
 // this in the future
@@ -90,6 +94,28 @@ task build_ui_xml {
           out  : new File('resources/xml', 'mindmapmodemenu.xml')
          )
 }
+
+projectid = 'org.freeplane.core'
+
+task copy_core_jars(type: Copy) {
+     from ('build/libs') {
+          include("*.jar")
+     }
+     from ('lib') {
+          include("*.jar")
+     }
+     into('../DIST/core/' + projectid + '/lib/')
+}
+
+task copy_core_manifest(type: Copy) {
+     from ('META-INF') {
+          include("*.MF")
+     }
+     into('../DIST/core/' + projectid + '/META-INF/')
+}
+
+build.dependsOn(copy_core_jars)
+build.dependsOn(copy_core_manifest)
 
 jar.dependsOn viewerJar
 jar.dependsOn editorJar

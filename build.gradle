@@ -34,14 +34,17 @@ configure(subprojects.findAll {it.name =~ /plugin/}) {
          from ('build/libs') {
               include("*.jar")
          }
-         into('../DIST/plugins/' + pluginid + '/lib')
+         from ('lib') {
+              include("*.jar")
+         }
+         into('../DIST/plugins/' + pluginid + '/lib/')
     }
 
     task copy_plugin_manifest(type: Copy) {
          from ('META-INF') {
               include("*.MF")
          }
-         into('../DIST/plugins/' + pluginid + '/META-INF')
+         into('../DIST/plugins/' + pluginid + '/META-INF/')
     }
 
 
@@ -49,11 +52,6 @@ configure(subprojects.findAll {it.name =~ /plugin/}) {
     build.dependsOn(copy_plugin_jars) // TODO: make 'check' depend on it instead of 'build'?
     build.dependsOn(copy_plugin_manifest)
 }
-
-// this doesn't seem to work :-/
-//task listJars << {
-//    configurations.compile.each { File file -> println file.name }
-//}
 
 apply plugin: 'base' // necessary to get the global 'clean' task
 
