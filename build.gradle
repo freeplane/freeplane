@@ -24,33 +24,13 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
     }
 }
 
-// /*|| it.name =~ /^freeplane$/*/
-configure(subprojects.findAll {it.name =~ /plugin/}) {
+configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
     apply plugin: 'osgi'
 
-    ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
-
-    task copy_plugin_jars(type: Copy) {
-         from ('build/libs') {
-              include("*.jar")
-         }
-         from ('lib') {
-              include("*.jar")
-         }
-         into('../DIST/plugins/' + pluginid + '/lib/')
-    }
-
-    task copy_plugin_manifest(type: Copy) {
-         from ('META-INF') {
-              include("*.MF")
-         }
-         into('../DIST/plugins/' + pluginid + '/META-INF/')
-    }
-
-
-    copy_plugin_jars.dependsOn(jar)
-    build.dependsOn(copy_plugin_jars) // TODO: make 'check' depend on it instead of 'build'?
-    build.dependsOn(copy_plugin_manifest)
+    if (project.name.equals("freeplane"))
+       ext.pluginid = 'org.freeplane.core'
+    else
+       ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
 }
 
 apply plugin: 'base' // necessary to get the global 'clean' task
