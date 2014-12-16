@@ -20,3 +20,10 @@ dependencies {
             'org.apache.xmlgraphics:batik-util:1.7',
             'org.apache.xmlgraphics:batik-xml:1.7'
 }
+
+jar {
+    manifest {
+        attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
+        instruction 'Bundle-Vendor', 'Freeplane Project'
+    }
+}

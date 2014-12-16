@@ -2,3 +2,10 @@ dependencies {
     compile project(':freeplane')
     compile group: 'org.scilab.forge', name: 'jlatexmath', version:'1.0.2'
 }
+
+jar {
+    manifest {
+        attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
+        instruction 'Bundle-Vendor', 'Freeplane Project'
+    }
+}

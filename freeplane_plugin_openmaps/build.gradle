@@ -2,3 +2,10 @@ dependencies {
     compile project(':freeplane')
     compile files('lib/JMapViewer.jar')
 }
+
+jar {
+    manifest {
+        attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
+        instruction 'Bundle-Vendor', 'Freeplane Project'
+    }
+}

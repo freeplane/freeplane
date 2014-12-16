@@ -16,7 +16,8 @@ dependencies {
 
 jar {
     manifest {
-             instruction 'Bundle-Vendor', 'Freeplane Project'
+        attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
+        instruction 'Bundle-Vendor', 'Freeplane Project'
     }
 }
 
@@ -97,6 +98,14 @@ task build_ui_xml {
          )
 }
 
+/*
+task copyDeps(type: Copy) {
+   from configurations.runtime
+   into "$buildDir/libs"
+}
+*/
+
 jar.dependsOn viewerJar
 jar.dependsOn editorJar
 jar.dependsOn osgiJar
+//jar.dependsOn copyDeps

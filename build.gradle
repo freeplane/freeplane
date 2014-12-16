@@ -31,6 +31,12 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
        ext.pluginid = 'org.freeplane.core'
     else
        ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
+
+    task copyDeps(type: Copy) {
+        from project.configurations.runtime
+        into "$buildDir/libs"
+    }
+    jar.dependsOn copyDeps
 }
 
 apply plugin: 'base' // necessary to get the global 'clean' task

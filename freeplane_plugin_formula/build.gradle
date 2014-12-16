@@ -2,3 +2,10 @@ dependencies {
     compile project(':freeplane')
     compile project(':freeplane_plugin_script')
 }
+
+jar {
+    manifest {
+        attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
+        instruction 'Bundle-Vendor', 'Freeplane Project'
+    }
+}

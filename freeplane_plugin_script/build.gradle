@@ -3,3 +3,10 @@ dependencies {
     compile group: 'de.sciss', name: 'jsyntaxpane', version:'1.0.0'
     compile group: 'org.codehaus.groovy', name: 'groovy', version:'2.3.1'
 }
+
+jar {
+    manifest {
+        attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
+        instruction 'Bundle-Vendor', 'Freeplane Project'
+    }
+}
