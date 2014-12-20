@@ -14,8 +14,11 @@ dependencies {
     compile files('./lib/SimplyHTML.jar','./lib/idw-gpl.jar')
 }
 
+version = '1.0.1'
+
 jar {
     manifest {
+        
         attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
         instruction 'Bundle-Vendor', 'Freeplane Project'
     }

@@ -3,9 +3,17 @@ dependencies {
     compile group: 'org.scilab.forge', name: 'jlatexmath', version:'1.0.2'
 }
 
+version = '1.0.0'
+
 jar {
     manifest {
+        name = pluginid
+        symbolicName = pluginid
+
         attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
         instruction 'Bundle-Vendor', 'Freeplane Project'
+        // instruction 'Bundle-Version', '1.0.0' // use project.version!
+        instruction 'Bundle-Activator', pluginid + ".Activator"
+        //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1"'
     }
 }
