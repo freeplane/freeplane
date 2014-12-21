@@ -59,7 +59,7 @@ public class AttributeMatchesCondition extends ASelectableCondition {
         this.value = value;
         int flags = Pattern.DOTALL;
         if (!matchCase) {
-            flags |= Pattern.CASE_INSENSITIVE;
+			flags |= Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
         }
         this.searchPattern = Pattern.compile(value, flags);
 	}
