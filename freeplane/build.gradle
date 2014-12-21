@@ -16,12 +16,38 @@ dependencies {
 
 version = '1.0.1'
 
+pluginid = 'org.freeplane.core'
+
 jar {
     manifest {
-        
+
+        name = pluginid
+        symbolicName = pluginid
+
         attributes 'Class-Path':configurations.runtime.files.collect { "lib/${it.name}" }.join(', ')
         instruction 'Bundle-Vendor', 'Freeplane Project'
+        instruction 'Import-Package', 'org.osgi.framework,org.osgi.service.url;version="1.0.0"'
+        instruction 'Export-Package', '*;-noimport:=true'
+        //instruction 'Private-Package', '*'
+        instruction 'Bundle-Activator', 'org.freeplane.main.osgi.Activator'
     }
+}
+
+task copyOSGiJars(type: Copy) {
+     from ('build/libs') {
+          include("*.jar")
+     }
+     from ('lib') {
+          include("*.jar")
+     }
+     into('../DIST/core/' + pluginid + '/lib/')
+}
+
+task copyOSGiManifest(type: Copy) {
+     from ("$buildDir/tmp/jar/") {
+          include("MANIFEST.MF")
+     }
+     into('../DIST/core/' + pluginid + '/META-INF/')
 }
 
 task viewerJar(type: Jar) {
@@ -101,14 +127,9 @@ task build_ui_xml {
          )
 }
 
-/*
-task copyDeps(type: Copy) {
-   from configurations.runtime
-   into "$buildDir/libs"
-}
-*/
-
 jar.dependsOn viewerJar
 jar.dependsOn editorJar
 jar.dependsOn osgiJar
-//jar.dependsOn copyDeps
+jar.dependsOn copyDeps
+build.dependsOn copyOSGiJars
+build.dependsOn copyOSGiManifest
