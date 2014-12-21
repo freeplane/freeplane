@@ -761,7 +761,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 */
 	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
 		if (file.exists() && !file.canWrite()) {
-			LogUtils.severe("Attempt to write in read-only file.");
+			JOptionPane.showMessageDialog(Controller.getCurrentController()
+				    .getMapViewManager().getMapViewComponent(),
+					TextUtils.format("SaveAs_toReadonlyMsg", file),
+					TextUtils.getText("SaveAs_toReadonlyTitle"),
+				    JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		try {
