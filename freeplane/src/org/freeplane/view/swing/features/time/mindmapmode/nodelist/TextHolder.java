@@ -48,7 +48,7 @@ public class TextHolder implements Comparable<TextHolder> {
 		}
 		if (untaggedNotesText == null || (originalNotesText != null && !originalNotesText.equals(notesText))) {
 			originalNotesText = notesText;
-			untaggedNotesText = HtmlUtils.removeHtmlTagsFromString(notesText).replaceAll("\\s+", " ");
+			untaggedNotesText = HtmlUtils.htmlToPlain(notesText).replaceAll("\\s+", " ");
 		}
 		return untaggedNotesText;
 	}

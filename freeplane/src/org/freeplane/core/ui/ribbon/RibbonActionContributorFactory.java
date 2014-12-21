@@ -46,7 +46,7 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 
 public class RibbonActionContributorFactory implements IRibbonContributorFactory {
 
-	public static final String ACTION_KEY_PROPERTY = "ACTION_KEY";
+	public static final String ACTION = "ACTION_KEY";
 	public static final String ACTION_ACCELERATOR = "ACTION_ACCELERATOR";
 	public static final String ACTION_NAME_PROPERTY = "ACTION_NAME";
 	public static final String ACTION_CHANGE_LISTENER = "ACTION_CHANGE_LISTENER";
@@ -271,7 +271,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 								updateActionState(action, button);
 							}
 						}
-						button.putClientProperty(ACTION_KEY_PROPERTY, action);
+						button.putClientProperty(ACTION, action);
 						
 						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(actionKey);
 						if(ks != null) {
@@ -317,7 +317,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 								AbstractCommandButton button = (AbstractCommandButton) comp;
 								
 								AbstractCommandButton menuButton = null;								
-								AFreeplaneAction action = (AFreeplaneAction)button.getClientProperty(ACTION_KEY_PROPERTY);
+								AFreeplaneAction action = (AFreeplaneAction)button.getClientProperty(ACTION);
 								if(action != null) {
 									if(isSelectionListener(action)) {
 										menuButton = createCommandToggleMenuButton(action);
@@ -328,7 +328,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 										popupmenu.addMenuButton((JCommandMenuButton) menuButton);
 									}
 									menuButton.setEnabled(button.isEnabled());
-									menuButton.putClientProperty(ACTION_KEY_PROPERTY, action);
+									menuButton.putClientProperty(ACTION, action);
 									KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action.getKey());
 									updateRichTooltip(menuButton, action, ks);
 									updateActionState(action, menuButton);
@@ -371,11 +371,11 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 			public void addChild(Object child, ChildProperties properties) {
 				if(child instanceof AbstractCommandButton) {
 					childButtons.add((AbstractCommandButton) child);
-					Object obj = ((AbstractCommandButton) child).getClientProperty(ACTION_KEY_PROPERTY);
-					if(obj != null) {
+					AFreeplaneAction action = (AFreeplaneAction) ((AbstractCommandButton) child).getClientProperty(ACTION);
+					if(action != null) {
 						try {
-							builder.getMapChangeAdapter().removeListener((IChangeObserver) ((AFreeplaneAction) obj).getValue(ACTION_CHANGE_LISTENER));
-							getAccelChangeListener().removeAction(((AFreeplaneAction) obj).getKey());
+							builder.getMapChangeAdapter().removeListener((IChangeObserver) (action).getValue(ACTION_CHANGE_LISTENER));
+							getAccelChangeListener().removeAction(((AFreeplaneAction) action).getKey());
 						}
 						catch(Exception e) {
 							LogUtils.info("RibbonActionContributorFactory.getContributor(...).new ARibbonContributor() {...}.addChild(): "+e.getMessage());
