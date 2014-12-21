@@ -449,7 +449,7 @@ public class NodeList {
 		Pattern p;
 		try {
 			p = Pattern.compile(useRegexInFind.isSelected() ? searchString : Pattern.quote(searchString),
-					matchCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE);
+					matchCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CASE);
 		}
 		catch (final PatternSyntaxException e) {
 			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
