@@ -24,6 +24,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
     }
 }
 
+// common configuration for all OSGi projects...
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
     apply plugin: 'osgi'
 
@@ -37,6 +38,31 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         into "$buildDir/libs"
     }
     jar.dependsOn copyDeps
+}
+
+// common configuration for all plugins...
+configure(subprojects.findAll {it.name =~ /plugin/ }) {
+
+    task copyOSGiJars(type: Copy) {
+        from ("$buildDir/libs") {
+            include("*.jar")
+        }
+        from ('lib') {
+            include("*.jar")
+        }
+        into('../DIST/plugins/' + pluginid + '/lib/')
+    }
+
+    task copyOSGiManifest(type: Copy) {
+        from ("$buildDir/tmp/jar/") {
+            include("MANIFEST.MF")
+        }
+        into('../DIST/plugins/' + pluginid + '/META-INF/')
+    }
+
+    build.dependsOn copyOSGiJars
+    build.dependsOn copyOSGiManifest
+
 }
 
 apply plugin: 'base' // necessary to get the global 'clean' task
