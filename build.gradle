@@ -63,6 +63,24 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
     build.dependsOn copyOSGiJars
     build.dependsOn copyOSGiManifest
 
+    // create a separate non-OSGi(!) jar for each plugin!
+    task pluginJar(type: Jar) {
+         baseName = 'plugin'
+         dependsOn classes
+    
+         from (sourceSets.main.output) {
+             include("**")
+         }
+         includeEmptyDirs = false
+
+         // use a non-OSGi manifest (this jar is referenced from an OSGi bundle)!
+         project.manifest { }
+    }
+
+    // jar must execute after pluginJar so that the OSGi manifest can still be
+    // picked up from build/tmp/jar (and isn't overwritten by plugin*.jar's non-OSGi
+    // manifest!)
+    jar.dependsOn pluginJar
 }
 
 apply plugin: 'base' // necessary to get the global 'clean' task

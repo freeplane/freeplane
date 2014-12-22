@@ -5,19 +5,6 @@ dependencies {
 
 version = '1.3.1'
 
-task pluginJar(type: Jar) {
-     baseName = 'plugin'
-     dependsOn classes
-
-     from (sourceSets.main.output) {
-         include("**")
-     }
-     includeEmptyDirs = false
-
-     // use a non-OSGi manifest (this jar is referenced from an OSGi bundle)!
-     project.manifest { }
-}
-
 jar {
     manifest {
         name = pluginid
@@ -36,8 +23,4 @@ jar {
         // Require-Bundle is ignored by bnd => replaced by Import-Package!
         //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1", org.freeplane.plugin.script;bundle-version="1.0.1"'
     }
-
-    // must execute after pluginJar so that the OSGi manifest can still be
-    // picked up from build/tmp/jar!
-    dependsOn pluginJar
 }
