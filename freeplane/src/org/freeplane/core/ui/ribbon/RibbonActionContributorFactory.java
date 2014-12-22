@@ -375,7 +375,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 					if(action != null) {
 						try {
 							builder.getMapChangeAdapter().removeListener((IChangeObserver) (action).getValue(ACTION_CHANGE_LISTENER));
-							getAccelChangeListener().removeAction(((AFreeplaneAction) action).getKey());
+							getAccelChangeListener().removeActionByKey(((AFreeplaneAction) action).getKey());
 						}
 						catch(Exception e) {
 							LogUtils.info("RibbonActionContributorFactory.getContributor(...).new ARibbonContributor() {...}.addChild(): "+e.getMessage());
@@ -449,7 +449,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 			actionMap.put(actionKey, button);
 		}
 		
-		public void removeAction(String actionKey) {
+		public void removeActionByKey(String actionKey) {
 			actionMap.remove(actionKey);
 		}
 		
