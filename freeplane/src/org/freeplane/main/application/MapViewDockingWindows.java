@@ -46,6 +46,7 @@ import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import net.infonode.docking.AbstractTabWindow;
 import net.infonode.docking.DockingWindow;
 import net.infonode.docking.DockingWindowAdapter;
 import net.infonode.docking.OperationAbortedException;
@@ -382,4 +383,28 @@ class MapViewDockingWindows implements IMapViewChangeListener {
             }
 		}
     }
+
+	public void selectNextMapView() {
+		selectMap(1);
+	}
+
+	public void selectPreviousMapView() {
+		selectMap(-1);
+	}
+	
+	private void selectMap(final int tabIndexChange) {
+		final Controller controller = Controller.getCurrentController();
+		MapView mapView = (MapView)controller.getMapViewManager().getMapViewComponent();
+		if(mapView != null){
+			AbstractTabWindow tabWindow = (AbstractTabWindow) SwingUtilities.getAncestorOfClass(AbstractTabWindow.class, mapView);
+			if(tabWindow != null){
+				final DockingWindow selectedWindow = tabWindow.getSelectedWindow();
+				final int childWindowIndex = tabWindow.getChildWindowIndex(selectedWindow);
+				final int childWindowCount = tabWindow.getChildWindowCount();
+				final int nextWindowIndex = (childWindowIndex + childWindowCount + tabIndexChange) % childWindowCount;
+				tabWindow.setSelectedTab(nextWindowIndex);
+			}
+		}
+	}
+
 }
