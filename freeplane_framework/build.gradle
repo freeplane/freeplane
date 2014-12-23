@@ -1,0 +1,19 @@
+
+task freeplanelauncherJar(type: Jar) {
+     baseName = 'freeplanelauncher'
+     destinationDir = new File('./DIST')
+
+     dependsOn classes
+     from (sourceSets.main.output) {
+          include("**")
+     }
+     includeEmptyDirs = false
+
+     manifest {
+          attributes("Manifest-Version": "1.0",
+                     "Main-Class": "org.freeplane.launcher.Launcher",
+                     "Class-Path": "freeplaneLauncher.jar, framework.jar") // TODO!!???
+     }
+}
+
+jar.dependsOn freeplanelauncherJar
