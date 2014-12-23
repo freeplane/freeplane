@@ -10,6 +10,7 @@ jar {
         name = pluginid
         symbolicName = pluginid 
 
+        configurations.runtime.transitive = false
         ext.deps = configurations.runtime.files.collect { "lib/${it.name}" }
         ext.deps.add(0, "lib/plugin-" + project.version + '.jar')
 
