@@ -55,7 +55,7 @@
 			 classname="org.freeplane.ant.CreatePlugin"/>
 
     <!-- Need to make this an ant task to call. In root project probably? -->
-    <!-- This ant task will also publish to the correct directory --!>
+    <!-- This ant task will also publish to the correct directory -->
 	<target name="makePlugin">
 		<ant antfile="ant/build.xml" target="${anttarget}" dir="${workspace}/${plugindir}" inheritall="false" />
 		<mkdir dir="${build}/${targetdir}/${pluginname}" />
