@@ -2,8 +2,6 @@ dependencies {
     compile project(':freeplane')
 }
 
-version = '1.0.1'
-
 jar {
     manifest {
         name = pluginid

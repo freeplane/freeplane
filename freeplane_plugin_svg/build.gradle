@@ -21,8 +21,6 @@ dependencies {
             'org.apache.xmlgraphics:batik-xml:1.7'
 }
 
-version = '1.0.1'
-
 jar {
     manifest {
         name = pluginid

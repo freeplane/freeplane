@@ -14,8 +14,6 @@ dependencies {
     compile files('./lib/SimplyHTML.jar','./lib/idw-gpl.jar')
 }
 
-version = '1.0.1'
-
 //pluginid = 'org.freeplane.core'
 
 jar {

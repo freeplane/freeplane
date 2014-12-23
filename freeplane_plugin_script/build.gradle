@@ -6,9 +6,6 @@ dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy', version:'2.3.1'
 }
 
-// TODO: in order to activate this, we need a versioned project dependency in freeplane_plugin_formular!
-//version = '1.0.1'
-
 jar {
     manifest {
         name = pluginid

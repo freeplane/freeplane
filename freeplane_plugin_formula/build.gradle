@@ -3,8 +3,6 @@ dependencies {
     compile project(':freeplane_plugin_script')
 }
 
-version = '1.0.1'
-
 jar {
     manifest {
         name = pluginid
