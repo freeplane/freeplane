@@ -17,3 +17,59 @@ task freeplanelauncherJar(type: Jar) {
 }
 
 jar.dependsOn freeplanelauncherJar
+
+/*
+launcher.dist.lib = ${workspace}/freeplane_framework/build
+freeplanelauncher.jar = ${launcher.dist.lib}/freeplanelauncher.jar
+framework.ext.lib = ${workspace}/freeplane_framework/lib
+framework.jar = ${framework.ext.lib}/knopflerfish/framework.jar
+
+	<property name="launcher_src" value="src" />
+	<property name="launcher_manifest" value="${root}/META-INF/LAUNCHER_MANIFEST.MF" />
+	<property name="launcher_build" value="${root}/launcher_build" />
+	<property name="launcher_classpath" value="${framework.jar}" />
+	<target name="build_launcher" depends="build_core">
+		<mkdir dir="${launcher_build}" />
+		<javac srcdir="${launcher_src}" destdir="${launcher_build}" classpath="${launcher_classpath}" 
+			debug="${debug}" source="${java_source_version}" target="${java_target_version}" encoding="utf8"/>
+		<jar jarfile="${freeplanelauncher.jar}" manifest="${launcher_manifest}">
+			<fileset dir="${launcher_build}">
+				<include name="**" />
+			</fileset>
+		</jar>
+
+		<copy todir="${build}">
+			<fileset dir="${script}" />
+			<fileset file="${framework.jar}" />
+			<fileset file="${freeplanelauncher.jar}" />
+			<fileset file="windows-icons/freeplaneIcons.dll" />
+			<fileset dir="launch4j" includes="*.exe" />
+			<fileset dir="launch4j" includes="*.ini" />
+		</copy>
+		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
+	</target>
+*/
+// TODO: this needs testing!
+task copyLauncherStuff(type: Copy) {
+     from('script/') {
+         include('freeplane.sh')
+         fileMode = 0755
+     }
+     from('script/') {
+         include('*')
+         exclude('freeplane.sh')
+     }
+     from('lib/knopflerfish/') {
+         include('framework.jar')
+     }
+     from('windows-icons/') {
+         include('freeplaneIcons.dll')
+     }
+     from('launch4j/') {
+         include('*.exe')
+         include('*.ini')
+     }
+     into('../DIST')
+     dependsOn jar
+}
+build.dependsOn copyLauncherStuff
