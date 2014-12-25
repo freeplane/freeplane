@@ -28,3 +28,35 @@ jar {
         //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1"'
     }
 }
+
+task copyScripts(type: Copy) {
+    from('scripts/') {
+        include('**')
+    }
+    into('../DIST/scripts')
+}
+
+// TODO: generate zip from this!
+javadoc {
+    // we need source from both this and the freeplane project!
+    //  source = sourceSets.main.allJava
+
+    ext.javadocInputFromThisProject = fileTree(dir: 'src/main/java')
+      .include('**/Proxy.java')
+      .include('**/Convertible.java')
+      .include('**/FreeplaneScriptBaseClass.java')
+      .include('**/ScriptUtils.java')
+    ext.javadocInputFromFreeplaneProject = fileTree(dir: '../freeplane/src/main/java')
+      .include('**/UITools.java')
+      .include('**/TextUtils.java')
+      .include('**/FreeplaneVersion.java')
+      .include('**/HtmlUtils.java')
+      .include('**/LogUtils.java')
+      .include('**/MenuUtils.java')
+
+    source = ext.javadocInputFromThisProject + ext.javadocInputFromFreeplaneProject
+    destinationDir = new File('../DIST/doc/api/')
+}
+
+build.dependsOn copyScripts
+build.dependsOn javadoc
