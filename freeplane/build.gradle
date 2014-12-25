@@ -122,6 +122,20 @@ task osgiJar(type: Jar) {
     includeEmptyDirs = false
 }
 
+task copyExternalResources(type: Copy) {
+    from('external-resources') {
+        include('**')
+    }
+    into('../DIST/resources')
+}
+
+task copyDoc(type: Copy) {
+    from('doc/') {
+        include('**')
+    }
+    into('../DIST/doc')
+}
+
 // This task calls out to ant to perform an xslt task since it is an easier
 // dependency to satisfy than a seperate gradle plugin. We may wish to change
 // this in the future
@@ -138,3 +152,5 @@ jar.dependsOn osgiJar
 jar.dependsOn copyDeps
 build.dependsOn copyOSGiJars
 build.dependsOn copyOSGiManifest
+build.dependsOn copyExternalResources
+build.dependsOn copyDoc
