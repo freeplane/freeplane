@@ -79,6 +79,12 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
          from (sourceSets.main.output) {
              include("**")
          }
+         // unfortunately some resource (xml,properties) files (e.g. preferences.xml in latex plugin)
+         // are in src/main/java...
+         from (sourceSets.main.allSource) {
+             include("**/*.xml")
+             include("**/*.properties")
+         }
          includeEmptyDirs = false
 
          // use a non-OSGi manifest (this jar is referenced from an OSGi bundle)!
