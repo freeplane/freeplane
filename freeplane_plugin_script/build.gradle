@@ -36,7 +36,6 @@ task copyScripts(type: Copy) {
     into('../DIST/scripts')
 }
 
-// TODO: generate zip from this!
 javadoc {
     // we need source from both this and the freeplane project!
     //  source = sourceSets.main.allJava
@@ -58,5 +57,18 @@ javadoc {
     destinationDir = new File('../DIST/doc/api/')
 }
 
+// TODO: this doesn't work yet!
+/*
+task zipJavadoc(type: Zip) {
+  baseName = 'scripting-api'
+  from ('../DIST/doc/api/') {
+      include('**')
+  }
+  destinationDir = new File('../DIST')
+  dependsOn javadoc
+}
+*/
+
 build.dependsOn copyScripts
 build.dependsOn javadoc
+//build.dependsOn zipJavadoc
