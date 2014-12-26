@@ -1,7 +1,7 @@
 
 task freeplanelauncherJar(type: Jar) {
      baseName = 'freeplanelauncher'
-     destinationDir = new File('./DIST')
+     destinationDir = new File(globalBuild)
 
      dependsOn classes
      from (sourceSets.main.output) {
@@ -69,7 +69,7 @@ task copyLauncherStuff(type: Copy) {
          include('*.exe')
          include('*.ini')
      }
-     into('../DIST')
+     into(globalBuild)
      dependsOn jar
 }
 build.dependsOn copyLauncherStuff

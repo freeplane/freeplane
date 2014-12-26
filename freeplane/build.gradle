@@ -45,14 +45,14 @@ task copyOSGiJars(type: Copy) {
      from ('lib') {
           include("*.jar")
      }
-     into('../DIST/core/' + pluginid + '/lib/')
+     into(globalBuild + '/core/' + pluginid + '/lib/')
 }
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/tmp/jar/") {
           include("MANIFEST.MF")
      }
-     into('../DIST/core/' + pluginid + '/META-INF/')
+     into(globalBuild + '/core/' + pluginid + '/META-INF/')
 }
 
 task viewerJar(type: Jar) {
@@ -126,14 +126,14 @@ task copyExternalResources(type: Copy) {
     from('external-resources') {
         include('**')
     }
-    into('../DIST/resources')
+    into(globalBuild + '/resources')
 }
 
 task copyDoc(type: Copy) {
     from('doc/') {
         include('**')
     }
-    into('../DIST/doc')
+    into(globalBuild + '/doc')
 }
 
 // This task calls out to ant to perform an xslt task since it is an easier
