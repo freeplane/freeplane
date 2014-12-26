@@ -29,6 +29,8 @@ jar {
         ext.deps.add(0, "lib/freeplaneviewer-" + project.version + ".jar")
 
         attributes 'Class-Path' : ext.deps.join(', ')
+        attributes 'Bundle-ClassPath': '., ' + ext.deps.join(', ')
+
         instruction 'Bundle-Vendor', 'Freeplane Project'
         instruction 'Import-Package', 'org.osgi.framework,org.osgi.service.url;version="1.0.0"'
         instruction 'Export-Package', '*;-noimport:=true'

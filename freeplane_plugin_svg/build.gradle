@@ -31,6 +31,8 @@ jar {
         ext.deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': ext.deps.join(', ')
+        attributes 'Bundle-ClassPath': '., ' + ext.deps.join(', ')
+
         instruction 'Bundle-Vendor', 'Freeplane Project'
         instruction 'Bundle-Activator', pluginid + ".Activator"
         instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.6'
