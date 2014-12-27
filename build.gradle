@@ -4,6 +4,27 @@ allprojects {
 
     // WARNING: this is removed with "gradle clean"!!
     ext.globalBuild = rootDir.path + '/BUILD'
+
+}
+
+def filterPluginDeps(listOfPaths) {
+    def filteredListOfPaths = []
+
+    for (path in listOfPaths) {
+        if (path.startsWith('lib/frameworkbundle-')) {
+            continue;
+        }
+        if (path == ("lib/freeplane-" + project.version + ".jar")) {
+            continue;
+        }
+        if (path.startsWith('lib/freeplane_plugin_') &&
+            path.endsWith('-' + project.version + '.jar')) {
+            continue;
+        }
+        filteredListOfPaths.add(path)
+    }
+
+    return filteredListOfPaths
 }
 
 subprojects {
@@ -54,6 +75,10 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
     task copyOSGiJars(type: Copy) {
         from ("$buildDir/libs") {
             include("*.jar")
+            // TODO: this is redundant with regard to 'filterPluginDeps' (see above)!
+            exclude('frameworkbundle-*.jar')
+            exclude('freeplane-' + project.version + '.jar')
+            exclude('freeplane_plugin_*-' + project.version + '.jar')
         }
         from ('lib') {
             include("*.jar")

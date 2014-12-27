@@ -11,6 +11,7 @@ jar {
         ext.deps = configurations.runtime.files.collect { "lib/${it.name}" }
         ext.deps.add(0, "lib/plugin-" + project.version + '.jar')
 
+        ext.deps = filterPluginDeps(ext.deps)
         attributes 'Class-Path': ext.deps.join(', ')
         attributes 'Bundle-ClassPath': '., ' + ext.deps.join(', ')
 
