@@ -20,7 +20,7 @@ jar {
         instruction 'Bundle-Activator', pluginid + ".Activator"
         instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.6'
         // TODO: import only "src-jsyntaxpane" from plugin.script!
-        instruction 'Import-Package', 'org.freeplane.plugin.script, org.osgi.framework;version="1.3.0", org.freeplane.core.*, org.freeplane.features.*, org.freeplane.main.*, org.freeplane.n3.*, org.freeplane.view.*'
+        instruction 'Import-Package', 'org.freeplane.plugin.script.*, org.osgi.framework;version="1.3.0", org.freeplane.core.*, org.freeplane.features.*, org.freeplane.main.*, org.freeplane.n3.*, org.freeplane.view.*'
         instruction 'Export-Package', ''
 
         // Require-Bundle is ignored by bnd => replaced by Import-Package!
