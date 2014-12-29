@@ -36,21 +36,21 @@ public class UIIconSet extends UIIcon {
 		return uiIcons;
 	}
 
-	List<Icon> imageIcons;
+	List<UIIcon> imageIcons;
 	private MultipleImage compoundIcon;
 
 	public UIIconSet(final Collection<UIIcon> uiIcons, final float zoom) {
 		super("", "");
 		this.zoom = zoom;
 		this.uiIcons = Collections.unmodifiableCollection(uiIcons);
-		imageIcons = new LinkedList<Icon>();
+		imageIcons = new LinkedList<UIIcon>();
 		for (final UIIcon uiIcon : uiIcons) {
-			final Icon icon;
+			final UIIcon icon;
 			if (zoom == 1f) {
-				icon = uiIcon.getIcon();
+				icon = uiIcon;
 			}
 			else {
-				icon = new ZoomedIcon(uiIcon, zoom).getIcon();
+				icon = new ZoomedIcon(uiIcon, zoom);
 			}
 			imageIcons.add(icon);
 		}
@@ -60,8 +60,8 @@ public class UIIconSet extends UIIcon {
 	public Icon getIcon() {
 		if (compoundIcon == null) {
 			compoundIcon = new MultipleImage();
-			for (final Icon icon : imageIcons) {
-				compoundIcon.addImage(icon);
+			for (final UIIcon icon : imageIcons) {
+				compoundIcon.addIcon(icon);
 			}
 		}
 		return compoundIcon;

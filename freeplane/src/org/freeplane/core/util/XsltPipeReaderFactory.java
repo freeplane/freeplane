@@ -31,7 +31,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -43,7 +42,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.url.CleaningInputStream;
 
 /**
  * @author Dimitry Polivaev
@@ -60,8 +58,7 @@ public class XsltPipeReaderFactory {
 	public Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
 	        IOException {
 		try {
-			String updatedXml = transform(file, xsltScript);
-			return new StringReader(updatedXml);
+			return new StringReader (transformToString(file, xsltScript));
 		}
 		catch (final Exception ex) {
 			final String message = ex.getMessage();
@@ -72,7 +69,7 @@ public class XsltPipeReaderFactory {
 		}
 	}
 
-	public String transform(final File file, final String xsltScript) throws InterruptedException, TransformerException {
+	public String transformToString(final File file, final String xsltScript) throws InterruptedException, TransformerException {
 		URL inputUrl;
         try {
 	        inputUrl = file.toURL();
@@ -80,57 +77,70 @@ public class XsltPipeReaderFactory {
         catch (MalformedURLException e) {
         	throw new IllegalArgumentException(e);
         }
-	    return transform(inputUrl, xsltScript);
+	    return transformToString(inputUrl, xsltScript);
     }
 
-	public String transform(final URL inputUrl, final String xsltScript) throws InterruptedException,
-            TransformerException {
-	    final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
-	    if (updaterUrl == null) {
-	    	throw new IllegalArgumentException(xsltScript + " not found.");
-	    }
+	public String transformToString(URL inputUrl, final String xsltScript) throws InterruptedException, TransformerException {
 	    final StringWriter writer = new StringWriter();
 	    final Result result = new StreamResult(writer);
-	    class TransformerRunnable implements Runnable {
-	    	private Throwable thrownException = null;
-
-	    	public void run() {
-	    		final TransformerFactory transFact = TransformerFactory.newInstance();
-	    		InputStream xsltInputStream = null;
-	    		InputStream input = null;
-	    		try {
-	    			xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
-	    			final Source xsltSource = new StreamSource(xsltInputStream);
-	    			input = new BufferedInputStream(inputUrl.openStream());
-	    			final CleaningInputStream cleanedInput = new CleaningInputStream(input);
-	    			final Reader reader = new InputStreamReader(cleanedInput, cleanedInput.isUtf8() ? Charset.forName("UTF-8") : FileUtils.defaultCharset());
-	    			final Transformer trans = transFact.newTransformer(xsltSource);
-	    			trans.transform(new StreamSource(reader), result);
-	    		}
-	    		catch (final Exception ex) {
-	    			LogUtils.warn(ex);
-	    			thrownException = ex;
-	    		}
-	    		finally {
-	    			FileUtils.silentlyClose(input, xsltInputStream);
-	    		}
-	    	}
-
-	    	public Throwable thrownException() {
-	    		return thrownException;
-	    	}
-	    }
-	    final TransformerRunnable transformer = new TransformerRunnable();
-	    final Thread transformerThread = new Thread(transformer, "XSLT");
-	    transformerThread.start();
-	    transformerThread.join();
-	    final Throwable thrownException = transformer.thrownException();
-	    if (thrownException != null) {
-	    	throw new TransformerException(thrownException);
-	    }
+	    final TransformerRunnable transformer = transformer(inputUrl, xsltScript, result);
+		final Thread transformerThread = new Thread(transformer, "XSLT");
+		transformerThread.start();
+		transformerThread.join();
+		final Throwable thrownException = transformer.thrownException();
+		if (thrownException != null) {
+			throw new TransformerException(thrownException);
+		}
 	    String updatedXml = writer.getBuffer().toString();
 	    return updatedXml;
     }
+
+	static class TransformerRunnable implements Runnable {
+    	private Throwable thrownException = null;
+		final private URL updaterUrl;
+		final private URL inputURL;
+		final private Result result;
+
+    	public TransformerRunnable(URL updaterUrl, URL inputURL, Result result) {
+			super();
+			this.updaterUrl = updaterUrl;
+			this.inputURL = inputURL;
+			this.result = result;
+		}
+
+		public void run() {
+    		final TransformerFactory transFact = TransformerFactory.newInstance();
+    		InputStream xsltInputStream = null;
+    		InputStream input = null;
+    		try {
+    			xsltInputStream = new BufferedInputStream(updaterUrl.openStream());
+    			final Source xsltSource = new StreamSource(xsltInputStream);
+    			input = new BufferedInputStream(inputURL.openStream());
+    			final Transformer trans = transFact.newTransformer(xsltSource);
+    			trans.transform(new StreamSource(input), result);
+    		}
+    		catch (final Exception ex) {
+    			LogUtils.warn(ex);
+    			thrownException = ex;
+    		}
+    		finally {
+    			FileUtils.silentlyClose(input, xsltInputStream);
+    		}
+    	}
+
+    	public Throwable thrownException() {
+    		return thrownException;
+    	}
+    }
+	private TransformerRunnable transformer(final URL inputUrl,
+			final String xsltScript, final Result result) {
+		final URL updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
+	    if (updaterUrl == null) {
+	    	throw new IllegalArgumentException(xsltScript + " not found.");
+	    }
+	    final TransformerRunnable transformer = new TransformerRunnable(updaterUrl, inputUrl, result);
+		return transformer;
+	}
 
 	/**
 	 * Creates a default reader that just reads the given file.

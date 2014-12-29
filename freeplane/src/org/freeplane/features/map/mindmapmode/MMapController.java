@@ -625,7 +625,7 @@ public class MMapController extends MapController {
 
 	@Override
     public void setSaved(final MapModel mapModel, final boolean saved) {
-		final boolean setTitle = saved != mapModel.isSaved();
+		final boolean setTitle = saved != mapModel.isSaved() || mapModel.isReadOnly();
 		mapModel.setSaved(saved);
 		if (setTitle) {
 			final Controller controller = Controller.getCurrentController();
@@ -717,7 +717,10 @@ public class MMapController extends MapController {
 					final MFileManager fileManager = MFileManager.getController(getMModeController());
 					File alternativeFile = fileManager.getAlternativeFile(file, AlternativeFileMode.AUTOSAVE);
 					if(alternativeFile != null){
-						alternativeURL = Compat.fileToUrl(alternativeFile);
+						if (alternativeFile.getAbsoluteFile().equals(file.getAbsoluteFile()) )
+							alternativeURL =  url;
+						else
+							alternativeURL = Compat.fileToUrl(alternativeFile);
 					}
 					else
 						return false;
@@ -765,6 +768,7 @@ public class MMapController extends MapController {
         	newModel.setReadOnly(true);
         	fireMapCreated(newModel);
         	newMapView(newModel);
+        	newModel.setSaved(true);
         	return true;
         }
         finally {

@@ -80,11 +80,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     }
 
 	private boolean canEdit(TextController controller) {
-		try {
-			return controller instanceof MTextController;
-		} catch (Throwable e) {
-			return false;
-		}
+		return controller.canEdit();
 	}
 
 	private boolean isEditingStartEvent(MouseEvent e) {

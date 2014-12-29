@@ -29,13 +29,13 @@ public class MapVersionInterpreter implements IExtension{
 	DOCEAR("docear ", false, true, "Docear", "docear.url"),
 
 */
-	static final public MapVersionInterpreter DEFAULT = new MapVersionInterpreter("", 0, "", false, true, null, null);
 	static final public IMapInputStreamConverter DEFAULT_INPUTSTREAM_CONVERTER = new IMapInputStreamConverter() {
 		private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 		public Reader getConvertedStream(File f) throws FileNotFoundException, IOException {
 			return new XsltPipeReaderFactory().getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
 		}
 	};
+	static final public MapVersionInterpreter DEFAULT = new MapVersionInterpreter("", 0, "", true, true, null, null);
 	final public String mapBegin;
 	final public String name;
 	final public int version;

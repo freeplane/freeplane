@@ -21,9 +21,11 @@ package org.freeplane.features.url.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.ui.AFreeplaneAction;
+import javax.swing.JOptionPane;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -42,6 +44,14 @@ class SaveAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		if (Controller.getCurrentController().getMap().isReadOnly()) {
+			JOptionPane.showMessageDialog(Controller.getCurrentController()
+				    .getMapViewManager().getMapViewComponent(),
+					TextUtils.getText("SaveAction_readonlyMsg"),
+					TextUtils.getText("SaveAction_readonlyTitle"),
+				    JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		final boolean success = ((MModeController) Controller.getCurrentModeController()).save();
 		final Controller controller = Controller.getCurrentController();
 		if (success) {
@@ -57,6 +67,6 @@ class SaveAction extends AFreeplaneAction {
 	public void setEnabled() {
 		final Controller controller = Controller.getCurrentController();
 		MapModel map = controller.getMap();
-		setEnabled(map != null && ! map.isSaved() && ! map.isReadOnly());
+		setEnabled(map != null && ! map.isSaved());
 	}
 }

@@ -49,7 +49,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.factories.ButtonBarFactory;
+import com.jgoodies.forms.builder.ButtonBarBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
@@ -75,7 +75,36 @@ public class OptionPanel {
 		this.feedback = feedback;
 		new OptionPanelBuilder();
 	}
+	
+	/**
+	 * Builds and returns a right aligned button bar with the given buttons.
+	 *
+	 * @param buttons  an array of buttons to add
+	 * @return a right aligned button bar with the given buttons
+	 */
+	public static JPanel buildRightAlignedBar(JButton[] buttons) {
+//        ButtonBarBuilder2 builder = new ButtonBarBuilder2();
+		ButtonBarBuilder builder = new ButtonBarBuilder();
+		builder.addGlue();
+		builder.addButton(buttons);
+		return builder.getPanel();
+	}
+	
+	
+	/**
+	 * Builds and returns a button bar with OK and Cancel.
+	 *
+	 * @param ok		the OK button
+	 * @param cancel	the Cancel button
+	 * @return a panel that contains the button(s)
+	 */
+	public static JPanel buildOKCancelBar(
+			JButton ok, JButton cancel) {
+		return buildRightAlignedBar(new JButton[] {ok, cancel});
+	}
 
+	
+	
 	/**
 	 * This method builds the preferences panel.
 	 * A list of IPropertyControl is iterated through and
@@ -145,7 +174,7 @@ public class OptionPanel {
 			}
 		});
 		topDialog.getRootPane().setDefaultButton(okButton);
-		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
+		topDialog.getContentPane().add(buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
 	}
 
 	private boolean validate() {

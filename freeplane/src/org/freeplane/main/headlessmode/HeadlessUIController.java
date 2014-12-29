@@ -228,6 +228,15 @@ public class HeadlessUIController extends FrameController {
 	@Override
 	protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar) {
 		throw new RuntimeException("Method not implemented");
+	}
+
+	public void previousMapView() {
+		throw new RuntimeException("Method not implemented");
+		
+	}
+
+	public void nextMapView() {
+		throw new RuntimeException("Method not implemented");
 	}	
 	
 }
