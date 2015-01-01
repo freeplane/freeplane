@@ -1,6 +1,6 @@
 
 task freeplanelauncherJar(type: Jar) {
-     baseName = 'freeplanelauncher'
+     archiveName = 'freeplanelauncher.jar'
      destinationDir = new File(globalBuild)
 
      dependsOn classes
