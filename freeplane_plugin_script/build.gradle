@@ -32,7 +32,13 @@ jar {
                       org.freeplane.n3.*,
                       org.freeplane.view.*,
                       org.apache.commons.lang.*,
-                      org.apache.commons.io.*
+                      org.apache.commons.io.*,
+                      org.pushingpixels.flamingo.api.common,
+                      org.pushingpixels.flamingo.api.common.icon,
+                      org.pushingpixels.flamingo.api.common.model,
+                      org.pushingpixels.flamingo.api.common.popup,
+                      org.pushingpixels.flamingo.api.ribbon,
+                      org.pushingpixels.flamingo.api.ribbon.resize
                       """
         instruction 'Import-Package', imports.replaceAll("\\s+", "")
         // avoid that bnd creates Private-Package: for org.freeplane.plugin.script.*!
