@@ -23,8 +23,10 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
@@ -102,6 +104,8 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				linkController.loadLink(node, value);
+				final Collection<NodeLinkModel> links = NodeLinks.getLinks(node);
+				arrowLinks.addAll(links);
 			}
 		});
 		
@@ -178,13 +182,13 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setStartArrow(ArrowType.valueOf(value.toUpperCase()));
+				arrowLink.setStartArrow(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH)));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setEndArrow(ArrowType.valueOf(value.toUpperCase()));
+				arrowLink.setEndArrow(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH)));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {

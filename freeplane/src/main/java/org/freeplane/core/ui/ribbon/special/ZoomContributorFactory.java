@@ -14,7 +14,7 @@ import org.freeplane.core.ui.ribbon.CurrentState;
 import org.freeplane.core.ui.ribbon.IChangeObserver;
 import org.freeplane.core.ui.ribbon.IRibbonContributorFactory;
 import org.freeplane.core.ui.ribbon.RibbonActionContributorFactory;
-import org.freeplane.core.ui.ribbon.RibbonActionContributorFactory.ActionAcceleratorChangeListener;
+import org.freeplane.core.ui.ribbon.RibbonActionContributorFactory.AcceleratorChangeListenerForCommandButtons;
 import org.freeplane.core.ui.ribbon.RibbonActionContributorFactory.ActionChangeListener;
 import org.freeplane.core.ui.ribbon.RibbonBuildContext;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
@@ -32,16 +32,16 @@ import org.pushingpixels.flamingo.api.ribbon.resize.RibbonBandResizePolicy;
 
 public class ZoomContributorFactory implements IRibbonContributorFactory {
 	
-	private ActionAcceleratorChangeListener changeListener;
+	private AcceleratorChangeListenerForCommandButtons changeListener;
 
 	public ZoomContributorFactory(RibbonBuilder builder) {
 		builder.getAcceleratorManager().addAcceleratorChangeListener(getAccelChangeListener());
 	}
 	
 
-	protected ActionAcceleratorChangeListener getAccelChangeListener() {
+	protected AcceleratorChangeListenerForCommandButtons getAccelChangeListener() {
 		if(changeListener == null) {
-			changeListener = new ActionAcceleratorChangeListener();
+			changeListener = new AcceleratorChangeListenerForCommandButtons();
 		}
 		return changeListener;
 	}
@@ -68,21 +68,21 @@ public class ZoomContributorFactory implements IRibbonContributorFactory {
 				AFreeplaneAction action = context.getBuilder().getMode().getAction("ZoomInAction");				
 				JCommandButton button = RibbonActionContributorFactory.createCommandButton(action);				
 				button.setDisplayState(CommandButtonDisplayState.SMALL);
-				getAccelChangeListener().addAction(action.getKey(), button);
+				getAccelChangeListener().addCommandButton(action.getKey(), button);
 				addDefaultToggleHandler(context, action, button);
 				strip.add(button);
 				
 				action = context.getBuilder().getMode().getAction("ZoomOutAction");				
 				button = RibbonActionContributorFactory.createCommandButton(action);				
 				button.setDisplayState(CommandButtonDisplayState.SMALL);
-				getAccelChangeListener().addAction(action.getKey(), button);
+				getAccelChangeListener().addCommandButton(action.getKey(), button);
 				addDefaultToggleHandler(context, action, button);
 				strip.add(button);
 				
 				action = context.getBuilder().getMode().getAction("FitToPage");				
 				button = RibbonActionContributorFactory.createCommandButton(action);				
 				button.setDisplayState(CommandButtonDisplayState.MEDIUM);
-				getAccelChangeListener().addAction(action.getKey(), button);
+				getAccelChangeListener().addCommandButton(action.getKey(), button);
 				addDefaultToggleHandler(context, action, button);
 				strip.add(button);
 				

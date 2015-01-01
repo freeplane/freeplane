@@ -38,16 +38,35 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 	private final LinkController linkController;
 	private final NodeModel target;
 
+	public GotoLinkNodeAction(final LinkController linkController, String actionName, final NodeModel target) {
+	    this(linkController, target);
+	}
+
 	public GotoLinkNodeAction(final LinkController linkController, final NodeModel target) {
 		super("GotoLinkNodeAction");
 		this.target = target;
 		this.linkController = linkController;
-		if (target != null) {
-			final String adaptedText = TextController.getController().getShortText(target);
-			putValue(Action.NAME, TextUtils.getText("follow_graphical_link") + adaptedText);
-			putValue(Action.SHORT_DESCRIPTION, target.toString());
-		}
 	}
+
+	public void configureText(String actionName, final NodeModel target) {
+	    if (target != null) {
+			final String adaptedText = TextController.getController().getShortText(target);
+			putValue(Action.NAME, TextUtils.format(actionName, adaptedText));
+			StringBuilder path = new StringBuilder();
+			appendPath(path, target.getParentNode());
+			path.append(target);
+			putValue(Action.SHORT_DESCRIPTION, path.toString());
+		}
+    }
+
+	private void appendPath(StringBuilder path, final NodeModel target) {
+		if(target != null){
+			appendPath(path, target.getParentNode());
+			final String shortText = TextController.getController().getShortText(target);
+			path.append(shortText);
+			path.append(" -> ");
+		}
+    }
 
 	public void actionPerformed(final ActionEvent e) {
 		linkController.onDeselect(Controller.getCurrentModeController().getMapController().getSelectedNode());

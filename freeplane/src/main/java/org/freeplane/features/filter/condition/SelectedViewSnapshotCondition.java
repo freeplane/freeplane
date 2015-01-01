@@ -19,27 +19,23 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class SelectedViewSnapshotCondition extends ASelectableCondition {
 	private static final String NAME = "selected_view_snapshot";
 	private static String description;
 
-	public static ASelectableCondition CreateCondition() {
-		return new SelectedViewSnapshotCondition();
-	}
-
 	HashSet<NodeModel> selectedNodes;
 
-	public SelectedViewSnapshotCondition() {
+	public SelectedViewSnapshotCondition(Collection<NodeModel> selectedNodes) {
 		super();
-		selectedNodes = new HashSet<NodeModel>();
-		selectedNodes.addAll(Controller.getCurrentController().getSelection().getSelection());
+		this.selectedNodes = new HashSet<NodeModel>();
+		this.selectedNodes.addAll(selectedNodes);
 	}
 
 	public boolean checkNode(final NodeModel node) {

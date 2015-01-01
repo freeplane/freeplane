@@ -384,4 +384,8 @@ public class MNoteController extends NoteController {
 	public void setShowNotesInMap(final MapModel model, final boolean show) {
 		MapStyle.getController().setProperty(model, SHOW_NOTES_IN_MAP, Boolean.toString(show));
 	}
+	
+	public void editNoteInDialog(final NodeModel nodeModel) {
+		new NoteDialogStarter().editNoteInDialog(nodeModel);
+	}
 }

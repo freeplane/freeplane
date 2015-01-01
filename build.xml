@@ -1,68 +1,56 @@
-<project name="GlobalFreeplane" default="ant_dist" basedir=".">
+<project name="GlobalFreeplane" default="dist" basedir=".">
 
-    <target name="ant_build">
-        <ant antfile="freeplane_framework/ant/build.xml"  target="build"
-            inheritAll="false" />
-    </target>
+	<target name="build">
+		<ant antfile="freeplane_framework/ant/build.xml" target="build" inheritAll="false" />
+	</target>
 
-    <target name="ant_dist">
-        <ant antfile="freeplane_framework/ant/build.xml"  target="dist"
-            inheritAll="false" />
-    </target>
+	<target name="dist">
+		<ant antfile="freeplane_framework/ant/build.xml" target="dist" inheritAll="false" />
+	</target>
+	<target name="format-translation">
+		<ant antfile="JOrtho_0.4_freeplane/build.xml" target="format-translation" inheritAll="false" />
+		<ant antfile="freeplane_framework/ant/build.xml" target="format-translation" inheritAll="false" />
+	</target>
 
-    <target name="ant_format_translation">
-        <ant antfile="JOrtho_0.4_freeplane/build.xml"  target="format-translation"
-            inheritAll="false" />
-        <ant antfile="freeplane_framework/ant/build.xml"  target="format-translation"
-            inheritAll="false" />
-    </target>
+	<target name="clean">
+		<ant antfile="freeplane_framework/ant/build.xml" target="clean" inheritAll="false" />
 
-    <target name="ant_clean">
-        <ant antfile="freeplane_framework/ant/build.xml"  target="clean"
-            inheritAll="false" />
+		<ant antfile="freeplane_ant/build.xml" target="clean" inheritAll="false" />
 
-        <ant antfile="JOrtho_0.4_freeplane/build.xml" target="clean"
-            inheritAll="false" />
-    </target>
+		<ant antfile="JOrtho_0.4_freeplane/build.xml" target="clean" inheritAll="false" />
+	</target>
 
-    <target name="ant_cleandist" depends="ant_clean, ant_dist">
-    </target>
+	<target name="cleandist" depends="clean, dist">
+	</target>
 
-    <target name="ant_release" depends="ant_clean, ant_dist, ant_tag_release"/>
+	<target name="release" depends="clean, dist, tag-release" />
 
-    <target name="ant_tag_release">
-        <property file="freeplane/viewer-resources/version.properties"/>
+	<target name="tag-release">
+		<property file="freeplane/viewer-resources/version.properties" />
 
-        <condition property="minor_suffix" value="_${minor}" else="">
-            <isset property="minor" />
-        </condition>
+		<condition property="preview_suffix" value="-pre${minor}" else="">
+			<isset property="minor" />
+		</condition>
 
-        <condition property="tag.release" value="release-${freeplane_version}">
-            <equals arg1="${freeplane_version_status}" arg2=""/>
-        </condition>
-        <condition property="tag.release" value="beta-${freeplane_version}${minor_suffix}">
-            <or>
-                <equals arg1="${freeplane_version_status}" arg2="beta"/>
-                <equals arg1="${freeplane_version_status}" arg2="rc"/>
-            </or>
-        </condition>
-        <condition property="tag.release" value="preview-${freeplane_version}${minor_suffix}">
-            <equals arg1="${freeplane_version_status}" arg2="alpha"/>
-        </condition>
+		<condition property="tag.release" 
+				value="release-${freeplane_version}${preview_suffix}" 
+				else="${freeplane_version_status}-${freeplane_version}${preview_suffix}">
+			<equals arg1="${freeplane_version_status}" arg2="" />
+		</condition>
 
-        <echo>Press enter to tag '${tag.release}'</echo>
-        <input/>
+		<echo>Press enter to tag '${tag.release}'</echo>
+		<input />
 
-        <echo>Running git tag -m '' ${tag.release}</echo>
+		<echo>Running git tag -m '' ${tag.release}</echo>
 
-        <exec executable="git" failonerror="true">
-            <arg value="tag"/>
-            <arg value="-m ''"/>
-            <arg value="${tag.release}"/>
-        </exec>
-    </target>
+		<exec executable="git" failonerror="true">
+			<arg value="tag" />
+			<arg value="-m ''" />
+			<arg value="${tag.release}" />
+		</exec>
+	</target>
 
-    <target name="ant_create_plugin">
-        <ant antfile="freeplane_framework/ant/build.xml"  target="create-plugin" inheritAll="false" />
-    </target>
+	<target name="create-plugin">
+		<ant antfile="freeplane_framework/ant/build.xml" target="create-plugin" inheritAll="false" />
+	</target>
 </project>

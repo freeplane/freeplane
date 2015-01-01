@@ -37,16 +37,12 @@ import org.freeplane.features.map.NodeModel;
  * @author foltin
  */
 class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformation {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 */
 	public RemoveAllIconsAction() {
 		super("RemoveAllIconsAction");
-		putValue(Action.SHORT_DESCRIPTION, getDescription());
+		putValue(Action.SHORT_DESCRIPTION, getTranslationValueLabel());
 	}
 
 	@Override
@@ -54,8 +50,12 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 		final MIconController iconController = (MIconController) IconController.getController();
 		iconController.removeAllIcons(node);
 	}
+	
+	public String getTranslationKeyLabel() {
+		return null;
+	}
 
-	public String getDescription() {
+	public String getTranslationValueLabel() {
 		return (String) getValue(Action.NAME);
 	}
 

@@ -41,14 +41,14 @@ public class AttributeContainsCondition extends ASelectableCondition {
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new AttributeContainsCondition(
-            element.getAttribute(AttributeContainsCondition.ATTRIBUTE, null),
-            element.getAttribute(AttributeContainsCondition.VALUE, null),
-            Boolean.valueOf(element.getAttribute(AttributeContainsCondition.MATCH_CASE, null)),
-            Boolean.valueOf(element.getAttribute(AttributeContainsCondition.MATCH_APPROXIMATELY, null))
+			AttributeConditionController.toAttributeObject(element.getAttribute(ATTRIBUTE, null)),
+            element.getAttribute(VALUE, null),
+            Boolean.valueOf(element.getAttribute(MATCH_CASE, null)),
+            Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null))
 		    );
 	}
 
-	final private String attribute;
+	final private Object attribute;
 	final private String value;
 	final private String comparedValue;
 	final private boolean matchCase;
@@ -57,7 +57,7 @@ public class AttributeContainsCondition extends ASelectableCondition {
 
     /**
 	 */
-	public AttributeContainsCondition(final String attribute,final String value, final boolean matchCase,
+	public AttributeContainsCondition(final Object attribute,final String value, final boolean matchCase,
 			final boolean matchApproximately) {
 		super();
         this.attribute = attribute;
@@ -80,31 +80,40 @@ public class AttributeContainsCondition extends ASelectableCondition {
 		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		final TextController textController = TextController.getController();
 		for (int i = 0; i < attributes.getRowCount(); i++) {
-            if(! attributes.getValueAt(i, 0).equals(attribute)) {
+			if(attribute.equals(AttributeConditionController.ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT)){
+				if (checkText(attributes.getValueAt(i, 0).toString()))
+					return true;
+				
+			}
+			else if(! attributes.getValueAt(i, 0).equals(attribute)) {
                 continue;
             }
             final Object originalContent = attributes.getValueAt(i, 1);
             String text = textController.getTransformedTextNoThrow(originalContent, node, null);
-            if (stringMatchingStrategy.matches(comparedValue, text, true, matchCase)) {
+            if (checkText(text)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
+	private boolean checkText(String text) {
+	    return stringMatchingStrategy.matches(comparedValue, text, true, matchCase);
+    }
+
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(attribute, simpleCondition, value, matchCase, matchApproximately);
+		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, matchCase, matchApproximately);
 	}
 
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		child.setAttribute(AttributeContainsCondition.ATTRIBUTE, attribute);
-        child.setAttribute(AttributeContainsCondition.VALUE, value);
-        child.setAttribute(AttributeContainsCondition.MATCH_CASE, Boolean.toString(matchCase));
-        child.setAttribute(AttributeContainsCondition.MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
+		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
+        child.setAttribute(VALUE, value);
+        child.setAttribute(MATCH_CASE, Boolean.toString(matchCase));
+        child.setAttribute(MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
 	}
 
 	@Override

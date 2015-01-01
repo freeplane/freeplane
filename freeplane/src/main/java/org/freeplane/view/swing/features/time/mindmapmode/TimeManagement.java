@@ -78,7 +78,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.FormLayout;
 
 /**
@@ -157,11 +157,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			calendarContainer.setAlignmentX(0.5f);
 			add(calendarContainer);
 			
-			DefaultFormBuilder btnBuilder = new DefaultFormBuilder(new FormLayout(FormFactory.GROWING_BUTTON_COLSPEC.toString(), ""));
+			DefaultFormBuilder btnBuilder = new DefaultFormBuilder(new FormLayout(FormSpecs.GROWING_BUTTON_COLSPEC.toString(), ""));
 			 btnBuilder.getLayout().addGroupedColumn(btnBuilder.getColumnCount());
 			 for(int i = 1; i< colCount; i++){
 				 btnBuilder.appendRelatedComponentsGapColumn();
-				 btnBuilder.appendColumn(FormFactory.GROWING_BUTTON_COLSPEC);
+				 btnBuilder.appendColumn(FormSpecs.GROWING_BUTTON_COLSPEC);
 				 btnBuilder.getLayout().addGroupedColumn(btnBuilder.getColumnCount());
 			}
 

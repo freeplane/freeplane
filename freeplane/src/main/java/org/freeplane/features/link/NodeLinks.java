@@ -207,12 +207,14 @@ public class NodeLinks implements IExtension {
     	this.formatNodeAsHyperlink = formatNodeAsHyperlink;
     }
 
-	public void setSource(NodeModel newSource) {
+	public void replaceSource(NodeModel oldSource, NodeModel newSource) {
 		final ListIterator<NodeLinkModel> listIterator = links.listIterator();
 		while(listIterator.hasNext()){
 			final NodeLinkModel link = listIterator.next();
-			listIterator.remove();
-			listIterator.add(link.cloneForSource(newSource));
+			if(link.getSource().equals(oldSource)){
+				listIterator.remove();
+				listIterator.add(link.cloneForSource(newSource));
+			}
 		}
     }
 

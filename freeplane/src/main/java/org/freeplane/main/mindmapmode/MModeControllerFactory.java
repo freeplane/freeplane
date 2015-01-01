@@ -58,19 +58,16 @@ import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
-import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.IconSelectionPlugin;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
+import org.freeplane.features.map.CloneStateIconSupplier;
 import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.mindmapmode.ChangeNodeLevelController;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -286,7 +283,7 @@ public class MModeControllerFactory {
 		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addExtension(MUIFactory.class, uiFactory);
 		modeController.addMenuContributor(menuContributor);
-		registerStateIconProvider();
+		new CloneStateIconSupplier().registerStateIconProvider();
 
 //		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
 //			public UIIcon getStateIcon(NodeModel node) {
@@ -312,27 +309,4 @@ public class MModeControllerFactory {
 //			}
 //		});
 	}
-	private static UIIcon cloneIcon;
-	private static UIIcon cloneRootIcon;
-	private void registerStateIconProvider() {
-	    IconController.getController().addStateIconProvider(new IStateIconProvider() {
-
-			public UIIcon getStateIcon(NodeModel node) {
-				if (node.clones().size() <= 1) {
-					return null;
-				}
-				final NodeModel parentNode = node.getParentNode();
-				if(parentNode != null && parentNode.clones().size() == node.clones().size()){
-					if (cloneIcon == null) {
-						cloneIcon = IconStoreFactory.create().getUIIcon("clone.png");
-					}
-					return cloneIcon;
-				}
-				if (cloneRootIcon == null) {
-					cloneRootIcon = IconStoreFactory.create().getUIIcon("cloneroot.png");
-				}
-				return cloneRootIcon;
-			}
-		});
-    }
 }

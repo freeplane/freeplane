@@ -119,7 +119,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 				mPattern = null;
 			}
 			else{
-				mPattern = Pattern.compile(mFilterRegexp, matchCase ? 0 : Pattern.CASE_INSENSITIVE);
+				mPattern = Pattern.compile(mFilterRegexp, matchCase ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 			}
 			updateIndexArray();
 			fireTableDataChanged();

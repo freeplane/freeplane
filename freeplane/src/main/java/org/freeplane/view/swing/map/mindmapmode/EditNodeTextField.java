@@ -32,6 +32,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -39,6 +41,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
+import java.text.AttributedCharacterIterator;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -138,6 +141,34 @@ public class EditNodeTextField extends EditNodeBase {
         }
     }
     
+	private static class InputMethodInUseListener implements InputMethodListener {
+		private boolean imeInUse = false;
+
+		public void inputMethodTextChanged(InputMethodEvent event) {
+			updateImeInUseState(event);
+		}
+
+		public void caretPositionChanged(InputMethodEvent event) {
+			updateImeInUseState(event);
+		}
+
+		public boolean isIMEInUse(){
+			return imeInUse;
+		}
+		
+		private void updateImeInUseState(InputMethodEvent event) {
+	        AttributedCharacterIterator aci = event.getText();
+			if(aci != null) {
+				int inputLen = aci.getEndIndex() - aci.getBeginIndex();
+				int committedLen = event.getCommittedCharacterCount();
+				imeInUse = inputLen > 0 && inputLen != committedLen;
+			}
+            else
+	            imeInUse = false;
+        }
+
+	}
+	
 	private int extraWidth;
 	final private boolean layoutMapOnTextChange;
 
@@ -228,9 +259,10 @@ public class EditNodeTextField extends EditNodeBase {
 	}
 
 	private void setLineWrap() {
-		if(null != textfield.getClientProperty("EditNodeTextField.linewrap")){
+		if(null != textfield.getClientProperty("EditNodeTextField.linewrap") || inputMethodInUseListener.isIMEInUse()){
 			return;
 		}
+		
 	    final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 	    document.getStyleSheet().addRule("body { width: " + (maxWidth - 1) + "}");
 	    // bad hack: call "setEditable" only to update view
@@ -404,6 +436,7 @@ public class EditNodeTextField extends EditNodeBase {
 	}
 	
 	private JEditorPane textfield;
+	final private InputMethodInUseListener inputMethodInUseListener;
 	private final DocumentListener documentListener;
 	private int maxWidth;
 
@@ -464,11 +497,13 @@ public class EditNodeTextField extends EditNodeBase {
 		removeFormattingAction = new ExtendedEditorKit.RemoveStyleAttributeAction(null, TextUtils.getText("simplyhtml.clearFormatLabel"));
 		removeFormattingAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control T"));
 		
+		inputMethodInUseListener = new InputMethodInUseListener();
 		if(editControl != null ){
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MTextController textController = (MTextController) TextController.getController(modeController);
 			textfield = textController.createEditorPane(MTextController.NODE_TEXT);
 			textfield.setNavigationFilter(new MyNavigationFilter(textfield));
+			textfield.addInputMethodListener(inputMethodInUseListener);
 		}
 	}
 

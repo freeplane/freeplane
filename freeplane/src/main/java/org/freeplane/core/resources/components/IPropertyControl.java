@@ -20,7 +20,7 @@ package org.freeplane.core.resources.components;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public interface IPropertyControl {
-	String getDescription();
+	String getTooltip();
 
 	String getName();
 

@@ -30,7 +30,7 @@ public class NextColumnProperty implements IPropertyControl {
 	    this.n=n;
     }
 
-	public String getDescription() {
+	public String getTooltip() {
 		return null;
 	}
 

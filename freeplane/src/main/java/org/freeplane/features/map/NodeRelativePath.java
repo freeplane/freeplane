@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.map;
 
+import java.util.Arrays;
+
 
 /**
  * @author Dimitry Polivaev
@@ -96,4 +98,10 @@ public class NodeRelativePath {
 		}
 	    return ancestor;
     }
+
+	public boolean equalPathsTo(NodeRelativePath nodeRelativePath2) {
+	    return Arrays.equals(beginPath, nodeRelativePath2.beginPath) && Arrays.equals(endPath, nodeRelativePath2.endPath);
+    }
+	
+	
 }

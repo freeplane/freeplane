@@ -81,10 +81,14 @@ public abstract class NodeLinkModel{
     		final NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
     		final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
     		final NodeModel ancestorClone = nodeRelativePath.ancestorForBegin(sourceClone);
-    		if(commonAncestor.isCloneOf(ancestorClone)){
-    			final NodeModel targetClone = nodeRelativePath.pathEnd(ancestorClone);
-    			targetID = targetClone.createID();
-    		}
+    		if(commonAncestor.isCloneOf(ancestorClone)) {
+	            final NodeRelativePath pathAncestorToSource = new NodeRelativePath(commonAncestor, source);
+				final NodeRelativePath clonePath = new NodeRelativePath(ancestorClone, sourceClone);
+				if (pathAncestorToSource.equalPathsTo(clonePath)) {
+	            	final NodeModel targetClone = nodeRelativePath.pathEnd(ancestorClone);
+	            	targetID = targetClone.createID();
+	            }
+            }
     	}
 		return cloneForSource(sourceClone, targetID);
     }

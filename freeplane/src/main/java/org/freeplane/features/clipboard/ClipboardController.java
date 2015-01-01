@@ -20,6 +20,7 @@
 package org.freeplane.features.clipboard;
 
 import java.awt.Color;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -72,8 +73,14 @@ public class ClipboardController implements IExtension {
 		super();
 //		this.modeController = modeController;
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
-		selection = toolkit.getSystemSelection();
-		clipboard = toolkit.getSystemClipboard();
+		
+		if (!GraphicsEnvironment.isHeadless()) {
+			selection = toolkit.getSystemSelection();
+			clipboard = toolkit.getSystemClipboard();
+		} else {
+			selection = null;
+			clipboard = null;
+		}
 		createActions();
 	}
 
@@ -206,7 +213,10 @@ public class ClipboardController implements IExtension {
 	/**
 	 */
 	public Transferable getClipboardContents() {
-		return clipboard.getContents(this);
+		if (clipboard != null) {
+			return clipboard.getContents(this);
+		}
+		return null;
 	}
 
 	private String rtfEscapeUnicodeAndSpecialCharacters(final String text) {
@@ -265,7 +275,9 @@ public class ClipboardController implements IExtension {
 	/**
 	 */
 	public void setClipboardContents(final Transferable t) {
-		clipboard.setContents(t, null);
+		if (clipboard != null) {
+			clipboard.setContents(t, null);
+		}
 		if (selection != null) {
 			selection.setContents(t, null);
 		}

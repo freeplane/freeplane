@@ -60,7 +60,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 			// if clipboard contains a valid uri use it
 			ClipboardController clipboardController = modeController.getExtension(ClipboardController.class);
 			Transferable t = clipboardController.getClipboardContents();
-			if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				try {
 					final String plainTextFromClipboard = t.getTransferData(DataFlavor.stringFlavor).toString().trim();
 					new URI(plainTextFromClipboard);

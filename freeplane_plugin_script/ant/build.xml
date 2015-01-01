@@ -7,7 +7,7 @@
 	<property file="${workspace}/freeplane_framework/ant/ant.properties" />
 	<property file="${workspace}/freeplane/ant/ant.properties" />
 	<property file="ant/ant.properties" />
-	<property name="external.jars" value="${commons-lang.jar}:${commons-io.jar}:${forms.jar}:${SimplyHTML.jar}:${groovy.jar}" />
+	<property name="external.jars" value="${commons-lang.jar}:${commons-io.jar}:${forms.jar}:${SimplyHTML.jar}:${groovy.jar}:${insubstantial.jars}" />
 	<property name="dist.osgi.dir" value="dist/org.freeplane.plugin.script" />
 	<property name="freeplaneplugin.jar" value="dist/org.freeplane.plugin.script.jar" />
 	<property name="src.pluginclass" value="${src}/org/freeplane/plugin/script/"/>

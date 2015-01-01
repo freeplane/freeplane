@@ -76,11 +76,9 @@ public class NodeModel{
 	private Clones clones;
 
 	void setClones(Clones clones) {
-		if(this.clones != clones){
-			this.clones = clones;
-			for(NodeModel clone : clones)
-				clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
-		}
+		this.clones = clones;
+		for(NodeModel clone : clones)
+			clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
 	}
 
 	public Object getUserObject() {
@@ -103,6 +101,7 @@ public class NodeModel{
 	private NodeModel(NodeModel toBeCloned){
 		this.map = toBeCloned.map;
 		this.sharedData = toBeCloned.sharedData;
+		this.folded = toBeCloned.folded;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
 		clones = new DetachedNodeList(this, toBeCloned);
@@ -530,7 +529,7 @@ public class NodeModel{
     }
 
 
-	private boolean isAttached() {
+	boolean isAttached() {
 	    return clones.size() != 0;
     }
 
@@ -637,6 +636,18 @@ public class NodeModel{
 
 	public boolean isCloneOf(NodeModel ancestorClone) {
 	    return clones().contains(ancestorClone);
+    }
+
+	public NodeModel getSubtreeRoot() {
+		if(isSubtreeRoot())
+			return this;
+		else
+			return getParentNode().getSubtreeRoot();
+			
+    }
+
+	public boolean isSubtreeRoot() {
+	    return parent == null || parent.clones.size() < clones.size();
     }
 
 }

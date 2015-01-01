@@ -21,6 +21,7 @@ package org.freeplane.core.ui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -403,8 +404,17 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 
 	private static Insets nullInsets = new Insets(0, 0, 0, 0);
 	private static final String SHORTCUT_PROPERTY_PREFIX = "acceleratorFor";
-	static final int MAX_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height - 100;
-
+	
+	static final int MAX_HEIGHT;
+	
+	static {		
+		if (!GraphicsEnvironment.isHeadless()) {
+			MAX_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height - 100;
+		} else {
+			MAX_HEIGHT = 0;
+		}
+	}
+	
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
 		final String text = TextUtils.getRawText(name);

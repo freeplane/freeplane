@@ -72,6 +72,7 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.map.CloneStateIconSupplier;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -100,7 +101,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(3, new LinkConditionController());
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(30, new LinkConditionController());
 	}
 
 	public static void install( final LinkController linkController) {
@@ -148,6 +149,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
 			GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
+			gotoLinkNodeAction.configureText("follow_graphical_link", source);
 			addAction(arrowLinkPopup, gotoLinkNodeAction);
 		}
 	}
@@ -193,8 +195,10 @@ public class LinkController extends SelectionController implements IExtension {
 	private void createActions() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new FollowLinkAction());
-		modeController.addMenuContributor(new LinkMenuContributor("menu_navigate", "menu_goto_links"));
-		modeController.addMenuContributor(new LinkMenuContributor("popup_navigate", "popup_goto_links"));
+		modeController.addMenuContributor(new LinkMenuContributor("menu_links", "menu_goto_links"));
+		modeController.addMenuContributor(new LinkMenuContributor("popup_links", "popup_goto_links"));
+		modeController.addMenuContributor(new ClonesMenuContributor("menu_links", "menu_goto_clones"));
+		modeController.addMenuContributor(new ClonesMenuContributor("popup_links", "popup_goto_clones"));
 	}
 
     private class LinkMenuContributor implements IMenuContributor {
@@ -214,9 +218,7 @@ public class LinkController extends SelectionController implements IExtension {
 							final NodeModel node = selection.getSelected();
 	            			Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>( NodeLinks.getLinks(node));
 	            			links.addAll(getLinksTo(node));
-	            			if(links.isEmpty())
-	            				return;
-	            			builder.addSeparator(key, MenuBuilder.AS_CHILD);
+	            			boolean firstAction = true;
 	            			for(NodeLinkModel link : links){
 	            				final String targetID = link.getTargetID();
 	            				final NodeModel target;
@@ -233,8 +235,13 @@ public class LinkController extends SelectionController implements IExtension {
 	            				else
 	            					target = node.getMap().getNodeForID(targetID);
 	            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
+	            				gotoLinkNodeAction.configureText("follow_graphical_link", target);
 	            				if(!(link instanceof ConnectorModel)){
 	            					gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
+	            				}
+	            				if(firstAction){
+	            					builder.addSeparator(key, MenuBuilder.AS_CHILD);
+	            					firstAction = false;
 	            				}
 	            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
 	            			}
@@ -249,8 +256,61 @@ public class LinkController extends SelectionController implements IExtension {
 	            	});
             }
 	    }
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "(" + key + ")";
+        }
     }
-	@SuppressWarnings("serial")
+
+    private class ClonesMenuContributor implements IMenuContributor {
+    	final String key;
+	    public ClonesMenuContributor(String menuKey, String key) {
+	        super();
+	        this.key = key;
+        }
+		public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
+			if(builder.contains(key)) {
+				builder.addPopupMenuListener((DefaultMutableTreeNode)builder.get(key).getParent(), new PopupMenuListener(
+	            		) {
+	            		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+	            			final IMapSelection selection = modeController.getController().getSelection();
+	            			if(selection == null)
+	            				return;
+							final NodeModel node = selection.getSelected();
+	            			boolean firstAction = true;
+	            			NodeModel parentNode = node.getParentNode();
+							if(parentNode != null){
+	            				for(NodeModel clone : node.clones()){
+									if(!clone.equals(node)){
+			            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
+			            				NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
+										gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
+			            				gotoLinkNodeAction.putValue(Action.SMALL_ICON, CloneStateIconSupplier.CLONEROOT_ICON.getIcon());
+			            				if(firstAction){
+			            					builder.addSeparator(key, MenuBuilder.AS_CHILD);
+			            					firstAction = false;
+			            				}
+			            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
+									}
+	            				}
+	            			}
+	            		}
+
+	            		public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+	            			builder.removeChildElements(key);
+	            		}
+
+	            		public void popupMenuCanceled(PopupMenuEvent e) {
+	            		}
+	            	});
+            }
+	    }
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "(" + key + ")";
+        }
+    }
+    @SuppressWarnings("serial")
     public static final class ClosePopupAction extends AbstractAction {
         final private String reason;
 

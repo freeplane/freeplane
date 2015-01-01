@@ -12,6 +12,7 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 public class RibbonTaskContributorFactory implements IRibbonContributorFactory {
 
 	public ARibbonContributor getContributor(final Properties attributes) {
+		
 		return new ARibbonContributor() {
 			private List<ComparableContributorHull<AbstractRibbonBand<?>>> hulls = new ArrayList<ARibbonContributor.ComparableContributorHull<AbstractRibbonBand<?>>>();
 			

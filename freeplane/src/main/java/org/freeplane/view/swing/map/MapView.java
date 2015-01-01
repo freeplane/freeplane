@@ -241,6 +241,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final private Set<NodeView> selectedSet = new LinkedHashSet<NodeView>();
 		final private List<NodeView> selectedList = new ArrayList<NodeView>();
 		private NodeView selectedNode = null;
+		private NodeView selectionStart = null;
+		private NodeView selectionEnd = null;
 
 		public Selection() {
 		};
@@ -250,6 +252,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectedSet.add(node);
 			selectedList.add(node);
 			selectedNode = node;
+			selectionEnd = selectionStart = node;
 			addSelectionForHooks(node);
 			node.repaintSelected();
 		}
@@ -284,6 +287,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				selectedNode = null;
 				selectedSet.clear();
 				selectedList.clear();
+				selectionEnd = selectionStart = null;
 			}
 		}
 
@@ -296,6 +300,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		private boolean deselect(final NodeView node) {
+			if(selectionStart == node)
+				selectionEnd = selectionStart = null;
 			final boolean selectedChanged = selectedNode != null && selectedNode.equals(node);
 			if (selectedChanged) {
 				removeSelectionForHooks(node);
@@ -369,6 +375,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		private Set<NodeView> getSelectedSet() {
 	        return selectedSet;
         }
+
+		public NodeView getSelectionStart() {
+			return selectionStart;
+		}
+
+		public void setSelectionStart(NodeView node) {
+			selectionEnd = selectionStart = node;
+		}
+		public NodeView getSelectionEnd() {
+			return selectionEnd;
+		}
+
+		public void setSelectionEnd(NodeView selectionEnd) {
+			this.selectionEnd = selectionEnd;
+		}
+
 	}
 
 	private static final int margin = 20;
@@ -503,7 +525,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			anchor = view;
 			anchorHorizontalPoint = horizontalPoint;
 			anchorVerticalPoint = verticalPoint;
-			setAnchorContentLocation(getAnchorCenterPoint());
+			this.anchorContentLocation = getAnchorCenterPoint();
 			if (nodeToBeVisible == null) {
 				nodeToBeVisible = anchor;
 				extraWidth = 0;
@@ -542,7 +564,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		content.scrollRectToVisible(rect);
 		nodeToBeCentered = null;
 		this.slowScroll = false;
-		setAnchorContentLocation(getAnchorCenterPoint());
+		this.anchorContentLocation = getAnchorCenterPoint();
     }
 	
 	
@@ -667,8 +689,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return new Point();
 		}
 		final MainView mainView = anchor.getMainView();
-		final Point anchorCenterPoint = new Point((int) (mainView.getWidth() * anchorHorizontalPoint), (int) (mainView
-		    .getHeight() * anchorVerticalPoint));
+		final int mainViewWidth = mainView.getWidth();
+		final int mainViewHeight = mainView.getHeight();
+		final Point anchorCenterPoint = new Point((int) (mainViewWidth * anchorHorizontalPoint), (int) (mainViewHeight * anchorVerticalPoint));
 		final JViewport parent = (JViewport) getParent();
 		UITools.convertPointToAncestor(mainView, anchorCenterPoint, this);
 		anchorCenterPoint.x += - parent.getWidth() / 2;
@@ -881,13 +904,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	ArrayList<NodeModel> getSelectedNodesSortedByY(final boolean differentSubtrees) {
 		validateSelecteds();
 		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap<Integer, LinkedList<NodeModel>>();
-		iteration: for (final NodeView view : selection.getSelectedSet()) {
+		for (final NodeView view : selection.getSelectedSet()) {
 			if (differentSubtrees) {
-				for (Component parent = view.getParent(); parent != null; parent = parent.getParent()) {
-					if (selection.getSelectedSet().contains(parent)) {
-						continue iteration;
-					}
-				}
+				if(viewBelongsToSelectedSubtreeOrItsClone(view))
+					continue;
 			}
 			final Point point = new Point();
 			UITools.convertPointToAncestor(view.getParent(), point, this);
@@ -910,6 +930,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		return selectedNodes;
 	}
+
+	private boolean viewBelongsToSelectedSubtreeOrItsClone(final NodeView view) {
+		HashSet<NodeModel> selectedNodesWithClones = new HashSet<NodeModel>();
+		for (NodeView selectedView : selection.getSelectedList())
+			for(NodeModel clone : selectedView.getModel().clones())
+				selectedNodesWithClones.add(clone);
+			
+	    for (Component parent = view.getParent(); parent instanceof NodeView; parent = parent.getParent()) {
+	    	if (selectedNodesWithClones.contains(((NodeView)parent).getModel())) {
+	    		return true;
+	    	}
+	    }
+	    return false;
+    }
 
 	/**
 	 * @return
@@ -1026,7 +1060,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void initRoot() {
-		setAnchorContentLocation(new Point());
+		this.anchorContentLocation = new Point();
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), this, this, 0);
 		anchor = rootView;
 	}
@@ -1208,35 +1242,66 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return selectSibling(continious, false, false);
 	}
 
-	private boolean selectSibling(boolean continious, boolean page, boolean down) {
-		NodeView nextSelected = getSelected();
-		do {
+	private boolean selectSibling(final boolean continious, final boolean page, final boolean down) {
+		final NodeView oldSelectionEnd = selection.getSelectionEnd();
+		if(oldSelectionEnd == null)
+			return false;
+		NodeView nextSelected = oldSelectionEnd;
+		{
 			final NodeView nextVisibleSibling = getNextVisibleSibling(nextSelected, down);
-			if(nextSelected == null || nextSelected == nextVisibleSibling)
+			if (nextSelected == nextVisibleSibling)
 				return false;
 			nextSelected = nextVisibleSibling;
-		} while (nextSelected.isSelected());
+		}
 		if(page){
 			NodeView sibling = nextSelected;
 			for(;;)  {
 				sibling = getNextVisibleSibling(sibling, down);
-				if(sibling == nextSelected || sibling.getParentView() != nextSelected.getParentView())
+				final boolean noNextNodeFound = sibling == nextSelected;
+				if(noNextNodeFound 
+						|| sibling.getParentView() != nextSelected.getParentView()
+						|| sibling.isSelected() && sibling.getParentView() != oldSelectionEnd.getParentView()
+						)
 					break;
 				nextSelected = sibling;
 			}
+			if(nextSelected.isSelected() && nextSelected.getParentView() == oldSelectionEnd.getParentView())
+				nextSelected = getNextVisibleSibling(nextSelected, down);
 		}
 		if(continious){
-			selectAsTheOnlyOneSelected(getSelected());
-			NodeView node = getSelected();
-			do{
-				node = getNextVisibleSibling(node, down);
-				addSelected(node, false);
-			}while(node != nextSelected);
-			scrollNodeToVisible(nextSelected);
+			final NodeView selectionStart = selection.getSelectionStart();
+			selectAsTheOnlyOneSelected(selectionStart);
+			Boolean selectsDown = selectsDown(selectionStart, nextSelected);
+			if(selectsDown != null){
+				NodeView node = selectionStart;
+				do{
+					node = getNextVisibleSibling(node, selectsDown);
+					addSelected(node, false);
+				}while(node != nextSelected);
+				selection.setSelectionEnd(nextSelected);
+				scrollNodeToVisible(nextSelected);
+			}
 		}
 		else
 			selectAsTheOnlyOneSelected(nextSelected);
 		return true;
+    }
+
+	private Boolean selectsDown(NodeView first, NodeView second) {
+		if(first == second)
+			return null;
+		NodeView node = first;
+		for(boolean down : new boolean[]{true, false}){
+			for(;;){
+				final NodeView nextVisibleSibling = getNextVisibleSibling(node, down);
+				if(node == nextVisibleSibling)
+					break;
+				node = nextVisibleSibling;
+				if(node == second)
+					return down;
+			};
+		}
+		return null;
     }
 
 	public NodeView getNextVisibleSibling(NodeView node, boolean down) {
@@ -1813,52 +1878,47 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	void selectContinuous(final NodeView newSelected) {
-		if(newSelected.isRoot()){
-			selection.add(newSelected);
-			scrollNodeToVisible(newSelected);
-			return;
-		}
+		final NodeView selectionStart = selection.getSelectionStart();
+		final NodeView selectionEnd = selection.getSelectionEnd();
 		final NodeView parentView = newSelected.getParentView();
-		final boolean isLeft = newSelected.isLeft();
-		final NodeModel parent = parentView.getModel();
-		final int newIndex = parent.getIndex(newSelected.getModel());
-		int indexGapAbove = Integer.MAX_VALUE;
-		int indexGapBelow = Integer.MIN_VALUE;
-		final LinkedList<NodeView> childrenViews = parentView.getChildrenViews();
-		for(NodeView sibling : childrenViews){
-			if(newSelected == sibling || sibling.isLeft() != isLeft || ! sibling.isSelected())
-				continue;
-			final int index2 = parent.getIndex(sibling.getModel());
-			final int indexGap = newIndex - index2;
-			if(indexGap > 0){
-				if(indexGap < indexGapAbove){
-					indexGapAbove = indexGap;
-				}
-			}
-			else if(indexGapAbove == Integer.MAX_VALUE){
-				if(indexGap > indexGapBelow){
-					indexGapBelow = indexGap;
-				}
-			}
-		}
-		if(indexGapAbove == Integer.MAX_VALUE && indexGapBelow == Integer.MIN_VALUE){
-			selection.add(newSelected);
+		final boolean left = newSelected.isLeft();
+		if(newSelected.isRoot() 
+				|| selectionStart == null || selectionEnd == null 
+				|| parentView != selectionStart.getParentView() || parentView != selectionEnd.getParentView() 
+				|| left != selectionStart.isLeft() || newSelected.isLeft() != selectionEnd.isLeft()){
+			selection.setSelectionStart(newSelected);
+			if(!newSelected.isSelected())
+				selection.add(newSelected);
 			scrollNodeToVisible(newSelected);
 			return;
 		}
-		NodeView lastSelected = newSelected;
-		for(NodeView sibling : childrenViews){
-			if(sibling.isLeft() != isLeft)
-				continue;
-			final int index2 = parent.getIndex(sibling.getModel());
-			final int indexGap = newIndex - index2;
-			if(indexGap >= 0 && indexGapAbove < Integer.MAX_VALUE && indexGap < indexGapAbove
-					|| indexGap <= 0 && indexGapAbove == Integer.MAX_VALUE && indexGapBelow > Integer.MIN_VALUE  && indexGap > indexGapBelow){
-				selection.add(sibling);
-				lastSelected = sibling;
+
+		boolean selectionFound = false;
+		boolean selectionRequired = false;
+		for (NodeView child : parentView.getChildrenViews()){
+			if(child.isLeft() == left){
+				final boolean onOldSelectionMargin = child == selectionStart || child == selectionEnd;
+				boolean selectionFoundNow = ! selectionFound && onOldSelectionMargin;
+				selectionFound = selectionFound || selectionFoundNow;
+				
+				final boolean onNewSelectionMargin = child == selectionStart || child == newSelected;
+				boolean selectionRequiredNow = ! selectionRequired && onNewSelectionMargin;
+				selectionRequired = selectionRequired || selectionRequiredNow;
+				
+				if(selectionRequired && ! selectionFound)
+					selection.add(child);
+				else if(! selectionRequired && selectionFound)
+					selection.deselect(child);
+				
+				if(selectionFound && (selectionStart == selectionEnd || ! selectionFoundNow && onOldSelectionMargin))
+					selectionFound = false;
+				if(selectionRequired && (selectionStart == newSelected ||  ! selectionRequiredNow && onNewSelectionMargin))
+					selectionRequired = false;
 			}
 		}
-		scrollNodeToVisible(lastSelected);
+		selection.setSelectionEnd(newSelected);
+		scrollNodeToVisible(newSelected);
+		
 	}
 
 	public void setMoveCursor(final boolean isHand) {
@@ -1884,9 +1944,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
-		if (anchor != getRoot()) {
-			anchor = getRoot();
-		}
 		final int deltaX = newAnchorContentLocation.x - oldAnchorContentLocation.x;
 		final int deltaY = newAnchorContentLocation.y - oldAnchorContentLocation.y;
 		if (deltaX != 0 || deltaY != 0) {
@@ -1907,6 +1964,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			vp.setScrollMode(scrollMode);
 			nodeToBeVisible = null;
 		}
+		anchor = getRoot();
+		anchorHorizontalPoint = anchorVerticalPoint = 0;
+		this.anchorContentLocation = getAnchorCenterPoint();
 	}
 
 	public void setZoom(final float zoom) {
@@ -1941,6 +2001,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				selection.deselect(nodeView);
 		}
 		else {
+			selection.setSelectionStart(nodeView);
 			selection.add(nodeView);
 			scrollNodeToVisible(nodeView);
 		}
@@ -2062,11 +2123,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public void setLocation(int x, int y) {
 	    if(isValid()){
 	    	super.setLocation(x, y);
-	    	setAnchorContentLocation(getAnchorCenterPoint());
+	    	this.anchorContentLocation = getAnchorCenterPoint();
 	    }
-    }
-
-	private void setAnchorContentLocation(Point anchorContentLocation) {
-	    this.anchorContentLocation = anchorContentLocation;
     }
 }

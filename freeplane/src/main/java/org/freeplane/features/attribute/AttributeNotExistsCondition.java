@@ -33,14 +33,17 @@ public class AttributeNotExistsCondition extends ASelectableCondition {
 	static final String NAME = "attribute_not_exists_condition";
 
 	static ASelectableCondition load(final XMLElement element) {
-		return new AttributeNotExistsCondition(element.getAttribute(AttributeNotExistsCondition.ATTRIBUTE, null));
+		return new AttributeNotExistsCondition(
+			AttributeConditionController.toAttributeObject(element.getAttribute(AttributeNotExistsCondition.ATTRIBUTE, null))
+		);
 	}
 
-	final private String attribute;
+
+	final private Object attribute;
 
 	/**
 	 */
-	public AttributeNotExistsCondition(final String attribute) {
+	public AttributeNotExistsCondition(final Object attribute) {
 		super();
 		this.attribute = attribute;
 	}
@@ -64,12 +67,12 @@ public class AttributeNotExistsCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
-		return ConditionFactory.createDescription(attribute, simpleCondition, null, false, false);
+		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, null, false, false);
 	}
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		child.setAttribute(AttributeNotExistsCondition.ATTRIBUTE, attribute);
+		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
 	}
 
 	@Override

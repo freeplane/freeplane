@@ -149,4 +149,12 @@ class DialogController extends FrameController {
 	public void setMapView(Component mapViewComponent) {
 	    mapViewScrollPane.getViewport().setView(mapViewComponent);
     }
+
+	public void previousMapView() {
+		throw new RuntimeException("Method not implemented");
+	}
+
+	public void nextMapView() {
+		throw new RuntimeException("Method not implemented");
+	}
 }

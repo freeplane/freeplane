@@ -21,20 +21,30 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.features.icon.UIIcon;
+
 public class MultipleImage implements Icon {
 	final private List<Icon> mIcons = new ArrayList<Icon>();
+	final private List<UIIcon> mUIIcons = new ArrayList<UIIcon>();
 
 	public MultipleImage() {
 	}
 
-	public void addImage(final Icon icon) {
+	public void addIcon(final UIIcon uiIcon) {
+		mIcons.add(uiIcon.getIcon());
+		mUIIcons.add(uiIcon);
+	}
+
+	public void addLinkIcon(Icon icon) {
 		mIcons.add(icon);
+		mUIIcons.add(null);
 	};
 
 	public int getIconHeight() {
@@ -68,7 +78,20 @@ public class MultipleImage implements Icon {
 		}
 	}
 	
-
+	public UIIcon getUIIconAt(Point coordinate){
+		if(coordinate.x < 0 || coordinate.y < 0)
+			return null;
+		int iconX = 0;
+		for (int iconIndex = 0; iconIndex < mIcons.size(); iconIndex++)
+		{
+			iconX += mIcons.get(iconIndex).getIconWidth();
+			if(coordinate.x <= iconX){
+				return mUIIcons.get(iconIndex);
+			}
+		}
+		return null;
+	}
+	
 	//DOCEAR - get a rect relative to this image for a specific icon  
 	public Rectangle getIconR(Icon icon) {
 		int myX = 0;
@@ -79,25 +102,5 @@ public class MultipleImage implements Icon {
 			myX += ico.getIconWidth();
 		}
 		return null;
-	}
-	
-	public void addOrReplaceIcon(Icon oldIcon, Icon newIcon) {
-		if(newIcon == null || mIcons.indexOf(newIcon) >= 0) {
-			return;
-		}
-		
-		if(oldIcon == null) {
-			mIcons.add(newIcon);
-		}
-		else {
-    		int index = mIcons.indexOf(oldIcon);
-    		if(index > -1) {
-    			mIcons.remove(index);
-    			mIcons.add(index, newIcon);
-    		}
-    		else {
-    			mIcons.add(newIcon);
-    		}
-		}
 	}
 };

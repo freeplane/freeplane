@@ -33,14 +33,16 @@ public class AttributeExistsCondition extends ASelectableCondition {
 	static final String NAME = "attribute_exists_condition";
 
 	static ASelectableCondition load(final XMLElement element) {
-		return new AttributeExistsCondition(element.getAttribute(AttributeExistsCondition.ATTRIBUTE, null));
+		return new AttributeExistsCondition(
+			AttributeConditionController.toAttributeObject(element.getAttribute(AttributeExistsCondition.ATTRIBUTE, null))
+		);
 	}
 
-	final private String attribute;
+	final private Object attribute;
 
 	/**
 	 */
-	public AttributeExistsCondition(final String attribute) {
+	public AttributeExistsCondition(final Object attribute) {
 		super();
 		this.attribute = attribute;
 	}
@@ -54,7 +56,10 @@ public class AttributeExistsCondition extends ASelectableCondition {
 	public boolean checkNode(final NodeModel node) {
 		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
-			if (attributes.getValueAt(i, 0).equals(attribute)) {
+			if(attribute.equals(AttributeConditionController.ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT)){
+				return true;
+			}
+			else if (attributes.getValueAt(i, 0).equals(attribute)) {
 				return true;
 			}
 		}
@@ -64,12 +69,12 @@ public class AttributeExistsCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
-		return ConditionFactory.createDescription(attribute, simpleCondition, null, false, false);
+		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, null, false, false);
 	}
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		child.setAttribute(AttributeExistsCondition.ATTRIBUTE, attribute);
+		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
 	}
 
 	@Override

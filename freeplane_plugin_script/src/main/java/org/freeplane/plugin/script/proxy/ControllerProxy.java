@@ -101,7 +101,7 @@ class ControllerProxy implements Proxy.Controller {
         }
     }
 
-	public void selectMultipleNodes(final Collection<Node> toSelect) {
+	public void select(final Collection<Node> toSelect) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final Iterator<Node> it = toSelect.iterator();
 		if (!it.hasNext()) {
@@ -112,6 +112,10 @@ class ControllerProxy implements Proxy.Controller {
 			final NodeModel nodeModel = ((NodeProxy) it.next()).getDelegate();
 			Controller.getCurrentController().getSelection().toggleSelected(nodeModel);
 		}
+	}
+	
+    public void selectMultipleNodes(final Collection<Node> toSelect) {
+	    select(toSelect);
 	}
 
 	public void deactivateUndo() {

@@ -609,8 +609,11 @@ public class MClipboardController extends ClipboardController {
     }
 
 	Collection<IDataFlavorHandler> getFlavorHandlers() {
-		final Transferable t = getClipboardContents();
+		final Transferable t = getClipboardContents();		
 		final Collection<IDataFlavorHandler> handlerList = new LinkedList<IDataFlavorHandler>();
+		if (t == null) {
+			return handlerList;
+		}
 		if (t.isDataFlavorSupported(MindMapNodesSelection.mindMapNodesFlavor)) {
 			try {
 				final String textFromClipboard = t.getTransferData(MindMapNodesSelection.mindMapNodesFlavor).toString();

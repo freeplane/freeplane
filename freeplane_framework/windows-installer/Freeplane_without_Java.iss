@@ -11,17 +11,19 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.4.1 alpha"
+#define MyVersion "1.4.1"
+#define MyStatus "alpha"
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
 #define MyAppExeName "freeplane.exe"
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
-AppCopyright=Copyright © 2000-2012 Freeplane team and others
+AppCopyright=Copyright © 2000-2014 Freeplane team and others
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
@@ -31,7 +33,11 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 ArchitecturesInstallIn64BitMode=x64 ia64
 OutputDir=..\dist
-OutputBaseFilename=Freeplane-Setup-{#MyVersion}
+#if MyStatus == ""
+  OutputBaseFilename=Freeplane-Setup-{#MyVersion}
+#else
+  OutputBaseFilename=Freeplane-Setup-{#MyVersion}-{#MyStatus}
+#endif
 SetupIconFile=Setup.ico
 VersionInfoDescription=Free mind mapping software. Fast. Simple. Streamlined.
 ChangesAssociations=true
@@ -41,7 +47,11 @@ ShowTasksTreeLines=true
 WindowVisible=true
 WizardSmallImageFile=Freeplane_bee.bmp
 WizardImageStretch=false
-AppVersion={#MyVersion}
+#if MyStatus == ""
+  AppVersion={#MyVersion}
+#else
+  AppVersion={#MyVersion}{#MyStatus}
+#endif
 UninstallDisplayIcon={app}\freeplane.exe
 UninstallDisplayName=Freeplane
 DiskSpanning=false

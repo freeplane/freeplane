@@ -57,7 +57,7 @@ public class HyperTextLinkModel extends NodeLinkModel {
 		    return false;
 	    if (getClass() != obj.getClass())
 		    return false;
-	    ConnectorModel other = (ConnectorModel) obj;
+	    NodeLinkModel other = (NodeLinkModel) obj;
 	    if (!getSource().equals(other.getSource()))
 	        return false;
 	    final String targetID = getTargetID();

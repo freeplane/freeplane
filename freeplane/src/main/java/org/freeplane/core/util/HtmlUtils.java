@@ -183,6 +183,8 @@ public class HtmlUtils {
 		return HtmlUtils.HTML_PATTERN.matcher(text).matches();
 	}
 
+	/** transforms {@code &, <, >, \n} and whitespace by their HTML counterpart and
+	 * encloses the whole text in {@code <html><body><p>...</p></body></html>}. */
 	public static String plainToHTML(final String text) {
 		char myChar;
 		final String textTabsExpanded = text.replaceAll("\t", "         ");
@@ -432,10 +434,11 @@ public class HtmlUtils {
 		private String stringWithoutTags;
 
 		public String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
-			initialize(text);
+			final String unescapedText = unescapeHTMLUnicodeEntity(text);
+			initialize(unescapedText);
 			final Matcher matcher = pattern.matcher(stringWithoutTags);
 			if (! matcher.find()) {
-				return text;
+				return unescapedText;
 			}
 			final StringBuilder sbResult = new StringBuilder();
 			int pureTextPosition = 0;
@@ -448,10 +451,10 @@ public class HtmlUtils {
 				if(pair == null){
 					for(pair = indexPairs.next();pair.pureTextEnd <= mStart;pair = indexPairs.next()){
 						if(pair.mIsTag || pureTextPosition <= pair.pureTextStart){
-							sbResult.append(text, pair.originalStart, pair.originalEnd);
+							sbResult.append(unescapedText, pair.originalStart, pair.originalEnd);
 						}
 						else if(pureTextPosition <= pair.pureTextEnd){
-							sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
+							sbResult.append(unescapedText, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
 						}
 					}
 					if(pureTextPosition < pair.pureTextStart){
@@ -459,7 +462,7 @@ public class HtmlUtils {
 					}
 				}
 
-				sbResult.append(text, 
+				sbResult.append(unescapedText, 
 					pair.originalStart + pureTextPosition - pair.pureTextStart, 
 					pair.originalStart + mStart - pair.pureTextStart);
 				appendReplacement(sbResult, matcher, replacement);
@@ -468,7 +471,7 @@ public class HtmlUtils {
 				if(matcher.find()){
 					if(matcher.start() >= pair.pureTextEnd){
 						if(mEnd < pair.pureTextEnd){
-							sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
+							sbResult.append(unescapedText, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
 							pureTextPosition = pair.pureTextEnd;
 						}
 						pair = null;
@@ -477,11 +480,11 @@ public class HtmlUtils {
 				}
 				for(;;){
 					if(pureTextPosition <= pair.pureTextEnd){
-						sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, text.length());
+						sbResult.append(unescapedText, pair.originalStart + pureTextPosition - pair.pureTextStart, unescapedText.length());
 						return sbResult.toString();
 					}
 					if(pair.mIsTag){
-						sbResult.append(text, pair.originalStart, pair.originalEnd);
+						sbResult.append(unescapedText, pair.originalStart, pair.originalEnd);
 					}
 					pair = indexPairs.next();
 				}
@@ -746,4 +749,37 @@ public class HtmlUtils {
 	public static String toHTMLEscapedText(String s) {
 		return toXMLEscapedText(s).replaceAll("\n", "<br>\n");
 	}
+
+	private static Pattern htmlBodyPattern = Pattern.compile("^\\s*(?:<html>|<body>)+\\s*(.*?)"
+            + "\\s*(?:</body>|</html>)+\\s*$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
+    /**
+     * Join arbitrary texts to html. Plain text arguments will be transformed via
+     * {@link #plainToHTML(String)}, i.e. newlines and other special characters will
+     * be translated to their HTML counterpart and wrapped in a paragraph (&lt;p&gt;&lt;/p&gt;).
+     * <pre>{@code
+     *   // plain + html -> <html><body><p>text1</p>text2</body></html>
+     *   HtmlUtils.join("text1", "", "<html><body>text2</body></html>");
+     *   // insert an empty paragraph (<p></p>) between two strings:
+     *   HtmlUtils.join("text1", "", "text2");
+     *   // this will insert two paragraphs:
+     *   HtmlUtils.join("text1", "\n", "text2");
+     * }</pre>
+     * @param texts either html (starting with <HTML> or <html>) or plain text.
+     * @return html
+     */
+    public static String join(String... texts) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<html><body>");
+        for (int i = 0; i < texts.length; i++) {
+            String string = texts[i];
+            if (i > 0)
+                builder.append('\n');
+            if (!isHtmlNode(string))
+                string = plainToHTML(string);
+            builder.append(htmlBodyPattern.matcher(string).replaceFirst("$1"));
+        }
+        builder.append("</body></html>");
+        return builder.toString();
+    }
 }

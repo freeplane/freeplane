@@ -630,7 +630,7 @@ public class UITools {
 	public static boolean isEditingText() {
 	    final Component focusOwner = FocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		final boolean isTextComponentFocused = focusOwner instanceof JTextComponent;
-		return isTextComponentFocused && ((JTextComponent)focusOwner).isEditable();
+		return isTextComponentFocused && focusOwner.isShowing() && ((JTextComponent)focusOwner).isEditable();
     }
 
 }

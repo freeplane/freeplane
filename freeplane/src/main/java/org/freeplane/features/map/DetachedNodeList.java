@@ -50,7 +50,11 @@ public class DetachedNodeList implements Clones {
 
 	public void attach() {
 		if(clonedNode == clone)
-			clonedNode.setClones(new SingleNodeList(clonedNode));
+			clone.setClones(new SingleNodeList(clone));
+		else if (! clonedNode.isAttached()){
+			clone.setClones(new SingleNodeList(clone));
+			clonedNode.setClones(new DetachedNodeList(clonedNode, clone));
+		}
         else {
 	        final Clones clonesWithNewClone = clonedNode.clones().add(clone);
 	        clonedNode.setClones(clonesWithNewClone);

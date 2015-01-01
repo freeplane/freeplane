@@ -170,45 +170,26 @@ if [ "${JAVA_TYPE}" != "sun" ]; then
   #JAVA_OPTS="-Dsun.java2d.xrender=True $JAVA_OPTS"
 fi
 
+# enable this in order to turn off the splash screen:
+#JAVA_OPTS="-Dorg.freeplane.nosplash=true $JAVA_OPTS"
+
 _debug "Calling: "\
 "${JAVACMD}" -Xmx512m\
- "-Dorg.freeplane.param1=$1"\
- "-Dorg.freeplane.param2=$2"\
- "-Dorg.freeplane.param3=$3"\
- "-Dorg.freeplane.param4=$4"\
- "-Dorg.freeplane.param5=$5"\
- "-Dorg.freeplane.param6=$6"\
- "-Dorg.freeplane.param7=$7"\
- "-Dorg.freeplane.param8=$8"\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
- "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
- "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
  $JAVA_OPTS\
  $xdockname\
- -jar "${freedir}/framework.jar"\
- -xargs "${freedir}/props.xargs"\
- -xargs "${freedir}/init.xargs"
+ -jar "${freedir}/freeplanelauncher.jar"\
+ $*
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
 
 # now actually launch Freeplane
 "${JAVACMD}" -Xmx512m\
- "-Dorg.freeplane.param1=$1"\
- "-Dorg.freeplane.param2=$2"\
- "-Dorg.freeplane.param3=$3"\
- "-Dorg.freeplane.param4=$4"\
- "-Dorg.freeplane.param5=$5"\
- "-Dorg.freeplane.param6=$6"\
- "-Dorg.freeplane.param7=$7"\
- "-Dorg.freeplane.param8=$8"\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
- "-Dorg.knopflerfish.framework.bundlestorage=memory"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
- "-Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/core/"\
  $JAVA_OPTS\
  $xdockname\
- -jar "${freedir}/framework.jar"\
- -xargs "${freedir}/props.xargs"\
- -xargs "${freedir}/init.xargs"
+ -jar "${freedir}/freeplanelauncher.jar"\
+ $*

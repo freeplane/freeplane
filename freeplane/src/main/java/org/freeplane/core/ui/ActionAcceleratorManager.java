@@ -115,10 +115,10 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		final String shortcutKey = getPropertyKey(itemKey);
 		if (null == getProperty(shortcutKey)) {
 			defaultProps.setProperty(shortcutKey, accelerator);
+			KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
+			AFreeplaneAction action = Controller.getCurrentModeController().getAction(itemKey);
+			setAccelerator(action, ks);
 		}
-		KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
-		AFreeplaneAction action = Controller.getCurrentModeController().getAction(itemKey);
-		setAccelerator(action, ks);
 
 	}
 

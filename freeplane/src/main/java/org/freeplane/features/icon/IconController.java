@@ -23,11 +23,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -54,10 +54,9 @@ public class IconController implements IExtension {
     }
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(1,
-		    new IconConditionController());
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(5,
-		    new PriorityConditionController());
+		final ConditionFactory conditionFactory = FilterController.getCurrentFilterController().getConditionFactory();
+		conditionFactory.addConditionController(10, new IconConditionController());
+		conditionFactory.addConditionController(50, new PriorityConditionController());
 	}
 
 	public static void install( final IconController iconController) {
@@ -67,6 +66,12 @@ public class IconController implements IExtension {
 
 // 	final private ModeController modeController;
 	final private Collection<IStateIconProvider> stateIconProviders;
+	
+	final private List<IconMouseListener> iconMouseListeners;
+	
+	public void addIconMouseListener(final IconMouseListener iconMouseListener) {
+		iconMouseListeners.add(iconMouseListener);
+	}
 
 	public boolean addStateIconProvider(IStateIconProvider o) {
 	    return stateIconProviders.add(o);
@@ -100,6 +105,7 @@ public class IconController implements IExtension {
 				return currentValue;
 			}
 		});
+		iconMouseListeners = new LinkedList<IconMouseListener>();
 	}
 
 	public IPropertyHandler<Collection<MindIcon>, NodeModel> addIconGetter(
@@ -131,6 +137,12 @@ public class IconController implements IExtension {
 			}
 		}
 		return icons;
+	}
+	public void onIconClicked(NodeModel node, UIIcon icon) {
+		for (IconMouseListener listener : iconMouseListeners)
+		{
+			listener.uiIconClicked(new IconClickedEvent(icon, node));
+		}
 	}
 
 }

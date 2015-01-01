@@ -26,6 +26,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.ImageIconFactory;
 
 /**
@@ -43,7 +44,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	        + "\\.\\." + SEPARATOR);
 	private final String name;
 	private final String fileName;
-	private final String description;
+	private final String translationKeyLabel;
 	private final String shortcutKey;
 	private URL resourceURL;
 
@@ -51,14 +52,14 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		this(name, fileName, "", "?");
 	}
 
-	public UIIcon(final String name, final String fileName, final String description) {
-		this(name, fileName, description, "?");
+	public UIIcon(final String name, final String fileName, final String translationKeyLabel) {
+		this(name, fileName, translationKeyLabel, "?");
 	}
 
-	public UIIcon(final String name, final String fileName, final String description, final String shortcutKey) {
+	public UIIcon(final String name, final String fileName, final String translationKeyLabel, final String shortcutKey) {
 		this.name = name;
 		this.fileName = fileName;
-		this.description = description;
+		this.translationKeyLabel = translationKeyLabel;
 		this.shortcutKey = shortcutKey;
 	}
 
@@ -73,23 +74,18 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return shortcutKey;
 	}
 
-	/**
-	 * @return description of icon
-	 */
-	public String getDescription() {
-		return description;
+	public String getTranslationKeyLabel() {
+		return translationKeyLabel;
+	}
+	
+	public String getTranslationValueLabel() {
+		return TextUtils.getText(translationKeyLabel, "");
 	}
 
-	/**
-	 * @return name of icon
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @return associated ImageIcon for this icon
-	 */
 	public Icon getIcon() {
 		return ImageIconFactory.getInstance().getImageIcon(this);
 	}
@@ -125,7 +121,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((translationKeyLabel == null) ? 0 : translationKeyLabel.hashCode());
 		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
@@ -145,12 +141,12 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 			return false;
 		}
 		final UIIcon other = (UIIcon) obj;
-		if (description == null) {
-			if (other.description != null) {
+		if (translationKeyLabel == null) {
+			if (other.translationKeyLabel != null) {
 				return false;
 			}
 		}
-		else if (!description.equals(other.description)) {
+		else if (!translationKeyLabel.equals(other.translationKeyLabel)) {
 			return false;
 		}
 		if (fileName == null) {
@@ -188,4 +184,5 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	public String toString() {
 		return name;
 	}
+
 }
