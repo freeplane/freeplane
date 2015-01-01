@@ -1,7 +1,6 @@
 dependencies {
     compile project(':freeplane')
-    compile project(':freeplane_plugin_jsp')
-    compile group: 'org.scilab.forge', name: 'jlatexmath', version:'1.0.2'
+    compile files('./lib/jsyntaxpane.jar')
 }
 
 jar {
@@ -23,9 +22,6 @@ jar {
 
         def imports = """\
                       org.osgi.framework;version="1.3.0",
-                      jsyntaxpane,
-                      jsyntaxpane.lexers,
-                      jsyntaxpane.syntaxkits,
                       org.freeplane.core.*,
                       org.freeplane.features.*,
                       org.freeplane.main.*,
@@ -33,7 +29,14 @@ jar {
                       org.freeplane.view.*
                       """
         instruction 'Import-Package', imports.replaceAll("\\s+", "")
-        instruction 'Export-Package', ''
+        
+        def exports = """\
+                      jsyntaxpane,
+                      jsyntaxpane.lexers,
+                      jsyntaxpane.syntaxkits
+                      """
+        // bnd f**cks up the exports, so we bypass it using attributes!
+        attributes 'Export-Package': exports.replaceAll("\\s+", "")
 
         // Require-Bundle is ignored by bnd => replaced by Import-Package!
         //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1", org.freeplane.plugin.script;bundle-version="1.0.1"'

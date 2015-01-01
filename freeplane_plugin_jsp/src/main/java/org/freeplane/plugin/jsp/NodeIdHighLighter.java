@@ -1,4 +1,4 @@
-package org.freeplane.plugin.script;
+package org.freeplane.plugin.jsp;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
