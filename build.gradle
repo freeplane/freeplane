@@ -32,6 +32,13 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
+    compileJava {
+      options.encoding = "UTF-8"
+    }
+    javadoc {
+      options.encoding = "UTF-8"
+    }
+
     repositories {
         mavenCentral()
     }
