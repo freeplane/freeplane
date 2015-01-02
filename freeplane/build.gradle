@@ -15,8 +15,6 @@ dependencies {
     compile files('./lib/SimplyHTML.jar','./lib/idw-gpl.jar')
 }
 
-//pluginid = 'org.freeplane.core'
-
 jar {
     manifest {
 
@@ -25,7 +23,7 @@ jar {
 
         ext.deps = configurations.runtime.files.collect { "lib/${it.name}" }
         ext.deps.add(0, "lib/freeplaneosgi-" + project.version + ".jar")
-        // TODO: freeplanemac.jar!
+        //ext.deps.add(0, "lib/freeplanemac.jar") // TODO: where does this come from? => add source!
         ext.deps.add(0, "lib/freeplaneeditor-" + project.version + ".jar")
         ext.deps.add(0, "lib/freeplaneviewer-" + project.version + ".jar")
 
