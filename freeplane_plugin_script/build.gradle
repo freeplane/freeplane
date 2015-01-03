@@ -66,6 +66,8 @@ task copyScripts(type: Copy) {
 }
 
 javadoc {
+    enabled = true
+
     // we need source from both this and the freeplane project!
     //  source = sourceSets.main.allJava
 

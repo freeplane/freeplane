@@ -37,6 +37,7 @@ subprojects {
     }
     javadoc {
       options.encoding = "UTF-8"
+      enabled = false
     }
 
     repositories {
