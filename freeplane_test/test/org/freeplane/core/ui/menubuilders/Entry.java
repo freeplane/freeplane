@@ -17,16 +17,18 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Entry {
 	
 	private String name;
+	final private ArrayList<Entry> childEntries;
+	final private Map<String, String> attributes;
+	private List<String> builders;
+	private Entry parent;
 
 	public Entry() {
 		super();
 		this.name = "";
+		childEntries = new ArrayList<>();
+		attributes = new HashMap<>();
 	}
 
-	ArrayList<Entry> childEntries = new ArrayList<>();
-	final private Map<String, String> attributes = new HashMap<>();
-	private List<String> builders;
-	private Entry parent;
 
 	public void setAttribute(final String key, String value) {
 		attributes.put(key, value);
@@ -76,6 +78,20 @@ public class Entry {
 
 	public String getName() {
 		return name;
+	}
+
+	public Entry getChild(int index) {
+		return childEntries.get(index);
+	}
+
+
+	public Iterable<Entry> children() {
+		return childEntries;
+	}
+
+
+	public Iterable<String> builders() {
+		return builders;
 	}
 	
 }

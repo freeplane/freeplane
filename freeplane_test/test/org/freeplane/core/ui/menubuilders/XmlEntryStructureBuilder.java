@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -13,7 +14,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XmlEntryStructureBuilder {
+public class XmlEntryStructureBuilder implements Builder{
 
 
 	static final String ENTRY = "entry";
@@ -35,6 +36,13 @@ public class XmlEntryStructureBuilder {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	static public Entry buildMenuStructure(String xmlWithoutContent) {
+		XmlEntryStructureBuilder builder = new XmlEntryStructureBuilder(new StringReader(xmlWithoutContent));
+		Entry initialMenuStructure = new Entry();
+		builder.build(initialMenuStructure);
+		return initialMenuStructure;
 	}
 
 }

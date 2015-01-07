@@ -59,4 +59,15 @@ public class EntryTest {
 		entry.addChild(child);
 		assertThat(child.getPath(), equalTo("/parent/child"));
 	}
+
+	@Test
+	public void test() {
+		Entry firstStructureWithEntry = new Entry();
+		final Entry firstEntry = new Entry();
+		firstStructureWithEntry.addChild(firstEntry);
+		Entry child = null;
+		for(Entry childInLoop : firstStructureWithEntry.children())
+			child = childInLoop;
+		assertThat(firstEntry, equalTo(child));
+	}
 }

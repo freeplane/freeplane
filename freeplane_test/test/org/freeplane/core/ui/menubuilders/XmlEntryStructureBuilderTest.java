@@ -4,7 +4,6 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.io.StringReader;
 import java.util.Arrays;
 
 import org.hamcrest.CoreMatchers;
@@ -13,18 +12,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class XmlEntryStructureBuilderTest {
-	private Entry buildMenuStructure(String xmlWithoutContent) {
-		XmlEntryStructureBuilder builder = new XmlEntryStructureBuilder(new StringReader(xmlWithoutContent));
-		Entry initialMenuStructure = new Entry();
-		builder.build(initialMenuStructure);
-		return initialMenuStructure;
-	}
-
 	@Test
 	public void givenXmlWithourContent_createsEmptyStructure() {
 		String xmlWithoutContent = "<freeplaneUIEntries/>";
 
-		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 		
 		Entry menuStructureWithChildEntry = new Entry();
 		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
@@ -34,7 +26,7 @@ public class XmlEntryStructureBuilderTest {
 	public void givenXmlWithChildEntryWithBuilderSpecificAttribute_createsStructureWithChildEntry() {
 		String xmlWithoutContent = "<freeplaneUIEntries><entry builderSpecificAttribute='Value'/></freeplaneUIEntries>";
 
-		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
 		final Entry childEntry = new Entry();
@@ -48,7 +40,7 @@ public class XmlEntryStructureBuilderTest {
 	public void givenXmlWithChildEntryWithOneBuilder_createsStructureWithChildEntry() {
 		String xmlWithoutContent = "<freeplaneUIEntries><entry builder='builder'/></freeplaneUIEntries>";
 
-		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
 		final Entry childEntry = new Entry();
@@ -62,7 +54,7 @@ public class XmlEntryStructureBuilderTest {
 	public void givenXmlWithChildEntryWithTwoBuilders_createsStructureWithChildEntry() {
 		String xmlWithoutContent = "<freeplaneUIEntries><entry builder='builder1, builder2'/></freeplaneUIEntries>";
 
-		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
 		final Entry childEntry = new Entry();
@@ -76,7 +68,7 @@ public class XmlEntryStructureBuilderTest {
 	public void givenXmlWithChildEntryWithName_createsStructureWithNamedChildEntry() {
 		String xmlWithoutContent = "<freeplaneUIEntries><entry name='entry'/></freeplaneUIEntries>";
 
-		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
 		final Entry childEntry = new Entry();
@@ -92,7 +84,7 @@ public class XmlEntryStructureBuilderTest {
 				+ "<entry name='level2'/>"
 				+ "</entry></freeplaneUIEntries>";
 
-		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
 		final Entry childEntry = new Entry();
@@ -112,7 +104,7 @@ public class XmlEntryStructureBuilderTest {
 				+ "<entry name='level2'/>"
 				+ "</freeplaneUIEntries>";
 
-		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
 		final Entry childEntry = new Entry();
