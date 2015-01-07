@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders;
 
 import java.io.Reader;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -39,11 +40,12 @@ public class EntryStructureBuilder {
 }
 
 class MenuStructureXmlHandler extends DefaultHandler {
+	final private LinkedList<Entry> childStack;
 	private static final String BUILDER = "builder";
-	private Entry menuStructure;
 
-	public MenuStructureXmlHandler(Entry menuStructure) {
-		this.menuStructure = menuStructure;
+	public MenuStructureXmlHandler(Entry root) {
+		 childStack = new LinkedList<>();
+		 childStack.add(root);
 	}
 
 	@Override
@@ -57,10 +59,22 @@ class MenuStructureXmlHandler extends DefaultHandler {
 				final String attributeValue = attributes.getValue(attributeName);
 				if(attributeName.equals(BUILDER))
 					child.setBuilders(Arrays.asList(attributeValue.split("\\s*,\\s*")));
+				else if(attributeName.equals("name"))
+					child.setName(attributeValue);
 				else
 					child.setAttribute(attributeName, attributeValue);
 			}
-			menuStructure.addChild(child);
+			childStack.getLast().addChild(child);
+			childStack.add(child);
 		}
 	}
+
+	@Override
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+		super.endElement(uri, localName, qName);
+		childStack.removeLast();
+	}
+	
+	
 }

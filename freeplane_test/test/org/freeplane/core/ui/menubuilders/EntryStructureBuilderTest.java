@@ -37,9 +37,9 @@ public class EntryStructureBuilderTest {
 		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
-		final Entry homeEntry = new Entry();
-		homeEntry.setAttribute("builderSpecificAttribute", "Value");
-		menuStructureWithChildEntry.addChild(homeEntry);
+		final Entry childEntry = new Entry();
+		childEntry.setAttribute("builderSpecificAttribute", "Value");
+		menuStructureWithChildEntry.addChild(childEntry);
 
 		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
 	}
@@ -51,9 +51,9 @@ public class EntryStructureBuilderTest {
 		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
-		final Entry homeEntry = new Entry();
-		homeEntry.setBuilders(asList("builder"));
-		menuStructureWithChildEntry.addChild(homeEntry);
+		final Entry childEntry = new Entry();
+		childEntry.setBuilders(asList("builder"));
+		menuStructureWithChildEntry.addChild(childEntry);
 
 		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
 	}
@@ -65,9 +65,63 @@ public class EntryStructureBuilderTest {
 		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
 
 		Entry menuStructureWithChildEntry = new Entry();
-		final Entry homeEntry = new Entry();
-		homeEntry.setBuilders(asList("builder1", "builder2"));
-		menuStructureWithChildEntry.addChild(homeEntry);
+		final Entry childEntry = new Entry();
+		childEntry.setBuilders(asList("builder1", "builder2"));
+		menuStructureWithChildEntry.addChild(childEntry);
+
+		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
+	}
+
+	@Test
+	public void givenXmlWithChildEntryWithName_createsStructureWithNamedChildEntry() {
+		String xmlWithoutContent = "<freeplaneUIEntries><entry name='entry'/></freeplaneUIEntries>";
+
+		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+
+		Entry menuStructureWithChildEntry = new Entry();
+		final Entry childEntry = new Entry();
+		childEntry.setName("entry");
+		menuStructureWithChildEntry.addChild(childEntry);
+
+		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
+	}
+	
+	@Test
+	public void givenXmlWithDifferentChildLevels_createsStructure() {
+		String xmlWithoutContent = "<freeplaneUIEntries><entry name='level1'>"
+				+ "<entry name='level2'/>"
+				+ "</entry></freeplaneUIEntries>";
+
+		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+
+		Entry menuStructureWithChildEntry = new Entry();
+		final Entry childEntry = new Entry();
+		childEntry.setName("level1");
+		menuStructureWithChildEntry.addChild(childEntry);
+
+		final Entry child2Entry = new Entry();
+		child2Entry.setName("level2");
+		childEntry.addChild(child2Entry);
+
+		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
+	}
+
+	@Test
+	public void givenXmlWithSameChildLevels_createsStructure() {
+		String xmlWithoutContent = "<freeplaneUIEntries><entry name='level1'/>"
+				+ "<entry name='level2'/>"
+				+ "</freeplaneUIEntries>";
+
+		Entry builtMenuStructure = buildMenuStructure(xmlWithoutContent);
+
+		Entry menuStructureWithChildEntry = new Entry();
+		final Entry childEntry = new Entry();
+		childEntry.setName("level1");
+		menuStructureWithChildEntry.addChild(childEntry);
+
+		final Entry child2Entry = new Entry();
+		child2Entry.setName("level2");
+		menuStructureWithChildEntry.addChild(child2Entry);
 
 		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
 	}

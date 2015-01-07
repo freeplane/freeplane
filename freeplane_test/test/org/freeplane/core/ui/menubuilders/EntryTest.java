@@ -40,4 +40,23 @@ public class EntryTest {
 		
 		assertThat(child.getParent(), equalTo(structureWithEntry));
 	}
+
+
+	@Test
+	public void rootEntryPathIsSlashifiedName() {
+		Entry entry = new Entry();
+		entry.setName("name");
+		assertThat(entry.getPath(), equalTo("/name"));
+	}
+
+
+	@Test
+	public void childEntryPathIsSlashifiedNameAfteParentName() {
+		Entry entry = new Entry();
+		entry.setName("parent");
+		Entry child = new Entry();
+		child.setName("child");
+		entry.addChild(child);
+		assertThat(child.getPath(), equalTo("/parent/child"));
+	}
 }

@@ -15,6 +15,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  */
 public class Entry {
+	
+	private String name;
+
+	public Entry() {
+		super();
+		this.name = "";
+	}
 
 	ArrayList<Entry> childEntries = new ArrayList<>();
 	final private Map<String, String> attributes = new HashMap<>();
@@ -58,7 +65,17 @@ public class Entry {
 	public Object getParent() {
 		return parent;
 	}
-	
-	
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPath() {
+		return (parent != null ? parent.getPath() : "") +  "/" + getName();
+	}
+
+	public String getName() {
+		return name;
+	}
+	
 }
