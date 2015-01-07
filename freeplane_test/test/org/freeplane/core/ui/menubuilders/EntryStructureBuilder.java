@@ -24,7 +24,7 @@ public class EntryStructureBuilder {
 		
 	}
 
-	public void build(Entry source, Entry target) {
+	public void build(Entry target) {
 		try {
 			SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 			XMLReader xmlReader = saxParser.getXMLReader();

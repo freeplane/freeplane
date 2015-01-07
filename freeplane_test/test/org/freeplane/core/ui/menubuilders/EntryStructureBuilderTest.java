@@ -16,7 +16,7 @@ public class EntryStructureBuilderTest {
 	private Entry buildMenuStructure(String xmlWithoutContent) {
 		EntryStructureBuilder builder = new EntryStructureBuilder(new StringReader(xmlWithoutContent));
 		Entry initialMenuStructure = new Entry();
-		builder.build(initialMenuStructure, initialMenuStructure);
+		builder.build(initialMenuStructure);
 		return initialMenuStructure;
 	}
 
