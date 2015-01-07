@@ -31,4 +31,13 @@ public class EntryTest {
 		Entry otherStructureWithEntry = new Entry();
 		assertThat(firstStructureWithEntry, CoreMatchers.not(otherStructureWithEntry));
 	}
+
+	@Test
+	public void knowsParent() {
+		Entry structureWithEntry = new Entry();
+		final Entry child = new Entry();
+		structureWithEntry.addChild(child);
+		
+		assertThat(child.getParent(), equalTo(structureWithEntry));
+	}
 }
