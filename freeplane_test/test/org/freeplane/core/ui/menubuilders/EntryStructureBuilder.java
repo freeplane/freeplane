@@ -23,13 +23,12 @@ public class EntryStructureBuilder {
 		
 	}
 
-	public Entry build(Entry menuStructure) {
+	public void build(Entry source, Entry target) {
 		try {
 			SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 			XMLReader xmlReader = saxParser.getXMLReader();
-			xmlReader.setContentHandler(new MenuStructureXmlHandler(menuStructure));
+			xmlReader.setContentHandler(new MenuStructureXmlHandler(target));
 			xmlReader.parse(new InputSource(stringReader));
-			return menuStructure;
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
