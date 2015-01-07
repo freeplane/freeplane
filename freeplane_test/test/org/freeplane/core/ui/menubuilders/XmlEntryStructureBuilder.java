@@ -13,13 +13,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class EntryStructureBuilder {
+public class XmlEntryStructureBuilder {
 
 
 	static final String ENTRY = "entry";
 	private Reader stringReader;
 
-	public EntryStructureBuilder(Reader stringReader) {
+	public XmlEntryStructureBuilder(Reader stringReader) {
 		this.stringReader = stringReader;
 		
 	}
@@ -52,7 +52,7 @@ class MenuStructureXmlHandler extends DefaultHandler {
 	public void startElement(String uri, String localName,
 			String qName, Attributes attributes)
 			throws SAXException {
-		if(qName.equals(EntryStructureBuilder.ENTRY)){
+		if(qName.equals(XmlEntryStructureBuilder.ENTRY)){
 			final Entry child = new Entry();
 			for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++){
 				final String attributeName = attributes.getQName(attributeIndex);

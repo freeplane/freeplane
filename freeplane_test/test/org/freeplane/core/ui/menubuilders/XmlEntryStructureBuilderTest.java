@@ -12,9 +12,9 @@ import org.hamcrest.core.IsNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class EntryStructureBuilderTest {
+public class XmlEntryStructureBuilderTest {
 	private Entry buildMenuStructure(String xmlWithoutContent) {
-		EntryStructureBuilder builder = new EntryStructureBuilder(new StringReader(xmlWithoutContent));
+		XmlEntryStructureBuilder builder = new XmlEntryStructureBuilder(new StringReader(xmlWithoutContent));
 		Entry initialMenuStructure = new Entry();
 		builder.build(initialMenuStructure);
 		return initialMenuStructure;
