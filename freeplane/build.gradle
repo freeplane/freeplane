@@ -272,3 +272,5 @@ build.dependsOn copyOSGiJars
 build.dependsOn copyOSGiManifest
 build.dependsOn copyExternalResources
 build.dependsOn copyDoc
+
+apply from: './format_translation.gradle'

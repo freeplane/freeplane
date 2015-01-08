@@ -137,3 +137,12 @@ task cleanBUILD(type: Delete) {
     delete globalBuild
 }
 clean.dependsOn(cleanBUILD)
+
+task check_translation {
+    dependsOn ':JOrtho_0.4_freeplane:check_translation'
+    dependsOn ':freeplane:check_translation'
+}
+task format_translation {
+    dependsOn ':JOrtho_0.4_freeplane:format_translation'
+    dependsOn ':freeplane:format_translation'
+}
