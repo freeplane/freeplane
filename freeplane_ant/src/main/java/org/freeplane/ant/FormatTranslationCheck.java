@@ -28,7 +28,7 @@ public class FormatTranslationCheck extends Task {
 
 	public void execute() {
 		int countUnformatted = formatTranslation.checkOnly();
-		final String message = countUnformatted + " files require proper formatting - run format-translation to fix";
+		final String message = countUnformatted + " files require proper formatting - run format_translation to fix";
 		if (countUnformatted == 0)
 			formatTranslation.log("all files are properly formatted", Project.MSG_DEBUG);
 		else if (failOnError)
