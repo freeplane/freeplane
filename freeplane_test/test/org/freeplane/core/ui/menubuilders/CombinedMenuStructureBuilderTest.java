@@ -19,4 +19,15 @@ public class CombinedMenuStructureBuilderTest {
 		Mockito.verify(builder).build(childEntry);
 	}
 
+
+	@Test
+	public void defaultBuilderIsCalled() {
+		final CombinedMenuStructureBuilder combinedMenuStructureBuilder = new CombinedMenuStructureBuilder();
+		Builder builder = Mockito.mock(Builder.class);
+		combinedMenuStructureBuilder.setDefaultBuilder(builder);
+		final Entry childEntry = new Entry();
+		combinedMenuStructureBuilder.build(childEntry);
+		
+		Mockito.verify(builder).build(childEntry);
+	}
 }

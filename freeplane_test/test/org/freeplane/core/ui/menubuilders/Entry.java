@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class Entry {
 		this.name = "";
 		childEntries = new ArrayList<>();
 		attributes = new HashMap<>();
+		builders = Collections.emptyList();
 	}
 
 

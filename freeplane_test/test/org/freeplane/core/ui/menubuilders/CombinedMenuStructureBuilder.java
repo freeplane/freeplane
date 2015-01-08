@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class CombinedMenuStructureBuilder implements Builder{
 
 	final private HashMap<String, Builder> builders = new HashMap<String, Builder>();
+	private Builder defaultBuilder;
 
 	public void addBuilder(String name, Builder builder) {
 		builders.put(name, builder);
@@ -12,8 +13,19 @@ public class CombinedMenuStructureBuilder implements Builder{
 
 	@Override
 	public void build(Entry target) {
-		for(String builderName :  target.builders())
-			builders.get(builderName).build(target);
+		for(String builderName :  target.builders()) {
+			final Builder explicitBuilder = builders.get(builderName);
+			if(explicitBuilder != null){
+				explicitBuilder.build(target);
+				return;
+			}
+		}
+		defaultBuilder.build(target);
+	}
+
+	public void setDefaultBuilder(Builder defaultBuilder) {
+		this.defaultBuilder = defaultBuilder;
+		
 	}
 
 }
