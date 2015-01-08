@@ -30,4 +30,14 @@ public class CombinedMenuStructureBuilderTest {
 		
 		Mockito.verify(builder).build(childEntry);
 	}
+
+
+
+	@Test(expected = IllegalStateException.class)
+	public void defaultBuilderIsNotSetException() {
+		final CombinedMenuStructureBuilder combinedMenuStructureBuilder = new CombinedMenuStructureBuilder();
+		final Entry childEntry = new Entry();
+		combinedMenuStructureBuilder.build(childEntry);
+		
+	}
 }
