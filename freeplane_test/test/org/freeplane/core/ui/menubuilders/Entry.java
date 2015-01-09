@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
  * @author Dimitry
@@ -23,6 +24,8 @@ public class Entry {
 	private List<String> builders;
 	private Entry parent;
 	private Object component;
+	private AFreeplaneAction action;
+
 
 	public Entry() {
 		super();
@@ -109,4 +112,14 @@ public class Entry {
 	public void setComponent(Object component) {
 		this.component = component;
 	}
+
+
+	public AFreeplaneAction getAction() {
+		return action;
+	}
+	
+	public void setAction(AFreeplaneAction action) {
+		this.action = action;
+	}
+
 }
