@@ -51,7 +51,7 @@ import org.freeplane.features.ui.INodeViewLifeCycleListener;
  * default Actions you may want to use for easy editing of your model. Take
  * MindMapController as a sample.
  */
-public class ModeController extends AController {
+public class ModeController extends AController implements FreeplaneActions{
 // // 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;

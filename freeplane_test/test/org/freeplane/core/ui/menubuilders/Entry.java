@@ -36,6 +36,10 @@ public class Entry {
 	public void setAttribute(final String key, String value) {
 		attributes.put(key, value);
 	}
+	
+	public String getAttribute(final String key) {
+		return attributes.get(key);
+	}
 
 	public void addChild(Entry homeEntry) {
 		childEntries.add(homeEntry);
@@ -67,7 +71,7 @@ public class Entry {
 		
 	}
 
-	public Object getParent() {
+	public Entry getParent() {
 		return parent;
 	}
 
