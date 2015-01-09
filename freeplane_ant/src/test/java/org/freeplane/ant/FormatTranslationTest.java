@@ -169,7 +169,7 @@ public class FormatTranslationTest {
 	}
 
 	@Test
-	public void convertsUnicodeToLowerCase(){
+	public void convertsUnicodeToUpperCase(){
 		final FormatTranslation formatTranslation = new FormatTranslation();
 		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("u"), CoreMatchers.equalTo("u"));
 		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\\\u"), CoreMatchers.equalTo("\\\\u"));
