@@ -7,7 +7,8 @@ public class RecursiveMenuStructureBuilder implements Builder{
 
 	final private HashMap<String, Builder> builders;
 	final private HashMap<String, String> subtreeDefaultBuilders;
-	private LinkedList<String> subtreeDefaultBuilderStack; 
+	private LinkedList<String> subtreeDefaultBuilderStack;
+	private Builder defaultBuilder = Builder.ILLEGAL_BUILDER; 
 
 	public RecursiveMenuStructureBuilder() {
 		builders = new HashMap<String, Builder>();
@@ -21,10 +22,14 @@ public class RecursiveMenuStructureBuilder implements Builder{
 
 	@Override
 	public void build(Entry target) {
-		final String builderToCall = builderToCall(target);
 		final int originalDefaultBuilderStackSize = subtreeDefaultBuilderStack.size();
-		changeDefaultBuilder(builderToCall);
-		builders.get(builderToCall).build(target);
+		final String builderToCall = builderToCall(target);
+		if(builderToCall != null){
+			changeDefaultBuilder(builderToCall);
+			builders.get(builderToCall).build(target);
+		}
+		else
+			defaultBuilder.build(target);
 		for(Entry child:target.children())
 			build(child);
 		if(originalDefaultBuilderStackSize < subtreeDefaultBuilderStack.size())
@@ -37,17 +42,21 @@ public class RecursiveMenuStructureBuilder implements Builder{
 			subtreeDefaultBuilderStack.addLast(defaultBuilder);
 	}
 
-	public String builderToCall(Entry target) {
+	private String builderToCall(Entry target) {
 		for(String builderName :  target.builders()) 
 			if(builders.containsKey(builderName))
 				return builderName;
 		if (subtreeDefaultBuilderStack.isEmpty())
-			throw new IllegalStateException("no builder found");
+			return null;
 		return subtreeDefaultBuilderStack.getLast();
 	}
 
 	public void addSubtreeDefaultBuilder(String name, String string) {
 		subtreeDefaultBuilders.put(name, string);
+	}
+
+	public void setDefaultBuilder(Builder defaultBuilder) {
+		this.defaultBuilder = defaultBuilder;
 	}
 
 }

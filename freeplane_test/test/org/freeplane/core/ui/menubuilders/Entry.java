@@ -22,6 +22,7 @@ public class Entry {
 	final private Map<String, String> attributes;
 	private List<String> builders;
 	private Entry parent;
+	private Object component;
 
 	public Entry() {
 		super();
@@ -95,5 +96,13 @@ public class Entry {
 	public Iterable<String> builders() {
 		return builders;
 	}
+
+
+	public Object getComponent() {
+		return component;
+	}
 	
+	public void setComponent(Object component) {
+		this.component = component;
+	}
 }

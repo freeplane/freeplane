@@ -19,6 +19,16 @@ public class RecursiveMenuStructureBuilderTest {
 		Mockito.verify(builder).build(childEntry);
 	}
 
+	@Test
+	public void defaultBuilderIsCalled() {
+		final RecursiveMenuStructureBuilder combinedMenuStructureBuilder = new RecursiveMenuStructureBuilder();
+		Builder builder = Mockito.mock(Builder.class);
+		combinedMenuStructureBuilder.setDefaultBuilder(builder);
+		final Entry childEntry = new Entry();
+		combinedMenuStructureBuilder.build(childEntry);
+		Mockito.verify(builder).build(childEntry);
+	}
+
 
 	@Test
 	public void defaultBuilderIsCalledForChild() {
