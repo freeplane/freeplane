@@ -25,7 +25,8 @@ public class RecursiveMenuStructureBuilderTest {
 		final RecursiveMenuStructureBuilder combinedMenuStructureBuilder = new RecursiveMenuStructureBuilder();
 		Builder defaultBuilder = Mockito.mock(Builder.class);
 		combinedMenuStructureBuilder.addBuilder("builder", Builder.EMTPY_BUILDER);
-		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("builder", defaultBuilder);
+		combinedMenuStructureBuilder.addBuilder("defaultBuilder", defaultBuilder);
+		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
@@ -40,10 +41,12 @@ public class RecursiveMenuStructureBuilderTest {
 	public void defaultBuilderIsRestoredAfterChildCall() {
 		final RecursiveMenuStructureBuilder combinedMenuStructureBuilder = new RecursiveMenuStructureBuilder();
 		combinedMenuStructureBuilder.addBuilder("builder1", Builder.EMTPY_BUILDER);
-		Builder defaultBuilder = Mockito.mock(Builder.class);
-		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("builder1", defaultBuilder);
 		combinedMenuStructureBuilder.addBuilder("builder2", Builder.EMTPY_BUILDER);
-		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("builder2", Builder.EMTPY_BUILDER);
+		Builder defaultBuilder = Mockito.mock(Builder.class);
+		combinedMenuStructureBuilder.addBuilder("builder3", defaultBuilder);
+		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("builder1", "builder3");
+		combinedMenuStructureBuilder.addBuilder("builder2", Builder.EMTPY_BUILDER);
+		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("builder2", "builder2");
 
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder1"));
@@ -60,6 +63,27 @@ public class RecursiveMenuStructureBuilderTest {
 	}
 
 
+	@Test
+	public void defaultBuilderIsCalledForChildUsingDefaultBuilder() {
+		final RecursiveMenuStructureBuilder combinedMenuStructureBuilder = new RecursiveMenuStructureBuilder();
+		Builder defaultBuilder = Mockito.mock(Builder.class);
+		combinedMenuStructureBuilder.addBuilder("builder", Builder.EMTPY_BUILDER);
+		combinedMenuStructureBuilder.addBuilder("emptyBuilder", Builder.EMTPY_BUILDER);
+		combinedMenuStructureBuilder.addBuilder("defaultBuilder", defaultBuilder);
+		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "emptyBuilder");
+		combinedMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder", "defaultBuilder");
+		final Entry entry = new Entry();
+		entry.setBuilders(asList("builder"));
+		final Entry childEntry = new Entry();
+		entry.addChild(childEntry);
+		final Entry subChildEntry = new Entry();
+		childEntry.addChild(subChildEntry);
+		
+		combinedMenuStructureBuilder.build(entry);
+		
+		Mockito.verify(defaultBuilder).build(subChildEntry);
+	}
+	
 	@Test(expected = IllegalStateException.class)
 	public void defaultBuilderIsNotSetException() {
 		final RecursiveMenuStructureBuilder combinedMenuStructureBuilder = new RecursiveMenuStructureBuilder();

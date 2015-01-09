@@ -6,14 +6,13 @@ import java.util.LinkedList;
 public class RecursiveMenuStructureBuilder implements Builder{
 
 	final private HashMap<String, Builder> builders;
-	final private HashMap<String, Builder> subtreeDefaultBuilders;
-	private LinkedList<Builder> subtreeDefaultBuilderStack; 
+	final private HashMap<String, String> subtreeDefaultBuilders;
+	private LinkedList<String> subtreeDefaultBuilderStack; 
 
 	public RecursiveMenuStructureBuilder() {
 		builders = new HashMap<String, Builder>();
-		subtreeDefaultBuilders = new HashMap<String, Builder>();
+		subtreeDefaultBuilders = new HashMap<String, String>();
 		subtreeDefaultBuilderStack = new LinkedList<>(); 
-		subtreeDefaultBuilderStack.addLast(ILLEGAL_BUILDER);
 	}
 
 	public void addBuilder(String name, Builder builder) {
@@ -22,40 +21,33 @@ public class RecursiveMenuStructureBuilder implements Builder{
 
 	@Override
 	public void build(Entry target) {
-		callBuilder(target);
-		boolean defaultBuilderChanged = changeDefaultBuilder(target);
+		final String builderToCall = builderToCall(target);
+		final int originalDefaultBuilderStackSize = subtreeDefaultBuilderStack.size();
+		changeDefaultBuilder(builderToCall);
+		builders.get(builderToCall).build(target);
 		for(Entry child:target.children())
 			build(child);
-		if(defaultBuilderChanged)
+		if(originalDefaultBuilderStackSize < subtreeDefaultBuilderStack.size())
 			subtreeDefaultBuilderStack.removeLast();
 	}
 
-	private boolean changeDefaultBuilder(Entry target) {
-		boolean defaultBuilderChanged = false;
-		for(String builderName :  target.builders()) {
-			final Builder defaultBuilder = subtreeDefaultBuilders.get(builderName);
-			defaultBuilderChanged = defaultBuilder != null;
-			if(defaultBuilderChanged){
-				subtreeDefaultBuilderStack.addLast(defaultBuilder);
-				break;
-			}
-		}
-		return defaultBuilderChanged;
+	private void changeDefaultBuilder(String calledBuilder) {
+		final String defaultBuilder = subtreeDefaultBuilders.get(calledBuilder);
+		if (defaultBuilder != null && (subtreeDefaultBuilderStack.isEmpty() || ! subtreeDefaultBuilderStack.getLast().equals(defaultBuilder)))
+			subtreeDefaultBuilderStack.addLast(defaultBuilder);
 	}
 
-	public void callBuilder(Entry target) {
-		for(String builderName :  target.builders()) {
-			final Builder explicitBuilder = builders.get(builderName);
-			if(explicitBuilder != null){
-				explicitBuilder.build(target);
-				return;
-			}
-		}
-		subtreeDefaultBuilderStack.getLast().build(target);
+	public String builderToCall(Entry target) {
+		for(String builderName :  target.builders()) 
+			if(builders.containsKey(builderName))
+				return builderName;
+		if (subtreeDefaultBuilderStack.isEmpty())
+			throw new IllegalStateException("no builder found");
+		return subtreeDefaultBuilderStack.getLast();
 	}
 
-	public void addSubtreeDefaultBuilder(String name, Builder builder) {
-		subtreeDefaultBuilders.put(name, builder);
+	public void addSubtreeDefaultBuilder(String name, String string) {
+		subtreeDefaultBuilders.put(name, string);
 	}
 
 }
