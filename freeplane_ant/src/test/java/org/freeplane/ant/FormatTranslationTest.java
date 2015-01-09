@@ -28,6 +28,7 @@ import org.apache.tools.ant.Project;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Ignore;
 
 public class FormatTranslationTest {
 	private static final String TRANSLATIONS_SOURCE_DIR = System.getProperty("TRANSLATIONS_SOURCE_DIR");
@@ -102,8 +103,7 @@ public class FormatTranslationTest {
 		assertFalse("not unix", TaskUtils.checkEolStyleAndReadLines(winInput, resultList, unix));
 		assertFalse("not mac", TaskUtils.checkEolStyleAndReadLines(winInput, resultList, mac));
 		assertEquals("a trailing backslash escapes a new line", 6, resultList.size());
-		//
-		String resource = TaskUtils.readFile(new File(TRANSLATIONS_SOURCE_DIR, "Resources_de.properties"));
+		String resource = TaskUtils.readFile(new File(new File("./src/test/resources/unsorted"), "Test_de.properties"));
 		assertTrue("not unix", TaskUtils.checkEolStyleAndReadLines(resource, resultList, unix));
 	}
 
@@ -154,6 +154,7 @@ public class FormatTranslationTest {
 		formatTranslation.processLines("a_file", new ArrayList<String>(lines));
 	}
 
+	@Ignore // this tests causes a lot of modified files...
 	@Test
 	public void testFormatTranslation() {
 		final FormatTranslation formatTranslation = new FormatTranslation();
@@ -161,9 +162,8 @@ public class FormatTranslationTest {
 		formatTranslation.setTaskName("format-translation");
 		formatTranslation.setProject(project);
 		formatTranslation.setEolStyle("unix");
-		assertNotNull("system property TRANSLATIONS_SOURCE_DIR not set", TRANSLATIONS_SOURCE_DIR);
-		formatTranslation.setDir(TRANSLATIONS_SOURCE_DIR);
-		formatTranslation.setIncludes("Resources_*.properties");
+		formatTranslation.setDir(new File("./src/test/resources/unsorted"));
+		formatTranslation.setIncludes("Test_*.properties");
 		formatTranslation.execute();
 		System.out.println("done");
 	}

@@ -352,7 +352,7 @@ public class FormatTranslation extends Task {
 	}
 
 	public String convertUnicodeCharacterRepresentation(String input) {
-		if(! (input.contains("\\\\u") || input.contains("\\\\U")))
+		if(! (input.contains("\\u") || input.contains("\\U")))
 			return input;
 		final char[] chars = input.toCharArray();
 		for (int offset = 0; 6 + offset < chars.length;  offset++) {

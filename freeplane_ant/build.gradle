@@ -1,5 +1,3 @@
-test.enabled = false
-
 dependencies {
     compile group: 'org.apache.ant', name: 'ant', version: '1.9.3'
 }
