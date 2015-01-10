@@ -13,7 +13,7 @@ public class ActionFinder implements Builder{
 
 	@Override
 	public void build(Entry target) {
-		final String actionName = target.getAttribute("action");
+		final String actionName = target.getName();
 		if(actionName != null) {
 			final AFreeplaneAction action = freeplaneActions.getAction(actionName);
 			target.setAction(action);

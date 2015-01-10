@@ -52,7 +52,7 @@ public class JMenuBuilderTest {
 	public void createsToolbarButtonWithAction() {
 		String xmlWithoutContent = "<freeplaneUIEntries>"
 				+ "<entry name='home' builder='toolbar'>"
-				+ "<entry action='action'/>"
+				+ "<entry name='action'/>"
 				+ "</entry>"
 				+ "</freeplaneUIEntries>";
 
@@ -68,7 +68,7 @@ public class JMenuBuilderTest {
 	public void givengroupWithAction_addsActionButtonToToolbar() {
 		String xmlWithoutContent = "<freeplaneUIEntries>"
 				+ "<entry name='home' builder='toolbar'>"
-				+ "<entry action='action'/>"
+				+ "<entry name='action'/>"
 				+ "</entry>"
 				+ "</freeplaneUIEntries>";
 

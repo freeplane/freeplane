@@ -16,7 +16,7 @@ public class ActionFinderTest {
 	public void createsToolbarButtonWithAction() {
 		FreeplaneActions freeplaneActions = mock(FreeplaneActions.class);
 		Entry entry = new Entry();
-		entry.setAttribute("action", "action");
+		entry.setName("action");
 		final AFreeplaneAction someAction = Mockito.mock(AFreeplaneAction.class);
 		when(freeplaneActions.getAction("action")).thenReturn(someAction);
 		
