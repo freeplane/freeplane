@@ -48,8 +48,9 @@ public class XmlEntryStructureBuilder implements Builder{
 }
 
 class MenuStructureXmlHandler extends DefaultHandler {
-	final private LinkedList<Entry> childStack;
+	private static final String NAME = "name";
 	private static final String BUILDER = "builder";
+	final private LinkedList<Entry> childStack;
 
 	public MenuStructureXmlHandler(Entry root) {
 		 childStack = new LinkedList<>();
@@ -63,11 +64,11 @@ class MenuStructureXmlHandler extends DefaultHandler {
 		if(qName.equals(XmlEntryStructureBuilder.ENTRY)){
 			final Entry child = new Entry();
 			for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++){
-				final String attributeName = attributes.getQName(attributeIndex);
-				final String attributeValue = attributes.getValue(attributeName);
-				if(attributeName.equals(BUILDER))
+				final String attributeName = attributes.getQName(attributeIndex).intern();
+				final String attributeValue = attributes.getValue(attributeName).intern();
+				if(attributeName == BUILDER)
 					child.setBuilders(Arrays.asList(attributeValue.split("\\s*,\\s*")));
-				else if(attributeName.equals("name"))
+				else if(attributeName == NAME)
 					child.setName(attributeValue);
 				else
 					child.setAttribute(attributeName, attributeValue);
