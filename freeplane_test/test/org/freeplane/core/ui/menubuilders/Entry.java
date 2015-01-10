@@ -18,13 +18,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 public class Entry {
 	
+	public static final String COMPONENT = "component";
+	public static final String ACTION = "action";
 	private String name;
 	final private ArrayList<Entry> childEntries;
-	final private Map<String, String> attributes;
+	final private Map<String, Object> attributes;
 	private List<String> builders;
 	private Entry parent;
-	private Object component;
-	private AFreeplaneAction action;
 
 
 	public Entry() {
@@ -36,11 +36,11 @@ public class Entry {
 	}
 
 
-	public void setAttribute(final String key, String value) {
+	public void setAttribute(final String key, Object value) {
 		attributes.put(key, value);
 	}
 	
-	public String getAttribute(final String key) {
+	public Object getAttribute(final String key) {
 		return attributes.get(key);
 	}
 
@@ -106,20 +106,19 @@ public class Entry {
 
 
 	public Object getComponent() {
-		return component;
+		return getAttribute(COMPONENT);
 	}
 	
 	public void setComponent(Object component) {
-		this.component = component;
+		setAttribute(COMPONENT, component);
 	}
 
-
 	public AFreeplaneAction getAction() {
-		return action;
+		return(AFreeplaneAction ) getAttribute(ACTION);
 	}
 	
 	public void setAction(AFreeplaneAction action) {
-		this.action = action;
+		setAttribute(ACTION, action);
 	}
 
 }

@@ -23,7 +23,7 @@ public class ActionFinderTest {
 		final ActionFinder actionFinder = new ActionFinder(freeplaneActions);
 		actionFinder.build(entry);
 		
-		assertThat(entry.getAction(), CoreMatchers.equalTo(someAction));
+		assertThat((AFreeplaneAction) entry.getAttribute(Entry.ACTION), CoreMatchers.equalTo(someAction));
 	}
 
 }
