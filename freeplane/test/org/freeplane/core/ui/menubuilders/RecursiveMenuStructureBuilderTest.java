@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
 import static java.util.Arrays.asList;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -9,14 +10,14 @@ public class RecursiveMenuStructureBuilderTest {
 
 	@Test
 	public void explicitBuilderIsCalled() {
-		final RecursiveMenuStructureBuilder combinedMenuStructureBuilder = new RecursiveMenuStructureBuilder();
+		final RecursiveMenuStructureBuilder recursiveMenuStructureBuilder = new RecursiveMenuStructureBuilder();
 		Builder builder = Mockito.mock(Builder.class);
-		combinedMenuStructureBuilder.addBuilder("builder", builder);
-		final Entry childEntry = new Entry();
-		childEntry.setBuilders(asList("builder"));
-		combinedMenuStructureBuilder.build(childEntry);
+		recursiveMenuStructureBuilder.addBuilder("builder", builder);
+		final Entry entry = new Entry();
+		entry.setBuilders(asList("builder"));
+		recursiveMenuStructureBuilder.build(entry);
 		
-		Mockito.verify(builder).build(childEntry);
+		verify(builder).build(entry);
 	}
 
 	@Test
@@ -24,9 +25,9 @@ public class RecursiveMenuStructureBuilderTest {
 		final RecursiveMenuStructureBuilder combinedMenuStructureBuilder = new RecursiveMenuStructureBuilder();
 		Builder builder = Mockito.mock(Builder.class);
 		combinedMenuStructureBuilder.setDefaultBuilder(builder);
-		final Entry childEntry = new Entry();
-		combinedMenuStructureBuilder.build(childEntry);
-		Mockito.verify(builder).build(childEntry);
+		final Entry entry = new Entry();
+		combinedMenuStructureBuilder.build(entry);
+		verify(builder).build(entry);
 	}
 
 
@@ -44,7 +45,7 @@ public class RecursiveMenuStructureBuilderTest {
 		
 		combinedMenuStructureBuilder.build(entry);
 		
-		Mockito.verify(defaultBuilder).build(childEntry);
+		verify(defaultBuilder).build(childEntry);
 	}
 
 	@Test
@@ -101,59 +102,4 @@ public class RecursiveMenuStructureBuilderTest {
 		combinedMenuStructureBuilder.build(childEntry);
 		
 	}
-	
-	@Test
-	public void explicitBuilderForPathIsCalled() {
-		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
-		buildersForPath.addBuilder("/name", builder);
-		final Entry childEntry = new Entry();
-		childEntry.setName("name");
-		buildersForPath.build(childEntry);
-		
-		Mockito.verify(builder).build(childEntry);
-	}
-
-	@Test
-	public void differentBuildersForPathAreCalled() {
-		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
-		buildersForPath.addBuilder("/name", builder);
-		buildersForPath.addBuilder("/name", Builder.EMTPY_BUILDER);
-		final Entry childEntry = new Entry();
-		childEntry.setName("name");
-		buildersForPath.build(childEntry);
-		
-		Mockito.verify(builder).build(childEntry);
-	}
-
-	@Test
-	public void differentBuildersForDifferentPathsAreCalled() {
-		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
-		buildersForPath.addBuilder("/name", builder);
-		final Entry childEntry = new Entry();
-		childEntry.setName("name2");
-		buildersForPath.build(childEntry);
-		
-		Mockito.verify(builder, Mockito.never()).build(childEntry);
-	}
-
-
-	@Test
-	public void differentBuildersForSubtreePathsAreCalled() {
-		final Entry entry = new Entry();
-		entry.setName("parent");
-		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
-		buildersForPath.addBuilder("/parent/child", builder);
-		final Entry childEntry = new Entry();
-		childEntry.setName("child");
-		entry.addChild(childEntry);
-		
-		buildersForPath.build(entry);
-		
-		Mockito.verify(builder).build(childEntry);
-	}
-
 }
