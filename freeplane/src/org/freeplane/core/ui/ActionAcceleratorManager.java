@@ -28,6 +28,7 @@ import org.freeplane.core.resources.components.IKeystrokeValidator;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.IDefaultAcceleratorMap;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -35,7 +36,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAcceleratorChangeListener {
+public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAcceleratorChangeListener, IDefaultAcceleratorMap {
 
 	private static final String SHORTCUT_PROPERTY_PREFIX = "acceleratorFor.";
 
