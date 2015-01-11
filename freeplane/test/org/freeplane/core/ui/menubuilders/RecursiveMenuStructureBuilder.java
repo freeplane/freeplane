@@ -51,8 +51,8 @@ public class RecursiveMenuStructureBuilder implements Builder{
 		return subtreeDefaultBuilderStack.getLast();
 	}
 
-	public void addSubtreeDefaultBuilder(String name, String string) {
-		subtreeDefaultBuilders.put(name, string);
+	public void addSubtreeDefaultBuilder(String builder, String subtreeBuilder) {
+		subtreeDefaultBuilders.put(builder, subtreeBuilder);
 	}
 
 	public void setDefaultBuilder(Builder defaultBuilder) {
