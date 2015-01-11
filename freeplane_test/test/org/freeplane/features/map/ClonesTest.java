@@ -22,7 +22,7 @@ package org.freeplane.features.map;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.collection.IsEmptyIterable.emptyIterable;
+import org.hamcrest.collection.IsEmptyIterable;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class ClonesTest {
 	@Test
 	public void clonesContainsNothingBeforeAddingToTree() {
 		final NodeModel node = new NodeModel("node", map);
-		assertThat(node.clones(), emptyIterable());
+		assertThat(node.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
 
 	}
 
@@ -52,7 +52,7 @@ public class ClonesTest {
 		final NodeModel parent = new NodeModel("parent", map);
 		final NodeModel node = new NodeModel("node", map);
 		parent.insert(node);
-		assertThat(node.clones(), emptyIterable());
+		assertThat(node.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class ClonesTest {
 		final NodeModel node = new NodeModel("node", map);
 		parent.insert(node);
 		parent.remove(parent.getIndex(node));
-		assertThat(node.clones(), emptyIterable());
+		assertThat(node.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class ClonesTest {
 		final NodeModel child = new NodeModel("child", map);
 		node.insert(child);
 		parent.remove(parent.getIndex(node));
-		assertThat(child.clones(), emptyIterable());
+		assertThat(child.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
 	}
 
 	@Test
