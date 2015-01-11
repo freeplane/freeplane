@@ -21,5 +21,7 @@
 	<classpathentry kind="lib" path="lib/idw-gpl.jar" sourcepath="C:/Users/Dimitry/Downloads/idw-gpl-1.6.1-src/idw-gpl-1.6.1/src"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit-Mockito-Matchers"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
