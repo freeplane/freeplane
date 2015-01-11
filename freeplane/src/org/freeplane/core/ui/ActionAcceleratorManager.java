@@ -111,12 +111,12 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		return TextUtils.removeTranslateComment(title);
  	}
 
- 	public void setDefaultAccelerator(final String itemKey, final String accelerator) {
-		final String shortcutKey = getPropertyKey(itemKey);
+ 	public void setDefaultAccelerator(final String actionKey, final String accelerator) {
+		final String shortcutKey = getPropertyKey(actionKey);
 		if (null == getProperty(shortcutKey)) {
 			defaultProps.setProperty(shortcutKey, accelerator);
 			KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
-			AFreeplaneAction action = Controller.getCurrentModeController().getAction(itemKey);
+			AFreeplaneAction action = Controller.getCurrentModeController().getAction(actionKey);
 			setAccelerator(action, ks);
 		}
 
