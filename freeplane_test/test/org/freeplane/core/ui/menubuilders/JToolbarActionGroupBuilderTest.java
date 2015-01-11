@@ -27,22 +27,6 @@ public class JToolbarActionGroupBuilderTest {
 		actionEntry.setAction(action);
 
 		Entry toolbarEntry = new Entry();
-		toolbarEntry.setComponent(freeplaneToolbar());
-		toolbarEntry.addChild(actionEntry);
-		
-		final JToolbarActionGroupBuilder toolbarActionGroupBuilder = new JToolbarActionGroupBuilder();
-		toolbarActionGroupBuilder.build(actionEntry);
-
-		assertThat(((JButton)actionEntry.getComponent()).getAction(), CoreMatchers.<Action>equalTo(action));
-	}
-
-	@Test
-	public void givengroupWithAction_addsActionButtonToToolbar() {
-		Entry actionEntry = new Entry();
-		final AFreeplaneAction action = Mockito.mock(AFreeplaneAction.class);
-		actionEntry.setAction(action);
-
-		Entry toolbarEntry = new Entry();
 		final FreeplaneToolBar toolbar = freeplaneToolbar();
 		toolbarEntry.setComponent(toolbar);
 		toolbarEntry.addChild(actionEntry);
@@ -50,8 +34,9 @@ public class JToolbarActionGroupBuilderTest {
 		final JToolbarActionGroupBuilder toolbarActionGroupBuilder = new JToolbarActionGroupBuilder();
 		toolbarActionGroupBuilder.build(actionEntry);
 
-		assertThat(((JButton)actionEntry.getComponent()).getParent(), CoreMatchers.equalTo((Container)toolbar));
+		JButton button = (JButton)actionEntry.getComponent();
+
+		assertThat(button.getAction(), CoreMatchers.<Action>equalTo(action));
+		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
 	}
-
-
 }
