@@ -24,7 +24,6 @@ import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
 import org.freeplane.core.ui.ribbon.RibbonSeparatorContributorFactory.RibbonSeparator;
 import org.freeplane.core.ui.ribbon.StructureTree.StructurePath;
-import org.freeplane.core.ui.ribbon.event.AboutToPerformEvent;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -94,7 +93,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		final JButton button = new JButton(title, icon);
 		
 //		updateRichTooltip(button, action, null);
-		button.addActionListener(new RibbonActionListener(action));
+		button.addActionListener(new AccelerateableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
@@ -106,7 +105,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		final JCommandButton button = new JCommandButton(title, icon);
 		
 		updateRichTooltip(button, action, null);
-		button.addActionListener(new RibbonActionListener(action));
+		button.addActionListener(new AccelerateableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
@@ -118,7 +117,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		final JCommandToggleButton button = new JCommandToggleButton(title, icon);
 		
 		updateRichTooltip(button, action, null);
-		button.addActionListener(new RibbonActionListener(action));
+		button.addActionListener(new AccelerateableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
@@ -130,7 +129,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		final JCommandMenuButton button = new JCommandMenuButton(title, icon);
 		
 		updateRichTooltip(button, action, null);
-		button.addActionListener(new RibbonActionListener(action));
+		button.addActionListener(new AccelerateableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
@@ -142,7 +141,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		final JCommandToggleMenuButton button = new JCommandToggleMenuButton(title, icon);
 		
 		updateRichTooltip(button, action, null);
-		button.addActionListener(new RibbonActionListener(action));
+		button.addActionListener(new AccelerateableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
@@ -373,15 +372,15 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 								((JCommandMenuButton)menuButton).setCommandButtonKind(((JCommandButton) button).getCommandButtonKind());										
 							}
 						}
-						//clear all RibbonActionListeners from the menuButton
+						//clear all AccelerateableActions from the menuButton
 						for (ActionListener listener : menuButton.getListeners(ActionListener.class)) {
-							if(listener instanceof RibbonActionListener) {
+							if(listener instanceof AccelerateableAction) {
 								menuButton.removeActionListener(listener);
 							}
 						}
 						//add 
 						for (ActionListener listener : button.getListeners(ActionListener.class)) {
-							if(listener instanceof RibbonActionListener) {
+							if(listener instanceof AccelerateableAction) {
 								menuButton.addActionListener(listener);
 							}
 						}
@@ -405,45 +404,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 	 * NESTED TYPE DECLARATIONS
 	 **********************************************************************************/
 	
-	public static class RibbonActionListener implements ActionListener {
-		private final String key;
-		private final RibbonBuilder builder;
 
-		protected RibbonActionListener(AFreeplaneAction action) {
-			this.key = action.getKey();
-			this.builder = Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			AFreeplaneAction action = Controller.getCurrentModeController().getAction(key);
-			
-			if(action == null || linkAccelerator(action, e)) {
-				return;
-			}
-			
-			if ((0 != (e.getModifiers() & ActionEvent.CTRL_MASK))) {
-				builder.getAcceleratorManager().newAccelerator(action, null);
-				return;
-			}
-			builder.getRibbonActionEventHandler().fireAboutToPerformEvent(new AboutToPerformEvent(action));
-			action.actionPerformed(e);
-		}
-
-		private boolean linkAccelerator(AFreeplaneAction action, ActionEvent e) {
-			final boolean newAcceleratorOnNextClickEnabled = AccelerateableAction.isNewAcceleratorOnNextClickEnabled();
-			if (newAcceleratorOnNextClickEnabled) {
-				AccelerateableAction.getAcceleratorOnNextClickActionDialog().setVisible(false);
-			}
-			final Object source = e.getSource();
-			if ((newAcceleratorOnNextClickEnabled || 0 != (e.getModifiers() & ActionEvent.CTRL_MASK)) && source instanceof AbstractCommandButton) {
-				builder.getAcceleratorManager().newAccelerator(action, AccelerateableAction.getAcceleratorForNextClick());
-				return true;
-			}
-			return false;
-		}
-		
-		
-	}
 	
 	public static class AcceleratorChangeListenerForCommandButtons implements IAcceleratorChangeListener {
 		private final Map<String, AbstractCommandButton> commandButtonsForActionKeys = new HashMap<String, AbstractCommandButton>();

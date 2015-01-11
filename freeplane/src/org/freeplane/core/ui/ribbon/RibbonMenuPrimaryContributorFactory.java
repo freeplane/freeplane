@@ -8,6 +8,7 @@ import java.util.Properties;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
@@ -34,7 +35,7 @@ public class RibbonMenuPrimaryContributorFactory implements IRibbonContributorFa
 		String title = ActionUtils.getActionTitle(action);
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 
-		RibbonApplicationMenuEntryPrimary entry = new RibbonApplicationMenuEntryPrimary(icon, title, new RibbonActionContributorFactory.RibbonActionListener(action), kind);
+		RibbonApplicationMenuEntryPrimary entry = new RibbonApplicationMenuEntryPrimary(icon, title, new AccelerateableAction(action), kind);
 		return entry;
 	}
 	

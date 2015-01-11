@@ -6,6 +6,7 @@ import java.util.Properties;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
@@ -55,7 +56,7 @@ public class RibbonMenuFooterContributorFactory implements IRibbonContributorFac
 					if(action != null) {
 						String title = ActionUtils.getActionTitle(action);
 						ResizableIcon icon = ActionUtils.getActionIcon(action);
-						ActionListener listener = new RibbonActionContributorFactory.RibbonActionListener(action);
+						ActionListener listener = new AccelerateableAction(action);
 						final RibbonApplicationMenuEntryFooter entry = new RibbonApplicationMenuEntryFooter(icon, title, listener);
 						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(key);
 						if(ks != null) {

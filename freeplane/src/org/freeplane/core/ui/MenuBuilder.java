@@ -782,7 +782,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 	}
 
 	public IFreeplaneAction acceleratableAction(final AFreeplaneAction action) {
-		return new AccelerateableAction(acceleratorManager, action);
+		return new AccelerateableAction(action);
 	}
 
 	@Override

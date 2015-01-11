@@ -6,7 +6,7 @@ import java.util.Properties;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ribbon.RibbonActionContributorFactory.RibbonActionListener;
+import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.ui.ribbon.RibbonMenuPrimaryContributorFactory.SecondaryEntryGroup;
 import org.freeplane.core.util.TextUtils;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
@@ -62,7 +62,7 @@ public class RibbonMenuSecondaryGroupContributorFactory implements IRibbonContri
 					}
 				}
 				for (ActionListener l : button.getListeners(ActionListener.class)) {
-					if(l instanceof RibbonActionListener) {
+					if(l instanceof AccelerateableAction) {
 						listener = l;
 						break;
 					}

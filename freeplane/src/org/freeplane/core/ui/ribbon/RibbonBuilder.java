@@ -18,8 +18,6 @@ import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.OneTouchCollapseResizer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.StructureTree.StructurePath;
-import org.freeplane.core.ui.ribbon.event.AboutToPerformEvent;
-import org.freeplane.core.ui.ribbon.event.IActionEventListener;
 import org.freeplane.core.ui.ribbon.special.EdgeStyleContributorFactory;
 import org.freeplane.core.ui.ribbon.special.FilterConditionsContributorFactory;
 import org.freeplane.core.ui.ribbon.special.FontStyleContributorFactory;
@@ -50,8 +48,6 @@ public class RibbonBuilder {
 	private boolean enabled = true;
 
 	private RibbonMapChangeAdapter changeAdapter;
-
-	private RibbonActionEventHandler raeHandler;
 
 	public RibbonBuilder(ModeController mode, ActionAcceleratorManager acceleratorManager) {
 		structure = new StructureTree();
@@ -204,42 +200,6 @@ public class RibbonBuilder {
 			changeAdapter = new RibbonMapChangeAdapter();
 		}
 		return changeAdapter;
-	}
-
-	public RibbonActionEventHandler getRibbonActionEventHandler() {
-		if(raeHandler == null) {
-			raeHandler = new RibbonActionEventHandler();
-		}
-		return raeHandler;
-	}
-
-	public static class RibbonActionEventHandler {
-
-		private final List<IActionEventListener> listeners = new ArrayList<IActionEventListener>();
-
-		public void fireAboutToPerformEvent(AboutToPerformEvent event) {
-    		synchronized (listeners) {
-    			IActionEventListener[] aListeners = listeners.toArray(new IActionEventListener[0]);
-    			for(int i=aListeners.length-1; i >= 0; i--) {
-    				aListeners[i].aboutToPerform(event);
-    			}
- 			}
-		}
-
-		public void addListener(IActionEventListener listener) {
-			synchronized (listeners) {
-				if(!listeners.contains(listener)) {
-					listeners.add(listener);
-				}
-			}
-		}
-
-		public void removeListener(IActionEventListener listener) {
-			synchronized (listeners) {
-				listeners.remove(listener);
-			}
-		}
-
 	}
 
 	public JRibbon getRibbonRootComponent() {

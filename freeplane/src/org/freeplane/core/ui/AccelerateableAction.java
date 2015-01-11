@@ -43,7 +43,6 @@ import org.freeplane.features.mode.Controller;
 public class AccelerateableAction implements IFreeplaneAction {
 
 	final private AFreeplaneAction originalAction;
-	private ActionAcceleratorManager acceleratorManager;
     private static JDialog setAcceleratorOnNextClickActionDialog;
     private static KeyStroke acceleratorForNextClickedAction;
 
@@ -74,9 +73,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 		getAcceleratorOnNextClickActionDialog().setVisible(true);
 	}
 
-	public AccelerateableAction(final ActionAcceleratorManager acceleratorManager, final AFreeplaneAction originalAction) {
+	public AccelerateableAction(final AFreeplaneAction originalAction) {
 		super();
-		this.acceleratorManager = acceleratorManager;
 		this.originalAction = originalAction;
 	}
 
@@ -88,10 +86,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 		}
 		final Object source = e.getSource();
 		if ((newAcceleratorOnNextClickEnabled || 0 != (e.getModifiers() & ActionEvent.CTRL_MASK))
-		        && source instanceof IKeyBindingManager && !((IKeyBindingManager) source).isKeyBindingProcessed()
-		        && source instanceof JMenuItem) {
-			final JMenuItem item = (JMenuItem) source;
-			acceleratorManager.newAccelerator(getOriginalAction(), newAccelerator);
+		        && ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed())) {
+			getAcceleratorManager().newAccelerator(getOriginalAction(), newAccelerator);
 			return;
 		}
 		originalAction.actionPerformed(e);
@@ -151,5 +147,9 @@ public class AccelerateableAction implements IFreeplaneAction {
 
 	public String getIconKey() {
 		return originalAction.getIconKey();
+	}
+
+	private ActionAcceleratorManager getAcceleratorManager() {
+		return Controller.getCurrentModeController().getUserInputListenerFactory().getAcceleratorManager();
 	}
 }
