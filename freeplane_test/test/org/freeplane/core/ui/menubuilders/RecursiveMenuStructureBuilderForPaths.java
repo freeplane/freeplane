@@ -24,7 +24,7 @@ public class RecursiveMenuStructureBuilderForPaths {
 
 	private List<Builder> availableBuildersForPath(Entry childEntry) {
 		final List<Builder> buildersForPath = builders.get(childEntry.getPath());
-		return buildersForPath != null ? buildersForPath : Collections.emptyList();
+		return buildersForPath != null ? buildersForPath : Collections.<Builder>emptyList();
 	}
 
 	public void addBuilder(String path, Builder builder) {

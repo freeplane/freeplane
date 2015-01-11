@@ -4,6 +4,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.awt.Container;
+
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
@@ -61,7 +64,7 @@ public class JMenuBuilderTest {
 
 		Entry builtMenuStructure = buildJMenu(xmlWithoutContent);
 		
-		assertThat(((JButton)builtMenuStructure.getChild(0).getChild(0).getComponent()).getAction(), CoreMatchers.equalTo(someAction));
+		assertThat(((JButton)builtMenuStructure.getChild(0).getChild(0).getComponent()).getAction(), CoreMatchers.<Action>equalTo(someAction));
 	}
 
 	@Test
@@ -79,6 +82,6 @@ public class JMenuBuilderTest {
 		
 		final JToolBar toolbar = (JToolBar)builtMenuStructure.getChild(0).getComponent();
 		final JButton button = (JButton)builtMenuStructure.getChild(0).getChild(0).getComponent();
-		assertThat(button.getParent(), CoreMatchers.equalTo(toolbar));
+		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
 	}
 }
