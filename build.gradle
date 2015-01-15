@@ -27,6 +27,18 @@ def filterPluginDeps(listOfPaths) {
     return filteredListOfPaths
 }
 
+// we need this filter to convert i.e.:
+// lib/foo, li
+//  b/bar
+// TO:
+// lib/foo, lib/bar
+// !
+class JarCutOffFilter extends FilterReader {
+   JarCutOffFilter(Reader input) {
+        super(new StringReader(input.text.replace("\r\n ", "").replace("\n ", "").replace("\r ", "")))
+    }
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
@@ -80,6 +92,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         from('build/tmp/jar/MANIFEST.MF') {
         }
         into('META-INF/')
+        filter JarCutOffFilter
         filter { line -> line.replace("lib/", "build/libs/") }
     }
     filterOSGiManifestForEclipse.dependsOn jar
