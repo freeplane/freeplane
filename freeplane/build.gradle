@@ -10,7 +10,8 @@ dependencies {
             'com.github.insubstantial:substance:7.2.1',
             'com.github.insubstantial:substance-flamingo:7.2.1',
             'com.github.insubstantial:substance-swingx:7.2.1',
-            'com.github.insubstantial:trident:7.2.1'
+            'com.github.insubstantial:trident:7.2.1',
+            'gnu-regexp:gnu-regexp:1.1.4'
 
     compile files('./lib/SimplyHTML.jar','./lib/idw-gpl.jar')
 }
