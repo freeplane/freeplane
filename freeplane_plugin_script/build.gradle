@@ -23,7 +23,6 @@ jar {
 
         def imports = """\
                       org.osgi.framework;version="1.3.0",
-                      jsyntaxpane,
                       jsyntaxpane.lexers,
                       jsyntaxpane.syntaxkits,
                       org.freeplane.core.*,
@@ -37,8 +36,7 @@ jar {
                       org.pushingpixels.flamingo.api.common.icon,
                       org.pushingpixels.flamingo.api.common.model,
                       org.pushingpixels.flamingo.api.common.popup,
-                      org.pushingpixels.flamingo.api.ribbon,
-                      org.pushingpixels.flamingo.api.ribbon.resize
+                      org.pushingpixels.flamingo.api.ribbon
                       """
         instruction 'Import-Package', imports.replaceAll("\\s+", "")
         // avoid that bnd creates Private-Package: for org.freeplane.plugin.script.*!

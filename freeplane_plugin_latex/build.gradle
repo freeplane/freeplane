@@ -23,7 +23,6 @@ jar {
 
         def imports = """\
                       org.osgi.framework;version="1.3.0",
-                      jsyntaxpane,
                       jsyntaxpane.lexers,
                       jsyntaxpane.syntaxkits,
                       org.freeplane.core.*,
