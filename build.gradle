@@ -75,6 +75,20 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         into "$buildDir/libs"
     }
     jar.dependsOn copyDeps
+
+    task filterOSGiManifestForEclipse(type: Copy) {
+        from('build/tmp/jar/MANIFEST.MF') {
+        }
+        into('META-INF/')
+        filter { line -> line.replace("lib/", "build/libs/") }
+    }
+    filterOSGiManifestForEclipse.dependsOn jar
+    build.dependsOn filterOSGiManifestForEclipse
+
+    task cleanOSGiManifestForEclipse(type: Delete) {
+       delete "META-INF/MANIFEST.MF"
+    }
+    clean.dependsOn cleanOSGiManifestForEclipse
 }
 
 // common configuration for all plugins...
