@@ -33,8 +33,8 @@ def filterPluginDeps(listOfPaths) {
 // TO:
 // lib/foo, lib/bar
 // !
-class JarCutOffFilter extends FilterReader {
-   JarCutOffFilter(Reader input) {
+class UnwrapManifestFilter extends FilterReader {
+    UnwrapManifestFilter(Reader input) {
         super(new StringReader(input.text.replace("\r\n ", "").replace("\n ", "").replace("\r ", "")))
     }
 }
@@ -92,8 +92,12 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         from('build/tmp/jar/MANIFEST.MF') {
         }
         into('META-INF/')
-        filter JarCutOffFilter
+        // unwrap each header
+        filter UnwrapManifestFilter
+        // replace path for dependencies
         filter { line -> line.replace("lib/", "build/libs/") }
+        // re-wrap each header (TODO: use CRLF?)
+        filter { line -> line.replace(",", ",\n ") }
     }
     filterOSGiManifestForEclipse.dependsOn jar
     build.dependsOn filterOSGiManifestForEclipse
