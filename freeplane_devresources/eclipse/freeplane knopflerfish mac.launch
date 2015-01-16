@@ -18,7 +18,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_25.jdk"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.knopflerfish.framework.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="freeplane"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xdock:icon=${workspace_loc:/freeplane_framework/mac-jarbundler/freeplane.icns} -Xdock:name=Freeplane -Xmx512m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xdock:icon=${workspace_loc:/freeplane_framework/mac-appbundler/freeplane.icns} -Xdock:name=Freeplane -Xmx512m"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:freeplane_framework/build4mac/Freeplane.app/Contents/Resources/Java}"/>
 <stringAttribute key="yk-options" value="&#13;&#10;snapshots-dir=&#13;&#10;additional-options2=onexit\=snapshot&#13;&#10;startup=0&#13;&#10;"/>
 </launchConfiguration>
