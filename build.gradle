@@ -106,6 +106,26 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
        delete "META-INF/MANIFEST.MF"
     }
     clean.dependsOn cleanOSGiManifestForEclipse
+
+    // fix eclipse classpath: artifacts to be Export-Package:'d need
+    // to be referenced from build/libs (and not from ~/.gradle/caches)
+    eclipse.classpath.file {
+        whenMerged { classpath ->
+           for (entry in classpath.entries)
+           {
+               if (entry.getKind().equals('lib'))
+               {
+                   def jarName = new File(entry.path).name
+                   def localDep = project.configurations.runtime.files.any { it.name.equals(jarName) }
+                   if (localDep)
+                   {
+                       entry.path = "build/libs/" + jarName
+                   }
+               }
+           }
+           return classpath
+        }
+    }
 }
 
 // common configuration for all plugins...
