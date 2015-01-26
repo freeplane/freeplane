@@ -61,6 +61,19 @@ subprojects {
     dependencies {
         testCompile group: 'junit', name: 'junit', version: '4.11'
     }
+
+    task copyEclipseSettings(type: Copy) {
+        from(rootDir.path + "/freeplane_framework/eclipse/settings-templates/") {
+            include("*.prefs")
+        }
+        into(project.file(".settings/"))
+    }
+    eclipseJdt.dependsOn copyEclipseSettings
+
+    task cleanEclipseSettings(type: Delete) {
+        delete(project.file(".settings"))
+    }
+    cleanEclipseJdt.dependsOn cleanEclipseSettings
 }
 
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
