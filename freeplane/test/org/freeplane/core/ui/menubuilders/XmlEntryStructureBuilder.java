@@ -17,7 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class XmlEntryStructureBuilder implements Builder{
 
 
-	static final String ENTRY = "entry";
+	static final String ENTRY = "Entry";
 	private Reader stringReader;
 
 	public XmlEntryStructureBuilder(Reader stringReader) {

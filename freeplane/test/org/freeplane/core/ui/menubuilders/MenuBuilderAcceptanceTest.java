@@ -43,9 +43,9 @@ public class MenuBuilderAcceptanceTest {
 
 	@Test
 	public void createsEmptyToolbarComponent() {
-		String xmlWithoutContent = "<freeplaneUIEntries>"
-				+ "<entry name='home' builder='toolbar'/>"
-				+ "</freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries>"
+				+ "<Entry name='home' builder='toolbar'/>"
+				+ "</FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = buildJMenu(xmlWithoutContent);
 		assertThat(builtMenuStructure.getChild(0).getComponent().getClass(), CoreMatchers.<Object>is(FreeplaneToolBar.class));
@@ -53,11 +53,11 @@ public class MenuBuilderAcceptanceTest {
 
 	@Test
 	public void createsToolbarButtonWithAction() {
-		String xmlWithoutContent = "<freeplaneUIEntries>"
-				+ "<entry name='home' builder='toolbar'>"
-				+ "<entry name='action'/>"
-				+ "</entry>"
-				+ "</freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries>"
+				+ "<Entry name='home' builder='toolbar'>"
+				+ "<Entry name='action'/>"
+				+ "</Entry>"
+				+ "</FreeplaneUIEntries>";
 
 		final AFreeplaneAction someAction = Mockito.mock(AFreeplaneAction.class);
 		when(freeplaneActions.getAction("action")).thenReturn(someAction);
@@ -69,11 +69,11 @@ public class MenuBuilderAcceptanceTest {
 
 	@Test
 	public void givengroupWithAction_addsActionButtonToToolbar() {
-		String xmlWithoutContent = "<freeplaneUIEntries>"
-				+ "<entry name='home' builder='toolbar'>"
-				+ "<entry name='action'/>"
-				+ "</entry>"
-				+ "</freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries>"
+				+ "<Entry name='home' builder='toolbar'>"
+				+ "<Entry name='action'/>"
+				+ "</Entry>"
+				+ "</FreeplaneUIEntries>";
 
 		final AFreeplaneAction someAction = Mockito.mock(AFreeplaneAction.class);
 		when(freeplaneActions.getAction("action")).thenReturn(someAction);

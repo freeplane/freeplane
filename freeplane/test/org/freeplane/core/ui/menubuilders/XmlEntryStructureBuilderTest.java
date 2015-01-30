@@ -14,7 +14,7 @@ import org.junit.Test;
 public class XmlEntryStructureBuilderTest {
 	@Test
 	public void givenXmlWithourContent_createsEmptyStructure() {
-		String xmlWithoutContent = "<freeplaneUIEntries/>";
+		String xmlWithoutContent = "<FreeplaneUIEntries/>";
 
 		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 		
@@ -24,7 +24,7 @@ public class XmlEntryStructureBuilderTest {
 
 	@Test
 	public void givenXmlWithChildEntryWithBuilderSpecificAttribute_createsStructureWithChildEntry() {
-		String xmlWithoutContent = "<freeplaneUIEntries><entry builderSpecificAttribute='Value'/></freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry builderSpecificAttribute='Value'/></FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
@@ -38,7 +38,7 @@ public class XmlEntryStructureBuilderTest {
 
 	@Test
 	public void givenXmlWithChildEntryWithOneBuilder_createsStructureWithChildEntry() {
-		String xmlWithoutContent = "<freeplaneUIEntries><entry builder='builder'/></freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry builder='builder'/></FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
@@ -52,7 +52,7 @@ public class XmlEntryStructureBuilderTest {
 	
 	@Test
 	public void givenXmlWithChildEntryWithTwoBuilders_createsStructureWithChildEntry() {
-		String xmlWithoutContent = "<freeplaneUIEntries><entry builder='builder1, builder2'/></freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry builder='builder1, builder2'/></FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
@@ -66,7 +66,7 @@ public class XmlEntryStructureBuilderTest {
 
 	@Test
 	public void givenXmlWithChildEntryWithName_createsStructureWithNamedChildEntry() {
-		String xmlWithoutContent = "<freeplaneUIEntries><entry name='entry'/></freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry name='entry'/></FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
@@ -80,9 +80,9 @@ public class XmlEntryStructureBuilderTest {
 	
 	@Test
 	public void givenXmlWithDifferentChildLevels_createsStructure() {
-		String xmlWithoutContent = "<freeplaneUIEntries><entry name='level1'>"
-				+ "<entry name='level2'/>"
-				+ "</entry></freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry name='level1'>"
+				+ "<Entry name='level2'/>"
+				+ "</Entry></FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
@@ -100,9 +100,9 @@ public class XmlEntryStructureBuilderTest {
 
 	@Test
 	public void givenXmlWithSameChildLevels_createsStructure() {
-		String xmlWithoutContent = "<freeplaneUIEntries><entry name='level1'/>"
-				+ "<entry name='level2'/>"
-				+ "</freeplaneUIEntries>";
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry name='level1'/>"
+				+ "<Entry name='level2'/>"
+				+ "</FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 
