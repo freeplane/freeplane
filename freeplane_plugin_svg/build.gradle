@@ -36,7 +36,8 @@ dependencies {
             // when starting from elipse:
             'xerces:xercesImpl:2.11.0'
 
-    compile files('./lib/pdf-transcoder.jar') // "fop.jar"/libfop-java
+    // from flatDir "localGitDepsRepository":
+    compile ':pdf-transcoder-1.0' // "fop.jar"/libfop-java
 }
 
 jar {
