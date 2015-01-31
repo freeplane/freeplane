@@ -21,11 +21,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class JToolbarActionBuilderTest {
-	private FreeplaneToolBar freeplaneToolbar() {
-		return new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
-	}
-	
-
 	@Test
 	public void createsToolbarButtonWithAction() {
 		Entry actionEntry = new Entry();
@@ -33,7 +28,7 @@ public class JToolbarActionBuilderTest {
 		actionEntry.setAction(action);
 
 		Entry toolbarEntry = new Entry();
-		final FreeplaneToolBar toolbar = freeplaneToolbar();
+		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
 		toolbarEntry.setComponent(toolbar);
 		toolbarEntry.addChild(actionEntry);
 		
@@ -53,7 +48,7 @@ public class JToolbarActionBuilderTest {
 		actionEntry.setAction(action);
 
 		Entry toolbarEntry = new Entry();
-		final FreeplaneToolBar toolbar = freeplaneToolbar();
+		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
 		toolbarEntry.setComponent(toolbar);
 		toolbarEntry.addChild(actionEntry);
 		
@@ -67,12 +62,12 @@ public class JToolbarActionBuilderTest {
 	}
 	
 	@Test
-	public void createsToolbarSeparator() {
+	public void createsVerticalToolbarSeparator() {
 		Entry separatorEntry = new Entry();
 		separatorEntry.setBuilders(asList("separator"));
 
 		Entry toolbarEntry = new Entry();
-		final FreeplaneToolBar toolbar = freeplaneToolbar();
+		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
 		toolbarEntry.setComponent(toolbar);
 		toolbarEntry.addChild(separatorEntry);
 		
@@ -82,6 +77,7 @@ public class JToolbarActionBuilderTest {
 		JToolBar.Separator separator = (JToolBar.Separator)separatorEntry.getComponent();
 
 		assertThat(separator.getParent(), CoreMatchers.equalTo((Container)toolbar));
+		assertThat(separator.getOrientation(), CoreMatchers.equalTo(SwingConstants.VERTICAL));
 	}
 }
 
