@@ -1,12 +1,15 @@
 package org.freeplane.core.ui.menubuilders;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertThat;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -63,6 +66,23 @@ public class JToolbarActionBuilderTest {
 		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
 	}
 	
+	@Test
+	public void createsToolbarSeparator() {
+		Entry separatorEntry = new Entry();
+		separatorEntry.setBuilders(asList("separator"));
+
+		Entry toolbarEntry = new Entry();
+		final FreeplaneToolBar toolbar = freeplaneToolbar();
+		toolbarEntry.setComponent(toolbar);
+		toolbarEntry.addChild(separatorEntry);
+		
+		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
+		toolbarActionGroupBuilder.build(separatorEntry);
+
+		JToolBar.Separator separator = (JToolBar.Separator)separatorEntry.getComponent();
+
+		assertThat(separator.getParent(), CoreMatchers.equalTo((Container)toolbar));
+	}
 }
 
 @SuppressWarnings("serial")

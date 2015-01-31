@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 
 import javax.swing.JButton;
+import javax.swing.JToolBar;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
@@ -17,17 +18,24 @@ public class JToolbarActionBuilder implements Builder {
 	@Override
 	public void build(Entry entry) {
 		final AFreeplaneAction action = entry.getAction();
+		Component component;
 		if(action != null){
-			Component button;
 			if (action.getClass().getAnnotation(SelectableAction.class) != null) {
-				button = new JAutoToggleButton(action);
+				component = new JAutoToggleButton(action);
 			}
 			else {
-				button = new JButton(action);
+				component = new JButton(action);
 			}
-			entry.setComponent(button);
+		}
+		else if(entry.builders().contains("separator")){
+			component = new JToolBar.Separator();
+		}
+		else
+			component = null;
+		if(component != null){
+			entry.setComponent(component);
 			final Container container = (Container) entry.getAncestorComponent();
-			container.add(button);
+			container.add(component);
 		}
 	}
 

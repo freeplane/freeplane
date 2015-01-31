@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +101,7 @@ public class Entry {
 	}
 
 
-	public Iterable<String> builders() {
+	public Collection<String> builders() {
 		return builders;
 	}
 
