@@ -121,4 +121,18 @@ public class Entry {
 		setAttribute(ACTION, action);
 	}
 
+
+	public Object getAncestorComponent() {
+		final Entry parent = getParent();
+		if(parent == null)
+			return null;
+		else{
+			final Object parentComponent = parent.getComponent();
+			if(parentComponent != null)
+				return parentComponent;
+			else
+				return parent.getAncestorComponent();
+		}
+	}
+
 }

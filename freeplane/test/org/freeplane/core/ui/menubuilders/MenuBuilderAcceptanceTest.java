@@ -37,8 +37,8 @@ public class MenuBuilderAcceptanceTest {
 		recursiveMenuStructureBuilder = new RecursiveMenuStructureBuilder();
 		recursiveMenuStructureBuilder.setDefaultBuilder(Builder.EMTPY_BUILDER);
 		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.actionGroup");
-		recursiveMenuStructureBuilder.addBuilder("toolbar.actionGroup", new JToolbarActionGroupBuilder());
+		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
+		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
 	}
 
 	@Test
