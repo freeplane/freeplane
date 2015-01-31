@@ -5,6 +5,12 @@ allprojects {
     // WARNING: this is removed with "gradle clean"!!
     ext.globalBuild = rootDir.path + '/BUILD'
 
+    repositories {
+        // this is necessary to grab both binary and source jars
+        // for local (git) dependencies
+        flatDir name: 'localGitDepsRepository', dirs: rootDir.path + "/freeplane/lib"
+    }
+
 }
 
 def filterPluginDeps(listOfPaths) {
