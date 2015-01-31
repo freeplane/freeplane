@@ -9,7 +9,8 @@ allprojects {
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
         flatDir name: 'localGitDepsRepository',
-                dirs: [rootDir.path + "/freeplane/lib", rootDir.path + "/freeplane_plugin_jsp/lib"]
+                dirs: [rootDir.path + "/freeplane/lib", rootDir.path + "/freeplane_plugin_jsp/lib",
+                       rootDir.path + "/freeplane_plugin_openmaps/lib"]
     }
 
 }
