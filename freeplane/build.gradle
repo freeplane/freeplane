@@ -166,6 +166,7 @@ task copyOSGiJars(type: Copy) {
      }
      from ('lib') {
           include("*.jar")
+          exclude('*-sources.jar')
      }
      into(globalBuild + '/core/' + pluginid + '/lib/')
 }

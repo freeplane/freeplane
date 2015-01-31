@@ -172,6 +172,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
         }
         from ('lib') {
             include("*.jar")
+            exclude('*-sources.jar')
         }
         into(globalBuild + '/plugins/' + pluginid + '/lib/')
     }
