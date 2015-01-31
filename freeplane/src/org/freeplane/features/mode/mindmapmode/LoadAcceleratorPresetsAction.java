@@ -26,8 +26,10 @@ import java.io.InputStream;
 import java.net.URL;
 
 
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
@@ -114,7 +116,9 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		InputStream in = null;
 		try {
 			in = resource.openStream();
-			MenuBuilder.loadAcceleratorPresets(in);
+			final InputStream in1 = in;
+			final ActionAcceleratorManager acclMgr = Controller.getCurrentModeController().getUserInputListenerFactory().getAcceleratorManager();
+			acclMgr.loadAcceleratorPresets(in1);
 		}
 		catch (final IOException e1) {
 			e1.printStackTrace();

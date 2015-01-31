@@ -429,59 +429,6 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 		return menu;
 	}
 
-	public static void loadAcceleratorPresets(final InputStream in) {
-		final Properties prop = new Properties();
-		try {
-			prop.load(in);
-			for (final Entry<Object, Object> property : prop.entrySet()) {
-				final String shortcutKey = (String) property.getKey();
-				final String keystrokeString = (String) property.getValue();
-				if (!shortcutKey.startsWith(SHORTCUT_PROPERTY_PREFIX)) {
-					LogUtils.warn("wrong property key " + shortcutKey);
-					continue;
-				}
-				final int pos = shortcutKey.indexOf("/", SHORTCUT_PROPERTY_PREFIX.length());
-				if (pos <= 0) {
-					LogUtils.warn("wrong property key " + shortcutKey);
-					continue;
-				}
-				final String modeName = shortcutKey.substring(SHORTCUT_PROPERTY_PREFIX.length(), pos);
-				final String itemKey = shortcutKey.substring(pos + 1);
-				Controller controller = Controller.getCurrentController();
-				final ModeController modeController = controller.getModeController(modeName);
-				if (modeController == null) {
-					LogUtils.warn("unknown mode name in " + shortcutKey);
-					continue;
-				}
-				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-				final ActionAcceleratorManager acclMgr = modeController.getUserInputListenerFactory().getAcceleratorManager();
-				final Node node = (Node) menuBuilder.get(itemKey);
-				final AFreeplaneAction action = null;
-				if (node == null) {
-					LogUtils.warn("wrong key in " + shortcutKey);
-					continue;
-				}
-				final Object obj = node.getUserObject();
-				if (!(obj instanceof JMenuItem)) {
-					LogUtils.warn("wrong key in " + shortcutKey);
-					continue;
-				}
-				final KeyStroke keyStroke;
-				if (!keystrokeString.equals("")) {
-					keyStroke = UITools.getKeyStroke(keystrokeString);
-				}
-				else {
-					keyStroke = null;
-				}
-				acclMgr.setAccelerator(action, keyStroke);
-				ResourceController.getResourceController().setProperty(shortcutKey, keystrokeString);
-			}
-		}
-		catch (final IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * Ampersand indicates that the character after it is a mnemo, unless the
 	 * character is a space. In "Find & Replace", ampersand does not label
