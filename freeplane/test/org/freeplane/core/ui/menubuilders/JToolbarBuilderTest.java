@@ -1,6 +1,5 @@
 package org.freeplane.core.ui.menubuilders;
 
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertThat;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -13,7 +12,6 @@ public class JToolbarBuilderTest {
 	@Test
 	public void createsEmptyToolbarComponent() {
 		Entry toolbarEntry = new Entry();
-		toolbarEntry.setBuilders(asList("toolbar"));
 		
 		final JToolbarBuilder toolbarBuilder = new JToolbarBuilder();
 		toolbarBuilder.build(toolbarEntry);
