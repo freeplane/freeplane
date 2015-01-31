@@ -8,7 +8,8 @@ allprojects {
     repositories {
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
-        flatDir name: 'localGitDepsRepository', dirs: rootDir.path + "/freeplane/lib"
+        flatDir name: 'localGitDepsRepository',
+                dirs: [rootDir.path + "/freeplane/lib", rootDir.path + "/freeplane_plugin_jsp/lib"]
     }
 
 }

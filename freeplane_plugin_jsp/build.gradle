@@ -1,6 +1,8 @@
 dependencies {
     compile project(':freeplane')
-    compile files('./lib/jsyntaxpane.jar')
+
+    // from flatDir "localGitDepsRepository":
+    compile ':jsyntaxpane-0.9.6~r156-5' // from the Debian "libjsyntaxpane-java" package
 }
 
 jar {
