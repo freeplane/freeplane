@@ -35,7 +35,8 @@ jar {
         def exports = """\
                       jsyntaxpane,
                       jsyntaxpane.lexers,
-                      jsyntaxpane.syntaxkits
+                      jsyntaxpane.syntaxkits,
+                      jsyntaxpane.actions
                       """
         // bnd f**cks up the exports, so we bypass it using attributes!
         attributes 'Export-Package': exports.replaceAll("\\s+", "")

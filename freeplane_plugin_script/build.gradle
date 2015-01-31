@@ -25,6 +25,7 @@ jar {
                       org.osgi.framework;version="1.3.0",
                       jsyntaxpane.lexers,
                       jsyntaxpane.syntaxkits,
+                      jsyntaxpane.actions,
                       org.freeplane.core.*,
                       org.freeplane.features.*,
                       org.freeplane.main.*,
