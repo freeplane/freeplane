@@ -649,7 +649,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 		Map<KeyStroke, AFreeplaneAction> actionAccelMap = acceleratorManager.getAcceleratorMap();
 		Map<KeyStroke, Node> accelerators = new HashMap<KeyStroke, IndexedTree.Node>();
 		for (Entry<KeyStroke, AFreeplaneAction> entry: actionAccelMap.entrySet()) {
-			Node node = actionNodeMap.get(entry.getKey());
+			Node node = actionNodeMap.get(entry.getValue());
 			if(node != null) {
 				accelerators.put(entry.getKey(), node);
 			}
