@@ -21,7 +21,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.main.addons.AddOnProperties;
@@ -60,7 +60,7 @@ public class ManageAddOnsDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton closeButton = new JButton();
-				MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getRawText("close_btn"));
+				LabelAndMnemonicSetter.setLabelAndMnemonic(closeButton, TextUtils.getRawText("close_btn"));
 				closeButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						setVisible(false);

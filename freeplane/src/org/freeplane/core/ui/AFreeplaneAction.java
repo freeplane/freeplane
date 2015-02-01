@@ -81,7 +81,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	public AFreeplaneAction(final String key) {
 		super();
 		this.key = key;
-		MenuBuilder.setLabelAndMnemonic(this, TextUtils.getRawText(getTextKey()));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(this, TextUtils.getRawText(getTextKey()));
 		final String iconKey = getIconKey();
 		final ImageIcon cachedIcon = iconCache.get(iconKey);
 		if(cachedIcon != null){
@@ -121,7 +121,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 //		this.controller = controller;
 		putValue(SMALL_ICON, icon);
 		if (title != null && !title.equals("")) {
-			MenuBuilder.setLabelAndMnemonic(this, title);
+			LabelAndMnemonicSetter.setLabelAndMnemonic(this, title);
 		}
 		this.key = key;
 	}

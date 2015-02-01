@@ -21,17 +21,12 @@ package org.freeplane.core.ui;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.GraphicsEnvironment;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -39,7 +34,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.AbstractButton;
@@ -68,7 +62,6 @@ import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -81,164 +74,6 @@ import org.pushingpixels.flamingo.api.common.AsynchronousLoadListener;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 
 public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener {
-	private static class ActionHolder implements INameMnemonicHolder {
-		final private Action action;
-
-		public ActionHolder(final Action action) {
-			super();
-			this.action = action;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see freeplane.main.Tools.IAbstractButton#getText()
-		 */
-		public String getText() {
-			return (String) action.getValue(Action.NAME);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * freeplane.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
-		 */
-		public void setDisplayedMnemonicIndex(final int mnemoSignIndex) {
-			action.putValue("SwingDisplayedMnemonicIndexKey", mnemoSignIndex);
-
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see freeplane.main.Tools.IAbstractButton#setMnemonic(char)
-		 */
-		public void setMnemonic(final char charAfterMnemoSign) {
-			int vk = charAfterMnemoSign;
-			if (vk >= 'a' && vk <= 'z') {
-				vk -= ('a' - 'A');
-			}
-			action.putValue(Action.MNEMONIC_KEY, new Integer(vk));
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see freeplane.main.Tools.IAbstractButton#setText(java.lang.String)
-		 */
-		public void setText(final String text) {
-			action.putValue(Action.NAME, text);
-		}
-	}
-
-	public static class ButtonHolder implements INameMnemonicHolder {
-		final private AbstractButton btn;
-
-		public ButtonHolder(final AbstractButton btn) {
-			super();
-			this.btn = btn;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see freeplane.main.Tools.IAbstractButton#getText()
-		 */
-		public String getText() {
-			return btn.getText();
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * freeplane.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
-		 */
-		public void setDisplayedMnemonicIndex(final int mnemoSignIndex) {
-			btn.setDisplayedMnemonicIndex(mnemoSignIndex);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see freeplane.main.Tools.IAbstractButton#setMnemonic(char)
-		 */
-		public void setMnemonic(final char charAfterMnemoSign) {
-			btn.setMnemonic(charAfterMnemoSign);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see freeplane.main.Tools.IAbstractButton#setText(java.lang.String)
-		 */
-		public void setText(final String text) {
-			btn.setText(text);
-		}
-	}
-
-	static private class DelegatingPopupMenuListener implements PopupMenuListener {
-		final private PopupMenuListener listener;
-		final private Object source;
-
-		public DelegatingPopupMenuListener(final PopupMenuListener listener, final Object source) {
-			super();
-			this.listener = listener;
-			this.source = source;
-		}
-
-		public Object getSource() {
-			return source;
-		}
-
-		private PopupMenuEvent newEvent() {
-			return new PopupMenuEvent(source);
-		}
-
-		public void popupMenuCanceled(final PopupMenuEvent e) {
-			listener.popupMenuCanceled(newEvent());
-		}
-
-		public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-			listener.popupMenuWillBecomeInvisible(newEvent());
-		}
-
-		public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-			listener.popupMenuWillBecomeVisible(newEvent());
-		}
-	}
-
-	static private class Enabler implements PropertyChangeListener {
-		final private WeakReference<Component> comp;
-
-		public Enabler(final Component comp) {
-			this.comp = new WeakReference<Component>(comp);
-		}
-
-		public void propertyChange(final PropertyChangeEvent evt) {
-			final Component component = comp.get();
-			if (component == null) {
-				final Action action = (Action) evt.getSource();
-				action.removePropertyChangeListener(this);
-			}
-			else if (evt.getPropertyName().equals("enabled")) {
-				final Action action = (Action) evt.getSource();
-				component.setEnabled(action.isEnabled());
-			}
-		}
-	}
-
-	interface INameMnemonicHolder {
-		/**
-		 */
-		String getText();
-
-		/**
-		 */
-		void setDisplayedMnemonicIndex(int mnemoSignIndex);
-
-		/**
-		 */
-		void setMnemonic(char charAfterMnemoSign);
-
-		/**
-		 */
-		void setText(String replaceAll);
-	}
-
 	private static class MenuPath {
 		static MenuPath emptyPath() {
 			final MenuPath menuPath = new MenuPath("");
@@ -343,7 +178,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 						if(nameRef == null)
 						    nameRef = attributes.getAttribute("name", null);
 						final String iconResource = ResourceController.getResourceController().getProperty(nameRef + ".icon", null);
-						MenuBuilder.setLabelAndMnemonic(menuItem, TextUtils.getRawText(nameRef));
+						LabelAndMnemonicSetter.setLabelAndMnemonic(menuItem, TextUtils.getRawText(nameRef));
 						if(iconResource != null){
 							final URL url = ResourceController.getResourceController().getResource(iconResource);
 							menuItem.setIcon(new ImageIcon(url));
@@ -415,59 +250,6 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 		}
 	}
 	
-	static public JMenu createMenu(final String name) {
-		final JMenu menu = new JMenu();
-		final String text = TextUtils.getRawText(name);
-		MenuBuilder.setLabelAndMnemonic(menu, text);
-		return menu;
-	}
-
-	static public JMenuItem createMenuItem(final String name) {
-		final JMenuItem menu = new JFreeplaneMenuItem();
-		final String text = TextUtils.getRawText(name);
-		MenuBuilder.setLabelAndMnemonic(menu, text);
-		return menu;
-	}
-
-	/**
-	 * Ampersand indicates that the character after it is a mnemo, unless the
-	 * character is a space. In "Find & Replace", ampersand does not label
-	 * mnemo, while in "&About", mnemo is "Alt + A".
-	 */
-	public static void setLabelAndMnemonic(final AbstractButton btn, final String inLabel) {
-		MenuBuilder.setLabelAndMnemonic(new ButtonHolder(btn), inLabel);
-	}
-
-	/**
-	 * Ampersand indicates that the character after it is a mnemo, unless the
-	 * character is a space. In "Find & Replace", ampersand does not label
-	 * mnemo, while in "&About", mnemo is "Alt + A".
-	 */
-	public static void setLabelAndMnemonic(final Action action, final String inLabel) {
-		MenuBuilder.setLabelAndMnemonic(new ActionHolder(action), inLabel);
-	}
-
-	private static void setLabelAndMnemonic(final INameMnemonicHolder item, final String inLabel) {
-		String rawLabel = inLabel;
-		if (rawLabel == null) {
-			rawLabel = item.getText();
-		}
-		if (rawLabel == null) {
-			return;
-		}
-		item.setText(TextUtils.removeMnemonic(rawLabel));
-		final int mnemoSignIndex = rawLabel.indexOf('&');
-		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
-			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);
-			if (charAfterMnemoSign != ' ') {
-				if (!Compat.isMacOsX()) {
-					item.setMnemonic(charAfterMnemoSign);
-					item.setDisplayedMnemonicIndex(mnemoSignIndex);
-				}
-			}
-		}
-	}
-
 	final private ModeController modeController;
 	final MenuStructureReader reader;
 	private Set<String> plugins;
@@ -565,7 +347,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 	}
 
 	public void addComponent(final String parent, final Container item, final Action action, final int position) {
-		action.addPropertyChangeListener(new Enabler(item));
+		action.addPropertyChangeListener(new ActionEnabler(item));
 		addElement(parent, item, position);
 	}
 

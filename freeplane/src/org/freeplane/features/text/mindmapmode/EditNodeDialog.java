@@ -48,7 +48,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -113,10 +113,10 @@ public class EditNodeDialog extends EditNodeBase {
 			final JButton splitButton = new JButton();
 			final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
 			    .getBooleanProperty("el__enter_confirms_by_default"));
-			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
-			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
-			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
-			MenuBuilder.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();

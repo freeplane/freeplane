@@ -43,7 +43,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
@@ -166,7 +166,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final Box buttons = Box.createHorizontalBox();
 		buttons.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JButton okBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okBtn, TextUtils.getRawText("ok"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(okBtn, TextUtils.getRawText("ok"));
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
@@ -174,7 +174,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 		});
 		final JButton cancelBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelBtn, TextUtils.getRawText("cancel"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(cancelBtn, TextUtils.getRawText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();

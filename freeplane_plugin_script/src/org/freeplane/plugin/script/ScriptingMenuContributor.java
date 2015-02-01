@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.ModeController;
@@ -68,7 +69,7 @@ class ScriptingMenuContributor implements IMenuContributor {
     private void addSubMenu(final String parentLocation, final String location, String menuTitle) {
         if (registeredLocations.add(location) && menuBuilder.get(location) == null) {
             final JMenu menuItem = new JMenu();
-            MenuBuilder.setLabelAndMnemonic(menuItem, menuTitle);
+            LabelAndMnemonicSetter.setLabelAndMnemonic(menuItem, menuTitle);
             menuBuilder.addMenuItem(parentLocation, menuItem, location, MenuBuilder.AS_CHILD);
         }
     }

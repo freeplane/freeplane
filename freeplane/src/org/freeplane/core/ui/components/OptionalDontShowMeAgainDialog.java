@@ -36,7 +36,7 @@ import javax.swing.WindowConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -188,7 +188,7 @@ public class OptionalDontShowMeAgainDialog {
 			boxString = "OptionalDontShowMeAgainDialog.rememberMyDescision";
 		}
 		mDontShowAgainBox = new JCheckBox(TextUtils.getRawText(boxString));
-		MenuBuilder.setLabelAndMnemonic(mDontShowAgainBox, null);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(mDontShowAgainBox, null);
 		mDialog.getContentPane().add(
 		    mDontShowAgainBox,
 		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
@@ -201,7 +201,7 @@ public class OptionalDontShowMeAgainDialog {
 			okText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.ok");
 		}
 		final JButton okButton = new JButton(okText);
-		MenuBuilder.setLabelAndMnemonic(okButton, null);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, null);
 		okButton.addActionListener(okAction);
 		mDialog.getContentPane().add(
 		    okButton,
@@ -209,7 +209,7 @@ public class OptionalDontShowMeAgainDialog {
 		        5, 5, 0, 0), 0, 0));
 		if(mMessageType != ONLY_OK_SELECTION_IS_SHOWN){
 			final JButton cancelButton = new JButton(TextUtils.getRawText("OptionalDontShowMeAgainDialog.cancel"));
-			MenuBuilder.setLabelAndMnemonic(cancelButton, null);
+			LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, null);
 			cancelButton.addActionListener(cancelAction);
 			mDialog.getContentPane().add(
 				cancelButton,

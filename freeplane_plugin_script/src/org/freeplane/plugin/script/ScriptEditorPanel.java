@@ -57,7 +57,7 @@ import javax.swing.text.JTextComponent;
 import jsyntaxpane.actions.ActionUtils;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
@@ -381,7 +381,7 @@ class ScriptEditorPanel extends JDialog {
 		mScriptTextField.repaint();
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu();
-		MenuBuilder.setLabelAndMnemonic(menu, TextUtils.getRawText("plugins/ScriptEditor.menu_actions"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, TextUtils.getRawText("plugins/ScriptEditor.menu_actions"));
 		if (pHasNewScriptFunctionality) {
 			addAction(menu, new NewScriptAction(TextUtils.getRawText("plugins/ScriptEditor.new_script")));
 		}
@@ -411,7 +411,7 @@ class ScriptEditorPanel extends JDialog {
 
 	private void addAction(final JMenu menu, final AbstractAction action) {
 		final JMenuItem item = menu.add(action);
-		MenuBuilder.setLabelAndMnemonic(item, (String) action.getValue(Action.NAME));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(item, (String) action.getValue(Action.NAME));
 		item.setIcon(new BlindIcon(UIBuilder.ICON_SIZE));
 	}
 

@@ -40,6 +40,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
@@ -147,7 +148,7 @@ public class SelectMenuItemDialog extends JDialog {
 
 	private JButton createButton(final String key, final CloseAction closeAction) {
 		final JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getRawText(key));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(button, TextUtils.getRawText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		return button;

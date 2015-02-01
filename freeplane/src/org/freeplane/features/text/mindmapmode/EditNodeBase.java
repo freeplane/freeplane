@@ -30,6 +30,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -42,7 +43,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
@@ -221,7 +222,7 @@ abstract public class EditNodeBase {
 			return;
 	    final String text = TextUtils.getRawText(label);
 	    final JMenuItem item = menu.add(new JMenuItem());
-	    MenuBuilder.setLabelAndMnemonic(item, text);
+	    LabelAndMnemonicSetter.setLabelAndMnemonic(item, text);
 	    item.addActionListener(action);
     }
 

@@ -47,7 +47,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -211,7 +211,7 @@ public class FilterConditionEditor extends JComponent {
 		//add(caseSensitive, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
 		//gridBagConstraints.gridx++;
-		MenuBuilder.setLabelAndMnemonic(caseSensitive,TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(caseSensitive,TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE));
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
 		
@@ -219,7 +219,7 @@ public class FilterConditionEditor extends JComponent {
 		approximateMatching = new JCheckBox();
 		approximateMatching.setModel(filterController.getApproximateMatchingButtonModel());
 		approximateMatching.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP));
-		MenuBuilder.setLabelAndMnemonic(approximateMatching, TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(approximateMatching, TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH));
 		//add(approximateMatching, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);
 		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(

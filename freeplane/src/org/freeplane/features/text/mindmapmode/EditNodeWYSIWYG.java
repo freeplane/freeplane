@@ -39,7 +39,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
@@ -67,9 +67,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			splitButton = new JButton();
-			MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
-			MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
-			MenuBuilder.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();
