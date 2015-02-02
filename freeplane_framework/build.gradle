@@ -1,4 +1,3 @@
-
 task freeplanelauncherJar(type: Jar) {
      archiveName = 'freeplanelauncher.jar'
      destinationDir = new File(globalBuild)
@@ -12,44 +11,12 @@ task freeplanelauncherJar(type: Jar) {
      manifest {
           attributes("Manifest-Version": "1.0",
                      "Main-Class": "org.freeplane.launcher.Launcher",
-                     "Class-Path": "freeplaneLauncher.jar, framework.jar") // TODO!!???
+                     "Class-Path": "framework.jar")
      }
 }
 
 jar.dependsOn freeplanelauncherJar
 
-/*
-launcher.dist.lib = ${workspace}/freeplane_framework/build
-freeplanelauncher.jar = ${launcher.dist.lib}/freeplanelauncher.jar
-framework.ext.lib = ${workspace}/freeplane_framework/lib
-framework.jar = ${framework.ext.lib}/knopflerfish/framework.jar
-
-	<property name="launcher_src" value="src" />
-	<property name="launcher_manifest" value="${root}/META-INF/LAUNCHER_MANIFEST.MF" />
-	<property name="launcher_build" value="${root}/launcher_build" />
-	<property name="launcher_classpath" value="${framework.jar}" />
-	<target name="build_launcher" depends="build_core">
-		<mkdir dir="${launcher_build}" />
-		<javac srcdir="${launcher_src}" destdir="${launcher_build}" classpath="${launcher_classpath}" 
-			debug="${debug}" source="${java_source_version}" target="${java_target_version}" encoding="utf8"/>
-		<jar jarfile="${freeplanelauncher.jar}" manifest="${launcher_manifest}">
-			<fileset dir="${launcher_build}">
-				<include name="**" />
-			</fileset>
-		</jar>
-
-		<copy todir="${build}">
-			<fileset dir="${script}" />
-			<fileset file="${framework.jar}" />
-			<fileset file="${freeplanelauncher.jar}" />
-			<fileset file="windows-icons/freeplaneIcons.dll" />
-			<fileset dir="launch4j" includes="*.exe" />
-			<fileset dir="launch4j" includes="*.ini" />
-		</copy>
-		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
-	</target>
-*/
-// TODO: this needs testing!
 task copyLauncherStuff(type: Copy) {
      from('script/') {
          include('freeplane.sh')
@@ -59,9 +26,19 @@ task copyLauncherStuff(type: Copy) {
          include('*')
          exclude('freeplane.sh')
      }
-     from('lib/knopflerfish/') {
-         include('framework.jar')
+
+     def knopflerfishJarFile = project.configurations.runtime.files.find {
+         it.name =~ /^frameworkbundle-[0-9\.]+\.jar$/
      }
+     from(knopflerfishJarFile)
+     // rename frameworkbundle-*.jar to framework.jar
+     rename { String fileName ->
+         if (fileName =~ /^frameworkbundle-[0-9\.]+\.jar$/)
+            return "framework.jar"
+         else
+            return fileName
+     }
+
      from('windows-icons/') {
          include('freeplaneIcons.dll')
      }

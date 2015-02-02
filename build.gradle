@@ -86,6 +86,8 @@ subprojects {
     cleanEclipseJdt.dependsOn cleanEclipseSettings
 }
 
+// OSGi projects (/plugin/, freeplane) need this for compilation (e.g. resolve Bundle),
+// and freeplane_framework needs to copy it to BUILD/framework.jar
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
     repositories {
         maven {
