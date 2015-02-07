@@ -134,10 +134,10 @@ def distVersion = project.version
 		</zip>
 	</target>
 */
-task binZip(type: Zip) {
+task binZip(type: Zip, dependsOn: ':freeplane:build') {
     destinationDir = new File(globalDist)
     archiveName = 'freeplane_bin-' + distVersion + '.zip'
-    
+
     from(globalBuild) {
         include('**')
         exclude('freeplane.sh')
@@ -154,9 +154,6 @@ task binZip(type: Zip) {
 
     into('freeplane-' + distVersion)
 
-    // TODO: this doesn't work
-    //dependsOn build
-    //dependsOn ':build' // does not work either
 }
 
 
