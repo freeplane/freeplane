@@ -231,3 +231,5 @@ task format_translation {
     dependsOn ':JOrtho_0.4_freeplane:format_translation'
     dependsOn ':freeplane:format_translation'
 }
+
+apply from: './dist.gradle'
