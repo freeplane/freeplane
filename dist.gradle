@@ -134,7 +134,7 @@ def distVersion = project.version
 		</zip>
 	</target>
 */
-task binZip(type: Zip, dependsOn: ':freeplane:build') {
+task binZip(type: Zip) {
     destinationDir = new File(globalDist)
     archiveName = 'freeplane_bin-' + distVersion + '.zip'
 
@@ -154,6 +154,9 @@ task binZip(type: Zip, dependsOn: ':freeplane:build') {
 
     into('freeplane-' + distVersion)
 
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
 }
 
 
