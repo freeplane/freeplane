@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/flamingo-7.2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/substance-7.2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/substance-flamingo-7.2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/substance-swingx-7.2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/trident-7.2.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
@@ -20,6 +15,14 @@
 	<classpathentry kind="lib" path="lib/jortho.jar"/>
 	<classpathentry kind="lib" path="lib/idw-gpl.jar" sourcepath="C:/Users/Dimitry/Downloads/idw-gpl-1.6.1-src/idw-gpl-1.6.1/src"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/flamingo-7.3/flamingo-7.3.jar" sourcepath="lib/flamingo-7.3/flamingo-7.3-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/freeplane/lib/flamingo-7.3/flamingo-7.3-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/flamingo-7.3/substance-7.3.jar"/>
+	<classpathentry kind="lib" path="lib/flamingo-7.3/substance-swingx-7.3.jar"/>
+	<classpathentry kind="lib" path="lib/flamingo-7.3/trident-7.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit-Mockito-Matchers"/>
