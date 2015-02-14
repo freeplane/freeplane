@@ -119,4 +119,19 @@ public class EntryTest {
 		assertThat(structureWithEntry, is(new Entry()));
 	}
 	
+	@Test(expected=AttributeAlreadySetException.class)
+	public void cannotSetAttributeTwice() {
+		Entry entry = new Entry();
+		entry.setAttribute("key", "value");
+		entry.setAttribute("key", "value");
+	}
+
+	@Test
+	public void canRemoveAttribute() {
+		Entry entry = new Entry();
+		entry.setAttribute("key", "value1");
+		entry.removeAttribute("key");
+		entry.setAttribute("key", "value2");
+		assertThat(entry.getAttribute("key"), CoreMatchers.<Object>equalTo("value2"));
+	}
 }
