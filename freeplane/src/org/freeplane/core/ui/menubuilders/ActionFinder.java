@@ -1,8 +1,5 @@
 package org.freeplane.core.ui.menubuilders;
 
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
 import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.FreeplaneActions;
@@ -27,14 +24,14 @@ public class ActionFinder implements Builder{
 				freeplaneActions.addAction(action);
 			}
 			
-			new EntryPopupMenuListenerAccessor(target).addPopupMenuListener(new PopupMenuListener() {
-				public void popupMenuCanceled(final PopupMenuEvent e) {
+			new EntryPopupListenerAccessor(target).addEntryPopupListener(new EntryPopupListener() {
+				public void popupCanceled(final Entry target) {
 				}
 
-				public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+				public void popupWillBecomeInvisible(final Entry target) {
 				}
 
-				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+				public void popupWillBecomeVisible(final Entry target) {
 					final AFreeplaneAction action = target.getAction();
 					if(action.isEnabled())
 						action.setSelected();
