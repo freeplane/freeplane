@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders;
 
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.freeplane.core.resources.SetBooleanPropertyAction;
@@ -49,4 +50,24 @@ public class ActionFinderTest {
 		Mockito.verify(freeplaneActions).addAction(setBooleanPropertyAction);
 		assertThat(entry.getAttribute(Entry.ACTION), CoreMatchers.<Object>equalTo(setBooleanPropertyAction));
 	}
+
+
+	@Test
+	public void activatesSelectOnPopup() {
+		FreeplaneActions freeplaneActions = mock(FreeplaneActions.class);
+		Entry entry = new Entry();
+		entry.setName("action");
+		final AFreeplaneAction someAction = Mockito.mock(AFreeplaneAction.class);
+		when(freeplaneActions.getAction("action")).thenReturn(someAction);
+		when(someAction.checkSelectionOnPopup()).thenReturn(true);
+		when(someAction.isEnabled()).thenReturn(true);
+		
+		final ActionFinder actionFinder = new ActionFinder(freeplaneActions);
+		actionFinder.build(entry);
+		
+		new EntryPopupMenuListenerAccessor(entry).popupMenuWillBecomeVisible();
+		
+		verify(someAction).setSelected();
+	}
+
 }
