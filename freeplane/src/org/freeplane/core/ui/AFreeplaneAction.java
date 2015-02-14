@@ -41,32 +41,32 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	 */
 	private static final long serialVersionUID = 1L;
 
-	static public boolean checkEnabledOnChange(final AFreeplaneAction action) {
-		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
+	public boolean checkEnabledOnChange() {
+		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
 		if (annotation == null) {
 			return false;
 		}
 		return annotation.checkOnNodeChange();
 	}
 
-	static public boolean checkSelectionOnChange(final AFreeplaneAction action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
+	public boolean checkSelectionOnChange() {
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
 		}
 		return annotation.checkOnNodeChange();
 	}
 
-	static public boolean checkSelectionOnPropertyChange(final AFreeplaneAction action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
+	public boolean checkSelectionOnPropertyChange() {
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
 		}
 		return !"".equals(annotation.checkOnPropertyChange());
 	}
 
-	static public boolean checkSelectionOnPopup(final AFreeplaneAction action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
+	public boolean checkSelectionOnPopup(){
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
 		}

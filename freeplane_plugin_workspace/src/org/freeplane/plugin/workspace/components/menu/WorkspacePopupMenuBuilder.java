@@ -140,7 +140,7 @@ public class WorkspacePopupMenuBuilder {
 		if (action instanceof PopupMenuListener) {
 			popupMenu.addPopupMenuListener(new DelegatingPopupMenuListener((PopupMenuListener) action, popupMenu));
 		}
-		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
+		if (action.checkSelectionOnPopup()) {
 			popupMenu.addPopupMenuListener(new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
 				}

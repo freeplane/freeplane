@@ -304,7 +304,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 	}
 
 	private void addListeners(final String key, final AFreeplaneAction action) {
-		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
+		if (action.checkSelectionOnPopup()) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
 				}

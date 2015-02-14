@@ -197,7 +197,8 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 	}
 	
 	public static void updateActionState(AFreeplaneAction action, AbstractCommandButton button) {		
-		if(AFreeplaneAction.checkEnabledOnChange(action)) {
+		final AFreeplaneAction action1 = action;
+		if(action1.checkEnabledOnChange()) {
 			action.setEnabled();
 			button.setEnabled(action.isEnabled());
 		}
@@ -209,7 +210,10 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 
 
 	public static boolean isSelectionListener(AFreeplaneAction action) {
-		return AFreeplaneAction.checkSelectionOnChange(action) || AFreeplaneAction.checkSelectionOnPopup(action) || AFreeplaneAction.checkSelectionOnPropertyChange(action);
+		final AFreeplaneAction action1 = action;
+		final AFreeplaneAction action2 = action;
+		final AFreeplaneAction action3 = action;
+		return action1.checkSelectionOnChange() || action3.checkSelectionOnPopup() || action2.checkSelectionOnPropertyChange();
 	}
 	
 	/***********************************************************************************
