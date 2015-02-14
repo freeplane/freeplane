@@ -136,4 +136,9 @@ public class Entry {
 		}
 	}
 
+
+	public void removeChildren() {
+		childEntries.clear();
+	}
+
 }

@@ -1,7 +1,9 @@
 package org.freeplane.core.ui.menubuilders;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 
 import java.util.Arrays;
@@ -106,4 +108,15 @@ public class EntryTest {
 
 		assertThat(level2child.getAncestorComponent(), equalTo(component));
 	}
+
+	@Test 
+	public void removesChildEntries(){
+		Entry structureWithEntry = new Entry();
+		final Entry child = new Entry();
+		structureWithEntry.addChild(child);
+		structureWithEntry.removeChildren();
+		
+		assertThat(structureWithEntry, is(new Entry()));
+	}
+	
 }
