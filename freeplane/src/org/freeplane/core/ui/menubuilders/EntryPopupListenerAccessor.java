@@ -34,11 +34,6 @@ public class EntryPopupListenerAccessor {
 			entryPopupListener.popupWillBecomeInvisible(entry);
 	}
 
-	public void popupMenuCanceled() {
-		for(EntryPopupListener entryPopupListener : listeners)
-			entryPopupListener.popupCanceled(entry);
-	}
-
 	public void removeEntryPopupListener(EntryPopupListener entryPopupListener) {
 		listeners.remove(entryPopupListener);
 	}

@@ -7,6 +7,4 @@ public interface EntryPopupListener {
 
 	void popupWillBecomeInvisible(Entry entry);
 
-	void popupCanceled(Entry entry);
-
 }

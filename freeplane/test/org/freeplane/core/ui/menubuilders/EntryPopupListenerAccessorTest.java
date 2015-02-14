@@ -32,19 +32,6 @@ public class EntryPopupListenerAccessorTest {
 	}
 
 
-
-	@Test
-	public void forwardsPopupMenuCanceledToRegisteredEntryPopupListener() {
-		final Entry entry = new Entry();
-		final EntryPopupListenerAccessor entryEntryPopupListenerAccessor = new EntryPopupListenerAccessor(entry);
-		EntryPopupListener  popupMenuListener = mock(EntryPopupListener.class);
-		entryEntryPopupListenerAccessor.addEntryPopupListener(popupMenuListener);
-		
-		entryEntryPopupListenerAccessor.popupMenuCanceled();
-		verify(popupMenuListener).popupCanceled(entry);
-	}
-
-
 	@Test
 	public void supportsMoreThanOneListener() {
 		final Entry entry = new Entry();
