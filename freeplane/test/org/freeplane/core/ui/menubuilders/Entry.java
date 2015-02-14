@@ -38,8 +38,6 @@ public class Entry {
 
 
 	public void setAttribute(final String key, Object value) {
-		if(attributes.containsKey(key))
-			throw new AttributeAlreadySetException(key, attributes.get(key));
 		attributes.put(key, value);
 	}
 	
@@ -136,10 +134,6 @@ public class Entry {
 			else
 				return parent.getAncestorComponent();
 		}
-	}
-
-	public void removeAttribute(String key) {
-		attributes.remove(key);
 	}
 
 }
