@@ -1,3 +1,5 @@
+ import org.apache.tools.ant.filters.FixCrLfFilter;
+ 
 //   <!-- For release targets. Again move to top level? -->
 	// <target name="rungit" depends="mkdistdir">
 	// 	<delete file="${build}/gitinfo.txt" quiet="true"/>
@@ -159,10 +161,105 @@ task binZip(type: Zip) {
     }
 }
 
+// this is shorter than
+//     include(dir + '/**/*.java')
+//     include(dir + '/**/*.xml')
+//     ...
+//def textFilesIncludeSpec = {
+//    println(it.file)
+//    return it.file.name.substring(it.file.name.lastIndexOf(".") + 1) in ['java', 'xml', 'xsl', 'mm', 'properties', 'gradle']
+//}
+// => does not work because "it" represents directories, not files, when
+// called from include() in a Tar task!
+
+def textFilesIncludeSpec(dir)
+{
+    if (dir == null)
+        return ['**/*.java',
+                '**/*.xml',
+                '**/*.xsl',
+                '**/*.mm',
+                '**/*.properties',
+                '**/*.gradle']
+    else
+        return [dir + '/**/*.java',
+                dir + '/**/*.xml',
+                dir + '/**/*.xsl',
+                dir + '/**/*.mm',
+                dir + '/**/*.properties',
+                dir + '/**/*.gradle']
+}
+
+	// 		<fileset dir="${workspace}">
+	// 			<include name="build.xml" />
+	// 			<include name="freeplane/**" />
+	// 			<include name="freeplane_plugin*/**" />
+	// 			<include name="freeplane_ant/**" />
+	// 			<include name="freeplane_mac/**" />
+	// 			<include name="freeplane_framework/**" />
+	// 			<include name="freeplane_devresources/**" />
+	// 			<include name="JOrtho_0.4_freeplane/**" />
+	// 			<include name="build.xml" />
+	// 			<exclude name=".*/**" />
+	// 			<exclude name="**/~*" />
+	// 			<exclude name="**/signjar.properties" />
+	// 			<exclude name="**/backups/**" />
+	// 			<exclude name="bin/**" />
+	// 			<exclude name="build/**" />
+	// 			<exclude name="dist/**" />
+	// 			<exclude name="*/bin/**" />
+	// 			<exclude name="*/build/**" />
+	// 			<exclude name="*/launcher_build/**" />
+	// 			<exclude name="*/build-nodehighlighter/**" />
+	// 			<exclude name="*/build4mac/**" />
+	// 			<exclude name="*/dist/**" />
+	// 			<exclude name="**/.backup/**" />
+	// 			<exclude name="**/backups/**" />
+	// 			<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
+	// 			<exclude name="freeplane_framework/windows-icons/Objects/**" />
+	// 			<exclude name="freeplane_framework/windows-icons/*.layout" />
+	// 			<exclude name="freeplane_framework/windows-icons/Makefile.win" />
+
+	// 			<!-- these are generated using ribbons2menu.xsl! -->
+	// 			<exclude name="freeplane/resources/xml/mindmapmodemenu.xml" />
+
+	// 		</fileset>
+	// 		<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
+	// 			<include name="${license}" />
+	// 			<include name="${readme_src}" />
+	// 		</tarfileset>
+task srcTarGz(type: Tar) {
+    destinationDir = new File(globalDist)
+    archiveName = 'freeplane_src-' + distVersion + '.tar.gz'
+    compression = 'GZIP'
+    includeEmptyDirs = false
+
+    // text files (convert to LF)
+    from(rootDir) {
+        include('license.txt')
+        include('*.gradle')
+        include(textFilesIncludeSpec('freeplane*'))
+        include(textFilesIncludeSpec('JOrtho_0.4_freeplane'))
+
+        filter(FixCrLfFilter.class,
+            eol:FixCrLfFilter.CrLf.newInstance("lf"))
+    }
+
+    // all other (source) files
+    from(rootDir) {
+        include('freeplane*/**')
+        include('JOrtho_0.4_freeplane/**')
+        exclude(textFilesIncludeSpec(null))
+    }
+
+    into('freeplane-' + distVersion)
+}
+
 
 // meta task
 task dist {
     dependsOn binZip
+    dependsOn srcTarGz
 }
 
 // clean
