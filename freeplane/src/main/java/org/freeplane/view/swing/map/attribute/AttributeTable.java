@@ -449,7 +449,19 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final JComboBox comboBox;
 		if (dce == null) {
-			comboBox = new JComboBox();
+			comboBox = new JComboBox(){
+
+				// Workaround for bug introduced in Java 8: they use wrong component in DefaultCellEditor.EditorDelegate
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(e != null && e.getSource() == dce){
+						super.actionPerformed(new ActionEvent(getEditor(), e.getID(), e.getActionCommand(),e.getWhen(),e.getModifiers()));
+					}
+					else
+						super.actionPerformed(e);
+				}
+				
+			};
 			comboBox.addFocusListener(AttributeTable.focusListener);
 			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
 			comboBox.setRenderer(new TypedListCellRenderer());
@@ -619,8 +631,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			return true;
 		}
 		if (ks.getKeyCode() == KeyEvent.VK_ESCAPE && e.getModifiers() == 0 && pressed) {
-			attributeView.getNodeView().requestFocusInWindow();
-			return true;
+			if (! isEditing()){
+				attributeView.getNodeView().requestFocusInWindow();
+				return true;
+			}
+			else
+				return super.processKeyBinding(ks, e, condition, pressed);
+				
 		}
 		boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
 		if (!retValue && condition == JComponent.WHEN_FOCUSED && isFocusOwner() && ks.getKeyCode() != KeyEvent.VK_TAB
