@@ -172,8 +172,7 @@ task binZip(type: Zip) {
 // => does not work because "it" represents directories, not files, when
 // called from include() in a Tar task!
 
-def textFilesIncludeSpec(dir)
-{
+def textFilesIncludeSpec(dir) {
     if (dir == null)
         return ['**/*.java',
                 '**/*.xml',
@@ -188,6 +187,10 @@ def textFilesIncludeSpec(dir)
                 dir + '/**/*.mm',
                 dir + '/**/*.properties',
                 dir + '/**/*.gradle']
+}
+
+def buildFilesIncludeSpec() {
+    return ['*/build/**', '*/bin/**']
 }
 
 	// 		<fileset dir="${workspace}">
@@ -241,10 +244,13 @@ task srcTarGz(type: Tar) {
         include(textFilesIncludeSpec('freeplane*'))
         include(textFilesIncludeSpec('JOrtho_0.4_freeplane'))
 
-        // exclude dot files/directories:
-        exclude('**/.*/**')
         // might include credentials:
         exclude('**/signjar*.properties')
+
+        // exclude gradle/eclipse build files for all projects:
+        exclude(buildFilesIncludeSpec())
+        // exclude dot files/directories:
+        exclude('**/.*/**')
 
         filter(FixCrLfFilter.class,
             eol:FixCrLfFilter.CrLf.newInstance("lf"))
@@ -255,6 +261,11 @@ task srcTarGz(type: Tar) {
         include('freeplane*/**')
         include('JOrtho_0.4_freeplane/**')
         exclude(textFilesIncludeSpec(null))
+
+        // exclude gradle/eclipse build files for all projects:
+        exclude(buildFilesIncludeSpec())
+        // exclude dot files/directories:
+        exclude('**/.*/**')
     }
 
     into('freeplane-' + distVersion)
