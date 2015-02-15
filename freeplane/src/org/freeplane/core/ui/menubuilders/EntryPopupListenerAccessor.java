@@ -23,15 +23,15 @@ public class EntryPopupListenerAccessor {
 		listeners.add(entryPopupListener);
 	}
 
-	public void popupMenuWillBecomeVisible() {
+	public void entryWillBecomeVisible() {
 		for(EntryPopupListener entryPopupListener : listeners)
-			entryPopupListener.popupWillBecomeVisible(entry);
+			entryPopupListener.entryWillBecomeVisible(entry);
 		
 	}
 
-	public void popupMenuWillBecomeInvisible() {
+	public void entryWillBecomeInvisible() {
 		for(EntryPopupListener entryPopupListener : listeners)
-			entryPopupListener.popupWillBecomeInvisible(entry);
+			entryPopupListener.entryWillBecomeInvisible(entry);
 	}
 
 	public void removeEntryPopupListener(EntryPopupListener entryPopupListener) {

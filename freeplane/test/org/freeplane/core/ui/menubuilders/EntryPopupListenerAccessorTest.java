@@ -16,8 +16,8 @@ public class EntryPopupListenerAccessorTest {
 		EntryPopupListener  popupMenuListener = mock(EntryPopupListener.class);
 		entryEntryPopupListenerAccessor.addEntryPopupListener(popupMenuListener);
 		
-		entryEntryPopupListenerAccessor.popupMenuWillBecomeVisible();
-		verify(popupMenuListener).popupWillBecomeVisible(entry);
+		entryEntryPopupListenerAccessor.entryWillBecomeVisible();
+		verify(popupMenuListener).entryWillBecomeVisible(entry);
 	}
 
 	@Test
@@ -27,8 +27,8 @@ public class EntryPopupListenerAccessorTest {
 		EntryPopupListener  popupMenuListener = mock(EntryPopupListener.class);
 		entryEntryPopupListenerAccessor.addEntryPopupListener(popupMenuListener);
 		
-		entryEntryPopupListenerAccessor.popupMenuWillBecomeInvisible();
-		verify(popupMenuListener).popupWillBecomeInvisible(entry);
+		entryEntryPopupListenerAccessor.entryWillBecomeInvisible();
+		verify(popupMenuListener).entryWillBecomeInvisible(entry);
 	}
 
 
@@ -41,8 +41,8 @@ public class EntryPopupListenerAccessorTest {
 		EntryPopupListener  popupMenuListener2 = mock(EntryPopupListener.class);
 		entryEntryPopupListenerAccessor.addEntryPopupListener(popupMenuListener2);
 		
-		entryEntryPopupListenerAccessor.popupMenuWillBecomeVisible();
-		verify(popupMenuListener1).popupWillBecomeVisible(entry);
+		entryEntryPopupListenerAccessor.entryWillBecomeVisible();
+		verify(popupMenuListener1).entryWillBecomeVisible(entry);
 	}
 
 
@@ -54,8 +54,8 @@ public class EntryPopupListenerAccessorTest {
 		entryEntryPopupListenerAccessor.addEntryPopupListener(popupMenuListener);
 		
 		final EntryPopupListenerAccessor entryEntryPopupListener2 = new EntryPopupListenerAccessor(entry);
-		entryEntryPopupListener2.popupMenuWillBecomeVisible();
-		verify(popupMenuListener).popupWillBecomeVisible(entry);
+		entryEntryPopupListener2.entryWillBecomeVisible();
+		verify(popupMenuListener).entryWillBecomeVisible(entry);
 	}
 
 	@Test
@@ -66,8 +66,8 @@ public class EntryPopupListenerAccessorTest {
 		entryEntryPopupListenerAccessor.addEntryPopupListener(popupMenuListener);
 		entryEntryPopupListenerAccessor.removeEntryPopupListener(popupMenuListener);
 		
-		entryEntryPopupListenerAccessor.popupMenuWillBecomeVisible();
-		verify(popupMenuListener, never()).popupWillBecomeVisible(entry);
+		entryEntryPopupListenerAccessor.entryWillBecomeVisible();
+		verify(popupMenuListener, never()).entryWillBecomeVisible(entry);
 	}
 
 }

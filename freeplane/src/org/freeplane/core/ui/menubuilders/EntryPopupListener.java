@@ -3,8 +3,8 @@ package org.freeplane.core.ui.menubuilders;
 
 public interface EntryPopupListener {
 
-	void popupWillBecomeVisible(Entry entry);
+	void entryWillBecomeVisible(Entry entry);
 
-	void popupWillBecomeInvisible(Entry entry);
+	void entryWillBecomeInvisible(Entry entry);
 
 }

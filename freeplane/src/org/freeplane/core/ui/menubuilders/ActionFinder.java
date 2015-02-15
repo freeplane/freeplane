@@ -25,13 +25,13 @@ public class ActionFinder implements Builder{
 			}
 			
 			new EntryPopupListenerAccessor(target).addEntryPopupListener(new EntryPopupListener() {
-				public void popupWillBecomeVisible(final Entry target) {
+				public void entryWillBecomeVisible(final Entry target) {
 					final AFreeplaneAction action = target.getAction();
 					if(action.isEnabled())
 						action.setSelected();
 				}
 				
-				public void popupWillBecomeInvisible(final Entry target) {
+				public void entryWillBecomeInvisible(final Entry target) {
 				}
 
 			});
