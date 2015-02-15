@@ -65,7 +65,7 @@ public class ActionFinderTest {
 		final ActionFinder actionFinder = new ActionFinder(freeplaneActions);
 		actionFinder.build(entry);
 		
-		new EntryPopupListenerAccessor(entry).entryWillBecomeVisible();
+		new EntryPopupListenerAccessor(entry).childEntriesWillBecomeVisible();
 		
 		verify(someAction).setSelected();
 	}

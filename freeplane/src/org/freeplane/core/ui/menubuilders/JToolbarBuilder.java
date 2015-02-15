@@ -11,4 +11,10 @@ public class JToolbarBuilder implements Builder {
 		target.setComponent(new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL));
 	}
 
+	@Override
+	public void destroy(Entry target) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

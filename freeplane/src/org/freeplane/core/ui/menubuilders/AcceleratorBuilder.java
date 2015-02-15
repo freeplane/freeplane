@@ -27,4 +27,10 @@ public class AcceleratorBuilder implements Builder{
 		return Compat.isMacOsX();
 	}
 
+	@Override
+	public void destroy(Entry target) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

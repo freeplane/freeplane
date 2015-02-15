@@ -25,13 +25,13 @@ public class ActionFinder implements Builder{
 			}
 			
 			new EntryPopupListenerAccessor(target).addEntryPopupListener(new EntryPopupListener() {
-				public void entryWillBecomeVisible(final Entry target) {
+				public void childEntriesWillBecomeVisible(final Entry target) {
 					final AFreeplaneAction action = target.getAction();
 					if(action.isEnabled())
 						action.setSelected();
 				}
 				
-				public void entryWillBecomeInvisible(final Entry target) {
+				public void childEntriesWillBecomeInvisible(final Entry target) {
 				}
 
 			});
@@ -43,6 +43,12 @@ public class ActionFinder implements Builder{
 	protected SetBooleanPropertyAction createSetBooleanPropertyAction(
 			String propertyName) {
 		return new SetBooleanPropertyAction(propertyName);
+	}
+
+	@Override
+	public void destroy(Entry target) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -45,6 +45,12 @@ public class XmlEntryStructureBuilder implements Builder{
 		return initialMenuStructure;
 	}
 
+	@Override
+	public void destroy(Entry target) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 class MenuStructureXmlHandler extends DefaultHandler {

@@ -39,4 +39,10 @@ public class JToolbarActionBuilder implements Builder {
 		}
 	}
 
+	@Override
+	public void destroy(Entry target) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

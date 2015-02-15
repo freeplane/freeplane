@@ -9,4 +9,10 @@ public class JMenubarBuilder implements Builder {
 		target.setComponent(new FreeplaneMenuBar());
 	}
 
+	@Override
+	public void destroy(Entry target) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
