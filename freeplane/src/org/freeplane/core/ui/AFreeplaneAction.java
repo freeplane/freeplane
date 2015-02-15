@@ -177,4 +177,8 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public void setVisible() {
 	}
+
+	public boolean isSelectable() {
+		return getClass().getAnnotation(SelectableAction.class) != null;
+	}
 }

@@ -20,7 +20,7 @@ public class JToolbarActionBuilder implements Builder {
 		final AFreeplaneAction action = entry.getAction();
 		Component component;
 		if(action != null){
-			if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			if (action.isSelectable()) {
 				component = new JAutoToggleButton(action);
 			}
 			else {

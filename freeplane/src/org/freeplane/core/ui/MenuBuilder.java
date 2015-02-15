@@ -292,7 +292,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 			return;
 		}
 		final JMenuItem item;
-		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+		if (action.isSelectable()) {
 			item = new JAutoCheckBoxMenuItem(decorateAction(category, action));
 		}
 		else {
@@ -320,10 +320,10 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 		}
 	}
 
-	private void addButton(final String category, final Action action, final String key, final int position) {
+	private void addButton(final String category, final AFreeplaneAction action, final String key, final int position) {
 		final AbstractButton button;
 		assert action != null;
-		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+		if (action.isSelectable()) {
 			button = new JAutoToggleButton(action);
 		}
 		else {
@@ -449,7 +449,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 			final AFreeplaneAction action, final boolean isSelected) {
 		assert key != null;
 		final JRadioButtonMenuItem item;
-		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+		if (action.isSelectable()) {
 			item = new JAutoRadioButtonMenuItem(decorateAction(category, action));
 		}
 		else {
