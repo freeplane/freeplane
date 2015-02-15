@@ -22,14 +22,20 @@ public class RecursiveMenuStructureBuilder implements Builder{
 
 	@Override
 	public void build(Entry target) {
+		final String builderToCall = builderToCall(target);
+		if(builderToCall != null)
+			builders.get(builderToCall).build(target);
+		else
+			defaultBuilder.build(target);
+		buildChildren(target);
+	}
+
+	private void buildChildren(Entry target) {
 		final int originalDefaultBuilderStackSize = subtreeDefaultBuilderStack.size();
 		final String builderToCall = builderToCall(target);
 		if(builderToCall != null){
 			changeDefaultBuilder(builderToCall);
-			builders.get(builderToCall).build(target);
 		}
-		else
-			defaultBuilder.build(target);
 		for(Entry child:target.children())
 			build(child);
 		if(originalDefaultBuilderStackSize < subtreeDefaultBuilderStack.size())
