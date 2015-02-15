@@ -161,17 +161,8 @@ task binZip(type: Zip) {
     }
 }
 
-// this is shorter than
-//     include(dir + '/**/*.java')
-//     include(dir + '/**/*.xml')
-//     ...
-//def textFilesIncludeSpec = {
-//    println(it.file)
-//    return it.file.name.substring(it.file.name.lastIndexOf(".") + 1) in ['java', 'xml', 'xsl', 'mm', 'properties', 'gradle']
-//}
-// => does not work because "it" represents directories, not files, when
-// called from include() in a Tar task!
 
+// some shorthands for often-used include(...)/exclude(...) specs:
 def textFilesIncludeSpec(dir) {
     if (dir == null)
         return ['**/*.java',
@@ -194,7 +185,7 @@ def buildFilesIncludeSpec() {
 }
 
 def miscExcludedFilesSpec() {
-    return [''**/.*/**'', // dot files
+    return ['**/.*/**', // dot files
             '**/signjar*.properties'] // might include credentials!
 }
 
@@ -237,8 +228,8 @@ def miscExcludedFilesSpec() {
 	// 			<include name="${readme_src}" />
 	// 		</tarfileset>
 
-// NOTE: if you change excludes here, also adapt task 'srcpureTarGz' below,
-// too (unfortunately there is some redundancy)!
+// NOTE: if you change excludes here, also adapt task 'srcpureTarGz' below
+// (unfortunately there is some redundancy)!
 task srcTarGz(type: Tar) {
     destinationDir = new File(globalDist)
     archiveName = 'freeplane_src-' + distVersion + '.tar.gz'
@@ -303,13 +294,63 @@ task srcTarGz(type: Tar) {
 	// 			<include name="${readme_src}" />
 	// 		</tarfileset>
 	// 	</tar>
+
+def srcpureAdditionalExcludeSpec() {
+    // built from latex.flex using jflex!
+    return ['freeplane_plugin_jsp/src/main/java/jsyntaxpane/lexers/LaTeXLexer.java',
+
+    // the flash files don't have a source in the freeplane-distrib,
+    // which is a problem for Debian,
+    // see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736106 
+    // (the source is here: https://github.com/freeplane/misc/tree/master/flash-browser)
+    // => there is an (inactive) Debian package here:
+    //    https://github.com/fnatter/freeplane-flash-browser-debian/
+          'freeplane/resources/flash/visorFreeplane.swf', 'freeplane/resources/flash/flashobject.js',
+
+    // windows stuff
+            '**/*.exe', '**/*.res', '**/*.jar', '**/*.dll',
+    // MAC stuff
+            '**/*JavaApplicationStub*']
+
+}
+
 task srcpureTarGz(type: Tar) {
     destinationDir = new File(globalDist)
     archiveName = 'freeplane_srcpure-' + distVersion + '.tar.gz'
     compression = 'GZIP'
     includeEmptyDirs = false
 
-    // TODO
+    // text files (convert to LF)
+    from(rootDir) {
+        include('license.txt')
+        include('*.gradle')
+        include(textFilesIncludeSpec('freeplane*'))
+        include(textFilesIncludeSpec('JOrtho_0.4_freeplane'))
+
+        // exclude gradle/eclipse build files for all projects:
+        exclude(buildFilesIncludeSpec())
+        // exclude misc files:
+        exclude(miscExcludedFilesSpec())
+        // exclude additional srcpure stuff
+        exclude(srcpureAdditionalExcludeSpec())
+
+        filter(FixCrLfFilter.class,
+            eol:FixCrLfFilter.CrLf.newInstance("lf"))
+    }
+
+    // all other (source) files
+    from(rootDir) {
+        include('freeplane*/**')
+        include('JOrtho_0.4_freeplane/**')
+        exclude(textFilesIncludeSpec(null))
+
+        // exclude gradle/eclipse build files for all projects:
+        exclude(buildFilesIncludeSpec())
+        // exclude misc files:
+        exclude(miscExcludedFilesSpec())
+        // exclude additional srcpure stuff
+        exclude(srcpureAdditionalExcludeSpec())
+    }
 
     into('freeplane-' + distVersion)
 }
