@@ -114,11 +114,11 @@ public class RecursiveMenuStructureBuilderTest {
 	}
 	
 	@Test
-	public void explicitBuilderIsNotCalledForLazilyBuildEntry() {
+	public void explicitBuilderIsNotCalledForDelayedBuildEntry() {
 		final Entry childEntry = new Entry();
 		childEntry.setBuilders(asList("builder"));
 		final Entry rootEntry = new Entry();
-		rootEntry.setAttribute("lazy", true);
+		rootEntry.setAttribute("delayedBuild", true);
 		rootEntry.setBuilders(asList("emptyBuilder"));
 		rootEntry.addChild(childEntry);
 		recursiveMenuStructureBuilder.build(rootEntry);
@@ -128,11 +128,26 @@ public class RecursiveMenuStructureBuilderTest {
 
 
 	@Test
-	public void explicitBuilderIsCalledBeforeChildEntriesBecomeVisibleForLazilyBuildEntry() {
+	public void noEntriesAreDeleyed() {
+		recursiveMenuStructureBuilder.noDelay();
 		final Entry childEntry = new Entry();
 		childEntry.setBuilders(asList("builder"));
 		final Entry rootEntry = new Entry();
-		rootEntry.setAttribute("lazy", true);
+		rootEntry.setAttribute("delayedBuild", true);
+		rootEntry.setBuilders(asList("emptyBuilder"));
+		rootEntry.addChild(childEntry);
+		recursiveMenuStructureBuilder.build(rootEntry);
+		
+		verify(builder).build(childEntry);
+	}
+
+
+	@Test
+	public void explicitBuilderIsCalledBeforeChildEntriesBecomeVisibleForDelayedBuildEntry() {
+		final Entry childEntry = new Entry();
+		childEntry.setBuilders(asList("builder"));
+		final Entry rootEntry = new Entry();
+		rootEntry.setAttribute("delayedBuild", true);
 		rootEntry.setBuilders(asList("emptyBuilder"));
 		rootEntry.addChild(childEntry);
 		recursiveMenuStructureBuilder.build(rootEntry);
@@ -143,11 +158,11 @@ public class RecursiveMenuStructureBuilderTest {
 	}
 
 	@Test
-	public void destroyIsCalledBeforeChildEntriesBecomeInvisibleForLazilyBuildEntry() {
+	public void destroyIsCalledBeforeChildEntriesBecomeInvisibleForDelayedBuildEntry() {
 		final Entry childEntry = new Entry();
 		childEntry.setBuilders(asList("builder"));
 		final Entry rootEntry = new Entry();
-		rootEntry.setAttribute("lazy", true);
+		rootEntry.setAttribute("delayedBuild", true);
 		rootEntry.setBuilders(asList("emptyBuilder"));
 		rootEntry.addChild(childEntry);
 		recursiveMenuStructureBuilder.build(rootEntry);
@@ -163,7 +178,7 @@ public class RecursiveMenuStructureBuilderTest {
 		final Entry childEntry = new Entry();
 		childEntry.setBuilders(asList("builder"));
 		final Entry rootEntry = new Entry();
-		rootEntry.setAttribute("lazy", true);
+		rootEntry.setAttribute("delayedBuild", true);
 		rootEntry.setBuilders(asList("emptyBuilder"));
 		rootEntry.addChild(childEntry);
 		recursiveMenuStructureBuilder.build(rootEntry);

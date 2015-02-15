@@ -11,6 +11,7 @@ public class RecursiveMenuStructureBuilder implements Builder{
 	private LinkedList<String> subtreeDefaultBuilderStack;
 	private Builder defaultBuilder = Builder.ILLEGAL_BUILDER; 
 	final private Map<Integer, EntryPopupListener> entryPopupListeners;
+	private boolean delayChildBuild;
 	private static final String DELAYED_BUILD_ATTRIBUTE = "delayedBuild";
 
 	public RecursiveMenuStructureBuilder() {
@@ -18,6 +19,7 @@ public class RecursiveMenuStructureBuilder implements Builder{
 		subtreeDefaultBuilders = new HashMap<String, String>();
 		subtreeDefaultBuilderStack = new LinkedList<>(); 
 		entryPopupListeners = new HashMap<>();
+		delayChildBuild = true;
 	}
 
 	public void addBuilder(String name, Builder builder) {
@@ -35,7 +37,7 @@ public class RecursiveMenuStructureBuilder implements Builder{
 	}
 
 	private boolean shouldDelayChildBuild(Entry target) {
-		return Boolean.TRUE.equals(target.getAttribute(RecursiveMenuStructureBuilder.DELAYED_BUILD_ATTRIBUTE));
+		return delayChildBuild && Boolean.TRUE.equals(target.getAttribute(RecursiveMenuStructureBuilder.DELAYED_BUILD_ATTRIBUTE));
 	}
 
 	private void startProcessingChildrenWhenTheirVisibilityChanges(Entry target) {
@@ -123,5 +125,9 @@ public class RecursiveMenuStructureBuilder implements Builder{
 
 	public void setDefaultBuilder(Builder defaultBuilder) {
 		this.defaultBuilder = defaultBuilder;
+	}
+
+	public void noDelay() {
+		delayChildBuild = false;
 	}
 }
