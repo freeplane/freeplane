@@ -241,6 +241,11 @@ task srcTarGz(type: Tar) {
         include(textFilesIncludeSpec('freeplane*'))
         include(textFilesIncludeSpec('JOrtho_0.4_freeplane'))
 
+        // exclude dot files/directories:
+        exclude('**/.*/**')
+        // might include credentials:
+        exclude('**/signjar*.properties')
+
         filter(FixCrLfFilter.class,
             eol:FixCrLfFilter.CrLf.newInstance("lf"))
     }
@@ -255,11 +260,22 @@ task srcTarGz(type: Tar) {
     into('freeplane-' + distVersion)
 }
 
+task srcpureTarGz(type: Tar) {
+    destinationDir = new File(globalDist)
+    archiveName = 'freeplane_srcpure-' + distVersion + '.tar.gz'
+    compression = 'GZIP'
+    includeEmptyDirs = false
+
+    // TODO
+
+    into('freeplane-' + distVersion)
+}
 
 // meta task
 task dist {
     dependsOn binZip
     dependsOn srcTarGz
+    dependsOn srcpureTarGz
 }
 
 // clean
