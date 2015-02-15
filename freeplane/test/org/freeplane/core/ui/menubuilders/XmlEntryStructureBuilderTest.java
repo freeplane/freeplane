@@ -117,4 +117,34 @@ public class XmlEntryStructureBuilderTest {
 
 		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
 	}
+	
+	@Test
+	public void givenXmlWithChildEntryWithFalse_createsBooleanObject() {
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry builderSpecificAttribute='FAlse'/></FreeplaneUIEntries>";
+
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
+
+		Entry menuStructureWithChildEntry = new Entry();
+		final Entry childEntry = new Entry();
+		childEntry.setAttribute("builderSpecificAttribute", false);
+		menuStructureWithChildEntry.addChild(childEntry);
+
+		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
+	}
+
+	@Test
+	public void givenXmlWithChildEntryWithTrue_createsBooleanObject() {
+		String xmlWithoutContent = "<FreeplaneUIEntries><Entry builderSpecificAttribute='true'/></FreeplaneUIEntries>";
+
+		Entry builtMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
+
+		Entry menuStructureWithChildEntry = new Entry();
+		final Entry childEntry = new Entry();
+		childEntry.setAttribute("builderSpecificAttribute", true);
+		menuStructureWithChildEntry.addChild(childEntry);
+
+		assertThat(builtMenuStructure, equalTo(menuStructureWithChildEntry));
+	}
+
+
 }

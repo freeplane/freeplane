@@ -71,11 +71,20 @@ class MenuStructureXmlHandler extends DefaultHandler {
 				else if(attributeName == NAME)
 					child.setName(attributeValue);
 				else
-					child.setAttribute(attributeName, attributeValue);
+					child.setAttribute(attributeName, toValueObject(attributeValue));
 			}
 			childStack.getLast().addChild(child);
 			childStack.add(child);
 		}
+	}
+
+	private Object toValueObject(String attributeValue) {
+		if("true".equalsIgnoreCase(attributeValue))
+			return Boolean.TRUE;
+		else if("false".equalsIgnoreCase(attributeValue))
+			return Boolean.FALSE;
+		else
+		return attributeValue;
 	}
 
 	@Override
