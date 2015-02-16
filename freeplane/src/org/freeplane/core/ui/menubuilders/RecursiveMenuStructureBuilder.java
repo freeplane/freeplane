@@ -55,12 +55,13 @@ public class RecursiveMenuStructureBuilder implements Builder{
 		entryPopupListeners.put(System.identityHashCode(target), entryPopupListener);
 		new EntryPopupListenerAccessor(target).addEntryPopupListener(entryPopupListener);
 	}
-
+	
+	private static final boolean DESTROY_CHILDREN_RECURSIVELY = false;
 	@Override
 	public void destroy(Entry target) {
 		if(shouldDelayChildBuild(target))
 			cancelProcessingChildrenWhenTheirVisibilityChanges(target);
-		else
+		else if(DESTROY_CHILDREN_RECURSIVELY)
 			destroyChildren(target);
 		final Builder builder = builder(target);
 		builder.destroy(target);
