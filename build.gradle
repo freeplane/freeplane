@@ -21,7 +21,7 @@ def filterPluginDeps(listOfPaths) {
     def filteredListOfPaths = []
 
     for (path in listOfPaths) {
-        if (path.startsWith('lib/frameworkbundle-')) {
+        if (path.startsWith('lib/framework-')) {
             continue;
         }
         if (path == ("lib/freeplane-" + project.version + ".jar")) {
@@ -96,7 +96,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
     }
 
     dependencies {
-        compile group: 'org.knopflerfish', name:'frameworkbundle', version: '4.1.10'
+        compile group: 'org.knopflerfish', name:'framework', version: '7.1.2'
     }
 }
 
@@ -168,7 +168,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
         from ("$buildDir/libs") {
             include("*.jar")
             // TODO: this is redundant with regard to 'filterPluginDeps' (see above)!
-            exclude('frameworkbundle-*.jar')
+            exclude('framework-*.jar')
             exclude('freeplane-' + project.version + '.jar')
             exclude('freeplane_plugin_*-' + project.version + '.jar')
         }
