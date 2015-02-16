@@ -15,7 +15,7 @@ task windowsInstaller(type: Exec) {
     ignoreExitValue = true
     workingDir = rootDir.path + '/freeplane_framework/windows-installer'
 
-    commandLine 'iscc.exe', '/Q', 'Freeplane_without_Java.iss'
+    commandLine 'cmd.exe', '/c', 'ISCC.exe /Q Freeplane_without_Java.iss'
 
     for (p in subprojects) {
         dependsOn p.tasks.getByPath("build")
