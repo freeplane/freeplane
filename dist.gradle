@@ -1,4 +1,26 @@
- import org.apache.tools.ant.filters.FixCrLfFilter;
+import org.apache.tools.ant.filters.FixCrLfFilter;
+import org.apache.tools.ant.taskdefs.condition.Os;
+
+/*
+	<target name="installer" depends="build, mkdistdir">
+		<exec osfamily="windows" dir="${workspace}/freeplane_framework/windows-installer" executable="iscc.exe" failifexecutionfails="false" failonerror="true">
+			<arg line="/Q Freeplane_without_Java.iss" />
+		</exec>
+	</target>
+*/
+task windowsInstaller(type: Exec) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
+    // continue the build when running windows but iscc.exe is not installed?
+    ignoreExitValue = true
+    workingDir = rootDir.path + '/freeplane_framework/windows-installer'
+
+    commandLine 'iscc.exe', '/Q', 'Freeplane_without_Java.iss'
+
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
+}
  
 //   <!-- For release targets. Again move to top level? -->
 	// <target name="rungit" depends="mkdistdir">
@@ -360,6 +382,7 @@ task dist {
     dependsOn binZip
     dependsOn srcTarGz
     dependsOn srcpureTarGz
+    dependsOn windowsInstaller
 }
 
 // clean
