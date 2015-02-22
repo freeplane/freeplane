@@ -128,21 +128,6 @@ public class RecursiveMenuStructureBuilderTest {
 
 
 	@Test
-	public void noEntriesAreDeleyed() {
-		recursiveMenuStructureBuilder.noDelay();
-		final Entry childEntry = new Entry();
-		childEntry.setBuilders(asList("builder"));
-		final Entry rootEntry = new Entry();
-		rootEntry.setAttribute("delayedBuild", true);
-		rootEntry.setBuilders(asList("emptyBuilder"));
-		rootEntry.addChild(childEntry);
-		recursiveMenuStructureBuilder.build(rootEntry);
-		
-		verify(builder).build(childEntry);
-	}
-
-
-	@Test
 	public void explicitBuilderIsCalledBeforeChildEntriesBecomeVisibleForDelayedBuildEntry() {
 		final Entry childEntry = new Entry();
 		childEntry.setBuilders(asList("builder"));
