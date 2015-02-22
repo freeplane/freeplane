@@ -9,10 +9,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 
-public class JMenuItemBuilder implements Builder{
+public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
-	public void build(Entry entry) {
+	public void visit(Entry entry) {
 		final AFreeplaneAction action = entry.getAction();
 		Component component;
 		if(action != null){
@@ -36,9 +36,9 @@ public class JMenuItemBuilder implements Builder{
 	}
 
 	@Override
-	public void destroy(Entry target) {
-		throw new UnsupportedOperationException();
+	public boolean shouldSkipChildren() {
+		// TODO Auto-generated method stub
+		return false;
 	}
-
 
 }

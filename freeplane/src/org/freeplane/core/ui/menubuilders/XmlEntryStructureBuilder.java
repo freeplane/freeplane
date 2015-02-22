@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XmlEntryStructureBuilder implements Builder{
+public class XmlEntryStructureBuilder implements EntryVisitor{
 
 
 	static final String ENTRY = "Entry";
@@ -25,7 +25,7 @@ public class XmlEntryStructureBuilder implements Builder{
 		
 	}
 
-	public void build(Entry target) {
+	public void visit(Entry target) {
 		try {
 			SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 			XMLReader xmlReader = saxParser.getXMLReader();
@@ -41,13 +41,14 @@ public class XmlEntryStructureBuilder implements Builder{
 	static public Entry buildMenuStructure(String xmlWithoutContent) {
 		XmlEntryStructureBuilder builder = new XmlEntryStructureBuilder(new StringReader(xmlWithoutContent));
 		Entry initialMenuStructure = new Entry();
-		builder.build(initialMenuStructure);
+		builder.visit(initialMenuStructure);
 		return initialMenuStructure;
 	}
 
 	@Override
-	public void destroy(Entry target) {
-		throw new UnsupportedOperationException();
+	public boolean shouldSkipChildren() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

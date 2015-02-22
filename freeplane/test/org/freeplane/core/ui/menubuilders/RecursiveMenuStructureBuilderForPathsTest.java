@@ -9,38 +9,38 @@ public class RecursiveMenuStructureBuilderForPathsTest {
 	@Test
 	public void explicitBuilderForPathIsCalled() {
 		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
+		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
 		buildersForPath.addBuilder("/name", builder);
 		final Entry childEntry = new Entry();
 		childEntry.setName("name");
 		buildersForPath.build(childEntry);
 		
-		Mockito.verify(builder).build(childEntry);
+		Mockito.verify(builder).visit(childEntry);
 	}
 
 	@Test
 	public void differentBuildersForPathAreCalled() {
 		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
+		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
 		buildersForPath.addBuilder("/name", builder);
-		buildersForPath.addBuilder("/name", Builder.EMTPY_BUILDER);
+		buildersForPath.addBuilder("/name", EntryVisitor.EMTPY_VISITOR);
 		final Entry childEntry = new Entry();
 		childEntry.setName("name");
 		buildersForPath.build(childEntry);
 		
-		Mockito.verify(builder).build(childEntry);
+		Mockito.verify(builder).visit(childEntry);
 	}
 
 	@Test
 	public void differentBuildersForDifferentPathsAreCalled() {
 		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
+		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
 		buildersForPath.addBuilder("/name", builder);
 		final Entry childEntry = new Entry();
 		childEntry.setName("name2");
 		buildersForPath.build(childEntry);
 		
-		Mockito.verify(builder, Mockito.never()).build(childEntry);
+		Mockito.verify(builder, Mockito.never()).visit(childEntry);
 	}
 
 
@@ -49,7 +49,7 @@ public class RecursiveMenuStructureBuilderForPathsTest {
 		final Entry entry = new Entry();
 		entry.setName("parent");
 		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
-		Builder builder = Mockito.mock(Builder.class);
+		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
 		buildersForPath.addBuilder("/parent/child", builder);
 		final Entry childEntry = new Entry();
 		childEntry.setName("child");
@@ -57,7 +57,7 @@ public class RecursiveMenuStructureBuilderForPathsTest {
 		
 		buildersForPath.build(entry);
 		
-		Mockito.verify(builder).build(childEntry);
+		Mockito.verify(builder).visit(childEntry);
 	}
 
 }

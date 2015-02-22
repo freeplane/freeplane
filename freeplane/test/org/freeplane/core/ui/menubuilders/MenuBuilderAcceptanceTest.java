@@ -26,8 +26,8 @@ public class MenuBuilderAcceptanceTest {
 		final Entry buildMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
 		final RecursiveMenuStructureBuilder actionBuilder = new RecursiveMenuStructureBuilder();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
-		actionBuilder.build(buildMenuStructure);
-		recursiveMenuStructureBuilder.build(buildMenuStructure);
+		actionBuilder.visit(buildMenuStructure);
+		recursiveMenuStructureBuilder.visit(buildMenuStructure);
 		return buildMenuStructure;
 	}
 
@@ -35,7 +35,7 @@ public class MenuBuilderAcceptanceTest {
 	public void setup() {
 		freeplaneActions = mock(FreeplaneActions.class);
 		recursiveMenuStructureBuilder = new RecursiveMenuStructureBuilder();
-		recursiveMenuStructureBuilder.setDefaultBuilder(Builder.EMTPY_BUILDER);
+		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
 		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
 		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());

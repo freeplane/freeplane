@@ -3,33 +3,25 @@ package org.freeplane.core.ui.menubuilders;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class EntryPopupListenerAccessor {
+public class EntryPopupListenerCollection {
 
 	final private Collection<EntryPopupListener> listeners;
-	final private Entry entry;
 
-	public EntryPopupListenerAccessor(Entry entry) {
-		this.entry = entry;
-		final EntryPopupListenerAccessor registeredListener = (EntryPopupListenerAccessor) entry.getAttribute(EntryPopupListenerAccessor.class.getName());
-		if(registeredListener == null){
+	public EntryPopupListenerCollection() {
 			listeners = new ArrayList<EntryPopupListener>();
-			entry.setAttribute(EntryPopupListenerAccessor.class.getName(), this);
-		}
-		else
-			listeners = registeredListener.listeners;
 	}
 
 	public void addEntryPopupListener(EntryPopupListener entryPopupListener) {
 		listeners.add(entryPopupListener);
 	}
 
-	public void childEntriesWillBecomeVisible() {
+	public void childEntriesWillBecomeVisible(Entry entry) {
 		for(EntryPopupListener entryPopupListener : listeners)
 			entryPopupListener.childEntriesWillBecomeVisible(entry);
 		
 	}
 
-	public void childEntriesWillBecomeInvisible() {
+	public void childEntriesWillBecomeInvisible(Entry entry) {
 		for(EntryPopupListener entryPopupListener : listeners)
 			entryPopupListener.childEntriesWillBecomeInvisible(entry);
 	}

@@ -10,13 +10,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 
-public class JToolbarActionBuilder implements Builder {
+public class JToolbarActionBuilder implements EntryVisitor {
 
 	public JToolbarActionBuilder() {
 	}
 
 	@Override
-	public void build(Entry entry) {
+	public void visit(Entry entry) {
 		final AFreeplaneAction action = entry.getAction();
 		Component component;
 		if(action != null){
@@ -40,8 +40,8 @@ public class JToolbarActionBuilder implements Builder {
 	}
 
 	@Override
-	public void destroy(Entry target) {
-		throw new UnsupportedOperationException();
+	public boolean shouldSkipChildren() {
+		// TODO Auto-generated method stub
+		return false;
 	}
-
 }

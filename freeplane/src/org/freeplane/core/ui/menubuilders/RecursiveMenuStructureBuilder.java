@@ -4,97 +4,53 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class RecursiveMenuStructureBuilder implements Builder{
+public class RecursiveMenuStructureBuilder implements EntryVisitor{
 
-	final private Map<String, Builder> builders;
+	final private Map<String, EntryVisitor> builders;
 	final private Map<String, String> subtreeDefaultBuilders;
 	private LinkedList<String> subtreeDefaultBuilderStack;
-	private Builder defaultBuilder = Builder.ILLEGAL_BUILDER; 
+	private EntryVisitor defaultBuilder = EntryVisitor.ILLEGAL_VISITOR; 
 	final private Map<Integer, EntryPopupListener> entryPopupListeners;
 	private static final String DELAYED_BUILD_ATTRIBUTE = "delayedBuild";
 
 	public RecursiveMenuStructureBuilder() {
-		builders = new HashMap<String, Builder>();
+		builders = new HashMap<String, EntryVisitor>();
 		subtreeDefaultBuilders = new HashMap<String, String>();
 		subtreeDefaultBuilderStack = new LinkedList<>(); 
 		entryPopupListeners = new HashMap<>();
 	}
 
-	public void addBuilder(String name, Builder builder) {
+	public void addBuilder(String name, EntryVisitor builder) {
 		builders.put(name, builder);
 	}
 
 	@Override
-	public void build(Entry target) {
-		final Builder builder = builder(target);
-		builder.build(target);
-		if(shouldDelayChildBuild(target))
-			startProcessingChildrenWhenTheirVisibilityChanges(target);
-		else
+	public void visit(Entry target) {
+		final EntryVisitor builder = builder(target);
+		builder.visit(target);
+//		if(builder.shouldProcessChildren())
 			buildChildren(target);
 	}
 
-	private boolean shouldDelayChildBuild(Entry target) {
-		return Boolean.TRUE.equals(target.getAttribute(RecursiveMenuStructureBuilder.DELAYED_BUILD_ATTRIBUTE));
-	}
-
-	private void startProcessingChildrenWhenTheirVisibilityChanges(Entry target) {
-		final EntryPopupListener entryPopupListener = new EntryPopupListener() {
-			@Override
-			public void childEntriesWillBecomeVisible(Entry entry) {
-				buildChildren(entry);
-			}
-			
-			@Override
-			public void childEntriesWillBecomeInvisible(Entry entry) {
-				destroyChildren(entry);
-			}
-		};
-		entryPopupListeners.put(System.identityHashCode(target), entryPopupListener);
-		new EntryPopupListenerAccessor(target).addEntryPopupListener(entryPopupListener);
-	}
-	
-	@Override
-	public void destroy(Entry target) {
-		if(shouldDelayChildBuild(target))
-			cancelProcessingChildrenWhenTheirVisibilityChanges(target);
-		else
-			destroyChildren(target);
-		final Builder builder = builder(target);
-		builder.destroy(target);
-	}
-
-	private void cancelProcessingChildrenWhenTheirVisibilityChanges(Entry target) {
-		EntryPopupListener entryPopupListener = entryPopupListeners.remove(System.identityHashCode(target));
-		new EntryPopupListenerAccessor(target).removeEntryPopupListener(entryPopupListener);
-	}
-
 	private void buildChildren(Entry target) {
-		processChildren(target, true);
+		processChildren(target);
 	}
 
-	private void destroyChildren(Entry target) {
-		processChildren(target, false);
-	}
-	
-	private void processChildren(Entry target, boolean build) {
+	private void processChildren(Entry target) {
 		final int originalDefaultBuilderStackSize = subtreeDefaultBuilderStack.size();
 		final String builderToCall = builderToCall(target);
 		if(builderToCall != null)
 			changeDefaultBuilder(builderToCall);
 		for(Entry child:target.children()) {
-			if(build)
-				build(child);
-			else
-				destroy(child);
+				visit(child);
 		}
 		if(originalDefaultBuilderStackSize < subtreeDefaultBuilderStack.size())
 			subtreeDefaultBuilderStack.removeLast();
 	}
 
-	private Builder builder(Entry target) {
+	private EntryVisitor builder(Entry target) {
 		final String builderToCall = builderToCall(target);
-		final Builder builder;
+		final EntryVisitor builder;
 		if(builderToCall != null)
 			builder = builders.get(builderToCall);
 		else
@@ -121,7 +77,13 @@ public class RecursiveMenuStructureBuilder implements Builder{
 		subtreeDefaultBuilders.put(builder, subtreeBuilder);
 	}
 
-	public void setDefaultBuilder(Builder defaultBuilder) {
+	public void setDefaultBuilder(EntryVisitor defaultBuilder) {
 		this.defaultBuilder = defaultBuilder;
+	}
+
+	@Override
+	public boolean shouldSkipChildren() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

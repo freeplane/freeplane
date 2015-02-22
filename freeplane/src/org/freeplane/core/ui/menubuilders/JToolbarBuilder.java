@@ -4,16 +4,17 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 
-public class JToolbarBuilder implements Builder {
+public class JToolbarBuilder implements EntryVisitor {
 
 	@Override
-	public void build(Entry target) {
+	public void visit(Entry target) {
 		target.setComponent(new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL));
 	}
 
 	@Override
-	public void destroy(Entry target) {
-		throw new UnsupportedOperationException();
+	public boolean shouldSkipChildren() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -15,7 +15,7 @@ public class JMenubarBuilderTest {
 		Entry toolbarEntry = new Entry();
 		
 		final JMenubarBuilder toolbarBuilder = new JMenubarBuilder();
-		toolbarBuilder.build(toolbarEntry);
+		toolbarBuilder.visit(toolbarEntry);
 
 		assertThat(toolbarEntry.getComponent().getClass(), CoreMatchers.<Object>is(FreeplaneMenuBar.class));
 	}

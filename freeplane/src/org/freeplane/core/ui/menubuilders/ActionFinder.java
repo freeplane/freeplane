@@ -4,7 +4,7 @@ import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.FreeplaneActions;
 
-public class ActionFinder implements Builder{
+public class ActionFinder implements EntryVisitor{
 
 	final private FreeplaneActions freeplaneActions;
 
@@ -13,7 +13,7 @@ public class ActionFinder implements Builder{
 	}
 
 	@Override
-	public void build(final Entry target) {
+	public void visit(final Entry target) {
 		final String actionName = target.getName();
 		if(actionName != null) {
 			AFreeplaneAction action = freeplaneActions.getAction(actionName);
@@ -24,18 +24,6 @@ public class ActionFinder implements Builder{
 				freeplaneActions.addAction(action);
 			}
 			
-			new EntryPopupListenerAccessor(target).addEntryPopupListener(new EntryPopupListener() {
-				public void childEntriesWillBecomeVisible(final Entry target) {
-					final AFreeplaneAction action = target.getAction();
-					if(action.isEnabled())
-						action.setSelected();
-				}
-				
-				public void childEntriesWillBecomeInvisible(final Entry target) {
-				}
-
-			});
-
 			target.setAction(action);
 		}
 	}
@@ -46,9 +34,9 @@ public class ActionFinder implements Builder{
 	}
 
 	@Override
-	public void destroy(Entry target) {
+	public boolean shouldSkipChildren() {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 }

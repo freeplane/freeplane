@@ -30,7 +30,7 @@ public class JMenuItemBuilderTest {
 		menuEntry.addChild(actionEntry);
 		
 		final JMenuItemBuilder menuActionGroupBuilder = new JMenuItemBuilder();
-		menuActionGroupBuilder.build(actionEntry);
+		menuActionGroupBuilder.visit(actionEntry);
 
 		JMenuItem item = (JMenuItem)actionEntry.getComponent();
 
@@ -51,7 +51,7 @@ public class JMenuItemBuilderTest {
 		menuEntry.addChild(actionEntry);
 		
 		final JMenuItemBuilder menuActionGroupBuilder = new JMenuItemBuilder();
-		menuActionGroupBuilder.build(actionEntry);
+		menuActionGroupBuilder.visit(actionEntry);
 
 		JAutoCheckBoxMenuItem item = (JAutoCheckBoxMenuItem)actionEntry.getComponent();
 
@@ -70,7 +70,7 @@ public class JMenuItemBuilderTest {
 		menuEntry.addChild(separatorEntry);
 		
 		final JMenuItemBuilder menuActionGroupBuilder = new JMenuItemBuilder();
-		menuActionGroupBuilder.build(separatorEntry);
+		menuActionGroupBuilder.visit(separatorEntry);
 
 		JPopupMenu.Separator separator = (JPopupMenu.Separator)separatorEntry.getComponent();
 

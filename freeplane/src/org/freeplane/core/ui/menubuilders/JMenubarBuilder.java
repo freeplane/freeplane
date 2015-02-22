@@ -2,16 +2,16 @@ package org.freeplane.core.ui.menubuilders;
 
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
-public class JMenubarBuilder implements Builder {
+public class JMenubarBuilder implements EntryVisitor {
 
 	@Override
-	public void build(Entry target) {
+	public void visit(Entry target) {
 		target.setComponent(new FreeplaneMenuBar());
 	}
 
 	@Override
-	public void destroy(Entry target) {
-		throw new UnsupportedOperationException();
+	public boolean shouldSkipChildren() {
+		// TODO Auto-generated method stub
+		return false;
 	}
-
 }

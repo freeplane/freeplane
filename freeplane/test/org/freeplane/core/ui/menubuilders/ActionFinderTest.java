@@ -23,7 +23,7 @@ public class ActionFinderTest {
 		when(freeplaneActions.getAction("action")).thenReturn(someAction);
 		
 		final ActionFinder actionFinder = new ActionFinder(freeplaneActions);
-		actionFinder.build(entry);
+		actionFinder.visit(entry);
 		
 		assertThat((AFreeplaneAction) entry.getAttribute(Entry.ACTION), CoreMatchers.equalTo(someAction));
 	}
@@ -45,29 +45,10 @@ public class ActionFinderTest {
 			}
 			
 		};
-		actionFinder.build(entry);
+		actionFinder.visit(entry);
 		
 		Mockito.verify(freeplaneActions).addAction(setBooleanPropertyAction);
 		assertThat(entry.getAttribute(Entry.ACTION), CoreMatchers.<Object>equalTo(setBooleanPropertyAction));
-	}
-
-
-	@Test
-	public void activatesSelectOnPopup() {
-		FreeplaneActions freeplaneActions = mock(FreeplaneActions.class);
-		Entry entry = new Entry();
-		entry.setName("action");
-		final AFreeplaneAction someAction = Mockito.mock(AFreeplaneAction.class);
-		when(freeplaneActions.getAction("action")).thenReturn(someAction);
-		when(someAction.checkSelectionOnPopup()).thenReturn(true);
-		when(someAction.isEnabled()).thenReturn(true);
-		
-		final ActionFinder actionFinder = new ActionFinder(freeplaneActions);
-		actionFinder.build(entry);
-		
-		new EntryPopupListenerAccessor(entry).childEntriesWillBecomeVisible();
-		
-		verify(someAction).setSelected();
 	}
 
 }

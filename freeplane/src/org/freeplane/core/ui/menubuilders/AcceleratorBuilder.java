@@ -2,7 +2,7 @@ package org.freeplane.core.ui.menubuilders;
 
 import org.freeplane.core.util.Compat;
 
-public class AcceleratorBuilder implements Builder{
+public class AcceleratorBuilder implements EntryVisitor{
 
 	private static final String ACCELERATOR = "accelerator";
 	private IDefaultAcceleratorMap map;
@@ -11,7 +11,7 @@ public class AcceleratorBuilder implements Builder{
 		this.map = map;
 	}
 
-	public void build(Entry entry) {
+	public void visit(Entry entry) {
 		if(entry.getAction() != null){
 			String accelerator = (String) entry.getAttribute(ACCELERATOR);
 			if(accelerator != null) {
@@ -28,8 +28,9 @@ public class AcceleratorBuilder implements Builder{
 	}
 
 	@Override
-	public void destroy(Entry target) {
-		throw new UnsupportedOperationException();
+	public boolean shouldSkipChildren() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

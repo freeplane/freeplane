@@ -26,7 +26,7 @@ public class AcceleratorBuilderTest {
 
 		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
-		acceleratorBuilder.build(actionEntry);
+		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map).setDefaultAccelerator(actionKey, keyStroke);
 
@@ -42,7 +42,7 @@ public class AcceleratorBuilderTest {
 
 		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
-		acceleratorBuilder.build(actionEntry);
+		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map, never()).setDefaultAccelerator(actionKey, keyStroke);
 
@@ -56,7 +56,7 @@ public class AcceleratorBuilderTest {
 
 		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
-		acceleratorBuilder.build(actionEntry);
+		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map, never()).setDefaultAccelerator(anyString(), anyString());
 
@@ -82,7 +82,7 @@ public class AcceleratorBuilderTest {
 			}
 			
 		};
-		acceleratorBuilder.build(actionEntry);
+		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map).setDefaultAccelerator(actionKey, keyStroke.replaceAll("CONTROL", "META"));
 

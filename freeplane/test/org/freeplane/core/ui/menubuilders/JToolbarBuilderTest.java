@@ -14,7 +14,7 @@ public class JToolbarBuilderTest {
 		Entry toolbarEntry = new Entry();
 		
 		final JToolbarBuilder toolbarBuilder = new JToolbarBuilder();
-		toolbarBuilder.build(toolbarEntry);
+		toolbarBuilder.visit(toolbarEntry);
 
 		assertThat(toolbarEntry.getComponent().getClass(), CoreMatchers.<Object>is(FreeplaneToolBar.class));
 	}

@@ -31,7 +31,7 @@ public class JToolbarActionBuilderTest {
 		toolbarEntry.addChild(actionEntry);
 		
 		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
-		toolbarActionGroupBuilder.build(actionEntry);
+		toolbarActionGroupBuilder.visit(actionEntry);
 
 		JButton button = (JButton)actionEntry.getComponent();
 
@@ -52,7 +52,7 @@ public class JToolbarActionBuilderTest {
 		toolbarEntry.addChild(actionEntry);
 		
 		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
-		toolbarActionGroupBuilder.build(actionEntry);
+		toolbarActionGroupBuilder.visit(actionEntry);
 
 		JAutoToggleButton button = (JAutoToggleButton)actionEntry.getComponent();
 
@@ -71,7 +71,7 @@ public class JToolbarActionBuilderTest {
 		toolbarEntry.addChild(separatorEntry);
 		
 		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
-		toolbarActionGroupBuilder.build(separatorEntry);
+		toolbarActionGroupBuilder.visit(separatorEntry);
 
 		JToolBar.Separator separator = (JToolBar.Separator)separatorEntry.getComponent();
 
