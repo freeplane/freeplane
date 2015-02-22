@@ -132,4 +132,14 @@ public class EntryTest {
 		entry.setAttribute("key", "value2");
 		assertThat(entry.getAttribute("key"), CoreMatchers.<Object>equalTo("value2"));
 	}
+
+	@Test
+	public void hasChildren() {
+		Entry firstStructureWithEntry = new Entry();
+		final Entry firstEntry = new Entry();
+		firstStructureWithEntry.addChild(firstEntry);
+		
+		assertThat(firstStructureWithEntry.hasChildren(), equalTo(true));
+	}
+
 }

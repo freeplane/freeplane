@@ -4,6 +4,8 @@ import java.awt.Component;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
@@ -11,33 +13,78 @@ import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
+	private EntryPopupListener popupListener;
+
+	public JMenuItemBuilder(EntryPopupListener popupListener) {
+		this.popupListener = popupListener;
+	}
+
 	@Override
 	public void visit(Entry entry) {
+		if(entry.hasChildren())
+			addSubmenu(entry);
+		else
+			addActionItem(entry);
+	}
+
+	private void addActionItem(Entry entry) {
+		final Component actionComponent = createActionComponent(entry);
+		if(actionComponent != null){
+			entry.setComponent(actionComponent);
+			final JPopupMenu container = ((JMenu) entry.getAncestorComponent()).getPopupMenu();
+			container.add(actionComponent);
+		}
+	}
+
+	private void addSubmenu(final Entry entry) {
+		final Component actionComponent = createActionComponent(entry);
+		final JPopupMenu container = ((JMenu) entry.getAncestorComponent()).getPopupMenu();
+		JMenu menu = new JMenu();
+		entry.setComponent(menu);
+		container.add(menu);
+		final JPopupMenu popupMenu = menu.getPopupMenu();
+		if(actionComponent != null){
+			popupMenu.add(actionComponent);
+		}
+		popupMenu.addPopupMenuListener(new PopupMenuListener() {
+			
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				popupListener.childEntriesWillBecomeVisible(entry);
+			}
+			
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				popupListener.childEntriesWillBecomeInvisible(entry);
+			}
+			
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+			}
+		});
+	}
+
+	private Component createActionComponent(Entry entry) {
 		final AFreeplaneAction action = entry.getAction();
-		Component component;
+		final Component actionComponent;
 		if(action != null){
 			if (action.isSelectable()) {
-				component = new JAutoCheckBoxMenuItem(action);
+				actionComponent = new JAutoCheckBoxMenuItem(action);
 			}
 			else {
-				component = new JFreeplaneMenuItem(action);
+				actionComponent = new JFreeplaneMenuItem(action);
 			}
 		}
 		else if(entry.builders().contains("separator")){
-			component = new JPopupMenu.Separator();
+			actionComponent = new JPopupMenu.Separator();
 		}
 		else
-			component = null;
-		if(component != null){
-			entry.setComponent(component);
-			final JMenu container = ((JMenu) entry.getAncestorComponent());
-			container.getPopupMenu().add(component);
-		}
+			actionComponent = null;
+		return actionComponent;
 	}
 
 	@Override
 	public boolean shouldSkipChildren() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

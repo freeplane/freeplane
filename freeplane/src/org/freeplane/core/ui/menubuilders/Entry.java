@@ -147,4 +147,9 @@ public class Entry {
 		attributes.remove(key);
 	}
 
+
+	public boolean hasChildren() {
+		return ! childEntries.isEmpty();
+	}
+
 }
