@@ -84,16 +84,15 @@ public class SvgViewerFactory implements IViewerFactory {
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
-				final Dimension preferredSize = canvas.getOriginalSize();
+				final Dimension originalSize = canvas.getOriginalSize();
 				float r = resource.getZoom();
-				final int originalWidth = preferredSize.width;
+				final int originalWidth = originalSize.width;
 				if(r == -1){
 					r = resource.setZoom(originalWidth, maximumWidth);
 				}
-				preferredSize.width = (int) (Math.rint(originalWidth * r));
-				preferredSize.height = (int) (Math.rint(preferredSize.height * r));
-				canvas.setPreferredSize(preferredSize);
-				canvas.setLayout(new ViewerLayoutManager(1f));
+				final ViewerLayoutManager viewerLayoutManager = new ViewerLayoutManager(1f, resource, originalSize);
+				canvas.setPreferredSize(viewerLayoutManager.calculatePreferredSize());
+				canvas.setLayout(viewerLayoutManager);
 				canvas.revalidate();
 				canvas.removeGVTTreeRendererListener(this);
 			}
