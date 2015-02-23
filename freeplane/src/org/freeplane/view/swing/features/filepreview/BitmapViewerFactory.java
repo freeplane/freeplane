@@ -66,10 +66,11 @@ public class BitmapViewerFactory implements IViewerFactory {
 		if(zoom == -1){
 			zoom = resource.setZoom(originalSize.width, maximumWidth);
 		}
-		originalSize.width = (int) (originalSize.width * zoom);
-		originalSize.height = (int) (originalSize.height * zoom);
-		bitmapViewerComponent.setFinalViewerSize(originalSize);
-		((JComponent) bitmapViewerComponent).setLayout(new ViewerLayoutManager(1f));
+		final ViewerLayoutManager viewerLayoutManager = new ViewerLayoutManager(1f, resource, originalSize);
+		((JComponent) bitmapViewerComponent).setLayout(viewerLayoutManager);
+		
+		Dimension zoomedSize = viewerLayoutManager.calculatePreferredSize();
+		bitmapViewerComponent.setFinalViewerSize(zoomedSize );
 		return bitmapViewerComponent;
 	}
 
