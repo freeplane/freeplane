@@ -217,7 +217,13 @@ public class BitmapViewerComponent extends JComponent {
 		tempDir.mkdirs();
 		try {
 			synchronized(LOCK) {
-				cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
+				if(cacheFile == null)
+					cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
+				else{
+					cacheFile.delete();
+					cacheFile.createNewFile();
+				}
+				
 			}
 			ImageIO.write(cachedImage, "jpg", cacheFile);
 
