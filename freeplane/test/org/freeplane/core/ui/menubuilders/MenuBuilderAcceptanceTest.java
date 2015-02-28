@@ -19,22 +19,22 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class MenuBuilderAcceptanceTest {
-	RecursiveMenuStructureBuilder recursiveMenuStructureBuilder;
+	RecursiveMenuStructureProcessor recursiveMenuStructureBuilder;
 	FreeplaneActions freeplaneActions;
 
 	private Entry buildJMenu(String xmlWithoutContent) {
 		final Entry buildMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(xmlWithoutContent);
-		final RecursiveMenuStructureBuilder actionBuilder = new RecursiveMenuStructureBuilder();
+		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
-		actionBuilder.visit(buildMenuStructure);
-		recursiveMenuStructureBuilder.visit(buildMenuStructure);
+		actionBuilder.process(buildMenuStructure);
+		recursiveMenuStructureBuilder.process(buildMenuStructure);
 		return buildMenuStructure;
 	}
 
 	@Before
 	public void setup() {
 		freeplaneActions = mock(FreeplaneActions.class);
-		recursiveMenuStructureBuilder = new RecursiveMenuStructureBuilder();
+		recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
 		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
