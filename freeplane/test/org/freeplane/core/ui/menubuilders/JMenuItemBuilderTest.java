@@ -38,7 +38,14 @@ public class JMenuItemBuilderTest {
 		menuEntry = new Entry();
 		menu = new JMenu();
 		popupListener = mock(EntryPopupListener.class);
-		menuActionGroupBuilder = new JMenuItemBuilder(popupListener);
+		menuActionGroupBuilder = new JMenuItemBuilder(popupListener){
+
+			@Override
+			protected JMenu createMenuEntry(Entry entry) {
+				return new JMenu(entry.getName());
+			}
+			
+		};
 	}
 	
 	@Test

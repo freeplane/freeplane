@@ -1,15 +1,20 @@
 package org.freeplane.core.ui.menubuilders;
 
 import java.awt.Component;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
+import org.freeplane.core.util.TextUtils;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
@@ -39,7 +44,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private void addSubmenu(final Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
 		final JPopupMenu container = ((JMenu) entry.getAncestorComponent()).getPopupMenu();
-		JMenu menu = new JMenu();
+		JMenu menu = createMenuEntry(entry);
 		entry.setComponent(menu);
 		container.add(menu);
 		final JPopupMenu popupMenu = menu.getPopupMenu();
@@ -62,6 +67,18 @@ public class JMenuItemBuilder implements EntryVisitor{
 			public void popupMenuCanceled(PopupMenuEvent e) {
 			}
 		});
+	}
+
+	protected JMenu createMenuEntry(final Entry entry) {
+		JMenu menu = new JMenu();
+		String name = entry.getName();
+		final String iconResource = ResourceController.getResourceController().getProperty(name + ".icon", null);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, TextUtils.getRawText(name));
+		if(iconResource != null){
+			final URL url = ResourceController.getResourceController().getResource(iconResource);
+			menu.setIcon(new ImageIcon(url));
+		}
+		return menu;
 	}
 
 	private Component createActionComponent(Entry entry) {
