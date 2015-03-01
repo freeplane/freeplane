@@ -25,6 +25,8 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -52,6 +54,13 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.Entry;
+import org.freeplane.core.ui.menubuilders.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.JMenubarBuilder;
+import org.freeplane.core.ui.menubuilders.JToolbarActionBuilder;
+import org.freeplane.core.ui.menubuilders.JToolbarBuilder;
+import org.freeplane.core.ui.menubuilders.RecursiveMenuStructureProcessor;
+import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -335,6 +344,27 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			viewController.updateMenus(getMenuBuilder(MenuBuilder.class));
 		}
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
+		
+		final URL genericStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.out.xml"));
+		if(genericStructure != null){
+			try {
+				final BufferedReader reader = new BufferedReader(new  InputStreamReader(genericStructure.openStream()) );
+				final Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
+				
+				RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
+				recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
+				recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder());
+				
+				recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
+				recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
+				recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
+				
+				
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+			
 	}
 
 	private void loadStructure(Set<String> plugins, final URL menuStructure) {

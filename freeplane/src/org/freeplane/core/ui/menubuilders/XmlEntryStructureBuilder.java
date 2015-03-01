@@ -51,7 +51,7 @@ public class XmlEntryStructureBuilder implements EntryVisitor{
 	}
 
 	@Override
-	public boolean shouldSkipChildren() {
+	public boolean shouldSkipChildren(Entry entry) {
 		// TODO Auto-generated method stub
 		return false;
 	}

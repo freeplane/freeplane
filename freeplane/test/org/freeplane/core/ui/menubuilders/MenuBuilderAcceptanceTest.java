@@ -33,36 +33,14 @@ public class MenuBuilderAcceptanceTest {
 	
 	@BeforeClass
 	static public void setup() {
-		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
-		
-		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
-		
-		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
-		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
-		
-		recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder());
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("main_menu", "menu.action");
-		recursiveMenuStructureBuilder.addBuilder("menu.action", new JMenuItemBuilder(new EntryPopupListener() {
-			
-			@Override
-			public void childEntriesWillBecomeVisible(Entry entry) {
-			}
-			
-			@Override
-			public void childEntriesWillBecomeInvisible(Entry entry) {
-			}
-		}));
-		
+		final PhaseProcessor buildProcessor = new BuildProcessFactory().createBuildProcessor(Controller.getCurrentModeController(), new ResourceDependentMenuEntryBuilder());
 		final String menuResource = "/xml/mindmapmoderibbon.out.xml";
 		final InputStream resource = MenuBuilderAcceptanceTest.class.getResourceAsStream(menuResource);
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 		menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
-		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
-		FreeplaneActions modeController = Controller.getCurrentModeController();
-		actionBuilder.setDefaultBuilder(new ActionFinder(modeController ));
-		new PhaseProcessor(actionBuilder,recursiveMenuStructureBuilder).process(menuStructure);
+		buildProcessor.process(menuStructure);
 	}
+
 
 	@Test
 	public void test() {

@@ -13,7 +13,7 @@ public class JComponentRemover implements EntryVisitor{
 	}
 
 	@Override
-	public boolean shouldSkipChildren() {
+	public boolean shouldSkipChildren(Entry entry) {
 		return true;
 	}
 	

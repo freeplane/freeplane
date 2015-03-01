@@ -9,7 +9,8 @@ public class RecursiveMenuStructureProcessor{
 	final private Map<String, EntryVisitor> visitors;
 	final private Map<String, String> subtreeDefaultVisitors;
 	private LinkedList<String> subtreeDefaultVisitorStack;
-	private EntryVisitor defaultBuilder = EntryVisitor.ILLEGAL_VISITOR; 
+	private EntryVisitor defaultBuilder = EntryVisitor.ILLEGAL_VISITOR;
+	public static final String PROCESS_ON_POPUP = "processOnPopup"; 
 
 	public RecursiveMenuStructureProcessor() {
 		visitors = new HashMap<String, EntryVisitor>();
@@ -24,7 +25,7 @@ public class RecursiveMenuStructureProcessor{
 	public void process(Entry target) {
 		final EntryVisitor builder = visitor(target);
 		builder.visit(target);
-		if(! builder.shouldSkipChildren())
+		if(! builder.shouldSkipChildren(target))
 			processChildren(target);
 	}
 

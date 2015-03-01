@@ -8,7 +8,7 @@ public interface EntryVisitor {
 		}
 
 		@Override
-		public boolean shouldSkipChildren() {
+		public boolean shouldSkipChildren(Entry entry) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -21,12 +21,12 @@ public interface EntryVisitor {
 		}
 
 		@Override
-		public boolean shouldSkipChildren() {
+		public boolean shouldSkipChildren(Entry entry) {
 			// TODO Auto-generated method stub
 			return false;
 		}
 	};
 
 	public void visit(Entry target);
-	public boolean shouldSkipChildren();
+	public boolean shouldSkipChildren(Entry entry);
 }

@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -39,14 +40,12 @@ public class JMenuItemBuilderTest {
 		menuEntry = new Entry();
 		menu = new JMenu();
 		popupListener = mock(EntryPopupListener.class);
-		menuActionGroupBuilder = new JMenuItemBuilder(popupListener){
-
+		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, new MenuEntryBuilder() {
 			@Override
-			protected JMenu createMenuEntry(Entry entry) {
+			public JMenu createMenuEntry(Entry entry) {
 				return new JMenu(entry.getName());
 			}
-			
-		};
+		});
 	}
 	
 	@Test
@@ -167,4 +166,16 @@ public class JMenuItemBuilderTest {
 	}
 
 
+	
+	@Test
+	public void delayesChildProcessing() {
+		menuEntry.setComponent(menu);
+		actionEntry.setAttribute(RecursiveMenuStructureProcessor.PROCESS_ON_POPUP, true);
+		menuEntry.addChild(actionEntry);
+		menuActionGroupBuilder.visit(actionEntry);
+		assertThat(menuActionGroupBuilder.shouldSkipChildren(actionEntry), equalTo(true));
+
+
+		
+	}
 }

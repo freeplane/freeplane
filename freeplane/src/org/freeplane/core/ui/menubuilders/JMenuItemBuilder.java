@@ -1,5 +1,8 @@
 package org.freeplane.core.ui.menubuilders;
 
+import static java.lang.Boolean.TRUE;
+import static org.freeplane.core.ui.menubuilders.RecursiveMenuStructureProcessor.PROCESS_ON_POPUP;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.net.URL;
@@ -19,10 +22,12 @@ import org.freeplane.core.util.TextUtils;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
-	private EntryPopupListener popupListener;
+	final private EntryPopupListener popupListener;
+	final private MenuEntryBuilder menuEntryBuilder;
 
-	public JMenuItemBuilder(EntryPopupListener popupListener) {
+	public JMenuItemBuilder(EntryPopupListener popupListener, MenuEntryBuilder menuEntryBuilder) {
 		this.popupListener = popupListener;
+		this.menuEntryBuilder = menuEntryBuilder;
 	}
 
 	@Override
@@ -45,7 +50,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private void addSubmenu(final Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
 		final Container container = getParentComponent(entry);
-		JMenu menu = createMenuEntry(entry);
+		JMenu menu = menuEntryBuilder.createMenuEntry(entry);
 		entry.setComponent(menu);
 		container.add(menu);
 		final JPopupMenu popupMenu = menu.getPopupMenu();
@@ -78,17 +83,6 @@ public class JMenuItemBuilder implements EntryVisitor{
 			return ancestorComponent;
 	}
 
-	protected JMenu createMenuEntry(final Entry entry) {
-		JMenu menu = new JMenu();
-		String name = entry.getName();
-		final String iconResource = ResourceController.getResourceController().getProperty(name + ".icon", null);
-		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, TextUtils.getRawText(name));
-		if(iconResource != null){
-			final URL url = ResourceController.getResourceController().getResource(iconResource);
-			menu.setIcon(new ImageIcon(url));
-		}
-		return menu;
-	}
 
 	private Component createActionComponent(Entry entry) {
 		final AFreeplaneAction action = entry.getAction();
@@ -110,8 +104,8 @@ public class JMenuItemBuilder implements EntryVisitor{
 	}
 
 	@Override
-	public boolean shouldSkipChildren() {
-		return false;
+	public boolean shouldSkipChildren(Entry entry) {
+		return TRUE.equals(entry.getAttribute(PROCESS_ON_POPUP));
 	}
 
 }

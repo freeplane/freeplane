@@ -115,9 +115,9 @@ public class RecursiveMenuStructureProcessorTest {
 	}
 	@Test
 	public void defaultBuilderIsNotCalledForChildIfChildProcessingIsSkipped() {
-		when(builder.shouldSkipChildren()).thenReturn(true);
 		recursiveMenuStructureBuilder.setDefaultBuilder(defaultBuilder);
 		final Entry entry = new Entry();
+		when(builder.shouldSkipChildren(entry)).thenReturn(true);
 		entry.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
 		entry.addChild(childEntry);
