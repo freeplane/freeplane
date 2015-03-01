@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -36,14 +37,14 @@ public class JMenuItemBuilder implements EntryVisitor{
 		final Component actionComponent = createActionComponent(entry);
 		if(actionComponent != null){
 			entry.setComponent(actionComponent);
-			final JPopupMenu container = ((JMenu) entry.getAncestorComponent()).getPopupMenu();
+			final Container container = getParentComponent(entry);
 			container.add(actionComponent);
 		}
 	}
 
 	private void addSubmenu(final Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
-		final JPopupMenu container = ((JMenu) entry.getAncestorComponent()).getPopupMenu();
+		final Container container = getParentComponent(entry);
 		JMenu menu = createMenuEntry(entry);
 		entry.setComponent(menu);
 		container.add(menu);
@@ -67,6 +68,14 @@ public class JMenuItemBuilder implements EntryVisitor{
 			public void popupMenuCanceled(PopupMenuEvent e) {
 			}
 		});
+	}
+
+	private Container getParentComponent(final Entry entry) {
+		final Container ancestorComponent = (Container) entry.getAncestorComponent();
+		if(ancestorComponent instanceof JMenu)
+			return ((JMenu) ancestorComponent).getPopupMenu();
+		else 
+			return ancestorComponent;
 	}
 
 	protected JMenu createMenuEntry(final Entry entry) {

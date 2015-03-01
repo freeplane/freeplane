@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -99,6 +100,20 @@ public class JMenuItemBuilderTest {
 
 		JMenu item = (JMenu)menuEntry.getComponent();
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(parentMenu.getPopupMenu()));
+	}
+
+	@Test
+	public void createsMainMenuWithoutAction() {
+		Entry parentMenuEntry = new Entry();
+		final FreeplaneMenuBar parentMenu = new FreeplaneMenuBar();
+		parentMenuEntry.setComponent(parentMenu);
+		parentMenuEntry.addChild(menuEntry);
+		menuEntry.addChild(actionEntry);
+		
+		menuActionGroupBuilder.visit(menuEntry);
+
+		JMenu item = (JMenu)menuEntry.getComponent();
+		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(parentMenu));
 	}
 
 	@Test
