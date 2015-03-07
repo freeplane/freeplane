@@ -441,6 +441,7 @@ task dist {
     dependsOn srcTarGz
     dependsOn srcpureTarGz
     dependsOn windowsInstaller
+    dependsOn windowsPortableInstaller
 }
 
 // clean
