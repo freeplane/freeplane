@@ -82,6 +82,11 @@ task windowsPortableInstaller(type: Exec) {
     commandLine 'cmd.exe', '/c', 'PortableApps.comInstaller.exe'
 
     dependsOn copyWindowsPortableInstallerFiles
+
+    // TODO: rename ouput *.paf.exe
+    doLast {
+         new File(".pbf.exe").renameTo(".paf.exe".replaceAll());
+    }
 }
  
 //   <!-- For release targets. Again move to top level? -->
