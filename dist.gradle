@@ -60,6 +60,7 @@ task copyWindowsPortableInstallerFiles(type: Copy) {
     // copy all other files
     from (globalBuild) {
         exclude('*.bat', '*.ini', '*.sh')
+        exclude('doc/api/**')
     }
     into(portableInstallerDir + '/App/Freeplane/')
 
