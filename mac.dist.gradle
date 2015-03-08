@@ -1,0 +1,60 @@
+def appBundlerJar = 'freeplane_framework/mac-appbundler/appbundler-1.0.jar'
+ant.taskdef(
+    name: "appbundler",
+    classname: 'com.oracle.appbundler.AppBundlerTask',
+    classpath: appBundlerJar,
+    onerror: "report"
+)
+
+task macosxapp {
+    doFirst {
+        def build4mac = globalDist + '/build4mac'
+        delete build4mac + '/Freeplane.app'
+        mkdir build4mac
+
+        ant.appbundler(
+            outputdirectory: build4mac,
+            name: 'Freeplane',
+            displayname: 'Freeplane',
+            mainclassname: 'org.freeplane.launcher.Launcher',
+            shortversion: project.version,
+            copyright: "Freeplane ${project.version}",
+            identifier: 'org.freeplane.core',
+            icon: 'freeplane_framework/mac-appbundler/freeplane.icns',
+            signature: '????'
+        ) {
+            classpath(dir: globalBuild, includes: '*.jar')
+            option(value: "-Xmx512m")
+            option(value: "-Dapple.laf.useScreenMenuBar=true")
+            option(value: "-Xdock:name=Freeplane")
+        }
+
+        println('Adding configuration to Info.plist')
+        def macappfullpath = new File(build4mac, 'Freeplane.app')
+        def dist_macos_info = macappfullpath + '/Contents/Info.plist'
+        ant.xslt(in: new File(dist_macos_info),
+            style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
+            out: new File(dist_macos_info + '2')
+        )
+        Files.move(Paths.get(dist_macos_info + '2'), Paths.get(dist_macos_info),
+                   CopyOption.REPLACE_EXISTING)
+
+        def macjavafullpath = macappfullpath.path + '/Contents/Java'
+        copy {
+            from(globalBuild) {
+                 exclude('**/*.bat')
+                 exclude('**/*.exe')
+                 exclude('*.jar')
+            }
+            into(macjavafullpath)
+        }
+
+        def macresourcesfullpath = macappfullpath.path + '/Contents/Resources'
+        copy {
+             from('freeplane_framework/mac-appbundler') {
+                 include('freeplanedoc.icns')
+             }
+             into(macresourcesfullpath)
+        }
+    }
+}

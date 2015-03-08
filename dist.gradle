@@ -4,6 +4,8 @@ import org.apache.tools.ant.taskdefs.condition.Os;
 def globalDist = rootDir.path + '/DIST'
 def distVersion = project.version
 
+apply from: './mac.dist.gradle'
+
 task windowsInstaller(type: Exec) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
 
