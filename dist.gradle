@@ -1,5 +1,6 @@
-import org.apache.tools.ant.filters.FixCrLfFilter;
-import org.apache.tools.ant.taskdefs.condition.Os;
+import org.apache.tools.ant.filters.FixCrLfFilter
+import org.apache.tools.ant.taskdefs.condition.Os
+import groovy.io.FileType
 
 def globalDist = rootDir.path + '/DIST'
 def distVersion = project.version
@@ -81,13 +82,15 @@ task windowsPortableInstaller(type: Exec) {
     ignoreExitValue = true
     workingDir = rootDir.path + '/freeplane_framework'
 
-    commandLine 'cmd.exe', '/c', 'PortableApps.comInstaller.exe'
+    commandLine 'cmd.exe', '/c', 'PortableApps.comInstaller.exe', portableInstallerDir
 
     dependsOn copyWindowsPortableInstallerFiles
 
-    // TODO: rename ouput *.paf.exe
     doLast {
-         new File(".pbf.exe").renameTo(".paf.exe".replaceAll());
+		 new File(portableInstallerDir).deleteDir() 
+         new File(globalDist).eachFileMatch(FileType.FILES, ~/.*\.paf\.exe/) {
+			 f -> f.renameTo(new File(globalDist, f.name.replace('_' as char, '-' as char)))
+		 }
     }
 }
  
