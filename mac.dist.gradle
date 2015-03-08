@@ -17,8 +17,8 @@ task macosxapp {
             name: 'Freeplane',
             displayname: 'Freeplane',
             mainclassname: 'org.freeplane.launcher.Launcher',
-            shortversion: project.version,
-            copyright: "Freeplane ${project.version}",
+            shortversion: distVersion,
+            copyright: "Freeplane ${distVersion}",
             identifier: 'org.freeplane.core',
             icon: 'freeplane_framework/mac-appbundler/freeplane.icns',
             signature: '????'
@@ -29,15 +29,14 @@ task macosxapp {
             option(value: "-Xdock:name=Freeplane")
         }
 
-        println('Adding configuration to Info.plist')
         def macappfullpath = new File(build4mac, 'Freeplane.app')
-        def dist_macos_info = macappfullpath + '/Contents/Info.plist'
+        def dist_macos_info = macappfullpath.path + '/Contents/Info.plist'
         ant.xslt(in: new File(dist_macos_info),
             style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
             out: new File(dist_macos_info + '2')
         )
-        Files.move(Paths.get(dist_macos_info + '2'), Paths.get(dist_macos_info),
-                   CopyOption.REPLACE_EXISTING)
+        java.nio.file.Files.move(java.nio.file.Paths.get(dist_macos_info + '2'), java.nio.file.Paths.get(dist_macos_info),
+                   java.nio.file.StandardCopyOption.REPLACE_EXISTING)
 
         def macjavafullpath = macappfullpath.path + '/Contents/Java'
         copy {

@@ -2,8 +2,8 @@ import org.apache.tools.ant.filters.FixCrLfFilter
 import org.apache.tools.ant.taskdefs.condition.Os
 import groovy.io.FileType
 
-def globalDist = rootDir.path + '/DIST'
-def distVersion = project.version
+ext.globalDist = rootDir.path + '/DIST'
+ext.distVersion = project.version
 
 apply from: './mac.dist.gradle'
 
