@@ -263,10 +263,12 @@ task copyDoc(type: Copy) {
 // dependency to satisfy than a seperate gradle plugin. We may wish to change
 // this in the future
 task build_ui_xml {
- ant.xslt(in   : file('resources/xml/mindmapmoderibbon.xml'),
-          style: file('resources/xslt/ribbons2menu.xsl'),
-          out  : new File('resources/xml', 'mindmapmodemenu.xml')
-         )
+    doFirst {
+        ant.xslt(in   : file('resources/xml/mindmapmoderibbon.xml'),
+              style: file('resources/xslt/ribbons2menu.xsl'),
+              out  : new File('resources/xml', 'mindmapmodemenu.xml')
+        )
+    }
 }
 
 jar.dependsOn viewerJar
@@ -277,5 +279,6 @@ build.dependsOn copyOSGiJars
 build.dependsOn copyOSGiManifest
 build.dependsOn copyExternalResources
 build.dependsOn copyDoc
+build.dependsOn build_ui_xml
 
 apply from: './format_translation.gradle'
