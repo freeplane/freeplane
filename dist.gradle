@@ -5,6 +5,33 @@ import groovy.io.FileType
 ext.globalDist = rootDir.path + '/DIST'
 ext.distVersion = project.version
 
+// TODO: hook up this task as dependency of other task(s)!
+// TODO: is the destination for gitinfo.properties correct??
+// does this need to be packaged in some distributions???
+task runGit(type: Exec) {
+    ignoreExitValue = true
+
+    // TODO: do not fail if 'git' does not exist!
+    commandLine 'git', 'log', '--pretty=format:git-revision=%h_%an_%ai', '-n1'
+
+    doFirst {
+        standardOutput = new FileOutputStream(new File(globalBuild, 'gitinfo.txt'))
+    }
+    doLast {
+        // create gitinfo.properties!
+        copy {
+            from(globalBuild) {
+                include('gitinfo.txt')
+                rename('gitinfo.txt', 'gitinfo.properties')
+                filter(org.apache.tools.ant.filters.EscapeUnicode)
+                filter { line -> line.replaceAll('[^\\w=-]', '') }
+            }
+            into(globalDist)
+        }
+    }
+}
+
+
 apply from: './mac.dist.gradle'
 
 task windowsInstaller(type: Exec) {
