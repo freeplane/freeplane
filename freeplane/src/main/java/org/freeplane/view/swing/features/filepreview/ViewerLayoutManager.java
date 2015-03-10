@@ -34,13 +34,19 @@ import org.freeplane.view.swing.map.MapView;
 
 public class ViewerLayoutManager implements LayoutManager {
 	private float zoom;
+	private ExternalResource externalResource;
+	private Dimension originalSize;
 
 	/**
+	 * @param externalResource TODO
+	 * @param originalSize TODO
 	 * 
 	 */
-	public ViewerLayoutManager(final float zoom) {
+	public ViewerLayoutManager(final float zoom, ExternalResource externalResource, Dimension originalSize) {
 		super();
 		this.zoom = zoom;
+		this.externalResource = externalResource;
+		this.originalSize = originalSize;
 	}
 
 	public void addLayoutComponent(final String name, final Component comp) {
@@ -50,19 +56,23 @@ public class ViewerLayoutManager implements LayoutManager {
 		if (!parent.isPreferredSizeSet()) {
 			throw new IllegalStateException("preferred size not set for " + parent);
 		}
-		final Dimension preferredSize = parent.getPreferredSize();
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, parent);
 		if (mapView == null) {
 			return;
 		}
 		final float newZoom = mapView.getZoom();
 		if (zoom != newZoom) {
-			final float ratio = newZoom / zoom;
-			preferredSize.width = (int) (Math.rint(preferredSize.width * ratio));
-			preferredSize.height = (int) (Math.rint(preferredSize.height * ratio));
-			parent.setPreferredSize(preferredSize);
 			zoom = newZoom;
+			final Dimension preferredSize = calculatePreferredSize();
+			parent.setPreferredSize(preferredSize);
 		}
+	}
+
+	public Dimension calculatePreferredSize() {
+		int width = (int) (Math.ceil(originalSize.width * externalResource.getZoom() * zoom));
+		int height = (int) (Math.ceil(originalSize.height * externalResource.getZoom() * zoom));
+		final Dimension preferredSize = new Dimension(width, height);
+		return preferredSize;
 	}
 
 	public Dimension minimumLayoutSize(final Container parent) {
