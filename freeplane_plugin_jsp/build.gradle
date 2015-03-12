@@ -11,12 +11,12 @@ jar {
         symbolicName = pluginid
 
         configurations.runtime.transitive = false
-        ext.deps = configurations.runtime.files.collect { "lib/${it.name}" }
-        ext.deps.add(0, "lib/plugin-" + project.version + '.jar')
+        def deps = configurations.runtime.files.collect { "lib/${it.name}" }
+        deps.add(0, "lib/plugin-" + project.version + '.jar')
 
-        ext.deps = filterPluginDeps(ext.deps)
-        attributes 'Class-Path': ext.deps.join(', ')
-        attributes 'Bundle-ClassPath': '., ' + ext.deps.join(', ')
+        deps = filterPluginDeps(deps)
+        attributes 'Class-Path': deps.join(', ')
+        attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
 
         instruction 'Bundle-Vendor', 'Freeplane Project'
         instruction 'Bundle-Activator', pluginid + ".Activator"

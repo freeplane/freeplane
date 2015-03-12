@@ -25,14 +25,15 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        ext.deps = configurations.runtime.files.collect { "lib/${it.name}" }
-        ext.deps.add(0, "lib/freeplaneosgi-" + project.version + ".jar")
-        //ext.deps.add(0, "lib/freeplanemac.jar") // TODO: where does this come from? => add source!
-        ext.deps.add(0, "lib/freeplaneeditor-" + project.version + ".jar")
-        ext.deps.add(0, "lib/freeplaneviewer-" + project.version + ".jar")
+        def deps = configurations.runtime.files.collect { "lib/${it.name}" }
+        deps.add(0, "lib/freeplaneosgi-" + project.version + ".jar")
+        // this is built from :freeplane_mac on a Mac!
+        //deps.add(0, "lib/freeplanemac.jar")
+        deps.add(0, "lib/freeplaneeditor-" + project.version + ".jar")
+        deps.add(0, "lib/freeplaneviewer-" + project.version + ".jar")
 
-        attributes 'Class-Path' : ext.deps.join(', ')
-        attributes 'Bundle-ClassPath': '., ' + ext.deps.join(', ')
+        attributes 'Class-Path' : deps.join(', ')
+        attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
         // f*ck bnd! it filters things like "org.apache.commons.*" from
         // Export-Package:, that's why we bypass bnd for now!
         def exports = """\
