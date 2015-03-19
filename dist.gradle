@@ -39,7 +39,8 @@ task dist {
     dependsOn srcpureTarGz
     dependsOn windowsInstaller
     dependsOn windowsPortableInstaller
-    // TODO: mac
+    dependsOn dmg4mac
+    dependsOn zip4mac
 }
 
 // clean
