@@ -18,6 +18,8 @@ task windowsInstaller(type: Exec) {
 def portableInstallerDir = new File(globalDist, 'FreeplanePortable').path
 
 task copyWindowsPortableInstallerFiles1(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy windows-portable files
     from(rootDir.path + '/freeplane_framework/windows-portable') {
          include('**')
@@ -25,6 +27,8 @@ task copyWindowsPortableInstallerFiles1(type: Copy) {
     into(portableInstallerDir)
 }
 task copyWindowsPortableInstallerFiles2(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy license
     from(rootDir.path + '/freeplane/resources/') {
          include('license.txt')
@@ -33,6 +37,8 @@ task copyWindowsPortableInstallerFiles2(type: Copy) {
     into(portableInstallerDir + '/Other/Source/')
 }
 task copyWindowsPortableInstallerFiles3(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy icon
     from(rootDir.path + '/freeplane_framework/launch4j') {
         include('Freeplane_app.ico')
@@ -42,6 +48,8 @@ task copyWindowsPortableInstallerFiles3(type: Copy) {
 }
 
 task copyWindowsPortableInstallerFiles(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy INI I
     from(rootDir.path + '/freeplane_framework/portableApps') {
         include('portable.ini')
@@ -81,7 +89,7 @@ task windowsPortableInstaller(type: Exec) {
     dependsOn copyWindowsPortableInstallerFiles
 
     doLast {
-		 new File(portableInstallerDir).deleteDir() 
+         new File(portableInstallerDir).deleteDir() 
          new File(globalDist).eachFileMatch(FileType.FILES, ~/.*\.paf\.exe/) {
 			 f -> f.renameTo(new File(globalDist, f.name.replace('_' as char, '-' as char)))
 		 }
