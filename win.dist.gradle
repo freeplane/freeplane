@@ -4,7 +4,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
 task windowsInstaller(type: Exec) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
 
-    // continue the build when running windows but iscc.exe is not installed?
     ignoreExitValue = true
     workingDir = rootDir.path + '/freeplane_framework/windows-installer'
 
@@ -17,7 +16,7 @@ task windowsInstaller(type: Exec) {
 
 def portableInstallerDir = new File(globalDist, 'FreeplanePortable').path
 
-task copyWindowsPortableInstallerFiles1(type: Copy) {
+task copyWindowsPortableInstallerBasicFiles(type: Copy) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
 
     // copy windows-portable files
@@ -26,7 +25,7 @@ task copyWindowsPortableInstallerFiles1(type: Copy) {
     }
     into(portableInstallerDir)
 }
-task copyWindowsPortableInstallerFiles2(type: Copy) {
+task copyWindowsPortableInstallerLicense(type: Copy) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
 
     // copy license
@@ -36,7 +35,7 @@ task copyWindowsPortableInstallerFiles2(type: Copy) {
     }
     into(portableInstallerDir + '/Other/Source/')
 }
-task copyWindowsPortableInstallerFiles3(type: Copy) {
+task copyWindowsPortableInstallerIcon(type: Copy) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
 
     // copy icon
@@ -72,9 +71,9 @@ task copyWindowsPortableInstallerFiles(type: Copy) {
     for (p in subprojects) {
         dependsOn p.tasks.getByPath("build")
     }
-    dependsOn copyWindowsPortableInstallerFiles1
-    dependsOn copyWindowsPortableInstallerFiles2
-    dependsOn copyWindowsPortableInstallerFiles3
+    dependsOn copyWindowsPortableInstallerBasicFiles
+    dependsOn copyWindowsPortableInstallerLicense
+    dependsOn copyWindowsPortableInstallerIcon
 }
 
 task windowsPortableInstaller(type: Exec) {
