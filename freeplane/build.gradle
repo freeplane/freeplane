@@ -246,11 +246,18 @@ task osgiJar(type: Jar) {
     includeEmptyDirs = false
 }
 
+apply from: './git.gradle'
+
 task copyExternalResources(type: Copy) {
     from('external-resources') {
         include('**')
     }
     into(globalBuild + '/resources')
+
+    // (exactly) one of these two groups (copy vs. create) is always disabled!
+    dependsOn copyGitTxt
+    dependsOn copyGitProperty
+    dependsOn createGitProperty
 }
 
 task copyDoc(type: Copy) {
