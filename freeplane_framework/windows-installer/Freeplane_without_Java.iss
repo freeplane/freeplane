@@ -32,7 +32,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 ArchitecturesInstallIn64BitMode=x64 ia64
-OutputDir=..\dist
+OutputDir=..\..\DIST
 #if MyStatus == ""
   OutputBaseFilename=Freeplane-Setup-{#MyVersion}
 #else
