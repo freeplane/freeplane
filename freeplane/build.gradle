@@ -30,7 +30,7 @@ jar {
         // this is built from :freeplane_mac on a Mac!
         //deps.add(0, "lib/freeplanemac.jar")
         deps.add(0, "lib/freeplaneeditor-" + project.version + ".jar")
-        deps.add(0, "lib/freeplaneviewer-" + project.version + ".jar")
+        deps.add(0, "lib/freeplaneviewer.jar")
 
         attributes 'Class-Path' : deps.join(', ')
         attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
@@ -189,7 +189,8 @@ task viewerJar(type: Jar) {
                    "Application-Name": "Freeplane Viewer Applet")
     }
 
-    baseName = 'freeplaneviewer'
+    // this must be unversioned because the applet export code relies on this
+    archiveName = 'freeplaneviewer.jar'
     dependsOn classes
     from (sourceSets.main.output) {
         exclude('**/application/**')
