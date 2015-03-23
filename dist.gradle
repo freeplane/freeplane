@@ -1,5 +1,11 @@
 ext.globalDist = rootDir.path + '/DIST'
-ext.distVersion = project.version
+
+Properties props = new Properties()
+props.load(new FileInputStream(rootDir.path + '/freeplane/viewer-resources/version.properties'))
+ext.distVersion = props['freeplane_version']
+if (!props['freeplane_version_status'].empty) {
+  ext.distVersion = ext.distVersion + '-' + props['freeplane_version_status']
+}
 
 task gitinfoDist(type: Copy) {
     from(globalBuild) {
