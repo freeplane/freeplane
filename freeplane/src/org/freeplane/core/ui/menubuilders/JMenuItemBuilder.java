@@ -23,9 +23,9 @@ import org.freeplane.core.util.TextUtils;
 public class JMenuItemBuilder implements EntryVisitor{
 
 	final private EntryPopupListener popupListener;
-	final private MenuEntryBuilder menuEntryBuilder;
+	final private ResourceAccessor menuEntryBuilder;
 
-	public JMenuItemBuilder(EntryPopupListener popupListener, MenuEntryBuilder menuEntryBuilder) {
+	public JMenuItemBuilder(EntryPopupListener popupListener, ResourceAccessor menuEntryBuilder) {
 		this.popupListener = popupListener;
 		this.menuEntryBuilder = menuEntryBuilder;
 	}
@@ -50,7 +50,15 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private void addSubmenu(final Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
 		final Container container = getParentComponent(entry);
-		JMenu menu = menuEntryBuilder.createMenuEntry(entry);
+		JMenu menu = new JMenu();
+		String name = entry.getName();
+		final String key = name + ".icon";
+		final String iconResource = menuEntryBuilder.getProperty(key);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, menuEntryBuilder.getRawText(name));
+		if(iconResource != null){
+			final URL url = menuEntryBuilder.getResource(iconResource);
+			menu.setIcon(new ImageIcon(url));
+		}
 		entry.setComponent(menu);
 		container.add(menu);
 		final JPopupMenu popupMenu = menu.getPopupMenu();

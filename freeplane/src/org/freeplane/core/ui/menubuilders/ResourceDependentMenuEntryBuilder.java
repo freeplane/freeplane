@@ -9,17 +9,19 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 
-class ResourceDependentMenuEntryBuilder implements MenuEntryBuilder {
+class ResourceDependentMenuEntryBuilder implements ResourceAccessor {
 	@Override
-	public JMenu createMenuEntry(Entry entry) {
-		JMenu menu = new JMenu();
-		String name = entry.getName();
-		final String iconResource = ResourceController.getResourceController().getProperty(name + ".icon", null);
-		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, TextUtils.getRawText(name));
-		if(iconResource != null){
-			final URL url = ResourceController.getResourceController().getResource(iconResource);
-			menu.setIcon(new ImageIcon(url));
-		}
-		return menu;
+	public URL getResource(final String name) {
+		return ResourceController.getResourceController().getResource(name);
+	}
+
+	@Override
+	public String getRawText(String name) {
+		return TextUtils.getRawText(name);
+	}
+
+	@Override
+	public String getProperty(final String key) {
+		return ResourceController.getResourceController().getProperty(key, null);
 	}
 }

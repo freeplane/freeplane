@@ -7,7 +7,7 @@ import org.freeplane.features.mode.FreeplaneActions;
 
 public class BuildProcessFactory {
 
-	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, MenuEntryBuilder menuEntryBuilder) {
+	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor menuEntryBuilder) {
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);

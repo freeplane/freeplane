@@ -16,13 +16,7 @@ public class BuildProcessFactoryTest {
 	public void ifProcessOnPopupIsSet_delayesActionProcessing() throws Exception {
 		final BuildProcessFactory buildProcessFactory = new BuildProcessFactory();
 		final FreeplaneActions freeplaneActions = mock(FreeplaneActions.class);
-		final PhaseProcessor phaseProcessor = buildProcessFactory.createBuildProcessor(freeplaneActions, new MenuEntryBuilder() {
-
-			@Override
-			public JMenu createMenuEntry(Entry entry) {
-				return new JMenu(entry.getName());
-			}
-		});
+		final PhaseProcessor phaseProcessor = buildProcessFactory.createBuildProcessor(freeplaneActions, new ResourceAccessorStub()) ;
 		final Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(
 				"<Entry builder='main_menu'>"
 						+ "<Entry name='submenu'>"
@@ -39,13 +33,7 @@ public class BuildProcessFactoryTest {
 	public void ifProcessOnPopupIsSet_buildsWhenItBecomesVisible() throws Exception {
 		final BuildProcessFactory buildProcessFactory = new BuildProcessFactory();
 		final FreeplaneActions freeplaneActions = mock(FreeplaneActions.class);
-		final PhaseProcessor phaseProcessor = buildProcessFactory.createBuildProcessor(freeplaneActions, new MenuEntryBuilder() {
-
-			@Override
-			public JMenu createMenuEntry(Entry entry) {
-				return new JMenu(entry.getName());
-			}
-		});
+		final PhaseProcessor phaseProcessor = buildProcessFactory.createBuildProcessor(freeplaneActions, new ResourceAccessorStub());
 		final Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(
 				"<Entry builder='main_menu'>"
 						+ "<Entry name='submenu'>"
