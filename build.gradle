@@ -1,6 +1,7 @@
 allprojects {
     // in a multi-project setup, all projects must have the same version number!
-    version = '1.4.1'
+    // the real (specific) version number is in freeplane/viewer-resources/version.properties!
+    version = '1.4'
 
     // WARNING: this is removed with "gradle clean"!!
     ext.globalBuild = rootDir.path + '/BUILD'

@@ -63,6 +63,15 @@ task srcTarGz(type: Tar) {
         exclude(miscExcludedFilesSpec())
     }
 
+    // these two files must be included because they are generated from git info
+    // and git info is not available int src/srcpure distribs!
+    from(globalBuild) {
+        include('gitinfo.txt')
+    }
+    from(globalBuild + '/resources') {
+        include('gitinfo.properties')
+    }
+
     into('freeplane-' + distVersion)
 }
 
@@ -121,6 +130,15 @@ task srcpureTarGz(type: Tar) {
         exclude(miscExcludedFilesSpec())
         // exclude additional srcpure stuff
         exclude(srcpureAdditionalExcludeSpec())
+    }
+
+    // these two files must be included because they are generated from git info
+    // and git info is not available int src/srcpure distribs!
+    from(globalBuild) {
+        include('gitinfo.txt')
+    }
+    from(globalBuild + '/resources') {
+        include('gitinfo.properties')
     }
 
     into('freeplane-' + distVersion)

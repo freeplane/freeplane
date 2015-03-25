@@ -4,7 +4,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
 task windowsInstaller(type: Exec) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
 
-    // continue the build when running windows but iscc.exe is not installed?
     ignoreExitValue = true
     workingDir = rootDir.path + '/freeplane_framework/windows-installer'
 
@@ -17,14 +16,18 @@ task windowsInstaller(type: Exec) {
 
 def portableInstallerDir = new File(globalDist, 'FreeplanePortable').path
 
-task copyWindowsPortableInstallerFiles1(type: Copy) {
+task copyWindowsPortableInstallerBasicFiles(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy windows-portable files
     from(rootDir.path + '/freeplane_framework/windows-portable') {
          include('**')
     }
     into(portableInstallerDir)
 }
-task copyWindowsPortableInstallerFiles2(type: Copy) {
+task copyWindowsPortableInstallerLicense(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy license
     from(rootDir.path + '/freeplane/resources/') {
          include('license.txt')
@@ -32,7 +35,9 @@ task copyWindowsPortableInstallerFiles2(type: Copy) {
     }
     into(portableInstallerDir + '/Other/Source/')
 }
-task copyWindowsPortableInstallerFiles3(type: Copy) {
+task copyWindowsPortableInstallerIcon(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy icon
     from(rootDir.path + '/freeplane_framework/launch4j') {
         include('Freeplane_app.ico')
@@ -42,6 +47,8 @@ task copyWindowsPortableInstallerFiles3(type: Copy) {
 }
 
 task copyWindowsPortableInstallerFiles(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
     // copy INI I
     from(rootDir.path + '/freeplane_framework/portableApps') {
         include('portable.ini')
@@ -64,9 +71,9 @@ task copyWindowsPortableInstallerFiles(type: Copy) {
     for (p in subprojects) {
         dependsOn p.tasks.getByPath("build")
     }
-    dependsOn copyWindowsPortableInstallerFiles1
-    dependsOn copyWindowsPortableInstallerFiles2
-    dependsOn copyWindowsPortableInstallerFiles3
+    dependsOn copyWindowsPortableInstallerBasicFiles
+    dependsOn copyWindowsPortableInstallerLicense
+    dependsOn copyWindowsPortableInstallerIcon
 }
 
 task windowsPortableInstaller(type: Exec) {
@@ -81,7 +88,7 @@ task windowsPortableInstaller(type: Exec) {
     dependsOn copyWindowsPortableInstallerFiles
 
     doLast {
-		 new File(portableInstallerDir).deleteDir() 
+         new File(portableInstallerDir).deleteDir() 
          new File(globalDist).eachFileMatch(FileType.FILES, ~/.*\.paf\.exe/) {
 			 f -> f.renameTo(new File(globalDist, f.name.replace('_' as char, '-' as char)))
 		 }
