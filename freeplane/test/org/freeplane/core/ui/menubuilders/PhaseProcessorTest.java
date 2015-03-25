@@ -13,7 +13,7 @@ public class PhaseProcessorTest {
 		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
 		final PhaseProcessor phasedBuilder = new PhaseProcessor(builder);
 		final Entry entry = new Entry();
-		phasedBuilder.process(entry);
+		phasedBuilder.build(entry);
 		verify(builder).process(entry);
 	}
 	@Test
@@ -22,7 +22,7 @@ public class PhaseProcessorTest {
 		RecursiveMenuStructureProcessor second = mock(RecursiveMenuStructureProcessor.class);
 		final PhaseProcessor phasedBuilder = new PhaseProcessor(first, second);
 		final Entry entry = new Entry();
-		phasedBuilder.process(entry);
+		phasedBuilder.build(entry);
 		verify(second).process(entry);
 	}
 }

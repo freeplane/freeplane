@@ -9,7 +9,7 @@ public class PhaseProcessor implements Processor{
 	}
 
 	@Override
-	public void process(Entry entry) {
+	public void build(Entry entry) {
 		for(RecursiveMenuStructureProcessor processor:processors)
 			processor.process(entry);
 	}

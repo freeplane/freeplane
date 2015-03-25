@@ -118,10 +118,10 @@ public class EntryTest {
 	}
 	
 	@Test(expected=AttributeAlreadySetException.class)
-	public void cannotSetAttributeTwice() {
+	public void cannotSetDifferentAttributeValue() {
 		Entry entry = new Entry();
 		entry.setAttribute("key", "value");
-		entry.setAttribute("key", "value");
+		entry.setAttribute("key", "value2");
 	}
 
 	@Test
@@ -142,4 +142,34 @@ public class EntryTest {
 		assertThat(firstStructureWithEntry.hasChildren(), equalTo(true));
 	}
 
+
+	@Test
+	public void getsChildrenWithNoIndices() {
+		Entry top = new Entry();
+		top.setName("top");
+		
+		assertThat(top.getChild(), equalTo(top));
+	}
+
+	@Test
+	public void getsChildrenWithOneIndex() {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		middle.setName("middle");
+		
+		assertThat(top.getChild(0), equalTo(middle));
+	}
+
+	@Test
+	public void getsChildrenWithTwoIndices() {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("down");
+		
+		assertThat(top.getChild(0, 0), equalTo(down));
+	}
 }

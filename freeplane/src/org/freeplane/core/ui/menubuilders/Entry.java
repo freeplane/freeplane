@@ -38,9 +38,12 @@ public class Entry {
 
 
 	public void setAttribute(final String key, Object value) {
-		if(attributes.containsKey(key))
-			throw new AttributeAlreadySetException(key, attributes.get(key));
-		attributes.put(key, value);
+		if(attributes.containsKey(key)){
+			if(value != attributes.get(key))
+				throw new AttributeAlreadySetException(key, attributes.get(key));
+		}
+		else
+			attributes.put(key, value);
 	}
 	
 	public Object getAttribute(final String key) {
@@ -97,6 +100,13 @@ public class Entry {
 		return childEntries.get(index);
 	}
 
+	public Entry getChild(int... indices) {
+		Entry entry = this;
+		for(int index : indices)
+			entry = entry.getChild(index);
+		return entry;
+	}
+
 
 	public Iterable<Entry> children() {
 		return childEntries;
@@ -151,5 +161,6 @@ public class Entry {
 	public boolean hasChildren() {
 		return ! childEntries.isEmpty();
 	}
+
 
 }

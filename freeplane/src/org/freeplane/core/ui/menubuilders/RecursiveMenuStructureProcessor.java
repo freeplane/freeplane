@@ -23,17 +23,21 @@ public class RecursiveMenuStructureProcessor{
 	}
 
 	public void process(Entry target) {
-		final EntryVisitor builder = visitor(target);
-		builder.visit(target);
-		if(! builder.shouldSkipChildren(target))
+		final EntryVisitor builder = builder(target);
+		process(builder, target);
+	}
+
+	private void process(final EntryVisitor visitor, Entry target) {
+		visitor.visit(target);
+		if(! visitor.shouldSkipChildren(target))
 			processChildren(target);
 	}
 
 	private void processChildren(Entry target) {
 		final int originalDefaultBuilderStackSize = subtreeDefaultVisitorStack.size();
-		final String builderToCall = visitorToCall(target);
-		if(builderToCall != null)
-			changeDefaultBuilder(builderToCall);
+		final String visitorToCall = visitorToCall(target);
+		if(visitorToCall != null)
+			changeDefaultBuilder(visitorToCall);
 		for(Entry child:target.children()) {
 				process(child);
 		}
@@ -41,7 +45,7 @@ public class RecursiveMenuStructureProcessor{
 			subtreeDefaultVisitorStack.removeLast();
 	}
 
-	private EntryVisitor visitor(Entry target) {
+	private EntryVisitor builder(Entry target) {
 		final String builderToCall = visitorToCall(target);
 		final EntryVisitor builder;
 		if(builderToCall != null)

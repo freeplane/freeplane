@@ -38,7 +38,7 @@ public class MenuBuilderAcceptanceTest {
 		final InputStream resource = MenuBuilderAcceptanceTest.class.getResourceAsStream(menuResource);
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 		menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
-		buildProcessor.process(menuStructure);
+		buildProcessor.build(menuStructure);
 	}
 
 

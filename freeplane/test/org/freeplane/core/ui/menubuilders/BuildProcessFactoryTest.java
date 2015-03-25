@@ -31,12 +31,12 @@ public class BuildProcessFactoryTest {
 						+ "</Entry>"
 						+ "</Entry>"
 						+ "</Entry>");
-		phaseProcessor.process(menuStructure);
+		phaseProcessor.build(menuStructure);
 		verify(freeplaneActions, never()).getAction("action");
 	}
 
 	@Test
-	public void test() throws Exception {
+	public void ifProcessOnPopupIsSet_buildsWhenItBecomesVisible() throws Exception {
 		final BuildProcessFactory buildProcessFactory = new BuildProcessFactory();
 		final FreeplaneActions freeplaneActions = mock(FreeplaneActions.class);
 		final PhaseProcessor phaseProcessor = buildProcessFactory.createBuildProcessor(freeplaneActions, new MenuEntryBuilder() {
@@ -54,8 +54,9 @@ public class BuildProcessFactoryTest {
 						+ "</Entry>"
 						+ "</Entry>"
 						+ "</Entry>");
-		phaseProcessor.process(menuStructure);
-		JMenu menu = (JMenu) menuStructure.getChild(0).getChild(0).getComponent();
+		phaseProcessor.build(menuStructure);
+		final Entry openedEntry = menuStructure.getChild(0,0,0);
+		JMenu menu = (JMenu) openedEntry.getComponent();
 		menu.getPopupMenu().setVisible(true);
 		verify(freeplaneActions).getAction("action");
 	}
