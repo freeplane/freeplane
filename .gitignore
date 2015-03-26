@@ -22,7 +22,8 @@ Thumbs.db
 
 #Build System files
 .gradle/
-BUILD
+BUILD/
+DIST/
 
 # TODO: needs cleanup
 *.diff
