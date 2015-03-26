@@ -62,12 +62,13 @@ public class RecursiveMenuStructureProcessor{
 	}
 
 	private String visitorToCall(Entry target) {
-		for(String visitorName :  target.builders()) 
-			if(visitors.containsKey(visitorName))
-				return visitorName;
-		if (subtreeDefaultVisitorStack.isEmpty())
+		String explicitBuilderName = explicitBuilderName(target);
+		if (explicitBuilderName != null)
+			return explicitBuilderName;
+		else if (subtreeDefaultVisitorStack.isEmpty())
 			return null;
-		return subtreeDefaultVisitorStack.getLast();
+		else
+			return subtreeDefaultVisitorStack.getLast();
 	}
 
 	public void addSubtreeDefaultBuilder(String builder, String subtreeBuilder) {
@@ -77,4 +78,53 @@ public class RecursiveMenuStructureProcessor{
 	public void setDefaultBuilder(EntryVisitor defaultBuilder) {
 		this.defaultBuilder = defaultBuilder;
 	}
+
+	public EntryVisitor findSubtreeDefaultBuilder(Entry root, Entry entry) {
+		final Entry explicitDefaultBuilderEntry = explicitDefaultBuilderEntry(root, entry);
+		if (explicitDefaultBuilderEntry != null) {
+			String builderName = explicitBuilderName(explicitDefaultBuilderEntry);
+			if (entry == explicitDefaultBuilderEntry) {
+				builderName = subtreeDefaultVisitors.get(builderName);
+			}
+			else
+				for (Entry index = entry; index != explicitDefaultBuilderEntry; index = index.getParent()) {
+					if (explicitBuilderName(index) == null) {
+					final String nextExplicitDefaultBuilderName = subtreeDefaultVisitors.get(builderName);
+					if (nextExplicitDefaultBuilderName != null)
+						builderName = nextExplicitDefaultBuilderName;
+					}
+			}
+			return visitors.get(builderName);
+		}
+		return defaultBuilder;
+	}
+
+	private Entry explicitDefaultBuilderEntry(Entry root, Entry entry) {
+		String explicitBuilderName = explicitBuilderName(entry);
+		final EntryVisitor explicitDefaultBuilder = explicitDefaultBuilder(explicitBuilderName);
+		if (explicitDefaultBuilder != null)
+			return entry;
+		else if (root == entry)
+			return null;
+		else
+			return explicitDefaultBuilderEntry(root, entry.getParent());
+	}
+
+	private EntryVisitor explicitDefaultBuilder(String explicitBuilderName) {
+	    final String subtreeDefaultBuilder = subtreeDefaultVisitors.get(explicitBuilderName);
+		final EntryVisitor explicitDefaultBuilder = visitors.get(subtreeDefaultBuilder);
+	    return explicitDefaultBuilder;
+    }
+
+	private String explicitBuilderName(Entry entry) {
+		String builderToCall = null;
+		if (entry != null) {
+		for (String visitorName : entry.builders())
+			if (visitors.containsKey(visitorName)) {
+				builderToCall = visitorName;
+				break;
+			}
+		}
+	    return builderToCall;
+    }
 }
