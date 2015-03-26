@@ -12,6 +12,16 @@ public class RecursiveMenuStructureProcessor{
 	private EntryVisitor defaultBuilder = EntryVisitor.ILLEGAL_VISITOR;
 	public static final String PROCESS_ON_POPUP = "processOnPopup"; 
 
+	private RecursiveMenuStructureProcessor(Map<String, EntryVisitor> visitors,
+	                                        Map<String, String> subtreeDefaultVisitors,
+	                                        EntryVisitor defaultBuilder) {
+		super();
+		this.visitors = visitors;
+		this.subtreeDefaultVisitors = subtreeDefaultVisitors;
+		this.subtreeDefaultVisitorStack = new LinkedList<String>();
+		this.defaultBuilder = defaultBuilder;
+	}
+
 	public RecursiveMenuStructureProcessor() {
 		visitors = new HashMap<String, EntryVisitor>();
 		subtreeDefaultVisitors = new HashMap<String, String>();
@@ -127,4 +137,8 @@ public class RecursiveMenuStructureProcessor{
 		}
 	    return builderToCall;
     }
+
+	public RecursiveMenuStructureProcessor forSubtree(Entry root, Entry subtreeRoot) {
+		return new RecursiveMenuStructureProcessor(visitors, subtreeDefaultVisitors, findSubtreeDefaultBuilder(root, subtreeRoot));
+	}
 }

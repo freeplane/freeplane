@@ -209,4 +209,17 @@ public class RecursiveMenuStructureProcessorTest {
 		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeDefaultBuilder(root, childEntry);
 		assertThat(subtreeDefaultBuilder, equalTo(this.emptyBuilder));
 	}
+
+	@Test
+	public void defaultBuilderIsSetForSubtreeProcessor() {
+		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
+		final Entry entry = new Entry();
+		entry.setBuilders(asList("builder"));
+		final Entry childEntry = new Entry();
+		entry.addChild(childEntry);
+		RecursiveMenuStructureProcessor subtreeProcessor = recursiveMenuStructureBuilder.forSubtree(entry, childEntry);
+		subtreeProcessor.process(childEntry);
+		verify(defaultBuilder).visit(childEntry);
+	}
 }
