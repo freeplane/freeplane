@@ -1,8 +1,8 @@
 package org.freeplane.core.ui.menubuilders;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 
@@ -24,5 +24,16 @@ public class PhaseProcessorTest {
 		final Entry entry = new Entry();
 		phasedBuilder.build(entry);
 		verify(second).process(entry);
+	}
+
+	@Test
+	public void subtreeBuilder() throws Exception {
+		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
+		RecursiveMenuStructureProcessor childrenBuilder = mock(RecursiveMenuStructureProcessor.class);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor(builder);
+		final Entry entry = new Entry();
+		when(builder.forChildren(entry, entry)).thenReturn(childrenBuilder);
+		phasedBuilder.forChildren(entry, entry).build(entry);
+		verify(childrenBuilder).process(entry);
 	}
 }

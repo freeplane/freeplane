@@ -163,4 +163,7 @@ public class Entry {
 	}
 
 
+	public Entry getRoot() {
+		return parent == null ? this : parent.getRoot();
+	}
 }

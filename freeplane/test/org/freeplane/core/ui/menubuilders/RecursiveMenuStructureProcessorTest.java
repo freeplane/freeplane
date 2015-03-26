@@ -138,7 +138,7 @@ public class RecursiveMenuStructureProcessorTest {
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeDefaultBuilder(entry, entry);
+		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(entry, entry);
 		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
 	}
 
@@ -148,7 +148,7 @@ public class RecursiveMenuStructureProcessorTest {
 		recursiveMenuStructureBuilder.setDefaultBuilder(defaultBuilder);
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeDefaultBuilder(entry, entry);
+		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(entry, entry);
 		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
 	}
 
@@ -160,7 +160,7 @@ public class RecursiveMenuStructureProcessorTest {
 		root.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
 		root.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeDefaultBuilder(root, childEntry);
+		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
 		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
 	}
 
@@ -175,7 +175,7 @@ public class RecursiveMenuStructureProcessorTest {
 		root.addChild(parentEntry);
 		final Entry childEntry = new Entry();
 		parentEntry.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeDefaultBuilder(root, childEntry);
+		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
 		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
 	}
 
@@ -189,7 +189,7 @@ public class RecursiveMenuStructureProcessorTest {
 		root.addChild(parentEntry);
 		final Entry childEntry = new Entry();
 		parentEntry.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeDefaultBuilder(root, childEntry);
+		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
 		assertThat(subtreeDefaultBuilder, equalTo(this.emptyBuilder));
 	}
 
@@ -206,7 +206,7 @@ public class RecursiveMenuStructureProcessorTest {
 		root.addChild(parentEntry);
 		final Entry childEntry = new Entry();
 		parentEntry.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeDefaultBuilder(root, childEntry);
+		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
 		assertThat(subtreeDefaultBuilder, equalTo(this.emptyBuilder));
 	}
 
@@ -218,7 +218,7 @@ public class RecursiveMenuStructureProcessorTest {
 		entry.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
 		entry.addChild(childEntry);
-		RecursiveMenuStructureProcessor subtreeProcessor = recursiveMenuStructureBuilder.forSubtree(entry, childEntry);
+		RecursiveMenuStructureProcessor subtreeProcessor = recursiveMenuStructureBuilder.forChildren(entry, childEntry);
 		subtreeProcessor.process(childEntry);
 		verify(defaultBuilder).visit(childEntry);
 	}

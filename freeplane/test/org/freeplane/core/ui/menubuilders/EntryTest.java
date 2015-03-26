@@ -45,6 +45,30 @@ public class EntryTest {
 
 
 	@Test
+	public void selfIsRoot() {
+		final Entry entry = new Entry();
+		assertThat(entry.getRoot(), equalTo(entry));
+	}
+
+	@Test
+	public void parentIsRoot() {
+		Entry structureWithEntry = new Entry();
+		final Entry child = new Entry();
+		structureWithEntry.addChild(child);
+		assertThat(child.getRoot(), equalTo(structureWithEntry));
+	}
+
+	@Test
+	public void parentIsNotRoot() {
+		Entry root = new Entry();
+		final Entry parent = new Entry();
+		root.addChild(parent);
+		final Entry child = new Entry();
+		parent.addChild(child);
+		assertThat(child.getRoot(), equalTo(root));
+	}
+
+	@Test
 	public void rootEntryPathIsSlashifiedName() {
 		Entry entry = new Entry();
 		entry.setName("name");

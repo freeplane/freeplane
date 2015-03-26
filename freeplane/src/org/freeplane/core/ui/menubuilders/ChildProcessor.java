@@ -9,9 +9,12 @@ EntryPopupListener {
 
 	@Override
 	public void childEntriesWillBecomeVisible(Entry entry) {
-		if(TRUE.equals(entry.getAttribute(PROCESS_ON_POPUP)))
-			for (Entry child:entry.children())
-				processor.build(child);
+		if (TRUE.equals(entry.getAttribute(PROCESS_ON_POPUP))) {
+			final Processor subtreeProcessor = processor.forChildren(entry.getRoot(), entry);
+			for (Entry child : entry.children()) {
+				subtreeProcessor.build(child);
+			}
+		}
 	}
 
 	public void setProcessor(Processor processor) {

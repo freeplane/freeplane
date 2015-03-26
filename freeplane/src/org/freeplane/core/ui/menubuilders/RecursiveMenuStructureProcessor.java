@@ -89,7 +89,7 @@ public class RecursiveMenuStructureProcessor{
 		this.defaultBuilder = defaultBuilder;
 	}
 
-	public EntryVisitor findSubtreeDefaultBuilder(Entry root, Entry entry) {
+	public EntryVisitor findSubtreeChildrenDefaultBuilder(Entry root, Entry entry) {
 		final Entry explicitDefaultBuilderEntry = explicitDefaultBuilderEntry(root, entry);
 		if (explicitDefaultBuilderEntry != null) {
 			String builderName = explicitBuilderName(explicitDefaultBuilderEntry);
@@ -138,7 +138,7 @@ public class RecursiveMenuStructureProcessor{
 	    return builderToCall;
     }
 
-	public RecursiveMenuStructureProcessor forSubtree(Entry root, Entry subtreeRoot) {
-		return new RecursiveMenuStructureProcessor(visitors, subtreeDefaultVisitors, findSubtreeDefaultBuilder(root, subtreeRoot));
+	public RecursiveMenuStructureProcessor forChildren(Entry root, Entry subtreeRoot) {
+		return new RecursiveMenuStructureProcessor(visitors, subtreeDefaultVisitors, findSubtreeChildrenDefaultBuilder(root, subtreeRoot));
 	}
 }
