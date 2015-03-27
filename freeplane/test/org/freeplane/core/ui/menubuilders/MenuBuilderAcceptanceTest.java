@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
+import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.features.mode.Controller;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class MenuBuilderAcceptanceTest {
 	
 	@BeforeClass
 	static public void setup() {
-		final PhaseProcessor buildProcessor = new BuildProcessFactory().createBuildProcessor(Controller.getCurrentModeController(), new FreeplaneResourceAccessor());
+		final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(Controller.getCurrentModeController(), new FreeplaneResourceAccessor());
 		final String menuResource = "/xml/mindmapmoderibbon.out.xml";
 		final InputStream resource = MenuBuilderAcceptanceTest.class.getResourceAsStream(menuResource);
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));

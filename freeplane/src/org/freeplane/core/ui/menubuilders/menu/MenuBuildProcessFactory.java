@@ -1,4 +1,4 @@
-package org.freeplane.core.ui.menubuilders;
+package org.freeplane.core.ui.menubuilders.menu;
 
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
@@ -7,13 +7,9 @@ import org.freeplane.core.ui.menubuilders.generic.ChildProcessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
-import org.freeplane.core.ui.menubuilders.menu.JMenuItemBuilder;
-import org.freeplane.core.ui.menubuilders.menu.JMenubarBuilder;
-import org.freeplane.core.ui.menubuilders.menu.JToolbarActionBuilder;
-import org.freeplane.core.ui.menubuilders.menu.JToolbarBuilder;
 import org.freeplane.features.mode.FreeplaneActions;
 
-public class BuildProcessFactory {
+public class MenuBuildProcessFactory {
 
 	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor menuEntryBuilder) {
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
