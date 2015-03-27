@@ -73,6 +73,13 @@ import org.freeplane.features.ui.FrameController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
+	private final class IconMenuContributor implements IMenuContributor {
+	    public void updateMenus(final ModeController modeController, MenuBuilder builder) {
+	    	MIconController.this.updateMenus(modeController, builder);
+	    	updateIconToolbar(modeController);
+	    }
+    }
+
 	public static enum Keys {
 		ICONS
 	};
@@ -145,12 +152,7 @@ public class MIconController extends IconController {
 		iconBox = new CollapseableBoxBuilder(frameController).setPropertyNameBase("leftToolbarVisible").setResizeable(false).createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
 		createPreferences();
-		modeController.addMenuContributor(new IMenuContributor() {
-			public void updateMenus(final ModeController modeController, MenuBuilder builder) {
-				MIconController.this.updateMenus(modeController, builder);
-				updateIconToolbar(modeController);
-			}
-		});
+		modeController.addMenuContributor(new IconMenuContributor());
 	}
 
 	public void addIcon(final NodeModel node, final MindIcon icon) {

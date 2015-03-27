@@ -68,6 +68,12 @@ import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 public class ReminderHook extends PersistentNodeHook implements IExtension {
 
+	private final class ReminderContributor implements IMenuContributor {
+	    public void updateMenus(ModeController modeController, MenuBuilder builder) {
+	    	createTimePanel();
+	    }
+    }
+
 	//******************************************	
 	@EnabledAction(checkOnNodeChange = true)
 	private class ReminderHookAction extends HookAction {
@@ -144,11 +150,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	public ReminderHook(ModeController modeController){
 		super();
 		this.modeController = modeController;
-		modeController.addMenuContributor(new IMenuContributor() {
-			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				createTimePanel();
-			}
-		});
+		modeController.addMenuContributor(new ReminderContributor());
 		registerAction(new TimeManagementAction(this));
 		registerAction(new TimeListAction());
 		registerAction(new NodeListAction());

@@ -90,6 +90,62 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 	
 	private static final String USER_SETTINGS_FILENAME = "user.settings";
 
+	private class WorkspaceContributor implements IMenuContributor {
+	    public void updateMenus(ModeController modeController, MenuBuilder builder) {
+	    	final String MENU_PROJECT_KEY = "/menu_bar/project";
+	    	//insert project menu into main menu
+	    	JMenu projectMenu = new JMenu(TextUtils.getText("menu.project.entry.label"));
+	    	projectMenu.setMnemonic('o');				
+	    	builder.addMenuItem("/menu_bar/format", projectMenu, MENU_PROJECT_KEY, MenuBuilder.AFTER);
+	    	
+	    	builder.addAction(MENU_PROJECT_KEY, WorkspaceController.getAction(WorkspaceNewProjectAction.KEY), MenuBuilder.AS_CHILD);
+	    	builder.addAction(MENU_PROJECT_KEY, WorkspaceController.getAction(WorkspaceImportProjectAction.KEY), MenuBuilder.AS_CHILD);
+	    	
+	    	builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
+	    	final String MENU_PROJECT_ADD_KEY = builder.getMenuKey(MENU_PROJECT_KEY, "new");				
+	    	final JMenu addMenu = new JMenu(TextUtils.getText("workspace.action.new.label"));
+	    	builder.addMenuItem(MENU_PROJECT_KEY, addMenu, MENU_PROJECT_ADD_KEY, MenuBuilder.AS_CHILD);
+	    	builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewFolderAction(), MenuBuilder.AS_CHILD);
+	    	builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewLinkAction(), MenuBuilder.AS_CHILD);
+	    	final WorkspaceRemoveProjectAction rmProjectAction = new WorkspaceRemoveProjectAction();
+	    	builder.addAction(MENU_PROJECT_KEY, rmProjectAction, MenuBuilder.AS_CHILD);
+	    	
+	    	builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
+	    	setDefaultAccelerator(builder.getShortcutKey(builder.getMenuKey(MENU_PROJECT_KEY,WorkspaceProjectOpenLocationAction.KEY)), "control alt L");
+	    	final WorkspaceProjectOpenLocationAction openLocAction = new WorkspaceProjectOpenLocationAction();
+	    	builder.addAction(MENU_PROJECT_KEY, openLocAction, MenuBuilder.AS_CHILD);
+	    	
+	    	projectMenu.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
+	    		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+	    			rmProjectAction.setEnabled();
+	    			openLocAction.setEnabled();
+	    			if(WorkspaceController.getCurrentProject() == null) {
+	    				addMenu.setEnabled(false);
+	    			}
+	    			else {
+	    				addMenu.setEnabled(true);
+	    			}						
+	    		}
+	    		
+	    		public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+	    		
+	    		public void popupMenuCanceled(PopupMenuEvent e) {}
+	    	});
+	    }
+
+	    private void setDefaultAccelerator(final String shortcutKey, String accelerator) {
+	    	if (accelerator != null) {				
+	    		if (null == ResourceController.getResourceController().getProperty(shortcutKey, null)) {
+	    			if (Compat.isMacOsX()) {
+	    		        accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
+	    		    }
+	    			
+	    			ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
+	    		}
+	    	}
+	    }
+    }
+
 	abstract class ResizerEventAdapter implements ResizerListener, ComponentCollapseListener {
 	}
 
@@ -150,61 +206,7 @@ public class MModeWorkspaceController extends AWorkspaceModeExtension {
 
 		});
 		
-		modeController.addMenuContributor(new IMenuContributor() {
-			public void updateMenus(ModeController modeController, MenuBuilder builder) {
-				final String MENU_PROJECT_KEY = "/menu_bar/project";
-				//insert project menu into main menu
-				JMenu projectMenu = new JMenu(TextUtils.getText("menu.project.entry.label"));
-				projectMenu.setMnemonic('o');				
-				builder.addMenuItem("/menu_bar/format", projectMenu, MENU_PROJECT_KEY, MenuBuilder.AFTER);
-				
-				builder.addAction(MENU_PROJECT_KEY, WorkspaceController.getAction(WorkspaceNewProjectAction.KEY), MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_PROJECT_KEY, WorkspaceController.getAction(WorkspaceImportProjectAction.KEY), MenuBuilder.AS_CHILD);
-				
-				builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
-				final String MENU_PROJECT_ADD_KEY = builder.getMenuKey(MENU_PROJECT_KEY, "new");				
-				final JMenu addMenu = new JMenu(TextUtils.getText("workspace.action.new.label"));
-				builder.addMenuItem(MENU_PROJECT_KEY, addMenu, MENU_PROJECT_ADD_KEY, MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewFolderAction(), MenuBuilder.AS_CHILD);
-				builder.addAction(MENU_PROJECT_ADD_KEY, new NodeNewLinkAction(), MenuBuilder.AS_CHILD);
-				final WorkspaceRemoveProjectAction rmProjectAction = new WorkspaceRemoveProjectAction();
-				builder.addAction(MENU_PROJECT_KEY, rmProjectAction, MenuBuilder.AS_CHILD);
-				
-				builder.addSeparator(MENU_PROJECT_KEY, MenuBuilder.AS_CHILD);
-				setDefaultAccelerator(builder.getShortcutKey(builder.getMenuKey(MENU_PROJECT_KEY,WorkspaceProjectOpenLocationAction.KEY)), "control alt L");
-				final WorkspaceProjectOpenLocationAction openLocAction = new WorkspaceProjectOpenLocationAction();
-				builder.addAction(MENU_PROJECT_KEY, openLocAction, MenuBuilder.AS_CHILD);
-				
-				projectMenu.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
-					public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-						rmProjectAction.setEnabled();
-						openLocAction.setEnabled();
-						if(WorkspaceController.getCurrentProject() == null) {
-							addMenu.setEnabled(false);
-						}
-						else {
-							addMenu.setEnabled(true);
-						}						
-					}
-					
-					public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-					
-					public void popupMenuCanceled(PopupMenuEvent e) {}
-				});
-			}
-			
-			private void setDefaultAccelerator(final String shortcutKey, String accelerator) {
-				if (accelerator != null) {				
-					if (null == ResourceController.getResourceController().getProperty(shortcutKey, null)) {
-						if (Compat.isMacOsX()) {
-					        accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
-					    }
-						
-						ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
-					}
-				}
-			}
-		});
+		modeController.addMenuContributor(new WorkspaceContributor());
 	}
 
 	private void setupSettings(ModeController modeController) {
