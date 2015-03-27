@@ -357,7 +357,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				recursiveMenuStructureBuilder.addBuilderPair("main_menu", new BuilderDestroyerPair(new JMenubarBuilder(), null));
 				
 				recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder(), null));
-				recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
+				recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 				recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarActionBuilder(), null));
 				
 				

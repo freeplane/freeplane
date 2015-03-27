@@ -59,7 +59,7 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void defaultBuilderIsCalledForChild() {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
@@ -77,9 +77,9 @@ public class RecursiveMenuStructureProcessorTest {
 		recursiveMenuStructureBuilder.addBuilderPair("builder2", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		EntryVisitor defaultBuilder = Mockito.mock(EntryVisitor.class);
 		recursiveMenuStructureBuilder.addBuilderPair("builder3", new BuilderDestroyerPair(defaultBuilder, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder1", "builder3");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder1", "builder3");
 		recursiveMenuStructureBuilder.addBuilderPair("builder2", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder2", "builder2");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder2", "builder2");
 
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder1"));
@@ -98,9 +98,9 @@ public class RecursiveMenuStructureProcessorTest {
 
 	@Test
 	public void defaultBuilderIsCalledForChildUsingDefaultBuilder() {
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder", "defaultBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("emptyBuilder", "defaultBuilder");
 		recursiveMenuStructureBuilder.addBuilderPair("emptyBuilder2", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder2", "emptyBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("emptyBuilder2", "emptyBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("emptyBuilder2"));
 		final Entry childEntry = new Entry();
@@ -138,7 +138,7 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void explicitRootBuilderExplicitSubtreeDefaultBuilderForRoot() {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
 		BuilderDestroyerPair subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(
@@ -160,7 +160,7 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void explicitRootBuilderExplicitSubtreeDefaultBuilderForChild() {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "defaultBuilder");
 		final Entry root = new Entry();
 		root.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
@@ -173,8 +173,8 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void explicitRootBuilderImplicitBuilderForParentExplicitSubtreeDefaultBuilderForChild() {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "emptyBuilder");
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder", "defaultBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "emptyBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("emptyBuilder", "defaultBuilder");
 		final Entry root = new Entry();
 		root.setBuilders(asList("builder"));
 		final Entry parentEntry = new Entry();
@@ -189,7 +189,7 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void defaultBuilderWithoutDefaultBuilderChange() {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "emptyBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "emptyBuilder");
 		final Entry root = new Entry();
 		root.setBuilders(asList("builder"));
 		final Entry parentEntry = new Entry();
@@ -205,8 +205,8 @@ public class RecursiveMenuStructureProcessorTest {
 	public void explicitBuilderWithoutDefaultBuilderChange() {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addBuilderPair("parent", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "emptyBuilder");
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder", "defaultBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "emptyBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("emptyBuilder", "defaultBuilder");
 		final Entry root = new Entry();
 		root.setBuilders(asList("builder"));
 		final Entry parentEntry = new Entry();
@@ -222,7 +222,7 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void defaultBuilderIsSetForSubtreeProcessor() {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
-		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
+		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();

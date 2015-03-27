@@ -99,7 +99,7 @@ public class RecursiveMenuStructureProcessor{
 			return subtreeDefaultVisitorStack.getLast();
 	}
 
-	public void addSubtreeDefaultBuilder(String builder, String subtreeBuilder) {
+	public void setSubtreeDefaultBuilderPair(String builder, String subtreeBuilder) {
 		subtreeDefaultVisitors.put(builder, subtreeBuilder);
 	}
 
