@@ -1,0 +1,116 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+def appBundlerJar = 'freeplane_framework/mac-appbundler/appbundler-1.0.jar'
+ant.taskdef(
+    name: "appbundler",
+    classname: 'com.oracle.appbundler.AppBundlerTask',
+    classpath: appBundlerJar,
+    onerror: "report"
+)
+
+def build4mac = globalDist + '/build4mac'
+def macappfullpath = new File(build4mac, 'Freeplane.app')
+
+task macosxapp {
+    doFirst {
+        delete build4mac + '/Freeplane.app'
+        mkdir build4mac
+
+        ant.appbundler(
+            outputdirectory: build4mac,
+            name: 'Freeplane',
+            displayname: 'Freeplane',
+            mainclassname: 'org.freeplane.launcher.Launcher',
+            shortversion: distVersion,
+            copyright: "Freeplane ${distVersion}",
+            identifier: 'org.freeplane.core',
+            icon: 'freeplane_framework/mac-appbundler/freeplane.icns',
+            signature: '????'
+        ) {
+            classpath(dir: globalBuild, includes: '*.jar')
+            option(value: "-Xmx512m")
+            option(value: "-Dapple.laf.useScreenMenuBar=true")
+            option(value: "-Xdock:name=Freeplane")
+        }
+
+        def dist_macos_info = macappfullpath.path + '/Contents/Info.plist'
+        ant.xslt(in: new File(dist_macos_info),
+            style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
+            out: new File(dist_macos_info + '2')
+        )
+        java.nio.file.Files.move(java.nio.file.Paths.get(dist_macos_info + '2'),
+                                 java.nio.file.Paths.get(dist_macos_info),
+                   java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+
+        def macjavafullpath = macappfullpath.path + '/Contents/Java'
+        copy {
+            from(globalBuild) {
+                 exclude('**/*.bat')
+                 exclude('**/*.exe')
+                 exclude('*.jar')
+            }
+            into(macjavafullpath)
+        }
+
+        def macresourcesfullpath = macappfullpath.path + '/Contents/Resources'
+        copy {
+             from('freeplane_framework/mac-appbundler') {
+                 include('freeplanedoc.icns')
+             }
+             into(macresourcesfullpath)
+        }
+    }
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
+}
+
+  // <target name="dmg4mac"  depends="git_version_info, macosxapp" if="isMacOs" >
+	// 	<exec executable="hdiutil">
+	// 		<arg line="create -srcfolder ${macappfullpath} ${dist}/freeplane_app-${ver}.dmg"/>
+	// 	</exec>
+	// </target>
+
+task dmg4mac(type: Exec) {
+    onlyIf { Os.isFamily(Os.FAMILY_MAC) }
+
+    commandLine 'hdiutil', 'create', '-srcfolder', macappfullpath.path,
+        globalDist + '/freeplane_app-' + distVersion + '.dmg' 
+
+    dependsOn macosxapp
+}
+	// <target name="zip4mac" depends="git_version_info, macosxapp">
+	// 	<zip destfile="${dist}/freeplane_macos_bin-${ver}.zip" compress="true">
+	// 		<zipfileset dir="${build4mac}" prefix="freeplane-${ver}">
+	// 			<exclude name="**/JavaAppLauncher" />
+	// 		</zipfileset>
+	// 		<zipfileset file="${macappfullpath}/Contents/MacOS/JavaAppLauncher" filemode="775"
+  //           	prefix="freeplane-${ver}/Freeplane.app/Contents/MacOS"/>
+	// 	</zip>
+	// </target>
+
+task zip4mac(type: Zip) {
+    destinationDir = new File(globalDist)
+    archiveName = 'freeplane_macos_bin-' + distVersion + '.zip'
+
+    from(build4mac) {
+        exclude('**/JavaAppLauncher')
+    }
+    from(build4mac) {
+        include('**/JavaAppLauncher')
+        fileMode = 0775
+    }
+
+    into('freeplane-' + distVersion)
+    dependsOn macosxapp
+}
+
+// this grouping task is necessary so that we can clean up build4mac!
+task macDist {
+    dependsOn dmg4mac
+    dependsOn zip4mac
+
+    doLast {
+        delete(build4mac)
+    }
+}

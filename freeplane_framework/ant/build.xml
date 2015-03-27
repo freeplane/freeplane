@@ -1,3 +1,4 @@
+<!-- Alot of this needs moved into the root project -->
 <project name="freeplane" default="dist" basedir="..">
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
@@ -20,6 +21,7 @@
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
 
+    <!-- Not sure what this does -->
 	<condition property="freeplane_version_status_suffix" value="" else="-${freeplane_version_status}">
 		<equals arg1="${freeplane_version_status}" arg2=""/>
 	</condition>
@@ -42,15 +44,19 @@
 		<os family="mac"/>
 	</condition>
 
+    <!-- Mac stuff. Move this to the root I guess -->
 	<property name="mac-appbundler" value = "${root}/mac-appbundler"/>
 	<property name="appbundler.jar" value = "appbundler-1.0.jar"/>
 	<taskdef name="appbundler" onerror="report"
 			 classpath="${mac-appbundler}/${appbundler.jar}"
 			 classname="com.oracle.appbundler.AppBundlerTask" />
+
 	<taskdef name="create-plugin" onerror="report"
 			 classpath="${freeplaneant.jar}"
 			 classname="org.freeplane.ant.CreatePlugin"/>
 
+    <!-- Need to make this an ant task to call. In root project probably? -->
+    <!-- This ant task will also publish to the correct directory -->
 	<target name="makePlugin">
 		<ant antfile="ant/build.xml" target="${anttarget}" dir="${workspace}/${plugindir}" inheritall="false" />
 		<mkdir dir="${build}/${targetdir}/${pluginname}" />
@@ -60,6 +66,8 @@
 	</target>
 
 
+    <!-- Important one? -->
+    <!-- These builds all belong to root -->
 	<target name="build_core">
 		<echo>Freeplane Version = ${ver}.</echo>
 
@@ -71,6 +79,7 @@
 			<param name="pluginname" value="org.freeplane.core"/>
 		</antcall>
 	</target>
+
 
 	<target name="build_help" unless="skip_help">
 		<antcall target="makePlugin" inheritall="false">
@@ -153,6 +162,7 @@
 		</antcall>
 	</target>
 
+    <!-- Main build for this project? Should this be a seperate project? -->
 	<target name="build_launcher" depends="build_core">
 		<mkdir dir="${launcher_build}" />
 		<javac srcdir="${launcher_src}" destdir="${launcher_build}" classpath="${launcher_classpath}" 
@@ -174,6 +184,7 @@
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
 	</target>
 
+    <!-- Does some publishing aswell as the builds -->
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_openmaps, build_workspace, build_launcher, git_version_info">
 		<mkdir dir="${build.resources}" />
 		<copy todir="${build.resources}">
@@ -204,6 +215,7 @@
 	</target>
 
 
+    <!-- For release targets. Again move to top level? -->
 	<target name="rungit" depends="mkdistdir">
 		<delete file="${build}/gitinfo.txt" quiet="true"/>
 		<delete file="${dist}/git.properties" quiet="true"/>
@@ -229,6 +241,7 @@
 		</exec>
 	</target>
 
+    <!-- publishing? -->
 	<target name="binzip" depends="build">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
@@ -333,6 +346,8 @@
 		<delete dir="${src.temp.dir}" />
 	</target>
 
+    <!-- Need someone to test this -->
+    <!-- Move the the gradle exec command -->
 	<target name="installer" depends="build, mkdistdir">
 		<exec osfamily="windows" dir="${workspace}/freeplane_framework/windows-installer" executable="iscc.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="/Q Freeplane_without_Java.iss" />
@@ -505,6 +520,7 @@
 	</target>
 
 
+    <!-- important -->
 	<target name="dist" depends="copyDistFiles, renameDistFiles">
 		<checksum>
 			<fileset dir="${dist}">
@@ -530,6 +546,7 @@
 	<target name="cleandist" depends="clean,dist">
 	</target>
 
+    <!-- Doesn't need to be here -->
 	<target name="check-translation">
 		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
 	</target>
@@ -542,12 +559,14 @@
 	<target name="create-plugin">
 		<create-plugin />
 	</target>
+    <!-- Gradle fixes this -->
 	<target name="test">
 		<ant antfile="build.xml" target="test" dir="${workspace}/freeplane_ant" inheritall="false" />
 		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
 		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_uitest" inheritall="false" />
 	</target>
 
+    <!-- Gradle should handle this? -->
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="${build}" />
