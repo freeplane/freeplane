@@ -32,7 +32,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 ArchitecturesInstallIn64BitMode=x64 ia64
-OutputDir=..\dist
+OutputDir=..\..\DIST
 #if MyStatus == ""
   OutputBaseFilename=Freeplane-Setup-{#MyVersion}
 #else
@@ -75,7 +75,7 @@ Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescri
 
 
 [Files]
-Source: ..\build\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
+Source: "..\..\BUILD\*"; DestDir: "{app}"; Flags: ignoreversion createallsubdirs recursesubdirs; Excludes: "fwdir\*"
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

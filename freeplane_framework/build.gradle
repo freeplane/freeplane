@@ -1,0 +1,52 @@
+task freeplanelauncherJar(type: Jar) {
+     archiveName = 'freeplanelauncher.jar'
+     destinationDir = new File(globalBuild)
+
+     dependsOn classes
+     from (sourceSets.main.output) {
+          include("**")
+     }
+     includeEmptyDirs = false
+
+     manifest {
+          attributes("Manifest-Version": "1.0",
+                     "Main-Class": "org.freeplane.launcher.Launcher",
+                     "Class-Path": "framework.jar")
+     }
+}
+
+jar.dependsOn freeplanelauncherJar
+
+task copyLauncherStuff(type: Copy) {
+     from('script/') {
+         include('freeplane.sh')
+         fileMode = 0755
+     }
+     from('script/') {
+         include('*')
+         exclude('freeplane.sh')
+     }
+
+     def knopflerfishJarFile = project.configurations.runtime.files.find {
+         it.name =~ /^framework-[0-9\.]+\.jar$/
+     }
+     from(knopflerfishJarFile)
+     // rename framework-*.jar to framework.jar
+     rename { String fileName ->
+         if (fileName =~ /^framework-[0-9\.]+\.jar$/)
+            return "framework.jar"
+         else
+            return fileName
+     }
+
+     from('windows-icons/') {
+         include('freeplaneIcons.dll')
+     }
+     from('launch4j/') {
+         include('*.exe')
+         include('*.ini')
+     }
+     into(globalBuild)
+     dependsOn jar
+}
+build.dependsOn copyLauncherStuff

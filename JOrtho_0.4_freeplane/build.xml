@@ -1,4 +1,4 @@
-<project name="JOrtho" default="dist" basedir=".">
+<project name="JOrtho" default="ant_dist" basedir=".">
 	<description>
 		Ant build file for JOrtho as needed by Freeplane Debian package
 	</description>
@@ -16,7 +16,7 @@
 	<taskdef name="format-translation" classname="org.freeplane.ant.FormatTranslation" classpath="${freeplaneant.jar}" onerror="report" />
 	<taskdef name="check-translation" classname="org.freeplane.ant.FormatTranslationCheck" classpath="${freeplaneant.jar}" onerror="report" />
 
-	<target name="init">
+	<target name="ant_init">
 		<!-- Create the time stamp -->
 		<tstamp />
 		<!-- Create the build directory structure used by compile -->
@@ -28,7 +28,7 @@
 		</copy>
 	</target>
 
-	<target name="compile" depends="init" description="compile the source ">
+	<target name="ant_compile" depends="ant_init" description="compile the source ">
 		<!-- Compile the java code from ${src} into ${build} -->
 		<javac sourcepath="" srcdir="${src}" destdir="${build}" debug="${debug}" source="${source}" target="${target}">
 			<include name="**/*.java" />
@@ -36,7 +36,7 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="check-translation, compile" description="generate the distribution">
+	<target name="ant_jar" depends="ant_check_translation, ant_compile" description="generate the distribution">
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist}/lib" />
 
@@ -50,15 +50,16 @@
 		</jar>
 	</target>
 
-	<target name="check-translation">
+	<target name="ant_check_translation">
 		<check-translation dir="${src}/com/inet/jortho/i18n" includes="*.properties" eolstyle="${eolstyle}" />
 	</target>
-	<target name="format-translation">
+	<target name="ant_format_translation">
 		<format-translation dir="${src}/com/inet/jortho/i18n" includes="*.properties" eolstyle="${eolstyle}" />
 	</target>
-	<target name="dist" depends="jar" description="generate the distribution" />
 
-	<target name="clean" description="clean up">
+	<target name="ant_dist" depends="ant_jar" description="generate the distribution" />
+
+	<target name="ant_clean" description="clean up">
 		<!-- Delete the ${build} and ${dist} directory trees -->
 		<delete dir="${build}" />
 		<delete dir="${dist}" />
