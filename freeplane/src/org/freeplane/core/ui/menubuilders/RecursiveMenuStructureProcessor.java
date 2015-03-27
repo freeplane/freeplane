@@ -104,7 +104,11 @@ public class RecursiveMenuStructureProcessor{
 	}
 
 	public void setDefaultBuilder(EntryVisitor defaultBuilder) {
-		this.defaultBuilder = new BuilderDestroyerPair(defaultBuilder, null);
+		setDefaultBuilderPair(new BuilderDestroyerPair(defaultBuilder, EntryVisitor.EMTPY_VISITOR));
+	}
+
+	public void setDefaultBuilderPair(BuilderDestroyerPair pair) {
+		this.defaultBuilder = pair;
 	}
 
 	public BuilderDestroyerPair findSubtreeChildrenDefaultBuilder(Entry root, Entry entry) {
