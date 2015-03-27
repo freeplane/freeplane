@@ -11,7 +11,7 @@ public class PhaseProcessor implements Processor{
 	@Override
 	public void build(Entry entry) {
 		for(RecursiveMenuStructureProcessor processor:processors)
-			processor.process(entry);
+			processor.build(entry);
 	}
 
 	@Override
@@ -21,5 +21,11 @@ public class PhaseProcessor implements Processor{
 		for (RecursiveMenuStructureProcessor processor : processors)
 			subtreeProcessors[i++] = processor.forChildren(root, entry);
 		return new PhaseProcessor(subtreeProcessors);
+	}
+
+	@Override
+	public void destroy(Entry entry) {
+		for (RecursiveMenuStructureProcessor processor : processors)
+			processor.destroy(entry);
 	}
 }

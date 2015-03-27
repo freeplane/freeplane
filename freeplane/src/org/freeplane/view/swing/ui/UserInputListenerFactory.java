@@ -54,6 +54,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.Entry;
 import org.freeplane.core.ui.menubuilders.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.JMenubarBuilder;
@@ -353,11 +354,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				
 				RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 				recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
-				recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder());
+				recursiveMenuStructureBuilder.addBuilderPair("main_menu", new BuilderDestroyerPair(new JMenubarBuilder(), null));
 				
-				recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
+				recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder(), null));
 				recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
-				recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
+				recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarActionBuilder(), null));
 				
 				
 			} catch (Exception e) {

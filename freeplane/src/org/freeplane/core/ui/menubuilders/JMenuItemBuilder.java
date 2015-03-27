@@ -1,8 +1,5 @@
 package org.freeplane.core.ui.menubuilders;
 
-import static java.lang.Boolean.TRUE;
-import static org.freeplane.core.ui.menubuilders.RecursiveMenuStructureProcessor.PROCESS_ON_POPUP;
-
 import java.awt.Component;
 import java.awt.Container;
 import java.net.URL;
@@ -13,12 +10,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
-import org.freeplane.core.util.TextUtils;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
@@ -113,7 +108,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return TRUE.equals(entry.getAttribute(PROCESS_ON_POPUP));
+		return false;
 	}
 
 }

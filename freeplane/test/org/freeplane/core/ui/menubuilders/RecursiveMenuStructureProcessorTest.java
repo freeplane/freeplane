@@ -7,6 +7,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.freeplane.core.ui.menubuilders.BuilderDestroyerPair.VisitorType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,16 +18,18 @@ public class RecursiveMenuStructureProcessorTest {
 	private EntryVisitor builder;
 	private EntryVisitor defaultBuilder;
 	private EntryVisitor emptyBuilder;
+	private EntryVisitor destroyer;
 
 	@Before
 	public void setup(){
 		recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		defaultBuilder = Mockito.mock(EntryVisitor.class);
 		builder = Mockito.mock(EntryVisitor.class);
-		recursiveMenuStructureBuilder.addBuilder("builder", builder);
+		destroyer = Mockito.mock(EntryVisitor.class);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(builder, destroyer));
 		emptyBuilder = EntryVisitor.EMTPY_VISITOR;
-		recursiveMenuStructureBuilder.addBuilder("emptyBuilder", emptyBuilder);
-		recursiveMenuStructureBuilder.addBuilder("defaultBuilder", defaultBuilder);
+		recursiveMenuStructureBuilder.addBuilderPair("emptyBuilder", new BuilderDestroyerPair(emptyBuilder, null));
+		recursiveMenuStructureBuilder.addBuilderPair("defaultBuilder", new BuilderDestroyerPair(defaultBuilder, null));
 	}
 
 
@@ -34,10 +37,10 @@ public class RecursiveMenuStructureProcessorTest {
 	public void explicitBuilderIsCalled() {
 		final RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
-		recursiveMenuStructureBuilder.addBuilder("builder", builder);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(builder, null));
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
-		recursiveMenuStructureBuilder.process(entry);
+		recursiveMenuStructureBuilder.build(entry);
 		
 		verify(builder).visit(entry);
 	}
@@ -48,21 +51,21 @@ public class RecursiveMenuStructureProcessorTest {
 		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
 		recursiveMenuStructureBuilder.setDefaultBuilder(builder);
 		final Entry entry = new Entry();
-		recursiveMenuStructureBuilder.process(entry);
+		recursiveMenuStructureBuilder.build(entry);
 		verify(builder).visit(entry);
 	}
 
 
 	@Test
 	public void defaultBuilderIsCalledForChild() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
 		entry.addChild(childEntry);
 		
-		recursiveMenuStructureBuilder.process(entry);
+		recursiveMenuStructureBuilder.build(entry);
 		
 		verify(defaultBuilder).visit(childEntry);
 	}
@@ -70,12 +73,12 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void defaultBuilderIsRestoredAfterChildCall() {
 		final RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
-		recursiveMenuStructureBuilder.addBuilder("builder1", EntryVisitor.EMTPY_VISITOR);
-		recursiveMenuStructureBuilder.addBuilder("builder2", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder1", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
+		recursiveMenuStructureBuilder.addBuilderPair("builder2", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		EntryVisitor defaultBuilder = Mockito.mock(EntryVisitor.class);
-		recursiveMenuStructureBuilder.addBuilder("builder3", defaultBuilder);
+		recursiveMenuStructureBuilder.addBuilderPair("builder3", new BuilderDestroyerPair(defaultBuilder, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder1", "builder3");
-		recursiveMenuStructureBuilder.addBuilder("builder2", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder2", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder2", "builder2");
 
 		final Entry entry = new Entry();
@@ -87,7 +90,7 @@ public class RecursiveMenuStructureProcessorTest {
 		final Entry childEntry2 = new Entry();
 		entry.addChild(childEntry2);
 
-		recursiveMenuStructureBuilder.process(entry);
+		recursiveMenuStructureBuilder.build(entry);
 		
 		Mockito.verify(defaultBuilder).visit(childEntry2);
 	}
@@ -96,7 +99,7 @@ public class RecursiveMenuStructureProcessorTest {
 	@Test
 	public void defaultBuilderIsCalledForChildUsingDefaultBuilder() {
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder", "defaultBuilder");
-		recursiveMenuStructureBuilder.addBuilder("emptyBuilder2", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("emptyBuilder2", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder2", "emptyBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("emptyBuilder2"));
@@ -105,7 +108,7 @@ public class RecursiveMenuStructureProcessorTest {
 		final Entry subChildEntry = new Entry();
 		childEntry.addChild(subChildEntry);
 		
-		recursiveMenuStructureBuilder.process(entry);
+		recursiveMenuStructureBuilder.build(entry);
 		
 		Mockito.verify(defaultBuilder).visit(subChildEntry);
 	}
@@ -114,7 +117,7 @@ public class RecursiveMenuStructureProcessorTest {
 	public void defaultBuilderIsNotSetException() {
 		final RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		final Entry childEntry = new Entry();
-		recursiveMenuStructureBuilder.process(childEntry);
+		recursiveMenuStructureBuilder.build(childEntry);
 		
 	}
 	@Test
@@ -127,46 +130,49 @@ public class RecursiveMenuStructureProcessorTest {
 		entry.addChild(childEntry);
 		
 		
-		recursiveMenuStructureBuilder.process(entry);
+		recursiveMenuStructureBuilder.build(entry);
 		
 		Mockito.verify(defaultBuilder, never()).visit(childEntry);
 	}
 
 	@Test
 	public void explicitRootBuilderExplicitSubtreeDefaultBuilderForRoot() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(entry, entry);
-		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
+		BuilderDestroyerPair subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(
+		    entry, entry);
+		assertThat(subtreeDefaultBuilder.get(VisitorType.BUILDER), equalTo(this.defaultBuilder));
 	}
 
 	@Test
 	public void explicitRootBuilderImplicitSubtreeDefaultBuilderForRoot() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.setDefaultBuilder(defaultBuilder);
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(entry, entry);
-		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
+		BuilderDestroyerPair subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(
+		    entry, entry);
+		assertThat(subtreeDefaultBuilder.get(VisitorType.BUILDER), equalTo(this.defaultBuilder));
 	}
 
 	@Test
 	public void explicitRootBuilderExplicitSubtreeDefaultBuilderForChild() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
 		final Entry root = new Entry();
 		root.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
 		root.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
-		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
+		BuilderDestroyerPair subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(
+		    root, childEntry);
+		assertThat(subtreeDefaultBuilder.get(VisitorType.BUILDER), equalTo(this.defaultBuilder));
 	}
 
 	@Test
 	public void explicitRootBuilderImplicitBuilderForParentExplicitSubtreeDefaultBuilderForChild() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "emptyBuilder");
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder", "defaultBuilder");
 		final Entry root = new Entry();
@@ -175,13 +181,14 @@ public class RecursiveMenuStructureProcessorTest {
 		root.addChild(parentEntry);
 		final Entry childEntry = new Entry();
 		parentEntry.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
-		assertThat(subtreeDefaultBuilder, equalTo(this.defaultBuilder));
+		BuilderDestroyerPair subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(
+		    root, childEntry);
+		assertThat(subtreeDefaultBuilder.get(VisitorType.BUILDER), equalTo(this.defaultBuilder));
 	}
 
 	@Test
 	public void defaultBuilderWithoutDefaultBuilderChange() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "emptyBuilder");
 		final Entry root = new Entry();
 		root.setBuilders(asList("builder"));
@@ -189,14 +196,15 @@ public class RecursiveMenuStructureProcessorTest {
 		root.addChild(parentEntry);
 		final Entry childEntry = new Entry();
 		parentEntry.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
-		assertThat(subtreeDefaultBuilder, equalTo(this.emptyBuilder));
+		BuilderDestroyerPair subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(
+		    root, childEntry);
+		assertThat(subtreeDefaultBuilder.get(VisitorType.BUILDER), equalTo(this.emptyBuilder));
 	}
 
 	@Test
 	public void explicitBuilderWithoutDefaultBuilderChange() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
-		recursiveMenuStructureBuilder.addBuilder("parent", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
+		recursiveMenuStructureBuilder.addBuilderPair("parent", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "emptyBuilder");
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("emptyBuilder", "defaultBuilder");
 		final Entry root = new Entry();
@@ -206,20 +214,32 @@ public class RecursiveMenuStructureProcessorTest {
 		root.addChild(parentEntry);
 		final Entry childEntry = new Entry();
 		parentEntry.addChild(childEntry);
-		EntryVisitor subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(root, childEntry);
-		assertThat(subtreeDefaultBuilder, equalTo(this.emptyBuilder));
+		BuilderDestroyerPair subtreeDefaultBuilder = recursiveMenuStructureBuilder.findSubtreeChildrenDefaultBuilder(
+		    root, childEntry);
+		assertThat(subtreeDefaultBuilder.get(VisitorType.BUILDER), equalTo(this.emptyBuilder));
 	}
 
 	@Test
 	public void defaultBuilderIsSetForSubtreeProcessor() {
-		recursiveMenuStructureBuilder.addBuilder("builder", EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(EntryVisitor.EMTPY_VISITOR, null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("builder", "defaultBuilder");
 		final Entry entry = new Entry();
 		entry.setBuilders(asList("builder"));
 		final Entry childEntry = new Entry();
 		entry.addChild(childEntry);
 		RecursiveMenuStructureProcessor subtreeProcessor = recursiveMenuStructureBuilder.forChildren(entry, childEntry);
-		subtreeProcessor.process(childEntry);
+		subtreeProcessor.build(childEntry);
 		verify(defaultBuilder).visit(childEntry);
+	}
+
+	@Test
+	public void explicitDestroyerIsCalled() {
+		final RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
+		EntryVisitor destroyer = Mockito.mock(EntryVisitor.class);
+		recursiveMenuStructureBuilder.addBuilderPair("builder", new BuilderDestroyerPair(null, destroyer));
+		final Entry entry = new Entry();
+		entry.setBuilders(asList("builder"));
+		recursiveMenuStructureBuilder.destroy(entry);
+		verify(destroyer).visit(entry);
 	}
 }

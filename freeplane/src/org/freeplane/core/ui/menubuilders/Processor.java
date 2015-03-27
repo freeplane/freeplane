@@ -6,4 +6,5 @@ public interface Processor {
 
 	Processor forChildren(Entry root, Entry entry);
 
+	void destroy(Entry entry);
 }

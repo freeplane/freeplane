@@ -1,7 +1,6 @@
 package org.freeplane.core.ui.menubuilders;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -158,19 +157,5 @@ public class JMenuItemBuilderTest {
 		item.getPopupMenu().setVisible(true);
 		item.getPopupMenu().setVisible(false);
 		verify(popupListener).childEntriesWillBecomeInvisible(menuEntry);
-	}
-
-
-	
-	@Test
-	public void delayesChildProcessing() {
-		menuEntry.setComponent(menu);
-		actionEntry.setAttribute(RecursiveMenuStructureProcessor.PROCESS_ON_POPUP, true);
-		menuEntry.addChild(actionEntry);
-		menuActionGroupBuilder.visit(actionEntry);
-		assertThat(menuActionGroupBuilder.shouldSkipChildren(actionEntry), equalTo(true));
-
-
-		
 	}
 }

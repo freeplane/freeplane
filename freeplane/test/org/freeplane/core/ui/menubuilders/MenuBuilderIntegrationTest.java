@@ -35,9 +35,9 @@ public class MenuBuilderIntegrationTest {
 		freeplaneActions = mock(FreeplaneActions.class);
 		recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
-		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
+		recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder(), null));
 		recursiveMenuStructureBuilder.addSubtreeDefaultBuilder("toolbar", "toolbar.action");
-		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
+		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarActionBuilder(), null));
 	}
 
 	@Test

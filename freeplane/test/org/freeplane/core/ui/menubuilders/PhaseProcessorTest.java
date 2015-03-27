@@ -14,7 +14,7 @@ public class PhaseProcessorTest {
 		final PhaseProcessor phasedBuilder = new PhaseProcessor(builder);
 		final Entry entry = new Entry();
 		phasedBuilder.build(entry);
-		verify(builder).process(entry);
+		verify(builder).build(entry);
 	}
 	@Test
 	public void twoPhaseBuilder() throws Exception {
@@ -23,7 +23,7 @@ public class PhaseProcessorTest {
 		final PhaseProcessor phasedBuilder = new PhaseProcessor(first, second);
 		final Entry entry = new Entry();
 		phasedBuilder.build(entry);
-		verify(second).process(entry);
+		verify(second).build(entry);
 	}
 
 	@Test
@@ -34,6 +34,15 @@ public class PhaseProcessorTest {
 		final Entry entry = new Entry();
 		when(builder.forChildren(entry, entry)).thenReturn(childrenBuilder);
 		phasedBuilder.forChildren(entry, entry).build(entry);
-		verify(childrenBuilder).process(entry);
+		verify(childrenBuilder).build(entry);
+	}
+
+	@Test
+	public void onePhaseDestroy() throws Exception {
+		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor(builder);
+		final Entry entry = new Entry();
+		phasedBuilder.destroy(entry);
+		verify(builder).destroy(entry);
 	}
 }

@@ -1,20 +1,25 @@
 package org.freeplane.core.ui.menubuilders;
 
+import static java.lang.Boolean.TRUE;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.freeplane.core.ui.menubuilders.BuilderDestroyerPair.VisitorType;
+
 public class RecursiveMenuStructureProcessor{
 
-	final private Map<String, EntryVisitor> visitors;
+	final private Map<String, BuilderDestroyerPair> visitors;
 	final private Map<String, String> subtreeDefaultVisitors;
 	private LinkedList<String> subtreeDefaultVisitorStack;
-	private EntryVisitor defaultBuilder = EntryVisitor.ILLEGAL_VISITOR;
+	private BuilderDestroyerPair defaultBuilder = new BuilderDestroyerPair(EntryVisitor.ILLEGAL_VISITOR,
+	    EntryVisitor.ILLEGAL_VISITOR);
 	public static final String PROCESS_ON_POPUP = "processOnPopup"; 
 
-	private RecursiveMenuStructureProcessor(Map<String, EntryVisitor> visitors,
+	private RecursiveMenuStructureProcessor(Map<String, BuilderDestroyerPair> visitors,
 	                                        Map<String, String> subtreeDefaultVisitors,
-	                                        EntryVisitor defaultBuilder) {
+	                                        BuilderDestroyerPair defaultBuilder) {
 		super();
 		this.visitors = visitors;
 		this.subtreeDefaultVisitors = subtreeDefaultVisitors;
@@ -23,47 +28,60 @@ public class RecursiveMenuStructureProcessor{
 	}
 
 	public RecursiveMenuStructureProcessor() {
-		visitors = new HashMap<String, EntryVisitor>();
+		visitors = new HashMap<String, BuilderDestroyerPair>();
 		subtreeDefaultVisitors = new HashMap<String, String>();
 		subtreeDefaultVisitorStack = new LinkedList<>(); 
 	}
 
-	public void addBuilder(String name, EntryVisitor builder) {
-		visitors.put(name, builder);
+	public void addBuilderPair(String name, BuilderDestroyerPair pair) {
+		visitors.put(name, pair);
 	}
 
-	public void process(Entry target) {
-		final EntryVisitor builder = builder(target);
-		process(builder, target);
+	public void build(Entry target) {
+		process(target, VisitorType.BUILDER);
 	}
 
-	private void process(final EntryVisitor visitor, Entry target) {
+	private void process(Entry target, final VisitorType visitorType) {
+		final BuilderDestroyerPair builderDestroyerPair = builderDestroyerPair(target);
+		process(target, builderDestroyerPair, visitorType);
+	}
+
+	private void process(Entry target, final BuilderDestroyerPair builderDestroyerPair, VisitorType visitorType) {
+	    final EntryVisitor visitor = builderDestroyerPair.get(visitorType);
 		visitor.visit(target);
-		if(! visitor.shouldSkipChildren(target))
-			processChildren(target);
+		if (!(shouldProcessOnEvent(target) || visitor.shouldSkipChildren(target)))
+			processChildren(target, visitorType);
+    }
+
+	public void destroy(Entry target) {
+		process(target, VisitorType.DESTROYER);
 	}
 
-	private void processChildren(Entry target) {
+	public static boolean shouldProcessOnEvent(Entry target) {
+		return TRUE.equals(target.getAttribute(PROCESS_ON_POPUP));
+	}
+
+	private void processChildren(Entry target, VisitorType visitorType) {
 		final int originalDefaultBuilderStackSize = subtreeDefaultVisitorStack.size();
 		final String visitorToCall = visitorToCall(target);
 		if(visitorToCall != null)
 			changeDefaultBuilder(visitorToCall);
 		for(Entry child:target.children()) {
-				process(child);
+			process(child, visitorType);
 		}
 		if(originalDefaultBuilderStackSize < subtreeDefaultVisitorStack.size())
 			subtreeDefaultVisitorStack.removeLast();
 	}
 
-	private EntryVisitor builder(Entry target) {
-		final String builderToCall = visitorToCall(target);
-		final EntryVisitor builder;
+	private BuilderDestroyerPair builderDestroyerPair(Entry target) {
+	    final String builderToCall = visitorToCall(target);
+		final BuilderDestroyerPair builder;
 		if(builderToCall != null)
 			builder = visitors.get(builderToCall);
 		else
 			builder = defaultBuilder;
 		return builder;
-	}
+    }
 
 	private void changeDefaultBuilder(String calledBuilder) {
 		final String defaultBuilder = subtreeDefaultVisitors.get(calledBuilder);
@@ -86,10 +104,10 @@ public class RecursiveMenuStructureProcessor{
 	}
 
 	public void setDefaultBuilder(EntryVisitor defaultBuilder) {
-		this.defaultBuilder = defaultBuilder;
+		this.defaultBuilder = new BuilderDestroyerPair(defaultBuilder, null);
 	}
 
-	public EntryVisitor findSubtreeChildrenDefaultBuilder(Entry root, Entry entry) {
+	public BuilderDestroyerPair findSubtreeChildrenDefaultBuilder(Entry root, Entry entry) {
 		final Entry explicitDefaultBuilderEntry = explicitDefaultBuilderEntry(root, entry);
 		if (explicitDefaultBuilderEntry != null) {
 			String builderName = explicitBuilderName(explicitDefaultBuilderEntry);
@@ -111,7 +129,7 @@ public class RecursiveMenuStructureProcessor{
 
 	private Entry explicitDefaultBuilderEntry(Entry root, Entry entry) {
 		String explicitBuilderName = explicitBuilderName(entry);
-		final EntryVisitor explicitDefaultBuilder = explicitDefaultBuilder(explicitBuilderName);
+		final BuilderDestroyerPair explicitDefaultBuilder = explicitDefaultBuilder(explicitBuilderName);
 		if (explicitDefaultBuilder != null)
 			return entry;
 		else if (root == entry)
@@ -120,9 +138,9 @@ public class RecursiveMenuStructureProcessor{
 			return explicitDefaultBuilderEntry(root, entry.getParent());
 	}
 
-	private EntryVisitor explicitDefaultBuilder(String explicitBuilderName) {
+	private BuilderDestroyerPair explicitDefaultBuilder(String explicitBuilderName) {
 	    final String subtreeDefaultBuilder = subtreeDefaultVisitors.get(explicitBuilderName);
-		final EntryVisitor explicitDefaultBuilder = visitors.get(subtreeDefaultBuilder);
+		final BuilderDestroyerPair explicitDefaultBuilder = visitors.get(subtreeDefaultBuilder);
 	    return explicitDefaultBuilder;
     }
 
@@ -141,4 +159,5 @@ public class RecursiveMenuStructureProcessor{
 	public RecursiveMenuStructureProcessor forChildren(Entry root, Entry subtreeRoot) {
 		return new RecursiveMenuStructureProcessor(visitors, subtreeDefaultVisitors, findSubtreeChildrenDefaultBuilder(root, subtreeRoot));
 	}
+
 }
