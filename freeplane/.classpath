@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/extraLibs"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="viewer-resources"/>
@@ -24,6 +23,7 @@
 	<classpathentry kind="lib" path="lib/flamingo-7.3/substance-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/flamingo-7.3/substance-swingx-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/flamingo-7.3/trident-7.3.jar"/>
+	<classpathentry kind="lib" path="extraLibs/commons-lang3-3.3.2/commons-lang3-3.3.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JOrtho_0.4_freeplane"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit-Mockito-Matchers"/>

@@ -8,7 +8,7 @@ public class ActionSelectListener implements EntryPopupListener {
 	public void childEntriesWillBecomeVisible(final Entry submenu) {
 		for (Entry target : submenu.children()) {
 			final AFreeplaneAction action = target.getAction();
-			if (action.checkSelectionOnPopup() && action.isEnabled())
+			if (action != null && action.checkSelectionOnPopup() && action.isEnabled())
 				action.setSelected();
 		}
 	}

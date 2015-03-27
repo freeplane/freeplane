@@ -22,10 +22,10 @@ public class Entry {
 	public static final String COMPONENT = "component";
 	public static final String ACTION = "action";
 	private String name;
-	final private ArrayList<Entry> childEntries;
-	final private Map<String, Object> attributes;
-	private List<String> builders;
 	private Entry parent;
+	private List<String> builders;
+	final private Map<String, Object> attributes;
+	final private ArrayList<Entry> childEntries;
 
 
 	public Entry() {

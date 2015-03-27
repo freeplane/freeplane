@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collections;
@@ -54,14 +55,11 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
-import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
-import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
-import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
-import org.freeplane.core.ui.menubuilders.menu.JMenubarBuilder;
-import org.freeplane.core.ui.menubuilders.menu.JToolbarActionBuilder;
-import org.freeplane.core.ui.menubuilders.menu.JToolbarBuilder;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
+import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -349,18 +347,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		final URL genericStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.out.xml"));
 		if(genericStructure != null){
 			try {
-				final BufferedReader reader = new BufferedReader(new  InputStreamReader(genericStructure.openStream()) );
-				final Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
-				
-				RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
-				recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
-				recursiveMenuStructureBuilder.addBuilderPair("main_menu", new BuilderDestroyerPair(new JMenubarBuilder(), null));
-				
-				recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder(), null));
-				recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
-				recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarActionBuilder(), null));
-				
-				
+				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
+				    Controller.getCurrentModeController(), new FreeplaneResourceAccessor());
+				final InputStream resource = genericStructure.openStream();
+				final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+				Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
+				buildProcessor.build(menuStructure);
+				menuBar = (FreeplaneMenuBar) menuStructure.getChild(0).getComponent();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

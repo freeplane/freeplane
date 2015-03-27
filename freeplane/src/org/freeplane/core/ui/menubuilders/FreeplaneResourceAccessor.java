@@ -6,7 +6,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
 import org.freeplane.core.util.TextUtils;
 
-class FreeplaneResourceAccessor implements ResourceAccessor {
+public class FreeplaneResourceAccessor implements ResourceAccessor {
 	@Override
 	public URL getResource(final String name) {
 		return ResourceController.getResourceController().getResource(name);
