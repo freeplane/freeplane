@@ -3,7 +3,7 @@ package org.freeplane.core.ui.menubuilders.generic;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class EntryPopupListenerCollection {
+public class EntryPopupListenerCollection implements EntryPopupListener {
 
 	final private Collection<EntryPopupListener> listeners;
 
