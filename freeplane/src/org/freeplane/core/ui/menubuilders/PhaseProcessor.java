@@ -1,5 +1,8 @@
 package org.freeplane.core.ui.menubuilders;
 
+import java.util.Arrays;
+import java.util.ListIterator;
+
 public class PhaseProcessor implements Processor{
 
 	final private RecursiveMenuStructureProcessor[] processors;
@@ -25,7 +28,9 @@ public class PhaseProcessor implements Processor{
 
 	@Override
 	public void destroy(Entry entry) {
-		for (RecursiveMenuStructureProcessor processor : processors)
-			processor.destroy(entry);
+		final ListIterator<RecursiveMenuStructureProcessor> processorIterator = Arrays.asList(processors).listIterator(
+		    processors.length);
+		while (processorIterator.hasPrevious())
+			processorIterator.previous().destroy(entry);
 	}
 }

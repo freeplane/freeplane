@@ -1,10 +1,12 @@
 package org.freeplane.core.ui.menubuilders;
 
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.mockito.InOrder;
 
 
 public class PhaseProcessorTest {
@@ -44,5 +46,17 @@ public class PhaseProcessorTest {
 		final Entry entry = new Entry();
 		phasedBuilder.destroy(entry);
 		verify(builder).destroy(entry);
+	}
+
+	@Test
+	public void twoPhaseDestroyInOppositeOrder() throws Exception {
+		RecursiveMenuStructureProcessor first = mock(RecursiveMenuStructureProcessor.class);
+		RecursiveMenuStructureProcessor second = mock(RecursiveMenuStructureProcessor.class);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor(first, second);
+		final Entry entry = new Entry();
+		phasedBuilder.destroy(entry);
+		final InOrder inOrder = inOrder(first, second);
+		inOrder.verify(second).destroy(entry);
+		inOrder.verify(first).destroy(entry);
 	}
 }
