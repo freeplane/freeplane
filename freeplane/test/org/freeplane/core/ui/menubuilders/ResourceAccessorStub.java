@@ -2,7 +2,9 @@ package org.freeplane.core.ui.menubuilders;
 
 import java.net.URL;
 
-class ResourceAccessorStub implements
+import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
+
+public class ResourceAccessorStub implements
 		ResourceAccessor {
 	@Override
 	public String getProperty(String key) {

@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.core.IsNull;
 import org.junit.Ignore;

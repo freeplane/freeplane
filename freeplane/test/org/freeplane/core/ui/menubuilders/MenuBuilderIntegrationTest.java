@@ -12,6 +12,14 @@ import javax.swing.JToolBar;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.menubuilders.action.ActionFinder;
+import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
+import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarActionBuilder;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarBuilder;
 import org.freeplane.features.mode.FreeplaneActions;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;

@@ -1,12 +1,13 @@
 package org.freeplane.core.ui.menubuilders;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import javax.swing.JMenu;
 
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.features.mode.FreeplaneActions;
 import org.junit.Test;
 
