@@ -21,7 +21,7 @@ public class RecursiveMenuStructureBuilderForPathsTest {
 		final RecursiveMenuStructureBuilderForPaths buildersForPath = new RecursiveMenuStructureBuilderForPaths();
 		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
 		buildersForPath.addBuilder("/name", builder);
-		buildersForPath.addBuilder("/name", EntryVisitor.EMTPY_VISITOR);
+		buildersForPath.addBuilder("/name", EntryVisitor.EMTPY);
 		final Entry childEntry = new Entry();
 		childEntry.setName("name");
 		buildersForPath.build(childEntry);

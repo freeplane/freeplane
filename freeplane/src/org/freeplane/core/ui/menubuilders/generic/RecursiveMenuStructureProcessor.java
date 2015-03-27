@@ -13,8 +13,8 @@ public class RecursiveMenuStructureProcessor{
 	final private Map<String, BuilderDestroyerPair> visitors;
 	final private Map<String, String> subtreeDefaultVisitors;
 	private LinkedList<String> subtreeDefaultVisitorStack;
-	private BuilderDestroyerPair defaultBuilder = new BuilderDestroyerPair(EntryVisitor.ILLEGAL_VISITOR,
-	    EntryVisitor.ILLEGAL_VISITOR);
+	private BuilderDestroyerPair defaultBuilder = new BuilderDestroyerPair(EntryVisitor.ILLEGAL,
+	    EntryVisitor.ILLEGAL);
 	public static final String PROCESS_ON_POPUP = "processOnPopup"; 
 
 	private RecursiveMenuStructureProcessor(Map<String, BuilderDestroyerPair> visitors,
@@ -104,7 +104,7 @@ public class RecursiveMenuStructureProcessor{
 	}
 
 	public void setDefaultBuilder(EntryVisitor defaultBuilder) {
-		setDefaultBuilderPair(new BuilderDestroyerPair(defaultBuilder, EntryVisitor.EMTPY_VISITOR));
+		setDefaultBuilderPair(new BuilderDestroyerPair(defaultBuilder, EntryVisitor.EMTPY));
 	}
 
 	public void setDefaultBuilderPair(BuilderDestroyerPair pair) {

@@ -1,7 +1,7 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 public interface EntryVisitor {
-	public static EntryVisitor ILLEGAL_VISITOR = new EntryVisitor() {
+	public static EntryVisitor ILLEGAL = new EntryVisitor() {
 		@Override
 		public void visit(Entry target) {
 			throw new IllegalStateException("no builder found");
@@ -9,21 +9,30 @@ public interface EntryVisitor {
 
 		@Override
 		public boolean shouldSkipChildren(Entry entry) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 	};
 
-	public static EntryVisitor EMTPY_VISITOR = new EntryVisitor() {
+	public static EntryVisitor EMTPY = new EntryVisitor() {
 		@Override
 		public void visit(Entry target) {
 		}
 
 		@Override
 		public boolean shouldSkipChildren(Entry entry) {
-			// TODO Auto-generated method stub
 			return false;
+		}
+	};
+
+	public static EntryVisitor SKIP = new EntryVisitor() {
+		@Override
+		public void visit(Entry target) {
+		}
+
+		@Override
+		public boolean shouldSkipChildren(Entry entry) {
+			return true;
 		}
 	};
 

@@ -16,8 +16,11 @@ public class MenuBuildProcessFactory {
 	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor menuEntryBuilder) {
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 
-		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY_VISITOR);
+		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
 
+		recursiveMenuStructureBuilder.addBuilderPair("ribbon_taskbar", new BuilderDestroyerPair(EntryVisitor.SKIP));
+		recursiveMenuStructureBuilder.addBuilderPair("ribbon_menu", new BuilderDestroyerPair(EntryVisitor.SKIP));
+		recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder()));
 		recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder()));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(

@@ -12,7 +12,7 @@ public class BuilderDestroyerPair {
 	}
 
 	public BuilderDestroyerPair(EntryVisitor builder) {
-		this(builder, EntryVisitor.ILLEGAL_VISITOR);
+		this(builder, EntryVisitor.ILLEGAL);
 	}
 
 	public EntryVisitor get(VisitorType visitorType) {
