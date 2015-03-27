@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 
+
 public class BuilderDestroyerPair {
 	enum VisitorType {
 		BUILDER, DESTROYER
@@ -8,6 +9,10 @@ public class BuilderDestroyerPair {
 	final private EntryVisitor[] visitors;
 	public BuilderDestroyerPair(EntryVisitor builder, EntryVisitor destroyer) {
 		visitors = new EntryVisitor[] { builder, destroyer };
+	}
+
+	public BuilderDestroyerPair(EntryVisitor builder) {
+		this(builder, EntryVisitor.ILLEGAL_VISITOR);
 	}
 
 	public EntryVisitor get(VisitorType visitorType) {
