@@ -1,0 +1,49 @@
+configurations {
+    ant_tasks
+}
+
+dependencies {
+    ant_tasks project(':freeplane_ant')
+}
+
+task format_translation(dependsOn: configurations.ant_tasks) << {
+    ant.taskdef(
+        name: "format_translation",
+        classname: "org.freeplane.ant.FormatTranslation",
+        classpath: configurations.ant_tasks.asPath,
+        onerror: "report"
+    )
+
+    ant.format_translation(
+        dir: file("./resources/translations"),
+        includes: "*.properties",
+        eolstyle: "unix"
+    )
+    ant.format_translation(
+        dir: file("./viewer-resources/translations"),
+        includes: "*.properties",
+        eolstyle: "unix"
+    )
+}
+
+task check_translation(dependsOn: configurations.ant_tasks) << {
+    ant.taskdef(
+        name: "check_translation",
+        classname: "org.freeplane.ant.FormatTranslationCheck",
+        classpath: configurations.ant_tasks.asPath,
+        onerror: "report"
+    )
+
+    ant.check_translation(
+        dir: file("./resources/translations"),
+        includes: "*.properties",
+        eolstyle: "unix"
+    )
+    ant.check_translation(
+        dir: file("./viewer-resources/translations"),
+        includes: "*.properties",
+        eolstyle: "unix"
+    )
+}
+
+build.dependsOn(check_translation)
