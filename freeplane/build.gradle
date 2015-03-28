@@ -24,6 +24,17 @@ dependencies {
     compile ':SimplyHTML-0.16.09'
 }
 
+sourceSets {
+    test {
+        resources {
+            srcDir 'resources'
+            srcDir 'viewer-resources'
+            srcDir 'external-resources'
+        }
+    }
+}
+
+
 jar {
     manifest {
 
