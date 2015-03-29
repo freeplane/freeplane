@@ -34,7 +34,8 @@ public class MenuBuilderIntegrationTest {
 		final Entry buildMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(content);
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
-		new PhaseProcessor(actionBuilder,recursiveMenuStructureBuilder).build(buildMenuStructure);
+		new PhaseProcessor().withPhase("action", actionBuilder).withPhase("menuUI", recursiveMenuStructureBuilder)
+		    .build(buildMenuStructure);
 		return buildMenuStructure;
 	}
 

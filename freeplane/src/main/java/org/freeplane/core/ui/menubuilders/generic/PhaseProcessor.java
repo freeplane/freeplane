@@ -1,35 +1,40 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.ListIterator;
 
 public class PhaseProcessor implements Processor{
 
-	final private RecursiveMenuStructureProcessor[] processors;
+	final private LinkedHashMap<String, RecursiveMenuStructureProcessor> processors;
 
-	public PhaseProcessor(RecursiveMenuStructureProcessor... processors) {
-		this.processors = processors;
+	public PhaseProcessor() {
+		this.processors = new LinkedHashMap<String, RecursiveMenuStructureProcessor>();
 	}
 
 	@Override
 	public void build(Entry entry) {
-		for(RecursiveMenuStructureProcessor processor:processors)
+		for (RecursiveMenuStructureProcessor processor : processors.values())
 			processor.build(entry);
 	}
 
 	@Override
 	public Processor forChildren(Entry root, Entry entry) {
-		RecursiveMenuStructureProcessor[] subtreeProcessors = new RecursiveMenuStructureProcessor[processors.length];
-		int i = 0;
-		for (RecursiveMenuStructureProcessor processor : processors)
-			subtreeProcessors[i++] = processor.forChildren(root, entry);
-		return new PhaseProcessor(subtreeProcessors);
+		final PhaseProcessor phaseProcessor = new PhaseProcessor();
+		for (java.util.Map.Entry<String, RecursiveMenuStructureProcessor> processor : processors.entrySet())
+			phaseProcessor.withPhase(processor.getKey(), processor.getValue().forChildren(root, entry));
+		return phaseProcessor;
+	}
+
+	public PhaseProcessor withPhase(String phaseName, RecursiveMenuStructureProcessor processor) {
+		processors.put(phaseName, processor);
+		return this;
 	}
 
 	@Override
 	public void destroy(Entry entry) {
-		final ListIterator<RecursiveMenuStructureProcessor> processorIterator = Arrays.asList(processors).listIterator(
-		    processors.length);
+		final ListIterator<RecursiveMenuStructureProcessor> processorIterator = new ArrayList<>(processors.values())
+		    .listIterator(processors.size());
 		while (processorIterator.hasPrevious())
 			processorIterator.previous().destroy(entry);
 	}

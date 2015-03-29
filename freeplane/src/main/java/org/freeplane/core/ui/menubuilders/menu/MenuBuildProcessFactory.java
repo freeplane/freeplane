@@ -39,7 +39,8 @@ public class MenuBuildProcessFactory {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions ));
-		final PhaseProcessor buildProcessor = new PhaseProcessor(actionBuilder,recursiveMenuStructureBuilder);
+		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase("action", actionBuilder).withPhase("menuUI",
+		    recursiveMenuStructureBuilder);
 		childBuilder.setProcessor(buildProcessor);
 		return buildProcessor;
 	}
