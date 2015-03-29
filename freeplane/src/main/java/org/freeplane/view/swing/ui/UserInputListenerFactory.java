@@ -57,6 +57,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
+import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
@@ -90,6 +91,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private final List<JComponent>[] toolbarLists;
 	private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
+	final private Map<String, BuilderDestroyerPair> actionBuilders = new HashMap<String, BuilderDestroyerPair>();
 
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
 		useRibbonMenu = useRibbons;
@@ -349,6 +351,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			try {
 				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
 				    Controller.getCurrentModeController(), new FreeplaneResourceAccessor());
+				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : actionBuilders.entrySet())
+					buildProcessor.phase("action").addBuilderPair(entry.getKey(), entry.getValue());
 				final InputStream resource = genericStructure.openStream();
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 				Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
@@ -402,5 +406,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public boolean useRibbonMenu() {
 		return useRibbonMenu;
+	}
+
+	public void addActionBuilder(String name, BuilderDestroyerPair builderDestroyerPair) {
+		actionBuilders.put(name, builderDestroyerPair);
 	}
 }

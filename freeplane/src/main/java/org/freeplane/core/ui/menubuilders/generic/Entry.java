@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,9 +76,14 @@ public class Entry {
 		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parent").build();
 	}
 
-	public void setBuilders(List<String> builders) {
+	public Entry setBuilders(List<String> builders) {
 		this.builders = builders;
+		return this;
 		
+	}
+
+	public Entry setBuilders(String... builders) {
+		return setBuilders(Arrays.asList(builders));
 	}
 
 	public Entry getParent() {
@@ -130,8 +136,9 @@ public class Entry {
 		return(AFreeplaneAction ) getAttribute(ACTION);
 	}
 	
-	public void setAction(AFreeplaneAction action) {
+	public Entry setAction(AFreeplaneAction action) {
 		setAttribute(ACTION, action);
+		return this;
 	}
 
 

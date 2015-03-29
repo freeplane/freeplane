@@ -62,6 +62,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -199,6 +202,59 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addMenuContributor(new LinkMenuContributor("popup_links", "popup_goto_links"));
 		modeController.addMenuContributor(new ClonesMenuContributor("menu_links", "menu_goto_clones"));
 		modeController.addMenuContributor(new ClonesMenuContributor("popup_links", "popup_goto_clones"));
+		modeController.addActionBuilder("menu_links", new BuilderDestroyerPair(new EntryVisitor() {
+			@Override
+			public void visit(Entry entry) {
+				final IMapSelection selection = modeController.getController().getSelection();
+				if (selection == null)
+					return;
+				final NodeModel node = selection.getSelected();
+				Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>(NodeLinks.getLinks(node));
+				links.addAll(getLinksTo(node));
+				boolean firstAction = true;
+				for (NodeLinkModel link : links) {
+					final String targetID = link.getTargetID();
+					final NodeModel target;
+					if (node.getID().equals(targetID)) {
+						if (link instanceof ConnectorModel) {
+							ConnectorModel cm = (ConnectorModel) link;
+							target = cm.getSource();
+							if (node.equals(target))
+								continue;
+						}
+						else
+							continue;
+					}
+					else
+						target = node.getMap().getNodeForID(targetID);
+					final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
+					gotoLinkNodeAction.configureText("follow_graphical_link", target);
+					if (!(link instanceof ConnectorModel)) {
+						gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
+					}
+					if (firstAction) {
+						entry.addChild(new Entry().setBuilders("separator"));
+						firstAction = false;
+					}
+					entry.addChild(new Entry().setAction(gotoLinkNodeAction));
+				}
+			}
+
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return true;
+			}
+		}, new EntryVisitor() {
+			@Override
+			public void visit(Entry target) {
+				target.removeChildren();
+			}
+
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return true;
+			}
+		}));
 	}
 
     private class LinkMenuContributor implements IMenuContributor {
