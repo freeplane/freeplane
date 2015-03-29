@@ -1,10 +1,12 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -46,6 +48,13 @@ public class PhaseProcessorTest {
 		final Entry entry = new Entry();
 		phasedBuilder.destroy(entry);
 		verify(builder).destroy(entry);
+	}
+
+	@Test
+	public void returnsPhase() throws Exception {
+		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase("builder", builder);
+		Assert.assertThat(phasedBuilder.phase("builder"), equalTo(builder));
 	}
 
 	@Test

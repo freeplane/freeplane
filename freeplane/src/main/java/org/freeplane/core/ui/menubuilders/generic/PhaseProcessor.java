@@ -31,6 +31,10 @@ public class PhaseProcessor implements Processor{
 		return this;
 	}
 
+	public RecursiveMenuStructureProcessor phase(String name) {
+		return processors.get(name);
+	}
+
 	@Override
 	public void destroy(Entry entry) {
 		final ListIterator<RecursiveMenuStructureProcessor> processorIterator = new ArrayList<>(processors.values())
