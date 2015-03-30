@@ -12,6 +12,8 @@ import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.MenuSplitter;
+import org.freeplane.core.ui.MenuSplitterConfiguration;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
@@ -22,11 +24,14 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 public class JMenuItemBuilder implements EntryVisitor{
 
 	final private EntryPopupListener popupListener;
-	final private ResourceAccessor menuEntryBuilder;
+	final private ResourceAccessor resourceAccessor;
+	final private MenuSplitter menuSplitter;
 
-	public JMenuItemBuilder(EntryPopupListener popupListener, ResourceAccessor menuEntryBuilder) {
+	public JMenuItemBuilder(EntryPopupListener popupListener, ResourceAccessor resourceAccessor) {
 		this.popupListener = popupListener;
-		this.menuEntryBuilder = menuEntryBuilder;
+		this.resourceAccessor = resourceAccessor;
+		menuSplitter = new MenuSplitter(resourceAccessor.getIntProperty(
+		    MenuSplitterConfiguration.MAX_MENU_ITEM_COUNT_KEY, 10));
 	}
 
 	@Override
@@ -40,30 +45,35 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private void addActionItem(Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
 		if(actionComponent != null){
-			entry.setComponent(actionComponent);
-			final Container container = getParentComponent(entry);
-			container.add(actionComponent);
+			addComponent(entry, actionComponent);
 		}
 	}
 
+	private void addComponent(Entry entry, final Component component) {
+	    entry.setComponent(component);
+	    final Container container = (Container) entry.getAncestorComponent();
+	    if (container instanceof JMenu)
+	    	menuSplitter.addMenuComponent((JMenu) container, component);
+	    else
+	    	container.add(component);
+    }
+
 	private void addSubmenu(final Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
-		final Container container = getParentComponent(entry);
 		JMenu menu = new JMenu();
 		String name = entry.getName();
 		final String key = name + ".icon";
-		final String iconResource = menuEntryBuilder.getProperty(key);
-		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, menuEntryBuilder.getRawText(name));
+		final String iconResource = resourceAccessor.getProperty(key);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, resourceAccessor.getRawText(name));
 		if(iconResource != null){
-			final URL url = menuEntryBuilder.getResource(iconResource);
+			final URL url = resourceAccessor.getResource(iconResource);
 			menu.setIcon(new ImageIcon(url));
 		}
-		entry.setComponent(menu);
-		container.add(menu);
-		final JPopupMenu popupMenu = menu.getPopupMenu();
+		addComponent(entry, menu);
 		if(actionComponent != null){
-			popupMenu.add(actionComponent);
+			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
+		final JPopupMenu popupMenu = menu.getPopupMenu();
 		popupMenu.addPopupMenuListener(new PopupMenuListener() {
 			
 			@Override
@@ -81,15 +91,6 @@ public class JMenuItemBuilder implements EntryVisitor{
 			}
 		});
 	}
-
-	private Container getParentComponent(final Entry entry) {
-		final Container ancestorComponent = (Container) entry.getAncestorComponent();
-		if(ancestorComponent instanceof JMenu)
-			return ((JMenu) ancestorComponent).getPopupMenu();
-		else 
-			return ancestorComponent;
-	}
-
 
 	private Component createActionComponent(Entry entry) {
 		final AFreeplaneAction action = entry.getAction();

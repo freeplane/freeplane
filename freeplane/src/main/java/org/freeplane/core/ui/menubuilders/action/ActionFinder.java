@@ -17,7 +17,7 @@ public class ActionFinder implements EntryVisitor{
 	@Override
 	public void visit(final Entry target) {
 		final String actionName = target.getName();
-		if(actionName != null) {
+		if (actionName != null && target.getAction() == null) {
 			AFreeplaneAction action = freeplaneActions.getAction(actionName);
 			final String setBooleanPropertyActionPrefix = SetBooleanPropertyAction.class.getSimpleName() + ".";
 			if(action == null && actionName.startsWith(setBooleanPropertyActionPrefix)){

@@ -8,17 +8,22 @@ import org.freeplane.core.util.TextUtils;
 
 public class FreeplaneResourceAccessor implements ResourceAccessor {
 	@Override
-	public URL getResource(final String name) {
-		return ResourceController.getResourceController().getResource(name);
+	public URL getResource(final String key) {
+		return ResourceController.getResourceController().getResource(key);
 	}
 
 	@Override
-	public String getRawText(String name) {
-		return TextUtils.getRawText(name);
+	public String getRawText(String key) {
+		return TextUtils.getRawText(key);
 	}
 
 	@Override
 	public String getProperty(final String key) {
 		return ResourceController.getResourceController().getProperty(key, null);
+	}
+
+	@Override
+	public int getIntProperty(String key, int defaultValue) {
+		return ResourceController.getResourceController().getIntProperty(key, defaultValue);
 	}
 }

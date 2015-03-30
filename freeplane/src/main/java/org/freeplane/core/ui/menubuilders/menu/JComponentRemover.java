@@ -1,21 +1,25 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
-import java.awt.Container;
 
+import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JComponentRemover implements EntryVisitor{
+	final private static MenuSplitter menuSplitter = new MenuSplitter(0);
 
 	@Override
 	public void visit(Entry target) {
 		final Component component = (Component) target.removeComponent();
 		if (component != null) {
-			final Container parent = component.getParent();
-			parent.remove(component);
+			removeMenuComponent(component);
 		}
 	}
+
+	private void removeMenuComponent(final Component component) {
+		menuSplitter.removeMenuComponent(component);
+    }
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {

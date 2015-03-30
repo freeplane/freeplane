@@ -20,4 +20,9 @@ public class ResourceAccessorStub implements
 	public URL getResource(String name) {
 		return null;
 	}
+
+	@Override
+	public int getIntProperty(String name, int defaultValue) {
+		return defaultValue;
+	}
 }
