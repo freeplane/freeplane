@@ -43,6 +43,13 @@ public class MenuSplitter{
 		this(MenuSplitterConfiguration.MAX_MENU_ITEM_COUNT);
 	}
 
+	public void addComponent(Container container, Component component) {
+		if (container instanceof JMenu)
+			addMenuComponent((JMenu) container, component);
+		else
+			container.add(component);
+	}
+
 	public void addMenuComponent(JMenu menu, final Component component, final int index) {
 	    final JPopupMenu popupMenu = menu.getPopupMenu();
 	    final int itemCount = popupMenu.getComponentCount();
@@ -111,4 +118,5 @@ public class MenuSplitter{
 	public void addMenuComponent(JMenu menu, Component component) {
 		addMenuComponent(menu, component, menu.getPopupMenu().getComponentCount());
 	}
+
 }

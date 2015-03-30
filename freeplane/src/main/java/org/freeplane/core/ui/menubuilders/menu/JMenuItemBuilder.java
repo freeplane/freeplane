@@ -52,10 +52,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private void addComponent(Entry entry, final Component component) {
 	    entry.setComponent(component);
 	    final Container container = (Container) entry.getAncestorComponent();
-	    if (container instanceof JMenu)
-	    	menuSplitter.addMenuComponent((JMenu) container, component);
-	    else
-	    	container.add(component);
+		menuSplitter.addComponent(container, component);
     }
 
 	private void addSubmenu(final Entry entry) {
