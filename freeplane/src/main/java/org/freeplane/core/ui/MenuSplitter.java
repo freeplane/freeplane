@@ -78,7 +78,7 @@ public class MenuSplitter{
 
 	public JMenu getExtraSubMenu(JMenu parentComponent) {
 		final Component lastComponent = parentComponent.getComponent(parentComponent.getComponentCount()-1);
-		if(new MenuSplitter().isExtraSubMenu(lastComponent))
+		if (isExtraSubMenu(lastComponent))
 			return (JMenu) lastComponent;
 		else
 			return null;
