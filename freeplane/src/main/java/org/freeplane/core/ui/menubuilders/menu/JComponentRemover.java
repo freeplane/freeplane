@@ -10,14 +10,16 @@ public class JComponentRemover implements EntryVisitor{
 
 	@Override
 	public void visit(Entry target) {
-		final Component component = (Component) target.getComponent();
-		final Container parent = component.getParent();
-		parent.remove(component);
+		final Component component = (Component) target.removeComponent();
+		if (component != null) {
+			final Container parent = component.getParent();
+			parent.remove(component);
+		}
 	}
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return true;
+		return false;
 	}
 	
 }

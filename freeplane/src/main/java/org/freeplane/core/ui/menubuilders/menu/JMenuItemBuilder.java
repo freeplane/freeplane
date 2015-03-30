@@ -31,7 +31,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public void visit(Entry entry) {
-		if(entry.hasChildren())
+		if (entry.hasChildren() && !entry.getName().isEmpty())
 			addSubmenu(entry);
 		else
 			addActionItem(entry);

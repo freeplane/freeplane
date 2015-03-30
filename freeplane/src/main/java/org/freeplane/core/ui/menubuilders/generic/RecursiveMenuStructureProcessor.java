@@ -48,8 +48,9 @@ public class RecursiveMenuStructureProcessor{
 
 	private void process(Entry target, final BuilderDestroyerPair builderDestroyerPair, VisitorType visitorType) {
 	    final EntryVisitor visitor = builderDestroyerPair.get(visitorType);
+		final boolean shouldSkipChildren = visitor.shouldSkipChildren(target);
 		visitor.visit(target);
-		if (!(shouldProcessOnEvent(target) || visitor.shouldSkipChildren(target)))
+		if (!(shouldSkipChildren || shouldProcessOnEvent(target)))
 			processChildren(target, visitorType);
     }
 

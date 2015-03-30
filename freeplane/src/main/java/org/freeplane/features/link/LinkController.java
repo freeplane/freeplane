@@ -202,7 +202,7 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addMenuContributor(new LinkMenuContributor("popup_links", "popup_goto_links"));
 		modeController.addMenuContributor(new ClonesMenuContributor("menu_links", "menu_goto_clones"));
 		modeController.addMenuContributor(new ClonesMenuContributor("popup_links", "popup_goto_clones"));
-		modeController.addActionBuilder("menu_links", new BuilderDestroyerPair(new EntryVisitor() {
+		modeController.addActionBuilder("link_actions", new BuilderDestroyerPair(new EntryVisitor() {
 			@Override
 			public void visit(Entry entry) {
 				final IMapSelection selection = modeController.getController().getSelection();

@@ -128,6 +128,10 @@ public class Entry {
 		return getAttribute(COMPONENT);
 	}
 	
+	public Object removeComponent() {
+		return removeAttribute(COMPONENT);
+	}
+
 	public void setComponent(Object component) {
 		setAttribute(COMPONENT, component);
 	}
@@ -160,8 +164,8 @@ public class Entry {
 		childEntries.clear();
 	}
 
-	public void removeAttribute(String key) {
-		attributes.remove(key);
+	public Object removeAttribute(String key) {
+		return attributes.remove(key);
 	}
 
 

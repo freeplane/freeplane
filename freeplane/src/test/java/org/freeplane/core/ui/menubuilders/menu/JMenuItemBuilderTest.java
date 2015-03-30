@@ -32,6 +32,7 @@ public class JMenuItemBuilderTest {
 	private JMenu menu;
 	private JMenuItemBuilder menuActionGroupBuilder;
 	private EntryPopupListener popupListener;
+	private Entry groupEntry;
 
 	@Before
 	public void setup() {
@@ -40,6 +41,8 @@ public class JMenuItemBuilderTest {
 		actionEntry.setAction(action);
 
 		menuEntry = new Entry();
+		menuEntry.setName("menu");
+		groupEntry = new Entry();
 		menu = new JMenu();
 		popupListener = mock(EntryPopupListener.class);
 		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, new ResourceAccessorStub());
@@ -128,6 +131,19 @@ public class JMenuItemBuilderTest {
 
 		final JMenuItem menuItem = (JMenuItem) item.getPopupMenu().getComponent(0);
 		assertThat(menuItem.getAction(), CoreMatchers.<Action>equalTo(action));
+	}
+
+	@Test
+	public void createsGroupWithAction() {
+		Entry parentMenuEntry = new Entry();
+		final JMenu parentMenu = new JMenu();
+		parentMenuEntry.setComponent(parentMenu);
+		parentMenuEntry.addChild(groupEntry);
+		groupEntry.addChild(actionEntry);
+		groupEntry.setAction(action);
+		menuActionGroupBuilder.visit(groupEntry);
+		final JMenuItem menuItem = (JMenuItem) parentMenu.getPopupMenu().getComponent(0);
+		assertThat(menuItem.getAction(), CoreMatchers.<Action> equalTo(action));
 	}
 	
 	@Test
