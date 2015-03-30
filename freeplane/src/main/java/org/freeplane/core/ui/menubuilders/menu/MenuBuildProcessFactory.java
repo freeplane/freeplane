@@ -1,5 +1,8 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.UI;
+
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
@@ -39,7 +42,8 @@ public class MenuBuildProcessFactory {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions ));
-		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase("action", actionBuilder).withPhase("menuUI",
+		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder).withPhase(
+UI,
 		    recursiveMenuStructureBuilder);
 		childBuilder.setProcessor(buildProcessor);
 		return buildProcessor;

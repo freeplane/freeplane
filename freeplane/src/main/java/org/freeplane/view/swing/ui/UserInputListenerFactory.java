@@ -19,6 +19,8 @@
  */
 package org.freeplane.view.swing.ui;
 
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
+
 import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
@@ -352,7 +354,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
 				    Controller.getCurrentModeController(), new FreeplaneResourceAccessor());
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : actionBuilders.entrySet())
-					buildProcessor.phase("action").addBuilderPair(entry.getKey(), entry.getValue());
+					buildProcessor.phase(ACTIONS).addBuilderPair(entry.getKey(), entry.getValue());
 				final InputStream resource = genericStructure.openStream();
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 				Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);

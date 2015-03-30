@@ -1,5 +1,7 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACCELERATORS;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -15,7 +17,7 @@ public class PhaseProcessorTest {
 	@Test
 	public void onePhaseBuilder() throws Exception {
 		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
-		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase("builder", builder);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, builder);
 		final Entry entry = new Entry();
 		phasedBuilder.build(entry);
 		verify(builder).build(entry);
@@ -24,7 +26,8 @@ public class PhaseProcessorTest {
 	public void twoPhaseBuilder() throws Exception {
 		RecursiveMenuStructureProcessor first = mock(RecursiveMenuStructureProcessor.class);
 		RecursiveMenuStructureProcessor second = mock(RecursiveMenuStructureProcessor.class);
-		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase("first", first).withPhase("second", second);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, first).withPhase(ACCELERATORS,
+		    second);
 		final Entry entry = new Entry();
 		phasedBuilder.build(entry);
 		verify(second).build(entry);
@@ -34,7 +37,7 @@ public class PhaseProcessorTest {
 	public void subtreeBuilder() throws Exception {
 		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
 		RecursiveMenuStructureProcessor childrenBuilder = mock(RecursiveMenuStructureProcessor.class);
-		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase("builder", builder);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, builder);
 		final Entry entry = new Entry();
 		when(builder.forChildren(entry, entry)).thenReturn(childrenBuilder);
 		phasedBuilder.forChildren(entry, entry).build(entry);
@@ -44,7 +47,7 @@ public class PhaseProcessorTest {
 	@Test
 	public void onePhaseDestroy() throws Exception {
 		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
-		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase("builder", builder);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, builder);
 		final Entry entry = new Entry();
 		phasedBuilder.destroy(entry);
 		verify(builder).destroy(entry);
@@ -53,15 +56,16 @@ public class PhaseProcessorTest {
 	@Test
 	public void returnsPhase() throws Exception {
 		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
-		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase("builder", builder);
-		Assert.assertThat(phasedBuilder.phase("builder"), equalTo(builder));
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, builder);
+		Assert.assertThat(phasedBuilder.phase(ACTIONS), equalTo(builder));
 	}
 
 	@Test
 	public void twoPhaseDestroyInOppositeOrder() throws Exception {
 		RecursiveMenuStructureProcessor first = mock(RecursiveMenuStructureProcessor.class);
 		RecursiveMenuStructureProcessor second = mock(RecursiveMenuStructureProcessor.class);
-		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase("first", first).withPhase("second", second);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, first).withPhase(ACCELERATORS,
+		    second);
 		final Entry entry = new Entry();
 		phasedBuilder.destroy(entry);
 		final InOrder inOrder = inOrder(first, second);

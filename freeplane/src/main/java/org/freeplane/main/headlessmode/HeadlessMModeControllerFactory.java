@@ -67,6 +67,7 @@ import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.features.progress.mindmapmode.ProgressFactory;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -114,6 +115,7 @@ public class HeadlessMModeControllerFactory {
 	private void createStandardControllers() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
+		modeController.setUserInputListenerFactory(new UserInputListenerFactory(modeController, false));
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		new MMapController(modeController);

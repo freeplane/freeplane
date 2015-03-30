@@ -1,5 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.UI;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,7 +36,7 @@ public class MenuBuilderIntegrationTest {
 		final Entry buildMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(content);
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
-		new PhaseProcessor().withPhase("action", actionBuilder).withPhase("menuUI", recursiveMenuStructureBuilder)
+		new PhaseProcessor().withPhase(ACTIONS, actionBuilder).withPhase(UI, recursiveMenuStructureBuilder)
 		    .build(buildMenuStructure);
 		return buildMenuStructure;
 	}
