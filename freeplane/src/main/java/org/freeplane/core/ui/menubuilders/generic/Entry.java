@@ -8,12 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.freeplane.core.ui.AFreeplaneAction;
-
 /**
  * @author Dimitry
  *
@@ -57,21 +51,6 @@ public class Entry {
 	private void setParent(Entry parent) {
 		this.parent = parent;
 		
-	}
-
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, "parent");
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(this, obj, "parent");
-	}
-
-	@Override
-	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parent").build();
 	}
 
 	public Entry setBuilders(List<String> builders) {
@@ -138,5 +117,58 @@ public class Entry {
 
 	public Entry getRoot() {
 		return parent == null ? this : parent.getRoot();
+	}
+
+	@Override
+	public String toString() {
+		return "Entry [name=" + name + ", builders=" + builders + ", attributes=" + attributes + ", childEntries="
+		        + childEntries + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
+		result = prime * result + ((builders == null) ? 0 : builders.hashCode());
+		result = prime * result + ((childEntries == null) ? 0 : childEntries.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Entry other = (Entry) obj;
+		if (attributes == null) {
+			if (other.attributes != null)
+				return false;
+		}
+		else if (!attributes.equals(other.attributes))
+			return false;
+		if (builders == null) {
+			if (other.builders != null)
+				return false;
+		}
+		else if (!builders.equals(other.builders))
+			return false;
+		if (childEntries == null) {
+			if (other.childEntries != null)
+				return false;
+		}
+		else if (!childEntries.equals(other.childEntries))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		}
+		else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 }

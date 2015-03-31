@@ -3,7 +3,6 @@ dependencies {
     compile project(':JOrtho_0.4_freeplane')
 
     compile 'commons-lang:commons-lang:2.6',
-            'org.apache.commons:commons-lang3:3.3.2',
             'commons-io:commons-io:2.4',
             'commons-codec:commons-codec:1.7',
             'com.jgoodies:jgoodies-forms:1.6.0',
