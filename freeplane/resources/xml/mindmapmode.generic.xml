@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- This file was generated automatically from a ribbon xml. Do not edit 
+	this file, edit the original ribbon xml instead. -->
+<FreeplaneUIEntries>
+	<Entry builder="main_menu">
+		<Entry builder="ribbon_taskbar">
+			<Entry name="NewMapAction" accelerator="control N" mandatory="true" />
+			<Entry name="EncryptedMap" mandatory="true" />
+			<Entry builder="separator" />
+			<Entry name="OpenAction" accelerator="control O" mandatory="true" />
+			<Entry builder="separator" />
+			<Entry name="SaveAction" accelerator="control S" />
+			<Entry name="SaveAsAction" accelerator="control shift S" />
+			<Entry name="SaveAll" />
+		</Entry>
+		<Entry builder="ribbon_menu">
+			<Entry name="new" builder="primary_entry">
+				<Entry name="new" builder="entry_group">
+					<Entry name="NewMapAction" accelerator="control N" mandatory="true" />
+					<Entry name="new_map_from_user_templates" mandatory="true" />
+					<Entry name="EncryptedMap" mandatory="true" />
+				</Entry>
+			</Entry>
+			<Entry name="open" builder="primary_entry">
+				<Entry name="open" builder="entry_group">
+					<Entry name="OpenAction" accelerator="control O" mandatory="true" />
+					<Entry name="OpenURLMapAction" mandatory="true" />
+					<Entry name="RevertAction" mandatory="true" />
+				</Entry>
+			</Entry>
+			<Entry name="lastOpenedMaps" builder="ribbon_contributor" />
+			<Entry name="save" builder="primary_entry">
+				<Entry name="save" builder="entry_group">
+					<Entry name="SaveAction" accelerator="control S" />
+					<Entry name="SaveAsAction" accelerator="control shift S" />
+					<Entry name="SaveAll" />
+				</Entry>
+			</Entry>
+			<Entry name="import_export" builder="primary_entry">
+				<Entry name="export" builder="entry_group">
+					<Entry name="ExportAction" />
+					<Entry name="ExportBranchAction" accelerator="alt shift A" />
+				</Entry>
+				<Entry name="import" builder="entry_group">
+					<Entry name="ImportBranchAction" />
+					<Entry name="ImportLinkedBranchAction" />
+					<Entry name="ImportLinkedBranchWithoutRootAction" />
+					<Entry name="ImportExplorerFavoritesAction" />
+					<Entry name="ImportFolderStructureAction" />
+					<Entry name="ImportMindmanagerFiles" />
+				</Entry>
+			</Entry>
+			<Entry name="print" builder="primary_entry">
+				<Entry name="print" builder="entry_group">
+					<Entry name="PageAction" />
+					<Entry name="PrintPreviewAction" />
+					<Entry name="PrintAction" accelerator="control P" />
+				</Entry>
+			</Entry>
+			<Entry name="OpenUserDirAction" mandatory="true" builder="primary_entry" />
+			<Entry name="PropertyAction" mandatory="true" builder="primary_entry" />
+			<Entry name="AboutAction" mandatory="true" builder="primary_entry" />
+			<Entry name="help" builder="primary_entry">
+				<Entry name="help" builder="entry_group">
+					<Entry name="OpenFreeplaneSiteAction" mandatory="true" />
+					<Entry name="GettingStartedAction" accelerator="F1"
+						mandatory="true" />
+					<Entry name="AskForHelp" mandatory="true" />
+					<Entry name="RequestFeatureAction" mandatory="true" />
+					<Entry name="ReportBugAction" mandatory="true" />
+					<Entry name="HotKeyInfoAction" mandatory="true" />
+				</Entry>
+			</Entry>
+			<Entry name="CloseAction" accelerator="control W" mandatory="true"
+				builder="footer_entry" />
+			<Entry name="QuitAction" mandatory="true" accelerator="alt F4"
+				builder="footer_entry" />
+		</Entry>
+		<Entry name="home" orderPriority="first" builder="ribbon_task,toolbar">
+			<Entry name="basics" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="NewMapAction" accelerator="control N" mandatory="true">
+					<Entry name="EncryptedMap" mandatory="true" />
+				</Entry>
+				<Entry name="OpenAction" accelerator="control O" mandatory="true">
+					<Entry name="OpenURLMapAction" mandatory="true" />
+					<Entry name="RevertAction" mandatory="true" />
+				</Entry>
+				<Entry name="SaveAction" accelerator="control S">
+					<Entry name="SaveAsAction" accelerator="control shift S" />
+					<Entry name="SaveAll" />
+				</Entry>
+				<Entry name="CloseAction" accelerator="control W" />
+				<Entry name="CutAction" accelerator="control X" priority="medium" />
+				<Entry name="CopyAction" accelerator="control C" priority="medium">
+					<Entry name="CopySingleAction" accelerator="control shift C" />
+					<Entry name="CopyIDAction" />
+					<Entry name="CopyNodeURIAction" />
+				</Entry>
+				<Entry name="PasteAction" accelerator="control V" priority="medium">
+					<Entry name="SelectedPasteAction" />
+					<Entry name="MoveAction" />
+					<Entry name="CloneAction" />
+				</Entry>
+				<Entry name="UndoAction" accelerator="control Z" priority="medium">
+					<Entry name="RedoAction" accelerator="control Y" />
+				</Entry>
+			</Entry>
+			<Entry name="nodes" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ToggleFoldedAction" accelerator="SPACE" priority="top">
+					<Entry name="ToggleChildrenFoldedAction" accelerator="control SPACE" />
+					<Entry name="UnfoldAllAction" accelerator="alt END" />
+					<Entry name="FoldAllAction" accelerator="alt HOME" />
+				</Entry>
+				<Entry name="NewChildAction" accelerator="INSERT" priority="top" />
+				<Entry name="NewSiblingAction" accelerator="ENTER">
+					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				</Entry>
+				<Entry name="EditAction" priority="Medium">
+					<Entry name="EditLongAction" priority="Top" accelerator="alt ENTER" />
+				</Entry>
+				<Entry name="BackAction" accelerator="alt LEFT" priority="Medium" />
+				<Entry name="ForwardAction" accelerator="alt RIGHT" priority="Medium" />
+			</Entry>
+			<Entry name="fontStyleContributor" builder="ribbon_contributor" />
+			<Entry name="resources" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ExternalImageAddAction" accelerator="alt shift K"
+					priority="Top">
+					<Entry name="ExternalImageChangeAction" />
+					<Entry name="ExternalImageRemoveAction" />
+				</Entry>
+				<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex">
+					<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
+				</Entry>
+				<Entry name="EditAttributesAction" accelerator="alt F9"
+					priority="medium">
+					<Entry name="attributes_AddAttributeAction" />
+					<Entry name="AssignAttributesAction" />
+					<Entry name="CopyAttributes" />
+					<Entry name="PasteAttributes" />
+					<Entry name="attributes_RemoveAllAttributesAction" />
+					<Entry name="attributes_RemoveFirstAttributeAction" />
+					<Entry name="attributes_RemoveLastAttributeAction" />
+					<Entry name="ShowSelectedAttributesAction" />
+					<Entry name="ShowAllAttributesAction" />
+					<Entry name="HideAllAttributesAction" />
+					<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+					<Entry name="ShowAttributeDialogAction" />
+				</Entry>
+				<Entry name="AddConnectorAction">
+					<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
+					<Entry name="SetLinkByFileChooserAction" />
+					<Entry name="SetLinkByTextFieldAction" />
+					<Entry name="ExtractLinkFromTextAction" />
+				</Entry>
+				<Entry name="IconSelectionPlugin">
+					<Entry name="RemoveAllIconsAction" />
+					<Entry name="RemoveIcon_0_Action" />
+					<Entry name="RemoveIconAction" />
+				</Entry>
+				<Entry name="CloudAction" />
+				<Entry name="CloudColorAction" />
+				<Entry name="EditNoteInDialogAction">
+					<Entry name="RemoveNoteAction" />
+				</Entry>
+			</Entry>
+		</Entry>
+		<Entry name="nodes" orderPriority="0" builder="ribbon_task">
+			<Entry name="add_node" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="NewChildAction" accelerator="INSERT" priority="top" />
+				<Entry name="NewSiblingAction" accelerator="ENTER" priority="top">
+					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
+				</Entry>
+				<Entry name="NewSummaryAction">
+					<Entry name="FirstGroupNodeAction" accelerator="alt shift B"
+						priority="medium" />
+					<Entry name="SummaryNodeAction" accelerator="alt shift S" />
+				</Entry>
+				<Entry name="NewFreeNodeAction" />
+				<Entry name="NewParentNode" accelerator="shift INSERT" />
+			</Entry>
+			<Entry name="edit_node" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="EditAction" priority="Top" />
+				<Entry name="EditLongAction" priority="Top" accelerator="alt ENTER" />
+				<Entry name="DeleteAction" accelerator="DELETE" priority="medium" />
+				<Entry name="NodeUpAction" accelerator="control UP" />
+				<Entry name="NodeDownAction" accelerator="control DOWN" />
+				<Entry name="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
+				<Entry name="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
+			</Entry>
+			<Entry name="node_details" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="EditDetailsAction" priority="medium" />
+				<Entry name="EditDetailsInDialogAction" />
+				<Entry name="DeleteDetailsAction" />
+				<Entry name="ToggleDetailsAction" accelerator="alt F2" />
+			</Entry>
+			<Entry name="node_settings" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="JoinNodesAction" accelerator="control J"
+					priority="medium" />
+				<Entry name="SplitNode" />
+				<Entry name="AlwaysUnfoldedNodeAction" />
+				<Entry name="ResetNodeLocationAction" />
+				<Entry name="SetShortenerStateAction" />
+				<Entry name="FreeNodeAction" />
+			</Entry>
+			<Entry name="general_settings" resize_policies="Mirror"
+				builder="ribbon_band">
+				<Entry name="RevisionPluginAction" />
+				<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
+			</Entry>
+			<Entry name="sort" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="SortNodes" />
+			</Entry>
+		</Entry>
+		<Entry name="resources" orderPriority="4000" builder="ribbon_task">
+			<Entry name="images" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ExternalImageAddAction" accelerator="alt shift K" />
+				<Entry name="ExternalImageChangeAction" />
+				<Entry name="ExternalImageRemoveAction" />
+			</Entry>
+			<Entry name="formula_latex" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
+				<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
+			</Entry>
+			<Entry name="attributes" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="EditAttributesAction" accelerator="alt F9"
+					priority="medium">
+					<Entry name="attributes_AddAttributeAction" />
+				</Entry>
+				<Entry name="AssignAttributesAction" />
+				<Entry name="CopyAttributes" />
+				<Entry name="PasteAttributes" />
+				<Entry name="attributes_RemoveAllAttributesAction">
+					<Entry name="attributes_RemoveFirstAttributeAction" />
+					<Entry name="attributes_RemoveLastAttributeAction" />
+				</Entry>
+				<Entry name="menu_displayAttributes">
+					<Entry name="ShowSelectedAttributesAction" />
+					<Entry name="ShowAllAttributesAction" />
+					<Entry name="HideAllAttributesAction" />
+					<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+				</Entry>
+				<Entry name="ShowAttributeDialogAction" />
+			</Entry>
+			<Entry name="links" resize_policies="Mirror" builder="ribbon_band" processOnPopup="true">
+				<Entry name="AddConnectorAction" />
+				<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
+				<Entry name="SetLinkByFileChooserAction" />
+				<Entry name="SetLinkByTextFieldAction" />
+				<Entry name="ExtractLinkFromTextAction" />
+				<Entry name="SetLinkAnchorAction">
+					<Entry name="MakeLinkFromAnchorAction" />
+					<Entry name="MakeLinkToAnchorAction" />
+					<Entry name="ClearLinkAnchorAction" />
+				</Entry>
+				<Entry builder = "link_actions"/>
+			</Entry>
+			<Entry name="icons" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="IconSelectionPlugin" />
+				<Entry name="HierarchicalIconsAction" />
+				<Entry name="HierarchicalIcons2Action" />
+				<Entry name="RemoveAllIconsAction">
+					<Entry name="RemoveIcon_0_Action" />
+					<Entry name="RemoveIconAction" />
+				</Entry>
+				<Entry name="IconList">
+					<Entry builder="icon_actions"/>
+				</Entry>
+				<Entry name="IconProgressIconUpAction" accelerator="alt LESS">
+					<Entry name="IconProgressIconDownAction" accelerator="alt shift LESS" />
+					<Entry name="IconProgressExtended10Action" />
+					<Entry name="IconProgressExtended25Action" />
+					<Entry name="IconProgressRemoveAction" />
+				</Entry>
+			</Entry>
+			<Entry name="cloud" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="CloudAction" />
+				<Entry name="cloud_shapes">
+					<Entry name="CloudShapeAction.ARC" />
+					<Entry name="CloudShapeAction.STAR" />
+					<Entry name="CloudShapeAction.RECT" />
+					<Entry name="CloudShapeAction.ROUND_RECT" />
+				</Entry>
+				<Entry name="CloudColorAction" />
+			</Entry>
+			<Entry name="notes" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="SelectNoteAction" accelerator="control LESS" />
+				<Entry name="EditNoteInDialogAction" />
+				<Entry name="ShowHideNoteAction" accelerator="control GREATER"
+					priority="medium" />
+				<Entry name="RemoveNoteAction" />
+				<Entry name="ShowNotesInMapAction" />
+				<Entry name="ShowHideNoteAction" accelerator="control GREATER" />
+				<Entry name="SetBooleanMapPropertyAction.show_note_icons" />
+				<Entry name="note_window_location">
+					<Entry name="SetNoteWindowPosition.top" />
+					<Entry name="SetNoteWindowPosition.left" />
+					<Entry name="SetNoteWindowPosition.right" />
+					<Entry name="SetNoteWindowPosition.bottom" />
+				</Entry>
+			</Entry>
+		</Entry>
+		<Entry name="formatting" builder="ribbon_task">
+			<Entry name="fontStyleContributor" builder="ribbon_contributor" />
+			<Entry name="styleContributor" builder="ribbon_contributor" />
+			<Entry name="manage_styles" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="NewUserStyleAction" priority="medium">
+					<Entry name="RedefineStyleAction" />
+					<Entry name="ManageConditionalStylesAction" />
+					<Entry name="ManageNodeConditionalStylesAction" />
+				</Entry>
+				<Entry name="CopyMapStylesAction" />
+				<Entry name="CopyStyleExtensionsAction" />
+				<Entry name="EditStylesAction" />
+				<Entry name="FormatCopy" accelerator="alt shift C" priority="medium" />
+				<Entry name="FormatPaste" accelerator="alt shift V" priority="medium" />
+				<Entry name="automatic_layout">
+					<Entry name="AutomaticLayoutControllerAction.HEADINGS" />
+					<Entry name="AutomaticLayoutControllerAction.ALL" />
+					<Entry name="AutomaticLayoutControllerAction.null" />
+				</Entry>
+			</Entry>
+			<Entry name="EdgeProperties" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="format_menu_edge_styles">
+					<Entry name="EdgeStyleAsParentAction" />
+					<Entry name="EdgeStyleAction.linear" />
+					<Entry name="EdgeStyleAction.bezier" />
+					<Entry name="EdgeStyleAction.sharp_linear" />
+					<Entry name="EdgeStyleAction.sharp_bezier" />
+					<Entry name="EdgeStyleAction.horizontal" />
+					<Entry name="EdgeStyleAction.hide_edge" />
+				</Entry>
+				<Entry name="format_menu_edge_widths">
+					<Entry name="EdgeWidthAction_width_parent" />
+					<Entry name="EdgeWidthAction_width_thin" />
+					<Entry name="EdgeWidthAction_1" />
+					<Entry name="EdgeWidthAction_2" />
+					<Entry name="EdgeWidthAction_4" />
+					<Entry name="EdgeWidthAction_8" />
+				</Entry>
+				<Entry name="EdgeColorAction" accelerator="alt shift E">
+					<Entry name="AutomaticEdgeColorHookAction" />
+				</Entry>
+				<Entry name="NodeWidthAction" />
+			</Entry>
+			<Entry name="map_background" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="MapBackgroundColorAction" />
+				<Entry name="MapBackgroundImageAction">
+					<Entry name="MapBackgroundClearAction" />
+					<Entry name="SetBooleanMapPropertyAction.fit_to_viewport" />
+				</Entry>
+				<Entry builder="menu_separator" />
+			</Entry>
+		</Entry>
+		<Entry name="filter" builder="ribbon_task">
+			<Entry name="userDefinedFilters" builder="ribbon_contributor" />
+			<Entry name="filter" resize_policies="Mirror, High2Low"
+				builder="ribbon_band">
+				<Entry name="EditFilterAction" priority="top" />
+				<Entry name="FindAction" accelerator="control G" priority="top" />
+				<Entry name="NodeListAction" accelerator="control shift F">
+					<Entry name="AllMapsNodeListAction" />
+				</Entry>
+				<Entry name="UndoFilterAction" priority="medium" />
+				<Entry name="RedoFilterAction" />
+				<Entry name="ReapplyFilterAction" priority="medium" />
+				<Entry name="ApplySelectedViewConditionAction" priority="medium" />
+				<Entry name="QuickFindAllAction" priority="medium" />
+				<Entry name="ApplyNoFilteringAction" priority="medium" />
+				<Entry name="filterConditionsContributor" builder="ribbon_contributor" />
+			</Entry>
+		</Entry>
+		<Entry name="navigate" builder="ribbon_task">
+			<Entry name="navigate_main" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="NavigationPreviousMapAction" accelerator="control shift TAB"
+					priority="Top" />
+				<Entry name="NavigationNextMapAction" accelerator="control TAB"
+					priority="Top" />
+				<Entry name="BackAction" accelerator="alt LEFT" priority="Top" />
+				<Entry name="ForwardAction" accelerator="alt RIGHT" priority="Top" />
+				<Entry name="NextNodeAction.BACK" accelerator="control alt LEFT"
+					priority="Top">
+					<Entry name="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
+				</Entry>
+				<Entry name="NextNodeAction.FORWARD" accelerator="control alt RIGHT"
+					priority="Top">
+					<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+				</Entry>
+			</Entry>
+			<Entry name="navigate_maps" builder="ribbon_contributor" />
+			<Entry name="navigate_modes" builder="ribbon_contributor" />
+			<Entry name="goto" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="MoveToRootAction" accelerator="ESCAPE" priority="Top" />
+				<Entry name="FollowLinkAction" accelerator="control ENTER" />
+				<Entry name="GotoNodeAction" />
+				<Entry name="linkList" builder="ribbon_contributor" />
+				<Entry name="cloneList" builder="ribbon_contributor" />
+			</Entry>
+			<Entry name="navigate_nodes" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ToggleFoldedAction" accelerator="SPACE" priority="top">
+					<Entry name="ToggleChildrenFoldedAction" accelerator="control SPACE" />
+				</Entry>
+				<Entry name="UnfoldAllAction" accelerator="alt END" priority="top" />
+				<Entry name="FoldAllAction" accelerator="alt HOME" priority="top" />
+				<Entry name="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
+				<Entry name="FoldOneLevelAction" accelerator="alt PAGE_UP" />
+				<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
+			</Entry>
+			<Entry name="navigate_select" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="SelectAllAction" accelerator="control A"
+					priority="medium" />
+				<Entry name="SelectBranchAction" accelerator="control shift A" />
+			</Entry>
+		</Entry>
+		<Entry name="tools_and_settings" builder="ribbon_task">
+			<Entry name="tools_misc" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="OpenUserDirAction" priority="top" />
+				<Entry name="PropertyAction" accelerator="control COMMA"
+					priority="top" />
+				<Entry name="menu_time" priority="medium">
+					<Entry name="TimeManagementAction" accelerator="control T" />
+					<Entry name="TimeListAction" />
+					<Entry name="ReminderHookAction" />
+				</Entry>
+				<Entry name="menu_encryption" priority="medium">
+					<Entry name="EnterPassword" />
+					<Entry name="RemoveEncryption" />
+				</Entry>
+				<Entry name="loadAcceleratorPresets" builder="ribbon_contributor" />
+				<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
+				<Entry name="scripting" plugin="org.freeplane.plugin.script">
+					<Entry name="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script" />
+					<Entry name="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script" />
+					<Entry name="ScriptEditor" plugin="org.freeplane.plugin.script" />
+					<Entry name="userScripts" plugin="org.freeplane.plugin.script"
+						builder="ribbon_contributor" />
+				</Entry>
+				<Entry name="formula.menuname" plugin="org.freeplane.plugin.formula">
+					<Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
+				</Entry>
+				<Entry name="export">
+					<Entry name="ExportAction" />
+					<Entry name="ExportBranchAction" accelerator="alt shift A" />
+				</Entry>
+				<Entry name="import">
+					<Entry name="ImportBranchAction" />
+					<Entry name="ImportLinkedBranchAction" />
+					<Entry name="ImportLinkedBranchWithoutRootAction" />
+					<Entry name="ImportExplorerFavoritesAction" />
+					<Entry name="ImportFolderStructureAction" />
+					<Entry name="ImportMindmanagerFiles" />
+				</Entry>
+			</Entry>
+			<Entry name="maps" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="OpenMapsAddLocation" plugin="org.freeplane.plugin.openmaps" />
+				<Entry name="OpenMapsRemoveLocation" plugin="org.freeplane.plugin.openmaps" />
+				<Entry name="OpenMapsViewLocation" plugin="org.freeplane.plugin.openmaps" />
+			</Entry>
+		</Entry>
+		<Entry name="view" builder="ribbon_task">
+			<Entry name="zoomContributor" builder="ribbon_contributor" />
+			<Entry name="view_mode" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ToggleRibbonAction" priority="top" />
+				<Entry name="CenterSelectedNodeAction" priority="top">
+					<Entry name="SetBooleanPropertyAction.center_selected_node" />
+				</Entry>
+				<Entry name="ViewLayoutTypeAction.OUTLINE" />
+				<Entry name="ToggleFullScreenAction" />
+				<Entry name="SetBooleanPropertyAction.presentation_mode" />
+			</Entry>
+			<Entry name="elements" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ToggleDetailsAction" accelerator="alt F2" />
+				<Entry name="attribute_options" priority="top">
+					<Entry name="ShowSelectedAttributesAction" />
+					<Entry name="ShowAllAttributesAction" />
+					<Entry name="HideAllAttributesAction" />
+					<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+					<Entry name="ShowAttributeDialogAction" />
+				</Entry>
+				<Entry name="ShowHideNoteAction" accelerator="control GREATER"
+					priority="top" />
+				<Entry name="menu_noteView">
+					<Entry name="ShowNotesInMapAction" />
+					<Entry name="SetBooleanMapPropertyAction.show_note_icons" />
+				</Entry>
+				<Entry name="note_window_location">
+					<Entry name="SetNoteWindowPosition.top" />
+					<Entry name="SetNoteWindowPosition.left" />
+					<Entry name="SetNoteWindowPosition.right" />
+					<Entry name="SetNoteWindowPosition.bottom" />
+				</Entry>
+			</Entry>
+			<Entry name="tooltips" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="SetBooleanPropertyAction.show_node_tooltips" />
+				<Entry name="SetBooleanPropertyAction.show_styles_in_tooltip" />
+				<Entry name="CreationModificationPluginAction" />
+			</Entry>
+			<Entry name="toolbars" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ToggleFBarAction" />
+				<Entry name="ToggleLeftToolbarAction" priority="top" />
+				<Entry name="ShowFormatPanel" priority="top" />
+				<Entry name="ShowFilterToolbarAction" priority="top"
+					accelerator="control F" />
+				<Entry name="ToggleStatusAction" />
+				<Entry name="ToggleScrollbarsAction" />
+			</Entry>
+			<Entry name="view_misc" resize_policies="Mirror" builder="ribbon_band">
+				<Entry name="ShowSelectionAsRectangleAction" />
+				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
+			</Entry>
+		</Entry>
+		<Entry name="help" orderPriority="last" builder="ribbon_task">
+			<Entry name="help_misc" resize_policies="Mirror" orderPriority="0"
+				builder="ribbon_band">
+				<Entry name="OpenUserDirAction" priority="top" mandatory="true" />
+				<Entry name="UpdateCheckAction" priority="top" mandatory="true" />
+				<Entry name="GettingStartedAction" accelerator="F1" mandatory="true" />
+				<Entry name="HotKeyInfoAction" mandatory="true" />
+			</Entry>
+			<Entry name="contact" resize_policies="Mirror" orderPriority="2000"
+				builder="ribbon_band">
+				<Entry name="AskForHelp" mandatory="true" />
+				<Entry name="RequestFeatureAction" mandatory="true" />
+				<Entry name="ReportBugAction" mandatory="true" />
+			</Entry>
+			<Entry name="about" resize_policies="Mirror" orderPriority="last"
+				builder="ribbon_band">
+				<Entry name="OpenFreeplaneSiteAction" priority="top"
+					mandatory="true" />
+				<Entry name="AboutAction" priority="top" mandatory="true" />
+			</Entry>
+		</Entry>
+	</Entry>
+</FreeplaneUIEntries>
