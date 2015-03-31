@@ -2,6 +2,7 @@
 1.3.16
 ===============================
 Fix zooming for external images
+Automatic edge coloring: no yellow edges
 ===============================
 1.3.15
 ===============================

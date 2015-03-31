@@ -122,7 +122,7 @@ class AutomaticEdgeColor implements IExtension{
 	    this.colorCount = colorCount;
     }
 	private static final Color[] COLORS = new Color[]{
-		Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.CYAN, Color.YELLOW, 
+		Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.CYAN, 
 		Color.RED.darker().darker(), Color.BLUE.darker().darker(), Color.GREEN.darker().darker(), Color.MAGENTA.darker().darker(), Color.CYAN.darker().darker(), Color.YELLOW.darker().darker()};
 	Color nextColor() {
 		if(colorCount >= COLORS.length){
