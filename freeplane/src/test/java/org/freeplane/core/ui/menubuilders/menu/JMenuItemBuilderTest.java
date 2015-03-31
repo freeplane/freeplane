@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,10 +17,10 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
-import org.freeplane.core.ui.menubuilders.ResourceAccessorStub;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +35,7 @@ public class JMenuItemBuilderTest {
 	private JMenuItemBuilder menuActionGroupBuilder;
 	private EntryPopupListener popupListener;
 	private Entry groupEntry;
+	private ResourceAccessor resourceAccessorMock;
 
 	@Before
 	public void setup() {
@@ -46,7 +48,10 @@ public class JMenuItemBuilderTest {
 		groupEntry = new Entry();
 		menu = new JMenu();
 		popupListener = mock(EntryPopupListener.class);
-		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, new ResourceAccessorStub());
+		resourceAccessorMock = mock(ResourceAccessor.class);
+		when(resourceAccessorMock.getRawText(anyString())).thenReturn("");
+		when(resourceAccessorMock.getRawText("menu")).thenReturn("menu");
+		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, resourceAccessorMock);
 	}
 	
 	@Test

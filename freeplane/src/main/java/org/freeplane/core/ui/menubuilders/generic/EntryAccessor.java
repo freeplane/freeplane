@@ -47,8 +47,15 @@ public class EntryAccessor {
 			return (String) entry.getAttribute(TEXT);
 		else {
 			String name = entry.getName();
-			final String rawText = resourceAccessor.getRawText(name);
-			return rawText;
+			if (name.isEmpty())
+				return "";
+			else {
+				final String rawText = resourceAccessor.getRawText(name);
+				if (rawText != null)
+					return rawText;
+				else
+					return "";
+			}
 		}
 	}
 
