@@ -21,7 +21,7 @@ public class MenuBuilderAcceptanceTest {
 	@BeforeClass
 	static public void setup() {
 		final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(Controller.getCurrentModeController(), new FreeplaneResourceAccessor());
-		final String menuResource = "/xml/mindmapmoderibbon.out.xml";
+		final String menuResource = "/xml/mindmapmode.generic.xml";
 		final InputStream resource = MenuBuilderAcceptanceTest.class.getResourceAsStream(menuResource);
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 		menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
