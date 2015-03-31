@@ -84,4 +84,12 @@ public class EntryAccessor {
 				return getAncestorComponent(parent);
 		}
 	}
+
+	public void setText(Entry entry, String text) {
+		entry.setAttribute(TEXT, text);
+	}
+
+	public void setIcon(Entry entry, Icon icon) {
+		entry.setAttribute(ICON, icon);
+	}
 }

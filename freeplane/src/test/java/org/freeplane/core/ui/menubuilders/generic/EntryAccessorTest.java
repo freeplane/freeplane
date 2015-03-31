@@ -5,8 +5,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.ui.menubuilders.generic.Entry;
-import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,6 +24,25 @@ public class EntryAccessorTest {
 		final Icon icon = new ImageIcon();
 		entry.setAttribute("icon", icon);
 		final EntryAccessor entryAccessor = new EntryAccessor();
+		final Icon entryIcon = entryAccessor.getIcon(entry);
+		Assert.assertThat(entryIcon, equalTo(icon));
+	}
+
+	@Test
+	public void setsTextToEntryAttributeText() throws Exception {
+		final Entry entry = new Entry();
+		final EntryAccessor entryAccessor = new EntryAccessor();
+		entryAccessor.setText(entry, "entry text");
+		final String entryText = entryAccessor.getText(entry);
+		Assert.assertThat(entryText, equalTo("entry text"));
+	}
+
+	@Test
+	public void setsIconToEntryAttributeIcon() throws Exception {
+		final Entry entry = new Entry();
+		final EntryAccessor entryAccessor = new EntryAccessor();
+		final Icon icon = new ImageIcon();
+		entryAccessor.setIcon(entry, icon);
 		final Icon entryIcon = entryAccessor.getIcon(entry);
 		Assert.assertThat(entryIcon, equalTo(icon));
 	}

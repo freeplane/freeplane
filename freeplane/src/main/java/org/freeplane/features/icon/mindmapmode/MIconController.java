@@ -54,6 +54,8 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
@@ -79,6 +81,18 @@ public class MIconController extends IconController {
 	    	updateIconToolbar(modeController);
 	    }
     }
+
+	private final class IconActionBuilder implements EntryVisitor {
+		@Override
+		public void visit(Entry target) {
+
+		}
+
+		@Override
+		public boolean shouldSkipChildren(Entry entry) {
+			return false;
+		}
+	}
 
 	public static enum Keys {
 		ICONS

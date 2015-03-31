@@ -247,17 +247,7 @@ public class LinkController extends SelectionController implements IExtension {
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
-		}, new EntryVisitor() {
-			@Override
-			public void visit(Entry target) {
-				target.removeChildren();
-			}
-
-			@Override
-			public boolean shouldSkipChildren(Entry entry) {
-				return true;
-			}
-		}));
+		}, EntryVisitor.CHILD_ENTRY_REMOVER));
 	}
 
     private class LinkMenuContributor implements IMenuContributor {
