@@ -17,6 +17,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
@@ -58,7 +59,7 @@ public class MenuBuilderIntegrationTest {
 				+ "</FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = buildJMenu(content);
-		assertThat(builtMenuStructure.getChild(0).getComponent().getClass(), CoreMatchers.<Object>is(FreeplaneToolBar.class));
+		assertThat(new EntryAccessor().getComponent(builtMenuStructure.getChild(0)).getClass(), CoreMatchers.<Object>is(FreeplaneToolBar.class));
 	}
 
 	@Test
@@ -74,7 +75,7 @@ public class MenuBuilderIntegrationTest {
 
 		Entry builtMenuStructure = buildJMenu(content);
 		
-		assertThat(((JButton)builtMenuStructure.getChild(0).getChild(0).getComponent()).getAction(), CoreMatchers.<Action>equalTo(someAction));
+		assertThat(((JButton)new EntryAccessor().getComponent(builtMenuStructure.getChild(0).getChild(0))).getAction(), CoreMatchers.<Action>equalTo(someAction));
 	}
 
 	@Test
@@ -90,8 +91,8 @@ public class MenuBuilderIntegrationTest {
 		
 		Entry builtMenuStructure = buildJMenu(content);
 		
-		final JToolBar toolbar = (JToolBar)builtMenuStructure.getChild(0).getComponent();
-		final JButton button = (JButton)builtMenuStructure.getChild(0).getChild(0).getComponent();
+		final JToolBar toolbar = (JToolBar)new EntryAccessor().getComponent(builtMenuStructure.getChild(0));
+		final JButton button = (JButton)new EntryAccessor().getComponent(builtMenuStructure.getChild(0).getChild(0));
 		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
 	}
 }

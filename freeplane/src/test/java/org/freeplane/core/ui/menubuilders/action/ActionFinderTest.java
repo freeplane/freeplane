@@ -2,13 +2,12 @@ package org.freeplane.core.ui.menubuilders.action;
 
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.features.mode.FreeplaneActions;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class ActionFinderTest {
 		final ActionFinder actionFinder = new ActionFinder(freeplaneActions);
 		actionFinder.visit(entry);
 		
-		assertThat((AFreeplaneAction) entry.getAttribute(Entry.ACTION), CoreMatchers.equalTo(someAction));
+		assertThat((AFreeplaneAction) new EntryAccessor().getAction(entry), CoreMatchers.equalTo(someAction));
 	}
 
 	@Test
@@ -50,7 +49,7 @@ public class ActionFinderTest {
 		actionFinder.visit(entry);
 		
 		Mockito.verify(freeplaneActions).addAction(setBooleanPropertyAction);
-		assertThat(entry.getAttribute(Entry.ACTION), CoreMatchers.<Object>equalTo(setBooleanPropertyAction));
+		assertThat(new EntryAccessor().getAction(entry), CoreMatchers.<Object> equalTo(setBooleanPropertyAction));
 	}
 
 }

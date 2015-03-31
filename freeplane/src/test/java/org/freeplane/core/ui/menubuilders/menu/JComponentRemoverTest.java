@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class JComponentRemoverTest {
 		JComponent parent = new JPanel();
 		JComponent entryComponent = new JPanel();
 		parent.add(entryComponent);
-		entry.setComponent(entryComponent);
+		new EntryAccessor().setComponent(entry, entryComponent);
 		componentRemover.visit(entry);
 		
 		Assert.assertThat(entryComponent.getParent(), nullValue(Container.class));
@@ -45,7 +46,7 @@ public class JComponentRemoverTest {
 		final MenuSplitter menuSplitter = new MenuSplitter(1);
 		menuSplitter.addMenuComponent(parent, new JMenu());
 		menuSplitter.addMenuComponent(parent, entryComponent);
-		entry.setComponent(entryComponent);
+		new EntryAccessor().setComponent(entry, entryComponent);
 		componentRemover.visit(entry);
 		Assert.assertThat(parent.getPopupMenu().getComponentCount(), equalTo(1));
 	}

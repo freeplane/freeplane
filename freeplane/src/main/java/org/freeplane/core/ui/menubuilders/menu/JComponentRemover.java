@@ -4,6 +4,7 @@ import java.awt.Component;
 
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JComponentRemover implements EntryVisitor{
@@ -11,7 +12,7 @@ public class JComponentRemover implements EntryVisitor{
 
 	@Override
 	public void visit(Entry target) {
-		final Component component = (Component) target.removeComponent();
+		final Component component = (Component) new EntryAccessor().removeComponent(target);
 		if (component != null) {
 			removeMenuComponent(component);
 		}

@@ -3,6 +3,7 @@ package org.freeplane.core.ui.menubuilders.action;
 import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.features.mode.FreeplaneActions;
 
@@ -17,7 +18,7 @@ public class ActionFinder implements EntryVisitor{
 	@Override
 	public void visit(final Entry target) {
 		final String actionName = target.getName();
-		if (actionName != null && target.getAction() == null) {
+		if (actionName != null && new EntryAccessor().getAction(target) == null) {
 			AFreeplaneAction action = freeplaneActions.getAction(actionName);
 			final String setBooleanPropertyActionPrefix = SetBooleanPropertyAction.class.getSimpleName() + ".";
 			if(action == null && actionName.startsWith(setBooleanPropertyActionPrefix)){
@@ -26,7 +27,7 @@ public class ActionFinder implements EntryVisitor{
 				freeplaneActions.addAction(action);
 			}
 			
-			target.setAction(action);
+			new EntryAccessor().setAction(target, action);
 		}
 	}
 

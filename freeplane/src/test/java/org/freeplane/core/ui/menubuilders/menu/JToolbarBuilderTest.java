@@ -4,6 +4,7 @@ import static org.junit.Assert.assertThat;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -18,6 +19,6 @@ public class JToolbarBuilderTest {
 		final JToolbarBuilder toolbarBuilder = new JToolbarBuilder();
 		toolbarBuilder.visit(toolbarEntry);
 
-		assertThat(toolbarEntry.getComponent().getClass(), CoreMatchers.<Object>is(FreeplaneToolBar.class));
+		assertThat(new EntryAccessor().getComponent(toolbarEntry).getClass(), CoreMatchers.<Object>is(FreeplaneToolBar.class));
 	}
 }

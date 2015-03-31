@@ -5,18 +5,18 @@ import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.U
 
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
-import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.ChildProcessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.features.mode.FreeplaneActions;
 
 public class MenuBuildProcessFactory {
 
-	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor menuEntryBuilder) {
+	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor resourceAccessor) {
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
@@ -37,7 +37,7 @@ public class MenuBuildProcessFactory {
 		entryPopupListenerCollection.addEntryPopupListener(childBuilder);
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 		recursiveMenuStructureBuilder.addBuilderPair("menu.action", new BuilderDestroyerPair(new JMenuItemBuilder(
-		    entryPopupListenerCollection, menuEntryBuilder), new JComponentRemover()));
+		    entryPopupListenerCollection, resourceAccessor), new JComponentRemover()));
 
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		

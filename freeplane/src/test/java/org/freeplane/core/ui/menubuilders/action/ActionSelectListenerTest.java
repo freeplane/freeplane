@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -21,7 +22,7 @@ public class ActionSelectListenerTest {
 		final AFreeplaneAction someAction = Mockito.mock(AFreeplaneAction.class);
 		when(someAction.checkSelectionOnPopup()).thenReturn(true);
 		when(someAction.isEnabled()).thenReturn(true);
-		actionEntry.setAction(someAction);
+		new EntryAccessor().setAction(actionEntry, someAction);
 		
 		final EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
 		final ActionSelectListener actionSelectListener = new ActionSelectListener();
@@ -39,7 +40,7 @@ public class ActionSelectListenerTest {
 		final AFreeplaneAction someAction = Mockito.mock(AFreeplaneAction.class);
 		when(someAction.checkSelectionOnPopup()).thenReturn(false);
 		when(someAction.isEnabled()).thenReturn(true);
-		actionEntry.setAction(someAction);
+		new EntryAccessor().setAction(actionEntry, someAction);
 		
 		final EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
 		final ActionSelectListener actionSelectListener = new ActionSelectListener();

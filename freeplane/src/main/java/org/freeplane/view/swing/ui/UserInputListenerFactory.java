@@ -61,6 +61,7 @@ import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
@@ -351,15 +352,17 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		final URL genericStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.out.xml"));
 		if(genericStructure != null){
 			try {
+				final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
-				    Controller.getCurrentModeController(), new FreeplaneResourceAccessor());
+				    Controller.getCurrentModeController(), resourceAccessor);
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : actionBuilders.entrySet())
 					buildProcessor.phase(ACTIONS).addBuilderPair(entry.getKey(), entry.getValue());
 				final InputStream resource = genericStructure.openStream();
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 				Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
 				buildProcessor.build(menuStructure);
-				menuBar = (FreeplaneMenuBar) menuStructure.getChild(0).getComponent();
+				menuBar = (FreeplaneMenuBar) new EntryAccessor(resourceAccessor)
+				    .getComponent(menuStructure.getChild(0));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

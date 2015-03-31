@@ -102,11 +102,11 @@ public class EntryTest {
 	public void findsParentComponent(){
 		Object component = mock(Object.class);
 		Entry structureWithEntry = new Entry();
-		structureWithEntry.setComponent(component);
+		new EntryAccessor().setComponent(structureWithEntry, component);
 		final Entry child = new Entry();
 		structureWithEntry.addChild(child);
 		
-		assertThat(child.getAncestorComponent(), equalTo(component));
+		assertThat(new EntryAccessor().getAncestorComponent(child), equalTo(component));
 	}
 	
 	@Test 
@@ -115,21 +115,21 @@ public class EntryTest {
 		final Entry child = new Entry();
 		structureWithEntry.addChild(child);
 		
-		assertThat(child.getAncestorComponent(), CoreMatchers.<Object>nullValue());
+		assertThat(new EntryAccessor().getAncestorComponent(child), CoreMatchers.<Object>nullValue());
 	}
 	
 	@Test 
 	public void findsAncestorComponent(){
 		Object component = mock(Object.class);
 		Entry structureWithEntry = new Entry();
-		structureWithEntry.setComponent(component);
+		new EntryAccessor().setComponent(structureWithEntry, component);
 		final Entry level1child = new Entry();
 		structureWithEntry.addChild(level1child);
 		
 		final Entry level2child = new Entry();
 		level1child.addChild(level2child);
 
-		assertThat(level2child.getAncestorComponent(), equalTo(component));
+		assertThat(new EntryAccessor().getAncestorComponent(level2child), equalTo(component));
 	}
 
 	@Test 

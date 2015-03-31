@@ -3,7 +3,7 @@ package org.freeplane.core.ui.menubuilders;
 import java.net.URL;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.util.TextUtils;
 
 public class FreeplaneResourceAccessor implements ResourceAccessor {

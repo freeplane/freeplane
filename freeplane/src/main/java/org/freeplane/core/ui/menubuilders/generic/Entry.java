@@ -20,8 +20,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 public class Entry {
 	
-	public static final String COMPONENT = "component";
-	public static final String ACTION = "action";
 	private String name;
 	private Entry parent;
 	private List<String> builders;
@@ -121,42 +119,6 @@ public class Entry {
 
 	public Collection<String> builders() {
 		return builders;
-	}
-
-
-	public Object getComponent() {
-		return getAttribute(COMPONENT);
-	}
-	
-	public Object removeComponent() {
-		return removeAttribute(COMPONENT);
-	}
-
-	public void setComponent(Object component) {
-		setAttribute(COMPONENT, component);
-	}
-
-	public AFreeplaneAction getAction() {
-		return(AFreeplaneAction ) getAttribute(ACTION);
-	}
-	
-	public Entry setAction(AFreeplaneAction action) {
-		setAttribute(ACTION, action);
-		return this;
-	}
-
-
-	public Object getAncestorComponent() {
-		final Entry parent = getParent();
-		if(parent == null)
-			return null;
-		else{
-			final Object parentComponent = parent.getComponent();
-			if(parentComponent != null)
-				return parentComponent;
-			else
-				return parent.getAncestorComponent();
-		}
 	}
 
 

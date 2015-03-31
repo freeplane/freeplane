@@ -18,6 +18,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.menubuilders.ResourceAccessorStub;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class JMenuItemBuilderTest {
 	public void setup() {
 		actionEntry = new Entry();
 		action = Mockito.mock(AFreeplaneAction.class);
-		actionEntry.setAction(action);
+		new EntryAccessor().setAction(actionEntry, action);
 
 		menuEntry = new Entry();
 		menuEntry.setName("menu");
@@ -50,11 +51,11 @@ public class JMenuItemBuilderTest {
 	
 	@Test
 	public void createsMenuButtonWithAction() {
-		menuEntry.setComponent(menu);
+		new EntryAccessor().setComponent(menuEntry, menu);
 		menuEntry.addChild(actionEntry);
 		menuActionGroupBuilder.visit(actionEntry);
 
-		JMenuItem item = (JMenuItem)actionEntry.getComponent();
+		JMenuItem item = (JMenuItem)new EntryAccessor().getComponent(actionEntry);
 
 		assertThat(item.getAction(), CoreMatchers.<Action>equalTo(action));
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
@@ -64,10 +65,10 @@ public class JMenuItemBuilderTest {
 	public void createsMenuItemWithSelectableAction() {
 		menuEntry.addChild(actionEntry);
 		when(action.isSelectable()).thenReturn(true);
-		menuEntry.setComponent(menu);
+		new EntryAccessor().setComponent(menuEntry, menu);
 		menuActionGroupBuilder.visit(actionEntry);
 
-		JAutoCheckBoxMenuItem item = (JAutoCheckBoxMenuItem)actionEntry.getComponent();
+		JAutoCheckBoxMenuItem item = (JAutoCheckBoxMenuItem)new EntryAccessor().getComponent(actionEntry);
 
 		assertThat(item.getAction(), CoreMatchers.<Action>equalTo(action));
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
@@ -75,14 +76,14 @@ public class JMenuItemBuilderTest {
 	
 	@Test
 	public void createsMenuSeparator() {
-		menuEntry.setComponent(menu);
+		new EntryAccessor().setComponent(menuEntry, menu);
 		Entry separatorEntry = new Entry();
 		separatorEntry.setBuilders(asList("separator"));
 		menuEntry.addChild(separatorEntry);
 		
 		menuActionGroupBuilder.visit(separatorEntry);
 
-		JPopupMenu.Separator separator = (JPopupMenu.Separator)separatorEntry.getComponent();
+		JPopupMenu.Separator separator = (JPopupMenu.Separator)new EntryAccessor().getComponent(separatorEntry);
 
 		assertThat(separator.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
 	}
@@ -91,13 +92,13 @@ public class JMenuItemBuilderTest {
 	public void createsSubmenuWithoutAction() {
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
-		parentMenuEntry.setComponent(parentMenu);
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
 		
 		menuActionGroupBuilder.visit(menuEntry);
 
-		JMenu item = (JMenu)menuEntry.getComponent();
+		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(parentMenu.getPopupMenu()));
 	}
 
@@ -105,13 +106,13 @@ public class JMenuItemBuilderTest {
 	public void createsMainMenuWithoutAction() {
 		Entry parentMenuEntry = new Entry();
 		final FreeplaneMenuBar parentMenu = new FreeplaneMenuBar();
-		parentMenuEntry.setComponent(parentMenu);
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
 		
 		menuActionGroupBuilder.visit(menuEntry);
 
-		JMenu item = (JMenu)menuEntry.getComponent();
+		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(parentMenu));
 	}
 
@@ -120,14 +121,14 @@ public class JMenuItemBuilderTest {
 
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
-		parentMenuEntry.setComponent(parentMenu);
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
-		menuEntry.setAction(action);
+		new EntryAccessor().setAction(menuEntry, action);
 		
 		menuActionGroupBuilder.visit(menuEntry);
 
-		JMenu item = (JMenu)menuEntry.getComponent();
+		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 
 		final JMenuItem menuItem = (JMenuItem) item.getPopupMenu().getComponent(0);
 		assertThat(menuItem.getAction(), CoreMatchers.<Action>equalTo(action));
@@ -137,10 +138,10 @@ public class JMenuItemBuilderTest {
 	public void createsGroupWithAction() {
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
-		parentMenuEntry.setComponent(parentMenu);
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(groupEntry);
 		groupEntry.addChild(actionEntry);
-		groupEntry.setAction(action);
+		new EntryAccessor().setAction(groupEntry, action);
 		menuActionGroupBuilder.visit(groupEntry);
 		final JMenuItem menuItem = (JMenuItem) parentMenu.getPopupMenu().getComponent(0);
 		assertThat(menuItem.getAction(), CoreMatchers.<Action> equalTo(action));
@@ -150,13 +151,13 @@ public class JMenuItemBuilderTest {
 	public void whenPopupMenuBecomesVisible_popupListenerIsCalled() {
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
-		parentMenuEntry.setComponent(parentMenu);
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
 		
 		menuActionGroupBuilder.visit(menuEntry);
 
-		JMenu item = (JMenu)menuEntry.getComponent();
+		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 		item.getPopupMenu().setVisible(true);
 		verify(popupListener).childEntriesWillBecomeVisible(menuEntry);
 	}
@@ -166,13 +167,13 @@ public class JMenuItemBuilderTest {
 	public void whenPopupMenuBecomesInvisible_popupListenerIsCalled() {
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
-		parentMenuEntry.setComponent(parentMenu);
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
 		
 		menuActionGroupBuilder.visit(menuEntry);
 
-		JMenu item = (JMenu)menuEntry.getComponent();
+		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 		item.getPopupMenu().setVisible(true);
 		item.getPopupMenu().setVisible(false);
 		verify(popupListener).childEntriesWillBecomeInvisible(menuEntry);

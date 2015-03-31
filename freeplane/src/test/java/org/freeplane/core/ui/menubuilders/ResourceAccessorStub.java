@@ -2,7 +2,7 @@ package org.freeplane.core.ui.menubuilders;
 
 import java.net.URL;
 
-import org.freeplane.core.ui.menubuilders.action.ResourceAccessor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 
 public class ResourceAccessorStub implements
 		ResourceAccessor {

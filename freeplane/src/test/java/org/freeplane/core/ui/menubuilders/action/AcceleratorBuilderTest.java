@@ -11,6 +11,7 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -24,7 +25,7 @@ public class AcceleratorBuilderTest {
 		String keyStroke = KeyStroke.getKeyStroke('A', InputEvent.CTRL_MASK).toString();
 		actionEntry.setAttribute("accelerator", keyStroke);
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
-		actionEntry.setAction(action);
+		new EntryAccessor().setAction(actionEntry, action);
 
 		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
@@ -54,7 +55,7 @@ public class AcceleratorBuilderTest {
 	public void ignoresEntryWithoutAccelerator() {
 		Entry actionEntry = new Entry();
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
-		actionEntry.setAction(action);
+		new EntryAccessor().setAction(actionEntry, action);
 
 		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
@@ -73,7 +74,7 @@ public class AcceleratorBuilderTest {
 		String keyStroke = "CONTROL A";
 		actionEntry.setAttribute("accelerator", keyStroke);
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
-		actionEntry.setAction(action);
+		new EntryAccessor().setAction(actionEntry, action);
 
 		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map){

@@ -9,6 +9,7 @@ import javax.swing.JMenu;
 import org.freeplane.core.ui.menubuilders.ResourceAccessorStub;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.features.mode.FreeplaneActions;
@@ -48,7 +49,7 @@ public class MenuBuildProcessFactoryTest {
 						+ "</Entry>");
 		phaseProcessor.build(menuStructure);
 		final Entry openedEntry = menuStructure.getChild(0,0,0);
-		JMenu menu = (JMenu) openedEntry.getComponent();
+		JMenu menu = (JMenu) new EntryAccessor().getComponent(openedEntry);
 		menu.getPopupMenu().setVisible(true);
 		verify(freeplaneActions).getAction("action");
 	}

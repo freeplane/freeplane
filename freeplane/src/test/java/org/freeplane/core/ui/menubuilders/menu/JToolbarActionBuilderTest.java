@@ -15,6 +15,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarActionBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -25,17 +26,17 @@ public class JToolbarActionBuilderTest {
 	public void createsToolbarButtonWithAction() {
 		Entry actionEntry = new Entry();
 		final AFreeplaneAction action = Mockito.mock(AFreeplaneAction.class);
-		actionEntry.setAction(action);
+		new EntryAccessor().setAction(actionEntry, action);
 
 		Entry toolbarEntry = new Entry();
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
-		toolbarEntry.setComponent(toolbar);
+		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
 		
 		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
 		toolbarActionGroupBuilder.visit(actionEntry);
 
-		JButton button = (JButton)actionEntry.getComponent();
+		JButton button = (JButton)new EntryAccessor().getComponent(actionEntry);
 
 		assertThat(button.getAction(), CoreMatchers.<Action>equalTo(action));
 		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
@@ -46,17 +47,17 @@ public class JToolbarActionBuilderTest {
 		Entry actionEntry = new Entry();
 		final AFreeplaneAction action = Mockito.mock(AFreeplaneAction.class);
 		when(action.isSelectable()).thenReturn(true);
-		actionEntry.setAction(action);
+		new EntryAccessor().setAction(actionEntry, action);
 
 		Entry toolbarEntry = new Entry();
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
-		toolbarEntry.setComponent(toolbar);
+		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
 		
 		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
 		toolbarActionGroupBuilder.visit(actionEntry);
 
-		JAutoToggleButton button = (JAutoToggleButton)actionEntry.getComponent();
+		JAutoToggleButton button = (JAutoToggleButton)new EntryAccessor().getComponent(actionEntry);
 
 		assertThat(button.getAction(), CoreMatchers.<Action>equalTo(action));
 		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
@@ -69,13 +70,13 @@ public class JToolbarActionBuilderTest {
 
 		Entry toolbarEntry = new Entry();
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
-		toolbarEntry.setComponent(toolbar);
+		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(separatorEntry);
 		
 		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
 		toolbarActionGroupBuilder.visit(separatorEntry);
 
-		JToolBar.Separator separator = (JToolBar.Separator)separatorEntry.getComponent();
+		JToolBar.Separator separator = (JToolBar.Separator)new EntryAccessor().getComponent(separatorEntry);
 
 		assertThat(separator.getParent(), CoreMatchers.equalTo((Container)toolbar));
 		assertThat(separator.getOrientation(), CoreMatchers.equalTo(SwingConstants.VERTICAL));

@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.action;
 
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.Compat;
 
@@ -14,7 +15,7 @@ public class AcceleratorBuilder implements EntryVisitor{
 	}
 
 	public void visit(Entry entry) {
-		if(entry.getAction() != null){
+		if (new EntryAccessor().getAction(entry) != null) {
 			String accelerator = (String) entry.getAttribute(ACCELERATOR);
 			if(accelerator != null) {
 				if (isMacOsX()) {

@@ -10,6 +10,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JToolbarActionBuilder implements EntryVisitor {
@@ -19,7 +20,7 @@ public class JToolbarActionBuilder implements EntryVisitor {
 
 	@Override
 	public void visit(Entry entry) {
-		final AFreeplaneAction action = entry.getAction();
+		final AFreeplaneAction action = new EntryAccessor().getAction(entry);
 		Component component;
 		if(action != null){
 			if (action.isSelectable()) {
@@ -35,8 +36,8 @@ public class JToolbarActionBuilder implements EntryVisitor {
 		else
 			component = null;
 		if(component != null){
-			entry.setComponent(component);
-			final Container container = (Container) entry.getAncestorComponent();
+			new EntryAccessor().setComponent(entry, component);
+			final Container container = (Container) new EntryAccessor().getAncestorComponent(entry);
 			container.add(component);
 		}
 	}

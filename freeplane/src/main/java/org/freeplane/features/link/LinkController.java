@@ -64,6 +64,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
@@ -236,7 +237,9 @@ public class LinkController extends SelectionController implements IExtension {
 						entry.addChild(new Entry().setBuilders("separator"));
 						firstAction = false;
 					}
-					entry.addChild(new Entry().setAction(gotoLinkNodeAction));
+					final Entry actionEntry = new Entry();
+					new EntryAccessor().setAction(actionEntry, gotoLinkNodeAction);
+					entry.addChild(actionEntry);
 				}
 			}
 
