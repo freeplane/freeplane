@@ -12,11 +12,13 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.MenuSplitterConfiguration;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
+import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -31,11 +33,13 @@ public class JMenuItemBuilder implements EntryVisitor{
 	final private MenuSplitter menuSplitter;
 	final private EntryAccessor entryAccessor;
 	private IAcceleratorMap accelerators;
+	private AcceleratebleActionProvider acceleratebleActionProvider;
 
 	public JMenuItemBuilder(EntryPopupListener popupListener, IAcceleratorMap accelerators,
-	                        ResourceAccessor resourceAccessor) {
+	                        AcceleratebleActionProvider acceleratebleActionProvider, ResourceAccessor resourceAccessor) {
 		this.popupListener = popupListener;
 		this.accelerators = accelerators;
+		this.acceleratebleActionProvider = acceleratebleActionProvider;
 		this.resourceAccessor = resourceAccessor;
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
 		menuSplitter = new MenuSplitter(resourceAccessor.getIntProperty(
@@ -99,11 +103,12 @@ public class JMenuItemBuilder implements EntryVisitor{
 		final AFreeplaneAction action = new EntryAccessor().getAction(entry);
 		if(action != null){
 			final JMenuItem actionComponent;
+			IFreeplaneAction wrappedAction = acceleratebleActionProvider.wrap(action);
 			if (action.isSelectable()) {
-				actionComponent = new JAutoCheckBoxMenuItem(action);
+				actionComponent = new JAutoCheckBoxMenuItem(wrappedAction);
 			}
 			else {
-				actionComponent = new JFreeplaneMenuItem(action);
+				actionComponent = new JFreeplaneMenuItem(wrappedAction);
 			}
 			final KeyStroke accelerator = accelerators.getAccelerator(entry.getName());
 			actionComponent.setAccelerator(accelerator);

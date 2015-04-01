@@ -17,8 +17,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
+import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -41,6 +43,7 @@ public class JMenuItemBuilderTest {
 	private Entry groupEntry;
 	private ResourceAccessor resourceAccessorMock;
 	private IAcceleratorMap accelerators;
+	private AcceleratebleActionProvider acceleratebleActionProvider;
 
 	@Before
 	public void setup() {
@@ -58,7 +61,14 @@ public class JMenuItemBuilderTest {
 		when(resourceAccessorMock.getRawText(anyString())).thenReturn("");
 		when(resourceAccessorMock.getRawText("menu")).thenReturn("menu");
 		accelerators = mock(IAcceleratorMap.class);
-		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, accelerators, resourceAccessorMock);
+		acceleratebleActionProvider = new AcceleratebleActionProvider() {
+			@Override
+			protected boolean isApplet() {
+				return false;
+			}
+		};
+		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, accelerators, acceleratebleActionProvider,
+		    resourceAccessorMock);
 	}
 	
 	@Test
@@ -69,7 +79,7 @@ public class JMenuItemBuilderTest {
 
 		JMenuItem item = (JMenuItem)new EntryAccessor().getComponent(actionEntry);
 
-		assertThat(item.getAction(), CoreMatchers.<Action>equalTo(action));
+		assertThatMenuItemHasCorrectAction(item);
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
 	}
 
@@ -93,7 +103,8 @@ public class JMenuItemBuilderTest {
 
 		JAutoCheckBoxMenuItem item = (JAutoCheckBoxMenuItem)new EntryAccessor().getComponent(actionEntry);
 
-		assertThat(item.getAction(), CoreMatchers.<Action>equalTo(action));
+		final AccelerateableAction itemAction = (AccelerateableAction) item.getAction();
+		assertThat(itemAction.getOriginalAction(), CoreMatchers.<Action> equalTo(action));
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
 	}
 	
@@ -154,7 +165,7 @@ public class JMenuItemBuilderTest {
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 
 		final JMenuItem menuItem = (JMenuItem) item.getPopupMenu().getComponent(0);
-		assertThat(menuItem.getAction(), CoreMatchers.<Action>equalTo(action));
+		assertThatMenuItemHasCorrectAction(menuItem);
 	}
 
 	@Test
@@ -167,8 +178,13 @@ public class JMenuItemBuilderTest {
 		new EntryAccessor().setAction(groupEntry, action);
 		menuActionGroupBuilder.visit(groupEntry);
 		final JMenuItem menuItem = (JMenuItem) parentMenu.getPopupMenu().getComponent(0);
-		assertThat(menuItem.getAction(), CoreMatchers.<Action> equalTo(action));
+		assertThatMenuItemHasCorrectAction(menuItem);
 	}
+
+	protected void assertThatMenuItemHasCorrectAction(final JMenuItem menuItem) {
+	    final AccelerateableAction itemAction = (AccelerateableAction) menuItem.getAction();
+		assertThat(itemAction.getOriginalAction(), CoreMatchers.<Action> equalTo(action));
+    }
 	
 	@Test
 	public void whenPopupMenuBecomesVisible_popupListenerIsCalled() {

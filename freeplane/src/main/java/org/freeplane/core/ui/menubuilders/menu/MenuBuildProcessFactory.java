@@ -3,6 +3,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.UI;
 
+import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
@@ -41,9 +42,9 @@ public class MenuBuildProcessFactory {
 		EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
 		entryPopupListenerCollection.addEntryPopupListener(childBuilder);
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
-		recursiveMenuStructureBuilder.addBuilderPair("menu.action", new JMenuItemBuilder(
-entryPopupListenerCollection,
-		    acceleratorMap, resourceAccessor), new JComponentRemover());
+		recursiveMenuStructureBuilder.addBuilderPair("menu.action", //
+		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
+		        resourceAccessor), new JComponentRemover());
 
 		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
 		    .withPhase(Phases.ACCELERATORS, acceleratorBuilder).withPhase(UI, recursiveMenuStructureBuilder);
