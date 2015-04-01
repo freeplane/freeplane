@@ -30,8 +30,8 @@ public class MenuBuildProcessFactory {
 
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
-		recursiveMenuStructureBuilder.addBuilder("ribbon_taskbar", EntryVisitor.SKIP);
-		recursiveMenuStructureBuilder.addBuilder("ribbon_menu", EntryVisitor.SKIP);
+		recursiveMenuStructureBuilder.addBuilder("ribbon_taskbar", EntryVisitor.CHILD_ENTRY_REMOVER);
+		recursiveMenuStructureBuilder.addBuilder("ribbon_menu", EntryVisitor.CHILD_ENTRY_REMOVER);
 		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
