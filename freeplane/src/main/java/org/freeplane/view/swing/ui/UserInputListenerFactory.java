@@ -355,7 +355,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			try {
 				final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
-				    Controller.getCurrentModeController(), resourceAccessor);
+				    Controller.getCurrentModeController(), resourceAccessor, getAcceleratorManager());
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : actionBuilders.entrySet())
 					buildProcessor.phase(ACTIONS).addBuilderPair(entry.getKey(), entry.getValue());
 				final InputStream resource = genericStructure.openStream();

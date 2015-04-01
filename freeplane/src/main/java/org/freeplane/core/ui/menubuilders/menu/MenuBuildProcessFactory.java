@@ -3,27 +3,30 @@ package org.freeplane.core.ui.menubuilders.menu;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.UI;
 
+import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
+import org.freeplane.core.ui.menubuilders.action.IDefaultAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.ChildProcessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.features.mode.FreeplaneActions;
 
 public class MenuBuildProcessFactory {
 
-	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor resourceAccessor) {
+	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor resourceAccessor,
+	                                           IDefaultAcceleratorMap acceleratorMap) {
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
 
 		recursiveMenuStructureBuilder.addBuilderPair("ribbon_taskbar", new BuilderDestroyerPair(EntryVisitor.SKIP));
 		recursiveMenuStructureBuilder.addBuilderPair("ribbon_menu", new BuilderDestroyerPair(EntryVisitor.SKIP));
-		recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder()));
 		recursiveMenuStructureBuilder.addBuilderPair("toolbar", new BuilderDestroyerPair(new JToolbarBuilder()));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(
@@ -40,11 +43,12 @@ public class MenuBuildProcessFactory {
 		    entryPopupListenerCollection, resourceAccessor), new JComponentRemover()));
 
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
+		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
 		
-		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions ));
-		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder).withPhase(
-UI,
-		    recursiveMenuStructureBuilder);
+		final RecursiveMenuStructureProcessor acceleratorBuilder = new RecursiveMenuStructureProcessor();
+		acceleratorBuilder.setDefaultBuilder(new AcceleratorBuilder(acceleratorMap));
+		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
+		    .withPhase(Phases.ACCELERATORS, acceleratorBuilder).withPhase(UI, recursiveMenuStructureBuilder);
 		childBuilder.setProcessor(buildProcessor);
 		return buildProcessor;
 	}
