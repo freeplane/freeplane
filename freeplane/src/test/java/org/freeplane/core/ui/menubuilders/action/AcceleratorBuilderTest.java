@@ -9,7 +9,6 @@ import java.awt.event.InputEvent;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.junit.Test;
@@ -27,8 +26,8 @@ public class AcceleratorBuilderTest {
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		new EntryAccessor().setAction(actionEntry, action);
 
-		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
+		IAcceleratorMap map = mock(IAcceleratorMap.class);
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map).setDefaultAccelerator(actionKey, keyStroke);
@@ -43,8 +42,8 @@ public class AcceleratorBuilderTest {
 		String keyStroke = "CONTROL A";
 		actionEntry.setAttribute("accelerator", keyStroke);
 
-		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
+		IAcceleratorMap map = mock(IAcceleratorMap.class);
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map, never()).setDefaultAccelerator(actionKey, keyStroke);
@@ -52,13 +51,13 @@ public class AcceleratorBuilderTest {
 	}
 	
 	@Test
-	public void ignoresEntryWithoutAccelerator() {
+	public void givenEntryWithoutAccelerator_doesNotSetDefaultAccelerator() {
 		Entry actionEntry = new Entry();
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		new EntryAccessor().setAction(actionEntry, action);
 
-		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map);
+		IAcceleratorMap map = mock(IAcceleratorMap.class);
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map, never()).setDefaultAccelerator(anyString(), anyString());
@@ -76,8 +75,8 @@ public class AcceleratorBuilderTest {
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		new EntryAccessor().setAction(actionEntry, action);
 
-		IDefaultAcceleratorMap map = mock(IDefaultAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map){
+		IAcceleratorMap map = mock(IAcceleratorMap.class);
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class)){
 
 			@Override
 			protected boolean isMacOsX() {
@@ -88,6 +87,21 @@ public class AcceleratorBuilderTest {
 		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map).setDefaultAccelerator(actionKey, keyStroke.replaceAll("CONTROL", "META"));
+
+	}
+
+	@Test
+	public void registersEntryWithAction() {
+		Entry actionEntry = new Entry();
+		final AFreeplaneAction action = mock(AFreeplaneAction.class);
+		new EntryAccessor().setAction(actionEntry, action);
+
+		IAcceleratorMap map = mock(IAcceleratorMap.class);
+		IEntriesForAction entries = mock(IEntriesForAction.class);
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map, entries);
+		acceleratorBuilder.visit(actionEntry);
+		
+		Mockito.verify(entries).registerEntry(action, actionEntry);
 
 	}
 }

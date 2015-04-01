@@ -37,6 +37,14 @@ public class RecursiveMenuStructureProcessor{
 		visitors.put(name, pair);
 	}
 
+	public void addBuilderPair(String name, EntryVisitor builder, EntryVisitor destroyer) {
+		addBuilderPair(name, new BuilderDestroyerPair(builder, destroyer));
+	}
+
+	public void addBuilder(String name, EntryVisitor builder) {
+		addBuilderPair(name, new BuilderDestroyerPair(builder));
+	}
+
 	public void build(Entry target) {
 		process(target, VisitorType.BUILDER);
 	}
@@ -108,7 +116,11 @@ public class RecursiveMenuStructureProcessor{
 		setDefaultBuilderPair(new BuilderDestroyerPair(defaultBuilder, EntryVisitor.EMTPY));
 	}
 
-	public void setDefaultBuilderPair(BuilderDestroyerPair pair) {
+	public void setDefaultBuilderPair(EntryVisitor defaultBuilder, EntryVisitor defaultDestroyer) {
+		setDefaultBuilderPair(new BuilderDestroyerPair(defaultBuilder, defaultDestroyer));
+	}
+
+	private void setDefaultBuilderPair(BuilderDestroyerPair pair) {
 		this.defaultBuilder = pair;
 	}
 

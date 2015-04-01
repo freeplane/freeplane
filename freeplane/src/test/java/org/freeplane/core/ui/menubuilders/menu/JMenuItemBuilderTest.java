@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -13,15 +14,18 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
+import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -36,11 +40,13 @@ public class JMenuItemBuilderTest {
 	private EntryPopupListener popupListener;
 	private Entry groupEntry;
 	private ResourceAccessor resourceAccessorMock;
+	private IAcceleratorMap accelerators;
 
 	@Before
 	public void setup() {
 		actionEntry = new Entry();
 		action = Mockito.mock(AFreeplaneAction.class);
+		actionEntry.setName("action");
 		new EntryAccessor().setAction(actionEntry, action);
 
 		menuEntry = new Entry();
@@ -51,7 +57,8 @@ public class JMenuItemBuilderTest {
 		resourceAccessorMock = mock(ResourceAccessor.class);
 		when(resourceAccessorMock.getRawText(anyString())).thenReturn("");
 		when(resourceAccessorMock.getRawText("menu")).thenReturn("menu");
-		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, resourceAccessorMock);
+		accelerators = mock(IAcceleratorMap.class);
+		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, accelerators, resourceAccessorMock);
 	}
 	
 	@Test
@@ -64,6 +71,17 @@ public class JMenuItemBuilderTest {
 
 		assertThat(item.getAction(), CoreMatchers.<Action>equalTo(action));
 		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
+	}
+
+	@Test
+	public void createsMenuButtonWithAcceleratedAction() {
+		new EntryAccessor().setComponent(menuEntry, menu);
+		menuEntry.addChild(actionEntry);
+		final KeyStroke keyStroke = KeyStroke.getKeyStroke('A');
+		when(accelerators.getAccelerator(actionEntry.getName())).thenReturn(keyStroke);
+		menuActionGroupBuilder.visit(actionEntry);
+		JMenuItem item = (JMenuItem) new EntryAccessor().getComponent(actionEntry);
+		Assert.assertThat(item.getAccelerator(), equalTo(keyStroke));
 	}
 
 	@Test

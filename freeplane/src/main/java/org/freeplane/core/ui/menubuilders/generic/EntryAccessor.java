@@ -13,6 +13,7 @@ public class EntryAccessor {
 	public static final String ACTION = "action";
 	public static final String TEXT = "text";
 	public static final String ICON = "icon";
+	public static final String ACCELERATOR = "accelerator";
 	public final ResourceAccessor resourceAccessor;
 
 	public EntryAccessor(ResourceAccessor resourceAccessor) {
@@ -98,5 +99,10 @@ public class EntryAccessor {
 
 	public void setIcon(Entry entry, Icon icon) {
 		entry.setAttribute(ICON, icon);
+	}
+
+	public String getAccelerator(Entry entry) {
+		String accelerator = (String) entry.getAttribute(ACCELERATOR);
+		return accelerator;
 	}
 }

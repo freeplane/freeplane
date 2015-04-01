@@ -5,7 +5,9 @@ import java.awt.Container;
 
 import javax.swing.Icon;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -15,6 +17,7 @@ import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.MenuSplitterConfiguration;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
+import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
@@ -27,9 +30,12 @@ public class JMenuItemBuilder implements EntryVisitor{
 	final ResourceAccessor resourceAccessor;
 	final private MenuSplitter menuSplitter;
 	final private EntryAccessor entryAccessor;
+	private IAcceleratorMap accelerators;
 
-	public JMenuItemBuilder(EntryPopupListener popupListener, ResourceAccessor resourceAccessor) {
+	public JMenuItemBuilder(EntryPopupListener popupListener, IAcceleratorMap accelerators,
+	                        ResourceAccessor resourceAccessor) {
 		this.popupListener = popupListener;
+		this.accelerators = accelerators;
 		this.resourceAccessor = resourceAccessor;
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
 		menuSplitter = new MenuSplitter(resourceAccessor.getIntProperty(
@@ -91,21 +97,23 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	private Component createActionComponent(Entry entry) {
 		final AFreeplaneAction action = new EntryAccessor().getAction(entry);
-		final Component actionComponent;
 		if(action != null){
+			final JMenuItem actionComponent;
 			if (action.isSelectable()) {
 				actionComponent = new JAutoCheckBoxMenuItem(action);
 			}
 			else {
 				actionComponent = new JFreeplaneMenuItem(action);
 			}
+			final KeyStroke accelerator = accelerators.getAccelerator(entry.getName());
+			actionComponent.setAccelerator(accelerator);
+			return actionComponent;
 		}
 		else if(entry.builders().contains("separator")){
-			actionComponent = new JPopupMenu.Separator();
+			return new JPopupMenu.Separator();
 		}
 		else
-			actionComponent = null;
-		return actionComponent;
+			return null;
 	}
 
 	@Override
