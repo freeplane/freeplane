@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import javax.swing.JMenu;
 
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
+import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -24,7 +25,7 @@ public class MenuBuildProcessFactoryTest {
 		final MenuBuildProcessFactory buildProcessFactory = new MenuBuildProcessFactory();
 		final FreeplaneActions freeplaneActions = mock(FreeplaneActions.class);
 		final PhaseProcessor phaseProcessor = buildProcessFactory.createBuildProcessor(freeplaneActions,
-		    mock(ResourceAccessor.class), mock(IAcceleratorMap.class));
+		    mock(ResourceAccessor.class), mock(IAcceleratorMap.class), new EntriesForAction());
 		final Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(
 				"<Entry builder='main_menu'>"
 						+ "<Entry name='submenu'>"
@@ -44,7 +45,7 @@ public class MenuBuildProcessFactoryTest {
 		final ResourceAccessor resourceAccessorMock = mock(ResourceAccessor.class);
 		when(resourceAccessorMock.getRawText(Matchers.anyString())).thenReturn("text");
 		final PhaseProcessor phaseProcessor = buildProcessFactory.createBuildProcessor(freeplaneActions,
-		    resourceAccessorMock, mock(IAcceleratorMap.class));
+		    resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction());
 		final Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(
 				"<Entry builder='main_menu'>"
 						+ "<Entry name='submenu'>"

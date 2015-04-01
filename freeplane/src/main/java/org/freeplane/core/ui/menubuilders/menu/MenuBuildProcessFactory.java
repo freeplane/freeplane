@@ -21,13 +21,13 @@ import org.freeplane.features.mode.FreeplaneActions;
 public class MenuBuildProcessFactory {
 
 	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor resourceAccessor,
-	                                           IAcceleratorMap acceleratorMap) {
+	                                           IAcceleratorMap acceleratorMap, EntriesForAction entries) {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
+
 		final RecursiveMenuStructureProcessor acceleratorBuilder = new RecursiveMenuStructureProcessor();
-		final EntriesForAction entries = new EntriesForAction();
 		acceleratorBuilder.setDefaultBuilder(new AcceleratorBuilder(acceleratorMap, entries));
-		acceleratorMap.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
+
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
 		recursiveMenuStructureBuilder.addBuilder("ribbon_taskbar", EntryVisitor.SKIP);
@@ -37,11 +37,13 @@ public class MenuBuildProcessFactory {
 		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
 		recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder());
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
+
 		final ChildProcessor childBuilder = new ChildProcessor();
 		final ActionSelectListener actionSelectListener = new ActionSelectListener();
 		EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
 		entryPopupListenerCollection.addEntryPopupListener(childBuilder);
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
+
 		recursiveMenuStructureBuilder.addBuilderPair("menu.action", //
 		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());

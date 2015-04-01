@@ -59,10 +59,12 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
+import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
+import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
@@ -354,8 +356,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		if(genericStructure != null){
 			try {
 				final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
+				final EntriesForAction entries = new EntriesForAction();
+				final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
 				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
-				    Controller.getCurrentModeController(), resourceAccessor, getAcceleratorManager());
+				    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries);
+				acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : actionBuilders.entrySet())
 					buildProcessor.phase(ACTIONS).addBuilderPair(entry.getKey(), entry.getValue());
 				final InputStream resource = genericStructure.openStream();

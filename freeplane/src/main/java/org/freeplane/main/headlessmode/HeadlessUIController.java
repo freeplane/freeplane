@@ -112,7 +112,7 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	public boolean isApplet() {
-		throw new RuntimeException("Method not implemented");
+		return false;
 	}
 
 	public boolean isMenubarVisible() {
