@@ -97,6 +97,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
 	final private Map<String, BuilderDestroyerPair> actionBuilders = new HashMap<String, BuilderDestroyerPair>();
+	private Entry genericMenuStructure;
 
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
 		useRibbonMenu = useRibbons;
@@ -365,10 +366,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					buildProcessor.phase(ACTIONS).addBuilderPair(entry.getKey(), entry.getValue());
 				final InputStream resource = genericStructure.openStream();
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
-				Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
-				buildProcessor.build(menuStructure);
+				genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
+				buildProcessor.build(genericMenuStructure);
 				menuBar = (FreeplaneMenuBar) new EntryAccessor(resourceAccessor)
-				    .getComponent(menuStructure.getChild(0));
+				    .getComponent(genericMenuStructure.getChild(0));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -421,5 +422,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void addActionBuilder(String name, BuilderDestroyerPair builderDestroyerPair) {
 		actionBuilders.put(name, builderDestroyerPair);
+	}
+
+	@Override
+	public Entry getGenericMenuStructure() {
+		return genericMenuStructure;
 	}
 }

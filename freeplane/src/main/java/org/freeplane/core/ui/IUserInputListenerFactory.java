@@ -30,6 +30,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
 
 public interface IUserInputListenerFactory {
 	void addMouseWheelEventHandler(final IMouseWheelEventHandler handler);
@@ -73,4 +74,6 @@ public interface IUserInputListenerFactory {
 	public void updateMenus(String menuStructureResource, Set<String> plugins);
 
 	void addActionBuilder(String name, BuilderDestroyerPair builderDestroyerPair);
+
+	Entry getGenericMenuStructure();
 }
