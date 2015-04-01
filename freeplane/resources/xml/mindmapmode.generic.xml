@@ -241,7 +241,7 @@
 				</Entry>
 				<Entry name="ShowAttributeDialogAction" />
 			</Entry>
-			<Entry name="links" resize_policies="Mirror" builder="ribbon_band" processOnPopup="true">
+			<Entry name="links" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="AddConnectorAction" />
 				<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
 				<Entry name="SetLinkByFileChooserAction" />
@@ -252,7 +252,8 @@
 					<Entry name="MakeLinkToAnchorAction" />
 					<Entry name="ClearLinkAnchorAction" />
 				</Entry>
-				<Entry builder = "link_actions"/>
+				<Entry processOnPopup="true"> <Entry builder = "link_actions"/> </Entry>
+				
 			</Entry>
 			<Entry name="icons" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="IconSelectionPlugin" />

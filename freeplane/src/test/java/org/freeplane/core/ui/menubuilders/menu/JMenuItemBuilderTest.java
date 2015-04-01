@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -187,7 +188,7 @@ public class JMenuItemBuilderTest {
     }
 	
 	@Test
-	public void whenPopupMenuBecomesVisible_popupListenerIsCalled() {
+	public void whenPopupMenuBecomesVisible_itsOwnPopupListenerIsCalled() {
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
 		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
@@ -202,6 +203,34 @@ public class JMenuItemBuilderTest {
 	}
 
 	
+	@Test
+	public void whenPopupMenuBecomesVisible_itsChildActionPopupListenerIsCalled() {
+		Entry parentMenuEntry = new Entry();
+		final JMenu parentMenu = new JMenu();
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
+		parentMenuEntry.addChild(actionEntry);
+		menuActionGroupBuilder.visit(actionEntry);
+		parentMenu.getPopupMenu().setVisible(true);
+		verify(popupListener).childEntriesWillBecomeVisible(actionEntry);
+	}
+
+	@Test
+	public void whenNoPopupMenuBecomesVisible_PopupListenerIsNotCalled() {
+		menuActionGroupBuilder.visit(menuEntry);
+		verify(popupListener, never()).childEntriesWillBecomeVisible(Mockito.<Entry> anyObject());
+	}
+
+	@Test
+	public void whenPopupMenuBecomesVisible_itsChildGroupPopupListenerIsCalled() {
+		Entry parentMenuEntry = new Entry();
+		final JMenu parentMenu = new JMenu();
+		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
+		parentMenuEntry.addChild(groupEntry);
+		menuActionGroupBuilder.visit(groupEntry);
+		parentMenu.getPopupMenu().setVisible(true);
+		verify(popupListener).childEntriesWillBecomeVisible(groupEntry);
+	}
+
 	@Test
 	public void whenPopupMenuBecomesInvisible_popupListenerIsCalled() {
 		Entry parentMenuEntry = new Entry();
