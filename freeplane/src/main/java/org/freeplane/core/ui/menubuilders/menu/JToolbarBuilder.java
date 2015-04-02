@@ -1,17 +1,21 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
-import javax.swing.SwingConstants;
-
-import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JToolbarBuilder implements EntryVisitor {
+	private final IUserInputListenerFactory userInputListenerFactory;
+
+	public JToolbarBuilder(IUserInputListenerFactory userInputListenerFactory) {
+		super();
+		this.userInputListenerFactory = userInputListenerFactory;
+	}
 
 	@Override
 	public void visit(Entry target) {
-		new EntryAccessor().setComponent(target, new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL));
+		new EntryAccessor().setComponent(target, userInputListenerFactory.getToolBar("/main_toolbar"));
 	}
 
 	@Override

@@ -5,9 +5,9 @@ import java.awt.Container;
 
 import javax.swing.JButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -38,7 +38,10 @@ public class JToolbarActionBuilder implements EntryVisitor {
 		if(component != null){
 			new EntryAccessor().setComponent(entry, component);
 			final Container container = (Container) new EntryAccessor().getAncestorComponent(entry);
-			container.add(component);
+			if (container instanceof JToolBar)
+				container.add(component);
+			else
+				SwingUtilities.getAncestorOfClass(JToolBar.class, container).add(component);
 		}
 	}
 

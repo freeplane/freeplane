@@ -1,15 +1,21 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JMenubarBuilder implements EntryVisitor {
+	private final IUserInputListenerFactory userInputListenerFactory;
+
+	public JMenubarBuilder(IUserInputListenerFactory userInputListenerFactory) {
+		super();
+		this.userInputListenerFactory = userInputListenerFactory;
+	}
 
 	@Override
 	public void visit(Entry target) {
-		new EntryAccessor().setComponent(target, new FreeplaneMenuBar());
+		new EntryAccessor().setComponent(target, userInputListenerFactory.getMenuBar());
 	}
 
 	@Override

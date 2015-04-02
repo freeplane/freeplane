@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -32,6 +32,7 @@ import org.mockito.Mockito;
 public class MenuBuilderIntegrationTest {
 	RecursiveMenuStructureProcessor recursiveMenuStructureBuilder;
 	FreeplaneActions freeplaneActions;
+	private JToolBar toolbar;
 
 	private Entry buildJMenu(String content) {
 		final Entry buildMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(content);
@@ -47,7 +48,10 @@ public class MenuBuilderIntegrationTest {
 		freeplaneActions = mock(FreeplaneActions.class);
 		recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		recursiveMenuStructureBuilder.setDefaultBuilderPair(EntryVisitor.EMTPY, EntryVisitor.EMTPY);
-		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
+		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
+		toolbar = new JToolBar();
+		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(toolbar);
+		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarActionBuilder(), null));
 	}
@@ -59,7 +63,7 @@ public class MenuBuilderIntegrationTest {
 				+ "</FreeplaneUIEntries>";
 
 		Entry builtMenuStructure = buildJMenu(content);
-		assertThat(new EntryAccessor().getComponent(builtMenuStructure.getChild(0)).getClass(), CoreMatchers.<Object>is(FreeplaneToolBar.class));
+		assertThat(new EntryAccessor().getComponent(builtMenuStructure.getChild(0)), CoreMatchers.<Object> is(toolbar));
 	}
 
 	@Test

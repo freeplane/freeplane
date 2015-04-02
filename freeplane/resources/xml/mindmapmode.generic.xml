@@ -2,8 +2,59 @@
 <!-- This file was generated automatically from a ribbon xml. Do not edit 
 	this file, edit the original ribbon xml instead. -->
 <FreeplaneUIEntries>
+	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry builder="separator" />
+		<Entry name="history">
+			<Entry name="BackAction" />
+			<Entry name="ForwardAction" />
+		</Entry>
+		<Entry name="update" builder="main_toolbar_update" />
+		<Entry name="main">
+			<Entry name="NavigationPreviousMapAction" />
+			<Entry name="NavigationNextMapAction" />
+		</Entry>
+		<Entry name="zoom" builder="main_toolbar_zoom" />
+		<Entry name="open">
+			<Entry name="OpenAction" />
+			<Entry name="NewMapAction" />
+			<Entry name="SaveAction" />
+			<Entry name="SaveAsAction" />
+			<Entry name="PrintAction" />
+			<Entry name="CloseAction" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry name="undo">
+			<Entry name="UndoAction" />
+			<Entry name="RedoAction" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry name="font" builder="main_toolbar_font">
+			<Entry name="toolbar_styles" builder="main_toolbar_style" />
+			<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
+			<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
+			<Entry name="BoldAction" />
+			<Entry name="ItalicAction" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry name="CloudAction" />
+		<Entry name="CloudColorAction" />
+		<Entry builder="separator" />
+		<Entry name="folding">
+			<Entry name="UnfoldOneLevelAction" />
+			<Entry name="FoldOneLevelAction" />
+			<Entry name="UnfoldAllAction" />
+			<Entry name="FoldAllAction" />
+		</Entry>
+		<Entry name="find">
+			<Entry name="FindAction" />
+			<Entry name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAction.BACK" />
+			<Entry name="NodeListAction" />
+		</Entry>
+		<Entry name="EnterPassword" />
+	</Entry>
 	<Entry builder="main_menu">
-		<Entry builder="ribbon_taskbar">
+		<Entry builder="ribbon_taskbar,ignore">
 			<Entry name="NewMapAction" accelerator="control N" mandatory="true" />
 			<Entry name="EncryptedMap" mandatory="true" />
 			<Entry builder="separator" />
@@ -13,7 +64,7 @@
 			<Entry name="SaveAsAction" accelerator="control shift S" />
 			<Entry name="SaveAll" />
 		</Entry>
-		<Entry builder="ribbon_menu">
+		<Entry builder="ribbon_menu,ignore">
 			<Entry name="new" builder="primary_entry">
 				<Entry name="new" builder="entry_group">
 					<Entry name="NewMapAction" accelerator="control N" mandatory="true" />
@@ -76,7 +127,7 @@
 			<Entry name="QuitAction" mandatory="true" accelerator="alt F4"
 				builder="footer_entry" />
 		</Entry>
-		<Entry name="home" orderPriority="first" builder="ribbon_task,toolbar">
+		<Entry name="home" orderPriority="first" builder="ribbon_task,ignore">
 			<Entry name="basics" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="NewMapAction" accelerator="control N" mandatory="true">
 					<Entry name="EncryptedMap" mandatory="true" />

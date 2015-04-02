@@ -3,6 +3,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.UI;
 
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
@@ -20,8 +21,8 @@ import org.freeplane.features.mode.FreeplaneActions;
 
 public class MenuBuildProcessFactory {
 
-	public PhaseProcessor createBuildProcessor(FreeplaneActions freeplaneActions, ResourceAccessor resourceAccessor,
-	                                           IAcceleratorMap acceleratorMap, EntriesForAction entries) {
+	public PhaseProcessor createBuildProcessor(IUserInputListenerFactory userInputListenerFactory, FreeplaneActions freeplaneActions,
+	                                           ResourceAccessor resourceAccessor, IAcceleratorMap acceleratorMap, EntriesForAction entries) {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
 
@@ -30,12 +31,11 @@ public class MenuBuildProcessFactory {
 
 		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
 		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
-		recursiveMenuStructureBuilder.addBuilder("ribbon_taskbar", EntryVisitor.CHILD_ENTRY_REMOVER);
-		recursiveMenuStructureBuilder.addBuilder("ribbon_menu", EntryVisitor.CHILD_ENTRY_REMOVER);
-		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder());
+		recursiveMenuStructureBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
+		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
-		recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder());
+		recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
 
 		final ChildProcessor childBuilder = new ChildProcessor();
