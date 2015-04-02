@@ -46,6 +46,12 @@ public class JMenuItemBuilderTest {
 	private IAcceleratorMap accelerators;
 	private AcceleratebleActionProvider acceleratebleActionProvider;
 
+	private JMenuItem getFirstSubMenuItem(Entry entry) {
+		JMenu menu = (JMenu) new EntryAccessor().getComponent(entry);
+		final JMenuItem menuItem = (JMenuItem) menu.getPopupMenu().getComponent(0);
+		return menuItem;
+	}
+
 	@Before
 	public void setup() {
 		actionEntry = new Entry();
@@ -163,9 +169,7 @@ public class JMenuItemBuilderTest {
 		
 		menuActionGroupBuilder.visit(menuEntry);
 
-		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
-
-		final JMenuItem menuItem = (JMenuItem) item.getPopupMenu().getComponent(0);
+		final JMenuItem menuItem = getFirstSubMenuItem(menuEntry);
 		assertThatMenuItemHasCorrectAction(menuItem);
 	}
 
@@ -178,7 +182,7 @@ public class JMenuItemBuilderTest {
 		groupEntry.addChild(actionEntry);
 		new EntryAccessor().setAction(groupEntry, action);
 		menuActionGroupBuilder.visit(groupEntry);
-		final JMenuItem menuItem = (JMenuItem) parentMenu.getPopupMenu().getComponent(0);
+		final JMenuItem menuItem = getFirstSubMenuItem(parentMenuEntry);
 		assertThatMenuItemHasCorrectAction(menuItem);
 	}
 
@@ -189,10 +193,6 @@ public class JMenuItemBuilderTest {
 	
 	@Test
 	public void whenPopupMenuBecomesVisible_itsOwnPopupListenerIsCalled() {
-		Entry parentMenuEntry = new Entry();
-		final JMenu parentMenu = new JMenu();
-		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
-		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
 		
 		menuActionGroupBuilder.visit(menuEntry);
@@ -205,12 +205,10 @@ public class JMenuItemBuilderTest {
 	
 	@Test
 	public void whenPopupMenuBecomesVisible_itsChildActionPopupListenerIsCalled() {
-		Entry parentMenuEntry = new Entry();
-		final JMenu parentMenu = new JMenu();
-		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
-		parentMenuEntry.addChild(actionEntry);
-		menuActionGroupBuilder.visit(actionEntry);
-		parentMenu.getPopupMenu().setVisible(true);
+		menuEntry.addChild(actionEntry);
+		menuActionGroupBuilder.visit(menuEntry);
+		JMenu item = (JMenu) new EntryAccessor().getComponent(menuEntry);
+		item.getPopupMenu().setVisible(true);
 		verify(popupListener).childEntriesWillBecomeVisible(actionEntry);
 	}
 
@@ -222,12 +220,10 @@ public class JMenuItemBuilderTest {
 
 	@Test
 	public void whenPopupMenuBecomesVisible_itsChildGroupPopupListenerIsCalled() {
-		Entry parentMenuEntry = new Entry();
-		final JMenu parentMenu = new JMenu();
-		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
-		parentMenuEntry.addChild(groupEntry);
-		menuActionGroupBuilder.visit(groupEntry);
-		parentMenu.getPopupMenu().setVisible(true);
+		menuEntry.addChild(groupEntry);
+		menuActionGroupBuilder.visit(menuEntry);
+		JMenu menu = (JMenu) new EntryAccessor().getComponent(menuEntry);
+		menu.getPopupMenu().setVisible(true);
 		verify(popupListener).childEntriesWillBecomeVisible(groupEntry);
 	}
 

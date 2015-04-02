@@ -8,7 +8,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -53,28 +52,6 @@ public class JMenuItemBuilder implements EntryVisitor{
 			addSubmenu(entry);
 		else
 			addActionItem(entry);
-		addPopupMenuListener(entry);
-	}
-
-	private void addPopupMenuListener(Entry entry) {
-	    final JPopupMenu popup = getPopupMenu(entry);
-		if (popup != null)
-			addPopupMenuListener(entry, popup);
-    }
-
-	private JPopupMenu getPopupMenu(Entry entry) {
-		if (entry == null)
-			return null;
-		final Object component = entryAccessor.getComponent(entry);
-		if (component instanceof JMenu)
-			return ((JMenu) component).getPopupMenu();
-		if (component instanceof Component) {
-			final JPopupMenu ancestorPopupMenu = (JPopupMenu) SwingUtilities.getAncestorOfClass(JPopupMenu.class,
-			    (Component) component);
-			if (ancestorPopupMenu != null)
-				return (JPopupMenu) ancestorPopupMenu;
-		}
-		return getPopupMenu(entry.getParent());
 	}
 
 	private void addActionItem(Entry entry) {
@@ -87,7 +64,8 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private void addComponent(Entry entry, final Component component) {
 		entryAccessor.setComponent(entry, component);
 		final Container container = (Container) entryAccessor.getAncestorComponent(entry);
-		menuSplitter.addComponent(container, component);
+		if (container != null)
+			menuSplitter.addComponent(container, component);
     }
 
 	private void addSubmenu(final Entry entry) {
@@ -103,6 +81,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 		if(actionComponent != null){
 			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
+		addPopupMenuListener(entry, menu.getPopupMenu());
 
 	}
 
@@ -111,13 +90,27 @@ public class JMenuItemBuilder implements EntryVisitor{
 			
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				popupListener.childEntriesWillBecomeVisible(entry);
+				fireChildEntriesWillBecomeVisible(entry);
 			}
-			
+
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				popupListener.childEntriesWillBecomeInvisible(entry);
+				fireChildEntriesWillBecomeInvisible(entry);
 			}
+
+			private void fireChildEntriesWillBecomeVisible(final Entry entry) {
+				popupListener.childEntriesWillBecomeVisible(entry);
+				for (Entry child : entry.children())
+					if (!(entryAccessor.getComponent(child) instanceof JMenu))
+						fireChildEntriesWillBecomeVisible(child);
+			}
+
+			private void fireChildEntriesWillBecomeInvisible(final Entry entry) {
+	            popupListener.childEntriesWillBecomeInvisible(entry);
+				for (Entry child : entry.children())
+					if (!(entryAccessor.getComponent(child) instanceof JMenu))
+						fireChildEntriesWillBecomeInvisible(child);
+            }
 			
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) {
