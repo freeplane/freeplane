@@ -5,14 +5,14 @@ import java.util.LinkedHashMap;
 import java.util.ListIterator;
 
 public class PhaseProcessor implements Processor{
-	public static enum Phases {
+	public static enum Phase {
 		ACTIONS, ACCELERATORS, UI
 	}
 
-	final private LinkedHashMap<Phases, RecursiveMenuStructureProcessor> processors;
+	final private LinkedHashMap<Phase, RecursiveMenuStructureProcessor> processors;
 
 	public PhaseProcessor() {
-		this.processors = new LinkedHashMap<Phases, RecursiveMenuStructureProcessor>();
+		this.processors = new LinkedHashMap<Phase, RecursiveMenuStructureProcessor>();
 	}
 
 	@Override
@@ -24,17 +24,17 @@ public class PhaseProcessor implements Processor{
 	@Override
 	public Processor forChildren(Entry root, Entry entry) {
 		final PhaseProcessor phaseProcessor = new PhaseProcessor();
-		for (java.util.Map.Entry<Phases, RecursiveMenuStructureProcessor> processor : processors.entrySet())
+		for (java.util.Map.Entry<Phase, RecursiveMenuStructureProcessor> processor : processors.entrySet())
 			phaseProcessor.withPhase(processor.getKey(), processor.getValue().forChildren(root, entry));
 		return phaseProcessor;
 	}
 
-	public PhaseProcessor withPhase(Phases phaseName, RecursiveMenuStructureProcessor processor) {
+	public PhaseProcessor withPhase(Phase phaseName, RecursiveMenuStructureProcessor processor) {
 		processors.put(phaseName, processor);
 		return this;
 	}
 
-	public RecursiveMenuStructureProcessor phase(Phases name) {
+	public RecursiveMenuStructureProcessor phase(Phase name) {
 		return processors.get(name);
 	}
 

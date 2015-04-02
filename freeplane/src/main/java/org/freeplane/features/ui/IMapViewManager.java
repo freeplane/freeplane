@@ -21,7 +21,6 @@ package org.freeplane.features.ui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
@@ -30,7 +29,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
 
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.map.IMapSelection;
@@ -38,7 +37,6 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -142,4 +140,6 @@ public interface IMapViewManager {
 	public Object setEdgesRenderingHint(final Graphics2D g);
 	public void setTextRenderingHint(final Graphics2D g);
 	public boolean closeAllMaps();
+
+	public JComboBox createZoomBox();
 }

@@ -1,7 +1,7 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
-import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
-import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.UI;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
@@ -14,7 +14,7 @@ import org.freeplane.core.ui.menubuilders.generic.ChildProcessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
-import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.features.mode.FreeplaneActions;
@@ -34,7 +34,7 @@ public class MenuBuildProcessFactory {
 		recursiveMenuStructureBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
 		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
-		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarActionBuilder());
+		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
 		recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
 
@@ -49,7 +49,7 @@ public class MenuBuildProcessFactory {
 		        resourceAccessor), new JComponentRemover());
 
 		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
-		    .withPhase(Phases.ACCELERATORS, acceleratorBuilder).withPhase(UI, recursiveMenuStructureBuilder);
+		    .withPhase(Phase.ACCELERATORS, acceleratorBuilder).withPhase(UI, recursiveMenuStructureBuilder);
 		childBuilder.setProcessor(buildProcessor);
 		return buildProcessor;
 	}

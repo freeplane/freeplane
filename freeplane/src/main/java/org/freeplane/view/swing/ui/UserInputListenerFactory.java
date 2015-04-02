@@ -19,8 +19,6 @@
  */
 package org.freeplane.view.swing.ui;
 
-import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
-
 import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
@@ -31,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,6 +61,7 @@ import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
@@ -94,10 +94,15 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private final List<JComponent>[] toolbarLists;
 	private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
-	final private Map<String, BuilderDestroyerPair> actionBuilders = new HashMap<String, BuilderDestroyerPair>();
+	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
 	private Entry genericMenuStructure;
 
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
+		customBuilders = new ArrayList<>(Phase.values().length);
+		for (@SuppressWarnings("unused")
+		Phase phase : Phase.values()) {
+			customBuilders.add(new HashMap<String, BuilderDestroyerPair>());
+		}
 		useRibbonMenu = useRibbons;
 		Controller controller = Controller.getCurrentController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
@@ -360,8 +365,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
 				    this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries);
 				acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
-				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : actionBuilders.entrySet())
-					buildProcessor.phase(ACTIONS).addBuilderPair(entry.getKey(), entry.getValue());
+				for (final Phase phase : Phase.values())
+					for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
+					    .entrySet())
+						buildProcessor.phase(phase).addBuilderPair(entry.getKey(), entry.getValue());
 				final InputStream resource = genericStructure.openStream();
 				final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 				genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
@@ -416,8 +423,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return useRibbonMenu;
 	}
 
-	public void addActionBuilder(String name, BuilderDestroyerPair builderDestroyerPair) {
-		actionBuilders.put(name, builderDestroyerPair);
+	public void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair) {
+		customBuilders.get(phase.ordinal()).put(name, builderDestroyerPair);
 	}
 
 	@Override

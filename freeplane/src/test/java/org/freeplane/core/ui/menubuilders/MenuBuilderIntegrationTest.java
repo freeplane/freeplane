@@ -1,7 +1,7 @@
 package org.freeplane.core.ui.menubuilders;
 
-import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
-import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.UI;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,7 +21,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
-import org.freeplane.core.ui.menubuilders.menu.JToolbarActionBuilder;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarBuilder;
 import org.freeplane.features.mode.FreeplaneActions;
 import org.hamcrest.CoreMatchers;
@@ -53,7 +53,7 @@ public class MenuBuilderIntegrationTest {
 		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(toolbar);
 		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
-		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarActionBuilder(), null));
+		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarComponentBuilder(), null));
 	}
 
 	@Test

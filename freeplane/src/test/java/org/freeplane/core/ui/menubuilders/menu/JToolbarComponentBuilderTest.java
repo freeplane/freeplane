@@ -16,12 +16,12 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
-import org.freeplane.core.ui.menubuilders.menu.JToolbarActionBuilder;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class JToolbarActionBuilderTest {
+public class JToolbarComponentBuilderTest {
 	@Test
 	public void createsToolbarButtonWithAction() {
 		Entry actionEntry = new Entry();
@@ -33,7 +33,7 @@ public class JToolbarActionBuilderTest {
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
 		
-		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
+		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
 		toolbarActionGroupBuilder.visit(actionEntry);
 
 		JButton button = (JButton)new EntryAccessor().getComponent(actionEntry);
@@ -54,7 +54,7 @@ public class JToolbarActionBuilderTest {
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
 		
-		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
+		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
 		toolbarActionGroupBuilder.visit(actionEntry);
 
 		JAutoToggleButton button = (JAutoToggleButton)new EntryAccessor().getComponent(actionEntry);
@@ -73,7 +73,7 @@ public class JToolbarActionBuilderTest {
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(separatorEntry);
 		
-		final JToolbarActionBuilder toolbarActionGroupBuilder = new JToolbarActionBuilder();
+		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
 		toolbarActionGroupBuilder.visit(separatorEntry);
 
 		JToolBar.Separator separator = (JToolBar.Separator)new EntryAccessor().getComponent(separatorEntry);

@@ -1,7 +1,7 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
-import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACCELERATORS;
-import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phases.ACTIONS;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACCELERATORS;
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;

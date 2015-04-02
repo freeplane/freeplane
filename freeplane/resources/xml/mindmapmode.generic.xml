@@ -28,7 +28,7 @@
 			<Entry name="RedoAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="font" builder="main_toolbar_font">
+		<Entry name="font">
 			<Entry name="toolbar_styles" builder="main_toolbar_style" />
 			<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
 			<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />

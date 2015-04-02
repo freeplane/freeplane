@@ -62,10 +62,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -203,7 +203,7 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addMenuContributor(new LinkMenuContributor("popup_links", "popup_goto_links"));
 		modeController.addMenuContributor(new ClonesMenuContributor("menu_links", "menu_goto_clones"));
 		modeController.addMenuContributor(new ClonesMenuContributor("popup_links", "popup_goto_clones"));
-		modeController.addActionBuilder("link_actions", new BuilderDestroyerPair(new EntryVisitor() {
+		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new EntryVisitor() {
 			@Override
 			public void visit(Entry entry) {
 				final IMapSelection selection = modeController.getController().getSelection();
@@ -247,7 +247,7 @@ public class LinkController extends SelectionController implements IExtension {
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
-		}, EntryVisitor.CHILD_ENTRY_REMOVER));
+		}, EntryVisitor.CHILD_ENTRY_REMOVER);
 	}
 
     private class LinkMenuContributor implements IMenuContributor {

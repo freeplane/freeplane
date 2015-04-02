@@ -55,10 +55,10 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
@@ -256,7 +256,7 @@ public class MIconController extends IconController {
 		createIconActions(modeController);
 		createPreferences();
 		modeController.addMenuContributor(new IconMenuContributor());
-		modeController.addActionBuilder("icon_actions", new BuilderDestroyerPair(new IconActionBuilder()));
+		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconActionBuilder());
 	}
 
 	public void addIcon(final NodeModel node, final MindIcon icon) {
