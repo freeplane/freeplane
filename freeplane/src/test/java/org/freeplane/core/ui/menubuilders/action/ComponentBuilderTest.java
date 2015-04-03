@@ -11,12 +11,12 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JComponentBuilderTest {
+public class ComponentBuilderTest {
 	@Test
 	public void testName() throws Exception {
 		final Entry entry = new Entry();
 		final Component testComponent = new JPanel();
-		final JComponentBuilder builder = new JComponentBuilder(new ComponentProvider() {
+		final ComponentBuilder builder = new ComponentBuilder(new ComponentProvider() {
 			@Override
 			public Component createComponent(Entry entry) {
 				return testComponent;

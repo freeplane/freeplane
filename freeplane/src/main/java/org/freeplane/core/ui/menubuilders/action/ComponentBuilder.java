@@ -5,10 +5,10 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
 
-public class JComponentBuilder implements EntryVisitor {
+public class ComponentBuilder implements EntryVisitor {
 	final private ComponentProvider componentProvider;
 
-	public JComponentBuilder(ComponentProvider componentProvider) {
+	public ComponentBuilder(ComponentProvider componentProvider) {
 		this.componentProvider = componentProvider;
 	}
 
