@@ -29,14 +29,14 @@ public class MenuBuildProcessFactory {
 		final RecursiveMenuStructureProcessor acceleratorBuilder = new RecursiveMenuStructureProcessor();
 		acceleratorBuilder.setDefaultBuilder(new AcceleratorBuilder(acceleratorMap, entries));
 
-		RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
-		recursiveMenuStructureBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
-		recursiveMenuStructureBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
-		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
-		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
-		recursiveMenuStructureBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
-		recursiveMenuStructureBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
-		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
+		RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
+		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
+		uiBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
+		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
+		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
+		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
+		uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
+		uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
 
 		final ChildProcessor childBuilder = new ChildProcessor();
 		final ActionSelectListener actionSelectListener = new ActionSelectListener();
@@ -44,12 +44,12 @@ public class MenuBuildProcessFactory {
 		entryPopupListenerCollection.addEntryPopupListener(childBuilder);
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 
-		recursiveMenuStructureBuilder.addBuilderPair("menu.action", //
+		uiBuilder.addBuilderPair("menu.action", //
 		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
 
 		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
-		    .withPhase(Phase.ACCELERATORS, acceleratorBuilder).withPhase(UI, recursiveMenuStructureBuilder);
+		    .withPhase(Phase.ACCELERATORS, acceleratorBuilder).withPhase(UI, uiBuilder);
 		childBuilder.setProcessor(buildProcessor);
 		return buildProcessor;
 	}
