@@ -8,6 +8,6 @@ include 'freeplane',
         'freeplane_plugin_openmaps',
         'freeplane_plugin_script',
         'freeplane_plugin_svg',
-        'freeplane_plugin_jsp',
+        'freeplane_plugin_jsyntaxpane',
 
         'JOrtho_0.4_freeplane'
