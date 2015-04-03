@@ -171,4 +171,11 @@ public class Entry {
 			return false;
 		return true;
 	}
+
+	public Entry getChild(String name) {
+		for (Entry child : children())
+			if (name.equals(child.getName()))
+				return child;
+		return null;
+	}
 }

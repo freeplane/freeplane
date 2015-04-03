@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Arrays;
 
-import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
@@ -196,5 +195,14 @@ public class EntryTest {
 		down.setName("down");
 		
 		assertThat(top.getChild(0, 0), equalTo(down));
+	}
+
+	@Test
+	public void returnsChildWithName() throws Exception {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		middle.setName("name");
+		assertThat(top.getChild("name"), equalTo(middle));
 	}
 }
