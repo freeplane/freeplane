@@ -189,4 +189,14 @@ public class Entry {
 	public boolean isLeaf() {
 		return childEntries.isEmpty();
 	}
+
+	public Entry getChildByPath(String... names) {
+		Entry entry = this;
+		for (String name : names) {
+			entry = entry.getChild(name);
+			if (entry == null)
+				break;
+		}
+		return entry;
+	}
 }

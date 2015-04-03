@@ -174,14 +174,6 @@ public class EntryTest {
 	}
 
 	@Test
-	public void getsChildrenWithNoIndices() {
-		Entry top = new Entry();
-		top.setName("top");
-		
-		assertThat(top.getChild(), equalTo(top));
-	}
-
-	@Test
 	public void getsChildrenWithOneIndex() {
 		Entry top = new Entry();
 		Entry middle = new Entry();
@@ -221,5 +213,28 @@ public class EntryTest {
 		middle.addChild(down);
 		down.setName("name");
 		assertThat(top.getChild("name"), equalTo(down));
+	}
+
+	@Test
+	public void getsChildrenWithTwoNames() {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		middle.setName("middle");
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("down");
+		assertThat(top.getChildByPath("middle", "down"), equalTo(down));
+	}
+
+	@Test
+	public void dhildrenWithTwoNamesNotFound() {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("down");
+		assertThat(top.getChildByPath("middle", "down"), equalTo(null));
 	}
 }
