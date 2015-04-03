@@ -168,6 +168,12 @@ public class EntryTest {
 
 
 	@Test
+	public void isLeaf() {
+		Entry firstStructureWithEntry = new Entry();
+		assertThat(firstStructureWithEntry.isLeaf(), equalTo(true));
+	}
+
+	@Test
 	public void getsChildrenWithNoIndices() {
 		Entry top = new Entry();
 		top.setName("top");
@@ -204,5 +210,16 @@ public class EntryTest {
 		top.addChild(middle);
 		middle.setName("name");
 		assertThat(top.getChild("name"), equalTo(middle));
+	}
+
+	@Test
+	public void returnsChildWithNameDeeply() throws Exception {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("name");
+		assertThat(top.getChild("name"), equalTo(down));
 	}
 }
