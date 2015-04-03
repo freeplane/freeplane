@@ -1,6 +1,7 @@
-package org.freeplane.main.application;
+package org.freeplane.main.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,7 +12,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,13 +26,15 @@ import javax.swing.border.Border;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
@@ -55,7 +57,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private static final int TWO_DAYS = 1 * 24 * 60 * 60 * 1000;
 	private static final String UPDATE_BUTTON_LOCATION = "main_toolbar_update";
-	private static final String UPDATE_BUTTON_PATH = UPDATE_BUTTON_LOCATION + "/checkUpdate";
 //	/**
 //	 * the url where to download the newest version
 //	 */
@@ -64,6 +65,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 	 * the url to check the local version against
 	 */
 	private static final String WEB_UPDATE_LOCATION_KEY = "webUpdateLocation";
+	protected Entry entry;
 
 	/**
 	 * the client which asks a remote repository for the current version of the program.
@@ -97,6 +99,19 @@ class UpdateCheckAction extends AFreeplaneAction {
 				controller.getMapViewManager().removeMapViewChangeListener(this);
 			}
 		});
+		controller.getModeController().addUiBuilder(Phase.ACTIONS, UPDATE_BUTTON_LOCATION,
+		    new EntryVisitor() {
+			@Override
+			public void visit(Entry target) {
+				entry = target;
+				new EntryAccessor().setAction(target, UpdateCheckAction.this);
+			}
+
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return false;
+			}
+		});
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -113,29 +128,23 @@ class UpdateCheckAction extends AFreeplaneAction {
 	}
 
 	private void addUpdateButton(final FreeplaneVersion lastVersion) {
-		Controller controller = Controller.getCurrentController();
-		final Set<String> modes = controller.getModes();
-		for (final String mode : modes) {
-			ModeController modeController = controller.getModeController(mode);
-			if(!modeController.getUserInputListenerFactory().useRibbonMenu()) {	
-				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
-				    .getMenuBuilder(MenuBuilder.class);
-				if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
-					ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
-					if (menuBuilder.get(UPDATE_BUTTON_PATH) != null) {
-						menuBuilder.removeElement(UPDATE_BUTTON_PATH);
-					}
-					continue;
-				}
+		if (entry != null) {
+			Controller controller = Controller.getCurrentController();
+			final Component component = (Component) new EntryAccessor().getComponent(entry);
+			final Dimension preferredSize = component.getPreferredSize();
+			if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
+				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
+				component.setPreferredSize(new Dimension(0, preferredSize.height));
+				component.setVisible(false);
+			}
+			else {
 				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
 				final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
 				controller.getViewController().out(updateAvailable);
 				putValue(SHORT_DESCRIPTION, updateAvailable);
 				putValue(LONG_DESCRIPTION, updateAvailable);
-				if (menuBuilder.get(UPDATE_BUTTON_PATH) == null) {
-					menuBuilder.addAction(UPDATE_BUTTON_LOCATION, UPDATE_BUTTON_PATH, UpdateCheckAction.this,
-					    MenuBuilder.AS_CHILD);
-				}
+				component.setPreferredSize(new Dimension(preferredSize.height, preferredSize.height));
+				component.setVisible(true);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package org.freeplane.main.application;
+package org.freeplane.main.mindmapmode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
