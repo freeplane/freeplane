@@ -17,7 +17,11 @@ public class ToolbarComponentProvider implements ComponentProvider {
 	 */
 	@Override
     public Component createComponent(Entry entry) {
-	    final AFreeplaneAction action = new EntryAccessor().getAction(entry);
+	    final EntryAccessor entryAccessor = new EntryAccessor();
+		final Object existingComponent = entryAccessor.getComponent(entry);
+		if (existingComponent != null)
+			return (Component) existingComponent;
+		final AFreeplaneAction action = entryAccessor.getAction(entry);
 		Component component;
 		if(action != null){
 			if (action.isSelectable()) {

@@ -40,6 +40,7 @@ import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.action.JComponentBuilder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
@@ -291,7 +292,7 @@ public class MModeControllerFactory {
 		modeController.addExtension(MUIFactory.class, uiFactory);
 		modeController.addMenuContributor(menuContributor);
 
-		modeController.addUiBuilder(Phase.UI, "main_toolbar_font_name", new JToolbarComponentBuilder(
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_name", new JComponentBuilder(
 		    new ComponentProvider() {
 			    @Override
 			    public Component createComponent(Entry entry) {
@@ -304,7 +305,7 @@ public class MModeControllerFactory {
 		    }));
 
 
-		modeController.addUiBuilder(Phase.UI, "main_toolbar_font_size", new JToolbarComponentBuilder(
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_size", new JComponentBuilder(
 		    new ComponentProvider() {
 			    @Override
 			    public Component createComponent(Entry entry) {
@@ -313,7 +314,7 @@ public class MModeControllerFactory {
 		    }));
 
 
-		modeController.addUiBuilder(Phase.UI, "main_toolbar_style", new JToolbarComponentBuilder(
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_style", new JComponentBuilder(
 		    new ComponentProvider() {
 			    @Override
 			    public Component createComponent(Entry entry) {
