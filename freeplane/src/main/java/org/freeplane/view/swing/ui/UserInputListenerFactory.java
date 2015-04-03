@@ -332,29 +332,14 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void updateMenus(String menuStructureResource, Set<String> plugins) {
 		mapsPopupMenu = new JPopupMenu();
-		getMenuBuilder(MenuBuilder.class).addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
-		getMenuBuilder(MenuBuilder.class).addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
-		final URL popupStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "popup.xml"));
-		loadStructure(plugins, popupStructure);
+		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
 		if(useRibbonMenu()) {
 			final URL ribbonStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.xml"));
 			if (ribbonStructure != null) {
 				getMenuBuilder(RibbonBuilder.class).updateRibbon(ribbonStructure);
 			}
 		}
-		else {
-			final FreeplaneMenuBar menuBar = getMenuBar();
-			getMenuBuilder(MenuBuilder.class).addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
-			//			getMenuBuilder(MenuBuilder.class).addToolbar((JToolBar) getToolBar("/main_toolbar"), "/main_toolbar");
-			final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
-			loadStructure(plugins, menuStructure);
-			//			final URL toolbarStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "toolbar.xml"));
-			//			loadStructure(plugins, toolbarStructure);
-			final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
-			viewController.updateMenus(getMenuBuilder(MenuBuilder.class));
-		}
-		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
-		
+
 		final URL genericStructure = ResourceController.getResourceController().getResource(
 		    menuStructureResource.replace("menu.xml", ".generic.xml"));
 		if(genericStructure != null){

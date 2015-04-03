@@ -35,8 +35,13 @@ public class MenuBuildProcessFactory {
 		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
+
 		uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
+		uiBuilder.addBuilder("map_popup", new MapPopupBuilder(userInputListenerFactory));
+		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu.action");
+		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
+		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
 
 		final ChildProcessor childBuilder = new ChildProcessor();
 		final ActionSelectListener actionSelectListener = new ActionSelectListener();

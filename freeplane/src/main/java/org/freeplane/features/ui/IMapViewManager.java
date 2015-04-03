@@ -31,7 +31,6 @@ import java.util.Map;
 
 import javax.swing.JComboBox;
 
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -134,7 +133,6 @@ public interface IMapViewManager {
 	public Map<String, MapModel> getMaps(String modename);
 
 	public List<Component> getViews(MapModel map);
-	public void updateMenus(final MenuBuilder menuBuilder);
 	public void obtainFocusForSelected();
 	public void setTitle();
 	public Object setEdgesRenderingHint(final Graphics2D g);

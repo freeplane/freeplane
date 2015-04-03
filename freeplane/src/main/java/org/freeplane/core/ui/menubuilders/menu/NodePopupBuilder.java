@@ -5,17 +5,17 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
-public class JToolbarBuilder implements EntryVisitor {
+public class NodePopupBuilder implements EntryVisitor {
 	private final IUserInputListenerFactory userInputListenerFactory;
 
-	public JToolbarBuilder(IUserInputListenerFactory userInputListenerFactory) {
+	public NodePopupBuilder(IUserInputListenerFactory userInputListenerFactory) {
 		super();
 		this.userInputListenerFactory = userInputListenerFactory;
 	}
 
 	@Override
 	public void visit(Entry target) {
-		new EntryAccessor().setComponent(target, userInputListenerFactory.getToolBar("/main_toolbar"));
+		new EntryAccessor().setComponent(target, userInputListenerFactory.getNodePopupMenu());
 	}
 
 	@Override
