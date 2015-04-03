@@ -216,7 +216,7 @@ public class EntryTest {
 	}
 
 	@Test
-	public void getsChildrenWithTwoNames() {
+	public void getsChildByPath() {
 		Entry top = new Entry();
 		Entry middle = new Entry();
 		top.addChild(middle);
@@ -228,7 +228,7 @@ public class EntryTest {
 	}
 
 	@Test
-	public void dhildrenWithTwoNamesNotFound() {
+	public void childrenWithTwoNamesNotFound() {
 		Entry top = new Entry();
 		Entry middle = new Entry();
 		top.addChild(middle);
