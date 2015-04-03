@@ -1,4 +1,4 @@
-package org.freeplane.plugin.jsp;
+package org.freeplane.plugin.jsyntaxpane;
 
 import java.util.Hashtable;
 
@@ -37,7 +37,7 @@ public class Activator implements BundleActivator {
             final String components = "jsyntaxpane.components.PairsMarker" //
             		+ ", jsyntaxpane.components.LineNumbersRuler" //
             		+ ", jsyntaxpane.components.TokenMarker" //
-            		+ ", org.freeplane.plugin.jsp.NodeIdHighLighter";
+            		+ ", org.freeplane.plugin.jsyntaxpane.NodeIdHighLighter";
             	new GroovySyntaxKit().setProperty("Components", components);
         }
         finally {
