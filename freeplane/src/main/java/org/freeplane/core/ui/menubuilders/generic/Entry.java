@@ -178,4 +178,8 @@ public class Entry {
 				return child;
 		return null;
 	}
+
+	public boolean isLeaf() {
+		return childEntries.isEmpty();
+	}
 }

@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.help;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -31,18 +30,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.MenuUtils;
-import org.freeplane.core.util.MenuUtils.MenuEntry;
+import org.freeplane.core.util.MenuUtilsNew;
+import org.freeplane.core.util.MenuUtilsNew.MenuEntry;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -103,7 +96,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 			builder.append("<table cellspacing=\"0\" cellpadding=\"0\">");
 			for (final MenuEntry entry : menuEntries) {
 				final String keystroke = entry.getKeyStroke() == null ? "" //
-				        : MenuUtils.formatKeyStroke(entry.getKeyStroke());
+				        : MenuUtilsNew.formatKeyStroke(entry.getKeyStroke());
 				builder.append(el("tr", el("td", entry.getLabel() + "&#xa0;")
 				        + el("td", keystroke)
 				        + el("td", entry.getToolTipText())));
@@ -123,13 +116,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 
 	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
-		// use the MModeController for the mindmap mode menu if possible - the browse menu doesn't have much entries!
-		final ModeController modeController = ResourceController.getResourceController().isApplet() ? Controller
-		    .getCurrentModeController() : MModeController.getMModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-		//TODO - find a similar way to outline the hotkeys for the ribbons
-		final DefaultMutableTreeNode menuEntryTree = MenuUtils.createAcceleratebleMenuEntryTree(
-		    FreeplaneMenuBar.MENU_BAR_PREFIX, menuBuilder);
+		final DefaultMutableTreeNode menuEntryTree = MenuUtilsNew.createAcceleratebleMenuEntryTree("main_menu");
 		final String title = TextUtils.getText("hot_keys_table");
 		final String html = formatAsHtml(menuEntryTree.children());
 		JEditorPane refPane = new JEditorPane("text/html", html);

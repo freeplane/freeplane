@@ -53,7 +53,7 @@
 		</Entry>
 		<Entry name="EnterPassword" />
 	</Entry>
-	<Entry builder="main_menu">
+	<Entry name="main_menu" builder="main_menu">
 		<Entry builder="ribbon_taskbar,ignore">
 			<Entry name="NewMapAction" accelerator="control N" mandatory="true" />
 			<Entry name="EncryptedMap" mandatory="true" />
