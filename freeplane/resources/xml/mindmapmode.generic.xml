@@ -191,9 +191,11 @@
 					<Entry name="attributes_RemoveAllAttributesAction" />
 					<Entry name="attributes_RemoveFirstAttributeAction" />
 					<Entry name="attributes_RemoveLastAttributeAction" />
-					<Entry name="ShowSelectedAttributesAction" />
-					<Entry name="ShowAllAttributesAction" />
-					<Entry name="HideAllAttributesAction" />
+					<Entry builder="radio_button_group">
+						<Entry name="ShowSelectedAttributesAction" />
+						<Entry name="ShowAllAttributesAction" />
+						<Entry name="HideAllAttributesAction" />
+					</Entry>
 					<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
 					<Entry name="ShowAttributeDialogAction" />
 				</Entry>
@@ -215,77 +217,77 @@
 				</Entry>
 			</Entry>
 		</Entry>
-			<Entry name="file" builder="menu.action,ignore">
-				<Entry name="NewMapAction" accelerator="control N" />
+		<Entry name="file" builder="menu.action,ignore">
+			<Entry name="NewMapAction" accelerator="control N" />
+			<Entry name="EncryptedMap" />
+			<Entry builder="separator" />
+			<Entry name="OpenAction" accelerator="control O" />
+			<Entry builder="separator" />
+			<Entry name="SaveAction" accelerator="control S" />
+			<Entry name="SaveAsAction" accelerator="control shift S" />
+			<Entry name="SaveAll" />
+			<Entry name="new">
+				<Entry name="NewMapAction" />
+				<Entry name="new_map_from_user_templates" />
 				<Entry name="EncryptedMap" />
-				<Entry builder="separator" />
-				<Entry name="OpenAction" accelerator="control O" />
-				<Entry builder="separator" />
-				<Entry name="SaveAction" accelerator="control S" />
-				<Entry name="SaveAsAction" accelerator="control shift S" />
+			</Entry>
+			<Entry name="open">
+				<Entry name="OpenAction" />
+				<Entry name="OpenURLMapAction" />
+				<Entry name="RevertAction" />
+			</Entry>
+			<Entry name="lastOpenedMaps" builder="main_menu_most_recent_files" />
+			<Entry name="save">
+				<Entry name="SaveAction" />
+				<Entry name="SaveAsAction" />
 				<Entry name="SaveAll" />
-				<Entry name="new">
-						<Entry name="NewMapAction" />
-						<Entry name="new_map_from_user_templates" />
-						<Entry name="EncryptedMap" />
-				</Entry>
-				<Entry name="open">
-						<Entry name="OpenAction" />
-						<Entry name="OpenURLMapAction" />
-						<Entry name="RevertAction" />
-				</Entry>
-				<Entry name="lastOpenedMaps" builder="main_menu_most_recent_files" />
-				<Entry name="save">
-						<Entry name="SaveAction" />
-						<Entry name="SaveAsAction" />
-						<Entry name="SaveAll" />
-				</Entry>
-				<Entry name="import_export">
-					<Entry name="export">
-						<Entry name="ExportAction" />
-						<Entry name="ExportBranchAction" accelerator="alt shift A" />
-					</Entry>
-					<Entry name="import">
-						<Entry name="ImportBranchAction" />
-						<Entry name="ImportLinkedBranchAction" />
-						<Entry name="ImportLinkedBranchWithoutRootAction" />
-						<Entry name="ImportExplorerFavoritesAction" />
-						<Entry name="ImportFolderStructureAction" />
-						<Entry name="ImportMindmanagerFiles" />
-					</Entry>
-				</Entry>
-				<Entry name="print">
-						<Entry name="PageAction" />
-						<Entry name="PrintPreviewAction" />
-						<Entry name="PrintAction" accelerator="control P" />
-				</Entry>
-				<Entry name="OpenUserDirAction" />
-				<Entry name="PropertyAction" />
-				<Entry name="AboutAction" />
-				<Entry name="help">
-						<Entry name="OpenFreeplaneSiteAction" />
-						<Entry name="GettingStartedAction" accelerator="F1" />
-						<Entry name="AskForHelp" />
-						<Entry name="RequestFeatureAction" />
-						<Entry name="ReportBugAction" />
-						<Entry name="HotKeyInfoAction" />
-				</Entry>
-				<Entry name="CloseAction" accelerator="control W" />
-				<Entry name="QuitAction" accelerator="alt F4" />
 			</Entry>
-			<Entry name="edit" builder="menu.action,ignore">
-				<Entry name="CutAction" accelerator="control X" />
-				<Entry name="CopyAction" accelerator="control C" />
-				<Entry name="CopySingleAction" accelerator="control shift C" />
-				<Entry name="CopyIDAction" />
-				<Entry name="CopyNodeURIAction" />
-				<Entry name="PasteAction" accelerator="control V" />
-				<Entry name="SelectedPasteAction" />
-				<Entry name="MoveAction" />
-				<Entry name="CloneAction" />
-				<Entry name="UndoAction" accelerator="control Z" />
-				<Entry name="RedoAction" accelerator="control Y" />
+			<Entry name="import_export">
+				<Entry name="export">
+					<Entry name="ExportAction" />
+					<Entry name="ExportBranchAction" accelerator="alt shift A" />
+				</Entry>
+				<Entry name="import">
+					<Entry name="ImportBranchAction" />
+					<Entry name="ImportLinkedBranchAction" />
+					<Entry name="ImportLinkedBranchWithoutRootAction" />
+					<Entry name="ImportExplorerFavoritesAction" />
+					<Entry name="ImportFolderStructureAction" />
+					<Entry name="ImportMindmanagerFiles" />
+				</Entry>
 			</Entry>
+			<Entry name="print">
+				<Entry name="PageAction" />
+				<Entry name="PrintPreviewAction" />
+				<Entry name="PrintAction" accelerator="control P" />
+			</Entry>
+			<Entry name="OpenUserDirAction" />
+			<Entry name="PropertyAction" />
+			<Entry name="AboutAction" />
+			<Entry name="help">
+				<Entry name="OpenFreeplaneSiteAction" />
+				<Entry name="GettingStartedAction" accelerator="F1" />
+				<Entry name="AskForHelp" />
+				<Entry name="RequestFeatureAction" />
+				<Entry name="ReportBugAction" />
+				<Entry name="HotKeyInfoAction" />
+			</Entry>
+			<Entry name="CloseAction" accelerator="control W" />
+			<Entry name="QuitAction" accelerator="alt F4" />
+		</Entry>
+		<Entry name="edit" builder="menu.action,ignore">
+			<Entry name="CutAction" accelerator="control X" />
+			<Entry name="CopyAction" accelerator="control C" />
+			<Entry name="CopySingleAction" accelerator="control shift C" />
+			<Entry name="CopyIDAction" />
+			<Entry name="CopyNodeURIAction" />
+			<Entry name="PasteAction" accelerator="control V" />
+			<Entry name="SelectedPasteAction" />
+			<Entry name="MoveAction" />
+			<Entry name="CloneAction" />
+			<Entry name="UndoAction" accelerator="control Z" />
+			<Entry name="RedoAction" accelerator="control Y" />
+		</Entry>
 		<Entry name="nodes" orderPriority="0" builder="ribbon_task">
 			<Entry name="add_node" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="NewChildAction" accelerator="INSERT" priority="top" />
@@ -400,7 +402,7 @@
 			</Entry>
 			<Entry name="cloud" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="CloudAction" />
-				<Entry name="cloud_shapes">
+				<Entry name="cloud_shapes" builder="radio_button_group">
 					<Entry name="CloudShapeAction.ARC" />
 					<Entry name="CloudShapeAction.STAR" />
 					<Entry name="CloudShapeAction.RECT" />
@@ -417,7 +419,7 @@
 				<Entry name="ShowNotesInMapAction" />
 				<Entry name="ShowHideNoteAction" accelerator="control GREATER" />
 				<Entry name="SetBooleanMapPropertyAction.show_note_icons" />
-				<Entry name="note_window_location">
+				<Entry name="note_window_location" builder="radio_button_group">
 					<Entry name="SetNoteWindowPosition.top" />
 					<Entry name="SetNoteWindowPosition.left" />
 					<Entry name="SetNoteWindowPosition.right" />
@@ -446,7 +448,7 @@
 				</Entry>
 			</Entry>
 			<Entry name="EdgeProperties" resize_policies="Mirror" builder="ribbon_band">
-				<Entry name="format_menu_edge_styles">
+				<Entry name="format_menu_edge_styles" builder="radio_button_group">
 					<Entry name="EdgeStyleAsParentAction" />
 					<Entry name="EdgeStyleAction.linear" />
 					<Entry name="EdgeStyleAction.bezier" />
@@ -455,7 +457,7 @@
 					<Entry name="EdgeStyleAction.horizontal" />
 					<Entry name="EdgeStyleAction.hide_edge" />
 				</Entry>
-				<Entry name="format_menu_edge_widths">
+				<Entry name="format_menu_edge_widths" builder="radio_button_group">
 					<Entry name="EdgeWidthAction_width_parent" />
 					<Entry name="EdgeWidthAction_width_thin" />
 					<Entry name="EdgeWidthAction_1" />
@@ -512,8 +514,8 @@
 					<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
 				</Entry>
 			</Entry>
-			<Entry name="navigate_maps" builder="ribbon_contributor" />
-			<Entry name="navigate_modes" builder="ribbon_contributor" />
+			<Entry builder="navigate_maps" />
+			<Entry builder="navigate_modes" />
 			<Entry name="goto" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="MoveToRootAction" accelerator="ESCAPE" priority="Top" />
 				<Entry name="FollowLinkAction" accelerator="control ENTER" />
@@ -657,7 +659,9 @@
 		</Entry>
 	</Entry>
 	<Entry builder="map_popup">
-		<Entry processOnPopup="true"><Entry name="mindmaps" builder="popup_menu_mindmaps" /></Entry>
+		<Entry processOnPopup="true">
+			<Entry builder="navigate_maps" />
+		</Entry>
 		<Entry builder="separator" />
 		<Entry name="ToggleFullScreenAction" />
 		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />

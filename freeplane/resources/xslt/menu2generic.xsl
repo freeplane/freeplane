@@ -16,6 +16,11 @@
 				<xsl:text>separator</xsl:text>
 			</xsl:attribute>
 		</xsl:if>
+		<xsl:if test="*[name()='menu_radio_action']">
+			<xsl:attribute name="builder">
+				<xsl:text>radio_button_group</xsl:text>
+			</xsl:attribute>
+		</xsl:if>
 		<xsl:apply-templates select="@*"/>
 		<xsl:apply-templates select="*"/>
 	</xsl:element>

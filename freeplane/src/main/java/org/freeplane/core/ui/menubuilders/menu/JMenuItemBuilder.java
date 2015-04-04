@@ -5,19 +5,13 @@ import java.awt.Container;
 
 import javax.swing.Icon;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.MenuSplitterConfiguration;
-import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
-import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -32,18 +26,23 @@ public class JMenuItemBuilder implements EntryVisitor{
 	final ResourceAccessor resourceAccessor;
 	final private MenuSplitter menuSplitter;
 	final private EntryAccessor entryAccessor;
-	private IAcceleratorMap accelerators;
-	private AcceleratebleActionProvider acceleratebleActionProvider;
+	final private ComponentProvider menuActionComponentProvider;
 
 	public JMenuItemBuilder(EntryPopupListener popupListener, IAcceleratorMap accelerators,
 	                        AcceleratebleActionProvider acceleratebleActionProvider, ResourceAccessor resourceAccessor) {
+		this(popupListener,
+		    new MenuActionComponentProvider(accelerators, acceleratebleActionProvider, resourceAccessor),
+		    resourceAccessor);
+	}
+
+	public JMenuItemBuilder(EntryPopupListener popupListener, ComponentProvider menuActionComponentProvider,
+	                        ResourceAccessor resourceAccessor) {
 		this.popupListener = popupListener;
-		this.accelerators = accelerators;
-		this.acceleratebleActionProvider = acceleratebleActionProvider;
 		this.resourceAccessor = resourceAccessor;
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
 		menuSplitter = new MenuSplitter(resourceAccessor.getIntProperty(
 		    MenuSplitterConfiguration.MAX_MENU_ITEM_COUNT_KEY, 10));
+		this.menuActionComponentProvider = menuActionComponentProvider;
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 	}
 
 	private void addActionItem(Entry entry) {
-		final Component actionComponent = createActionComponent(entry);
+		final Component actionComponent = menuActionComponentProvider.createComponent(entry);
 		if(actionComponent != null){
 			addComponent(entry, actionComponent);
 		}
@@ -69,7 +68,7 @@ public class JMenuItemBuilder implements EntryVisitor{
     }
 
 	private void addSubmenu(final Entry entry) {
-		final Component actionComponent = createActionComponent(entry);
+		final Component actionComponent = menuActionComponentProvider.createComponent(entry);
 		JMenu menu = new JMenu();
 		final String rawText = entryAccessor.getText(entry);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, rawText);
@@ -117,28 +116,6 @@ public class JMenuItemBuilder implements EntryVisitor{
 			}
 		});
     }
-
-	private Component createActionComponent(Entry entry) {
-		final AFreeplaneAction action = entryAccessor.getAction(entry);
-		if(action != null){
-			final JMenuItem actionComponent;
-			IFreeplaneAction wrappedAction = acceleratebleActionProvider.wrap(action);
-			if (action.isSelectable()) {
-				actionComponent = new JAutoCheckBoxMenuItem(wrappedAction);
-			}
-			else {
-				actionComponent = new JFreeplaneMenuItem(wrappedAction);
-			}
-			final KeyStroke accelerator = accelerators.getAccelerator(entry.getName());
-			actionComponent.setAccelerator(accelerator);
-			return actionComponent;
-		}
-		else if(entry.builders().contains("separator")){
-			return new JPopupMenu.Separator();
-		}
-		else
-			return null;
-	}
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {

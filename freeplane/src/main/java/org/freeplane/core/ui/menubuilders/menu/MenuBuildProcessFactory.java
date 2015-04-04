@@ -10,13 +10,13 @@ import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
-import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.features.mode.FreeplaneActions;
 
 public class MenuBuildProcessFactory {
@@ -64,6 +64,10 @@ public class MenuBuildProcessFactory {
 
 		uiBuilder.addBuilderPair("menu.action", //
 		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
+		        resourceAccessor), new JComponentRemover());
+
+		uiBuilder.addBuilderPair("radio_button_group", //
+		    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
 
 		buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
