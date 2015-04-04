@@ -135,30 +135,35 @@ public class MenuUtils {
 		}
 
 		private DefaultMutableTreeNode menuNode2menuEntryNode(Entry menuItem) {
-			// only named entries may contain an action
 			final String name = menuItem.getName();
 			if (name != null) {
 				final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
 				final AFreeplaneAction action = entryAccessor.getAction(menuItem);
-				final String text;
-				final String iconKey;
-				final String tooltip;
-				final KeyStroke accelerator;
-				if (action != null) {
-					text = ActionUtils.getActionTitle(action);
-					iconKey = action.getIconKey();
-					tooltip = (String) action.getValue(Action.LONG_DESCRIPTION);
-					accelerator = acceleratorManager.getAccelerator(action.getKey());
+				if (menuItem.hasChildren()) {
+					String text = entryAccessor.getText(menuItem);
+					final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new MenuEntry(name, text));
+					if (action != null) {
+						final MenuEntry menuEntry = menuEntry(action);
+						node.add(new DefaultMutableTreeNode(menuEntry));
+					}
+					return node;
 				}
-				else {
-					iconKey = tooltip = null;
-					accelerator = null;
-					text = entryAccessor.getText(menuItem);
+				else if (action != null) {
+					final MenuEntry menuEntry = menuEntry(action);
+					return new DefaultMutableTreeNode(menuEntry);
 				}
-				return new DefaultMutableTreeNode(new MenuEntry(name, text, iconKey, accelerator, tooltip));
+
 			}
-			// omit non-action entries like separators
 			return null;
+		}
+
+		private MenuEntry menuEntry(final AFreeplaneAction action) {
+			String text = ActionUtils.getActionTitle(action);
+			String iconKey = action.getIconKey();
+			String tooltip = (String) action.getValue(Action.LONG_DESCRIPTION);
+			KeyStroke accelerator = acceleratorManager.getAccelerator(action.getKey());
+			final MenuEntry menuEntry = new MenuEntry(action.getKey(), text, iconKey, accelerator, tooltip);
+			return menuEntry;
 		}
 	}
 
