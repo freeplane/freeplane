@@ -297,6 +297,7 @@
 				<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
 				<Entry name="SetLinkByFileChooserAction" />
 				<Entry name="SetLinkByTextFieldAction" />
+				<Entry name="AddMenuItemLinkAction" />
 				<Entry name="ExtractLinkFromTextAction" />
 				<Entry name="SetLinkAnchorAction">
 					<Entry name="MakeLinkFromAnchorAction" />
