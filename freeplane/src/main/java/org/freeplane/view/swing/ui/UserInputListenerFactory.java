@@ -62,6 +62,7 @@ import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
@@ -96,6 +97,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private final boolean useRibbonMenu;
 	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
 	private Entry genericMenuStructure;
+	private SubtreeProcessor subtreeBuilder;
 
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
 		customBuilders = new ArrayList<>(Phase.values().length);
@@ -330,6 +332,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
+	public void rebuildMenus(Entry entry){
+		subtreeBuilder.rebuildChildren(entry);
+	}
+
 	public void updateMenus(String menuStructureResource, Set<String> plugins) {
 		mapsPopupMenu = new JPopupMenu();
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
@@ -343,12 +349,16 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		final URL genericStructure = ResourceController.getResourceController().getResource(
 		    menuStructureResource.replace("menu.xml", ".generic.xml"));
 		if(genericStructure != null){
+			final boolean isUserDefined = genericStructure.getProtocol().equalsIgnoreCase("file");
 			try {
 				final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 				final EntriesForAction entries = new EntriesForAction();
 				final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
-				final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
-				    this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries);
+				final MenuBuildProcessFactory menuBuildProcessFactory = new MenuBuildProcessFactory();
+				subtreeBuilder = menuBuildProcessFactory.getChildProcessor();
+				final PhaseProcessor buildProcessor = menuBuildProcessFactory.createBuildProcessor(this,
+				    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries)
+				    .getBuildProcessor();
 				acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
 				for (final Phase phase : Phase.values())
 					for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
@@ -359,29 +369,17 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
 				buildProcessor.build(genericMenuStructure);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-			
-	}
-
-	private void loadStructure(Set<String> plugins, final URL menuStructure) {
-		if (menuStructure != null) {
-			final boolean isUserDefined = menuStructure.getProtocol().equalsIgnoreCase("file");
-			try{
-				getMenuBuilder(MenuBuilder.class).processMenuCategory(menuStructure, plugins);
-			}
-			catch (RuntimeException e){
 				if(isUserDefined){
 					LogUtils.warn(e);
-					String myMessage = TextUtils.format("menu_error", menuStructure.getPath(), e.getMessage());
+					String myMessage = TextUtils.format("menu_error", genericStructure.getPath(), e.getMessage());
 					UITools.backOtherWindows();
 					JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
 					System.exit(-1);
 				}
-				throw e;
+				throw new RuntimeException(e);
 			}
 		}
+
 	}
 
 	private void updateModeMenu() {

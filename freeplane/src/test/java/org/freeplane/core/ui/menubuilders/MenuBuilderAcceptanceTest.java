@@ -33,7 +33,7 @@ public class MenuBuilderAcceptanceTest {
 		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(toolbar);
 		final PhaseProcessor buildProcessor = new MenuBuildProcessFactory().createBuildProcessor(
 		    userInputListenerFactory, Controller.getCurrentModeController(), new FreeplaneResourceAccessor(),
-		    mock(IAcceleratorMap.class), new EntriesForAction());
+		    mock(IAcceleratorMap.class), new EntriesForAction()).getBuildProcessor();
 		final String menuResource = "/xml/mindmapmode.generic.xml";
 		final InputStream resource = MenuBuilderAcceptanceTest.class.getResourceAsStream(menuResource);
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));

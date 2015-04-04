@@ -36,7 +36,7 @@ public class MenuBuildProcessFactoryTest {
 		final FreeplaneMenuBar menubar = new FreeplaneMenuBar();
 		when(userInputListenerFactory.getMenuBar()).thenReturn(menubar);
 		phaseProcessor = buildProcessFactory.createBuildProcessor(userInputListenerFactory, freeplaneActions,
-		    resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction());
+		    resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction()).getBuildProcessor();
 	}
 
 	@Test

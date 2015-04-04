@@ -5,7 +5,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.freeplane.core.ui.menubuilders.generic.ChildProcessor;
+import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.Processor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
@@ -13,10 +13,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 
-public class ChildProcessorTest {
+public class SubtreeProcessorTest {
 	@Test
 	public void doesNotBuildEntriesWithoutDelay() throws Exception {
-		final ChildProcessor childProcessor = new ChildProcessor();
+		final SubtreeProcessor childProcessor = new SubtreeProcessor();
 		final Processor processor = mock(Processor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
@@ -29,7 +29,7 @@ public class ChildProcessorTest {
 
 	@Test
 	public void buildsEntriesWithDelay() throws Exception {
-		final ChildProcessor childProcessor = new ChildProcessor();
+		final SubtreeProcessor childProcessor = new SubtreeProcessor();
 		final Processor processor = mock(Processor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
@@ -43,7 +43,7 @@ public class ChildProcessorTest {
 
 	@Test
 	public void doesNotDestroyEntriesWithoutDelay() throws Exception {
-		final ChildProcessor childProcessor = new ChildProcessor();
+		final SubtreeProcessor childProcessor = new SubtreeProcessor();
 		final Processor processor = mock(Processor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
@@ -56,7 +56,7 @@ public class ChildProcessorTest {
 
 	@Test
 	public void destroysEntriesWithDelay() throws Exception {
-		final ChildProcessor childProcessor = new ChildProcessor();
+		final SubtreeProcessor childProcessor = new SubtreeProcessor();
 		final Processor processor = mock(Processor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);

@@ -74,6 +74,8 @@ public interface IUserInputListenerFactory {
 	
 	public void updateMenus(String menuStructureResource, Set<String> plugins);
 
+	public void rebuildMenus(Entry entry);
+
 	void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair);
 
 	Entry getGenericMenuStructure();

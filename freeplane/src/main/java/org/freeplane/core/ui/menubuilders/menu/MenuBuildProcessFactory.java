@@ -10,7 +10,7 @@ import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
-import org.freeplane.core.ui.menubuilders.generic.ChildProcessor;
+import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
@@ -21,7 +21,20 @@ import org.freeplane.features.mode.FreeplaneActions;
 
 public class MenuBuildProcessFactory {
 
-	public PhaseProcessor createBuildProcessor(IUserInputListenerFactory userInputListenerFactory, FreeplaneActions freeplaneActions,
+	private PhaseProcessor buildProcessor;
+
+	public PhaseProcessor getBuildProcessor() {
+		return buildProcessor;
+	}
+
+	public SubtreeProcessor getChildProcessor() {
+		return childProcessor;
+	}
+
+	private SubtreeProcessor childProcessor;
+
+	public MenuBuildProcessFactory createBuildProcessor(IUserInputListenerFactory userInputListenerFactory,
+	                                                    FreeplaneActions freeplaneActions,
 	                                           ResourceAccessor resourceAccessor, IAcceleratorMap acceleratorMap, EntriesForAction entries) {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
@@ -43,20 +56,20 @@ public class MenuBuildProcessFactory {
 		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
 
-		final ChildProcessor childBuilder = new ChildProcessor();
+		childProcessor = new SubtreeProcessor();
 		final ActionSelectListener actionSelectListener = new ActionSelectListener();
 		EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
-		entryPopupListenerCollection.addEntryPopupListener(childBuilder);
+		entryPopupListenerCollection.addEntryPopupListener(childProcessor);
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 
 		uiBuilder.addBuilderPair("menu.action", //
 		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
 
-		final PhaseProcessor buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
+		buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
 		    .withPhase(Phase.ACCELERATORS, acceleratorBuilder).withPhase(UI, uiBuilder);
-		childBuilder.setProcessor(buildProcessor);
-		return buildProcessor;
+		childProcessor.setProcessor(buildProcessor);
+		return this;
 	}
 }
 
