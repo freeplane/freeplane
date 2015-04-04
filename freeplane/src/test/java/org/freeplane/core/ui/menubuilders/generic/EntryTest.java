@@ -169,8 +169,7 @@ public class EntryTest {
 
 	@Test
 	public void getsChildrenWithNoIndices() {
-		Entry top = new Entry();
-		top.setName("top");
+		Entry top = entryWithName("top");
 		
 		assertThat(top.getChild(), equalTo(top));
 	}
@@ -178,9 +177,8 @@ public class EntryTest {
 	@Test
 	public void getsChildrenWithOneIndex() {
 		Entry top = new Entry();
-		Entry middle = new Entry();
+		Entry middle = entryWithName("middle");
 		top.addChild(middle);
-		middle.setName("middle");
 		
 		assertThat(top.getChild(0), equalTo(middle));
 	}
@@ -190,9 +188,8 @@ public class EntryTest {
 		Entry top = new Entry();
 		Entry middle = new Entry();
 		top.addChild(middle);
-		Entry down = new Entry();
+		Entry down = entryWithName("down");
 		middle.addChild(down);
-		down.setName("down");
 		
 		assertThat(top.getChild(0, 0), equalTo(down));
 	}
@@ -200,9 +197,24 @@ public class EntryTest {
 	@Test
 	public void returnsChildWithName() throws Exception {
 		Entry top = new Entry();
-		Entry middle = new Entry();
+		Entry middle = entryWithName("child");
 		top.addChild(middle);
-		middle.setName("name");
-		assertThat(top.getChild("name"), equalTo(middle));
+		assertThat(top.getChild("child"), equalTo(middle));
+	}
+
+	@Test
+	public void recursiveSearchReturnsChildWithName() throws Exception {
+		Entry top = new Entry();
+		Entry middle = entryWithName("child");
+		top.addChild(middle);
+		Entry leaf = entryWithName("grandchild");
+		middle.addChild(leaf);
+		assertThat(top.findChildRecursively("grandchild"), equalTo(leaf));
+	}
+
+	private Entry entryWithName(String name) {
+		Entry entry = new Entry();
+		entry.setName(name);
+		return entry;
 	}
 }

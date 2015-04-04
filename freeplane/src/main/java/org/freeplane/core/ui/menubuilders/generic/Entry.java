@@ -179,6 +179,21 @@ public class Entry {
 		return null;
 	}
 
+	public Entry findChildRecursively(String name) {
+		return findEntryByNameRecursively(this, name);
+	}
+
+	private Entry findEntryByNameRecursively(Entry that, String name) {
+		if (that.name.equals(name))
+			return that;
+		for (Entry child : that.children()) {
+			Entry entry = findEntryByNameRecursively(child, name);
+			if (entry != null)
+				return entry;
+		}
+		return null;
+	}
+
 	public boolean isLeaf() {
 		return childEntries.isEmpty();
 	}
