@@ -173,9 +173,16 @@ public class Entry {
 	}
 
 	public Entry getChild(String name) {
-		for (Entry child : children())
-			if (name.equals(child.getName()))
+		for (Entry child : children()) {
+	        final String childName = child.getName();
+			if (childName.isEmpty()) {
+				final Entry deepChild = child.getChild(name);
+				if (deepChild != null)
+					return deepChild;
+			}
+	        if (name.equals(childName))
 				return child;
+        }
 		return null;
 	}
 
@@ -196,5 +203,15 @@ public class Entry {
 
 	public boolean isLeaf() {
 		return childEntries.isEmpty();
+	}
+
+	public Entry getChildByPath(String... names) {
+		Entry entry = this;
+		for (String name : names) {
+			entry = entry.getChild(name);
+			if (entry == null)
+				break;
+		}
+		return entry;
 	}
 }

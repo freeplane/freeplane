@@ -217,4 +217,38 @@ public class EntryTest {
 		entry.setName(name);
 		return entry;
 	}
+
+	@Test
+	public void returnsChildWithNameDeeply() throws Exception {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("name");
+		assertThat(top.getChild("name"), equalTo(down));
+	}
+
+	@Test
+	public void getsChildByPath() {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		middle.setName("middle");
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("down");
+		assertThat(top.getChildByPath("middle", "down"), equalTo(down));
+	}
+
+	@Test
+	public void childrenWithTwoNamesNotFound() {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("down");
+		assertThat(top.getChildByPath("middle", "down"), equalTo(null));
+	}
 }

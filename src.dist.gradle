@@ -77,7 +77,7 @@ task srcTarGz(type: Tar) {
 
 def srcpureAdditionalExcludeSpec() {
     // built from latex.flex using jflex!
-    return ['freeplane_plugin_jsp/src/main/java/jsyntaxpane/lexers/LaTeXLexer.java',
+    return ['freeplane_plugin_jsyntaxpane/src/main/java/jsyntaxpane/lexers/LaTeXLexer.java',
 
     // the flash files don't have a source in the freeplane-distrib,
     // which is a problem for Debian,

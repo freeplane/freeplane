@@ -303,8 +303,10 @@
 					<Entry name="MakeLinkToAnchorAction" />
 					<Entry name="ClearLinkAnchorAction" />
 				</Entry>
-				<Entry processOnPopup="true"> <Entry builder = "link_actions"/> </Entry>
-				
+				<Entry processOnPopup="true">
+					<Entry builder="link_actions" />
+				</Entry>
+
 			</Entry>
 			<Entry name="icons" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="IconSelectionPlugin" />
@@ -315,7 +317,7 @@
 					<Entry name="RemoveIconAction" />
 				</Entry>
 				<Entry name="IconList">
-					<Entry builder="icon_actions"/>
+					<Entry builder="icon_actions" />
 				</Entry>
 				<Entry name="IconProgressIconUpAction" accelerator="alt LESS">
 					<Entry name="IconProgressIconDownAction" accelerator="alt shift LESS" />
@@ -581,5 +583,77 @@
 				<Entry name="AboutAction" priority="top" mandatory="true" />
 			</Entry>
 		</Entry>
+	</Entry>
+	<Entry builder="map_popup">
+		<Entry processOnPopup="true"><Entry name="mindmaps" builder="popup_menu_mindmaps" /></Entry>
+		<Entry builder="separator" />
+		<Entry name="ToggleFullScreenAction" />
+		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
+		<Entry name="ToggleToolbarAction" />
+		<Entry name="ShowFilterToolbarAction" />
+		<Entry name="ToggleFBarAction" />
+		<Entry name="ToggleLeftToolbarAction" />
+		<Entry name="ToggleStatusAction" />
+		<Entry name="ToggleScrollbarsAction" />
+		<Entry builder="separator" />
+		<Entry name="ShowFormatPanel" />
+		<Entry name="ShowHideNoteAction" accelerator="control GREATER" />
+		<Entry builder="separator" />
+		<Entry name="MapBackgroundColorAction" />
+		<Entry builder="separator" />
+		<Entry name="ViewLayoutTypeAction.OUTLINE" />
+		<Entry name="FitToPage" />
+		<Entry name="CenterSelectedNodeAction" />
+		<Entry name="MoveToRootAction" accelerator="ESCAPE" />
+		<Entry name="GotoNodeAction" />
+	</Entry>
+	<Entry builder="node_popup">
+		<Entry name="EditLongAction" accelerator="alt ENTER" />
+		<Entry name="EditDetailsInDialogAction" />
+		<Entry name="EditDetailsAction" />
+		<Entry name="DeleteDetailsAction" />
+		<Entry name="SetShortenerStateAction" />
+		<Entry name="EditNoteInDialogAction" />
+		<Entry name="ExternalImageAddAction" />
+		<Entry name="EditAttributesAction" accelerator="alt F9" />
+		<Entry builder="separator" />
+		<Entry name="NewSummaryAction" accelerator="alt shift INSERT" />
+		<Entry name="SummaryNodeAction" accelerator="alt shift S" />
+		<Entry name="AlwaysUnfoldedNodeAction" />
+		<Entry name="FreeNodeAction" />
+		<Entry name="CloudAction" accelerator="control shift B" />
+		<Entry name="menu_applyStyle" builder="node_popup_styles" />
+		<Entry name="AddConnectorAction" accelerator="control L" />
+		<Entry name="links" builder="popup_links">
+			<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
+			<Entry name="SetLinkByTextFieldAction" accelerator="control K" />
+			<Entry name="ExtractLinkFromTextAction" />
+			<Entry builder="separator" />
+			<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
+			<Entry name="AddMenuItemLinkAction" accelerator="" />
+			<Entry builder="separator" />
+			<Entry name="SetLinkAnchorAction" accelerator="" />
+			<Entry name="MakeLinkFromAnchorAction" accelerator="" />
+			<Entry name="MakeLinkToAnchorAction" accelerator="" />
+			<Entry name="ClearLinkAnchorAction" accelerator="" />
+		</Entry>
+		<Entry name="goto" processOnPopup="true">
+			<Entry builder="link_actions" />
+			<Entry builder="clone_actions" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry name="EnterPassword" />
+		<Entry name="scripting" plugin="org.freeplane.plugin.script"
+			builder="node_popup_scripting" />
+		<Entry builder="separator" />
+		<Entry name="CutAction" accelerator="control X" />
+		<Entry name="CopyAction" accelerator="control C" />
+		<Entry name="CopySingleAction" accelerator="control shift C" />
+		<Entry name="CopyIDAction" />
+		<Entry name="CopyNodeURIAction" />
+		<Entry name="PasteAction" accelerator="control V" />
+		<Entry name="SortNodes" />
+		<Entry name="UndoAction" />
+		<Entry name="RedoAction" />
 	</Entry>
 </FreeplaneUIEntries>

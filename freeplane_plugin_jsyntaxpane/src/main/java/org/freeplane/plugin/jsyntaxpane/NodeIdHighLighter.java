@@ -1,4 +1,4 @@
-package org.freeplane.plugin.jsp;
+package org.freeplane.plugin.jsyntaxpane;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
