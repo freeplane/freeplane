@@ -209,7 +209,7 @@ public class EntryTest {
 		top.addChild(middle);
 		Entry leaf = entryWithName("grandchild");
 		middle.addChild(leaf);
-		assertThat(top.findChildRecursively("grandchild"), equalTo(leaf));
+		assertThat(top.findEntry("grandchild"), equalTo(leaf));
 	}
 
 	private Entry entryWithName(String name) {
@@ -239,6 +239,18 @@ public class EntryTest {
 		middle.addChild(down);
 		down.setName("down");
 		assertThat(top.getChildByPath("middle", "down"), equalTo(down));
+	}
+
+	@Test
+	public void ignoresEmptyStringsInPath() {
+		Entry top = new Entry();
+		Entry middle = new Entry();
+		top.addChild(middle);
+		middle.setName("middle");
+		Entry down = new Entry();
+		middle.addChild(down);
+		down.setName("down");
+		assertThat(top.getChildByPath("middle", "", "down"), equalTo(down));
 	}
 
 	@Test

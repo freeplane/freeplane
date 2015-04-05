@@ -186,15 +186,11 @@ public class Entry {
 		return null;
 	}
 
-	public Entry findChildRecursively(String name) {
-		return findEntryByNameRecursively(this, name);
-	}
-
-	private Entry findEntryByNameRecursively(Entry that, String name) {
-		if (that.name.equals(name))
-			return that;
-		for (Entry child : that.children()) {
-			Entry entry = findEntryByNameRecursively(child, name);
+	public Entry findEntry(String name) {
+		if (this.name.equals(name))
+			return this;
+		for (Entry child : this.children()) {
+			Entry entry = child.findEntry(name);
 			if (entry != null)
 				return entry;
 		}
@@ -208,7 +204,8 @@ public class Entry {
 	public Entry getChildByPath(String... names) {
 		Entry entry = this;
 		for (String name : names) {
-			entry = entry.getChild(name);
+			if (!name.isEmpty())
+				entry = entry.getChild(name);
 			if (entry == null)
 				break;
 		}

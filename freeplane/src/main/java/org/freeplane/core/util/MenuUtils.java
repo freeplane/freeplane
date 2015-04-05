@@ -113,7 +113,7 @@ public class MenuUtils {
 		}
 
 		private DefaultMutableTreeNode build(final String menuRootKey) {
-			Entry entry = genericMenuStructure().findChildRecursively(menuRootKey);
+			Entry entry = genericMenuStructure().findEntry(menuRootKey);
 			if (entry == null)
 				throw new IllegalArgumentException("not found: menuRootKey=" + menuRootKey);
 			final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(menuNode2menuEntryNode(entry));
@@ -297,7 +297,7 @@ public class MenuUtils {
 		final Entry genericMenuStructure = genericMenuStructure();
 		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
 		for (String menuItemKey : menuItemKeys) {
-			Entry menuItem = genericMenuStructure.findChildRecursively(makeActionNameFromMenuItemKey(menuItemKey));
+			Entry menuItem = genericMenuStructure.findEntry(makeActionNameFromMenuItemKey(menuItemKey));
 			final AFreeplaneAction action = entryAccessor.getAction(menuItem);
 			if (action == null) {
 				UITools.errorMessage(TextUtils.format("MenuUtils.invalid_menuitem", menuItemKey));
@@ -311,7 +311,7 @@ public class MenuUtils {
 
 	/** returns the icon for a menuItemKey or null if it has none. */
 	public static Icon getMenuItemIcon(String menuItemKey) {
-		Entry menuItem = genericMenuStructure().findChildRecursively(makeActionNameFromMenuItemKey(menuItemKey));
+		Entry menuItem = genericMenuStructure().findEntry(makeActionNameFromMenuItemKey(menuItemKey));
 		if (menuItem == null)
 			return null;
 		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
