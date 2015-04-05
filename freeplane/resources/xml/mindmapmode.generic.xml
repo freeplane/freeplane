@@ -236,7 +236,7 @@
 				<Entry name="OpenURLMapAction" />
 				<Entry name="RevertAction" />
 			</Entry>
-			<Entry name="lastOpenedMaps" builder="main_menu_most_recent_files" />
+			<Entry name="lastOpenedMaps"><Entry builder="lastOpenedMaps" /></Entry>
 			<Entry name="save">
 				<Entry name="SaveAction" />
 				<Entry name="SaveAsAction" />

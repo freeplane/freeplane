@@ -267,6 +267,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		mindMapModeController.getMapController().addMapChangeListener(lastOpenedList);
 		LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
 		RibbonBuilder menuBuilder = mindMapModeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
+		lastOpenedList.registerMenuContributor(mindMapModeController);
 		menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
 		mindMapModeController.addMenuContributor(FilterController.getController(controller).getMenuContributor());
 		if(! USE_RIBBONS_MENU){
