@@ -33,6 +33,7 @@
 					<choice value="always_save_folding" />
 				</combo>
 				<boolean name="save_modification_times" />
+				<path name="default_save_dir" dir="true"/>
 			</separator>
 			<separator name="automatic_save">
 				<number name="time_for_automatic_save" min="0" />
