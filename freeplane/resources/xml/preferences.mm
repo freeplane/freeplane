@@ -113,7 +113,7 @@
 <attribute NAME="name" VALUE="language"/>
 </node>
 </node>
-<node TEXT="Files" ID="ID_1398818983">
+<node TEXT="Files" FOLDED="true" ID="ID_1398818983">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="files"/>
 <node TEXT="Last opened list length" ID="ID_1451739024">
@@ -168,7 +168,7 @@
 <attribute NAME="min" VALUE="1"/>
 </node>
 </node>
-<node TEXT="Save" FOLDED="true" ID="ID_124150095">
+<node TEXT="Save" ID="ID_124150095">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="save"/>
 <node TEXT="Save folding" FOLDED="true" ID="ID_416087882">
@@ -190,6 +190,11 @@
 <node TEXT="Save modification times" ID="ID_634390567">
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="save_modification_times"/>
+</node>
+<node TEXT="Default Save Directory" ID="ID_1450786152">
+<attribute NAME="type" VALUE="path"/>
+<attribute NAME="name" VALUE="default_save_dir"/>
+<attribute NAME="dir" VALUE="true"/>
 </node>
 </node>
 <node TEXT="Automatic save" FOLDED="true" ID="ID_852360897">
@@ -582,7 +587,7 @@
 <attribute NAME="name" VALUE="icons"/>
 </node>
 </node>
-<node TEXT="Behaviour" POSITION="right" ID="ID_630037237">
+<node TEXT="Behaviour" FOLDED="true" POSITION="right" ID="ID_630037237">
 <attribute NAME="type" VALUE="tab"/>
 <attribute NAME="name" VALUE="Behaviour"/>
 <node TEXT="Behaviour" FOLDED="true" ID="ID_1310182301">

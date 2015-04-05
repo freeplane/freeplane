@@ -55,6 +55,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
@@ -94,6 +95,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
+	private static final String DEFAULT_SAVE_DIR_PROPERTY = "default_save_dir";
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final int DEBUG_OFFSET = 0;
 
@@ -230,6 +232,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public MFileManager() {
 		super();
+		setLastCurrentDir(new File(getDefaultSaveDirFromPrefs()));
+	}
+
+	private String getDefaultSaveDirFromPrefs() {
+		return ResourceController.getResourceController().getProperty(DEFAULT_SAVE_DIR_PROPERTY);
 	}
 
 	@Override
@@ -736,8 +743,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getFileChooser(true);
 		if (getMapsParentFile(map) == null) {
-			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION));
+			File defaultFile = new File(getFileNameProposal(map)
+				        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+			chooser.setSelectedFile(defaultFile);
 		}
 		else {
 			chooser.setSelectedFile(map.getFile());
