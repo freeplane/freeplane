@@ -661,9 +661,7 @@
 		</Entry>
 	</Entry>
 	<Entry name="map_popup" builder="map_popup">
- 		<Entry>
-			<Entry builder="navigate_maps,radio_button_group" />
-		</Entry>
+		<Entry builder="navigate_maps,radio_button_group" />
 		<Entry builder="separator" />
 		<Entry name="ToggleFullScreenAction" />
 		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
@@ -685,7 +683,7 @@
 		<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 		<Entry name="GotoNodeAction" />
 	</Entry>
-	<Entry builder="node_popup">
+	<Entry name="node_popup" builder="node_popup">
 		<Entry name="EditLongAction" accelerator="alt ENTER" />
 		<Entry name="EditDetailsInDialogAction" />
 		<Entry name="EditDetailsAction" />
