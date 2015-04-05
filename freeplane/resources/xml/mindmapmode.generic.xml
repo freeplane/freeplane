@@ -494,7 +494,7 @@
 				<Entry name="ApplySelectedViewConditionAction" priority="medium" />
 				<Entry name="QuickFindAllAction" priority="medium" />
 				<Entry name="ApplyNoFilteringAction" priority="medium" />
-				<Entry name="filterConditionsContributor" builder="ribbon_contributor" />
+				<Entry name="filterConditions"><Entry builder="filterConditions"/></Entry>
 			</Entry>
 		</Entry>
 		<Entry name="navigate" builder="ribbon_task">

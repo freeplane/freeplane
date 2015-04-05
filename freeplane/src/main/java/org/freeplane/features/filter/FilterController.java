@@ -52,12 +52,11 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -73,7 +72,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
@@ -539,9 +537,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterConditions.addListDataListener(filterChangeListener);
 		applyFilter(false);
 		Controller controller = Controller.getCurrentController();
-		final ModeController modeController = controller.getModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-		filterMenuBuilder.updateMenus(modeController, menuBuilder);
+		filterMenuBuilder.updateMenus();
 		//TODO RIBBONS: apply to ribbons as well, if necessary
 	}
 
@@ -622,7 +618,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			filterConditions.setSelectedItem(condition);
     }
 
-	public IMenuContributor getMenuContributor() {
-	    return filterMenuBuilder;
-    }
+	public EntryVisitor getMenuBuilder() {
+		return filterMenuBuilder;
+	}
+
 }
