@@ -289,9 +289,7 @@ public class MModeControllerFactory {
 		mapController.addNodeSelectionListener(uiFactory);
 		mapController.addMapChangeListener(uiFactory);
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
-		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addExtension(MUIFactory.class, uiFactory);
-		modeController.addMenuContributor(menuContributor);
 
 		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_name", new ComponentBuilder(
 		    new ComponentProvider() {
