@@ -77,11 +77,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	private boolean selected = false;
 	
 	static private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
+	final private String rawText;
 
 	public AFreeplaneAction(final String key) {
 		super();
 		this.key = key;
-		LabelAndMnemonicSetter.setLabelAndMnemonic(this, TextUtils.getRawText(getTextKey()));
+		rawText = TextUtils.getRawText(getTextKey());
+		LabelAndMnemonicSetter.setLabelAndMnemonic(this, rawText);
 		final String iconKey = getIconKey();
 		final ImageIcon cachedIcon = iconCache.get(iconKey);
 		if(cachedIcon != null){
@@ -123,6 +125,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		if (title != null && !title.equals("")) {
 			LabelAndMnemonicSetter.setLabelAndMnemonic(this, title);
 		}
+		this.rawText = title;
 		this.key = key;
 	}
 
@@ -181,4 +184,9 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	public boolean isSelectable() {
 		return getClass().getAnnotation(SelectableAction.class) != null;
 	}
+
+	public String getRawText() {
+		return rawText;
+	}
+
 }

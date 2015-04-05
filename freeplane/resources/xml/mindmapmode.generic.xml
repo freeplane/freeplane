@@ -172,7 +172,7 @@
 				<Entry name="BackAction" accelerator="alt LEFT" priority="Medium" />
 				<Entry name="ForwardAction" accelerator="alt RIGHT" priority="Medium" />
 			</Entry>
-			<Entry name="fontStyleContributor" builder="ribbon_contributor" />
+			<Entry name="fontStyleContributor" builder="ribbon_contributor,skip" />
 			<Entry name="resources" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="ExternalImageAddAction" accelerator="alt shift K"
 					priority="Top">
@@ -390,7 +390,7 @@
 					<Entry name="RemoveIcon_0_Action" />
 					<Entry name="RemoveIconAction" />
 				</Entry>
-				<Entry name="IconList">
+				<Entry name="icons">
 					<Entry builder="icon_actions" />
 				</Entry>
 				<Entry name="IconProgressIconUpAction" accelerator="alt LESS">
@@ -428,8 +428,8 @@
 			</Entry>
 		</Entry>
 		<Entry name="formatting" builder="ribbon_task">
-			<Entry name="fontStyleContributor" builder="ribbon_contributor" />
-			<Entry name="styleContributor" builder="ribbon_contributor" />
+			<Entry name="fontStyleContributor" builder="ribbon_contributor,skip" />
+			<Entry name="styleContributor" builder="ribbon_contributor,skip" />
 			<Entry name="manage_styles" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="NewUserStyleAction" priority="medium">
 					<Entry name="RedefineStyleAction" />
@@ -480,7 +480,7 @@
 			</Entry>
 		</Entry>
 		<Entry name="filter" builder="ribbon_task">
-			<Entry name="userDefinedFilters" builder="ribbon_contributor" />
+			<Entry name="filterConditions"><Entry builder="filterConditions"/></Entry>
 			<Entry name="filter" resize_policies="Mirror, High2Low"
 				builder="ribbon_band">
 				<Entry name="EditFilterAction" priority="top" />
@@ -494,7 +494,6 @@
 				<Entry name="ApplySelectedViewConditionAction" priority="medium" />
 				<Entry name="QuickFindAllAction" priority="medium" />
 				<Entry name="ApplyNoFilteringAction" priority="medium" />
-				<Entry name="filterConditions"><Entry builder="filterConditions"/></Entry>
 			</Entry>
 		</Entry>
 		<Entry name="navigate" builder="ribbon_task">
@@ -522,8 +521,8 @@
 				<Entry name="MoveToRootAction" accelerator="ESCAPE" priority="Top" />
 				<Entry name="FollowLinkAction" accelerator="control ENTER" />
 				<Entry name="GotoNodeAction" />
-				<Entry name="linkList" builder="ribbon_contributor" />
-				<Entry name="cloneList" builder="ribbon_contributor" />
+				<Entry builder="link_actions" />
+				<Entry builder="clone_actions" />
 			</Entry>
 			<Entry name="navigate_nodes" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" priority="top">
@@ -587,7 +586,7 @@
 			</Entry>
 		</Entry>
 		<Entry name="view" builder="ribbon_task">
-			<Entry name="zoomContributor" builder="ribbon_contributor" />
+			<Entry name="zoomContributor" builder="ribbon_contributor,skip" />
 			<Entry name="view_mode" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="ToggleRibbonAction" priority="top" />
 				<Entry name="CenterSelectedNodeAction" priority="top">

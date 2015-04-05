@@ -45,6 +45,7 @@ public class MenuBuildProcessFactory {
 		RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
 		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
 		uiBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
+		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
 		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());

@@ -47,6 +47,9 @@ public class EntryAccessor {
 		if (entry.getAttribute(TEXT) != null)
 			return (String) entry.getAttribute(TEXT);
 		else {
+			final AFreeplaneAction action = getAction(entry);
+			if (action != null)
+				return action.getRawText();
 			String name = entry.getName();
 			if (name.isEmpty())
 				return "";
