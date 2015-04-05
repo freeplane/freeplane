@@ -26,11 +26,11 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
 
-class ModesMenuActionListener extends AFreeplaneAction {
+class ModesMenuAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final String mode;
 
-	public ModesMenuActionListener(final String mode, final Controller controller) {
+	public ModesMenuAction(final String mode, final Controller controller) {
 		super("ModesMenuAction." + mode);
 		this.mode = mode;
 	}

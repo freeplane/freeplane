@@ -19,11 +19,24 @@ public class SubtreeProcessor implements EntryPopupListener {
 	}
 
 	public void buildChildren(Entry entry) {
-		final Processor subtreeProcessor = processor.forChildren(entry.getRoot(), entry);
+		final Processor subtreeProcessor = forChildren(entry);
 		for (Entry child : entry.children()) {
 			subtreeProcessor.build(child);
 		}
 	}
+
+	public void rebuildEntry(Entry entry) {
+		final Entry parent = entry.getParent();
+		final Processor subtreeProcessor = parent != null ? forChildren(parent) : processor;
+		subtreeProcessor.destroy(entry);
+		subtreeProcessor.build(entry);
+	}
+
+	private Processor forChildren(Entry entry) {
+	    final Entry root = entry.getRoot();
+		final Processor subtreeProcessor = processor.forChildren(root, entry);
+	    return subtreeProcessor;
+    }
 
 	@Override
 	public void childEntriesWillBecomeInvisible(Entry entry) {
@@ -33,7 +46,7 @@ public class SubtreeProcessor implements EntryPopupListener {
 	}
 
 	public void destroyChildren(Entry entry) {
-		final Processor subtreeProcessor = processor.forChildren(entry.getRoot(), entry);
+		final Processor subtreeProcessor = forChildren(entry);
 		for (Entry child : entry.children()) {
 			subtreeProcessor.destroy(child);
 		}

@@ -514,8 +514,10 @@
 					<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
 				</Entry>
 			</Entry>
-			<Entry builder="navigate_maps" />
-			<Entry builder="navigate_modes" />
+			<Entry name="maps">
+				<Entry builder="navigate_maps,radio_button_group" />
+			</Entry>
+			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 			<Entry name="goto" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="MoveToRootAction" accelerator="ESCAPE" priority="Top" />
 				<Entry name="FollowLinkAction" accelerator="control ENTER" />
@@ -658,9 +660,9 @@
 			</Entry>
 		</Entry>
 	</Entry>
-	<Entry builder="map_popup">
-		<Entry processOnPopup="true">
-			<Entry builder="navigate_maps" />
+	<Entry name="map_popup" builder="map_popup">
+ 		<Entry>
+			<Entry builder="navigate_maps,radio_button_group" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="ToggleFullScreenAction" />

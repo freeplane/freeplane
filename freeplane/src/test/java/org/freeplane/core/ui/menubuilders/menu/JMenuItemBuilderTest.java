@@ -57,6 +57,7 @@ public class JMenuItemBuilderTest {
 		actionEntry = new Entry();
 		action = Mockito.mock(AFreeplaneAction.class);
 		actionEntry.setName("action");
+		when(action.getKey()).thenReturn("action");
 		new EntryAccessor().setAction(actionEntry, action);
 
 		menuEntry = new Entry();

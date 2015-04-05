@@ -21,7 +21,6 @@ package org.freeplane.view.swing.ui;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -29,9 +28,8 @@ import org.freeplane.features.mode.Controller;
 
 @SuppressWarnings("serial")
 class MapsMenuAction extends AFreeplaneAction {
-
-	public MapsMenuAction(String key, String title, Icon icon) {
-		super(key, title, icon);
+	public MapsMenuAction(String command) {
+		super("MapsMenuAction." + command, command, null);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
