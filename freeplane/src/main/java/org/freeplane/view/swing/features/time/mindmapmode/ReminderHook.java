@@ -34,8 +34,6 @@ import javax.swing.JTabbedPane;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
@@ -67,12 +65,6 @@ import org.freeplane.view.swing.map.attribute.AttributePanelManager;
  */
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 public class ReminderHook extends PersistentNodeHook implements IExtension {
-
-	private final class ReminderContributor implements IMenuContributor {
-	    public void updateMenus(ModeController modeController, MenuBuilder builder) {
-	    	createTimePanel();
-	    }
-    }
 
 	//******************************************	
 	@EnabledAction(checkOnNodeChange = true)
@@ -150,7 +142,6 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	public ReminderHook(ModeController modeController){
 		super();
 		this.modeController = modeController;
-		modeController.addMenuContributor(new ReminderContributor());
 		registerAction(new TimeManagementAction(this));
 		registerAction(new TimeListAction());
 		registerAction(new NodeListAction());
@@ -159,7 +150,8 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		registerStateIconProvider();
 
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(90,
-			new ReminderConditionController());
+ new ReminderConditionController());
+		createTimePanel();
 	}
 	private static final IconStore STORE = IconStoreFactory.create();
 	private static UIIcon bellIcon;
