@@ -26,17 +26,17 @@ import java.net.URL;
 
 import javax.swing.JLabel;
 
-import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 
-class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
+class BToolbarContributor implements EntryVisitor, IMapViewChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
 // 	final private ModeController modeController;
 	private PersistentEditableComboBox urlfield = null;
@@ -86,8 +86,19 @@ class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 		urlfield.setText(text);
 	}
 
-	public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
-		builder.addElement("main_toolbar_url", new JLabel("URL:"), MenuBuilder.AS_CHILD);
-		builder.addElement("main_toolbar_url", urlfield, MenuBuilder.AS_CHILD);
+	@Override
+	public void visit(Entry target) {
+		final EntryAccessor entryAccessor = new EntryAccessor();
+		final Entry label = new Entry();
+		target.addChild(label);
+		entryAccessor.setComponent(label, new JLabel("URL:"));
+		final Entry field = new Entry();
+		target.addChild(field);
+		entryAccessor.setComponent(field, urlfield);
+	}
+
+	@Override
+	public boolean shouldSkipChildren(Entry entry) {
+		return true;
 	}
 }

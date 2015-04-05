@@ -25,6 +25,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.clipboard.ClipboardController;
@@ -92,7 +93,7 @@ public class BModeControllerFactory {
 		FreeNode.install();
 		MapStyle.install(true);
 		final BToolbarContributor toolbarContributor = new BToolbarContributor();
-		modeController.addMenuContributor(toolbarContributor);
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_url", toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);

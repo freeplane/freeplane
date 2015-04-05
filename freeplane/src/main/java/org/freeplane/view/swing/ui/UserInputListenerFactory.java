@@ -326,6 +326,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	final private Map<Entry, Entry> mapMenuEntries = new IdentityHashMap<>();
 
 	private void createModeActions(final Entry modesMenuEntry) {
+		rebuildMenuOnMapChange(modesMenuEntry);
 		Controller controller = Controller.getCurrentController();
 		EntryAccessor entryAccessor = new EntryAccessor();
 		for (final String key : new LinkedList<String>(controller.getModes())) {
@@ -342,11 +343,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	private void createMapActions(final Entry mapsMenuEntry) {
-		Entry menuEntry;
-		for (menuEntry = mapsMenuEntry.getParent(); //
-		menuEntry.getName().isEmpty(); //
-		menuEntry = menuEntry.getParent());
-		mapMenuEntries.put(menuEntry, null);
+		rebuildMenuOnMapChange(mapsMenuEntry);
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final List<? extends Component> mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
@@ -366,6 +363,14 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			mapsMenuEntry.addChild(actionEntry);
 		}
 	}
+
+	private void rebuildMenuOnMapChange(final Entry entry) {
+	    Entry menuEntry;
+		for (menuEntry = entry.getParent(); //
+		menuEntry.getName().isEmpty(); //
+		menuEntry = menuEntry.getParent());
+		mapMenuEntries.put(menuEntry, null);
+    }
 
 	public void rebuildMenu(Entry entry){
 		if (subtreeBuilder != null)
