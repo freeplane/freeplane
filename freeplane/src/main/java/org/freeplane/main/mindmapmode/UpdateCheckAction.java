@@ -131,20 +131,22 @@ class UpdateCheckAction extends AFreeplaneAction {
 		if (entry != null) {
 			Controller controller = Controller.getCurrentController();
 			final Component component = (Component) new EntryAccessor().getComponent(entry);
-			final Dimension preferredSize = component.getPreferredSize();
-			if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
-				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
-				component.setPreferredSize(new Dimension(0, preferredSize.height));
-				component.setVisible(false);
-			}
-			else {
-				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
-				final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
-				controller.getViewController().out(updateAvailable);
-				putValue(SHORT_DESCRIPTION, updateAvailable);
-				putValue(LONG_DESCRIPTION, updateAvailable);
-				component.setPreferredSize(new Dimension(preferredSize.height, preferredSize.height));
-				component.setVisible(true);
+			if (component != null) {
+				final Dimension preferredSize = component.getPreferredSize();
+				if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
+					ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
+					component.setPreferredSize(new Dimension(0, preferredSize.height));
+					component.setVisible(false);
+				}
+				else {
+					ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
+					final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
+					controller.getViewController().out(updateAvailable);
+					putValue(SHORT_DESCRIPTION, updateAvailable);
+					putValue(LONG_DESCRIPTION, updateAvailable);
+					component.setPreferredSize(new Dimension(preferredSize.height, preferredSize.height));
+					component.setVisible(true);
+				}
 			}
 		}
 	}

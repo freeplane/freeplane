@@ -46,12 +46,19 @@ public class MenuBuildProcessFactory {
 		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
 		uiBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
 		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
-		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
-		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
-		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
 
-		uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
-		uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
+		if (userInputListenerFactory.useRibbonMenu()) {
+
+		}
+		else {
+
+			uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
+			uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
+			uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
+
+			uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
+			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
+		}
 		uiBuilder.addBuilder("map_popup", new MapPopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu.action");
 		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
