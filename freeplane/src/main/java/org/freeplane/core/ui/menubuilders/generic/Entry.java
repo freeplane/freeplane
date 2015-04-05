@@ -43,9 +43,9 @@ public class Entry {
 		return attributes.get(key);
 	}
 
-	public void addChild(Entry homeEntry) {
-		childEntries.add(homeEntry);
-		homeEntry.setParent(this);
+	public void addChild(Entry entry) {
+		childEntries.add(entry);
+		entry.setParent(this);
 	}
 
 	private void setParent(Entry parent) {
