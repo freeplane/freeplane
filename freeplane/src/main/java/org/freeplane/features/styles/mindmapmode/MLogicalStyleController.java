@@ -27,7 +27,10 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -215,18 +218,16 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new CopyMapStylesAction());
 		}
 		if(! modeController.getController().getViewController().isHeadless()){
+			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(),
+			    EntryVisitor.CHILD_ENTRY_REMOVER);
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-			final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder(MenuBuilder.class);
 			//TODO RIBBONS - apply to ribbons as well
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 				public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-					removeStyleMenu(menuBuilder, "main_menu_styles");
-					removeStyleMenu(menuBuilder, "node_popup_styles");
 				}
 
 				public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-					addStyleMenu(menuBuilder, "main_menu_styles", newMap);
-					addStyleMenu(menuBuilder, "node_popup_styles", newMap);
+					userInputListenerFactory.rebuildMenus("styles");
 				}
 			});
 			final MapController mapController = modeController.getMapController();
@@ -250,10 +251,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 				public void mapChanged(final MapChangeEvent event) {
 					if (event.getProperty().equals(MapStyle.MAP_STYLES)) {
-						removeStyleMenu(menuBuilder, "main_menu_styles");
-						addStyleMenu(menuBuilder, "main_menu_styles", event.getMap());
-						removeStyleMenu(menuBuilder, "node_popup_styles");
-						addStyleMenu(menuBuilder, "node_popup_styles", event.getMap());
+						userInputListenerFactory.rebuildMenus("style_actions");
 					}
 				}
 			});
@@ -268,40 +266,48 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 	}
 
-	protected void removeStyleMenu(final MenuBuilder menuBuilder, final String formatMenuString) {
-		if(null != menuBuilder.get(formatMenuString))
-			menuBuilder.removeChildElements(formatMenuString);
-		actions.clear();
-	}
+	class StyleMenuBuilder implements EntryVisitor {
 
-	protected void addStyleMenu(final MenuBuilder menuBuilder, final String formatMenuString, final MapModel newMap) {
-		if (newMap == null) {
-			return;
+		@Override
+		public void visit(Entry target) {
+			addStyleMenu(target);
 		}
-		final MapStyleModel extension = MapStyleModel.getExtension(newMap);
-		if (extension == null) {
-			return;
+
+		@Override
+		public boolean shouldSkipChildren(Entry entry) {
+			return true;
 		}
-		 if(null == menuBuilder.get(formatMenuString))
-		     return;
-		 final NodeModel rootNode = extension.getStyleMap().getRootNode();
+
+		private void addStyleMenu(final Entry target) {
+			MapModel map = Controller.getCurrentController().getMap();
+			if (map == null) {
+				return;
+			}
+			final MapStyleModel extension = MapStyleModel.getExtension(map);
+			if (extension == null) {
+				return;
+			}
+			actions.clear();
+			final NodeModel rootNode = extension.getStyleMap().getRootNode();
 			final AssignStyleAction resetAction = new AssignStyleAction(null);
 			actions.add(resetAction);
-			menuBuilder.addAction(formatMenuString, resetAction, MenuBuilder.AS_CHILD);
-		 addStyleMenu(menuBuilder, formatMenuString, rootNode, extension);
-	}
+			new EntryAccessor().addChildAction(target, resetAction);
+			addStyleMenu(target, rootNode, extension);
+		}
 
-	private void addStyleMenu(final MenuBuilder menuBuilder, final String category, final NodeModel rootNode, MapStyleModel extension) {
-		final List<NodeModel> children = rootNode.getChildren();
-		for (final NodeModel child : children) {
-			final IStyle style = (IStyle) child.getUserObject();
-			if (child.hasChildren()) {
-				addStyleMenu(menuBuilder, category, child, extension);
-			}
-			else if(null != extension.getStyleNode(style)){
-				final AssignStyleAction action = new AssignStyleAction(style);
-				actions.add(action);
-				menuBuilder.addAction(category, action, MenuBuilder.AS_CHILD);
+		private void addStyleMenu(final Entry target, final NodeModel rootNode, MapStyleModel extension) {
+			final List<NodeModel> children = rootNode.getChildren();
+			final EntryAccessor entryAccessor = new EntryAccessor();
+			for (final NodeModel child : children) {
+				final IStyle style = (IStyle) child.getUserObject();
+				if (child.hasChildren()) {
+					addStyleMenu(target, child, extension);
+				}
+				else if (null != extension.getStyleNode(style)) {
+					final AssignStyleAction action = new AssignStyleAction(style);
+					actions.add(action);
+					entryAccessor.addChildAction(target, action);
+				}
 			}
 		}
 	}
