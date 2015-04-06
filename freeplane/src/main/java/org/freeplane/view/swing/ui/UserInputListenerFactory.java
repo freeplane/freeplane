@@ -377,6 +377,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			subtreeBuilder.rebuildChildren(entry);
 	}
 
+	public void rebuildMenus(String name) {
+		final Entry entry = getGenericMenuStructure().findEntry(name);
+		rebuildMenu(entry);
+	}
+
 	public void updateMenus(String menuStructureResource, Set<String> plugins) {
 		mapsPopupMenu = new JPopupMenu();
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
