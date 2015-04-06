@@ -25,15 +25,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -80,20 +80,9 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			final OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile));
 			keysetProperties.store(output, "");
 			output.close();
-			final String key = "LoadAcceleratorPresetsAction." + keyset;
-			if (Controller.getCurrentController().getAction(key) != null) {
-				return;
-			}
-			final String title = TextUtils.getText(key + ".text", keyset);
-			final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
-			    keysetFile.toURL(), key, title);
-			if (null == Controller.getCurrentController().getAction(loadAcceleratorPresetsAction.getKey())) {
-				Controller.getCurrentController().addAction(loadAcceleratorPresetsAction);
-				Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class).addAction(
-				    "main_menu_new_load_accelerator_presets", key, loadAcceleratorPresetsAction,
-				    MenuBuilder.AS_CHILD);
-				//TODO RIBBONS - maybe sth for ribbons as well
-			}
+			final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController()
+			    .getUserInputListenerFactory();
+			userInputListenerFactory.rebuildMenus("load_accelerator_presets");
 		}
 		catch (final IOException e1) {
 			UITools.errorMessage(TextUtils.getText("can_not_save_key_set"));

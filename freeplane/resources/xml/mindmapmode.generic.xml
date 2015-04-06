@@ -554,7 +554,10 @@
 					<Entry name="EnterPassword" />
 					<Entry name="RemoveEncryption" />
 				</Entry>
-				<Entry name="loadAcceleratorPresets" builder="ribbon_contributor" />
+				<Entry name="acceleratorPresets" >
+					<Entry name="load_accelerator_presets"><Entry builder="acceleratorPresets"/></Entry>
+					<Entry name="SaveAcceleratorPresetsAction"/>
+				</Entry>
 				<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
 				<Entry name="scripting" plugin="org.freeplane.plugin.script">
 					<Entry name="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script" />

@@ -68,7 +68,6 @@ import org.freeplane.n3.nanoxml.XMLException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
-	private static final String MENU_CATEGORY = "main_menu_most_recent_files";
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	// // 	private final Controller controller;
@@ -294,8 +293,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private void updateMenus() {
 		final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController()
 		    .getUserInputListenerFactory();
-		Entry lastOpenedMaps = userInputListenerFactory.getGenericMenuStructure().findEntry("lastOpenedMaps");
-		userInputListenerFactory.rebuildMenu(lastOpenedMaps);
+		userInputListenerFactory.rebuildMenus("lastOpenedMaps");
 	}
 
 	private void updateMenus(Entry target) {

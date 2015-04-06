@@ -63,7 +63,6 @@ public class FilterMenuBuilder implements EntryVisitor {
 
 	public void updateMenus() {
 	    final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController().getUserInputListenerFactory();
-		final Entry filterConditions = userInputListenerFactory.getGenericMenuStructure().findEntry("filterConditions");
-		userInputListenerFactory.rebuildMenu(filterConditions);
+		userInputListenerFactory.rebuildMenus("filterConditions");
     }
 }
