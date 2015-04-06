@@ -67,6 +67,7 @@ import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
+import org.freeplane.features.map.CloneOfSelectedViewCondition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
@@ -181,6 +182,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private Filter inactiveFilter;
 	final private String pathToFilterFile;
 	private ASelectableCondition selectedViewCondition;
+	private ASelectableCondition cloneOfSelectedViewCondition;
 	private final ButtonModel showAncestors;
 	private final ButtonModel approximateMatchingButtonModel;
 	private final ButtonModel caseSensitiveButtonModel;
@@ -189,6 +191,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private ASelectableCondition highlightCondition;
 	private JComboBox activeFilterConditionComboBox;
 	private final FilterConditionEditor quickEditor;
+	static final int USER_DEFINED_CONDITION_START_INDEX = 3;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
@@ -256,6 +259,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		if (filterConditions.getSelectedItem() == null) {
 			filterConditions.setSelectedItem(noFiltering);
 		}
+
+		if (cloneOfSelectedViewCondition == null)
+			cloneOfSelectedViewCondition = CloneOfSelectedViewCondition.CreateCondition();
+		filterConditions.insertElementAt(cloneOfSelectedViewCondition, 2);
 	}
 
 	/**
