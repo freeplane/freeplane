@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -58,7 +59,15 @@ public class ManageNodeConditionalStylesAction extends AManageConditionalStylesA
 			final int confirmed = JOptionPane.showConfirmDialog(controller.getMapViewManager().getMapViewComponent(), pane, TextUtils.getText(TextUtils.removeMnemonic("ManageNodeConditionalStylesAction.text")), JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
 			if(JOptionPane.OK_OPTION == confirmed){
 				modeController.commit();
-				modeController.getMapController().nodeChanged(controller.getSelection().getSelected(),NodeModel.UNKNOWN_PROPERTY,null,null);
+				final IMapSelection selection = controller.getSelection();
+				final NodeModel selected = selection.getSelected();
+				modeController.getMapController().nodeChanged(selected,NodeModel.UNKNOWN_PROPERTY,null,null);
+				for (NodeModel otherSelectedNode : selection.getSelection())
+					if (selected != otherSelectedNode) {
+						otherSelectedNode.putExtension(conditionalStyleModel.clone());
+						modeController.getMapController().nodeChanged(otherSelectedNode, NodeModel.UNKNOWN_PROPERTY,
+						    null, null);
+					}
 			}
 			else{
 				modeController.rollback();
