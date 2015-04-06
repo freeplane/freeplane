@@ -67,7 +67,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	public void loadDefaultAcceleratorPresets() {
 	    try {
-			loadAcceleratorPresets(new FileInputStream(getPresetsFile()));
+			if (ResourceController.getResourceController().getFreeplaneUserDirectory() != null)
+				loadAcceleratorPresets(new FileInputStream(getPresetsFile()));
 		}
 		catch (IOException ex) {
 		}

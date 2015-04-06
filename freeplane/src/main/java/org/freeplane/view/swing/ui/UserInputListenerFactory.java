@@ -106,7 +106,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		useRibbonMenu = useRibbons;
 		Controller controller = Controller.getCurrentController();
 		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));
-		menuBuilderList.put(RibbonBuilder.class, new RibbonBuilder(modeController, getAcceleratorManager()));
+		if (!ResourceController.getResourceController().isApplet())
+			menuBuilderList.put(RibbonBuilder.class, new RibbonBuilder(modeController, getAcceleratorManager()));
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				if(modeController.equals(Controller.getCurrentModeController()))

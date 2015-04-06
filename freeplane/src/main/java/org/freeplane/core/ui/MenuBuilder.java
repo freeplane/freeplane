@@ -21,7 +21,6 @@ package org.freeplane.core.ui;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -60,6 +59,7 @@ import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
+import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -68,8 +68,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.pushingpixels.flamingo.api.common.AsynchronousLoadListener;
-import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 
 public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener {
 	private static class MenuPath {
@@ -359,15 +357,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 	public void addMenuItem(final String relativeKey, final JMenuItem item, final String key, final int position) {
 		//RIBBONS - to set the right icon size
 		if(item.getIcon() != null && item.getIcon() instanceof ImageIcon) {
-			ImageIcon ico = (ImageIcon)item.getIcon();
-			ImageWrapperResizableIcon newIco = ImageWrapperResizableIcon.getIcon(ico.getImage(), new Dimension(ico.getIconWidth(), ico.getIconHeight()));
-			newIco.setPreferredSize(new Dimension(16, 16));
-			newIco.addAsynchronousLoadListener(new AsynchronousLoadListener() {
-				public void completed(boolean success) {
-					item.repaint();
-				}
-			});
-			item.setIcon(newIco);
+			RibbonBuilder.setRibbonIcon(item);
 		}
 		final Node element = (Node) addElement(relativeKey, item, key, position);
 		if (null == getMenuBar(element)) {
