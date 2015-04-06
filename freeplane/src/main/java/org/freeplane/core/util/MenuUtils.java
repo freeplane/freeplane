@@ -140,7 +140,7 @@ public class MenuUtils {
 				final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
 				final AFreeplaneAction action = entryAccessor.getAction(menuItem);
 				if (menuItem.hasChildren()) {
-					String text = entryAccessor.getText(menuItem);
+					String text = TextUtils.removeMnemonic(entryAccessor.getText(menuItem));
 					final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new MenuEntry(name, text));
 					if (action != null) {
 						final MenuEntry menuEntry = menuEntry(action);
