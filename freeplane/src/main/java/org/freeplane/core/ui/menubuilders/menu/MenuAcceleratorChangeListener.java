@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
@@ -19,7 +20,9 @@ public class MenuAcceleratorChangeListener implements IAcceleratorChangeListener
 	@Override
 	public void acceleratorChanged(AFreeplaneAction action, KeyStroke oldStroke, KeyStroke newStroke) {
 		for (Entry entry : entries.entries(action)) {
-			final Object component = new EntryAccessor().getComponent(entry);
+			Object component = new EntryAccessor().getComponent(entry);
+			if (component instanceof JMenu)
+				component = ((JMenu) component).getPopupMenu().getComponent(0);
 			if (component instanceof JMenuItem)
 				((JMenuItem) component).setAccelerator(newStroke);
 		}

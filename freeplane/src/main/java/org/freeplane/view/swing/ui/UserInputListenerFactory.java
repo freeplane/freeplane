@@ -91,7 +91,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
-	private ActionAcceleratorManager acceleratorManager;
+	static private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
 	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
 	private Entry genericMenuStructure;

@@ -28,12 +28,10 @@ import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.AbstractButton;
@@ -644,18 +642,6 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 		}
 	}
 
-
-	public Map<KeyStroke, Node> getAcceleratorMap() {
-		Map<KeyStroke, AFreeplaneAction> actionAccelMap = acceleratorManager.getAcceleratorMap();
-		Map<KeyStroke, Node> accelerators = new HashMap<KeyStroke, IndexedTree.Node>();
-		for (Entry<KeyStroke, AFreeplaneAction> entry: actionAccelMap.entrySet()) {
-			Node node = actionNodeMap.get(entry.getValue());
-			if(node != null) {
-				accelerators.put(entry.getKey(), node);
-			}
-		}
-		return Collections.unmodifiableMap(accelerators);
-	}
 
 	public void acceleratorChanged(AFreeplaneAction action, KeyStroke oldStroke, KeyStroke newStroke) {
 		Node node = actionNodeMap.get(action);
