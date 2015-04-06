@@ -96,9 +96,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 							final String title = TextUtils.getText(key + ".text", propName);
 							final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
 							    prop.toURL(), key, title);
-						final Entry actionEntry = new Entry();
-						target.addChild(actionEntry);
-						new EntryAccessor().setAction(actionEntry, loadAcceleratorPresetsAction);
+						new EntryAccessor().addChildAction(target, loadAcceleratorPresetsAction);
 					}
 					catch (final Exception e) {
 						UITools.errorMessage(TextUtils.format("accelerators_loading_error", prop.getPath()));

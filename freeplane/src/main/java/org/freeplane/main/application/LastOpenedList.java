@@ -299,9 +299,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private void updateMenus(Entry target) {
 		List<AFreeplaneAction> openMapActions = createOpenLastMapActionList();
 		for (AFreeplaneAction openMapAction : openMapActions) {
-			final Entry actionEntry = new Entry();
-			new EntryAccessor().setAction(actionEntry, openMapAction);
-			target.addChild(actionEntry);
+			new EntryAccessor().addChildAction(target, openMapAction);
 		}
 	}
 

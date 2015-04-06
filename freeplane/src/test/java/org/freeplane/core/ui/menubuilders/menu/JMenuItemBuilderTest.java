@@ -58,6 +58,7 @@ public class JMenuItemBuilderTest {
 		action = Mockito.mock(AFreeplaneAction.class);
 		actionEntry.setName("action");
 		when(action.getKey()).thenReturn("action");
+		when(action.getRawText()).thenReturn("action");
 		new EntryAccessor().setAction(actionEntry, action);
 
 		menuEntry = new Entry();
@@ -183,11 +184,11 @@ public class JMenuItemBuilderTest {
 		groupEntry.addChild(actionEntry);
 		new EntryAccessor().setAction(groupEntry, action);
 		menuActionGroupBuilder.visit(groupEntry);
-		final JMenuItem menuItem = getFirstSubMenuItem(parentMenuEntry);
+		final JMenuItem menuItem = getFirstSubMenuItem(groupEntry);
 		assertThatMenuItemHasCorrectAction(menuItem);
 	}
 
-	protected void assertThatMenuItemHasCorrectAction(final JMenuItem menuItem) {
+	private void assertThatMenuItemHasCorrectAction(final JMenuItem menuItem) {
 	    final AccelerateableAction itemAction = (AccelerateableAction) menuItem.getAction();
 		assertThat(itemAction.getOriginalAction(), CoreMatchers.<Action> equalTo(action));
     }

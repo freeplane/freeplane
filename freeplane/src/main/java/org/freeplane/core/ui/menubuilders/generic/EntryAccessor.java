@@ -108,4 +108,10 @@ public class EntryAccessor {
 		String accelerator = (String) entry.getAttribute(ACCELERATOR);
 		return accelerator;
 	}
+
+	public void addChildAction(Entry target, AFreeplaneAction action) {
+		final Entry actionEntry = new Entry();
+		new EntryAccessor().setAction(actionEntry, action);
+		target.addChild(actionEntry);
+	}
 }

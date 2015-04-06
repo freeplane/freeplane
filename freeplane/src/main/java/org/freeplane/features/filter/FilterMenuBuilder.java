@@ -48,9 +48,7 @@ public class FilterMenuBuilder implements EntryVisitor {
 			final String conditionName = condition.getUserName();
 			if(conditionName != null && usedNames.add(conditionName)){
 				final ApplyNamedFilterAction action = new ApplyNamedFilterAction(filterController, condition);
-				final Entry actionEntry = new Entry();
-				new EntryAccessor().setAction(actionEntry, action);
-				target.addChild(actionEntry);
+				new EntryAccessor().addChildAction(target, action);
 			}
 		}
 

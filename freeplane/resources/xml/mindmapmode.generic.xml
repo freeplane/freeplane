@@ -447,6 +447,7 @@
 					<Entry name="AutomaticLayoutControllerAction.null" />
 				</Entry>
 			</Entry>
+			<Entry name="styles"><Entry  builder="style_actions" /></Entry>
 			<Entry name="EdgeProperties" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="format_menu_edge_styles" builder="radio_button_group">
 					<Entry name="EdgeStyleAsParentAction" />

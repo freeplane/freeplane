@@ -241,9 +241,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    			entry.addChild(new Entry().setBuilders("separator"));
 	    			firstAction = false;
 	    		}
-	    		final Entry actionEntry = new Entry();
-	    		new EntryAccessor().setAction(actionEntry, gotoLinkNodeAction);
-	    		entry.addChild(actionEntry);
+				new EntryAccessor().addChildAction(entry, gotoLinkNodeAction);
 	    	}
 	    }
 
@@ -282,9 +280,7 @@ public class LinkController extends SelectionController implements IExtension {
 							target.addChild(new Entry().setBuilders("separator"));
 							firstAction = false;
 						}
-						final Entry actionEntry = new Entry();
-						target.addChild(actionEntry);
-						new EntryAccessor().setAction(actionEntry, gotoLinkNodeAction);
+						new EntryAccessor().addChildAction(target, gotoLinkNodeAction);
 					}
 				}
 			}

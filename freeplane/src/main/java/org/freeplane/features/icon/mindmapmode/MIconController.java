@@ -117,9 +117,7 @@ public class MIconController extends IconController {
 			final int separatorPosition = fileName.indexOf('/');
 			EntryAccessor entryAccessor = new EntryAccessor();
 			if (separatorPosition == -1) {
-				final Entry actionEntry = new Entry();
-				entryAccessor.setAction(actionEntry, iconActions.get(icon));
-				target.addChild(actionEntry);
+				entryAccessor.addChildAction(target, iconActions.get(icon));
 			}
 			else {
 				final String submenuName = fileName.substring(0, separatorPosition);
