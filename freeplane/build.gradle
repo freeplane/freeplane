@@ -222,6 +222,8 @@ task viewerJar(type: Jar) {
     includeEmptyDirs = false
 }
 
+apply from: './signjar.gradle'
+
 task editorJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
     manifest = project.manifest {
