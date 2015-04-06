@@ -157,6 +157,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		if (value != null) {
 			value = value.replace("{freeplaneuserdir}", ResourceController.getResourceController()
 			    .getFreeplaneUserDirectory());
+			value = value.replace("{user.home}", System.getProperty("user.home"));
 			this.path = value;
 		}
 		else {
