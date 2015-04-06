@@ -11,7 +11,7 @@
 			</Entry>
 			<Entry name="icons">
 				<Entry name="icons">
-					<Entry builder="main_menu_icons" name="icons_list" />
+					<Entry builder="icon_actions" />
 				</Entry>
 				<Entry name="menu_remove_icons">
 					<Entry name="RemoveIcon_0_Action" />
@@ -44,14 +44,10 @@
 			</Entry>
 		</Entry>
 		<Entry name="view">
-			<Entry name="Menu_Toolbar_Panel">
-				<Entry name="toolbars">
-					<Entry name="toolbars">
-						<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
-						<Entry name="ToggleToolbarAction" />
-						<Entry name="ToggleLeftToolbarAction" />
-					</Entry>
-				</Entry>
+			<Entry name="toolbars">
+				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleToolbarAction" />
+				<Entry name="ToggleLeftToolbarAction" />
 			</Entry>
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
@@ -65,15 +61,13 @@
 			<Entry name="menu_hoverView">
 				<Entry accelerator="alt F2" name="ToggleDetailsAction" />
 			</Entry>
-			<Entry name="AttributeView">
-				<Entry builder="radio_button_group" name="menu_displayAttributes">
-					<Entry name="ShowSelectedAttributesAction" />
-					<Entry name="ShowAllAttributesAction" />
-					<Entry name="HideAllAttributesAction" />
-				</Entry>
+			<Entry builder="radio_button_group" name="menu_displayAttributes">
+				<Entry name="ShowSelectedAttributesAction" />
+				<Entry name="ShowAllAttributesAction" />
+				<Entry name="HideAllAttributesAction" />
 			</Entry>
 		</Entry>
-		<Entry name="format">
+		<Entry name="formatting">
 			<Entry name="menu_manageStyles">
 				<Entry accelerator="" name="DeleteUserStyleAction" />
 				<Entry name="NewLevelStyleAction" />
@@ -98,9 +92,7 @@
 				<Entry builder="separator" />
 				<Entry name="RemoveFormatAction" />
 			</Entry>
-			<Entry name="CloudProperties">
-				<Entry name="CloudColorAction" />
-			</Entry>
+			<Entry name="CloudColorAction" />
 			<Entry name="EdgeProperties">
 				<Entry builder="radio_button_group" name="styles">
 					<Entry name="EdgeStyleAsParentAction" />
@@ -111,7 +103,7 @@
 					<Entry name="EdgeStyleAction.horizontal" />
 					<Entry name="EdgeStyleAction.hide_edge" />
 				</Entry>
-				<Entry builder="radio_button_group" name="widths">
+				<Entry builder="radio_button_group" name="format_menu_edge_widths">
 					<Entry name="EdgeWidthAction_width_parent" />
 					<Entry name="EdgeWidthAction_width_thin" />
 					<Entry name="EdgeWidthAction_1" />
@@ -125,19 +117,12 @@
 		</Entry>
 		<Entry name="navigate">
 			<Entry name="navigate">
-				<Entry name="folding">
-					<Entry accelerator="SPACE" name="ToggleFoldedAction" />
-					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
-					<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
-				</Entry>
+				<Entry accelerator="SPACE" name="ToggleFoldedAction" />
+				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+				<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
 			</Entry>
 			<Entry accelerator="control A" name="SelectAllAction" />
 			<Entry accelerator="control shift A" name="SelectBranchAction" />
-		</Entry>
-		<Entry name="mindmaps">
-			<Entry builder="main_menu_modes" name="modes" />
-			<Entry builder="main_menu_navigate_maps" name="navigate" />
-			<Entry builder="main_menu_mindmaps" name="mindmaps" />
 		</Entry>
 	</Entry>
 	<Entry name="map_popup">
