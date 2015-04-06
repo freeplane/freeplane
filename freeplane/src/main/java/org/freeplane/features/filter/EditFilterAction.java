@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -64,7 +65,7 @@ class EditFilterAction extends AFreeplaneAction {
 		protected DefaultComboBoxModel createModel() {
 			DefaultComboBoxModel model = new DefaultComboBoxModel();
 			ComboBoxModel externalConditionsModel = filterController.getFilterConditions();
-			for (int i = 2; i < externalConditionsModel.getSize(); i++) {
+			for (int i = FilterController.USER_DEFINED_CONDITION_START_INDEX; i < externalConditionsModel.getSize(); i++) {
 				final Object element = externalConditionsModel.getElementAt(i);
 				model.addElement(element);
 			}
