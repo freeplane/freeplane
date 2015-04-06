@@ -378,8 +378,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public void rebuildMenus(String name) {
-		final Entry entry = getGenericMenuStructure().findEntry(name);
-		rebuildMenu(entry);
+		final List<Entry> entries = getGenericMenuStructure().findEntries(name);
+		for (Entry entry : entries)
+			rebuildMenu(entry);
 	}
 
 	public void updateMenus(String menuStructureResource, Set<String> plugins) {

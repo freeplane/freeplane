@@ -6,11 +6,18 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 public class EntryTest {
+
+	private Entry entryWithName(String name) {
+		Entry entry = new Entry();
+		entry.setName(name);
+		return entry;
+	}
 
 	@Test
 	public void equalEntriesWithChild() {
@@ -114,7 +121,7 @@ public class EntryTest {
 		final Entry child = new Entry();
 		structureWithEntry.addChild(child);
 		
-		assertThat(new EntryAccessor().getAncestorComponent(child), CoreMatchers.<Object>nullValue());
+		assertThat(new EntryAccessor().getAncestorComponent(child), CoreMatchers.nullValue());
 	}
 	
 	@Test 
@@ -211,11 +218,17 @@ public class EntryTest {
 		middle.addChild(leaf);
 		assertThat(top.findEntry("grandchild"), equalTo(leaf));
 	}
-
-	private Entry entryWithName(String name) {
-		Entry entry = new Entry();
-		entry.setName(name);
-		return entry;
+	
+	@Test
+	public void recursiveSearchReturnsChildsWithName() throws Exception {
+		Entry top = new Entry();
+		Entry middle = entryWithName("child");
+		top.addChild(middle);
+		Entry leaf1 = entryWithName("grandchild");
+		middle.addChild(leaf1);
+		Entry leaf2 = entryWithName("grandchild");
+		middle.addChild(leaf2);
+		assertThat(top.findEntries("grandchild"), CoreMatchers.<Collection<?>> equalTo(Arrays.asList(leaf1, leaf2)));
 	}
 
 	@Test

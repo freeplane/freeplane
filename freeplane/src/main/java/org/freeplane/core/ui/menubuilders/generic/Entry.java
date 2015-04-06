@@ -196,6 +196,16 @@ public class Entry {
 		}
 		return null;
 	}
+	
+	public List<Entry> findEntries(String name) {
+		List<Entry> entries = new ArrayList<Entry>();
+		if (this.name.equals(name))
+			entries.add(this);
+		for (Entry child : this.children()) {
+			entries.addAll(child.findEntries(name));
+		}
+		return entries;
+	}
 
 	public boolean isLeaf() {
 		return childEntries.isEmpty();
