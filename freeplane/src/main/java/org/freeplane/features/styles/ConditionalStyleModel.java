@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -27,6 +28,11 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 	        this.style = style;
 	        this.setLast(isLast);
         }
+
+		public Item(Item prototype) {
+			this(prototype.isActive, prototype.condition, prototype.style, prototype.isLast);
+		}
+
 		public void setCondition(ASelectableCondition condition) {
 	        this.condition = condition;
         }
@@ -78,6 +84,14 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 	    super();
 	    this.styles = new ArrayList<Item>();
     }
+
+	public ConditionalStyleModel(ConditionalStyleModel conditionalStyleModel) {
+		super();
+		final ArrayList<Item> prototypeStyles = conditionalStyleModel.styles;
+		this.styles = new ArrayList<Item>(prototypeStyles.size());
+		for (Item style : prototypeStyles)
+			styles.add(new Item(style));
+	}
 	private boolean recursiveCall;
 	
 	public Collection<IStyle> getStyles(NodeModel node){
@@ -255,4 +269,9 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 	public int getStyleCount() {
 	    return styles.size();
     }
+
+	public ConditionalStyleModel clone() {
+		final ConditionalStyleModel conditionalStyleModel = new ConditionalStyleModel(this);
+		return conditionalStyleModel;
+	}
 }
