@@ -42,6 +42,7 @@ import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.action.ComponentBuilder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
@@ -301,7 +302,7 @@ public class MModeControllerFactory {
 				    fontBox.setPreferredSize(preferredSize);
 				    return fontBox;
 			    }
-		    }));
+		    }), EntryVisitor.EMTPY);
 
 
 		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_size", new ComponentBuilder(
@@ -310,7 +311,7 @@ public class MModeControllerFactory {
 			    public Component createComponent(Entry entry) {
 				    return uiFactory.createSizeBox();
 			    }
-		    }));
+		    }), EntryVisitor.EMTPY);
 
 
 		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_style", new ComponentBuilder(
@@ -319,7 +320,7 @@ public class MModeControllerFactory {
 			    public Component createComponent(Entry entry) {
 				    return uiFactory.createStyleBox();
 			    }
-		    }));
+		    }), EntryVisitor.EMTPY);
 
 		modeController.addUiBuilder(Phase.UI, "main_toolbar_zoom", new JToolbarComponentBuilder(
 		    new ComponentProvider() {
