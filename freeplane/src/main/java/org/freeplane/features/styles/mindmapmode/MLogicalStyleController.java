@@ -251,7 +251,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 				public void mapChanged(final MapChangeEvent event) {
 					if (event.getProperty().equals(MapStyle.MAP_STYLES)) {
-						userInputListenerFactory.rebuildMenus("style_actions");
+						userInputListenerFactory.rebuildMenus("styles");
 					}
 				}
 			});
