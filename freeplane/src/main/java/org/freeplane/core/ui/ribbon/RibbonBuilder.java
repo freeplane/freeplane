@@ -121,7 +121,7 @@ public class RibbonBuilder {
 		return this.contributorFactories.get(key);
 	}
 
-	public void buildRibbon() {
+	private void buildRibbon() {
 		Window f = SwingUtilities.getWindowAncestor(ribbon);
 		if(!isEnabled()) {
 			return;
@@ -167,20 +167,20 @@ public class RibbonBuilder {
 	public void updateRibbon(URL xmlResource) {
 		//final URL xmlSource = ResourceController.getResourceController().getResource(xmlResource);
 		if (xmlResource != null) {
-			final boolean isUserDefined = xmlResource.getProtocol().equalsIgnoreCase("file");
-			try{
-				reader.loadStructure(xmlResource);
-			}
-			catch (RuntimeException e){
-				if(isUserDefined){
-					LogUtils.warn(e);
-					String myMessage = TextUtils.format("ribbon_error", xmlResource.getPath(), e.getMessage());
-					UITools.backOtherWindows();
-					JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
-					System.exit(-1);
-				}
-				throw e;
-			}
+//			final boolean isUserDefined = xmlResource.getProtocol().equalsIgnoreCase("file");
+//			try{
+//				reader.loadStructure(xmlResource);
+//			}
+//			catch (RuntimeException e){
+//				if(isUserDefined){
+//					LogUtils.warn(e);
+//					String myMessage = TextUtils.format("ribbon_error", xmlResource.getPath(), e.getMessage());
+//					UITools.backOtherWindows();
+//					JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+//					System.exit(-1);
+//				}
+//				throw e;
+//			}
 		}
 	}
 

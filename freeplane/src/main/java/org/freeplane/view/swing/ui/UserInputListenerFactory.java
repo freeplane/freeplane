@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.KeyListener;
@@ -73,6 +74,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.view.swing.map.MapView;
+import org.pushingpixels.flamingo.api.ribbon.JRibbon;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
@@ -203,6 +206,16 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			menuBar = new FreeplaneMenuBar();
 		}
 		return menuBar;
+	}
+
+	public JRibbon getRibbon() {
+		Frame frame = UITools.getFrame();
+		if(frame instanceof JRibbonFrame) {
+			return ((JRibbonFrame)frame).getRibbon();
+		}
+		else {
+			throw new RuntimeException("ribbons not activated");
+		}
 	}
 
 //	public MenuBuilder getMenuBuilder() {

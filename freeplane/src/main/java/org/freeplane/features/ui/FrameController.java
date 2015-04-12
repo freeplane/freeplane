@@ -399,7 +399,8 @@ abstract public class FrameController implements ViewController {
 			}
 		}
 		if(newUserInputListenerFactory.useRibbonMenu()) {
-			newUserInputListenerFactory.getMenuBuilder(RibbonBuilder.class).buildRibbon();
+			//TODO - RIBBON unify menu initialization
+			//newUserInputListenerFactory.getMenuBuilder(RibbonBuilder.class).buildRibbon();
 		}
 		else {
 			setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());

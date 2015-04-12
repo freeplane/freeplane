@@ -32,6 +32,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 
 public interface IUserInputListenerFactory {
 	void addMouseWheelEventHandler(final IMouseWheelEventHandler handler);
@@ -45,6 +46,8 @@ public interface IUserInputListenerFactory {
 	JPopupMenu getMapPopup();
 
 	public FreeplaneMenuBar getMenuBar();
+	
+	public JRibbon getRibbon();
 
 	<T> T getMenuBuilder(final Class<T> clazz);
 	

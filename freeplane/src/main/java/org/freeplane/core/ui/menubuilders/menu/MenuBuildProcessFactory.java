@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
+import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACCELERATORS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI;
 
@@ -13,7 +14,6 @@ import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
-import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
@@ -48,7 +48,13 @@ public class MenuBuildProcessFactory {
 		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
 
 		if (userInputListenerFactory.useRibbonMenu()) {
-
+			uiBuilder.addBuilder("main_menu", new JRibbonBuilder(userInputListenerFactory));
+			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "ribbon.action");
+			
+			uiBuilder.addBuilderPair("ribbon_taskbar", new JRibbonTaskbarBuilder(), new JRibbonTaskbarDestroyer());
+			uiBuilder.addBuilder("ribbon_menu", new JRibbonApplicationMenuBuilder(resourceAccessor));
+//			uiBuilder.addBuilder("ribbon_task", new JRibbonTaskBuilder());
+//			uiBuilder.addBuilder("ribbon_band", new JRibbonBandBuilder());			
 		}
 		else {
 
@@ -59,6 +65,7 @@ public class MenuBuildProcessFactory {
 			uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
 			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
 		}
+		
 		uiBuilder.addBuilder("map_popup", new MapPopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu.action");
 		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
@@ -73,13 +80,18 @@ public class MenuBuildProcessFactory {
 		uiBuilder.addBuilderPair("menu.action", //
 		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
+		uiBuilder.addBuilderPair("ribbon.action", 
+			new JRibbonActionBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
+			    resourceAccessor), new JRibbonComponentRemover());
 
 		uiBuilder.addBuilderPair("radio_button_group", //
 		    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
 
-		buildProcessor = new PhaseProcessor().withPhase(ACTIONS, actionBuilder) //
-		    .withPhase(Phase.ACCELERATORS, acceleratorBuilder).withPhase(UI, uiBuilder);
+		buildProcessor = new PhaseProcessor()
+								.withPhase(ACTIONS, actionBuilder) //
+							    .withPhase(ACCELERATORS, acceleratorBuilder)
+							    .withPhase(UI, uiBuilder);
 		childProcessor.setProcessor(buildProcessor);
 		return this;
 	}

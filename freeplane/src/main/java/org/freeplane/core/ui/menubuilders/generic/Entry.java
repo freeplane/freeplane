@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.core.util.LogUtils;
+
 /**
  * @author Dimitry
  *
@@ -32,8 +34,11 @@ public class Entry {
 
 	public void setAttribute(final String key, Object value) {
 		if(attributes.containsKey(key)){
-			if(value != attributes.get(key))
+			if(value != attributes.get(key)) {
+				LogUtils.warn("Entry: " + getName());
+				LogUtils.warn("Value: " + String.valueOf(value));
 				throw new AttributeAlreadySetException(key, attributes.get(key));
+			}
 		}
 		else
 			attributes.put(key, value);
