@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference;
 
 import javax.swing.Action;
 
-class ActionEnabler implements PropertyChangeListener {
+public class ActionEnabler implements PropertyChangeListener {
 	final private WeakReference<Component> comp;
 
 	public ActionEnabler(final Component comp) {

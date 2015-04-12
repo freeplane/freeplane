@@ -9,6 +9,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.MenuSplitterConfiguration;
@@ -54,11 +56,19 @@ public class JMenuItemBuilder implements EntryVisitor{
 	}
 
 	private void addActionItem(Entry entry) {
-		final Component actionComponent = menuActionComponentProvider.createComponent(entry);
+		final Component actionComponent = createActionComponent(entry);
 		if(actionComponent != null){
 			addComponent(entry, actionComponent);
 		}
 	}
+
+	private Component createActionComponent(Entry entry) {
+	    final Component component = menuActionComponentProvider.createComponent(entry);
+		final AFreeplaneAction action = entryAccessor.getAction(entry);
+		if (action != null)
+			action.addPropertyChangeListener(new ActionEnabler(component));
+		return component;
+    }
 
 	private void addComponent(Entry entry, final Component component) {
 		entryAccessor.setComponent(entry, component);
@@ -68,7 +78,7 @@ public class JMenuItemBuilder implements EntryVisitor{
     }
 
 	private void addSubmenu(final Entry entry) {
-		final Component actionComponent = menuActionComponentProvider.createComponent(entry);
+		final Component actionComponent = createActionComponent(entry);
 		JMenu menu = new JMenu();
 		final String rawText = entryAccessor.getText(entry);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, rawText);

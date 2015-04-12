@@ -62,6 +62,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
@@ -113,8 +114,26 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			menuBuilderList.put(RibbonBuilder.class, new RibbonBuilder(modeController, getAcceleratorManager()));
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-				if(modeController.equals(Controller.getCurrentModeController()))
-					getMenuBuilder(MenuBuilder.class).afterMapChange(newMap);
+				if (modeController.equals(Controller.getCurrentModeController())) {
+					final RecursiveMenuStructureProcessor recursiveMenuStructureProcessor = new RecursiveMenuStructureProcessor();
+					recursiveMenuStructureProcessor.setDefaultBuilder(new EntryVisitor() {
+						EntryAccessor entryAccessor = new EntryAccessor();
+
+						@Override
+						public void visit(Entry entry) {
+							final AFreeplaneAction action = entryAccessor.getAction(entry);
+							if (action != null) {
+								action.afterMapChange(newMap);
+							}
+						}
+
+						@Override
+						public boolean shouldSkipChildren(Entry entry) {
+							return false;
+						}
+					});
+					recursiveMenuStructureProcessor.build(genericMenuStructure);
+				}
 			}
 
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
