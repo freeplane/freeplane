@@ -39,6 +39,9 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -57,6 +60,7 @@ import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
+import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.addons.ManageAddOnsAction;
@@ -169,6 +173,31 @@ class ScriptingRegistration {
 				ScriptingEngine.executeScript(node, script);
 			}
 		});
+
+		modeController.addUiBuilder(Phase.ACTIONS, "script_actions", new EntryVisitor() {
+
+			@Override
+			public void visit(Entry target) {
+				//				if (configuration.getMenuTitleToPathMap().isEmpty()) {
+				//					popupmenu.addMenuButton(createNoScriptsAvailableButton());
+				//				}
+				//				else {
+				//					final ExecutionMode executionMode = getExecutionMode();
+				//					for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
+				//						// for every action
+				//						AFreeplaneAction action = null;
+				//						new EntryAccessor().addChildAction(target, action);
+				//						popupmenu.addMenuButton(createScriptButton(entry.getKey(), entry.getValue(), executionMode));
+				//					}
+				//				}
+			}
+
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return true;
+			}
+		}, EntryVisitor.CHILD_ENTRY_REMOVER);
+
 		registerScriptAddOns();
 		if(! modeController.getController().getViewController().isHeadless()){
 			registerGuiStuff(modeController);
@@ -180,8 +209,9 @@ class ScriptingRegistration {
 			new ScriptConditionController());
 	}
 
-    private void registerGuiStuff(ModeController modeController) {
+	private void registerGuiStuff(ModeController modeController) {
         addPropertiesToOptionPanel();
+		addModeSelectors(modeController);
         modeController.addAction(new ScriptEditor());
         modeController.addAction(new ExecuteScriptForAllNodes());
         modeController.addAction(new ExecuteScriptForSelectionAction());
@@ -196,6 +226,13 @@ class ScriptingRegistration {
         });
         updateMenus(modeController, new ScriptingConfiguration());
     }
+
+	private void addModeSelectors(ModeController modeController) {
+		final ExecutionModeSelector modeSelector = new ExecutionModeSelector();
+		modeController.addAction(new ScriptsRunToggleAction(modeSelector, ExecutionMode.ON_SINGLE_NODE));
+		modeController.addAction(new ScriptsRunToggleAction(modeSelector, ExecutionMode.ON_SELECTED_NODE));
+		modeController.addAction(new ScriptsRunToggleAction(modeSelector, ExecutionMode.ON_SELECTED_NODE_RECURSIVELY));
+	}
 
     private void addPropertiesToOptionPanel() {
         final URL preferences = this.getClass().getResource("preferences.xml");

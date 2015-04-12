@@ -561,11 +561,17 @@
 				</Entry>
 				<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
 				<Entry name="scripting" plugin="org.freeplane.plugin.script">
-					<Entry name="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script" />
-					<Entry name="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script" />
-					<Entry name="ScriptEditor" plugin="org.freeplane.plugin.script" />
-					<Entry name="userScripts" plugin="org.freeplane.plugin.script"
-						builder="ribbon_contributor" />
+					<Entry name="ExecuteScriptForSelectionAction" />
+					<Entry name="ExecuteScriptForAllNodes" />
+					<Entry name="ScriptEditor" />
+					<Entry name="userScripts">
+						<Entry builder="radio_button_group">
+							<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE" />
+							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
+							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
+						</Entry> 
+						<Entry builder="script_actions" /> 
+					</Entry>
 				</Entry>
 				<Entry name="formula.menuname" plugin="org.freeplane.plugin.formula">
 					<Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
