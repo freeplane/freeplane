@@ -112,12 +112,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	public KeyStroke getAcceleratorKeyStroke(AFreeplaneAction action) {
-		final String shortcutKey = getPropertyKey(action.getKey());
-		final String shortcut = getProperty(shortcutKey);
-		if(shortcut != null){
-			return UITools.getKeyStroke(shortcut);
-		}
-		return null;
+		return getAccelerator(action.getKey());
     }
 
  	private String getActionTitle(String key) {
