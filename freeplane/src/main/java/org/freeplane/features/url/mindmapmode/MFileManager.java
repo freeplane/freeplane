@@ -782,9 +782,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			if (!isInternal) {
 				setFile(map, file);
-				map.setSaved(true);
 			}
 			writeToFile(map, file);
+			if (!isInternal) {
+				map.setSaved(true);
+			}
 			map.scheduleTimerForAutomaticSaving();
 			return true;
 		}
