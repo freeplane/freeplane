@@ -179,6 +179,9 @@ static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(AT
         if (element.getName().equalsIgnoreCase(AttributeContainsCondition.NAME)) {
             return AttributeContainsCondition.load(element);
         }
+        if (element.getName().equalsIgnoreCase(AttributeMatchesCondition.NAME)) {
+            return AttributeMatchesCondition.load(element);
+        }
 		return null;
 	}
 

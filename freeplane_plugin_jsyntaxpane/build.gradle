@@ -45,3 +45,11 @@ jar {
         //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1", org.freeplane.plugin.script;bundle-version="1.0.1"'
     }
 }
+
+task generateLaTeXLexer(type: Exec) {
+    onlyIf { !file('src/main/java/jsyntaxpane/lexers/LaTeXLexer.java').exists() }
+
+    commandLine 'jflex', '-d', 'src/main/java/jsyntaxpane/lexers/', 'src/main/java/jsyntaxpane/lexers/latex.flex'
+}
+
+compileJava.dependsOn generateLaTeXLexer
