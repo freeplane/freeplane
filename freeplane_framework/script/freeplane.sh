@@ -181,7 +181,7 @@ _debug "Calling: "\
  $JAVA_OPTS\
  $xdockname\
  -jar "${freedir}/freeplanelauncher.jar"\
- $*
+ "$@"
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
 
 # now actually launch Freeplane
@@ -192,4 +192,4 @@ _debug "Calling: "\
  $JAVA_OPTS\
  $xdockname\
  -jar "${freedir}/freeplanelauncher.jar"\
- $*
+ "$@"
