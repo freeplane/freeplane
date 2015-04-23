@@ -78,20 +78,20 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 
 	public boolean checkNode(final NodeModel node) {
 		final Object content[] = NodeTextConditionController.getItemsForComparison(nodeItem, node);
-		return content != null && checkText(content);
+		return content != null && checkContents(content);
 	}
 
-	private boolean checkText(Object content[]) {
+	private boolean checkContents(Object content[]) {
 		for(Object o : content){
-			if(o != null && checkText(o))
+			if(o != null && checkContent(o))
 				return true;
 		}
 		return false;
 	}
 	
-	private boolean checkText(final Object plainTextContent) {
+	private boolean checkContent(final Object content) {
 		try {
-			compareTo(plainTextContent);
+			compareTo(content);
 			return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
 		}
 		catch (final NumberFormatException e) {
