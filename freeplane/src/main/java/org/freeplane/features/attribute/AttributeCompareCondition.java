@@ -88,7 +88,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		final TextController textController = TextController.getController();
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			if(attribute.equals(AttributeConditionController.ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT)){
-				if (checkText(attributes.getValueAt(i, 0)))
+				if (checkContent(attributes.getValueAt(i, 0)))
 					return true;
 				
 			}
@@ -96,15 +96,15 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 				continue;
 			}
 			final Object originalContent = attributes.getValueAt(i, 1);
-			final Object text = textController.getTransformedObjectNoThrow(originalContent, node, null);
-			if (checkText(text))
+			final Object content = textController.getTransformedObjectNoThrow(originalContent, node, null);
+			if (checkContent(content))
 				return true;
 		}
 		return false;
 	}
 
-	private boolean checkText(Object text) {
-		compareTo(text);
+	private boolean checkContent(Object content) {
+		compareTo(content);
 	    return isComparisonOK() &&  succeed == (getComparisonResult() == comparationResult);
     }
 
