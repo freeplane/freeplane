@@ -83,7 +83,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
 
 	private boolean checkText(Object content[]) {
 		for(Object o : content){
-			if(o != null && checkText(o.toString()))
+			if(o != null && checkText(o))
 				return true;
 		}
 		return false;
