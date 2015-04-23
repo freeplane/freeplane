@@ -181,6 +181,11 @@ public class TextController implements IExtension {
 		}
 	}
 	
+	public Object getTransformedObjectNoFormattingNoThrow(Object data, NodeModel node) {
+		return getTransformedObjectNoThrow(data, node, null);
+	}
+
+	
 	public Object getTransformedObject(NodeModel node)  throws TransformationException{
 		final Object userObject = node.getUserObject();
 		return getTransformedObject(userObject, node, userObject);
@@ -372,5 +377,6 @@ public class TextController implements IExtension {
 	public ModeController getModeController() {
     	return modeController;
     }
+
 
 }

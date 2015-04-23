@@ -145,8 +145,8 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return 0;
 		}
 		if (conditionValue instanceof FormattedDate) {
-			if (transformedContent instanceof FormattedDate) {
-				return compareTo((FormattedDate)transformedContent);
+			if (transformedContent instanceof Date) {
+				return compareTo((Date)transformedContent);
 			}
 			error = true;
 			return 0;
