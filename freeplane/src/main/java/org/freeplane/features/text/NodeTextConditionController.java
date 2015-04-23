@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.text;
 
+import java.util.Date;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ComboBoxEditor;
@@ -27,6 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
@@ -188,14 +190,14 @@ class NodeTextConditionController implements IElementaryConditionController {
 	private static Object getItemForComparison(Object nodeItem, final NodeModel node) {
 		final Object result;
 		if(nodeItem.equals(TextController.FILTER_NODE)){
-			result = TextController.getController().getTransformedObjectNoThrow(node);
+			result = transformedObject(node);
 		}
 		else if(nodeItem.equals(TextController.FILTER_PARENT)){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode == null)
 				result = null;
 			else
-				result = TextController.getController().getTransformedObjectNoThrow(parentNode);
+				result = transformedObject(parentNode);
 		}
 		else if(nodeItem.equals(TextController.FILTER_DETAILS)){
 			result = DetailTextModel.getDetailTextText(node);
@@ -209,6 +211,11 @@ class NodeTextConditionController implements IElementaryConditionController {
 			return HtmlUtils.htmlToPlain((String)result);
 		return result;
     }
+
+	private static Object transformedObject(final NodeModel node) {
+		final Object userObject = node.getUserObject();
+		return TextController.getController().getTransformedObjectNoFormattingNoThrow(userObject, node);
+	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
         if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
