@@ -618,7 +618,12 @@ public class UITools {
 		}
     }
 
+	// TODO remove this to use ribbons when they are working again
+	private static final boolean TODO_RIBBONS_DISABLED = true;
+
 	public static boolean useRibbonsMenu() {
+		if (TODO_RIBBONS_DISABLED)
+			return false;
 		String bool = ResourceController.getResourceController().getProperty("menu.ribbons", null);
 		if(bool == null) {
 			bool = "true";
