@@ -7,6 +7,7 @@ import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
+import org.freeplane.core.ui.menubuilders.action.AcceleratorDestroyer;
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
@@ -40,7 +41,8 @@ public class MenuBuildProcessFactory {
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
 
 		final RecursiveMenuStructureProcessor acceleratorBuilder = new RecursiveMenuStructureProcessor();
-		acceleratorBuilder.setDefaultBuilder(new AcceleratorBuilder(acceleratorMap, entries));
+		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
+		    new AcceleratorDestroyer(acceleratorMap, entries));
 
 		RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
 		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);

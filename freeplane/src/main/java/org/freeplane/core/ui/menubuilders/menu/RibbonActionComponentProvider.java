@@ -75,7 +75,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 				if(entry.hasChildren()) {
 					//((JCommandButton)button).setPopupCallback(getPopupPanelCallBack(path, context));
 					((JCommandButton)button).setCommandButtonKind(CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);
-					KeyStroke ks = accelerators.getAccelerator(action.getKey());
+					KeyStroke ks = accelerators.getAccelerator(action);
 					updateRichTooltip(button, action, ks);
 					updateActionState(action, button);
 				}

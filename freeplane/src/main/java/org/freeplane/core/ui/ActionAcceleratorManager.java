@@ -54,8 +54,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	private final Map<Pair<ModeController, String>, KeyStroke> actionMap = new HashMap<>();
 	private final List<IAcceleratorChangeListener> changeListeners = new ArrayList<IAcceleratorChangeListener>();
 
-	private final Properties keysetProps = new Properties();
-	private final Properties defaultProps = new Properties();
+	private final Properties keysetProps;
+	private final Properties defaultProps;
 
 
 	/***********************************************************************************
@@ -63,6 +63,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	 **********************************************************************************/
 
  	public ActionAcceleratorManager() {
+		keysetProps = new Properties();
+		defaultProps = new Properties();
  	}
 
 	public void loadDefaultAcceleratorPresets() {
@@ -105,17 +107,10 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		if(keyStroke != null) {
 			actionMap.put(key(modeController, actionKey), keyStroke);
 		}
-		else {
-			actionMap.remove(key(modeController, actionKey));
-		}
 		fireAcceleratorChanged(action, removedAccelerator, keyStroke);
 	}
 
-	public KeyStroke getAcceleratorKeyStroke(AFreeplaneAction action) {
-		return getAccelerator(action.getKey());
-    }
-
- 	private String getActionTitle(String key) {
+	private String getActionTitle(String key) {
  		String title = TextUtils.getText(key+".text");
 		if(title == null || title.isEmpty()) {
 			title = key;
@@ -123,16 +118,40 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		return TextUtils.removeTranslateComment(title);
  	}
 
- 	public void setDefaultAccelerator(final String actionKey, final String accelerator) {
+	@Deprecated
+	public void setDefaultAccelerator(String actionKey, String accel) {
+		setDefaultAccelerator(Controller.getCurrentModeController().getAction(actionKey), accel);
+	}
+
+	@Override
+	public void setDefaultAccelerator(AFreeplaneAction action) {
+		final String actionKey = action.getKey();
 		final String shortcutKey = getPropertyKey(actionKey);
+		String accelerator = ResourceController.getResourceController().getProperty(shortcutKey, null);
+		if (accelerator != null)
+			setDefaultAccelerator(action, accelerator);
+	}
+
+	public void setDefaultAccelerator(final AFreeplaneAction action, String accelerator) {
+
+		final String shortcutKey = getPropertyKey(action.getKey());
 		if (null == getProperty(shortcutKey)) {
+			if (Compat.isMacOsX()) {
+				accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
+			}
 			defaultProps.setProperty(shortcutKey, accelerator);
 			KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
-			AFreeplaneAction action = Controller.getCurrentModeController().getAction(actionKey);
 			setAccelerator(action, ks);
 		}
-
 	}
+
+	@Override
+	public void removeAction(AFreeplaneAction action) {
+		final String shortcutKey = getPropertyKey(action.getKey());
+		defaultProps.remove(shortcutKey);
+		removeAccelerator(action);
+	}
+
 
 	public KeyStroke removeAccelerator(final AFreeplaneAction action) {
 		return removeAccelerator(Controller.getCurrentModeController(), action);
@@ -144,7 +163,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  			return null;
  		}
 		final String actionKey = action.getKey();
-		final KeyStroke oldAccelerator = actionMap.get(key(modeController, actionKey));
+		final KeyStroke oldAccelerator = actionMap.remove(key(modeController, actionKey));
 		if (oldAccelerator != null) {
 			final AFreeplaneAction oldAction = accelerators.remove(key(modeController, oldAccelerator));
 			if (oldAction != null && !action.getKey().equals(oldAction.getKey())) {
@@ -158,8 +177,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		return SHORTCUT_PROPERTY_PREFIX + Controller.getCurrentModeController().getModeName() + "/" + key;
 	}
 
- 	public KeyStroke getAccelerator(String actionKey) {
-		KeyStroke ks = actionMap.get(key(actionKey));
+ 	public KeyStroke getAccelerator(AFreeplaneAction action) {
+		KeyStroke ks = actionMap.get(key(action.getKey()));
  		return ks;
  	}
 

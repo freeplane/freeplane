@@ -131,7 +131,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 					    if (Compat.isMacOsX()) {
 					        accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 					    }
-					    acceleratorManager.setDefaultAccelerator(theAction.getKey(), accelerator);
+						acceleratorManager.setDefaultAccelerator(theAction, accelerator);
 					}
 					if (tag.equals("menu_radio_action")) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem)
@@ -371,7 +371,7 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 //
 //		}
 		if(action != null) {
-	        KeyStroke acceleratorKeyStroke = acceleratorManager.getAcceleratorKeyStroke(action);
+	        KeyStroke acceleratorKeyStroke = acceleratorManager.getAccelerator(action);
 	        if(acceleratorKeyStroke != null){
 	        	acceleratorManager.setAccelerator(action, acceleratorKeyStroke);
 	        	item.setAccelerator(acceleratorKeyStroke);

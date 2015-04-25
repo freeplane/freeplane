@@ -161,7 +161,7 @@ public class MenuUtils {
 			String text = ActionUtils.getActionTitle(action);
 			String iconKey = action.getIconKey();
 			String tooltip = (String) action.getValue(Action.LONG_DESCRIPTION);
-			KeyStroke accelerator = acceleratorManager.getAccelerator(action.getKey());
+			KeyStroke accelerator = acceleratorManager.getAccelerator(action);
 			final MenuEntry menuEntry = new MenuEntry(action.getKey(), text, iconKey, accelerator, tooltip);
 			return menuEntry;
 		}

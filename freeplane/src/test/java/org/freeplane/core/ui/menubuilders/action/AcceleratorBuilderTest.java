@@ -30,7 +30,7 @@ public class AcceleratorBuilderTest {
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
-		Mockito.verify(map).setDefaultAccelerator(actionKey, keyStroke);
+		Mockito.verify(map).setDefaultAccelerator(action, keyStroke);
 
 	}
 	
@@ -46,12 +46,12 @@ public class AcceleratorBuilderTest {
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
-		Mockito.verify(map, never()).setDefaultAccelerator(actionKey, keyStroke);
+		Mockito.verify(map, never()).setDefaultAccelerator(Mockito.<AFreeplaneAction> any(), Mockito.<String> any());
 
 	}
 	
 	@Test
-	public void givenEntryWithoutAccelerator_doesNotSetDefaultAccelerator() {
+	public void givenEntryWithoutAccelerator_doesNotSetOwnDefaultAccelerator() {
 		Entry actionEntry = new Entry();
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		new EntryAccessor().setAction(actionEntry, action);
@@ -60,35 +60,24 @@ public class AcceleratorBuilderTest {
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
-		Mockito.verify(map, never()).setDefaultAccelerator(anyString(), anyString());
+		Mockito.verify(map, never()).setDefaultAccelerator(Mockito.<AFreeplaneAction> any(), anyString());
 
 	}
 
-
 	@Test
-	public void replacesControlByMetaForMacOS() {
+	public void givenEntryWithoutAccelerator_doesSetsDefaultAccelerator() {
 		Entry actionEntry = new Entry();
-		String actionKey = "actionKey";
-		actionEntry.setName(actionKey);
-		String keyStroke = "CONTROL A";
-		actionEntry.setAttribute("accelerator", keyStroke);
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		new EntryAccessor().setAction(actionEntry, action);
 
 		IAcceleratorMap map = mock(IAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class)){
-
-			@Override
-			protected boolean isMacOsX() {
-				return true;
-			}
-			
-		};
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map, mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
-		
-		Mockito.verify(map).setDefaultAccelerator(actionKey, keyStroke.replaceAll("CONTROL", "META"));
+
+		Mockito.verify(map).setDefaultAccelerator(action);
 
 	}
+
 
 	@Test
 	public void registersEntryWithAction() {

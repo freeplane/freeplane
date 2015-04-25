@@ -94,10 +94,11 @@ public class JMenuItemBuilderTest {
 
 	@Test
 	public void createsMenuButtonWithAcceleratedAction() {
-		new EntryAccessor().setComponent(menuEntry, menu);
+		final EntryAccessor entryAccessor = new EntryAccessor();
+		entryAccessor.setComponent(menuEntry, menu);
 		menuEntry.addChild(actionEntry);
 		final KeyStroke keyStroke = KeyStroke.getKeyStroke('A');
-		when(accelerators.getAccelerator(actionEntry.getName())).thenReturn(keyStroke);
+		when(accelerators.getAccelerator(action)).thenReturn(keyStroke);
 		menuActionGroupBuilder.visit(actionEntry);
 		JMenuItem item = (JMenuItem) new EntryAccessor().getComponent(actionEntry);
 		Assert.assertThat(item.getAccelerator(), equalTo(keyStroke));

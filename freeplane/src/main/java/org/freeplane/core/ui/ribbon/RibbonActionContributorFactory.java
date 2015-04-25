@@ -2,7 +2,6 @@ package org.freeplane.core.ui.ribbon;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
@@ -269,14 +267,14 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 								StructurePath path = context.getCurrentPath();
 								((JCommandButton)button).setPopupCallback(getPopupPanelCallBack(path, context));
 								((JCommandButton)button).setCommandButtonKind(CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);
-								KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(actionKey);
+								KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action);
 								updateRichTooltip(button, action, ks);
 								updateActionState(action, button);
 							}
 						}
 						button.putClientProperty(ACTION, action);
 						
-						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(actionKey);
+						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action);
 						if(ks != null) {
 							button.putClientProperty(ACTION_ACCELERATOR, ks);
 							updateRichTooltip(button, action, ks);
@@ -357,7 +355,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 							}
 							menuButton.setEnabled(button.isEnabled());
 							menuButton.putClientProperty(ACTION, action);
-							KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action.getKey());
+							KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action);
 							updateRichTooltip(menuButton, action, ks);
 							updateActionState(action, menuButton);
 						}

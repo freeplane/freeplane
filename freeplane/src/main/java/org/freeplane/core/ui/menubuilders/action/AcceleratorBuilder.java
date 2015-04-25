@@ -21,13 +21,11 @@ public class AcceleratorBuilder implements EntryVisitor{
 		if (action != null) {
 			final EntryAccessor entryAccessor = new EntryAccessor();
 			String accelerator = entryAccessor.getAccelerator(entry);
-			final String key = entry.getName();
 			if(accelerator != null) {
-				if (isMacOsX()) {
-			        accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
-			    }
-				map.setDefaultAccelerator(key, accelerator);
+				map.setDefaultAccelerator(action, accelerator);
 			}
+			else
+				map.setDefaultAccelerator(action);
 			entries.registerEntry(action, entry);
 		}
 	}

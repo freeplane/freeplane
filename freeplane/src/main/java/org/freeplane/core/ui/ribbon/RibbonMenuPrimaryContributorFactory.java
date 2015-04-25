@@ -11,8 +11,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
-import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
+import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary;
@@ -95,10 +95,10 @@ public class RibbonMenuPrimaryContributorFactory implements IRibbonContributorFa
 					
 					entry = createMenuEntry(action, CommandButtonKind.ACTION_ONLY);
 				}
-				KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(getKey());
-				if(ks != null) {
-					AFreeplaneAction action = context.getBuilder().getMode().getAction(getKey());
-					if(action != null) {
+				AFreeplaneAction action = context.getBuilder().getMode().getAction(getKey());
+				if (action != null) {
+					KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action);
+					if (ks != null) {
 						RichTooltip tip = RibbonActionContributorFactory.getRichTooltip(action, ks);
 						if(tip != null) {
 							entry.setActionRichTooltip(tip);

@@ -44,7 +44,7 @@ public class MenuActionComponentProvider implements ComponentProvider {
 			else {
 				actionComponent = new JFreeplaneMenuItem(wrappedAction);
 			}
-			final KeyStroke accelerator = accelerators.getAccelerator(action.getKey());
+			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
 			return actionComponent;
 		}

@@ -49,7 +49,7 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 			}
 			actionComponent.setSelected(Boolean.TRUE.equals(entry.getAttribute("selected")));
 			buttonGroup.add(actionComponent);
-			final KeyStroke accelerator = accelerators.getAccelerator(action.getKey());
+			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
 			return actionComponent;
 		}

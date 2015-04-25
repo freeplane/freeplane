@@ -58,7 +58,7 @@ public class RibbonMenuFooterContributorFactory implements IRibbonContributorFac
 						ResizableIcon icon = ActionUtils.getActionIcon(action);
 						ActionListener listener = new AccelerateableAction(action);
 						final RibbonApplicationMenuEntryFooter entry = new RibbonApplicationMenuEntryFooter(icon, title, listener);
-						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(key);
+						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action);
 						if(ks != null) {
 							RichTooltip tip = RibbonActionContributorFactory.getRichTooltip(action, ks);
 							if(tip != null) {
