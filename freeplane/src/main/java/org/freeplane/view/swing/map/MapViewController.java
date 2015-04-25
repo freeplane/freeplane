@@ -51,7 +51,6 @@ import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
@@ -724,15 +723,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		final float currentZoomIndex = getCurrentZoomIndex();
 		if (currentZoomIndex > 0) {
 			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
-		}
-	}
-
-	public void updateMenus(final MenuBuilder menuBuilder) {
-		if (menuBuilder.contains("main_toolbar_zoom")) {
-			final JComboBox zoomBox = createZoomBox();
-			menuBuilder.addElement("main_toolbar_zoom", zoomBox, MenuBuilder.AS_CHILD);
-			// FELIXHACK
-			//zoomBox.setRenderer(new ComboBoxRendererWithTooltip(zoomBox));
 		}
 	}
 

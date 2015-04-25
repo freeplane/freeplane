@@ -35,16 +35,16 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.Action;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.components.JFreeplaneMenuItem;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
@@ -68,7 +68,6 @@ import org.freeplane.n3.nanoxml.XMLException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
-	private static final String MENU_CATEGORY = "main_menu_most_recent_files";
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	// // 	private final Controller controller;
@@ -94,6 +93,22 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 //		this.controller = controller;
 		restoreList(LAST_OPENED);
 		lastOpenedMapsRibbonContributorFactory = new LastOpenedMapsRibbonContributorFactory(this);
+	}
+
+	public void registerMenuContributor(final ModeController modeController) {
+		modeController.addUiBuilder(Phase.ACTIONS, "lastOpenedMaps", new EntryVisitor() {
+
+			@Override
+			public void visit(Entry target) {
+				updateMenus(target);
+			}
+
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return true;
+			}
+		}, EntryVisitor.CHILD_ENTRY_REMOVER);
+
 	}
 
 	public void afterViewChange(final Component oldView, final Component newView) {
@@ -276,20 +291,15 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private void updateMenus() {
-		Controller controller = Controller.getCurrentController();
-		final ModeController modeController = controller.getModeController();
-		if(!modeController.getUserInputListenerFactory().useRibbonMenu()) {
-			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-			menuBuilder.removeChildElements(MENU_CATEGORY);
-			List<AFreeplaneAction> openMapActions = createOpenLastMapActionList();
-			for(AFreeplaneAction openMapAction:openMapActions)
-			{
-				final IFreeplaneAction acceleratableAction = menuBuilder.acceleratableAction(openMapAction);
-				final JMenuItem item = new JFreeplaneMenuItem(acceleratableAction);
-				item.setMnemonic(0);
-				menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + openMapAction.getKey(),
-				    UIBuilder.AS_CHILD);
-			}
+		final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController()
+		    .getUserInputListenerFactory();
+		userInputListenerFactory.rebuildMenus("lastOpenedMaps");
+	}
+
+	private void updateMenus(Entry target) {
+		List<AFreeplaneAction> openMapActions = createOpenLastMapActionList();
+		for (AFreeplaneAction openMapAction : openMapActions) {
+			new EntryAccessor().addChildAction(target, openMapAction);
 		}
 	}
 

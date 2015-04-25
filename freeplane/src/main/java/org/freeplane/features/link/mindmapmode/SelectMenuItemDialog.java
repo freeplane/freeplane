@@ -40,8 +40,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
@@ -50,7 +49,6 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * Presents the menu bar as a tree. Only allows the selection of leaf nodes.
@@ -60,7 +58,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 public class SelectMenuItemDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	// append "/extras/first/scripting/scripts" for scripts
-	private static final String SELECTION_ROOT_KEY = FreeplaneMenuBar.MENU_BAR_PREFIX;
+	private static final String SELECTION_ROOT_KEY = "main_menu";
 	private static final Dimension DIALOG_DIMENSION = new Dimension(350, 350);
 	private JButton btnOK;
 	private final JTree tree;
@@ -147,16 +145,14 @@ public class SelectMenuItemDialog extends JDialog {
 
 	private JButton createButton(final String key, final CloseAction closeAction) {
 		final JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getRawText(key));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(button, TextUtils.getRawText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		return button;
 	}
 
 	private JTree createTree() {
-		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-		final DefaultMutableTreeNode treeRoot = MenuUtils.createMenuEntryTree(SELECTION_ROOT_KEY, menuBuilder);
+		final DefaultMutableTreeNode treeRoot = MenuUtils.createMenuEntryTree(SELECTION_ROOT_KEY);
 		if (treeRoot.getUserObject() == null)
 			treeRoot.setUserObject(new MenuEntry(null, TextUtils.getText("select_menu_item_root_node")));
 		JTree jTree = new JTree(treeRoot);

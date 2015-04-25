@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -12,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -49,7 +50,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	    final Box buttons = Box.createVerticalBox();
 	    
 	    JButton create = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(create, TextUtils.getRawText("new"));
+	    LabelAndMnemonicSetter.setLabelAndMnemonic(create, TextUtils.getRawText("new"));
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -61,7 +62,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		});
 
 	    JButton edit = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(edit, TextUtils.getRawText("edit"));
+	    LabelAndMnemonicSetter.setLabelAndMnemonic(edit, TextUtils.getRawText("edit"));
 	    edit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    edit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -77,7 +78,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		});
 
 	    JButton delete = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(delete, TextUtils.getRawText("delete"));
+	    LabelAndMnemonicSetter.setLabelAndMnemonic(delete, TextUtils.getRawText("delete"));
 	    delete.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +98,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 			}
 		});
 	    JButton up = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(up, TextUtils.getRawText("up"));
+	    LabelAndMnemonicSetter.setLabelAndMnemonic(up, TextUtils.getRawText("up"));
 	    up.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,7 +113,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 			}
 		});
 	    JButton down = new JButton();
-	    MenuBuilder.setLabelAndMnemonic(down, TextUtils.getRawText("down"));
+	    LabelAndMnemonicSetter.setLabelAndMnemonic(down, TextUtils.getRawText("down"));
 	    down.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    down.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

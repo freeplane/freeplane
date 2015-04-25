@@ -19,6 +19,9 @@
  */
 package org.freeplane.main.mindmapmode;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
@@ -37,6 +40,12 @@ import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.action.ComponentBuilder;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.ui.ribbon.RibbonMapChangeAdapter;
 import org.freeplane.core.util.TextUtils;
@@ -171,6 +180,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new ChangeExternalImageAction());
 		modeController.addAction(new ShowFormatPanelAction());
 		modeController.addAction(new FitToPage());
+		modeController.addAction(new UpdateCheckAction());
 		MEncryptionController.install(new MEncryptionController(modeController));
 		modeController.addAction(new IconSelectionPlugin());
 		modeController.addAction(new NewParentNode());
@@ -280,9 +290,46 @@ public class MModeControllerFactory {
 		mapController.addNodeSelectionListener(uiFactory);
 		mapController.addMapChangeListener(uiFactory);
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
-		final MToolbarContributor menuContributor = new MToolbarContributor(uiFactory);
 		modeController.addExtension(MUIFactory.class, uiFactory);
-		modeController.addMenuContributor(menuContributor);
+
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_name", new ComponentBuilder(
+		    new ComponentProvider() {
+			    @Override
+			    public Component createComponent(Entry entry) {
+				    final Container fontBox = uiFactory.createFontBox();
+				    final Dimension preferredSize = fontBox.getPreferredSize();
+				    preferredSize.width = 90;
+				    fontBox.setPreferredSize(preferredSize);
+				    return fontBox;
+			    }
+		    }), EntryVisitor.EMTPY);
+
+
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_size", new ComponentBuilder(
+		    new ComponentProvider() {
+			    @Override
+			    public Component createComponent(Entry entry) {
+				    return uiFactory.createSizeBox();
+			    }
+		    }), EntryVisitor.EMTPY);
+
+
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_style", new ComponentBuilder(
+		    new ComponentProvider() {
+			    @Override
+			    public Component createComponent(Entry entry) {
+				    return uiFactory.createStyleBox();
+			    }
+		    }), EntryVisitor.EMTPY);
+
+		modeController.addUiBuilder(Phase.UI, "main_toolbar_zoom", new JToolbarComponentBuilder(
+		    new ComponentProvider() {
+			    @Override
+			    public Component createComponent(Entry entry) {
+				    return controller.getMapViewManager().createZoomBox();
+			    }
+		    }));
+
 		new CloneStateIconSupplier().registerStateIconProvider();
 
 //		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {

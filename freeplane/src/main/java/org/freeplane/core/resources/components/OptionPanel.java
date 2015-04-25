@@ -42,7 +42,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator.ValidationResult;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -157,14 +157,14 @@ public class OptionPanel {
 		}
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				closeWindow();
 			}
 		});
 		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				if (validate()) {

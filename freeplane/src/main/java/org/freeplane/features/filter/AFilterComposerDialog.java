@@ -50,7 +50,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -522,14 +522,14 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		getContentPane().add(controllerBox, BorderLayout.SOUTH);
 		final CloseAction closeAction = new CloseAction();
 		btnOK = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnOK, TextUtils.getRawText("ok"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(btnOK, TextUtils.getRawText("ok"));
 		btnOK.addActionListener(closeAction);
 		btnOK.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnOK);
 		if (!isModal()) {
 			btnApply = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnApply, TextUtils.getRawText("apply"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(btnApply, TextUtils.getRawText("apply"));
 			btnApply.addActionListener(closeAction);
 			btnApply.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			controllerBox.add(Box.createHorizontalGlue());
@@ -539,7 +539,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			btnApply = null;
 		}
 		btnCancel = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnCancel, TextUtils.getRawText("cancel"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(btnCancel, TextUtils.getRawText("cancel"));
 		btnCancel.addActionListener(closeAction);
 		btnCancel.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -549,12 +549,12 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnSave, TextUtils.getRawText("FilterComposerDialog.save"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(btnSave, TextUtils.getRawText("FilterComposerDialog.save"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnLoad, TextUtils.getRawText("load"));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(btnLoad, TextUtils.getRawText("load"));
 			btnLoad.addActionListener(loadAction);
 			btnLoad.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 			controllerBox.add(btnSave);

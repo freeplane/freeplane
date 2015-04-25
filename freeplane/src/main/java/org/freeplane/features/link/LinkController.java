@@ -51,17 +51,18 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -195,120 +196,101 @@ public class LinkController extends SelectionController implements IExtension {
 	private void createActions() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new FollowLinkAction());
-		modeController.addMenuContributor(new LinkMenuContributor("menu_links", "menu_goto_links"));
-		modeController.addMenuContributor(new LinkMenuContributor("popup_links", "popup_goto_links"));
-		modeController.addMenuContributor(new ClonesMenuContributor("menu_links", "menu_goto_clones"));
-		modeController.addMenuContributor(new ClonesMenuContributor("popup_links", "popup_goto_clones"));
+		modeController.addUiBuilder(Phase.ACTIONS, "clone_actions", new ClonesMenuBuilder(modeController),
+		    EntryVisitor.CHILD_ENTRY_REMOVER);
+		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController), EntryVisitor.CHILD_ENTRY_REMOVER);
 	}
 
-    private class LinkMenuContributor implements IMenuContributor {
-    	final String key;
-	    public LinkMenuContributor(String menuKey, String key) {
-	        super();
-	        this.key = key;
-        }
-		public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
-			if(builder.contains(key)) {
-				builder.addPopupMenuListener((DefaultMutableTreeNode)builder.get(key).getParent(), new PopupMenuListener(
-	            		) {
-	            		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-	            			final IMapSelection selection = modeController.getController().getSelection();
-	            			if(selection == null)
-	            				return;
-							final NodeModel node = selection.getSelected();
-	            			Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>( NodeLinks.getLinks(node));
-	            			links.addAll(getLinksTo(node));
-	            			boolean firstAction = true;
-	            			for(NodeLinkModel link : links){
-	            				final String targetID = link.getTargetID();
-	            				final NodeModel target;
-	            				if(node.getID().equals(targetID)){
-	            					if(link instanceof ConnectorModel){
-	            						ConnectorModel cm = (ConnectorModel) link;
-	            						target = cm.getSource();
-	            						if(node.equals(target))
-	            							continue;
-	            					}
-	            					else
-	            						continue;
-	            				}
-	            				else
-	            					target = node.getMap().getNodeForID(targetID);
-	            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
-	            				gotoLinkNodeAction.configureText("follow_graphical_link", target);
-	            				if(!(link instanceof ConnectorModel)){
-	            					gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
-	            				}
-	            				if(firstAction){
-	            					builder.addSeparator(key, MenuBuilder.AS_CHILD);
-	            					firstAction = false;
-	            				}
-	            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
-	            			}
-	            		}
+	final class LinkMenuBuilder implements EntryVisitor {
+	    private final ModeController modeController;
 
-	            		public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-	            			builder.removeChildElements(key);
-	            		}
-
-	            		public void popupMenuCanceled(PopupMenuEvent e) {
-	            		}
-	            	});
-            }
+	    LinkMenuBuilder(ModeController modeController) {
+		    this.modeController = modeController;
 	    }
-        @Override
-        public String toString() {
-            return getClass().getSimpleName() + "(" + key + ")";
-        }
+
+	    @Override
+	    public void visit(Entry entry) {
+	    	final IMapSelection selection = modeController.getController().getSelection();
+	    	if (selection == null)
+	    		return;
+	    	final NodeModel node = selection.getSelected();
+	    	Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>(NodeLinks.getLinks(node));
+	    	links.addAll(getLinksTo(node));
+	    	boolean firstAction = true;
+	    	for (NodeLinkModel link : links) {
+	    		final String targetID = link.getTargetID();
+	    		final NodeModel target;
+	    		if (node.getID().equals(targetID)) {
+	    			if (link instanceof ConnectorModel) {
+	    				ConnectorModel cm = (ConnectorModel) link;
+	    				target = cm.getSource();
+	    				if (node.equals(target))
+	    					continue;
+	    			}
+	    			else
+	    				continue;
+	    		}
+	    		else
+	    			target = node.getMap().getNodeForID(targetID);
+	    		final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
+	    		gotoLinkNodeAction.configureText("follow_graphical_link", target);
+	    		if (!(link instanceof ConnectorModel)) {
+	    			gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
+	    		}
+	    		if (firstAction) {
+	    			entry.addChild(new Entry().setBuilders("separator"));
+	    			firstAction = false;
+	    		}
+				new EntryAccessor().addChildAction(entry, gotoLinkNodeAction);
+	    	}
+	    }
+
+	    @Override
+	    public boolean shouldSkipChildren(Entry entry) {
+	    	return true;
+	    }
     }
 
-    private class ClonesMenuContributor implements IMenuContributor {
-    	final String key;
-	    public ClonesMenuContributor(String menuKey, String key) {
+
+	private class ClonesMenuBuilder implements EntryVisitor {
+		final private ModeController modeController;
+
+		public ClonesMenuBuilder(ModeController modeController) {
 	        super();
-	        this.key = key;
+			this.modeController = modeController;
         }
-		public void updateMenus(final ModeController modeController, final MenuBuilder builder) {
-			if(builder.contains(key)) {
-				builder.addPopupMenuListener((DefaultMutableTreeNode)builder.get(key).getParent(), new PopupMenuListener(
-	            		) {
-	            		public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-	            			final IMapSelection selection = modeController.getController().getSelection();
-	            			if(selection == null)
-	            				return;
-							final NodeModel node = selection.getSelected();
-	            			boolean firstAction = true;
-	            			NodeModel parentNode = node.getParentNode();
-							if(parentNode != null){
-	            				for(NodeModel clone : node.clones()){
-									if(!clone.equals(node)){
-			            				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
-			            				NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
-										gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
-			            				gotoLinkNodeAction.putValue(Action.SMALL_ICON, CloneStateIconSupplier.CLONEROOT_ICON.getIcon());
-			            				if(firstAction){
-			            					builder.addSeparator(key, MenuBuilder.AS_CHILD);
-			            					firstAction = false;
-			            				}
-			            				builder.addAction(key, gotoLinkNodeAction, MenuBuilder.AS_CHILD);
-									}
-	            				}
-	            			}
-	            		}
 
-	            		public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-	            			builder.removeChildElements(key);
-	            		}
 
-	            		public void popupMenuCanceled(PopupMenuEvent e) {
-	            		}
-	            	});
-            }
-	    }
-        @Override
-        public String toString() {
-            return getClass().getSimpleName() + "(" + key + ")";
-        }
+		@Override
+		public void visit(Entry target) {
+			final IMapSelection selection = modeController.getController().getSelection();
+			if (selection == null)
+				return;
+			final NodeModel node = selection.getSelected();
+			boolean firstAction = true;
+			NodeModel parentNode = node.getParentNode();
+			if (parentNode != null) {
+				for (NodeModel clone : node.clones()) {
+					if (!clone.equals(node)) {
+						final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
+						NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
+						gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
+						gotoLinkNodeAction.putValue(Action.SMALL_ICON, CloneStateIconSupplier.CLONEROOT_ICON.getIcon());
+						if (firstAction) {
+							target.addChild(new Entry().setBuilders("separator"));
+							firstAction = false;
+						}
+						new EntryAccessor().addChildAction(target, gotoLinkNodeAction);
+					}
+				}
+			}
+
+		}
+
+		@Override
+		public boolean shouldSkipChildren(Entry entry) {
+			return true;
+		}
     }
     @SuppressWarnings("serial")
     public static final class ClosePopupAction extends AbstractAction {

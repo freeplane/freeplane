@@ -36,6 +36,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.IExtensionCopier;
@@ -51,7 +54,7 @@ import org.freeplane.features.ui.INodeViewLifeCycleListener;
  * default Actions you may want to use for easy editing of your model. Take
  * MindMapController as a sample.
  */
-public class ModeController extends AController {
+public class ModeController extends AController implements FreeplaneActions{
 // // 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
@@ -231,6 +234,19 @@ public class ModeController extends AController {
 	public void addMenuContributor(final IMenuContributor contributor) {
 		menuContributors.add(contributor);
 	}
+
+	public void addUiBuilder(Phase phase, String name, EntryVisitor builder) {
+		addUiBuilder(phase, name, new BuilderDestroyerPair(builder));
+	}
+
+	public void addUiBuilder(Phase phase, String name, EntryVisitor builder, EntryVisitor destroyer) {
+		addUiBuilder(phase, name, new BuilderDestroyerPair(builder, destroyer));
+	}
+
+	public void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair) {
+		getUserInputListenerFactory().addUiBuilder(phase, name, builderDestroyerPair);
+    }
+
 
 	public void commit() {
 	}
@@ -426,4 +442,5 @@ public class ModeController extends AController {
 			toolTip.put(key, tooltip);
 		}
 	}
+
 }

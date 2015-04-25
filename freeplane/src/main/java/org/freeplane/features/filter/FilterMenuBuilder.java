@@ -23,27 +23,24 @@ import java.util.HashSet;
 
 import javax.swing.DefaultComboBoxModel;
 
-import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.UIBuilder;
+import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
  * 23.03.2013
  */
-public class FilterMenuBuilder implements IMenuContributor {
-	private static final String MENU_USER_DEFINED_FILTERS = "menu_user_defined_filters";
+public class FilterMenuBuilder implements EntryVisitor {
 	private final FilterController filterController;
 	FilterMenuBuilder(FilterController filtercontroller){
 		this.filterController = filtercontroller;
 	}
-	//TODO RIBBONS: also impl ribbons version
-	public void updateMenus(ModeController modeController, MenuBuilder builder) {
-		if(builder.get(MENU_USER_DEFINED_FILTERS) == null)
-			return;
-		builder.removeChildElements(MENU_USER_DEFINED_FILTERS);
+	@Override
+	public void visit(Entry target) {
 		final DefaultComboBoxModel filterConditions = filterController.getFilterConditions();
 		final HashSet<String> usedNames = new HashSet<String>();
 		for(int i = 0; i < filterConditions.getSize(); i++){
@@ -51,8 +48,19 @@ public class FilterMenuBuilder implements IMenuContributor {
 			final String conditionName = condition.getUserName();
 			if(conditionName != null && usedNames.add(conditionName)){
 				final ApplyNamedFilterAction action = new ApplyNamedFilterAction(filterController, condition);
-				builder.addAction(MENU_USER_DEFINED_FILTERS, action,UIBuilder.AS_CHILD );
+				new EntryAccessor().addChildAction(target, action);
 			}
 		}
+
 	}
+
+	@Override
+	public boolean shouldSkipChildren(Entry entry) {
+		return true;
+	}
+
+	public void updateMenus() {
+	    final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController().getUserInputListenerFactory();
+		userInputListenerFactory.rebuildMenus("filterConditions");
+    }
 }

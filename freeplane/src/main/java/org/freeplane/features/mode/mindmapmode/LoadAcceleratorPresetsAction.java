@@ -25,11 +25,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -63,43 +66,48 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "accelerators");
 	}
 
-	final static public void install() {
-		final File[] dirs = { LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory(),
-		        LoadAcceleratorPresetsAction.getAcceleratorsSysDirectory() };
-		final Controller controller = Controller.getCurrentController();
-		ModeController modecontroller = controller.getModeController(MModeController.MODENAME);
-		final MenuBuilder menuBuilder = modecontroller.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-		//TODO RIBBONS: impl. eventually
-		for (final File dir : dirs) {
-			final File[] fileList = dir.listFiles();
-			if (fileList == null) {
-				continue;
-			}
-			for (final File prop : fileList) {
-				final String fileName = prop.getName();
-				if (prop.isDirectory()) {
+	final static public void install(ModeController modeController) {
+		modeController.addUiBuilder(Phase.ACTIONS, "acceleratorPresets", new AcceleratorPresetsBuilder(),
+		    EntryVisitor.CHILD_ENTRY_REMOVER);
+	}
+
+	static class AcceleratorPresetsBuilder implements EntryVisitor {
+		@Override
+		public void visit(Entry target) {
+			final File[] dirs = { LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory(),
+			        LoadAcceleratorPresetsAction.getAcceleratorsSysDirectory() };
+			for (final File dir : dirs) {
+				final File[] fileList = dir.listFiles();
+				if (fileList == null) {
 					continue;
 				}
-				if (!fileName.endsWith(".properties")) {
-					continue;
-				}
-				try {
-					final int propNameLength = fileName.lastIndexOf('.');
-					final String propName = fileName.substring(0, propNameLength);
-					final String key = "LoadAcceleratorPresetsAction." + propName;
-					if (controller.getAction(key) == null) {
-						final String title = TextUtils.getText(key + ".text", propName);
-						final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
-							prop.toURL(), key, title);
-						controller.addAction(loadAcceleratorPresetsAction);
-						menuBuilder.addAction("main_menu_new_load_accelerator_presets", key,
-							loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
+				for (final File prop : fileList) {
+					final String fileName = prop.getName();
+					if (prop.isDirectory()) {
+						continue;
+					}
+					if (!fileName.endsWith(".properties")) {
+						continue;
+					}
+					try {
+						final int propNameLength = fileName.lastIndexOf('.');
+						final String propName = fileName.substring(0, propNameLength);
+						final String key = "LoadAcceleratorPresetsAction." + propName;
+							final String title = TextUtils.getText(key + ".text", propName);
+							final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
+							    prop.toURL(), key, title);
+						new EntryAccessor().addChildAction(target, loadAcceleratorPresetsAction);
+					}
+					catch (final Exception e) {
+						UITools.errorMessage(TextUtils.format("accelerators_loading_error", prop.getPath()));
 					}
 				}
-				catch (final Exception e) {
-					UITools.errorMessage(TextUtils.format("accelerators_loading_error", prop.getPath()));
-				}
 			}
+		}
+
+		@Override
+		public boolean shouldSkipChildren(Entry entry) {
+			return true;
 		}
 	}
 
@@ -114,13 +122,16 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		InputStream in = null;
 		try {
 			in = resource.openStream();
-			MenuBuilder.loadAcceleratorPresets(in);
+			final InputStream in1 = in;
+			final ActionAcceleratorManager acclMgr = Controller.getCurrentModeController()
+			    .getUserInputListenerFactory().getAcceleratorManager();
+			acclMgr.loadAcceleratorPresets(in1);
 		}
 		catch (final IOException e1) {
 			e1.printStackTrace();
-		}
+	}
 		finally {
 			FileUtils.silentlyClose(in);
-		}
 	}
+}
 }

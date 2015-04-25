@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,14 +47,16 @@ import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.KeyProperty;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
@@ -73,6 +76,67 @@ import org.freeplane.features.ui.FrameController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
+	private final class IconActionBuilder implements EntryVisitor {
+		private final HashMap<String, Entry> submenuEntries = new HashMap<>();
+		final private ModeController modeController;
+
+		public IconActionBuilder(ModeController modeController) {
+			this.modeController = modeController;
+		}
+
+		@Override
+		public void visit(Entry target) {
+			addIcons(target);
+			submenuEntries.clear();
+			updateIconToolbar(modeController);
+		}
+
+		private void addIcons(final Entry target) {
+			for (final IconGroup iconGroup : STORE.getGroups()) {
+				addIconGroup(target, iconGroup);
+			}
+		}
+
+		private void addIconGroup(final Entry target, final IconGroup group) {
+			if (group.getIcons().size() < 1) {
+				return;
+			}
+			final Entry item = new Entry();
+			EntryAccessor entryAccessor = new EntryAccessor();
+			entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
+			entryAccessor.setText(item, group.getDescription());
+			target.addChild(item);
+			for (final MindIcon icon : group.getIcons()) {
+				final String fileName = icon.getFileName();
+				addAction(item, "", icon, fileName);
+			}
+		}
+
+		private void addAction(final Entry target, final String itemKey, final MindIcon icon,
+		                       final String fileName) {
+			final int separatorPosition = fileName.indexOf('/');
+			EntryAccessor entryAccessor = new EntryAccessor();
+			if (separatorPosition == -1) {
+				entryAccessor.addChildAction(target, iconActions.get(icon));
+			}
+			else {
+				final String submenuName = fileName.substring(0, separatorPosition);
+				final String submenuKey = itemKey + "/" + submenuName;
+				Entry submenu = submenuEntries.get(submenuKey);
+				if (submenu == null) {
+					submenu = new Entry();
+					entryAccessor.setText(submenu, submenuName);
+					submenuEntries.put(submenuKey, submenu);
+				}
+				addAction(submenu, submenuKey, icon, fileName.substring(separatorPosition + 1));
+			}
+		}
+		@Override
+		public boolean shouldSkipChildren(Entry entry) {
+			return false;
+		}
+	}
+
 	public static enum Keys {
 		ICONS
 	};
@@ -145,12 +209,7 @@ public class MIconController extends IconController {
 		iconBox = new CollapseableBoxBuilder(frameController).setPropertyNameBase("leftToolbarVisible").setResizeable(false).createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
 		createPreferences();
-		modeController.addMenuContributor(new IMenuContributor() {
-			public void updateMenus(final ModeController modeController, MenuBuilder builder) {
-				MIconController.this.updateMenus(modeController, builder);
-				updateIconToolbar(modeController);
-			}
-		});
+		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconActionBuilder(modeController));
 	}
 
 	public void addIcon(final NodeModel node, final MindIcon icon) {
@@ -189,44 +248,6 @@ public class MIconController extends IconController {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
-	}
-
-	private void addIconGroupToMenu(final MenuBuilder builder, final String category, final IconGroup group) {
-		if (group.getIcons().size() < 1) {
-			return;
-		}
-		final JMenuItem item = new JMenu();
-		item.setIcon(group.getGroupIcon().getIcon());
-		item.setText(group.getDescription());
-		final String itemKey = category + "/" + group;
-		builder.addMenuItem(category, item, itemKey, MenuBuilder.AS_CHILD);
-		for (final MindIcon icon : group.getIcons()) {
-			final String fileName = icon.getFileName();
-			addAction(builder, itemKey, icon, fileName);
-		}
-	}
-
-	private void addAction(final MenuBuilder builder, final String itemKey, final MindIcon icon, final String fileName) {
-		final int separatorPosition = fileName.indexOf('/');
-		if (separatorPosition == -1) {
-			builder.addAction(itemKey, iconActions.get(icon), MenuBuilder.AS_CHILD);
-			return;
-		}
-		final String submenuName = fileName.substring(0, separatorPosition);
-		final String submenuKey = itemKey + "/" + submenuName;
-		if (null == builder.get(submenuKey)) {
-			final JMenu submenu = new JMenu(submenuName);
-			builder.addMenuItem(itemKey, submenu, submenuKey, MenuBuilder.AS_CHILD);
-		}
-		addAction(builder, submenuKey, icon, fileName.substring(separatorPosition + 1));
-	}
-
-	private void addIconsToMenu(final ModeController modeController, final MenuBuilder builder, final String iconMenuString) {
-		if(builder.get(iconMenuString) == null)
-			return;
-		for (final IconGroup iconGroup : STORE.getGroups()) {
-			addIconGroupToMenu(builder, iconMenuString, iconGroup);
-		}
 	}
 
 	private void createIconActions(final ModeController modeController) {
@@ -407,8 +428,4 @@ public class MIconController extends IconController {
 		}
 	}
 
-	private void updateMenus(ModeController modeController, final MenuBuilder builder) {
-		addIconsToMenu(modeController, builder, "main_menu_icons");
-		addIconsToMenu(modeController, builder, "popup_menu_icons");
-	}
 }

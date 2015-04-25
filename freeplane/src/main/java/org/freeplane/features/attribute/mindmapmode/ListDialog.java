@@ -54,7 +54,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -206,18 +206,18 @@ class ListDialog extends JDialog {
 	public void init(final Component locationComp, final String labelText, final IListModel data, final String longValue) {
 	    this.data = data;
 		final JButton closeButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeButton, TextUtils.getRawText("simplyhtml.closeBtnName"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(closeButton, TextUtils.getRawText("simplyhtml.closeBtnName"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(addButton, TextUtils.getRawText("add"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(addButton, TextUtils.getRawText("add"));
 		final AddAction addAction = new AddAction();
 		addButton.addActionListener(addAction);
 		renameButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(renameButton, TextUtils.getRawText("rename"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(renameButton, TextUtils.getRawText("rename"));
 		renameButton.addActionListener(new RenameAction());
 		deleteButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteButton, TextUtils.getRawText("delete"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(deleteButton, TextUtils.getRawText("delete"));
 		deleteButton.addActionListener(new DeleteAction());
 		textField = new JTextField(20);
 		textField.getDocument().addDocumentListener(new TextChangeListener());

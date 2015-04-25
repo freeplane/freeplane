@@ -162,7 +162,7 @@ public class EdgeStyleContributorFactory implements IRibbonContributorFactory {
 	private void addDefaultToggleHandler(final RibbonBuildContext context, final AFreeplaneAction action, final JCommandToggleButton button) {
 		context.getBuilder().getMapChangeAdapter().addListener(new IChangeObserver() {
 			public void updateState(CurrentState state) {
-				if (AFreeplaneAction.checkSelectionOnChange(action)) {
+				if (action.checkSelectionOnChange()) {
 					action.setSelected();
 					button.getActionModel().setSelected(action.isSelected());
 				}

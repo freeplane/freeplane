@@ -25,7 +25,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneIconUtils;
@@ -119,7 +119,7 @@ public class AddOnInstallerPanel extends JPanel {
 
 	private JButton createInstallButton() {
 	    final JButton installButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(installButton, getText("install"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(installButton, getText("install"));
 		installButton.setEnabled(false);
 		// FIXME: get rid of that
 		installButton.setMargin(new Insets(0, 25, 0, 25));

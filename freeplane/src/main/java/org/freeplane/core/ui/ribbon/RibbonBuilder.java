@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -18,8 +20,6 @@ import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.OneTouchCollapseResizer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.StructureTree.StructurePath;
-import org.freeplane.core.ui.ribbon.event.AboutToPerformEvent;
-import org.freeplane.core.ui.ribbon.event.IActionEventListener;
 import org.freeplane.core.ui.ribbon.special.EdgeStyleContributorFactory;
 import org.freeplane.core.ui.ribbon.special.FilterConditionsContributorFactory;
 import org.freeplane.core.ui.ribbon.special.FontStyleContributorFactory;
@@ -28,6 +28,7 @@ import org.freeplane.core.ui.ribbon.special.ZoomContributorFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.ModeController;
+import org.pushingpixels.flamingo.api.common.AsynchronousLoadListener;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.JRibbon;
@@ -50,8 +51,6 @@ public class RibbonBuilder {
 	private boolean enabled = true;
 
 	private RibbonMapChangeAdapter changeAdapter;
-
-	private RibbonActionEventHandler raeHandler;
 
 	public RibbonBuilder(ModeController mode, ActionAcceleratorManager acceleratorManager) {
 		structure = new StructureTree();
@@ -122,7 +121,7 @@ public class RibbonBuilder {
 		return this.contributorFactories.get(key);
 	}
 
-	public void buildRibbon() {
+	private void buildRibbon() {
 		Window f = SwingUtilities.getWindowAncestor(ribbon);
 		if(!isEnabled()) {
 			return;
@@ -168,20 +167,20 @@ public class RibbonBuilder {
 	public void updateRibbon(URL xmlResource) {
 		//final URL xmlSource = ResourceController.getResourceController().getResource(xmlResource);
 		if (xmlResource != null) {
-			final boolean isUserDefined = xmlResource.getProtocol().equalsIgnoreCase("file");
-			try{
-				reader.loadStructure(xmlResource);
-			}
-			catch (RuntimeException e){
-				if(isUserDefined){
-					LogUtils.warn(e);
-					String myMessage = TextUtils.format("ribbon_error", xmlResource.getPath(), e.getMessage());
-					UITools.backOtherWindows();
-					JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
-					System.exit(-1);
-				}
-				throw e;
-			}
+//			final boolean isUserDefined = xmlResource.getProtocol().equalsIgnoreCase("file");
+//			try{
+//				reader.loadStructure(xmlResource);
+//			}
+//			catch (RuntimeException e){
+//				if(isUserDefined){
+//					LogUtils.warn(e);
+//					String myMessage = TextUtils.format("ribbon_error", xmlResource.getPath(), e.getMessage());
+//					UITools.backOtherWindows();
+//					JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+//					System.exit(-1);
+//				}
+//				throw e;
+//			}
 		}
 	}
 
@@ -206,43 +205,20 @@ public class RibbonBuilder {
 		return changeAdapter;
 	}
 
-	public RibbonActionEventHandler getRibbonActionEventHandler() {
-		if(raeHandler == null) {
-			raeHandler = new RibbonActionEventHandler();
-		}
-		return raeHandler;
-	}
-
-	public static class RibbonActionEventHandler {
-
-		private final List<IActionEventListener> listeners = new ArrayList<IActionEventListener>();
-
-		public void fireAboutToPerformEvent(AboutToPerformEvent event) {
-    		synchronized (listeners) {
-    			IActionEventListener[] aListeners = listeners.toArray(new IActionEventListener[0]);
-    			for(int i=aListeners.length-1; i >= 0; i--) {
-    				aListeners[i].aboutToPerform(event);
-    			}
- 			}
-		}
-
-		public void addListener(IActionEventListener listener) {
-			synchronized (listeners) {
-				if(!listeners.contains(listener)) {
-					listeners.add(listener);
-				}
-			}
-		}
-
-		public void removeListener(IActionEventListener listener) {
-			synchronized (listeners) {
-				listeners.remove(listener);
-			}
-		}
-
-	}
-
 	public JRibbon getRibbonRootComponent() {
 		return ribbon;
+	}
+
+	public static void setRibbonIcon(final JMenuItem item) {
+		ImageIcon ico = (ImageIcon) item.getIcon();
+		ImageWrapperResizableIcon newIco = ImageWrapperResizableIcon.getIcon(ico.getImage(),
+		    new Dimension(ico.getIconWidth(), ico.getIconHeight()));
+		newIco.setPreferredSize(new Dimension(16, 16));
+		newIco.addAsynchronousLoadListener(new AsynchronousLoadListener() {
+			public void completed(boolean success) {
+				item.repaint();
+			}
+		});
+		item.setIcon(newIco);
 	}
 }

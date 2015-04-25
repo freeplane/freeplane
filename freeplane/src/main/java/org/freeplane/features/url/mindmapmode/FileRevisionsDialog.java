@@ -54,7 +54,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -133,12 +133,12 @@ class FileRevisionsDialog extends JDialog {
 		}
 
 		private void setButtonOpenDefault() {
-			MenuBuilder.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("open")));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("open")));
 			btnRestore.setToolTipText(TextUtils.format(key("open.tooltip")));
 		}
 
 		private void setButtonOpenRestore(final FileWrapper fileWrapper) {
-			MenuBuilder.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("restore")));
+			LabelAndMnemonicSetter.setLabelAndMnemonic(btnRestore, TextUtils.getRawText(key("restore")));
 			btnRestore.setToolTipText(TextUtils.format(key("restore.tooltip"),
 			    file.getName(), fileWrapper.toString()));
 		}
@@ -297,7 +297,7 @@ class FileRevisionsDialog extends JDialog {
 
 	private JButton createButton(final String key, final String tooltipKey, final ActionListener closeAction) {
 		final JButton button = new JButton();
-		MenuBuilder.setLabelAndMnemonic(button, TextUtils.getRawText(key));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(button, TextUtils.getRawText(key));
 		button.addActionListener(closeAction);
 		button.setMaximumSize(new Dimension(1000, 1000));
 		final String selectedFileName = getSelectedFile() == null ? null : getSelectedFile().getName();

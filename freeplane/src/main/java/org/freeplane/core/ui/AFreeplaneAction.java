@@ -41,32 +41,32 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	 */
 	private static final long serialVersionUID = 1L;
 
-	static public boolean checkEnabledOnChange(final AFreeplaneAction action) {
-		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
+	public boolean checkEnabledOnChange() {
+		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
 		if (annotation == null) {
 			return false;
 		}
 		return annotation.checkOnNodeChange();
 	}
 
-	static public boolean checkSelectionOnChange(final AFreeplaneAction action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
+	public boolean checkSelectionOnChange() {
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
 		}
 		return annotation.checkOnNodeChange();
 	}
 
-	static public boolean checkSelectionOnPropertyChange(final AFreeplaneAction action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
+	public boolean checkSelectionOnPropertyChange() {
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
 		}
 		return !"".equals(annotation.checkOnPropertyChange());
 	}
 
-	static public boolean checkSelectionOnPopup(final AFreeplaneAction action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
+	public boolean checkSelectionOnPopup(){
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
 		}
@@ -77,11 +77,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	private boolean selected = false;
 	
 	static private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
+	final private String rawText;
 
 	public AFreeplaneAction(final String key) {
 		super();
 		this.key = key;
-		MenuBuilder.setLabelAndMnemonic(this, TextUtils.getRawText(getTextKey()));
+		rawText = TextUtils.getRawText(getTextKey());
+		LabelAndMnemonicSetter.setLabelAndMnemonic(this, rawText);
 		final String iconKey = getIconKey();
 		final ImageIcon cachedIcon = iconCache.get(iconKey);
 		if(cachedIcon != null){
@@ -121,8 +123,9 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 //		this.controller = controller;
 		putValue(SMALL_ICON, icon);
 		if (title != null && !title.equals("")) {
-			MenuBuilder.setLabelAndMnemonic(this, title);
+			LabelAndMnemonicSetter.setLabelAndMnemonic(this, title);
 		}
+		this.rawText = title;
 		this.key = key;
 	}
 
@@ -177,4 +180,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public void setVisible() {
 	}
+
+	public boolean isSelectable() {
+		return getClass().getAnnotation(SelectableAction.class) != null;
+	}
+
+	public String getRawText() {
+		return rawText;
+	}
+
 }

@@ -38,7 +38,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
@@ -63,27 +63,27 @@ class PageAction extends AbstractPrintAction {
 		final ButtonGroup fitButtons = new ButtonGroup();
 		//Fit to page
 		final JRadioButton fitToPage = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitToPage, TextUtils.getRawText("fit_map_to_page"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(fitToPage, TextUtils.getRawText("fit_map_to_page"));
 		fitToPage.setSelected(fitMap == FitMap.PAGE);
 		fitButtons.add(fitToPage);
 		//Fit background image to page
 		final JRadioButton fitBackgroundImageToPage = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitBackgroundImageToPage, TextUtils.getRawText("fit_background_to_page"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(fitBackgroundImageToPage, TextUtils.getRawText("fit_background_to_page"));
 		fitBackgroundImageToPage.setSelected(fitMap == FitMap.BACKGROUND);
 		fitButtons.add(fitBackgroundImageToPage);
 		//Fit width
 		final JRadioButton fitToWidth = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitToWidth, TextUtils.getRawText("fit_map_to_page_width"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(fitToWidth, TextUtils.getRawText("fit_map_to_page_width"));
 		fitToWidth.setSelected(fitMap == FitMap.WIDTH);
 		fitButtons.add(fitToWidth);
 		//Fit to heighth
 		final JRadioButton fitToHeight = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(fitToHeight, TextUtils.getRawText("fit_map_to_page_height"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(fitToHeight, TextUtils.getRawText("fit_map_to_page_height"));
 		fitToHeight.setSelected(fitMap == FitMap.HEIGHT);
 		fitButtons.add(fitToHeight);
 		//User defined
 		final JRadioButton userDefaultScale = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(userDefaultScale, TextUtils.getRawText("user_defined_scale"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(userDefaultScale, TextUtils.getRawText("user_defined_scale"));
 		userDefaultScale.setSelected(fitMap == FitMap.USER_DEFINED);
 		fitButtons.add(userDefaultScale);
 		//User defined label

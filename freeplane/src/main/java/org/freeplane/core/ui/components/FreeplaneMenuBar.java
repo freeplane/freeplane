@@ -30,20 +30,10 @@ import javax.swing.text.JTextComponent;
  * Moreover, the StructuredMenuHolder of all menus are hold here.
  */
 public class FreeplaneMenuBar extends JMenuBar {
-	public static final String EDIT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/edit";
-	public static final String EXTRAS_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/extras";
-	public static final String FILE_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/file";
-	public static final String FORMAT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/format";
-	public static final String HELP_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/help";
-	public static final String INSERT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/insert";
-	public static final String MAP_POPUP_MENU = "/map_popup";
-	public static final String MENU_BAR_PREFIX = "/menu_bar";
-	public static final String MODES_MENU = "main_menu_modes";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final String VIEW_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/view";
 
 	public FreeplaneMenuBar() {
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0), "none");

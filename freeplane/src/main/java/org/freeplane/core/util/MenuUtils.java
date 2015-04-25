@@ -22,10 +22,7 @@ package org.freeplane.core.util;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -34,16 +31,20 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionAcceleratorManager;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /** Utilities for dealing with the Freeplane menu: In scripts available as "global variable" menuUtils. */
 public class MenuUtils {
@@ -104,6 +105,68 @@ public class MenuUtils {
 		}
 	}
 
+	public static class MenuEntryTreeBuilder {
+		private final ActionAcceleratorManager acceleratorManager;
+
+		private MenuEntryTreeBuilder() {
+			acceleratorManager = userInputFactory().getAcceleratorManager();
+		}
+
+		private DefaultMutableTreeNode build(final String menuRootKey) {
+			Entry entry = genericMenuStructure().findEntry(menuRootKey);
+			if (entry == null)
+				throw new IllegalArgumentException("not found: menuRootKey=" + menuRootKey);
+			final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(menuNode2menuEntryNode(entry));
+			addChildrenRecursively(treeRoot, entry.children());
+			return treeRoot;
+		}
+
+		private void addChildrenRecursively(final DefaultMutableTreeNode treeNode, final Iterable<Entry> menuElements) {
+			for (Entry childMenu : menuElements) {
+				final DefaultMutableTreeNode treeChild = menuNode2menuEntryNode(childMenu);
+				if (treeChild != null) {
+					treeNode.add(treeChild);
+					addChildrenRecursively(treeChild, childMenu.children());
+				}
+				else {
+					addChildrenRecursively(treeNode, childMenu.children());
+				}
+			}
+		}
+
+		private DefaultMutableTreeNode menuNode2menuEntryNode(Entry menuItem) {
+			final String name = menuItem.getName();
+			if (name != null) {
+				final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
+				final AFreeplaneAction action = entryAccessor.getAction(menuItem);
+				if (menuItem.hasChildren()) {
+					String text = TextUtils.removeMnemonic(entryAccessor.getText(menuItem));
+					final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new MenuEntry(name, text));
+					if (action != null) {
+						final MenuEntry menuEntry = menuEntry(action);
+						node.add(new DefaultMutableTreeNode(menuEntry));
+					}
+					return node;
+				}
+				else if (action != null) {
+					final MenuEntry menuEntry = menuEntry(action);
+					return new DefaultMutableTreeNode(menuEntry);
+				}
+
+			}
+			return null;
+		}
+
+		private MenuEntry menuEntry(final AFreeplaneAction action) {
+			String text = ActionUtils.getActionTitle(action);
+			String iconKey = action.getIconKey();
+			String tooltip = (String) action.getValue(Action.LONG_DESCRIPTION);
+			KeyStroke accelerator = acceleratorManager.getAccelerator(action);
+			final MenuEntry menuEntry = new MenuEntry(action.getKey(), text, iconKey, accelerator, tooltip);
+			return menuEntry;
+		}
+	}
+
 	/**
 	 * returns a tree of all <code>JMenuItem</code> nodes the menu contains (omitting Strings and Separators).
 	 * The tree is build from <code>DefaultMutableTreeNode</code> nodes having <code>MenuEntry</code> objects as
@@ -114,91 +177,21 @@ public class MenuUtils {
 	 * 
 	 * @param menuRootKey the key of the node that should form the root of the output.
 	 * @param menuBuilder access point for the menu(s).
+	 * @throws IllegalArgumentException if the menuRootKey does not point to an entry in the menu tree
 	 */
-	public static DefaultMutableTreeNode createMenuEntryTree(final String menuRootKey, final MenuBuilder menuBuilder) {
-		final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap = MenuUtils.invertAcceleratorMap(menuBuilder
-		    .getAcceleratorMap());
-		final DefaultMutableTreeNode menuRoot = menuBuilder.get(menuRootKey);
-		final DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode(MenuUtils.menuNode2menuEntryNode(menuRoot,
-		    menuKeyToKeyStrokeMap));
-		MenuUtils.addChildrenRecursively(treeRoot, menuRoot.children(), menuKeyToKeyStrokeMap);
-		return treeRoot;
-	}
-
-	@SuppressWarnings("rawtypes")
-	private static void addChildrenRecursively(final DefaultMutableTreeNode treeNode, final Enumeration menuChildren,
-	                                           final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
-		while (menuChildren.hasMoreElements()) {
-			final DefaultMutableTreeNode childMenu = (DefaultMutableTreeNode) menuChildren.nextElement();
-			final DefaultMutableTreeNode treeChild = MenuUtils.menuNode2menuEntryNode(childMenu, menuKeyToKeyStrokeMap);
-			if (treeChild != null) {
-				treeNode.add(treeChild);
-				MenuUtils.addChildrenRecursively(treeChild, childMenu.children(), menuKeyToKeyStrokeMap);
-			}
-			else {
-				MenuUtils.addChildrenRecursively(treeNode, childMenu.children(), menuKeyToKeyStrokeMap);
-			}
-		}
-	}
-
-	// in: node for JMenu, out: node for MenuEntry
-	private static DefaultMutableTreeNode menuNode2menuEntryNode(final DefaultMutableTreeNode menuNode,
-	                                                             final HashMap<String, KeyStroke> menuKeyToKeyStrokeMap) {
-		final IndexedTree.Node node = (Node) menuNode;
-		final Object userObject = menuNode.getUserObject();
-		if (userObject instanceof JMenuItem) {
-			final JMenuItem jMenuItem = (JMenuItem) userObject;
-			final IFreeplaneAction action = (IFreeplaneAction) jMenuItem.getAction();
-			final String key = String.valueOf(node.getKey());
-			final String iconKey = action == null ? null : action.getIconKey();
-			return new DefaultMutableTreeNode(new MenuEntry(key, jMenuItem.getText(), iconKey, menuKeyToKeyStrokeMap
-			    .get(key), jMenuItem.getToolTipText()));
-		}
-		// the other expected types are String and javax.swing.JPopupMenu.Separator
-		// - just omit them
-		return null;
+	public static DefaultMutableTreeNode createMenuEntryTree(final String menuRootKey) {
+		return new MenuEntryTreeBuilder().build(menuRootKey);
 	}
 
 	/** Used as the basis for dynamic generation of hotkey list.
 	 * Same as {@link #createMenuEntryTree(String, MenuBuilder)} but all MenuEntries without associated accelerator
 	 * and (then) empty submenus are removed from the result.
+	 * @throws IllegalArgumentException if the menuRootKey does not point to an entry in the menu tree
 	 */
-	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(final String menuRootKey,
-	                                                                      final MenuBuilder menuBuilder) {
-		final DefaultMutableTreeNode menuEntryTreeNode = MenuUtils.createMenuEntryTree(menuRootKey, menuBuilder);
+	public static DefaultMutableTreeNode createAcceleratebleMenuEntryTree(final String menuRootKey) {
+		final DefaultMutableTreeNode menuEntryTreeNode = MenuUtils.createMenuEntryTree(menuRootKey);
 		final DefaultMutableTreeNode result = new DefaultMutableTreeNode(menuEntryTreeNode.getUserObject());
-		MenuUtils.addAcceleratableChildrenRecursively(result, menuEntryTreeNode.children());
-		return result;
-	}
-
-	// filters out non-acceleratable menu entries
-	@SuppressWarnings("rawtypes")
-	private static void addAcceleratableChildrenRecursively(final DefaultMutableTreeNode target,
-	                                                        final Enumeration sourceChildren) {
-		while (sourceChildren.hasMoreElements()) {
-			final DefaultMutableTreeNode sourceChild = (DefaultMutableTreeNode) sourceChildren.nextElement();
-			final MenuEntry menuEntry = (MenuEntry) sourceChild.getUserObject();
-			if (sourceChild.isLeaf()) {
-				if (menuEntry.getKeyStroke() != null) {
-					target.add(new DefaultMutableTreeNode(menuEntry));
-				}
-			}
-			else {
-				final DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(menuEntry);
-				target.add(newNode);
-				MenuUtils.addAcceleratableChildrenRecursively(newNode, sourceChild.children());
-				if (newNode.isLeaf()) {
-					target.remove(newNode);
-				}
-			}
-		}
-	}
-
-	private static HashMap<String, KeyStroke> invertAcceleratorMap(final Map<KeyStroke, Node> acceleratorMap) {
-		final HashMap<String, KeyStroke> result = new HashMap<String, KeyStroke>();
-		for (final Entry<KeyStroke, Node> entry : acceleratorMap.entrySet()) {
-			result.put(String.valueOf(entry.getValue().getKey()), entry.getKey());
-		}
+		addAcceleratableChildrenRecursively(result, menuEntryTreeNode.children());
 		return result;
 	}
 
@@ -209,9 +202,9 @@ public class MenuUtils {
 	                                                final MapController mapController) {
 		while (children.hasMoreElements()) {
 			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
-			final NodeModel newNodeModel = MenuUtils.insertAsNodeModel(nodeModel, child, mapController);
+			final NodeModel newNodeModel = insertAsNodeModel(nodeModel, child, mapController);
 			if (!child.isLeaf()) {
-				MenuUtils.insertAsNodeModelRecursively(newNodeModel, child.children(), mapController);
+				insertAsNodeModelRecursively(newNodeModel, child.children(), mapController);
 			}
 		}
 	}
@@ -232,6 +225,29 @@ public class MenuUtils {
 		}
 		nodeModel.insert(newNodeModel);
 		return newNodeModel;
+	}
+
+	// filters out non-acceleratable menu entries
+	@SuppressWarnings("rawtypes")
+	private static void addAcceleratableChildrenRecursively(final DefaultMutableTreeNode target,
+	                                                        final Enumeration sourceChildren) {
+		while (sourceChildren.hasMoreElements()) {
+			final DefaultMutableTreeNode sourceChild = (DefaultMutableTreeNode) sourceChildren.nextElement();
+			final MenuEntry menuEntry = (MenuEntry) sourceChild.getUserObject();
+			if (sourceChild.isLeaf()) {
+				if (menuEntry.getKeyStroke() != null) {
+					target.add(new DefaultMutableTreeNode(menuEntry));
+				}
+			}
+			else {
+				final DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(menuEntry);
+				target.add(newNode);
+				addAcceleratableChildrenRecursively(newNode, sourceChild.children());
+				if (newNode.isLeaf()) {
+					target.remove(newNode);
+				}
+			}
+		}
 	}
 
 	/** pretty print a keystroke. */
@@ -263,42 +279,52 @@ public class MenuUtils {
 	}
 
 	/** that's the key that is used to define keyboard accelerators, e.g. found in the auto.properties. */
-    public static String makeAcceleratorKey(String menuItemKey) {
-        return "acceleratorForMindMap/$" + menuItemKey + "$0";
-    }
+	public static String makeAcceleratorKey(String menuItemKey) {
+		return "acceleratorForMindMap/$" + menuItemKey + "$0";
+	}
 
-    /** to be used from scripts to execute menu items. 
-     * Find out the menuItemKey of a menu item with the devtools add-on. It contains a tool for that. */
-    public static void executeMenuItems(final List<String> menuItemKeys) {
-        LogUtils.info("menu items to execute: " + menuItemKeys);
-        final MenuBuilder menuBuilder = getMenuBuilder();
-        for (String menuItemKey : menuItemKeys) {
-            final DefaultMutableTreeNode treeNode = menuBuilder.get(menuItemKey);
-            if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
-                UITools.errorMessage(TextUtils.format("MenuUtils.invalid_menuitem", menuItemKey));
-                return;
-            }
-            final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
-            final Action action = menuItem.getAction();
-            LogUtils.info("executing " + menuItem.getText() + "(" + menuItemKey + ")");
-            ActionEvent e = new ActionEvent(menuItem, 0, null);
-            action.actionPerformed(e);
-        }
-    }
+	/** "optionalLeadingGarbage$AddConnectorAction$0" -> "AddConnectorAction" */
+	private static String makeActionNameFromMenuItemKey(String menuItemKey) {
+		return menuItemKey.replaceFirst(".*\\$(.*)\\$0", "$1");
+	}
 
-    private static MenuBuilder getMenuBuilder() {
-        final ModeController modeController = Controller.getCurrentModeController();
-        final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-        return menuBuilder;
-    }
+	/**
+	 * to be used from scripts to execute menu items. Find out the menuItemKey
+	 * of a menu item with the devtools add-on. It contains a tool for that.
+	 */
+	public static void executeMenuItems(final List<String> menuItemKeys) {
+		LogUtils.info("menu items to execute: " + menuItemKeys);
+		final Entry genericMenuStructure = genericMenuStructure();
+		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
+		for (String menuItemKey : menuItemKeys) {
+			Entry menuItem = genericMenuStructure.findEntry(makeActionNameFromMenuItemKey(menuItemKey));
+			final AFreeplaneAction action = entryAccessor.getAction(menuItem);
+			if (action == null) {
+				UITools.errorMessage(TextUtils.format("MenuUtils.invalid_menuitem", menuItemKey));
+				return;
+			}
+			LogUtils.info("executing " + ActionUtils.getActionTitle(action) + "(" + menuItemKey + ")");
+			ActionEvent e = new ActionEvent(menuItem, 0, null);
+			action.actionPerformed(e);
+		}
+	}
 
-    /** returns the icon for a menuItemKey or null if it has none. */
-    public static Icon getMenuItemIcon(String menuItemKey) {
-        final DefaultMutableTreeNode treeNode = getMenuBuilder().get(menuItemKey);
-        if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
-            return null;
-        }
-        final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
-        return menuItem.getIcon();
-    }
+	/** returns the icon for a menuItemKey or null if it has none. */
+	public static Icon getMenuItemIcon(String menuItemKey) {
+		Entry menuItem = genericMenuStructure().findEntry(makeActionNameFromMenuItemKey(menuItemKey));
+		if (menuItem == null)
+			return null;
+		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
+		final AFreeplaneAction action = entryAccessor.getAction(menuItem);
+		return (Icon) action.getValue(Action.SMALL_ICON);
+	}
+
+	private static IUserInputListenerFactory userInputFactory() {
+		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		return modeController.getUserInputListenerFactory();
+	}
+
+	private static Entry genericMenuStructure() {
+		return userInputFactory().getGenericMenuStructure();
+	}
 }

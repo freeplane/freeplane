@@ -20,11 +20,10 @@
 package org.freeplane.core.ui;
 
 import java.awt.Component;
+import java.awt.Container;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
-
-import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -32,9 +31,25 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class MenuSplitter{
 	private static final String EXTRA_SUBMENU = MenuBuilder.class.getName()+".extra_submenu";
-	private static final int MAX_MENU_ITEM_COUNT = ResourceController.getResourceController().getIntProperty("max_menu_item_count");
 	
 	public static int count = 0;
+	private final int maxMenuItemCount;
+
+	public MenuSplitter(int maxMenuItemCount) {
+		this.maxMenuItemCount = maxMenuItemCount;
+	}
+
+	public MenuSplitter() {
+		this(MenuSplitterConfiguration.MAX_MENU_ITEM_COUNT);
+	}
+
+	public void addComponent(Container container, Component component) {
+		if (container instanceof JMenu)
+			addMenuComponent((JMenu) container, component);
+		else
+			container.add(component);
+	}
+
 	public void addMenuComponent(JMenu menu, final Component component, final int index) {
 	    final JPopupMenu popupMenu = menu.getPopupMenu();
 	    final int itemCount = popupMenu.getComponentCount();
@@ -62,9 +77,25 @@ public class MenuSplitter{
         }
     }
 
+	public void removeMenuComponent(final Component component) {
+		final Container parent = component.getParent();
+		if (parent != null) {
+			parent.remove(component);
+			if (parent instanceof JPopupMenu) {
+				final Component invoker = ((JPopupMenu) parent).getInvoker();
+				if (isExtraSubMenu(invoker) && parent.getComponentCount() == 0)
+					removeMenuComponent(invoker);
+			}
+		}
+	}
+
 	private boolean fitsOnScreen(final JPopupMenu popupMenu, final Component component) {
 		final int itemCount = popupMenu.getComponentCount();
-	    return itemCount < MAX_MENU_ITEM_COUNT && (popupMenu.getPreferredSize().height + component.getPreferredSize().height) < MenuBuilder.MAX_HEIGHT;
+	    return itemCount < getMaxMenuItemCount() && (popupMenu.getPreferredSize().height + component.getPreferredSize().height) < MenuBuilder.MAX_HEIGHT;
+    }
+
+	protected int getMaxMenuItemCount() {
+		return maxMenuItemCount;
     }
 
 	public boolean hasExtraSubMenu(final JMenu menu) {
@@ -78,12 +109,14 @@ public class MenuSplitter{
 
 	public JMenu getExtraSubMenu(JMenu parentComponent) {
 		final Component lastComponent = parentComponent.getComponent(parentComponent.getComponentCount()-1);
-		if(new MenuSplitter().isExtraSubMenu(lastComponent))
+		if (isExtraSubMenu(lastComponent))
 			return (JMenu) lastComponent;
 		else
 			return null;
     }
 
+	public void addMenuComponent(JMenu menu, Component component) {
+		addMenuComponent(menu, component, menu.getPopupMenu().getComponentCount());
+	}
 
-	
 }

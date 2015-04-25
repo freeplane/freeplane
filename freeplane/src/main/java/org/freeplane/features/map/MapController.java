@@ -199,13 +199,13 @@ public class MapController extends SelectionController implements IExtension{
 
 
 	public void addListenerForAction(final AFreeplaneAction action) {
-		if (AFreeplaneAction.checkEnabledOnChange(action)) {
+		if (action.checkEnabledOnChange()) {
 			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
 			addNodeSelectionListener(listener);
 			addNodeChangeListener(listener);
 			addMapChangeListener(listener);
 		}
-		if (AFreeplaneAction.checkSelectionOnChange(action)) {
+		if (action.checkSelectionOnChange()) {
 			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
 			addNodeSelectionListener(listener);
 			addNodeChangeListener(listener);
@@ -214,12 +214,12 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void removeListenerForAction(final AFreeplaneAction action) {
-		if (AFreeplaneAction.checkEnabledOnChange(action)) {
+		if (action.checkEnabledOnChange()) {
 			removeNodeSelectionListener(ActionEnablerOnChange.class, action);
 			removeNodeChangeListener(ActionEnablerOnChange.class, action);
 			removeMapChangeListener(ActionEnablerOnChange.class, action);
 		}
-		if (AFreeplaneAction.checkSelectionOnChange(action)) {
+		if (action.checkSelectionOnChange()) {
 			removeNodeSelectionListener(ActionSelectorOnChange.class, action);
 			removeNodeChangeListener(ActionSelectorOnChange.class, action);
 			removeMapChangeListener(ActionSelectorOnChange.class, action);

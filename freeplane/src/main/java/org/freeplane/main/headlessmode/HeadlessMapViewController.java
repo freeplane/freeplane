@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.freeplane.core.ui.MenuBuilder;
@@ -44,7 +45,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -265,4 +265,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public boolean close(Component mapViewComponent, boolean force) {
 		throw new RuntimeException("Method not implemented");
     }
+
+	@Override
+	public JComboBox createZoomBox() {
+		throw new RuntimeException("Method not implemented");
+	}
 }

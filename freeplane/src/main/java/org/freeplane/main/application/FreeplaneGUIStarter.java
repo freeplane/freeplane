@@ -36,6 +36,8 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
@@ -178,7 +180,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			LinkController.install();
 			IconController.install();
 			HelpController.install();
-			controller.addAction(new UpdateCheckAction());
 			controller.addAction(new NextNodeAction(Direction.FORWARD));
 			controller.addAction(new NextNodeAction(Direction.BACK));
 			controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
@@ -268,8 +269,11 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		mindMapModeController.getMapController().addMapChangeListener(lastOpenedList);
 		LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
 		RibbonBuilder menuBuilder = mindMapModeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
+		lastOpenedList.registerMenuContributor(mindMapModeController);
 		menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
-		mindMapModeController.addMenuContributor(FilterController.getController(controller).getMenuContributor());
+		mindMapModeController.addUiBuilder(Phase.ACTIONS, "filterConditions", FilterController
+		    .getController(controller)
+		    .getMenuBuilder(), EntryVisitor.CHILD_ENTRY_REMOVER);
 		if(! USE_RIBBONS_MENU){
 			BModeControllerFactory.createModeController();
 			FModeControllerFactory.createModeController();
@@ -277,8 +281,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     }
 
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
+		LoadAcceleratorPresetsAction.install(controller.getModeController(MModeController.MODENAME));
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
-	    LoadAcceleratorPresetsAction.install();
 	    if(! USE_RIBBONS_MENU){
 	    	buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
 	    	buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");

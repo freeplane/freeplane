@@ -53,7 +53,7 @@ public class AController {
 			getActions().put(key, old);
 			throw new RuntimeException("action " + key + " already registered");
 		}
-		if (AFreeplaneAction.checkSelectionOnPropertyChange(value)) {
+		if (value.checkSelectionOnPropertyChange()) {
 			final ActionSelectorOnPropertyChange listener = new ActionSelectorOnPropertyChange(value);
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
@@ -69,7 +69,7 @@ public class AController {
 
 	public AFreeplaneAction removeAction(final String key) {
 		final AFreeplaneAction action = getActions().remove(key);
-		if (AFreeplaneAction.checkSelectionOnPropertyChange(action)) {
+		if (action.checkSelectionOnPropertyChange()) {
 			ResourceController.getResourceController().removePropertyChangeListener(
 			    ActionSelectorOnPropertyChange.class, action);
 		}

@@ -37,7 +37,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -138,7 +138,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		box.add(filenameField);
 		box.add(Box.createHorizontalStrut(3));
 		selectButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(selectButton, TextUtils.getText("browse"));
+		LabelAndMnemonicSetter.setLabelAndMnemonic(selectButton, TextUtils.getText("browse"));
 		selectButton.addActionListener(new SelectFileAction());
 		selectButton.setMaximumSize(new Dimension(1000, 1000));
 		box.add(selectButton);
