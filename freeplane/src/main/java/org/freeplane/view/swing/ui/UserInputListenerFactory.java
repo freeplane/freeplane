@@ -428,36 +428,35 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 		final URL genericStructure = ResourceController.getResourceController().getResource(
 		    menuStructureResource.replace("menu.xml", ".generic.xml"));
-		if(genericStructure != null){
-			final boolean isUserDefined = genericStructure.getProtocol().equalsIgnoreCase("file");
-			try {
-				final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
-				final EntriesForAction entries = new EntriesForAction();
-				final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
-				final MenuBuildProcessFactory menuBuildProcessFactory = new MenuBuildProcessFactory();
-				final PhaseProcessor buildProcessor = menuBuildProcessFactory.createBuildProcessor(this,
-				    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries)
-				    .getBuildProcessor();
-				subtreeBuilder = menuBuildProcessFactory.getChildProcessor();
-				acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
-				for (final Phase phase : Phase.values())
-					for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
-					    .entrySet())
-						buildProcessor.phase(phase).addBuilderPair(entry.getKey(), entry.getValue());
-				final InputStream resource = genericStructure.openStream();
-				final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
-				genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
-				buildProcessor.build(genericMenuStructure);
-			} catch (Exception e) {
-				if(isUserDefined){
-					LogUtils.warn(e);
-					String myMessage = TextUtils.format("menu_error", genericStructure.getPath(), e.getMessage());
-					UITools.backOtherWindows();
-					JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
-					System.exit(-1);
-				}
-				throw new RuntimeException(e);
+		final boolean isUserDefined = genericStructure.getProtocol().equalsIgnoreCase("file");
+		try {
+			final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
+			final EntriesForAction entries = new EntriesForAction();
+			final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
+			final MenuBuildProcessFactory menuBuildProcessFactory = new MenuBuildProcessFactory();
+			final PhaseProcessor buildProcessor = menuBuildProcessFactory.createBuildProcessor(this,
+			    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries)
+			    .getBuildProcessor();
+			subtreeBuilder = menuBuildProcessFactory.getChildProcessor();
+			acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
+			for (final Phase phase : Phase.values())
+				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
+				    .entrySet())
+					buildProcessor.phase(phase).addBuilderPair(entry.getKey(), entry.getValue());
+			final InputStream resource = genericStructure.openStream();
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+			genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
+			buildProcessor.build(genericMenuStructure);
+		}
+		catch (Exception e) {
+			if (isUserDefined) {
+				LogUtils.warn(e);
+				String myMessage = TextUtils.format("menu_error", genericStructure.getPath(), e.getMessage());
+				UITools.backOtherWindows();
+				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+				System.exit(-1);
 			}
+			throw new RuntimeException(e);
 		}
 
 	}
