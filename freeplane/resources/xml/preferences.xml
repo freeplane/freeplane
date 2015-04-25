@@ -21,6 +21,8 @@
 				<combo name="load_folding">
 					<choice value="always_fold_all_after_load" />
 					<choice value="load_folding_from_map_default_fold_all" />
+					<choice value="always_show_less_than_N_nodes_after_load" />
+					<choice value="show_less_than_N_nodes_by_default_after_load" />
 					<choice value="load_folding_from_map_default_unfold_all" />
 					<choice value="always_unfold_all_after_load" />
 				</combo>
