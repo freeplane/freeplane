@@ -3,6 +3,8 @@
 ===============================
 Fix zooming for external images
 Automatic edge coloring: no yellow edges
+Fix date filtering on nodes and attributes
+Use oracle appbundler and universalJavaApplicationStub.sh for MacOS
 ===============================
 1.3.15
 ===============================
