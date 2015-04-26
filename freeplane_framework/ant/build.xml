@@ -471,6 +471,7 @@
 		<property name="maclauncherfullpath" value="${macappfullpath}/Contents/MacOS"/>
 		<delete file="${maclauncherfullpath}/JavaAppLauncher"/>
 		<copy file="${mac-appbundler}/universalJavaApplicationStub.sh" todir="${maclauncherfullpath}"/>
+		<chmod file="${maclauncherfullpath}/universalJavaApplicationStub.sh" perm="ugo+rx" />
 		<property name="macjavafullpath" value="${macappfullpath}/Contents/Java"/>
 		<copy todir="${macjavafullpath}">
 			<fileset dir="${build}">
