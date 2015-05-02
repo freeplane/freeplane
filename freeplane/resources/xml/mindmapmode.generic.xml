@@ -597,6 +597,7 @@
 		</Entry>
 		<Entry name="view" builder="ribbon_task">
 			<Entry name="zoomContributor" builder="ribbon_contributor,skip" />
+			<Entry name="NewMapViewAction"/>
 			<Entry name="view_mode" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="ToggleRibbonAction" priority="top" />
 				<Entry name="CenterSelectedNodeAction" priority="top">
