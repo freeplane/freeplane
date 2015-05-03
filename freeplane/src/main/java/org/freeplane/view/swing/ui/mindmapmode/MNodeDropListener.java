@@ -152,6 +152,18 @@ private Timer timer;
 	}
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
+		int dropAction = event.getDropAction();
+		if (dropAction == DnDConstants.ACTION_LINK) {
+			return isFromSameMap(event);
+		}
+
+		if (dropAction == DnDConstants.ACTION_MOVE) {
+			return !isFromDescencantNode(event);
+		}
+		return true;
+	}
+
+	private boolean isFromSameMap(final DropTargetDropEvent event) {
 		final Transferable t = event.getTransferable();
 		final List<NodeModel> transferData;
 		try {
@@ -160,19 +172,30 @@ private Timer timer;
 		catch (Exception e) {
 			return false;
 		}
-		int dropAction = event.getDropAction();
 		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
 		for (final NodeModel selected : transferData) {
-			if (dropAction == DnDConstants.ACTION_LINK) {
-				if (selected.getMap() != node.getMap())
-					return false;
-			}
-			if (dropAction == DnDConstants.ACTION_MOVE) {
-				if ((node == selected) || node.isDescendantOf(selected))
-					return false;
-			}
+			if (selected.getMap() != node.getMap())
+				return false;
 		}
 		return true;
+	}
+
+	private boolean isFromDescencantNode(final DropTargetDropEvent event) {
+		final Transferable t = event.getTransferable();
+		final List<NodeModel> transferData;
+		try {
+			transferData = getNodeObjects(t);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
+		for (final NodeModel selected : transferData) {
+			if ((node == selected) || node.isDescendantOf(selected))
+				return true;
+		}
+		return false;
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -242,7 +265,7 @@ private Timer timer;
 			}
 			else {
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-				if (DnDConstants.ACTION_MOVE == dropAction) {
+				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(dtde)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 					moveNodes(mapController, targetNode, t, dropAsSibling, isLeft);
 					
@@ -251,7 +274,7 @@ private Timer timer;
 					else
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
-				else {
+				else if (DnDConstants.ACTION_COPY == dropAction || DnDConstants.ACTION_MOVE == dropAction) {
 					((MClipboardController) ClipboardController.getController()).paste(t, targetNode, dropAsSibling,
 					    isLeft);
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
@@ -271,23 +294,15 @@ private Timer timer;
 	        IOException {
 		final List<NodeModel> movedNodes = getNodeObjects(t);
 		for (final NodeModel node : movedNodes) {
-			if(targetNode.getMap() == node.getMap()) {
-				boolean changeSide = isLeft != node.isLeft();
-				if (dropAsSibling) {
-					mapController.moveNodeBefore(node, targetNode, isLeft, changeSide);
-				}
-				else {
-					mapController.moveNodeAsChild(node, targetNode, isLeft, changeSide);
-				}
+			boolean changeSide = isLeft != node.isLeft();
+			if (dropAsSibling) {
+				mapController.moveNodeBefore(node, targetNode, isLeft, changeSide);
 			}
-			else{
-				mapController.deleteNode(node);
-				((MClipboardController) ClipboardController.getController()).paste(t, targetNode, dropAsSibling,
-				    isLeft);
-				break;
+			else {
+				mapController.moveNodeAsChild(node, targetNode, isLeft, changeSide);
 			}
-	    }
-    }
+		}
+	}
 
 	public void dropActionChanged(final DropTargetDragEvent e) {
 	}
