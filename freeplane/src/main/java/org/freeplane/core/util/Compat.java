@@ -183,11 +183,15 @@ public class Compat {
 
 	/** the directory *including* the version directory. */
 	public static String getApplicationUserDirectory() {
+		return getApplicationUserDirectoryExcludingVersion() + CURRENT_VERSION_DIR;
+	}
+
+	public static String getApplicationUserDirectoryExcludingVersion() {
 		String userFpDir = System.getProperty(PROPERTY_FREEPLANE_USERDIR);
 		if(userFpDir == null){
 			userFpDir = getDefaultFreeplaneUserDirectory();
 		}
-		return userFpDir + CURRENT_VERSION_DIR;
+		return userFpDir;
 	}
 
 	private static String getDefaultFreeplaneUserDirectory() {
