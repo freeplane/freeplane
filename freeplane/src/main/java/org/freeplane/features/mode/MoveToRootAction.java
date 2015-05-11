@@ -22,6 +22,8 @@ package org.freeplane.features.mode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.view.swing.map.NodeView;
 
 class MoveToRootAction extends AFreeplaneAction {
 	static final String NAME = "moveToRoot";
@@ -36,8 +38,13 @@ class MoveToRootAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent event) {
 		Controller ctrl = Controller.getCurrentController();
-		if(ctrl.getSelection() != null) {
-			Controller.getCurrentController().getSelection().selectRoot();
+		final IMapSelection selection = ctrl.getSelection();
+		if (selection != null) {
+			final NodeView selectedComponent = (NodeView) ctrl.getMapViewManager().getSelectedComponent();
+			if (!selectedComponent.focused())
+				selectedComponent.requestFocusInWindow();
+			else
+				selection.selectRoot();
 		}
 	}
 }

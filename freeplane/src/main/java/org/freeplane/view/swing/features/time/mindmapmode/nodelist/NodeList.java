@@ -247,7 +247,9 @@ public class NodeList {
 			if (e.getClickCount() == 2) {
 				final Point p = e.getPoint();
 				final int row = tableView.rowAtPoint(p);
-				gotoNodesAndClose(row, new int[] { row });
+				selectNodes(row, new int[] { row });
+				if (!(e.isControlDown() || e.isMetaDown()))
+					disposeDialog();
 			}
 		}
 	}
@@ -434,11 +436,6 @@ public class NodeList {
 		final NodeModel selectedNode = ((TextHolder) tableView.getModel().getValueAt(focussedRow,
 		    NodeList.NODE_TEXT_COLUMN)).getNode();
 		return selectedNode;
-	}
-
-	private void gotoNodesAndClose(final int focussedRow, final int[] selectedRows) {
-		selectNodes(focussedRow, selectedRows);
-		disposeDialog();
 	}
 
 	private void replace(final HolderAccessor holderAccessor) {

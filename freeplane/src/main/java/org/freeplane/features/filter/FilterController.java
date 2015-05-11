@@ -190,6 +190,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private JComboBox activeFilterConditionComboBox;
 	private final FilterConditionEditor quickEditor;
 	static final int USER_DEFINED_CONDITION_START_INDEX = 3;
+	final private QuickFilterAction quickFilterAction;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
@@ -235,7 +236,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(new ShowAncestorsAction(this));
 		controller.addAction(new ShowDescendantsAction(this));
 		controller.addAction(new ApplyToVisibleAction(this));
-		controller.addAction(new QuickFilterAction(this, quickEditor));
+		quickFilterAction = new QuickFilterAction(this, quickEditor);
+		controller.addAction(quickFilterAction);
 		controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK));
 		controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD));
 		controller.addAction(new QuickFindAllAction(this, quickEditor));
@@ -277,6 +279,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			quickEditor.mapChanged(newMap);
 			final Filter filter = newMap.getFilter();
 			updateSettingsFromFilter(filter);
+			quickFilterAction.setSelected(isFilterActive());
+
 		}
 		else {
 			filterConditions.setSelectedItem(filterConditions.getElementAt(0));
@@ -287,9 +291,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	void applyFilter(final boolean force) {
+		quickFilterAction.setSelected(isFilterActive());
 		final ASelectableCondition selectedCondition = getSelectedCondition();
 		final Filter filter = createFilter(selectedCondition);
-		final ICondition condition = filter.getCondition();
+		final ICondition condition = condition(filter);
 		if(condition != selectedCondition && condition instanceof ASelectableCondition)
 			getFilterConditions().setSelectedItem(condition);
 		else
@@ -357,7 +362,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
 		final JButton applyFindPreviousBtn = new JButton(controller.getAction("QuickFindAction.BACK"));
 		final JButton applyFindNextBtn = new JButton(controller.getAction("QuickFindAction.FORWARD"));
-		final JButton applyQuickFilterBtn = new JButton(controller.getAction("QuickFilterAction"));
+		final JAutoToggleButton applyQuickFilterBtn = new JAutoToggleButton(controller.getAction("QuickFilterAction"));
 		final JButton applyQuickSelectBtn = new JButton(controller.getAction("QuickFindAllAction"));
 		final JToggleButton applyQuickHighlightBtn = new JAutoToggleButton(controller.getAction("QuickHighlightAction"));
 
@@ -552,7 +557,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		getFilterConditions().removeListDataListener(filterChangeListener);
 		showAncestors.removeChangeListener(filterChangeListener);
 		showDescendants.removeChangeListener(filterChangeListener);
-		filterConditions.setSelectedItem(filter.getCondition());
+		filterConditions.setSelectedItem(condition(filter));
 		showAncestors.setSelected(filter.areAncestorsShown());
 		showDescendants.setSelected(filter.areDescendantsShown());
 		applyToVisibleNodeOnly.setSelected(filter.appliesToVisibleNodesOnly());
@@ -560,6 +565,14 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		showAncestors.addChangeListener(filterChangeListener);
 		showDescendants.addChangeListener(filterChangeListener);
 	}
+
+	private ICondition condition(final Filter filter) {
+	    final ICondition condition = filter.getCondition();
+		if (condition == null)
+			return NO_FILTERING;
+		else
+			return condition;
+    }
 
 	void updateSettingsFromHistory() {
 		final Filter filter = history.getCurrentFilter();
@@ -629,4 +642,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		return filterMenuBuilder;
 	}
 
+	public boolean isFilterActive() {
+		final ASelectableCondition selectedCondition = getSelectedCondition();
+		return NO_FILTERING != selectedCondition && null != selectedCondition;
+	}
 }
