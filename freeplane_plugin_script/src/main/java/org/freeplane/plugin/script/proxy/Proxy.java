@@ -224,6 +224,10 @@ public interface Proxy {
 		 * </pre>
 		 * @since 1.3.2 */
 		Iterator<java.util.Map.Entry<String, Object>> iterator();
+
+		/** optimize widths of attribute view columns according to contents. 
+		 * @since 1.4 */
+		void optimizeWidths();
 	}
 
     /** Here are four ways to enable a cloud on the current node and switch it off again:
