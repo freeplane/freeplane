@@ -429,6 +429,7 @@ public class MLinkController extends LinkController {
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction());
 		modeController.addAction(new AddMenuItemLinkAction());
+		modeController.addAction(new AddExecutionLinkAction());
 		modeController.addAction(new ExtractLinkFromTextAction());
 		modeController.addAction(new SetLinkAnchorAction());
 		modeController.addAction(new MakeLinkToAnchorAction());

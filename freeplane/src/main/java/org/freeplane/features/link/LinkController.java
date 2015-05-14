@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -92,6 +93,7 @@ import org.freeplane.features.url.UrlManager;
  */
 public class LinkController extends SelectionController implements IExtension {
 	public static final String MENUITEM_SCHEME = "menuitem";
+	public static final String EXECUTE_APP_SCHEME = "execute";
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -453,7 +455,7 @@ public class LinkController extends SelectionController implements IExtension {
 					throw new IllegalArgumentException("ActionEvent is needed for menu item links");
 				}
 				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-				final DefaultMutableTreeNode treeNode = menuBuilder.get(LinkController.parseMenuItemLink(link));
+				final DefaultMutableTreeNode treeNode = menuBuilder.get(LinkController.parseSpecialLink(link));
 				if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
 					LogUtils.warn("node " + link + " should have been an executable action");
 					return;
@@ -465,6 +467,15 @@ public class LinkController extends SelectionController implements IExtension {
 					action.actionPerformed(e);
 				} else {
 					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
+				}
+			}
+			else if (LinkController.isSpecialLink(LinkController.EXECUTE_APP_SCHEME, link)) {
+				final String command = LinkController.parseSpecialLink(link);
+				try {
+					Controller.getCurrentController().getViewController().out(command);
+					Runtime.getRuntime().exec(command);
+				}
+				catch (IOException e1) {
 				}
 			}
 			else {
@@ -713,17 +724,21 @@ public class LinkController extends SelectionController implements IExtension {
 		return null;
 	}
 
+	public static URI createMenuItemLink(final String content) {
+		return createItemLink(MENUITEM_SCHEME, content);
+	}
+
 	/**
-	 * the syntax of menu item URIs is
+	 * the syntax of  item URIs is
 	 * <pre>
-	 *   "menuitem" + ":" + "_" + <menuItemKey>
+	 *   "scheme" + ":" + "_" + <menuItemKey>
 	 * </pre>
 	 * Compared to <code>mailto:abc@somewhere.com</code> a "_" is added to prevent the rest being parsed
-	 * as a regular path. (Menu item keys start with "/").
+	 * as a regular path.
 	 */
-	public static URI createMenuItemLink(final String menuItemKey) {
+	public static URI createItemLink(final String scheme, final String content) {
 		try {
-			return new URI(MENUITEM_SCHEME, "_" + menuItemKey, null);
+			return new URI(scheme, "_" + content, null);
 		}
 		catch (URISyntaxException e) {
 			throw new RuntimeException("huh? URI should have escaped illegal characters", e);
@@ -731,12 +746,16 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static boolean isMenuItemLink(final URI uri) {
+		return isSpecialLink(MENUITEM_SCHEME, uri);
+	}
+
+	public static boolean isSpecialLink(final String requiredScheme, final URI uri) {
 		final String scheme = uri.getScheme();
-		return scheme != null && scheme.equals(MENUITEM_SCHEME);
+		return scheme != null && scheme.equals(requiredScheme);
 	}
 
 	// this will fail badly for non-menuitem uris!
-	public static String parseMenuItemLink(final URI uri) {
+	public static String parseSpecialLink(final URI uri) {
 		return uri.getSchemeSpecificPart().substring(1);
 	}
 
@@ -817,7 +836,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    if(linkType == null)
 	    	return null;
 	    if(linkType.equals(LinkType.MENU)){
-	    	final String menuItemKey = parseMenuItemLink(link);
+	    	final String menuItemKey = parseSpecialLink(link);
 	    	synchronized (menuItemCache) {
 	    	    Icon icon = menuItemCache.get(menuItemKey);
                 if (icon == null) {
@@ -851,7 +870,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    else if (isMenuItemLink(link)) {
 	    	return LinkType.MENU;
 	    }
-	    else if (Compat.isWindowsExecutable(link)) {
+		else if (isSpecialLink(EXECUTE_APP_SCHEME, link) || Compat.isWindowsExecutable(link)) {
 	    	return LinkType.EXECUTABLE;
 	    }
 	    else{
