@@ -22,6 +22,8 @@ package org.freeplane.core.resources.components;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JCheckBox;
 
@@ -72,4 +74,14 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
     protected Component[] getComponents() {
 	    return new Component[]{mCheckBox};
     }
+
+	public void enables(final IPropertyControl control) {
+		control.setEnabled(getBooleanValue());
+		addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				control.setEnabled(getBooleanValue());
+			}
+		});
+	}
 }

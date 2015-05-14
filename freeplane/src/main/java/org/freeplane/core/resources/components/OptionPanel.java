@@ -48,8 +48,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.builder.ButtonBarBuilder;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
@@ -200,22 +200,34 @@ public class OptionPanel {
 		return formatter.format(new Object[] { StringUtils.join(errors.iterator(), "<br>") });
 	}
 
-	@SuppressWarnings("unchecked")
 	/**
 	 * This is where the controls are added to the "controls" IProperty Vector
 	 * @param controlsTree This is the tree that gets built
 	 */
 	private void initControls(final DefaultMutableTreeNode controlsTree) {
 		controls = new Vector<IPropertyControl>();
-		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
-			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement().getUserObject();
+		addChildControls(null, controlsTree);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void addChildControls(BooleanProperty parentControl, final DefaultMutableTreeNode controlsTree) {
+		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.children(); i.hasMoreElements();) {
+			final DefaultMutableTreeNode node = i.nextElement();
+			final IPropertyControlCreator creator = (IPropertyControlCreator) node.getUserObject();
 			if (creator == null) {
 				continue;
 			}
 			final IPropertyControl control = creator.createControl();
 			controls.add(control);
+			if (parentControl != null)
+				parentControl.enables(control);
+			addChildControls(asBooleanProperty(control), node);
 		}
 	}
+
+	private BooleanProperty asBooleanProperty(final IPropertyControl control) {
+	    return (control instanceof BooleanProperty) ? (BooleanProperty) control : null;
+    }
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
