@@ -238,6 +238,44 @@
 					<choice value="PASTE_PLAIN_TEXT" />
 				</combo>
 			</separator>
+			<separator name="edge_colors">
+				<boolean name="use_auto_edge_color_0">
+					<color name="auto_edge_color_0" />
+				</boolean>
+				<boolean name="use_auto_edge_color_1">
+					<color name="auto_edge_color_1" />
+				</boolean>
+				<boolean name="use_auto_edge_color_2">
+					<color name="auto_edge_color_2" />
+				</boolean>
+				<boolean name="use_auto_edge_color_3">
+					<color name="auto_edge_color_3" />
+				</boolean>
+				<boolean name="use_auto_edge_color_4">
+					<color name="auto_edge_color_4" />
+				</boolean>
+				<boolean name="use_auto_edge_color_5">
+					<color name="auto_edge_color_5" />
+				</boolean>
+				<boolean name="use_auto_edge_color_6">
+					<color name="auto_edge_color_6" />
+				</boolean>
+				<boolean name="use_auto_edge_color_7">
+					<color name="auto_edge_color_7" />
+				</boolean>
+				<boolean name="use_auto_edge_color_8">
+					<color name="auto_edge_color_8" />
+				</boolean>
+				<boolean name="use_auto_edge_color_9">
+					<color name="auto_edge_color_9" />
+				</boolean>
+				<boolean name="use_auto_edge_color_10">
+					<color name="auto_edge_color_10" />
+				</boolean>
+				<boolean name="use_auto_edge_color_11">
+					<color name="auto_edge_color_11" />
+				</boolean>
+			</separator>
 		</tab>
 		<tab name="HTML">
 			<separator name="browser">

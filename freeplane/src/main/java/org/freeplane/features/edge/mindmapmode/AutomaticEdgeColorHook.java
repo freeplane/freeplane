@@ -20,8 +20,13 @@
 package org.freeplane.features.edge.mindmapmode;
 
 import java.awt.Color;
+import java.util.HashMap;
+
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
@@ -82,8 +87,28 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 		final Listener listener = new Listener();
 		modeController = Controller.getCurrentModeController();
 		modeController.addExtension(AutomaticEdgeColorHook.class, this);
+
+		installOptionPanelLabels();
+
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(listener);
+    }
+
+	private void installOptionPanelLabels() {
+	    final ResourceController resourceController = ResourceController.getResourceController();
+		if (null == resourceController.getText("OptionPanel.auto_edge_color_1", null)) {
+			HashMap<String, String> map = new HashMap<>(AutomaticEdgeColor.MAXIMUM_COLOR_NUMBER);
+			for (int colorIndex = 0; colorIndex < AutomaticEdgeColor.MAXIMUM_COLOR_NUMBER; colorIndex++) {
+				final String usePropertyKey = "OptionPanel.use_auto_edge_color";
+				final String usePropertyText = TextUtils.format(usePropertyKey, colorIndex + 1);
+				final String indexedUsePropertyKey = usePropertyKey + "_" + colorIndex;
+				map.put(indexedUsePropertyKey, usePropertyText);
+				final String colorPropertyKey = "OptionPanel.auto_edge_color";
+				final String colorPropertyText = TextUtils.format(colorPropertyKey, colorIndex + 1);
+				map.put(colorPropertyKey + "_" + colorIndex, colorPropertyText);
+			}
+			resourceController.addLanguageResources(resourceController.getLanguageCode(), map);
+		}
     }
 
 	@Override
@@ -113,6 +138,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 }
 
 class AutomaticEdgeColor implements IExtension{
+	static final int MAXIMUM_COLOR_NUMBER = 12;
 	private int colorCount; 
 	int getColorCount() {
     	return colorCount;
@@ -121,14 +147,31 @@ class AutomaticEdgeColor implements IExtension{
 	    super();
 	    this.colorCount = colorCount;
     }
-	private static final Color[] COLORS = new Color[]{
-		Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.CYAN, 
-		Color.RED.darker().darker(), Color.BLUE.darker().darker(), Color.GREEN.darker().darker(), Color.MAGENTA.darker().darker(), Color.CYAN.darker().darker(), Color.YELLOW.darker().darker()};
+
 	Color nextColor() {
-		if(colorCount >= COLORS.length){
+		int skippedColorNumber = 0;
+		final ResourceController resourceController = ResourceController.getResourceController();
+		if (colorCount >= MAXIMUM_COLOR_NUMBER) {
 			colorCount = 0;
 		}
-		return COLORS[colorCount++]; 
+
+		while (!resourceController.getBooleanProperty("use_auto_edge_color_" + colorCount)
+		        && skippedColorNumber < MAXIMUM_COLOR_NUMBER) {
+			colorCount++;
+			if (colorCount >= MAXIMUM_COLOR_NUMBER)
+				colorCount = 0;
+			skippedColorNumber++;
+		}
+
+		if (skippedColorNumber < MAXIMUM_COLOR_NUMBER) {
+			String colorSpec = resourceController.getProperty("auto_edge_color_" + colorCount);
+			Color color = ColorUtils.stringToColor(colorSpec);
+			colorCount++;
+			return color;
+		}
+		else
+			return Color.BLACK;
+
     }
 }
 
