@@ -7,6 +7,7 @@ import groovy.lang.Closure;
 import groovy.lang.MissingMethodException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -19,8 +20,10 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.view.swing.map.NodeView;
 
 class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {
 	AttributesProxy(final NodeModel delegate, final ScriptContext scriptContext) {
@@ -261,6 +264,17 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
     public boolean asBoolean() {
         return !isEmpty();
     }
+
+	@Override
+	public void optimizeWidths() {
+		for (INodeView view : getDelegate().getViewers()) {
+			if (view instanceof NodeView) {
+				// getAttributeView() will check for null for itself:
+				((NodeView) view).getAttributeView().setOptimalColumnWidths();
+				return;
+			}
+		}
+	}
     
     @SuppressWarnings("unchecked")
     public Iterator<Map.Entry<String, Object>> iterator() {

@@ -16,7 +16,8 @@ public class ConfigurationUtils {
         if (value.length() == 0)
             return Collections.emptyList();
         final String sep = requireTwo ? CONFIG_LIST_VALUE_SEPARATOR_STRICT : CONFIG_LIST_VALUE_SEPARATOR_ONE_OR_MORE;
-        return Arrays.asList(value.split("\\s*" + sep + "\\s*"));
+        // -1: don't discard trailing empty strings
+        return Arrays.asList(value.split("\\s*" + sep + "\\s*", -1));
     }
 
 	/** if not requireTwo one pathseparator suffices otherwise two are required. */
