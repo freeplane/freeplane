@@ -22,23 +22,21 @@ package org.freeplane.main.application;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.main.application.LastOpenedList.RecentFile;
 
 class OpenLastOpenedAction extends AFreeplaneAction {
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	final private LastOpenedList list;
-	final private String restoreable;
+    final private RecentFile recentFile;
 
-	public OpenLastOpenedAction(final int i, final LastOpenedList list, String restoreable) {
+	public OpenLastOpenedAction(final int i, final LastOpenedList list, RecentFile recentFile) {
 		super("OpenLastOpenedAction_" + i, null, null);
 		this.list = list;
-		this.restoreable = restoreable;
+		this.recentFile = recentFile;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		list.safeOpen(restoreable);
+		list.safeOpen(recentFile);
 	}
 
 	@Override

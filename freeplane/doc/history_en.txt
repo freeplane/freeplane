@@ -3,6 +3,7 @@
 ===============================
 Fix zooming for external images
 Automatic edge coloring: no yellow edges
+Save and restore last edit location
 ===============================
 1.3.15
 ===============================
