@@ -62,7 +62,7 @@ public class MenuBuildProcessFactory {
 			uiBuilder.addBuilderPair("ribbon_taskbar", new JRibbonTaskbarBuilder(), new JRibbonTaskbarDestroyer());
 			uiBuilder.addBuilder("ribbon_menu", new JRibbonApplicationMenuBuilder(resourceAccessor));
 			uiBuilder.addBuilderPair("ribbon_task", new JRibbonTaskBuilder(resourceAccessor), new JRibbonComponentRemover());
-//			uiBuilder.addBuilder("ribbon_band", new JRibbonBandBuilder());	
+			uiBuilder.addBuilderPair("ribbon_band", new JRibbonBandBuilder(resourceAccessor), new JRibbonComponentRemover());	
 			
 			uiBuilder.addBuilderPair("ribbon.action", 
 				new JRibbonActionBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),

@@ -25,7 +25,7 @@ public class JRibbonTaskBuilder implements EntryVisitor {
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return true;
+		return false;
 	}
 
 }
