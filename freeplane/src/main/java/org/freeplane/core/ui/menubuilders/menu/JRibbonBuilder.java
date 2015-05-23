@@ -1,17 +1,27 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
+import java.awt.Frame;
+
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.pushingpixels.flamingo.api.ribbon.JRibbon;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
 public class JRibbonBuilder implements EntryVisitor {
 	private JRibbon ribbon = null;
 
 	public JRibbonBuilder(IUserInputListenerFactory userInputListenerFactory) {
 		super();
-		this.ribbon = userInputListenerFactory.getRibbon();
+		Frame frame = UITools.getFrame();
+		if(frame instanceof JRibbonFrame) {
+			this.ribbon = ((JRibbonFrame)frame).getRibbon();
+		}
+		else {
+			throw new RuntimeException("ribbons not activated");
+		}
 	}
 
 	@Override
