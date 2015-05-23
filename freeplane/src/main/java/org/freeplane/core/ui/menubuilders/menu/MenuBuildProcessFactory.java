@@ -48,15 +48,25 @@ public class MenuBuildProcessFactory {
 		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
 		uiBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
 		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
+		
+		childProcessor = new SubtreeProcessor();
+		final ActionSelectListener actionSelectListener = new ActionSelectListener();
+		EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
+		entryPopupListenerCollection.addEntryPopupListener(childProcessor);
+		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 
 		if (userInputListenerFactory.useRibbonMenu()) {
-			uiBuilder.addBuilder("main_menu", new JRibbonBuilder(userInputListenerFactory));
+			uiBuilder.addBuilderPair("main_menu", new JRibbonBuilder(userInputListenerFactory), new JRibbonComponentRemover());
 			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "ribbon.action");
 			
 			uiBuilder.addBuilderPair("ribbon_taskbar", new JRibbonTaskbarBuilder(), new JRibbonTaskbarDestroyer());
 			uiBuilder.addBuilder("ribbon_menu", new JRibbonApplicationMenuBuilder(resourceAccessor));
-//			uiBuilder.addBuilder("ribbon_task", new JRibbonTaskBuilder());
-//			uiBuilder.addBuilder("ribbon_band", new JRibbonBandBuilder());			
+			uiBuilder.addBuilderPair("ribbon_task", new JRibbonTaskBuilder(resourceAccessor), new JRibbonComponentRemover());
+//			uiBuilder.addBuilder("ribbon_band", new JRibbonBandBuilder());	
+			
+			uiBuilder.addBuilderPair("ribbon.action", 
+				new JRibbonActionBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
+				    resourceAccessor), new JRibbonComponentRemover());
 		}
 		else {
 
@@ -66,6 +76,10 @@ public class MenuBuildProcessFactory {
 
 			uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
 			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
+			
+			uiBuilder.addBuilderPair("radio_button_group", //
+			    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
+			        resourceAccessor), new JComponentRemover());
 		}
 		
 		uiBuilder.addBuilder("map_popup", new MapPopupBuilder(userInputListenerFactory));
@@ -73,21 +87,8 @@ public class MenuBuildProcessFactory {
 		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
 
-		childProcessor = new SubtreeProcessor();
-		final ActionSelectListener actionSelectListener = new ActionSelectListener();
-		EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
-		entryPopupListenerCollection.addEntryPopupListener(childProcessor);
-		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
-
 		uiBuilder.addBuilderPair("menu.action", //
 		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
-		        resourceAccessor), new JComponentRemover());
-		uiBuilder.addBuilderPair("ribbon.action", 
-			new JRibbonActionBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
-			    resourceAccessor), new JRibbonComponentRemover());
-
-		uiBuilder.addBuilderPair("radio_button_group", //
-		    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
 
 		buildProcessor = new PhaseProcessor()
