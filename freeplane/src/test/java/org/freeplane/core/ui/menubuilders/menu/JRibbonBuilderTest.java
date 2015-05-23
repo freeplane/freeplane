@@ -2,14 +2,14 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.pushingpixels.flamingo.api.ribbon.JRibbon;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
 public class JRibbonBuilderTest {
 
@@ -18,11 +18,11 @@ public class JRibbonBuilderTest {
 	public void createsEmptyJRibbonComponent() {
 		Entry ribbonEntry = new Entry();
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
-		final JRibbon ribbon = new JRibbon();
-		when(userInputListenerFactory.getRibbon()).thenReturn(ribbon);
+		final JRibbonFrame jrframe = new JRibbonFrame();
+		jrframe.setName(UITools.MAIN_FREEPLANE_FRAME);
 		final JRibbonBuilder ribbonBuilder = new JRibbonBuilder(userInputListenerFactory);
 		ribbonBuilder.visit(ribbonEntry);
 
-		assertThat(new EntryAccessor().getComponent(ribbonEntry), CoreMatchers.<Object> is(ribbon));
+		assertThat(new EntryAccessor().getComponent(ribbonEntry), CoreMatchers.<Object> is(jrframe.getRibbon()));
 	}
 }
