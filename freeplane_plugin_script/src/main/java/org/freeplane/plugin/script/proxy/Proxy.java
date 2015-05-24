@@ -1494,10 +1494,12 @@ public interface Proxy {
          *  @since 1.2 */
         void setFloating(boolean floating);
 
-        /** @since 1.2.20 */
+        /** minNodeWidth in px - set to -1 to restore default.
+         * @since 1.2.20 */
         void setMinNodeWidth(int width);
         
-        /** @since 1.2.20 */
+        /** minNodeWidth in px - set to -1 to restore default.
+         * @since 1.2.20 */
         void setMaxNodeWidth(int width);
 
         /** @since 1.3.8 */
