@@ -530,9 +530,10 @@ public class MClipboardController extends ClipboardController {
 			}
 		}
 		final ResourceController resourceController = ResourceController.getResourceController();
-		if (t.isDataFlavorSupported(MindMapNodesSelection.htmlFlavor)) {
+		DataFlavor supportedHtmlFlavor = getSupportedHtmlFlavor(t);
+		if (supportedHtmlFlavor != null) {
 			try {
-				final String textFromClipboard = t.getTransferData(MindMapNodesSelection.htmlFlavor).toString();
+				final String textFromClipboard = t.getTransferData(supportedHtmlFlavor).toString();
 				if (textFromClipboard.charAt(0) != 65533) {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						final MTextController textController = (MTextController) TextController
@@ -609,9 +610,10 @@ public class MClipboardController extends ClipboardController {
 			catch (final IOException e) {
 			}
 		}
-		if (t.isDataFlavorSupported(MindMapNodesSelection.htmlFlavor)) {
+		DataFlavor supportedHtmlFlavor = getSupportedHtmlFlavor(t);
+		if (supportedHtmlFlavor != null) {
 			try {
-				final String textFromClipboard = t.getTransferData(MindMapNodesSelection.htmlFlavor).toString();
+				final String textFromClipboard = t.getTransferData(supportedHtmlFlavor).toString();
 				if (textFromClipboard.charAt(0) != 65533) {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						handlerList.add(new StructuredHtmlFlavorHandler(textFromClipboard));
@@ -656,6 +658,16 @@ public class MClipboardController extends ClipboardController {
 		}
 		return handlerList;
 	}
+	private DataFlavor getSupportedHtmlFlavor(Transferable t) {
+		for (DataFlavor dataFlavor : t.getTransferDataFlavors())
+			if(dataFlavor.getPrimaryType().equals(MindMapNodesSelection.htmlFlavor.getPrimaryType()) 
+			&& dataFlavor.getSubType().equals(MindMapNodesSelection.htmlFlavor.getSubType())
+			&& dataFlavor.getRepresentationClass().equals(MindMapNodesSelection.htmlFlavor.getRepresentationClass())
+			)
+				return dataFlavor;
+		return null;
+	}
+
 	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 		paste(t, target, asSibling, isLeft, DnDConstants.ACTION_NONE);
 	}
