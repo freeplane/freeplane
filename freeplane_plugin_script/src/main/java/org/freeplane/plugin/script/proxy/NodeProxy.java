@@ -318,6 +318,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	// NodeRO: R
+	public String getHtmlText() {
+		final String nodeText = getDelegate().getText();
+		if (HtmlUtils.isHtmlNode(nodeText))
+			return nodeText;
+		else
+			return HtmlUtils.plainToHTML(nodeText);
+	}
+
+	// NodeRO: R
 	public Proxy.NodeStyle getStyle() {
 		return new NodeStyleProxy(getDelegate(), getScriptContext());
 	}

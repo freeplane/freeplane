@@ -15,6 +15,7 @@ import javax.swing.Icon;
 
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormattedDate;
@@ -1027,28 +1028,49 @@ public interface Proxy {
 		 * @since 1.2 */
 		boolean hasStyle(String styleName);
 
-		/** use this method to remove all tags from an HTML node. Formulas are not evaluated.
+		/** Raw text of this node which might be plain or HTML text.
+		 * Possible transformations (formula evaluation, formatting, ...) are not applied.
+		 * @see #getPlainText() for plain text or use {@link HtmlUtils#htmlToPlain(String)}.
+		 * @see #getHtmlText() for HTML text or use {@link HtmlUtils#plainToHTML(String)}.
+		 * @see #getTransformedText() or {@link #getValue()} for text after formula evaluation.
+		 * @see #getObject() for possible typed content.
+		 * @see #getTo() for text/object conversions.
+		 * @since 1.2 */
+		String getText();
+
+		/** Plain text after removal of possible HTML markup.
+		 * Possible transformations (formula evaluation, formatting, ...) are not applied.
 		 * @since 1.2 */
 		String getPlainText();
 
-		/** use this method to remove all tags from an HTML node.
+		/** Plain text after removal of possible HTML markup. Formulas are not evaluated.
 		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
 		String getPlainTextContent();
 
-		/** The visible text of this node. Use {@link #getPlainText()} to remove HTML.
+		/** Plain text after removal of possible HTML markup.
+		 * Possible transformations (formula evaluation, formatting, ...) are not applied.
+		 * @since 1.2 */
+		String getHtmlText();
+
+		/** Plain or HTML text of this node after possible transformation (formula evaluation, formatting, ...).
+		 * @since 1.2 */
+		String getTransformedText();
+
+		/** Plain or HTML text of this node after possible transformation (formula evaluation, formatting, ...)
+		 * and after text shortening.
+		 * @see #isMinimized() for node shortening
 		 * @since 1.2 */
 		String getDisplayedText();
-		String getTransformedText();
 		
+		/** Plain text of this node after possible transformation and forced text shortening.
+		 * @since 1.2 */
 		String getShortText();
 
-		/** The html text of this node. Use {@link #getPlainText()} to remove HTML.
-		 * @since 1.2 */
-		String getText();
 		/** The object that's displayed as the node text - normally the raw text of this node (then this method is
 		 * equivalent to {@link #getText()}).
 		 * But in case of typed content (for numbers, dates and calendars) {@link #getObject()} returns
 		 * a proper {@link IFormattedObject}. Use {@link #getPlainText()} to remove HTML.
+		 * @see Node#setObject(Object) for details.
 		 * @since 1.2 */
 		Object getObject();
 
@@ -1088,6 +1110,7 @@ public interface Proxy {
 		 * to this node; returns false otherwise. */
 		boolean isDescendantOf(Node p);
 
+		/** if this node is folded. Note that the folding state only concerns the visibility of the <em>child nodes</em>. */
 		boolean isFolded();
 
 		/** returns true if this node is freely positionable.
@@ -1100,8 +1123,11 @@ public interface Proxy {
 
 		boolean isRoot();
 
+		/** if this node is visible or not (due to filtering). Node folding is not considered.
+		 * @see #isFolded() for folding state. */
 		boolean isVisible();
 		
+		/** if this node's text is shortened for display. */
 		boolean isMinimized();
 		
 		/** Starting from this node, recursively searches for nodes for which
