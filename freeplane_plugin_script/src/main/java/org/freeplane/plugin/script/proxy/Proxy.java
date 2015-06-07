@@ -392,7 +392,6 @@ public interface Proxy {
 
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
-		 * @see Node#find(ICondition) for searches on subtrees
 		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
 		List<Node> find(ICondition condition);
 
@@ -412,10 +411,10 @@ public interface Proxy {
 		 *    def texts = matchingNodes.collect{ it.text }
 		 *    print "node texts containing numbers:\n " + texts.join("\n ")
 		 * </pre>
+		 * See {@link Node#find(Closure)} for searches on subtrees.
 		 * @param closure a Groovy closure that returns a boolean value. The closure will receive
 		 *        a NodeModel as an argument which can be tested for a match.
 		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
-		 * @see Node#find(Closure) for searches on subtrees
 		 */
 		List<Node> find(Closure<Boolean> closure);
 
@@ -430,7 +429,8 @@ public interface Proxy {
 		 *  2
 		 * </pre>
 		 * [1, 1.1, 1.1.1, 1.1.2, 1.2, 2] is returned.
-		 * @see Node#find(Closure) for searches on subtrees
+		 * See {@link Node#find(Closure)} for searches on subtrees.
+		 * @see #findAllDepthFirst()
 		 * @since 1.2 */
 		List<Node> findAll();
 
@@ -445,7 +445,7 @@ public interface Proxy {
 		 *  2
 		 * </pre>
 		 * [1.1.1, 1.1.2, 1.1, 1.2, 1, 2] is returned.
-		 * @see Node#findAllDepthFirst() for subtrees
+		 * See {@link Node#findAllDepthFirst()} for subtrees.
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
 
@@ -1030,11 +1030,15 @@ public interface Proxy {
 
 		/** Raw text of this node which might be plain or HTML text.
 		 * Possible transformations (formula evaluation, formatting, ...) are not applied.
-		 * @see #getPlainText() for plain text or use {@link HtmlUtils#htmlToPlain(String)}.
-		 * @see #getHtmlText() for HTML text or use {@link HtmlUtils#plainToHTML(String)}.
-		 * @see #getTransformedText() or {@link #getValue()} for text after formula evaluation.
-		 * @see #getObject() for possible typed content.
-		 * @see #getTo() for text/object conversions.
+		 * <p>
+		 * See
+		 * <ul>
+		 * <li> {@link #getPlainText()} for plain text or use {@link HtmlUtils#htmlToPlain(String)}.
+		 * <li> {@link #getHtmlText()} for HTML text or use {@link HtmlUtils#plainToHTML(String)}.
+		 * <li> {@link #getTransformedText()} or {@link #getValue()} for text after formula evaluation.
+		 * <li> {@link #getObject()} for possible typed content.
+		 * <li> {@link #getTo()} for text/object conversions.
+		 * </ul>
 		 * @since 1.2 */
 		String getText();
 
@@ -1058,7 +1062,7 @@ public interface Proxy {
 
 		/** Plain or HTML text of this node after possible transformation (formula evaluation, formatting, ...)
 		 * and after text shortening.
-		 * @see #isMinimized() for node shortening
+		 * See {@link #isMinimized()} for node shortening.
 		 * @since 1.2 */
 		String getDisplayedText();
 		
@@ -1070,7 +1074,7 @@ public interface Proxy {
 		 * equivalent to {@link #getText()}).
 		 * But in case of typed content (for numbers, dates and calendars) {@link #getObject()} returns
 		 * a proper {@link IFormattedObject}. Use {@link #getPlainText()} to remove HTML.
-		 * @see Node#setObject(Object) for details.
+		 * See {@link Node#setObject(Object)} for details.
 		 * @since 1.2 */
 		Object getObject();
 
@@ -1124,7 +1128,7 @@ public interface Proxy {
 		boolean isRoot();
 
 		/** if this node is visible or not (due to filtering). Node folding is not considered.
-		 * @see #isFolded() for folding state. */
+		 * See {@link #isFolded()} for folding state. */
 		boolean isVisible();
 		
 		/** if this node's text is shortened for display. */
@@ -1140,12 +1144,12 @@ public interface Proxy {
 		List<Node> find(Closure<Boolean> closure);
 
 		/** Returns all nodes of the branch that starts with this node in breadth-first order.
-		 * @see Controller#findAll() for subtrees
+		 * See {@link Controller#findAll()} for map-global searches.
 		 * @since 1.2 */
 		List<Node> findAll();
 		
 		/** Returns all nodes of the branch that starts with this node in depth-first order.
-		 * @see Controller#findAllDepthFirst() for subtrees.
+		 * See {@link Controller#findAllDepthFirst()} for map-global searches.
 		 * @since 1.2 */
 		List<Node> findAllDepthFirst();
 
