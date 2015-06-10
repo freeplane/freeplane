@@ -19,9 +19,12 @@
  */
 package org.freeplane.features.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
+import javax.swing.FocusManager;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -50,8 +53,12 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 		final String propertyName = Controller.getCurrentController().getViewController().completeVisiblePropertyKey(toolBar);
 		final boolean wasVisible = resourceController.getBooleanProperty(propertyName);
 		final boolean visible = !wasVisible;
+		Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+		boolean toolbarLostFocus = SwingUtilities.isDescendingFrom(focusOwner, toolBar);
 		resourceController.setProperty(propertyName, visible);
 		setVisible(toolBar, visible);
+		if(toolbarLostFocus)
+			Controller.getCurrentController().getMapViewManager().getSelectedComponent().requestFocus();
 	}
 
 	protected void setVisible(final JComponent toolBar, final boolean visible) {
