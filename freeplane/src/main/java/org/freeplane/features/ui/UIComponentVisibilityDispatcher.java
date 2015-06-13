@@ -19,12 +19,16 @@
  */
 package org.freeplane.features.ui;
 
+import java.awt.Component;
 import java.awt.Container;
 
+import javax.swing.FocusManager;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OneTouchCollapseResizer;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -78,6 +82,16 @@ public class UIComponentVisibilityDispatcher {
 		final Container parent = component.getParent();
 		if(parent != null)
 			((JComponent) parent).revalidate();
+		if (!visible) {
+			Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+			boolean toolbarLostFocus = SwingUtilities.isDescendingFrom(focusOwner, component);
+			if (toolbarLostFocus) {
+	            final Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
+				if (selectedComponent != null)
+					selectedComponent.requestFocus();
+            }
+		}
+
     }
 
 	public void setProperty(final boolean visible) {
