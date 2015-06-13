@@ -836,25 +836,27 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	@Override
-    public void editingStopped(ChangeEvent e) {
-		try{
-			putClientProperty(EDITING_STOPPED, Boolean.TRUE);
-		       // Take in the new value
-	        TableCellEditor editor = getCellEditor();
-	        if (editor != null) {
-	            final Object value = editor.getCellEditorValue();
-				if (value != null) {
-					final String pattern = extractPatternIfAvailable(getValueAt(editingRow, editingColumn));
-                    final Object newValue = enforceFormattedObjectForIdentityPattern(value, pattern);
-                    setValueAt(newValue, editingRow, editingColumn);
+	public void editingStopped(ChangeEvent e) {
+		if(isEditing() && null == getClientProperty(EDITING_STOPPED) ) {
+			try{
+				putClientProperty(EDITING_STOPPED, Boolean.TRUE);
+				// Take in the new value
+				TableCellEditor editor = getCellEditor();
+				if (editor != null) {
+					final Object value = editor.getCellEditorValue();
+					if (value != null) {
+						final String pattern = extractPatternIfAvailable(getValueAt(editingRow, editingColumn));
+						final Object newValue = enforceFormattedObjectForIdentityPattern(value, pattern);
+						setValueAt(newValue, editingRow, editingColumn);
+					}
+					removeEditor();
 				}
-	            removeEditor();
-	        }
+			}
+			finally{
+				putClientProperty(EDITING_STOPPED, null);
+			}
 		}
-		finally{
-			putClientProperty(EDITING_STOPPED, null);
-		}
-    }
+	}
 
     private String extractPatternIfAvailable(final Object oldValue) {
         return oldValue instanceof IFormattedObject ? ((IFormattedObject) oldValue).getPattern() : null;
