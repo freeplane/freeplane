@@ -54,7 +54,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 		final boolean wasVisible = resourceController.getBooleanProperty(propertyName);
 		final boolean visible = !wasVisible;
 		Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
-		boolean toolbarLostFocus = SwingUtilities.isDescendingFrom(focusOwner, toolBar);
+		boolean toolbarLostFocus = focusOwner != null && SwingUtilities.isDescendingFrom(focusOwner, toolBar);
 		resourceController.setProperty(propertyName, visible);
 		setVisible(toolBar, visible);
 		if(toolbarLostFocus)
