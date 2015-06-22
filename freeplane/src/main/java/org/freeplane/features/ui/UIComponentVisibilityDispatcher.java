@@ -84,7 +84,7 @@ public class UIComponentVisibilityDispatcher {
 			((JComponent) parent).revalidate();
 		if (!visible) {
 			Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
-			boolean toolbarLostFocus = SwingUtilities.isDescendingFrom(focusOwner, component);
+			boolean toolbarLostFocus = focusOwner != null && SwingUtilities.isDescendingFrom(focusOwner, component);
 			if (toolbarLostFocus) {
 	            final Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
 				if (selectedComponent != null)
