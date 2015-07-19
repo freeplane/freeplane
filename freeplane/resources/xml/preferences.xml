@@ -181,6 +181,8 @@
 				<string name="date_format" />
 				<string name="datetime_format" />
 				<languages name="format_locale" />
+				<boolean name="parse_formulas"/>
+				<boolean name="parse_latex"/>
 			</separator>
 			<separator name="search">
 				<boolean name="compare_as_number" />
