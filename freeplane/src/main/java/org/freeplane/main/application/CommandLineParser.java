@@ -130,14 +130,14 @@ class CommandLineParser {
             else if (arg.startsWith("-X")) {
                 if (arg.length() > 2)
                     result.addMenuItemToExecute(arg.substring(2));
-                else if (args.length >= i)
+                else if (args.length > i + 1)
                     result.addMenuItemToExecute(args[++i]);
             }
             else if (arg.startsWith("-U")) {
                 String userdir = null;
                 if (arg.length() > 2)
                     userdir = arg.substring(2);
-                else if (args.length >= i)
+                else if (args.length > i + 1)
                     userdir = args[++i];
                 else {
                     if (firstRun)
