@@ -130,7 +130,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 
 	public FreeplaneGUIStarter(String[] args) {
 		super();
-		options = CommandLineParser.parse(args);
+		options = CommandLineParser.parse(args, true);
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();

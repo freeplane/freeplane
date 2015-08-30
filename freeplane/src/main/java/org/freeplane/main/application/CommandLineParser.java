@@ -99,7 +99,7 @@ class CommandLineParser {
         }
     }
 
-    public static CommandLineParser.Options parse(String[] args) {
+    public static CommandLineParser.Options parse(String[] args, boolean firstRun) {
         CommandLineParser.Options result = new CommandLineParser.Options();
         if (args == null || args.length == 0 || !args[0].startsWith("-")) {
             result.setFilesToOpen(args);
@@ -139,8 +139,10 @@ class CommandLineParser {
                     userdir = arg.substring(2);
                 else if (args.length >= i)
                     userdir = args[++i];
-                else
-                    System.err.println("option -U<userdir> misses its parameter");
+                else {
+                    if (firstRun)
+                        System.err.println("option -U<userdir> misses its parameter");
+                }
                 if (userdir != null) {
                     System.setProperty("org.freeplane.userfpdir", userdir);
                     // make sure that old settings aren't imported!
@@ -166,7 +168,7 @@ class CommandLineParser {
             result.addFilesToOpen(args[i]);
         if (result.stopAfterLaunch && !result.menuItemsToExecute.contains(QUIT_MENU_ITEM_KEY))
             result.addMenuItemToExecute(QUIT_MENU_ITEM_KEY);
-        if (result.isHelpRequested()) {
+        if (result.isHelpRequested() && firstRun) {
             System.out.println(result.getHelpMessage());
         }
         return result;
