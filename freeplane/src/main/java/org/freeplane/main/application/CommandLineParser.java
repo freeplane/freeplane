@@ -100,7 +100,6 @@ class CommandLineParser {
     }
 
     public static CommandLineParser.Options parse(String[] args) {
-for(String arg:args) System.out.println(arg);
         CommandLineParser.Options result = new CommandLineParser.Options();
         if (args == null || args.length == 0 || !args[0].startsWith("-")) {
             result.setFilesToOpen(args);
@@ -142,8 +141,11 @@ for(String arg:args) System.out.println(arg);
                     userdir = args[++i];
                 else
                     System.err.println("option -U<userdir> misses its parameter");
-                if (userdir != null)
+                if (userdir != null) {
                     System.setProperty("org.freeplane.userfpdir", userdir);
+                    // make sure that old settings aren't imported!
+                    System.setProperty("org.freeplane.old_userfpdir", userdir);
+                }
             }
             else if (arg.startsWith("-h")) {
                 result.setHelpRequested(true);
