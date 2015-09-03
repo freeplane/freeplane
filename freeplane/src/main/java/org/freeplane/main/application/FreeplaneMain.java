@@ -45,7 +45,7 @@ public class FreeplaneMain {
         if(oldHandler != null)
             newHandler = oldHandler + '|' + newHandler;
         System.setProperty("java.protocol.handler.pkgs", newHandler);
-		final FreeplaneStarter starter = new FreeplaneGUIStarter();
+		final FreeplaneStarter starter = new FreeplaneGUIStarter(args);
 		starter.run(args);
 	}
 }
