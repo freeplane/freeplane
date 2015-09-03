@@ -33,7 +33,7 @@ public class SingleInstanceManager {
 	}
 
 	public void start(String[] args) {
-        final Options options = CommandLineParser.parse(args);
+        final Options options = CommandLineParser.parse(args, false);
         final String[] filesToLoad = options.getFilesToOpenAsArray();
 		if (isSingleInstanceMode && !options.hasMenuItemsToExecute()) {
 			initLockFile();
