@@ -14,12 +14,12 @@ import org.freeplane.core.util.TextUtils;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
 
-public class JRibbonAcceleratorChangeListener implements IAcceleratorChangeListener {
+public class RibbonAcceleratorChangeListener implements IAcceleratorChangeListener {
 
 	private EntriesForAction entries;
 	private EntryAccessor entryAccessor;
 
-	public JRibbonAcceleratorChangeListener(EntriesForAction entries) {
+	public RibbonAcceleratorChangeListener(EntriesForAction entries) {
 		this.entries = entries;
 		this.entryAccessor = new EntryAccessor();
 	}

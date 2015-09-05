@@ -56,7 +56,7 @@ public class MenuBuildProcessFactory {
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 
 		if (userInputListenerFactory.useRibbonMenu()) {
-			acceleratorMap.addAcceleratorChangeListener(new JRibbonAcceleratorChangeListener(entries));
+			acceleratorMap.addAcceleratorChangeListener(new RibbonAcceleratorChangeListener(entries));
 			
 			uiBuilder.addBuilderPair("main_menu", new JRibbonBuilder(userInputListenerFactory), new JRibbonComponentRemover());
 			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "ribbon.action");

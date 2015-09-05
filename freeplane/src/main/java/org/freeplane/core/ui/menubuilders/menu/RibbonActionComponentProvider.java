@@ -76,7 +76,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 			button.putClientProperty(PRIORITY_PROPERTY, getPriority(attr == null? "medium" : String.valueOf(attr)));
 			
 			KeyStroke ks = accelerators.getAccelerator(action);
-			JRibbonAcceleratorChangeListener.updateRichTooltip(button, action, ks);
+			RibbonAcceleratorChangeListener.updateRichTooltip(button, action, ks);
 			updateActionState(action, button);
 			
 //			getAccelChangeListener().addCommandButton(actionKey, button);
@@ -105,7 +105,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		
 		final JCommandButton button = new JCommandButton(title, icon);
 		
-		JRibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);		
+		RibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);		
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
@@ -117,7 +117,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		
 		final JCommandToggleButton button = new JCommandToggleButton(title, icon);
 		
-		JRibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
+		RibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
@@ -129,7 +129,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		
 		final JCommandMenuButton button = new JCommandMenuButton(title, icon);
 		
-		JRibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
+		RibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
@@ -141,7 +141,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		
 		final JCommandToggleMenuButton button = new JCommandToggleMenuButton(title, icon);
 		
-		JRibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
+		RibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
