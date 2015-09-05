@@ -56,6 +56,8 @@ public class MenuBuildProcessFactory {
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 
 		if (userInputListenerFactory.useRibbonMenu()) {
+			acceleratorMap.addAcceleratorChangeListener(new JRibbonAcceleratorChangeListener(entries));
+			
 			uiBuilder.addBuilderPair("main_menu", new JRibbonBuilder(userInputListenerFactory), new JRibbonComponentRemover());
 			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "ribbon.action");
 			
@@ -67,9 +69,12 @@ public class MenuBuildProcessFactory {
 			uiBuilder.addBuilderPair("ribbon.action", 
 				new JRibbonActionBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 				    resourceAccessor), new JRibbonComponentRemover());
+			
+			
 		}
 		else {
-
+			acceleratorMap.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
+			
 			uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 			uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 			uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());

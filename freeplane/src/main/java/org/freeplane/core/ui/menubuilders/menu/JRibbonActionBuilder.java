@@ -19,7 +19,7 @@ import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
 import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
 import org.pushingpixels.flamingo.api.common.popup.PopupPanelCallback;
 
-public class JRibbonActionBuilder implements EntryVisitor{
+public class JRibbonActionBuilder implements EntryVisitor {
 
 	final private EntryPopupListener popupListener;
 	final ResourceAccessor resourceAccessor;
@@ -64,7 +64,7 @@ public class JRibbonActionBuilder implements EntryVisitor{
 	}
 
 	private JRibbonContainer addPopupCallback(final Entry entry, final JCommandButton button) {
-	    RibbonPopupWrapper callback = new RibbonPopupWrapper(entry, popupListener);
+	    RibbonPopupWrapper callback = new RibbonPopupWrapper(entry, popupListener, button);
 		button.setPopupCallback(callback);
 		return callback;
     }
@@ -82,12 +82,14 @@ class RibbonPopupWrapper extends JRibbonContainer implements PopupPanelCallback 
 	final private JCommandPopupMenu popupmenu;
 	final private EntryAccessor entryAccessor;
 	final private Entry entry;
+	final private Component parent;
 	
-	public RibbonPopupWrapper(Entry entry, EntryPopupListener popupListener) {
+	public RibbonPopupWrapper(Entry entry, EntryPopupListener popupListener, Component parent) {
 		this.entry = entry;
 		this.entryAccessor = new EntryAccessor();
 		this.popupmenu = new JCommandPopupMenu();
 		this.popupListener = popupListener;
+		this.parent = parent;
 	}
 
 	@Override
@@ -125,6 +127,11 @@ class RibbonPopupWrapper extends JRibbonContainer implements PopupPanelCallback 
 			if (!(entryAccessor.getComponent(child) instanceof RibbonPopupWrapper))
 				fireChildEntriesWillBecomeInvisible(child);
     }
+
+	@Override
+	public Component getParent() {
+		return this.parent;
+	}
 }
 
 

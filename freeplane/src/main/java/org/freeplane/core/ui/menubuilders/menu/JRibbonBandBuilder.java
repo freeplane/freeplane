@@ -9,7 +9,6 @@ import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.MutableRibbonTask;
-import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenu;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 
 public class JRibbonBandBuilder implements EntryVisitor {
@@ -56,6 +55,11 @@ class RibbonBandContainer extends JRibbonContainer {
 	}
 
 	public JRibbonBand getBand() {
+		return band;
+	}
+
+	@Override
+	public Component getParent() {
 		return band;
 	}	
 }

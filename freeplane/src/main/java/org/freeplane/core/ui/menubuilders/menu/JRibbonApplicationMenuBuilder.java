@@ -61,5 +61,10 @@ class RibbonApplicationMenuContainer extends JRibbonContainer {
 
 	public RibbonApplicationMenu getApplicationMenu() {
 		return appMenu;
+	}
+
+	@Override
+	public Component getParent() {
+		return null;
 	}	
 }

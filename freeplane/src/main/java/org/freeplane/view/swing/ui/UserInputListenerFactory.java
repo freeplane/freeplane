@@ -425,7 +425,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries)
 			    .getBuildProcessor();
 			subtreeBuilder = menuBuildProcessFactory.getChildProcessor();
-			acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
 			for (final Phase phase : Phase.values())
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
 				    .entrySet())

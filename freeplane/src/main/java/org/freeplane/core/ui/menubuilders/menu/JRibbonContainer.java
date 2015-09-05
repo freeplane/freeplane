@@ -22,4 +22,6 @@ public abstract class JRibbonContainer {
 	public void add(Component component) {
 		add(component, null, APPEND);
 	}
+	
+	abstract public Component getParent(); 
 }

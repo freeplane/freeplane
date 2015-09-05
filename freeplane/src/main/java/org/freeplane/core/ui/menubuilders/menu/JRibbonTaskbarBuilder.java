@@ -46,5 +46,10 @@ class TaskbarDelegator extends JRibbonContainer {
 		this.ribbon.addTaskbarComponent(component);
 	}
 
+	@Override
+	public Component getParent() {
+		return ribbon;
+	}
+
 }
 
