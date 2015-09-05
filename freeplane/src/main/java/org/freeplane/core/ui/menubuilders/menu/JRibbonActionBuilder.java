@@ -4,6 +4,8 @@ import java.awt.Component;
 
 import javax.swing.JSeparator;
 
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -46,6 +48,10 @@ public class JRibbonActionBuilder implements EntryVisitor {
 		final Component actionComponent = actionComponentProvider.createComponent(entry);
 		if(actionComponent != null){
 			addComponent(entry, actionComponent);
+			
+			final AFreeplaneAction action = entryAccessor.getAction(entry);
+			if(action != null) 
+				action.addPropertyChangeListener(new ActionEnabler(actionComponent));
 		}
 	}
 
