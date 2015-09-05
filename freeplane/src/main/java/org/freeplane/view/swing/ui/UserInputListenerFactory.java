@@ -63,7 +63,6 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
-import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
@@ -406,13 +405,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public void updateMenus(String menuStructureResource, Set<String> plugins) {
 		mapsPopupMenu = new JPopupMenu();
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
-		if(useRibbonMenu()) {
-			final URL ribbonStructure = ResourceController.getResourceController().getResource(menuStructureResource.replace("menu.xml", "ribbon.xml"));
-			if (ribbonStructure != null) {
-				getMenuBuilder(RibbonBuilder.class).updateRibbon(ribbonStructure);
-			}
-		}
-
+		
 		final URL genericStructure = ResourceController.getResourceController().getResource(
 		    menuStructureResource.replace("menu.xml", ".generic.xml"));
 		final boolean isUserDefined = genericStructure.getProtocol().equalsIgnoreCase("file");
