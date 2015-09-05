@@ -38,7 +38,6 @@ import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
@@ -267,10 +266,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
 		LastOpenedList lastOpenedList = applicationResourceController.getLastOpenedList();
 		mindMapModeController.getMapController().addMapChangeListener(lastOpenedList);
-		LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
-		RibbonBuilder menuBuilder = mindMapModeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
 		lastOpenedList.registerMenuContributor(mindMapModeController);
-		menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
 		mindMapModeController.addUiBuilder(Phase.ACTIONS, "filterConditions", FilterController
 		    .getController(controller)
 		    .getMenuBuilder(), EntryVisitor.CHILD_ENTRY_REMOVER);

@@ -42,7 +42,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -265,11 +264,12 @@ class ScriptingRegistration {
 
     private void updateMenus(ModeController modeController, final ScriptingConfiguration configuration) {
         if (UITools.useRibbonsMenu()) {
-            final RibbonBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(
-                RibbonBuilder.class);
-            menuBuilder.registerContributorFactory(MENU_SCRIPTS_LOCATION, new ScriptingRibbonsContributorFactory(
-                modeController, configuration));
-            menuBuilder.updateRibbon(getClass().getResource("ribbons.xml"));
+        	// TODO - implement with new menu structure api
+//            final RibbonBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(
+//                RibbonBuilder.class);
+//            menuBuilder.registerContributorFactory(MENU_SCRIPTS_LOCATION, new ScriptingRibbonsContributorFactory(
+//                modeController, configuration));
+//            menuBuilder.updateRibbon(getClass().getResource("ribbons.xml"));
         }
         else {
             modeController.addMenuContributor(new ScriptingMenuContributor(modeController, configuration,

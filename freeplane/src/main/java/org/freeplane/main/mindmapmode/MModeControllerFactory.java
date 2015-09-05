@@ -46,8 +46,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
-import org.freeplane.core.ui.ribbon.RibbonMapChangeAdapter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.mindmapmode.AddAttributeAction;
@@ -212,14 +210,6 @@ public class MModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		new MMapController(modeController);
-		if(userInputListenerFactory.useRibbonMenu()) {
-			RibbonBuilder builder = userInputListenerFactory.getMenuBuilder(RibbonBuilder.class);
-			final RibbonMapChangeAdapter mapChangeAdapter = builder.getMapChangeAdapter();
-			modeController.getMapController().addNodeSelectionListener(mapChangeAdapter);
-			modeController.getMapController().addNodeChangeListener(mapChangeAdapter);
-			modeController.getMapController().addMapChangeListener(mapChangeAdapter);
-			controller.getMapViewManager().addMapSelectionListener(mapChangeAdapter);
-		}
 		final MFileManager fileManager = new MFileManager();
 		UrlManager.install(fileManager);
 		MMapIO.install(modeController);

@@ -79,8 +79,8 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 			RibbonAcceleratorChangeListener.updateRichTooltip(button, action, ks);
 			updateActionState(action, button);
 			
-//			builder.getMapChangeAdapter().addListener(new ActionChangeListener(action, button));	
-
+//			builder.getMapChangeAdapter().addListener(new ActionChangeListener(action, button));
+			
 			return button;
 		}
 		return null;
