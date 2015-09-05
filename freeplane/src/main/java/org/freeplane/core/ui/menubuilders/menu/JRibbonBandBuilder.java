@@ -48,7 +48,6 @@ class RibbonBandContainer extends JRibbonContainer {
 
 	@Override
 	public void add(Component comp, Object constraints, int index) {
-		System.out.println("add to Band: " + comp);
 		AbstractCommandButton button = (AbstractCommandButton) comp;
 		RibbonElementPriority priority = (RibbonElementPriority)button.getClientProperty(RibbonActionComponentProvider.PRIORITY_PROPERTY);
 		band.addCommandButton(button, priority != null ? priority : RibbonElementPriority.MEDIUM);

@@ -79,8 +79,6 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 			RibbonAcceleratorChangeListener.updateRichTooltip(button, action, ks);
 			updateActionState(action, button);
 			
-//			getAccelChangeListener().addCommandButton(actionKey, button);
-//			
 //			builder.getMapChangeAdapter().addListener(new ActionChangeListener(action, button));	
 
 			return button;
@@ -154,11 +152,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 			button.setEnabled(action.isEnabled());
 		}
 		if(isSelectionListener(action)) {
-//			try {
-//				action.setSelected();
-//			} catch(Exception cause) {
-//				cause.printStackTrace();
-//			}
+			//action.setSelected();
 			button.getActionModel().setSelected(action.isSelected());
 		}
 	}
