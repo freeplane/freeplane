@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -31,6 +30,8 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 	
 	public static final String ACTION = "ACTION_KEY";
 	public static final String MANDATORY_PROPERTY = "MANDATORY";
+	public static final String PRIORITY_PROPERTY = "PRIORITY_KEY";
+	public static final String ORDER_PROPERTY = "ORDER_KEY";
 	
 	private IAcceleratorMap accelerators;
 	private AcceleratebleActionProvider acceleratebleActionProvider;
@@ -53,40 +54,36 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		if(action != null) {
 			Object attr = entry.getAttribute("mandatory");
 			final boolean mandatory = Boolean.parseBoolean(attr == null? "false":String.valueOf(attr).toLowerCase());
-			attr = entry.getAttribute("orderPriority");
-			ChildProperties childProps = //new ChildProperties(parseOrderSettings(attr == null? "":String.valueOf(attr)));
-					new ChildProperties(JRibbonContainer.APPEND);
-			attr = entry.getAttribute("priority");
-			childProps.set(RibbonElementPriority.class, getPriority(attr == null? "medium" : String.valueOf(attr)));
-			
 			if(mandatory) {
 				action.putValue(MANDATORY_PROPERTY, mandatory);
 			}
+			final boolean isPopupItem = (entryAccessor.getAncestorComponent(entry) instanceof RibbonPopupWrapper);
 			
 			AbstractCommandButton button;
 			if(isSelectionListener(action)) {
-				button = createCommandToggleButton(action);
+				button = isPopupItem ? createCommandToggleMenuButton(action) : createCommandToggleButton(action);
 				if (entry.hasChildren()) {
 					LogUtils.severe("RibbonActionComponentProvider.createButton(): can't add popup menu to toggle button for action: "+ entry);
 				}
 			}
 			else {
-				button = createCommandButton(action);
+				button = isPopupItem ? createCommandMenuButton(action) : createCommandButton(action);
 				if(entry.hasChildren()) {
-					//((JCommandButton)button).setPopupCallback(getPopupPanelCallBack(path, context));
 					((JCommandButton)button).setCommandButtonKind(CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);
-					KeyStroke ks = accelerators.getAccelerator(action);
-					updateRichTooltip(button, action, ks);
-					updateActionState(action, button);
 				}
 			}
 			button.putClientProperty(ACTION, action);
 			
-//			KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(actionKey);
-//			if(ks != null) {
-//				button.putClientProperty(ACTION_ACCELERATOR, ks);
-//				updateRichTooltip(button, action, ks);
-//			}
+			attr = entry.getAttribute("orderPriority");
+			button.putClientProperty(ORDER_PROPERTY, JRibbonContainer.APPEND); //parseOrderSettings(attr == null? "":String.valueOf(attr))
+
+			attr = entry.getAttribute("priority");
+			button.putClientProperty(PRIORITY_PROPERTY, getPriority(attr == null? "medium" : String.valueOf(attr)));
+			
+			KeyStroke ks = accelerators.getAccelerator(action);
+			updateRichTooltip(button, action, ks);
+			updateActionState(action, button);
+			
 //			getAccelChangeListener().addCommandButton(actionKey, button);
 //			
 //			builder.getMapChangeAdapter().addListener(new ActionChangeListener(action, button));	
@@ -107,67 +104,67 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		return prio;
 	}
 	
-	public static JButton createButton(final AFreeplaneAction action) {
+	private JButton createButton(final AFreeplaneAction action) {
 		String title = ActionUtils.getActionTitle(action);
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		
 		final JButton button = new JButton(title, icon);
 		
 //		updateRichTooltip(button, action, null);
-		button.addActionListener(new AccelerateableAction(action));
+		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
 
-	public static JCommandButton createCommandButton(final AFreeplaneAction action) {
+	private JCommandButton createCommandButton(final AFreeplaneAction action) {
 		String title = ActionUtils.getActionTitle(action);
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		
 		final JCommandButton button = new JCommandButton(title, icon);
 		
-		updateRichTooltip(button, action, null);
-		button.addActionListener(new AccelerateableAction(action));
+		updateRichTooltip(button, action, null);		
+		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
 	
-	public static JCommandToggleButton createCommandToggleButton(final AFreeplaneAction action) {
+	private JCommandToggleButton createCommandToggleButton(final AFreeplaneAction action) {
 		String title = ActionUtils.getActionTitle(action);
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		
 		final JCommandToggleButton button = new JCommandToggleButton(title, icon);
 		
 		updateRichTooltip(button, action, null);
-		button.addActionListener(new AccelerateableAction(action));
+		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
 	
-	public static JCommandMenuButton createCommandMenuButton(final AFreeplaneAction action) {
+	private JCommandMenuButton createCommandMenuButton(final AFreeplaneAction action) {
 		String title = ActionUtils.getActionTitle(action);
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		
 		final JCommandMenuButton button = new JCommandMenuButton(title, icon);
 		
 		updateRichTooltip(button, action, null);
-		button.addActionListener(new AccelerateableAction(action));
+		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
 	
-	public static JCommandToggleMenuButton createCommandToggleMenuButton(final AFreeplaneAction action) {
+	private JCommandToggleMenuButton createCommandToggleMenuButton(final AFreeplaneAction action) {
 		String title = ActionUtils.getActionTitle(action);
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		
 		final JCommandToggleMenuButton button = new JCommandToggleMenuButton(title, icon);
 		
 		updateRichTooltip(button, action, null);
-		button.addActionListener(new AccelerateableAction(action));
+		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
 	}
 	
-	public static void updateRichTooltip(final AbstractCommandButton button, AFreeplaneAction action, KeyStroke ks) {
+	private void updateRichTooltip(final AbstractCommandButton button, AFreeplaneAction action, KeyStroke ks) {
 		RichTooltip tip = getRichTooltip(action, ks);
 		if(tip != null) {
 			button.setActionRichTooltip(tip);
@@ -177,7 +174,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		}
 	}
 	
-	public static RichTooltip getRichTooltip(AFreeplaneAction action, KeyStroke ks) {
+	private RichTooltip getRichTooltip(AFreeplaneAction action, KeyStroke ks) {
 		RichTooltip tip = null;
 		final String tooltip = TextUtils.getRawText(action.getTooltipKey(), null);
 		if (tooltip != null && !"".equals(tooltip)) {
@@ -192,7 +189,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		return tip;
 	}
 
-	public static String formatShortcut(KeyStroke ks) {
+	private String formatShortcut(KeyStroke ks) {
 		StringBuilder sb = new StringBuilder();
 		if(ks != null) {
 			String[] st = ks.toString().split("[\\s]+");
@@ -210,20 +207,23 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		return sb.toString();
 	}
 	
-	public static void updateActionState(AFreeplaneAction action, AbstractCommandButton button) {		
+	private void updateActionState(AFreeplaneAction action, AbstractCommandButton button) {		
 		final AFreeplaneAction action1 = action;
 		if(action1.checkEnabledOnChange()) {
-			action.setEnabled();
+			//action.setEnabled();
 			button.setEnabled(action.isEnabled());
 		}
 		if(isSelectionListener(action)) {
-			action.setSelected();
+//			try {
+//				action.setSelected();
+//			} catch(Exception cause) {
+//				cause.printStackTrace();
+//			}
 			button.getActionModel().setSelected(action.isSelected());
 		}
 	}
 	
-	public static boolean isSelectionListener(AFreeplaneAction action) {		
+	private boolean isSelectionListener(AFreeplaneAction action) {		
 		return action.checkSelectionOnChange() || action.checkSelectionOnPopup() || action.checkSelectionOnPropertyChange();
 	}
-
 }

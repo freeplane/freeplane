@@ -43,13 +43,16 @@ class RibbonBandContainer extends JRibbonContainer {
 	final private JRibbonBand band;
 
 	public RibbonBandContainer(JRibbonBand band) {
+		if(band == null) throw new IllegalArgumentException("band is NULL!");
 		this.band = band;
 	}
 
 	@Override
 	public void add(Component comp, Object constraints, int index) {
 		System.out.println("add to Band: " + comp);
-		band.addCommandButton((AbstractCommandButton) comp, RibbonElementPriority.MEDIUM);
+		AbstractCommandButton button = (AbstractCommandButton) comp;
+		RibbonElementPriority priority = (RibbonElementPriority)button.getClientProperty(RibbonActionComponentProvider.PRIORITY_PROPERTY);
+		band.addCommandButton(button, priority != null ? priority : RibbonElementPriority.MEDIUM);
 	}
 
 	public JRibbonBand getBand() {

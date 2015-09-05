@@ -118,6 +118,10 @@ public class Entry {
 	public boolean hasChildren() {
 		return ! childEntries.isEmpty();
 	}
+	
+	public int getChildCount() {
+		return childEntries.size();
+	}
 
 
 	public Entry getRoot() {

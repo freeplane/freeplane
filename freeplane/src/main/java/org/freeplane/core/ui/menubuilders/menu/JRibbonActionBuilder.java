@@ -2,10 +2,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
 
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.JSeparator;
 
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
@@ -14,6 +11,13 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.pushingpixels.flamingo.api.common.JCommandButton;
+import org.pushingpixels.flamingo.api.common.JCommandMenuButton;
+import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
+import org.pushingpixels.flamingo.api.common.JCommandToggleMenuButton;
+import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
+import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
+import org.pushingpixels.flamingo.api.common.popup.PopupPanelCallback;
 
 public class JRibbonActionBuilder implements EntryVisitor{
 
@@ -46,7 +50,12 @@ public class JRibbonActionBuilder implements EntryVisitor{
 	}
 
 	private void addComponent(Entry entry, final Component component) {
-		entryAccessor.setComponent(entry, component);
+		if(entry.isLeaf()) {
+			entryAccessor.setComponent(entry, component);
+		}
+		else {
+			entryAccessor.setComponent(entry, addPopupCallback(entry, (JCommandButton)component));
+		}
 		Object parent = entryAccessor.getAncestorComponent(entry);
 		if(parent instanceof JRibbonContainer) {
 			final JRibbonContainer container = (JRibbonContainer) parent; 
@@ -54,37 +63,10 @@ public class JRibbonActionBuilder implements EntryVisitor{
 		}
 	}
 
-	protected void addPopupMenuListener(final Entry entry, final JPopupMenu popupMenu) {
-	    popupMenu.addPopupMenuListener(new PopupMenuListener() {
-			
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				fireChildEntriesWillBecomeVisible(entry);
-			}
-
-			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				fireChildEntriesWillBecomeInvisible(entry);
-			}
-
-			private void fireChildEntriesWillBecomeVisible(final Entry entry) {
-				popupListener.childEntriesWillBecomeVisible(entry);
-				for (Entry child : entry.children())
-					if (!(entryAccessor.getComponent(child) instanceof JMenu))
-						fireChildEntriesWillBecomeVisible(child);
-			}
-
-			private void fireChildEntriesWillBecomeInvisible(final Entry entry) {
-	            popupListener.childEntriesWillBecomeInvisible(entry);
-				for (Entry child : entry.children())
-					if (!(entryAccessor.getComponent(child) instanceof JMenu))
-						fireChildEntriesWillBecomeInvisible(child);
-            }
-			
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {
-			}
-		});
+	private JRibbonContainer addPopupCallback(final Entry entry, final JCommandButton button) {
+	    RibbonPopupWrapper callback = new RibbonPopupWrapper(entry, popupListener);
+		button.setPopupCallback(callback);
+		return callback;
     }
 
 	@Override
@@ -93,3 +75,56 @@ public class JRibbonActionBuilder implements EntryVisitor{
 	}
 
 }
+
+class RibbonPopupWrapper extends JRibbonContainer implements PopupPanelCallback {
+
+	final private EntryPopupListener popupListener;
+	final private JCommandPopupMenu popupmenu;
+	final private EntryAccessor entryAccessor;
+	final private Entry entry;
+	
+	public RibbonPopupWrapper(Entry entry, EntryPopupListener popupListener) {
+		this.entry = entry;
+		this.entryAccessor = new EntryAccessor();
+		this.popupmenu = new JCommandPopupMenu();
+		this.popupListener = popupListener;
+	}
+
+	@Override
+	public void add(Component component, Object constraints, int index) {
+		if(component instanceof JSeparator) {
+			popupmenu.addMenuSeparator();
+		}
+		else {
+			if(component instanceof JCommandToggleButton) {
+				popupmenu.addMenuButton((JCommandToggleMenuButton)component);
+			}
+			else {
+				popupmenu.addMenuButton((JCommandMenuButton)component);
+			}
+		}
+		
+	}
+
+	@Override
+	public JPopupPanel getPopupPanel(JCommandButton commandButton) {
+		fireChildEntriesWillBecomeVisible(entry);		
+		return popupmenu;
+	}
+	
+	protected void fireChildEntriesWillBecomeVisible(final Entry entry) {
+		popupListener.childEntriesWillBecomeVisible(entry);
+		for (Entry child : entry.children())
+			if (!(entryAccessor.getComponent(child) instanceof RibbonPopupWrapper))
+				fireChildEntriesWillBecomeVisible(child);
+	}
+
+	protected void fireChildEntriesWillBecomeInvisible(final Entry entry) {
+        popupListener.childEntriesWillBecomeInvisible(entry);
+		for (Entry child : entry.children())
+			if (!(entryAccessor.getComponent(child) instanceof RibbonPopupWrapper))
+				fireChildEntriesWillBecomeInvisible(child);
+    }
+}
+
+
