@@ -21,6 +21,8 @@
 				<combo name="load_folding">
 					<choice value="always_fold_all_after_load" />
 					<choice value="load_folding_from_map_default_fold_all" />
+					<choice value="always_show_less_than_N_nodes_after_load" />
+					<choice value="show_less_than_N_nodes_by_default_after_load" />
 					<choice value="load_folding_from_map_default_unfold_all" />
 					<choice value="always_unfold_all_after_load" />
 				</combo>
@@ -33,6 +35,7 @@
 					<choice value="always_save_folding" />
 				</combo>
 				<boolean name="save_modification_times" />
+				<boolean name="save_last_visited_node" />
 				<path name="default_save_dir" dir="true"/>
 			</separator>
 			<separator name="automatic_save">
@@ -178,6 +181,8 @@
 				<string name="date_format" />
 				<string name="datetime_format" />
 				<languages name="format_locale" />
+				<boolean name="parse_formulas"/>
+				<boolean name="parse_latex"/>
 			</separator>
 			<separator name="search">
 				<boolean name="compare_as_number" />
@@ -235,6 +240,44 @@
 					<choice value="PASTE_HTML" />
 					<choice value="PASTE_PLAIN_TEXT" />
 				</combo>
+			</separator>
+			<separator name="edge_colors">
+				<boolean name="use_auto_edge_color_0">
+					<color name="auto_edge_color_0" />
+				</boolean>
+				<boolean name="use_auto_edge_color_1">
+					<color name="auto_edge_color_1" />
+				</boolean>
+				<boolean name="use_auto_edge_color_2">
+					<color name="auto_edge_color_2" />
+				</boolean>
+				<boolean name="use_auto_edge_color_3">
+					<color name="auto_edge_color_3" />
+				</boolean>
+				<boolean name="use_auto_edge_color_4">
+					<color name="auto_edge_color_4" />
+				</boolean>
+				<boolean name="use_auto_edge_color_5">
+					<color name="auto_edge_color_5" />
+				</boolean>
+				<boolean name="use_auto_edge_color_6">
+					<color name="auto_edge_color_6" />
+				</boolean>
+				<boolean name="use_auto_edge_color_7">
+					<color name="auto_edge_color_7" />
+				</boolean>
+				<boolean name="use_auto_edge_color_8">
+					<color name="auto_edge_color_8" />
+				</boolean>
+				<boolean name="use_auto_edge_color_9">
+					<color name="auto_edge_color_9" />
+				</boolean>
+				<boolean name="use_auto_edge_color_10">
+					<color name="auto_edge_color_10" />
+				</boolean>
+				<boolean name="use_auto_edge_color_11">
+					<color name="auto_edge_color_11" />
+				</boolean>
 			</separator>
 		</tab>
 		<tab name="HTML">

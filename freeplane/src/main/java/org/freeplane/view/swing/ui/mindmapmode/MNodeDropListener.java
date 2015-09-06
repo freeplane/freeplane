@@ -22,6 +22,7 @@ package org.freeplane.view.swing.ui.mindmapmode;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
@@ -29,8 +30,8 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -150,6 +151,58 @@ private Timer timer;
 	public void dragScroll(final DropTargetDragEvent e) {
 	}
 
+	private boolean isDropAcceptable(final DropTargetDropEvent event) {
+		int dropAction = event.getDropAction();
+		if (dropAction == DnDConstants.ACTION_LINK) {
+			return isFromSameMap(event);
+		}
+
+		if (dropAction == DnDConstants.ACTION_MOVE) {
+			return !isFromDescencantNode(event);
+		}
+		return true;
+	}
+
+	private boolean isFromSameMap(final DropTargetDropEvent event) {
+		final Transferable t = event.getTransferable();
+		final List<NodeModel> transferData;
+		try {
+			transferData = getNodeObjects(t);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
+		for (final NodeModel selected : transferData) {
+			if (selected.getMap() != node.getMap())
+				return false;
+		}
+		return true;
+	}
+
+	private boolean isFromDescencantNode(final DropTargetDropEvent event) {
+		final Transferable t = event.getTransferable();
+		final List<NodeModel> transferData;
+		try {
+			transferData = getNodeObjects(t);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
+		for (final NodeModel selected : transferData) {
+			if ((node == selected) || node.isDescendantOf(selected))
+				return true;
+		}
+		return false;
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<NodeModel> getNodeObjects(final Transferable t) throws UnsupportedFlavorException, IOException {
+	    return (List<NodeModel>) t.getTransferData(MindMapNodesSelection.mindMapNodeObjectsFlavor);
+    }
+
 	public void drop(final DropTargetDropEvent dtde) {
 		try {
 			int dropAction = dtde.getDropAction();
@@ -171,7 +224,7 @@ private Timer timer;
 			}
 			mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
 			mainView.repaint();
-			if (dtde.isLocalTransfer() && (dropAction == DnDConstants.ACTION_MOVE) && !isDropAcceptable(dtde)) {
+			if (dtde.isLocalTransfer() && !isDropAcceptable(dtde)) {
 				dtde.rejectDrop();
 				return;
 			}
@@ -203,49 +256,27 @@ private Timer timer;
 					        + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
-					for (final Iterator<NodeModel> it = controller.getSelection().getSelection().iterator(); it
-					    .hasNext();) {
-						final NodeModel selectedNodeModel = (it.next());
+					for (final NodeModel sourceNodeModel : getNodeObjects(t)) {
+						
 						((MLinkController) LinkController.getController(modeController)).addConnector(
-						    selectedNodeModel, targetNode);
+						    sourceNodeModel, targetNode);
 					}
 				}
 			}
 			else {
-				Transferable trans = null;
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-				if (DnDConstants.ACTION_MOVE == dropAction) {
-					NodeModel actualNode = targetNode;
-					do {
-						if (selecteds.contains(actualNode)) {
-							final String message = TextUtils.getText("cannot_move_to_child");
-							JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
-							    "Freeplane", JOptionPane.WARNING_MESSAGE);
-							dtde.dropComplete(true);
-							return;
-						}
-						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
-					} while (actualNode != null);
+				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(dtde)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
-					final List<NodeModel> sortedSelection = controller.getSelection().getSortedSelection(true);
-					for (final NodeModel node : sortedSelection) {
-						boolean changeSide = isLeft != node.isLeft();
-                        if (dropAsSibling) {
-                        	mapController.moveNodeBefore(node, targetNode, isLeft, changeSide);
-                        }
-                        else {
-                        	mapController.moveNodeAsChild(node, targetNode, isLeft, changeSide);
-                        }
-					}
+					moveNodes(mapController, targetNode, t, dropAsSibling, isLeft);
 					
 					if(dropAsSibling || ! targetNode.isFolded())
 					    controller.getSelection().replaceSelection(array);
 					else
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
-				else {
-					trans = ClipboardController.getController().copy(controller.getSelection());
-					((MClipboardController) ClipboardController.getController()).paste(trans, targetNode, dropAsSibling, isLeft);
+				else if (DnDConstants.ACTION_COPY == dropAction || DnDConstants.ACTION_MOVE == dropAction) {
+					((MClipboardController) ClipboardController.getController()).paste(t, targetNode, dropAsSibling,
+					    isLeft);
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 			}
@@ -256,6 +287,21 @@ private Timer timer;
 			return;
 		}
 		dtde.dropComplete(true);
+	}
+
+	private void moveNodes(final MMapController mapController, final NodeModel targetNode, Transferable t,
+	                       final boolean dropAsSibling, final boolean isLeft) throws UnsupportedFlavorException,
+	        IOException {
+		final List<NodeModel> movedNodes = getNodeObjects(t);
+		for (final NodeModel node : movedNodes) {
+			boolean changeSide = isLeft != node.isLeft();
+			if (dropAsSibling) {
+				mapController.moveNodeBefore(node, targetNode, isLeft, changeSide);
+			}
+			else {
+				mapController.moveNodeAsChild(node, targetNode, isLeft, changeSide);
+			}
+		}
 	}
 
 	public void dropActionChanged(final DropTargetDragEvent e) {
@@ -271,10 +317,4 @@ private Timer timer;
 		return false;
 	}
 
-	private boolean isDropAcceptable(final DropTargetDropEvent event) {
-		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
-		final ModeController modeController = Controller.getCurrentController().getModeController();
-		final NodeModel selected = modeController.getMapController().getSelectedNode();
-		return ((node != selected) && !node.isDescendantOf(selected));
-	}
 }

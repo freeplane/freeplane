@@ -113,9 +113,12 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 			@Override
             public void viewFocusChanged(View previouslyFocusedView, View focusedView) {
-	            if(previouslyFocusedView != null && focusedView != null){
+				if (focusedView != null) {
 	            	Component containedMapView = getContainedMapView(focusedView);
-	            	viewSelectionChanged(containedMapView);
+					final Component mapViewComponent = Controller.getCurrentController().getMapViewManager()
+					    .getMapViewComponent();
+					if (containedMapView != mapViewComponent)
+						viewSelectionChanged(containedMapView);
 	            }
             }
 

@@ -1,7 +1,4 @@
 * text=auto
-freeplane/resources/translations/*.properties -text
-freeplane/viewer-resources/translations/*.properties -text
-JOrtho_0.4_freeplane/src/com/inet/jortho/i18n/*.properties -text
 *.properties eol=lf
 freeplane_framework/mac-jarbundler/universalJavaApplicationStub eol=lf
 *.sh eol=lf

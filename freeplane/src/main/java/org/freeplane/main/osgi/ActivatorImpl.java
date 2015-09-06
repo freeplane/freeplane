@@ -245,7 +245,7 @@ class ActivatorImpl implements BundleActivator {
 		if(Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME))
 			return new FreeplaneHeadlessStarter();
 		else
-			return new FreeplaneGUIStarter();
+			return new FreeplaneGUIStarter(getCallParameters());
     }
 
     private void registerClasspathUrlHandler(final BundleContext context) {

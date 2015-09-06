@@ -125,8 +125,11 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String LOAD_LAST_MAP = "load_last_map";
 	public static Boolean USE_RIBBONS_MENU;
-	public FreeplaneGUIStarter() {
+	final private Options options;
+
+	public FreeplaneGUIStarter(String[] args) {
 		super();
+		options = CommandLineParser.parse(args, true);
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();
@@ -300,7 +303,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		new UserPropertiesUpdater().importOldDefaultStyle();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-			    final Options options = CommandLineParser.parse(args);
 				viewController.init(Controller.getCurrentController());
 				splash.toBack();
 				final Frame frame = viewController.getFrame();

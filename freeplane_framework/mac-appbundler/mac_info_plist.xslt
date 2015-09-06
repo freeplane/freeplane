@@ -44,12 +44,8 @@
   </xsl:copy>
 </xsl:template>
 
-<xsl:template match="key[text()='JVMVersion']">
-	<key>WorkingDirectory</key>
-  	<string>$JAVAROOT</string>
-    <xsl:copy>
-      <xsl:apply-templates select="@* | node()"/>
-    </xsl:copy>
+<xsl:template match="string[text()='JavaAppLauncher']">
+	<string>universalJavaApplicationStub.sh</string>
 </xsl:template>
 
 <xsl:template match="/ | node() | @* | comment() | processing-instruction()">

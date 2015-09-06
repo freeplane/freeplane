@@ -24,7 +24,8 @@ class FormatContentTransformer extends AbstractContentTransformer {
 	}
 
 	private Object expandFormat(Object obj, final NodeModel node, final String format, boolean nodeNumbering) {
-		final boolean hasFormat = format != null && format.length() != 0 && !PatternFormat.IDENTITY_PATTERN.equals(format);
+		final boolean hasFormat = format != null && format.length() != 0 && 
+				!PatternFormat.IDENTITY_PATTERN.equals(format) && !PatternFormat.STANDARD_FORMAT_PATTERN.equals(format);
 		if (!hasFormat && !nodeNumbering){
 			return obj;
 		}

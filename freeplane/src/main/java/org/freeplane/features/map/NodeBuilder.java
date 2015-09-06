@@ -34,18 +34,21 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeBuilder implements IElementDOMHandler {
+
+
 	static class IconProperties {
 		String iconName;
 	}
 
 	public static final String FOLDING_LOADED = "folding_loaded";
-	public static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
+	private static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
+	private static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
+	private static final String RESOURCES_LOAD_FOLDING = "load_folding";
+	private static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
+	private static final String MAX_DISPLAYED_NODE_COUNT = "max_displayed_node_count";
+	private static final String RESOURCES_ALWAYS_SHOW_LESS_THAN_N_NODES_AFTER_LOAD = "always_show_less_than_N_nodes_after_load";
+	private static final String RESOURCES_SHOW_LESS_THAN_N_NODES_BY_DEFAULT_AFTER_LOAD = "show_less_than_N_nodes_by_default_after_load";
 	public static final String RESOURCES_ALWAYS_SAVE_FOLDING = "always_save_folding";
-	public static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
-	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
-	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
-	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
-	protected static final String MAX_DISPLAYED_NODE_COUNT = "max_displayed_node_count";
 	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
 	public static final String RESOURCES_SAVE_FOLDING = "save_folding";
 	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
@@ -143,11 +146,13 @@ public class NodeBuilder implements IElementDOMHandler {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				final Object mode = mapReader.getCurrentNodeTreeCreator().getHint(Hint.MODE);
+
 				if (mode.equals(Mode.FILE)) {
 					final String loadFolding = ResourceController.getResourceController().getProperty(
 					    NodeBuilder.RESOURCES_LOAD_FOLDING);
 					if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
-					        || loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD)) {
+					        || loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD)
+					        || loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_SHOW_LESS_THAN_N_NODES_AFTER_LOAD)) {
 						return;
 					}
 					mapReader.getCurrentNodeTreeCreator().setHint(FOLDING_LOADED, Boolean.TRUE);
@@ -184,8 +189,13 @@ public class NodeBuilder implements IElementDOMHandler {
 				final ResourceController resourceController = ResourceController.getResourceController();
 				final String loadFolding = resourceController.getProperty(NodeBuilder.RESOURCES_LOAD_FOLDING);
 				if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
-				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
-					int nodeCount = resourceController.getIntProperty(NodeBuilder.MAX_DISPLAYED_NODE_COUNT, 20);
+				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)
+				        || loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_SHOW_LESS_THAN_N_NODES_AFTER_LOAD)
+				        || loadFolding.equals(NodeBuilder.RESOURCES_SHOW_LESS_THAN_N_NODES_BY_DEFAULT_AFTER_LOAD)) {
+					int nodeCount = 1;
+					if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_SHOW_LESS_THAN_N_NODES_AFTER_LOAD)
+					        || loadFolding.equals(NodeBuilder.RESOURCES_SHOW_LESS_THAN_N_NODES_BY_DEFAULT_AFTER_LOAD))
+						nodeCount = resourceController.getIntProperty(NodeBuilder.MAX_DISPLAYED_NODE_COUNT, 20);
 					final List<NodeModel> children = topNode.getChildren();
 					nodeCount = nodeCount - 1 - children.size();
 					for (final NodeModel child : children) {

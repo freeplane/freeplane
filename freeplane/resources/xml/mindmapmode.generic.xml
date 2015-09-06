@@ -597,6 +597,7 @@
 		</Entry>
 		<Entry name="view" builder="ribbon_task">
 			<Entry name="zoomContributor" builder="ribbon_contributor,skip" />
+			<Entry name="NewMapViewAction"/>
 			<Entry name="view_mode" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="ToggleRibbonAction" priority="top" />
 				<Entry name="CenterSelectedNodeAction" priority="top">
@@ -715,12 +716,13 @@
 			<Entry name="ExtractLinkFromTextAction" />
 			<Entry builder="separator" />
 			<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
-			<Entry name="AddMenuItemLinkAction" accelerator="" />
+			<Entry name="AddMenuItemLinkAction"/>
+			<Entry name="AddExecutionLinkAction"/>
 			<Entry builder="separator" />
-			<Entry name="SetLinkAnchorAction" accelerator="" />
-			<Entry name="MakeLinkFromAnchorAction" accelerator="" />
-			<Entry name="MakeLinkToAnchorAction" accelerator="" />
-			<Entry name="ClearLinkAnchorAction" accelerator="" />
+			<Entry name="SetLinkAnchorAction"/>
+			<Entry name="MakeLinkFromAnchorAction"/>
+			<Entry name="MakeLinkToAnchorAction"/>
+			<Entry name="ClearLinkAnchorAction"/>
 		</Entry>
 		<Entry name="goto" processOnPopup="true">
 			<Entry builder="link_actions" />

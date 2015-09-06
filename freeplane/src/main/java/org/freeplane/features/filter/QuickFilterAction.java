@@ -22,12 +22,14 @@ package org.freeplane.features.filter;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 
 /**
  * @author Dimitry Polivaev
  * Mar 30, 2009
  */
+@SelectableAction
 final class QuickFilterAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -54,6 +56,9 @@ final class QuickFilterAction extends AFreeplaneAction {
 		if(condition == null){
 			return;
 		}
-		filterController.apply(condition);
+		if (isSelected())
+			filterController.applyNoFiltering();
+		else
+			filterController.apply(condition);
 	}
 }

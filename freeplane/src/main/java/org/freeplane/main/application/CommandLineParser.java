@@ -15,7 +15,7 @@ class CommandLineParser {
                 + "\n -S: stop after executing menu items" //
                 + "\n -N: set the 'nonInteractive' system property to 'true'" //
                 + "\n -U<userdir>: set the freeplane user config directory (default: "
-                + Compat.getApplicationUserDirectory() + ")" //
+                + Compat.getApplicationUserDirectoryExcludingVersion() + ")" //
                 + "\n -h|--help: print this help";
         private List<String> filesToOpen = new ArrayList<String>();
         private List<String> menuItemsToExecute = new ArrayList<String>();
@@ -99,8 +99,7 @@ class CommandLineParser {
         }
     }
 
-    public static CommandLineParser.Options parse(String[] args) {
-for(String arg:args) System.out.println(arg);
+    public static CommandLineParser.Options parse(String[] args, boolean firstRun) {
         CommandLineParser.Options result = new CommandLineParser.Options();
         if (args == null || args.length == 0 || !args[0].startsWith("-")) {
             result.setFilesToOpen(args);
@@ -131,19 +130,24 @@ for(String arg:args) System.out.println(arg);
             else if (arg.startsWith("-X")) {
                 if (arg.length() > 2)
                     result.addMenuItemToExecute(arg.substring(2));
-                else if (args.length >= i)
+                else if (args.length > i + 1)
                     result.addMenuItemToExecute(args[++i]);
             }
             else if (arg.startsWith("-U")) {
                 String userdir = null;
                 if (arg.length() > 2)
                     userdir = arg.substring(2);
-                else if (args.length >= i)
+                else if (args.length > i + 1)
                     userdir = args[++i];
-                else
-                    System.err.println("option -U<userdir> misses its parameter");
-                if (userdir != null)
+                else {
+                    if (firstRun)
+                        System.err.println("option -U<userdir> misses its parameter");
+                }
+                if (userdir != null) {
                     System.setProperty("org.freeplane.userfpdir", userdir);
+                    // make sure that old settings aren't imported!
+                    System.setProperty("org.freeplane.old_userfpdir", userdir);
+                }
             }
             else if (arg.startsWith("-h")) {
                 result.setHelpRequested(true);
@@ -164,7 +168,7 @@ for(String arg:args) System.out.println(arg);
             result.addFilesToOpen(args[i]);
         if (result.stopAfterLaunch && !result.menuItemsToExecute.contains(QUIT_MENU_ITEM_KEY))
             result.addMenuItemToExecute(QUIT_MENU_ITEM_KEY);
-        if (result.isHelpRequested()) {
+        if (result.isHelpRequested() && firstRun) {
             System.out.println(result.getHelpMessage());
         }
         return result;

@@ -14,6 +14,7 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 
 	private static final String PREFERENCES_RESOURCE = "preferences.xml";
+	static final String TOGGLE_PARSE_LATEX = "parse_latex";
 
 	/*
 	 * (non-Javadoc)
