@@ -64,7 +64,6 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -72,9 +71,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.main.application.ApplicationResourceController;
-import org.freeplane.main.application.LastOpenedList;
-import org.freeplane.main.application.LastOpenedMapsRibbonContributorFactory;
 import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
@@ -109,21 +105,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		useRibbonMenu = useRibbons;
 		Controller controller = Controller.getCurrentController();
 		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));
-//		if (!ResourceController.getResourceController().isApplet())
-//			menuBuilderList.put(RibbonBuilder.class, new RibbonBuilder(modeController, getAcceleratorManager()));
-//		if(useRibbons) {
-//			final RibbonMapChangeAdapter mapChangeAdapter = //builder.getMapChangeAdapter();
-//			modeController.getMapController().addNodeSelectionListener(mapChangeAdapter);
-//			modeController.getMapController().addNodeChangeListener(mapChangeAdapter);
-//			modeController.getMapController().addMapChangeListener(mapChangeAdapter);
-//			controller.getMapViewManager().addMapSelectionListener(mapChangeAdapter);
-			LastOpenedList lastOpenedList = ((ApplicationResourceController)ResourceController.getResourceController()).getLastOpenedList();
-			LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
-//			RibbonBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
-//			menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
-//		}
-		
-		
+				
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				if (modeController.equals(Controller.getCurrentModeController())) {

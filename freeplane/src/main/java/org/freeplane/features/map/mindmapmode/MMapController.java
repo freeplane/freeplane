@@ -88,7 +88,7 @@ public class MMapController extends MapController {
 
 	public MMapController(ModeController modeController) {
 		super(modeController);
-		createActions();
+		createActions(modeController);
 			addNodeSelectionListener(new INodeSelectionListener() {
 				public void onSelect(final NodeModel node) {
 					final ViewController viewController = Controller.getCurrentController().getViewController();
@@ -298,8 +298,7 @@ public class MMapController extends MapController {
 		return super.close(map, force);
 	}
 
-	private void createActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
+	private void createActions(ModeController modeController) {
 		modeController.addAction(new NewMapViewAction());
 		modeController.addAction(new NewSiblingAction());
 		modeController.addAction(new NewPreviousSiblingAction());

@@ -289,7 +289,7 @@ public class MapController extends SelectionController implements IExtension{
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
-		createActions();
+		createActions(modeController);
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {
@@ -439,11 +439,11 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	/**
+	 * @param modeController 
 	 * @param modeController
 	 *
 	 */
-	private void createActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
+	private void createActions(ModeController modeController) {
 		modeController.addAction(new ToggleFoldedAction());
 		modeController.addAction(new ToggleChildrenFoldedAction());
 		modeController.addAction(new ShowNextChildAction());

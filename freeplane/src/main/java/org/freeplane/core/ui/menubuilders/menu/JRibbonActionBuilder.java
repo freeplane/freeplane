@@ -50,6 +50,7 @@ public class JRibbonActionBuilder implements EntryVisitor {
 			addComponent(entry, actionComponent);
 			
 			final AFreeplaneAction action = entryAccessor.getAction(entry);
+			//TODO - event listener im destroyer wieder entfernen?
 			if(action != null) 
 				action.addPropertyChangeListener(new ActionEnabler(actionComponent));
 		}
