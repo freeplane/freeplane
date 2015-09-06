@@ -1,7 +1,11 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.ref.WeakReference;
 
+import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -112,10 +116,10 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		
 		final JCommandToggleButton button = new JCommandToggleButton(title, icon);
-		
+		action.addPropertyChangeListener(new ButtonSelectToggler(button));
 		RibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
-		button.setFocusable(false);
+		button.setFocusable(false);		
 		return button;
 	}
 	
@@ -124,7 +128,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		
 		final JCommandMenuButton button = new JCommandMenuButton(title, icon);
-		
+		action.addPropertyChangeListener(new ButtonSelectToggler(button));
 		RibbonAcceleratorChangeListener.updateRichTooltip(button, action, null);
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
@@ -146,11 +150,9 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 	private void updateActionState(AFreeplaneAction action, AbstractCommandButton button) {		
 		final AFreeplaneAction action1 = action;
 		if(action1.checkEnabledOnChange()) {
-			//action.setEnabled();
 			button.setEnabled(action.isEnabled());
 		}
 		if(isSelectionListener(action)) {
-			//action.setSelected();
 			button.getActionModel().setSelected(action.isSelected());
 		}
 	}
@@ -158,4 +160,26 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 	private boolean isSelectionListener(AFreeplaneAction action) {		
 		return action.checkSelectionOnChange() || action.checkSelectionOnPopup() || action.checkSelectionOnPropertyChange();
 	}
+}
+
+class ButtonSelectToggler implements PropertyChangeListener {
+	final private WeakReference<AbstractCommandButton> comp;
+	
+	public ButtonSelectToggler(AbstractCommandButton button) {
+		this.comp = new WeakReference<AbstractCommandButton>(button);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		final AbstractCommandButton component = comp.get();
+		if (component == null) {
+			final Action action = (Action) evt.getSource();
+			action.removePropertyChangeListener(this);
+		}
+		else if (evt.getPropertyName().equals("selected")) {
+			final AFreeplaneAction action = (AFreeplaneAction) evt.getSource();
+			component.getActionModel().setSelected(action.isSelected());
+		}
+	}
+
 }
