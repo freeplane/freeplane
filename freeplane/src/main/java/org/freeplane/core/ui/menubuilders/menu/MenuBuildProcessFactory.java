@@ -63,12 +63,20 @@ public class MenuBuildProcessFactory {
 			
 			uiBuilder.addBuilderPair("ribbon_taskbar", new JRibbonTaskbarBuilder(), new JRibbonTaskbarDestroyer());
 			uiBuilder.addBuilder("ribbon_menu", new JRibbonApplicationMenuBuilder(resourceAccessor));
+			uiBuilder.addBuilder("primary_entry", new JRibbonApplicationMenuPrimaryBuilder(resourceAccessor, new AcceleratebleActionProvider()));
+			uiBuilder.addBuilder("entry_group", new JRibbonApplicationMenuGroupBuilder(resourceAccessor, acceleratorMap));
+//			uiBuilder.addBuilder("footer_entry", new JRibbonApplicationMenuFooterBuilder(resourceAccessor));
 			uiBuilder.addBuilderPair("ribbon_task", new JRibbonTaskBuilder(resourceAccessor), new JRibbonComponentRemover());
 			uiBuilder.addBuilderPair("ribbon_band", new JRibbonBandBuilder(resourceAccessor), new JRibbonComponentRemover());	
 			
 			uiBuilder.addBuilderPair("ribbon.action", 
 				new JRibbonActionBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 				    resourceAccessor), new JRibbonComponentRemover());
+			
+//			LastOpenedList lastOpenedList = ((ApplicationResourceController)ResourceController.getResourceController()).getLastOpenedList();
+//			LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
+//			RibbonBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
+//			menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
 			
 			
 		}

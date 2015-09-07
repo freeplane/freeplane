@@ -1,6 +1,5 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.net.URL;
 
@@ -50,7 +49,7 @@ public class JRibbonApplicationMenuBuilder implements EntryVisitor {
 interface RibbonApplicationMenuContainer {
 	public void add(RibbonApplicationMenuEntryPrimary comp);
 	
-	public void add(SecondaryEntryGroup comp);
+	public void add(SecondaryGroupEntry comp);
 	
 	public void add(RibbonApplicationMenuEntryFooter comp);
 }
@@ -69,7 +68,7 @@ class RibbonApplicationMenuContainerImpl implements RibbonApplicationMenuContain
 		ribbon.setApplicationMenu(appMenu);
 	}
 
-	public void add(SecondaryEntryGroup comp) {
+	public void add(SecondaryGroupEntry comp) {
 		throw new RuntimeException("not supported!");
 	}
 	

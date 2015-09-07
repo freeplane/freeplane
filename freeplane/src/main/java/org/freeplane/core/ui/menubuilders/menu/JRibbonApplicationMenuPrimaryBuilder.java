@@ -1,9 +1,6 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
-import java.awt.Component;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -20,19 +17,17 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary;
 
 public class JRibbonApplicationMenuPrimaryBuilder implements EntryVisitor {
-	private ResourceAccessor resourceAccessor;
 	private AcceleratebleActionProvider acceleratebleActionProvider;
 	private EntryAccessor entryAccessor;
 	
 	public JRibbonApplicationMenuPrimaryBuilder(ResourceAccessor resourceAccessor, AcceleratebleActionProvider acceleratebleActionProvider) {
 		super();
-		this.resourceAccessor = resourceAccessor;
 		this.acceleratebleActionProvider = acceleratebleActionProvider;
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
 	}
 	@Override
 	public void visit(Entry entry) {
-		RibbonApplicationMenuEntryPrimary component = createMenuEntry(entry);
+		CustomRibbonApplicationMenuEntryPrimary component = createMenuEntry(entry);
 		entryAccessor.setComponent(entry, new RibbonApplicationMenuPrimaryContainer(component));
 		Object parent = entryAccessor.getAncestorComponent(entry);
 		if(parent instanceof RibbonApplicationMenuContainer) {
@@ -46,7 +41,7 @@ public class JRibbonApplicationMenuPrimaryBuilder implements EntryVisitor {
 		return false;
 	}
 	
-	private RibbonApplicationMenuEntryPrimary createMenuEntry(Entry entry) {
+	private CustomRibbonApplicationMenuEntryPrimary createMenuEntry(Entry entry) {
 		AFreeplaneAction action = entryAccessor.getAction(entry);
 		CommandButtonKind kind = CommandButtonKind.POPUP_ONLY;
 		ActionListener listener = null;
@@ -61,24 +56,21 @@ public class JRibbonApplicationMenuPrimaryBuilder implements EntryVisitor {
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 
 	 
-		return new RibbonApplicationMenuEntryPrimary(icon, title, listener, kind);
+		return new CustomRibbonApplicationMenuEntryPrimary(icon, title, listener, kind);
 	}
 }
 
-class SecondaryEntryGroup {
+class SecondaryGroupEntry {
 	private final String groupTitle;
-	private List<RibbonApplicationMenuEntrySecondary> entries = new ArrayList<RibbonApplicationMenuEntrySecondary>();
+	private final RibbonApplicationMenuEntrySecondary entry;
 	
-	public SecondaryEntryGroup(String title) {
+	public SecondaryGroupEntry(String title, RibbonApplicationMenuEntrySecondary entry) {
 		this.groupTitle = title;
+		this.entry = entry;
 	}
 	
-	public void addEntry(RibbonApplicationMenuEntrySecondary entry) {
-		entries.add(entry);
-	}
-	
-	public List<RibbonApplicationMenuEntrySecondary> getEntries() {
-		return Collections.unmodifiableList(entries);
+	public RibbonApplicationMenuEntrySecondary getEntry() {
+		return entry;
 	}
 	
 	public String getTitle() {
@@ -87,9 +79,9 @@ class SecondaryEntryGroup {
 }
 
 class RibbonApplicationMenuPrimaryContainer implements RibbonApplicationMenuContainer {
-	final private RibbonApplicationMenuEntryPrimary primary;
+	final private CustomRibbonApplicationMenuEntryPrimary primary;
 
-	public RibbonApplicationMenuPrimaryContainer(RibbonApplicationMenuEntryPrimary primary) {
+	public RibbonApplicationMenuPrimaryContainer(CustomRibbonApplicationMenuEntryPrimary primary) {
 		this.primary = primary;
 	}
 	
@@ -102,13 +94,34 @@ class RibbonApplicationMenuPrimaryContainer implements RibbonApplicationMenuCont
 		throw new RuntimeException("not supported!");
 	}
 
-	@Override
-	public void add(SecondaryEntryGroup group) {
-		primary.addSecondaryMenuGroup(group.getTitle(), group.getEntries().toArray(new RibbonApplicationMenuEntrySecondary[0]));
+	public void add(SecondaryGroupEntry group) {
+		primary.addToSecondaryMenuGroup(group.getTitle(), group.getEntry());
 	}
 
 	@Override
 	public void add(RibbonApplicationMenuEntryFooter comp) {
 		throw new RuntimeException("not supported!");
 	}	
+}
+
+class CustomRibbonApplicationMenuEntryPrimary extends RibbonApplicationMenuEntryPrimary {
+
+	public CustomRibbonApplicationMenuEntryPrimary(ResizableIcon icon, String text, ActionListener mainActionListener, CommandButtonKind entryKind) {
+		super(icon, text, mainActionListener, entryKind);
+	}
+	
+	public synchronized void addToSecondaryMenuGroup(String groupTitle, RibbonApplicationMenuEntrySecondary... entries) {
+		int index = this.groupTitles.indexOf(groupTitle);
+		if(index == -1) {
+			super.addSecondaryMenuGroup(groupTitle, entries);
+		} else {
+			List<RibbonApplicationMenuEntrySecondary> entryList = this.groupEntries.get(index);
+			for (RibbonApplicationMenuEntrySecondary entry : entries) {
+				entryList.add(entry);
+			}
+		}
+	}
+	
+	
+	
 }
