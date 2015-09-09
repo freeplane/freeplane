@@ -11,6 +11,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.features.icon.factory.ImageIconFactory;
@@ -20,6 +21,13 @@ import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
 public class RibbonComponentDecorationProvider {
 	private ResourceAccessor resourceAccessor;
+	public static ResizableIcon BLANK_ACTION_ICON;
+	static {
+		URL location = ResourceController.getResourceController().getResource("/images/blank_icon_48x48.png");
+		if (location != null) {
+			BLANK_ACTION_ICON = ImageWrapperResizableIcon.getIcon(location, new Dimension(48, 48));
+		}
+	}
 	
 	public RibbonComponentDecorationProvider(ResourceAccessor resourceAccessor) {
 		this.resourceAccessor = resourceAccessor;
@@ -28,7 +36,7 @@ public class RibbonComponentDecorationProvider {
 	public ResizableIcon createIcon(ImageIcon ico) {
 		if(ico != null)
 			return ImageWrapperResizableIcon.getIcon(ico.getImage(), new Dimension(ico.getIconWidth(), ico.getIconHeight()));
-		return null;
+		return BLANK_ACTION_ICON;
 	}
 	
 	public ResizableIcon createIcon(URL location) {
@@ -36,7 +44,7 @@ public class RibbonComponentDecorationProvider {
 			ImageIcon icon = ImageIconFactory.getInstance().getImageIcon(location);
 			return createIcon(icon);
 		}
-		return null;
+		return BLANK_ACTION_ICON;
 	}
 	
 	public ResizableIcon createIcon(Path location) {
@@ -47,7 +55,7 @@ public class RibbonComponentDecorationProvider {
 				throw new RuntimeException(e);
 			}		
 		}
-		return null;
+		return BLANK_ACTION_ICON;
 	}
 	
 	public ResizableIcon getActionIcon(final AFreeplaneAction action) {
