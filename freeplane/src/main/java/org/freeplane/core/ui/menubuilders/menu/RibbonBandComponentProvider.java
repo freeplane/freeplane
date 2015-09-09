@@ -8,6 +8,7 @@ import java.util.List;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.util.TextUtils;
 import org.pushingpixels.flamingo.api.ribbon.AbstractRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies;
@@ -28,7 +29,7 @@ public class RibbonBandComponentProvider implements ComponentProvider {
 
 	@Override
 	public Component createComponent(Entry entry) {
-		String title = entryAccessor.getText(entry);
+		String title = TextUtils.removeMnemonic(entryAccessor.getText(entry));
 		JRibbonBand band = new JRibbonBand(title, null);
 		setResizePolicies(band, String.valueOf(entry.getAttribute(RESIZE_POLICIES_ATTRIBUTE)));
 		return band;

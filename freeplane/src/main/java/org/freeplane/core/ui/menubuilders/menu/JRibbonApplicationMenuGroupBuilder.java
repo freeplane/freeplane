@@ -9,29 +9,28 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
-import org.freeplane.core.ui.ribbon.RibbonActionContributorFactory;
+import org.freeplane.core.ui.menubuilders.ribbon.RibbonComponentDecorator;
 import org.pushingpixels.flamingo.api.common.AbstractCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
-import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.common.popup.PopupPanelCallback;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary;
 
 public class JRibbonApplicationMenuGroupBuilder implements EntryVisitor {
 	private EntryAccessor entryAccessor;
-	private IAcceleratorMap accelerators;
+	private RibbonComponentDecorator decorator;
 	
 	public JRibbonApplicationMenuGroupBuilder(ResourceAccessor resourceAccessor, IAcceleratorMap accelerators) {
 		super();
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
-		this.accelerators = accelerators;
+		this.decorator = new RibbonComponentDecorator(resourceAccessor, accelerators);
 	}
 	
 	@Override
 	public void visit(Entry entry) {
 		Object parent = entryAccessor.getAncestorComponent(entry);
 		if(parent instanceof RibbonApplicationMenuContainer) {
-			entryAccessor.setComponent(entry, new RibbonApplicationMenuEntryGroupDelegator(entryAccessor.getText(entry), (RibbonApplicationMenuContainer) parent, accelerators));
+			entryAccessor.setComponent(entry, new RibbonApplicationMenuEntryGroupDelegator(entryAccessor.getText(entry), (RibbonApplicationMenuContainer) parent, decorator));
 		}
 	}
 
@@ -46,13 +45,14 @@ class RibbonApplicationMenuEntryGroupDelegator extends JRibbonContainer {
 	private final String title;
 	private final RibbonApplicationMenuContainer parent;
 	private AcceleratebleActionProvider acceleratebleActionProvider;
-	private IAcceleratorMap accelerators;
+	private RibbonComponentDecorator decorator;
+	
 
-	public RibbonApplicationMenuEntryGroupDelegator(String title, RibbonApplicationMenuContainer parent, IAcceleratorMap accelerators) {
+	public RibbonApplicationMenuEntryGroupDelegator(String title, RibbonApplicationMenuContainer parent, RibbonComponentDecorator decorator) {
 		this.title = title;
 		this.parent = parent;
 		this.acceleratebleActionProvider = new AcceleratebleActionProvider();
-		this.accelerators = accelerators;
+		this.decorator = decorator;
 	}
 	
 	@Override
@@ -74,11 +74,7 @@ class RibbonApplicationMenuEntryGroupDelegator extends JRibbonContainer {
 					entry.setPopupCallback(callback);
 				}
 			
-			
-				RichTooltip tip = RibbonActionContributorFactory.getRichTooltip(action, accelerators.getAccelerator(action));
-				if(tip != null) {
-					entry.setActionRichTooltip(tip);
-				}
+				decorator.updateRichTooltip(component, action);
 			
 				parent.add(new SecondaryGroupEntry(title, entry));
 			}

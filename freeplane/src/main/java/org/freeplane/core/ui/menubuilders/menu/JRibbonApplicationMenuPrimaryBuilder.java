@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
+import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.ui.menubuilders.ribbon.RibbonComponentDecorator;
 import org.freeplane.core.util.ActionUtils;
+import org.freeplane.core.util.TextUtils;
 import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryFooter;
@@ -19,11 +22,13 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary
 public class JRibbonApplicationMenuPrimaryBuilder implements EntryVisitor {
 	private AcceleratebleActionProvider acceleratebleActionProvider;
 	private EntryAccessor entryAccessor;
+	private RibbonComponentDecorator decorator;
 	
-	public JRibbonApplicationMenuPrimaryBuilder(ResourceAccessor resourceAccessor, AcceleratebleActionProvider acceleratebleActionProvider) {
+	public JRibbonApplicationMenuPrimaryBuilder(ResourceAccessor resourceAccessor, AcceleratebleActionProvider acceleratebleActionProvider, IAcceleratorMap accelerators) {
 		super();
 		this.acceleratebleActionProvider = acceleratebleActionProvider;
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
+		this.decorator = new RibbonComponentDecorator(resourceAccessor, accelerators);
 	}
 	@Override
 	public void visit(Entry entry) {
@@ -52,11 +57,11 @@ public class JRibbonApplicationMenuPrimaryBuilder implements EntryVisitor {
 			kind = entry.hasChildren() ? CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION : CommandButtonKind.ACTION_ONLY;
 			listener = acceleratebleActionProvider.acceleratableAction(action);
 		}
-		String title = ActionUtils.getActionTitle(action);
-		ResizableIcon icon = ActionUtils.getActionIcon(action);
-
-	 
-		return new CustomRibbonApplicationMenuEntryPrimary(icon, title, listener, kind);
+		String title = TextUtils.removeMnemonic(ActionUtils.getActionTitle(action));
+		ResizableIcon icon = decorator.getDecorationProvider().getActionIcon(action);
+		CustomRibbonApplicationMenuEntryPrimary component = new CustomRibbonApplicationMenuEntryPrimary(icon, title, listener, kind);
+		decorator.updateRichTooltip(component, action);
+		return component;
 	}
 }
 

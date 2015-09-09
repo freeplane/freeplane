@@ -73,7 +73,9 @@ class RibbonApplicationMenuContainerImpl implements RibbonApplicationMenuContain
 	}
 	
 	public void add(RibbonApplicationMenuEntryFooter comp) {
-		System.out.println("add Footer: " + comp);
+		RibbonApplicationMenu appMenu = cloneMenu();
+		appMenu.addFooterEntry(comp);
+		ribbon.setApplicationMenu(appMenu);
 	}
 	
 	private RibbonApplicationMenu cloneMenu() {

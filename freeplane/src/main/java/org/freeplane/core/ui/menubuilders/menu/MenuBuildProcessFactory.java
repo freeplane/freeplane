@@ -56,16 +56,16 @@ public class MenuBuildProcessFactory {
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 
 		if (userInputListenerFactory.useRibbonMenu()) {
-			acceleratorMap.addAcceleratorChangeListener(new RibbonAcceleratorChangeListener(entries));
+			acceleratorMap.addAcceleratorChangeListener(new RibbonAcceleratorChangeListener(resourceAccessor, acceleratorMap, entries));
 			
 			uiBuilder.addBuilderPair("main_menu", new JRibbonBuilder(userInputListenerFactory), new JRibbonComponentRemover());
 			uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "ribbon.action");
 			
 			uiBuilder.addBuilderPair("ribbon_taskbar", new JRibbonTaskbarBuilder(), new JRibbonTaskbarDestroyer());
 			uiBuilder.addBuilder("ribbon_menu", new JRibbonApplicationMenuBuilder(resourceAccessor));
-			uiBuilder.addBuilder("primary_entry", new JRibbonApplicationMenuPrimaryBuilder(resourceAccessor, new AcceleratebleActionProvider()));
+			uiBuilder.addBuilder("primary_entry", new JRibbonApplicationMenuPrimaryBuilder(resourceAccessor, new AcceleratebleActionProvider(), acceleratorMap));
 			uiBuilder.addBuilder("entry_group", new JRibbonApplicationMenuGroupBuilder(resourceAccessor, acceleratorMap));
-//			uiBuilder.addBuilder("footer_entry", new JRibbonApplicationMenuFooterBuilder(resourceAccessor));
+			uiBuilder.addBuilder("footer_entry", new JRibbonApplicationMenuFooterBuilder(resourceAccessor, acceleratorMap));
 			uiBuilder.addBuilderPair("ribbon_task", new JRibbonTaskBuilder(resourceAccessor), new JRibbonComponentRemover());
 			uiBuilder.addBuilderPair("ribbon_band", new JRibbonBandBuilder(resourceAccessor), new JRibbonComponentRemover());	
 			
