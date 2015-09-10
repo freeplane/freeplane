@@ -122,15 +122,10 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	final private List<RecentFile> lastOpenedList = new LinkedList<RecentFile>();
 	private RecentFile mapSelectedOnStart;
-	final private LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory;
-
-	public LastOpenedMapsRibbonContributorFactory getLastOpenedMapsRibbonContributorFactory() {
-		return lastOpenedMapsRibbonContributorFactory;
-	}
 
 	LastOpenedList() {
 		restore();
-		lastOpenedMapsRibbonContributorFactory = new LastOpenedMapsRibbonContributorFactory(this);
+		
 	}
 
 	public void registerMenuContributor(final ModeController modeController) {

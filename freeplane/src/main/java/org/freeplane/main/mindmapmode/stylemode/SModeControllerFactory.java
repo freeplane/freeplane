@@ -32,7 +32,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
@@ -120,7 +119,6 @@ public class SModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
 		new MMapController(modeController);
-		userInputListenerFactory.getMenuBuilder(RibbonBuilder.class).setEnabled(false);
 		TextController.install(new MTextController(modeController));
 		SpellCheckerController.install(modeController);
 		IconController.install(new MIconController(modeController));

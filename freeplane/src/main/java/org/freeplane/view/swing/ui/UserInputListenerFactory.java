@@ -55,6 +55,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
+import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -64,6 +65,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
+import org.freeplane.core.ui.menubuilders.ribbon.RibbonBuildProcessFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -104,8 +106,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		useRibbonMenu = useRibbons;
 		Controller controller = Controller.getCurrentController();
-		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));
-				
+		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));		
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				if (modeController.equals(Controller.getCurrentModeController())) {
@@ -411,11 +412,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 			final EntriesForAction entries = new EntriesForAction();
 			final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
-			final MenuBuildProcessFactory menuBuildProcessFactory = new MenuBuildProcessFactory();
-			final PhaseProcessor buildProcessor = menuBuildProcessFactory.createBuildProcessor(this,
-			    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries)
-			    .getBuildProcessor();
-			subtreeBuilder = menuBuildProcessFactory.getChildProcessor();
+			final BuildProcessFactory buildProcessFactory = useRibbonMenu() ? 
+					new RibbonBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries):
+					new MenuBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries);
+			final PhaseProcessor buildProcessor = buildProcessFactory.getBuildProcessor();
+			subtreeBuilder = buildProcessFactory.getChildProcessor();
 			for (final Phase phase : Phase.values())
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
 				    .entrySet())

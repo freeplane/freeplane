@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ribbon.RibbonActionContributorFactory;
+import org.freeplane.core.ui.menubuilders.ribbon.RibbonComponentDecorationProvider;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
@@ -29,7 +29,7 @@ public abstract class ActionUtils {
 			}
 		}
 		if(icon == null) {
-			icon = RibbonActionContributorFactory.BLANK_ACTION_ICON;
+			icon = RibbonComponentDecorationProvider.BLANK_ACTION_ICON;
 		}
 		return icon;
 	}

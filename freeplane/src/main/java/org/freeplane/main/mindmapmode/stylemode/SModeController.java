@@ -27,7 +27,6 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -108,7 +107,6 @@ class SModeController extends MModeController {
 	    }
 	    setStatus(returnVal == JOptionPane.YES_OPTION ? JOptionPane.OK_OPTION : JOptionPane.CANCEL_OPTION);
 	    dialog.setVisible(false);
-	    Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class).setEnabled(true);
     }
 
 	@Override

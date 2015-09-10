@@ -59,7 +59,6 @@ import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -355,10 +354,6 @@ public class MenuBuilder extends UIBuilder implements IAcceleratorChangeListener
 	}
 
 	public void addMenuItem(final String relativeKey, final JMenuItem item, final String key, final int position) {
-		//RIBBONS - to set the right icon size
-		if(item.getIcon() != null && item.getIcon() instanceof ImageIcon) {
-			RibbonBuilder.setRibbonIcon(item);
-		}
 		final Node element = (Node) addElement(relativeKey, item, key, position);
 		if (null == getMenuBar(element)) {
 			return;

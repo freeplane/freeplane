@@ -28,15 +28,14 @@ public class MenuBuildProcessFactoryTest {
 
 	@Before
 	public void setup() {
-		final MenuBuildProcessFactory buildProcessFactory = new MenuBuildProcessFactory();
 		freeplaneActions = mock(FreeplaneActions.class);
 		final ResourceAccessor resourceAccessorMock = mock(ResourceAccessor.class);
 		when(resourceAccessorMock.getRawText(Matchers.anyString())).thenReturn("text");
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
 		final FreeplaneMenuBar menubar = new FreeplaneMenuBar();
 		when(userInputListenerFactory.getMenuBar()).thenReturn(menubar);
-		phaseProcessor = buildProcessFactory.createBuildProcessor(userInputListenerFactory, freeplaneActions,
-		    resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction()).getBuildProcessor();
+		phaseProcessor = (new MenuBuildProcessFactory(userInputListenerFactory, freeplaneActions,
+		    resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction())).getBuildProcessor();
 	}
 
 	@Test

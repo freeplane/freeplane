@@ -68,7 +68,6 @@ import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
@@ -178,7 +177,6 @@ abstract public class FrameController implements ViewController {
 //		this.controller = controller;
 		controller.setViewController(this);
 		controller.addAction(new ToggleFullScreenAction(this));
-		controller.addAction(new ToggleRibbonAction());
 		controller.addAction(new CloseAction());
 
 		controller.addAction(new ToggleMenubarAction(this));

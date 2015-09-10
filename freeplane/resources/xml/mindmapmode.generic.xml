@@ -79,7 +79,7 @@
 					<Entry name="RevertAction" mandatory="true" />
 				</Entry>
 			</Entry>
-			<Entry name="lastOpenedMaps" builder="ribbon_contributor" />
+			<Entry name="lastOpenedMaps" builder="lastOpenedMaps" />
 			<Entry name="save" builder="primary_entry">
 				<Entry name="save" builder="entry_group">
 					<Entry name="SaveAction" accelerator="control S" />
