@@ -78,11 +78,6 @@ public class RibbonBuildProcessFactory implements BuildProcessFactory{
 		uiBuilder.addBuilderPair("ribbon.action", 
 			new JRibbonActionBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 			    resourceAccessor), new JRibbonComponentRemover());
-			
-//		LastOpenedList lastOpenedList = ((ApplicationResourceController)ResourceController.getResourceController()).getLastOpenedList();
-//		LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = lastOpenedList.getLastOpenedMapsRibbonContributorFactory();
-//		RibbonBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
-//		menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
 		
 		uiBuilder.addBuilder("map_popup", new MapPopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu.action");
