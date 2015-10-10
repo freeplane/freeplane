@@ -51,7 +51,7 @@ public class RibbonComponentDecorator {
 	}
 
 	public void updateRichTooltip(Object component, AFreeplaneAction action, KeyStroke ks) {
-		final String title = action.getRawText();
+		final String title = resourceAccessor.getText(action.getTextKey(), "");
 		final String tooltip = getActionTooltip(action);
 		RichTooltip tip = decorationProvider.createRichTooltip(title, tooltip, ks);
 		setRichToolTip(component, tip);
@@ -87,9 +87,9 @@ public class RibbonComponentDecorator {
 	
 	private String getActionTooltip(final AFreeplaneAction action) {
 		if (action != null) {
-			final String rawText = resourceAccessor.getRawText(action.getTooltipKey());
-			if (rawText != null)
-				return rawText;					
+			final String text = resourceAccessor.getText(action.getTooltipKey(), null);
+			if (text != null)
+				return text;					
 		}
 		return "";
 	}

@@ -26,4 +26,14 @@ public class FreeplaneResourceAccessor implements ResourceAccessor {
 	public int getIntProperty(String key, int defaultValue) {
 		return ResourceController.getResourceController().getIntProperty(key, defaultValue);
 	}
+
+	@Override
+	public String getText(String key) {
+		return TextUtils.getText(key);
+	}
+
+	@Override
+	public String getText(String key, String defaultValue) {
+		return TextUtils.getText(key, defaultValue);
+	}
 }

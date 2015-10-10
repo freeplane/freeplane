@@ -8,6 +8,10 @@ public interface ResourceAccessor {
 	public String getProperty(final String key);
 
 	public String getRawText(String name);
+	
+	public String getText(String name);
+	
+	public String getText(String name, String defaultValue);
 
 	public URL getResource(final String name);
 

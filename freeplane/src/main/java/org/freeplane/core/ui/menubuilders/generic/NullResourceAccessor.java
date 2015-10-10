@@ -22,4 +22,14 @@ class NullResourceAccessor implements ResourceAccessor {
     public int getIntProperty(String name, int defaultValue) {
     	return 0;
     }
+
+	@Override
+	public String getText(String name) {
+		return null;
+	}
+
+	@Override
+	public String getText(String name, String defaultValue) {
+		return defaultValue;
+	}
 }
