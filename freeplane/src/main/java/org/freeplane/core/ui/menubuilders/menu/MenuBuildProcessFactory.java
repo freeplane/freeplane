@@ -75,9 +75,11 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
 
-		uiBuilder.addBuilderPair("menu.action", //
-		    new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
-		        resourceAccessor), new JComponentRemover());
+		JMenuItemBuilder menuBuilder = new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
+		    resourceAccessor);
+		JComponentRemover destroyer = new JComponentRemover();
+		uiBuilder.addBuilderPair("menu", menuBuilder, destroyer);
+		uiBuilder.addBuilderPair("menu.action", menuBuilder, destroyer);
 
 		buildProcessor = new PhaseProcessor()
 								.withPhase(ACTIONS, actionBuilder) //

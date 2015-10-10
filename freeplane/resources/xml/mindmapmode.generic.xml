@@ -217,7 +217,7 @@
 				</Entry>
 			</Entry>
 		</Entry>
-		<Entry name="file" builder="menu.action,ignore">
+		<Entry name="file" builder="menu,ignore">
 			<Entry name="NewMapAction" accelerator="control N" />
 			<Entry name="EncryptedMap" />
 			<Entry builder="separator" />
@@ -275,7 +275,7 @@
 			<Entry name="CloseAction" accelerator="control W" />
 			<Entry name="QuitAction" accelerator="alt F4" />
 		</Entry>
-		<Entry name="edit" builder="menu.action,ignore">
+		<Entry name="edit" builder="menu,ignore">
 			<Entry name="CutAction" accelerator="control X" />
 			<Entry name="CopyAction" accelerator="control C" />
 			<Entry name="CopySingleAction" accelerator="control shift C" />
@@ -390,7 +390,7 @@
 					<Entry name="RemoveIcon_0_Action" />
 					<Entry name="RemoveIconAction" />
 				</Entry>
-				<Entry name="icons">
+				<Entry name="icons" >
 					<Entry builder="icon_actions" />
 				</Entry>
 				<Entry name="IconProgressIconUpAction" accelerator="alt LESS">
@@ -648,21 +648,18 @@
 			</Entry>
 		</Entry>
 		<Entry name="help" orderPriority="last" builder="ribbon_task">
-			<Entry name="help_misc" orderPriority="0"
-				builder="ribbon_band">
+			<Entry name="help_misc" orderPriority="0" builder="ribbon_band">
 				<Entry name="OpenUserDirAction" priority="top" mandatory="true" />
 				<Entry name="UpdateCheckAction" priority="top" mandatory="true" />
 				<Entry name="GettingStartedAction" accelerator="F1" mandatory="true" />
 				<Entry name="HotKeyInfoAction" mandatory="true" />
 			</Entry>
-			<Entry name="contact" orderPriority="2000"
-				builder="ribbon_band">
+			<Entry name="contact" orderPriority="2000" builder="ribbon_band">
 				<Entry name="AskForHelp" mandatory="true" />
 				<Entry name="RequestFeatureAction" mandatory="true" />
 				<Entry name="ReportBugAction" mandatory="true" />
 			</Entry>
-			<Entry name="about" orderPriority="last"
-				builder="ribbon_band">
+			<Entry name="about" orderPriority="last" builder="ribbon_band">
 				<Entry name="OpenFreeplaneSiteAction" priority="top"
 					mandatory="true" />
 				<Entry name="AboutAction" priority="top" mandatory="true" />
