@@ -38,7 +38,12 @@ public class MutableRibbonTask extends RibbonTask {
 		if(band != null) {
 			band.setRibbonTask(this);
 			this.bands.add(band);
+			fireTaskChanged();
 		}
+	}
+
+	private void fireTaskChanged() {
+		this.setTitle(getTitle());
 	}
 }
 
