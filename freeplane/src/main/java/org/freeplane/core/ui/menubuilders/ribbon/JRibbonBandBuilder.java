@@ -1,5 +1,7 @@
 package org.freeplane.core.ui.menubuilders.ribbon;
 
+import static org.freeplane.core.ui.menubuilders.ribbon.RibbonBandComponentProvider.RESIZE_POLICIES_ATTRIBUTE;
+
 import java.awt.Component;
 import java.awt.Insets;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class JRibbonBandBuilder implements EntryVisitor {
 
 	@Override
 	public void visit(Entry target) {
-		Object attr = target.getAttribute("");
+		Object attr = target.getAttribute(RESIZE_POLICIES_ATTRIBUTE);
 		RibbonBandContainer container = new RibbonBandContainer((JRibbonBand)provider.createComponent(target), attr == null ? null : String.valueOf(attr));
 		accessor.setComponent(target, container);
 		((MutableRibbonTask) accessor.getAncestorComponent(target)).addBand(container.getBand());

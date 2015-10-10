@@ -289,7 +289,7 @@
 			<Entry name="RedoAction" accelerator="control Y" />
 		</Entry>
 		<Entry name="nodes" orderPriority="0" builder="ribbon_task">
-			<Entry name="add_node" resize_policies="Mirror,hi2mid" builder="ribbon_band">
+			<Entry name="add_node" resize_policies="" builder="ribbon_band">
 				<Entry name="NewChildAction" accelerator="INSERT" priority="top" />
 				<Entry name="NewSiblingAction" accelerator="ENTER" priority="top">
 					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
@@ -302,7 +302,7 @@
 				<Entry name="NewFreeNodeAction" />
 				<Entry name="NewParentNode" accelerator="shift INSERT" />
 			</Entry>
-			<Entry name="edit_node" resize_policies="Mirror,hi2mid" builder="ribbon_band">
+			<Entry name="edit_node" resize_policies="" builder="ribbon_band">
 				<Entry name="EditAction" priority="Top" />
 				<Entry name="EditLongAction" priority="Top" accelerator="alt ENTER" />
 				<Entry name="DeleteAction" accelerator="DELETE" priority="medium" />
@@ -311,13 +311,13 @@
 				<Entry name="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
 				<Entry name="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
 			</Entry>
-			<Entry name="node_details" resize_policies="Mirror,hi2mid" builder="ribbon_band">
+			<Entry name="node_details" resize_policies="" builder="ribbon_band">
 				<Entry name="EditDetailsAction" priority="medium" />
 				<Entry name="EditDetailsInDialogAction" />
 				<Entry name="DeleteDetailsAction" />
 				<Entry name="ToggleDetailsAction" accelerator="alt F2" />
 			</Entry>
-			<Entry name="node_settings" resize_policies="Mirror,hi2mid" builder="ribbon_band">
+			<Entry name="node_settings" resize_policies="" builder="ribbon_band">
 				<Entry name="JoinNodesAction" accelerator="control J"
 					priority="medium" />
 				<Entry name="SplitNode" />
@@ -326,7 +326,7 @@
 				<Entry name="SetShortenerStateAction" />
 				<Entry name="FreeNodeAction" />
 			</Entry>
-			<Entry name="general_settings" resize_policies="Mirror"
+			<Entry name="general_settings" resize_policies=""
 				builder="ribbon_band">
 				<Entry name="RevisionPluginAction" />
 				<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
@@ -482,7 +482,7 @@
 		</Entry>
 		<Entry name="filter" builder="ribbon_task">
 			<Entry name="filterConditions"><Entry builder="filterConditions"/></Entry>
-			<Entry name="filter" resize_policies="Mirror, High2Low"	builder="ribbon_band">
+			<Entry name="filter" resize_policies=""	builder="ribbon_band">
 				<Entry name="EditFilterAction" priority="top" />
 				<Entry name="FindAction" accelerator="control G" priority="top" />
 				<Entry name="NodeListAction" accelerator="control shift F">
