@@ -1,6 +1,8 @@
 package org.freeplane.core.ui.menubuilders.ribbon;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
 
 import javax.swing.Action;
 import javax.swing.JPanel;
@@ -67,7 +69,15 @@ public class RibbonLastOpenedMapsBuilder extends JRibbonApplicationMenuPrimaryBu
 					for (Entry child : entry.children()) {
 						AFreeplaneAction action = entryAccessor.getAction(child);
 						String name = ActionUtils.getActionTitle(action);
-						JCommandButton menuButton = new JCommandButton(name);
+						@SuppressWarnings("serial")
+						JCommandButton menuButton = new JCommandButton(name){
+							@Override
+							public Dimension getPreferredSize() {
+								FontMetrics fm = getFontMetrics(getFont());
+								return new Dimension(1, fm.getAscent() + fm.getDescent() + 2);
+							}
+							
+						};
 						menuButton.addActionListener(action);
 						menuButton.setCommandButtonKind(CommandButtonKind.ACTION_ONLY);
 						menuButton.setHorizontalAlignment(SwingUtilities.LEADING);
@@ -77,9 +87,12 @@ public class RibbonLastOpenedMapsBuilder extends JRibbonApplicationMenuPrimaryBu
 						    .getValue(Action.SHORT_DESCRIPTION), name));
 						secondary.addButtonToLastGroup(menuButton);
 					}
-					JScrollablePanel<JCommandButtonPanel> scrollPanel = new JScrollablePanel<JCommandButtonPanel>(
-					    secondary, ScrollType.VERTICALLY);
-					targetPanel.add(scrollPanel, BorderLayout.CENTER);
+					JScrollablePanel<JCommandButtonPanel> horizontalScrollPanel = new JScrollablePanel<JCommandButtonPanel>(
+						    secondary, ScrollType.HORIZONTALLY);
+					JScrollablePanel<JScrollablePanel<JCommandButtonPanel> > verticalScrollPanel = new JScrollablePanel<JScrollablePanel<JCommandButtonPanel> >(
+							horizontalScrollPanel, ScrollType.VERTICALLY);
+					
+					targetPanel.add(verticalScrollPanel, BorderLayout.CENTER);
 				}
 			};
 		}
