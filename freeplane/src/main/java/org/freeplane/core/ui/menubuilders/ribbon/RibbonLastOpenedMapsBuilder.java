@@ -31,7 +31,6 @@ import org.pushingpixels.flamingo.internal.ui.ribbon.appmenu.JRibbonApplicationM
 
 public class RibbonLastOpenedMapsBuilder extends JRibbonApplicationMenuPrimaryBuilder {
 
-	private PrimaryRolloverCallback rolloverCallback;
 	
 	public RibbonLastOpenedMapsBuilder(ResourceAccessor resourceAccessor, AcceleratebleActionProvider acceleratebleActionProvider, IAcceleratorMap accelerators) {
 		super(resourceAccessor, acceleratebleActionProvider, accelerators);
@@ -39,16 +38,18 @@ public class RibbonLastOpenedMapsBuilder extends JRibbonApplicationMenuPrimaryBu
 	
 	@Override
 	public void visit(Entry entry) {
-		if(rolloverCallback == null) {
-			RibbonApplicationMenuEntryPrimary component = this.createMenuEntry(entry);
-			component.setRolloverCallback(getCallback(component, entry));
-			entryAccessor.setComponent(entry, component);
-			Object parent = entryAccessor.getAncestorComponent(entry);
-			if(parent instanceof RibbonApplicationMenuContainer) {
-				final RibbonApplicationMenuContainer container = (RibbonApplicationMenuContainer) parent; 
-				container.add(component);
+		    Entry parentEntry = entry.getParent();
+			RibbonApplicationMenuEntryPrimary component = (RibbonApplicationMenuEntryPrimary) entryAccessor.getComponent(parentEntry);
+			if(component == null) {
+				component = this.createMenuEntry(parentEntry);
+				entryAccessor.setComponent(parentEntry, component);
+				Object parent = entryAccessor.getAncestorComponent(parentEntry);
+				if(parent instanceof RibbonApplicationMenuContainer) {
+					final RibbonApplicationMenuContainer container = (RibbonApplicationMenuContainer) parent; 
+					container.add(component);
+				}
 			}
-		}
+			component.setRolloverCallback(getCallback(component, entry));
 	}
 
 	@Override
@@ -57,45 +58,43 @@ public class RibbonLastOpenedMapsBuilder extends JRibbonApplicationMenuPrimaryBu
 	}
 	
 	private PrimaryRolloverCallback getCallback(final RibbonApplicationMenuEntryPrimary primeEntry, final Entry entry) {
-		if (rolloverCallback == null) {
-			rolloverCallback = new PrimaryRolloverCallback() {
-				public void menuEntryActivated(JPanel targetPanel) {
-					targetPanel.removeAll();
-					targetPanel.setLayout(new BorderLayout());
-					JCommandButtonPanel secondary = new JRibbonApplicationMenuPopupPanelSecondary(primeEntry);
-					secondary.setToShowGroupLabels(false);
-					String groupDesc = primeEntry.getText();
-					secondary.addButtonGroup(groupDesc);
-					for (Entry child : entry.children()) {
-						AFreeplaneAction action = entryAccessor.getAction(child);
-						String name = ActionUtils.getActionTitle(action);
-						@SuppressWarnings("serial")
-						JCommandButton menuButton = new JCommandButton(name){
-							@Override
-							public Dimension getPreferredSize() {
-								FontMetrics fm = getFontMetrics(getFont());
-								return new Dimension(1, fm.getAscent() + fm.getDescent() + 2);
-							}
-							
-						};
-						menuButton.addActionListener(action);
-						menuButton.setCommandButtonKind(CommandButtonKind.ACTION_ONLY);
-						menuButton.setHorizontalAlignment(SwingUtilities.LEADING);
-						menuButton.setPopupOrientationKind(CommandButtonPopupOrientationKind.SIDEWARD);
-						menuButton.setEnabled(true);
-						menuButton.setActionRichTooltip(new RichTooltip((String) action
-						    .getValue(Action.SHORT_DESCRIPTION), name));
-						secondary.addButtonToLastGroup(menuButton);
-					}
-					JScrollablePanel<JCommandButtonPanel> horizontalScrollPanel = new JScrollablePanel<JCommandButtonPanel>(
-						    secondary, ScrollType.HORIZONTALLY);
-					JScrollablePanel<JScrollablePanel<JCommandButtonPanel> > verticalScrollPanel = new JScrollablePanel<JScrollablePanel<JCommandButtonPanel> >(
-							horizontalScrollPanel, ScrollType.VERTICALLY);
-					
-					targetPanel.add(verticalScrollPanel, BorderLayout.CENTER);
+		PrimaryRolloverCallback rolloverCallback = new PrimaryRolloverCallback() {
+			public void menuEntryActivated(JPanel targetPanel) {
+				targetPanel.removeAll();
+				targetPanel.setLayout(new BorderLayout());
+				JCommandButtonPanel secondary = new JRibbonApplicationMenuPopupPanelSecondary(primeEntry);
+				secondary.setToShowGroupLabels(false);
+				String groupDesc = primeEntry.getText();
+				secondary.addButtonGroup(groupDesc);
+				for (Entry child : entry.children()) {
+					AFreeplaneAction action = entryAccessor.getAction(child);
+					String name = ActionUtils.getActionTitle(action);
+					@SuppressWarnings("serial")
+					JCommandButton menuButton = new JCommandButton(name){
+						@Override
+						public Dimension getPreferredSize() {
+							FontMetrics fm = getFontMetrics(getFont());
+							return new Dimension(1, fm.getAscent() + fm.getDescent() + 2);
+						}
+
+					};
+					menuButton.addActionListener(action);
+					menuButton.setCommandButtonKind(CommandButtonKind.ACTION_ONLY);
+					menuButton.setHorizontalAlignment(SwingUtilities.LEADING);
+					menuButton.setPopupOrientationKind(CommandButtonPopupOrientationKind.SIDEWARD);
+					menuButton.setEnabled(true);
+					menuButton.setActionRichTooltip(new RichTooltip((String) action
+							.getValue(Action.SHORT_DESCRIPTION), name));
+					secondary.addButtonToLastGroup(menuButton);
 				}
-			};
-		}
+				JScrollablePanel<JCommandButtonPanel> horizontalScrollPanel = new JScrollablePanel<JCommandButtonPanel>(
+						secondary, ScrollType.HORIZONTALLY);
+				JScrollablePanel<JScrollablePanel<JCommandButtonPanel> > verticalScrollPanel = new JScrollablePanel<JScrollablePanel<JCommandButtonPanel> >(
+						horizontalScrollPanel, ScrollType.VERTICALLY);
+
+				targetPanel.add(verticalScrollPanel, BorderLayout.CENTER);
+			}
+		};
 		return rolloverCallback;
 	}
 
