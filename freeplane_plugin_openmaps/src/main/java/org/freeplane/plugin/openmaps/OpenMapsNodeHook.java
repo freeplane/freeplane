@@ -14,6 +14,7 @@ import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.openmaps.mapelements.OpenMapsDialog;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.interfaces.ICoordinate;
 import org.freeplane.plugin.openmaps.LocationChoosenListener;
 
 /**
@@ -51,7 +52,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	
 
 	//Called when a location is chosen in the OpenMapsDialog
-	public void locationChoosenAction(Coordinate locationChoosen, int zoom) {
+	public void locationChoosenAction(ICoordinate locationChoosen, int zoom) {
 		addChoosenLocationToSelectedNode(locationChoosen, zoom); 
 //		map.getController().removeLocationChoosenListener(this);
 	}
@@ -107,7 +108,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		}
 	}
 	
-	private void addChoosenLocationToSelectedNode(Coordinate locationChoosen, int zoom) {
+	private void addChoosenLocationToSelectedNode(ICoordinate locationChoosen, int zoom) {
 		final NodeModel node = getCurrentlySelectedNode();
 		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
 		
@@ -119,7 +120,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		refreshNode(node);
 	}
 	
-	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final Coordinate locationChoosen, final int zoomChoosen) {
+	private void setLocationChoiceUndoable(final OpenMapsExtension extension, final ICoordinate locationChoosen, final int zoomChoosen) {
 		final Coordinate currentLocation = extension.getLocation();
 		final int currentZoom = extension.getZoom();
 
@@ -133,11 +134,11 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		}
 	}
 
-	private IActor createUndoActor(final OpenMapsExtension extension, final Coordinate newlyChoosenLocation, 
-			final Coordinate currentlyStoredLocation, final int newlyChoosenZoom , final int currentlyStoredZoom) {
+	private IActor createUndoActor(final OpenMapsExtension extension, final ICoordinate newlyChoosenLocation, 
+			final ICoordinate currentlyStoredLocation, final int newlyChoosenZoom , final int currentlyStoredZoom) {
 		
 		return new IActor() {
-			private final Coordinate oldLocation = currentlyStoredLocation;
+			private final ICoordinate oldLocation = currentlyStoredLocation;
 			private final int oldZoom = currentlyStoredZoom;
 
 			public void act() {
