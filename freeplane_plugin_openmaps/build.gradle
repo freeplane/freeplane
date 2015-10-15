@@ -1,7 +1,7 @@
 dependencies {
     compile project(':freeplane')
 
-    compile ':JMapViewer-1.02' // note that JMapViewer >= 1.04 requires Java7!
+    compile ':JMapViewer-1.11'
 }
 
 jar {
