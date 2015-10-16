@@ -3,6 +3,8 @@ package org.freeplane.core.ui.menubuilders.ribbon;
 import java.awt.Dimension;
 import java.net.URL;
 
+import javax.swing.JPanel;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -79,7 +81,8 @@ class RibbonApplicationMenuContainerImpl implements RibbonApplicationMenuContain
 	}
 	
 	private RibbonApplicationMenu cloneMenu() {
-		RibbonApplicationMenu appMenu = new RibbonApplicationMenu();
+		final RibbonApplicationMenu appMenu = new RibbonApplicationMenu();
+		increasePreferredWidth(appMenu);
 		RibbonApplicationMenu oldMenu = ribbon.getApplicationMenu();
 		if(oldMenu != null) {
 			for(RibbonApplicationMenuEntryFooter footer : oldMenu.getFooterEntries()) {
@@ -90,5 +93,16 @@ class RibbonApplicationMenuContainerImpl implements RibbonApplicationMenuContain
 			}
 		}
 		return appMenu;
+	}
+
+	private void increasePreferredWidth(final RibbonApplicationMenu appMenu) {
+		appMenu.setDefaultCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
+			@Override
+			public void menuEntryActivated(JPanel targetPanel) {
+				Dimension preferredSize = targetPanel.getPreferredSize();
+				targetPanel.setPreferredSize(new Dimension( preferredSize.width * 5 / 3, preferredSize.height));
+				appMenu.setDefaultCallback(null);
+			}
+		});
 	}
 }
