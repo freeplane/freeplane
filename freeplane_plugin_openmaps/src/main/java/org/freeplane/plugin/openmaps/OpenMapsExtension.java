@@ -2,6 +2,7 @@ package org.freeplane.plugin.openmaps;
 
 import org.freeplane.core.extension.IExtension;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.interfaces.ICoordinate;
 
 /**
  * @author Blair Archibald
@@ -33,7 +34,7 @@ public class OpenMapsExtension implements IExtension {
 		location = new Coordinate(location_x, location_y);
 	}
 
-	public void updateLocation(Coordinate locationChoosen) {
+	public void updateLocation(ICoordinate locationChoosen) {
 		location = new Coordinate(locationChoosen.getLat(), locationChoosen.getLon());
 	}
 
