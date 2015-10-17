@@ -16,6 +16,7 @@ import org.pushingpixels.flamingo.api.common.JCommandButton.CommandButtonKind;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryFooter;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary;
+import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary;
 
 public class JRibbonApplicationMenuPrimaryBuilder implements EntryVisitor {
@@ -105,7 +106,11 @@ class RibbonApplicationMenuPrimaryContainer implements RibbonApplicationMenuCont
 	@Override
 	public void add(RibbonApplicationMenuEntryFooter comp) {
 		throw new RuntimeException("not supported!");
-	}	
+	}
+	
+	public void setRolloverCallback(PrimaryRolloverCallback rolloverCallback) {
+		primary.setRolloverCallback(rolloverCallback);
+	}
 }
 
 class CustomRibbonApplicationMenuEntryPrimary extends RibbonApplicationMenuEntryPrimary {

@@ -39,17 +39,12 @@ public class RibbonLastOpenedMapsBuilder extends JRibbonApplicationMenuPrimaryBu
 	@Override
 	public void visit(Entry entry) {
 		    Entry parentEntry = entry.getParent();
-			RibbonApplicationMenuEntryPrimary component = (RibbonApplicationMenuEntryPrimary) entryAccessor.getComponent(parentEntry);
+		    RibbonApplicationMenuPrimaryContainer component = (RibbonApplicationMenuPrimaryContainer) entryAccessor.getComponent(parentEntry);
 			if(component == null) {
-				component = this.createMenuEntry(parentEntry);
+				component = new RibbonApplicationMenuPrimaryContainer(this.createMenuEntry(parentEntry));
 				entryAccessor.setComponent(parentEntry, component);
-				Object parent = entryAccessor.getAncestorComponent(parentEntry);
-				if(parent instanceof RibbonApplicationMenuContainer) {
-					final RibbonApplicationMenuContainer container = (RibbonApplicationMenuContainer) parent; 
-					container.add(component);
-				}
 			}
-			component.setRolloverCallback(getCallback(component, entry));
+			component.setRolloverCallback(getCallback(component.getPrimary(), entry));
 	}
 
 	@Override

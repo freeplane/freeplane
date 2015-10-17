@@ -64,6 +64,9 @@ public class RibbonBuildProcessFactory implements BuildProcessFactory{
 		
 		uiBuilder.addBuilderPair("main_menu", new JRibbonBuilder(userInputListenerFactory), new JRibbonComponentRemover());
 		uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "ribbon.action");
+		uiBuilder.setSubtreeDefaultBuilderPair("ribbon_menu", "primary_entry");
+		uiBuilder.setSubtreeDefaultBuilderPair("primary_entry", "entry_group");
+		uiBuilder.setSubtreeDefaultBuilderPair("entry_group", "ribbon.action");
 		
 		uiBuilder.addBuilderPair("ribbon_taskbar", new JRibbonTaskbarBuilder(), new JRibbonTaskbarDestroyer());
 		uiBuilder.addBuilder("ribbon_menu", new JRibbonApplicationMenuBuilder(resourceAccessor));
