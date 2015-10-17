@@ -55,6 +55,8 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
  */
 public class MapStyleModel implements IExtension {
 	public static final String STYLES_PREDEFINED = "styles.predefined";
+	public static final String STYLES_USER_DEFINED = "styles.user-defined";
+	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
 	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
     public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
     public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
@@ -303,7 +305,6 @@ public class MapStyleModel implements IExtension {
     }
 
 	ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
-	public static final String STYLES_USER_DEFINED = "styles.user-defined";
 	ComboBoxModel getStylesAsComboBoxModel() {
 		return stylesComboBoxModel;
     }
