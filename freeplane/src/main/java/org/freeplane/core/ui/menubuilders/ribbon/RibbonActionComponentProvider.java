@@ -34,11 +34,13 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 	private AcceleratebleActionProvider acceleratebleActionProvider;
 	private EntryAccessor entryAccessor;
 	private RibbonComponentDecorator decorator;
+	private ResourceAccessor resourceAccessor;
 	
 	public RibbonActionComponentProvider(IAcceleratorMap accelerators, AcceleratebleActionProvider acceleratebleActionProvider, ResourceAccessor resourceAccessor) {
 		this.acceleratebleActionProvider = acceleratebleActionProvider;
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
-		this.decorator = new RibbonComponentDecorator(resourceAccessor, accelerators);
+		this.resourceAccessor = resourceAccessor;
+		this.decorator = new RibbonComponentDecorator(this.resourceAccessor, accelerators);
 	}
 	
 	@Override
@@ -47,21 +49,20 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 	}
 	
 	private Component createButtonComponent(Entry entry) {
+		final boolean isPopupItem = (entryAccessor.getAncestorComponent(entry) instanceof RibbonPopupWrapper);
 		final AFreeplaneAction action = entryAccessor.getAction(entry);
-		
 		if(action != null) {
 			Object attr = entry.getAttribute("mandatory");
 			final boolean mandatory = Boolean.parseBoolean(attr == null? "false":String.valueOf(attr).toLowerCase());
 			if(mandatory) {
 				action.putValue(MANDATORY_PROPERTY, mandatory);
 			}
-			final boolean isPopupItem = (entryAccessor.getAncestorComponent(entry) instanceof RibbonPopupWrapper);
 			
 			AbstractCommandButton button;
 			if(isSelectionListener(action)) {
 				button = isPopupItem ? createCommandToggleMenuButton(action) : createCommandToggleButton(action);
 				if (entry.hasChildren()) {
-					LogUtils.severe("RibbonActionComponentProvider.createButton(): can't add popup menu to toggle button for action: "+ entry);
+					LogUtils.severe("RibbonActionComponentProvider.createButton(): can't add popup menu to toggle button for: "+ entry.getPath());
 				}
 			}
 			else {
@@ -72,18 +73,35 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 			}
 			button.putClientProperty(ACTION, action);
 			
-			attr = entry.getAttribute("orderPriority");
-			button.putClientProperty(ORDER_PROPERTY, JRibbonContainer.APPEND); //parseOrderSettings(attr == null? "":String.valueOf(attr))
-
-			attr = entry.getAttribute("priority");
-			button.putClientProperty(PRIORITY_PROPERTY, getPriority(attr == null? "medium" : String.valueOf(attr)));
-			
-			decorator.decorate(button, entry);
+			decorate(button, entry);
 			updateActionState(action, button);
 			
 			return button;
 		}
+		else {
+			if (entry.hasChildren()){
+				String title = entryAccessor.getText(entry);
+				
+				final JCommandButton button = isPopupItem ? new JCommandMenuButton(title, null) : new JCommandButton(title, null);
+				button.setCommandButtonKind(CommandButtonKind.POPUP_ONLY);
+				button.setFocusable(false);
+				
+				decorate(button, entry);
+				return button;
+			}
+		}
 		return null;
+	}
+
+	private void decorate(AbstractCommandButton button, Entry entry) {
+		Object attr;
+		attr = entry.getAttribute("orderPriority");
+		button.putClientProperty(ORDER_PROPERTY, JRibbonContainer.APPEND); //parseOrderSettings(attr == null? "":String.valueOf(attr))
+
+		attr = entry.getAttribute("priority");
+		button.putClientProperty(PRIORITY_PROPERTY, getPriority(attr == null? "medium" : String.valueOf(attr)));
+		
+		decorator.decorate(button, entry);
 	}
 	
 	private RibbonElementPriority getPriority(String attr) {
@@ -119,8 +137,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 	private JCommandMenuButton createCommandMenuButton(final AFreeplaneAction action) {
 		String title = ActionUtils.getActionTitle(action);
 		
-		final JCommandMenuButton button = new JCommandMenuButton(title, null);
-		action.addPropertyChangeListener(new ButtonSelectToggler(button));
+		final JCommandMenuButton button = new JCommandMenuButton(title, null);		
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;
@@ -130,6 +147,7 @@ public class RibbonActionComponentProvider implements ComponentProvider {
 		String title = ActionUtils.getActionTitle(action);
 		
 		final JCommandToggleMenuButton button = new JCommandToggleMenuButton(title, null);
+		action.addPropertyChangeListener(new ButtonSelectToggler(button));
 		button.addActionListener(acceleratebleActionProvider.acceleratableAction(action));
 		button.setFocusable(false);
 		return button;

@@ -53,6 +53,10 @@ public class RibbonComponentDecorator {
 	public void updateRichTooltip(Object component, AFreeplaneAction action, KeyStroke ks) {
 		final String title = resourceAccessor.getText(action.getTextKey(), "");
 		final String tooltip = getActionTooltip(action);
+		updateRichTooltip(component, ks, title, tooltip);
+	}
+
+	private void updateRichTooltip(Object component, KeyStroke ks, String title, String tooltip) {
 		RichTooltip tip = decorationProvider.createRichTooltip(title, tooltip, ks);
 		setRichToolTip(component, tip);
 	}
@@ -63,8 +67,14 @@ public class RibbonComponentDecorator {
 	}
 	
 	public void updateRichToolTip(final Object component, Entry entry) {
-		AFreeplaneAction action = entryAccessor.getAction(entry);	
-		updateRichTooltip(component, action);
+		AFreeplaneAction action = entryAccessor.getAction(entry);
+		if(action != null) { 
+			updateRichTooltip(component, action);
+		} else {
+			final String title = entryAccessor.getText(entry);
+			final String tooltip = resourceAccessor.getText(entry.getName()+".tooltip", "");
+			updateRichTooltip(component, null, title, tooltip);
+		}
 	}
 	
 	private void setRichToolTip(final Object component, RichTooltip tip) {
@@ -102,7 +112,8 @@ public class RibbonComponentDecorator {
 	public ResizableIcon getIcon(Entry entry) {
 		ResizableIcon icon = decorationProvider.createIcon((ImageIcon)entryAccessor.getIcon(entry));
 		if(icon == null) {
-			icon = decorationProvider.getActionIcon(entryAccessor.getAction(entry));
+			AFreeplaneAction action = entryAccessor.getAction(entry);
+			if(action != null) icon = decorationProvider.getActionIcon(action);
 		}
 		return icon;
 	}
