@@ -18,9 +18,11 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenuEntrySecondary
 public class JRibbonApplicationMenuGroupBuilder implements EntryVisitor {
 	private EntryAccessor entryAccessor;
 	private RibbonComponentDecorator decorator;
+	private ResourceAccessor resourceAccessor;
 	
 	public JRibbonApplicationMenuGroupBuilder(ResourceAccessor resourceAccessor, IAcceleratorMap accelerators) {
 		super();
+		this.resourceAccessor = resourceAccessor;
 		this.entryAccessor = new EntryAccessor(resourceAccessor);
 		this.decorator = new RibbonComponentDecorator(resourceAccessor, accelerators);
 	}
@@ -29,7 +31,7 @@ public class JRibbonApplicationMenuGroupBuilder implements EntryVisitor {
 	public void visit(Entry entry) {
 		Object parent = entryAccessor.getAncestorComponent(entry);
 		if(parent instanceof RibbonApplicationMenuContainer) {
-			entryAccessor.setComponent(entry, new RibbonApplicationMenuEntryGroupDelegator(entryAccessor.getText(entry), (RibbonApplicationMenuContainer) parent, decorator));
+			entryAccessor.setComponent(entry, new RibbonApplicationMenuEntryGroupDelegator(resourceAccessor.getText(entry.getName()), (RibbonApplicationMenuContainer) parent, decorator));
 		}
 	}
 
