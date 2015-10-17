@@ -48,10 +48,10 @@ public class NewLevelStyleAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getCurrentController().getMap();
-		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		NodeModel levelStyleParentNode = styleModel.getStyleNodeGroup(map, MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
 		final String styleName = "AutomaticLayout.level," + levelStyleParentNode.getChildCount();
 		final IStyle styleObject = StyleFactory.create(NamedObject.format(styleName));
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node = new NodeModel(map);
 		node.setUserObject(styleObject);
@@ -73,7 +73,4 @@ public class NewLevelStyleAction extends AFreeplaneAction {
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	private NodeModel getLevelStyleParentNode(final MapModel map) {
-		return (NodeModel) map.getRootNode().getChildAt(1);
-	}
 }
