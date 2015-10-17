@@ -43,6 +43,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
@@ -317,19 +319,12 @@ public class MNoteController extends NoteController {
 	        NodeStyleController.class);
 	    MapModel map = Controller.getCurrentModeController().getController().getMap();
 	    if(map != null){
-	        final Font defaultFont;
-	        defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
-	        String rule = "body {";
-	        rule += "font-family: " + defaultFont.getFamily() + ";";
-	        rule += "font-size: " + defaultFont.getSize() + "pt;";
-            if (defaultFont.isItalic()) {
-                rule += "font-style: italic; ";
-            }
-            if (defaultFont.isBold()) {
-                rule += "font-weight: bold; ";
-            }
-	        rule += "}\n";
-	        styleSheet.addRule(rule);
+	        final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
+	        String content = new CssRuleBuilder()
+					.withFont(defaultFont)
+					.buildRule();
+	        StringBuilder rule = new StringBuilder( "body {").append(content).append("}\n");
+	        styleSheet.addRule(rule.toString());
 	    }
 	    if (ResourceController.getResourceController().getBooleanProperty(
 	        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
