@@ -50,9 +50,10 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = Controller.getCurrentModeController();
+		final SModeController modeController = (SModeController) Controller.getCurrentModeController();
 		final MapModel map = Controller.getCurrentController().getMap();
-		final NodeModel levelStyleParentNode = getLevelStyleParentNode(map);
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		NodeModel levelStyleParentNode = styleModel.getStyleNodeGroup(map, MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
 		final int childNumber = levelStyleParentNode.getChildCount() - 1;
 		if (childNumber < 1) {
 			UITools.errorMessage(TextUtils.getText("can_not_delete_root_style"));
@@ -60,7 +61,6 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 		}
 		final String styleName = "AutomaticLayout.level," + childNumber;
 		final IStyle styleObject = StyleFactory.create(NamedObject.format(styleName));
-		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel node = styleModel.getStyleNode(styleObject);
 		mapController.deleteNode(node);
@@ -78,9 +78,5 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);
-	}
-
-	private NodeModel getLevelStyleParentNode(final MapModel map) {
-		return (NodeModel) map.getRootNode().getChildAt(1);
 	}
 }

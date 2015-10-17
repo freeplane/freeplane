@@ -41,6 +41,7 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -238,21 +239,10 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
 			final StringBuilder ruleBuilder = new StringBuilder(100);
 			ruleBuilder.append("body {");
-			if(font != null){
-				ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
-				final int fontSize = Math.round(font.getSize() / UITools.FONT_SCALE_FACTOR);
-				ruleBuilder.append("font-size: ").append(fontSize).append("pt;");
-				if (font.isItalic()) {
-					ruleBuilder.append("font-style: italic; ");
-				}
-				if (font.isBold()) {
-					ruleBuilder.append("font-weight: bold; ");
-				}
-			}
-			if(textColor != null)
-				ruleBuilder.append("color: ").append(ColorUtils.colorToString(textColor)).append(";");
-		    final Color bgColor = getBackground();
-			ruleBuilder.append("background-color: ").append(ColorUtils.colorToString(bgColor)).append(";");
+			ruleBuilder.append(new CssRuleBuilder()
+					.withFont(font, UITools.FONT_SCALE_FACTOR)
+					.withColor(textColor)
+					.withBackground(getBackground()));
 			ruleBuilder.append("}\n");
 			ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();

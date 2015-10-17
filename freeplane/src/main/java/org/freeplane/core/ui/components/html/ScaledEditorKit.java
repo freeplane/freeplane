@@ -90,25 +90,12 @@ public class ScaledEditorKit extends HTMLEditorKit {
 
 	private String displayPropertiesToCSS(Font font, Color fg) {
 		StringBuffer rule = new StringBuffer("body {");
-		if (font != null) {
-			rule.append(" font-family: ");
-			rule.append(font.getFamily());
-			rule.append(" ; ");
-			rule.append(" font-size: ");
-			final int fontSize = Math.round(font.getSize() / UITools.FONT_SCALE_FACTOR);
-			rule.append(fontSize);
-			rule.append("pt ;");
-			if (font.isBold()) {
-				rule.append(" font-weight: bold ; ");
-			}
-			if (font.isItalic()) {
-				rule.append(" font-style: italic ; ");
-			}
-		}
-		if (fg != null) {
-			rule.append(" color: ").append(ColorUtils.colorToString(fg)).append(" ; ");
-		}
-		rule.append(" }");
+		String content = new CssRuleBuilder()
+				.withFont(font, UITools.FONT_SCALE_FACTOR)
+				.withColor(fg)
+				.buildRule();
+		rule.append(content);
+		rule.append("}");
 		return rule.toString();
 	}
 
