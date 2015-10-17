@@ -26,6 +26,7 @@ import java.net.URL;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
@@ -120,16 +121,8 @@ public class NoteController implements IExtension {
 				    NodeStyleController.class);
 				MapModel map = modeController.getController().getMap();
 				if(map != null){
-				    final Font defaultFont;
-				    defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
-				    rule.append("font-family: " + defaultFont.getFamily() + ";");
-				    rule.append("font-size: " + defaultFont.getSize() + "pt;");
-	                if (defaultFont.isItalic()) {
-	                    rule.append("font-style: italic; ");
-	                }
-	                if (defaultFont.isBold()) {
-	                    rule.append("font-weight: bold; ");
-	                }
+				    final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
+				    rule.append(new CssRuleBuilder().withFont(defaultFont));
 				}
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
