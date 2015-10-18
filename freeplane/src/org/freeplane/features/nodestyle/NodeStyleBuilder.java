@@ -37,6 +37,7 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
@@ -174,7 +175,15 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH", nodeMinWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MIN_WIDTH", nodeMinWidthHandler);
-		
+
+		final IAttributeHandler textAlignHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setTextAlign(node, TextAlign.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEXT_ALIGN", textAlignHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEXT_ALIGN", textAlignHandler);
 	}
 
 	/**
@@ -243,6 +252,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final String format = forceFormatting ? nsc.getNodeFormat(node) : style.getNodeFormat();
 		if (format != null) {
 			writer.addAttribute("FORMAT", format);
+		}
+		final TextAlign textAlign = forceFormatting ? nsc.getTextAlign(node) : style.getTextAlign();
+		if (textAlign != TextAlign.DEFAULT) {
+			writer.addAttribute("TEXT_ALIGN", textAlign.toString());
 		}
 	}
 

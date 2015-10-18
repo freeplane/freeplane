@@ -649,7 +649,8 @@ public class EditNodeTextField extends EditNodeBase {
 		ruleBuilder.append(new CssRuleBuilder()
 				.withFont(font, UITools.FONT_SCALE_FACTOR)
 				.withColor(nodeTextColor)
-				.withBackground(getBackground()));
+				.withBackground(getBackground())
+				.withAlignment(parent.getHorizontalAlignment()));
 		ruleBuilder.append("}\n");
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();

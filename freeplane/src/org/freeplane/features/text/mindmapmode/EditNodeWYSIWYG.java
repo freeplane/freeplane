@@ -34,6 +34,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
@@ -47,6 +48,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
@@ -192,6 +194,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private Color textColor = Color.BLACK;
 	private Dimension preferredSize = PREFERRED_SIZE;
 
+	private int horizontalAlignment = TextAlign.DEFAULT.swingConstant;
+
 	public String getTitle() {
     	return title;
     }
@@ -242,7 +246,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			ruleBuilder.append(new CssRuleBuilder()
 					.withFont(font, UITools.FONT_SCALE_FACTOR)
 					.withColor(textColor)
-					.withBackground(getBackground()));
+					.withBackground(getBackground())
+					.withAlignment(horizontalAlignment));
 			ruleBuilder.append("}\n");
 			ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
@@ -307,4 +312,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		}
 	    return htmlEditorWindow;
     }
+
+	public void setTextAlignment(int horizontalAlignment) {
+		this.horizontalAlignment = horizontalAlignment;
+	}
 }

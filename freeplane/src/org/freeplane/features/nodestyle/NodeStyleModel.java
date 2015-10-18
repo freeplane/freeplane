@@ -21,9 +21,13 @@ package org.freeplane.features.nodestyle;
 
 import java.awt.Color;
 
+import javax.swing.SwingConstants;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
+
+import javafx.scene.text.TextAlignment;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
@@ -36,6 +40,18 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public static final String SHAPE_COMBINED = "combined";
 	public static final String STYLE_BUBBLE = "bubble";
 	public static final String STYLE_FORK = "fork";
+	
+	public enum TextAlign {
+		DEFAULT(SwingConstants.LEFT), 
+		LEFT(SwingConstants.LEFT), 
+		RIGHT(SwingConstants.RIGHT), 
+		CENTER(SwingConstants.CENTER);
+		
+		final public int swingConstant;
+
+		TextAlign(int swingConstant){
+			this.swingConstant = swingConstant;}
+	};
 
 	public static NodeStyleModel createNodeStyleModel(final NodeModel node) {
 		NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
@@ -96,6 +112,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.isItalic();
 	}
 
+	public static TextAlign getTextAlign(final NodeModel node) {
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? TextAlign.DEFAULT : styleModel.getTextAlign();
+	}
+
 	public static void setBackgroundColor(final NodeModel node, final Color color) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setBackgroundColor(color);
@@ -121,6 +142,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShape(shape);
 	}
 
+	public static void setTextAlign(final NodeModel node, final TextAlign textAlign) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setTextAlign(textAlign);
+	}
+
 	private Color backgroundColor;
 	private Color color;
 	private String fontFamilyName = null;
@@ -130,6 +156,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private String shape;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
+	private  TextAlign textAlign = TextAlign.DEFAULT;
 
 	@Override
 	protected NodeStyleModel clone() {
@@ -155,6 +182,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	            nodeStyleModel.setNodeFormat(nodeFormat);
 	    if(nodeNumbering != null)
 	        nodeStyleModel.setNodeNumbering(nodeNumbering);
+	    nodeStyleModel.setTextAlign(textAlign);
 		return nodeStyleModel;
     }
 
@@ -192,6 +220,10 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public Boolean isItalic() {
 		return isItalic;
+	}
+
+	public TextAlign getTextAlign() {
+		return textAlign;
 	}
 
 	public void setBackgroundColor(final Color color) {
@@ -234,5 +266,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		} catch (IllegalArgumentException e) {
 			LogUtils.warn("unknown shape " + shape, e);
 		}
+	}
+	public void setTextAlign(final TextAlign textAlign) {
+		this.textAlign = textAlign;
 	}
 }

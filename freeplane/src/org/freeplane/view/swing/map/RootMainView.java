@@ -33,6 +33,8 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
 class RootMainView extends MainView {
 	/**
@@ -47,6 +49,12 @@ class RootMainView extends MainView {
         setHorizontalAlignment(SwingConstants.CENTER);
     	this.shape = shape;
     }
+	
+	void updateTextAlign(NodeView node) {
+		final TextAlign textAlign = NodeStyleController.getController(node.getMap().getModeController()).getTextAlign(node.getModel());
+		setHorizontalAlignment(textAlign != TextAlign.DEFAULT ?  textAlign.swingConstant : TextAlign.CENTER.swingConstant);
+	}
+
 
     @Override
 	public boolean dropAsSibling(final double xCoord) {

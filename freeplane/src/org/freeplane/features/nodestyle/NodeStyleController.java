@@ -34,6 +34,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -63,6 +64,7 @@ public class NodeStyleController implements IExtension {
  	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
+	final private ExclusivePropertyChain<TextAlign, NodeModel> textAlignHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
 
 	public NodeStyleController(final ModeController modeController) {
@@ -72,6 +74,8 @@ public class NodeStyleController implements IExtension {
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		shapeHandlers = new ExclusivePropertyChain<String, NodeModel>();
+		textAlignHandlers = new ExclusivePropertyChain<TextAlign, NodeModel>();
+		
 		addFontGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
 				final Font defaultFont = NodeStyleController.getDefaultFont();
@@ -117,6 +121,19 @@ public class NodeStyleController implements IExtension {
 				return NodeStyleModel.SHAPE_AS_PARENT;
 			}
 		});
+		
+		addTextAlignGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<TextAlign, NodeModel>() {
+			public TextAlign getProperty(final NodeModel node, final TextAlign currentValue) {
+				return TextAlign.DEFAULT;
+			}
+		});
+		
+		addTextAlignGetter(IPropertyHandler.STYLE, new IPropertyHandler<TextAlign, NodeModel>() {
+			public TextAlign getProperty(final NodeModel node, final TextAlign currentValue) {
+				return getTextAlign(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
+			}
+		});
+		
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -130,8 +147,13 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                         final IPropertyHandler<Color, NodeModel> getter) {
+            final IPropertyHandler<Color, NodeModel> getter) {
 		return textColorHandlers.addGetter(key, getter);
+	}
+
+	public IPropertyHandler<TextAlign, NodeModel> addTextAlignGetter(final Integer key,
+            final IPropertyHandler<TextAlign, NodeModel> getter) {
+		return textAlignHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
@@ -263,6 +285,10 @@ public class NodeStyleController implements IExtension {
 		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
 	}
 
+	public TextAlign getTextAlign(final NodeModel node) {
+		return textAlignHandlers.getProperty(node);
+	}
+
 	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic) {
 		if (family == null && size == null && bold == null && italic == null) {
 			return baseFont;
@@ -329,6 +355,25 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
+	private TextAlign getTextAlign(final MapModel map, final Collection<IStyle> style) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : style){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final TextAlign textAlign = styleModel.getTextAlign();
+			if (textAlign == TextAlign.DEFAULT) {
+				continue;
+			}
+			return textAlign;
+		}
+		return null;
+	}
 	public Font getFont(final NodeModel node) {
 		final Font font = fontHandlers.getProperty(node, null);
 		return font;
@@ -355,22 +400,6 @@ public class NodeStyleController implements IExtension {
 
 	public boolean isItalic(final NodeModel node) {
 		return getFont(node).isItalic();
-	}
-
-	public IPropertyHandler<Color, NodeModel> removeBackgroundColorGetter(final Integer key) {
-		return backgroundColorHandlers.removeGetter(key);
-	}
-
-	public IPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
-		return textColorHandlers.removeGetter(key);
-	}
-
-	public IPropertyHandler<Font, NodeModel> removeFontGetter(final Integer key) {
-		return fontHandlers.removeGetter(key);
-	}
-
-	public IPropertyHandler<String, NodeModel> removeShapeGetter(final Integer key) {
-		return shapeHandlers.removeGetter(key);
 	}
 
 	public Boolean getNodeNumbering(NodeModel node) {

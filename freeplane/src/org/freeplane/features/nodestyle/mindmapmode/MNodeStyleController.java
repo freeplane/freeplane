@@ -32,6 +32,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
@@ -136,7 +137,10 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getNodeNumbering()) {
 				fromStyle.setNodeNumbering(null);
 			}
-        }
+			if (TextAlign.DEFAULT != whichStyle.getTextAlign()) {
+				fromStyle.setTextAlign(TextAlign.DEFAULT);
+			}
+       }
 
 		public void resolveParentExtensions(Object key, NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
@@ -174,6 +178,9 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new CopyFormat());
 		modeController.addAction(new PasteFormat());
 		modeController.addAction(new RemoveFormatAction());
+		modeController.addAction(new TextAlignAction(TextAlign.LEFT));
+		modeController.addAction(new TextAlignAction(TextAlign.CENTER));
+		modeController.addAction(new TextAlignAction(TextAlign.RIGHT));
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction") {
 			private static final long serialVersionUID = 1L;
 
@@ -217,6 +224,7 @@ public class MNodeStyleController extends NodeStyleController {
 			setItalic(target, sourceStyleModel.isItalic());
 			setNodeFormat(target, sourceStyleModel.getNodeFormat());
 			setNodeNumbering(target, sourceStyleModel.getNodeNumbering());
+			setTextAlign(target, sourceStyleModel.getTextAlign());
 		}
     }
 	protected void copySizeModel(final NodeModel source, final NodeModel target) {
@@ -602,4 +610,27 @@ public class MNodeStyleController extends NodeStyleController {
 		}
     }
 
+
+	public void setTextAlign(final NodeModel node, final TextAlign textAlign) {
+		final TextAlign oldTextAlign = NodeStyleModel.getTextAlign(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				NodeStyleModel.setTextAlign(node, textAlign);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setMaxNodeWidth";
+			}
+
+			public void undo() {
+				NodeStyleModel.setTextAlign(node, oldTextAlign);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+		
+    }
 }

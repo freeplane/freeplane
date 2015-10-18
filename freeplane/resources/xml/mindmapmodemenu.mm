@@ -1047,6 +1047,21 @@
 <node TEXT="---" ID="ID_1673359742" CREATED="1370194798823" MODIFIED="1370194798823">
 <attribute NAME="type" VALUE="separator"/>
 </node>
+<node TEXT="TextAlignAction.LEFT">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="TextAlignAction.LEFT"/>
+</node>
+<node TEXT="TextAlignAction.CENTER">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="TextAlignAction.CENTER"/>
+</node>
+<node TEXT="TextAlignAction.RIGHT">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="TextAlignAction.RIGHT"/>
+</node>
+<node TEXT="---">
+<attribute NAME="type" VALUE="separator"/>
+</node>
 <node TEXT="Node color..." ID="ID_769544494" CREATED="1370194798823" MODIFIED="1370194798823">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="NodeColorAction"/>
@@ -2054,6 +2069,24 @@
 </node>
 </node>
 <node TEXT="---" ID="ID_1378666411" CREATED="1370194798943" MODIFIED="1370194798943">
+<attribute NAME="type" VALUE="separator"/>
+</node>
+<node TEXT="Text alignment" FOLDED="true">
+<attribute NAME="type" VALUE="category"/>
+<node TEXT="TextAlignAction.LEFT">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="TextAlignAction.LEFT"/>
+</node>
+<node TEXT="TextAlignAction.CENTER">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="TextAlignAction.CENTER"/>
+</node>
+<node TEXT="TextAlignAction.RIGHT">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="TextAlignAction.RIGHT"/>
+</node>
+</node>
+<node TEXT="---">
 <attribute NAME="type" VALUE="separator"/>
 </node>
 <node TEXT="Add / remove cloud (default)" ID="ID_1763924306" CREATED="1370194798943" MODIFIED="1370194798943">
