@@ -1280,6 +1280,7 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.setVisible(true);
 		mainView.updateTextColor(this);
 		mainView.updateFont(this);
+		mainView.updateTextAlign(this);
 		createAttributeView();
 		if (attributeView != null) {
 			attributeView.update();

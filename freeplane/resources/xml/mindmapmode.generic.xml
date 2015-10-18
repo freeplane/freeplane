@@ -35,6 +35,11 @@
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />
 		</Entry>
+		<Entry name="align">
+			<Entry name="TextAlignAction.LEFT" />
+			<Entry name="TextAlignAction.CENTER" />
+			<Entry name="TextAlignAction.RIGHT" />
+		</Entry>
 		<Entry builder="separator" />
 		<Entry name="CloudAction" />
 		<Entry name="CloudColorAction" />

@@ -23,7 +23,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.StringReader;
 
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -71,34 +74,6 @@ public class ScaledEditorKit extends HTMLEditorKit {
 		return doc;
 	}
 
-	/**
-	 * Sets the async policy to flush everything in one chunk, and
-	 * to not display unknown tags.
-	 */
-	Document createDefaultDocument(Font defaultFont, Color foreground) {
-		StyleSheet styles = getStyleSheet();
-		StyleSheet ss = new ScaledStyleSheet();
-		ss.addStyleSheet(styles);
-		HTMLDocument doc = new HTMLDocument(ss);
-		doc.setPreservesUnknownTags(false);
-		doc.getStyleSheet().addRule(displayPropertiesToCSS(defaultFont, foreground));
-		doc.setParser(getParser());
-		doc.setAsynchronousLoadPriority(Integer.MAX_VALUE);
-		doc.setPreservesUnknownTags(false);
-		return doc;
-	}
-
-	private String displayPropertiesToCSS(Font font, Color fg) {
-		StringBuffer rule = new StringBuffer("body {");
-		String content = new CssRuleBuilder()
-				.withFont(font, UITools.FONT_SCALE_FACTOR)
-				.withColor(fg)
-				.buildRule();
-		rule.append(content);
-		rule.append("}");
-		return rule.toString();
-	}
-
 	static public ScaledEditorKit create() {
 		if (kit == null) {
 			kit = new ScaledEditorKit();
@@ -110,4 +85,22 @@ public class ScaledEditorKit extends HTMLEditorKit {
 	 * The source of the html renderers
 	 */
 	private static ScaledEditorKit kit;
+
+	public Document createDefaultDocument(JLabel c) {
+		Font font = c.getFont();
+		Color foreground = c.getForeground();
+		StyleSheet styles = getStyleSheet();
+		StyleSheet ss = new ScaledStyleSheet();
+		ss.addStyleSheet(styles);
+		HTMLDocument doc = new HTMLDocument(ss);
+		doc.setPreservesUnknownTags(false);
+		doc.getStyleSheet().addRule(new StringBuffer("body {").append(new CssRuleBuilder()
+		.withFont(font, UITools.FONT_SCALE_FACTOR)
+		.withColor(foreground)
+		.withAlignment(c.getHorizontalAlignment())).append("}").toString());
+		doc.setParser(getParser());
+		doc.setAsynchronousLoadPriority(Integer.MAX_VALUE);
+		doc.setPreservesUnknownTags(false);
+		return doc;
+	}
 }

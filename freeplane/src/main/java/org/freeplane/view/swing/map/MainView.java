@@ -65,6 +65,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -455,6 +456,12 @@ public abstract class MainView extends ZoomableLabel {
 		    node.getModel());
 		setForeground(color);
 	}
+	
+	void updateTextAlign(NodeView node) {
+		final TextAlign textAlign = NodeStyleController.getController(node.getMap().getModeController()).getTextAlign(node.getModel());
+		setHorizontalAlignment(textAlign.swingConstant);
+	}
+
 
 	public boolean isEdited() {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
@@ -761,5 +768,6 @@ public abstract class MainView extends ZoomableLabel {
 		else
 			return null;
 	}
+
 	
 }
