@@ -35,7 +35,7 @@
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />
 		</Entry>
-		<Entry name="align">
+		<Entry name="textalignment">
 			<Entry name="TextAlignAction.LEFT" />
 			<Entry name="TextAlignAction.CENTER" />
 			<Entry name="TextAlignAction.RIGHT" />
@@ -178,6 +178,16 @@
 				<Entry name="ForwardAction" accelerator="alt RIGHT" priority="Medium" />
 			</Entry>
 			<Entry name="fontStyleContributor" builder="ribbon_contributor,skip" />
+			<Entry name="font">
+				<Entry name="BoldAction" />
+				<Entry name="ItalicAction" />
+			</Entry>
+			<Entry name="textalignment">
+				<Entry name="TextAlignAction.LEFT" />
+				<Entry name="TextAlignAction.CENTER" />
+				<Entry name="TextAlignAction.RIGHT" />
+			</Entry>
+			
 			<Entry name="resources" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="ExternalImageAddAction" accelerator="alt shift K"
 					priority="Top">
@@ -453,6 +463,15 @@
 				</Entry>
 			</Entry>
 			<Entry name="styles"><Entry  builder="style_actions" /></Entry>
+			<Entry name="font">
+				<Entry name="BoldAction" />
+				<Entry name="ItalicAction" />
+			</Entry>
+			<Entry name="textalignment">
+				<Entry name="TextAlignAction.LEFT" />
+				<Entry name="TextAlignAction.CENTER" />
+				<Entry name="TextAlignAction.RIGHT" />
+			</Entry>
 			<Entry name="EdgeProperties" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="format_menu_edge_styles" builder="radio_button_group">
 					<Entry name="EdgeStyleAsParentAction" />
