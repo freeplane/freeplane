@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -89,6 +90,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.AutomaticLayoutController;
@@ -97,6 +99,7 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 
@@ -249,6 +252,21 @@ public class StyleEditorPanel extends JPanel {
 			styleController.setStyle(node, enabled ? EdgeStyle.getStyle(mEdgeStyle.getValue()) : null);
 		}
 	}
+	private class TextAlignmentChangeListener extends ChangeListener {
+		public TextAlignmentChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node,
+				final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+					.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setTextAlign(node, enabled ? TextAlign.valueOf(mNodeTextAlignment.getValue()) : null);
+		}
+	}
+	
+	
 
 	private class EdgeWidthChangeListener extends ChangeListener {
 		public EdgeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
@@ -432,6 +450,8 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_SHAPE = "nodeshape";
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 	private static final String NODE_FORMAT = "nodeformat";
+	private static final String TEXT_ALIGNMENT = "textalignment";
+	private static final String[] TEXT_ALIGNMENTS = StyleEditorPanel.initializeTextAlignments();
 	/**
 	* 
 	*/
@@ -444,6 +464,15 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
 		final String[] strings = new String[enumConstants.length-1];
 		for (int i = 0; i < enumConstants.length-1; i++) {
+			strings[i] = enumConstants[i].toString();
+		}
+		return strings;
+	}
+
+	private static String[] initializeTextAlignments() {
+		final TextAlign[] enumConstants = TextAlign.class.getEnumConstants();
+		final String[] strings = new String[enumConstants.length];
+		for (int i = 0; i < strings.length; i++) {
 			strings[i] = enumConstants[i].toString();
 		}
 		return strings;
@@ -478,6 +507,7 @@ public class StyleEditorPanel extends JPanel {
 	private EditablePatternComboProperty mNodeFormat;
 	private NumberProperty mMaxNodeWidth;
 	private NumberProperty mMinNodeWidth;
+	private ComboProperty mNodeTextAlignment;
 
 	
 	private BooleanProperty mSetCloud;
@@ -497,6 +527,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetStyle;
 	private BooleanProperty mSetMaxNodeWidth;
 	private BooleanProperty mSetMinNodeWidth;
+	private BooleanProperty mSetNodeTextAlignment;
 	
 	
 	private final boolean addStyleBox;
@@ -717,6 +748,22 @@ public class StyleEditorPanel extends JPanel {
 		mNodeShape.fireOnMouseClick();
 	}
 
+	private void addNodeTextAlignmentControl(final List<IPropertyControl> controls) {
+		mSetNodeTextAlignment = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetNodeTextAlignment);
+		final Vector<String> possibleTranslations = new Vector<String>(TEXT_ALIGNMENTS.length);
+		for (int i = 0; i < TEXT_ALIGNMENTS.length; i++) {
+			possibleTranslations.add(TextUtils.getText("TextAlignAction." + TEXT_ALIGNMENTS[i] + ".text"));
+		}
+		Vector<String> translations = possibleTranslations;
+		mNodeTextAlignment = new ComboProperty(StyleEditorPanel.TEXT_ALIGNMENT, Arrays.asList(TEXT_ALIGNMENTS), translations);
+		controls.add(mNodeTextAlignment);
+		final TextAlignmentChangeListener listener = new TextAlignmentChangeListener(mSetNodeTextAlignment, mNodeTextAlignment);
+		mSetNodeTextAlignment.addPropertyChangeListener(listener);
+		mNodeTextAlignment.addPropertyChangeListener(listener);
+		mNodeTextAlignment.fireOnMouseClick();
+	}
+
 	private List<IPropertyControl> getControls() {
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
@@ -735,6 +782,7 @@ public class StyleEditorPanel extends JPanel {
 		addFontSizeControl(controls);
 		addFontBoldControl(controls);
 		addFontItalicControl(controls);
+		addNodeTextAlignmentControl(controls);
 		addFontHyperlinkControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
@@ -962,6 +1010,12 @@ public class StyleEditorPanel extends JPanel {
 				final Boolean viewitalic = styleController.isItalic(node);
 				mSetNodeFontItalic.setValue(italic != null);
 				mNodeFontItalic.setValue(viewitalic);
+			}
+			{
+				final TextAlign style = NodeStyleModel.getTextAlign(node);
+				final TextAlign viewStyle = styleController.getTextAlign(node);
+				mSetNodeTextAlignment.setValue(style != null);
+				mNodeTextAlignment.setValue(viewStyle.toString());
 			}
 			{
 				final Boolean hyperlink = NodeLinks.formatNodeAsHyperlink(node);
