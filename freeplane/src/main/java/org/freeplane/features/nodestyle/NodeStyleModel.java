@@ -114,7 +114,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public static TextAlign getTextAlign(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? TextAlign.DEFAULT : styleModel.getTextAlign();
+		return styleModel == null ? null : styleModel.getTextAlign();
 	}
 
 	public static void setBackgroundColor(final NodeModel node, final Color color) {
@@ -156,7 +156,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private String shape;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
-	private  TextAlign textAlign = TextAlign.DEFAULT;
+	private  TextAlign textAlign = null;
 
 	@Override
 	protected NodeStyleModel clone() {
@@ -182,7 +182,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	            nodeStyleModel.setNodeFormat(nodeFormat);
 	    if(nodeNumbering != null)
 	        nodeStyleModel.setNodeNumbering(nodeNumbering);
-	    nodeStyleModel.setTextAlign(textAlign);
+	    if(textAlign != null)
+	    	nodeStyleModel.setTextAlign(textAlign);
 		return nodeStyleModel;
     }
 
