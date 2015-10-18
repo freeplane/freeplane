@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -48,7 +49,7 @@ public class SelectionController {
 
 	public void onDeselect(final NodeModel node) {
 		try {
-			final HashSet<INodeSelectionListener> copy = new HashSet<INodeSelectionListener>(nodeSelectionListeners);
+			final ArrayList<INodeSelectionListener> copy = new ArrayList<INodeSelectionListener>(nodeSelectionListeners);
 			for (final INodeSelectionListener listener : copy) {
 				listener.onDeselect(node);
 			}
@@ -59,7 +60,8 @@ public class SelectionController {
 	}
 
 	public void onSelect(final NodeModel node) {
-		for (final INodeSelectionListener listener : nodeSelectionListeners) {
+		final ArrayList<INodeSelectionListener> copy = new ArrayList<INodeSelectionListener>(nodeSelectionListeners);
+		for (final INodeSelectionListener listener : copy) {
 			listener.onSelect(node);
 		}
 	}
