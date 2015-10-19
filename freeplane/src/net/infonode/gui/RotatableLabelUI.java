@@ -68,7 +68,7 @@ public class RotatableLabelUI extends BasicLabelUI {
   }
 
   public void paint(Graphics g, JComponent c) {
-	  if (direction == Direction.RIGHT){
+	  if (direction == Direction.RIGHT && ! mirror){
 		  super.paint(g, c);
 		  return;
 	  }
@@ -103,7 +103,8 @@ public class RotatableLabelUI extends BasicLabelUI {
     AffineTransform tr = g2.getTransform();
 
     int m = mirror ? -1 : 1;
-    g2.transform(direction == Direction.DOWN ? new AffineTransform(0, 1, -m, 0, mirror ? 0 : c.getWidth(), 0) :
+    g2.transform(direction == Direction.RIGHT ? new AffineTransform(1, 0, 0, m, 0, mirror ? c.getHeight() : 0) :
+    	direction == Direction.DOWN ? new AffineTransform(0, 1, -m, 0, mirror ? 0 : c.getWidth(), 0) :
                  direction == Direction.LEFT ? new AffineTransform(-1,
                                                                    0,
                                                                    0,
