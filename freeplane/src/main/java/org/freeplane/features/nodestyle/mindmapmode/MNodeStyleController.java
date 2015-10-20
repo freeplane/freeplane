@@ -586,7 +586,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 	public void setMaxNodeWidth(final NodeModel node, final Quantity<LengthUnits> maxNodeWidth) {
 	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
-		final Quantity<LengthUnits> oldValue = NodeSizeModel.getNodeMaxNodeWidth(node);
+		final Quantity<LengthUnits> oldValue = NodeSizeModel.getMaxNodeWidth(node);
 		final IActor actor = new IActor() {
 			public void act() {
 				sizeModel.setMaxNodeWidth(maxNodeWidth);

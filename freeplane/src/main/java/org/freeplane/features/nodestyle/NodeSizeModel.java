@@ -103,7 +103,7 @@ public class NodeSizeModel implements IExtension {
 		createNodeSizeModel(node).setMinNodeWidth(minNodeWidth);
     }
 	
-	public static Quantity<LengthUnits> getNodeMaxNodeWidth(NodeModel node) {
+	public static Quantity<LengthUnits> getMaxNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
 		return extension != null ? extension.getMaxNodeWidth() : null;
     }
