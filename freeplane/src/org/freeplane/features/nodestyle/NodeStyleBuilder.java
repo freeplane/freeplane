@@ -34,9 +34,12 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -157,20 +160,50 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEMPLATE", formatHandler);
 			reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", formatHandler);
 		}
-		
+
+		final IAttributeHandler nodeMaxNodeWidthQuantityHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				try {
+					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.class);
+					NodeSizeModel.setMaxNodeWidth(node, width);
+				} catch (Exception e) {
+					LogUtils.warn("Can not parse quantity " + value);
+				}
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH_QUANTITY", nodeMaxNodeWidthQuantityHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_WIDTH_QUANTITY", nodeMaxNodeWidthQuantityHandler);
+
 		final IAttributeHandler nodeMaxNodeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeSizeModel.setNodeMaxNodeWidth(node, Integer.valueOf(value));
+				int widthInPixels = Integer.parseInt(value);
+				NodeSizeModel.setMaxNodeWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
-		
+
+		final IAttributeHandler nodeMinNodeWidthQuantityHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				try {
+					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.class);
+					NodeSizeModel.setNodeMinWidth(node, width);
+				} catch (Exception e) {
+					LogUtils.warn("Can not parse quantity " + value);
+				}
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH_QUANTITY", nodeMinNodeWidthQuantityHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MIN_WIDTH_QUANTITY", nodeMinNodeWidthQuantityHandler);
+
 		final IAttributeHandler nodeMinWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeSizeModel.setNodeMinWidth(node, Integer.valueOf(value));
+				int widthInPixels = Integer.parseInt(value);
+				NodeSizeModel.setNodeMinWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH", nodeMinWidthHandler);
@@ -261,14 +294,14 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeSizeModel size,
 	                             final boolean forceFormatting) {
-		final int maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
-		if (maxTextWidth != NodeSizeModel.NOT_SET) {
-			writer.addAttribute("MAX_WIDTH", Integer.toString(maxTextWidth));
+		final Quantity<LengthUnits> maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
+		if (maxTextWidth != null) {
+			writer.addAttribute("MAX_WIDTH_QUANTITY", maxTextWidth.toString());
 		}
-		
-		final int minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
-		if (minTextWidth != NodeSizeModel.NOT_SET) {
-			writer.addAttribute("MIN_WIDTH", Integer.toString(minTextWidth));
+
+		final Quantity<LengthUnits> minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
+		if (minTextWidth != null) {
+			writer.addAttribute("MIN_WIDTH_QUANTITY", minTextWidth.toString());
 		}
 	}
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {

@@ -17,7 +17,7 @@ class ContentPaneLayout implements LayoutManager {
 		NodeView view = (NodeView) parent.getParent();
 		final MapView map = view.getMap();
 		final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
-		final int maxWidth = ncs.getMaxWidth(view.getModel());
+		final int maxWidth = ncs.getMaxWidth(view.getModel()).toBaseUnitsRounded();
 		int y = 0;
 		for (int i = 0; i < componentCount; i++) {
 			final Component component = parent.getComponent(i);
@@ -61,7 +61,7 @@ class ContentPaneLayout implements LayoutManager {
 		NodeView view = (NodeView) parent.getParent();
 		final MapView map = view.getMap();
 		final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
-		final int width = ncs.getMaxWidth(view.getModel());
+		final int width = ncs.getMaxWidth(view.getModel()).toBaseUnitsRounded();
 		final Dimension prefSize = new Dimension(0, 0);
 		final int componentCount = parent.getComponentCount();
 		for (int i = 0; i < componentCount; i++) {

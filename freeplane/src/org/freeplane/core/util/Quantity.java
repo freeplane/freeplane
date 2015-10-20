@@ -19,12 +19,12 @@ public class Quantity <U extends Enum<U> & Convertible >{
 		this.unit = unit;
 	}
 
-	public double inBaseUnits() {
+	double toBaseUnits() {
 		return value * unit.factor();
 	}
 
-	public int inBaseUnitsRounded() {
-		return (int) (inBaseUnits() + 0.5d);
+	public int toBaseUnitsRounded() {
+		return (int) (toBaseUnits() + 0.5d);
 	}
 
 	@Override

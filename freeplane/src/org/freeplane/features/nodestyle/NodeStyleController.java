@@ -26,6 +26,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -34,6 +35,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -66,6 +68,9 @@ public class NodeStyleController implements IExtension {
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 	final private ExclusivePropertyChain<TextAlign, NodeModel> textAlignHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
+	
+	private static final Quantity<LengthUnits> DEFAULT_MINIMUM_WIDTH = new Quantity<LengthUnits>(0, LengthUnits.cm);
+	private static final Quantity<LengthUnits> DEFAULT_MAXIMUM_WIDTH = new Quantity<LengthUnits>(10, LengthUnits.cm);
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -194,7 +199,7 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private int getStyleMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private Quantity<LengthUnits> getStyleMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -205,16 +210,16 @@ public class NodeStyleController implements IExtension {
 			if (sizeModel == null) {
 				continue;
 			}
-			final int maxTextWidth = sizeModel.getMaxNodeWidth();
-			if (maxTextWidth == NodeSizeModel.NOT_SET) {
+			final Quantity<LengthUnits> maxTextWidth = sizeModel.getMaxNodeWidth();
+			if (maxTextWidth == null) {
 				continue;
 			}
 			return maxTextWidth;
 		}
-		return 600;
+		return DEFAULT_MAXIMUM_WIDTH;
 	}
 	
-	private int getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private Quantity<LengthUnits> getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -225,13 +230,13 @@ public class NodeStyleController implements IExtension {
 			if (sizeModel == null) {
 				continue;
 			}
-			final int minWidth = sizeModel.getMinNodeWidth();
-			if (minWidth == NodeSizeModel.NOT_SET) {
+			final Quantity<LengthUnits> minWidth = sizeModel.getMinNodeWidth();
+			if (minWidth == null) {
 				continue;
 			}
 			return minWidth;
 		}
-		return 1;
+		return DEFAULT_MINIMUM_WIDTH;
 	}
 	
 	public static Font getDefaultFont() {
@@ -415,19 +420,19 @@ public class NodeStyleController implements IExtension {
 		return style == null ? null : style.getNodeFormat();
 	}
 
-	public int getMaxWidth(NodeModel node) {
+	public Quantity<LengthUnits> getMaxWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
-		final int maxTextWidth = getStyleMaxNodeWidth(map, style);
+		final Quantity<LengthUnits> maxTextWidth = getStyleMaxNodeWidth(map, style);
 		return maxTextWidth;
     }
 
-	public int getMinWidth(NodeModel node) {
+	public Quantity<LengthUnits> getMinWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
-		final int minWidth = getStyleMinWidth(map, style);
+		final Quantity<LengthUnits> minWidth = getStyleMinWidth(map, style);
 		return minWidth;
     }
 

@@ -255,20 +255,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		catch (final Exception e) {
 		}
-		final String maxNodeWidthString = element.getAttribute("max_node_width", null);
-		final String minNodeWidthString = element.getAttribute("min_node_width",null);
-		try {
-			if (maxNodeWidthString != null) {
-				final int maxNodeWidth = Integer.valueOf(maxNodeWidthString);
-				model.setMaxNodeWidth(maxNodeWidth);
-			}
-			if (minNodeWidthString != null) {
-				final int minNodeWidth = Integer.valueOf(minNodeWidthString);
-				model.setMinNodeWidth(minNodeWidth);
-			}
-		}
-		catch (final Exception e) {
-		}
 		return model;
 	}
 
