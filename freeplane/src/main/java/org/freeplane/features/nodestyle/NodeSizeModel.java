@@ -31,21 +31,28 @@ import org.freeplane.features.map.NodeModel;
  */
 public class NodeSizeModel implements IExtension {
 	
-	enum LengthUnits implements Convertible{
+	public enum LengthUnits implements Convertible{
 /*
- * px      | Pixels      | Varies        | No          | No                 | 
-+---------+-------------+---------------+-------------+--------------------+
-| in      | Inches      | 1             | Yes         | Yes                | 
-+---------+-------------+---------------+-------------+--------------------+
-| mm      | Millimeters | 25.4          | Yes         | Yes                | 
-+---------+-------------+---------------+-------------+--------------------+
-| pt      | Points      | 72      
++---------+-------------+---------------+
+| px      | Pixels      | Varies        | 
++---------+-------------+---------------+
+| in      | Inches      | 1             | 
++---------+-------------+---------------+
+| mm      | Millimeters | 25.4          | 
++---------+-------------+---------------+
+| cm      | Centimeters | 2.54          | 
++---------+-------------+---------------+
+| pt      | Points      | 72            | 
++---------+-------------+---------------+
 		
  */
-		px(1d / UITools.getScreenResolution()), in(1), mm(1d / 25.4), cm(1d / 2.54);
+		px(1d), 
+		in(UITools.getScreenResolution()), 
+		mm(UITools.getScreenResolution() / 25.4), 
+		cm(UITools.getScreenResolution() / 2.54);
 		
 		LengthUnits(double factor){
-			this.factor = factor * UITools.getScreenResolution();
+			this.factor = factor;
 			
 		}
 		final private double factor;
@@ -74,42 +81,35 @@ public class NodeSizeModel implements IExtension {
 	private Quantity<LengthUnits> minNodeWidth = null;
 	private Quantity<LengthUnits> maxTextWidth = null;
 	
-	public int getMaxNodeWidth() {
-    	return maxTextWidth != null ?  maxTextWidth.inBaseUnitsRounded() : NOT_SET;
+	public Quantity<LengthUnits> getMaxNodeWidth() {
+    	return maxTextWidth;
     }
-	public void setMaxNodeWidth(int maxTextWidth) {
-		setMaxNodeWidth(maxTextWidth != NOT_SET ? new Quantity<NodeSizeModel.LengthUnits>(maxTextWidth, LengthUnits.px) : null);
-    }
-	
 	public void setMaxNodeWidth(Quantity<LengthUnits> maxTextWidth) {
     	this.maxTextWidth = maxTextWidth;
     }
-	public int getMinNodeWidth() {
-    	return minNodeWidth != null ?  minNodeWidth.inBaseUnitsRounded() : NOT_SET;
+
+	public Quantity<LengthUnits> getMinNodeWidth() {
+    	return minNodeWidth;
     }
 	
-	public void setMinNodeWidth(int minNodeWidth) {
-    	setMinNodeWidth(minNodeWidth != NOT_SET ? new Quantity<NodeSizeModel.LengthUnits>(minNodeWidth, LengthUnits.px) : null);
-    }
-
 	public void setMinNodeWidth(Quantity<LengthUnits> quantity) {
 		this.minNodeWidth = quantity;
 	}
 	
-	public static void setNodeMaxNodeWidth(NodeModel node, int maxTextWidth) {
+	public static void setMaxNodeWidth(NodeModel node, Quantity<LengthUnits> maxTextWidth) {
 		createNodeSizeModel(node).setMaxNodeWidth(maxTextWidth);
     }
-	public static void setNodeMinWidth(NodeModel node, int minNodeWidth) {
+	public static void setNodeMinWidth(NodeModel node, Quantity<LengthUnits> minNodeWidth) {
 		createNodeSizeModel(node).setMinNodeWidth(minNodeWidth);
     }
 	
-	public static int getNodeMaxNodeWidth(NodeModel node) {
+	public static Quantity<LengthUnits> getNodeMaxNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
-		return extension != null ? extension.getMaxNodeWidth() : NOT_SET;
+		return extension != null ? extension.getMaxNodeWidth() : null;
     }
-	public static int getMinNodeWidth(NodeModel node) {
+	public static Quantity<LengthUnits> getMinNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
-		return extension != null ? extension.getMinNodeWidth() : NOT_SET;
+		return extension != null ? extension.getMinNodeWidth() : null;
     }
 
 	public void copyTo(NodeSizeModel to) {

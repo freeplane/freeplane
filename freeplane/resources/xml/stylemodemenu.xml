@@ -121,7 +121,6 @@
 				</menu_submenu>
 				<menu_action accelerator="alt shift E" action="EdgeColorAction" />
 			</menu_category>
-			<menu_action action="NodeWidthAction" />
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_links">
 			<menu_category name="navigate">

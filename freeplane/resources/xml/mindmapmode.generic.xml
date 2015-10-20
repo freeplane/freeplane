@@ -493,7 +493,6 @@
 				<Entry name="EdgeColorAction" accelerator="alt shift E">
 					<Entry name="AutomaticEdgeColorHookAction" />
 				</Entry>
-				<Entry name="NodeWidthAction" />
 			</Entry>
 			<Entry name="map_background" resize_policies="Mirror" builder="ribbon_band">
 				<Entry name="MapBackgroundColorAction" />

@@ -358,7 +358,6 @@
 				<ribbon_action action="EdgeColorAction" accelerator="alt shift E" >
 					<ribbon_action action="AutomaticEdgeColorHookAction" />
 				</ribbon_action>
-				<ribbon_action action="NodeWidthAction" />
 			</ribbon_band>
 			
 			<ribbon_band name="map_background" resize_policies="Mirror">

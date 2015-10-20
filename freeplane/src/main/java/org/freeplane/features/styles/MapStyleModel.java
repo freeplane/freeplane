@@ -35,6 +35,7 @@ import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudModel.Shape;
 import org.freeplane.features.edge.EdgeModel;
@@ -48,6 +49,7 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
+import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 
 /**
  * @author Dimitry Polivaev
@@ -141,9 +143,9 @@ public class MapStyleModel implements IExtension {
                 addStyleNode(newNode);
             }
             NodeModel defaultStyleModel = styleNodes.get(DEFAULT_STYLE);
-            if(maxNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getNodeMaxNodeWidth(defaultStyleModel))
-            	NodeSizeModel.setNodeMaxNodeWidth(defaultStyleModel, maxNodeWidth);
-            if(minNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getMinNodeWidth(defaultStyleModel))
+            if(maxNodeWidth != null && null == NodeSizeModel.getNodeMaxNodeWidth(defaultStyleModel))
+            	NodeSizeModel.setMaxNodeWidth(defaultStyleModel, maxNodeWidth);
+            if(minNodeWidth != null && null == NodeSizeModel.getMinNodeWidth(defaultStyleModel))
             	NodeSizeModel.setNodeMinWidth(defaultStyleModel, minNodeWidth);
             if(styleNodes.get(DETAILS_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DETAILS_STYLE, styleMap);
@@ -245,13 +247,13 @@ public class MapStyleModel implements IExtension {
 	}
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
-	private int maxNodeWidth = NodeSizeModel.NOT_SET;
-	private int minNodeWidth = NodeSizeModel.NOT_SET;
-	public void setMaxNodeWidth(final int maxNodeWidth) {
+	private Quantity<LengthUnits> maxNodeWidth = null;
+	private Quantity<LengthUnits> minNodeWidth = null;
+	public void setMaxNodeWidth(final Quantity<LengthUnits> maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
-	public void setMinNodeWidth(final int minNodeWidth) {
+	public void setMinNodeWidth(final Quantity<LengthUnits> minNodeWidth) {
 		this.minNodeWidth = minNodeWidth;
 	}  
 	

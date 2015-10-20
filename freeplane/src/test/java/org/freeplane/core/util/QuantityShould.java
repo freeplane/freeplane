@@ -25,7 +25,7 @@ public class QuantityShould {
 	@Test
 	public void calculateValueInBaseUnits() throws Exception {
 		Quantity<Metrics> quantity = new Quantity<Metrics>(1, Metrics.cm);
-		assertThat(quantity.inBaseUnits(), equalTo(0.01));
+		assertThat(quantity.toBaseUnits(), equalTo(0.01));
 	}
 
 
@@ -46,14 +46,14 @@ public class QuantityShould {
 	@Test
 	public void calculateRoundedDownValueInBaseUnits() throws Exception {
 		Quantity<Metrics> quantity = new Quantity<Metrics>(49, Metrics.cm);
-		assertThat(quantity.inBaseUnitsRounded(), equalTo(0));
+		assertThat(quantity.toBaseUnitsRounded(), equalTo(0));
 	}
 
 
 	@Test
 	public void calculateRoundedUpValueInBaseUnits() throws Exception {
 		Quantity<Metrics> quantity = new Quantity<Metrics>(51, Metrics.cm);
-		assertThat(quantity.inBaseUnitsRounded(), equalTo(1));
+		assertThat(quantity.toBaseUnitsRounded(), equalTo(1));
 	}
 	
 	@Test
