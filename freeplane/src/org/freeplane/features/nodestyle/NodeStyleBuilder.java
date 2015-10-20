@@ -178,7 +178,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler nodeMaxNodeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				if (NodeSizeModel.getNodeMaxNodeWidth(node) == null) {
+				if (NodeSizeModel.getMaxNodeWidth(node) == null) {
 					int widthInPixels = Integer.parseInt(value);
 					NodeSizeModel.setMaxNodeWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
 				}
