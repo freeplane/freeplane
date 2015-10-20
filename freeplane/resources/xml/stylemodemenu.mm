@@ -515,10 +515,6 @@
 <attribute NAME="action" VALUE="EdgeColorAction"/>
 </node>
 </node>
-<node TEXT="Set node width limits" ID="ID_219822382" CREATED="1370196501513" MODIFIED="1370196501513">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="NodeWidthAction"/>
-</node>
 </node>
 <node TEXT="Navigate" FOLDED="true" ID="ID_101184743" CREATED="1370196501513" MODIFIED="1370337347567">
 <attribute NAME="type" VALUE="submenu"/>

@@ -1216,10 +1216,6 @@
 <node TEXT="---" ID="ID_1126623769" CREATED="1370194798845" MODIFIED="1370194798845">
 <attribute NAME="type" VALUE="separator"/>
 </node>
-<node TEXT="Set node width limits" ID="ID_530668930" CREATED="1370194798846" MODIFIED="1370194798846">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="NodeWidthAction"/>
-</node>
 </node>
 <node TEXT="Navigate" FOLDED="true" ID="ID_400942186" CREATED="1370194798846" MODIFIED="1370334681725">
 <attribute NAME="type" VALUE="submenu"/>
