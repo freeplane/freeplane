@@ -55,5 +55,28 @@ public class QuantityShould {
 		Quantity<Metrics> quantity = new Quantity<Metrics>(51, Metrics.cm);
 		assertThat(quantity.inBaseUnitsRounded(), equalTo(1));
 	}
+	
+	@Test
+	public void convertToString() throws Exception {
+		Quantity<Metrics> quantity = new Quantity<Metrics>(51, Metrics.cm);
+		assertEquals("51.0 cm", quantity.toString());
+	}
+	
+	@Test
+	public void fromString_0_cm() throws Exception {
+		Quantity<Metrics> quantity = Quantity.fromString("0 cm", Metrics.class);
+		assertEquals("0.0 cm", quantity.toString());
+	}
 
+	@Test
+	public void fromString_1_cm() throws Exception {
+		Quantity<Metrics> quantity = Quantity.fromString("1 cm", Metrics.class);
+		assertEquals("1.0 cm", quantity.toString());
+	}
+
+	@Test
+	public void fromString_2_m() throws Exception {
+		Quantity<Metrics> quantity = Quantity.fromString("1 m", Metrics.class);
+		assertEquals("1.0 m", quantity.toString());
+	}
 }
