@@ -138,6 +138,8 @@
 		<Entry name="CenterSelectedNodeAction" />
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
+		<Entry name="FormatCopy" />
+		<Entry name="FormatPaste" />
 		<Entry name="EditDetailsInDialogAction" />
 		<Entry name="EditDetailsAction" />
 		<Entry name="DeleteDetailsAction" />
