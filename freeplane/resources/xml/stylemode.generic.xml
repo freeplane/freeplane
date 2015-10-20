@@ -130,14 +130,14 @@
 			<Entry accelerator="control shift A" name="SelectBranchAction" />
 		</Entry>
 	</Entry>
-	<Entry name="map_popup">
+	<Entry name="map_popup" builder="map_popup">
 		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ToggleLeftToolbarAction" />
 		<Entry name="ViewLayoutTypeAction.OUTLINE" />
 		<Entry name="CenterSelectedNodeAction" />
 	</Entry>
-	<Entry name="node_popup">
+	<Entry name="node_popup" builder="node_popup">
 		<Entry name="EditDetailsInDialogAction" />
 		<Entry name="EditDetailsAction" />
 		<Entry name="DeleteDetailsAction" />
@@ -147,7 +147,7 @@
 		<Entry name="NewUserStyleAction" />
 		<Entry name="DeleteUserStyleAction" />
 	</Entry>
-	<Entry name="main_toolbar">
+	<Entry name="main_toolbar" builder="toolbar,ignore">
 		<Entry name="undo">
 			<Entry name="styledialog.ok" />
 			<Entry name="styledialog.cancel" />
