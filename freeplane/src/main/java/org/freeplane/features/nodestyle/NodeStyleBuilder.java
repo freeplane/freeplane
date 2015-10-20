@@ -179,8 +179,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler nodeMaxNodeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				int widthInPixels = Integer.parseInt(value);
-				NodeSizeModel.setMaxNodeWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+				if (NodeSizeModel.getMaxNodeWidth(node) == null) {
+					int widthInPixels = Integer.parseInt(value);
+					NodeSizeModel.setMaxNodeWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+				}
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
@@ -203,8 +205,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler nodeMinWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				int widthInPixels = Integer.parseInt(value);
-				NodeSizeModel.setNodeMinWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+				if (NodeSizeModel.getMinNodeWidth(node) == null) {
+					int widthInPixels = Integer.parseInt(value);
+					NodeSizeModel.setNodeMinWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+				}
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH", nodeMinWidthHandler);
@@ -298,11 +302,13 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final Quantity<LengthUnits> maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
 		if (maxTextWidth != null) {
 			writer.addAttribute("MAX_WIDTH_QUANTITY", maxTextWidth.toString());
+			writer.addAttribute("MAX_WIDTH", maxTextWidth.toBaseUnitsRounded());
 		}
 
 		final Quantity<LengthUnits> minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
 		if (minTextWidth != null) {
 			writer.addAttribute("MIN_WIDTH_QUANTITY", minTextWidth.toString());
+			writer.addAttribute("MIN_WIDTH", minTextWidth.toBaseUnitsRounded());
 		}
 	}
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
