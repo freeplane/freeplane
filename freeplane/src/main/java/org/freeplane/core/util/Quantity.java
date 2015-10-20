@@ -14,4 +14,8 @@ public class Quantity <U extends Enum<U> & Convertible >{
 		return value * unit.factor();
 	}
 
+	public int inBaseUnitsRounded() {
+		return (int) (inBaseUnits() + 0.5d);
+	}
+
 }
