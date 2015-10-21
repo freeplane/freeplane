@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.IExtensionCopier;
@@ -33,7 +34,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
