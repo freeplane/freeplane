@@ -57,6 +57,8 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.note.NoteController;
@@ -121,6 +123,7 @@ public class SModeControllerFactory {
 		SpellCheckerController.install(modeController);
 		IconController.install(new MIconController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
+		LocationController.install(new MLocationController());
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
