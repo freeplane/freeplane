@@ -34,6 +34,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.cloud.CloudModel;
@@ -49,7 +50,6 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
-import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 
 /**
  * @author Dimitry Polivaev

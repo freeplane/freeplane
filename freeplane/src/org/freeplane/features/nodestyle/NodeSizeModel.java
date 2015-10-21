@@ -20,8 +20,7 @@
 package org.freeplane.features.nodestyle;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Convertible;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
@@ -30,38 +29,6 @@ import org.freeplane.features.map.NodeModel;
  * Nov 13, 2011
  */
 public class NodeSizeModel implements IExtension {
-	
-	public enum LengthUnits implements Convertible{
-/*
-+---------+-------------+---------------+
-| px      | Pixels      | Varies        | 
-+---------+-------------+---------------+
-| in      | Inches      | 1             | 
-+---------+-------------+---------------+
-| mm      | Millimeters | 25.4          | 
-+---------+-------------+---------------+
-| cm      | Centimeters | 2.54          | 
-+---------+-------------+---------------+
-| pt      | Points      | 72            | 
-+---------+-------------+---------------+
-		
- */
-		px(1d), 
-		in(UITools.getScreenResolution()), 
-		mm(UITools.getScreenResolution() / 25.4), 
-		cm(UITools.getScreenResolution() / 2.54);
-		
-		LengthUnits(double factor){
-			this.factor = factor;
-			
-		}
-		final private double factor;
-		
-		public double factor() {
-			return factor;
-		}
-		
-	}
 	
 	public static final int NOT_SET = -1;
 
