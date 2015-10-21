@@ -22,6 +22,7 @@ package org.freeplane.features.nodelocation.mindmapmode;
 import java.util.ArrayList;
 
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -41,17 +42,16 @@ public class MLocationController extends LocationController {
 		modeController.addAction(new ResetNodeLocationAction());
 	}
 
-	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
+	public void moveNodePosition(final NodeModel node, final int hGap, final int shiftY) {
+		final ModeController currentModeController = Controller.getCurrentModeController();
+		MapModel map = node.getMap();
 		ArrayList<IActor> actors = new ArrayList<IActor>(3);
 		actors.add(new ChangeShiftXActor(node, hGap));
 		actors.add(new ChangeShiftYActor(node, shiftY));
-		final NodeModel parentNode = node.getParentNode();
-		if(parentNode != null)
-			actors.add(new ChangeVGapActor(parentNode, parentVGap));
-		for (final IActor actor : actors)
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		for (final IActor actor : actors) {
+			currentModeController.execute(actor, map);
+		}
 	}
-
 
 	public void setHorizontalShift(NodeModel node, final int horizontalShift){
 		final IActor actor = new ChangeShiftXActor(node, horizontalShift);
@@ -64,7 +64,10 @@ public class MLocationController extends LocationController {
 	}
 
 	public void setMinimalDistanceBetweenChildren(NodeModel node, final int minimalDistanceBetweenChildren){
-		final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		if(node != null){
+			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
+			Controller.getCurrentModeController().execute(actor, node.getMap());
+		}
+
 	}
 }

@@ -42,8 +42,9 @@ class ResetNodeLocationAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MLocationController) LocationController.getController()).moveNodePosition(node,
-				LocationModel.NULL_LOCATION.getVGap(), LocationModel.NULL_LOCATION.getHGap(), LocationModel.NULL_LOCATION
-				.getShiftY());
+		MLocationController locationController = (MLocationController) LocationController.getController();
+		locationController.moveNodePosition(node, LocationModel.NULL_LOCATION.getHGap(), LocationModel.NULL_LOCATION
+						.getShiftY());
+		locationController.setMinimalDistanceBetweenChildren(node.getParentNode(), LocationModel.NULL_LOCATION.getVGap());
 	}
 }
