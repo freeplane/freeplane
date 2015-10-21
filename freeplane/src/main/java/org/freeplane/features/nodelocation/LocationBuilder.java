@@ -62,7 +62,7 @@ class LocationBuilder implements IExtensionAttributeWriter {
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final LocationModel locationModel = (LocationModel) extension;
 		final int vGap = locationModel.getVGap();
-		if (vGap != LocationModel.VGAP) {
+		if (vGap != LocationModel.GAP_NOT_SET) {
 			writer.addAttribute("VGAP", Integer.toString(vGap));
 		}
 		final int hGap = locationModel.getHGap();

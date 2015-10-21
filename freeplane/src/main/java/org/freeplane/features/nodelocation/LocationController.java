@@ -19,18 +19,29 @@
  */
 package org.freeplane.features.nodelocation;
 
+import java.awt.Color;
+import java.util.Collection;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ExclusivePropertyChain;
+import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev
  */
 public class LocationController implements IExtension {
+	final private ExclusivePropertyChain<Integer, NodeModel> childGapHandlers;
 	public static LocationController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -56,6 +67,46 @@ public class LocationController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final LocationBuilder locationBuilder = new LocationBuilder();
 		locationBuilder.registerBy(readManager, writeManager);
+		childGapHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
+		addChildGapGetter(IPropertyHandler.STYLE, new IPropertyHandler<Integer, NodeModel>() {
+			public Integer getProperty(final NodeModel node, final Integer currentValue) {
+				final MapModel map = node.getMap();
+				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+				final Collection<IStyle> style = styleController.getStyles(node);
+				final Integer returnedGap = getStyleChildGap(map, style);
+				return returnedGap;
+			}
+		});
+		addChildGapGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
+			public Integer getProperty(final NodeModel node, final Integer currentValue) {
+				return LocationModel.VGAP;
+			}
+		});
+
+	}
+	private IPropertyHandler<Integer, NodeModel> addChildGapGetter(final Integer key,
+            final IPropertyHandler<Integer, NodeModel> getter) {
+			return childGapHandlers.addGetter(key, getter);
+	}
+
+	private Integer getStyleChildGap(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final LocationModel styleModel = styleNode.getExtension(LocationModel.class);
+			if (styleModel == null) {
+				continue;
+			}
+			int vGap = styleModel.getVGap();
+			if (vGap == LocationModel.GAP_NOT_SET) {
+				continue;
+			}
+			return vGap;
+		}
+		return null;
 	}
 
 	public int getHorizontalShift(NodeModel node){
@@ -67,6 +118,6 @@ public class LocationController implements IExtension {
 	}
 
 	public int getMinimalDistanceBetweenChildren(NodeModel node){
-		return LocationModel.getModel(node).getVGap();
+		return childGapHandlers.getProperty(node);
 	}
 }
