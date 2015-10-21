@@ -42,6 +42,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -207,6 +208,27 @@ public class OptionPanelBuilder {
 		}
 	}
 	
+	private class QuantityOptionCreator extends PropertyCreator {
+		private IPropertyControlCreator createNumberPropertyCreator(
+				final String name, final double min, final double step, final double max) {
+			return new IPropertyControlCreator() {
+				public IPropertyControl createControl() {
+					return new QuantityProperty<LengthUnits>(name, min, max, step, LengthUnits.class);
+				}
+			};
+		}
+		
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			final String minString = data.getAttribute("min", "0");
+			final String maxString = data.getAttribute("max", "100000");
+			final String stepString = data.getAttribute("step", "0.1");
+			return createNumberPropertyCreator(name,
+					Double.parseDouble(minString),
+					Double.parseDouble(stepString),
+					Double.parseDouble(maxString));
+		}
+	}
 	private class PathOptionCreator extends PropertyCreator {
 		private IPropertyControlCreator createPathPropertyCreator(final String name, final boolean isDir,
 		                                                          final String[] suffixes) {
@@ -570,6 +592,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("font", new FontOptionCreator());
 		readManager.addElementHandler("boolean", new BooleanOptionCreator());
 		readManager.addElementHandler("number", new NumberOptionCreator());
+		readManager.addElementHandler("quantity", new QuantityOptionCreator());
 		readManager.addElementHandler("path", new PathOptionCreator());
 		readManager.addElementHandler("color", new ColorOptionCreator());
 		readManager.addElementHandler("combo", new ComboOptionCreator());

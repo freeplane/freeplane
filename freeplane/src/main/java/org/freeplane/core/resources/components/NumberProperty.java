@@ -103,4 +103,16 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
     protected Component[] getComponents() {
 	    return spinner.getComponents();
     }
+
+	public Number getNumberValue() {
+		return (Number)spinner.getValue();
+	}
+
+	public void setValue(double value) {
+		spinner.setValue(value);
+	}
+
+	public void setValue(int value) {
+		spinner.setValue(value);
+	}
 }

@@ -59,6 +59,7 @@ import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
@@ -88,8 +89,10 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
-import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
@@ -309,7 +312,18 @@ public class StyleEditorPanel extends JPanel {
 			styleController.setMinNodeWidth(node, enabled ? mMinNodeWidth.getQuantifiedValue(): null);
 		}
 	}
+	private class ChildDistanceChangeListener extends ChangeListener {
+		public ChildDistanceChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
 
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MLocationController locationController = (MLocationController) Controller.getCurrentModeController().getExtension(LocationController.class);
+			locationController.setMinimalDistanceBetweenChildren(node, enabled ? mChildDistance.getNumberValue().intValue(): LocationModel.GAP_NOT_SET);
+		}
+	}
+	
 	private class CloudColorChangeListener extends ChangeListener {
 		public CloudColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -461,6 +475,8 @@ public class StyleEditorPanel extends JPanel {
 	private static final String SET_RESOURCE = "set_property_text";
 	private static final String MAX_TEXT_WIDTH = "max_node_width";
 	private static final String MIN_NODE_WIDTH = "min_node_width";
+	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
+	
 	
 	private static String[] initializeEdgeStyles() {
 		final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
@@ -509,6 +525,7 @@ public class StyleEditorPanel extends JPanel {
 	private EditablePatternComboProperty mNodeFormat;
 	private QuantityProperty<LengthUnits> mMaxNodeWidth;
 	private QuantityProperty<LengthUnits> mMinNodeWidth;
+	private NumberProperty mChildDistance;
 	private ComboProperty mNodeTextAlignment;
 
 	
@@ -529,6 +546,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetStyle;
 	private BooleanProperty mSetMaxNodeWidth;
 	private BooleanProperty mSetMinNodeWidth;
+	private BooleanProperty mSetChildDistance;
 	private BooleanProperty mSetNodeTextAlignment;
 	
 	
@@ -681,6 +699,17 @@ public class StyleEditorPanel extends JPanel {
 		mMinNodeWidth.fireOnMouseClick();
 	}
 
+	private void addChildDistanceControl(final List<IPropertyControl> controls) {
+		mSetChildDistance = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetChildDistance);
+		mChildDistance = new NumberProperty(StyleEditorPanel.VERTICAL_CHILD_GAP, 0, 100000, 1);
+		controls.add(mChildDistance);
+		final ChildDistanceChangeListener listener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
+		mSetChildDistance.addPropertyChangeListener(listener);
+		mChildDistance.addPropertyChangeListener(listener);
+		mChildDistance.fireOnMouseClick();
+	}
+
 	private void addFontBoldControl(final List<IPropertyControl> controls) {
 		mSetNodeFontBold = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeFontBold);
@@ -778,6 +807,7 @@ public class StyleEditorPanel extends JPanel {
 		addNodeShapeControl(controls);
 		addMinNodeWidthControl(controls);
 		addMaxNodeWidthControl(controls);
+		addChildDistanceControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
 		addFontNameControl(controls);
@@ -959,6 +989,15 @@ public class StyleEditorPanel extends JPanel {
 				mSetMinNodeWidth.setValue(width != null);
 				mMinNodeWidth.setQuantifiedValue(viewWidth);
 			}
+			{
+				final LocationModel locationModel = LocationModel.getModel(node);
+				final LocationController locationController = modeController.getExtension(LocationController.class);
+				final int gap = locationModel.getVGap();
+				final int viewGap = locationController.getMinimalDistanceBetweenChildren(node);
+				mSetChildDistance.setValue(gap != LocationModel.GAP_NOT_SET);
+				mChildDistance.setValue(viewGap);
+			}
+			
 			final EdgeController edgeController = EdgeController.getController();
 			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			{

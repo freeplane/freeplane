@@ -8,10 +8,10 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
