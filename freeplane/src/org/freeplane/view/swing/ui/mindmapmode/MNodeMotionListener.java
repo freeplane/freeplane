@@ -130,7 +130,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				if (Compat.isCtrlEvent(e)) {
 					final NodeView nodeV = getNodeView(e);
 					final NodeModel node = nodeV.getModel();
-					locationController.setMinimalDistanceBetweenChildren(node.getParentNode(), LocationModel.VGAP);
+					locationController.setMinimalDistanceBetweenChildren(node.getParentNode(), LocationModel.GAP_NOT_SET);
 					return;
 				}
 			}
