@@ -22,23 +22,64 @@ package org.freeplane.features.nodelocation.mindmapmode;
 import java.util.ArrayList;
 
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MLocationController extends LocationController {
+	
+	private static class StyleCopier implements IExtensionCopier {
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			LocationModel source = from.getExtension(LocationModel.class);
+			if(source != null){
+				LocationModel.createLocationModel(to).setVGap(source.getVGap());
+			}
+		}
+
+		public void remove(Object key, NodeModel from) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			LocationModel target = from.getExtension(LocationModel.class);
+			if(target != null){
+				target.setVGap(LocationModel.GAP_NOT_SET);
+			}
+		}
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			LocationModel model = which.getExtension(LocationModel.class);
+			if(model != null && model.getVGap() != LocationModel.GAP_NOT_SET ){
+				remove(key, from);
+			}
+		}
+
+		@Override
+		public void resolveParentExtensions(Object key, NodeModel to) {
+		}
+	}
+	
 	public MLocationController() {
 		super();
-		createActions();
+		final ModeController modeController = Controller.getCurrentModeController();
+		createActions(modeController);
+		modeController.registerExtensionCopier(new StyleCopier());
 	}
 
-	private void createActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
+	private void createActions(ModeController modeController) {
 		modeController.addAction(new ResetNodeLocationAction());
 	}
 
