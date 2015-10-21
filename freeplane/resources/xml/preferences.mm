@@ -421,6 +421,13 @@
 <node TEXT="Size limits" FOLDED="true" ID="ID_887796087" CREATED="1370183720046" MODIFIED="1370183720046">
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="size_limits"/>
+<node TEXT="Maximum shortened text width">
+<attribute NAME="type" VALUE="quantity"/>
+<attribute NAME="name" VALUE="bubble_vertical_margin"/>
+<attribute NAME="min" VALUE="0"/>
+<attribute NAME="max" VALUE="1000"/>
+<attribute NAME="step" VALUE="0.01"/>
+</node>
 <node TEXT="Maximum shortened text width" ID="ID_1080402416" CREATED="1370183720046" MODIFIED="1370183720046">
 <attribute NAME="type" VALUE="number"/>
 <attribute NAME="name" VALUE="max_shortened_text_length"/>
