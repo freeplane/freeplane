@@ -27,9 +27,14 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.util.WeakHashMap;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel.LengthUnits;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 
 class BubbleMainView extends MainView {
@@ -39,6 +44,8 @@ class BubbleMainView extends MainView {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final int HORIZONTAL_MARGIN = 3;
+	private static final String VERTICAL_MARGIN_KEY = "bubble_vertical_margin";
 
 	@Override
     public
@@ -90,7 +97,45 @@ class BubbleMainView extends MainView {
 		graphics.setColor(color);
 		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 	}
-    private static Insets insets = new Insets(3, 3, 3, 3);
+    
+	final private static  WeakHashMap<BubbleMainView, ?> bubbles;
+    final private static Insets insets;
+    static {
+    	insets = new Insets(0, 0, 0, 0);
+    	updateInsets();
+    	bubbles = new WeakHashMap<>();
+    	ResourceController resourceController = ResourceController.getResourceController();
+		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
+			
+			@Override
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if(propertyName.equals(VERTICAL_MARGIN_KEY)) {
+					updateInsets();
+					for (BubbleMainView bubble : bubbles.keySet()){
+						if(bubble.isValid()){
+							bubble.revalidate();
+							bubble.repaint();
+						}
+					}
+				}
+			}
+		});
+    }
+    
+   
+
+    public BubbleMainView() {
+		super();
+		bubbles.put(this, null);
+	}
+
+    static private void updateInsets() {
+    	ResourceController resourceController = ResourceController.getResourceController();
+    	String verticalMarginSProperty = resourceController.getProperty(VERTICAL_MARGIN_KEY);
+		int verticalMargin = Quantity.fromString(verticalMarginSProperty, LengthUnits.class).toBaseUnitsRounded();
+		insets.set(verticalMargin,  HORIZONTAL_MARGIN,  verticalMargin, HORIZONTAL_MARGIN);
+    }
+	
     
     @Override
     public Insets getInsets() {
@@ -101,4 +146,5 @@ class BubbleMainView extends MainView {
     public Insets getInsets(Insets insets) {
         return BubbleMainView.insets;
     }
+
 }
