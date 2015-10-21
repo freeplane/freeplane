@@ -631,7 +631,7 @@ public class MMapController extends MapController {
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
 		if(! addNewNode(newNode, target, -1, newNodeIsLeft))
 			return null;
-		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, -1, pt.x, pt.y);
+		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, pt.x, pt.y);
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if (component == null)
 			return newNode;
