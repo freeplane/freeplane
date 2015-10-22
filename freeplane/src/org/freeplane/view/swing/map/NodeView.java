@@ -1175,7 +1175,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (mainView == null) {
 			return false;
 		}
-		if (mainView.requestFocusInWindow()) {
+		if (super.requestFocusInWindow() && mainView.requestFocusInWindow()) {
 			getMap().scrollNodeToVisible(this);
 			Controller.getCurrentController().getViewController().addObjectTypeInfo(getModel().getUserObject());
 			return true;
@@ -1190,6 +1190,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		getMap().scrollNodeToVisible(this);
 		Controller.getCurrentController().getViewController().addObjectTypeInfo(getModel().getUserObject());
+		super.requestFocus(); 
 		mainView.requestFocus();
 	}
 
