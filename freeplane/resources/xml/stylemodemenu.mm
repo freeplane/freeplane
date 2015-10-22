@@ -603,6 +603,16 @@
 <node TEXT="node_popup" FOLDED="true" POSITION="right" ID="ID_1356522776" CREATED="1370196501529" MODIFIED="1370196501529">
 <attribute NAME="type" VALUE="category"/>
 <attribute NAME="name" VALUE="node_popup"/>
+<node TEXT="Copy format">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="accelerator" VALUE="alt shift C"/>
+<attribute NAME="action" VALUE="FormatCopy"/>
+</node>
+<node TEXT="Paste format">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="accelerator" VALUE="alt shift V"/>
+<attribute NAME="action" VALUE="FormatPaste"/>
+</node>
 <node TEXT="Edit node details in dialog" ID="ID_1010190057" CREATED="1370196501529" MODIFIED="1370196501529">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditDetailsInDialogAction"/>
