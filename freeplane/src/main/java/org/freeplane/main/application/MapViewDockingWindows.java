@@ -49,6 +49,7 @@ import javax.swing.event.InternalFrameEvent;
 import net.infonode.docking.AbstractTabWindow;
 import net.infonode.docking.DockingWindow;
 import net.infonode.docking.DockingWindowAdapter;
+import net.infonode.docking.FloatingWindow;
 import net.infonode.docking.OperationAbortedException;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.TabWindow;
@@ -138,11 +139,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					final DockingWindowProperties windowProperties = addedWindow.getWindowProperties();
 					windowProperties.setDockEnabled(false);
 					windowProperties.setUndockEnabled(false);
-					final TabAreaProperties tabAreaProperties = ((TabWindow)addedWindow).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
-	                if (addedToWindow == rootWindow)
-	                    tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.MORE_THAN_ONE_TAB);
-                    else
-	                	tabAreaProperties.setTabAreaVisiblePolicy(TabAreaVisiblePolicy.ALWAYS);
+					if(addedToWindow.isUndocked() ||  ! controller.getViewController().isFullScreenEnabled())
+						setTabAreaVisiblePolicy((TabWindow) addedWindow);
+					else
+						setTabAreaPolicy((TabWindow) addedWindow, TabAreaVisiblePolicy.NEVER);
                 }
 				setTabPolicies(addedWindow);
             }
@@ -159,6 +159,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					setTabPolicies(window.getChildWindow(i));
 				}
 			}
+
+
 
 			@Override
             public void windowRemoved(DockingWindow removedFromWindow, DockingWindow removedWindow) {
@@ -410,4 +412,41 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
 	}
 
+	private void setTabAreaVisiblePolicy(final TabWindow window) {
+		setTabAreaPolicy((TabWindow) window,  
+				window.getWindowParent() == rootWindow ? 
+						TabAreaVisiblePolicy.MORE_THAN_ONE_TAB : 
+							TabAreaVisiblePolicy.ALWAYS);
+	}
+
+	private void setTabAreaPolicy(TabWindow window, TabAreaVisiblePolicy tabAreaVisiblePolicy) {
+		final TabAreaProperties tabAreaProperties = ((TabWindow)window).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
+		tabAreaProperties.setTabAreaVisiblePolicy(tabAreaVisiblePolicy);
+	}
+
+	public void setTabAreaVisiblePolicy(){
+		setTabAreaVisiblePolicies(rootWindow);
+	}
+
+	private void setTabAreaVisiblePolicies(DockingWindow parentWindow) {
+		for(int i = 0; i < parentWindow.getChildWindowCount(); i++){
+			final DockingWindow window = parentWindow.getChildWindow(i);
+			if(!(parentWindow instanceof FloatingWindow) && window instanceof TabWindow)
+				setTabAreaVisiblePolicy((TabWindow) window);
+			setTabAreaVisiblePolicies(window);
+		}
+	}
+
+	public void setTabAreaInvisiblePolicy(){
+		setTabAreaInvisiblePolicies(rootWindow);
+	}
+
+	private void setTabAreaInvisiblePolicies(DockingWindow parentWindow) {
+		for(int i = 0; i < parentWindow.getChildWindowCount(); i++){
+			final DockingWindow window = parentWindow.getChildWindow(i);
+			if(!(parentWindow instanceof FloatingWindow) && window instanceof TabWindow)
+				setTabAreaPolicy((TabWindow) window, TabAreaVisiblePolicy.NEVER);
+			setTabAreaInvisiblePolicies(window);
+		}
+	}
 }

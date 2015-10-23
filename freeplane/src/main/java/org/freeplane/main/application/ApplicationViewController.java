@@ -509,4 +509,12 @@ class ApplicationViewController extends FrameController {
 		mapViewWindows.selectNextMapView();
 	}
 
+	@Override
+	protected void setFullScreen(boolean fullScreen) {
+		super.setFullScreen(fullScreen);
+		if(fullScreen)
+			mapViewWindows.setTabAreaInvisiblePolicy();
+		else
+			mapViewWindows.setTabAreaVisiblePolicy();
+	}
 }

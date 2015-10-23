@@ -60,9 +60,9 @@ public class OutlineLayout implements INodeViewLayout {
             ((NodeView) component).validateTree();
         }
         int spaceAround = view.getSpaceAround();
-		final int hgapProperty = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
+		final int hgapProperty = ResourceController.getResourceController().getLengthProperty("outline_hgap");
 		int hgap = view.getMap().getZoomed(hgapProperty);
-		final int vgapPropertyValue = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
+		final int vgapPropertyValue = ResourceController.getResourceController().getLengthProperty("outline_vgap");
 		int vgap = view.getMap().getZoomed(vgapPropertyValue);
 		JComponent content = view.getContent();
 		int baseX = content.getX();

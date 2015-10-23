@@ -53,6 +53,7 @@ import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
@@ -522,6 +523,8 @@ public class EditNodeTextField extends EditNodeBase {
 		if (textfield == null) {
 			return;
 		}
+		final JEditorPane textfield = this.textfield;
+		this.textfield = null;
 		textfield.getDocument().removeDocumentListener(documentListener);
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		mapViewManager.removeMapViewChangeListener(mapViewChangeListener);
@@ -529,8 +532,6 @@ public class EditNodeTextField extends EditNodeBase {
 		parent.setPreferredSize(null);
 		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null)
 			nodeView.update();
-		if(nodeView.isRoot() && parent instanceof MainView)
-		    parent.setHorizontalAlignment(JLabel.CENTER);
 		final Dimension textFieldSize = textfield.getSize();
 		final Point textFieldCoordinate = new Point();
 		final MapView mapView = nodeView.getMap();
@@ -539,7 +540,6 @@ public class EditNodeTextField extends EditNodeBase {
 		parent.revalidate();
 		parent.repaint();
 		mapView.repaint(textFieldCoordinate.x, textFieldCoordinate.y, textFieldSize.width, textFieldSize.height);
-		textfield = null;
 	}
 
 	private final ZoomableLabel parent;
@@ -646,11 +646,12 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.setCaretColor(nodeTextColor);
 		final StringBuilder ruleBuilder = new StringBuilder(100);
 		ruleBuilder.append("body {");
+		final int labelHorizontalAlignment = parent.getHorizontalAlignment();
 		ruleBuilder.append(new CssRuleBuilder()
 				.withFont(font, UITools.FONT_SCALE_FACTOR)
 				.withColor(nodeTextColor)
 				.withBackground(getBackground())
-				.withAlignment(parent.getHorizontalAlignment()));
+				.withAlignment(labelHorizontalAlignment));
 		ruleBuilder.append("}\n");
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
@@ -695,21 +696,32 @@ public class EditNodeTextField extends EditNodeBase {
 			textFieldSize.height = textfield.getPreferredSize().height;
 		}
 		final Rectangle textR = ((ZoomableLabelUI)parent.getUI()).getTextR(parent);
+		final int widthAddedToTextField = Math.max(textFieldSize.width - textR.width, 0);
 		textFieldSize.width = Math.max(textFieldSize.width, textR.width);
 		textFieldSize.height = Math.max(textFieldSize.height, textR.height);
 		textfield.setSize(textFieldSize.width, textFieldSize.height);
 		horizontalSpace = Math.max(nodeWidth - textFieldSize.width, textR.x);
 		verticalSpace = Math.max(nodeHeight - textFieldSize.height, textR.y);
 		final Dimension newParentSize = new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height);
-		parent.setPreferredSize(newParentSize);
 
 		final Point location = new Point(textR.x - 2, textR.y);
+		if(widthAddedToTextField > 0){
+			switch(labelHorizontalAlignment){
+			case SwingConstants.CENTER:
+				location.x -= widthAddedToTextField / 2;
+				break;
+			case SwingConstants.RIGHT:
+				location.x -= widthAddedToTextField;
+				break;
+			}
+		}
 		if(! layoutMapOnTextChange)
 			UITools.convertPointToAncestor(parent, location, mapView);
+		
 		textfield.setBounds(location.x, location.y, textFieldSize.width, textFieldSize.height);
+		parent.setPreferredSize(newParentSize);
 		parent.setText("");
-        if(nodeView.isRoot() && parent instanceof MainView)
-            parent.setHorizontalAlignment(JLabel.LEFT);
+        parent.setHorizontalAlignment(JLabel.LEFT);
 		if(layoutMapOnTextChange)
 			parent.add(textfield, 0);
 		else

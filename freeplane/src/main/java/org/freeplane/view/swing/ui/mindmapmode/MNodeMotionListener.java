@@ -245,7 +245,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	}
 
 	private void findGridPoint(Point point) {
-		final int gridSize = ResourceController.getResourceController().getIntProperty("grid_size");
+		final int gridSize = ResourceController.getResourceController().getLengthProperty("grid_size");
 		if (gridSize <= 2) {
 			return;
 		}

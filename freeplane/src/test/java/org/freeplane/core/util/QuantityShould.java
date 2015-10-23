@@ -19,7 +19,6 @@ public class QuantityShould {
 		public double factor() {
 			return factor;
 		}
-
 	}
 
 	@Test
@@ -64,19 +63,25 @@ public class QuantityShould {
 	
 	@Test
 	public void fromString_0_cm() throws Exception {
-		Quantity<Metrics> quantity = Quantity.fromString("0 cm", Metrics.class);
+		Quantity<Metrics> quantity = Quantity.fromString("0 cm", Metrics.cm);
 		assertEquals("0.0 cm", quantity.toString());
 	}
 
 	@Test
 	public void fromString_1_cm() throws Exception {
-		Quantity<Metrics> quantity = Quantity.fromString("1 cm", Metrics.class);
+		Quantity<Metrics> quantity = Quantity.fromString("1 cm", Metrics.cm);
 		assertEquals("1.0 cm", quantity.toString());
 	}
 
 	@Test
 	public void fromString_2_m() throws Exception {
-		Quantity<Metrics> quantity = Quantity.fromString("1 m", Metrics.class);
+		Quantity<Metrics> quantity = Quantity.fromString("1 m", Metrics.cm);
 		assertEquals("1.0 m", quantity.toString());
+	}
+	
+	@Test
+	public void useDefaultUnit_fromString_1() throws Exception {
+		Quantity<Metrics> quantity = Quantity.fromString("1", Metrics.cm);
+		assertEquals("1.0 cm", quantity.toString());
 	}
 }
