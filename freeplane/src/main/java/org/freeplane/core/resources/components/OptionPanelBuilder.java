@@ -208,12 +208,12 @@ public class OptionPanelBuilder {
 		}
 	}
 	
-	private class QuantityOptionCreator extends PropertyCreator {
+	private class LengthOptionCreator extends PropertyCreator {
 		private IPropertyControlCreator createNumberPropertyCreator(
-				final String name, final double min, final double step, final double max) {
+				final String name, final String defaultUnit, final double min, final double step, final double max) {
 			return new IPropertyControlCreator() {
 				public IPropertyControl createControl() {
-					return new QuantityProperty<LengthUnits>(name, min, max, step, LengthUnits.class);
+					return new QuantityProperty<LengthUnits>(name, min, max, step, LengthUnits.valueOf(defaultUnit));
 				}
 			};
 		}
@@ -223,7 +223,9 @@ public class OptionPanelBuilder {
 			final String minString = data.getAttribute("min", "0");
 			final String maxString = data.getAttribute("max", "100000");
 			final String stepString = data.getAttribute("step", "0.1");
+			final String defaultUnit = data.getAttribute("defaultUnit", "px");
 			return createNumberPropertyCreator(name,
+					defaultUnit,
 					Double.parseDouble(minString),
 					Double.parseDouble(stepString),
 					Double.parseDouble(maxString));
@@ -592,7 +594,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("font", new FontOptionCreator());
 		readManager.addElementHandler("boolean", new BooleanOptionCreator());
 		readManager.addElementHandler("number", new NumberOptionCreator());
-		readManager.addElementHandler("quantity", new QuantityOptionCreator());
+		readManager.addElementHandler("length", new LengthOptionCreator());
 		readManager.addElementHandler("path", new PathOptionCreator());
 		readManager.addElementHandler("color", new ColorOptionCreator());
 		readManager.addElementHandler("combo", new ComboOptionCreator());
