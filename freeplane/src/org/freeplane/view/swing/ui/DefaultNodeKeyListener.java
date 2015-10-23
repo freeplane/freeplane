@@ -116,7 +116,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 	}
 
 	public void keyTyped(final KeyEvent e) {
-		if ((e.isAltDown() || e.isControlDown() || e.isMetaDown())) {
+		if ((e.isAltDown() || e.isControlDown() || e.isMetaDown()) || AltCodeChecker.isAltCode(e.getKeyChar())) {
 			return;
 		}
 		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action",
