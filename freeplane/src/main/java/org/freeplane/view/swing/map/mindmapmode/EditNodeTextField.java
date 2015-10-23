@@ -705,16 +705,25 @@ public class EditNodeTextField extends EditNodeBase {
 		final Dimension newParentSize = new Dimension(horizontalSpace + textFieldSize.width, verticalSpace + textFieldSize.height);
 
 		final Point location = new Point(textR.x - 2, textR.y);
+		
+		final int alignmentCorrection;
 		if(widthAddedToTextField > 0){
 			switch(labelHorizontalAlignment){
 			case SwingConstants.CENTER:
-				location.x -= widthAddedToTextField / 2;
+				alignmentCorrection= widthAddedToTextField / 2;
 				break;
 			case SwingConstants.RIGHT:
-				location.x -= widthAddedToTextField;
+				alignmentCorrection= widthAddedToTextField;
+				break;
+			default:
+				alignmentCorrection= 0;
 				break;
 			}
+			location.x -= alignmentCorrection;
 		}
+		else
+			alignmentCorrection = 0;
+		
 		if(! layoutMapOnTextChange)
 			UITools.convertPointToAncestor(parent, location, mapView);
 		
@@ -736,7 +745,7 @@ public class EditNodeTextField extends EditNodeBase {
 				MouseEvent mouseEvent = (MouseEvent) currentEvent;
 				if(mouseEvent.getComponent().equals(parent)){
 					final Point point = mouseEvent.getPoint();
-					point.x -= textR.x;
+					point.x -= textR.x - alignmentCorrection;
 					point.y -= textR.y;
 					pos = textfield.viewToModel(point);
 				}
