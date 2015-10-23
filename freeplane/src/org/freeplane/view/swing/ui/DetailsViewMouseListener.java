@@ -67,7 +67,10 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 		else {
 			nodeSelector.extendSelection(e);
 			if (canEdit(controller) && isEditingStartEvent(e)) {
-				((MTextController) controller).editDetails(model, e, e.isAltDown());
+				final boolean editLong = e.isAltDown();
+				if(! editLong)
+					((MTextController)controller).getEventQueue().activate(e);
+				((MTextController) controller).editDetails(model, e, editLong);
 			}
 			else
 				super.mouseClicked(e);
