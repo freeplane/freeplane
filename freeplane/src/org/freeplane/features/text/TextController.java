@@ -33,6 +33,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -261,21 +263,18 @@ public class TextController implements IExtension {
 			        Font detailFont = style.getFont(detailStyleNode);
 			        Color detailBackground = style.getBackgroundColor(detailStyleNode);
 			        Color detailForeground = style.getColor(detailStyleNode);
+			        final int alignment = style.getTextAlign(detailStyleNode).swingConstant;
 					
-					final StringBuilder rule = new StringBuilder();
-					rule.append("font-family: " + detailFont.getFamily() + ";");
-					rule.append("font-size: " + detailFont.getSize() + "pt;");
-	                if (detailFont.isItalic()) {
-	                    rule.append("font-style: italic; ");
-	                }
-	                if (detailFont.isBold()) {
-	                    rule.append("font-weight: bold; ");
-	                }
-					rule.append("color: ").append(ColorUtils.colorToString(detailForeground)).append(";");
-					rule.append("background-color: ").append(ColorUtils.colorToString(detailBackground)).append(";");
+					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
+							.append(new CssRuleBuilder()
+							.withFont(detailFont, UITools.FONT_SCALE_FACTOR)
+							.withColor(detailForeground)
+							.withBackground(detailBackground)
+							.withAlignment(alignment))
+							.append("\">");
 					
 					String noteText= detailText.getHtml();
-					final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+					final String tooltipText = noteText.replaceFirst("<body>",  htmlBodyStyle.toString())
 					    .replaceFirst("</body>", "</div></body>");
 					return tooltipText;
 				}
@@ -290,18 +289,8 @@ public class TextController implements IExtension {
 				    }
 				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 				    final Font font = style.getFont(node);
-				    final StringBuilder rule = new StringBuilder();
-				    rule.append("font-family: " + font.getFamily() + ";");
-				    rule.append("font-size: " + font.getSize() + "pt;");
-				    rule.append("margin-top:0;");
-					if (font.isItalic()) {
-						rule.append("font-style: italic; ");
-					}
-					if (font.isBold()) {
-						rule.append("font-weight: bold; ");
-					}
-					final Color nodeTextColor = view.getForeground();
-					rule.append("color: ").append(ColorUtils.colorToString(nodeTextColor)).append(";");
+					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
+							.append(new CssRuleBuilder().withFont(font, UITools.FONT_SCALE_FACTOR));
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {
@@ -309,12 +298,14 @@ public class TextController implements IExtension {
 				    }
 				    catch (Exception e) {
 					    text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
-					    rule.append("color:red;");
+					    htmlBodyStyle.append("color:red;");
 				    }
+
+				    htmlBodyStyle.append("\">");
 				    if (!HtmlUtils.isHtmlNode(text)) {
 					    text = HtmlUtils.plainToHTML(text);
 				    }
-				    final String tooltipText = text.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+				    final String tooltipText = text.replaceFirst("<body>", htmlBodyStyle.toString())
 				        .replaceFirst("</body>", "</div></body>");
 				    return tooltipText;
 			    }

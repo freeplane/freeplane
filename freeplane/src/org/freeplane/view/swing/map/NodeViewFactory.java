@@ -275,6 +275,7 @@ class NodeViewFactory {
 		}
 		else {
 			detailContent.setFont(map.getDetailFont());
+			detailContent.setHorizontalAlignment(map.getDetailHorizontalAlignment());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			detailContent.updateText(detailText.getHtml());
 			detailContent.setForeground(map.getDetailForeground());
