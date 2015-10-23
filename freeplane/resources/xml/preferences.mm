@@ -422,7 +422,8 @@
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="size_limits"/>
 <node TEXT="Maximum shortened text width">
-<attribute NAME="type" VALUE="quantity"/>
+<attribute NAME="type" VALUE="length"/>
+<attribute NAME="defaultUnit" VALUE="px"/>
 <attribute NAME="name" VALUE="bubble_vertical_margin"/>
 <attribute NAME="min" VALUE="0"/>
 <attribute NAME="max" VALUE="1000"/>
@@ -544,14 +545,20 @@
 <attribute NAME="type" VALUE="separator"/>
 <attribute NAME="name" VALUE="outline_view"/>
 <node TEXT="Vertical distance" ID="ID_1110006236" CREATED="1370183720047" MODIFIED="1370183720047">
-<attribute NAME="type" VALUE="number"/>
+<attribute NAME="type" VALUE="length"/>
+<attribute NAME="defaultUnit" VALUE="px"/>
 <attribute NAME="name" VALUE="outline_vgap"/>
 <attribute NAME="min" VALUE="1"/>
+<attribute NAME="max" VALUE="1000"/>
+<attribute NAME="step" VALUE="0.01"/>
 </node>
 <node TEXT="Horizontal distance" ID="ID_592653838" CREATED="1370183720047" MODIFIED="1370183720047">
-<attribute NAME="type" VALUE="number"/>
+<attribute NAME="type" VALUE="length"/>
+<attribute NAME="defaultUnit" VALUE="px"/>
 <attribute NAME="name" VALUE="outline_hgap"/>
 <attribute NAME="min" VALUE="1"/>
+<attribute NAME="max" VALUE="1000"/>
+<attribute NAME="step" VALUE="0.01"/>
 </node>
 </node>
 <node TEXT="Icons" FOLDED="true" ID="ID_277900726" CREATED="1370183720047" MODIFIED="1370183720047">
@@ -619,9 +626,12 @@
 <attribute NAME="name" VALUE="edit_on_double_click"/>
 </node>
 <node TEXT="Grid gap size" ID="ID_1158278472" CREATED="1370183720052" MODIFIED="1370183720052">
-<attribute NAME="type" VALUE="number"/>
+<attribute NAME="type" VALUE="length"/>
+<attribute NAME="defaultUnit" VALUE="px"/>
 <attribute NAME="name" VALUE="grid_size"/>
 <attribute NAME="min" VALUE="1"/>
+<attribute NAME="max" VALUE="1000"/>
+<attribute NAME="step" VALUE="0.01"/>
 </node>
 <node TEXT="Automatic map scrolling speed" ID="ID_904143728" CREATED="1370183720052" MODIFIED="1370183720052">
 <attribute NAME="type" VALUE="number"/>

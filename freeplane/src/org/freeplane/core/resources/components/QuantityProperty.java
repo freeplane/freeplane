@@ -40,13 +40,13 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 	final private JSpinner numberSpinner;
 	@SuppressWarnings("rawtypes")
 	final private JComboBox unitBox;
-	final private Class<U> enumClass;
+	final private U defaultUnit;
 
-	public QuantityProperty(final String name, final double min, final double max, final double step, Class<U> enumClass) {
+	public QuantityProperty(final String name, final double min, final double max, final double step, U defaultUnit) {
 		super(name);
-		this.enumClass = enumClass;
+		this.defaultUnit = defaultUnit;
 		numberSpinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
-		NamedObject[] units = NamedObject.fromEnum(enumClass);
+		NamedObject[] units = NamedObject.fromEnum(defaultUnit.getDeclaringClass());
 		unitBox = new JComboBox(units);
 		addChangeListeners();
 	}
@@ -88,14 +88,14 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 	
 	public Quantity<U> getQuantifiedValue(){
 		double value = (Double) numberSpinner.getValue();
-		U unit = enumClass.getEnumConstants()[unitBox.getSelectedIndex()];
+		U unit = defaultUnit.getDeclaringClass().getEnumConstants()[unitBox.getSelectedIndex()];
 		return new Quantity<U>(value, unit);
 	}
 
 	@Override
 	public void setValue(final String value)
 	{
-		Quantity<U> quantity = Quantity.fromString(value, enumClass);
+		Quantity<U> quantity = Quantity.fromString(value, defaultUnit);
 		setQuantifiedValue(quantity);		
 	}
 

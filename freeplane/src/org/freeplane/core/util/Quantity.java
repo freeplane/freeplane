@@ -1,13 +1,22 @@
 package org.freeplane.core.util;
 
 public class Quantity <U extends Enum<U> & Convertible >{
-
-	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, Class<U> unitClass) {
-		int separatorPosition = valueString.lastIndexOf(' ');
-		String numberString = valueString.substring(0, separatorPosition);
+	
+	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, U defaultUnit) {
+		final int separatorPosition = valueString.lastIndexOf(' ');
+		final String numberString;
+		final U unit;
+		if(separatorPosition >= 0){
+			numberString = valueString.substring(0, separatorPosition);
+			String unitString = valueString.substring(separatorPosition + 1);
+			final Class<U> unitClass = (Class<U>)defaultUnit.getDeclaringClass();
+			unit = Enum.valueOf(unitClass, unitString);
+		}
+		else {
+			numberString = valueString;
+			unit = defaultUnit;
+		}
 		double doubleValue = Double.parseDouble(numberString);
-		String unitString = valueString.substring(separatorPosition + 1);
-		U unit = Enum.valueOf(unitClass, unitString);
 		return new Quantity<U>(doubleValue, unit);
 	}
 

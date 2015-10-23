@@ -99,8 +99,8 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 		if (! super.setUp(c)){
 			return false;
 		}
-		final int vgap = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
-		final int hgap = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
+		final int vgap = ResourceController.getResourceController().getLengthProperty("outline_vgap");
+		final int hgap = ResourceController.getResourceController().getLengthProperty("outline_hgap");
 		setVGap(getView().getMap().getZoomed(vgap));
 		hGap = getView().getMap().getZoomed(hgap);
 		return true;

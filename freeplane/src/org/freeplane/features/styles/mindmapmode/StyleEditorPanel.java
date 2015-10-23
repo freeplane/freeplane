@@ -681,7 +681,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addMaxNodeWidthControl(final List<IPropertyControl> controls) {
 		mSetMaxNodeWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetMaxNodeWidth);
-		mMaxNodeWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.MAX_TEXT_WIDTH, 0, 100000, 0.1, LengthUnits.class);
+		mMaxNodeWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.MAX_TEXT_WIDTH, 0, 100000, 0.1, LengthUnits.px);
 		controls.add(mMaxNodeWidth);
 		final MaxNodeWidthChangeListener listener = new MaxNodeWidthChangeListener(mSetMaxNodeWidth, mMaxNodeWidth);
 		mSetMaxNodeWidth.addPropertyChangeListener(listener);
@@ -692,7 +692,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addMinNodeWidthControl(final List<IPropertyControl> controls) {
 		mSetMinNodeWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetMinNodeWidth);
-		mMinNodeWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.MIN_NODE_WIDTH, 0, 100000, 0.1, LengthUnits.class);
+		mMinNodeWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.MIN_NODE_WIDTH, 0, 100000, 0.1, LengthUnits.px);
 		controls.add(mMinNodeWidth);
 		final MinNodeWidthChangeListener listener = new MinNodeWidthChangeListener(mSetMinNodeWidth, mMinNodeWidth);
 		mSetMinNodeWidth.addPropertyChangeListener(listener);

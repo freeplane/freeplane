@@ -130,8 +130,7 @@ class BubbleMainView extends MainView {
 
     static private void updateInsets() {
     	ResourceController resourceController = ResourceController.getResourceController();
-    	String verticalMarginSProperty = resourceController.getProperty(VERTICAL_MARGIN_KEY);
-		int verticalMargin = Quantity.fromString(verticalMarginSProperty, LengthUnits.class).toBaseUnitsRounded();
+		int verticalMargin = resourceController.getLengthProperty(VERTICAL_MARGIN_KEY);
 		insets.set(verticalMargin,  HORIZONTAL_MARGIN,  verticalMargin, HORIZONTAL_MARGIN);
     }
 	

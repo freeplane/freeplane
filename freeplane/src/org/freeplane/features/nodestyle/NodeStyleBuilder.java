@@ -165,7 +165,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				try {
-					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.class);
+					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
 					NodeSizeModel.setMaxNodeWidth(node, width);
 				} catch (Exception e) {
 					LogUtils.warn("Can not parse quantity " + value);
@@ -191,7 +191,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				try {
-					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.class);
+					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
 					NodeSizeModel.setNodeMinWidth(node, width);
 				} catch (Exception e) {
 					LogUtils.warn("Can not parse quantity " + value);
