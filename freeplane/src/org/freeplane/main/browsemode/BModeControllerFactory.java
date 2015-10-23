@@ -77,6 +77,7 @@ public class BModeControllerFactory {
 		NoteController.install(new NoteController());
 		TextController.install(new TextController(modeController));
 		LinkController.install(new LinkController());
+		LocationController.install(new LocationController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		try {
 			ClipboardController.install(new ClipboardController());
