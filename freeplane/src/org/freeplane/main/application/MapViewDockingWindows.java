@@ -57,6 +57,7 @@ import net.infonode.docking.properties.DockingWindowProperties;
 import net.infonode.docking.properties.RootWindowProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
+import net.infonode.properties.gui.util.ComponentProperties;
 import net.infonode.tabbedpanel.TabAreaProperties;
 import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
@@ -91,7 +92,6 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		rootWindow = new RootWindow(viewSerializer);
 		configureDefaultDockingWindowProperties();
 
-		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
 		try {
 	        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 			ObjectOutputStream wrapper = new ObjectOutputStream(byteStream);
@@ -179,14 +179,26 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	}
 
 	private void configureDefaultDockingWindowProperties() {
+
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
-		
+
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
-		overwrittenProperties.getWindowAreaProperties().setBackgroundColor(UIManager.getColor("Panel.background"));
+		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
+		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
+
+		overwrittenProperties.getWindowBarProperties().getComponentProperties().setInsets(null);
+		overwrittenProperties.getWindowBarProperties().getComponentProperties().setBorder(null);
+
 		TabbedPanelProperties tabbedPanelProperties = overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties();
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
 		tabbedPanelProperties.setTabDropDownListVisiblePolicy(TabDropDownListVisiblePolicy.MORE_THAN_ONE_TAB);
+		tabbedPanelProperties.setShadowEnabled(false);
+
+		final ComponentProperties contentPaneComponentProperties = tabbedPanelProperties.getContentPanelProperties().getComponentProperties();
+		contentPaneComponentProperties.setInsets(null);
+		contentPaneComponentProperties.setBorder(null);
+
 		Font tabFont = new Font("Dialog", 0, 11);
 		TitledTabProperties titledTabProperties = overwrittenProperties.getTabWindowProperties().getTabProperties().getTitledTabProperties();
 		titledTabProperties.getHighlightedProperties().getComponentProperties().setFont(tabFont);
@@ -328,6 +340,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				viewSerializer.removeDummyViews();
 				loadingLayoutFromObjectInpusStream = false;
 			}
+			rootWindow.getWindowBar(Direction.DOWN).setEnabled(false);
 		}
 	}
 
@@ -386,14 +399,14 @@ class MapViewDockingWindows implements IMapViewChangeListener {
     }
 
 	private void setTabAreaVisiblePolicy(final TabWindow window) {
-		setTabAreaPolicy((TabWindow) window,  
-				window.getWindowParent() == rootWindow ? 
-						TabAreaVisiblePolicy.MORE_THAN_ONE_TAB : 
+		setTabAreaPolicy(window,
+				window.getWindowParent() == rootWindow ?
+						TabAreaVisiblePolicy.MORE_THAN_ONE_TAB :
 							TabAreaVisiblePolicy.ALWAYS);
 	}
 
 	private void setTabAreaPolicy(TabWindow window, TabAreaVisiblePolicy tabAreaVisiblePolicy) {
-		final TabAreaProperties tabAreaProperties = ((TabWindow)window).getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
+		final TabAreaProperties tabAreaProperties = window.getTabWindowProperties().getTabbedPanelProperties().getTabAreaProperties();
 		tabAreaProperties.setTabAreaVisiblePolicy(tabAreaVisiblePolicy);
 	}
 
