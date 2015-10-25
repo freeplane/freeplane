@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.Timer;
+import javax.swing.border.Border;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -114,10 +115,12 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	final private Border defaultBorder;
 
 	public MapViewScrollPane() {
 		super();
 		setViewport(new MapViewPort());
+		defaultBorder = getBorder();
 	}
 
 	@Override
@@ -148,9 +151,12 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
     }
 
 	private void setScrollbarsVisiblilty() {
-	    boolean areScrollbarsVisible = Controller.getCurrentController().getViewController().areScrollbarsVisible();
+	    final ViewController viewController = Controller.getCurrentController().getViewController();
+		boolean areScrollbarsVisible = viewController.areScrollbarsVisible();
 	    setHorizontalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS : JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	    setVerticalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.VERTICAL_SCROLLBAR_ALWAYS : JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+	    final boolean isFullScreenEnabled = viewController.isFullScreenEnabled();
+	    setBorder(isFullScreenEnabled && ! areScrollbarsVisible ? null : defaultBorder);
     }
 
 	@Override
