@@ -546,7 +546,6 @@ public abstract class MainView extends ZoomableLabel {
     public JToolTip createToolTip() {
 		NodeTooltip tip = new NodeTooltip();
         tip.setComponent(this);
-        tip.setBackground(getNodeView().getMap().getBackground());
 		final URL url = getMap().getModel().getURL();
 		if (url != null) {
 			tip.setBase(url);
