@@ -48,6 +48,7 @@
 				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ToggleLeftToolbarAction" />
+				<Entry name="ShowFormatPanel" />
 			</Entry>
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
@@ -133,6 +134,7 @@
 	<Entry name="map_popup" builder="map_popup">
 		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
 		<Entry name="ToggleToolbarAction" />
+		<Entry name="ShowFormatPanel" />
 		<Entry name="ToggleLeftToolbarAction" />
 		<Entry name="ViewLayoutTypeAction.OUTLINE" />
 		<Entry name="CenterSelectedNodeAction" />
