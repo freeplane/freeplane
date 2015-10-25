@@ -725,9 +725,9 @@ public class EditNodeTextField extends EditNodeBase {
 		textFieldMinimumSize.width = Math.max(textFieldMinimumSize.width, nodeWidth - textFieldX - (parentInsets.right - textFieldBorderWidth));
 		textFieldMinimumSize.height = Math.max(textFieldMinimumSize.height, textR.height);
 		textfield.setSize(textFieldMinimumSize.width, textFieldMinimumSize.height);
-		final Dimension newParentSize = new Dimension(textFieldX + textFieldMinimumSize.width + parentInsets.right, verticalSpace + textFieldMinimumSize.height);
+		final Dimension newParentSize = new Dimension(textFieldX + textFieldMinimumSize.width + parentInsets.right,  2 * textR.y + textFieldMinimumSize.height);
 		horizontalSpace = newParentSize.width - textFieldMinimumSize.width;
-		verticalSpace = Math.max(nodeHeight - textFieldMinimumSize.height, textR.y);
+		verticalSpace = 2 * textR.y;
 		final int widthAddedToParent = newParentSize.width - parent.getWidth();
 		final Point location = new Point(textR.x - textFieldBorderWidth, textR.y);
 		
