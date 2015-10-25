@@ -102,8 +102,11 @@ public class UIComponentVisibilityDispatcher {
 	private void makeComponentVisible(final boolean visible) {
 		if(resizer == null)
 			component.setVisible(visible);
-		else
+		else {
+			if (visible || frameController.isFullScreenEnabled() && ! visible)
+				resizer.setVisible(visible);
 			resizer.setExpanded(visible);
+		}
     }
 
 	public String getPropertyName() {
