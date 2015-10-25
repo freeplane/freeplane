@@ -20,6 +20,7 @@
 package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.util.Collection;
 
@@ -185,7 +186,9 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	public Container createSizeBox() {
 		final JComboBox sizeBox = new JComboBox(size);
-		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
+		Dimension preferredSize = sizeBox.getPreferredSize();
+		preferredSize.width += 10;
+		sizeBox.setPreferredSize(preferredSize);
 		sizeBox.setEditor(new FixedBasicComboBoxEditor());
 		sizeBox.setEditable(true);
 		return sizeBox;
