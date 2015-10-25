@@ -190,9 +190,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
 		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
 		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
-
-		overwrittenProperties.getWindowBarProperties().getComponentProperties().setInsets(null);
-		overwrittenProperties.getWindowBarProperties().getComponentProperties().setBorder(null);
+		windowAreaProperties.setInsets(null);
+		windowAreaProperties.setBorder(null);
 
 		TabbedPanelProperties tabbedPanelProperties = overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties();
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
