@@ -275,7 +275,8 @@ public class TextController implements IExtension {
 							.withFont(detailFont, UITools.FONT_SCALE_FACTOR)
 							.withColor(detailForeground)
 							.withBackground(detailBackground)
-							.withAlignment(alignment))
+							.withAlignment(alignment)
+							.withWidth(style.getMaxWidth(detailStyleNode)))
 							.append("\">");
 					
 					String noteText= detailText.getHtml();
@@ -301,7 +302,8 @@ public class TextController implements IExtension {
 							.append(new CssRuleBuilder().withFont(font, UITools.FONT_SCALE_FACTOR)
 							.withColor(view.getForeground())
 							.withBackground(view.getNodeView().getTextBackground())
-							.withAlignment(view.getHorizontalAlignment()));
+							.withAlignment(view.getHorizontalAlignment())
+							.withWidth(style.getMaxWidth(node)));
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {
