@@ -51,6 +51,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.view.swing.map.MainView;
 
 
 /**
@@ -283,14 +284,20 @@ public class TextController implements IExtension {
 
 	private void registerNodeTextTooltip() {
 		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
-			    public String getTooltip(final ModeController modeController, NodeModel node, Component view) {
+			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
+				return getTooltip(modeController, node, (MainView)view);
+			}
+			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
 				    if (!ShortenedTextModel.isShortened(node)) {
 					    return null;
 				    }
 				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 				    final Font font = style.getFont(node);
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
-							.append(new CssRuleBuilder().withFont(font, UITools.FONT_SCALE_FACTOR));
+							.append(new CssRuleBuilder().withFont(font, UITools.FONT_SCALE_FACTOR)
+							.withColor(view.getForeground())
+							.withBackground(view.getNodeView().getTextBackground())
+							.withAlignment(view.getHorizontalAlignment()));
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {
