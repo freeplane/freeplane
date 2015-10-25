@@ -6,6 +6,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Convertible;
+import org.freeplane.core.util.Quantity;
 
 public class CssRuleBuilder {
 	private StringBuilder rule = new StringBuilder();
@@ -65,10 +67,18 @@ public class CssRuleBuilder {
 			break;
 		}
 		return this;
-		
+
 	}
 
 	public String toString() {
 		return rule.toString();
+	}
+
+	public <U extends Enum<U> & Convertible> CssRuleBuilder withWidth(Quantity<U> width) {
+		if(width != null)
+    		rule.append("width: ")
+    		.append(width.value).append(width.unit)
+    		.append(";");
+		return this;
 	}
 }
