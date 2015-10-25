@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mode;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
@@ -36,6 +37,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.IExtensionCopier;
@@ -43,7 +45,7 @@ import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 
 /**
@@ -383,12 +385,15 @@ public class ModeController extends AController {
 		return false;
 	}
 	public String createToolTip(final NodeModel node, Component view) {
+		final MapModel map = node.getMap();
 		// perhaps we should use the solution presented in the 3rd answer at
 		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
 		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
-		final String style = "<style type='text/css'>" //
-		        + " body { font-size: 10pt; }" // FIXME: copy from NoteController.setNoteTooltip() ?
-		        + "</style>";
+		final Color background = getExtension(MapStyle.class).getBackground(map);
+		final StringBuilder style = new StringBuilder( "<style type='text/css'>")
+		        .append(" body { font-size: 10pt;") // FIXME: copy from NoteController.setNoteTooltip() ?
+		        .append(new CssRuleBuilder().withBackground(background))
+		        .append(" }</style>");
 		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
 		boolean tooltipSet = false;
 		for (final ITooltipProvider provider : toolTip.values()) {
@@ -398,10 +403,9 @@ public class ModeController extends AController {
 			}
 			value = value.replace("<html>", "<div>");
 			value = value.replaceAll("\\s*</?(body|head)>", "");
-			value = value.replace("<td>", "<td style='background-color: white'>");
 			value = value.replace("</html>", "</div>");
 			if (tooltipSet) {
-				text.append("<br>");
+				text.append("<hr>");
 			}
 			text.append(value);
 			tooltipSet = true;
