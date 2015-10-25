@@ -53,7 +53,7 @@ public class NoteController implements IExtension {
 	private static UIIcon noteIcon;
 	public static URL bwNoteIconUrl;
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
-	private static final Integer NODE_TOOLTIP = 9;
+	private static final Integer NOTE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
 
 	public static NoteController getController() {
@@ -107,7 +107,7 @@ public class NoteController implements IExtension {
 	}
 
 	private void registerNoteTooltipProvider(ModeController modeController) {
-		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
+		modeController.addToolTipProvider(NOTE_TOOLTIP, new ITooltipProvider() {
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
 					return null;
