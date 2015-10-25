@@ -171,6 +171,7 @@
 				<Entry name="NewSiblingAction" accelerator="ENTER">
 					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				</Entry>
+				
 				<Entry name="EditAction" priority="Medium">
 					<Entry name="EditLongAction" priority="Top" accelerator="alt ENTER" />
 				</Entry>
@@ -339,6 +340,9 @@
 				<Entry name="AlwaysUnfoldedNodeAction" />
 				<Entry name="ResetNodeLocationAction" />
 				<Entry name="SetShortenerStateAction" />
+				<Entry name="FirstGroupNodeAction" accelerator="alt shift B"/>
+				<Entry name="SummaryNodeAction" accelerator="alt shift S"/>
+				<Entry name="AlwaysUnfoldedNodeAction"/>
 				<Entry name="FreeNodeAction" />
 			</Entry>
 			<Entry name="general_settings" resize_policies="Mirror"
