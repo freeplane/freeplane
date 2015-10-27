@@ -66,11 +66,10 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		if(layout == null || node.isLeaf() && ! layout.applyToLeaves)
 			return null;
 		final int depth = node.depth();
-		return getStyle(node, depth, layout.cyclic);
+		return getStyle(node.getMap(), depth, layout.cyclic);
 	}
 
-	private IStyle getStyle(final NodeModel node, final int depth, boolean cyclic) {
-		final MapModel map = node.getMap();
+	public IStyle getStyle(final MapModel map, final int depth, boolean cyclic) {
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
 		final String name = depth == 0 ? AUTOMATIC_LAYOUT_LEVEL_ROOT : AUTOMATIC_LAYOUT_LEVEL + depth;
 		final NamedObject styleKey = NamedObject.format(name);
@@ -88,7 +87,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		if(cycledLevelStyleCount <= 0)
 			return null;
 		else
-			return getStyle(node, FIRST_CYCLIC_STYLE_LEVEL + ((depth - FIRST_CYCLIC_STYLE_LEVEL) % cycledLevelStyleCount), false);
+			return getStyle(map, FIRST_CYCLIC_STYLE_LEVEL + ((depth - FIRST_CYCLIC_STYLE_LEVEL) % cycledLevelStyleCount), false);
 	}
 
 	@Override
