@@ -28,7 +28,7 @@ public class Quantity <U extends Enum<U> & Convertible >{
 		this.unit = unit;
 	}
 
-	double toBaseUnits() {
+	public double toBaseUnits() {
 		return value * unit.factor();
 	}
 
