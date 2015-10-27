@@ -79,10 +79,6 @@ public class LogicalStyleController implements IExtension {
 		});
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
-				IStyle style = LogicalStyleModel.getStyle(node);
-				if(style != null){
-					add(node, currentValue, style);
-				}
 				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 				Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
 				clearCache();
