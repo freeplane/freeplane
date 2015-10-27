@@ -237,10 +237,6 @@ class VerticalNodeViewLayoutStrategy {
 									- child.getBottomOverlap();
 						}
 						y = Math.max(y, summaryY);
-						final int summaryContentHeight = contentHeightSumAtGroupStart[itemLevel] + childContentHeight;
-						if (childContentHeightSum < summaryContentHeight) {
-							childContentHeightSum = summaryContentHeight;
-						}
 					}
 				}
 				if (!isItem || !isFreeNode) {
