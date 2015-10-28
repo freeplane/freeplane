@@ -20,9 +20,11 @@
  */
 package org.freeplane.features.styles;
 
+import java.awt.Color;
 import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -34,6 +36,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 public class AutomaticLayoutController extends PersistentNodeHook implements IExtension{
+	private static final int FIRST_CYCLIC_STYLE_LEVEL = 1;
+	private static final String AUTOMATIC_LAYOUT_LEVEL = "AutomaticLayout.level,";
+	private static final String AUTOMATIC_LAYOUT_LEVEL_ROOT = "AutomaticLayout.level.root";
+
 	/**
 	 *
 	 */
@@ -49,6 +55,15 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 				return currentValue;
 			}
 		});
+		EdgeController.getController().addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<Color, NodeModel>() {
+			public Color getProperty(NodeModel model, Color currentValue) {
+				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
+				if(layout == AutomaticLayout.COLUMNS)
+					return EdgeController.ID_BY_GRID;
+				else
+					return null;
+			}
+		});
 	}
 
 	@Override
@@ -59,18 +74,31 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	}
 
 	private IStyle getStyle(final NodeModel node, AutomaticLayout layout) {
-		if(layout == null || node.isLeaf() && ! layout.equals(AutomaticLayout.ALL))
+		if(layout == null || ! layout.addStyle ||  node.isLeaf() && ! layout.applyToLeaves)
 			return null;
 		final int depth = node.depth();
-		final MapModel map = node.getMap();
+		return getStyle(node.getMap(), depth, false);
+	}
+
+	public IStyle getStyle(final MapModel map, final int depth, boolean cyclic) {
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
-		final String name = depth == 0 ? "AutomaticLayout.level.root" : "AutomaticLayout.level," + depth;
-		final NamedObject obj = NamedObject.format(name);
-		final IStyle style = StyleFactory.create(obj);
+		final String name = depth == 0 ? AUTOMATIC_LAYOUT_LEVEL_ROOT : AUTOMATIC_LAYOUT_LEVEL + depth;
+		final NamedObject styleKey = NamedObject.format(name);
+		final IStyle style = StyleFactory.create(styleKey);
 		if (extension.getStyleNode(style) != null) {
 			return style;
 		}
-		return null;
+		if(! cyclic)
+			return null;
+		
+		final NamedObject rootKey = NamedObject.format(AUTOMATIC_LAYOUT_LEVEL_ROOT);
+		final IStyle rootStyle = StyleFactory.create(rootKey);
+		final NodeModel automaticStylesParentNode = extension.getStyleNode(rootStyle).getParentNode();
+		final int cycledLevelStyleCount = automaticStylesParentNode.getChildCount() - FIRST_CYCLIC_STYLE_LEVEL;
+		if(cycledLevelStyleCount <= 0)
+			return null;
+		else
+			return getStyle(map, FIRST_CYCLIC_STYLE_LEVEL + ((depth - FIRST_CYCLIC_STYLE_LEVEL) % cycledLevelStyleCount), false);
 	}
 
 	@Override

@@ -378,10 +378,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
                 		summaryY += childHeight + getVGap() - child.getBottomOverlap();
                 	}
                 	y = Math.max(y, summaryY);
-                	final int summaryContentHeight = groupStartContentHeightSum[itemLevel] + childContentHeight;
-                	if(childContentHeightSum  < summaryContentHeight){
-                		childContentHeightSum = summaryContentHeight;
-                	}
                 }
             }
 			if(! isItem || ! isFreeNode){

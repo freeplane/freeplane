@@ -21,6 +21,7 @@ package org.freeplane.features.edge;
 
 import java.awt.Color;
 import java.util.Collection;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -31,6 +32,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -41,6 +43,8 @@ import org.freeplane.features.styles.MapStyleModel;
 public class EdgeController implements IExtension {
 	public static final EdgeStyle STANDARD_EDGE_STYLE = EdgeStyle.EDGESTYLE_BEZIER;
 	public static final Color STANDARD_EDGE_COLOR = Color.GRAY;
+	public static final Color ID_BY_PARENT = new Color(0);
+	public static final Color ID_BY_GRID = new Color(0);
 
 	public static EdgeController getController() {
 		return getController(Controller.getCurrentModeController());
@@ -63,17 +67,25 @@ public class EdgeController implements IExtension {
 		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		styleHandlers = new ExclusivePropertyChain<EdgeStyle, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
-		addColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
+		
+		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return getStyleEdgeColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
+		
+		addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<Color, NodeModel>() {
+			public Color getProperty(NodeModel model, Color currentValue) {
+				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
+				if(layout == AutomaticLayout.COLUMNS)
+					return EdgeController.ID_BY_GRID;
+				else
+					return null;
+			}
+		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(NodeModel node, final Color currentValue) {
-				if(node.getParentNode() != null){
-					return null;
-				}
-				return STANDARD_EDGE_COLOR;
+				return ID_BY_PARENT;
 			}
 		});
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {

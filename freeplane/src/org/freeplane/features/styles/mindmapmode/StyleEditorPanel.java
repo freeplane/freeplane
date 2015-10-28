@@ -1005,7 +1005,10 @@ public class StyleEditorPanel extends JPanel {
 				final Color edgeColor = edgeModel != null ? edgeModel.getColor() : null;
 				final Color viewColor = edgeController.getColor(node);
 				mSetEdgeColor.setValue(edgeColor != null);
-				mEdgeColor.setColorValue(viewColor);
+				if(viewColor == EdgeController.ID_BY_GRID || viewColor == EdgeController.ID_BY_PARENT)
+					mEdgeColor.setColorValue(EdgeController.STANDARD_EDGE_COLOR);
+				else
+					mEdgeColor.setColorValue(viewColor);
 			}
 			{
 				final EdgeStyle style = edgeModel != null ? edgeModel.getStyle() : null;

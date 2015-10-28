@@ -68,12 +68,14 @@ import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
+import org.freeplane.view.swing.map.edge.AutomaticEdgeStyle;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 
@@ -1345,13 +1347,19 @@ public class NodeView extends JComponent implements INodeView {
 			return parentView.getEdgeWidth();
 		return 1;
     }
+	
 	public Color getEdgeColor() {
+		if(edgeColor == EdgeController.ID_BY_GRID)
+			if(getMap().getModeController().containsExtension(AutomaticLayoutController.class))
+				return edgeColor =new AutomaticEdgeStyle(this).getColor();
+		if(edgeColor == EdgeController.ID_BY_PARENT) {
+			final NodeView parentView = getParentView();
+			if (parentView != null)
+				return edgeColor = parentView.getEdgeColor();
+		}
 		if(edgeColor != null)
 			return edgeColor;
-		final NodeView parentView = getParentView();
-		if(parentView != null)
-			return parentView.getEdgeColor();
-		return Color.GRAY;
+		return edgeColor = Color.GRAY;
     }
 
 	private void updateCloud() {
