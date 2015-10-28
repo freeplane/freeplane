@@ -1343,15 +1343,19 @@ public class NodeView extends JComponent implements INodeView {
 			return parentView.getEdgeWidth();
 		return 1;
     }
+	
 	public Color getEdgeColor() {
-		if(getMap().getModeController().containsExtension(AutomaticLayoutController.class))
-			return new AutomaticEdgeStyle(this).getColor();
+		if(edgeColor == EdgeController.ID_BY_GRID)
+			if(getMap().getModeController().containsExtension(AutomaticLayoutController.class))
+				return edgeColor =new AutomaticEdgeStyle(this).getColor();
+		if(edgeColor == EdgeController.ID_BY_PARENT) {
+			final NodeView parentView = getParentView();
+			if (parentView != null)
+				return edgeColor = parentView.getEdgeColor();
+		}
 		if(edgeColor != null)
 			return edgeColor;
-		final NodeView parentView = getParentView();
-		if(parentView != null)
-			return parentView.getEdgeColor();
-		return Color.GRAY;
+		return edgeColor = Color.GRAY;
     }
 
 	private void updateCloud() {
