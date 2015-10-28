@@ -48,7 +48,7 @@ public class MMapModel extends MapModel {
 	 */
 	public MMapModel() {
 		super();
-		addExtension(IUndoHandler.class, new UndoHandler());
+		addExtension(IUndoHandler.class, new UndoHandler(this));
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
 		EventQueue.invokeLater(new Runnable() {

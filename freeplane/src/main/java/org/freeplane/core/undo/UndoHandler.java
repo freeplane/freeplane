@@ -30,6 +30,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 
@@ -50,7 +53,7 @@ public class UndoHandler implements IUndoHandler {
 
 	public static final int COMMIT_DELAY = 2;
 
-	private static class ActorList extends LinkedList<IActor> {
+	private static class ActorList extends LinkedList<CompoundActor> {
 		private static final long serialVersionUID = 1L;
 		int commitDelay = COMMIT_DELAY;
 	}
@@ -61,24 +64,26 @@ public class UndoHandler implements IUndoHandler {
 	private static final int MAX_ENTRIES = 100;
 	private static final long TIME_TO_BEGIN_NEW_ACTION = 100;
 	private boolean actionFrameStarted;
-	private ListIterator<IActor> actorIterator;
+	private ListIterator<CompoundActor> actorIterator;
 	private ActorList actorList;
 	private boolean isUndoActionRunning = false;
 	final private ActionListener redoAction;
 	private long timeOfLastAdd;
 	final private LinkedList<ActorList> transactionList;
-	final private LinkedList<ListIterator<IActor>> transactionIteratorList;
+	final private LinkedList<ListIterator<CompoundActor>> transactionIteratorList;
 	final private ActionListener undoAction;
 	private boolean deactivated;
 	private final ChangeEvent event;
+	final private MapModel map;
 
-	public UndoHandler() {
+	public UndoHandler(MapModel map) {
+		this.map = map;
 		actionFrameStarted = false;
 		deactivated = false;
 		listeners = new LinkedList<ChangeListener>();
 		actorList = new ActorList();
 		transactionList = new LinkedList<ActorList>();
-		transactionIteratorList = new LinkedList<ListIterator<IActor>>();
+		transactionIteratorList = new LinkedList<ListIterator<CompoundActor>>();
 		actorIterator = actorList.listIterator();
 		redoAction = new RedoAction();
 		timeOfLastAdd = 0;
@@ -116,21 +121,20 @@ public class UndoHandler implements IUndoHandler {
 		}
 		if ((actorList.size() > 0)
 		        && (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
-			final IActor lastActor = actorIterator.previous();
-			CompoundActor compoundActor;
-			if (!(lastActor instanceof CompoundActor)) {
-				compoundActor = new CompoundActor();
-				compoundActor.add(lastActor);
-				actorIterator.set(compoundActor);
-			}
-			else {
-				compoundActor = (CompoundActor) lastActor;
-			}
+			CompoundActor compoundActor = (CompoundActor) actorIterator.previous();
 			compoundActor.add(actor);
 			actorIterator.next();
 		}
 		else {
-			actorIterator.add(actor);
+			CompoundActor compoundActor = new CompoundActor();
+			final Controller controller = Controller.getCurrentController();
+			if(map == controller.getMap()){
+				final IMapSelection selection = controller.getSelection();
+				final SelectionActor selectionActor = SelectionActor.create(selection);
+				compoundActor.add(selectionActor);
+			}
+			compoundActor.add(actor);
+			actorIterator.add(compoundActor);
 			final int maxEntries = UndoHandler.MAX_ENTRIES;
 			while (actorList.size() > maxEntries) {
 				actorList.removeFirst();
