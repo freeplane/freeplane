@@ -99,11 +99,6 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		spinner.setValue(someValue);
 	}
 
-	@Override
-    protected Component[] getComponents() {
-	    return spinner.getComponents();
-    }
-
 	public Number getNumberValue() {
 		return (Number)spinner.getValue();
 	}

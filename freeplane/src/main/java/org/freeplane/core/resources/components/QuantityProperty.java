@@ -99,9 +99,4 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 		setQuantifiedValue(quantity);		
 	}
 
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{};
-    }
 }

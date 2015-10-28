@@ -84,10 +84,5 @@ public abstract class EditableComboProperty<T> extends PropertyBean implements I
 	    comboBox.setToolTipText(text);
     }
 
-	@Override
-    protected Component[] getComponents() {
-	    return comboBox.getComponents();
-    }
-
     abstract public T toValueObject(Object value);
 }

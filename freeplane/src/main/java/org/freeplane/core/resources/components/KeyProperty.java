@@ -111,9 +111,4 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		mButton.setText(value);
 		mButton.setToolTipText(mButton.getText());
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{mButton};
-    }
 }

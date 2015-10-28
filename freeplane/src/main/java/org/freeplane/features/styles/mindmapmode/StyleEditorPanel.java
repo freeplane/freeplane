@@ -585,7 +585,6 @@ public class StyleEditorPanel extends JPanel {
 		final BgColorChangeListener listener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
 		mSetNodeBackgroundColor.addPropertyChangeListener(listener);
 		mNodeBackgroundColor.addPropertyChangeListener(listener);
-		mNodeBackgroundColor.fireOnMouseClick();
 	}
 
     private void addFormatControl(final List<IPropertyControl> controls) {
@@ -597,7 +596,6 @@ public class StyleEditorPanel extends JPanel {
         final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat, mNodeFormat);
         mSetNodeFormat.addPropertyChangeListener(listener);
         mNodeFormat.addPropertyChangeListener(listener);
-        mNodeFormat.fireOnMouseClick();
     }
 	
 	private void addNodeNumberingControl(final List<IPropertyControl> controls) {
@@ -608,7 +606,6 @@ public class StyleEditorPanel extends JPanel {
 		final NodeNumberingChangeListener listener = new NodeNumberingChangeListener(mSetNodeNumbering, mNodeNumbering);
 		mSetNodeNumbering.addPropertyChangeListener(listener);
 		mNodeNumbering.addPropertyChangeListener(listener);
-		mNodeNumbering.fireOnMouseClick();
 	}
 
 	private void addCloudColorControl(final List<IPropertyControl> controls) {
@@ -620,7 +617,6 @@ public class StyleEditorPanel extends JPanel {
 		final CloudColorChangeListener listener = new CloudColorChangeListener(mSetCloud, mCloudColor);
 		mSetCloud.addPropertyChangeListener(listener);
 		mCloudColor.addPropertyChangeListener(listener);
-		mCloudColor.fireOnMouseClick();
 	}
 
 	private void addColorControl(final List<IPropertyControl> controls) {
@@ -632,7 +628,6 @@ public class StyleEditorPanel extends JPanel {
 		final ColorChangeListener listener = new ColorChangeListener(mSetNodeColor, mNodeColor);
 		mSetNodeColor.addPropertyChangeListener(listener);
 		mNodeColor.addPropertyChangeListener(listener);
-		mNodeColor.fireOnMouseClick();
 	}
 
 	private void addEdgeColorControl(final List<IPropertyControl> controls) {
@@ -643,7 +638,6 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeColorChangeListener listener = new EdgeColorChangeListener(mSetEdgeColor, mEdgeColor);
 		mSetEdgeColor.addPropertyChangeListener(listener);
 		mEdgeColor.addPropertyChangeListener(listener);
-		mEdgeColor.fireOnMouseClick();
 	}
 
 	private void addEdgeStyleControl(final List<IPropertyControl> controls) {
@@ -654,7 +648,6 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeStyleChangeListener listener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
 		mSetEdgeStyle.addPropertyChangeListener(listener);
 		mEdgeStyle.addPropertyChangeListener(listener);
-		mEdgeStyle.fireOnMouseClick();
 	}
 
 	private void addCloudShapeControl(final List<IPropertyControl> controls) {
@@ -663,7 +656,6 @@ public class StyleEditorPanel extends JPanel {
 		final CloudShapeChangeListener listener = new CloudShapeChangeListener(mSetCloud, mCloudShape);
 		mSetCloud.addPropertyChangeListener(listener);
 		mCloudShape.addPropertyChangeListener(listener);
-		mCloudShape.fireOnMouseClick();
 	}
 
 	private void addEdgeWidthControl(final List<IPropertyControl> controls) {
@@ -674,7 +666,6 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeWidthChangeListener listener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(listener);
 		mEdgeWidth.addPropertyChangeListener(listener);
-		mEdgeWidth.fireOnMouseClick();
 	}
 
 	private void addMaxNodeWidthControl(final List<IPropertyControl> controls) {
@@ -685,7 +676,6 @@ public class StyleEditorPanel extends JPanel {
 		final MaxNodeWidthChangeListener listener = new MaxNodeWidthChangeListener(mSetMaxNodeWidth, mMaxNodeWidth);
 		mSetMaxNodeWidth.addPropertyChangeListener(listener);
 		mMaxNodeWidth.addPropertyChangeListener(listener);
-		mMaxNodeWidth.fireOnMouseClick();
 	}
 
 	private void addMinNodeWidthControl(final List<IPropertyControl> controls) {
@@ -696,7 +686,6 @@ public class StyleEditorPanel extends JPanel {
 		final MinNodeWidthChangeListener listener = new MinNodeWidthChangeListener(mSetMinNodeWidth, mMinNodeWidth);
 		mSetMinNodeWidth.addPropertyChangeListener(listener);
 		mMinNodeWidth.addPropertyChangeListener(listener);
-		mMinNodeWidth.fireOnMouseClick();
 	}
 
 	private void addChildDistanceControl(final List<IPropertyControl> controls) {
@@ -707,7 +696,6 @@ public class StyleEditorPanel extends JPanel {
 		final ChildDistanceChangeListener listener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(listener);
 		mChildDistance.addPropertyChangeListener(listener);
-		mChildDistance.fireOnMouseClick();
 	}
 
 	private void addFontBoldControl(final List<IPropertyControl> controls) {
@@ -718,7 +706,6 @@ public class StyleEditorPanel extends JPanel {
 		final FontBoldChangeListener listener = new FontBoldChangeListener(mSetNodeFontBold, mNodeFontBold);
 		mSetNodeFontBold.addPropertyChangeListener(listener);
 		mNodeFontBold.addPropertyChangeListener(listener);
-		mNodeFontBold.fireOnMouseClick();
 	}
 
 	private void addFontItalicControl(final List<IPropertyControl> controls) {
@@ -729,7 +716,6 @@ public class StyleEditorPanel extends JPanel {
 		final FontItalicChangeListener listener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
 		mSetNodeFontItalic.addPropertyChangeListener(listener);
 		mNodeFontItalic.addPropertyChangeListener(listener);
-		mNodeFontItalic.fireOnMouseClick();
 	}
 
 	private void addFontHyperlinkControl(final List<IPropertyControl> controls) {
@@ -740,7 +726,6 @@ public class StyleEditorPanel extends JPanel {
 		final FontHyperlinkChangeListener listener = new FontHyperlinkChangeListener(mSetNodeFontHyperlink, mNodeFontHyperlink);
 		mSetNodeFontHyperlink.addPropertyChangeListener(listener);
 		mNodeFontHyperlink.addPropertyChangeListener(listener);
-		mNodeFontHyperlink.fireOnMouseClick();
 	}
 
 	private void addFontNameControl(final List<IPropertyControl> controls) {
@@ -751,7 +736,6 @@ public class StyleEditorPanel extends JPanel {
 		final FontNameChangeListener listener = new FontNameChangeListener(mSetNodeFontName, mNodeFontName);
 		mSetNodeFontName.addPropertyChangeListener(listener);
 		mNodeFontName.addPropertyChangeListener(listener);
-		mNodeFontName.fireOnMouseClick();
 	}
 
 	private void addFontSizeControl(final List<IPropertyControl> controls) {
@@ -764,7 +748,6 @@ public class StyleEditorPanel extends JPanel {
 		final FontSizeChangeListener listener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(listener);
 		mNodeFontSize.addPropertyChangeListener(listener);
-		mNodeFontSize.fireOnMouseClick();
 	}
 
 	private void addNodeShapeControl(final List<IPropertyControl> controls) {
@@ -776,7 +759,6 @@ public class StyleEditorPanel extends JPanel {
 		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape);
 		mSetNodeShape.addPropertyChangeListener(listener);
 		mNodeShape.addPropertyChangeListener(listener);
-		mNodeShape.fireOnMouseClick();
 	}
 
 	private void addNodeTextAlignmentControl(final List<IPropertyControl> controls) {
@@ -792,7 +774,6 @@ public class StyleEditorPanel extends JPanel {
 		final TextAlignmentChangeListener listener = new TextAlignmentChangeListener(mSetNodeTextAlignment, mNodeTextAlignment);
 		mSetNodeTextAlignment.addPropertyChangeListener(listener);
 		mNodeTextAlignment.addPropertyChangeListener(listener);
-		mNodeTextAlignment.fireOnMouseClick();
 	}
 
 	private List<IPropertyControl> getControls() {

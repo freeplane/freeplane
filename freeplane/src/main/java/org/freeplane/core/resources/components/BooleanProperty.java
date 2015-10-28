@@ -70,11 +70,6 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 		return mCheckBox.isSelected();
 	}
 
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{mCheckBox};
-    }
-
 	public void enables(final IPropertyControl control) {
 		control.setEnabled(getBooleanValue());
 		addPropertyChangeListener(new PropertyChangeListener() {
