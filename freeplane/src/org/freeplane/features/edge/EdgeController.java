@@ -21,6 +21,7 @@ package org.freeplane.features.edge;
 
 import java.awt.Color;
 import java.util.Collection;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -41,6 +42,8 @@ import org.freeplane.features.styles.MapStyleModel;
 public class EdgeController implements IExtension {
 	public static final EdgeStyle STANDARD_EDGE_STYLE = EdgeStyle.EDGESTYLE_BEZIER;
 	public static final Color STANDARD_EDGE_COLOR = Color.GRAY;
+	public static final Color ID_BY_PARENT = new Color(0);
+	public static final Color ID_BY_GRID = new Color(0);
 
 	public static EdgeController getController() {
 		return getController(Controller.getCurrentModeController());
@@ -70,10 +73,7 @@ public class EdgeController implements IExtension {
 		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(NodeModel node, final Color currentValue) {
-				if(node.getParentNode() != null){
-					return null;
-				}
-				return STANDARD_EDGE_COLOR;
+				return ID_BY_PARENT;
 			}
 		});
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {

@@ -3,12 +3,12 @@ package org.freeplane.features.styles;
 import org.freeplane.core.extension.IExtension;
 
 public enum AutomaticLayout implements IExtension{
-	HEADINGS(false, false), ALL(true, false),HEADINGS_CYCLIC(false, true), ALL_CYCLIC(true, true);
+	HEADINGS(true, true), ALL(true, false),COLUMN(false, false);
 	public boolean applyToLeaves;
-	public boolean cyclic;
-	private AutomaticLayout(boolean applyToLeaves, boolean cyclic) {
+	public boolean addStyle;
+	private AutomaticLayout(boolean addStyle, boolean applyToLeaves) {
 		this.applyToLeaves = applyToLeaves;
-		this.cyclic = cyclic;
+		this.addStyle = addStyle;
 	}
 	
 }

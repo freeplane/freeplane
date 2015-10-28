@@ -12,6 +12,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -26,13 +27,23 @@ public class AutomaticEdgeStyle {
 		
 		final NodeView rootView = map.getRoot();
 		final MapStyleModel mapStyleNodes = MapStyleModel.getExtension(rootView.getModel());
-		int gridSize = (node.getMainView().getWidth() + map.getZoomed(LocationModel.HGAP));
+		final NodeModel defaultStyleNode = mapStyleNodes.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+		final NodeStyleController nodeStyleController = modeController.getExtension(NodeStyleController.class);
+		int nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode).toBaseUnitsRounded() + LocationModel.HGAP);
 		Point origin = new Point();
-		UITools.convertPointToAncestor(rootView.getMainView(), origin, rootView);
+		final MainView rootContent = rootView.getMainView();
+		UITools.convertPointToAncestor(rootContent, origin, rootView);
 		Point coordinate = new Point();
-		UITools.convertPointToAncestor(node.getMainView(), coordinate, rootView);
-		int distance = Math.abs(coordinate.x - origin.x);
-		int level = (int) ((float)distance / gridSize + 0.5);
+		final MainView nodeContent = node.getMainView();
+		UITools.convertPointToAncestor(nodeContent, coordinate, rootView);
+		final int distance;
+		if(origin.x < coordinate.x ){
+			distance = coordinate.x + nodeContent.getWidth() - origin.x - rootContent.getWidth();
+		}
+		else{
+			distance = origin.x - coordinate.x;
+		}
+		int level = (int) ((float)distance / nodeColumnWidth + 0.5);
 		
 		final IStyle levelStyle = automaticLayoutController.getStyle(map.getModel(), level, true);
 		levelStyleNode = mapStyleNodes.getStyleNode(levelStyle);

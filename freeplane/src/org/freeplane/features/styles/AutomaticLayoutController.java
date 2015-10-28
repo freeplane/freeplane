@@ -20,9 +20,11 @@
  */
 package org.freeplane.features.styles;
 
+import java.awt.Color;
 import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -34,7 +36,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 public class AutomaticLayoutController extends PersistentNodeHook implements IExtension{
-	private static final int FIRST_CYCLIC_STYLE_LEVEL = 3;
+	private static final int FIRST_CYCLIC_STYLE_LEVEL = 1;
 	private static final String AUTOMATIC_LAYOUT_LEVEL = "AutomaticLayout.level,";
 	private static final String AUTOMATIC_LAYOUT_LEVEL_ROOT = "AutomaticLayout.level.root";
 
@@ -53,6 +55,15 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 				return currentValue;
 			}
 		});
+		EdgeController.getController().addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<Color, NodeModel>() {
+			public Color getProperty(NodeModel model, Color currentValue) {
+				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
+				if(layout == AutomaticLayout.COLUMN)
+					return EdgeController.ID_BY_GRID;
+				else
+					return null;
+			}
+		});
 	}
 
 	@Override
@@ -63,10 +74,10 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	}
 
 	private IStyle getStyle(final NodeModel node, AutomaticLayout layout) {
-		if(layout == null || node.isLeaf() && ! layout.applyToLeaves)
+		if(layout == null || ! layout.addStyle ||  node.isLeaf() && ! layout.applyToLeaves)
 			return null;
 		final int depth = node.depth();
-		return getStyle(node.getMap(), depth, layout.cyclic);
+		return getStyle(node.getMap(), depth, false);
 	}
 
 	public IStyle getStyle(final MapModel map, final int depth, boolean cyclic) {
