@@ -58,7 +58,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		EdgeController.getController().addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(NodeModel model, Color currentValue) {
 				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
-				if(layout == AutomaticLayout.COLUMN)
+				if(layout == AutomaticLayout.COLUMNS)
 					return EdgeController.ID_BY_GRID;
 				else
 					return null;
