@@ -983,6 +983,10 @@
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="RedefineStyleAction"/>
 </node>
+<node TEXT="Remove format" ID="ID_1704403630" CREATED="1370194798829" MODIFIED="1370194798829">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="RemoveFormatAction"/>
+</node>
 <node TEXT="Manage conditional styles for map" ID="ID_805486777" CREATED="1370194798818" MODIFIED="1370194798818">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="ManageConditionalStylesAction"/>
@@ -1095,10 +1099,6 @@
 </node>
 <node TEXT="---" ID="ID_884495267" CREATED="1370194798829" MODIFIED="1370194798829">
 <attribute NAME="type" VALUE="separator"/>
-</node>
-<node TEXT="Remove format" ID="ID_1704403630" CREATED="1370194798829" MODIFIED="1370194798829">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="RemoveFormatAction"/>
 </node>
 <node TEXT="Use plain text" ID="ID_1328005461" CREATED="1370194798829" MODIFIED="1370194798829">
 <attribute NAME="type" VALUE="action"/>
