@@ -78,8 +78,7 @@ public class OutlineLayout implements INodeViewLayout {
 			child = component;
 			final int additionalCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child) / 2;
 			y += additionalCloudHeigth;
-			final int childHGap = child.getContent().isVisible() ? hgap : 0;
-			final int x = baseX + childHGap - child.getContent().getX();
+			final int x = baseX - child.getContent().getX();
 			child.setLocation(x, y);
 			final int childHeight = child.getHeight() - 2 * spaceAround;
 			if (childHeight != 0) {
