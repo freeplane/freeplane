@@ -25,6 +25,9 @@ import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.ConstantObject;
+import org.freeplane.core.util.ObjectRule;
+import org.freeplane.core.util.RuleReference;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -42,9 +45,8 @@ import org.freeplane.features.styles.MapStyleModel;
  */
 public class EdgeController implements IExtension {
 	public static final EdgeStyle STANDARD_EDGE_STYLE = EdgeStyle.EDGESTYLE_BEZIER;
-	public static final Color STANDARD_EDGE_COLOR = Color.GRAY;
-	public static final Color ID_BY_PARENT = new Color(0);
-	public static final Color ID_BY_GRID = new Color(0);
+	public static final Color STANDARD_EDGE_COLOR = new Color(Color.GRAY.getRGB());
+	public static enum Rules {BY_PARENT, BY_GRID};
 
 	public static EdgeController getController() {
 		return getController(Controller.getCurrentModeController());
@@ -57,38 +59,39 @@ public class EdgeController implements IExtension {
 		Controller.getCurrentModeController().addExtension(EdgeController.class, edgeController);
 	}
 
-	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
+	final private ExclusivePropertyChain<ObjectRule<Color, Rules>, NodeModel> colorHandlers;
 // 	private final ModeController modeController;
 	final private ExclusivePropertyChain<EdgeStyle, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
 
 	public EdgeController(final ModeController modeController) {
 //		this.modeController = modeController;
-		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
+		colorHandlers = new ExclusivePropertyChain<ObjectRule<Color, Rules>, NodeModel>();
 		styleHandlers = new ExclusivePropertyChain<EdgeStyle, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
 		
-		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node, final Color currentValue) {
+		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
+			public ObjectRule<Color, Rules> getProperty(final NodeModel node, final ObjectRule<Color, Rules> currentValue) {
 				return getStyleEdgeColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		
-		addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<Color, NodeModel>() {
+		addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
 			@Override
-			public Color getProperty(NodeModel model, Color currentValue) {
+			public ObjectRule<Color, Rules> getProperty(NodeModel model, ObjectRule<Color, Rules> currentValue) {
 				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
 				if(layout == AutomaticLayout.COLUMNS)
-					return EdgeController.ID_BY_GRID;
+					return new RuleReference<Color, EdgeController.Rules>(Rules.BY_GRID);
 				else
 					return null;
 			}
 		});
-		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
-			public Color getProperty(NodeModel node, final Color currentValue) {
-				return ID_BY_PARENT;
+		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
+			public ObjectRule<Color, Rules> getProperty(NodeModel node, final ObjectRule<Color, Rules> currentValue) {
+				return new RuleReference<Color, EdgeController.Rules>(Rules.BY_PARENT);
 			}
 		});
+		
 		addStyleGetter(IPropertyHandler.STYLE, new IPropertyHandler<EdgeStyle, NodeModel>() {
 			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValu) {
 				return getStyleStyle(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
@@ -123,8 +126,8 @@ public class EdgeController implements IExtension {
 		edgeBuilder.registerBy(readManager, writeManager);
 	}
 
-	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                         final IPropertyHandler<Color, NodeModel> getter) {
+	public IPropertyHandler<ObjectRule<Color, Rules>, NodeModel> addColorGetter(final Integer key,
+	                                                         final IPropertyHandler<ObjectRule<Color, Rules>, NodeModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}
 
@@ -142,12 +145,22 @@ public class EdgeController implements IExtension {
 		return getColor(node, true);
 	}
 
-	public Color getColor(final NodeModel node, final boolean resolveParent) {
-	    final Color color = colorHandlers.getProperty(node);
-		if(color == null && resolveParent)
-			return getColor(node.getParentNode());
-		return color;
+	public Color getColor(final NodeModel node, final boolean resolveColor) {
+	    final ObjectRule<Color, Rules> colorRule = getColorRule(node);
+		if(colorRule.hasValue())
+			return colorRule.getValue();
+		if(Rules.BY_PARENT == colorRule.getRule()) {
+			final NodeModel parentNode = node.getParentNode();
+			if(parentNode != null)
+				return getColor(parentNode);
+		}
+		return STANDARD_EDGE_COLOR;
     }
+
+	public ObjectRule<Color, Rules> getColorRule(final NodeModel node) {
+		final ObjectRule<Color, Rules> color = colorHandlers.getProperty(node);
+		return color;
+	}
 
 	public EdgeStyle getStyle(final NodeModel node) {
 		return getStyle(node, true);
@@ -171,19 +184,7 @@ public class EdgeController implements IExtension {
 		return width;
     }
 
-	public IPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
-		return colorHandlers.removeGetter(key);
-	}
-
-	public IPropertyHandler<EdgeStyle, NodeModel> removeStyleGetter(final Integer key) {
-		return styleHandlers.removeGetter(key);
-	}
-
-	public IPropertyHandler<Integer, NodeModel> removeWidthGetter(final Integer key) {
-		return widthHandlers.removeGetter(key);
-	}
-
-	private Color getStyleEdgeColor(final MapModel map, final Collection<IStyle> collection) {
+	private ObjectRule<Color, Rules> getStyleEdgeColor(final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : collection){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -198,7 +199,7 @@ public class EdgeController implements IExtension {
 			if (styleColor == null) {
 				continue;
 			}
-			return styleColor;
+			return new ConstantObject<Color, Rules>(styleColor);
 		}
 		return null;
 	}

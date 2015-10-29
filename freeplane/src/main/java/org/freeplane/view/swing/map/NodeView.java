@@ -45,11 +45,13 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ObjectRule;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
@@ -118,7 +120,7 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeView preferredChild;
 	private EdgeStyle edgeStyle = EdgeStyle.EDGESTYLE_HIDDEN;
 	private Integer edgeWidth = 1;
-	private Color edgeColor = Color.BLACK;
+	private ObjectRule<Color, Rules> edgeColor = null;
 	private Color modelBackgroundColor;
 
 	private int topOverlap;
@@ -1323,7 +1325,7 @@ public class NodeView extends JComponent implements INodeView {
         final EdgeController edgeController = EdgeController.getController(getMap().getModeController());
 		this.edgeStyle = edgeController.getStyle(model, false);
 		this.edgeWidth = edgeController.getWidth(model, false);
-		this.edgeColor = edgeController.getColor(model, false);
+		this.edgeColor = edgeController.getColorRule(model);
     }
 
 	public EdgeStyle getEdgeStyle() {
@@ -1345,17 +1347,22 @@ public class NodeView extends JComponent implements INodeView {
     }
 	
 	public Color getEdgeColor() {
-		if(edgeColor == EdgeController.ID_BY_GRID)
-			if(getMap().getModeController().containsExtension(AutomaticLayoutController.class))
-				return edgeColor =new AutomaticEdgeStyle(this).getColor();
-		if(edgeColor == EdgeController.ID_BY_PARENT) {
-			final NodeView parentView = getParentView();
-			if (parentView != null)
-				return edgeColor = parentView.getEdgeColor();
+		if(edgeColor.hasValue())
+			return edgeColor.getValue();
+		if(edgeColor.getRule() == EdgeController.Rules.BY_GRID){
+			final Color color = new AutomaticEdgeStyle(this).getColor();
+			edgeColor.setCache(color);
+			return color;
 		}
-		if(edgeColor != null)
-			return edgeColor;
-		return edgeColor = Color.GRAY;
+		else if(edgeColor.getRule() == EdgeController.Rules.BY_PARENT) {
+			final NodeView parentView = getParentView();
+			if (parentView != null) {
+				final Color color = parentView.getEdgeColor();
+				edgeColor.setCache(color);
+				return color;
+			}
+		}
+		return Color.GRAY;
     }
 
 	private void updateCloud() {
@@ -1517,4 +1524,13 @@ public class NodeView extends JComponent implements INodeView {
 	void setBottomOverlap(int bottomOverlap) {
 		this.bottomOverlap = bottomOverlap;
 	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height) {
+		if(EdgeController.Rules.BY_GRID == edgeColor.getRule())
+			edgeColor.resetCache();
+		super.setBounds(x, y, width, height);
+	}
+	
+	
 }
