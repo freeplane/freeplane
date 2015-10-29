@@ -9,27 +9,22 @@ public class RuleReference<T, R extends Enum<?>> implements ObjectRule<T, R> {
 		this.rule = rule;
 	}
 
-	@Override
 	public T getValue() {
 		return value;
 	}
 
-	@Override
 	public boolean hasValue() {
 		return value != null;
 	}
 
-	@Override
 	public void resetCache() {
 		value = null;
 	}
 
-	@Override
 	public R getRule() {
 		return rule;
 	}
 
-	@Override
 	public void setCache(T value) {
 		this.value = value;
 		

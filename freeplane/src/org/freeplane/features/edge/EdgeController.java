@@ -77,7 +77,6 @@ public class EdgeController implements IExtension {
 		});
 		
 		addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
-			@Override
 			public ObjectRule<Color, Rules> getProperty(NodeModel model, ObjectRule<Color, Rules> currentValue) {
 				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
 				if(layout == AutomaticLayout.COLUMNS)
