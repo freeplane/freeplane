@@ -789,7 +789,7 @@ public class NodeView extends JComponent implements INodeView {
 			return false;
 		}
 		final NodeView parentView = (NodeView) parent;
-		return !parentView.isContentVisible();
+		return !parentView.isContentVisible() && ! parentView.getModel().isHiddenSummary();
 	}
 
 	/* fc, 25.1.2004: Refactoring necessary: should call the model. */

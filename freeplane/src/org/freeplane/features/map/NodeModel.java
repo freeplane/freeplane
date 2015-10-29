@@ -405,8 +405,16 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public boolean isVisible() {
+		return passesFilter() && ! isHiddenSummary();
+	}
+
+	public boolean isHiddenSummary() {
+		return SummaryNode.isHidden(this);
+	}
+
+	private boolean passesFilter() {
 		final Filter filter = getMap().getFilter();
-		return filter == null || filter.isVisible(this);
+		return (filter == null || filter.isVisible(this));
 	}
 
 	public void remove(final int index) {
@@ -472,7 +480,7 @@ public class NodeModel implements MutableTreeNode {
 		if (encryptionModel != null && !encryptionModel.isAccessible() && folded == false) {
 			folded = true;
 		}
-		else if (AlwaysUnfoldedNode.isConnectorNode(this)){
+		else if (AlwaysUnfoldedNode.isConnectorNode(this) || isHiddenSummary()){
 			folded = false;
 		}
 		if (this.folded == folded) {
@@ -529,6 +537,7 @@ public class NodeModel implements MutableTreeNode {
 			userObject = " " + text;
 			xmlText = null;
 		}
+		fixFolding();
 	}
 
 	public final void setUserObject(final Object data) {
@@ -538,11 +547,18 @@ public class NodeModel implements MutableTreeNode {
 		}
 		userObject = data;
 		xmlText = null;
+		fixFolding();
 	}
 
 	public final void setXmlText(final String pXmlText) {
 		xmlText = XmlUtils.makeValidXml(pXmlText);
 		userObject = HtmlUtils.toHtml(xmlText);
+		fixFolding();
+	}
+
+	private void fixFolding() {
+		if(isHiddenSummary() && isFolded())
+			setFolded(false);
 	}
 
 	@Override
