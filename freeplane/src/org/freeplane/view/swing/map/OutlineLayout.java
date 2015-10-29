@@ -75,8 +75,7 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 			child = component;
 			final int additionalCloudHeigth = getAdditionalCloudHeigth(child) / 2;
 			y += additionalCloudHeigth;
-			final int childHGap = child.getContent().isVisible() ? getHGap() : 0;
-			final int x = baseX + childHGap - child.getContent().getX();
+			final int x = baseX - child.getContent().getX();
 			child.setLocation(x, y);
 			final int childHeight = child.getHeight() - 2 * getSpaceAround();
 			if (childHeight != 0) {
