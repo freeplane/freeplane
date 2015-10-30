@@ -683,7 +683,6 @@ public class EditNodeTextField extends EditNodeBase {
 		mapView.scrollNodeToVisible(nodeView);
 		assert( parent.isValid());
 		final int nodeWidth = parent.getWidth();
-		final int nodeHeight = parent.getHeight();
 		final int textFieldBorderWidth = 2;
 		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeView.getSelectedColor()));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
