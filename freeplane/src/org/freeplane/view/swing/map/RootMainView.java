@@ -75,6 +75,24 @@ class RootMainView extends MainView {
 		return in;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see freeplane.view.mindmapview.NodeView.MainView#getPreferredSize()
+	 */
+	@Override
+	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
+		final Dimension prefSize = super.getPreferredSize(minimumWidth, maximumWidth);
+		if (isPreferredSizeSet()) {
+			return prefSize;
+		}
+		if (prefSize.height <= prefSize.width)
+			prefSize.height = prefSize.width;
+		else {
+			prefSize.width = Math.min(maximumWidth, prefSize.height);
+		}
+		return prefSize;
+	}
+
 	@Override
     public
 	Point getRightPoint() {
