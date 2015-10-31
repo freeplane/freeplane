@@ -45,6 +45,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -385,9 +386,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
 	    final MapModel styleMapContainer = new MapModel();
 		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
-		UrlManager.getController().loadCatchExceptions(source, styleMapContainer);
+		final ModeController modeController = Controller.getCurrentModeController();
+		final UrlManager urlManager = modeController.getExtension(UrlManager.class);
+		urlManager.loadCatchExceptions(source, styleMapContainer);
 		onCreate(styleMapContainer);
 		moveStyle(styleMapContainer, targetMap, true);
+		modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, styleMapContainer, targetMap);
+		modeController.getExtension(AutomaticEdgeColorHook.class).moveExtension(modeController, styleMapContainer, targetMap);
 		LogicalStyleController.getController().refreshMap(targetMap);
 		if(! undoable){
 			return;

@@ -37,7 +37,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
@@ -418,4 +420,36 @@ public abstract class PersistentNodeHook {
 			}
 		}
     }
+
+	public void moveExtension(ModeController modeController, MapModel sourceMap, MapModel targetMap) {
+		final NodeModel sourceNode = sourceMap.getRootNode();
+		final Class<? extends IExtension> extensionClass = getExtensionClass();
+		final IExtension sourceExtension = sourceNode.getExtension(extensionClass);
+		final NodeModel targetNode = targetMap.getRootNode();
+		final IExtension targetExtension = targetNode.getExtension(extensionClass);
+		if(sourceExtension == targetExtension)
+			return;
+		IActor actor = new IActor() {
+			public void act() {
+				if(targetExtension != null)
+					targetNode.removeExtension(targetExtension);
+				if(sourceExtension != null)
+					targetNode.addExtension(sourceExtension);
+			}
+			
+			public void undo() {
+				if(sourceExtension != null)
+					targetNode.removeExtension(sourceExtension);
+				if(targetExtension != null)
+					targetNode.addExtension(targetExtension);
+			}
+			
+			public String getDescription() {
+				return "move extension " + extensionClass.getName();
+			}
+			
+		};
+		modeController.execute(actor, targetMap);
+		
+	}
 }
