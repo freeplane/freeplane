@@ -48,15 +48,15 @@ public class ZoomableLabel extends JLabel {
 
 
 	final public Dimension getPreferredSize() {
-		return getPreferredSize(Integer.MAX_VALUE);
+		return getPreferredSize(0, Integer.MAX_VALUE);
 	}
 	
-	public Dimension getPreferredSize(int maximumWidth) {
+	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
 		if (isPreferredSizeSet()) {
 			Dimension preferredSize = super.getPreferredSize();
 			return preferredSize;
 		}
-		return ((ZoomableLabelUI)getUI()).getPreferredSize(this, maximumWidth);
+		return ((ZoomableLabelUI)getUI()).getPreferredSize(this, minimumWidth, maximumWidth);
 	}
 	
 	protected float getZoom() {
