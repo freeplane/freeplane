@@ -35,6 +35,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
@@ -62,7 +63,13 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				if(null == edgeModel.getColor()){
 					final MEdgeController controller = (MEdgeController) EdgeController.getController();
 					final AutomaticEdgeColor model = (AutomaticEdgeColor) getMapHook();
-					controller.setColor(child, model.nextColor());
+					model.increaseColorCounter();
+					int colorCounter = model.getColorCounter();
+					AutomaticLayoutController automaticLatoutController = modeController.getExtension(AutomaticLayoutController.class);
+					NodeModel styleNode = automaticLatoutController.getStyleNode(parent.getMap(), colorCounter, true);
+					if(styleNode != null){
+						controller.setColor(child, controller.getColor(styleNode));
+					}
 				}
 			}
 			else{
@@ -133,7 +140,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 	protected void saveExtension(IExtension extension, XMLElement element) {
 		final AutomaticEdgeColor automaticEdgeColor = (AutomaticEdgeColor)extension;
 		super.saveExtension(extension, element);
-		final int colorCount = automaticEdgeColor.getColorCount();
+		final int colorCount = automaticEdgeColor.getColorCounter();
 		element.setAttribute("COUNTER", Integer.toString(colorCount));
 		element.setAttribute("RULE", automaticEdgeColor.rule.toString());
 	}

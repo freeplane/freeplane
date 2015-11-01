@@ -71,6 +71,8 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.AutomaticLayoutController;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
@@ -1353,16 +1355,28 @@ public class NodeView extends JComponent implements INodeView {
 	public Color getEdgeColor() {
 		if(edgeColor.hasValue())
 			return edgeColor.getValue();
-		if(edgeColor.getRule() == EdgeController.Rules.BY_GRID){
+		Rules rule = edgeColor.getRule();
+		if(rule == EdgeController.Rules.BY_COLUMN){
 			final Color color = new AutomaticEdgeStyle(this).getColor();
 			edgeColor.setCache(color);
 			return color;
 		}
-		else if(edgeColor.getRule() == EdgeController.Rules.BY_PARENT) {
+		final NodeModel parentNode = model.getParentNode();
+		if(rule == EdgeController.Rules.BY_BRANCH && parentNode.isRoot()){
+			ModeController modeController = getMap().getModeController();
+			AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
+			int index = parentNode.getChildPosition(model) + 1;
+			NodeModel styleNode = automaticLayoutController.getStyleNode(map.getModel(), index, true);
+			if(styleNode != null){
+				Color color = modeController.getExtension(EdgeController.class).getColor(styleNode);
+				edgeColor.setCache(color);
+				return color;
+			}
+		}
+		else if(rule == EdgeController.Rules.BY_PARENT) {
 			final NodeView parentView = getParentView();
 			if (parentView != null) {
 				final Color color = parentView.getEdgeColor();
-				edgeColor.setCache(color);
 				return color;
 			}
 		}
@@ -1531,7 +1545,8 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		if(EdgeController.Rules.BY_GRID == edgeColor.getRule())
+		Rules rule = edgeColor.getRule();
+		if(EdgeController.Rules.BY_COLUMN == rule || EdgeController.Rules.BY_BRANCH == rule)
 			edgeColor.resetCache();
 		super.setBounds(x, y, width, height);
 	}
