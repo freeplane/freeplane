@@ -23,6 +23,11 @@ jar {
 
         def imports = """\
                       org.osgi.framework;version="1.3.0",
+                      com.jgoodies.forms.builder,
+                      com.jgoodies.forms.debug,
+                      com.jgoodies.forms.factories,
+                      com.jgoodies.forms.layout,
+                      com.jgoodies.forms.util,
                       jsyntaxpane.lexers,
                       jsyntaxpane.syntaxkits,
                       jsyntaxpane.actions,
