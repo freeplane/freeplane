@@ -107,5 +107,15 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	    LogicalStyleController.getController().refreshMap(node.getMap());
     	return extension;
     }
+
+	public boolean isAutomaticLevelStyle(NodeModel styleNode) {
+		NodeModel parentNode = styleNode.getParentNode();
+		if (parentNode == null)
+			return false;
+		Object userObject = parentNode.getUserObject();
+		if (! (userObject instanceof StyleNamedObject))
+			return false;
+		return ((StyleNamedObject)userObject).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
+	}
 	
 }
