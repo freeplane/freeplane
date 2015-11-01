@@ -936,7 +936,7 @@ public class StyleEditorPanel extends JPanel {
 						AutomaticEdgeColorHook hook = modeController.getExtension(AutomaticEdgeColorHook.class);
 						NamedObject selectedItem = (NamedObject)mAutomaticEdgeColorComboBox.getSelectedItem();
 						final AutomaticEdgeColor oldExtension = (AutomaticEdgeColor) hook.getMapHook();
-						final int colorCount = oldExtension == null ? 0 : oldExtension.getColorCount();
+						final int colorCount = oldExtension == null ? 0 : oldExtension.getColorCounter();
 						final NodeModel rootNode = Controller.getCurrentController().getMap().getRootNode();
 						hook.undoableDeactivateHook(rootNode);
 						if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
