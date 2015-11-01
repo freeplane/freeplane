@@ -1208,10 +1208,6 @@
 <attribute NAME="action" VALUE="EdgeColorAction"/>
 <attribute NAME="accelerator" VALUE="alt shift E"/>
 </node>
-<node TEXT="Automatic edge color" ID="ID_83643005" CREATED="1370194798845" MODIFIED="1370194798845">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="AutomaticEdgeColorHookAction"/>
-</node>
 </node>
 <node TEXT="---" ID="ID_1126623769" CREATED="1370194798845" MODIFIED="1370194798845">
 <attribute NAME="type" VALUE="separator"/>
