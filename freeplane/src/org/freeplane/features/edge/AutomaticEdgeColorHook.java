@@ -93,8 +93,6 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 		modeController = Controller.getCurrentModeController();
 		modeController.addExtension(AutomaticEdgeColorHook.class, this);
 
-		installOptionPanelLabels();
-
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(listener);
     }
@@ -104,23 +102,6 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 	}
 
 
-
-	private void installOptionPanelLabels() {
-	    final ResourceController resourceController = ResourceController.getResourceController();
-		if (null == resourceController.getText("OptionPanel.auto_edge_color_1", null)) {
-			HashMap<String, String> map = new HashMap<String, String>(AutomaticEdgeColor.MAXIMUM_COLOR_NUMBER);
-			for (int colorIndex = 0; colorIndex < AutomaticEdgeColor.MAXIMUM_COLOR_NUMBER; colorIndex++) {
-				final String usePropertyKey = "OptionPanel.use_auto_edge_color";
-				final String usePropertyText = TextUtils.format(usePropertyKey, colorIndex + 1);
-				final String indexedUsePropertyKey = usePropertyKey + "_" + colorIndex;
-				map.put(indexedUsePropertyKey, usePropertyText);
-				final String colorPropertyKey = "OptionPanel.auto_edge_color";
-				final String colorPropertyText = TextUtils.format(colorPropertyKey, colorIndex + 1);
-				map.put(colorPropertyKey + "_" + colorIndex, colorPropertyText);
-			}
-			resourceController.addLanguageResources(resourceController.getLanguageCode(), map);
-		}
-    }
 
 	@Override
     protected Class<? extends IExtension> getExtensionClass() {
