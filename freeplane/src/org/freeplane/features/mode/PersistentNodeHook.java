@@ -184,22 +184,8 @@ public abstract class PersistentNodeHook {
 		//		this.modeController = modeController;
 		//		controller = modeController.getController();
 		final ModeController modeController = Controller.getCurrentModeController();
-		if (modeController.getModeName().equals("MindMap")) {
-		    if(extensionClass.isEnum()){
-		        Class<Enum> enumClass = (Class<Enum>) (Class<?>)extensionClass;
-                EnumSet<? extends Enum<?>> all= EnumSet.allOf(enumClass);
-                for(Enum e : all){
-                    registerAction(new SelectableEnumAction(getClass().getSimpleName() + "Action", e));
-                }
-                registerAction(new SelectableEnumAction(getClass().getSimpleName() + "Action", null));
-		    }
-		    else{
-		        final HookAction selectableHookAction = createHookAction();
-		        if (selectableHookAction != null) {
-		            registerAction(selectableHookAction);
-		        }
-		    }
-		}
+		if (modeController.getModeName().equals("MindMap"))
+			registerActions();
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
 		final IExtensionElementWriter xmlWriter = createXmlWriter();
@@ -210,6 +196,24 @@ public abstract class PersistentNodeHook {
 			// do not use getExtensionClass() here since in several subclasses getExtensionClass() returns a
 			// different class than getClass()
 			modeController.addExtension((Class<? extends IExtension>) getClass(), (IExtension) this);
+		}
+	}
+
+	protected void registerActions() {
+		final Class<? extends IExtension> extensionClass = getExtensionClass();
+		if(extensionClass.isEnum()){
+		    Class<Enum> enumClass = (Class<Enum>) (Class<?>)extensionClass;
+		    EnumSet<? extends Enum<?>> all= EnumSet.allOf(enumClass);
+		    for(Enum e : all){
+		        registerAction(new SelectableEnumAction(getClass().getSimpleName() + "Action", e));
+		    }
+		    registerAction(new SelectableEnumAction(getClass().getSimpleName() + "Action", null));
+		}
+		else{
+		    final HookAction selectableHookAction = createHookAction();
+		    if (selectableHookAction != null) {
+		        registerAction(selectableHookAction);
+		    }
 		}
 	}
 

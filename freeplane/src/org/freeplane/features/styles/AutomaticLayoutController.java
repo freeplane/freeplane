@@ -65,7 +65,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	}
 
 	private IStyle getStyle(final NodeModel node, AutomaticLayout layout) {
-		if(layout == null || ! layout.addStyle ||  node.isLeaf() && ! layout.applyToLeaves)
+		if(layout == null || node.isLeaf() && ! layout.applyToLeaves)
 			return null;
 		final int depth = node.depth();
 		return getStyle(node.getMap(), depth, false);
@@ -91,6 +91,17 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		else
 			return getStyle(map, FIRST_CYCLIC_STYLE_LEVEL + ((depth - FIRST_CYCLIC_STYLE_LEVEL) % cycledLevelStyleCount), false);
 	}
+	
+	public NodeModel getStyleNode(MapModel map, int depth, boolean cyclic) {
+		IStyle style = getStyle(map, depth, cyclic);
+		if(style != null){
+			final MapStyleModel extension = MapStyleModel.getExtension(map);
+			return extension.getStyleNode(style);
+		}
+		return null;
+	}
+	
+
 
 	@Override
 	protected Class<? extends IExtension> getExtensionClass() {
@@ -107,5 +118,15 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	    LogicalStyleController.getController().refreshMap(node.getMap());
     	return extension;
     }
-	
+
+	public boolean isAutomaticLevelStyle(NodeModel styleNode) {
+		NodeModel parentNode = styleNode.getParentNode();
+		if (parentNode == null)
+			return false;
+		Object userObject = parentNode.getUserObject();
+		if (! (userObject instanceof StyleNamedObject))
+			return false;
+		return ((StyleNamedObject)userObject).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
+	}
+
 }

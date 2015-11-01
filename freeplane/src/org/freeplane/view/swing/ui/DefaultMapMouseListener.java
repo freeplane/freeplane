@@ -31,6 +31,7 @@ import java.awt.event.WindowFocusListener;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMouseListener;
@@ -80,7 +81,6 @@ public class DefaultMapMouseListener implements IMouseListener {
                 ((JPopupMenu)popup).show(component, e.getX(), e.getY());
             }
 			else {
-			    Point locationOnScreen = component.getLocationOnScreen();
 			    final Component window;
 			    if(popup instanceof Window){
 			        window= popup;
@@ -111,7 +111,9 @@ public class DefaultMapMouseListener implements IMouseListener {
                     });
 			        window = d;
 			    }
-			    window.setLocation(locationOnScreen.x+e.getX(), locationOnScreen.y + e.getY());
+			    Point eventLocation = e.getPoint();
+			    SwingUtilities.convertPointToScreen(eventLocation, e.getComponent());
+			    UITools.setBounds(window, eventLocation.x, eventLocation.y, window.getWidth(), window.getHeight());
 			    window.setVisible(true);
 			}
 			
