@@ -31,12 +31,15 @@ import java.awt.RenderingHints;
 
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
 class RootMainView extends MainView {
+	private static final double ADDITIONAL_WIDTH = new Quantity<LengthUnits>(40, LengthUnits.pt).toBaseUnits();
 	/**
 	 * 
 	 */
@@ -85,6 +88,7 @@ class RootMainView extends MainView {
 		if (isPreferredSizeSet()) {
 			return prefSize;
 		}
+		prefSize.width += getZoom() * ADDITIONAL_WIDTH;
 		if (prefSize.height <= prefSize.width)
 			prefSize.height = prefSize.width;
 		else {
