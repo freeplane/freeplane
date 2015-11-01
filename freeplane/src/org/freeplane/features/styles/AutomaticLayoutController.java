@@ -65,7 +65,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	}
 
 	private IStyle getStyle(final NodeModel node, AutomaticLayout layout) {
-		if(layout == null || ! layout.addStyle ||  node.isLeaf() && ! layout.applyToLeaves)
+		if(layout == null || node.isLeaf() && ! layout.applyToLeaves)
 			return null;
 		final int depth = node.depth();
 		return getStyle(node.getMap(), depth, false);

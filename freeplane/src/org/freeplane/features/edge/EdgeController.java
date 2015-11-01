@@ -39,6 +39,7 @@ import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleNamedObject;
 
 /**
  * @author Dimitry Polivaev
@@ -78,8 +79,8 @@ public class EdgeController implements IExtension {
 		
 		addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
 			public ObjectRule<Color, Rules> getProperty(NodeModel model, ObjectRule<Color, Rules> currentValue) {
-				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
-				if(layout == AutomaticLayout.COLUMNS)
+				AutomaticEdgeColor layout = model.getMap().getRootNode().getExtension(AutomaticEdgeColor.class);
+				if(layout != null && layout.rule == AutomaticEdgeColor.Rule.FOR_COLUMN)
 					return new RuleReference<Color, EdgeController.Rules>(Rules.BY_GRID);
 				else
 					return null;
@@ -197,6 +198,12 @@ public class EdgeController implements IExtension {
 			final Color styleColor = styleModel.getColor();
 			if (styleColor == null) {
 				continue;
+			}
+			AutomaticEdgeColor layout = map.getRootNode().getExtension(AutomaticEdgeColor.class);
+			// ignore automatic level style edge color if dynamic edge color is active
+			if(layout != null && layout.rule.isDynamic) {
+				if (((StyleNamedObject)styleNode.getParentNode().getUserObject()).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT))
+					continue;
 			}
 			return new ConstantObject<Color, Rules>(styleColor);
 		}
