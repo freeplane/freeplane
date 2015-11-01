@@ -109,7 +109,7 @@ public class IconStore {
 	 */
 	public MindIcon getMindIcon(final String name) {
 		if(name == null){
-			return IconNotFound.instance();
+			return new IconNotFound(name);
 		}
 		if (mindIcons.containsKey(name)) {
 			return mindIcons.get(name);
@@ -119,7 +119,7 @@ public class IconStore {
 		if (ResourceController.getResourceController().getResource(mindIcon.getPath()) != null) {
 			return mindIcon;
 		}
-		return IconNotFound.instance();
+		return new IconNotFound(name);
 	}
 
 	/**
