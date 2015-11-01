@@ -902,27 +902,6 @@ public class StyleEditorPanel extends JPanel {
 		}
 		{
 			
-/*
- 			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticLayout.class);
-			 mAutomaticLayoutComboBox = new JComboBox(automaticLayoutTypes);
-			 DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();
-			 automaticLayoutComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
-			 automaticLayoutComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
-			 mAutomaticLayoutComboBox.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(internalChange)
-						return;
-					final ModeController modeController = Controller.getCurrentModeController();
-					AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
-					NamedObject selectedItem = (NamedObject)mAutomaticLayoutComboBox.getSelectedItem();
-					al.undoableDeactivateHook(Controller.getCurrentController().getMap().getRootNode());
-					if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
-						al.undoableActivateHook(Controller.getCurrentController().getMap().getRootNode(), (AutomaticLayout) selectedItem.getObject());
-					}
-				}
-			});
-			
- */
 			if(mAutomaticEdgeColorComboBox == null){
 	 			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
 	 			 mAutomaticEdgeColorComboBox = new JComboBox(automaticLayoutTypes);
@@ -1110,7 +1089,7 @@ public class StyleEditorPanel extends JPanel {
 				AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
 				final AutomaticEdgeColor extension = (AutomaticEdgeColor) al.getExtension(node);
 				if(extension == null)
-					mAutomaticLayoutComboBox.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
+					mAutomaticEdgeColorComboBox.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
 				else
 					mAutomaticEdgeColorComboBox.setSelectedIndex(extension.rule.ordinal());
 			}
