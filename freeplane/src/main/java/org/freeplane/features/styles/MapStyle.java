@@ -45,7 +45,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
+import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
