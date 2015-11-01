@@ -191,6 +191,9 @@ public class EdgeController implements IExtension {
 			if (styleNode == null) {
 				continue;
 			}
+			if (((StyleNamedObject)styleNode.getParentNode().getUserObject()).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT)){
+				continue;
+			}
 			final EdgeModel styleModel = EdgeModel.getModel(styleNode);
 			if (styleModel == null) {
 				continue;
@@ -198,12 +201,6 @@ public class EdgeController implements IExtension {
 			final Color styleColor = styleModel.getColor();
 			if (styleColor == null) {
 				continue;
-			}
-			AutomaticEdgeColor layout = map.getRootNode().getExtension(AutomaticEdgeColor.class);
-			// ignore automatic level style edge color if dynamic edge color is active
-			if(layout != null && layout.rule.isDynamic) {
-				if (((StyleNamedObject)styleNode.getParentNode().getUserObject()).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT))
-					continue;
 			}
 			return new ConstantObject<Color, Rules>(styleColor);
 		}
