@@ -36,6 +36,7 @@ import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.AutomaticLayout;
+import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -64,16 +65,17 @@ public class EdgeController implements IExtension {
 // 	private final ModeController modeController;
 	final private ExclusivePropertyChain<EdgeStyle, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
+	private ModeController modeController;
 
 	public EdgeController(final ModeController modeController) {
-//		this.modeController = modeController;
+		this.modeController = modeController;
 		colorHandlers = new ExclusivePropertyChain<ObjectRule<Color, Rules>, NodeModel>();
 		styleHandlers = new ExclusivePropertyChain<EdgeStyle, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
 		
 		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
 			public ObjectRule<Color, Rules> getProperty(final NodeModel node, final ObjectRule<Color, Rules> currentValue) {
-				return getStyleEdgeColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
+				return getStyleEdgeColor(node);
 			}
 		});
 		
@@ -185,15 +187,20 @@ public class EdgeController implements IExtension {
 		return width;
     }
 
-	private ObjectRule<Color, Rules> getStyleEdgeColor(final MapModel map, final Collection<IStyle> collection) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
+	private ObjectRule<Color, Rules> getStyleEdgeColor(NodeModel node) {
+		MapModel map = node.getMap(); 
+		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+		final MapStyleModel styles = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : collection){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
+			final NodeModel styleNode = styles.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
 			}
-			if (((StyleNamedObject)styleNode.getParentNode().getUserObject()).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT)){
-				continue;
+			if (node != styleNode && map.getRootNode().containsExtension(AutomaticEdgeColor.class)) {
+				AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
+				if (automaticLayoutController != null && automaticLayoutController.isAutomaticLevelStyle(styleNode)) {
+					continue;
+				}
 			}
 			final EdgeModel styleModel = EdgeModel.getModel(styleNode);
 			if (styleModel == null) {
