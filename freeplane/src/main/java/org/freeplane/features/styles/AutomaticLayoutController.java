@@ -91,6 +91,17 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		else
 			return getStyle(map, FIRST_CYCLIC_STYLE_LEVEL + ((depth - FIRST_CYCLIC_STYLE_LEVEL) % cycledLevelStyleCount), false);
 	}
+	
+	public NodeModel getStyleNode(MapModel map, int depth, boolean cyclic) {
+		IStyle style = getStyle(map, depth, cyclic);
+		if(style != null){
+			final MapStyleModel extension = MapStyleModel.getExtension(map);
+			return extension.getStyleNode(style);
+		}
+		return null;
+	}
+	
+
 
 	@Override
 	protected Class<? extends IExtension> getExtensionClass() {
@@ -117,5 +128,5 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 			return false;
 		return ((StyleNamedObject)userObject).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
 	}
-	
+
 }
