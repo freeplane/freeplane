@@ -86,7 +86,7 @@ public class IconStoreFactory {
 				icons = new ArrayList<MindIcon>(iconMap.values());
 			}
 			if (groupIcon == null) {
-				groupIcon = icons.size() > 0 ? icons.get(0) : IconNotFound.instance();
+				groupIcon = icons.size() > 0 ? icons.get(0) : new IconNotFound("?");
 			}
 			iconStore.addGroup(new IconGroup(groupName, groupIcon, description, icons));
 		}

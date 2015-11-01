@@ -8,10 +8,10 @@ import org.freeplane.core.resources.ResourceController;
 
 public class IconNotFound extends MindIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images";
-	private static final IconNotFound ICON_NOT_FOUND = new IconNotFound();
+//	private static final IconNotFound ICON_NOT_FOUND = new IconNotFound();
 
-	public IconNotFound() {
-		super("icon_not_found", "IconNotFound.png", "icon not found");
+	public IconNotFound(final String originallyRequestedIconName) {
+		super(originallyRequestedIconName, "IconNotFound.png", "icon not found");
 	}
 
 	@Override
@@ -21,12 +21,13 @@ public class IconNotFound extends MindIcon {
 
     /**
      * creates an ImageIcon from <code>getImagePath()/filename</code>. If this is not possible returns an IconNotFound.
+     * THIS METHOD is USED for displaying add-on images, so there is not image 'name'.
      */
     public static ImageIcon createIconOrReturnNotFoundIcon(final String fileName) {
         final URL resource = ResourceController.getResourceController()
             .getResource(DEFAULT_IMAGE_PATH + "/" + fileName);
         final ImageIcon icon = (resource == null) ? null : new ImageIcon(resource);
-        return icon == null ? (ImageIcon) instance().getIcon() : icon;
+        return icon == null ? (ImageIcon) new IconNotFound("?").getIcon() : icon;
     }
     
     /**
@@ -38,7 +39,4 @@ public class IconNotFound extends MindIcon {
         return (resource == null) ? null : new ImageIcon(resource);
     }
 
-    public static IconNotFound instance() {
-		return ICON_NOT_FOUND;
-	}
 }
