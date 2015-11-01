@@ -8,7 +8,7 @@ import org.freeplane.core.util.ColorUtils;
 
 public class AutomaticEdgeColor implements IExtension{
 	public enum Rule {
-		/*FOR_BRANCH(true), */ FOR_COLUMN(true), ON_BRANCH_CREATION(false);
+		FOR_BRANCHES(true), FOR_COLUMNS(true), ON_BRANCH_CREATION(false);
 		
 		public final boolean isActiveOnCreation;
 		public final boolean isDynamic;

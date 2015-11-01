@@ -75,18 +75,30 @@ public class EdgeController implements IExtension {
 		
 		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
 			public ObjectRule<Color, Rules> getProperty(final NodeModel node, final ObjectRule<Color, Rules> currentValue) {
-				return getStyleEdgeColor(node);
+				return getStyleEdgeColorRule(node);
 			}
 		});
 		
 		addColorGetter(IPropertyHandler.AUTO, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
 			@Override
 			public ObjectRule<Color, Rules> getProperty(NodeModel model, ObjectRule<Color, Rules> currentValue) {
-				AutomaticEdgeColor layout = model.getMap().getRootNode().getExtension(AutomaticEdgeColor.class);
-				if(layout != null && layout.rule == AutomaticEdgeColor.Rule.FOR_COLUMN)
-					return new RuleReference<Color, EdgeController.Rules>(Rules.BY_GRID);
-				else
-					return null;
+				MapModel map = model.getMap();
+				AutomaticEdgeColor layout = map.getRootNode().getExtension(AutomaticEdgeColor.class);
+				if(layout != null){
+					if (layout.rule == AutomaticEdgeColor.Rule.FOR_COLUMNS)
+						return new RuleReference<Color, EdgeController.Rules>(Rules.BY_GRID);
+					NodeModel parentNode = model.getParentNode();
+					if (parentNode!= null && layout.rule == AutomaticEdgeColor.Rule.FOR_BRANCHES && parentNode.isRoot()){
+						AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
+						int index = parentNode.getChildPosition(model) + 1;
+						IStyle levelStyle = automaticLayoutController.getStyle(map, index, true);
+						if(levelStyle != null){
+							NodeModel styleNode = MapStyleModel.getExtension(map).getStyleNode(levelStyle);
+							return getNodeColorRule(styleNode);
+						}
+					}
+				}
+				return null;
 			}
 		});
 		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ObjectRule<Color, Rules>, NodeModel>() {
@@ -187,7 +199,7 @@ public class EdgeController implements IExtension {
 		return width;
     }
 
-	private ObjectRule<Color, Rules> getStyleEdgeColor(NodeModel node) {
+	private ObjectRule<Color, Rules> getStyleEdgeColorRule(NodeModel node) {
 		MapModel map = node.getMap(); 
 		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
 		final MapStyleModel styles = MapStyleModel.getExtension(map);
@@ -202,15 +214,9 @@ public class EdgeController implements IExtension {
 					continue;
 				}
 			}
-			final EdgeModel styleModel = EdgeModel.getModel(styleNode);
-			if (styleModel == null) {
-				continue;
-			}
-			final Color styleColor = styleModel.getColor();
-			if (styleColor == null) {
-				continue;
-			}
-			return new ConstantObject<Color, Rules>(styleColor);
+			ObjectRule<Color, Rules> nodeColor = getNodeColorRule(styleNode);
+			if(nodeColor != null)
+				return nodeColor;
 		}
 		return null;
 	}
@@ -253,6 +259,18 @@ public class EdgeController implements IExtension {
 			return style;
 		}
 		return null;
+	}
+
+	private ObjectRule<Color, Rules> getNodeColorRule(NodeModel styleNode) {
+		final EdgeModel styleModel = EdgeModel.getModel(styleNode);
+		if (styleModel == null) {
+			return null;
+		}
+		final Color styleColor = styleModel.getColor();
+		if (styleColor == null) {
+			return null;
+		}
+		return new ConstantObject<Color, Rules>(styleColor);
 	}
 
 }
