@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -208,6 +209,16 @@ public class ZoomableLabel extends JLabel {
 		final HTMLDocument document = (HTMLDocument) view.getDocument();
 		final String linkURL = HtmlUtils.getURLOfExistingLink(document, pos);
 		return linkURL;
+	}
+
+	public Insets getZoomedInsets() {
+		Insets unzoomedInsets = getInsets();
+		float zoom = getZoom();
+		Insets zoomedInsets = new Insets((int) (unzoomedInsets.top * zoom), 
+				(int) (unzoomedInsets.left * zoom), 
+				(int) (unzoomedInsets.bottom * zoom), 
+				(int) (unzoomedInsets.right * zoom));
+		return zoomedInsets;
 	}
 
 }
