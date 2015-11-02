@@ -39,7 +39,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
 class RootMainView extends MainView {
-	private static final int ADDITIONAL_MARGIN = new Quantity<LengthUnits>(40, LengthUnits.pt).toBaseUnitsRounded();
+	private static final int ADDITIONAL_MARGIN = new Quantity<LengthUnits>(10, LengthUnits.pt).toBaseUnitsRounded();
 	private static final Insets insets = new Insets(ADDITIONAL_MARGIN, ADDITIONAL_MARGIN, ADDITIONAL_MARGIN, ADDITIONAL_MARGIN);
 	/**
 	 * 
