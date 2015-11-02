@@ -669,6 +669,8 @@ public class EditNodeTextField extends EditNodeBase {
 			maxWidth -= icon.getIconWidth();
 			maxWidth -= parent.getIconTextGap();
 		}
+		Insets insets = parent.getInsets();
+		maxWidth -= insets.left + insets.right;
 		maxWidth = mapView.getZoomed(maxWidth);
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);
@@ -700,7 +702,7 @@ public class EditNodeTextField extends EditNodeBase {
 		final LayoutData layoutData = parentUI.getLayoutData(parent);
 		Rectangle iconR = layoutData.iconR;
 		final Rectangle textR = layoutData.textR;
-		final Insets parentInsets = parent.getInsets();
+		final Insets parentInsets = parent.getZoomedInsets();
 		int textFieldX = parentInsets.left - textFieldBorderWidth + (iconR.width > 0 ? textR.x - iconR.x : 0);
 		
 		

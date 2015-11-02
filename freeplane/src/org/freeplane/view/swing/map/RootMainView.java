@@ -39,7 +39,8 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
 class RootMainView extends MainView {
-	private static final double ADDITIONAL_WIDTH = new Quantity<LengthUnits>(40, LengthUnits.pt).toBaseUnits();
+	private static final int ADDITIONAL_MARGIN = new Quantity<LengthUnits>(40, LengthUnits.pt).toBaseUnitsRounded();
+	private static final Insets insets = new Insets(ADDITIONAL_MARGIN, ADDITIONAL_MARGIN, ADDITIONAL_MARGIN, ADDITIONAL_MARGIN);
 	/**
 	 * 
 	 */
@@ -88,7 +89,6 @@ class RootMainView extends MainView {
 		if (isPreferredSizeSet()) {
 			return prefSize;
 		}
-		prefSize.width += getZoom() * ADDITIONAL_WIDTH;
 		if (prefSize.height <= prefSize.width)
 			prefSize.height = prefSize.width;
 		else {
@@ -162,8 +162,6 @@ class RootMainView extends MainView {
 		setDraggedOver((dropLeft(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
 	}
 	
-    private static Insets insets = new Insets(4, 4, 4, 4);
-    
     @Override
     public Insets getInsets() {
         return RootMainView.insets;
