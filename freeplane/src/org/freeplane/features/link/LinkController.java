@@ -125,8 +125,12 @@ public class LinkController extends SelectionController implements IExtension {
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		new LinkBuilder(this).registerBy(readManager, writeManager);
+		
+		// this IContentTransformer is unconditional because the outcome
+		// (#ID_1698830792 -> Nodename) is usually wanted
 		final LinkTransformer textTransformer = new LinkTransformer(modeController, 10);
 		TextController.getController(modeController).addTextTransformer(textTransformer);
+		
 		textTransformer.registerListeners(modeController);
 
 		final INodeSelectionListener listener = new INodeSelectionListener() {

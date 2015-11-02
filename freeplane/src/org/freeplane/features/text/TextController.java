@@ -109,7 +109,11 @@ public class TextController implements IExtension {
 		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new SetShortenerStateAction());
 //		modeController.addAction(new ToggleNodeNumberingAction());
+		
+		// this IContentTransformer is unconditional because its outcome
+		// is explicitly defined by the user (assigning a format)!
 		addTextTransformer(new FormatContentTransformer(this, 50));
+		
 		registerDetailsTooltip();
 		registerNodeTextTooltip();
 	}
@@ -131,7 +135,7 @@ public class TextController implements IExtension {
 	}
 	
 	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) throws TransformationException{
-		if(object instanceof String && ResourceController.getResourceController().getBooleanProperty("parse_data")){
+		if(object instanceof String){
 			String string = (String) object;
 			if(string.length() > 0 && string.charAt(0) == '\''){
 				if(isTextFormattingDisabled(nodeModel))
@@ -351,8 +355,10 @@ public class TextController implements IExtension {
 			if (format != null) {
 				return format;
 			}
-        }
-        return parseData() ? PatternFormat.STANDARD_FORMAT_PATTERN : PatternFormat.IDENTITY_PATTERN;
+        } 
+		// do not return PatternFormat.IDENTITY_PATTERN if parse_data=false because that would
+		// automatically disable all IContentTransformers!
+		return PatternFormat.STANDARD_FORMAT_PATTERN;
     }
 
 	public boolean parseData() {

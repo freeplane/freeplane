@@ -7,6 +7,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.text.ConditionalContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
@@ -17,6 +18,8 @@ public class Activator implements BundleActivator {
 	private static final String FORMULA_DISABLE_CACHING = "formula_disable_caching";
 	private static final String MENU_BAR_PARENT_LOCATION = "/menu_bar/extras/first";
 	static final String MENU_BAR_LOCATION = MENU_BAR_PARENT_LOCATION + "/formula";
+	
+	private static final String TOGGLE_PARSE_FORMULAS = "parse_formulas";
 
 	private final class FormulaPluginRegistration implements IModeControllerExtensionProvider {
 		private static final String PREFERENCES_RESOURCE = "preferences.xml";
@@ -29,7 +32,10 @@ public class Activator implements BundleActivator {
 			final EvaluateAllAction evaluateAllAction = new EvaluateAllAction();
 			modeController.addAction(evaluateAllAction);
 			if (!disablePluginProperty) {
-				TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(1));
+				
+				TextController.getController(modeController).addTextTransformer(//
+						new ConditionalContentTransformer(new FormulaTextTransformer(1), TOGGLE_PARSE_FORMULAS));	
+				
 				// to enable Formulas in text templates:
 				// TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(100));
 				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();

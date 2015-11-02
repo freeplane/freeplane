@@ -22,6 +22,7 @@ package org.freeplane.plugin.latex;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.text.ConditionalContentTransformer;
 import org.freeplane.features.text.TextController;
 
 /**
@@ -40,7 +41,8 @@ class LatexRegistration {
 			modeController.addAction(new InsertLatexAction(nodeHook));
 			modeController.addAction(new EditLatexAction(nodeHook));
 			modeController.addAction(new DeleteLatexAction(nodeHook));
-			modeController.getExtension(TextController.class).addTextTransformer(new LatexRenderer());
+			modeController.getExtension(TextController.class).addTextTransformer(//
+					new ConditionalContentTransformer(new LatexRenderer(), Activator.TOGGLE_PARSE_LATEX));
 			modeController.getController().getExtension(FormatController.class).addPatternFormat(new LatexFormat());
 			modeController.getController().getExtension(FormatController.class).addPatternFormat(new UnparsedLatexFormat());
 		}
