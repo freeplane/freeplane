@@ -69,7 +69,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 
 	public Dimension getPreferredSize(final ZoomableLabel c, int minimumWidth, int maximumWidth) {
 		try{
-			this.maximumWidth = maximumWidth;
+			this.maximumWidth = maximumWidth == Integer.MAX_VALUE ? maximumWidth : (int) (maximumWidth / c.getZoom());
 			final Dimension preferredSize = getPreferredSize(c);
 			preferredSize.width = Math.max(minimumWidth,preferredSize.width);
 			return preferredSize;
