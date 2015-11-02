@@ -39,8 +39,6 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
 class RootMainView extends MainView {
-	private static final int ADDITIONAL_MARGIN = new Quantity<LengthUnits>(10, LengthUnits.pt).toBaseUnitsRounded();
-	private static final Insets insets = new Insets(ADDITIONAL_MARGIN, ADDITIONAL_MARGIN, ADDITIONAL_MARGIN, ADDITIONAL_MARGIN);
 	/**
 	 * 
 	 */
@@ -164,12 +162,16 @@ class RootMainView extends MainView {
 	
     @Override
     public Insets getInsets() {
-        return RootMainView.insets;
+        return getInsets(new Insets(0, 0, 0, 0));
     }
 
     @Override
     public Insets getInsets(Insets insets) {
-        return RootMainView.insets;
+    	if(insets == null)
+    		return getInsets();
+    	final int margin = new Quantity<LengthUnits>(getFont().getSize2D() * 0.2, LengthUnits.pt).toBaseUnitsRounded();
+    	insets.left=insets.right=insets.top=insets.bottom=margin;
+        return insets;
     }
     @Override
     public Point getConnectorPoint(Point p) {
