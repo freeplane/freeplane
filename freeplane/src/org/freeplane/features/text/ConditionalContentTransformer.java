@@ -43,12 +43,10 @@ public class ConditionalContentTransformer implements IContentTransformer {
 		this.prefsConditionKey = prefsConditionKey;
 	}
 	
-	@Override
 	public int compareTo(IContentTransformer o) {
 		return target.compareTo(o);
 	}
 
-	@Override
 	public Object transformContent(TextController textController,
 			Object content, NodeModel node, Object transformedExtension)
 			throws TransformationException {
@@ -58,7 +56,6 @@ public class ConditionalContentTransformer implements IContentTransformer {
 			return content;
 	}
 
-	@Override
 	public Icon getIcon(TextController textController, Object content,
 			NodeModel node, Object transformedExtension) {
 		if (ResourceController.getResourceController().getBooleanProperty(prefsConditionKey))
@@ -67,12 +64,10 @@ public class ConditionalContentTransformer implements IContentTransformer {
 			return null;
 	}
 
-	@Override
 	public int getPriority() {
 		return target.getPriority();
 	}
 
-	@Override
 	public boolean markTransformation() {
 		return target.markTransformation();
 	}
