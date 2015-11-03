@@ -138,10 +138,6 @@
 <attribute NAME="type" VALUE="boolean"/>
 <attribute NAME="name" VALUE="experimental_file_locking_on"/>
 </node>
-<node TEXT="Standard template file" ID="ID_396156987">
-<attribute NAME="type" VALUE="string"/>
-<attribute NAME="name" VALUE="standard_template"/>
-</node>
 </node>
 <node TEXT="Load" FOLDED="true" ID="ID_1577638913">
 <attribute NAME="type" VALUE="separator"/>

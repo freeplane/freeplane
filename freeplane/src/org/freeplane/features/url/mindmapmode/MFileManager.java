@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -41,8 +42,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import javax.swing.JComboBox;
@@ -256,6 +260,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				final LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
 				charsetTranslationList.addFirst(TextUtils.getText("OptionPanel.default"));
 				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
+			}
+		}, IndexedTree.AS_CHILD);
+		optionPanelBuilder.addCreator("Environment/files", new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				final TreeSet<String> templates = new TreeSet<String>();
+				for (File dir : new File[]{defaultStandardTemplateDir(), defaultUserTemplateDir()})
+					if(dir.isDirectory())
+						templates.addAll(Arrays.asList(dir.list(new FilenameFilter() {
+							@Override
+							public boolean accept(File dir, String name) {
+								return name.endsWith(FREEPLANE_FILE_EXTENSION);
+							}
+						})));
+				ComboProperty comboProperty = new ComboProperty("standard_template", templates, templates);
+				comboProperty.setEditable(true);
+				return comboProperty;
 			}
 		}, IndexedTree.AS_CHILD);
 	}
