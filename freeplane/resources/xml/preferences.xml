@@ -15,7 +15,6 @@
 				<boolean name="load_last_maps" />
 				<boolean name="always_load_last_maps" />
 				<boolean name="experimental_file_locking_on" />
-				<string name="standard_template" />
 			</separator>
 			<separator name="load">
 				<combo name="load_folding">
