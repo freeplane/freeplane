@@ -599,10 +599,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
 			return absolute;
 		}
-		final File userTemplates = defaultUserTemplateDir();
-		final File userStandard = new File(userTemplates, userDefinedTemplateFile);
-		if(userStandard.exists() && ! userStandard.isDirectory())
-			return userStandard;
+		for (final File userTemplates : new File[]{ defaultUserTemplateDir(), defaultStandardTemplateDir()}){
+			if(userTemplates.isDirectory()) {
+				final File userStandard = new File(userTemplates, userDefinedTemplateFile);
+				if(userStandard.exists() && ! userStandard.isDirectory())
+					return userStandard;
+			}
+		}
 		return null;
 	}
 
