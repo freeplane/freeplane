@@ -7,8 +7,8 @@
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" VGAP="32">
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" TEXT_ALIGN="CENTER" MAX_WIDTH_QUANTITY="135.0 cm" MAX_WIDTH="5102" MIN_WIDTH_QUANTITY="135.0 pt" MIN_WIDTH="180" VGAP="3">
-<font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" TEXT_ALIGN="CENTER" MAX_WIDTH_QUANTITY="135.0 pt" MAX_WIDTH="180" MIN_WIDTH_QUANTITY="135.0 pt" MIN_WIDTH="180" VGAP="3">
+<font NAME="SansSerif" SIZE="10" BOLD="true" ITALIC="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
