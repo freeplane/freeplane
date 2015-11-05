@@ -1,6 +1,6 @@
 <map version="freeplane 1.5.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node LOCALIZED_TEXT="new_mindmap" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1446667036203" VGAP="3" MAX_WIDTH_QUANTITY="140.0 pt" MAX_WIDTH="187" MIN_WIDTH_QUANTITY="140.0 pt" MIN_WIDTH="187"><hook NAME="MapStyle">
+<node LOCALIZED_TEXT="new_mindmap" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1446745964469"><hook NAME="MapStyle">
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" VGAP="32">
@@ -12,27 +12,15 @@
 <edge STYLE="bezier" WIDTH="3"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details">
-<edge STYLE="bezier" COLOR="#0000cc" WIDTH="3"/>
 <font SIZE="11"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.note" STYLE="bubble">
-<edge STYLE="bezier" COLOR="#0000cc" WIDTH="3"/>
-</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.floating">
-<edge STYLE="hide_edge" COLOR="#0000cc" WIDTH="3"/>
+<edge STYLE="hide_edge"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
 <font SIZE="9"/>
-<stylenode LOCALIZED_TEXT="styles.topic">
-<edge COLOR="#0000cc"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic">
-<edge COLOR="#0000cc"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic">
-<edge COLOR="#0000cc"/>
-</stylenode>
 <stylenode LOCALIZED_TEXT="styles.important">
 <icon BUILTIN="yes"/>
 <edge COLOR="#0000cc"/>
@@ -41,8 +29,8 @@
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <font SIZE="9"/>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" MAX_WIDTH_QUANTITY="140.0 pt" MAX_WIDTH="187" MIN_WIDTH_QUANTITY="140.0 pt" MIN_WIDTH="187">
-<font SIZE="30" ITALIC="true"/>
-<edge STYLE="bezier" COLOR="#33ffcc" WIDTH="3"/>
+<font SIZE="32" ITALIC="true"/>
+<edge COLOR="#33ffcc"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1">
 <edge COLOR="#000000"/>
@@ -125,7 +113,5 @@
 </hook>
 <hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_COLUMNS"/>
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
-<font SIZE="32"/>
-<node TEXT="" POSITION="right" ID="ID_27406036" CREATED="1446136397737" MODIFIED="1446240574788"/>
 </node>
 </map>
