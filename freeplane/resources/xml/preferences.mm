@@ -624,7 +624,7 @@
 <attribute NAME="type" VALUE="length"/>
 <attribute NAME="defaultUnit" VALUE="px"/>
 <attribute NAME="name" VALUE="grid_size"/>
-<attribute NAME="min" VALUE="1"/>
+<attribute NAME="min" VALUE="0"/>
 <attribute NAME="max" VALUE="1000"/>
 <attribute NAME="step" VALUE="0.01"/>
 </node>
