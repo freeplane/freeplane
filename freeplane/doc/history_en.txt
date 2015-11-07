@@ -7,6 +7,12 @@ Support length measurement units pt, cm, mm and in in addition to px
 Formatted tool tips
 Remove tabs and borders in full screen
 Column based edge colors
+2216: Do not clear "map modified" flag unless save was successful
+2177: Configurable default Map Save Directory
+2202: Changed behavior of read-only maps
+2195: Make data formatting, formula processing and LaTeX rendering
+      independently configurable
+keep icon name of user icon if it's not found in the current installation
 
 ===============================
 1.3.16
