@@ -475,7 +475,7 @@ public class NodeModel{
 		if (encryptionModel != null && !encryptionModel.isAccessible() && folded == false) {
 			folded = true;
 		}
-		else if (AlwaysUnfoldedNode.isConnectorNode(this) || isHiddenSummary()){
+		else if (AlwaysUnfoldedNode.isConnectorNode(this)){
 			folded = false;
 		}
 		if (this.folded == folded) {
@@ -543,22 +543,14 @@ public class NodeModel{
 
 	public final void setText(final String text) {
 		sharedData.setText(text);
-		fixFolding();
-	}
-
-	private void fixFolding() {
-		if(isHiddenSummary() && isFolded())
-			setFolded(false);
 	}
 
 	public final void setUserObject(final Object data) {
 		sharedData.setUserObject(data);
-		fixFolding();
 	}
 
 	public final void setXmlText(final String pXmlText) {
 		sharedData.setXmlText(pXmlText);
-		fixFolding();
 	}
 
 	@Override

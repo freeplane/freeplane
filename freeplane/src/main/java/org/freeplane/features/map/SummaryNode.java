@@ -50,7 +50,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	}
 
 	static public boolean isHidden(final NodeModel nodeModel) {
-		return nodeModel.hasChildren() && isSummaryNode(nodeModel) && nodeModel.getText().isEmpty(); 
+		return ! nodeModel.isFolded() && nodeModel.hasChildren() && isSummaryNode(nodeModel)&& nodeModel.getText().isEmpty(); 
 	}
 
 	public static int getSummaryLevel(NodeModel node) {

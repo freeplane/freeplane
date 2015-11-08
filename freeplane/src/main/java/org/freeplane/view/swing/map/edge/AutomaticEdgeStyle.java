@@ -7,6 +7,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -55,6 +56,8 @@ public class AutomaticEdgeStyle {
 			nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode).toBaseUnitsRounded() + LocationModel.HGAP);
 		}
 		int level = (int) ((float)distance / nodeColumnWidth + 0.5);
+		if(SummaryNode.isHidden(node.getModel()))
+			level++;
 		
 		final IStyle levelStyle = automaticLayoutController.getStyle(map.getModel(), level, true);
 		levelStyleNode = mapStyleNodes.getStyleNode(levelStyle);

@@ -973,7 +973,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 		}
 		else if (!oldSelected.isLeft()) {
-			newSelected = oldSelected.getVisibleParentView();
+			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
 			if (getModeController().getMapController().isFolded(oldModel)) {
@@ -981,13 +981,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
-			while (newSelected != null && !newSelected.isContentVisible()) {
+			while (newSelected != null && !newSelected.getModel().isVisible()) {
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 			}
 			if(newSelected == null)
 				newSelected = getVisibleSummaryView(oldSelected);
 		}
 		return newSelected;
+	}
+
+	protected NodeView getVisibleSummarizedOrParentView(final NodeView view) {
+			return view.getVisibleSummarizedOrParentView();
 	}
 
 	private NodeView getVisibleSummaryView(NodeView node) {
@@ -1011,6 +1015,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	if(level == requiredSummaryLevel){
 	    		if(next.getModel().isVisible())
 	    			return next;
+	    		final NodeView preferredVisibleChild = next.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), next.isLeft());
+	    		if(preferredVisibleChild != null)
+	    			return preferredVisibleChild;
 	    		break;
 	    	}
 	    	if(level == currentSummaryLevel && SummaryNode.isFirstGroupNode(next.getModel()))
@@ -1035,15 +1042,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 		}
 		else if (oldSelected.isLeft()) {
-			newSelected = oldSelected.getVisibleParentView();
+			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
 			if (getModeController().getMapController().isFolded(oldModel)) {
 				getModeController().getMapController().setFolded(oldModel, false);
-				return oldSelected;
+				if(oldSelected.getModel().isVisible())
+					return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
-			while (newSelected != null && !newSelected.isContentVisible()) {
+			while (newSelected != null && !newSelected.getModel().isVisible()) {
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 			}
 			if(newSelected == null)

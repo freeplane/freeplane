@@ -490,18 +490,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	protected NodeView getNextSiblingSingle() {
-		LinkedList<NodeView> v = null;
-		if (getParentView().getModel().isRoot()) {
-			if (this.isLeft()) {
-				v = (getParentView()).getLeft(true);
-			}
-			else {
-				v = (getParentView()).getRight(true);
-			}
-		}
-		else {
-			v = getParentView().getChildrenViews();
-		}
+		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
 		for (int i = index + 1; i < v.size(); i++) {
 			final NodeView nextView = v.get(i);
@@ -618,18 +607,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	protected NodeView getPreviousSiblingSingle() {
-		LinkedList<NodeView> v = null;
-		if (getParentView().getModel().isRoot()) {
-			if (this.isLeft()) {
-				v = (getParentView()).getLeft(true);
-			}
-			else {
-				v = (getParentView()).getRight(true);
-			}
-		}
-		else {
-			v = getParentView().getChildrenViews();
-		}
+		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
 		for (int i = index - 1; i >= 0; i--) {
 			final NodeView nextView = v.get(i);
@@ -644,6 +622,22 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		return this;
+	}
+
+	protected LinkedList<NodeView> getSiblingViews() {
+		LinkedList<NodeView> v = null;
+		if (getParentView().getModel().isRoot()) {
+			if (this.isLeft()) {
+				v = (getParentView()).getLeft(true);
+			}
+			else {
+				v = (getParentView()).getRight(true);
+			}
+		}
+		else {
+			v = getParentView().getChildrenViews();
+		}
+		return v;
 	}
 
 	protected NodeView getPreviousVisibleSibling() {
@@ -698,10 +692,6 @@ public class NodeView extends JComponent implements INodeView {
 		return map.getZoomed(calcShiftY(locationModel));
 	}
 
-	protected LinkedList<NodeView> getSiblingViews() {
-		return getParentView().getChildrenViews();
-	}
-
 	public Color getTextBackground() {
 		if (modelBackgroundColor != null) {
 			return modelBackgroundColor;
@@ -734,6 +724,34 @@ public class NodeView extends JComponent implements INodeView {
 		return parentView.getVisibleParentView();
 	}
 
+	public NodeView getVisibleSummarizedOrParentView() {
+		final Container parent = getParent();
+		if (!(parent instanceof NodeView)) {
+			return null;
+		}
+		final NodeView parentView = (NodeView) parent;
+		if(isSummary()){
+			boolean startFromSummary = true;
+			LinkedList<NodeView> v = getSiblingViews();
+			final int index = v.indexOf(this);
+			for (int i = index - 1; i >= 0; i--) {
+				final NodeView nextView = v.get(i);
+				if (nextView.isContentVisible()) {
+					return nextView;
+				}
+				if(! nextView.isSummary())
+					startFromSummary = false;
+				else if(! startFromSummary)
+					break;
+				
+			}
+		}
+		if (parentView.isContentVisible()) {
+			return parentView;
+		}
+		return parentView.getVisibleSummarizedOrParentView();
+	}
+	
 	public int getZoomedFoldingSymbolHalfWidth() {
 		if (NodeView.FOLDING_SYMBOL_WIDTH == -1) {
 			NodeView.FOLDING_SYMBOL_WIDTH = ResourceController.getResourceController().getIntProperty(
@@ -1546,6 +1564,6 @@ public class NodeView extends JComponent implements INodeView {
 			edgeColor.resetCache();
 		super.setBounds(x, y, width, height);
 	}
-	
+
 	
 }
