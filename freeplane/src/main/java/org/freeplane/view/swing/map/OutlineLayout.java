@@ -71,6 +71,8 @@ public class OutlineLayout implements INodeViewLayout {
 			baseX += hgap;
 			y += vgap;
 		}
+		else if (view.isSummary())
+			baseX += hgap;
 		int right = baseX + content.getWidth() + spaceAround;
 		NodeView child = null;
 		for (int i = 0; i < childCount; i++) {
