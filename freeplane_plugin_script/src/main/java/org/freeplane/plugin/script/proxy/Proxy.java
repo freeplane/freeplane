@@ -1010,11 +1010,11 @@ public interface Proxy {
          * @since 1.3.3 */
         List<Node> getPathToRoot();
 
-        /** returns the next node with respect to this node in breadth-first order.
+        /** returns the next node with respect to this node in depth-first order.
          * Returns null if this node is the only one in the map. */
         Node getNext();
 
-        /** returns the previous node with respect to this node in breadth-first order.
+        /** returns the previous node with respect to this node in depth-first order.
          * Returns null if this node is the only one in the map. */
         Node getPrevious();
 
