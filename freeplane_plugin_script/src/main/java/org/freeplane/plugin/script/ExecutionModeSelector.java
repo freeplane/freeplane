@@ -10,4 +10,8 @@ public class ExecutionModeSelector {
 		this.mode = mode;
 	}
 
+	public ExecutionMode getExecutionMode() {
+	    return mode;
+    }
+
 }
