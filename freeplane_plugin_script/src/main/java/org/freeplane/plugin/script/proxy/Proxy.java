@@ -1454,7 +1454,6 @@ public interface Proxy {
 
         /**@since 1.3.7 */
     	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
-	}
     	
     	/**
     	 * A sort method that uses the result of the Groovy closure ("block") for comparison. As this closure
