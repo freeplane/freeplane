@@ -68,10 +68,12 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
+import org.freeplane.features.edge.AutomaticEdgeColor;
+import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
+import org.freeplane.features.edge.AutomaticEdgeColor.Rule;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
@@ -104,7 +106,6 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 
@@ -870,7 +871,7 @@ public class StyleEditorPanel extends JPanel {
     }
 
 	private JComboBox mAutomaticLayoutComboBox;
-	private JCheckBox mAutomaticEdgeColorCheckBox;
+	private JComboBox mAutomaticEdgeColorComboBox;
 	private Container mStyleBox;
 	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
 		{
@@ -900,19 +901,34 @@ public class StyleEditorPanel extends JPanel {
 	    rightBuilder.nextLine();
 		}
 		{
-			if(mAutomaticEdgeColorCheckBox == null){
-				mAutomaticEdgeColorCheckBox = new JCheckBox();
-				mAutomaticEdgeColorCheckBox.addActionListener(new ActionListener() {
+			
+			if(mAutomaticEdgeColorComboBox == null){
+	 			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
+	 			 mAutomaticEdgeColorComboBox = new JComboBox(automaticLayoutTypes);
+				 DefaultComboBoxModel automaticEdgeColorComboBoxModel = (DefaultComboBoxModel) mAutomaticEdgeColorComboBox.getModel();
+				 automaticEdgeColorComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
+				 automaticEdgeColorComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
+				 mAutomaticEdgeColorComboBox.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						if(internalChange)
+							return;
 						final ModeController modeController = Controller.getCurrentModeController();
-						AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
-						al.undoableToggleHook(Controller.getCurrentController().getMap().getRootNode());
+						AutomaticEdgeColorHook hook = modeController.getExtension(AutomaticEdgeColorHook.class);
+						NamedObject selectedItem = (NamedObject)mAutomaticEdgeColorComboBox.getSelectedItem();
+						final AutomaticEdgeColor oldExtension = (AutomaticEdgeColor) hook.getMapHook();
+						final int colorCount = oldExtension == null ? 0 : oldExtension.getColorCounter();
+						final NodeModel rootNode = Controller.getCurrentController().getMap().getRootNode();
+						hook.undoableDeactivateHook(rootNode);
+						if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
+						final AutomaticEdgeColor newExtension = new  AutomaticEdgeColor((AutomaticEdgeColor.Rule) selectedItem.getObject(), colorCount);
+							hook.undoableActivateHook(rootNode, newExtension);
+						}
 					}
 				});
 			}
 			final String label = TextUtils.getText("AutomaticEdgeColorHookAction.text");
 			rightBuilder.append(new JLabel(label), 5);
-			rightBuilder.append(mAutomaticEdgeColorCheckBox);
+			rightBuilder.append(mAutomaticEdgeColorComboBox);
 		    rightBuilder.nextLine();
 		}
 	}
@@ -1068,10 +1084,14 @@ public class StyleEditorPanel extends JPanel {
 				else
 					mAutomaticLayoutComboBox.setSelectedIndex(((AutomaticLayout)extension).ordinal());
 			}
-			if(mAutomaticEdgeColorCheckBox != null){
+			if(mAutomaticEdgeColorComboBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
 				AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
-				mAutomaticEdgeColorCheckBox.setSelected(al.isActive(node));
+				final AutomaticEdgeColor extension = (AutomaticEdgeColor) al.getExtension(node);
+				if(extension == null)
+					mAutomaticEdgeColorComboBox.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
+				else
+					mAutomaticEdgeColorComboBox.setSelectedIndex(extension.rule.ordinal());
 			}
 		}
 		finally {

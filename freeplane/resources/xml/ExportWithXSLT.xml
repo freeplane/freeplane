@@ -33,7 +33,7 @@
             file_type="html"
             xslt_file="/xslt/freeplane2applet.xsl"
             create_dir="true"
-            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,/html/freeplane_applet.jnlp,/html/deployJava.js"
+            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,/html/freeplane_applet.jnlp"
             file_prefix=""
             copy_map="true"
             copy_map_xslt_file="/xslt/exportmm2appletmm.xsl"

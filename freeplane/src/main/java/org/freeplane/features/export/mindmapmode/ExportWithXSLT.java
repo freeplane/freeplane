@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -292,7 +293,8 @@ public class ExportWithXSLT implements IExportEngine {
 		try {
 			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
-			trans.setParameter("destination_dir", saveFile.getName() + "_files/");
+			final URI uri = new URI(null, null, saveFile.getName() + "_files/", null);
+			trans.setParameter("destination_dir", uri.toString());
 			trans.setParameter("area_code", areaCode);
 			trans.setParameter("folding_type", resourceController.getProperty(
 			"html_export_folding"));

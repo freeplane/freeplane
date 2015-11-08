@@ -34,6 +34,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Quantity;
@@ -49,6 +50,7 @@ import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 
 /**
@@ -130,6 +132,8 @@ public class MapStyleModel implements IExtension {
         	hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			styleMap.setRoot(root);
+			final int styleBlockGap = ResourceController.getResourceController().getLengthProperty("style_block_gap");
+			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
 			insertStyleMap(parentMap, styleMap);
 			NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, STYLES_PREDEFINED);
 			if(predefinedStyleParentNode == null){

@@ -61,7 +61,7 @@ public class UserPropertiesUpdater {
 		}
 		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
 		if(userPreferencesFile.exists()){
-			removeOpenedMaps(userPreferencesFile);
+			removeVersionSpecificProperties(userPreferencesFile);
 			return;
 		}
 		final File oldUserPreferencesFile =new File(System.getProperty("user.home"), ".freeplane/auto.properties");
@@ -110,18 +110,24 @@ public class UserPropertiesUpdater {
         }
 	}
 
-	private void removeOpenedMaps(File userPreferencesFile) {
+	private void removeVersionSpecificProperties(File userPreferencesFile) {
 		try {
 			Properties userProp = loadProperties(userPreferencesFile);
-	        userProp.remove("lastOpened_1.0.20");
-	        userProp.remove("openedNow_1.0.20");
-	        userProp.remove("browse_url_storage");
-	        userProp.remove("single_backup_directory_path");
-	        saveProperties(userProp, userPreferencesFile);
+			for(String name : new String[]{
+					"lastOpened_1.0.20",
+					"openedNow_1.0.20",
+					"openedNow_1.3.04",
+					"browse_url_storage",
+					"single_backup_directory_path",
+			"standard_template"})
+				userProp.remove(name);
+
+			saveProperties(userProp, userPreferencesFile);
         }
         catch (IOException e) {
         }
     }
+
 
 	Properties loadProperties(File userPreferencesFile) throws IOException {
 	    FileInputStream inputStream = null;

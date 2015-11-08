@@ -15,7 +15,6 @@
 				<boolean name="load_last_maps" />
 				<boolean name="always_load_last_maps" />
 				<boolean name="experimental_file_locking_on" />
-				<string name="standard_template" />
 			</separator>
 			<separator name="load">
 				<combo name="load_folding">
@@ -166,7 +165,7 @@
 				<boolean name="disable_cursor_move_paper" />
 				<number name="foldingsymbolwidth" />
 				<boolean name="edit_on_double_click" />
-				<length name="grid_size" defaultUnit = "px" min="1" max = "1000" step = "0.01"/>
+				<length name="grid_size" defaultUnit = "px" min="0" max = "1000" step = "0.01"/>
 				<number name="scrolling_speed" min="1" max="30" />
 				<boolean name="goto_note_end_on_edit" />
 				<combo name="key_type_action">

@@ -17,7 +17,8 @@ class ContentPaneLayout implements LayoutManager {
 		NodeView view = (NodeView) parent.getParent();
 		final MapView map = view.getMap();
 		final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
-		final int maxWidth = ncs.getMaxWidth(view.getModel()).toBaseUnitsRounded();
+		final int maxWidth = map.getZoomed(ncs.getMaxWidth(view.getModel()).toBaseUnits());
+		final int minWidth = map.getZoomed(ncs.getMinWidth(view.getModel()).toBaseUnits());
 		int y = 0;
 		for (int i = 0; i < componentCount; i++) {
 			final Component component = parent.getComponent(i);
@@ -27,7 +28,7 @@ class ContentPaneLayout implements LayoutManager {
 				if( width == 0) 
 					preferredCompSize = new Dimension();
 				else if (component instanceof ZoomableLabel){
-					preferredCompSize=  ((ZoomableLabel)component).getPreferredSize(maxWidth);
+					preferredCompSize=  ((ZoomableLabel)component).getPreferredSize(minWidth, maxWidth);
 				}
 				else{
 					preferredCompSize=  component.getPreferredSize();
@@ -61,7 +62,8 @@ class ContentPaneLayout implements LayoutManager {
 		NodeView view = (NodeView) parent.getParent();
 		final MapView map = view.getMap();
 		final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
-		final int width = ncs.getMaxWidth(view.getModel()).toBaseUnitsRounded();
+		final int minWidth = map.getZoomed(ncs.getMinWidth(view.getModel()).toBaseUnits());
+		final int maxWidth = map.getZoomed(ncs.getMaxWidth(view.getModel()).toBaseUnits());
 		final Dimension prefSize = new Dimension(0, 0);
 		final int componentCount = parent.getComponentCount();
 		for (int i = 0; i < componentCount; i++) {
@@ -70,7 +72,7 @@ class ContentPaneLayout implements LayoutManager {
 				component.validate();
 				final Dimension preferredCompSize;
 				if(component instanceof ZoomableLabel)
-					preferredCompSize = ((ZoomableLabel)component).getPreferredSize(width);
+					preferredCompSize = ((ZoomableLabel)component).getPreferredSize(minWidth, maxWidth);
 				else
 					preferredCompSize = component.getPreferredSize();
 				

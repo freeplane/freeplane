@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.JComponent;
 
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 
@@ -14,21 +15,20 @@ public class ContentSizeCalculator {
 		if(! view.isContentVisible())
 			return ZERO;
     	final JComponent content = view.getContent();
-        final ModeController modeController = view.getMap().getModeController();
+        final MapView map = view.getMap();
+		final ModeController modeController = map.getModeController();
         final NodeStyleController nsc = NodeStyleController.getController(modeController);
+        final NodeModel node = view.getModel();
+		final int minNodeWidth = map.getZoomed(nsc.getMinWidth(node).toBaseUnits());
+		final int maxNodeWidth = map.getZoomed(nsc.getMaxWidth(node).toBaseUnits());
         Dimension contentSize;
         if (content instanceof ZoomableLabel){
-        	int maxNodeWidth = nsc.getMaxWidth(view.getModel()).toBaseUnitsRounded();
-        	contentSize=  ((ZoomableLabel)content).getPreferredSize(maxNodeWidth);
+        	contentSize=  ((ZoomableLabel)content).getPreferredSize(minNodeWidth, maxNodeWidth);
         }
         else{
         	contentSize=  content.getPreferredSize();
         }
-        int minNodeWidth = nsc.getMinWidth(view.getModel()).toBaseUnitsRounded();
-        int contentWidth = Math.max(view.getZoomed(minNodeWidth),contentSize.width);
-        int contentHeight = contentSize.height;
-        final Dimension contentProfSize = new Dimension(contentWidth, contentHeight);
-        return contentProfSize;
+        return contentSize;
     }
 
 }

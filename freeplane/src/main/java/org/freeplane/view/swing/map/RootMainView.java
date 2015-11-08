@@ -31,13 +31,14 @@ import java.awt.RenderingHints;
 
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
 class RootMainView extends MainView {
-
 	private static final long serialVersionUID = 1L;
 	private String shape;
 
@@ -78,13 +79,16 @@ class RootMainView extends MainView {
 	 * @see freeplane.view.mindmapview.NodeView.MainView#getPreferredSize()
 	 */
 	@Override
-	public Dimension getPreferredSize(int width) {
-		final Dimension prefSize = super.getPreferredSize(width);
+	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
+		final Dimension prefSize = super.getPreferredSize(minimumWidth, maximumWidth);
 		if (isPreferredSizeSet()) {
 			return prefSize;
 		}
-		prefSize.width *= 1.1;
-		prefSize.height *= 2;
+		if (prefSize.height <= prefSize.width)
+			prefSize.height = prefSize.width;
+		else {
+			prefSize.width = Math.min(maximumWidth, prefSize.height);
+		}
 		return prefSize;
 	}
 
@@ -153,16 +157,18 @@ class RootMainView extends MainView {
 		setDraggedOver((dropLeft(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
 	}
 	
-    private static Insets insets = new Insets(4, 4, 4, 4);
-    
     @Override
     public Insets getInsets() {
-        return RootMainView.insets;
+        return getInsets(new Insets(0, 0, 0, 0));
     }
 
     @Override
     public Insets getInsets(Insets insets) {
-        return RootMainView.insets;
+    	if(insets == null)
+    		return getInsets();
+    	final int margin = new Quantity<LengthUnits>(getFont().getSize2D() * 0.2, LengthUnits.pt).toBaseUnitsRounded();
+    	insets.left=insets.right=insets.top=insets.bottom=margin;
+        return insets;
     }
     @Override
     public Point getConnectorPoint(Point p) {
