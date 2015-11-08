@@ -823,6 +823,7 @@ public class MMapController extends MapController {
 			IActor foldingActor = new IActor() {
 				@Override
 				public void undo() {
+					unfoldHiddenChildren(node);
 					MMapController.super.setFoldingState(node, ! folded);
 				}
 				
@@ -833,6 +834,7 @@ public class MMapController extends MapController {
 				
 				@Override
 				public void act() {
+					unfoldHiddenChildren(node);
 					MMapController.super.setFoldingState(node, folded);
 				}
 			};
