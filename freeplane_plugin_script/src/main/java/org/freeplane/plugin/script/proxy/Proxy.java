@@ -689,6 +689,12 @@ public interface Proxy {
 		 * @see FreeplaneIconUtils */
 		void add(String name);
 
+		/** @since 1.4 */
+		void addAll(Collection<String> names);
+
+		/** @since 1.4 */
+		void addAll(IconsRO icons);
+
 		/** @deprecated since 1.2 - use {@link #add(String)} instead. */
 		void addIcon(String name);
 

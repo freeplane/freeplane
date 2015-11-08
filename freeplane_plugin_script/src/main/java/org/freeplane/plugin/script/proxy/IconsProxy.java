@@ -5,6 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.proxy.Proxy.IconsRO;
 
 class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	IconsProxy(final NodeModel delegate, final ScriptContext scriptContext) {
@@ -24,6 +26,20 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	public void add(final String name) {
 		getIconController().addIcon(getDelegate(), IconStoreFactory.create().getMindIcon(name));
 	}
+
+	@Override
+    public void addAll(Collection<String> names) {
+		for (String name : names) {
+	        add(name);
+        }
+    }
+
+	@Override
+    public void addAll(IconsRO icons) {
+		for (String name : icons.getIcons()) {
+	        add(name);
+        }
+    }
 
 	@Deprecated
 	public void addIcon(final String name) {
