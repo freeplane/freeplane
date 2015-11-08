@@ -379,11 +379,9 @@ public class MLinkController extends LinkController {
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 	private String anchorID;
-	private final ModeController modeController;
 
 	public MLinkController(ModeController modeController) {
-		super();
-		this.modeController = modeController;
+		super(modeController);
 		this.anchorID = "";
 	}
 

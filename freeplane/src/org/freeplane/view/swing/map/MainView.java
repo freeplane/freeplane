@@ -61,6 +61,7 @@ import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -434,7 +435,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
-			final Icon icon = LinkController.getLinkIcon(link, model);
+			final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
 			if(icon != null)
 				iconImages.addImage(icon);
 	}

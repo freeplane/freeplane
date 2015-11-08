@@ -67,7 +67,7 @@ public class FModeControllerFactory {
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
 		TextController.install(new TextController(modeController));
-		LinkController.install(new LinkController());
+		LinkController.install(new LinkController(modeController));
 		CloudController.install(new CloudController(modeController));
 		ClipboardController.install(new ClipboardController());
 		LocationController.install(new LocationController());
