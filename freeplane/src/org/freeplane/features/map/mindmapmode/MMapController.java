@@ -47,6 +47,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FreeNode;
@@ -187,9 +188,11 @@ public class MMapController extends MapController {
 		NodeModel selected = selection.getSelected();
 		final NodeModel parentNode = selected.getParentNode();
 		final boolean isLeft = selected.isLeft();
-		final NodeModel newNode = addNewNode(parentNode, end+1, isLeft);
+		final NodeModel newSummaryNode = addNewNode(parentNode, end+1, isLeft);
 		final SummaryNode summary = modeController.getExtension(SummaryNode.class);
-		summary.undoableActivateHook(newNode, summary);
+		summary.undoableActivateHook(newSummaryNode, summary);
+		AlwaysUnfoldedNode unfolded = modeController.getExtension(AlwaysUnfoldedNode.class);
+		unfolded.undoableActivateHook(newSummaryNode, unfolded);
 		final FirstGroupNode firstGroup = modeController.getExtension(FirstGroupNode.class);
 		final NodeModel firstNode = (NodeModel) parentNode.getChildAt(start);
 		firstGroup.undoableActivateHook(firstNode, firstGroup);
@@ -205,8 +208,9 @@ public class MMapController extends MapController {
 			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
 				firstGroup.undoableActivateHook(node, firstGroup);
 		}
-		startEditingAfterSelect(newNode);
-		select(newNode);
+		final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, isLeft);
+		startEditingAfterSelect(firstSummaryChildNode);
+		select(firstSummaryChildNode);
 
 	}
 
