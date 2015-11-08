@@ -304,7 +304,7 @@ public class MapController extends SelectionController implements IExtension{
 	    if (unfold && unfoldInvisibleChildren(node, true))
 	        mapChanged = true;
 		if (node.isFolded() != folded && !(node.isRoot() && folded)){
-			node.setFolded(folded);
+			setFoldingState(node, folded);
 			mapChanged = true;
 		}
 		if(mapChanged){
@@ -312,6 +312,11 @@ public class MapController extends SelectionController implements IExtension{
 		}
 		else if(childShown)
 	        fireNodeUnfold(node);
+	}
+
+
+	protected void setFoldingState(final NodeModel node, final boolean folded) {
+		node.setFolded(folded);
 	}
 
 	public boolean showNextChild(final NodeModel node) {
@@ -322,7 +327,7 @@ public class MapController extends SelectionController implements IExtension{
 			for(NodeModel child:childrenUnfolded(node)){
 				child.addExtension(HideChildSubtree.instance);
 			}
-			node.setFolded(false);
+			setFoldingState(node, false);
 		}
 		boolean childMadeVisible = false;
 		for(NodeModel child:childrenUnfolded(node)){
@@ -358,13 +363,17 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	private void fireFoldingChanged(final NodeModel node) {
-	    final ResourceController resourceController = ResourceController.getResourceController();
-	    if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
-	    	NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+	    if (isFoldingPersistentAlways()) {
 	    	final MapModel map = node.getMap();
 	    	setSaved(map, false);
 	    }
     }
+
+	private boolean isFoldingPersistentAlways() {
+	    final ResourceController resourceController = ResourceController.getResourceController();
+		return resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
+	    	NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING);
+	}
 
 
 	private boolean unfoldHiddenChildren(NodeModel node) {
@@ -387,7 +396,7 @@ public class MapController extends SelectionController implements IExtension{
 				visibleFound = true;
 			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){
 				visibleFound = unfolded = true;
-				child.setFolded(false);
+				setFoldingState(node, false);
 			}
 		}
 		if(reportUnfolded)
