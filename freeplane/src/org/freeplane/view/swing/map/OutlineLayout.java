@@ -68,6 +68,8 @@ public class OutlineLayout extends NodeViewLayoutAdapter {
 			baseX += getHGap();
 			y += getVGap();
 		}
+		else if (getView().isSummary())
+			baseX += getHGap();
 		int right = baseX + getContent().getWidth() + getSpaceAround();
 		NodeView child = null;
 		for (int i = 0; i < getChildCount(); i++) {
