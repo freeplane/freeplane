@@ -539,6 +539,10 @@ public interface Proxy {
 		/** a value of 1 means 100%.
 		 * @since 1.2 */
 		void setZoom(final float ratio);
+
+		/** a list of all opened maps.
+		 * @since 1.5 */
+		List<Map> getOpenMaps();
 	}
 
 	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
