@@ -3,7 +3,10 @@ package org.freeplane.plugin.script;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.noScriptsAvailableMessage;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.scriptNameToMenuItemTitle;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
+
+import javax.swing.Action;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -31,19 +34,29 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 	@Override
 	public void visit(Entry target) {
 		if (configuration.getMenuTitleToPathMap().isEmpty()) {
-//			target.addChild(createNoScriptsAvailableAction());
+			target.addChild(createNoScriptsAvailableAction());
 		}
 		else {
 			// add entry for all scripts but disable scripts that don't support selected exec mode  
 			final ExecutionMode executionMode = modeSelector.getExecutionMode();
 			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 				// for every action
-				// FIXME: construct ExecuteScriptAction here (cached?)
-				AFreeplaneAction action = null;
-				new EntryAccessor().addChildAction(target, action);
 				target.addChild(createScriptEntry(entry.getKey(), entry.getValue(), executionMode));
 			}
 		}
+	}
+
+	private Entry createNoScriptsAvailableAction() {
+		final Entry entry = new Entry();
+		entry.setName("NoScriptsAvailableAction");
+		@SuppressWarnings("serial")
+		final AFreeplaneAction noScriptsAvailableAction = new AFreeplaneAction("NoScriptsAvailableAction", ScriptingMenuUtils.noScriptsAvailableMessage(), null) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			}
+		};
+		new  EntryAccessor().setAction(entry, noScriptsAvailableAction);
+		return entry;
 	}
 
 	private Entry createScriptEntry(final String scriptName, final String scriptPath, ExecutionMode executionMode) {
@@ -52,17 +65,17 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 		AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
 		    metaData.cacheContent(), metaData.getPermissions());
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
-		final JCommandMenuButton scriptEntry = new JCommandMenuButton(title, icon);
-//		scriptEntry.setActionRichTooltip(createRichTooltip(title, metaData));
-		scriptEntry.addActionListener(action);
-		scriptEntry.setFocusable(false);
-		scriptEntry.setEnabled(metaData.getExecutionModes().contains(executionMode));
-		return null;
+		final Entry scriptEntry = new Entry();
+		action.setEnabled(metaData.getExecutionModes().contains(executionMode));
+//		Object tooltip = createRichTooltip(title, metaData);
+//		action.putValue(Action.SHORT_DESCRIPTION, tooltip);
+//		action.putValue(Action.LONG_DESCRIPTION, tooltip);
+		final EntryAccessor entryAccessor = new EntryAccessor();
+		entryAccessor.addChildAction(scriptEntry, action);
+		entryAccessor.setIcon(scriptEntry, icon);
+
+		return scriptEntry;
 	}
-//
-//	private Entry createNoScriptsAvailableAction() {
-//		return new JCommandMenuButton(noScriptsAvailableMessage(), null);
-//	}
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {

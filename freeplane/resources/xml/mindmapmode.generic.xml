@@ -597,7 +597,7 @@
 							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
 							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
 						</Entry> 
-						<Entry builder="script_actions" /> 
+						<Entry name="script_actions"><Entry builder="script_actions" /></Entry> 
 					</Entry>
 				</Entry>
 				<Entry name="formula.menuname" plugin="org.freeplane.plugin.formula">
