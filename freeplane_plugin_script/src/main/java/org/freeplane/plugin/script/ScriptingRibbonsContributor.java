@@ -37,6 +37,7 @@ import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
 import org.pushingpixels.flamingo.api.common.popup.PopupPanelCallback;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 
+@Deprecated
 class ScriptingRibbonsContributor extends ARibbonContributor {
     private final ScriptingConfiguration configuration;
     private ConcurrentHashMap<RibbonElementPriority, ChildProperties> defaultChildProperties = new ConcurrentHashMap<RibbonElementPriority, ChildProperties>();

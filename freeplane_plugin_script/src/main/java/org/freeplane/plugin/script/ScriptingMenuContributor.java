@@ -20,6 +20,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 
+@Deprecated
 class ScriptingMenuContributor implements IMenuContributor {
     private final MenuBuilder menuBuilder;
     private final ScriptingConfiguration configuration;
