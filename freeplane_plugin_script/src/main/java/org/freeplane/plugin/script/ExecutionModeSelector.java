@@ -5,7 +5,7 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 
 public class ExecutionModeSelector {
 
-	private ExecutionMode mode;
+	private ExecutionMode mode = ExecutionMode.ON_SINGLE_NODE;
 
 	public void select(ExecutionMode mode) {
 		this.mode = mode;
