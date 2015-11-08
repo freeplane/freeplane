@@ -5,8 +5,11 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -810,5 +813,28 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
 		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+	}
+
+	@Override
+	public void sortChildrenBy(Closure<Comparable<Object>> closure) {
+		getScriptContext().accessNode(getDelegate());
+		NodeModel node = getDelegate();
+		final ArrayList<NodeModel> children = new ArrayList<NodeModel>(node.getChildren());
+		Collections.sort(children, comparatorByClosureResult(closure));
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		int i = 0;
+		for (final NodeModel child : children) {
+			((FreeNode) Controller.getCurrentModeController().getExtension(FreeNode.class))
+			    .undoableDeactivateHook(child);
+			mapController.moveNode(child, node, i++);
+		}
+	}
+
+	private Comparator<NodeModel> comparatorByClosureResult(final Closure<Comparable<Object>> closure) {
+		return new Comparator<NodeModel>() {
+			public int compare(NodeModel o1, NodeModel o2) {
+				return closure.call(o1).compareTo(closure.call(o2));
+			}
+		};
 	}
 }

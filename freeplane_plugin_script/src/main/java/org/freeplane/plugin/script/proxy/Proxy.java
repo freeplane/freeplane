@@ -1455,6 +1455,25 @@ public interface Proxy {
         /**@since 1.3.7 */
     	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
 	}
+    	
+    	/**
+    	 * A sort method that uses the result of the Groovy closure ("block") for comparison. As this closure
+    	 * will be called with a node as an argument (to be referenced by <code>it</code>) the search can
+    	 * evaluate every node property, like attributes, icons, node text or notes.
+    	 * <p>
+    	 * Examples:
+    	 * <pre>
+    	 *    // sort by details text
+    	 *    node.sortChildrenBy{ it.details.to.plain }
+    	 *    // sort numerically
+    	 *    node.sortChildrenBy{ it.to.num0 }
+    	 * </pre>
+    	 * @param closure a Groovy closure that returns a Comparable value like a String. The closure will receive
+    	 *        a NodeModel as an argument.
+    	 * @since 1.4.1
+    	 */
+		void sortChildrenBy(Closure<Comparable<Object>> closure);
+	}
 
 	/** Node's style: <code>node.style</code> - read-only. */
 	interface NodeStyleRO {
