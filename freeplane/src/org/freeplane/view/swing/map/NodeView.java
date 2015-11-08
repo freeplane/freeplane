@@ -154,7 +154,7 @@ public class NodeView extends JComponent implements INodeView {
 	private int calcShiftY(final LocationModel locationModel) {
 		try {
 			final NodeModel parent = model.getParentNode();
-			return locationModel.getShiftY() + (getMap().getModeController().hasOneVisibleChild(parent) ? SHIFT : 0);
+			return locationModel.getShiftY() + (! getParentView().isSummary() && getMap().getModeController().hasOneVisibleChild(parent) ? SHIFT : 0);
 		}
 		catch (final NullPointerException e) {
 			return 0;
