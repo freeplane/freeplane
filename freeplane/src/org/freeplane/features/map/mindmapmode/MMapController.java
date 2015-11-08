@@ -55,6 +55,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
@@ -789,5 +790,33 @@ public class MMapController extends MapController {
 		}
 	}
 
-
+	@Override
+	protected void setFoldingState(final NodeModel node, final boolean folded) {
+		if(isFoldingPersistent()){
+			IActor foldingActor = new IActor() {
+				@Override
+				public void undo() {
+					MMapController.super.setFoldingState(node, ! folded);
+				}
+				
+				@Override
+				public String getDescription() {
+					return "setFoldingState";
+				}
+				
+				@Override
+				public void act() {
+					MMapController.super.setFoldingState(node, folded);
+				}
+			};
+			getMModeController().execute(foldingActor, node.getMap());
+		}
+		else
+			super.setFoldingState(node, folded);
+	}
+	
+	private boolean isFoldingPersistent() {
+	    final ResourceController resourceController = ResourceController.getResourceController();
+		return resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).startsWith("save");
+	}
 }
