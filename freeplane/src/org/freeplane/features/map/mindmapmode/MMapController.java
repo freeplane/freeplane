@@ -602,7 +602,7 @@ public class MMapController extends MapController {
 
 	@Override
     public void setSaved(final MapModel mapModel, final boolean saved) {
-		final boolean setTitle = saved != mapModel.isSaved();
+		final boolean setTitle = saved != mapModel.isSaved() || mapModel.isReadOnly();
 		mapModel.setSaved(saved);
 		if (setTitle) {
 			final Controller controller = Controller.getCurrentController();
@@ -745,6 +745,7 @@ public class MMapController extends MapController {
         	newModel.setReadOnly(true);
         	fireMapCreated(newModel);
         	newMapView(newModel);
+        	newModel.setSaved(true);
         	return true;
         }
         finally {

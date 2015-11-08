@@ -1000,6 +1000,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public int getZoomed(final int number) {
 		return (int) Math.ceil(number * zoom);
 	}
+	
+	public int getZoomed(double number) {
+		return (int) Math.ceil(number * zoom);
+	}
+
 
 	private void initRoot() {
 		this.anchorContentLocation = new Point();

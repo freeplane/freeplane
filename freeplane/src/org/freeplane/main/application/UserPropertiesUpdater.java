@@ -60,7 +60,7 @@ public class UserPropertiesUpdater {
 		}
 		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
 		if(userPreferencesFile.exists()){
-			removeOpenedMaps(userPreferencesFile);
+			removeVersionSpecificProperties(userPreferencesFile);
 			return;
 		}
 	}
@@ -89,16 +89,19 @@ public class UserPropertiesUpdater {
 	    return old_userfpdir != null;
     }
 
-	private void removeOpenedMaps(File userPreferencesFile) {
+	private void removeVersionSpecificProperties(File userPreferencesFile) {
 		try {
 			Properties userProp = loadProperties(userPreferencesFile);
-	        userProp.remove("lastOpened_1.0.20");
-	        userProp.remove("openedNow_1.0.20");
-	        userProp.remove("openedNow_1.3.04");
-	        userProp.remove("browse_url_storage");
-	        userProp.remove("single_backup_directory_path");
-	        
-	        saveProperties(userProp, userPreferencesFile);
+			for(String name : new String[]{
+					"lastOpened_1.0.20",
+					"openedNow_1.0.20",
+					"openedNow_1.3.04",
+					"browse_url_storage",
+					"single_backup_directory_path",
+			"standard_template"})
+				userProp.remove(name);
+
+			saveProperties(userProp, userPreferencesFile);
         }
         catch (IOException e) {
         }

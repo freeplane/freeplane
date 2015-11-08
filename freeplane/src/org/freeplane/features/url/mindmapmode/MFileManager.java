@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -41,8 +42,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import javax.swing.JComboBox;
@@ -51,6 +55,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
@@ -90,6 +95,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
+	private static final String DEFAULT_SAVE_DIR_PROPERTY = "default_save_dir";
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final int DEBUG_OFFSET = 0;
 
@@ -226,6 +232,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public MFileManager() {
 		super();
+		setLastCurrentDir(new File(getDefaultSaveDirFromPrefs()));
+	}
+
+	private String getDefaultSaveDirFromPrefs() {
+		return ResourceController.getResourceController().getProperty(DEFAULT_SAVE_DIR_PROPERTY);
 	}
 
 	@Override
@@ -256,6 +267,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				final LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
 				charsetTranslationList.addFirst(TextUtils.getText("OptionPanel.default"));
 				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
+			}
+		}, IndexedTree.AS_CHILD);
+		optionPanelBuilder.addCreator("Environment/files", new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				final TreeSet<String> templates = new TreeSet<String>();
+				for (File dir : new File[]{defaultStandardTemplateDir(), defaultUserTemplateDir()})
+					if(dir.isDirectory())
+						templates.addAll(Arrays.asList(dir.list(new FilenameFilter() {
+							@Override
+							public boolean accept(File dir, String name) {
+								return name.endsWith(FREEPLANE_FILE_EXTENSION);
+							}
+						})));
+				ComboProperty comboProperty = new ComboProperty("standard_template", templates, templates);
+				comboProperty.setEditable(true);
+				return comboProperty;
 			}
 		}, IndexedTree.AS_CHILD);
 	}
@@ -572,10 +599,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
 			return absolute;
 		}
-		final File userTemplates = defaultUserTemplateDir();
-		final File userStandard = new File(userTemplates, userDefinedTemplateFile);
-		if(userStandard.exists() && ! userStandard.isDirectory())
-			return userStandard;
+		for (final File userTemplates : new File[]{ defaultUserTemplateDir(), defaultStandardTemplateDir()}){
+			if(userTemplates.isDirectory()) {
+				final File userStandard = new File(userTemplates, userDefinedTemplateFile);
+				if(userStandard.exists() && ! userStandard.isDirectory())
+					return userStandard;
+			}
+		}
 		return null;
 	}
 
@@ -713,8 +743,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getFileChooser(true);
 		if (getMapsParentFile(map) == null) {
-			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION));
+			File defaultFile = new File(getFileNameProposal(map)
+				        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+			chooser.setSelectedFile(defaultFile);
 		}
 		else {
 			chooser.setSelectedFile(map.getFile());
@@ -761,7 +792,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 */
 	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
 		if (file.exists() && !file.canWrite()) {
-			LogUtils.severe("Attempt to write in read-only file.");
+			JOptionPane.showMessageDialog(Controller.getCurrentController()
+				    .getMapViewManager().getMapViewComponent(),
+					TextUtils.format("SaveAs_toReadonlyMsg", file),
+					TextUtils.getText("SaveAs_toReadonlyTitle"),
+				    JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		try {
@@ -770,9 +805,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			if (!isInternal) {
 				setFile(map, file);
-				map.setSaved(true);
 			}
 			writeToFile(map, file);
+			if (!isInternal) {
+				map.setSaved(true);
+			}
 			map.scheduleTimerForAutomaticSaving();
 			return true;
 		}
