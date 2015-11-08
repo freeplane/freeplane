@@ -374,7 +374,7 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 
-	private boolean unfoldHiddenChildren(NodeModel node) {
+	protected boolean unfoldHiddenChildren(NodeModel node) {
 		final List<NodeModel> children = childrenFolded(node);
 		boolean changed = false;
 		for (NodeModel child : children){
