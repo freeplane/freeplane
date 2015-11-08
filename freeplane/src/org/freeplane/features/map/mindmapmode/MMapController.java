@@ -30,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -817,8 +818,10 @@ public class MMapController extends MapController {
 			super.setFoldingState(node, folded);
 	}
 	
+	static private final List<String> foldingSavedOptions = Arrays.asList(NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING, NodeBuilder.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
+	
 	private boolean isFoldingPersistent() {
 	    final ResourceController resourceController = ResourceController.getResourceController();
-		return resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).startsWith("save");
+		return foldingSavedOptions.contains(resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING));
 	}
 }
