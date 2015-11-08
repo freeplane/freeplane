@@ -356,7 +356,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Icon getLinkIcon(final URI uri) {
 		NodeModel nodeModel = ((IAttributeTableModel)getModel()).getNode();
-	    final Icon linkIcon = LinkController.getLinkIcon(uri, nodeModel);
+	    final Icon linkIcon =  Controller.getCurrentModeController().getExtension(LinkController.class).getLinkIcon(uri, nodeModel);
 	    return linkIcon;
     }
 	

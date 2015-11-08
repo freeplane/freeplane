@@ -233,7 +233,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
-		LinkController.install(new MLinkController());
+		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());
 		userInputListenerFactory.setNodeDragListener(new MNodeDragListener());

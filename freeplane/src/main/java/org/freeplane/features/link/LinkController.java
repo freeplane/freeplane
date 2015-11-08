@@ -110,20 +110,20 @@ public class LinkController extends SelectionController implements IExtension {
 	public static void install( final LinkController linkController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LinkController.class, linkController);
-		linkController.init(modeController);
+		linkController.init();
 	}
 
 	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
 	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
 	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty("link_local_icon");
 
-// 	final private ModeController modeController;
+ 	final protected ModeController modeController;
 
-	public LinkController() {
-//		this.modeController = modeController;
+	public LinkController(ModeController modeController) {
+		this.modeController = modeController;
 	}
 
-	protected void init(ModeController modeController) {
+	protected void init() {
 		createActions();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
@@ -835,7 +835,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final public Icon icon;
 	}
 
-	public static Icon getLinkIcon(final URI link, final NodeModel model) {
+	public Icon getLinkIcon(final URI link, final NodeModel model) {
 		final LinkType linkType = getLinkType(link, model);
 	    if(linkType == null)
 	    	return null;
@@ -851,6 +851,8 @@ public class LinkController extends SelectionController implements IExtension {
 	    	    return icon;
 	    	}
 	    }
+	    if(LinkType.DEFAULT == linkType && formatNodeAsHyperlink(model))
+	    	return null;
 	    return linkType.icon;
 
 	}
@@ -883,10 +885,6 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public boolean formatNodeAsHyperlink(final NodeModel node){
-	 return formatNodeAsHyperlink(Controller.getCurrentModeController(), node);
-	}
-
-	public boolean formatNodeAsHyperlink(final ModeController modeController, final NodeModel node){
 		final Boolean ownFlag = ownFormatNodeAsHyperlink(node);
 		if(ownFlag != null)
 			return ownFlag;

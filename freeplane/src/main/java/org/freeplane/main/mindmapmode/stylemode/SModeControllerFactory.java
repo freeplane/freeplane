@@ -132,7 +132,7 @@ public class SModeControllerFactory {
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
-		LinkController.install(new MLinkController());
+		LinkController.install(new MLinkController(modeController));
 		MFileManager.install(new MFileManager());
 		MMapIO.install(modeController);
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
