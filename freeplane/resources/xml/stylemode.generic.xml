@@ -142,14 +142,10 @@
 	<Entry name="node_popup" builder="node_popup">
 		<Entry name="FormatCopy" />
 		<Entry name="FormatPaste" />
-		<Entry name="EditDetailsInDialogAction" />
-		<Entry name="EditDetailsAction" />
-		<Entry name="DeleteDetailsAction" />
-		<Entry name="EditNoteInDialogAction" />
-		<Entry accelerator="alt F9" name="EditAttributesAction" />
-		<Entry accelerator="control shift B" name="CloudAction" />
 		<Entry name="NewUserStyleAction" />
 		<Entry name="DeleteUserStyleAction" />
+		<Entry name="NewLevelStyleAction" />
+		<Entry name="DeleteLevelStyleAction" />
 	</Entry>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
 		<Entry name="undo">
