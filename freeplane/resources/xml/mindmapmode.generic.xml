@@ -587,6 +587,7 @@
 					<Entry name="SaveAcceleratorPresetsAction"/>
 				</Entry>
 				<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
+				<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
 				<Entry name="scripting" plugin="org.freeplane.plugin.script">
 					<Entry builder="radio_button_group">
 						<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE" />
