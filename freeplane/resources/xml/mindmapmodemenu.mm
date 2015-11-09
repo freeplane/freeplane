@@ -383,6 +383,7 @@
 <node TEXT="Split node" ID="ID_1163943962" CREATED="1370194798665" MODIFIED="1370194798665">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="SplitNode"/>
+<attribute NAME="accelerator" VALUE="alt S"/>
 </node>
 <node TEXT="Change revisions background color" ID="ID_1486500406" CREATED="1370194798665" MODIFIED="1370194798665">
 <attribute NAME="type" VALUE="action"/>
@@ -705,6 +706,7 @@
 <node TEXT="Reset node position" ID="ID_56951123" CREATED="1370194798716" MODIFIED="1370194798716">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="ResetNodeLocationAction"/>
+<attribute NAME="accelerator" VALUE="control R"/>
 </node>
 <node TEXT="---" ID="ID_957163489" CREATED="1370194798716" MODIFIED="1370194798716">
 <attribute NAME="type" VALUE="separator"/>
@@ -789,6 +791,7 @@
 <node TEXT="Properties panel" ID="ID_759196812" CREATED="1370194798749" MODIFIED="1370194798749">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="ShowFormatPanel"/>
+<attribute NAME="accelerator" VALUE="control alt P"/>
 </node>
 </node>
 <node TEXT="---" ID="ID_742463946" CREATED="1370194798749" MODIFIED="1370194798749">
@@ -836,6 +839,7 @@
 <node TEXT="Full screen mode" ID="ID_370782802" CREATED="1370194798785" MODIFIED="1370194798785">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="ToggleFullScreenAction"/>
+<attribute NAME="accelerator" VALUE="F11"/>
 </node>
 <node TEXT="Presentation mode" ID="ID_723572077" CREATED="1370194798785" MODIFIED="1370334966163">
 <attribute NAME="type" VALUE="action"/>
@@ -856,6 +860,7 @@
 <node TEXT="Minimize node" ID="ID_483570758" CREATED="1370194798806" MODIFIED="1370194798806">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="SetShortenerStateAction"/>
+<attribute NAME="accelerator" VALUE="alt F3"/>
 </node>
 <node TEXT="Hide details" ID="ID_681110643" CREATED="1370194798807" MODIFIED="1370194798807">
 <attribute NAME="type" VALUE="action"/>
@@ -982,6 +987,7 @@
 <node TEXT="Redefine style" ID="ID_818301233" CREATED="1370194798818" MODIFIED="1370194798818">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="RedefineStyleAction"/>
+<attribute NAME="accelerator" VALUE="alt R"/>
 </node>
 <node TEXT="Remove format" ID="ID_1704403630" CREATED="1370194798829" MODIFIED="1370194798829">
 <attribute NAME="type" VALUE="action"/>
@@ -1001,10 +1007,12 @@
 <node TEXT="Copy map style from..." ID="ID_468835002" CREATED="1370194798821" MODIFIED="1370194798821">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="CopyMapStylesAction"/>
+<attribute NAME="accelerator" VALUE="control F11"/>
 </node>
 <node TEXT="Edit styles" ID="ID_246750226" CREATED="1370194798822" MODIFIED="1370194798822">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditStylesAction"/>
+<attribute NAME="accelerator" VALUE="control shift O"/>
 </node>
 </node>
 <node TEXT="Copy format" ID="ID_1670892979" CREATED="1370194798822" MODIFIED="1370194798822">
@@ -1085,6 +1093,7 @@
 <node TEXT="Node background color..." ID="ID_131182554" CREATED="1370194798828" MODIFIED="1370194798828">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="NodeBackgroundColorAction"/>
+<attribute NAME="accelerator" VALUE="alt B"/>
 </node>
 <node TEXT="---" ID="ID_1353593389" CREATED="1370194798828" MODIFIED="1370194798828">
 <attribute NAME="type" VALUE="separator"/>
@@ -1766,10 +1775,12 @@
 <node TEXT="Edit node details in dialog" ID="ID_1746465857" CREATED="1370194798920" MODIFIED="1370194798920">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditDetailsInDialogAction"/>
+<attribute NAME="accelerator" VALUE="control F3"/>
 </node>
 <node TEXT="Edit node details in-line" ID="ID_1274185383" CREATED="1370194798925" MODIFIED="1370194798925">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditDetailsAction"/>
+<attribute NAME="accelerator" VALUE="F3"/>
 </node>
 <node TEXT="Remove node details" ID="ID_193980725" CREATED="1370194798926" MODIFIED="1370194798926">
 <attribute NAME="type" VALUE="action"/>

@@ -90,10 +90,12 @@
 <node TEXT="OK" ID="ID_533612695" CREATED="1370196501360" MODIFIED="1370196501360">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="styledialog.ok"/>
+<attribute NAME="accelerator" VALUE="control ENTER"/>
 </node>
 <node TEXT="Cancel" ID="ID_796177157" CREATED="1370196501368" MODIFIED="1370196501368">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="styledialog.cancel"/>
+<attribute NAME="accelerator" VALUE="ESCAPE"/>
 </node>
 </node>
 <node TEXT="Edit" FOLDED="true" ID="ID_1301905948" CREATED="1370196501368" MODIFIED="1370196501368">
@@ -273,8 +275,8 @@
 </node>
 <node TEXT="Center selected node" ID="ID_22528557" CREATED="1370196501390" MODIFIED="1370196501390">
 <attribute NAME="type" VALUE="action"/>
-<attribute NAME="accelerator" VALUE="control alt C"/>
 <attribute NAME="action" VALUE="CenterSelectedNodeAction"/>
+<attribute NAME="accelerator" VALUE="control alt C"/>
 </node>
 </node>
 <node TEXT="View settings" FOLDED="true" ID="ID_1103116018" CREATED="1370196501392" MODIFIED="1370196501392">
@@ -338,6 +340,7 @@
 <node TEXT="Add level style" ID="ID_987121524" CREATED="1370196501470" MODIFIED="1370196501470">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="NewLevelStyleAction"/>
+<attribute NAME="accelerator" VALUE="control shift N"/>
 </node>
 <node TEXT="Remove level style" ID="ID_1654784204" CREATED="1370196501470" MODIFIED="1370196501470">
 <attribute NAME="type" VALUE="action"/>
@@ -638,11 +641,11 @@
 <attribute NAME="name" VALUE="undo"/>
 <node TEXT="OK" ID="ID_383730707" CREATED="1370196501537" MODIFIED="1370196501537">
 <attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="styledialog.ok"/>
+<attribute NAME="accelerator" VALUE="control ENTER"/>
 </node>
 <node TEXT="Cancel" ID="ID_744922979" CREATED="1370196501537" MODIFIED="1370196501537">
 <attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="styledialog.cancel"/>
+<attribute NAME="accelerator" VALUE="control ENTER"/>
 </node>
 <node TEXT="Undo" ID="ID_1603407980" CREATED="1370196501537" MODIFIED="1370196501537">
 <attribute NAME="type" VALUE="action"/>
