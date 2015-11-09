@@ -2,8 +2,8 @@
 <FreeplaneUIEntries>
 	<Entry builder="main_menu">
 		<Entry name="file">
-			<Entry name="styledialog.ok" />
-			<Entry name="styledialog.cancel" />
+			<Entry name="styledialog.ok" accelerator="control ENTER"/>
+			<Entry name="styledialog.cancel" accelerator="ESCAPE"/>
 		</Entry>
 		<Entry name="edit">
 			<Entry name="menu_group">
@@ -71,7 +71,7 @@
 		<Entry name="formatting">
 			<Entry name="menu_manageStyles">
 				<Entry accelerator="" name="DeleteUserStyleAction" />
-				<Entry name="NewLevelStyleAction" />
+				<Entry name="NewLevelStyleAction" accelerator="control shift N" />
 				<Entry name="DeleteLevelStyleAction" />
 				<Entry name="NewUserStyleAction" />
 				<Entry name="ManageNodeConditionalStylesAction" />
