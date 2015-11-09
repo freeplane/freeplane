@@ -13,20 +13,16 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.ActionUtils;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
-import org.pushingpixels.flamingo.api.common.JCommandMenuButton;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
 public class ScriptingMenuEntryVisitor implements EntryVisitor {
-	private ModeController modeController;
 	private ScriptingConfiguration configuration;
 	private ExecutionModeSelector modeSelector;
 
-	public ScriptingMenuEntryVisitor(ModeController modeController, ScriptingConfiguration configuration,
-	                                 ExecutionModeSelector modeSelector) {
-		this.modeController = modeController;
+	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ExecutionModeSelector modeSelector) {
 		this.configuration = configuration;
 		this.modeSelector = modeSelector;
 	}
@@ -40,7 +36,6 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 			// add entry for all scripts but disable scripts that don't support selected exec mode  
 			final ExecutionMode executionMode = modeSelector.getExecutionMode();
 			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-				// for every action
 				target.addChild(createScriptEntry(entry.getKey(), entry.getValue(), executionMode));
 			}
 		}
@@ -50,7 +45,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 		final Entry entry = new Entry();
 		entry.setName("NoScriptsAvailableAction");
 		@SuppressWarnings("serial")
-		final AFreeplaneAction noScriptsAvailableAction = new AFreeplaneAction("NoScriptsAvailableAction", ScriptingMenuUtils.noScriptsAvailableMessage(), null) {
+		final AFreeplaneAction noScriptsAvailableAction = new AFreeplaneAction("NoScriptsAvailableAction", noScriptsAvailableMessage(), null) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -67,15 +62,33 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 		ResizableIcon icon = ActionUtils.getActionIcon(action);
 		final Entry scriptEntry = new Entry();
 		action.setEnabled(metaData.getExecutionModes().contains(executionMode));
-//		Object tooltip = createRichTooltip(title, metaData);
-//		action.putValue(Action.SHORT_DESCRIPTION, tooltip);
-//		action.putValue(Action.LONG_DESCRIPTION, tooltip);
+		String tooltip = createTooltip(title, metaData);
+		action.putValue(Action.SHORT_DESCRIPTION, tooltip);
+		action.putValue(Action.LONG_DESCRIPTION, tooltip);
 		final EntryAccessor entryAccessor = new EntryAccessor();
 		entryAccessor.addChildAction(scriptEntry, action);
 		entryAccessor.setIcon(scriptEntry, icon);
 
 		return scriptEntry;
 	}
+
+	private String createTooltip(String title, ScriptMetaData metaData) {
+		final StringBuffer tooltip = new StringBuffer("<html>") //
+		    .append(TextUtils.format(ScriptingMenuUtils.LABEL_AVAILABLE_MODES_TOOLTIP, title)) //
+		    .append("<ul>");
+		for (ExecutionMode executionMode : metaData.getExecutionModes()) {
+			tooltip.append("<li>");
+			tooltip.append(getTitleForExecutionMode(executionMode));
+			tooltip.append("</li>");
+		}
+		tooltip.append("</ul>");
+		return tooltip.toString();
+	}
+
+    private String getTitleForExecutionMode(ExecutionMode executionMode) {
+        final String scriptLabel = TextUtils.getText(ScriptingMenuUtils.LABEL_SCRIPT);
+        return TextUtils.format(ScriptingConfiguration.getExecutionModeKey(executionMode), scriptLabel);
+    }
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
