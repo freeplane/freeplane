@@ -238,8 +238,8 @@ class ScriptingRegistration {
     }
 
     private void updateMenus(ModeController modeController, final ScriptingConfiguration configuration) {
-		modeController.addUiBuilder(Phase.ACTIONS, "script_actions", new ScriptingMenuEntryVisitor(modeController,
-		    configuration, modeSelector), EntryVisitor.CHILD_ENTRY_REMOVER);
+		modeController.addUiBuilder(Phase.ACTIONS, "script_actions", new ScriptingMenuEntryVisitor(configuration,
+		    modeSelector), EntryVisitor.CHILD_ENTRY_REMOVER);
     }
 
     private void registerScriptAddOns() {
