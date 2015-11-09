@@ -1,5 +1,6 @@
 package org.freeplane.plugin.script;
 
+import static org.freeplane.plugin.script.ScriptingMenuUtils.noScriptsAvailableMessage;
 import static org.freeplane.plugin.script.ScriptingMenuUtils.scriptNameToMenuItemTitle;
 
 import java.awt.event.ActionEvent;
@@ -41,7 +42,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 		final Entry entry = new Entry();
 		entry.setName("NoScriptsAvailableAction");
 		@SuppressWarnings("serial")
-		final AFreeplaneAction noScriptsAvailableAction = new AFreeplaneAction("NoScriptsAvailableAction", ScriptingMenuUtils.noScriptsAvailableMessage(), null) {
+		final AFreeplaneAction noScriptsAvailableAction = new AFreeplaneAction("NoScriptsAvailableAction", noScriptsAvailableMessage(), null) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
