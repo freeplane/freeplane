@@ -20,6 +20,7 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -39,6 +40,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -262,8 +264,13 @@ public class MMapController extends MapController {
 			if (views.size() == 1) {
 				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 				final String title = TextUtils.getText("SaveAction.text");
-				final int returnVal = JOptionPane.showOptionDialog(
-				    Controller.getCurrentController().getViewController().getContentPane(), text, title,
+				Component dialogParent;
+				final Frame viewFrame = JOptionPane.getFrameForComponent(views.get(0));
+				if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
+					dialogParent = viewFrame;
+				else
+					dialogParent = Controller.getCurrentController().getViewController().getFrame();
+				final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
 				    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (returnVal == JOptionPane.YES_OPTION) {
 					final boolean savingNotCancelled = ((MFileManager) UrlManager.getController())
