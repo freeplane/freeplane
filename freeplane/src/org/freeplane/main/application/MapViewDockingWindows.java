@@ -184,6 +184,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
 
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
+		
+		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
+		
 		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
 		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
 		windowAreaProperties.setInsets(null);
