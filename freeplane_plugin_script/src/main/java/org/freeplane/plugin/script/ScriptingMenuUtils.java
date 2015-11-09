@@ -10,7 +10,7 @@ public class ScriptingMenuUtils {
     static final String LABEL_AVAILABLE_MODES_TOOLTIP = "ExecuteScript.available_modes_tooltip";
     static final String LABEL_NO_SCRIPTS_AVAILABLE = "ExecuteScripts.noScriptsAvailable";
     static final String LABEL_SCRIPT = "ExecuteScript.script";
-    static final String LABEL_SCRIPTS_MENU = "ExecuteScripts.text";
+    static final String LABEL_SCRIPTS_MENU = "userScripts";
 
     public static String parentLocation(String location) {
         return location.replaceFirst("/[^/]*$", "");
