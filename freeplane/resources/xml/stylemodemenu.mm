@@ -613,32 +613,6 @@
 <attribute NAME="accelerator" VALUE="alt shift V"/>
 <attribute NAME="action" VALUE="FormatPaste"/>
 </node>
-<node TEXT="Edit node details in dialog" ID="ID_1010190057" CREATED="1370196501529" MODIFIED="1370196501529">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="EditDetailsInDialogAction"/>
-</node>
-<node TEXT="Edit node details in-line" ID="ID_54257149" CREATED="1370196501529" MODIFIED="1370196501529">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="EditDetailsAction"/>
-</node>
-<node TEXT="Remove node details" ID="ID_1207276165" CREATED="1370196501529" MODIFIED="1370196501529">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="DeleteDetailsAction"/>
-</node>
-<node TEXT="Edit note in dialog" ID="ID_1901787539" CREATED="1370196501529" MODIFIED="1370196501529">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="action" VALUE="EditNoteInDialogAction"/>
-</node>
-<node TEXT="Edit attribute in-line" ID="ID_1390671748" CREATED="1370196501529" MODIFIED="1370196501529">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="accelerator" VALUE="alt F9"/>
-<attribute NAME="action" VALUE="EditAttributesAction"/>
-</node>
-<node TEXT="Add / remove cloud (default)" ID="ID_1086573" CREATED="1370196501529" MODIFIED="1370196501529">
-<attribute NAME="type" VALUE="action"/>
-<attribute NAME="accelerator" VALUE="control shift B"/>
-<attribute NAME="action" VALUE="CloudAction"/>
-</node>
 <node TEXT="New style from selection" ID="ID_1942121087" CREATED="1370196501529" MODIFIED="1370196501529">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="NewUserStyleAction"/>
@@ -646,6 +620,14 @@
 <node TEXT="Remove user defined style" ID="ID_1232163939" CREATED="1370196501529" MODIFIED="1370196501529">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="DeleteUserStyleAction"/>
+</node>
+<node TEXT="Add level style">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="NewLevelStyleAction"/>
+</node>
+<node TEXT="Remove level style">
+<attribute NAME="type" VALUE="action"/>
+<attribute NAME="action" VALUE="DeleteLevelStyleAction"/>
 </node>
 </node>
 <node TEXT="main_toolbar" FOLDED="true" POSITION="right" ID="ID_1378903618" CREATED="1370196501536" MODIFIED="1370196501536">
