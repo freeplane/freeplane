@@ -26,6 +26,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
 import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
@@ -427,11 +429,12 @@ abstract public class FrameController implements ViewController {
 		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY, Boolean.toString(!fullScreen),Boolean.toString(fullScreen));
 		Iterable<Window> visibleFrames = collectVisibleFrames(frame);
 		if (fullScreen) {
+			final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
+			final Rectangle bounds = graphicsConfiguration.getBounds();
 			winState = frame.getExtendedState();
 			frame.dispose();
 			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			frame.setBounds(0, 0, screenSize.width, screenSize.height);
+			frame.setBounds(bounds);
 			frame.setUndecorated(true);
 			frame.setResizable(false);
 			setUIComponentsVisible(controller.getMapViewManager());
