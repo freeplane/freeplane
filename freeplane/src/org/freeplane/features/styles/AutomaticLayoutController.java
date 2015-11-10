@@ -84,7 +84,10 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		
 		final NamedObject rootKey = NamedObject.format(AUTOMATIC_LAYOUT_LEVEL_ROOT);
 		final IStyle rootStyle = StyleFactory.create(rootKey);
-		final NodeModel automaticStylesParentNode = extension.getStyleNode(rootStyle).getParentNode();
+		NodeModel rootStyleNode = extension.getStyleNode(rootStyle);
+		if(rootStyleNode == null)
+			return null;
+		final NodeModel automaticStylesParentNode = rootStyleNode.getParentNode();
 		final int cycledLevelStyleCount = automaticStylesParentNode.getChildCount() - FIRST_CYCLIC_STYLE_LEVEL;
 		if(cycledLevelStyleCount <= 0)
 			return null;
