@@ -636,17 +636,17 @@
 <node TEXT="main_toolbar" FOLDED="true" POSITION="right" ID="ID_1378903618" CREATED="1370196501536" MODIFIED="1370196501536">
 <attribute NAME="type" VALUE="category"/>
 <attribute NAME="name" VALUE="main_toolbar"/>
-<node TEXT="undo" FOLDED="true" ID="ID_460145169" CREATED="1370196501537" MODIFIED="1370196501537">
-<attribute NAME="type" VALUE="category"/>
-<attribute NAME="name" VALUE="undo"/>
 <node TEXT="OK" ID="ID_383730707" CREATED="1370196501537" MODIFIED="1370196501537">
 <attribute NAME="type" VALUE="action"/>
-<attribute NAME="accelerator" VALUE="control ENTER"/>
+<attribute NAME="action" VALUE="styledialog.ok"/>
 </node>
 <node TEXT="Cancel" ID="ID_744922979" CREATED="1370196501537" MODIFIED="1370196501537">
 <attribute NAME="type" VALUE="action"/>
-<attribute NAME="accelerator" VALUE="control ENTER"/>
+<attribute NAME="action" VALUE="styledialog.cancel"/>
 </node>
+<node TEXT="undo" FOLDED="true" ID="ID_460145169" CREATED="1370196501537" MODIFIED="1370196501537">
+<attribute NAME="type" VALUE="category"/>
+<attribute NAME="name" VALUE="undo"/>
 <node TEXT="Undo" ID="ID_1603407980" CREATED="1370196501537" MODIFIED="1370196501537">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="UndoAction"/>
