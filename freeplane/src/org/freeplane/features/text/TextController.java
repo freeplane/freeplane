@@ -272,11 +272,11 @@ public class TextController implements IExtension {
 					
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 							.append(new CssRuleBuilder()
-							.withFont(detailFont, UITools.FONT_SCALE_FACTOR)
+							.withFont(detailFont)
 							.withColor(detailForeground)
 							.withBackground(detailBackground)
 							.withAlignment(alignment)
-							.withWidth(style.getMaxWidth(detailStyleNode)))
+							.withWidthAsPt(style.getMaxWidth(detailStyleNode)))
 							.append("\">");
 					
 					String noteText= detailText.getHtml();
@@ -299,11 +299,11 @@ public class TextController implements IExtension {
 				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 				    final Font font = style.getFont(node);
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
-							.append(new CssRuleBuilder().withFont(font, UITools.FONT_SCALE_FACTOR)
+							.append(new CssRuleBuilder().withFont(font)
 							.withColor(view.getForeground())
 							.withBackground(view.getNodeView().getTextBackground())
 							.withAlignment(view.getHorizontalAlignment())
-							.withWidth(style.getMaxWidth(node)));
+							.withWidthAsPt(style.getMaxWidth(node)));
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {
