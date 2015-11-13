@@ -74,7 +74,7 @@ public class CssRuleBuilder {
 		return rule.toString();
 	}
 
-	public <U extends Enum<U> & Convertible> CssRuleBuilder withWidthPxAsPt(Quantity<U> width) {
+	public <U extends Enum<U> & Convertible> CssRuleBuilder withWidthAsPt(Quantity<U> width) {
 		if(width != null)
     		rule.append("width: ")
     		.append(width.toBaseUnitsRounded()).append("pt")

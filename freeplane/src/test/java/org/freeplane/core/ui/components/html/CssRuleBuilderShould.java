@@ -108,13 +108,13 @@ public class CssRuleBuilderShould {
 
 	@Test
 	public void addWidth() throws Exception {
-		cssRuleBuilder.withWidth(new Quantity<Metrics>(1.1, Metrics.cm));
-		assertRule("width: 1.1cm;");
+		cssRuleBuilder.withWidthAsPt(new Quantity<Metrics>(1000, Metrics.cm));
+		assertRule("width: 10pt;");
 	}
 
 	@Test
 	public void ignoreNullWidth() throws Exception {
-		cssRuleBuilder.withWidth(null);
+		cssRuleBuilder.withWidthAsPt(null);
 		assertRule("");
 	}
 }
