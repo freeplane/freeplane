@@ -16,7 +16,6 @@ import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
-import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
 public class ScriptingMenuEntryVisitor implements EntryVisitor {
 	private ScriptingConfiguration configuration;
@@ -36,7 +35,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 			// add entry for all scripts but disable scripts that don't support selected exec mode  
 			final ExecutionMode executionMode = modeSelector.getExecutionMode();
 			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-				target.addChild(createScriptEntry(entry.getKey(), entry.getValue(), executionMode));
+				target.addChild(createEntry(entry.getKey(), entry.getValue(), executionMode));
 			}
 		}
 	}
@@ -54,23 +53,30 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 		return entry;
 	}
 
-	private Entry createScriptEntry(final String scriptName, final String scriptPath, ExecutionMode executionMode) {
+	private Entry createEntry(final String scriptName, final String scriptPath, ExecutionMode executionMode) {
 		final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
 		final String title = scriptNameToMenuItemTitle(scriptName);
-		AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
-		    metaData.cacheContent(), metaData.getPermissions());
-		ResizableIcon icon = ActionUtils.getActionIcon(action);
+		return createEntry(createAction(scriptName, scriptPath, executionMode, metaData, title));
+	}
+
+	private Entry createEntry(AFreeplaneAction action) {
+	    final EntryAccessor entryAccessor = new EntryAccessor();
 		final Entry scriptEntry = new Entry();
+		entryAccessor.addChildAction(scriptEntry, action);
+		entryAccessor.setIcon(scriptEntry, ActionUtils.getActionIcon(action));
+		return scriptEntry;
+    }
+
+	private AFreeplaneAction createAction(final String scriptName, final String scriptPath,
+                                          ExecutionMode executionMode, final ScriptMetaData metaData, final String title) {
+	    AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
+		    metaData.cacheContent(), metaData.getPermissions());
 		action.setEnabled(metaData.getExecutionModes().contains(executionMode));
 		String tooltip = createTooltip(title, metaData);
 		action.putValue(Action.SHORT_DESCRIPTION, tooltip);
 		action.putValue(Action.LONG_DESCRIPTION, tooltip);
-		final EntryAccessor entryAccessor = new EntryAccessor();
-		entryAccessor.addChildAction(scriptEntry, action);
-		entryAccessor.setIcon(scriptEntry, icon);
-
-		return scriptEntry;
-	}
+	    return action;
+    }
 
 	private String createTooltip(String title, ScriptMetaData metaData) {
 		final StringBuffer tooltip = new StringBuffer("<html>") //
