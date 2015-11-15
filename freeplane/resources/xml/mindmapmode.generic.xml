@@ -758,8 +758,8 @@
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="EnterPassword" />
-		<Entry name="scripting" plugin="org.freeplane.plugin.script"
-			builder="node_popup_scripting" />
+		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
+			builder="script_actions" />
 		<Entry builder="separator" />
 		<Entry name="CutAction" accelerator="control X" />
 		<Entry name="CopyAction" accelerator="control C" />
