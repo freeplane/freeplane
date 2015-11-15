@@ -139,7 +139,7 @@ class VerticalNodeViewLayoutStrategy {
 
 	private void calculateLayoutY(final boolean isLeft) {
 		final int vGap;
-		if (view.getModel().isVisible()) {
+		if (view.getModel().hasVisibleContent()) {
 			vGap = view.getVGap();
 		} else {
 			vGap = view.getVisibleParentView().getVGap();

@@ -444,7 +444,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public boolean isVisible() {
-		return getDelegate().isVisible();
+		return getDelegate().hasVisibleContent();
 	}
 
 	// Node: R/W

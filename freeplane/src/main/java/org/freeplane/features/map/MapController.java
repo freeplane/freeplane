@@ -332,7 +332,7 @@ public class MapController extends SelectionController implements IExtension{
 		boolean childMadeVisible = false;
 		for(NodeModel child:childrenUnfolded(node)){
 			if (child.removeExtension(HideChildSubtree.instance) &&
-					(child.isVisible() || unfoldInvisibleChildren(child, true))){
+					(child.hasVisibleContent() || unfoldInvisibleChildren(child, true))){
 				childMadeVisible = true;
 				break;
 			}
@@ -392,7 +392,7 @@ public class MapController extends SelectionController implements IExtension{
 		boolean unfolded = false;
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
-			if(child.isVisible())
+			if(child.hasVisibleContent())
 				visibleFound = true;
 			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){
 				visibleFound = unfolded = true;
@@ -468,7 +468,7 @@ public class MapController extends SelectionController implements IExtension{
 	 * link actions).
 	 */
 	public void displayNode(final NodeModel node, final ArrayList<NodeModel> nodesUnfoldedByDisplay) {
-		if (!node.isVisible()) {
+		if (!node.hasVisibleContent()) {
 			node.getFilterInfo().reset();
 			nodeRefresh(node);
 		}

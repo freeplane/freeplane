@@ -220,7 +220,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		}
 
 		private void iterate(final NodeModel node) {
-			if (node.isVisible()) {
+			if (node.hasVisibleContent()) {
 				if (!node.isRoot() || !skipRootBtn.isSelected()) {
 					performAction(node);
 				}
