@@ -63,6 +63,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
@@ -817,6 +818,9 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public boolean formatNodeAsHyperlink(final NodeModel node){
+		String text = node.getText();
+		if (text.isEmpty() || HtmlUtils.isHtmlNode(text))
+			return false;
 		final Boolean ownFlag = ownFormatNodeAsHyperlink(node);
 		if(ownFlag != null)
 			return ownFlag;
