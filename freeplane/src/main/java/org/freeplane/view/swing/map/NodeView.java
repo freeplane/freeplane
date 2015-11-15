@@ -99,7 +99,6 @@ public class NodeView extends JComponent implements INodeView {
 	public final static int DRAGGED_OVER_SON_LEFT = 3;
 	static private int FOLDING_SYMBOL_WIDTH = -1;
 	private static final long serialVersionUID = 1L;
-	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
 	public static final int MAIN_VIEWER_POSITION = 1;
 	public static final int NOTE_VIEWER_POSITION = 10;
@@ -156,7 +155,7 @@ public class NodeView extends JComponent implements INodeView {
 	private int calcShiftY(final LocationModel locationModel) {
 		try {
 			final NodeModel parent = model.getParentNode();
-			return locationModel.getShiftY() + (! getParentView().isSummary() && getMap().getModeController().hasOneVisibleChild(parent) ? SHIFT : 0);
+			return locationModel.getShiftY() + (! getParentView().isSummary() && getMap().getModeController().hasOneVisibleChild(parent) ? getMainView().getSingleChildShift() : 0);
 		}
 		catch (final NullPointerException e) {
 			return 0;

@@ -769,6 +769,8 @@ public abstract class MainView extends ZoomableLabel {
 		else
 			return null;
 	}
-
 	
+	public int getSingleChildShift() {
+		return 0;
+	}
 }
