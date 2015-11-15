@@ -914,7 +914,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
-			while (newSelected != null && !newSelected.getModel().isVisible()) {
+			while (newSelected != null && !newSelected.getModel().hasVisibleContent()) {
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), true);
 			}
 			if(newSelected == null)
@@ -946,7 +946,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	else
 	    		level = 0;
 	    	if(level == requiredSummaryLevel){
-	    		if(next.getModel().isVisible())
+	    		if(next.getModel().hasVisibleContent())
 	    			return next;
 	    		final NodeView preferredVisibleChild = next.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), next.isLeft());
 	    		if(preferredVisibleChild != null)
@@ -980,11 +980,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else {
 			if (getModeController().getMapController().isFolded(oldModel)) {
 				getModeController().getMapController().setFolded(oldModel, false);
-				if(oldSelected.getModel().isVisible())
+				if(oldSelected.getModel().hasVisibleContent())
 					return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
-			while (newSelected != null && !newSelected.getModel().isVisible()) {
+			while (newSelected != null && !newSelected.getModel().hasVisibleContent()) {
 				newSelected = newSelected.getPreferredVisibleChild(layoutType.equals(MapViewLayout.OUTLINE), false);
 			}
 			if(newSelected == null)
@@ -1302,7 +1302,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final ILinkView arrowLink;
 					if (sourceView != null && targetView != null
 					        && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)
-					        && source.isVisible() && target.isVisible()) {
+					        && source.hasVisibleContent() && target.hasVisibleContent()) {
 						arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
 					}
 					else {
@@ -1618,7 +1618,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * Select the node, resulting in only that one being selected.
 	 */
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
-		if(! newSelected.getModel().isVisible())
+		if(! newSelected.getModel().hasVisibleContent())
 			throw new AssertionError("select invisible node");
 		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
 			centerNode(newSelected, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
@@ -1849,7 +1849,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void selectVisibleAncestorOrSelf(NodeView preferred) {
-		while(! preferred.getModel().isVisible())
+		while(! preferred.getModel().hasVisibleContent())
 			preferred = preferred.getParentView();
 		selectAsTheOnlyOneSelected(preferred);
     }

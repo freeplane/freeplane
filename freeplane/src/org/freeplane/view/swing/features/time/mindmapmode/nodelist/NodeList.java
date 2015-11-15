@@ -845,7 +845,7 @@ public class NodeList {
 		if (hook != null) {
 			date = new Date(hook.getRemindUserAt());
 		}
-		if (showAllNodes && node.isVisible() || hook != null) {
+		if (showAllNodes && node.hasVisibleContent() || hook != null) {
 			model.addRow(new Object[] {
 					date,
 					new TextHolder(new CoreTextAccessor(node)),

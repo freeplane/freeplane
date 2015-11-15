@@ -275,7 +275,7 @@ public class NodeModel implements MutableTreeNode {
 		int level = 0;
 		NodeModel parent;
 		for (parent = getParentNode(); parent != null; parent = parent.getParentNode()) {
-			if (countHidden || parent.isVisible()) {
+			if (countHidden || parent.hasVisibleContent()) {
 				level++;
 			}
 		}
@@ -404,15 +404,15 @@ public class NodeModel implements MutableTreeNode {
 		return getMap().getRootNode() == this;
 	}
 
-	public boolean isVisible() {
-		return passesFilter() && ! isHiddenSummary();
+	public boolean hasVisibleContent() {
+		return isVisible() && ! isHiddenSummary();
 	}
 
 	public boolean isHiddenSummary() {
 		return SummaryNode.isHidden(this);
 	}
 
-	private boolean passesFilter() {
+	public boolean isVisible() {
 		final Filter filter = getMap().getFilter();
 		return (filter == null || filter.isVisible(this));
 	}
@@ -572,7 +572,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public NodeModel getVisibleAncestorOrSelf() {
 		NodeModel node = this;
-		while (!node.isVisible()) {
+		while (!node.hasVisibleContent()) {
 			node = node.getParentNode();
 		}
 		return node;

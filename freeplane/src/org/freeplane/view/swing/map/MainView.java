@@ -244,16 +244,16 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
-		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
+		if (mapController.isFolded(node) && (node.hasVisibleContent() || node.getFilterInfo().isAncestor())) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (child.isVisible() && child.containsExtension(HideChildSubtree.class)) {
+			if (child.hasVisibleContent() && child.containsExtension(HideChildSubtree.class)) {
 				return FoldingMark.ITSELF_FOLDED;
 			}
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (!child.isVisible() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
+			if (!child.hasVisibleContent() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
 				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
 			}
 		}

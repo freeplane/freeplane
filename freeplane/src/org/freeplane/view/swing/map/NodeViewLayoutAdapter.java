@@ -166,7 +166,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         view = localView;
         model = localView.getModel();
         childCount = localChildCount;
-         if (getModel().isVisible()) {
+         if (getModel().hasVisibleContent()) {
             setVGap(getView().getVGap());
         }
         else {

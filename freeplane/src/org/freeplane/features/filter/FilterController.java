@@ -574,7 +574,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 				if (next == null) {
 					return null;
 				}
-			} while (!next.isVisible());
+			} while (!next.hasVisibleContent());
 			if (next == from) {
 				break;
 			}

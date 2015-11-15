@@ -297,7 +297,7 @@ public class ClipboardController implements IExtension {
 	private void writeChildrenRTF(final NodeModel node, final Writer fileout, final int depth,
 	                              final HashMap<Color, Integer> colorTable) throws IOException {
 		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
-			if (child.isVisible()) {
+			if (child.hasVisibleContent()) {
 				writeRTF(child, fileout, depth + 1, colorTable);
 			}
 			else {
@@ -309,7 +309,7 @@ public class ClipboardController implements IExtension {
 	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth)
 	        throws IOException {
 		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
-			if (child.isVisible()) {
+			if (child.hasVisibleContent()) {
 				writeTXT(child, fileout, depth + 1);
 			}
 			else {

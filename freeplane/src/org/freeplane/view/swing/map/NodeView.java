@@ -793,7 +793,7 @@ public class NodeView extends JComponent implements INodeView {
 	/**
 	 */
 	public boolean isContentVisible() {
-		return getModel().isVisible();
+		return getModel().hasVisibleContent();
 	}
 
 	public boolean isLeft() {

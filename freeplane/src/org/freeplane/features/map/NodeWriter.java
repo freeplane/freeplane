@@ -53,7 +53,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
 		for (final NodeModel child: mapController.childrenUnfolded(node)) {
-			if (writeInvisible || child.isVisible()) {
+			if (writeInvisible || child.hasVisibleContent()) {
 				writer.addElement(child, nodeTag);
 			}
 			else {

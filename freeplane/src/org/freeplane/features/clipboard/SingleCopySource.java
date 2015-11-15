@@ -231,8 +231,8 @@ class SingleCopySource extends NodeModel {
 	    return delegate.isRoot();
     }
 
-	public boolean isVisible() {
-	    return delegate.isVisible();
+	public boolean hasVisibleContent() {
+	    return delegate.hasVisibleContent();
     }
 
 	public void remove(int index) {

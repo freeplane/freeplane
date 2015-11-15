@@ -28,7 +28,7 @@ public class NextPresentationItemAction extends AFreeplaneAction {
 		final NodeModel next = filterController.findNext(start, null, Direction.FORWARD_N_FOLD, null);
 		if(next != null){
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			if (!next.isVisible()) {
+			if (!next.hasVisibleContent()) {
             	next.getFilterInfo().reset();
             	mapController.nodeRefresh(next);
             }
