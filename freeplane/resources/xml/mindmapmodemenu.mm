@@ -485,10 +485,12 @@
 <node TEXT="Edit node details in-line" ID="ID_1646950700" CREATED="1370194798682" MODIFIED="1370194798682">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditDetailsAction"/>
+<attribute NAME="accelerator" VALUE="F3"/>
 </node>
 <node TEXT="Edit node details in dialog" ID="ID_1478340195" CREATED="1370194798682" MODIFIED="1370194798682">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditDetailsInDialogAction"/>
+<attribute NAME="accelerator" VALUE="control F3"/>
 </node>
 <node TEXT="Copy extensions from style node" ID="ID_481032468" CREATED="1370194798682" MODIFIED="1370194798682">
 <attribute NAME="type" VALUE="action"/>
@@ -1007,12 +1009,12 @@
 <node TEXT="Copy map style from..." ID="ID_468835002" CREATED="1370194798821" MODIFIED="1370194798821">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="CopyMapStylesAction"/>
-<attribute NAME="accelerator" VALUE="control F11"/>
+<attribute NAME="accelerator" VALUE="control shift O"/>
 </node>
 <node TEXT="Edit styles" ID="ID_246750226" CREATED="1370194798822" MODIFIED="1370194798822">
 <attribute NAME="type" VALUE="action"/>
 <attribute NAME="action" VALUE="EditStylesAction"/>
-<attribute NAME="accelerator" VALUE="control shift O"/>
+<attribute NAME="accelerator" VALUE="control F11"/>
 </node>
 </node>
 <node TEXT="Copy format" ID="ID_1670892979" CREATED="1370194798822" MODIFIED="1370194798822">
