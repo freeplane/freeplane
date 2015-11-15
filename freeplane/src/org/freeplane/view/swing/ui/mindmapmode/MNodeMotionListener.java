@@ -129,7 +129,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				}
 				if (Compat.isCtrlEvent(e)) {
 					final NodeView nodeV = getNodeView(e);
-					NodeModel visibleParent = nodeV.getVisibleParentView().getModel();
+					NodeModel visibleParent = nodeV.getAncestorWithVisibleContent().getModel();
 					locationController.setMinimalDistanceBetweenChildren(visibleParent, LocationModel.GAP_NOT_SET);
 					return;
 				}
@@ -180,7 +180,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				final NodeModel node = nodeV.getModel();
 				dragStartingPoint = point;
 				originalAssignedParentVGap = LocationModel.getModel(node.getParentNode()).getVGap();
-				NodeModel visibleParent = nodeV.getVisibleParentView().getModel();
+				NodeModel visibleParent = nodeV.getAncestorWithVisibleContent().getModel();
 				minimalDistanceBetweenChildren = mapView.getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(visibleParent);
 				originalHGap = LocationModel.getModel(node).getHGap();
 				originalShiftY = LocationModel.getModel(node).getShiftY();
@@ -221,7 +221,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					return;
 			}
 			else {
-				final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
+				final NodeModel parentNode = nodeV.getAncestorWithVisibleContent().getModel();
 				final int vGapChange = getVGapChange(dragNextPoint, parentNode);
 				int newVGap = Math.max(0, minimalDistanceBetweenChildren - vGapChange);
 				LocationModel locationModel = LocationModel.createLocationModel(parentNode);
@@ -270,7 +270,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final Controller controller = modeController.getController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller
 				.getModeController());
-		NodeModel visibleParent = nodeV.getVisibleParentView().getModel();
+		NodeModel visibleParent = nodeV.getAncestorWithVisibleContent().getModel();
 		final int parentVGap = locationController.getMinimalDistanceBetweenChildren(visibleParent);
 		int hgap = LocationModel.getModel(node).getHGap();
 		final int shiftY = LocationModel.getModel(node).getShiftY();

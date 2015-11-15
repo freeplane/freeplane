@@ -170,7 +170,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             setVGap(getView().getVGap());
         }
         else {
-            setVGap(getView().getVisibleParentView().getVGap());
+            setVGap(getView().getAncestorWithVisibleContent().getVGap());
         }
         spaceAround = view.getSpaceAround();
 		if (view.isContentVisible()) {
