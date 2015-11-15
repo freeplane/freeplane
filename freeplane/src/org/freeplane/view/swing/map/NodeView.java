@@ -727,6 +727,17 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		return parentView.getAncestorWithVisibleContent();
 	}
+	
+	public NodeView getChildDistanceContainer(){
+		if (model.isVisible() || model.isHiddenSummary()) {
+			return this;
+		}
+		NodeView parentView = getParentView();
+		if(parentView == null)
+			return null;
+		return parentView.getAncestorWithVisibleContent();
+	
+	}
 
 	public NodeView getVisibleSummarizedOrParentView() {
 		final Container parent = getParent();

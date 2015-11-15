@@ -166,12 +166,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         view = localView;
         model = localView.getModel();
         childCount = localChildCount;
-         if (getModel().hasVisibleContent()) {
-            setVGap(getView().getMinimalDistanceBetweenChildren());
-        }
-        else {
-            setVGap(getView().getAncestorWithVisibleContent().getMinimalDistanceBetweenChildren());
-        }
+        setVGap(getView().getChildDistanceContainer().getMinimalDistanceBetweenChildren());
         spaceAround = view.getSpaceAround();
 		if (view.isContentVisible()) {
 			final Dimension contentSize = calculateContentSize(view);
