@@ -121,6 +121,20 @@ class ScriptingConfiguration {
 		public ScriptingPermissions getPermissions() {
         	return permissions;
         }
+
+		public boolean hasMenuLocation() {
+			for (String location : executionModeLocationMap.values()) {
+				if (location != null)
+					return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return "ScriptMetaData(" + scriptName + ", locations: " + executionModeLocationMap + ", titles: "
+			        + executionModeTitleKeyMap + ")";
+		}
 	}
 
 	static final String MENU_SCRIPTS_LOCATION = "main_menu_scripting";

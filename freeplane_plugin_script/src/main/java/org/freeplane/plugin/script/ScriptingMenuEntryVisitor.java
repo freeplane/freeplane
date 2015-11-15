@@ -13,6 +13,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.ActionUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
@@ -35,10 +36,44 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 			// add entry for all scripts but disable scripts that don't support selected exec mode  
 			final ExecutionMode executionMode = modeSelector.getExecutionMode();
 			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-				target.addChild(createEntry(entry.getKey(), entry.getValue(), executionMode));
+				String scriptName = entry.getKey();
+				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
+				if (metaData.hasMenuLocation()) {
+					LogUtils.warn("TODO: adding " + metaData + " to special menu location not yet implemented");
+				} else {
+    				final Entry menuEntry = createEntry(scriptName, entry.getValue(), executionMode);
+    				// System.out.println("adding " + metaData);
+    				target.addChild(menuEntry);
+				}
 			}
 		}
 	}
+//	private String scriptsLocation = ScriptingConfiguration.getScriptsLocation(parentLocation);
+//	private void registerScript(final String scriptName, final String scriptPath) {
+//		final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
+//        for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
+//            final String location = getLocation(scriptName, metaData, executionMode);
+//            addSubMenu(ScriptingMenuUtils.parentLocation(location), location, ScriptingMenuUtils.getMenuTitle(metaData, executionMode));
+//            addMenuItem(location, scriptName, scriptPath, executionMode, metaData);
+//        }
+//	}
+//
+//    private void addSubMenu(final String parentLocation, final String location, String menuTitle) {
+//        if (registeredLocations.add(location) && menuBuilder.get(location) == null) {
+//            final JMenu menuItem = new JMenu();
+//            LabelAndMnemonicSetter.setLabelAndMnemonic(menuItem, menuTitle);
+//            menuBuilder.addMenuItem(parentLocation, menuItem, location, MenuBuilder.AS_CHILD);
+//        }
+//    }
+//
+//    private void addMenuItem(final String location, final String scriptName, final String scriptPath,
+//                             final ExecutionMode executionMode, ScriptMetaData metaData) {
+//        if (registeredLocations.add(location + "/" + metaData.getTitleKey(executionMode))) {
+//            final ExecuteScriptAction action = new ExecuteScriptAction(scriptName, getMenuItemTitle(metaData,
+//                executionMode), scriptPath, executionMode, metaData.cacheContent(), metaData.getPermissions());
+//            menuBuilder.addAction(location, action, MenuBuilder.AS_CHILD);
+//        }
+//    }
 
 	private Entry createNoScriptsAvailableAction() {
 		final Entry entry = new Entry();
