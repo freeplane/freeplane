@@ -68,7 +68,8 @@ public class Quantity <U extends Enum<U> & Convertible >{
 			return false;
 		return true;
 	}
-	
-	
 
+	public Quantity<U> in(U unit) {
+		return new Quantity<U>(value * (this.unit.factor() / unit.factor()), unit);
+	}
 }

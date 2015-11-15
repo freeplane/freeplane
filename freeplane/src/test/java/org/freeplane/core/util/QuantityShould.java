@@ -84,4 +84,12 @@ public class QuantityShould {
 		Quantity<Metrics> quantity = Quantity.fromString("1", Metrics.cm);
 		assertEquals("1.0 cm", quantity.toString());
 	}
+	
+	@Test
+	public void convertUnits() throws Exception {
+		Quantity<Metrics> quantityInMeters = new Quantity<Metrics>(1, Metrics.m);
+		Quantity<Metrics> quantityInCm = quantityInMeters.in(Metrics.cm);
+		assertThat(quantityInCm, equalTo(new Quantity<Metrics>(100, Metrics.cm)));
+	}
+	
 }
