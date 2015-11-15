@@ -563,7 +563,7 @@ public class NodeView extends JComponent implements INodeView {
 			baseComponent = this;
 		}
 		else {
-			baseComponent = getVisibleParentView();
+			baseComponent = getAncestorWithVisibleContent();
 		}
 		final int ownX = baseComponent.getContent().getX() + baseComponent.getContent().getWidth() / 2;
 		final int ownY = baseComponent.getContent().getY() + baseComponent.getContent().getHeight() / 2;
@@ -712,7 +712,7 @@ public class NodeView extends JComponent implements INodeView {
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
 
-	public NodeView getVisibleParentView() {
+	public NodeView getAncestorWithVisibleContent() {
 		final Container parent = getParent();
 		if (!(parent instanceof NodeView)) {
 			return null;
@@ -721,7 +721,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (parentView.isContentVisible()) {
 			return parentView;
 		}
-		return parentView.getVisibleParentView();
+		return parentView.getAncestorWithVisibleContent();
 	}
 
 	public NodeView getVisibleSummarizedOrParentView() {
@@ -1143,7 +1143,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void repaintEdge(final NodeView target) {
 		if (target.getMap().getLayoutType() == MapViewLayout.OUTLINE){
-			target.getVisibleParentView().repaint();
+			target.getAncestorWithVisibleContent().repaint();
 			return;
 		}
 		final Point relativeLocation = getRelativeLocation(target);
@@ -1178,7 +1178,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		if (getEdgeStyle().equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
-			final NodeView visibleParentView = getVisibleParentView();
+			final NodeView visibleParentView = getAncestorWithVisibleContent();
 			if (visibleParentView != null) {
 				visibleParentView.repaintEdge(this);
 			}
