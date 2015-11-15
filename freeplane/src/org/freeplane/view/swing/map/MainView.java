@@ -744,4 +744,8 @@ public abstract class MainView extends ZoomableLabel {
 	private int getDraggingWidth() {
 		return getNodeView().getZoomed(DRAG_OVAL_WIDTH);
 	}
+
+	public int getSingleChildShift() {
+		return 0;
+	}
 }

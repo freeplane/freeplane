@@ -138,4 +138,11 @@ class ForkMainView extends MainView {
     		insets.set(0, 2, edgeWidth, 2);
         return insets;
     }
+	private final static int SINGLE_CHILD_SHIFT = -2;
+
+	@Override
+	public int getSingleChildShift() {
+		return SINGLE_CHILD_SHIFT;
+	}
+	
 }
