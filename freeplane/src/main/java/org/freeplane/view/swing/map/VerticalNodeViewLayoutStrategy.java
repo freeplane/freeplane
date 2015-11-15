@@ -138,12 +138,7 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
 	private void calculateLayoutY(final boolean isLeft) {
-		final int vGap;
-		if (view.getModel().hasVisibleContent()) {
-			vGap = view.getMinimalDistanceBetweenChildren();
-		} else {
-			vGap = view.getAncestorWithVisibleContent().getMinimalDistanceBetweenChildren();
-		}
+		final int vGap = view.getChildDistanceContainer().getMinimalDistanceBetweenChildren();
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int top = 0;
