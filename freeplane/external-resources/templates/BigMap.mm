@@ -1,6 +1,6 @@
 <map version="freeplane 1.5.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node LOCALIZED_TEXT="new_mindmap" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1446745964469"><hook NAME="MapStyle">
+<node LOCALIZED_TEXT="new_mindmap" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1446745964469" VGAP="3"><hook NAME="MapStyle">
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" VGAP="32">
@@ -28,9 +28,9 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <font SIZE="9"/>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" MAX_WIDTH_QUANTITY="140.0 pt" MAX_WIDTH="187" MIN_WIDTH_QUANTITY="140.0 pt" MIN_WIDTH="187">
-<font SIZE="32" ITALIC="true"/>
-<edge COLOR="#33ffcc"/>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" MAX_WIDTH_QUANTITY="120.0 pt" MAX_WIDTH="160" MIN_WIDTH_QUANTITY="120.0 pt" MIN_WIDTH="160">
+<font SIZE="30" ITALIC="true"/>
+<edge STYLE="bezier" WIDTH="3"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1">
 <edge COLOR="#000000"/>
@@ -51,13 +51,13 @@
 <edge COLOR="#cc00cc"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,7">
-<edge COLOR="#ffcc00"/>
+<edge COLOR="#ffbf00"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,8">
 <edge COLOR="#00ff99"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,9">
-<edge COLOR="#00ccff"/>
+<edge COLOR="#0099ff"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,10">
 <edge COLOR="#996600"/>
@@ -87,31 +87,24 @@
 <edge COLOR="#006600"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,19">
-<edge COLOR="#999999"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
 <edge COLOR="#ff00cc"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
+<edge COLOR="#00cc00"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,21">
-<edge COLOR="#33cc00"/>
+<edge COLOR="#0066cc"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,22">
-<edge COLOR="#006699"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,23">
-<edge COLOR="#669900"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,24">
-<edge COLOR="#999900"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,25">
-<edge COLOR="#ff0033"/>
+<edge COLOR="#00ffff"/>
 </stylenode>
 </stylenode>
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_COLUMNS"/>
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
+<font SIZE="28"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_COLUMNS"/>
+<node TEXT="" POSITION="right" ID="ID_889299359" CREATED="1447678121942" MODIFIED="1447678121942"/>
 </node>
 </map>
