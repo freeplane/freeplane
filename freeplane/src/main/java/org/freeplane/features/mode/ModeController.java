@@ -389,13 +389,13 @@ public class ModeController extends AController implements FreeplaneActions{
 
 	public void updateMenus(String menuStructure, final Set<String> plugins) {
 		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
-		userInputListenerFactory.getAcceleratorManager().loadDefaultAcceleratorPresets();
 		userInputListenerFactory.updateMenus(menuStructure, plugins);
 		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder(MenuBuilder.class);
 		final Iterator<IMenuContributor> iterator = menuContributors.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().updateMenus(this, menuBuilder);
 		}
+		userInputListenerFactory.getAcceleratorManager().loadDefaultAcceleratorPresets();
 	}
 
 	public boolean canEdit() {
