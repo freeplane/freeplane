@@ -23,6 +23,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Image;
+import java.awt.Window;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.InputMap;
@@ -69,6 +72,7 @@ import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
@@ -144,6 +148,13 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					else
 						setTabAreaPolicy((TabWindow) addedWindow, TabAreaVisiblePolicy.NEVER);
                 }
+				else if(addedWindow instanceof FloatingWindow) {
+					final Container topLevelAncestor = addedWindow.getTopLevelAncestor();
+					if(topLevelAncestor instanceof Window){
+						final List<Image> iconImages = UITools.getFrame().getIconImages();
+						((Window)topLevelAncestor).setIconImages(iconImages);
+					}
+				}
 				setTabPolicies(addedWindow);
             }
 
