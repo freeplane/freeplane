@@ -20,7 +20,7 @@ dependencies {
 
     // from flatDir "localGitDepsRepository":
     compile ':idw-gpl-1.6.1'
-    compile ':SimplyHTML-0.16.09'
+    compile ':SimplyHTML-0.16.11'
 }
 
 sourceSets {
