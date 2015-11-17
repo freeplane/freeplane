@@ -921,6 +921,11 @@ public class MTextController extends TextController {
         final JEditorPane editorPane = new JEditorPane(){
 
 			@Override
+			public String getSelectedText() {
+				return super.getSelectedText().replace('\u00a0', ' ');
+			}
+
+			@Override
             protected void paintComponent(Graphics g) {
 	            try {
 	                super.paintComponent(g);
