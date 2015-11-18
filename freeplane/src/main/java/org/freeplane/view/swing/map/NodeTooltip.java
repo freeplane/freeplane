@@ -90,12 +90,6 @@ public class NodeTooltip extends JToolTip {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, maximumWidth / 2));
-		scrollPane.addComponentListener(new ComponentAdapter() {
-			@Override
-            public void componentResized(ComponentEvent e) {
-	            revalidate();
-            }
-		});
 		UITools.setScrollbarIncrement(scrollPane);
 		add(scrollPane);
 		tip.setOpaque(true);
