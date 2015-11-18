@@ -74,11 +74,15 @@ public class CssRuleBuilder {
 		return rule.toString();
 	}
 
-	public <U extends Enum<U> & Convertible> CssRuleBuilder withWidthAsPt(Quantity<U> width) {
-		if(width != null)
-    		rule.append("width: ")
-    		.append(width.toBaseUnitsRounded()).append("pt")
-    		.append(";");
-		return this;
+	public CssRuleBuilder withMaxWidthAsPt(Quantity<?>... widths) {
+		int maxBaseUnits = -1;
+		for(Quantity<?> width : widths)
+			if(width != null)
+				maxBaseUnits = Math.max(maxBaseUnits, width.toBaseUnitsRounded());
+		if(maxBaseUnits >= 0)
+	   		rule.append("width: ")
+			.append(maxBaseUnits).append("pt")
+			.append(";");
+ 		return this;
 	}
 }
