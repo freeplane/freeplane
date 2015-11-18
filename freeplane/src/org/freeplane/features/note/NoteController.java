@@ -36,6 +36,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
@@ -125,7 +126,7 @@ public class NoteController implements IExtension {
 					final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
 				    final Font defaultFont = style.getFont(noteStyleNode);
 				    rule.append(new CssRuleBuilder().withFont(defaultFont)
-				    		.withMaxWidthAsPt(style.getMaxWidth(noteStyleNode), style.getMaxWidth(node)));
+				    		.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node)));
 				}
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
