@@ -129,16 +129,18 @@ public class NodeTooltip extends JToolTip {
 		tip.setPreferredSize(null);
 		tip.setText(tipText);
 		Dimension preferredSize = tip.getPreferredSize();
-		if (preferredSize.width < maximumWidth) {
-			tip.setPreferredSize(preferredSize);
-			return ;
+		if (preferredSize.width > maximumWidth) {
+			final HTMLDocument document = (HTMLDocument) tip.getDocument();
+			document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
+			// bad hack: call "setEditable" only to update view
+			tip.setEditable(true);
+			tip.setEditable(false);
+			preferredSize = tip.getPreferredSize();
 		}
-		final HTMLDocument document = (HTMLDocument) tip.getDocument();
-		document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
-		// bad hack: call "setEditable" only to update view
-		tip.setEditable(true);
-		tip.setEditable(false);
-		tip.setPreferredSize(tip.getPreferredSize());
+		tip.setSize(preferredSize);
+		preferredSize = tip.getPreferredSize();
+		tip.setPreferredSize(preferredSize);
+		
 	}
 
 	@Override
