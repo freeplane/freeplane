@@ -21,10 +21,9 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
-import org.freeplane.core.ui.MouseInsideListener;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.components.html.ScaledEditorKit;
+import org.freeplane.core.ui.components.html.SynchronousScaledEditorKit;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -74,7 +73,7 @@ public class NodeTooltip extends JToolTip {
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
 		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-		final HTMLEditorKit kit = ScaledEditorKit.create();
+		final HTMLEditorKit kit = SynchronousScaledEditorKit.create();
 		tip.setEditorKit(kit);
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
