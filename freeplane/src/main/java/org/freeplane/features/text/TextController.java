@@ -276,7 +276,7 @@ public class TextController implements IExtension {
 							.withColor(detailForeground)
 							.withBackground(detailBackground)
 							.withAlignment(alignment)
-							.withWidthAsPt(style.getMaxWidth(detailStyleNode)))
+							.withMaxWidthAsPt(style.getMaxWidth(detailStyleNode), style.getMaxWidth(node)))
 							.append("\">");
 					
 					String noteText= detailText.getHtml();
@@ -303,7 +303,7 @@ public class TextController implements IExtension {
 							.withColor(view.getForeground())
 							.withBackground(view.getNodeView().getTextBackground())
 							.withAlignment(view.getHorizontalAlignment())
-							.withWidthAsPt(style.getMaxWidth(node)));
+							.withMaxWidthAsPt(style.getMaxWidth(node)));
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {

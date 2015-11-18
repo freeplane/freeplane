@@ -121,8 +121,11 @@ public class NoteController implements IExtension {
 				    NodeStyleController.class);
 				MapModel map = modeController.getController().getMap();
 				if(map != null){
-				    final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
-				    rule.append(new CssRuleBuilder().withFont(defaultFont));
+					final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+					final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
+				    final Font defaultFont = style.getFont(noteStyleNode);
+				    rule.append(new CssRuleBuilder().withFont(defaultFont)
+				    		.withMaxWidthAsPt(style.getMaxWidth(noteStyleNode), style.getMaxWidth(node)));
 				}
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
