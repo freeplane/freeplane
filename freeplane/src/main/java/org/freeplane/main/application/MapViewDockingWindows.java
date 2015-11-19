@@ -115,6 +115,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(this);
 		rootWindow.addListener(new DockingWindowAdapter(){
+			
+			private IconColorReplacer iconColorReplacer;
 
 			@Override
             public void viewFocusChanged(View previouslyFocusedView, View focusedView) {
@@ -151,7 +153,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				else if(addedWindow instanceof FloatingWindow) {
 					final Container topLevelAncestor = addedWindow.getTopLevelAncestor();
 					if(topLevelAncestor instanceof Window){
-						final List<Image> iconImages = UITools.getFrame().getIconImages();
+						if(iconColorReplacer == null)
+							iconColorReplacer = new IconColorReplacer(UITools.getFrame().getIconImages());
+						final List<Image> iconImages = iconColorReplacer.getNextIconImages();
 						((Window)topLevelAncestor).setIconImages(iconImages);
 					}
 				}
