@@ -37,6 +37,7 @@ import javax.swing.RootPaneContainer;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.main.application.Browser;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.view.swing.map.MapViewScrollPane;
 
@@ -103,7 +104,7 @@ class DialogController extends FrameController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-		throw new UnsupportedOperationException();
+		new Browser().openDocument(uri);
 	}
 
 	/**
