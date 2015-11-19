@@ -87,12 +87,12 @@ public class SvgViewerFactory implements IViewerFactory {
 				final Dimension originalSize = canvas.getOriginalSize();
 				float r = resource.getZoom();
 				final int originalWidth = originalSize.width;
+				final ViewerLayoutManager viewerLayoutManager = new ViewerLayoutManager(1f, resource, originalSize);
+				canvas.setLayout(viewerLayoutManager);
 				if(r == -1){
 					r = resource.setZoom(originalWidth, maximumWidth);
 				}
-				final ViewerLayoutManager viewerLayoutManager = new ViewerLayoutManager(1f, resource, originalSize);
 				canvas.setPreferredSize(viewerLayoutManager.calculatePreferredSize());
-				canvas.setLayout(viewerLayoutManager);
 				canvas.revalidate();
 				canvas.removeGVTTreeRendererListener(this);
 			}
