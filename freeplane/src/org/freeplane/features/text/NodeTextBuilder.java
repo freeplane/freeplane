@@ -31,8 +31,10 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.MapWriter;
@@ -69,7 +71,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public void endElement(final Object parent, final String tag, final Object obj, final XMLElement attributes,
 	                       final String content) {
 		assert tag.equals("richcontent");
-		final String xmlText = content.trim();
+		final String xmlText;
+		final Object localizedHtml = attributes.getAttribute("LOCALIZED_HTML", null);
+		if(localizedHtml != null)
+			xmlText = TextUtils.getRawText((String)localizedHtml);
+		else
+			xmlText = content.trim();
 		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
 		final NodeModel nodeModel = (NodeModel) obj;
 		if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {

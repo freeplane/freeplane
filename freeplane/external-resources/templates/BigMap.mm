@@ -5,48 +5,7 @@
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" VGAP="32"  TEXT_SHORTENED="true">
 <font SIZE="24"/>
-<richcontent TYPE="DETAILS">
-<html>
-  <head>
-  </head>
-  <body>
-    <table width="800" style="text-align: left; vertical-align: top">
-      <tr valign="top">
-        <th>
-          <div style="margin-top: 0pt; margin-right: 0pt; margin-bottom: 0pt; margin-left: 0pt; text-align: center; font-weight: bold">
-            About this style set
-          </div>
-          <div style="text-align: left; font-weight: normal">
-            <div style="margin-top: 3pt; margin-right: 3pt; margin-bottom: 3pt; margin-left: 3pt">
-              This Standard was Developed after 11 years research Grounded on a Pedagogy Research Which has as Main Purpose Make the Process of Knowledge Easier and Faster.
-            </div>
-            <div style="margin-top: 3pt; margin-right: 3pt; margin-bottom: 3pt; margin-left: 3pt">
-              It consist in making the process of Assimilate, Associate, Process, Absorb, Understand, Domain and Master Knowledge, Information and Ideas As Fast and Easy as Possible
-            </div>
-            <div style="margin-top: 3pt; margin-right: 3pt; margin-bottom: 3pt; margin-left: 3pt">
-              It has been developed by Jonas Batista - Brazil
-            </div>
-            <div style="margin-top: 3pt; margin-right: 3pt; margin-bottom: 3pt; margin-left: 3pt">
-              You can find more information at: <a href="http://www.jonasbatista.com.br/">www.jonasbatista.com.br/ </a>
-            </div>
-          </div>
-        </th>
-        <th>
-          <div style="margin-top: 3pt; margin-right: 3pt; margin-bottom: 3pt; margin-left: 3pt">
-            <img src="freeplaneresource:/images/JonasBatista.jpg"/>
-            
-          </div>
-          <div style="text-align: center">
-            Jonas Batista<br/>
-          </div>
-        </th>
-      </tr>
-    </table>
-  </body>
-</html>
-
-</richcontent>
-
+<richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <font SIZE="9"/>
 <stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH_QUANTITY="135.0 pt" MAX_WIDTH="180" MIN_WIDTH_QUANTITY="135.0 pt" MIN_WIDTH="180">
