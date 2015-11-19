@@ -31,6 +31,7 @@ import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.IMapViewManager;
@@ -114,4 +115,8 @@ class SModeController extends MModeController {
 	@Override
     public void startup() {
     }
+
+	public boolean canEdit(NodeModel model) {
+		return model.getNodeLevel(true) >= 2;
+	}
 }
