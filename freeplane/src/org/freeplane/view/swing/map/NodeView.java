@@ -1249,13 +1249,16 @@ public class NodeView extends JComponent implements INodeView {
 			add(newMainView);
 		}
 		mainView = newMainView;
-		final IUserInputListenerFactory userInputListenerFactory = getMap().getModeController()
-		    .getUserInputListenerFactory();
-		mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
-		mainView.addMouseMotionListener(userInputListenerFactory.getNodeMouseMotionListener());
-		mainView.addKeyListener(userInputListenerFactory.getNodeKeyListener());
-		addDragListener(userInputListenerFactory.getNodeDragListener());
-		addDropListener(userInputListenerFactory.getNodeDropTargetListener());
+		ModeController modeController = getMap().getModeController();
+		if(modeController.canEdit(getModel())) {
+			final IUserInputListenerFactory userInputListenerFactory = modeController
+					.getUserInputListenerFactory();
+			mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
+			mainView.addMouseMotionListener(userInputListenerFactory.getNodeMouseMotionListener());
+			mainView.addKeyListener(userInputListenerFactory.getNodeKeyListener());
+			addDragListener(userInputListenerFactory.getNodeDragListener());
+			addDropListener(userInputListenerFactory.getNodeDropTargetListener());
+		}
 	}
 
 	protected void setModel(final NodeModel model) {
