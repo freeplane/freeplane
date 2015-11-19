@@ -105,7 +105,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 					node.setUserObject(newInstance);
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, new IAttributeHandler() {
+		IAttributeHandler textShortenedHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
 				try {
@@ -117,7 +117,10 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 					LogUtils.warn(e);
 				}
 			}
-		});
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, textShortenedHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, textShortenedHandler);
+		
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
