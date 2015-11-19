@@ -304,7 +304,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
 		Compat.macMenuChanges();
-		new UserPropertiesUpdater().importOldDefaultStyle();
+		new UserPropertiesUpdater().createUserStandardTemplate();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init(Controller.getCurrentController());

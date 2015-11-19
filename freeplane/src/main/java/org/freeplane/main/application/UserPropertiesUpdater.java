@@ -166,16 +166,17 @@ public class UserPropertiesUpdater {
         }
     }
 
-	void importOldDefaultStyle() {
+	void createUserStandardTemplate() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager fm = MFileManager.getController(modeController);
-		final String standardTemplateName = fm.getStandardTemplateName();
-		final File userDefault;
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final String standardTemplateName = resourceController.getProperty(MFileManager.STANDARD_TEMPLATE);
+		File userDefault;
 		final File absolute = new File(standardTemplateName);
+		final File userTemplates = fm.defaultUserTemplateDir();
 		if(absolute.isAbsolute())
 			userDefault = absolute;
 		else{
-			final File userTemplates = fm.defaultUserTemplateDir();
 			userDefault= new File(userTemplates, standardTemplateName);
 		}
 		if(userDefault.exists()){
@@ -187,14 +188,23 @@ public class UserPropertiesUpdater {
 		}
 		MapModel defaultStyleMap = new MapModel();
 		final File allUserTemplates = fm.defaultStandardTemplateDir();
-		final File standardTemplate = new File(allUserTemplates, "standard.mm");
+		File standardTemplate = new File(allUserTemplates, standardTemplateName);
+		if(! standardTemplate.exists()) {
+			final String defaultStandardTemplate = resourceController.getDefaultProperty(MFileManager.STANDARD_TEMPLATE);
+			resourceController.setProperty(MFileManager.STANDARD_TEMPLATE, defaultStandardTemplate);
+			standardTemplate = new File(allUserTemplates, defaultStandardTemplate);
+			userDefault = new File(userTemplates, standardTemplateName);
+			if(userDefault.exists()){
+				return;
+			}
+		}
 		try {
 			fm.loadCatchExceptions(standardTemplate.toURL(), defaultStyleMap);
 		}
 		catch (Exception e) {
 			LogUtils.warn(e);
 			try {
-				fm.loadCatchExceptions(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), defaultStyleMap);
+				fm.loadCatchExceptions(resourceController.getResource("/styles/viewer_standard.mm"), defaultStyleMap);
 			}
 			catch (Exception e2) {
 				defaultStyleMap.createNewRoot();

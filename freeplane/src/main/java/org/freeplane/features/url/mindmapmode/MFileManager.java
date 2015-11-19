@@ -95,6 +95,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
+	public static final String STANDARD_TEMPLATE = "standard_template";
 	private static final String DEFAULT_SAVE_DIR_PROPERTY = "default_save_dir";
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final int DEBUG_OFFSET = 0;
@@ -280,7 +281,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 								return name.endsWith(FREEPLANE_FILE_EXTENSION);
 							}
 						})));
-				ComboProperty comboProperty = new ComboProperty("standard_template", templates, templates);
+				ComboProperty comboProperty = new ComboProperty(STANDARD_TEMPLATE, templates, templates);
 				comboProperty.setEditable(true);
 				return comboProperty;
 			}
@@ -594,7 +595,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	@Override
     public File defaultTemplateFile() {
-		final String userDefinedTemplateFile = getStandardTemplateName();
+		final String userDefinedTemplateFile = ResourceController.getResourceController().getProperty(STANDARD_TEMPLATE);
 		final File absolute = new File(userDefinedTemplateFile);
 		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
 			return absolute;
@@ -619,10 +620,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
 		final File allUserTemplates = new File(resourceBaseDir, "templates");
 		return allUserTemplates;
-	}
-
-	public String getStandardTemplateName() {
-		return ResourceController.getResourceController().getProperty("standard_template");
 	}
 
 	/**@deprecated -- use MMapIO*/
