@@ -122,21 +122,6 @@ class RootMainView extends MainView {
 		graphics.fillOval(1, 1, getWidth() - 2, getHeight() - 2);
 	}
 
-	@Override
-	public void paintDragOver(final Graphics2D graphics) {
-		final int draggedOver = getDraggedOver();
-		if (draggedOver == NodeView.DRAGGED_OVER_SON) {
-			graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getNodeView().getMap().getBackground(),
-			    getWidth() * 3 / 4, 0, NodeView.dragColor));
-			graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
-		}
-		else if (draggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
-			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getNodeView().getMap().getBackground(),
-			    getWidth() / 4, 0, NodeView.dragColor));
-			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
-		}
-	}
-
     @Override
     public Insets getInsets() {
         return getInsets(new Insets(0, 0, 0, 0));
