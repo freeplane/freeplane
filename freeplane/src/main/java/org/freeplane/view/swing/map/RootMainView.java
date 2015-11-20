@@ -132,22 +132,22 @@ class RootMainView extends MainView {
     	insets.left=insets.right=insets.top=insets.bottom=margin;
         return insets;
     }
+
     @Override
     public Point getConnectorPoint(Point p) {
-            final MainView mainView = this;
-            if (USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
-                return super.getConnectorPoint(p);
-            }
-            final double nWidth = mainView.getWidth() / 2f;
-            final double nHeight = mainView.getHeight() / 2f;
-            int dx = Math.max(Math.abs(p.x -  mainView.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
-            if(p.x < mainView.getWidth()/2)
-            	dx = -dx;
-			double angle = Math.atan((p.y - nHeight) / dx);
-            if (dx < 0) {
-                angle += Math.PI;
-            }
-            final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
-            return out;
+    	if (USE_COMMON_OUT_POINT_FOR_ROOT_NODE ||  ! getNodeView().isRoot()) {
+    		return super.getConnectorPoint(p);
+    	}
+    	final double nWidth = this.getWidth() / 2f;
+    	final double nHeight = this.getHeight() / 2f;
+    	int dx = Math.max(Math.abs(p.x -  this.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
+    	if(p.x < this.getWidth()/2)
+    		dx = -dx;
+    	double angle = Math.atan((p.y - nHeight) / dx);
+    	if (dx < 0) {
+    		angle += Math.PI;
+    	}
+    	final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
+    	return out;
     }
 }
