@@ -8,7 +8,7 @@
 <richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <font SIZE="9"/>
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="small_bubble" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH_QUANTITY="135.0 pt" MAX_WIDTH="180" MIN_WIDTH_QUANTITY="135.0 pt" MIN_WIDTH="180">
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="small_bubble" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH_QUANTITY="120.0 pt" MIN_WIDTH_QUANTITY="120.0 pt">
 <font NAME="Arial" SIZE="9" BOLD="true" ITALIC="false"/>
 <edge STYLE="bezier" WIDTH="3"/>
 </stylenode>
@@ -52,13 +52,13 @@
 <edge COLOR="#cc00cc"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,7">
-<edge COLOR="#ffcc00"/>
+<edge COLOR="#ffbf00"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,8">
 <edge COLOR="#00ff99"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,9">
-<edge COLOR="#00ccff"/>
+<edge COLOR="#0099ff"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,10">
 <edge COLOR="#996600"/>
@@ -88,31 +88,24 @@
 <edge COLOR="#006600"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,19">
-<edge COLOR="#999999"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
 <edge COLOR="#ff00cc"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
+<edge COLOR="#00cc00"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,21">
-<edge COLOR="#33cc00"/>
+<edge COLOR="#0066cc"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,22">
-<edge COLOR="#006699"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,23">
-<edge COLOR="#669900"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,24">
-<edge COLOR="#999900"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,25">
-<edge COLOR="#ff0033"/>
+<edge COLOR="#00ffff"/>
 </stylenode>
 </stylenode>
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_COLUMNS"/>
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
+<font SIZE="28"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_COLUMNS"/>
+<node TEXT="" POSITION="right"/>
 </node>
 </map>
