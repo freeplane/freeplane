@@ -1,9 +1,9 @@
 <map version="freeplane 1.5.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node LOCALIZED_TEXT="new_mindmap">
+<node LOCALIZED_TEXT="new_mindmap" STYLE="circle" VGAP="3">
 <hook NAME="MapStyle">
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node" VGAP="32"  TEXT_SHORTENED="true">
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="circle" VGAP="32"  TEXT_SHORTENED="true">
 <font SIZE="24"/>
 <richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
@@ -29,9 +29,9 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <font SIZE="9"/>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" MAX_WIDTH_QUANTITY="140.0 pt" MAX_WIDTH="187" MIN_WIDTH_QUANTITY="140.0 pt" MIN_WIDTH="187">
-<font SIZE="32" ITALIC="true"/>
-<edge COLOR="#33ffcc"/>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="circle" MAX_WIDTH_QUANTITY="120.0 pt" MAX_WIDTH="160" MIN_WIDTH_QUANTITY="120.0 pt" MIN_WIDTH="160">
+<font SIZE="30" ITALIC="true"/>
+<edge STYLE="bezier" WIDTH="3"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1">
 <edge COLOR="#000000"/>
