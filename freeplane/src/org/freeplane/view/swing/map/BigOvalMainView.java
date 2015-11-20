@@ -4,10 +4,16 @@ import java.awt.Dimension;
 
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
-public class HighOvalMainView extends OvalMainView {
+public class BigOvalMainView extends OvalMainView {
 
-	public HighOvalMainView(Shape shape) {
-		super(shape);
+	public BigOvalMainView() {
+		super();
+	}
+	
+	@Override
+    public
+    Shape getShape() {
+		return Shape.big_oval;
 	}
 	
 	@Override

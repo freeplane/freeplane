@@ -75,22 +75,33 @@ class NodeViewFactory {
 		if(oldView != null && oldView.getShape().equals(shape))
 			return oldView;
 		final ModeController modeController = node.getMap().getModeController();
-		final NodeModel model = node.getModel();
 		final MainView view;
-		if (shape.equals(NodeStyleModel.Shape.bubble)) {
-			if (model.isRoot())
-				view = new CircleMainView(NodeStyleModel.Shape.bubble);
-			else
-				view =  new HighBubbleMainView();
+		
+		switch(shape){
+		case fork:
+			view =  new ForkMainView();
+			break;
+		case bubble:
+			view =  new HighBubbleMainView();
+			break;
+		case small_bubble:
+			view =  new SmallBubbleMainView();
+			break;
+		case big_oval:
+			view =  new BigOvalMainView();
+			break;
+		case small_oval:
+			view =  new SmallOvalMainView();
+			break;
+		case circle:
+			view = new CircleMainView();
+			break;
+		default:
+			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
+			view = new ForkMainView();
+
 		}
-		else {
-			if (shape != null && ! shape.equals(NodeStyleModel.Shape.fork))
-				System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
-			if (model.isRoot())
-				view = new CircleMainView(NodeStyleModel.Shape.fork);
-			else
-				view = new ForkMainView();
-		}
+		
 		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
 		toolTipManager.registerComponent(view);
 		return view;

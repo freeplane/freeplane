@@ -40,18 +40,16 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
-class OvalMainView extends MainView {
+abstract class OvalMainView extends MainView {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Shape shape;
 
 	
-	public OvalMainView(Shape shape) {
+	public OvalMainView() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
-    	this.shape = shape;
     }
 
 	@Override
@@ -69,19 +67,6 @@ class OvalMainView extends MainView {
 		return in;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getStyle()
-	 */
-	@Override
-    public
-    Shape getShape() {
-		return shape;
-	}
-
-	void setShape(Shape shape) {
-    	this.shape = shape;
-    }
 
 	@Override
 	public void paintComponent(final Graphics graphics) {

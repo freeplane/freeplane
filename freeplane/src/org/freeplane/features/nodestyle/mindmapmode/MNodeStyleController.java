@@ -205,8 +205,11 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeColorAction());
 		modeController.addAction(new NodeColorBlendAction());
 		modeController.addAction(new NodeBackgroundColorAction());
-		modeController.addAction(new NodeShapeAction(NodeStyleModel.Shape.fork));
-		modeController.addAction(new NodeShapeAction(NodeStyleModel.Shape.bubble));
+		for(NodeStyleModel.Shape shape : NodeStyleModel.Shape.values()){
+			if(shape.equals(Shape.as_parent))
+				break;
+			modeController.addAction(new NodeShapeAction(shape));
+		}
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {
