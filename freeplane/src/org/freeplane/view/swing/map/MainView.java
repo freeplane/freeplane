@@ -634,6 +634,8 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isInDragRegion(Point p) {
 		if (p.y >= 0 && p.y < getHeight()){
 			final NodeView nodeView = getNodeView();
+			if(nodeView.isRoot())
+				return false;
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
 				return false;
 			final int draggingWidth = getDraggingWidth();
