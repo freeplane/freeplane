@@ -57,15 +57,6 @@ abstract class BubbleMainView extends MainView {
 		return in;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getStyle()
-	 */
-	@Override
-    public
-    Shape getShape() {
-		return NodeStyleModel.Shape.bubble;
-	}
 
 	@Override
 	public void paintComponent(final Graphics graphics) {

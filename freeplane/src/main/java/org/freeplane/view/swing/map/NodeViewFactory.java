@@ -80,7 +80,7 @@ class NodeViewFactory {
 			view =  new ForkMainView();
 			break;
 		case bubble:
-			view =  new HighBubbleMainView();
+			view =  new BigBubbleMainView();
 			break;
 		case small_bubble:
 			view =  new SmallBubbleMainView();
