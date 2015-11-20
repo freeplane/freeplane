@@ -137,11 +137,6 @@ class RootMainView extends MainView {
 		}
 	}
 
-	@Override
-	public void setDraggedOver(final Point p) {
-		setDraggedOver((dropLeft(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
-	}
-	
     @Override
     public Insets getInsets() {
         return getInsets(new Insets(0, 0, 0, 0));

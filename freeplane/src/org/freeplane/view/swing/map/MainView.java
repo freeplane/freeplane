@@ -414,7 +414,20 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public void setDraggedOver(final Point p) {
-		setDraggedOver((dropAsSibling(p.getX())) ? NodeView.DRAGGED_OVER_SIBLING : NodeView.DRAGGED_OVER_SON);
+		final int draggedOver;
+		if(getNodeView().isRoot()) {
+			if (dropLeft(p.getX()))
+				draggedOver = NodeView.DRAGGED_OVER_SON_LEFT;
+			else
+				draggedOver = NodeView.DRAGGED_OVER_SON;
+		} 
+		else {
+			if (dropAsSibling(p.getX()))
+				draggedOver = NodeView.DRAGGED_OVER_SIBLING;
+			else
+				draggedOver = NodeView.DRAGGED_OVER_SON;
+		}
+		setDraggedOver(draggedOver);
 	}
 
 	public void updateFont(final NodeView node) {
