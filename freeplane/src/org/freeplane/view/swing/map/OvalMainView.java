@@ -38,7 +38,7 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
-class RootMainView extends MainView {
+class OvalMainView extends MainView {
 	/**
 	 * 
 	 */
@@ -46,7 +46,7 @@ class RootMainView extends MainView {
 	private String shape;
 
 	
-	public RootMainView(String shape) {
+	public OvalMainView(String shape) {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
     	this.shape = shape;
@@ -57,24 +57,6 @@ class RootMainView extends MainView {
 	Point getLeftPoint() {
 		final Point in = new Point(0, getHeight() / 2);
 		return in;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView.MainView#getPreferredSize()
-	 */
-	@Override
-	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
-		final Dimension prefSize = super.getPreferredSize(minimumWidth, maximumWidth);
-		if (isPreferredSizeSet()) {
-			return prefSize;
-		}
-		if (prefSize.height <= prefSize.width)
-			prefSize.height = prefSize.width;
-		else {
-			prefSize.width = Math.min(maximumWidth, prefSize.height);
-		}
-		return prefSize;
 	}
 
 	@Override
