@@ -36,6 +36,8 @@ import org.freeplane.core.util.Quantity;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
 class OvalMainView extends MainView {
@@ -43,10 +45,10 @@ class OvalMainView extends MainView {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String shape;
+	private Shape shape;
 
 	
-	public OvalMainView(String shape) {
+	public OvalMainView(Shape shape) {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
     	this.shape = shape;
@@ -73,11 +75,11 @@ class OvalMainView extends MainView {
 	 */
 	@Override
     public
-	String getShape() {
+    Shape getShape() {
 		return shape;
 	}
 
-	void setShape(String shape) {
+	void setShape(Shape shape) {
     	this.shape = shape;
     }
 

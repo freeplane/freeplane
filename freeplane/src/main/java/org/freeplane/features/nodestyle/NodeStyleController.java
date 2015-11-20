@@ -36,6 +36,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -64,7 +65,7 @@ public class NodeStyleController implements IExtension {
 // // //	final private Controller controller;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
  	final private ModeController modeController;
-	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
+	final private ExclusivePropertyChain<Shape, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 	final private ExclusivePropertyChain<TextAlign, NodeModel> textAlignHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
@@ -78,7 +79,7 @@ public class NodeStyleController implements IExtension {
 		fontHandlers = new CombinedPropertyChain<Font, NodeModel>(true);
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
-		shapeHandlers = new ExclusivePropertyChain<String, NodeModel>();
+		shapeHandlers = new ExclusivePropertyChain<Shape, NodeModel>();
 		textAlignHandlers = new ExclusivePropertyChain<TextAlign, NodeModel>();
 		
 		addFontGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
@@ -108,22 +109,22 @@ public class NodeStyleController implements IExtension {
 				return getStyleBackgroundColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
-		addShapeGetter(IPropertyHandler.STYLE, new IPropertyHandler<String, NodeModel>() {
-			public String getProperty(final NodeModel node, final String currentValue) {
+		addShapeGetter(IPropertyHandler.STYLE, new IPropertyHandler<Shape, NodeModel>() {
+			public Shape getProperty(final NodeModel node, final Shape currentValue) {
 				final MapModel map = node.getMap();
 				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 				final Collection<IStyle> style = styleController.getStyles(node);
-				final String returnedString = getStyleShape(map, style);
-				return returnedString;
+				final Shape returnedShape = getStyleShape(map, style);
+				return returnedShape;
 			}
 		});
-		addShapeGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<String, NodeModel>() {
-			public String getProperty(final NodeModel node, final String currentValue) {
+		addShapeGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Shape, NodeModel>() {
+			public Shape getProperty(final NodeModel node, final Shape currentValue) {
 				return getShape(node);
 			}
 
-			private String getShape(final NodeModel node) {
-				return NodeStyleModel.SHAPE_AS_PARENT;
+			private Shape getShape(final NodeModel node) {
+				return Shape.as_parent;
 			}
 		});
 		
@@ -166,8 +167,8 @@ public class NodeStyleController implements IExtension {
 		return fontHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<String, NodeModel> addShapeGetter(final Integer key,
-	                                                          final IPropertyHandler<String, NodeModel> getter) {
+	public IPropertyHandler<Shape, NodeModel> addShapeGetter(final Integer key,
+	                                                          final IPropertyHandler<Shape, NodeModel> getter) {
 		return shapeHandlers.addGetter(key, getter);
 	}
 
@@ -320,7 +321,7 @@ public class NodeStyleController implements IExtension {
 		return new Font(family, style, size);
 	}
 
-	private String getStyleShape(final MapModel map, final Collection<IStyle> style) {
+	private Shape getStyleShape(final MapModel map, final Collection<IStyle> style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : style){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -331,7 +332,7 @@ public class NodeStyleController implements IExtension {
 			if (styleModel == null) {
 				continue;
 			}
-			final String shape = styleModel.getShape();
+			final Shape shape = styleModel.getShape();
 			if (shape == null) {
 				continue;
 			}
@@ -394,8 +395,8 @@ public class NodeStyleController implements IExtension {
 		return font.getSize();
 	}
 
-	public String getShape(final NodeModel node) {
-		final String returnedString = shapeHandlers.getProperty(node);
+	public Shape getShape(final NodeModel node) {
+		final Shape returnedString = shapeHandlers.getProperty(node);
 		return returnedString;
 	}
 

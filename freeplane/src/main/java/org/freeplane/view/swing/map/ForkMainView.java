@@ -30,6 +30,7 @@ import java.awt.Stroke;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 class ForkMainView extends MainView {
 	
@@ -81,8 +82,8 @@ class ForkMainView extends MainView {
 	 */
 	@Override
     public
-	String getShape() {
-		return NodeStyleModel.SHAPE_FORK;
+    Shape getShape() {
+		return NodeStyleModel.Shape.fork;
 	}
 
 	@Override

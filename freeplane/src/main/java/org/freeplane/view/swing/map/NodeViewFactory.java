@@ -38,6 +38,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
@@ -67,24 +68,24 @@ class NodeViewFactory {
 	}
 
 	MainView newMainView(final NodeView node) {
-		String shape = shape(node);
+		Shape shape = shape(node);
 		final MainView oldView = node.getMainView();
 		if(oldView != null && oldView.getShape().equals(shape))
 			return oldView;
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
 		final MainView view;
-		if (shape.equals(NodeStyleModel.SHAPE_BUBBLE)) {
+		if (shape.equals(NodeStyleModel.Shape.bubble)) {
 			if (model.isRoot())
-				view = new CircleMainView(NodeStyleModel.SHAPE_BUBBLE);
+				view = new CircleMainView(NodeStyleModel.Shape.bubble);
 			else
 				view =  new HighBubbleMainView();
 		}
 		else {
-			if (shape != null && ! shape.equals(NodeStyleModel.SHAPE_FORK))
+			if (shape != null && ! shape.equals(NodeStyleModel.Shape.fork))
 				System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
 			if (model.isRoot())
-				view = new CircleMainView(NodeStyleModel.SHAPE_FORK);
+				view = new CircleMainView(NodeStyleModel.Shape.fork);
 			else
 				view = new ForkMainView();
 		}
@@ -93,22 +94,22 @@ class NodeViewFactory {
 		return view;
 	}
 
-	private String shape(NodeView node) {
+	private Shape shape(NodeView node) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
-		String shape = NodeStyleController.getController(modeController).getShape(model);
-		if (shape.equals(NodeStyleModel.SHAPE_COMBINED)) {
+		Shape shape = NodeStyleController.getController(modeController).getShape(model);
+		if (shape.equals(NodeStyleModel.Shape.combined)) {
 			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
-				shape= NodeStyleModel.SHAPE_BUBBLE;
+				shape= NodeStyleModel.Shape.bubble;
 			}
 			else {
-				shape = NodeStyleModel.SHAPE_FORK;
+				shape = NodeStyleModel.Shape.fork;
 			}
 		}
-		else while(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
+		else while(shape.equals(NodeStyleModel.Shape.as_parent)){
 			node = node.getParentView();
 			if (node == null)
-				shape = NodeStyleModel.SHAPE_FORK;
+				shape = NodeStyleModel.Shape.fork;
 			else
 				shape = node.getMainView().getShape();
 		}

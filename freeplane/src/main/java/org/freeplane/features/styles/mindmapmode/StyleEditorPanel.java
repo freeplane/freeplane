@@ -953,10 +953,10 @@ public class StyleEditorPanel extends JPanel {
 				    .getMapViewManager().getBackgroundColor(node));
 			}
 			{
-				final String shape = NodeStyleModel.getShape(node);
-				final String viewShape = styleController.getShape(node);
+				final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
+				final NodeStyleModel.Shape viewShape = styleController.getShape(node);
 				mSetNodeShape.setValue(shape != null);
-				mNodeShape.setValue(viewShape);
+				mNodeShape.setValue(viewShape.toString());
 			}
 			final NodeSizeModel nodeSizeModel = NodeSizeModel.getModel(node);
 			{

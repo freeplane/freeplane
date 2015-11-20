@@ -34,6 +34,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
@@ -125,7 +126,7 @@ public class MNodeStyleController extends NodeStyleController {
 				fromStyle.setFontSize(null);
 			}
 			if (null != whichStyle.getShape()) {
-				fromStyle.setShape(null);
+				fromStyle.setShape((NodeStyleModel.Shape)null);
 			}
 			if (null != whichStyle.getColor()) {
 				fromStyle.setColor(null);
@@ -155,7 +156,7 @@ public class MNodeStyleController extends NodeStyleController {
 				return;
 			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
 				if(hasOwnShape(source)){
-					final String shape = getShape(source);
+					final Shape shape = getShape(source);
 					NodeStyleModel.createNodeStyleModel(to).setShape(shape);
 					return;
 				}
@@ -163,10 +164,10 @@ public class MNodeStyleController extends NodeStyleController {
         }
 
 		private boolean hasOwnShape(NodeModel to) {
-	        return ! NodeStyleModel.SHAPE_AS_PARENT.equals(getShape(to));
+	        return ! Shape.as_parent.equals(getShape(to));
         }
 		
-		private String getShape(NodeModel node) {
+		private Shape getShape(NodeModel node) {
 			return modeController.getExtension(NodeStyleController.class).getShape(node);
 		}
 
@@ -204,8 +205,8 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeColorAction());
 		modeController.addAction(new NodeColorBlendAction());
 		modeController.addAction(new NodeBackgroundColorAction());
-		modeController.addAction(new NodeShapeAction(NodeStyleModel.SHAPE_FORK));
-		modeController.addAction(new NodeShapeAction(NodeStyleModel.SHAPE_BUBBLE));
+		modeController.addAction(new NodeShapeAction(NodeStyleModel.Shape.fork));
+		modeController.addAction(new NodeShapeAction(NodeStyleModel.Shape.bubble));
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {
@@ -524,8 +525,12 @@ public class MNodeStyleController extends NodeStyleController {
     }
 
 	public void setShape(final NodeModel node, final String shape) {
+		setShape(node, shape == null ? null : Shape.valueOf(shape));
+	}
+	
+	public void setShape(final NodeModel node, final Shape shape) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final String oldShape = NodeStyleModel.getShape(node);
+		final Shape oldShape = NodeStyleModel.getShape(node);
 		final IActor actor = new IActor() {
 			public void act() {
 				NodeStyleModel.setShape(node, shape);
@@ -541,8 +546,8 @@ public class MNodeStyleController extends NodeStyleController {
 				for (final NodeModel child : modeController.getMapController().childrenFolded(node)) {
 					if(child.getViewers().isEmpty())
 						continue;
-					final String childShape = NodeStyleModel.getShape(child);
-					if (childShape == null || NodeStyleModel.SHAPE_AS_PARENT.equals(childShape)) {
+					final Shape childShape = NodeStyleModel.getShape(child);
+					if (childShape == null || NodeStyleModel.Shape.as_parent.equals(childShape)) {
 						modeController.getMapController().nodeRefresh(child);
 						childShapeRefresh(child);
 					}
