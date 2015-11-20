@@ -85,7 +85,7 @@ class ForkMainView extends MainView {
 	@Override
     public
 	String getShape() {
-		return NodeStyleModel.STYLE_FORK;
+		return NodeStyleModel.SHAPE_FORK;
 	}
 
 	@Override

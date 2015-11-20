@@ -63,7 +63,7 @@ abstract class BubbleMainView extends MainView {
 	@Override
     public
 	String getShape() {
-		return NodeStyleModel.STYLE_BUBBLE;
+		return NodeStyleModel.SHAPE_BUBBLE;
 	}
 
 	@Override
