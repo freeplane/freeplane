@@ -74,17 +74,17 @@ class NodeViewFactory {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
 		final MainView view;
-		if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
+		if (shape.equals(NodeStyleModel.SHAPE_BUBBLE)) {
 			if (model.isRoot())
-				view = new CircleMainView(NodeStyleModel.STYLE_BUBBLE);
+				view = new CircleMainView(NodeStyleModel.SHAPE_BUBBLE);
 			else
 				view =  new HighBubbleMainView();
 		}
 		else {
-			if (shape != null && ! shape.equals(NodeStyleModel.STYLE_FORK))
+			if (shape != null && ! shape.equals(NodeStyleModel.SHAPE_FORK))
 				System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
 			if (model.isRoot())
-				view = new CircleMainView(NodeStyleModel.STYLE_FORK);
+				view = new CircleMainView(NodeStyleModel.SHAPE_FORK);
 			else
 				view = new ForkMainView();
 		}
@@ -99,16 +99,16 @@ class NodeViewFactory {
 		String shape = NodeStyleController.getController(modeController).getShape(model);
 		if (shape.equals(NodeStyleModel.SHAPE_COMBINED)) {
 			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
-				shape= NodeStyleModel.STYLE_BUBBLE;
+				shape= NodeStyleModel.SHAPE_BUBBLE;
 			}
 			else {
-				shape = NodeStyleModel.STYLE_FORK;
+				shape = NodeStyleModel.SHAPE_FORK;
 			}
 		}
 		else while(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
 			node = node.getParentView();
 			if (node == null)
-				shape = NodeStyleModel.STYLE_FORK;
+				shape = NodeStyleModel.SHAPE_FORK;
 			else
 				shape = node.getMainView().getShape();
 		}

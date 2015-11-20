@@ -452,8 +452,8 @@ public class StyleEditorPanel extends JPanel {
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String CLOUD_SHAPE = "cloudshape";
-	private static final String[] EDGE_STYLES = StyleEditorPanel.initializeEdgeStyles();
-	private static final String[] CLOUD_SHAPES = StyleEditorPanel.initializeCloudShapes();
+	private static final String[] EDGE_STYLES = enumStrings(EdgeStyle.class, EdgeStyle.values().length - 1);
+	private static final String[] CLOUD_SHAPES = StyleEditorPanel.enumStrings(CloudModel.Shape.class);
 	private static final String EDGE_WIDTH = "edgewidth";
 //	private static final String ICON = "icon";
 	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
@@ -468,7 +468,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 	private static final String NODE_FORMAT = "nodeformat";
 	private static final String TEXT_ALIGNMENT = "textalignment";
-	private static final String[] TEXT_ALIGNMENTS = StyleEditorPanel.initializeTextAlignments();
+	private static final String[] TEXT_ALIGNMENTS = StyleEditorPanel.enumStrings(TextAlign.class);
 	/**
 	* 
 	*/
@@ -479,31 +479,17 @@ public class StyleEditorPanel extends JPanel {
 	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
 	
 	
-	private static String[] initializeEdgeStyles() {
-		final EdgeStyle[] enumConstants = EdgeStyle.class.getEnumConstants();
-		final String[] strings = new String[enumConstants.length-1];
-		for (int i = 0; i < enumConstants.length-1; i++) {
+	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass, int length) {
+		final U[] enumConstants = enumerationClass.getEnumConstants();
+		final String[] strings = new String[length];
+		for (int i = 0; i < length; i++) {
 			strings[i] = enumConstants[i].toString();
 		}
 		return strings;
 	}
 
-	private static String[] initializeTextAlignments() {
-		final TextAlign[] enumConstants = TextAlign.class.getEnumConstants();
-		final String[] strings = new String[enumConstants.length];
-		for (int i = 0; i < strings.length; i++) {
-			strings[i] = enumConstants[i].toString();
-		}
-		return strings;
-	}
-
-	private static String[] initializeCloudShapes() {
-		final CloudModel.Shape[] enumConstants = CloudModel.Shape.class.getEnumConstants();
-		final String[] strings = new String[enumConstants.length];
-		for (int i = 0; i < enumConstants.length; i++) {
-			strings[i] = enumConstants[i].toString();
-		}
-		return strings;
+	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass) {
+		return enumStrings(enumerationClass, enumerationClass.getEnumConstants().length);
 	}
 
 	private boolean internalChange;
@@ -754,8 +740,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addNodeShapeControl(final List<IPropertyControl> controls) {
 		mSetNodeShape = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeShape);
-		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, new String[] { "fork", "bubble", "as_parent",
-		        "combined" });
+		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, enumStrings(NodeStyleModel.Shape.class));
 		controls.add(mNodeShape);
 		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape);
 		mSetNodeShape.addPropertyChangeListener(listener);

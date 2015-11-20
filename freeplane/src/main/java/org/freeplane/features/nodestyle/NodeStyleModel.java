@@ -33,13 +33,13 @@ import javafx.scene.text.TextAlignment;
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public static final String[] NODE_STYLES = new String[] { NodeStyleModel.STYLE_FORK, NodeStyleModel.STYLE_BUBBLE,
-	        NodeStyleModel.SHAPE_AS_PARENT, NodeStyleModel.SHAPE_COMBINED };
+	public enum Shape{fork, bubble, as_parent, combined}
 	enum Shapes{as_parent, combined, bubble, fork};
-	public static final String SHAPE_AS_PARENT = "as_parent";
-	public static final String SHAPE_COMBINED = "combined";
-	public static final String STYLE_BUBBLE = "bubble";
-	public static final String STYLE_FORK = "fork";
+	
+	public static final String SHAPE_AS_PARENT = Shape.as_parent.toString();
+	public static final String SHAPE_COMBINED = Shape.combined.toString();
+	public static final String SHAPE_BUBBLE = Shape.bubble.toString();
+	public static final String SHAPE_FORK = Shape.fork.toString();
 	
 	public enum TextAlign {
 		DEFAULT(SwingConstants.LEFT), 
