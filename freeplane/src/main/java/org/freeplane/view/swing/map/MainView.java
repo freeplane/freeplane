@@ -234,7 +234,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public void paintDragOver(final Graphics2D graphics) {
-		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
+		if (isDraggedOver == NodeView.DRAGGED_OVER_SON || isDraggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
 			paintDragOverSon(graphics);
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
@@ -249,7 +249,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private void paintDragOverSon(final Graphics2D graphics) {
-		if (getNodeView().isLeft()) {
+		if (getNodeView().isLeft() || isDraggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
 			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
 			    NodeView.dragColor));
 			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
