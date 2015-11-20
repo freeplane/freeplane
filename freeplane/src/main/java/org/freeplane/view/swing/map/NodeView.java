@@ -1462,7 +1462,7 @@ public class NodeView extends JComponent implements INodeView {
 				return;
 			if(model.isRoot()) {
 				if(newShape != null)
-					((RootMainView)mainView).setShape(newShape);
+					((OvalMainView)mainView).setShape(newShape);
 				return;
 			}
 		}

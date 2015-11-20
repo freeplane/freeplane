@@ -76,7 +76,7 @@ class NodeViewFactory {
 		final MainView view;
 		if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
 			if (model.isRoot())
-				view = new RootMainView(NodeStyleModel.STYLE_BUBBLE);
+				view = new CircleMainView(NodeStyleModel.STYLE_BUBBLE);
 			else
 				view =  new BubbleMainView();
 		}
@@ -84,7 +84,7 @@ class NodeViewFactory {
 			if (shape != null && ! shape.equals(NodeStyleModel.STYLE_FORK))
 				System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
 			if (model.isRoot())
-				view = new RootMainView(NodeStyleModel.STYLE_FORK);
+				view = new CircleMainView(NodeStyleModel.STYLE_FORK);
 			else
 				view = new ForkMainView();
 		}
