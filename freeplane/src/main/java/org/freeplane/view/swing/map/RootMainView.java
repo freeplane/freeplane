@@ -170,9 +170,4 @@ class RootMainView extends MainView {
             final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
             return out;
     }
-
-	@Override
-	public boolean isInDragRegion(Point p) {
-		return false;
-	}
 }
