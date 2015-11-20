@@ -109,7 +109,6 @@
 				</combo>
 			</separator>
 			<separator name="size_limits">
-				<length name="bubble_vertical_margin" defaultUnit = "px" min = "0" max = "1000" step = "0.01"/>
 				<number name="max_shortened_text_length" />
 				<number name="max_image_width" />
 				<number name="toolTipManager.max_tooltip_width" />
