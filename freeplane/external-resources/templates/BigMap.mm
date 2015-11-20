@@ -8,7 +8,7 @@
 <richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <font SIZE="9"/>
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH_QUANTITY="135.0 pt" MAX_WIDTH="180" MIN_WIDTH_QUANTITY="135.0 pt" MIN_WIDTH="180">
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="small_bubble" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH_QUANTITY="135.0 pt" MAX_WIDTH="180" MIN_WIDTH_QUANTITY="135.0 pt" MIN_WIDTH="180">
 <font NAME="Arial" SIZE="9" BOLD="true" ITALIC="false"/>
 <edge STYLE="bezier" WIDTH="3"/>
 </stylenode>

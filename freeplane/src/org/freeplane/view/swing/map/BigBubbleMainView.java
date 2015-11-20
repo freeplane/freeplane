@@ -6,17 +6,18 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 @SuppressWarnings("serial")
-public class SmallBubbleMainView extends BubbleMainView {
-    final private static Insets insets = new Insets(0,  HORIZONTAL_MARGIN,  0, HORIZONTAL_MARGIN);
-    
+public class BigBubbleMainView extends BubbleMainView {
+    final private static Insets insets = new Insets(HORIZONTAL_MARGIN,  HORIZONTAL_MARGIN,  HORIZONTAL_MARGIN, HORIZONTAL_MARGIN);
+
 	@Override
     public
     Shape getShape() {
-		return NodeStyleModel.Shape.small_bubble;
+		return NodeStyleModel.Shape.bubble;
 	}
-
-    @Override
+	
+   @Override
     public Insets getInsets() {
-        return SmallBubbleMainView.insets;
+        return BigBubbleMainView.insets;
     }
+
 }
