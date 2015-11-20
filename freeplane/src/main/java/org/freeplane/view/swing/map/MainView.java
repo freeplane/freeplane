@@ -124,7 +124,11 @@ public abstract class MainView extends ZoomableLabel {
 	/** @return true if should be on the left, false otherwise. */
 	public boolean dropLeft(final double xCoord) {
 		/* here it is the same as me. */
-		return getNodeView().isLeft();
+		NodeView nodeView = getNodeView();
+		if(getNodeView().isRoot())
+			return xCoord < getSize().width * 1 / 2;
+		else
+			return nodeView.isLeft();
 	}
 
 	public int getDeltaX() {

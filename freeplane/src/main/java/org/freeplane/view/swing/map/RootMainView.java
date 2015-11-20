@@ -49,13 +49,6 @@ class RootMainView extends MainView {
     	this.shape = shape;
     }
 
-	/** @return true if should be on the left, false otherwise. */
-	@Override
-	public boolean dropLeft(final double xCoord) {
-		return xCoord < getSize().width * 1 / 2;
-	}
-
-
 	@Override
     public
 	Point getLeftPoint() {
