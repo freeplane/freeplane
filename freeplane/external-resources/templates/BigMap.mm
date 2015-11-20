@@ -1,6 +1,6 @@
 <map version="freeplane 1.5.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node LOCALIZED_TEXT="new_mindmap" STYLE="circle" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1446745964469" VGAP="3">
+<node LOCALIZED_TEXT="new_mindmap" STYLE="circle" VGAP="3">
 <hook NAME="MapStyle">
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="circle" VGAP="32"  TEXT_SHORTENED="true">
@@ -106,6 +106,6 @@
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
 <font SIZE="28"/>
 <hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_COLUMNS"/>
-<node TEXT="" POSITION="right" ID="ID_889299359" CREATED="1447678121942" MODIFIED="1447678121942"/>
+<node TEXT="" POSITION="right"/>
 </node>
 </map>
