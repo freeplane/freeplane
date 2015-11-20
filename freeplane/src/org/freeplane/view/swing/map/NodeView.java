@@ -70,6 +70,7 @@ import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyleModel;
@@ -854,8 +855,8 @@ public class NodeView extends JComponent implements INodeView {
 		if (property == NodeChangeType.FOLDING) {
 			treeStructureChanged();
 			getMap().selectIfSelectionIsEmpty(this);
-			String shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-			if (shape.equals(NodeStyleModel.SHAPE_COMBINED))
+			Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+			if (shape.equals(NodeStyleModel.Shape.combined))
 				update();
 			return;
 		}
@@ -1455,8 +1456,8 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void updateShape() {
-		final String newShape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-		final String oldShape;
+		final Shape newShape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+		final Shape oldShape;
 		if(mainView != null)
 			oldShape = mainView.getShape();
 		else

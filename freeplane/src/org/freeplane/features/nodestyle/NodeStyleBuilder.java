@@ -278,9 +278,9 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (backgroundColor != null) {
 			writer.addAttribute("BACKGROUND_COLOR", ColorUtils.colorToString(backgroundColor));
 		}
-		final String shape = forceFormatting ? nsc.getShape(node) : style.getShape();
+		final NodeStyleModel.Shape shape = forceFormatting ? nsc.getShape(node) : style.getShape();
 		if (shape != null) {
-			writer.addAttribute("STYLE", shape);
+			writer.addAttribute("STYLE", shape.toString());
 		}
 		final Boolean numbered = forceFormatting ? nsc.getNodeNumbering(node) : style.getNodeNumbering();
 		if (numbered != null && numbered) {

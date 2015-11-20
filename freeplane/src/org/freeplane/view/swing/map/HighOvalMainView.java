@@ -2,9 +2,11 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
 
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+
 public class HighOvalMainView extends OvalMainView {
 
-	public HighOvalMainView(String shape) {
+	public HighOvalMainView(Shape shape) {
 		super(shape);
 	}
 	

@@ -32,12 +32,6 @@ import org.freeplane.features.map.NodeModel;
  */
 public class NodeStyleModel implements IExtension, Cloneable {
 	public enum Shape{fork, bubble, as_parent, combined}
-	enum Shapes{as_parent, combined, bubble, fork};
-	
-	public static final String SHAPE_AS_PARENT = Shape.as_parent.toString();
-	public static final String SHAPE_COMBINED = Shape.combined.toString();
-	public static final String SHAPE_BUBBLE = Shape.bubble.toString();
-	public static final String SHAPE_FORK = Shape.fork.toString();
 	
 	public enum TextAlign {
 		DEFAULT(SwingConstants.LEFT), 
@@ -95,7 +89,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getNodeFormat();
 	}
 
-	public static String getShape(final NodeModel node) {
+	public static Shape getShape(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getShape();
 	}
@@ -140,6 +134,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShape(shape);
 	}
 
+	public static void setShape(final NodeModel node, final Shape shape) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShape(shape);
+	}
+
 	public static void setTextAlign(final NodeModel node, final TextAlign textAlign) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setTextAlign(textAlign);
@@ -151,7 +150,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private Integer fontSize = null;
 	private Boolean isBold = null;
 	private Boolean isItalic = null;
-	private String shape;
+	private Shape shape;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
 	private  TextAlign textAlign = null;
@@ -209,7 +208,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	    return nodeFormat;
     }
 
-	public String getShape() {
+	public Shape getShape() {
 		return shape;
 	}
 
@@ -260,12 +259,18 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public void setShape(final String shape) {
 		try {
 			if(shape != null)
-				Shapes.valueOf(shape);
-			this.shape = shape;
+				this.shape = Shape.valueOf(shape);
+			else
+				this.shape = null;
 		} catch (IllegalArgumentException e) {
 			LogUtils.warn("unknown shape " + shape, e);
 		}
 	}
+	
+	public void setShape(final Shape shape) {
+		this.shape = shape;
+	}
+	
 	public void setTextAlign(final TextAlign textAlign) {
 		this.textAlign = textAlign;
 	}
