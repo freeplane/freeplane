@@ -1,4 +1,9 @@
 ===============================
+1.5.1
+===============================
+New node shapes small_bubble, small_oval, big_oval, circle
+
+===============================
 1.5.0
 ===============================
 Node and detail text alignment
