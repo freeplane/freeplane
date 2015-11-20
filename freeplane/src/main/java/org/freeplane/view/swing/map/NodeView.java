@@ -1458,15 +1458,8 @@ public class NodeView extends JComponent implements INodeView {
 			oldShape = mainView.getShape();
 		else
 			oldShape = null;
-		if (mainView != null){
-			if(oldShape.equals(newShape))
-				return;
-			if(model.isRoot()) {
-				if(newShape != null)
-					((OvalMainView)mainView).setShape(newShape);
-				return;
-			}
-		}
+		if (mainView != null && oldShape.equals(newShape))
+			return;
 		final MainView newMainView = NodeViewFactory.getInstance().newMainView(this);
 		if(newMainView.getShape().equals(oldShape))
 			return;

@@ -4,11 +4,19 @@ import java.awt.Dimension;
 
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
+@SuppressWarnings("serial")
 public class CircleMainView extends OvalMainView {
 
-	public CircleMainView(Shape shape) {
-		super(shape);
+	public CircleMainView() {
+		super();
 	}
+	
+	@Override
+    public
+    Shape getShape() {
+		return Shape.circle;
+	}
+
 	
 	@Override
 	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
