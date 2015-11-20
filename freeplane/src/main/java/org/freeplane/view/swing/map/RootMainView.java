@@ -48,11 +48,6 @@ class RootMainView extends MainView {
         setHorizontalAlignment(SwingConstants.CENTER);
     	this.shape = shape;
     }
-	
-    @Override
-	public boolean dropAsSibling(final double xCoord) {
-		return false;
-	}
 
 	/** @return true if should be on the left, false otherwise. */
 	@Override

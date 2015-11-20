@@ -113,6 +113,8 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean dropAsSibling(final double xCoord) {
+		if(getNodeView().isRoot())
+			return false;
 		if(dropLeft(xCoord))
 		return ! isInVerticalRegion(xCoord, 2. / 3);
 		else
