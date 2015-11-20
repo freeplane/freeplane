@@ -1,9 +1,9 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node LOCALIZED_TEXT="new_mindmap" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1283093380553">
+<node LOCALIZED_TEXT="new_mindmap" STYLE="big_oval" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1283093380553">
 <hook NAME="MapStyle" max_node_width="600">
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node">
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="circle" >
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
@@ -81,7 +81,7 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="big_oval" >
 <font SIZE="18"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
