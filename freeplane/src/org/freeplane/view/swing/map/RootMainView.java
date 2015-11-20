@@ -52,12 +52,6 @@ class RootMainView extends MainView {
     	this.shape = shape;
     }
 	
-	void updateTextAlign(NodeView node) {
-		final TextAlign textAlign = NodeStyleController.getController(node.getMap().getModeController()).getTextAlign(node.getModel());
-		setHorizontalAlignment(textAlign != TextAlign.DEFAULT ?  textAlign.swingConstant : TextAlign.CENTER.swingConstant);
-	}
-
-
     @Override
 	public boolean dropAsSibling(final double xCoord) {
 		return false;

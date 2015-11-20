@@ -448,7 +448,8 @@ public abstract class MainView extends ZoomableLabel {
 	
 	void updateTextAlign(NodeView node) {
 		final TextAlign textAlign = NodeStyleController.getController(node.getMap().getModeController()).getTextAlign(node.getModel());
-		setHorizontalAlignment(textAlign.swingConstant);
+		final boolean isCenteredByDefault = textAlign == TextAlign.DEFAULT && node.isRoot();
+		setHorizontalAlignment(isCenteredByDefault ? TextAlign.CENTER.swingConstant : textAlign.swingConstant);
 	}
 
 
