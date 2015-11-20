@@ -80,7 +80,7 @@ class NodeViewFactory {
 			if (model.isRoot())
 				view = new CircleMainView(NodeStyleModel.STYLE_BUBBLE);
 			else
-				view =  new BubbleMainView();
+				view =  new HighBubbleMainView();
 		}
 		else {
 			if (shape != null && ! shape.equals(NodeStyleModel.STYLE_FORK))
