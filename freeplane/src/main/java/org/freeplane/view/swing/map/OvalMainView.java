@@ -100,12 +100,14 @@ abstract class OvalMainView extends MainView {
     public Insets getInsets(Insets insets) {
     	if(insets == null)
     		return getInsets();
-    	final int margin = new Quantity<LengthUnits>(getFont().getSize2D() * 0.2, LengthUnits.pt).toBaseUnitsRounded();
+    	final int margin = new Quantity<LengthUnits>(getFont().getSize2D() * insetsScalingFactor(), LengthUnits.pt).toBaseUnitsRounded();
     	insets.left=insets.right=insets.top=insets.bottom=margin;
         return insets;
     }
 
-    @Override
+	abstract protected double insetsScalingFactor();
+
+	@Override
     public Point getConnectorPoint(Point p) {
     	if (USE_COMMON_OUT_POINT_FOR_ROOT_NODE ||  ! getNodeView().isRoot()) {
     		return super.getConnectorPoint(p);

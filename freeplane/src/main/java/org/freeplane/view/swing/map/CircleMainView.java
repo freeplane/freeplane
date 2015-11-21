@@ -31,4 +31,8 @@ public class CircleMainView extends OvalMainView {
 		}
 		return prefSize;
 	}
+
+	protected double insetsScalingFactor() {
+		return 0.2;
+	}
 }

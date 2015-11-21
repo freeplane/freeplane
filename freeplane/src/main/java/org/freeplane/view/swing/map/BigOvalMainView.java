@@ -25,4 +25,8 @@ public class BigOvalMainView extends OvalMainView {
 		prefSize.height *= 2;
 		return prefSize;
 	}
+
+	protected double insetsScalingFactor() {
+		return 0.1;
+	}
 }
