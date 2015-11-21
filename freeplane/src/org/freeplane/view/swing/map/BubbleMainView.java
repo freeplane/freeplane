@@ -20,37 +20,16 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.RenderingHints;
 
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.ModeController;
-
-abstract class BubbleMainView extends MainView {
+abstract class BubbleMainView extends ShapedMainView {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	protected static final int HORIZONTAL_MARGIN = 3;
-
-	@Override
-    public
-	Point getLeftPoint() {
-		final Point in = new Point(0, getHeight() / 2);
-		return in;
-	}
-
-	@Override
-    public
-	Point getRightPoint() {
-		final Point in = getLeftPoint();
-		in.x = getWidth() - 1;
-		return in;
-	}
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {

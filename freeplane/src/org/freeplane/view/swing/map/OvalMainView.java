@@ -19,28 +19,18 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.RenderingHints;
 
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
-import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 
-abstract class OvalMainView extends MainView {
+abstract class OvalMainView extends ShapedMainView {
 	/**
 	 * 
 	 */
@@ -51,21 +41,6 @@ abstract class OvalMainView extends MainView {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
     }
-
-	@Override
-    public
-	Point getLeftPoint() {
-		final Point in = new Point(0, getHeight() / 2);
-		return in;
-	}
-
-	@Override
-    public
-	Point getRightPoint() {
-		final Point in = getLeftPoint();
-		in.x = getWidth() - 1;
-		return in;
-	}
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {

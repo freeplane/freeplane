@@ -102,11 +102,6 @@ class ForkMainView extends MainView {
 	}
 	
 	@Override
-	protected void paintNodeShape(final Graphics2D g){
-		
-	}
-
-	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
 		graphics.fillRect(0, 0, getWidth(), getHeight() - getEdgeWidth());

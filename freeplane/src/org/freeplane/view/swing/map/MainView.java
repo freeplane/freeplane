@@ -220,31 +220,7 @@ public abstract class MainView extends ZoomableLabel {
 			super.paint(g);
 	}
 
-	@Override
-	public void paintComponent(final Graphics graphics) {
-		final Graphics2D g = (Graphics2D) graphics;
-		final NodeView nodeView = getNodeView();
-		if (nodeView.getModel() == null) {
-			return;
-		}
-		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
-		paintBackgound(g);
-		paintDragOver(g);
-		final Color edgeColor = nodeView.getEdgeColor();
-		g.setColor(edgeColor);
-		g.setStroke(MainView.DEF_STROKE);
-		paintNodeShape(g);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		super.paintComponent(g);
-	}
 	
-	abstract protected void paintNodeShape(final Graphics2D g);
-	protected void paintBackground(final Graphics2D graphics, final Color color) {
-		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-	}
-
 	public void paintDragOver(final Graphics2D graphics) {
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SON || isDraggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
 			paintDragOverSon(graphics);
@@ -404,7 +380,7 @@ public abstract class MainView extends ZoomableLabel {
 		g.setColor(color);
     }
 
-	public void paintBackgound(final Graphics2D g) {
+	protected void paintBackgound(final Graphics2D g) {
 		final Color color;
 		if (getNodeView().useSelectionColors()) {
 			color = getNodeView().getSelectedColor();
@@ -413,8 +389,10 @@ public abstract class MainView extends ZoomableLabel {
 		else {
 			color = getNodeView().getTextBackground();
 		}
+		
 		paintBackground(g, color);
 	}
+	abstract protected void paintBackground(final Graphics2D graphics, final Color color);
 
 	/*
 	 * (non-Javadoc)
