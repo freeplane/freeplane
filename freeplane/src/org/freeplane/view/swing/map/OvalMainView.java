@@ -71,15 +71,17 @@ abstract class OvalMainView extends MainView {
 	@Override
 	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
-		if (getNodeView().getModel() == null) {
+		NodeView nodeView = getNodeView();
+		if (nodeView.getModel() == null) {
 			return;
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
 		paintBackgound(g);
 		paintDragOver(g);
-		g.setColor(Color.gray);
-		g.setStroke(new BasicStroke(1.0f));
+		final Color edgeColor = nodeView.getEdgeColor();
+		g.setColor(edgeColor);
+		g.setStroke(MainView.DEF_STROKE);
 		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paintComponent(g);

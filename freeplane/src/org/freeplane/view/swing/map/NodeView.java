@@ -990,7 +990,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			switch (paintingMode) {
 				case NODES:
-					g2.setStroke(BubbleMainView.DEF_STROKE);
+					g2.setStroke(MainView.DEF_STROKE);
 					modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
                     paintEdges(g2, this);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
@@ -1109,7 +1109,7 @@ public class NodeView extends JComponent implements INodeView {
 		final Graphics2D g2 = g;
 		final ModeController modeController = map.getModeController();
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-		g2.setStroke(BubbleMainView.DEF_STROKE);
+		g2.setStroke(MainView.DEF_STROKE);
 		modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
 		final Point origin = new Point();
 		UITools.convertPointToAncestor(mainView, origin, this);
