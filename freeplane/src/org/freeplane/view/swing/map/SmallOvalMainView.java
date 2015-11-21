@@ -14,5 +14,9 @@ public class SmallOvalMainView extends OvalMainView {
     Shape getShape() {
 		return Shape.small_oval;
 	}
+
+	protected double insetsScalingFactor() {
+		return 0.4;
+	}
 	
 }
