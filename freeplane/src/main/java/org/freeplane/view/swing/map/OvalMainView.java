@@ -107,12 +107,8 @@ abstract class OvalMainView extends MainView {
 
 	abstract protected double insetsScalingFactor();
 
-	@Override
-    public Point getConnectorPoint(Point p) {
-    	if (USE_COMMON_OUT_POINT_FOR_ROOT_NODE ||  ! getNodeView().isRoot()) {
-    		return super.getConnectorPoint(p);
-    	}
-    	final double nWidth = this.getWidth() / 2f;
+	protected Point getConnectorPointAtTheOvalBorder(Point p) {
+		final double nWidth = this.getWidth() / 2f;
     	final double nHeight = this.getHeight() / 2f;
     	int dx = Math.max(Math.abs(p.x -  this.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
     	if(p.x < this.getWidth()/2)
@@ -122,6 +118,6 @@ abstract class OvalMainView extends MainView {
     		angle += Math.PI;
     	}
     	final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
-    	return out;
-    }
+		return out;
+	}
 }

@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
+import java.awt.Point;
 
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
@@ -28,5 +29,11 @@ public class BigOvalMainView extends OvalMainView {
 
 	protected double insetsScalingFactor() {
 		return 0.1;
+	}
+
+	@Override
+	public Point getConnectorPoint(Point p) {
+		return USE_COMMON_OUT_POINT_FOR_ROOT_NODE || ! getNodeView().isRoot() ? 
+				super.getConnectorPoint(p) : getConnectorPointAtTheOvalBorder(p);
 	}
 }
