@@ -27,8 +27,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 
-import javafx.scene.text.TextAlignment;
-
 /**
  * @author Dimitry Polivaev 20.11.2008
  */
