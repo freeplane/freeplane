@@ -2,6 +2,7 @@
 1.5.1
 ===============================
 New node shapes small_bubble, small_oval, big_oval, circle
+Make Javascript scripts available with Java 1.8
 
 ===============================
 1.5.0

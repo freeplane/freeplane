@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -203,16 +204,37 @@ public class GenericScript implements IScript {
 
     private static ClassLoader createClassLoader() {
         if (classLoader == null) {
-            final List<String> classpath = ScriptResources.getClasspath();
             final List<URL> urls = new ArrayList<URL>();
-            for (String path : classpath) {
+            for (String path : ScriptResources.getClasspath()) {
                 urls.add(pathToUrl(path));
             }
+            urls.addAll(jarsInExtDir());
             classLoader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]),
                 GenericScript.class.getClassLoader());
         }
         return classLoader;
     }
+
+    /** starting from Java 1.8 Javascript library is in ext dir and not available to the
+     * bundle classloader. So we are adding ext dir jars which also includes JavaFX jar. */
+	private static List<URL> jarsInExtDir() {
+		try {
+			final List<URL> urls = new ArrayList<URL>();
+			String extDirsProperty = System.getProperty("java.ext.dirs");
+			for (String path : (extDirsProperty == null ? "" : extDirsProperty).split(File.pathSeparator)) {
+				File dir = new File(path);
+				if (dir.isDirectory()) {
+					for (File file : dir.listFiles()) {
+						urls.add(file.toURI().toURL());
+					}
+				}
+			}
+			return urls;
+		}
+		catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
     private static URL pathToUrl(String path) {
         try {
