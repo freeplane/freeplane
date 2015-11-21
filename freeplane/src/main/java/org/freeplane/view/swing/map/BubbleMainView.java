@@ -52,25 +52,9 @@ abstract class BubbleMainView extends MainView {
 		return in;
 	}
 
-
 	@Override
-	public void paintComponent(final Graphics graphics) {
-		final Graphics2D g = (Graphics2D) graphics;
-		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		if (model == null) {
-			return;
-		}
-		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
-		paintBackgound(g);
-		paintDragOver(g);
-		final Color edgeColor = nodeView.getEdgeColor();
-		g.setColor(edgeColor);
-		g.setStroke(MainView.DEF_STROKE);
+	protected void paintNodeShape(final Graphics2D g) {
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		super.paintComponent(g);
 	}
 
 	@Override
