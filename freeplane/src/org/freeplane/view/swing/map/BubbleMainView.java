@@ -19,24 +19,19 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Stroke;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 abstract class BubbleMainView extends MainView {
 
-    final static Stroke DEF_STROKE = new BasicStroke();
-	/**
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -72,7 +67,7 @@ abstract class BubbleMainView extends MainView {
 		paintDragOver(g);
 		final Color edgeColor = nodeView.getEdgeColor();
 		g.setColor(edgeColor);
-		g.setStroke(BubbleMainView.DEF_STROKE);
+		g.setStroke(MainView.DEF_STROKE);
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paintComponent(g);

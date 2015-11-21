@@ -71,15 +71,17 @@ abstract class OvalMainView extends MainView {
 	@Override
 	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
-		if (getNodeView().getModel() == null) {
+		NodeView nodeView = getNodeView();
+		if (nodeView.getModel() == null) {
 			return;
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
 		paintBackgound(g);
 		paintDragOver(g);
-		g.setColor(Color.gray);
-		g.setStroke(new BasicStroke(1.0f));
+		final Color edgeColor = nodeView.getEdgeColor();
+		g.setColor(edgeColor);
+		g.setStroke(MainView.DEF_STROKE);
 		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paintComponent(g);
@@ -100,17 +102,15 @@ abstract class OvalMainView extends MainView {
     public Insets getInsets(Insets insets) {
     	if(insets == null)
     		return getInsets();
-    	final int margin = new Quantity<LengthUnits>(getFont().getSize2D() * 0.2, LengthUnits.pt).toBaseUnitsRounded();
+    	final int margin = new Quantity<LengthUnits>(getFont().getSize2D() * insetsScalingFactor(), LengthUnits.pt).toBaseUnitsRounded();
     	insets.left=insets.right=insets.top=insets.bottom=margin;
         return insets;
     }
 
-    @Override
-    public Point getConnectorPoint(Point p) {
-    	if (USE_COMMON_OUT_POINT_FOR_ROOT_NODE ||  ! getNodeView().isRoot()) {
-    		return super.getConnectorPoint(p);
-    	}
-    	final double nWidth = this.getWidth() / 2f;
+	abstract protected double insetsScalingFactor();
+
+	protected Point getConnectorPointAtTheOvalBorder(Point p) {
+		final double nWidth = this.getWidth() / 2f;
     	final double nHeight = this.getHeight() / 2f;
     	int dx = Math.max(Math.abs(p.x -  this.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
     	if(p.x < this.getWidth()/2)
@@ -120,6 +120,6 @@ abstract class OvalMainView extends MainView {
     		angle += Math.PI;
     	}
     	final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
-    	return out;
-    }
+		return out;
+	}
 }
