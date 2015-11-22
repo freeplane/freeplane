@@ -7,7 +7,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 @SuppressWarnings("serial")
 public class CircleMainView extends OvalMainView {
-
 	public CircleMainView() {
 		super();
 	}
@@ -17,7 +16,6 @@ public class CircleMainView extends OvalMainView {
     Shape getShape() {
 		return Shape.circle;
 	}
-
 	
 	@Override
 	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
@@ -32,11 +30,7 @@ public class CircleMainView extends OvalMainView {
 		}
 		return prefSize;
 	}
-
-	protected double insetsScalingFactor() {
-		return 0.2;
-	}
-
+	
 	@Override
 	public Point getConnectorPoint(Point p) {
 		return getConnectorPointAtTheOvalBorder(p);
