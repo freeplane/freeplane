@@ -11,6 +11,6 @@ public class BigOvalMainView extends OvalMainView {
 	@Override
     public
     Shape getShape() {
-		return Shape.big_oval;
+		return Shape.oval;
 	}
 }
