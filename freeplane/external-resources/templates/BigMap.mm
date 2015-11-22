@@ -29,7 +29,7 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <font SIZE="9"/>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="circle" MAX_WIDTH_QUANTITY="120.0 pt" MAX_WIDTH="160" MIN_WIDTH_QUANTITY="120.0 pt" MIN_WIDTH="160">
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="circle" MAX_WIDTH_QUANTITY="120.0 pt" MIN_WIDTH_QUANTITY="120.0 pt">
 <font SIZE="30" ITALIC="true"/>
 <edge STYLE="bezier" WIDTH="3"/>
 </stylenode>
@@ -104,7 +104,7 @@
 </map_styles>
 </hook>
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
-<font SIZE="28"/>
+<font SIZE="30"/>
 <hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_COLUMNS"/>
 <node TEXT="" POSITION="right"/>
 </node>
