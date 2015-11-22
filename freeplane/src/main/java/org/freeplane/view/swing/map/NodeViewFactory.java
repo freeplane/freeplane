@@ -88,9 +88,6 @@ class NodeViewFactory {
 		case big_oval:
 			view =  new BigOvalMainView();
 			break;
-		case small_oval:
-			view =  new SmallOvalMainView();
-			break;
 		case circle:
 			view = new CircleMainView();
 			break;

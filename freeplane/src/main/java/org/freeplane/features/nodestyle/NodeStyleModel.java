@@ -33,7 +33,7 @@ import javafx.scene.text.TextAlignment;
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public enum Shape{fork, bubble, small_bubble, small_oval, big_oval, circle, as_parent, combined}
+	public enum Shape{fork, bubble, small_bubble, big_oval, circle, as_parent, combined}
 	
 	public enum TextAlign {
 		DEFAULT(SwingConstants.LEFT), 
