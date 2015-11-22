@@ -21,53 +21,54 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Polygon;
 
 import javax.swing.SwingConstants;
 
-import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
-abstract class OvalMainView extends VariableInsetsMainView {
+class SmallWideHexagonMainView extends VariableInsetsMainView {
+	private static final double HORIZONTAL_MARGIN_FACTOR = (Math.sqrt(3) + 1)/2;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public OvalMainView() {
+	public SmallWideHexagonMainView() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
     }
-	
+
 	protected double getVerticalMarginFactor() {
-		return (double) 1.5;
+		return 1.0;
 	}
 
 	protected double getHorizontalMarginFactor() {
-		return 1.4;
+		return HORIZONTAL_MARGIN_FACTOR;
+	}
+	
+	@Override
+    public
+    Shape getShape() {
+		return Shape.small_wide_hexagon;
 	}
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
+		Polygon polygon = getPaintedShape();
+		g.draw(polygon);
+	}
+
+	protected Polygon getPaintedShape() {
+		final int zoomedHorizontalInset = (int) (getWidth() * (1 - 1 / getHorizontalMarginFactor()) / 2);
+		int[] xCoords = new int[]{0,               zoomedHorizontalInset, getWidth() - zoomedHorizontalInset - 1, getWidth(),      getWidth() - zoomedHorizontalInset - 1, zoomedHorizontalInset};
+		int[] yCoords = new int[]{getHeight() / 2, 0,                     0,                                      getHeight() / 2, getHeight() - 1,                        getHeight() - 1};
+		Polygon polygon = new Polygon(xCoords, yCoords, xCoords.length);
+		return polygon;
 	}
 
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillOval(1, 1, getWidth() - 2, getHeight() - 2);
+		graphics.fill(getPaintedShape());
 	}
-
-	protected Point getConnectorPointAtTheOvalBorder(Point p) {
-		final double nWidth = this.getWidth() / 2f;
-    	final double nHeight = this.getHeight() / 2f;
-    	int dx = Math.max(Math.abs(p.x -  this.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
-    	if(p.x < this.getWidth()/2)
-    		dx = -dx;
-    	double angle = Math.atan((p.y - nHeight) / dx);
-    	if (dx < 0) {
-    		angle += Math.PI;
-    	}
-    	final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
-		return out;
-	}
-
 }

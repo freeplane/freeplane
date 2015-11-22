@@ -21,53 +21,58 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Polygon;
 
 import javax.swing.SwingConstants;
 
-import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
-abstract class OvalMainView extends VariableInsetsMainView {
+class NarrowHexagonMainView extends VariableInsetsMainView {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public OvalMainView() {
+	public NarrowHexagonMainView() {
         super();
         setHorizontalAlignment(SwingConstants.CENTER);
     }
-	
+
 	protected double getVerticalMarginFactor() {
-		return (double) 1.5;
+		return 2;
 	}
 
 	protected double getHorizontalMarginFactor() {
-		return 1.4;
+		return 1;
+	}
+	
+	protected int getMinimumHorizontalInset(){
+		return 3;
+	}
+
+
+	@Override
+    public
+    Shape getShape() {
+		return Shape.narrow_hexagon;
 	}
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
+		Polygon polygon = getPaintedShape();
+		g.draw(polygon);
+	}
+
+	protected Polygon getPaintedShape() {
+		final int zoomedVerticalInset = (int) (getHeight() * (1 - 1 / getVerticalMarginFactor() ) / 2);
+		int[] xCoords = new int[]{0,                        getWidth()/2, getWidth() -1,            getWidth() - 1,                             getWidth()/2,   0};
+		int[] yCoords = new int[]{zoomedVerticalInset, 0,            zoomedVerticalInset, getHeight() - zoomedVerticalInset - 1, getHeight() - 1,getHeight() - zoomedVerticalInset - 1, };
+		Polygon polygon = new Polygon(xCoords, yCoords, xCoords.length);
+		return polygon;
 	}
 
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillOval(1, 1, getWidth() - 2, getHeight() - 2);
+		graphics.fill(getPaintedShape());
 	}
-
-	protected Point getConnectorPointAtTheOvalBorder(Point p) {
-		final double nWidth = this.getWidth() / 2f;
-    	final double nHeight = this.getHeight() / 2f;
-    	int dx = Math.max(Math.abs(p.x -  this.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
-    	if(p.x < this.getWidth()/2)
-    		dx = -dx;
-    	double angle = Math.atan((p.y - nHeight) / dx);
-    	if (dx < 0) {
-    		angle += Math.PI;
-    	}
-    	final Point out = new Point((int) ((1f + Math.cos(angle)) * nWidth), (int) ((1f + Math.sin(angle)) * nHeight));
-		return out;
-	}
-
 }
