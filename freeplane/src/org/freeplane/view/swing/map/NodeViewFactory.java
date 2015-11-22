@@ -87,7 +87,7 @@ class NodeViewFactory {
 		case small_bubble:
 			view =  new SmallBubbleMainView();
 			break;
-		case big_oval:
+		case oval:
 			view =  new BigOvalMainView();
 			break;
 		case circle:

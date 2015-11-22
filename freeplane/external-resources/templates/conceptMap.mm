@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="New Concept Map" STYLE="big_oval">
+<node TEXT="New Concept Map" STYLE="oval">
 <hook NAME="MapStyle" max_node_width="600">
     <conditional_styles>
         <conditional_style ACTIVE="true" LOCALIZED_STYLE_REF="styles.connection">
@@ -44,7 +44,7 @@
 		</stylenode>
 		</stylenode>
 		<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
-		<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="big_oval">
+		<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval">
 		<font SIZE="18"/>
 		</stylenode>
 		<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
