@@ -146,12 +146,5 @@ abstract class OvalMainView extends ShapedMainView {
 	public Insets getInsets(Insets insets) {
 		return getInsets();
 	}
-	
-	
-	@Override
-	public Point getConnectorPoint(Point p) {
-		return USE_COMMON_OUT_POINT_FOR_ROOT_NODE || ! getNodeView().isRoot() ? 
-				super.getConnectorPoint(p) : getConnectorPointAtTheOvalBorder(p);
-	}
 
 }
