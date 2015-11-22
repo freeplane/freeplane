@@ -1,4 +1,26 @@
 ===============================
+1.5.1
+===============================
+New node shapes small_bubble, oval, circle, hexagons
+Make Javascript scripts available with Java 1.8
+
+===============================
+1.5.0
+===============================
+Node and detail text alignment
+Distance between child nodes can be set in node style
+Support length measurement units pt, cm, mm and in in addition to px
+Formatted tool tips
+Remove tabs and borders in full screen
+Column based edge colors
+Summary node improvements
+Do not clear "map modified" flag unless save was successful
+Configurable default Map Save Directory
+Changed behavior of read-only maps
+Make data formatting, formula processing and LaTeX rendering independently configurable
+Keep icon name of user icon if it's not found in the current installation
+
+===============================
 1.4.1
 ===============================
 Ribbon UI
@@ -6,6 +28,7 @@ Background images
 Clones
 Scripting API extensions
 Save and restore last edit location
+
 ===============================
 1.3.16
 ===============================
