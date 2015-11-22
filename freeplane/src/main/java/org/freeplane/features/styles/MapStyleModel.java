@@ -39,7 +39,6 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.cloud.CloudModel;
-import org.freeplane.features.cloud.CloudModel.Shape;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.MapModel;
@@ -52,6 +51,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 
 /**
  * @author Dimitry Polivaev
@@ -131,6 +131,8 @@ public class MapStyleModel implements IExtension {
         	hints.put(Hint.MODE, Mode.FILE);
         	hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
+			NodeStyleModel.setShape(root, NodeStyleModel.Shape.circle);
+			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
 			final int styleBlockGap = ResourceController.getResourceController().getLengthProperty("style_block_gap");
 			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
@@ -164,7 +166,7 @@ public class MapStyleModel implements IExtension {
             if(styleNodes.get(FLOATING_STYLE) == null){
                 final NodeModel newNode = new NodeModel(FLOATING_STYLE, styleMap);
                 EdgeModel.createEdgeModel(newNode).setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
-                CloudModel.createModel(newNode).setShape(Shape.ROUND_RECT);
+                CloudModel.createModel(newNode).setShape(CloudModel.Shape.ROUND_RECT);
                 predefinedStyleParentNode.insert(newNode, 3);
                 addStyleNode(newNode);
             }
