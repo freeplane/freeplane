@@ -30,7 +30,7 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	
 
 	public VariableInsetsMainView() {
-        zoomedVerticalInset = zoomedHorizontalInset = 0;
+        zoomedVerticalInset = zoomedHorizontalInset = getMinimumHorizontalInset();
 	}
 
 	@Override
@@ -49,12 +49,21 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	abstract protected double getVerticalMarginFactor() ;
 	
 	abstract protected double getHorizontalMarginFactor();
+	
+	protected int getMinimumHorizontalInset(){
+		return 0;
+	}
+
+	protected int getMinimumVerticalInset(){
+		return 0;
+	}
 
 	protected Dimension getPreferredSizeWithoutMargin(int maximumWidth) {
 		int scaledMaximumWidth = maximumWidth != Integer.MAX_VALUE ? (int)(maximumWidth / getHorizontalMarginFactor()) : maximumWidth;
 		final int zoomedHorizontalInsetBackup = zoomedHorizontalInset;
 		final int zoomedVerticalInsetBackup = zoomedVerticalInset;
-		zoomedHorizontalInset = zoomedVerticalInset = 0;
+		zoomedHorizontalInset  = getMinimumHorizontalInset();
+		zoomedVerticalInset =  getMinimumVerticalInset();
 		final Dimension prefSize;
 		try{
 			prefSize = super.getPreferredSize(0, scaledMaximumWidth);
@@ -85,8 +94,8 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	public void setBounds(int x, int y, int width, int height) {
 		Dimension preferredSize = getPreferredSizeWithoutMargin(width);
 		super.setBounds(x, y, width, height);
-		zoomedHorizontalInset = Math.max(0, width - preferredSize.width) / 2;
-		zoomedVerticalInset = Math.max(0, height - preferredSize.height) / 2;
+		zoomedHorizontalInset = Math.max((int)(getZoom()*getMinimumHorizontalInset()), (width - preferredSize.width) / 2);
+		zoomedVerticalInset = Math.max((int)(getZoom()*getMinimumVerticalInset()), (height - preferredSize.height) / 2);
 	}
 
 	@Override
