@@ -1,6 +1,7 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node LOCALIZED_TEXT="new_mindmap" STYLE="circle" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1283093380553">
+<node LOCALIZED_TEXT="new_mindmap" STYLE="circle">
+<font SIZE="18"/>
 <hook NAME="MapStyle">
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" >
