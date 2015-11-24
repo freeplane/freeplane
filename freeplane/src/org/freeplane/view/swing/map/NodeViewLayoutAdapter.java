@@ -189,14 +189,12 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
         final NodeStyleController nsc = NodeStyleController.getController(modeController);
         final int minNodeWidth = map.getZoomed(nsc.getMinWidth(view.getModel()).toBaseUnits());
         final int maxNodeWidth = map.getZoomed(nsc.getMaxWidth(view.getModel()).toBaseUnits());
-        Dimension contentSize;
         if (content instanceof ZoomableLabel){
-        	contentSize=  ((ZoomableLabel)content).getPreferredSize(minNodeWidth, maxNodeWidth);
+        	ZoomableLabel r = ((ZoomableLabel)content);
+			r.setMinimumWidth(minNodeWidth);
+			r.setMaximumWidth(maxNodeWidth);
         }
-        else{
-        	contentSize=  content.getPreferredSize();
-        }
-        return contentSize;
+        return content.getPreferredSize();
 	}
 
 	protected void shutDown() {

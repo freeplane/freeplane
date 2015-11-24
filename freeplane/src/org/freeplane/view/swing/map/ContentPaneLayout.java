@@ -28,7 +28,10 @@ class ContentPaneLayout implements LayoutManager {
 				if( width == 0) 
 					preferredCompSize = new Dimension();
 				else if (component instanceof ZoomableLabel){
-					preferredCompSize=  ((ZoomableLabel)component).getPreferredSize(minWidth, maxWidth);
+					ZoomableLabel r = ((ZoomableLabel)component);
+					r.setMinimumWidth(minWidth);
+					r.setMaximumWidth(maxWidth);
+					preferredCompSize=  r.getPreferredSize();
 				}
 				else{
 					preferredCompSize=  component.getPreferredSize();
@@ -71,10 +74,12 @@ class ContentPaneLayout implements LayoutManager {
 			if (component.isVisible()) {
 				component.validate();
 				final Dimension preferredCompSize;
-				if(component instanceof ZoomableLabel)
-					preferredCompSize = ((ZoomableLabel)component).getPreferredSize(minWidth, maxWidth);
-				else
-					preferredCompSize = component.getPreferredSize();
+				if(component instanceof ZoomableLabel) {
+					ZoomableLabel r = ((ZoomableLabel)component);
+					r.setMinimumWidth(minWidth);
+					r.setMaximumWidth(maxWidth);
+				} 
+				preferredCompSize = component.getPreferredSize();
 				
 				prefSize.height += preferredCompSize.height;
 				prefSize.width = Math.max(prefSize.width, preferredCompSize.width);
