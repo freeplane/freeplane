@@ -732,7 +732,7 @@ public class NodeView extends JComponent implements INodeView {
 		if(parentView == null)
 			// actually should not happen
 			return this;
-		return parentView.getAncestorWithVisibleContent();
+		return parentView.getChildDistanceContainer();
 	
 	}
 
