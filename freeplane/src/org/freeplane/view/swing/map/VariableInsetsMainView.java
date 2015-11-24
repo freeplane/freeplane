@@ -32,17 +32,22 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	public VariableInsetsMainView() {
         zoomedVerticalInset = zoomedHorizontalInset = getMinimumHorizontalInset();
 	}
+	
+	protected boolean areInsetsFixed() {
+		return false;
+	}
+
 
 	@Override
-	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
+	public Dimension getPreferredSize() {
 		if (isPreferredSizeSet()) {
-			return super.getPreferredSize(minimumWidth, maximumWidth);
+			return super.getPreferredSize();
 		}
-		final Dimension prefSize = getPreferredSizeWithoutMargin(maximumWidth);
-		prefSize.width = (int) Math.ceil(prefSize.width *getHorizontalMarginFactor());
-		prefSize.height = (int) Math.ceil(prefSize.height *getVerticalMarginFactor());
-		if(prefSize.width < minimumWidth)
-			prefSize.width = minimumWidth;
+		final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
+		prefSize.width = (int) Math.ceil(Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getZoom() * getMinimumHorizontalInset()));
+		prefSize.height = (int) Math.ceil(Math.max(prefSize.height *getVerticalMarginFactor(), prefSize.height + getZoom() * getMinimumVerticalInset()));
+		if(prefSize.width < getMinimumWidth())
+			prefSize.width = getMinimumWidth();
 		return prefSize;
 	}
 
@@ -62,15 +67,24 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 		int scaledMaximumWidth = maximumWidth != Integer.MAX_VALUE ? (int)(maximumWidth / getHorizontalMarginFactor()) : maximumWidth;
 		final int zoomedHorizontalInsetBackup = zoomedHorizontalInset;
 		final int zoomedVerticalInsetBackup = zoomedVerticalInset;
-		zoomedHorizontalInset  = getMinimumHorizontalInset();
-		zoomedVerticalInset =  getMinimumVerticalInset();
+		final float zoom = getZoom();
+		zoomedHorizontalInset  = (int) (zoom * getMinimumHorizontalInset());
+		zoomedVerticalInset =  (int) (zoom * getMinimumVerticalInset());
+		final int oldMinimumWidth = getMinimumWidth();
+		final int oldMaximumWidth = getMaximumWidth();
 		final Dimension prefSize;
 		try{
-			prefSize = super.getPreferredSize(0, scaledMaximumWidth);
+			this.setMinimumWidth(0);
+			this.setMaximumWidth(scaledMaximumWidth);
+			prefSize = super.getPreferredSize();
+			prefSize.width -= zoomedHorizontalInset;
+			prefSize.height -= zoomedVerticalInset;
 		}
 		finally {
 			zoomedHorizontalInset = zoomedHorizontalInsetBackup;
 			zoomedVerticalInset = zoomedVerticalInsetBackup;
+			setMaximumWidth(oldMaximumWidth);
+			setMinimumWidth(oldMinimumWidth);
 		}
 		return prefSize;
 	}
@@ -92,10 +106,10 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		Dimension preferredSize = getPreferredSizeWithoutMargin(width);
+		Dimension preferredSize = getPreferredSizeWithoutMargin(getMaximumWidth());
 		super.setBounds(x, y, width, height);
-		zoomedHorizontalInset = Math.max((int)(getZoom()*getMinimumHorizontalInset()), (width - preferredSize.width) / 2);
-		zoomedVerticalInset = Math.max((int)(getZoom()*getMinimumVerticalInset()), (height - preferredSize.height) / 2);
+		zoomedHorizontalInset = (width - preferredSize.width) / 2;
+		zoomedVerticalInset = (height - preferredSize.height) / 2;
 	}
 
 	@Override

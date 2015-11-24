@@ -35,6 +35,9 @@ public class ZoomableLabel extends JLabel {
 		fmg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	}
 
+	private int minimumWidth;
+	private int maximumWidth;
+
 	public int getIconWidth() {
 		final Icon icon = getIcon();
 		if (icon == null) {
@@ -48,16 +51,12 @@ public class ZoomableLabel extends JLabel {
 	}
 
 
-	final public Dimension getPreferredSize() {
-		return getPreferredSize(0, Integer.MAX_VALUE);
-	}
-	
-	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
+	public Dimension getPreferredSize() {
 		if (isPreferredSizeSet()) {
 			Dimension preferredSize = super.getPreferredSize();
 			return preferredSize;
 		}
-		return ((ZoomableLabelUI)getUI()).getPreferredSize(this, minimumWidth, maximumWidth);
+		return ((ZoomableLabelUI)getUI()).getPreferredSize(this);
 	}
 	
 	protected float getZoom() {
@@ -105,18 +104,24 @@ public class ZoomableLabel extends JLabel {
 			return;
 		}
 		final boolean isHtml = nodeText.startsWith("<html>");
-		boolean widthMustBeRestricted = false;
+		boolean widthMustBeRestricted = ! areInsetsFixed();
 		boolean isLong = false;
-		final ModeController modeController = map.getModeController();
-		final NodeStyleController nsc = NodeStyleController.getController(modeController);
-		final int maxNodeWidth = nsc.getMaxWidth(node.getModel()).toBaseUnitsRounded();
 		if (!isHtml) {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {
-				setText(lines[line]);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
-				if (widthMustBeRestricted) {
+				if (widthMustBeRestricted)
 					break;
+				setText(lines[line]);
+				final int oldMaximumWidth = getMaximumWidth();
+				try{
+					final ModeController modeController = map.getModeController();
+					final NodeStyleController nsc = NodeStyleController.getController(modeController);
+					final int maxNodeWidth = nsc.getMaxWidth(node.getModel()).toBaseUnitsRounded();
+					setMaximumWidth(Integer.MAX_VALUE);
+					widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
+				}
+				finally{
+					setMaximumWidth(oldMaximumWidth);
 				}
 			}
 			isLong = widthMustBeRestricted || lines.length > 1;
@@ -158,6 +163,10 @@ public class ZoomableLabel extends JLabel {
 		}
     }
 	
+	protected boolean areInsetsFixed() {
+		return true;
+	}
+
 	public ZoomableLabel() {
 		setUI(ZoomableLabelUI.createUI(this));
 	}
@@ -220,5 +229,21 @@ public class ZoomableLabel extends JLabel {
 				(int) (unzoomedInsets.right * zoom));
 		return zoomedInsets;
 	}
+
+	public int getMinimumWidth() {
+		return minimumWidth;
+	}
+
+	public int getMaximumWidth() {
+		return maximumWidth;
+	}
+
+	public void setMaximumWidth(int maximumWidth) {
+		this.maximumWidth = maximumWidth;
+	}
+	public void setMinimumWidth(int minimumWidth) {
+		this.minimumWidth = minimumWidth;
+	}
+
 
 }

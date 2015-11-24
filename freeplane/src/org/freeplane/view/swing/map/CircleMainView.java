@@ -17,17 +17,35 @@ public class CircleMainView extends OvalMainView {
 		return Shape.circle;
 	}
 	
+	
+	
 	@Override
-	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
-		final Dimension prefSize = super.getPreferredSize(minimumWidth, maximumWidth);
+	protected int getMinimumHorizontalInset() {
+		return 3;
+	}
+
+	@Override
+	protected int getMinimumVerticalInset() {
+		return 3;
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
 		if (isPreferredSizeSet()) {
-			return prefSize;
+			return super.getPreferredSize();
 		}
-		if (prefSize.height <= prefSize.width)
+		final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
+		int w = prefSize.width;
+		int h = prefSize.height;
+		int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h)));
+		prefSize.width = (int) Math.ceil(Math.max(diameter, prefSize.width + getZoom() * getMinimumHorizontalInset()));
+		prefSize.height = (int) Math.ceil(Math.max(diameter, prefSize.height + getZoom() * getMinimumVerticalInset()));
+		if(prefSize.width < getMinimumWidth())
+			prefSize.width = getMinimumWidth();
+		if (prefSize.height < prefSize.width)
 			prefSize.height = prefSize.width;
-		else {
-			prefSize.width = Math.min(maximumWidth, prefSize.height);
-		}
+		else
+			prefSize.width = prefSize.height;
 		return prefSize;
 	}
 	

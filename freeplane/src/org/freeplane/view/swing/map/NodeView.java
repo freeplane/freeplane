@@ -1327,6 +1327,14 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.updateTextColor(this);
 		mainView.updateFont(this);
 		mainView.updateTextAlign(this);
+        MapView map = getMap();
+		final ModeController modeController = map.getModeController();
+        final NodeStyleController nsc = NodeStyleController.getController(modeController);
+        final int minNodeWidth = map.getZoomed(nsc.getMinWidth(getModel()).toBaseUnits());
+        final int maxNodeWidth = map.getZoomed(nsc.getMaxWidth(getModel()).toBaseUnits());
+        mainView.setMinimumWidth(minNodeWidth);
+        mainView.setMaximumWidth(maxNodeWidth);
+
 		createAttributeView();
 		if (attributeView != null) {
 			attributeView.update();
@@ -1334,7 +1342,7 @@ public class NodeView extends JComponent implements INodeView {
 		final boolean textShortened = isShortened();
 
 		if(! textShortened){
-			NodeViewFactory.getInstance().updateDetails(this);
+			NodeViewFactory.getInstance().updateDetails(this, minNodeWidth, maxNodeWidth);
 			if (contentPane != null) {
 				final int componentCount = contentPane.getComponentCount();
 				for (int i = 1; i < componentCount; i++) {
