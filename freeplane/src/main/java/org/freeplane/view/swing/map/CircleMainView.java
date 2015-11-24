@@ -18,15 +18,15 @@ public class CircleMainView extends OvalMainView {
 	}
 	
 	@Override
-	public Dimension getPreferredSize(int minimumWidth, int maximumWidth) {
-		final Dimension prefSize = super.getPreferredSize(minimumWidth, maximumWidth);
+	public Dimension getPreferredSize() {
+		final Dimension prefSize = super.getPreferredSize();
 		if (isPreferredSizeSet()) {
 			return prefSize;
 		}
 		if (prefSize.height <= prefSize.width)
 			prefSize.height = prefSize.width;
 		else {
-			prefSize.width = Math.min(maximumWidth, prefSize.height);
+			prefSize.width = Math.min(getMaximumWidth(), prefSize.height);
 		}
 		return prefSize;
 	}

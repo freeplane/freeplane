@@ -15,19 +15,7 @@ public class ContentSizeCalculator {
 		if(! view.isContentVisible())
 			return ZERO;
     	final JComponent content = view.getContent();
-        final MapView map = view.getMap();
-		final ModeController modeController = map.getModeController();
-        final NodeStyleController nsc = NodeStyleController.getController(modeController);
-        final NodeModel node = view.getModel();
-		final int minNodeWidth = map.getZoomed(nsc.getMinWidth(node).toBaseUnits());
-		final int maxNodeWidth = map.getZoomed(nsc.getMaxWidth(node).toBaseUnits());
-        Dimension contentSize;
-        if (content instanceof ZoomableLabel){
-        	contentSize=  ((ZoomableLabel)content).getPreferredSize(minNodeWidth, maxNodeWidth);
-        }
-        else{
-        	contentSize=  content.getPreferredSize();
-        }
+        Dimension contentSize=  content.getPreferredSize();
         return contentSize;
     }
 
