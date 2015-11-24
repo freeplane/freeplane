@@ -14,11 +14,6 @@ class ContentPaneLayout implements LayoutManager {
 	public void layoutContainer(final Container parent) {
 		final int componentCount = parent.getComponentCount();
 		final int width = parent.getWidth();
-		NodeView view = (NodeView) parent.getParent();
-		final MapView map = view.getMap();
-		final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
-		final int maxWidth = map.getZoomed(ncs.getMaxWidth(view.getModel()).toBaseUnits());
-		final int minWidth = map.getZoomed(ncs.getMinWidth(view.getModel()).toBaseUnits());
 		int y = 0;
 		for (int i = 0; i < componentCount; i++) {
 			final Component component = parent.getComponent(i);
@@ -27,15 +22,8 @@ class ContentPaneLayout implements LayoutManager {
 				final Dimension preferredCompSize;
 				if( width == 0) 
 					preferredCompSize = new Dimension();
-				else if (component instanceof ZoomableLabel){
-					ZoomableLabel r = ((ZoomableLabel)component);
-					r.setMinimumWidth(minWidth);
-					r.setMaximumWidth(maxWidth);
-					preferredCompSize=  r.getPreferredSize();
-				}
-				else{
+				else
 					preferredCompSize=  component.getPreferredSize();
-				}
 				
 				if (component instanceof ZoomableLabel) {
 					component.setBounds(0, y, width, preferredCompSize.height);
@@ -62,24 +50,13 @@ class ContentPaneLayout implements LayoutManager {
 	}
 
 	public Dimension preferredLayoutSize(final Container parent) {
-		NodeView view = (NodeView) parent.getParent();
-		final MapView map = view.getMap();
-		final NodeStyleController ncs = NodeStyleController.getController(map.getModeController());
-		final int minWidth = map.getZoomed(ncs.getMinWidth(view.getModel()).toBaseUnits());
-		final int maxWidth = map.getZoomed(ncs.getMaxWidth(view.getModel()).toBaseUnits());
 		final Dimension prefSize = new Dimension(0, 0);
 		final int componentCount = parent.getComponentCount();
 		for (int i = 0; i < componentCount; i++) {
 			final Component component = parent.getComponent(i);
 			if (component.isVisible()) {
 				component.validate();
-				final Dimension preferredCompSize;
-				if(component instanceof ZoomableLabel) {
-					ZoomableLabel r = ((ZoomableLabel)component);
-					r.setMinimumWidth(minWidth);
-					r.setMaximumWidth(maxWidth);
-				} 
-				preferredCompSize = component.getPreferredSize();
+				final Dimension preferredCompSize = component.getPreferredSize();
 				
 				prefSize.height += preferredCompSize.height;
 				prefSize.width = Math.max(prefSize.width, preferredCompSize.width);
