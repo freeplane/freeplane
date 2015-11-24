@@ -184,16 +184,6 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 
 	protected Dimension calculateContentSize(final NodeView view) {
     	final JComponent content = view.getContent();
-        MapView map = view.getMap();
-		final ModeController modeController = map.getModeController();
-        final NodeStyleController nsc = NodeStyleController.getController(modeController);
-        final int minNodeWidth = map.getZoomed(nsc.getMinWidth(view.getModel()).toBaseUnits());
-        final int maxNodeWidth = map.getZoomed(nsc.getMaxWidth(view.getModel()).toBaseUnits());
-        if (content instanceof ZoomableLabel){
-        	ZoomableLabel r = ((ZoomableLabel)content);
-			r.setMinimumWidth(minNodeWidth);
-			r.setMaximumWidth(maxNodeWidth);
-        }
         return content.getPreferredSize();
 	}
 

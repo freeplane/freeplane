@@ -244,7 +244,7 @@ class NodeViewFactory {
 
 	}
 
-	void updateDetails(NodeView nodeView) {
+	void updateDetails(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
 		final DetailTextModel detailText = DetailTextModel.getDetailText(nodeView.getModel());
 		if (detailText == null) {
 			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);
@@ -271,6 +271,9 @@ class NodeViewFactory {
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
 			detailContent.setPreferredSize(null);
+			detailContent.setMinimumWidth(minNodeWidth);
+			detailContent.setMaximumWidth(maxNodeWidth);
+			
 		}
 		detailContent.revalidate();
 		map.repaint();
