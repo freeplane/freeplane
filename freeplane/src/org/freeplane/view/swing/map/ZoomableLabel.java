@@ -104,25 +104,24 @@ public class ZoomableLabel extends JLabel {
 			return;
 		}
 		final boolean isHtml = nodeText.startsWith("<html>");
-		boolean widthMustBeRestricted = false;
+		boolean widthMustBeRestricted = ! areInsetsFixed();
 		boolean isLong = false;
-		final ModeController modeController = map.getModeController();
-		final NodeStyleController nsc = NodeStyleController.getController(modeController);
-		final int maxNodeWidth = nsc.getMaxWidth(node.getModel()).toBaseUnitsRounded();
 		if (!isHtml) {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {
+				if (widthMustBeRestricted)
+					break;
 				setText(lines[line]);
 				final int oldMaximumWidth = getMaximumWidth();
 				try{
+					final ModeController modeController = map.getModeController();
+					final NodeStyleController nsc = NodeStyleController.getController(modeController);
+					final int maxNodeWidth = nsc.getMaxWidth(node.getModel()).toBaseUnitsRounded();
 					setMaximumWidth(Integer.MAX_VALUE);
 					widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
 				}
 				finally{
 					setMaximumWidth(oldMaximumWidth);
-				}
-				if (widthMustBeRestricted) {
-					break;
 				}
 			}
 			isLong = widthMustBeRestricted || lines.length > 1;
@@ -164,6 +163,10 @@ public class ZoomableLabel extends JLabel {
 		}
     }
 	
+	protected boolean areInsetsFixed() {
+		return true;
+	}
+
 	public ZoomableLabel() {
 		setUI(ZoomableLabelUI.createUI(this));
 	}
