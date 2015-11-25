@@ -8,7 +8,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 @SuppressWarnings("serial")
 public class HexagonMainView extends WideHexagonMainView {
 	private static final double HEIGHT_TO_WIDTH_RELATION = Math.sqrt(3)/2;
-	private static final double HORIZONTAL_MARGIN_FACTOR = HEIGHT_TO_WIDTH_RELATION + 1./2.;
 
 	@Override
     public
@@ -25,7 +24,7 @@ public class HexagonMainView extends WideHexagonMainView {
 		int w = prefSize.width;
 		int h = prefSize.height;
 		int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h))) ;
-		prefSize.width = (int) Math.ceil(Math.max(diameter * HORIZONTAL_MARGIN_FACTOR, prefSize.width + getZoom() * getMinimumHorizontalInset()));
+		prefSize.width = (int) Math.ceil(Math.max(diameter, prefSize.width + getZoom() * getMinimumHorizontalInset()));
 		prefSize.height = (int) Math.ceil(Math.max(diameter, prefSize.height + getZoom() * getMinimumVerticalInset()));
 		if(prefSize.width < getMinimumWidth())
 			prefSize.width = getMinimumWidth();
