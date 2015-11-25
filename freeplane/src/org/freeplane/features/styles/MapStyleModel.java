@@ -63,6 +63,7 @@ public class MapStyleModel implements IExtension {
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
 	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
     public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
+    public static final IStyle ATTRIBUTE_STYLE = new StyleNamedObject("defaultstyle.attributes");
     public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
     public static final IStyle FLOATING_STYLE = new StyleNamedObject("defaultstyle.floating");
 	private Map<IStyle, NodeModel> styleNodes;
@@ -137,12 +138,9 @@ public class MapStyleModel implements IExtension {
 			final int styleBlockGap = ResourceController.getResourceController().getLengthProperty("style_block_gap");
 			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
 			insertStyleMap(parentMap, styleMap);
-			NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, STYLES_PREDEFINED);
-			if(predefinedStyleParentNode == null){
-				predefinedStyleParentNode = new NodeModel(styleMap);
-				predefinedStyleParentNode.setUserObject(new StyleNamedObject(MapStyleModel.STYLES_PREDEFINED));
-				root.insert(predefinedStyleParentNode);
-			}
+			NodeModel predefinedStyleParentNode = createStyleGroupNode(styleMap, STYLES_PREDEFINED);
+			createStyleGroupNode(styleMap, STYLES_USER_DEFINED);
+			createStyleGroupNode(styleMap, STYLES_AUTOMATIC_LAYOUT);
             if(styleNodes.get(DEFAULT_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DEFAULT_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 0);
@@ -174,6 +172,18 @@ public class MapStyleModel implements IExtension {
          catch (Exception e) {
 	        e.printStackTrace();
         }
+	}
+
+	protected NodeModel createStyleGroupNode(MapModel styleMap, String groupName) {
+		NodeModel root = styleMap.getRootNode();
+		NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, groupName);
+		if(predefinedStyleParentNode == null){
+			predefinedStyleParentNode = new NodeModel(styleMap);
+			predefinedStyleParentNode.setUserObject(new StyleNamedObject(groupName));
+			root.insert(predefinedStyleParentNode);
+		}
+		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.fork);
+		return predefinedStyleParentNode;
 	}
 
 	private void createNodeStyleMap(final NodeModel node) {
