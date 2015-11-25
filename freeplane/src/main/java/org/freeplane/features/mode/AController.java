@@ -2,6 +2,7 @@ package org.freeplane.features.mode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -65,6 +66,10 @@ public class AController {
 
 	protected Map<String, AFreeplaneAction> getActions() {
 		return actions;
+	}
+	
+	public Set<String> getActionKeys(){
+		return actions.keySet();
 	}
 
 	public AFreeplaneAction removeAction(final String key) {

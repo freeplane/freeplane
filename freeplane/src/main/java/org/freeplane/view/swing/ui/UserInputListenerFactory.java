@@ -39,6 +39,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -100,8 +102,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
 	private Entry genericMenuStructure;
 	private SubtreeProcessor subtreeBuilder;
+	final private ModeController modeController;
 
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
+		this.modeController = modeController;
 		customBuilders = new ArrayList<>(Phase.values().length);
 		for (@SuppressWarnings("unused")
 		Phase phase : Phase.values()) {
@@ -447,6 +451,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 			genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
 			buildProcessor.build(genericMenuStructure);
+			if(Boolean.getBoolean("org.freeplane.outputUnusedActions"))
+				outputUnusedActions();
 		}
 		catch (Exception e) {
 			if (isUserDefined) {
@@ -459,6 +465,23 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	private void outputUnusedActions() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Unused actions for mode ").append(modeController.getModeName()).append('\n');
+		TreeSet<String> actionKeys = new TreeSet<>();
+		actionKeys.addAll(modeController.getActionKeys());
+		actionKeys.addAll(modeController.getController().getActionKeys());
+		KEYS: for(String key : actionKeys){
+			final List<Entry> entries = genericMenuStructure.findEntries(key);
+			for(Entry entry : entries)
+				if(new EntryAccessor().getComponent(entry) != null)
+					continue KEYS;
+			sb.append(key).append('\n');
+		}
+		LogUtils.info(sb.toString());
+		
 	}
 
 	public boolean useRibbonMenu() {
