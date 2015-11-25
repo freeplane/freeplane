@@ -4,6 +4,8 @@ import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.AC
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI;
 
+import java.util.List;
+
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
@@ -12,6 +14,7 @@ import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
@@ -36,7 +39,7 @@ public class MenuBuildProcessFactory {
 
 	public MenuBuildProcessFactory createBuildProcessor(IUserInputListenerFactory userInputListenerFactory,
 	                                                    FreeplaneActions freeplaneActions,
-	                                           ResourceAccessor resourceAccessor, IAcceleratorMap acceleratorMap, EntriesForAction entries) {
+	                                           ResourceAccessor resourceAccessor, IAcceleratorMap acceleratorMap, EntriesForAction entries, List<BuildPhaseListener> buildPhaseListeners) {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
 
@@ -90,7 +93,7 @@ public class MenuBuildProcessFactory {
 		    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
 
-		buildProcessor = new PhaseProcessor()
+		buildProcessor = new PhaseProcessor(buildPhaseListeners)
 								.withPhase(ACTIONS, actionBuilder) //
 							    .withPhase(ACCELERATORS, acceleratorBuilder)
 							    .withPhase(UI, uiBuilder);

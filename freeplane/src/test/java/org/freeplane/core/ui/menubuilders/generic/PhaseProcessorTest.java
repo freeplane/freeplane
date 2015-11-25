@@ -8,6 +8,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -71,5 +73,15 @@ public class PhaseProcessorTest {
 		final InOrder inOrder = inOrder(first, second);
 		inOrder.verify(second).destroy(entry);
 		inOrder.verify(first).destroy(entry);
+	}
+	
+	@Test
+	public void notifyListener() throws Exception {
+		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
+		BuildPhaseListener listener = mock(BuildPhaseListener.class);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor(Arrays.asList(listener)).withPhase(ACTIONS, builder);
+		final Entry entry = new Entry();
+		phasedBuilder.build(entry);
+		verify(listener).buildPhaseFinished(ACTIONS, entry);
 	}
 }

@@ -58,6 +58,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -100,6 +101,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	static private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
 	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
+	final private List<BuildPhaseListener> buildPhaseListeners;
 	private Entry genericMenuStructure;
 	private SubtreeProcessor subtreeBuilder;
 	final private ModeController modeController;
@@ -107,6 +109,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
 		this.modeController = modeController;
 		customBuilders = new ArrayList<>(Phase.values().length);
+		buildPhaseListeners = new ArrayList<>();
 		for (@SuppressWarnings("unused")
 		Phase phase : Phase.values()) {
 			customBuilders.add(new HashMap<String, BuilderDestroyerPair>());
@@ -439,7 +442,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
 			final MenuBuildProcessFactory menuBuildProcessFactory = new MenuBuildProcessFactory();
 			final PhaseProcessor buildProcessor = menuBuildProcessFactory.createBuildProcessor(this,
-			    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries)
+			    Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries, buildPhaseListeners)
 			    .getBuildProcessor();
 			subtreeBuilder = menuBuildProcessFactory.getChildProcessor();
 			acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
@@ -490,6 +493,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair) {
 		customBuilders.get(phase.ordinal()).put(name, builderDestroyerPair);
+	}
+	
+	public void addBuildPhaseListener(BuildPhaseListener listener) {
+		buildPhaseListeners.add(listener);
 	}
 
 	@Override
