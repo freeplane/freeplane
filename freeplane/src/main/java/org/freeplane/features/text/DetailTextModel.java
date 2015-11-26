@@ -28,6 +28,7 @@ import org.freeplane.features.map.NodeModel;
 public class DetailTextModel extends RichTextModel implements IExtension {
 	public static final String EDITING_PURPOSE = "DetailText";
 	private boolean hidden = false;
+	private String localizedHtmlPropertyName;
 	public DetailTextModel(boolean hidden) {
 	    this.hidden = hidden;
     }
@@ -63,5 +64,14 @@ public class DetailTextModel extends RichTextModel implements IExtension {
 		final DetailTextModel extension = DetailTextModel.getDetailText(node);
 		return extension != null ? extension.getHtml() : null;
 	}
+
+	public void setLocalizedHtmlPropertyName(String localizedHtmlPropertyName) {
+		this.localizedHtmlPropertyName = localizedHtmlPropertyName;
+	}
+	
+	public String getLocalizedHtmlPropertyName() {
+		return localizedHtmlPropertyName;
+	}
+
 
 }
