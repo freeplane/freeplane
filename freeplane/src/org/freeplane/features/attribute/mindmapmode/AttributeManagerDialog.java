@@ -194,15 +194,10 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	static final Icon editButtonImage = new ImageIcon(ResourceController.getResourceController().getResource(
 	    "/images/edit12.png"));
-	private static final String[] fontSizes = { "6", "8", "10", "12", "14", "16", "18", "20", "24" };
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 // // 	final private Controller controller;
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;
-	final private JComboBox size;
 	final private JTable view;
 
 	public AttributeManagerDialog( final Frame frame) {
@@ -229,15 +224,6 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final JButton cancel = new JButton(new CancelAction());
 		southButtons.add(cancel);
 		southButtons.add(Box.createHorizontalGlue());
-		size = new JComboBox(AttributeManagerDialog.fontSizes);
-		size.addItemListener(new ItemListener() {
-			public void itemStateChanged(final ItemEvent e) {
-				model.setAttributeLayoutChanged();
-			}
-		});
-		size.setToolTipText(TextUtils.getText("attribute_font_size_tooltip"));
-		southButtons.add(size);
-		southButtons.add(Box.createHorizontalGlue());
 		final JButton importBtn = new JButton(new ImportAction());
 		importBtn.setToolTipText(TextUtils.getText("attributes_import_tooltip"));
 		southButtons.add(importBtn);
@@ -246,12 +232,6 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new ClosingListener());
 		controller.getMapViewManager().addMapSelectionListener(this);
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(final ComponentEvent e) {
-				size.setSelectedItem(Integer.toString(model.getFontSize()));
-			}
-		});
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -267,9 +247,6 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	}
 
 	private void applyChanges() {
-		final Object size = this.size.getSelectedItem();
-		final int iSize = Integer.parseInt(size.toString());
-		model.getAttributeController().performSetFontSize(model, iSize);
 		model.applyChanges();
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		modeController.delayedCommit();
@@ -283,8 +260,6 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	}
 
 	private void resetChanges() {
-		final int iSize = model.getFontSize();
-		size.setSelectedItem(Integer.toString(iSize));
 		model.resetChanges();
 		Controller.getCurrentModeController().rollback();
 	}

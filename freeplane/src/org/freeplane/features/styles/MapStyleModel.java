@@ -38,6 +38,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
@@ -155,6 +157,17 @@ public class MapStyleModel implements IExtension {
                 final NodeModel newNode = new NodeModel(DETAILS_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 1);
                 addStyleNode(newNode);
+            }
+            if(styleNodes.get(ATTRIBUTE_STYLE) == null){
+                final NodeModel newNode = new NodeModel(ATTRIBUTE_STYLE, styleMap);
+                final int defaultFontSize = 9;
+				NodeStyleModel.createNodeStyleModel(newNode).setFontSize(defaultFontSize);
+                predefinedStyleParentNode.insert(newNode, 1);
+                addStyleNode(newNode);
+            }
+            FontSizeExtension fontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
+            if(fontSizeExtension != null){
+            	NodeStyleModel.createNodeStyleModel(styleNodes.get(ATTRIBUTE_STYLE)).setFontSize(fontSizeExtension.fontSize);
             }
             if(styleNodes.get(NOTE_STYLE) == null){
                 final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
