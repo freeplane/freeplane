@@ -23,8 +23,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import javax.swing.SwingConstants;
-
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 class WideHexagonMainView extends VariableInsetsMainView {
@@ -35,7 +33,6 @@ class WideHexagonMainView extends VariableInsetsMainView {
 	private static final long serialVersionUID = 1L;
 	public WideHexagonMainView() {
         super();
-        setHorizontalAlignment(SwingConstants.CENTER);
     }
 
 	protected double getVerticalMarginFactor() {
