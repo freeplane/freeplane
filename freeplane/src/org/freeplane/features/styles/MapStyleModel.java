@@ -162,7 +162,7 @@ public class MapStyleModel implements IExtension {
                 final NodeModel newNode = new NodeModel(ATTRIBUTE_STYLE, styleMap);
                 final int defaultFontSize = 9;
 				NodeStyleModel.createNodeStyleModel(newNode).setFontSize(defaultFontSize);
-                predefinedStyleParentNode.insert(newNode, 1);
+                predefinedStyleParentNode.insert(newNode, 2);
                 addStyleNode(newNode);
             }
             FontSizeExtension fontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
@@ -171,14 +171,14 @@ public class MapStyleModel implements IExtension {
             }
             if(styleNodes.get(NOTE_STYLE) == null){
                 final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
-                predefinedStyleParentNode.insert(newNode, 2);
+                predefinedStyleParentNode.insert(newNode, 3);
                 addStyleNode(newNode);
             }
             if(styleNodes.get(FLOATING_STYLE) == null){
                 final NodeModel newNode = new NodeModel(FLOATING_STYLE, styleMap);
                 EdgeModel.createEdgeModel(newNode).setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
                 CloudModel.createModel(newNode).setShape(CloudModel.Shape.ROUND_RECT);
-                predefinedStyleParentNode.insert(newNode, 3);
+                predefinedStyleParentNode.insert(newNode, 4);
                 addStyleNode(newNode);
             }
         }
