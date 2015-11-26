@@ -20,10 +20,13 @@
 package org.freeplane.features.attribute;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.net.URI;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -37,8 +40,11 @@ import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev 22.11.2008
@@ -129,10 +135,6 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetFontSize(final AttributeRegistry registry, final int size) {
-		throw new UnsupportedOperationException();
-	}
-
 	public void performSetRestriction(final int row, final boolean restricted) {
 		throw new UnsupportedOperationException();
 	}
@@ -159,10 +161,16 @@ public class AttributeController implements IExtension {
 						&& ! textController.isMinimized(node)) {
 					return null;
 				}
-				final StringBuilder tooltip = new StringBuilder();
-				final int fontSize = registry.getFontSize();
-				tooltip.append("<html><body><table style='border: 1px black solid; background-color: black;");
-				tooltip.append(" font-size: "); tooltip.append(fontSize); tooltip.append("pt");
+				final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
+		        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+		        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
+		        final Font font = style.getFont(attributeStyleNode);
+		        final StringBuilder tooltip = new StringBuilder();
+				tooltip.append("<html><body><table style='border: 1px black solid;");
+				tooltip.append( new CssRuleBuilder().withFont(font, UITools.FONT_SCALE_FACTOR)
+						.withBackground(style.getBackgroundColor(attributeStyleNode))
+						.withColor(style.getColor(attributeStyleNode))
+						);
 				tooltip.append("' width='100%' cellspacing='1' cellpadding='2' ");
 				final int currentRowCount = attributes.getRowCount();
 				for (int i = 0; i < currentRowCount; i++) {

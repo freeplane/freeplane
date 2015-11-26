@@ -74,10 +74,12 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -486,10 +488,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		return AttributeTable.dtcr;
 	}
 
-	private float getFontSize() {
-		return UITools.FONT_SCALE_FACTOR * AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
-	}
-
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
 		if (!isValid()) {
@@ -716,7 +714,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public void setOptimalColumnWidths() {
 		Component comp = null;
 		int cellWidth = 0;
-		int maxCellWidth = 2 * (int) (Math.ceil(getFontSize() + AttributeTable.TABLE_ROW_HEIGHT));
+		int maxCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  AttributeTable.TABLE_ROW_HEIGHT));
 		for (int col = 0; col < 2; col++) {
 			for (int row = 0; row < getRowCount(); row++) {
 				comp = AttributeTable.dtcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row,
@@ -787,16 +785,16 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private void updateFontSize(final Component c, final float zoom) {
-		Font font = c.getFont();
-		if (font != null) {
-			final float oldFontSize = font.getSize2D();
-			final float newFontSize = getFontSize() * zoom;
-			if (Float.compare(oldFontSize, newFontSize) != 0) {
-				font = font.deriveFont(newFontSize);
-				c.setFont(font);
-			}
-		}
-	}
+		final MapView mapView = attributeView.getMapView();
+		final ModeController modeController = mapView.getModeController();
+		final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
+        final Font font = style.getFont(attributeStyleNode);
+        c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));
+        c.setBackground(style.getBackgroundColor(attributeStyleNode));
+        c.setForeground(style.getColor(attributeStyleNode));
+    }
 
 	private void updateRowHeights() {
 		if(! isDisplayable()){

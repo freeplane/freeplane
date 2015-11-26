@@ -43,7 +43,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
-	private static final int TABLE_FONT_SIZE = 9;
 
 	public static AttributeRegistry getRegistry(final MapModel map) {
 		AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
@@ -63,7 +62,6 @@ public class AttributeRegistry implements IExtension {
 	private String attributeViewType;
 	private ChangeEvent changeEvent;
 	protected SortedMapVector elements;
-	private int fontSize = AttributeRegistry.TABLE_FONT_SIZE;
 	protected boolean isAttributeLayoutChanged;
 	private boolean isRestricted;
 	private EventListenerList listenerList = null;
@@ -205,13 +203,6 @@ public class AttributeRegistry implements IExtension {
 		return elements;
 	}
 
-	/**
-	 * @return Returns the fontSize.
-	 */
-	public int getFontSize() {
-		return fontSize;
-	}
-
 	public Comparable<?> getKey(final int index) {
 		return elements.getKey(index);
 	}
@@ -344,13 +335,6 @@ public class AttributeRegistry implements IExtension {
 		fireStateChanged();
 	}
 
-	public void setFontSize(final int size) {
-		if (fontSize != size) {
-			fontSize = size;
-			fireAttributeLayoutChanged();
-		}
-	}
-
 	/**
 	 */
 	public void setRestricted(final boolean b) {
@@ -417,10 +401,6 @@ public class AttributeRegistry implements IExtension {
 		}
 		if (!attributeViewType.equals(AttributeTableLayoutModel.SHOW_ALL)) {
 			attributeRegistry.setAttribute("SHOW_ATTRIBUTES", attributeViewType);
-			toBeSaved = true;
-		}
-		if (getFontSize() != AttributeRegistry.TABLE_FONT_SIZE) {
-			attributeRegistry.setAttribute("FONT_SIZE", Integer.toString(getFontSize()));
 			toBeSaved = true;
 		}
 		for (int i = 0; i < size(); i++) {

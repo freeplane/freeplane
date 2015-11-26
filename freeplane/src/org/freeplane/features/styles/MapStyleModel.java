@@ -38,6 +38,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
@@ -63,6 +65,7 @@ public class MapStyleModel implements IExtension {
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
 	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
     public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
+    public static final IStyle ATTRIBUTE_STYLE = new StyleNamedObject("defaultstyle.attributes");
     public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
     public static final IStyle FLOATING_STYLE = new StyleNamedObject("defaultstyle.floating");
 	private Map<IStyle, NodeModel> styleNodes;
@@ -137,12 +140,9 @@ public class MapStyleModel implements IExtension {
 			final int styleBlockGap = ResourceController.getResourceController().getLengthProperty("style_block_gap");
 			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
 			insertStyleMap(parentMap, styleMap);
-			NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, STYLES_PREDEFINED);
-			if(predefinedStyleParentNode == null){
-				predefinedStyleParentNode = new NodeModel(styleMap);
-				predefinedStyleParentNode.setUserObject(new StyleNamedObject(MapStyleModel.STYLES_PREDEFINED));
-				root.insert(predefinedStyleParentNode);
-			}
+			NodeModel predefinedStyleParentNode = createStyleGroupNode(styleMap, STYLES_PREDEFINED);
+			createStyleGroupNode(styleMap, STYLES_USER_DEFINED);
+			createStyleGroupNode(styleMap, STYLES_AUTOMATIC_LAYOUT);
             if(styleNodes.get(DEFAULT_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DEFAULT_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 0);
@@ -158,22 +158,45 @@ public class MapStyleModel implements IExtension {
                 predefinedStyleParentNode.insert(newNode, 1);
                 addStyleNode(newNode);
             }
+            if(styleNodes.get(ATTRIBUTE_STYLE) == null){
+                final NodeModel newNode = new NodeModel(ATTRIBUTE_STYLE, styleMap);
+                final int defaultFontSize = 9;
+				NodeStyleModel.createNodeStyleModel(newNode).setFontSize(defaultFontSize);
+                predefinedStyleParentNode.insert(newNode, 2);
+                addStyleNode(newNode);
+            }
+            FontSizeExtension fontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
+            if(fontSizeExtension != null){
+            	NodeStyleModel.createNodeStyleModel(styleNodes.get(ATTRIBUTE_STYLE)).setFontSize(fontSizeExtension.fontSize);
+            }
             if(styleNodes.get(NOTE_STYLE) == null){
                 final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
-                predefinedStyleParentNode.insert(newNode, 2);
+                predefinedStyleParentNode.insert(newNode, 3);
                 addStyleNode(newNode);
             }
             if(styleNodes.get(FLOATING_STYLE) == null){
                 final NodeModel newNode = new NodeModel(FLOATING_STYLE, styleMap);
                 EdgeModel.createEdgeModel(newNode).setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
                 CloudModel.createModel(newNode).setShape(CloudModel.Shape.ROUND_RECT);
-                predefinedStyleParentNode.insert(newNode, 3);
+                predefinedStyleParentNode.insert(newNode, 4);
                 addStyleNode(newNode);
             }
         }
          catch (Exception e) {
 	        e.printStackTrace();
         }
+	}
+
+	protected NodeModel createStyleGroupNode(MapModel styleMap, String groupName) {
+		NodeModel root = styleMap.getRootNode();
+		NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, groupName);
+		if(predefinedStyleParentNode == null){
+			predefinedStyleParentNode = new NodeModel(styleMap);
+			predefinedStyleParentNode.setUserObject(new StyleNamedObject(groupName));
+			root.insert(predefinedStyleParentNode);
+		}
+		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.fork);
+		return predefinedStyleParentNode;
 	}
 
 	private void createNodeStyleMap(final NodeModel node) {

@@ -8,17 +8,18 @@ import java.awt.Polygon;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 @SuppressWarnings("serial")
-public class HexagonMainView extends VariableInsetsMainView {
-	private static final double HORIZONTAL_MARGIN_FACTOR = (Math.sqrt(3) + 1)/2;
+public class Hexagon2MainView extends VariableInsetsMainView {
+	private static final double VERTICAL_MARGIN_FACTOR = (Math.sqrt(3) + 1)/2;
 	/**
 	 * 
 	 */
-	public HexagonMainView() {
+	public Hexagon2MainView() {
         super();
     }
 
+	@Override
 	protected double getVerticalMarginFactor() {
-		return 1.0;
+		return VERTICAL_MARGIN_FACTOR;
 	}
 	
 	@Override
@@ -30,9 +31,10 @@ public class HexagonMainView extends VariableInsetsMainView {
 	protected int getMinimumVerticalInset() {
 		return 3;
 	}
-
+	
+	@Override
 	protected double getHorizontalMarginFactor() {
-		return HORIZONTAL_MARGIN_FACTOR;
+		return 1.0;
 	}
 	
 	@Override
@@ -46,12 +48,12 @@ public class HexagonMainView extends VariableInsetsMainView {
 		graphics.setColor(color);
 		graphics.fill(getPaintedShape());
 	}
-	private static final double HEIGHT_TO_WIDTH_RELATION = Math.sqrt(3)/2;
+	private static final double WIDTH_TO_HEIGHT_RELATION = Math.sqrt(3)/2;
 
 	@Override
     public
     Shape getShape() {
-		return Shape.hexagon;
+		return Shape.hexagon2;
 	}
 
 	@Override
@@ -67,16 +69,16 @@ public class HexagonMainView extends VariableInsetsMainView {
 		prefSize.height = (int) Math.ceil(Math.max(diameter, prefSize.height + getZoom() * getMinimumVerticalInset()));
 		if(prefSize.width < getMinimumWidth())
 			prefSize.width = getMinimumWidth();
-		if (prefSize.height < prefSize.width * HEIGHT_TO_WIDTH_RELATION)
-			prefSize.height = (int) (prefSize.width * HEIGHT_TO_WIDTH_RELATION);
+		if (prefSize.height < prefSize.width / WIDTH_TO_HEIGHT_RELATION)
+			prefSize.height = (int) (prefSize.width / WIDTH_TO_HEIGHT_RELATION);
 		else
-			prefSize.width = (int) (prefSize.height / HEIGHT_TO_WIDTH_RELATION);
+			prefSize.width = (int) (prefSize.height * WIDTH_TO_HEIGHT_RELATION);
 		return prefSize;
 	}
 
 	protected Polygon getPaintedShape() {
-		int[] xCoords = new int[]{0,   getWidth()/4, 3 * getWidth() /4 , getWidth(),      3 * getWidth() / 4, getWidth() / 4};
-		int[] yCoords = new int[]{getHeight() / 2, 0,  0,  getHeight() / 2, getHeight() - 1, getHeight() - 1};
+		int[] xCoords = new int[]{getWidth() / 2, 0,  0,  getWidth() / 2, getWidth() - 1, getWidth() - 1};
+		int[] yCoords = new int[]{0,   getHeight()/4, 3 * getHeight() /4 , getHeight(),      3 * getHeight() / 4, getHeight() / 4};
 		Polygon polygon = new Polygon(xCoords, yCoords, xCoords.length);
 		return polygon;
 	}

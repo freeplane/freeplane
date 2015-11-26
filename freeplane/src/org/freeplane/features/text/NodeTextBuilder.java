@@ -83,9 +83,13 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			nodeModel.setXmlText(xmlText);
 		}
 		else if (NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
-			final DetailTextModel note = new DetailTextModel("true".equals(attributes.getAttribute("HIDDEN", "false")));
-			note.setXml(xmlText);
-			nodeModel.addExtension((IExtension) note);
+			final boolean hidden = "true".equals(attributes.getAttribute("HIDDEN", "false"));
+			final DetailTextModel details = new DetailTextModel(hidden);
+			details.setXml(xmlText);
+			nodeModel.addExtension((IExtension) details);
+			if(localizedHtml != null) {
+				details.setLocalizedHtmlPropertyName((String)localizedHtml);
+			}
 		}
 	}
 
@@ -235,8 +239,13 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			if(model.isHidden()){
 				htmlElement.setAttribute("HIDDEN", "true");
 			}
-			final String content = model.getXml().replace('\0', ' ');
-			writer.addElement('\n' + content + '\n', htmlElement);
+			if(model.getLocalizedHtmlPropertyName() != null){
+				htmlElement.setAttribute("LOCALIZED_HTML", model.getLocalizedHtmlPropertyName());
+			}
+			else {
+				final String content = model.getXml().replace('\0', ' ');
+				writer.addElement('\n' + content + '\n', htmlElement);
+			}
 		}
 		return;
 	}

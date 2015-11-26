@@ -739,32 +739,6 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performSetFontSize(final AttributeRegistry registry, final int size) {
-		final int oldSize = registry.getFontSize();
-		if (size == oldSize) {
-			return;
-		}
-		final IActor actor = new IActor() {
-			public void act() {
-				final MapModel map = Controller.getCurrentModeController().getController().getMap();
-				final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
-				attributeRegistry.setFontSize(size);
-			}
-
-			public String getDescription() {
-				return "SetAttributeFontSizeActor";
-			}
-
-			public void undo() {
-				final MapModel map = Controller.getCurrentModeController().getController().getMap();
-				final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
-				attributeRegistry.setFontSize(oldSize);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, Controller.getCurrentModeController().getController().getMap());
-	}
-
-	@Override
 	public void performSetRestriction(final int index, final boolean isRestricted) {
 		boolean currentValue;
 		final MapModel map = Controller.getCurrentModeController().getController().getMap();

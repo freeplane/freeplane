@@ -31,7 +31,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public enum Shape{fork, bubble, small_bubble, oval, circle, hexagon, wide_hexagon, small_wide_hexagon, narrow_hexagon, as_parent, combined}
+	public enum Shape{fork, bubble, small_bubble, oval, circle, hexagon, hexagon2, wide_hexagon, small_wide_hexagon, narrow_hexagon, as_parent, combined}
 	
 	public enum TextAlign {
 		DEFAULT(SwingConstants.LEFT), 
