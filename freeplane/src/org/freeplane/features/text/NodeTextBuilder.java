@@ -83,9 +83,9 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			nodeModel.setXmlText(xmlText);
 		}
 		else if (NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
-			final DetailTextModel note = new DetailTextModel("true".equals(attributes.getAttribute("HIDDEN", "false")));
-			note.setXml(xmlText);
-			nodeModel.addExtension((IExtension) note);
+			final DetailTextModel details = new DetailTextModel("true".equals(attributes.getAttribute("HIDDEN", "false")));
+			details.setXml(xmlText);
+			nodeModel.addExtension((IExtension) details);
 		}
 	}
 
