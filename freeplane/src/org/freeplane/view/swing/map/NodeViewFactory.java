@@ -96,6 +96,9 @@ class NodeViewFactory {
 		case hexagon:
 			view = new HexagonMainView();
 			break;
+		case hexagon2:
+			view = new Hexagon2MainView();
+			break;
 		case wide_hexagon:
 			view = new WideHexagonMainView();
 			break;
