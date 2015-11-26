@@ -253,7 +253,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			tableHeader.setResizingAllowed(false);
 		}
 		setModel(attributeView.getCurrentAttributeTableModel());
-		updateFontSize(this, 1F);
+		updateComponent(this);
 		updateColumnWidths();
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
@@ -591,7 +591,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final DefaultComboBoxModel currentModel = new DefaultComboBoxModel(items);
 		comboBox.setModel(currentModel);
-		updateFontSize(comboBox, getZoom());
+		updateComponent(comboBox);
+		final Component editorComponent = comboBox.getEditor().getEditorComponent();
+		updateComponent(editorComponent);
+		final Font font = editorComponent.getFont();
+		editorComponent.setFont(font.deriveFont(font.getSize2D() * getZoom()));
 		return super.prepareEditor(tce, row, col);
 	}
 
@@ -771,7 +775,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	void updateAttributeTable() {
-		updateFontSize(this, 1F);
+		updateComponent(this);
 		updateRowHeights();
 		updateColumnWidths();
 	}
@@ -784,7 +788,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private void updateFontSize(final Component c, final float zoom) {
+	private void updateComponent(final Component c) {
 		final MapView mapView = attributeView.getMapView();
 		final ModeController modeController = mapView.getModeController();
 		final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
