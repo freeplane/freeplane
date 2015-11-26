@@ -29,6 +29,7 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
@@ -80,6 +81,8 @@ public interface IUserInputListenerFactory {
 	public void rebuildMenu(Entry entry);
 
 	void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair);
+	
+	public void addBuildPhaseListener(BuildPhaseListener listener);
 
 	Entry getGenericMenuStructure();
 
