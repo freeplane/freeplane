@@ -166,17 +166,17 @@ public class AttributeController implements IExtension {
 		        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
 		        final Font font = style.getFont(attributeStyleNode);
 		        final StringBuilder tooltip = new StringBuilder();
-				tooltip.append("<html><body><table style='border: 1px black solid;");
-				tooltip.append( new CssRuleBuilder().withFont(font, UITools.FONT_SCALE_FACTOR)
+				tooltip.append("<html><body><table style='border: 1px solid;");
+				tooltip.append( new CssRuleBuilder().withFont(font)
 						.withBackground(style.getBackgroundColor(attributeStyleNode))
 						.withColor(style.getColor(attributeStyleNode))
 						);
-				tooltip.append("' width='100%' cellspacing='1' cellpadding='2' ");
+				tooltip.append(" ' width='100%' cellspacing='0' cellpadding='2' ");
 				final int currentRowCount = attributes.getRowCount();
 				for (int i = 0; i < currentRowCount; i++) {
-					tooltip.append("<tr><td>");
+					tooltip.append("<tr><td style='border: 1px solid;'>");
 					tooltip.append(attributes.getValueAt(i, 0));
-					tooltip.append("</td><td>");
+					tooltip.append("</td><td style='border: 1px solid;'>");
 					final Object object = attributes.getValueAt(i, 1);
 					final String text = getTransformedValue(node, textController, object);
 					if(object instanceof URI){
