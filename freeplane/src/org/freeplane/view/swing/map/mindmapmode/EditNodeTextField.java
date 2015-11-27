@@ -663,14 +663,14 @@ public class EditNodeTextField extends EditNodeBase {
 		if(! mapView.isValid())
 			mapView.validate();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);
-		maxWidth = nsc.getMaxWidth(node).toBaseUnitsRounded();
+		maxWidth = Math.max(mapView.getZoomed(nsc.getMaxWidth(node).toBaseUnitsRounded()), parent.getWidth());
 		final Icon icon = parent.getIcon();
 		if(icon != null){
-			maxWidth -= icon.getIconWidth();
-			maxWidth -= parent.getIconTextGap();
+			maxWidth -= mapView.getZoomed(icon.getIconWidth());
+			maxWidth -= mapView.getZoomed(parent.getIconTextGap());
 		}
-		Insets insets = parent.getInsets();
-		maxWidth -= insets.left + insets.right;
+		Insets parentInsets = parent.getZoomedInsets();
+		maxWidth -= parentInsets.left + parentInsets.right;
 		maxWidth = mapView.getZoomed(maxWidth);
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);
@@ -702,7 +702,6 @@ public class EditNodeTextField extends EditNodeBase {
 		final LayoutData layoutData = parentUI.getLayoutData(parent);
 		Rectangle iconR = layoutData.iconR;
 		final Rectangle textR = layoutData.textR;
-		final Insets parentInsets = parent.getZoomedInsets();
 		int textFieldX = parentInsets.left - textFieldBorderWidth + (iconR.width > 0 ? textR.x - iconR.x : 0);
 		
 		
