@@ -24,7 +24,9 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -144,10 +146,25 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShape(shape);
 	}
+	
+	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withHorizontalMargin(margin));
+	}
+	
+	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withVerticalMargin(margin));
+	}
+
+	public static void setShapeUniform(final NodeModel node, final boolean uniform) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withUniform(uniform));
+	}
 
 	public static void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
-		styleModel.setShape(shape);
+		styleModel.setShapeConfiguration(shape);
 	}
 	
 	public static void setTextAlign(final NodeModel node, final TextAlign textAlign) {
@@ -185,7 +202,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	    if(isItalic != null)
 	        nodeStyleModel.setItalic(isItalic);
 	    if(getShapeConfiguration() != null)
-	        nodeStyleModel.setShape(getShapeConfiguration());
+			nodeStyleModel.setShapeConfiguration(getShapeConfiguration());
 	    if(nodeFormat != null)
 	            nodeStyleModel.setNodeFormat(nodeFormat);
 	    if(nodeNumbering != null)
@@ -194,10 +211,6 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	    	nodeStyleModel.setTextAlign(textAlign);
 		return nodeStyleModel;
     }
-
-	public void setShape(ShapeConfigurationModel shapeConfiguration) {
-		this.setShapeConfiguration(shapeConfiguration);
-	}
 
 	public Color getBackgroundColor() {
 		return backgroundColor;
