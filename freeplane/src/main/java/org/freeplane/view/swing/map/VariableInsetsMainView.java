@@ -22,14 +22,15 @@ package org.freeplane.view.swing.map;
 import java.awt.Dimension;
 import java.awt.Insets;
 
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+
 abstract class VariableInsetsMainView extends ShapedMainView {
 	private static final long serialVersionUID = 1L;
 	private int zoomedVerticalInset;
 	private int zoomedHorizontalInset;
 	
-	
-
-	public VariableInsetsMainView() {
+	public VariableInsetsMainView(ShapeConfigurationModel shapeConfiguration) {
+		super(shapeConfiguration);
         zoomedVerticalInset = zoomedHorizontalInset = getMinimumHorizontalInset();
 	}
 	
@@ -50,17 +51,17 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 			prefSize.width = getMinimumWidth();
 		return prefSize;
 	}
-
+	
 	abstract protected double getVerticalMarginFactor() ;
 	
 	abstract protected double getHorizontalMarginFactor();
 	
 	protected int getMinimumHorizontalInset(){
-		return 0;
+		return getShapeConfiguration().getHorizontalMargin().toBaseUnitsRounded();
 	}
 
 	protected int getMinimumVerticalInset(){
-		return 0;
+		return getShapeConfiguration().getVerticalMargin().toBaseUnitsRounded();
 	}
 
 	protected Dimension getPreferredSizeWithoutMargin(int maximumWidth) {

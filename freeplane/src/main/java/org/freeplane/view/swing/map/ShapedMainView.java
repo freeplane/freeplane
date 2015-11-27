@@ -7,9 +7,22 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 @SuppressWarnings("serial")
 abstract public class ShapedMainView extends MainView {
+	
+	final private ShapeConfigurationModel shapeConfiguration;
+
+	public ShapedMainView(ShapeConfigurationModel shapeConfiguration) {
+		super();
+		this.shapeConfiguration = shapeConfiguration;
+	}
+
+	public ShapeConfigurationModel getShapeConfiguration(){
+		return shapeConfiguration;
+	}
+
 	@Override
     public
 	Point getLeftPoint() {

@@ -20,21 +20,20 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import javax.swing.SwingConstants;
-
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-abstract class OvalMainView extends VariableInsetsMainView {
+class OvalMainView extends VariableInsetsMainView {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public OvalMainView() {
-        super();
-        setHorizontalAlignment(SwingConstants.CENTER);
+	public OvalMainView(ShapeConfigurationModel shapeConfigurationModel) {
+        super(shapeConfigurationModel);
     }
 	
 	protected double getVerticalMarginFactor() {
@@ -54,6 +53,37 @@ abstract class OvalMainView extends VariableInsetsMainView {
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
 		graphics.fillOval(1, 1, getWidth() - 2, getHeight() - 2);
+	}
+
+	@Override
+	public Point getConnectorPoint(Point p) {
+		return getShapeConfiguration().isUniform() || !USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getNodeView().isRoot() ? getConnectorPointAtTheOvalBorder(p) : super.getConnectorPoint(p);
+	}
+	
+	
+	
+	@Override
+	public Dimension getPreferredSize() {
+		if (isPreferredSizeSet()) {
+			return super.getPreferredSize();
+		}
+		if(getShapeConfiguration().isUniform()){
+			final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
+			int w = prefSize.width;
+			int h = prefSize.height;
+			int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h)));
+			prefSize.width = (int) Math.ceil(Math.max(diameter, prefSize.width + getZoom() * getMinimumHorizontalInset()));
+			prefSize.height = (int) Math.ceil(Math.max(diameter, prefSize.height + getZoom() * getMinimumVerticalInset()));
+			if(prefSize.width < getMinimumWidth())
+				prefSize.width = getMinimumWidth();
+			if (prefSize.height < prefSize.width)
+				prefSize.height = prefSize.width;
+			else
+				prefSize.width = prefSize.height;
+			return prefSize;
+		}
+		else 
+			return super.getPreferredSize();
 	}
 
 	protected Point getConnectorPointAtTheOvalBorder(Point p) {

@@ -64,7 +64,7 @@ public class OutlineEdgeView extends EdgeView {
 			final int y1 = end.y + gap * 13/8;
 			g.drawLine(start.x, start.y, start.x, y1);
 			int x2 = end.x;
-			if(NodeStyleModel.Shape.fork.equals(getTarget().getMainView().getShape()))
+			if(NodeStyleModel.Shape.fork.equals(getTarget().getMainView().getShapeConfiguration().getShape()))
 				x2 += getTarget().getContent().getWidth();
 			g.drawLine(start.x, y1, x2, y1);
 		}
