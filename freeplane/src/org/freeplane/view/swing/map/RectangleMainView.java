@@ -24,7 +24,7 @@ import java.awt.Graphics2D;
 
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-class BubbleMainView extends ShapedMainView {
+class RectangleMainView extends ShapedMainView {
 
     /**
 	 * 
@@ -33,17 +33,19 @@ class BubbleMainView extends ShapedMainView {
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 	}
 
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 	}
     
     
-    public BubbleMainView(ShapeConfigurationModel shapeConfiguration) {
+    public RectangleMainView(ShapeConfigurationModel shapeConfiguration) {
 		super(shapeConfiguration);
 	}
+
+
 }

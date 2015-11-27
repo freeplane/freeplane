@@ -88,6 +88,9 @@ class NodeViewFactory {
 		case oval:
 			view =  new OvalMainView(shapeConfiguration);
 			break;
+		case rectangle:
+			view =  new RectangleMainView(shapeConfiguration);
+			break;
 		case wide_hexagon:
 			view = new WideHexagonMainView(shapeConfiguration);
 			break;
