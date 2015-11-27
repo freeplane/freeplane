@@ -145,17 +145,15 @@ public class StyleEditorPanel extends JPanel {
 			.getCurrentModeController().getExtension(
 					NodeStyleController.class);
 			if(enabled){
-				if(evt.getSource() == mNodeShape || evt.getSource() == mSetNodeShape)
-					styleController.setShape(node, mNodeShape.getValue());
-				else if(evt.getSource() == mShapeHorizontalMargin)
-					styleController.setShapeHorizontalMargin(node, mShapeHorizontalMargin.getQuantifiedValue());
-				else if(evt.getSource() == mShapeVerticalMargin)
-					styleController.setShapeVerticalMargin(node, mShapeVerticalMargin.getQuantifiedValue());
-				else if(evt.getSource() == mUniformShape)
-					styleController.setUniformShape(node, mUniformShape.getBooleanValue());
+				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE
+						.withShape(NodeStyleModel.Shape.valueOf(mNodeShape.getValue()))
+						.withHorizontalMargin(mShapeHorizontalMargin.getQuantifiedValue())
+						.withVerticalMargin(mShapeVerticalMargin.getQuantifiedValue())
+						.withUniform(mUniformShape.getBooleanValue())
+						);
 			}
 			else
-				styleController.setShape(node, (NodeStyleModel.Shape)null);
+				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE);
 			final Shape shape = styleController.getShape(node);
 			enableShapeConfigurationProperties(enabled, shape);
 		}
