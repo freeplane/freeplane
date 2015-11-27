@@ -245,5 +245,22 @@ public class ZoomableLabel extends JLabel {
 		this.minimumWidth = minimumWidth;
 	}
 
+	protected int limitWidth(int width) {
+		if(width < getMinimumWidth())
+			return getMinimumWidth();
+		else if(width > getMaximumWidth())
+			return getMaximumWidth();
+		else
+			return width;
+	}
+
+	protected double limitWidth(double width) {
+		if(width < getMinimumWidth())
+			return getMinimumWidth();
+		else if(width > getMaximumWidth())
+			return getMaximumWidth();
+		else
+			return width;
+	}
 
 }

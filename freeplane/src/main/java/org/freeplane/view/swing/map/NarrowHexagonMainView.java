@@ -30,8 +30,9 @@ import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 class NarrowHexagonMainView extends VariableInsetsMainView {
-	private static final double VERTICAL_MARGIN_FACTOR = (Math.sqrt(3) + 1)/2;
+	private static final double HORIZONTAL_MARGIN_FACTOR = 1.0;
 	private static final double UNIFORM_HEIGHT_TO_WIDTH_RELATION = 2 / Math.sqrt(3);
+	private static final double VERTICAL_MARGIN_FACTOR = 2;
 
 	/**
 	 * 
@@ -47,7 +48,7 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 	}
 
 	protected double getHorizontalMarginFactor() {
-		return 1;
+		return HORIZONTAL_MARGIN_FACTOR;
 	}
 	
 	@Override
@@ -57,17 +58,10 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 		}
 		if(getShapeConfiguration().isUniform()){
 			final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
-			int w = prefSize.width;
-			int h = prefSize.height;
-			int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h))) ;
-			prefSize.width = (int) Math.ceil(Math.max(diameter, prefSize.width + getZoom() * getMinimumHorizontalInset()));
-			prefSize.height = (int) Math.ceil(Math.max(diameter, prefSize.height + getZoom() * getMinimumVerticalInset()));
-			if(prefSize.width < getMinimumWidth())
-				prefSize.width = getMinimumWidth();
-			if (prefSize.height < prefSize.width * UNIFORM_HEIGHT_TO_WIDTH_RELATION)
-				prefSize.height = (int) (prefSize.width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
-			else
-				prefSize.width = (int) (prefSize.height / UNIFORM_HEIGHT_TO_WIDTH_RELATION);
+			double width = (int) Math.ceil(prefSize.width + getZoom() * getMinimumHorizontalInset());
+			width = limitWidth(width);
+			prefSize.width = (int) width;
+			prefSize.height = (int) (width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
 			return prefSize;
 		}
 		else

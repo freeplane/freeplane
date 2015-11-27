@@ -45,10 +45,9 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 			return super.getPreferredSize();
 		}
 		final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
-		prefSize.width = (int) Math.ceil(Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getZoom() * getMinimumHorizontalInset()));
+		final double widthWithMargin = Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getZoom() * getMinimumHorizontalInset());
+		prefSize.width =  limitWidth((int) Math.ceil(widthWithMargin));
 		prefSize.height = (int) Math.ceil(Math.max(prefSize.height *getVerticalMarginFactor(), prefSize.height + getZoom() * getMinimumVerticalInset()));
-		if(prefSize.width < getMinimumWidth())
-			prefSize.width = getMinimumWidth();
 		return prefSize;
 	}
 	

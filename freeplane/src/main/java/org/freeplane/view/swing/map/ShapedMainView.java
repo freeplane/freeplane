@@ -58,6 +58,9 @@ abstract public class ShapedMainView extends MainView {
 		if (isPreferredSizeSet()) {
 			return preferredSize;
 		}
+		
+		preferredSize.width = limitWidth(preferredSize.width);
+
 		if(getShapeConfiguration().isUniform()) {
 			if(preferredSize.width < preferredSize.height)
 				preferredSize.width = preferredSize.height;
@@ -66,7 +69,7 @@ abstract public class ShapedMainView extends MainView {
 		}
 		return preferredSize;
 	}
-	
+
 	@Override
 	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;

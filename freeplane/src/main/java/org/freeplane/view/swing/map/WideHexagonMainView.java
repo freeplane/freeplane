@@ -27,8 +27,9 @@ import java.awt.Polygon;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class WideHexagonMainView extends VariableInsetsMainView {
-	private static final double HORIZONTAL_MARGIN_FACTOR = (Math.sqrt(3) + 1)/2;
+	private static final double VERTICAL_MARGIN_FACTOR = Math.sqrt(2);
 	private static final double UNIFORM_HEIGHT_TO_WIDTH_RELATION = Math.sqrt(3)/2;
+	private static final double HORIZONTAL_MARGIN_FACTOR = Math.sqrt(2)/ UNIFORM_HEIGHT_TO_WIDTH_RELATION;
 	/**
 	 * 
 	 */
@@ -39,7 +40,7 @@ class WideHexagonMainView extends VariableInsetsMainView {
 	}
 
 	protected double getVerticalMarginFactor() {
-		return 1.0;
+		return VERTICAL_MARGIN_FACTOR;
 	}
 	
 	protected double getHorizontalMarginFactor() {
@@ -53,17 +54,12 @@ class WideHexagonMainView extends VariableInsetsMainView {
 		}
 		if(getShapeConfiguration().isUniform()) {
 			final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
-			int w = prefSize.width;
-			int h = prefSize.height;
-			int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h))) ;
-			prefSize.width = (int) Math.ceil(Math.max(diameter, prefSize.width + getZoom() * getMinimumHorizontalInset()));
-			prefSize.height = (int) Math.ceil(Math.max(diameter, prefSize.height + getZoom() * getMinimumVerticalInset()));
-			if(prefSize.width < getMinimumWidth())
-				prefSize.width = getMinimumWidth();
-			if (prefSize.height < prefSize.width * UNIFORM_HEIGHT_TO_WIDTH_RELATION)
-				prefSize.height = (int) (prefSize.width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
-			else
-				prefSize.width = (int) (prefSize.height / UNIFORM_HEIGHT_TO_WIDTH_RELATION);
+			double w = prefSize.width + getZoom() * getMinimumHorizontalInset();
+			double h = prefSize.height + getZoom() * getMinimumVerticalInset();
+			double diameter = Math.sqrt(w * w + h * h);
+			double width = limitWidth (diameter/ UNIFORM_HEIGHT_TO_WIDTH_RELATION);
+			prefSize.width = (int) Math.ceil(width);
+			prefSize.height = (int) (width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
 			return prefSize;
 		}
 		else
