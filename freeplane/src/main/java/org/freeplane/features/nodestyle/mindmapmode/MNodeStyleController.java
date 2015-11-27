@@ -535,8 +535,24 @@ public class MNodeStyleController extends NodeStyleController {
 	public void setShape(final NodeModel node, final Shape shape) {
 		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withShape(shape));
-		
 	}
+	
+	public void setShapeHorizontalMargin(NodeModel node, Quantity<LengthUnits> margin) {
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		setShapeConfiguration(node, oldShape.withHorizontalMargin(margin));
+	}
+
+	public void setShapeVerticalMargin(NodeModel node, Quantity<LengthUnits> margin) {
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		setShapeConfiguration(node, oldShape.withVerticalMargin(margin));
+	}
+
+	public void setUniformShape(NodeModel node, boolean uniform) {
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		setShapeConfiguration(node, oldShape.withUniform(uniform));
+	}
+
+	
 	public void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
@@ -648,4 +664,5 @@ public class MNodeStyleController extends NodeStyleController {
 		getModeController().execute(actor, node.getMap());
 		
     }
+
 }

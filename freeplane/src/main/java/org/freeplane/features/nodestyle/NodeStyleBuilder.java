@@ -318,7 +318,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (! shapeHorizontalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
 			writer.addAttribute("SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMargin.toString());
 		}
-		final Quantity<LengthUnits> shapeVerticalMargin = shapeConfiguration.getHorizontalMargin();
+		final Quantity<LengthUnits> shapeVerticalMargin = shapeConfiguration.getVerticalMargin();
 		if (! shapeVerticalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
 			writer.addAttribute("SHAPE_VERTICAL_MARGIN", shapeVerticalMargin.toString());
 		}
