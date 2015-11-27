@@ -28,6 +28,7 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class OvalMainView extends VariableInsetsMainView {
+	private static final double MARGIN_FACTOR = Math.sqrt(2);
 	/**
 	 * 
 	 */
@@ -37,11 +38,11 @@ class OvalMainView extends VariableInsetsMainView {
     }
 	
 	protected double getVerticalMarginFactor() {
-		return (double) 1.5;
+		return MARGIN_FACTOR;
 	}
 
 	protected double getHorizontalMarginFactor() {
-		return 1.4;
+		return MARGIN_FACTOR;
 	}
 
 	@Override
