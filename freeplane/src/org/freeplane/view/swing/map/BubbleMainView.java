@@ -23,7 +23,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 
-abstract class BubbleMainView extends ShapedMainView {
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+
+class BubbleMainView extends ShapedMainView {
 
     /**
 	 * 
@@ -42,12 +44,17 @@ abstract class BubbleMainView extends ShapedMainView {
 		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 	}
     
-    public BubbleMainView() {
-		super();
+    
+    public BubbleMainView(ShapeConfigurationModel shapeConfiguration) {
+		super(shapeConfiguration);
 	}
-    
-    
-    abstract public Insets getInsets();
+
+	public Insets getInsets(){
+    	final ShapeConfigurationModel shapeConfiguration = getShapeConfiguration();
+    	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded();
+    	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded();
+    	return new Insets(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin);
+    }
     
     @Override
     public Insets getInsets(Insets insets) {

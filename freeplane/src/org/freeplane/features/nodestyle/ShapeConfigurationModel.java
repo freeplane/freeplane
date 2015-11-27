@@ -17,6 +17,41 @@ public class ShapeConfigurationModel {
 		this.verticalMargin = verticalMargin;
 		this.isUniform = isUniform;
 	}
+	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((horizontalMargin == null) ? 0 : horizontalMargin.hashCode());
+		result = prime * result + (isUniform ? 1231 : 1237);
+		result = prime * result + ((shape == null) ? 0 : shape.hashCode());
+		result = prime * result + ((verticalMargin == null) ? 0 : verticalMargin.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ShapeConfigurationModel other = (ShapeConfigurationModel) obj;
+		if (shape != other.shape)
+			return false;
+		if (isUniform != other.isUniform)
+			return false;
+		if (!horizontalMargin.equals(other.horizontalMargin))
+			return false;
+		if (!verticalMargin.equals(other.verticalMargin))
+			return false;
+		return true;
+	}
+
+
+
 	final static public Quantity<LengthUnits> DEFAULT_MARGIN = new Quantity<LengthUnits>(2, LengthUnits.pt);
 	public static ShapeConfigurationModel EMTPY_SHAPE = new ShapeConfigurationModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
 	public static final ShapeConfigurationModel AS_PARENT = EMTPY_SHAPE.withShape(Shape.as_parent);
