@@ -187,7 +187,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private Integer fontSize = null;
 	private Boolean isBold = null;
 	private Boolean isItalic = null;
-	private ShapeConfigurationModel shapeConfiguration = ShapeConfigurationModel.EMTPY_SHAPE;
+	private ShapeConfigurationModel shapeConfiguration = ShapeConfigurationModel.NULL_SHAPE;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
 	private  TextAlign textAlign = null;

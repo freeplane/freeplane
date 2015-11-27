@@ -53,9 +53,9 @@ public class ShapeConfigurationModel {
 
 
 	final static public Quantity<LengthUnits> DEFAULT_MARGIN = new Quantity<LengthUnits>(2, LengthUnits.pt);
-	public static ShapeConfigurationModel EMTPY_SHAPE = new ShapeConfigurationModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
-	public static final ShapeConfigurationModel AS_PARENT = EMTPY_SHAPE.withShape(Shape.as_parent);
-	public static final ShapeConfigurationModel FORK = EMTPY_SHAPE.withShape(Shape.fork);
+	public static ShapeConfigurationModel NULL_SHAPE = new ShapeConfigurationModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
+	public static final ShapeConfigurationModel AS_PARENT = NULL_SHAPE.withShape(Shape.as_parent);
+	public static final ShapeConfigurationModel FORK = NULL_SHAPE.withShape(Shape.fork);
 	public NodeStyleModel.Shape getShape() {
 		return shape;
 	}
