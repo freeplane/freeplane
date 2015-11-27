@@ -40,6 +40,7 @@ import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -106,14 +107,43 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_COLOR", bgHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BACKGROUND_COLOR", bgHandler);
-		final IAttributeHandler styleHandler = new IAttributeHandler() {
+		
+		final IAttributeHandler shapeHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				NodeStyleModel.setShape(node, value);
 			}
 		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", styleHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "STYLE", styleHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", shapeHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "STYLE", shapeHandler);
+		
+		final IAttributeHandler shapeHorizontalMarginHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setShapeHorizontalMargin(node, Quantity.fromString(value, LengthUnits.px));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMarginHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMarginHandler);
+		
+		final IAttributeHandler shapeVerticalMarginHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setShapeVerticalMargin(node, Quantity.fromString(value, LengthUnits.px));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "SHAPE_VERTICAL_MARGIN", shapeVerticalMarginHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "SHAPE_VERTICAL_MARGIN", shapeVerticalMarginHandler);
+
+		final IAttributeHandler uniformShapeHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setShapeUniform(node, Boolean.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "UNIFORM_SHAPE", uniformShapeHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "UNIFORM_SHAPE", uniformShapeHandler);
+
 		reader.addAttributeHandler("font", "SIZE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final FontProperties fp = (FontProperties) userObject;
@@ -278,9 +308,22 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (backgroundColor != null) {
 			writer.addAttribute("BACKGROUND_COLOR", ColorUtils.colorToString(backgroundColor));
 		}
-		final NodeStyleModel.Shape shape = forceFormatting ? nsc.getShape(node) : style.getShape();
+		final ShapeConfigurationModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
+		final Shape shape = shapeConfiguration.getShape();
 		if (shape != null) {
 			writer.addAttribute("STYLE", shape.toString());
+		}
+		final Quantity<LengthUnits> shapeHorizontalMargin = shapeConfiguration.getHorizontalMargin();
+		if (! shapeHorizontalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
+			writer.addAttribute("SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMargin.toString());
+		}
+		final Quantity<LengthUnits> shapeVerticalMargin = shapeConfiguration.getVerticalMargin();
+		if (! shapeVerticalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
+			writer.addAttribute("SHAPE_VERTICAL_MARGIN", shapeVerticalMargin.toString());
+		}
+		final boolean uniformShape = shapeConfiguration.isUniform();
+		if (uniformShape) {
+			writer.addAttribute("UNIFORM_SHAPE", "true");
 		}
 		final Boolean numbered = forceFormatting ? nsc.getNodeNumbering(node) : style.getNodeNumbering();
 		if (numbered != null && numbered) {

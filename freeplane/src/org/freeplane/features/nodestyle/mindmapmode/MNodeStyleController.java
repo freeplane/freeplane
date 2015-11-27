@@ -36,6 +36,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
@@ -222,7 +223,7 @@ public class MNodeStyleController extends NodeStyleController {
 		if (sourceStyleModel != null) {
 			setColor(target, sourceStyleModel.getColor());
 			setBackgroundColor(target, sourceStyleModel.getBackgroundColor());
-			setShape(target, sourceStyleModel.getShape());
+			setShapeConfiguration(target, sourceStyleModel.getShapeConfiguration());
 			setFontFamily(target, sourceStyleModel.getFontFamilyName());
 			setFontSize(target, sourceStyleModel.getFontSize());
 			setBold(target, sourceStyleModel.isBold());
@@ -532,11 +533,32 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 	
 	public void setShape(final NodeModel node, final Shape shape) {
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		setShapeConfiguration(node, oldShape.withShape(shape));
+	}
+	
+	public void setShapeHorizontalMargin(NodeModel node, Quantity<LengthUnits> margin) {
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		setShapeConfiguration(node, oldShape.withHorizontalMargin(margin));
+	}
+
+	public void setShapeVerticalMargin(NodeModel node, Quantity<LengthUnits> margin) {
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		setShapeConfiguration(node, oldShape.withVerticalMargin(margin));
+	}
+
+	public void setUniformShape(NodeModel node, boolean uniform) {
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		setShapeConfiguration(node, oldShape.withUniform(uniform));
+	}
+
+	
+	public void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final Shape oldShape = NodeStyleModel.getShape(node);
+		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		final IActor actor = new IActor() {
 			public void act() {
-				NodeStyleModel.setShape(node, shape);
+				NodeStyleModel.setShapeConfiguration(node, shape);
 				modeController.getMapController().nodeChanged(node);
 				childShapeRefresh(node);
 			}
@@ -558,7 +580,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			public void undo() {
-				NodeStyleModel.setShape(node, oldShape);
+				NodeStyleModel.setShapeConfiguration(node, oldShape);
 				modeController.getMapController().nodeChanged(node);
 				childShapeRefresh(node);
 			}
@@ -642,4 +664,5 @@ public class MNodeStyleController extends NodeStyleController {
 		getModeController().execute(actor, node.getMap());
 		
     }
+
 }

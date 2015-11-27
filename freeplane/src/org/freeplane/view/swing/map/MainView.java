@@ -67,6 +67,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.MapViewLayout;
@@ -184,7 +185,8 @@ public abstract class MainView extends ZoomableLabel {
 
 	public abstract Point getRightPoint();
 
-	public abstract Shape getShape();
+	
+	abstract public ShapeConfigurationModel getShapeConfiguration();
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();

@@ -71,6 +71,7 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyleModel;
@@ -1464,16 +1465,16 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void updateShape() {
-		final Shape newShape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-		final Shape oldShape;
+		final ShapeConfigurationModel newShape = NodeStyleController.getController(getMap().getModeController()).getShapeConfiguration(model);
+		final ShapeConfigurationModel oldShape;
 		if(mainView != null)
-			oldShape = mainView.getShape();
+			oldShape = mainView.getShapeConfiguration();
 		else
 			oldShape = null;
 		if (mainView != null && oldShape.equals(newShape))
 			return;
 		final MainView newMainView = NodeViewFactory.getInstance().newMainView(this);
-		if(newMainView.getShape().equals(oldShape))
+		if(newMainView.getShapeConfiguration().equals(oldShape))
 			return;
 		setMainView(newMainView);
 		if (map.getSelected() == this) {

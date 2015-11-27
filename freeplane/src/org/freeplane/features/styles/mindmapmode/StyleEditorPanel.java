@@ -39,7 +39,6 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -98,7 +97,9 @@ import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.AutomaticLayoutController;
@@ -113,6 +114,8 @@ import org.freeplane.features.ui.IMapViewManager;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
+
+import sun.java2d.pipe.ShapeSpanIterator;
 
 public class StyleEditorPanel extends JPanel {
 	private static final NamedObject AUTOMATIC_LAYOUT_DISABLED = new NamedObject("automatic_layout_disabled");
@@ -132,7 +135,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private class NodeShapeChangeListener extends ChangeListener {
-		public NodeShapeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public NodeShapeChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -141,7 +144,18 @@ public class StyleEditorPanel extends JPanel {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller
 			.getCurrentModeController().getExtension(
 					NodeStyleController.class);
-			styleController.setShape(node, enabled ? mNodeShape.getValue() : null);
+			if(enabled){
+				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE
+						.withShape(NodeStyleModel.Shape.valueOf(mNodeShape.getValue()))
+						.withHorizontalMargin(mShapeHorizontalMargin.getQuantifiedValue())
+						.withVerticalMargin(mShapeVerticalMargin.getQuantifiedValue())
+						.withUniform(mUniformShape.getBooleanValue())
+						);
+			}
+			else
+				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE);
+			final Shape shape = styleController.getShape(node);
+			enableShapeConfigurationProperties(enabled, shape);
 		}
 	}
 
@@ -413,13 +427,13 @@ public class StyleEditorPanel extends JPanel {
 		
 	}
 	private abstract class ChangeListener implements PropertyChangeListener {
-		final private IPropertyControl mProperty;
+		final private Collection<IPropertyControl> properties;
 		final private BooleanProperty mSet;
 
-		public ChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public ChangeListener(final BooleanProperty mSet, final IPropertyControl... properties) {
 			super();
 			this.mSet = mSet;
-			this.mProperty = mProperty;
+			this.properties = Arrays.asList(properties);
 		}
 
 		abstract void applyValue(final boolean enabled, NodeModel node, PropertyChangeEvent evt);
@@ -433,9 +447,8 @@ public class StyleEditorPanel extends JPanel {
 				enabled = mSet.getBooleanValue();
 			}
 			else {
-				assert evt.getSource().equals(mProperty);
+				assert properties.contains(evt.getSource());
 				enabled = true;
-				mSet.setValue(true);
 			}
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			final Collection<NodeModel> nodes = selection.getSelection();
@@ -444,6 +457,8 @@ public class StyleEditorPanel extends JPanel {
 			for (final NodeModel node : nodes) {
 				applyValue(enabled, node, evt);
 			}
+			if (enabled  && ! mSet.getBooleanValue())
+				mSet.setValue(true);
 			internalChange = false;
 			setStyle(selection.getSelected());
 		}
@@ -478,6 +493,9 @@ public class StyleEditorPanel extends JPanel {
 	private static final String MAX_TEXT_WIDTH = "max_node_width";
 	private static final String MIN_NODE_WIDTH = "min_node_width";
 	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
+	private static final String SHAPE_HORIZONTAL_MARGIN = "shape_horizontal_margin";
+	private static final String SHAPE_VERTICAL_MARGIN = "shape_vertical_margin";
+	private static final String UNIFORM_SHAPE = "uniform_shape";
 	
 	
 	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass, int length) {
@@ -510,6 +528,9 @@ public class StyleEditorPanel extends JPanel {
 	private ComboProperty mNodeFontSize;
 	private BooleanProperty mNodeNumbering;
 	private ComboProperty mNodeShape;
+	private QuantityProperty<LengthUnits> mShapeHorizontalMargin;
+	private QuantityProperty<LengthUnits> mShapeVerticalMargin;
+	private BooleanProperty mUniformShape;
 	private EditablePatternComboProperty mNodeFormat;
 	private QuantityProperty<LengthUnits> mMaxNodeWidth;
 	private QuantityProperty<LengthUnits> mMinNodeWidth;
@@ -755,14 +776,27 @@ public class StyleEditorPanel extends JPanel {
 		mNodeFontSize.fireOnMouseClick();
 	}
 
-	private void addNodeShapeControl(final List<IPropertyControl> controls) {
+	private void addNodeShapeControls(final List<IPropertyControl> controls) {
 		mSetNodeShape = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetNodeShape);
 		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, enumStrings(NodeStyleModel.Shape.class));
 		controls.add(mNodeShape);
-		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape);
+		controls.add(new NextColumnProperty(2));
+		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(StyleEditorPanel.SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
+		controls.add(mShapeHorizontalMargin);
+		controls.add(new NextColumnProperty(2));
+		mShapeVerticalMargin = new QuantityProperty<LengthUnits>(StyleEditorPanel.SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
+		controls.add(mShapeVerticalMargin);
+		controls.add(new NextColumnProperty(2));
+		mUniformShape = new BooleanProperty(StyleEditorPanel.UNIFORM_SHAPE);
+		controls.add(mUniformShape);
+		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape, mShapeHorizontalMargin, mShapeVerticalMargin, mUniformShape);
 		mSetNodeShape.addPropertyChangeListener(listener);
 		mNodeShape.addPropertyChangeListener(listener);
+		mShapeHorizontalMargin.addPropertyChangeListener(listener);
+		mShapeVerticalMargin.addPropertyChangeListener(listener);
+		mUniformShape.addPropertyChangeListener(listener);
+		
 		mNodeShape.fireOnMouseClick();
 	}
 
@@ -791,7 +825,7 @@ public class StyleEditorPanel extends JPanel {
 		addFormatControl(controls);
 		addNodeNumberingControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
-		addNodeShapeControl(controls);
+		addNodeShapeControls(controls);
 		addMinNodeWidthControl(controls);
 		addMaxNodeWidthControl(controls);
 		addChildDistanceControl(controls);
@@ -974,9 +1008,14 @@ public class StyleEditorPanel extends JPanel {
 			}
 			{
 				final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
-				final NodeStyleModel.Shape viewShape = styleController.getShape(node);
-				mSetNodeShape.setValue(shape != null);
-				mNodeShape.setValue(viewShape.toString());
+				ShapeConfigurationModel viewShape = styleController.getShapeConfiguration(node);
+				final boolean enabled = shape != null;
+				mSetNodeShape.setValue(enabled);
+				mNodeShape.setValue(viewShape.getShape().toString());
+				enableShapeConfigurationProperties(enabled, shape);
+				mShapeHorizontalMargin.setQuantifiedValue(viewShape.getHorizontalMargin());
+				mShapeVerticalMargin.setQuantifiedValue(viewShape.getVerticalMargin());
+				mUniformShape.setValue(viewShape.isUniform());
 			}
 			final NodeSizeModel nodeSizeModel = NodeSizeModel.getModel(node);
 			{
@@ -1178,5 +1217,12 @@ public class StyleEditorPanel extends JPanel {
 				}
 			}
 		});
+	}
+
+	private void enableShapeConfigurationProperties(final boolean enabled, final Shape shape) {
+		final boolean enableConfigurationProperties = enabled && shape.hasConfiguration;
+		mShapeHorizontalMargin.setEnabled(enableConfigurationProperties);
+		mShapeVerticalMargin.setEnabled(enableConfigurationProperties);
+		mUniformShape.setEnabled(enableConfigurationProperties);
 	}
 }

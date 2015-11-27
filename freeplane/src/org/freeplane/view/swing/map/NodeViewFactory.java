@@ -41,6 +41,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
@@ -70,46 +71,34 @@ class NodeViewFactory {
 	}
 
 	MainView newMainView(final NodeView node) {
-		Shape shape = shape(node);
+		ShapeConfigurationModel shapeConfiguration = shapeConfiguration(node);
 		final MainView oldView = node.getMainView();
-		if(oldView != null && oldView.getShape().equals(shape))
+		if(oldView != null && oldView.getShapeConfiguration().equals(shapeConfiguration))
 			return oldView;
 		final ModeController modeController = node.getMap().getModeController();
 		final MainView view;
 		
-		switch(shape){
+		switch(shapeConfiguration.getShape()){
 		case fork:
 			view =  new ForkMainView();
 			break;
 		case bubble:
-			view =  new BigBubbleMainView();
-			break;
-		case small_bubble:
-			view =  new SmallBubbleMainView();
+			view =  new BubbleMainView(shapeConfiguration);
 			break;
 		case oval:
-			view =  new BigOvalMainView();
+			view =  new OvalMainView(shapeConfiguration);
 			break;
-		case circle:
-			view = new CircleMainView();
-			break;
-		case hexagon:
-			view = new HexagonMainView();
-			break;
-		case hexagon2:
-			view = new Hexagon2MainView();
+		case rectangle:
+			view =  new RectangleMainView(shapeConfiguration);
 			break;
 		case wide_hexagon:
-			view = new WideHexagonMainView();
-			break;
-		case small_wide_hexagon:
-			view = new SmallWideHexagonMainView();
+			view = new WideHexagonMainView(shapeConfiguration);
 			break;
 		case narrow_hexagon:
-			view = new NarrowHexagonMainView();
+			view = new NarrowHexagonMainView(shapeConfiguration);
 			break;
 		default:
-			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
+			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shapeConfiguration.getShape()));
 			view = new ForkMainView();
 
 		}
@@ -119,26 +108,26 @@ class NodeViewFactory {
 		return view;
 	}
 
-	private Shape shape(NodeView node) {
+	private ShapeConfigurationModel shapeConfiguration(NodeView node) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
-		Shape shape = NodeStyleController.getController(modeController).getShape(model);
-		if (shape.equals(NodeStyleModel.Shape.combined)) {
+		ShapeConfigurationModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model);
+		if (shapeConfiguration.getShape().equals(NodeStyleModel.Shape.combined)) {
 			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
-				shape= NodeStyleModel.Shape.bubble;
+				shapeConfiguration= shapeConfiguration.withShape(NodeStyleModel.Shape.bubble);
 			}
 			else {
-				shape = NodeStyleModel.Shape.fork;
+				shapeConfiguration = ShapeConfigurationModel.FORK;
 			}
 		}
-		else while(shape.equals(NodeStyleModel.Shape.as_parent)){
+		else while(shapeConfiguration.getShape().equals(NodeStyleModel.Shape.as_parent)){
 			node = node.getParentView();
 			if (node == null)
-				shape = NodeStyleModel.Shape.fork;
+				shapeConfiguration = ShapeConfigurationModel.FORK;
 			else
-				shape = node.getMainView().getShape();
+				shapeConfiguration = node.getMainView().getShapeConfiguration();
 		}
-		return shape;
+		return shapeConfiguration;
 	}
 
 	/**

@@ -54,6 +54,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 /**
  * @author Dimitry Polivaev
@@ -134,7 +135,7 @@ public class MapStyleModel implements IExtension {
         	hints.put(Hint.MODE, Mode.FILE);
         	hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
-			NodeStyleModel.setShape(root, NodeStyleModel.Shape.circle);
+			NodeStyleModel.setShapeConfiguration(root, ShapeConfigurationModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
 			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
 			final int styleBlockGap = ResourceController.getResourceController().getLengthProperty("style_block_gap");

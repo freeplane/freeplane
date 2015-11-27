@@ -31,6 +31,7 @@ import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class ForkMainView extends MainView {
 	/**
@@ -77,16 +78,6 @@ class ForkMainView extends MainView {
 		int edgeWidth = getEdgeWidth();
 		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2);
 		return in;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getStyle()
-	 */
-	@Override
-    public
-    Shape getShape() {
-		return NodeStyleModel.Shape.fork;
 	}
 
 	@Override
@@ -143,6 +134,11 @@ class ForkMainView extends MainView {
 	@Override
 	public int getSingleChildShift() {
 		return SINGLE_CHILD_SHIFT;
+	}
+
+	@Override
+	public ShapeConfigurationModel getShapeConfiguration() {
+		return ShapeConfigurationModel.FORK;
 	}
 	
 }

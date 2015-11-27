@@ -24,15 +24,27 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public enum Shape{fork, bubble, small_bubble, oval, circle, hexagon, hexagon2, wide_hexagon, small_wide_hexagon, narrow_hexagon, as_parent, combined}
-	
+	public enum Shape{fork(false), bubble, oval, rectangle, wide_hexagon, narrow_hexagon, as_parent(false), combined;
+		public final boolean hasConfiguration;
+
+		private Shape() {
+			this(true);
+		}
+		private Shape(boolean hasConfiguration) {
+			this.hasConfiguration = hasConfiguration;
+		}
+
+	}
+
 	public enum TextAlign {
 		DEFAULT(SwingConstants.LEFT), 
 		LEFT(SwingConstants.LEFT), 
@@ -94,6 +106,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getShape();
 	}
 
+	public static ShapeConfigurationModel getShapeConfiguration(final NodeModel node) {
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getShapeConfiguration();
+	}
+
 	public static Boolean isBold(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.isBold();
@@ -138,7 +155,27 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShape(shape);
 	}
+	
+	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withHorizontalMargin(margin));
+	}
+	
+	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withVerticalMargin(margin));
+	}
 
+	public static void setShapeUniform(final NodeModel node, final boolean uniform) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withUniform(uniform));
+	}
+
+	public static void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(shape);
+	}
+	
 	public static void setTextAlign(final NodeModel node, final TextAlign textAlign) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setTextAlign(textAlign);
@@ -150,7 +187,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private Integer fontSize = null;
 	private Boolean isBold = null;
 	private Boolean isItalic = null;
-	private Shape shape;
+	private ShapeConfigurationModel shapeConfiguration = ShapeConfigurationModel.NULL_SHAPE;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
 	private  TextAlign textAlign = null;
@@ -173,8 +210,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	        nodeStyleModel.setFontSize(fontSize);
 	    if(isItalic != null)
 	        nodeStyleModel.setItalic(isItalic);
-	    if(shape != null)
-	        nodeStyleModel.setShape(shape);
+	    if(getShapeConfiguration() != null)
+			nodeStyleModel.setShapeConfiguration(getShapeConfiguration());
 	    if(nodeFormat != null)
 	            nodeStyleModel.setNodeFormat(nodeFormat);
 	    if(nodeNumbering != null)
@@ -209,7 +246,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
     }
 
 	public Shape getShape() {
-		return shape;
+		return getShapeConfiguration().getShape();
 	}
 
 	public Boolean isBold() {
@@ -258,20 +295,25 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public void setShape(final String shape) {
 		try {
-			if(shape != null)
-				this.shape = Shape.valueOf(shape);
-			else
-				this.shape = null;
+			this.setShapeConfiguration(getShapeConfiguration().withShape(shape != null ? Shape.valueOf(shape) : null));
 		} catch (IllegalArgumentException e) {
-			LogUtils.warn("unknown shape " + shape, e);
+			LogUtils.warn("unknown shape " + shape);
 		}
 	}
 	
 	public void setShape(final Shape shape) {
-		this.shape = shape;
+		this.setShapeConfiguration(getShapeConfiguration().withShape(shape));
 	}
 	
 	public void setTextAlign(final TextAlign textAlign) {
 		this.textAlign = textAlign;
+	}
+
+	public ShapeConfigurationModel getShapeConfiguration() {
+		return shapeConfiguration;
+	}
+
+	public void setShapeConfiguration(ShapeConfigurationModel shapeConfiguration) {
+		this.shapeConfiguration = shapeConfiguration;
 	}
 }
