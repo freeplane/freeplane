@@ -1,8 +1,10 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
@@ -38,6 +40,33 @@ abstract public class ShapedMainView extends MainView {
 		return in;
 	}
 
+	public Insets getInsets(){
+    	final ShapeConfigurationModel shapeConfiguration = getShapeConfiguration();
+    	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded();
+    	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded();
+    	return new Insets(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin);
+    }
+    
+    @Override
+    public Insets getInsets(Insets insets) {
+        return getInsets();
+    }
+    
+	@Override
+	public Dimension getPreferredSize() {
+		final Dimension preferredSize = super.getPreferredSize();
+		if (isPreferredSizeSet()) {
+			return preferredSize;
+		}
+		if(getShapeConfiguration().isUniform()) {
+			if(preferredSize.width < preferredSize.height)
+				preferredSize.width = preferredSize.height;
+			else 
+				preferredSize.height = preferredSize.width;
+		}
+		return preferredSize;
+	}
+	
 	@Override
 	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;

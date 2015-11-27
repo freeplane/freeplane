@@ -33,7 +33,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public enum Shape{fork(false), bubble, oval, wide_hexagon, narrow_hexagon, as_parent(false), combined;
+	public enum Shape{fork(false), bubble, oval, rectangle, wide_hexagon, narrow_hexagon, as_parent(false), combined;
 		public final boolean hasConfiguration;
 
 		private Shape() {
@@ -297,7 +297,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		try {
 			this.setShapeConfiguration(getShapeConfiguration().withShape(shape != null ? Shape.valueOf(shape) : null));
 		} catch (IllegalArgumentException e) {
-			LogUtils.warn("unknown shape " + shape, e);
+			LogUtils.warn("unknown shape " + shape);
 		}
 	}
 	
