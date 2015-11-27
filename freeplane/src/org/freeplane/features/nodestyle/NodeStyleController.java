@@ -122,10 +122,6 @@ public class NodeStyleController implements IExtension {
 			public ShapeConfigurationModel getProperty(final NodeModel node, final ShapeConfigurationModel currentValue) {
 				return ShapeConfigurationModel.AS_PARENT;
 			}
-
-			private Shape getShape(final NodeModel node) {
-				return Shape.as_parent;
-			}
 		});
 		
 		addTextAlignGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<TextAlign, NodeModel>() {
