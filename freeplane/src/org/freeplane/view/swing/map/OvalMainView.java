@@ -70,17 +70,10 @@ class OvalMainView extends VariableInsetsMainView {
 		}
 		if(getShapeConfiguration().isUniform()){
 			final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
-			int w = prefSize.width;
-			int h = prefSize.height;
+			double w = prefSize.width + getZoom() * getMinimumHorizontalInset();
+			double h = prefSize.height + getZoom() * getMinimumVerticalInset();
 			int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h)));
-			prefSize.width = (int) Math.ceil(Math.max(diameter, prefSize.width + getZoom() * getMinimumHorizontalInset()));
-			prefSize.height = (int) Math.ceil(Math.max(diameter, prefSize.height + getZoom() * getMinimumVerticalInset()));
-			if(prefSize.width < getMinimumWidth())
-				prefSize.width = getMinimumWidth();
-			if (prefSize.height < prefSize.width)
-				prefSize.height = prefSize.width;
-			else
-				prefSize.width = prefSize.height;
+			prefSize.width = prefSize.height = limitWidth(diameter);
 			return prefSize;
 		}
 		else 
