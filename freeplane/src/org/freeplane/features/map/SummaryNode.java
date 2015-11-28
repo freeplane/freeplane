@@ -70,7 +70,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 			
 			@Override
 			public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-				if (! parent.isFolded() && ! parent.hasChildren() && isSummaryNode(parent)&& parent.getText().isEmpty()){
+				if (!modeController.isUndoAction() && ! parent.isFolded() && ! parent.hasChildren() && isSummaryNode(parent)&& parent.getText().isEmpty()){
 					MMapController mapController =  (MMapController) modeController.getMapController();
 					mapController.deleteNode(parent);
 				}
