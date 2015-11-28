@@ -130,7 +130,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		}
 		final EditNodeTextField textField = new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, editControl);
 		if(EditedComponent.TEXT.equals(parent))
-			textField.setBackground (nodeView.getTextBackground());
+			textField.setBackground (((MainView)parentComponent).getPaintedBackground());
 		else if(EditedComponent.DETAIL.equals(parent))
 			textField.setBackground (nodeView.getDetailBackground());
 		return textField;
