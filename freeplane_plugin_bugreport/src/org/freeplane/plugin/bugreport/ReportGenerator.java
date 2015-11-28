@@ -171,7 +171,7 @@ public class ReportGenerator extends StreamHandler {
 			revision = FreeplaneVersion.getVersion().getRevision();
 			
 			if(! revision.equals("")){
-				sb.append("\nbzr revision = ");
+				sb.append("\ngit revision = ");
 				sb.append(revision);
 			}
 			sb.append("\njava_version = ");

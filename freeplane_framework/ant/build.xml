@@ -211,7 +211,7 @@
 			failifexecutionfails="false" failonerror="false" logError="true"
 			resultproperty="gitresult">
 			<arg value='log'/>
-			<arg value='--pretty=format:git-revision=%h_%an_%ai'/>
+			<arg value='--pretty=format:git-revision=%H %cn %ci'/>
 			<arg value='-n1'/>
 		</exec>
 		<condition property="gitok" value="">
@@ -221,7 +221,6 @@
 
 	<target name="git_version_info" depends="rungit" unless="giterror">
 		<native2ascii src="${build}" dest="${dist}" includes="gitinfo.txt" ext=".properties"/>
-		<replaceregexp file="${dist}/gitinfo.properties" flags="g" byline="false" match="[^\w=-]" replace="" />
 		<property file="${dist}/gitinfo.properties"/>
 		<exec dir="${build}" executable="git" output="${build}/gitinfo.txt" append="true"
             failifexecutionfails="false" failonerror="false" logError="true">
