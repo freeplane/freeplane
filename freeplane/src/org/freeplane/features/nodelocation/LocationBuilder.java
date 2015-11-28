@@ -40,12 +40,14 @@ class LocationBuilder implements IExtensionAttributeWriter {
 				LocationModel.createLocationModel(node).setShiftY(Integer.parseInt(value));
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP", new IAttributeHandler() {
+		final IAttributeHandler vgapHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				LocationModel.createLocationModel(node).setVGap(Integer.parseInt(value));
 			}
-		});
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP", vgapHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP", vgapHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "HGAP", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
