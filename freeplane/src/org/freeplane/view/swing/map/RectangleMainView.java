@@ -20,7 +20,9 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
@@ -45,6 +47,36 @@ class RectangleMainView extends ShapedMainView {
     
     public RectangleMainView(ShapeConfigurationModel shapeConfiguration) {
 		super(shapeConfiguration);
+	}
+
+	public Insets getInsets(){
+    	final ShapeConfigurationModel shapeConfiguration = getShapeConfiguration();
+    	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded();
+    	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded();
+    	return new Insets(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin);
+    }
+    
+    @Override
+    public Insets getInsets(Insets insets) {
+        return getInsets();
+    }
+    
+	@Override
+	public Dimension getPreferredSize() {
+		final Dimension preferredSize = super.getPreferredSize();
+		if (isPreferredSizeSet()) {
+			return preferredSize;
+		}
+		
+		preferredSize.width = limitWidth(preferredSize.width);
+
+		if(getShapeConfiguration().isUniform()) {
+			if(preferredSize.width < preferredSize.height)
+				preferredSize.width = preferredSize.height;
+			else 
+				preferredSize.height = preferredSize.width;
+		}
+		return preferredSize;
 	}
 
 

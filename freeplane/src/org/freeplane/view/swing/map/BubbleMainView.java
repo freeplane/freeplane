@@ -24,7 +24,7 @@ import java.awt.Graphics2D;
 
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-class BubbleMainView extends ShapedMainView {
+class BubbleMainView extends RectangleMainView {
 
     /**
 	 * 
