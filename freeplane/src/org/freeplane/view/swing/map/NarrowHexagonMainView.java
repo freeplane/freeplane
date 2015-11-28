@@ -79,13 +79,13 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 		final Polygon polygon;
 		if(getShapeConfiguration().isUniform()){
 			int[] xCoords = new int[]{getWidth() / 2, 0,  0,  getWidth() / 2, getWidth() - 1, getWidth() - 1};
-			int[] yCoords = new int[]{0,   getHeight()/4, 3 * getHeight() /4 , getHeight(),      3 * getHeight() / 4, getHeight() / 4};
+			int[] yCoords = new int[]{0,   getHeight()/4, 3 * getHeight() /4 , getHeight() - 1,      3 * getHeight() / 4, getHeight() / 4};
 			polygon = new Polygon(xCoords, yCoords, xCoords.length);
 		}
 		else {
 			final int zoomedVerticalInset = (int) (getHeight() * (1 - 1 / getVerticalMarginFactor() ) / 2);
 			int[] xCoords = new int[]{0,                        getWidth()/2, getWidth() -1,            getWidth() - 1,                             getWidth()/2,   0};
-			int[] yCoords = new int[]{zoomedVerticalInset, 0,            zoomedVerticalInset, getHeight() - zoomedVerticalInset - 1, getHeight() - 1,getHeight() - zoomedVerticalInset - 1, };
+			int[] yCoords = new int[]{zoomedVerticalInset, 0,            zoomedVerticalInset, getHeight() - zoomedVerticalInset - 1, getHeight() - 1,getHeight() - zoomedVerticalInset - 1};
 			polygon = new Polygon(xCoords, yCoords, xCoords.length);
 		}
 		return polygon;
