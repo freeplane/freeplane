@@ -27,7 +27,7 @@ task createGitProperty(type: Exec) {
 
     ignoreExitValue = true
 
-    commandLine 'git', 'log', '--pretty=format:git-revision=%h_%an_%ai', '-n1'
+    commandLine 'git', 'log', '--pretty=format:git-revision=%H %cn %ci', '-n1'
 
     doFirst {
         standardOutput = new FileOutputStream(new File(globalBuild, 'gitinfo.txt'))
@@ -39,7 +39,6 @@ task createGitProperty(type: Exec) {
                 include('gitinfo.txt')
                 rename('gitinfo.txt', 'gitinfo.properties')
                 filter(org.apache.tools.ant.filters.EscapeUnicode)
-                filter { line -> line.replaceAll('[^\\w=-]', '') }
             }
             into(globalBuild + '/resources')
         }
