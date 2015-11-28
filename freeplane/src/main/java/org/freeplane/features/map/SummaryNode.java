@@ -20,6 +20,9 @@
 package org.freeplane.features.map;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -31,6 +34,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "SummaryNode", onceForMap = false)
 public class SummaryNode extends PersistentNodeHook implements IExtension{
 	
+	private ModeController modeController;
+
 	public static void install(){
 		new SummaryNode();
 		new FirstGroupNode();
@@ -38,6 +43,45 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	
 	static public boolean isFirstGroupNode(final NodeModel nodeModel) {
 		return nodeModel.containsExtension(FirstGroupNode.class);
+	}
+	
+	
+
+	public SummaryNode() {
+		super();
+		modeController = Controller.getCurrentModeController();
+		modeController.getMapController().addMapChangeListener(new IMapChangeListener() {
+			
+			@Override
+			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+			}
+			
+			@Override
+			public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+			}
+			
+			@Override
+			public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+			}
+			
+			@Override
+			public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+			}
+			
+			@Override
+			public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+				if (! parent.isFolded() && ! parent.hasChildren() && isSummaryNode(parent)&& parent.getText().isEmpty()){
+					MMapController mapController =  (MMapController) modeController.getMapController();
+					mapController.deleteNode(parent);
+				}
+			}
+			
+			@Override
+			public void mapChanged(MapChangeEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	@Override
