@@ -36,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -97,6 +98,8 @@ public class ColorTracker implements ActionListener, Serializable {
 		}
 		dialog.addWindowListener(new Closer());
 		dialog.addComponentListener(new DisposeOnClose());
+		dialog.pack();
+		UITools.setDialogLocationRelativeTo(dialog, component);
 		dialog.setVisible(true);
 		return ok.getColor();
 	}
