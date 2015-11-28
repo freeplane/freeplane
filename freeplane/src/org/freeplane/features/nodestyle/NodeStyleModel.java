@@ -108,7 +108,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public static ShapeConfigurationModel getShapeConfiguration(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getShapeConfiguration();
+		return styleModel == null ? ShapeConfigurationModel.NULL_SHAPE : styleModel.getShapeConfiguration();
 	}
 
 	public static Boolean isBold(final NodeModel node) {
@@ -314,6 +314,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	}
 
 	public void setShapeConfiguration(ShapeConfigurationModel shapeConfiguration) {
+		if (shapeConfiguration == null)
+			throw new RuntimeException("Null pointer as shapeConfiguration");
 		this.shapeConfiguration = shapeConfiguration;
 	}
 }
