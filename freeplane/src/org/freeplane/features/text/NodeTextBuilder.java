@@ -241,6 +241,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			}
 			if(model.getLocalizedHtmlPropertyName() != null){
 				htmlElement.setAttribute("LOCALIZED_HTML", model.getLocalizedHtmlPropertyName());
+				writer.addElement(null, htmlElement);
 			}
 			else {
 				final String content = model.getXml().replace('\0', ' ');
