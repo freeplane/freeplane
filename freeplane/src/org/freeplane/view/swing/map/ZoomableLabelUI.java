@@ -119,7 +119,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		    }
 		} else {
 			if(zLabel.getMaximumWidth() != Integer.MAX_VALUE){
-				final int maximumWidth = (int) Math.ceil(zLabel.getMaximumWidth() / zoom);
+				final int maximumWidth = (int) (zLabel.getMaximumWidth() / zoom);
 				final Insets insets = label.getInsets();
 				viewR.width = maximumWidth - insets.left - insets.right;
 				if(viewR.width < 0)
