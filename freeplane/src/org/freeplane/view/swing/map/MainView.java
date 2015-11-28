@@ -383,16 +383,19 @@ public abstract class MainView extends ZoomableLabel {
     }
 
 	protected void paintBackgound(final Graphics2D g) {
+		final Color color = getPaintedBackground();
+		paintBackground(g, color);
+	}
+
+	public Color getPaintedBackground() {
 		final Color color;
 		if (getNodeView().useSelectionColors()) {
 			color = getNodeView().getSelectedColor();
-			paintBackground(g, color);
 		}
 		else {
 			color = getNodeView().getTextBackground();
 		}
-		
-		paintBackground(g, color);
+		return color;
 	}
 	abstract protected void paintBackground(final Graphics2D graphics, final Color color);
 
