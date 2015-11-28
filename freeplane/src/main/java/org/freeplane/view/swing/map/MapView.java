@@ -420,7 +420,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean isPrinting = false;
 	private final ModeController modeController;
 	final private MapModel model;
-	private NodeView nodeToBeVisible = null;
+	
+	enum ScrollingDirective {SCROLL_NODE_TO_CENTER, NODE_TO_LEFT, MAKE_NODE_VISIBLE, DONE, ANCHOR};
+	private ScrollingDirective scrollingDirective = ScrollingDirective.DONE;
+	private NodeView scrolledNode = null;
 	private NodeView rootView = null;
 	private boolean selectedsValid = true;
 	final private Selection selection = new Selection();
@@ -428,7 +431,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private float zoom = 1F;
 	private float anchorHorizontalPoint;
 	private float anchorVerticalPoint;
-	private NodeView nodeToBeCentered;
     private Font noteFont;
     private Font detailFont;
     private int detailHorizontalAlignment;
@@ -527,8 +529,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			anchorHorizontalPoint = horizontalPoint;
 			anchorVerticalPoint = verticalPoint;
 			this.anchorContentLocation = getAnchorCenterPoint();
-			if (nodeToBeVisible == null) {
-				nodeToBeVisible = anchor;
+			if (scrolledNode == null) {
+				scrolledNode = anchor;
+				scrollingDirective = ScrollingDirective.ANCHOR;
 				extraWidth = 0;
 			}
 		}
@@ -547,8 +550,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void centerNode(final NodeView node, boolean slowScroll) {
 		if (node != null) {
 			this.slowScroll = slowScroll;
-			nodeToBeVisible = null;
-			nodeToBeCentered = node;
+			scrolledNode = node;
+			scrollingDirective = ScrollingDirective.SCROLL_NODE_TO_CENTER;
 			if (isDisplayable())
 				centerNodeNow(slowScroll);
 		}
@@ -559,11 +562,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(slowScroll)
 			viewPort.putClientProperty(ViewController.SLOW_SCROLLING, Boolean.TRUE);
 		final Dimension d = viewPort.getExtentSize();
-		final JComponent content = nodeToBeCentered.getContent();
+		final JComponent content = scrolledNode.getContent();
 		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
 		        / 2, d.width, d.height);
 		content.scrollRectToVisible(rect);
-		nodeToBeCentered = null;
+		scrolledNode = null;
+		scrollingDirective = ScrollingDirective.DONE;
 		this.slowScroll = false;
 		this.anchorContentLocation = getAnchorCenterPoint();
     }
@@ -1811,14 +1815,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void scrollNodeToVisible(final NodeView node, final int extraWidth) {
-		if (nodeToBeCentered != null) {
-			if (node != nodeToBeCentered) {
+		if (scrolledNode != null && scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_CENTER) {
+			if (node != scrolledNode) {
 				centerNode(node, false);
 			}
 			return;
 		}
 		if (!isValid()) {
-			nodeToBeVisible = node;
+			scrolledNode = node;
+			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
 			this.extraWidth = extraWidth;
 			return;
 		}
@@ -1948,8 +1953,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void scrollView() {
-		if(nodeToBeCentered != null){
-			centerNode(nodeToBeCentered, slowScroll);
+		if(scrolledNode != null && scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_CENTER){
+			centerNode(scrolledNode, slowScroll);
 			return;
 		}
 		if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
@@ -1972,12 +1977,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else {
 			repaintVisible();
 		}
-		if (nodeToBeVisible != null) {
+		if (scrolledNode != null) {
 			final int scrollMode = vp.getScrollMode();
 			vp.setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
-			scrollNodeToVisible(nodeToBeVisible, extraWidth);
+			scrollNodeToVisible(scrolledNode, extraWidth);
 			vp.setScrollMode(scrollMode);
-			nodeToBeVisible = null;
+			scrolledNode = null;
+			scrollingDirective = ScrollingDirective.DONE;
 		}
 		anchor = getRoot();
 		anchorHorizontalPoint = anchorVerticalPoint = 0;
