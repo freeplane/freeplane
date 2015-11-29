@@ -1,19 +1,18 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class EntryNavigator {
-	private final Map<String, String> aliases = new HashMap<String, String>();
+	private final Map<String, String> aliases = new LinkedHashMap<String, String>();
 
 	public Entry findChildByPath(Entry top, String path) {
-		final String aliasedPath = aliases.get(path);
-		final String actualPath;
-		if (aliasedPath != null)
-			actualPath = aliasedPath;
-		else
-			actualPath = path;
-		return top.getChildByPath(actualPath.split("/"));
+		for (Map.Entry<String, String> entry : aliases.entrySet()) {
+			final String alias = entry.getKey();
+			if (path.startsWith(alias))
+				path = entry.getValue() + path.substring(alias.length());
+		}
+		return top.getChildByPath(path.split("/"));
 	}
 
 	public void addAlias(String alias, String path) {

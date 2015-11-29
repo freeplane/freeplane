@@ -23,7 +23,7 @@ public class EntryNavigatorTest {
 	@Test
 	public void findsChildByPathAlias() throws Exception {
 		final EntryNavigator entryNavigator = new EntryNavigator();
-		entryNavigator.addAlias("middle/up", "middle/down");
+		entryNavigator.addAlias("medium", "middle");
 		Entry top = new Entry();
 		Entry middle = new Entry();
 		top.addChild(middle);
@@ -31,6 +31,6 @@ public class EntryNavigatorTest {
 		Entry down = new Entry();
 		middle.addChild(down);
 		down.setName("down");
-		assertThat(entryNavigator.findChildByPath(top, "middle/up"), equalTo(down));
+		assertThat(entryNavigator.findChildByPath(top, "medium/down"), equalTo(down));
 	}
 }
