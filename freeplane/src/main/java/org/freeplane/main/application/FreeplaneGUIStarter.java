@@ -315,11 +315,11 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				contentPane.setVisible(false);
 				splash.dispose();
 				splash = null;
-				frame.setVisible(true);
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
 				loadMaps(options.getFilesToOpenAsArray());
+				frame.setVisible(true);
 				focusCurrentView();
 				viewController.getContentPane().setVisible(true);
 				frame.toFront();
