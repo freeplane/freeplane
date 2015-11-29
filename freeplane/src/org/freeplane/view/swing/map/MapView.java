@@ -1608,6 +1608,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void scrollNodeToVisible(final NodeView node, final int extraWidth) {
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {
 			if (node != scrolledNode) {
+				if (scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_THE_LEFT && !node.isRoot())
+					scrollingDirective = ScrollingDirective.SCROLL_NODE_TO_CENTER;
 				scrollNode(node, scrollingDirective, false);
 			}
 			return;
