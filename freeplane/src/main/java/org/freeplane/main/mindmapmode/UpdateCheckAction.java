@@ -475,7 +475,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		options = new Object[] { TextUtils.getText("simplyhtml.closeBtnName") };
 
 		
-		final int choice = JOptionPane.showOptionDialog(Controller.getCurrentController().getViewController().getFrame(), messagePane,
+		final int choice = JOptionPane.showOptionDialog(UITools.getMenuComponent(), messagePane,
 		    TextUtils.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 		    options, options[0]);
 		ResourceController.getResourceController().setProperty(CHECK_UPDATES_AUTOMATICALLY,

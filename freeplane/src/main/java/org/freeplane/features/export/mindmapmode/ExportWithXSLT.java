@@ -235,7 +235,7 @@ public class ExportWithXSLT implements IExportEngine {
 			String[] parameters = getProperty("set_properties", "").split(",\\s*");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode, mode, parameters);
 			if (!success) {
-				JOptionPane.showMessageDialog(UITools.getFrame(), getProperty("error_applying_template"), "Freeplane",
+				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), getProperty("error_applying_template"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -262,7 +262,7 @@ public class ExportWithXSLT implements IExportEngine {
 				}
 			}
 			if (!success) {
-				JOptionPane.showMessageDialog(UITools.getFrame(), getProperty("error_creating_directory"), "Freeplane",
+				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), getProperty("error_creating_directory"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}

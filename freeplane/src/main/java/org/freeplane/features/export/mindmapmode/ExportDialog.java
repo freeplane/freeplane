@@ -161,7 +161,7 @@ public class ExportDialog {
 				if (selectedFile.exists()) {
 					final String overwriteText = MessageFormat.format(TextUtils.getText("file_already_exists"),
 					    new Object[] { selectedFile.toString() });
-					final int overwriteMap = JOptionPane.showConfirmDialog(UITools.getFrame(), overwriteText,
+					final int overwriteMap = JOptionPane.showConfirmDialog(UITools.getCurrentRootComponent(), overwriteText,
 					    overwriteText, JOptionPane.YES_NO_OPTION);
 					if (overwriteMap != JOptionPane.YES_OPTION) {
 						return;

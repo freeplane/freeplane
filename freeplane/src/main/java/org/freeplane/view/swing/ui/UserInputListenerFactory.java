@@ -235,7 +235,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public JRibbon getRibbon() {
-		Frame frame = UITools.getFrame();
+		Component frame = UITools.getMenuComponent();
 		if(frame instanceof JRibbonFrame) {
 			return ((JRibbonFrame)frame).getRibbon();
 		}
@@ -462,7 +462,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				LogUtils.warn(e);
 				String myMessage = TextUtils.format("menu_error", genericStructure.getPath(), e.getMessage());
 				UITools.backOtherWindows();
-				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(UITools.getMenuComponent(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
 				System.exit(-1);
 			}
 			throw new RuntimeException(e);

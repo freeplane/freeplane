@@ -54,7 +54,7 @@ public class RibbonBuilder {
 
 	public RibbonBuilder(ModeController mode, ActionAcceleratorManager acceleratorManager) {
 		structure = new StructureTree();
-		Frame frame = UITools.getFrame();
+		Component frame = UITools.getMenuComponent();
 		if(frame instanceof JRibbonFrame) {
 			this.ribbon = ((JRibbonFrame)frame).getRibbon();
 		}

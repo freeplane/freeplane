@@ -338,7 +338,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			LogUtils.warn(ex);
 			final String message = TextUtils.format("remove_file_from_list_on_error", recentFile.restorable);
 			UITools.showFrame();
-			final Frame frame = UITools.getFrame();
+			final Component frame = UITools.getMenuComponent();
 			final int remove = JOptionPane.showConfirmDialog(frame, message, "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (remove == JOptionPane.YES_OPTION) {
 				lastOpenedList.remove(recentFile);

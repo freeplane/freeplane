@@ -530,7 +530,7 @@ public class NodeList {
 		NodeList.COLUMN_DETAILS= TextUtils.getText(PLUGINS_TIME_LIST_XML_DETAILS);
 		NodeList.COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
 		NodeList.COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
-		dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), modal /* modal */);
+		dialog = new JDialog(UITools.getCurrentFrame(), modal /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
 			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES;

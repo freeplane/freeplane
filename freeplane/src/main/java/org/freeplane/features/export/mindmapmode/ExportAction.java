@@ -20,6 +20,7 @@ package org.freeplane.features.export.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
@@ -50,7 +51,6 @@ class ExportAction extends AFreeplaneAction {
 	}
 
 	private void export(final MapModel model) {
-		final Controller controller = Controller.getCurrentController();
-		exp.export(controller.getViewController().getFrame(), model);
+		exp.export(UITools.getCurrentRootComponent(), model);
 	}
 }

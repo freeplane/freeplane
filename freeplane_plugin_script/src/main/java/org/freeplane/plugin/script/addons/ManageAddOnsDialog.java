@@ -3,6 +3,7 @@ package org.freeplane.plugin.script.addons;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -32,7 +33,7 @@ public class ManageAddOnsDialog extends JDialog {
 	private JTabbedPane tabbedPane;
 
 	public ManageAddOnsDialog(final List<AddOnProperties> addOns) {
-		super(UITools.getFrame(), TextUtils.getText("ManageAddOnsAction.text"), true);
+		super((Frame) UITools.getMenuComponent(), TextUtils.getText("ManageAddOnsAction.text"), true);
 		// stolen from FileRevisionsDialog - no idea if actually needed
 		if (getOwner() != null) {
 			final Window[] ownedWindows = getOwner().getOwnedWindows();

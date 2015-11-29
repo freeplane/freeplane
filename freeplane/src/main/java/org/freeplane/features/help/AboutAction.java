@@ -64,7 +64,7 @@ class AboutAction extends AFreeplaneAction {
 		addUri(box, "license_url", TextUtils.getText("license"));
 		addMessage(box, TextUtils.getText("license_text"));
 		
-		JOptionPane.showMessageDialog(UITools.getFrame(), box, TextUtils
+		JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), box, TextUtils
 		    .getText("AboutAction.text"), JOptionPane.INFORMATION_MESSAGE);
 	}
 

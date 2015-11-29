@@ -448,7 +448,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		final boolean useRelativeUri = ResourceController.getResourceController().getProperty("links").equals(
 		    "relative");
 		if (file == null && useRelativeUri) {
-			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
+			JOptionPane.showMessageDialog(viewController.getCurrentRootComponent(), TextUtils
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
@@ -468,7 +468,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		chooser.setAccessory(new ImagePreview(chooser));
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
-		    .getContentPane());
+		    .getCurrentRootComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return null;
 		}

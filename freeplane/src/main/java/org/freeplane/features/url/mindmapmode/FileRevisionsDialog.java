@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -191,7 +192,7 @@ class FileRevisionsDialog extends JDialog {
 	}
 
 	public FileRevisionsDialog(final File file, final File[] revisions, AlternativeFileMode mode) {
-		super(UITools.getFrame(), true);
+		super((Frame) UITools.getMenuComponent(), true);
 		if(mode == AlternativeFileMode.ALL)
 			keyBase = ALL_KEY_BASE;
 		else if(mode == AlternativeFileMode.AUTOSAVE)
@@ -234,7 +235,7 @@ class FileRevisionsDialog extends JDialog {
 		});
 		pack();
 		UITools.showFrame();
-		setLocationRelativeTo(UITools.getFrame());
+		setLocationRelativeTo(UITools.getMenuComponent());
 		setVisible(true);
 	}
 

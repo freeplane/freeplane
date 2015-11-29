@@ -27,8 +27,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
@@ -269,7 +271,8 @@ public class MModeControllerFactory {
 		KeyBindingProcessor keyProcessor = new KeyBindingProcessor();
 		modeController.addExtension(KeyBindingProcessor.class, keyProcessor);
 		keyProcessor.addKeyStrokeProcessor(userInputListenerFactory.getAcceleratorManager());
-		final FButtonBar fButtonToolBar = new FButtonBar(frameController.getRootPaneContainer().getRootPane(), keyProcessor);
+		final JRootPane rootPane = ((RootPaneContainer)frameController.getMenuComponent()).getRootPane();
+		final FButtonBar fButtonToolBar = new FButtonBar(rootPane, keyProcessor);
 		UIComponentVisibilityDispatcher.install(frameController, fButtonToolBar, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addToolBar("/fbuttons", ViewController.TOP, fButtonToolBar);

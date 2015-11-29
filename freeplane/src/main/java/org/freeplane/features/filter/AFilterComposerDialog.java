@@ -497,7 +497,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	private Box conditionButtonBox;
 
 	public AFilterComposerDialog(String title, boolean modal) {
-		super(Controller.getCurrentController().getViewController().getFrame(), title, modal);
+		super(UITools.getCurrentFrame(), title, modal);
 		filterController = FilterController.getCurrentFilterController();
 		editor = new FilterConditionEditor(filterController);
 		editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),

@@ -176,7 +176,7 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	private void displayNoPreviousFindMessage() {
-		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), TextUtils
+		UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(), TextUtils
 		    .getText("no_previous_find"));
 	}
 
@@ -213,7 +213,7 @@ class FindAction extends AFreeplaneAction {
 
 	private void displayNotFoundMessage(final NodeModel start, final ICondition condition) {
 		final String message = TextUtils.format("no_more_found_from", condition.toString(), getFindFromText(start));
-		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(), message);
+		UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(), message);
 	}
 
 	public String getFindFromText(final NodeModel node) {

@@ -19,6 +19,8 @@
  */
 package org.freeplane.view.swing.ui;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Point;
@@ -30,6 +32,7 @@ import java.awt.event.WindowFocusListener;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
@@ -86,11 +89,11 @@ public class DefaultMapMouseListener implements IMouseListener {
 			        window= popup;
 			    }
 			    else{
-                    final Frame frame = UITools.getFrame();
-                    final JDialog d = new JDialog(frame, popup.getName());
+					JOptionPane pane = new JOptionPane(popup);
+					final JDialog d = pane.createDialog(UITools.getMenuComponent(), popup.getName());
+					final Window frame = d.getOwner();
                     d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     d.setModal(false);
-                    d.add(popup);
                     d.pack();
                     d.addWindowFocusListener(new WindowFocusListener() {
                         public void windowLostFocus(WindowEvent e) {

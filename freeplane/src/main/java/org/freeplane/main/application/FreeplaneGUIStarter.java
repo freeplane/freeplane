@@ -309,9 +309,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			public void run() {
 				viewController.init(Controller.getCurrentController());
 				splash.toBack();
-				final Frame frame = viewController.getFrame();
+				final JFrame frame = (JFrame) viewController.getMenuComponent();
 				final int extendedState = frame.getExtendedState();
-				Container contentPane = viewController.getContentPane();
+				Container contentPane = frame.getContentPane();
 				contentPane.setVisible(false);
 				splash.dispose();
 				splash = null;
@@ -321,7 +321,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				loadMaps(options.getFilesToOpenAsArray());
 				frame.setVisible(true);
 				focusCurrentView();
-				viewController.getContentPane().setVisible(true);
+				contentPane.setVisible(true);
 				frame.toFront();
 				startupFinished = true;
 		        System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
@@ -400,7 +400,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	}
 
     private void toFront() {
-        final Frame frame = UITools.getFrame();
+        final Frame frame = (Frame) UITools.getMenuComponent();
         if(frame == null)
             return;
         final int state = frame.getExtendedState();
@@ -461,7 +461,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
-			JOptionPane.showMessageDialog(UITools.getFrame(), "freeplane.main.Freeplane can't be started",
+			JOptionPane.showMessageDialog(UITools.getMenuComponent(), "freeplane.main.Freeplane can't be started",
 			    "Startup problem", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}

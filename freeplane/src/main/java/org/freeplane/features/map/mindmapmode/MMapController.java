@@ -293,7 +293,7 @@ public class MMapController extends MapController {
 				if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
 					dialogParent = viewFrame;
 				else
-					dialogParent = Controller.getCurrentController().getViewController().getFrame();
+					dialogParent = UITools.getCurrentRootComponent();
 				final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
 				    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (returnVal == JOptionPane.YES_OPTION) {

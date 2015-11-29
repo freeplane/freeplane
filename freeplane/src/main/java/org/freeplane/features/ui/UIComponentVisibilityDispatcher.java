@@ -61,7 +61,7 @@ public class UIComponentVisibilityDispatcher {
 
 	public String completeVisiblePropertyKey() {
 		final String completeKeyString;
-		if (frameController.isFullScreenEnabled()) {
+		if (frameController.isMenuComponentInFullScreenMode()) {
 			completeKeyString = key + ".fullscreen";
 		}
 		else {
@@ -103,7 +103,7 @@ public class UIComponentVisibilityDispatcher {
 		if(resizer == null)
 			component.setVisible(visible);
 		else {
-			if (visible || frameController.isFullScreenEnabled() && ! visible)
+			if (visible || frameController.isMenuComponentInFullScreenMode() && ! visible)
 				resizer.setVisible(visible);
 			resizer.setExpanded(visible);
 		}

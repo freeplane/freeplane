@@ -41,6 +41,7 @@ import java.util.Vector;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -145,7 +146,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					final DockingWindowProperties windowProperties = addedWindow.getWindowProperties();
 					windowProperties.setDockEnabled(false);
 					windowProperties.setUndockEnabled(false);
-					if(addedToWindow.isUndocked() ||  ! controller.getViewController().isFullScreenEnabled())
+					if(UITools.getCurrentFrame().isResizable())
 						setTabAreaVisiblePolicy((TabWindow) addedWindow);
 					else
 						setTabAreaPolicy((TabWindow) addedWindow, TabAreaVisiblePolicy.NEVER);
@@ -154,7 +155,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					final Container topLevelAncestor = addedWindow.getTopLevelAncestor();
 					if(topLevelAncestor instanceof Window){
 						if(iconColorReplacer == null)
-							iconColorReplacer = new IconColorReplacer(UITools.getFrame().getIconImages());
+							iconColorReplacer = new IconColorReplacer(((Window) UITools.getMenuComponent()).getIconImages());
 						final List<Image> iconImages = iconColorReplacer.getNextIconImages();
 						((Window)topLevelAncestor).setIconImages(iconImages);
 					}
@@ -454,29 +455,33 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		tabAreaProperties.setTabAreaVisiblePolicy(tabAreaVisiblePolicy);
 	}
 
-	public void setTabAreaVisiblePolicy(){
-		setTabAreaVisiblePolicies(rootWindow);
+	public void setTabAreaVisiblePolicy(JFrame frame){
+		DockingWindow window = (DockingWindow) (JOptionPane.getFrameForComponent(rootWindow) == frame ? rootWindow : frame.getContentPane().getComponent(0));
+		setTabAreaVisiblePolicies(window);
 	}
 
 	private void setTabAreaVisiblePolicies(DockingWindow parentWindow) {
 		for(int i = 0; i < parentWindow.getChildWindowCount(); i++){
 			final DockingWindow window = parentWindow.getChildWindow(i);
-			if(!(parentWindow instanceof FloatingWindow) && window instanceof TabWindow)
+			if(window instanceof TabWindow)
 				setTabAreaVisiblePolicy((TabWindow) window);
-			setTabAreaVisiblePolicies(window);
+			if (!(window instanceof FloatingWindow))
+				setTabAreaVisiblePolicies(window);
 		}
 	}
 
-	public void setTabAreaInvisiblePolicy(){
-		setTabAreaInvisiblePolicies(rootWindow);
+	public void setTabAreaInvisiblePolicy(JFrame frame){
+		DockingWindow window = (DockingWindow) (JOptionPane.getFrameForComponent(rootWindow) == frame ? rootWindow : frame.getContentPane().getComponent(0));
+		setTabAreaInvisiblePolicies(window);
 	}
 
 	private void setTabAreaInvisiblePolicies(DockingWindow parentWindow) {
 		for(int i = 0; i < parentWindow.getChildWindowCount(); i++){
 			final DockingWindow window = parentWindow.getChildWindow(i);
-			if(!(parentWindow instanceof FloatingWindow) && window instanceof TabWindow)
+			if(window instanceof TabWindow)
 				setTabAreaPolicy((TabWindow) window, TabAreaVisiblePolicy.NEVER);
-			setTabAreaInvisiblePolicies(window);
+			if (!(window instanceof FloatingWindow)) 
+				setTabAreaInvisiblePolicies(window);
 		}
 	}
 }

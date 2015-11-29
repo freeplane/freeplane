@@ -305,7 +305,7 @@ public class MTextController extends TextController {
 		final MapModel map = selectedNode.getMap();
 		final File file = map.getFile();
 		if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
-			JOptionPane.showMessageDialog(viewController.getContentPane(), TextUtils
+			JOptionPane.showMessageDialog(viewController.getCurrentRootComponent(), TextUtils
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -320,7 +320,7 @@ public class MTextController extends TextController {
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setAccessory(new BitmapImagePreview(chooser));
-		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
+		final int returnVal = chooser.showOpenDialog(viewController.getCurrentRootComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return;
 		}
@@ -812,7 +812,7 @@ public class MTextController extends TextController {
             }
 		};
 		mCurrentEditDialog = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
-		final JFrame frame = controller.getViewController().getJFrame();
+		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
 		mCurrentEditDialog.show(frame);
 	}
 

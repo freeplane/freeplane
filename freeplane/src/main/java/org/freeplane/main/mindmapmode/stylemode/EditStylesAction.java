@@ -79,7 +79,7 @@ public class EditStylesAction extends AFreeplaneAction {
 		Controller controller = modeController.getController();
 		Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
 		((DialogController) controller.getViewController()).setMapView(mapViewComponent);
-		dialog.setLocationRelativeTo(currentController.getViewController().getJFrame());
+		dialog.setLocationRelativeTo(currentController.getViewController().getCurrentRootComponent());
 		dialog.setVisible(true);
 	}
 
@@ -105,7 +105,7 @@ public class EditStylesAction extends AFreeplaneAction {
 			Controller.setCurrentController ((Controller) dialog.getRootPane().getClientProperty(Controller.class));
 			return;
 		}
-		dialog = new JDialog(Controller.getCurrentController().getViewController().getJFrame());
+		dialog = new JDialog(UITools.getCurrentFrame());
 		final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(getKey() + ".dialog");
 		windowConfigurationStorage.restoreDialogPositions(dialog);
 		dialog.setModal(true);

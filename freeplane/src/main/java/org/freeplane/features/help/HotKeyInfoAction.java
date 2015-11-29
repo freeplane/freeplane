@@ -20,6 +20,7 @@
 package org.freeplane.features.help;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -127,7 +128,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		JScrollPane scrollPane = new JScrollPane(refPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(preferredSize.width, 600));
 		JOptionPane pane = new JOptionPane(scrollPane, JOptionPane.INFORMATION_MESSAGE);
-		 JDialog dialog = pane.createDialog(UITools.getFrame(), title);
+		JDialog dialog = pane.createDialog(UITools.getMenuComponent(), title);
 		 // the line below is added to the example from the docs
 		 dialog.setModal(false); // this says not to block background components
 		 dialog.setVisible(true);

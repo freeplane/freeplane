@@ -48,6 +48,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -92,7 +93,7 @@ class ApplicationViewController extends FrameController {
 		controller.addAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		this.frame = frame;
-		getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
 		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
 		// disable all hotkeys for JSplitPane
@@ -106,9 +107,9 @@ class ApplicationViewController extends FrameController {
 		final Component contentPane;
 		mapViewWindows = new MapViewDockingWindows();
 		contentPane = mapViewWindows.getMapPane();
-		getContentPane().add(contentPane, BorderLayout.CENTER);
+		frame.getContentPane().add(contentPane, BorderLayout.CENTER);
 		mapPane = mapViewWindows.getMapPane();
-		getContentPane().add(mSplitPane, BorderLayout.CENTER);
+		frame.getContentPane().add(mSplitPane, BorderLayout.CENTER);
 		mSplitPane.setLeftComponent(mapPane);
 		mSplitPane.setRightComponent(null);
 		initFrame(frame);
@@ -129,35 +130,9 @@ class ApplicationViewController extends FrameController {
 		return resourceController.getProperty(label);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getContentPane()
-	 */
-	@Override
-	public RootPaneContainer getRootPaneContainer() {
-		return frame;
-	}
-
 	@Override
 	public FreeplaneMenuBar getFreeplaneMenuBar() {
 		return Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBar();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getJFrame()
-	 */
-	@Override
-	public JFrame getJFrame() {
-		return frame;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getLayeredPane()
-	 */
-	public JLayeredPane getLayeredPane() {
-		return frame.getLayeredPane();
 	}
 
 	@Override
@@ -284,7 +259,7 @@ class ApplicationViewController extends FrameController {
 	@Override
 	public void saveProperties() {
 		saveSplitPanePosition();
-		if (!isFullScreenEnabled()) {
+		if (frame.isResizable()) {
 			final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 			if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 				resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
@@ -430,8 +405,19 @@ class ApplicationViewController extends FrameController {
 	protected void setFullScreen(boolean fullScreen) {
 		super.setFullScreen(fullScreen);
 		if(fullScreen)
-			mapViewWindows.setTabAreaInvisiblePolicy();
+			mapViewWindows.setTabAreaInvisiblePolicy((JFrame) UITools.getCurrentRootComponent());
 		else
-			mapViewWindows.setTabAreaVisiblePolicy();
+			mapViewWindows.setTabAreaVisiblePolicy((JFrame)UITools.getCurrentRootComponent());
+	}
+
+	@Override
+	public Component getCurrentRootComponent() {
+		final Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
+		return mapViewComponent != null ? SwingUtilities.getRoot(mapViewComponent) : frame;
+	}
+
+	@Override
+	public Component getMenuComponent() {
+		return frame;
 	}
 }

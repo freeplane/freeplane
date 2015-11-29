@@ -52,32 +52,14 @@ public interface ViewController {
 	public static final String RESOURCE_ANTIALIAS = "antialias";
 
 	public Rectangle getFrameSize();
-
 	public void setFrameSize(final Rectangle frameSize);
-	public boolean isFullScreenEnabled();
-
+	
 	public static final String SLOW_SCROLLING = "slowScrolling";
-
 	public void changeNoteWindowLocation();
 
 	public void err(final String msg);
 
-	/**
-	 * @return
-	 */
-	public RootPaneContainer getRootPaneContainer();
-
-	public Container getContentPane();
-
-	public Frame getFrame();
-
 	public FreeplaneMenuBar getFreeplaneMenuBar();
-
-	/**
-	 * @return
-	 */
-
-	public JFrame getJFrame();
 
 	/**
 	 */
@@ -152,5 +134,6 @@ public interface ViewController {
 	public void previousMapView();
 
 	public void nextMapView();
-
+	public Component getCurrentRootComponent();
+	public Component getMenuComponent();
 }

@@ -53,7 +53,7 @@ class ImportBranchAction extends AFreeplaneAction {
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);
 		}
-		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				final MapModel map = parent.getMap();

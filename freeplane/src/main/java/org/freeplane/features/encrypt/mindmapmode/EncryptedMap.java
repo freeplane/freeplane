@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.encrypt.SingleDesEncrypter;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.NodeModel;
@@ -46,8 +47,7 @@ class EncryptedMap extends AFreeplaneAction {
 	 * @param e 
 	 */
 	private StringBuilder getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getCurrentController().getViewController().getFrame(),
-		    true);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(UITools.getCurrentFrame(), true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {

@@ -79,7 +79,7 @@ class PasteFormat extends AMultipleNodeAction {
 	private void pasteFormat(final NodeModel node) {
 		final NodeModel pattern = CopyFormat.getPattern();
 		if (pattern == null) {
-			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(), TextUtils
+			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent(), TextUtils
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
