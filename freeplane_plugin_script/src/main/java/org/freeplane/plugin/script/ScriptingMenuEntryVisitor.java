@@ -69,8 +69,6 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 
 	@Override
 	public void buildPhaseFinished(Phase actions, Entry target) {
-		if (actions == Phase.ACTIONS) 
-			System.out.print("buildPhaseFinished: " + target.getPath());
 		if (target.getParent() == null && actions == Phase.ACTIONS) {
 			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(entry.getKey());
