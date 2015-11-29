@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
-public class PhaseProcessor implements Processor{
+public class PhaseProcessor{
 	public static enum Phase {
 		ACTIONS, ACCELERATORS, UI
 	}
@@ -25,7 +25,7 @@ public class PhaseProcessor implements Processor{
 		this(Collections.<BuildPhaseListener>emptyList());
 	}
 
-	@Override
+	
 	public void build(Entry entry) {
 		for ( Map.Entry<Phase, RecursiveMenuStructureProcessor> processEntry : processors.entrySet()){
 			processEntry.getValue().build(entry);
@@ -34,8 +34,8 @@ public class PhaseProcessor implements Processor{
 		}
 	}
 
-	@Override
-	public Processor forChildren(Entry root, Entry entry) {
+	
+	public PhaseProcessor forChildren(Entry root, Entry entry) {
 		final PhaseProcessor phaseProcessor = new PhaseProcessor(buildPhaseListeners);
 		for (java.util.Map.Entry<Phase, RecursiveMenuStructureProcessor> processor : processors.entrySet())
 			phaseProcessor.withPhase(processor.getKey(), processor.getValue().forChildren(root, entry));
@@ -51,7 +51,7 @@ public class PhaseProcessor implements Processor{
 		return processors.get(name);
 	}
 
-	@Override
+	
 	public void destroy(Entry entry) {
 		final ListIterator<RecursiveMenuStructureProcessor> processorIterator = new ArrayList<>(processors.values())
 		    .listIterator(processors.size());

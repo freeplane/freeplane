@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
-import org.freeplane.core.ui.menubuilders.generic.Processor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,7 +17,7 @@ public class SubtreeProcessorTest {
 	@Test
 	public void doesNotBuildEntriesWithoutDelay() throws Exception {
 		final SubtreeProcessor childProcessor = new SubtreeProcessor();
-		final Processor processor = mock(Processor.class);
+		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
 		final Entry entry = new Entry();
@@ -30,7 +30,7 @@ public class SubtreeProcessorTest {
 	@Test
 	public void buildsEntriesWithDelay() throws Exception {
 		final SubtreeProcessor childProcessor = new SubtreeProcessor();
-		final Processor processor = mock(Processor.class);
+		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
 		final Entry entry = new Entry();
@@ -44,7 +44,7 @@ public class SubtreeProcessorTest {
 	@Test
 	public void doesNotDestroyEntriesWithoutDelay() throws Exception {
 		final SubtreeProcessor childProcessor = new SubtreeProcessor();
-		final Processor processor = mock(Processor.class);
+		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
 		final Entry entry = new Entry();
@@ -57,7 +57,7 @@ public class SubtreeProcessorTest {
 	@Test
 	public void destroysEntriesWithDelay() throws Exception {
 		final SubtreeProcessor childProcessor = new SubtreeProcessor();
-		final Processor processor = mock(Processor.class);
+		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
 		final Entry entry = new Entry();
