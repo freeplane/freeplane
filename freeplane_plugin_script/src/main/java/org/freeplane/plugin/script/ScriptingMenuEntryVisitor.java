@@ -41,6 +41,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 			entryNavigator.addAlias("main_menu_scripting", userScriptsEntry.getParent().getPath());
 			entryNavigator.addAlias("/menu_bar/help", "main_menu/help/help_misc");
 			entryNavigator.addAlias("/menu_bar", "main_menu");
+			entryNavigator.addAlias("node_popup_scripting", "node_popup/node_popup_scripting");
 		}
 		return entryNavigator;
     }
