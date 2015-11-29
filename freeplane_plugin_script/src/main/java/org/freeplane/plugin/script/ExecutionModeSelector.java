@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.features.mode.Controller;
@@ -36,16 +37,16 @@ public class ExecutionModeSelector {
 		LinkedHashMap<File, JComponent> scriptFileToDisabledComponentMap = new LinkedHashMap<File, JComponent>();
 		HashSet<File> enabledScriptFiles = new HashSet<File>();
 		for (Entry actionEntry : scriptingEntry.children()) {
-			ExecuteScriptAction action = (ExecuteScriptAction) entryAccessor.getAction(actionEntry);
-			JComponent component = (JComponent) entryAccessor.getComponent(actionEntry);
-			if (component == null || action == null) {
+			AFreeplaneAction action = entryAccessor.getAction(actionEntry);
+			if (!(action instanceof ExecuteScriptAction))
 				continue;
-			}
-			boolean enabled = action.getExecutionMode() == mode;
+			ExecuteScriptAction scriptAction = (ExecuteScriptAction) action;
+			JComponent component = (JComponent) entryAccessor.getComponent(actionEntry);
+			boolean enabled = scriptAction.getExecutionMode() == mode;
 			if (enabled)
-				enabledScriptFiles.add(action.getScriptFile());
+				enabledScriptFiles.add(scriptAction.getScriptFile());
 			else
-				scriptFileToDisabledComponentMap.put(action.getScriptFile(), component);
+				scriptFileToDisabledComponentMap.put(scriptAction.getScriptFile(), component);
 			component.setVisible(enabled);
 			component.setEnabled(enabled);
 		}

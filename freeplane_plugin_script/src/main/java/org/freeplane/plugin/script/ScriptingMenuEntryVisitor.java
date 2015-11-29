@@ -53,20 +53,18 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	@Override
 	public void visit(Entry target) {
 		initEntryNavigator(target);
-		if (configuration.getMenuTitleToPathMap().isEmpty()) {
-			target.addChild(createNoScriptsAvailableAction());
-		}
-		else {
-			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-				String scriptName = entry.getKey();
-				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
-				if (!metaData.hasMenuLocation()) {
-					for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
-						target.addChild(createEntry(scriptName, entry.getValue(), executionMode));
-					}
+		for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
+			String scriptName = entry.getKey();
+			final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
+			if (!metaData.hasMenuLocation()) {
+				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
+					target.addChild(createEntry(scriptName, entry.getValue(), executionMode));
 				}
-				// else: see buildPhaseFinished
 			}
+			// else: see buildPhaseFinished
+		}
+		if (target.isLeaf()) {
+			target.addChild(createNoScriptsAvailableAction());
 		}
 	}
 
