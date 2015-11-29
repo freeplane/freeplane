@@ -235,7 +235,7 @@ class ScriptingRegistration {
     private void updateMenus(ModeController modeController, final ScriptingConfiguration configuration) {
 		ScriptingMenuEntryVisitor builder = new ScriptingMenuEntryVisitor(configuration,
 		    modeSelector);
-		modeController.addUiBuilder(Phase.ACTIONS, "script_actions", builder, EntryVisitor.CHILD_ENTRY_REMOVER);
+		modeController.addUiBuilder(Phase.ACTIONS, "userScripts", builder, EntryVisitor.CHILD_ENTRY_REMOVER);
 		modeController.getUserInputListenerFactory().addBuildPhaseListener(builder); 
     }
 

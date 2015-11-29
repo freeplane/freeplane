@@ -46,6 +46,10 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 		return entryNavigator;
     }
 
+	/** builds menu entries for scripts without a special menu location.
+	 * Add entry for all scripts and execution modes.
+	 * Scripts that don't support selected exec mode are made invisible in buildPhaseFinished()  
+	 */
 	@Override
 	public void visit(Entry target) {
 		initEntryNavigator(target);
@@ -53,15 +57,13 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 			target.addChild(createNoScriptsAvailableAction());
 		}
 		else {
-			// add entry for all scripts but disable scripts that don't support selected exec mode  
-			final ExecutionMode executionMode = modeSelector.getExecutionMode();
 			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 				String scriptName = entry.getKey();
 				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
 				if (!metaData.hasMenuLocation()) {
-					final Entry menuEntry = createEntry(scriptName, entry.getValue(), executionMode);
-    				// System.out.println("adding " + metaData);
-    				target.addChild(menuEntry);
+					for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
+						target.addChild(createEntry(scriptName, entry.getValue(), executionMode));
+					}
 				}
 				// else: see buildPhaseFinished
 			}
@@ -70,14 +72,21 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 
 	@Override
 	public void buildPhaseFinished(Phase actions, Entry target) {
-		if (target.getParent() == null && actions == Phase.ACTIONS) {
-			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(entry.getKey());
-				if (metaData.hasMenuLocation()) {
-					addEntryForGivenLocation(target.getRoot(), metaData, entry.getValue());
-				}
-				// else: see visit
+		if (target.getParent() == null) {
+			if (actions == Phase.ACTIONS)
+				buildEntriesWithSpecialMenuLocation(target);
+			else if (actions == Phase.UI)
+				modeSelector.updateMenus();
+		}
+	}
+
+	private void buildEntriesWithSpecialMenuLocation(Entry target) {
+		for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
+			final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(entry.getKey());
+			if (metaData.hasMenuLocation()) {
+				addEntryForGivenLocation(target.getRoot(), metaData, entry.getValue());
 			}
+			// else: see visit
 		}
 	}
 
@@ -135,7 +144,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private Entry createEntry(AFreeplaneAction action) {
 	    final EntryAccessor entryAccessor = new EntryAccessor();
 		final Entry scriptEntry = new Entry();
-		entryAccessor.addChildAction(scriptEntry, action);
+		entryAccessor.setAction(scriptEntry, action);
 		entryAccessor.setIcon(scriptEntry, ActionUtils.getActionIcon(action));
 		return scriptEntry;
     }

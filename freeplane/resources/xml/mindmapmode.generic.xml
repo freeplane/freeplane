@@ -594,9 +594,7 @@
 						<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
 						<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
 					</Entry> 
-					<Entry name="userScripts">
-						<Entry builder="script_actions" />
-					</Entry>
+					<Entry name="userScripts" builder="userScripts" />
 					<Entry name="ExecuteScriptForSelectionAction" />
 					<Entry name="ExecuteScriptForAllNodes" />
 					<Entry name="ScriptEditor" />
@@ -759,7 +757,7 @@
 		<Entry builder="separator" />
 		<Entry name="EnterPassword" />
 		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
-			builder="script_actions" />
+			builder="userScripts" />
 		<Entry builder="separator" />
 		<Entry name="CutAction" accelerator="control X" />
 		<Entry name="CopyAction" accelerator="control C" />
