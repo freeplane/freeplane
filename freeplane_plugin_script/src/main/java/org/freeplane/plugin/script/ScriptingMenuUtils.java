@@ -13,7 +13,10 @@ public class ScriptingMenuUtils {
     static final String LABEL_SCRIPTS_MENU = "userScripts";
 
     public static String parentLocation(String location) {
-        return location.replaceFirst("/[^/]*$", "");
+    	int indexOfSlash = location.lastIndexOf('/');
+    	if (indexOfSlash == -1)
+    		throw new IllegalArgumentException("location is not an absolute path: " + location);
+        return location.substring(0, indexOfSlash);
     }
 
     public static String getMenuItemTitle(ScriptMetaData metaData, ExecutionMode executionMode) {

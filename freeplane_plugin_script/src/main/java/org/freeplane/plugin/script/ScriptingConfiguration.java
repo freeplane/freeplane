@@ -137,8 +137,6 @@ class ScriptingConfiguration {
 		}
 	}
 
-	static final String MENU_SCRIPTS_LOCATION = "main_menu_scripting";
-	static final String CONTEXT_MENU_SCRIPTS_LOCATIONS = "node_popup_scripting";
 	private static final String JAR_REGEX = ".+\\.jar$";
 	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();

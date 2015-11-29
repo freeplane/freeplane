@@ -20,9 +20,6 @@
  */
 package org.freeplane.plugin.script;
 
-import static org.freeplane.plugin.script.ScriptingConfiguration.CONTEXT_MENU_SCRIPTS_LOCATIONS;
-import static org.freeplane.plugin.script.ScriptingConfiguration.MENU_SCRIPTS_LOCATION;
-
 import java.awt.Dimension;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -38,10 +35,8 @@ import javax.swing.ComboBoxEditor;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -238,8 +233,10 @@ class ScriptingRegistration {
     }
 
     private void updateMenus(ModeController modeController, final ScriptingConfiguration configuration) {
-		modeController.addUiBuilder(Phase.ACTIONS, "script_actions", new ScriptingMenuEntryVisitor(configuration,
-		    modeSelector), EntryVisitor.CHILD_ENTRY_REMOVER);
+		ScriptingMenuEntryVisitor builder = new ScriptingMenuEntryVisitor(configuration,
+		    modeSelector);
+		modeController.addUiBuilder(Phase.ACTIONS, "script_actions", builder, EntryVisitor.CHILD_ENTRY_REMOVER);
+		modeController.getUserInputListenerFactory().addBuildPhaseListener(builder); 
     }
 
     private void registerScriptAddOns() {

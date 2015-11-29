@@ -4,31 +4,50 @@ import static org.freeplane.plugin.script.ScriptingMenuUtils.noScriptsAvailableM
 import static org.freeplane.plugin.script.ScriptingMenuUtils.scriptNameToMenuItemTitle;
 
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.swing.Action;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.ActionUtils;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 
-public class ScriptingMenuEntryVisitor implements EntryVisitor {
+public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListener {
 	private ScriptingConfiguration configuration;
 	private ExecutionModeSelector modeSelector;
+	private final HashSet<String> registeredLocations = new HashSet<String>();
+	private EntryNavigator entryNavigator;
 
 	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ExecutionModeSelector modeSelector) {
 		this.configuration = configuration;
 		this.modeSelector = modeSelector;
 	}
 
+	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
+		if (entryNavigator == null) {
+			entryNavigator = new EntryNavigator();
+			final Entry userScriptsEntry = scriptingEntry.getParent();
+			// TODO: read this mapping from config file
+			entryNavigator.addAlias("main_menu_scripting" + "/scripts", userScriptsEntry.getPath());
+			entryNavigator.addAlias("main_menu_scripting", userScriptsEntry.getParent().getPath());
+			entryNavigator.addAlias("/menu_bar/help", "main_menu/help/help_misc");
+			entryNavigator.addAlias("/menu_bar", "main_menu");
+		}
+		return entryNavigator;
+    }
+
 	@Override
 	public void visit(Entry target) {
+		initEntryNavigator(target);
 		if (configuration.getMenuTitleToPathMap().isEmpty()) {
 			target.addChild(createNoScriptsAvailableAction());
 		}
@@ -38,42 +57,60 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor {
 			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 				String scriptName = entry.getKey();
 				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
-				if (metaData.hasMenuLocation()) {
-					LogUtils.warn("TODO: adding " + metaData + " to special menu location not yet implemented");
-				} else {
-    				final Entry menuEntry = createEntry(scriptName, entry.getValue(), executionMode);
+				if (!metaData.hasMenuLocation()) {
+					final Entry menuEntry = createEntry(scriptName, entry.getValue(), executionMode);
     				// System.out.println("adding " + metaData);
     				target.addChild(menuEntry);
 				}
+				// else: see buildPhaseFinished
 			}
 		}
 	}
-//	private String scriptsLocation = ScriptingConfiguration.getScriptsLocation(parentLocation);
-//	private void registerScript(final String scriptName, final String scriptPath) {
-//		final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
-//        for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
-//            final String location = getLocation(scriptName, metaData, executionMode);
-//            addSubMenu(ScriptingMenuUtils.parentLocation(location), location, ScriptingMenuUtils.getMenuTitle(metaData, executionMode));
-//            addMenuItem(location, scriptName, scriptPath, executionMode, metaData);
-//        }
-//	}
-//
-//    private void addSubMenu(final String parentLocation, final String location, String menuTitle) {
-//        if (registeredLocations.add(location) && menuBuilder.get(location) == null) {
-//            final JMenu menuItem = new JMenu();
-//            LabelAndMnemonicSetter.setLabelAndMnemonic(menuItem, menuTitle);
-//            menuBuilder.addMenuItem(parentLocation, menuItem, location, MenuBuilder.AS_CHILD);
-//        }
-//    }
-//
-//    private void addMenuItem(final String location, final String scriptName, final String scriptPath,
-//                             final ExecutionMode executionMode, ScriptMetaData metaData) {
-//        if (registeredLocations.add(location + "/" + metaData.getTitleKey(executionMode))) {
-//            final ExecuteScriptAction action = new ExecuteScriptAction(scriptName, getMenuItemTitle(metaData,
-//                executionMode), scriptPath, executionMode, metaData.cacheContent(), metaData.getPermissions());
-//            menuBuilder.addAction(location, action, MenuBuilder.AS_CHILD);
-//        }
-//    }
+
+	@Override
+	public void buildPhaseFinished(Phase actions, Entry target) {
+		if (target.getParent() == null && actions == Phase.ACTIONS) {
+			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
+				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(entry.getKey());
+				if (metaData.hasMenuLocation()) {
+					addEntryForGivenLocation(target.getRoot(), metaData, entry.getValue());
+				}
+				// else: see visit
+			}
+		}
+	}
+
+	private void addEntryForGivenLocation(Entry rootEntry, final ScriptMetaData metaData, String scriptPath) {
+		for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
+			final String location = metaData.getMenuLocation(executionMode);
+			if (registeredLocations.add(location + "/" + metaData.getScriptName())) {
+				Entry parentEntry = findOrCreateEntry(rootEntry, location);
+				if (parentEntry == null)
+					throw new RuntimeException("internal error: cannot add entry for " + location);
+				Entry entry = createEntry(metaData.getScriptName(), scriptPath, executionMode);
+				parentEntry.addChild(entry);;
+			}
+		}
+	}
+
+	private Entry findOrCreateEntry(Entry rootEntry, final String path) {
+		Entry entry = entryNavigator.findChildByPath(rootEntry, path);
+		if (entry == null) {
+			Entry parent = findOrCreateEntry(rootEntry, ScriptingMenuUtils.parentLocation(path));
+			Entry menuEntry = new Entry();
+			menuEntry.setName(lastPathElement(path));
+			menuEntry.setAttribute("text", scriptNameToMenuItemTitle(lastPathElement(path)));
+			parent.addChild(menuEntry);
+			return menuEntry;
+		}
+		return entry;
+	}
+
+    private String lastPathElement(String path) {
+    	int indexOfSlash = path.lastIndexOf('/');
+    	// even works if not found (-1 + 1 = 0)
+	    return path.substring(indexOfSlash + 1);
+    }
 
 	private Entry createNoScriptsAvailableAction() {
 		final Entry entry = new Entry();
