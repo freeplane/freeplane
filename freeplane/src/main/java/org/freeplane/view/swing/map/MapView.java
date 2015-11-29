@@ -699,10 +699,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final int mainViewWidth = mainView.getWidth();
 		final int mainViewHeight = mainView.getHeight();
 		final Point anchorCenterPoint = new Point((int) (mainViewWidth * anchorHorizontalPoint), (int) (mainViewHeight * anchorVerticalPoint));
-		final JViewport parent = (JViewport) getParent();
-		UITools.convertPointToAncestor(mainView, anchorCenterPoint, this);
-		anchorCenterPoint.x += - parent.getWidth() / 2;
-		anchorCenterPoint.y += - parent.getHeight() / 2;
+		SwingUtilities.convertPointToScreen(anchorCenterPoint, mainView);
 		return anchorCenterPoint;
 	}
 
@@ -1968,6 +1965,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		final JViewport vp = (JViewport) getParent();
+		final int scrollMode = vp.getScrollMode();
+		vp.setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
@@ -1976,22 +1975,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (deltaX != 0 || deltaY != 0) {
 			viewPosition.x += deltaX;
 			viewPosition.y += deltaY;
-			final int scrollMode = vp.getScrollMode();
-			vp.setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
 			vp.setViewPosition(viewPosition);
-			vp.setScrollMode(scrollMode);
 		}
 		else {
 			repaintVisible();
 		}
-		if (scrolledNode != null) {
-			final int scrollMode = vp.getScrollMode();
-			vp.setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
-			scrollNodeToVisible(scrolledNode, extraWidth);
-			vp.setScrollMode(scrollMode);
-			scrolledNode = null;
-			scrollingDirective = ScrollingDirective.DONE;
+		if (scrolledNode == null){
+			scrolledNode = selection.selectedNode;
+			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
 		}
+		scrollNodeToVisible(scrolledNode, extraWidth);
+		vp.setScrollMode(scrollMode);
+		scrolledNode = null;
+		scrollingDirective = ScrollingDirective.DONE;
 		anchor = getRoot();
 		anchorHorizontalPoint = anchorVerticalPoint = 0;
 		this.anchorContentLocation = getAnchorCenterPoint();
