@@ -221,6 +221,12 @@ public class UITools {
 	}
 
 	static public void setBounds(final Component frame, int win_x, int win_y, int win_width, int win_height) {
+		final Rectangle frameBounds = getValidFrameBounds(frame, win_x, win_y, win_width, win_height);
+		frame.setBounds(frameBounds);
+	}
+
+	public static Rectangle getValidFrameBounds(final Component frame, int win_x, int win_y, int win_width,
+			int win_height) {
 		final Rectangle desktopBounds = getDesktopBounds(frame);
 		int screenWidth = desktopBounds.width;
 		if(win_width != -1)
@@ -244,7 +250,8 @@ public class UITools {
 		}
 		else
 			win_y = desktopBounds.y + (screenHeight - win_height) / 2;
-		frame.setBounds(win_x, win_y, win_width, win_height);
+		final Rectangle frameBounds = new Rectangle( win_x, win_y, win_width, win_height);
+		return frameBounds;
 	}
 
 	public static Rectangle getDesktopBounds(Component frame) {

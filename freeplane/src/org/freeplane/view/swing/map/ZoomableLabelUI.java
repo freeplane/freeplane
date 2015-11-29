@@ -70,10 +70,12 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	public Dimension getPreferredSize(final JComponent c) {
 		final Dimension preferredSize = super.getPreferredSize(c);
 		final ZoomableLabel zoomableLabel = (ZoomableLabel) c;
-		final int fontHeight = zoomableLabel.getFontMetrics().getHeight();
-		final Insets insets = c.getInsets();
-		preferredSize.width = Math.max(preferredSize.width, fontHeight/2  + insets.left + insets.right);
-		preferredSize.height = Math.max(preferredSize.height, fontHeight + insets.top + insets.bottom);
+		if(zoomableLabel.getIcon() == null){
+			final int fontHeight = zoomableLabel.getFontMetrics().getHeight();
+			final Insets insets = c.getInsets();
+			preferredSize.width = Math.max(preferredSize.width, fontHeight/2  + insets.left + insets.right);
+			preferredSize.height = Math.max(preferredSize.height, fontHeight + insets.top + insets.bottom);
+		}
 		final float zoom = zoomableLabel.getZoom();
 		if (zoom != 1f) {
 			preferredSize.width = (int) (Math.ceil(zoom * preferredSize.width));

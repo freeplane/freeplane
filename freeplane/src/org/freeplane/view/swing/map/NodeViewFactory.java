@@ -256,7 +256,6 @@ class NodeViewFactory {
 			detailContent.setIcon(icon);
 			detailContent.setBackground(null);
 			detailContent.updateText("");
-			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
 			detailContent.setFont(map.getDetailFont());
@@ -265,11 +264,9 @@ class NodeViewFactory {
 			detailContent.updateText(detailText.getHtml());
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
-			detailContent.setPreferredSize(null);
-			detailContent.setMinimumWidth(minNodeWidth);
-			detailContent.setMaximumWidth(maxNodeWidth);
-			
 		}
+		detailContent.setMinimumWidth(minNodeWidth);
+		detailContent.setMaximumWidth(maxNodeWidth);
 		detailContent.revalidate();
 		map.repaint();
 	}
