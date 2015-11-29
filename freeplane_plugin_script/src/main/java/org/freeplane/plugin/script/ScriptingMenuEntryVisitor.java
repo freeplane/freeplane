@@ -18,6 +18,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 
@@ -26,10 +27,12 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private ExecutionModeSelector modeSelector;
 	private final HashSet<String> registeredLocations = new HashSet<String>();
 	private EntryNavigator entryNavigator;
+	private ModeController modeController;
 
-	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ExecutionModeSelector modeSelector) {
+	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ExecutionModeSelector modeSelector, ModeController modeController) {
 		this.configuration = configuration;
 		this.modeSelector = modeSelector;
+		this.modeController = modeController;
 	}
 
 	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
@@ -149,13 +152,20 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 
 	private AFreeplaneAction createAction(final String scriptName, final String scriptPath,
                                           ExecutionMode executionMode, final ScriptMetaData metaData, final String title) {
-	    AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
-		    metaData.cacheContent(), metaData.getPermissions());
-		action.setEnabled(metaData.getExecutionModes().contains(executionMode));
-		String tooltip = createTooltip(title, metaData);
-		action.putValue(Action.SHORT_DESCRIPTION, tooltip);
-		action.putValue(Action.LONG_DESCRIPTION, tooltip);
-	    return action;
+		final String key = ExecuteScriptAction.makeMenuItemKey(scriptName, executionMode);
+		final AFreeplaneAction alreadyRegisteredAction = modeController.getAction(key);
+		if (alreadyRegisteredAction == null) {
+			AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
+				metaData.cacheContent(), metaData.getPermissions());
+			String tooltip = createTooltip(title, metaData);
+			action.putValue(Action.SHORT_DESCRIPTION, tooltip);
+			action.putValue(Action.LONG_DESCRIPTION, tooltip);
+			modeController.addAction(action);
+			return action;
+		}
+		else {
+			return alreadyRegisteredAction;
+		}
     }
 
 	private String createTooltip(String title, ScriptMetaData metaData) {
