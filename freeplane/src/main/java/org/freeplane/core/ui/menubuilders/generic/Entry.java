@@ -96,7 +96,7 @@ public class Entry {
 	}
 
 
-	public Iterable<Entry> children() {
+	public List<Entry> children() {
 		return childEntries;
 	}
 
@@ -225,5 +225,10 @@ public class Entry {
 				break;
 		}
 		return entry;
+	}
+
+
+	public void remove(Entry entry) {
+		childEntries.remove(entry);
 	}
 }

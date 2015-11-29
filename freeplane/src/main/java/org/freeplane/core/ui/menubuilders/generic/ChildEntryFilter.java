@@ -7,7 +7,7 @@ public abstract class ChildEntryFilter extends ChildEntryRemover {
 	@Override
 	public void visit(Entry entry) {
 		if (shouldRemove(entry))
-			super.visit(entry);
+			entry.getParent().remove(entry);
 	}
 
 	@Override
