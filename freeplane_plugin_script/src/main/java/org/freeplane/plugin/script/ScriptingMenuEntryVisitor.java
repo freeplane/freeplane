@@ -18,6 +18,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 
@@ -26,10 +27,12 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private ExecutionModeSelector modeSelector;
 	private final HashSet<String> registeredLocations = new HashSet<String>();
 	private EntryNavigator entryNavigator;
+	private ModeController modeController;
 
-	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ExecutionModeSelector modeSelector) {
+	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ExecutionModeSelector modeSelector, ModeController modeController) {
 		this.configuration = configuration;
 		this.modeSelector = modeSelector;
+		this.modeController = modeController;
 	}
 
 	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
@@ -41,42 +44,50 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 			entryNavigator.addAlias("main_menu_scripting", userScriptsEntry.getParent().getPath());
 			entryNavigator.addAlias("/menu_bar/help", "main_menu/help/help_misc");
 			entryNavigator.addAlias("/menu_bar", "main_menu");
+			entryNavigator.addAlias("node_popup_scripting", "node_popup/node_popup_scripting");
 		}
 		return entryNavigator;
     }
 
+	/** builds menu entries for scripts without a special menu location.
+	 * Add entry for all scripts and execution modes.
+	 * Scripts that don't support selected exec mode are made invisible in buildPhaseFinished()  
+	 */
 	@Override
 	public void visit(Entry target) {
 		initEntryNavigator(target);
-		if (configuration.getMenuTitleToPathMap().isEmpty()) {
-			target.addChild(createNoScriptsAvailableAction());
-		}
-		else {
-			// add entry for all scripts but disable scripts that don't support selected exec mode  
-			final ExecutionMode executionMode = modeSelector.getExecutionMode();
-			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-				String scriptName = entry.getKey();
-				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
-				if (!metaData.hasMenuLocation()) {
-					final Entry menuEntry = createEntry(scriptName, entry.getValue(), executionMode);
-    				// System.out.println("adding " + metaData);
-    				target.addChild(menuEntry);
+		for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
+			String scriptName = entry.getKey();
+			final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
+			if (!metaData.hasMenuLocation()) {
+				for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
+					target.addChild(createEntry(scriptName, entry.getValue(), executionMode));
 				}
-				// else: see buildPhaseFinished
 			}
+			// else: see buildPhaseFinished
+		}
+		if (target.isLeaf()) {
+			target.addChild(createNoScriptsAvailableAction());
 		}
 	}
 
 	@Override
 	public void buildPhaseFinished(Phase actions, Entry target) {
-		if (target.getParent() == null && actions == Phase.ACTIONS) {
-			for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
-				final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(entry.getKey());
-				if (metaData.hasMenuLocation()) {
-					addEntryForGivenLocation(target.getRoot(), metaData, entry.getValue());
-				}
-				// else: see visit
+		if (target.getParent() == null) {
+			if (actions == Phase.ACTIONS)
+				buildEntriesWithSpecialMenuLocation(target);
+			else if (actions == Phase.UI)
+				modeSelector.updateMenus();
+		}
+	}
+
+	private void buildEntriesWithSpecialMenuLocation(Entry target) {
+		for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
+			final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(entry.getKey());
+			if (metaData.hasMenuLocation()) {
+				addEntryForGivenLocation(target.getRoot(), metaData, entry.getValue());
 			}
+			// else: see visit
 		}
 	}
 
@@ -134,20 +145,27 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private Entry createEntry(AFreeplaneAction action) {
 	    final EntryAccessor entryAccessor = new EntryAccessor();
 		final Entry scriptEntry = new Entry();
-		entryAccessor.addChildAction(scriptEntry, action);
+		entryAccessor.setAction(scriptEntry, action);
 		entryAccessor.setIcon(scriptEntry, ActionUtils.getActionIcon(action));
 		return scriptEntry;
     }
 
 	private AFreeplaneAction createAction(final String scriptName, final String scriptPath,
                                           ExecutionMode executionMode, final ScriptMetaData metaData, final String title) {
-	    AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
-		    metaData.cacheContent(), metaData.getPermissions());
-		action.setEnabled(metaData.getExecutionModes().contains(executionMode));
-		String tooltip = createTooltip(title, metaData);
-		action.putValue(Action.SHORT_DESCRIPTION, tooltip);
-		action.putValue(Action.LONG_DESCRIPTION, tooltip);
-	    return action;
+		final String key = ExecuteScriptAction.makeMenuItemKey(scriptName, executionMode);
+		final AFreeplaneAction alreadyRegisteredAction = modeController.getAction(key);
+		if (alreadyRegisteredAction == null) {
+			AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
+				metaData.cacheContent(), metaData.getPermissions());
+			String tooltip = createTooltip(title, metaData);
+			action.putValue(Action.SHORT_DESCRIPTION, tooltip);
+			action.putValue(Action.LONG_DESCRIPTION, tooltip);
+			modeController.addAction(action);
+			return action;
+		}
+		else {
+			return alreadyRegisteredAction;
+		}
     }
 
 	private String createTooltip(String title, ScriptMetaData metaData) {
