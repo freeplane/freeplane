@@ -56,7 +56,10 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
@@ -520,9 +523,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			this.slowScroll = slowScroll;
 			scrolledNode = node;
 			this.scrollingDirective = scrollingDirective;
-			if (isShowing())
+			if (isShowing() && frameLayoutCompleted())
 				scrollNodeNow(slowScroll);
 		}
+	}
+
+	private boolean frameLayoutCompleted() {
+		final JFrame frame = (JFrame) JOptionPane.getFrameForComponent(this);
+		final Insets frameInsets = frame.getInsets();
+		final JRootPane rootPane = frame.getRootPane();
+		final boolean frameLayoutCompleted = rootPane.getWidth() == frame.getWidth() - frameInsets.left - frameInsets.right
+				&& rootPane.getHeight() == frame.getHeight() - frameInsets.top - frameInsets.bottom;
+		return frameLayoutCompleted; 
 	}
 
 	private void scrollNodeNow(boolean slowScroll) {
