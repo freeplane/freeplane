@@ -27,12 +27,19 @@ public class ScriptingMenuUtils {
                 : translation;
     }
 
-    /** menuTitle may either be a scriptName or a translation key. */
-    public static String scriptNameToMenuItemTitle(final String scriptName) {
-        final String translation = TextUtils.getText(scriptName, null);
-        // convert CamelCase to Camel Case
-        return translation != null ? translation : scriptName.replaceAll("([a-z])([A-Z])", "$1 $2");
-    }
+	/** menuTitle may either be a scriptName or a translation key. */
+	public static String scriptNameToMenuItemTitle(final String scriptName) {
+		final String translation = TextUtils.getText(scriptName, null);
+		if (translation != null) {
+			return translation;
+		}
+		else {
+			// convert CamelCase to Camel Case
+			String capitalized = (scriptName.length() < 2) ? scriptName
+			        : scriptName.substring(0, 1).toUpperCase() + scriptName.substring(1);
+			return capitalized.replaceAll("([a-z])([A-Z])", "$1 $2");
+		}
+	}
 
     public static String noScriptsAvailableMessage() {
         return "<html><body><em>" + TextUtils.getText(ScriptingMenuUtils.LABEL_NO_SCRIPTS_AVAILABLE)
