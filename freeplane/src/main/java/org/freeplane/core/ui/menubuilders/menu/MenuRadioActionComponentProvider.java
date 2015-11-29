@@ -47,7 +47,8 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 			else {
 				actionComponent = new JRadioButtonMenuItem(wrappedAction);
 			}
-			actionComponent.setSelected(Boolean.TRUE.equals(entry.getAttribute("selected")));
+			actionComponent.setSelected(Boolean.TRUE.equals(entry.getAttribute("selected")) 
+				|| entry.getName().equals(entry.getParent().getAttribute("selectedAction")));
 			buttonGroup.add(actionComponent);
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
