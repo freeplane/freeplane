@@ -48,7 +48,7 @@ public class ExecutionModeSelector {
 			else
 				scriptFileToDisabledComponentMap.put(scriptAction.getScriptFile(), component);
 			component.setVisible(enabled);
-			component.setEnabled(enabled);
+			component.setEnabled(true);
 		}
 		// ensure that every script is visible (even if disabled)
 		for (java.util.Map.Entry<File, JComponent> mapEntry : scriptFileToDisabledComponentMap.entrySet()) {
