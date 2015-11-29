@@ -555,7 +555,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			this.slowScroll = slowScroll;
 			scrolledNode = node;
 			this.scrollingDirective = scrollingDirective;
-			if (isShowing() && frameLayoutCompleted())
+			if (isDisplayable() && frameLayoutCompleted())
 				scrollNodeNow(slowScroll);
 		}
 	}
