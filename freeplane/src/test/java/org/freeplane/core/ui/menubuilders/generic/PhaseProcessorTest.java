@@ -84,4 +84,15 @@ public class PhaseProcessorTest {
 		phasedBuilder.build(entry);
 		verify(listener).buildPhaseFinished(ACTIONS, entry);
 	}
+
+	@Test
+	public void childBuilder() throws Exception {
+		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
+		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, builder);
+		final Entry entry = new Entry();
+		final Entry child = new Entry();
+		entry.addChild(child);
+		phasedBuilder.buildChildren(entry);
+		verify(builder).build(child);
+	}
 }

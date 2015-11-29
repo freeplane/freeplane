@@ -35,10 +35,8 @@ public class SubtreeProcessorTest {
 		childProcessor.setProcessor(processor);
 		final Entry entry = new Entry();
 		entry.setAttribute(RecursiveMenuStructureProcessor.PROCESS_ON_POPUP, true);
-		final Entry child = new Entry();
-		entry.addChild(child);
 		childProcessor.childEntriesWillBecomeVisible(entry);
-		verify(processor).build(child);
+		verify(processor).buildChildren(entry);
 	}
 
 	@Test

@@ -20,9 +20,7 @@ public class SubtreeProcessor implements EntryPopupListener {
 
 	public void buildChildren(Entry entry) {
 		final PhaseProcessor subtreeProcessor = forChildren(entry);
-		for (Entry child : entry.children()) {
-			subtreeProcessor.build(child);
-		}
+		subtreeProcessor.buildChildren(entry);
 	}
 
 	public void rebuildEntry(Entry entry) {
