@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders.generic;
 
 import static java.lang.Boolean.TRUE;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -175,6 +176,13 @@ public class RecursiveMenuStructureProcessor{
 
 	public RecursiveMenuStructureProcessor forChildren(Entry root, Entry subtreeRoot) {
 		return new RecursiveMenuStructureProcessor(visitors, subtreeDefaultVisitors, findSubtreeChildrenDefaultBuilder(root, subtreeRoot));
+	}
+
+	public boolean containsOneOf(Collection<String> builders) {
+		for(String builder:builders)
+			if(visitors.containsKey(builder))
+				return true;
+		return false;
 	}
 
 }

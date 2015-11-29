@@ -7,6 +7,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair.VisitorType;
 import org.junit.Before;
 import org.junit.Test;
@@ -241,5 +243,29 @@ public class RecursiveMenuStructureProcessorTest {
 		entry.setBuilders(asList("builder"));
 		recursiveMenuStructureBuilder.destroy(entry);
 		verify(destroyer).visit(entry);
+	}
+
+
+	@Test
+	public void processorWithoutBuilder_containsNoBuilder() {
+		final RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
+		assertThat(recursiveMenuStructureBuilder.containsOneOf(Arrays.asList("builder")), equalTo(false));
+	}
+
+	@Test
+	public void processorWithBuilder_containsBuilder() {
+		final RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
+		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
+		recursiveMenuStructureBuilder.addBuilder("builder", builder);
+		assertThat(recursiveMenuStructureBuilder.containsOneOf(Arrays.asList("builder")), equalTo(true));
+	}
+
+
+	@Test
+	public void processorWithBuilder_containsOneOfBuilders() {
+		final RecursiveMenuStructureProcessor recursiveMenuStructureBuilder = new RecursiveMenuStructureProcessor();
+		EntryVisitor builder = Mockito.mock(EntryVisitor.class);
+		recursiveMenuStructureBuilder.addBuilder("builder", builder);
+		assertThat(recursiveMenuStructureBuilder.containsOneOf(Arrays.asList("builder", "builder2")), equalTo(true));
 	}
 }

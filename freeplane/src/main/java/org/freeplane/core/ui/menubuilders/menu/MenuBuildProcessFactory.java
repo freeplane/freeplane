@@ -15,6 +15,8 @@ import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
+import org.freeplane.core.ui.menubuilders.generic.ChildEntryFilter;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
@@ -47,9 +49,8 @@ public class MenuBuildProcessFactory {
 		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
 		    new AcceleratorDestroyer(acceleratorMap, entries));
 
-		RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
+		final RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
 		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
-		uiBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
 		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
 
 		if (userInputListenerFactory.useRibbonMenu()) {
@@ -75,6 +76,13 @@ public class MenuBuildProcessFactory {
 		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu.action");
 		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
+
+		actionBuilder.addBuilder("ignore", new ChildEntryFilter() {
+			@Override
+			public boolean shouldRemove(Entry entry) {
+				return ! uiBuilder.containsOneOf(entry.builders());
+			}
+		});
 
 		childProcessor = new SubtreeProcessor();
 		final ActionSelectListener actionSelectListener = new ActionSelectListener();
