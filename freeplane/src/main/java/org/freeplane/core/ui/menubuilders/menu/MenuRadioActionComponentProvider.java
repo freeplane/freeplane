@@ -8,6 +8,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
@@ -47,8 +48,8 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 			else {
 				actionComponent = new JRadioButtonMenuItem(wrappedAction);
 			}
-			actionComponent.setSelected(Boolean.TRUE.equals(entry.getAttribute("selected")) 
-				|| entry.getName().equals(entry.getParent().getAttribute("selectedAction")));
+			actionComponent.setSelected(Boolean.parseBoolean(String.valueOf(entry.getAttribute("selected"))) 
+				|| entry.getName().equals(getSelectedActionName(entry)));
 			buttonGroup.add(actionComponent);
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
@@ -59,5 +60,15 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 		}
 		else
 			return null;
+	}
+
+	private String getSelectedActionName(Entry entry) {
+		String selectedAction = (String) entry.getParent().getAttribute("selectedAction");
+		if (selectedAction != null)
+			return selectedAction;
+		String selectedActionProperty = (String) entry.getParent().getAttribute("selectedActionProperty");
+		if (selectedActionProperty != null)
+			return ResourceController.getResourceController().getProperty(selectedActionProperty);
+		return null;
 	}
 }

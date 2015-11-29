@@ -589,7 +589,7 @@
 				<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
 				<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
 				<Entry name="scripting" plugin="org.freeplane.plugin.script">
-					<Entry builder="radio_button_group" selectedAction="ScriptsRunToggleAction.ON_SINGLE_NODE">
+					<Entry builder="radio_button_group" selectedActionProperty="ScriptsRunToggleAction.default">
 						<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE"/>
 						<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
 						<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />

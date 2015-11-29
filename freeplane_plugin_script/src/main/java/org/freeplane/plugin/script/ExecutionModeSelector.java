@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -20,6 +21,8 @@ public class ExecutionModeSelector {
 	public void select(ExecutionMode mode) {
 		this.mode = mode;
 		updateMenus();
+		ResourceController.getResourceController().setProperty("ScriptsRunToggleAction.default",
+		    "ScriptsRunToggleAction." + mode);
 	}
 
 	public ExecutionMode getExecutionMode() {
