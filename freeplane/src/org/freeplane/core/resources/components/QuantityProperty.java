@@ -41,6 +41,7 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 	@SuppressWarnings("rawtypes")
 	final private JComboBox unitBox;
 	final private U defaultUnit;
+	private U currentUnit;
 
 	public QuantityProperty(final String name, final double min, final double max, final double step, U defaultUnit) {
 		super(name);
@@ -60,7 +61,13 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 		unitBox.addItemListener(new ItemListener() {
 			
 			public void itemStateChanged(ItemEvent e) {
-				firePropertyChangeEvent();
+				final U newUnit = getCurrentUnit();
+				double value = (Double) numberSpinner.getValue();
+				final Quantity<U> newQuantity = new Quantity<U>(value, currentUnit).in(newUnit);
+				if(value != newQuantity.value)
+					numberSpinner.setValue(newQuantity.value);
+				else
+					firePropertyChangeEvent();
 			}
 		});
 	}
@@ -82,14 +89,19 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 	}
 	
 	public void setQuantifiedValue(Quantity<U> quantity){
+		this.currentUnit = quantity.unit;
 		numberSpinner.setValue(quantity.value);
 		unitBox.setSelectedIndex(quantity.unit.ordinal());
 	}
 	
 	public Quantity<U> getQuantifiedValue(){
 		double value = (Double) numberSpinner.getValue();
-		U unit = defaultUnit.getDeclaringClass().getEnumConstants()[unitBox.getSelectedIndex()];
+		U unit = getCurrentUnit();
 		return new Quantity<U>(value, unit);
+	}
+
+	public U getCurrentUnit() {
+		return defaultUnit.getDeclaringClass().getEnumConstants()[unitBox.getSelectedIndex()];
 	}
 
 	@Override
