@@ -155,8 +155,14 @@ public abstract class ResourceController {
 
 
 	public int getLengthProperty(String name) {
+		final Quantity<LengthUnits> quantity = getQuantityProperty(name);
+		return quantity.toBaseUnitsRounded();
+	}
+
+	public Quantity<LengthUnits> getQuantityProperty(String name) {
 		final String property = getProperty(name);
-		return Quantity.fromString(property, LengthUnits.px).toBaseUnitsRounded();
+		final Quantity<LengthUnits> quantity = Quantity.fromString(property, LengthUnits.px);
+		return quantity;
 	}
 
 	public int getIntProperty(String key) {

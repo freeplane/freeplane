@@ -157,7 +157,7 @@ public class NodeView extends JComponent implements INodeView {
 	private int calcShiftY(final LocationModel locationModel) {
 		try {
 			final NodeModel parent = model.getParentNode();
-			return locationModel.getShiftY() + (! getParentView().isSummary() && getMap().getModeController().hasOneVisibleChild(parent) ? getMainView().getSingleChildShift() : 0);
+			return locationModel.getShiftY().toBaseUnitsRounded() + (! getParentView().isSummary() && getMap().getModeController().hasOneVisibleChild(parent) ? getMainView().getSingleChildShift() : 0);
 		}
 		catch (final NullPointerException e) {
 			return 0;
@@ -362,7 +362,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public int getHGap() {
-		return map.getZoomed(LocationModel.getModel(model).getHGap());
+		return map.getZoomed(LocationModel.getModel(model).getHGap().toBaseUnits());
 	}
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {
@@ -713,7 +713,7 @@ public class NodeView extends JComponent implements INodeView {
 	 * @return Returns the VGAP.
 	 */
 	public int getMinimalDistanceBetweenChildren() {
-		final int minimalDistanceBetweenChildren = map.getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(model);
+		final double minimalDistanceBetweenChildren = map.getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(model).toBaseUnits();
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
 

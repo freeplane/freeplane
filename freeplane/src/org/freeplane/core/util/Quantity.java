@@ -1,5 +1,7 @@
 package org.freeplane.core.util;
 
+import org.freeplane.core.ui.LengthUnits;
+
 public class Quantity <U extends Enum<U> & Convertible >{
 	
 	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, U defaultUnit) {
@@ -71,5 +73,18 @@ public class Quantity <U extends Enum<U> & Convertible >{
 
 	public Quantity<U> in(U unit) {
 		return new Quantity<U>(value * (this.unit.factor() / unit.factor()), unit);
+	}
+
+	public Quantity<U> add(Quantity<U> second) {
+		if(unit == second.unit)
+			return new Quantity<U>(value + second.value, unit);
+		else {
+			final double sum = value + second.in(unit).value;
+			return new Quantity<U>(sum, unit);
+		}
+	}
+
+	public Quantity<U> add(double value, U unit) {
+		return add(new Quantity<U>(value, unit));
 	}
 }

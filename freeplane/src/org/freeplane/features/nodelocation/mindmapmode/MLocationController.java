@@ -21,7 +21,9 @@ package org.freeplane.features.nodelocation.mindmapmode;
 
 import java.util.ArrayList;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -53,7 +55,7 @@ public class MLocationController extends LocationController {
 			}
 			LocationModel target = from.getExtension(LocationModel.class);
 			if(target != null){
-				target.setVGap(LocationModel.GAP_NOT_SET);
+				target.setVGap(LocationModel.DEFAULT_VGAP);
 			}
 		}
 
@@ -62,7 +64,7 @@ public class MLocationController extends LocationController {
 				return;
 			}
 			LocationModel model = which.getExtension(LocationModel.class);
-			if(model != null && model.getVGap() != LocationModel.GAP_NOT_SET ){
+			if(model != null && model.getVGap() != LocationModel.DEFAULT_VGAP ){
 				remove(key, from);
 			}
 		}
@@ -82,7 +84,7 @@ public class MLocationController extends LocationController {
 		modeController.addAction(new ResetNodeLocationAction());
 	}
 
-	public void moveNodePosition(final NodeModel node, final int hGap, final int shiftY) {
+	public void moveNodePosition(final NodeModel node, final Quantity<LengthUnits> hGap, final Quantity<LengthUnits> shiftY) {
 		final ModeController currentModeController = Controller.getCurrentModeController();
 		MapModel map = node.getMap();
 		ArrayList<IActor> actors = new ArrayList<IActor>(3);
@@ -93,17 +95,17 @@ public class MLocationController extends LocationController {
 		}
 	}
 
-	public void setHorizontalShift(NodeModel node, final int horizontalShift){
+	public void setHorizontalShift(NodeModel node, final Quantity<LengthUnits> horizontalShift){
 		final IActor actor = new ChangeShiftXActor(node, horizontalShift);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setVerticalShift(NodeModel node, final int verticalShift){
+	public void setVerticalShift(NodeModel node, final Quantity<LengthUnits> verticalShift){
 		final IActor actor = new ChangeShiftYActor(node, verticalShift);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setMinimalDistanceBetweenChildren(NodeModel node, final int minimalDistanceBetweenChildren){
+	public void setMinimalDistanceBetweenChildren(NodeModel node, final Quantity<LengthUnits> minimalDistanceBetweenChildren){
 		if(node != null){
 			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
 			Controller.getCurrentModeController().execute(actor, node.getMap());

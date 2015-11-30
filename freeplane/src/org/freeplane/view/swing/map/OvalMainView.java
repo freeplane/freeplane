@@ -83,7 +83,7 @@ class OvalMainView extends VariableInsetsMainView {
 	protected Point getConnectorPointAtTheOvalBorder(Point p) {
 		final double nWidth = this.getWidth() / 2f;
     	final double nHeight = this.getHeight() / 2f;
-    	int dx = Math.max(Math.abs(p.x -  this.getWidth()/2), getNodeView().getZoomed(LocationModel.HGAP));
+    	int dx = Math.max(Math.abs(p.x -  this.getWidth()/2), getNodeView().getZoomed(LocationModel.DEFAULT_HGAP_PX));
     	if(p.x < this.getWidth()/2)
     		dx = -dx;
     	double angle = Math.atan((p.y - nHeight) / dx);

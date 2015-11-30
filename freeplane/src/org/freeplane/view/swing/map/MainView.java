@@ -344,7 +344,7 @@ public abstract class MainView extends ZoomableLabel {
 			g2.setColor(Color.BLUE);
 			g.fillOval(r.x, r.y, r.width - 1, r.height - 1);
 		}
-		else if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
+		else if (LocationModel.getModel(movedView.getModel()).getHGap().value <= 0) {
 			g2.setColor(Color.RED);
 			g.fillOval(r.x, r.y, r.width- 1, r.height- 1);
 		}

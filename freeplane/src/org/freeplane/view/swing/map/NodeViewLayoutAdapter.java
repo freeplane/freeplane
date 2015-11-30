@@ -275,11 +275,11 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
             if(child.isContentVisible())
             	childHGap =  child.getHGap(); 
             else if(child.isSummary())
-            	childHGap = child.getZoomed(LocationModel.HGAP*7/12);
+            	childHGap = child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
             else
             	childHGap = 0;
 			if(view.getModel().isHiddenSummary())
-				childHGap -= child.getZoomed(LocationModel.HGAP*7/12);
+				childHGap -= child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 
             final int childHeight = child.getHeight() - 2 * getSpaceAround();
             

@@ -19,7 +19,9 @@
  */
 package org.freeplane.features.nodelocation.mindmapmode;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodelocation.LocationModel;
@@ -29,11 +31,11 @@ import org.freeplane.features.nodelocation.LocationModel;
  * 01.03.2014
  */
 final class ChangeShiftXActor implements IActor {
-	private final int shiftX;
+	private final Quantity<LengthUnits> shiftX;
 	private final NodeModel node;
-	private final int oldShiftX;
+	private final Quantity<LengthUnits> oldShiftX;
 
-	ChangeShiftXActor(final NodeModel node, final int shiftX){
+	ChangeShiftXActor(final NodeModel node, final Quantity<LengthUnits> shiftX){
 		final LocationModel locationModel = LocationModel.getModel(node);
 		oldShiftX = locationModel.getHGap();
 		this.node = node;
@@ -48,7 +50,7 @@ final class ChangeShiftXActor implements IActor {
 		return "moveNodePosition";
 	}
 
-	private void setShiftX(final NodeModel node, final int hGap) {
+	private void setShiftX(final NodeModel node, final Quantity<LengthUnits> hGap) {
 		final LocationModel locationModel = LocationModel.createLocationModel(node);
 		locationModel.setHGap(hGap);
 		Controller.getCurrentModeController().getMapController().nodeChanged(node);

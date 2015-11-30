@@ -45,10 +45,12 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.EncryptionModel;
@@ -644,7 +646,9 @@ public class MMapController extends MapController {
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
 		if(! addNewNode(newNode, target, -1, newNodeIsLeft))
 			return null;
-		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, pt.x, pt.y);
+		final Quantity<LengthUnits> x = new Quantity<LengthUnits>(pt.x, LengthUnits.px).in(LengthUnits.pt);
+		final Quantity<LengthUnits> y = new Quantity<LengthUnits>(pt.y, LengthUnits.px).in(LengthUnits.pt);
+		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, x, y);
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if (component == null)
 			return newNode;
