@@ -116,7 +116,7 @@ public class ZoomableLabel extends JLabel {
 				try{
 					final ModeController modeController = map.getModeController();
 					final NodeStyleController nsc = NodeStyleController.getController(modeController);
-					final int maxNodeWidth = nsc.getMaxWidth(node.getModel()).toBaseUnitsRounded();
+					final double maxNodeWidth = nsc.getMaxWidth(node.getModel()).toBaseUnits();
 					setMaximumWidth(Integer.MAX_VALUE);
 					widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
 				}
