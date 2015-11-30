@@ -143,9 +143,6 @@ public class ExportWithXSLT implements IExportEngine {
 		return success;
 	}
 
-	private int getImageResolutionDPI() {
-	    return ResourceController.getResourceController().getIntProperty("exported_image_resolution_dpi", 300);
-    }
 	/**
 	 * @param map
 	 */
@@ -153,7 +150,7 @@ public class ExportWithXSLT implements IExportEngine {
 		if (Controller.getCurrentController().getMapViewManager().getMapViewComponent() == null) {
 			return false;
 		}
-		final RenderedImage image = new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
+		final RenderedImage image = new ImageCreator(UITools.getScreenResolution()).createBufferedImage(map);
 		if(image == null){
 			return false;
 		}

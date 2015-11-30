@@ -55,6 +55,7 @@ class ClickableImageCreator {
 		this.regExpLinkReplacement = regExpLinkReplacement;
 		mapView = ((MapView) modeController.getController().getMapViewManager().getMapViewComponent());
 		if (mapView != null) {
+			mapView.preparePrinting();
 			innerBounds = mapView.getInnerBounds();
 		}
 		else {
@@ -62,6 +63,8 @@ class ClickableImageCreator {
 		}
 //		this.modeController = modeController;
 		createArea();
+		if (mapView != null)
+			mapView.endPrinting();
 	}
 
 	private void createArea() {
@@ -96,7 +99,7 @@ class ClickableImageCreator {
 			        + StringEscapeUtils.escapeHtml(holder.alt) + "\" title=\""
 			        + StringEscapeUtils.escapeHtml(holder.title) + "\" coords=\"" + holder.coordinates.x + ","
 			        + holder.coordinates.y + "," + (holder.coordinates.width + holder.coordinates.x) + ","
-			        + +(holder.coordinates.height + holder.coordinates.y) + "\" />");
+			        + +(holder.coordinates.height + holder.coordinates.y) + "\" />\n");
 		}
 		return htmlArea.toString();
 	}

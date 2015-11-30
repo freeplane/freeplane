@@ -288,11 +288,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
-		final int BOUND = 1;
-		innerBounds.x -= BOUND;
-		innerBounds.y -= BOUND;
-		innerBounds.width += 2 * BOUND;
-		innerBounds.height += 2 * BOUND;
 
 		double scaleFactor = (double) dpi / (double) UITools.getScreenResolution();
 
