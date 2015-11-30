@@ -1,7 +1,15 @@
 ===============================
+1.5.2
+===============================
+Save node location options in length units
+Use new style "attributes" for attribute formatting
+
+===============================
 1.5.1
 ===============================
-New node shapes small_bubble, oval, circle, hexagons
+New node shapes small_bubble, oval, rectangle, hexagons
+Node shape margin and uniform options
+Improve map positioning on start and on window size changes
 Make Javascript scripts available with Java 1.8
 
 ===============================
@@ -19,6 +27,7 @@ Configurable default Map Save Directory
 Changed behavior of read-only maps
 Make data formatting, formula processing and LaTeX rendering independently configurable
 Keep icon name of user icon if it's not found in the current installation
+Full screen without distracting elements
 
 ===============================
 1.3.16
