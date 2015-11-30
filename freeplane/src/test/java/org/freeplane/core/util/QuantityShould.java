@@ -105,4 +105,10 @@ public class QuantityShould {
 		Quantity<Metrics> second = new Quantity<Metrics>(2, Metrics.m);
 		assertThat(first.add(second), equalTo(new Quantity<Metrics>(300, Metrics.cm)));
 	}
+
+	@Test
+	public void addQuantitiesGivenAsPrimitives() throws Exception {
+		Quantity<Metrics> first = new Quantity<Metrics>(100, Metrics.cm);
+		assertThat(first.add(2, Metrics.m), equalTo(new Quantity<Metrics>(300, Metrics.cm)));
+	}
 }

@@ -83,4 +83,9 @@ public class Quantity <U extends Enum<U> & Convertible >{
 			return new Quantity<U>(sum, unit);
 		}
 	}
+
+	public Quantity<U> add(double value, U unit) {
+		return add(new Quantity<U>(value, unit));
+	}
+
 }
