@@ -1,7 +1,15 @@
 ===============================
+1.5.2
+===============================
+Save node location options in length units
+Use new style "attributes" for attribute formatting
+
+===============================
 1.5.1
 ===============================
-New node shapes small_bubble, oval, circle, hexagons
+New node shapes small_bubble, oval, rectangle, hexagons
+Node shape margin and uniform options
+Improve map positioning on start and on window size changes
 Make Javascript scripts available with Java 1.8
 
 ===============================
