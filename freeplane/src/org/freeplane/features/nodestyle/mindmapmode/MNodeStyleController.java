@@ -609,7 +609,7 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		getModeController().execute(actor, node.getMap());
 		final Quantity<LengthUnits> maxNodeWidth = getMaxWidth(node);
-		if(maxNodeWidth != null && minNodeWidth != null && maxNodeWidth.toBaseUnitsRounded() < minNodeWidth.toBaseUnitsRounded()){
+		if(maxNodeWidth != null && minNodeWidth != null && maxNodeWidth.toBaseUnits() < minNodeWidth.toBaseUnits()){
 			setMaxNodeWidth(node, minNodeWidth);
 		}
     }
