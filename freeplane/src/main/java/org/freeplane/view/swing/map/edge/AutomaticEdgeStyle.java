@@ -53,7 +53,7 @@ public class AutomaticEdgeStyle {
 			}
 			final NodeModel defaultStyleNode = mapStyleNodes.getStyleNode(MapStyleModel.DEFAULT_STYLE);
 			final NodeStyleController nodeStyleController = modeController.getExtension(NodeStyleController.class);
-			nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode).toBaseUnitsRounded() + LocationModel.HGAP);
+			nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode).toBaseUnitsRounded() + LocationModel.DEFAULT_HGAP_PX);
 		}
 		int level = (int) ((float)distance / nodeColumnWidth + 0.5);
 		if(SummaryNode.isHidden(node.getModel()))

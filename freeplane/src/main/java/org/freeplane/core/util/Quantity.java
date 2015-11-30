@@ -1,7 +1,5 @@
 package org.freeplane.core.util;
 
-import org.freeplane.core.util.QuantityShould.Metrics;
-
 public class Quantity <U extends Enum<U> & Convertible >{
 	
 	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, U defaultUnit) {
@@ -87,5 +85,4 @@ public class Quantity <U extends Enum<U> & Convertible >{
 	public Quantity<U> add(double value, U unit) {
 		return add(new Quantity<U>(value, unit));
 	}
-
 }

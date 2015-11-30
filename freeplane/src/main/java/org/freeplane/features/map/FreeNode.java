@@ -51,7 +51,7 @@ public class FreeNode extends PersistentNodeHook implements IExtension{
 		if(node.isRoot())
 				return;
 		final NodeModel[] selecteds = getSelectedNodes();
-		((MLocationController)LocationController.getController()).moveNodePosition(node, LocationModel.HGAP, 0);
+		((MLocationController)LocationController.getController()).moveNodePosition(node, LocationModel.DEFAULT_HGAP, LocationModel.DEFAULT_SHIFT_Y);
 		super.undoableToggleHook(node, extension);
 		if(isFreeNode(node)){
 			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();

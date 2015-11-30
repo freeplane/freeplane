@@ -335,7 +335,7 @@ public class StyleEditorPanel extends JPanel {
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MLocationController locationController = (MLocationController) Controller.getCurrentModeController().getExtension(LocationController.class);
-			locationController.setMinimalDistanceBetweenChildren(node, enabled ? mChildDistance.getNumberValue().intValue(): LocationModel.GAP_NOT_SET);
+			locationController.setMinimalDistanceBetweenChildren(node, enabled ? mChildDistance.getQuantifiedValue(): LocationModel.DEFAULT_VGAP);
 		}
 	}
 	
@@ -533,7 +533,7 @@ public class StyleEditorPanel extends JPanel {
 	private EditablePatternComboProperty mNodeFormat;
 	private QuantityProperty<LengthUnits> mMaxNodeWidth;
 	private QuantityProperty<LengthUnits> mMinNodeWidth;
-	private NumberProperty mChildDistance;
+	private QuantityProperty<LengthUnits> mChildDistance;
 	private ComboProperty mNodeTextAlignment;
 
 	
@@ -699,7 +699,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addChildDistanceControl(final List<IPropertyControl> controls) {
 		mSetChildDistance = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetChildDistance);
-		mChildDistance = new NumberProperty(StyleEditorPanel.VERTICAL_CHILD_GAP, 0, 100000, 1);
+		mChildDistance = new  QuantityProperty<LengthUnits>(StyleEditorPanel.VERTICAL_CHILD_GAP, 0, 1000, 0.1, LengthUnits.px);
 		controls.add(mChildDistance);
 		final ChildDistanceChangeListener listener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(listener);
@@ -1012,10 +1012,10 @@ public class StyleEditorPanel extends JPanel {
 			{
 				final LocationModel locationModel = LocationModel.getModel(node);
 				final LocationController locationController = modeController.getExtension(LocationController.class);
-				final int gap = locationModel.getVGap();
-				final int viewGap = locationController.getMinimalDistanceBetweenChildren(node);
-				mSetChildDistance.setValue(gap != LocationModel.GAP_NOT_SET);
-				mChildDistance.setValue(viewGap);
+				final Quantity<LengthUnits> gap = locationModel.getVGap();
+				final Quantity<LengthUnits> viewGap = locationController.getMinimalDistanceBetweenChildren(node);
+				mSetChildDistance.setValue(gap != LocationModel.DEFAULT_VGAP);
+				mChildDistance.setQuantifiedValue(viewGap);
 			}
 			
 			final EdgeController edgeController = EdgeController.getController();

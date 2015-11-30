@@ -25,6 +25,8 @@ import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 
@@ -34,26 +36,32 @@ import org.freeplane.features.map.NodeModel;
  */
 class LocationBuilder implements IExtensionAttributeWriter {
 	private void registerAttributeHandlers(final ReadManager reader) {
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VSHIFT", new IAttributeHandler() {
+		final IAttributeHandler vShiftHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				LocationModel.createLocationModel(node).setShiftY(Integer.parseInt(value));
+				LocationModel.createLocationModel(node).setShiftY(Quantity.fromString(value, LengthUnits.px));
 			}
-		});
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VSHIFT", vShiftHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VSHIFT_QUANTITY", vShiftHandler);
 		final IAttributeHandler vgapHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				LocationModel.createLocationModel(node).setVGap(Integer.parseInt(value));
+				LocationModel.createLocationModel(node).setVGap(Quantity.fromString(value, LengthUnits.px));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP", vgapHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP_QUANTITY", vgapHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP", vgapHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "HGAP", new IAttributeHandler() {
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP_QUANTITY", vgapHandler);
+		final IAttributeHandler hgapHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				LocationModel.createLocationModel(node).setHGap(Integer.parseInt(value));
+				LocationModel.createLocationModel(node).setHGap(Quantity.fromString(value, LengthUnits.px));
 			}
-		});
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "HGAP_QUANTITY", hgapHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "HGAP", hgapHandler);
 	}
 
 	void registerBy(final ReadManager readManager, final WriteManager writeManager) {
@@ -63,17 +71,17 @@ class LocationBuilder implements IExtensionAttributeWriter {
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final LocationModel locationModel = (LocationModel) extension;
-		final int vGap = locationModel.getVGap();
-		if (vGap != LocationModel.GAP_NOT_SET) {
-			writer.addAttribute("VGAP", Integer.toString(vGap));
+		final Quantity<LengthUnits> vGap = locationModel.getVGap();
+		if (vGap != LocationModel.DEFAULT_VGAP) {
+			writer.addAttribute("VGAP_QUANTITY", vGap.toString());
 		}
-		final int hGap = locationModel.getHGap();
-		if (locationModel.getHGap() != LocationModel.HGAP) {
-			writer.addAttribute("HGAP", Integer.toString(hGap));
+		final Quantity<LengthUnits> hGap = locationModel.getHGap();
+		if (locationModel.getHGap() != LocationModel.DEFAULT_HGAP) {
+			writer.addAttribute("HGAP_QUANTITY", hGap.toString());
 		}
-		final int shiftY = locationModel.getShiftY();
-		if (shiftY != 0) {
-			writer.addAttribute("VSHIFT", Integer.toString(shiftY));
+		final Quantity<LengthUnits> shiftY = locationModel.getShiftY();
+		if (shiftY != LocationModel.DEFAULT_SHIFT_Y) {
+			writer.addAttribute("VSHIFT_QUANTITY", shiftY.toString());
 		}
 	}
 }

@@ -70,7 +70,7 @@ public class HorizontalEdgeView extends EdgeView {
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
 		getWidth();
-		int xMiddle = getTarget().getMap().getZoomed(LocationModel.HGAP) / 2;
+		int xMiddle = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
 		final boolean left = getTarget().isLeft() 
 		    || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()&& start.x > end.x;
         if (left) {
