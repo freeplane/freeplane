@@ -92,4 +92,17 @@ public class QuantityShould {
 		assertThat(quantityInCm, equalTo(new Quantity<Metrics>(100, Metrics.cm)));
 	}
 	
+	@Test
+	public void addQuantitiesInSameUnits() throws Exception {
+		Quantity<Metrics> first = new Quantity<Metrics>(1, Metrics.m);
+		Quantity<Metrics> second = new Quantity<Metrics>(2, Metrics.m);
+		assertThat(first.add(second), equalTo(new Quantity<Metrics>(3, Metrics.m)));
+	}
+	
+	@Test
+	public void addQuantitiesInDifferentUnits() throws Exception {
+		Quantity<Metrics> first = new Quantity<Metrics>(100, Metrics.cm);
+		Quantity<Metrics> second = new Quantity<Metrics>(2, Metrics.m);
+		assertThat(first.add(second), equalTo(new Quantity<Metrics>(300, Metrics.cm)));
+	}
 }
