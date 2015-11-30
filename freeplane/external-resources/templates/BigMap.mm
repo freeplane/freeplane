@@ -3,7 +3,7 @@
 <node LOCALIZED_TEXT="new_mindmap">
 <hook NAME="MapStyle">
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP="32"  TEXT_SHORTENED="true">
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt"  TEXT_SHORTENED="true">
 <font SIZE="24"/>
 <richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
