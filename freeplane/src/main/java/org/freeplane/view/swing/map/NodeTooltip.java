@@ -21,10 +21,9 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
-import org.freeplane.core.ui.MouseInsideListener;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.components.html.ScaledEditorKit;
+import org.freeplane.core.ui.components.html.SynchronousScaledEditorKit;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -74,7 +73,7 @@ public class NodeTooltip extends JToolTip {
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
 		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-		final HTMLEditorKit kit = ScaledEditorKit.create();
+		final HTMLEditorKit kit = SynchronousScaledEditorKit.create();
 		tip.setEditorKit(kit);
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
@@ -91,17 +90,9 @@ public class NodeTooltip extends JToolTip {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, maximumWidth / 2));
-		scrollPane.addComponentListener(new ComponentAdapter() {
-			@Override
-            public void componentResized(ComponentEvent e) {
-	            revalidate();
-            }
-		});
 		UITools.setScrollbarIncrement(scrollPane);
 		add(scrollPane);
-		tip.setOpaque(false);
-//		scrollPane.setOpaque(false);
-//		scrollPane.getViewport().setOpaque(false);
+		tip.setOpaque(true);
 	}
 	
 	private static int maximumWidth = Integer.MAX_VALUE;
@@ -138,16 +129,18 @@ public class NodeTooltip extends JToolTip {
 		tip.setPreferredSize(null);
 		tip.setText(tipText);
 		Dimension preferredSize = tip.getPreferredSize();
-		if (preferredSize.width < maximumWidth) {
-			tip.setPreferredSize(preferredSize);
-			return ;
+		if (preferredSize.width > maximumWidth) {
+			final HTMLDocument document = (HTMLDocument) tip.getDocument();
+			document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
+			// bad hack: call "setEditable" only to update view
+			tip.setEditable(true);
+			tip.setEditable(false);
+			preferredSize = tip.getPreferredSize();
 		}
-		final HTMLDocument document = (HTMLDocument) tip.getDocument();
-		document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
-		// bad hack: call "setEditable" only to update view
-		tip.setEditable(true);
-		tip.setEditable(false);
-		tip.setPreferredSize(tip.getPreferredSize());
+		tip.setSize(preferredSize);
+		preferredSize = tip.getPreferredSize();
+		tip.setPreferredSize(preferredSize);
+		
 	}
 
 	@Override

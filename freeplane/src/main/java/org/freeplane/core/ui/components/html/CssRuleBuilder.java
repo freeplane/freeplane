@@ -6,6 +6,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Convertible;
+import org.freeplane.core.util.Quantity;
 
 public class CssRuleBuilder {
 	private StringBuilder rule = new StringBuilder();
@@ -65,10 +67,22 @@ public class CssRuleBuilder {
 			break;
 		}
 		return this;
-		
+
 	}
 
 	public String toString() {
 		return rule.toString();
+	}
+
+	public CssRuleBuilder withMaxWidthAsPt(Quantity<?>... widths) {
+		int maxBaseUnits = -1;
+		for(Quantity<?> width : widths)
+			if(width != null)
+				maxBaseUnits = Math.max(maxBaseUnits, width.toBaseUnitsRounded());
+		if(maxBaseUnits >= 0)
+	   		rule.append("width: ")
+			.append(maxBaseUnits).append("pt")
+			.append(";");
+ 		return this;
 	}
 }

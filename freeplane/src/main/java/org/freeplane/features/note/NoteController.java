@@ -36,6 +36,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
@@ -53,7 +54,7 @@ public class NoteController implements IExtension {
 	private static UIIcon noteIcon;
 	public static URL bwNoteIconUrl;
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
-	private static final Integer NODE_TOOLTIP = 9;
+	private static final Integer NOTE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
 
 	public static NoteController getController() {
@@ -107,7 +108,7 @@ public class NoteController implements IExtension {
 	}
 
 	private void registerNoteTooltipProvider(ModeController modeController) {
-		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
+		modeController.addToolTipProvider(NOTE_TOOLTIP, new ITooltipProvider() {
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
 					return null;
@@ -121,8 +122,11 @@ public class NoteController implements IExtension {
 				    NodeStyleController.class);
 				MapModel map = modeController.getController().getMap();
 				if(map != null){
-				    final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
-				    rule.append(new CssRuleBuilder().withFont(defaultFont));
+					final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+					final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
+				    final Font defaultFont = style.getFont(noteStyleNode);
+				    rule.append(new CssRuleBuilder().withFont(defaultFont)
+				    		.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node)));
 				}
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);

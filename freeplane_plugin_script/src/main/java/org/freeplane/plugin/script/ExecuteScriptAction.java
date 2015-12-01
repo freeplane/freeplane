@@ -131,4 +131,17 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		}
 		script.execute(node);
 	}
+	
+	public ExecutionMode getExecutionMode() {
+		return mode;
+	}
+	
+	public File getScriptFile() {
+		return scriptFile;
+	}
+
+	@Override
+	public String toString() {
+		return "ExecuteScriptAction(" + scriptFile + ", " + mode + ")";
+	}
 }

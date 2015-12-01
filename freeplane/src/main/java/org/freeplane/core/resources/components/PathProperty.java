@@ -166,9 +166,4 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		if (filenameField != null)
 			filenameField.setText(path);
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{filenameField, selectButton};
-    }
 }

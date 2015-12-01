@@ -280,7 +280,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						final MessageFormat formatter = new MessageFormat(
 							getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
 						final String message = formatter.format(messageArguments);
-						final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message,
+						final int result = JOptionPane.showConfirmDialog(controller.getViewController().getCurrentRootComponent(), message,
 							"Freeplane", JOptionPane.YES_NO_OPTION);
 						if (result == JOptionPane.NO_OPTION) {
 							return;
@@ -374,7 +374,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			return;
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
-		dialog = new JDialog(Controller.getCurrentController().getViewController().getFrame(), false /*not modal*/);
+		dialog = new JDialog(UITools.getCurrentFrame(), false /*not modal*/);
 		final JTimePanel timePanel =createTimePanel(dialog, true, 4);
 		nodeSelectionListener = new INodeSelectionListener() {
 			public void onSelect(NodeModel node) {

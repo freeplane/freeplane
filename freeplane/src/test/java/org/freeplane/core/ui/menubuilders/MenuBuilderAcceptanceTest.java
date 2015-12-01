@@ -6,12 +6,14 @@ import static org.mockito.Mockito.when;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 
 import javax.swing.JToolBar;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
@@ -31,9 +33,10 @@ public class MenuBuilderAcceptanceTest {
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
 		JToolBar toolbar = new JToolBar();
 		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(toolbar);
-		final PhaseProcessor buildProcessor = (new MenuBuildProcessFactory(
+		final PhaseProcessor buildProcessor = new MenuBuildProcessFactory(
 		    userInputListenerFactory, Controller.getCurrentModeController(), new FreeplaneResourceAccessor(),
-		    mock(IAcceleratorMap.class), new EntriesForAction())).getBuildProcessor();
+		    mock(IAcceleratorMap.class), 
+		    new EntriesForAction(), Collections.<BuildPhaseListener>emptyList()).getBuildProcessor();
 		final String menuResource = "/xml/mindmapmode.generic.xml";
 		final InputStream resource = MenuBuilderAcceptanceTest.class.getResourceAsStream(menuResource);
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));

@@ -369,24 +369,18 @@ public class MLinkController extends LinkController {
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 	private String anchorID;
-	private ModeController modeController;
-
-	public MLinkController() {
-		super();
+	public MLinkController(ModeController modeController) {
+		super(modeController);
+		this.anchorID = "";
 	}
 
 	@Override
-    protected void init(ModeController modeController) {
-		super.init(modeController);
-		setModeController(modeController);
+    protected void init() {
+		super.init();
 		this.anchorID = "";
 		createActions();
 		modeController.registerExtensionCopier(new StyleCopier());
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
-	}
-
-	protected void setModeController(ModeController modeController) {
-		this.modeController = modeController;
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final NodeModel target) {

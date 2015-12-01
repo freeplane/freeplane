@@ -34,9 +34,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
-import org.freeplane.features.cloud.CloudModel.Shape;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.MapModel;
@@ -47,7 +51,10 @@ import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 /**
  * @author Dimitry Polivaev
@@ -59,6 +66,7 @@ public class MapStyleModel implements IExtension {
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
 	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
     public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
+    public static final IStyle ATTRIBUTE_STYLE = new StyleNamedObject("defaultstyle.attributes");
     public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
     public static final IStyle FLOATING_STYLE = new StyleNamedObject("defaultstyle.floating");
 	private Map<IStyle, NodeModel> styleNodes;
@@ -127,45 +135,69 @@ public class MapStyleModel implements IExtension {
         	hints.put(Hint.MODE, Mode.FILE);
         	hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
+			NodeStyleModel.setShapeConfiguration(root, ShapeConfigurationModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
+			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
+			final Quantity<LengthUnits> styleBlockGap = ResourceController.getResourceController().getQuantityProperty("style_block_gap");
+			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
 			insertStyleMap(parentMap, styleMap);
-			NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, STYLES_PREDEFINED);
-			if(predefinedStyleParentNode == null){
-				predefinedStyleParentNode = new NodeModel(styleMap);
-				predefinedStyleParentNode.setUserObject(new StyleNamedObject(MapStyleModel.STYLES_PREDEFINED));
-				root.insert(predefinedStyleParentNode);
-			}
+			NodeModel predefinedStyleParentNode = createStyleGroupNode(styleMap, STYLES_PREDEFINED);
+			createStyleGroupNode(styleMap, STYLES_USER_DEFINED);
+			createStyleGroupNode(styleMap, STYLES_AUTOMATIC_LAYOUT);
             if(styleNodes.get(DEFAULT_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DEFAULT_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 0);
                 addStyleNode(newNode);
             }
             NodeModel defaultStyleModel = styleNodes.get(DEFAULT_STYLE);
-            if(maxNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getNodeMaxNodeWidth(defaultStyleModel))
-            	NodeSizeModel.setNodeMaxNodeWidth(defaultStyleModel, maxNodeWidth);
-            if(minNodeWidth != NodeSizeModel.NOT_SET && NodeSizeModel.NOT_SET == NodeSizeModel.getMinNodeWidth(defaultStyleModel))
+            if(maxNodeWidth != null && null == NodeSizeModel.getMaxNodeWidth(defaultStyleModel))
+            	NodeSizeModel.setMaxNodeWidth(defaultStyleModel, maxNodeWidth);
+            if(minNodeWidth != null && null == NodeSizeModel.getMinNodeWidth(defaultStyleModel))
             	NodeSizeModel.setNodeMinWidth(defaultStyleModel, minNodeWidth);
             if(styleNodes.get(DETAILS_STYLE) == null){
                 final NodeModel newNode = new NodeModel(DETAILS_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 1);
                 addStyleNode(newNode);
             }
+            if(styleNodes.get(ATTRIBUTE_STYLE) == null){
+                final NodeModel newNode = new NodeModel(ATTRIBUTE_STYLE, styleMap);
+                final int defaultFontSize = 9;
+				NodeStyleModel.createNodeStyleModel(newNode).setFontSize(defaultFontSize);
+                predefinedStyleParentNode.insert(newNode, 2);
+                addStyleNode(newNode);
+            }
+            FontSizeExtension fontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
+            if(fontSizeExtension != null){
+            	NodeStyleModel.createNodeStyleModel(styleNodes.get(ATTRIBUTE_STYLE)).setFontSize(fontSizeExtension.fontSize);
+            }
             if(styleNodes.get(NOTE_STYLE) == null){
                 final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
-                predefinedStyleParentNode.insert(newNode, 2);
+                predefinedStyleParentNode.insert(newNode, 3);
                 addStyleNode(newNode);
             }
             if(styleNodes.get(FLOATING_STYLE) == null){
                 final NodeModel newNode = new NodeModel(FLOATING_STYLE, styleMap);
                 EdgeModel.createEdgeModel(newNode).setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
-                CloudModel.createModel(newNode).setShape(Shape.ROUND_RECT);
-                predefinedStyleParentNode.insert(newNode, 3);
+                CloudModel.createModel(newNode).setShape(CloudModel.Shape.ROUND_RECT);
+                predefinedStyleParentNode.insert(newNode, 4);
                 addStyleNode(newNode);
             }
         }
          catch (Exception e) {
 	        e.printStackTrace();
         }
+	}
+
+	protected NodeModel createStyleGroupNode(MapModel styleMap, String groupName) {
+		NodeModel root = styleMap.getRootNode();
+		NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, groupName);
+		if(predefinedStyleParentNode == null){
+			predefinedStyleParentNode = new NodeModel(styleMap);
+			predefinedStyleParentNode.setUserObject(new StyleNamedObject(groupName));
+			root.insert(predefinedStyleParentNode);
+		}
+		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.fork);
+		return predefinedStyleParentNode;
 	}
 
 	private void createNodeStyleMap(final NodeModel node) {
@@ -245,13 +277,13 @@ public class MapStyleModel implements IExtension {
 	}
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
-	private int maxNodeWidth = NodeSizeModel.NOT_SET;
-	private int minNodeWidth = NodeSizeModel.NOT_SET;
-	public void setMaxNodeWidth(final int maxNodeWidth) {
+	private Quantity<LengthUnits> maxNodeWidth = null;
+	private Quantity<LengthUnits> minNodeWidth = null;
+	public void setMaxNodeWidth(final Quantity<LengthUnits> maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
-	public void setMinNodeWidth(final int minNodeWidth) {
+	public void setMinNodeWidth(final Quantity<LengthUnits> minNodeWidth) {
 		this.minNodeWidth = minNodeWidth;
 	}  
 	

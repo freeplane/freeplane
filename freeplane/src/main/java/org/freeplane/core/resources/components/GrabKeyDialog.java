@@ -21,6 +21,7 @@ package org.freeplane.core.resources.components;
 
 import java.awt.AWTEvent;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -256,12 +257,12 @@ public class GrabKeyDialog extends JDialog {
 	private IKeystrokeValidator validator;
 
 	public GrabKeyDialog(final String input, final int modifierMask) {
-		super(UITools.getFrame(), GrabKeyDialog.getText("grab-key.title"), true);
+		super((Frame) UITools.getMenuComponent(), GrabKeyDialog.getText("grab-key.title"), true);
 		init(input, modifierMask);
 	}
 
 	public GrabKeyDialog(final String input) {
-		super(UITools.getFrame(), GrabKeyDialog.getText("grab-key.title"), true);
+		super((Frame) UITools.getMenuComponent(), GrabKeyDialog.getText("grab-key.title"), true);
 		init(input, 0);
 	}
 

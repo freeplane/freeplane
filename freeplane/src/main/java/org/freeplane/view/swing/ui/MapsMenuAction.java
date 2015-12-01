@@ -19,12 +19,14 @@
  */
 package org.freeplane.view.swing.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
-
-import javax.swing.SwingUtilities;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 
 @SuppressWarnings("serial")
 class MapsMenuAction extends AFreeplaneAction {
@@ -32,11 +34,27 @@ class MapsMenuAction extends AFreeplaneAction {
 		super("MapsMenuAction." + command, command, null);
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Controller.getCurrentController().getMapViewManager().changeToMapView(e.getActionCommand());
+	public void actionPerformed(final ActionEvent menuEvent) {
+		final String mapId = menuEvent.getActionCommand();
+				final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+				final Component selectedComponent = mapViewManager.getSelectedComponent();
+				if(selectedComponent != null && ! selectedComponent.hasFocus()){
+					selectedComponent.addFocusListener(new  FocusListener() {
+						
+						@Override
+						public void focusLost(FocusEvent e) {
+						}
+						
+						@Override
+						public void focusGained(FocusEvent e) {
+							selectedComponent.removeFocusListener(this);
+							mapViewManager.changeToMapView(mapId);
+						}
+					});
+					selectedComponent.requestFocusInWindow();
+				}
+				else
+					mapViewManager.changeToMapView(mapId);
 			}
-		});
-	}
+
 }

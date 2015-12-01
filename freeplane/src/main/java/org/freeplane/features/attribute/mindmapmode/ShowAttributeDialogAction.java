@@ -23,6 +23,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
 
 class ShowAttributeDialogAction extends AFreeplaneAction {
@@ -42,7 +43,7 @@ class ShowAttributeDialogAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		if (frame == null) {
-			frame = Controller.getCurrentController().getViewController().getFrame();
+			frame = UITools.getCurrentFrame();
 		}
 		if (getAttributeDialog().isVisible() == false && Controller.getCurrentController().getMap() != null) {
 			getAttributeDialog().pack();

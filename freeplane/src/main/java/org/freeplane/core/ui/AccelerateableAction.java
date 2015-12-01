@@ -61,7 +61,7 @@ public class AccelerateableAction implements IFreeplaneAction {
         String text = TextUtils.getText(SET_ACCELERATOR_ON_NEXT_CLICK_ACTION);
 		if(accelerator != null)
 			text = TextUtils.format("SetAccelerator.keystrokeDetected", toString(accelerator)) + "\n" + text;
-		final Frame frame = Controller.getCurrentController().getViewController().getFrame();
+		final Component frame = Controller.getCurrentController().getViewController().getMenuComponent();
 		setAcceleratorOnNextClickActionDialog = UITools.createCancelDialog(frame, title, text);
 		getAcceleratorOnNextClickActionDialog().addComponentListener(new ComponentAdapter() {
 			@Override

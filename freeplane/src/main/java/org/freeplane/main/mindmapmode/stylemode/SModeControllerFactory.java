@@ -57,6 +57,8 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.note.NoteController;
@@ -68,6 +70,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
+import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.styles.mindmapmode.StyleEditorPanel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -123,10 +126,11 @@ public class SModeControllerFactory {
 		SpellCheckerController.install(modeController);
 		IconController.install(new MIconController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
+		LocationController.install(new MLocationController());
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
-		LinkController.install(new MLinkController());
+		LinkController.install(new MLinkController(modeController));
 		MFileManager.install(new MFileManager());
 		MMapIO.install(modeController);
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
@@ -154,6 +158,7 @@ public class SModeControllerFactory {
 		controller.selectModeForBuild(modeController);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
+		modeController.addAction(new ShowFormatPanelAction());
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			public void onSelect(final NodeModel node) {
@@ -203,6 +208,7 @@ public class SModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, styleScrollPane);
+		UIComponentVisibilityDispatcher.install(viewController, styleScrollPane, "styleScrollPaneVisible");
 		modeController.addExtension(MUIFactory.class, new MUIFactory());
 		final Set<String> emptySet = Collections.emptySet();
 		modeController.updateMenus("/xml/stylemodemenu.xml", emptySet);

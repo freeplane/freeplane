@@ -324,7 +324,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 		gridbag.setConstraints(nodeSelectedNodeCountLabel, c);
 		panel.add(nodeSelectedNodeCountLabel);
 		//Show dialog
-		JOptionPane.showMessageDialog(UITools.getFrame(), panel,
+		JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), panel,
 		    TextUtils.getText("FilePropertiesAction.text"), JOptionPane.PLAIN_MESSAGE);
 	}
 

@@ -10,10 +10,13 @@ public class ScriptingMenuUtils {
     static final String LABEL_AVAILABLE_MODES_TOOLTIP = "ExecuteScript.available_modes_tooltip";
     static final String LABEL_NO_SCRIPTS_AVAILABLE = "ExecuteScripts.noScriptsAvailable";
     static final String LABEL_SCRIPT = "ExecuteScript.script";
-    static final String LABEL_SCRIPTS_MENU = "ExecuteScripts.text";
+    static final String LABEL_SCRIPTS_MENU = "userScripts";
 
     public static String parentLocation(String location) {
-        return location.replaceFirst("/[^/]*$", "");
+    	int indexOfSlash = location.lastIndexOf('/');
+    	if (indexOfSlash == -1)
+    		throw new IllegalArgumentException("location is not an absolute path: " + location);
+        return location.substring(0, indexOfSlash);
     }
 
     public static String getMenuItemTitle(ScriptMetaData metaData, ExecutionMode executionMode) {
@@ -24,12 +27,19 @@ public class ScriptingMenuUtils {
                 : translation;
     }
 
-    /** menuTitle may either be a scriptName or a translation key. */
-    public static String scriptNameToMenuItemTitle(final String scriptName) {
-        final String translation = TextUtils.getText(scriptName, null);
-        // convert CamelCase to Camel Case
-        return translation != null ? translation : scriptName.replaceAll("([a-z])([A-Z])", "$1 $2");
-    }
+	/** menuTitle may either be a scriptName or a translation key. */
+	public static String scriptNameToMenuItemTitle(final String scriptName) {
+		final String translation = TextUtils.getText(scriptName, null);
+		if (translation != null) {
+			return translation;
+		}
+		else {
+			// convert CamelCase to Camel Case
+			String capitalized = (scriptName.length() < 2) ? scriptName
+			        : scriptName.substring(0, 1).toUpperCase() + scriptName.substring(1);
+			return capitalized.replaceAll("([a-z])([A-Z])", "$1 $2");
+		}
+	}
 
     public static String noScriptsAvailableMessage() {
         return "<html><body><em>" + TextUtils.getText(ScriptingMenuUtils.LABEL_NO_SCRIPTS_AVAILABLE)

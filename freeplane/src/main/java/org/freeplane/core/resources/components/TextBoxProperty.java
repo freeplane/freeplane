@@ -64,9 +64,4 @@ public class TextBoxProperty extends PropertyBean implements IPropertyControl {
 		mTextArea.setText(value);
 		mTextArea.selectAll();
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{ mTextArea };
-    }
 }

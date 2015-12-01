@@ -36,8 +36,9 @@ public class CompoundActor implements IActor {
 		this(new LinkedList<IActor>());
 	}
 
-	public CompoundActor(final LinkedList<IActor> actors) {
-		this.actors = actors;
+	@SuppressWarnings("unchecked")
+	public CompoundActor(final LinkedList<? extends IActor> actors) {
+		this.actors = (LinkedList<IActor>) actors;
 	}
 
 	public void act() {

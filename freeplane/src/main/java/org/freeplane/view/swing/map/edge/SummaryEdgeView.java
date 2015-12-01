@@ -35,7 +35,7 @@ import org.freeplane.view.swing.map.link.CollisionDetector;
  */
 public class SummaryEdgeView extends EdgeView {
 	private static final int CHILD_XCTRL = 20;
-	private static final int XCTRL = 6;
+	private static final int XCTRL = 4;
 
 	public SummaryEdgeView(NodeView source, NodeView target, Component paintedComponent) {
 	    super(source, target, paintedComponent);
@@ -62,9 +62,9 @@ public class SummaryEdgeView extends EdgeView {
 		    startX = Math.min(start.x, end.x - childXctrl);
 		else
             startX = Math.max(start.x, end.x - childXctrl);
-        path.moveTo(startX + xctrl, start.y);
-		path.lineTo(startX + 2 *xctrl, start.y);
-		path.curveTo(startX + 3 * xctrl, start.y, startX, end.y, end.x, end.y);
+        path.moveTo(startX, start.y);
+		path.lineTo(startX + xctrl, start.y);
+		path.curveTo(startX + 2 * xctrl, start.y, startX, end.y, end.x, end.y);
 		return path;
 	}
 

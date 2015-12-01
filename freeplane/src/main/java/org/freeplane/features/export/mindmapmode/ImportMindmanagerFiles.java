@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -59,7 +60,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final String type = "mmap";
-		final Container component = Controller.getCurrentController().getViewController().getContentPane();
+		final Component component = Controller.getCurrentController().getViewController().getCurrentRootComponent();
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new ExampleFileFilter(type, null));
 		final File mmFile = Controller.getCurrentController().getMap().getFile();

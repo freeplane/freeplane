@@ -26,25 +26,20 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.ui.ColoredIconCreator;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
@@ -74,52 +69,63 @@ class NodeViewFactory {
 	}
 
 	MainView newMainView(final NodeView node) {
-		String shape = shape(node);
+		ShapeConfigurationModel shapeConfiguration = shapeConfiguration(node);
 		final MainView oldView = node.getMainView();
-		if(oldView != null && oldView.getShape().equals(shape))
+		if(oldView != null && oldView.getShapeConfiguration().equals(shapeConfiguration))
 			return oldView;
 		final ModeController modeController = node.getMap().getModeController();
-		final NodeModel model = node.getModel();
 		final MainView view;
-		if (shape.equals(NodeStyleModel.STYLE_BUBBLE)) {
-			if (model.isRoot())
-				view = new RootMainView(NodeStyleModel.STYLE_BUBBLE);
-			else
-				view =  new BubbleMainView();
+		
+		switch(shapeConfiguration.getShape()){
+		case fork:
+			view =  new ForkMainView();
+			break;
+		case bubble:
+			view =  new BubbleMainView(shapeConfiguration);
+			break;
+		case oval:
+			view =  new OvalMainView(shapeConfiguration);
+			break;
+		case rectangle:
+			view =  new RectangleMainView(shapeConfiguration);
+			break;
+		case wide_hexagon:
+			view = new WideHexagonMainView(shapeConfiguration);
+			break;
+		case narrow_hexagon:
+			view = new NarrowHexagonMainView(shapeConfiguration);
+			break;
+		default:
+			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shapeConfiguration.getShape()));
+			view = new ForkMainView();
+
 		}
-		else {
-			if (shape != null && ! shape.equals(NodeStyleModel.STYLE_FORK))
-				System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shape));
-			if (model.isRoot())
-				view = new RootMainView(NodeStyleModel.STYLE_FORK);
-			else
-				view = new ForkMainView();
-		}
+		
 		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
 		toolTipManager.registerComponent(view);
 		return view;
 	}
 
-	private String shape(NodeView node) {
+	private ShapeConfigurationModel shapeConfiguration(NodeView node) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
-		String shape = NodeStyleController.getController(modeController).getShape(model);
-		if (shape.equals(NodeStyleModel.SHAPE_COMBINED)) {
+		ShapeConfigurationModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model);
+		if (shapeConfiguration.getShape().equals(NodeStyleModel.Shape.combined)) {
 			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
-				shape= NodeStyleModel.STYLE_BUBBLE;
+				shapeConfiguration= shapeConfiguration.withShape(NodeStyleModel.Shape.bubble);
 			}
 			else {
-				shape = NodeStyleModel.STYLE_FORK;
+				shapeConfiguration = ShapeConfigurationModel.FORK;
 			}
 		}
-		else while(shape.equals(NodeStyleModel.SHAPE_AS_PARENT)){
+		else while(shapeConfiguration.getShape().equals(NodeStyleModel.Shape.as_parent)){
 			node = node.getParentView();
 			if (node == null)
-				shape = NodeStyleModel.STYLE_FORK;
+				shapeConfiguration = ShapeConfigurationModel.FORK;
 			else
-				shape = node.getMainView().getShape();
+				shapeConfiguration = node.getMainView().getShapeConfiguration();
 		}
-		return shape;
+		return shapeConfiguration;
 	}
 
 	/**
@@ -164,7 +170,6 @@ class NodeViewFactory {
         newView.addChildViews();
 	}
 
-	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
 	private final Icon coloredIcon = createColoredIcon();
 	private static final IMouseListener DETAILS_MOUSE_LISTENER = new DetailsViewMouseListener();
 	private static final IMouseListener NOTE_MOUSE_LISTENER = new NoteViewMouseListener();
@@ -177,6 +182,8 @@ class NodeViewFactory {
 		label.setVerticalTextPosition(JLabel.TOP);
 		return label;
 	}
+	
+	static ColoredIconCreator coloredIconCreator = new ColoredIconCreator(NoteController.bwNoteIconUrl,  Color.BLACK);
 
 	private Icon createColoredIcon() {
 		return new Icon() {
@@ -185,45 +192,20 @@ class NodeViewFactory {
 				if(nodeView == null)
 					return;
 				final Color iconColor =  nodeView.getEdgeColor();
-				createColoredIcon(iconColor).paintIcon(c, g, x, y);
+				coloredIconCreator.createColoredIcon(iconColor).paintIcon(c, g, x, y);
 			}
 
 			public int getIconWidth() {
-				return createColoredIcon(Color.BLACK).getIconWidth();
+				return coloredIconCreator.createColoredIcon(Color.BLACK).getIconWidth();
 			}
 
 			public int getIconHeight() {
-				return createColoredIcon(Color.BLACK).getIconHeight();
+				return coloredIconCreator.createColoredIcon(Color.BLACK).getIconHeight();
 			}
 		};
     }
 
-	private Icon createColoredIcon(Color iconColor) {
-	    Icon icon = coloredNoteIcons.get(iconColor);
-		if(icon == null){
-			final BufferedImage img;
-			try {
-				img = ImageIO.read(NoteController.bwNoteIconUrl);
-				final int oldRGB = 0xffffff & Color.BLACK.getRGB();
-				final int newRGB = 0xffffff & iconColor.getRGB();
-				if(oldRGB != newRGB){
-					for (int x = 0; x < img.getWidth(); x++) {
-						for (int y = 0; y < img.getHeight(); y++) {
-							final int rgb =  img.getRGB(x, y);
-							if ((0xffffff &rgb) == oldRGB)
-								img.setRGB(x, y, 0xff000000 & rgb| newRGB);
-						}
-					}
-				}
-				icon = new ImageIcon(img);
-				coloredNoteIcons.put(iconColor, icon);
-			}
-			catch (IOException e) {
-			}
-		}
-	    return icon;
-    }
-
+	
 	void updateNoteViewer(NodeView nodeView) {
 		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
 		String oldText = note != null ? note.getText() : null;
@@ -255,7 +237,7 @@ class NodeViewFactory {
 
 	}
 
-	void updateDetails(NodeView nodeView) {
+	void updateDetails(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
 		final DetailTextModel detailText = DetailTextModel.getDetailText(nodeView.getModel());
 		if (detailText == null) {
 			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);
@@ -272,16 +254,17 @@ class NodeViewFactory {
 			detailContent.setIcon(icon);
 			detailContent.setBackground(null);
 			detailContent.updateText("");
-			detailContent.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
 		}
 		else {
 			detailContent.setFont(map.getDetailFont());
+			detailContent.setHorizontalAlignment(map.getDetailHorizontalAlignment());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			detailContent.updateText(detailText.getHtml());
 			detailContent.setForeground(map.getDetailForeground());
 			detailContent.setBackground(nodeView.getDetailBackground());
-			detailContent.setPreferredSize(null);
 		}
+		detailContent.setMinimumWidth(minNodeWidth);
+		detailContent.setMaximumWidth(maxNodeWidth);
 		detailContent.revalidate();
 		map.repaint();
 	}

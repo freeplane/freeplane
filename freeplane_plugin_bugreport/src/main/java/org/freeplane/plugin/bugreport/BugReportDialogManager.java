@@ -32,7 +32,7 @@ class BugReportDialogManager {
 		historyPane.setPreferredSize(new Dimension(500, 300));
 		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(historyPane);
-		final int choice = JOptionPane.showOptionDialog(UITools.getFrame(), messagePane, title,
+		final int choice = JOptionPane.showOptionDialog(UITools.getCurrentRootComponent(), messagePane, title,
 		    JOptionPane.DEFAULT_OPTION, messageType, null, options, firstChoice);
 		return choice;
 	}

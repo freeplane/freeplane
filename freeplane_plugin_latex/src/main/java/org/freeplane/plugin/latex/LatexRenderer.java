@@ -84,7 +84,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			if (latext == null)
 				return null;
 			final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
-			final int maxWidth = ncs.getMaxWidth(node);
+			final int maxWidth = ncs.getMaxWidth(node).toBaseUnitsRounded();
 			TeXText teXt = new TeXText(latext);
 			int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
 			TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);

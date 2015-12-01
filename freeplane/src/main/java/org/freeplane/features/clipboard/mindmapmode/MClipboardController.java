@@ -424,7 +424,7 @@ public class MClipboardController extends ClipboardController {
 	    		fileChooser.setAcceptAllFileFilterUsed(false);
 	    		fileChooser.setFileFilter(filter);
 	    		fileChooser.setSelectedFile(file);
-	    		int returnVal = fileChooser.showSaveDialog(UITools.getFrame());
+	    		int returnVal = fileChooser.showSaveDialog(UITools.getCurrentRootComponent());
 	    		if (returnVal != JFileChooser.APPROVE_OPTION) {
 	    			tempFile.delete();
 	    			return;

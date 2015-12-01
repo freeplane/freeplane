@@ -5,8 +5,11 @@ package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +17,11 @@ import java.util.Map.Entry;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
@@ -441,7 +446,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	public boolean isVisible() {
-		return getDelegate().isVisible();
+		return getDelegate().hasVisibleContent();
 	}
 
 	// Node: R/W
@@ -789,26 +794,52 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 
 	public int getHorizontalShift(){
-		return LocationController.getController().getHorizontalShift(getDelegate());
+		return LocationController.getController().getHorizontalShift(getDelegate()).toBaseUnitsRounded();
 	}
 
 	public void setHorizontalShift(final int horizontalShift){
-		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), horizontalShift);
+		final Quantity<LengthUnits> horizontalShiftQuantity = new Quantity<LengthUnits>(horizontalShift, LengthUnits.px);
+		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(),horizontalShiftQuantity);
 	}
 
 	public int getVerticalShift(){
-		return LocationController.getController().getVerticalShift(getDelegate());
+		return LocationController.getController().getVerticalShift(getDelegate()).toBaseUnitsRounded();
 	}
 
 	public void setVerticalShift(final int verticalShift){
-		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShift);
+		final Quantity<LengthUnits> verticalShiftQuantity = new Quantity<LengthUnits>(verticalShift, LengthUnits.px);
+		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShiftQuantity);
 	}
 
 	public int getMinimalDistanceBetweenChildren(){
-		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate());
+		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate()).toBaseUnitsRounded();
 	}
 
 	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+		final Quantity<LengthUnits> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnits>(minimalDistanceBetweenChildren, LengthUnits.px);
+		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+	}
+
+	@Override
+	public void sortChildrenBy(Closure<Comparable<Object>> closure) {
+		getScriptContext().accessNode(getDelegate());
+		NodeModel node = getDelegate();
+		final ArrayList<NodeModel> children = new ArrayList<NodeModel>(node.getChildren());
+		Collections.sort(children, comparatorByClosureResult(closure));
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		int i = 0;
+		for (final NodeModel child : children) {
+			((FreeNode) Controller.getCurrentModeController().getExtension(FreeNode.class))
+			    .undoableDeactivateHook(child);
+			mapController.moveNode(child, node, i++);
+		}
+	}
+
+	private Comparator<NodeModel> comparatorByClosureResult(final Closure<Comparable<Object>> closure) {
+		return new Comparator<NodeModel>() {
+			public int compare(NodeModel o1, NodeModel o2) {
+				return closure.call(o1).compareTo(closure.call(o2));
+			}
+		};
 	}
 }

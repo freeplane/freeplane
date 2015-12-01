@@ -35,6 +35,11 @@
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />
 		</Entry>
+		<Entry name="textalignment">
+			<Entry name="TextAlignAction.LEFT" />
+			<Entry name="TextAlignAction.CENTER" />
+			<Entry name="TextAlignAction.RIGHT" />
+		</Entry>
 		<Entry builder="separator" />
 		<Entry name="CloudAction" />
 		<Entry name="CloudColorAction" />
@@ -166,6 +171,7 @@
 				<Entry name="NewSiblingAction" accelerator="ENTER">
 					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				</Entry>
+				
 				<Entry name="EditAction" priority="Medium">
 					<Entry name="EditLongAction" priority="Top" accelerator="alt ENTER" />
 				</Entry>
@@ -173,6 +179,15 @@
 				<Entry name="ForwardAction" accelerator="alt RIGHT" priority="Medium" />
 			</Entry>
 			<Entry name="fontStyleContributor" builder="ribbon_contributor,skip" />
+			<Entry name="font">
+				<Entry name="BoldAction" />
+				<Entry name="ItalicAction" />
+			</Entry>
+			<Entry name="textalignment">
+				<Entry name="TextAlignAction.LEFT" />
+				<Entry name="TextAlignAction.CENTER" />
+				<Entry name="TextAlignAction.RIGHT" />
+			</Entry>
 			<Entry name="resources" builder="ribbon_band">
 				<Entry name="ExternalImageAddAction" accelerator="alt shift K"
 					priority="Top">
@@ -312,18 +327,21 @@
 				<Entry name="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
 			</Entry>
 			<Entry name="node_details" resize_policies="" builder="ribbon_band">
-				<Entry name="EditDetailsAction" priority="medium" />
-				<Entry name="EditDetailsInDialogAction" />
+				<Entry name="EditDetailsAction" priority="medium" accelerator="F3" />
+				<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
 				<Entry name="DeleteDetailsAction" />
 				<Entry name="ToggleDetailsAction" accelerator="alt F2" />
 			</Entry>
 			<Entry name="node_settings" resize_policies="" builder="ribbon_band">
 				<Entry name="JoinNodesAction" accelerator="control J"
 					priority="medium" />
-				<Entry name="SplitNode" />
+				<Entry name="SplitNode" accelerator="alt S" />
 				<Entry name="AlwaysUnfoldedNodeAction" />
-				<Entry name="ResetNodeLocationAction" />
-				<Entry name="SetShortenerStateAction" />
+				<Entry name="ResetNodeLocationAction" accelerator="control R" />
+				<Entry name="SetShortenerStateAction" accelerator="alt F3" />
+				<Entry name="FirstGroupNodeAction" accelerator="alt shift B"/>
+				<Entry name="SummaryNodeAction" accelerator="alt shift S"/>
+				<Entry name="AlwaysUnfoldedNodeAction"/>
 				<Entry name="FreeNodeAction" />
 			</Entry>
 			<Entry name="general_settings" resize_policies=""
@@ -432,13 +450,13 @@
 			<Entry name="styleContributor" builder="ribbon_contributor,skip" />
 			<Entry name="manage_styles" builder="ribbon_band">
 				<Entry name="NewUserStyleAction" priority="medium">
-					<Entry name="RedefineStyleAction" />
+					<Entry name="RedefineStyleAction" accelerator="alt R" />
 					<Entry name="ManageConditionalStylesAction" />
 					<Entry name="ManageNodeConditionalStylesAction" />
 				</Entry>
-				<Entry name="CopyMapStylesAction" />
+				<Entry name="CopyMapStylesAction" accelerator="control shift O"/>
 				<Entry name="CopyStyleExtensionsAction" />
-				<Entry name="EditStylesAction" />
+				<Entry name="EditStylesAction" accelerator="control F11" />
 				<Entry name="FormatCopy" accelerator="alt shift C" priority="medium" />
 				<Entry name="FormatPaste" accelerator="alt shift V" priority="medium" />
 				<Entry name="automatic_layout">
@@ -448,6 +466,15 @@
 				</Entry>
 			</Entry>
 			<Entry name="styles"><Entry  builder="style_actions" /></Entry>
+			<Entry name="font">
+				<Entry name="BoldAction" />
+				<Entry name="ItalicAction" />
+			</Entry>
+			<Entry name="textalignment">
+				<Entry name="TextAlignAction.LEFT" />
+				<Entry name="TextAlignAction.CENTER" />
+				<Entry name="TextAlignAction.RIGHT" />
+			</Entry>
 			<Entry name="EdgeProperties" builder="ribbon_band">
 				<Entry name="format_menu_edge_styles" builder="radio_button_group">
 					<Entry name="EdgeStyleAsParentAction" />
@@ -469,7 +496,6 @@
 				<Entry name="EdgeColorAction" accelerator="alt shift E">
 					<Entry name="AutomaticEdgeColorHookAction" />
 				</Entry>
-				<Entry name="NodeWidthAction" />
 			</Entry>
 			<Entry name="map_background" builder="ribbon_band">
 				<Entry name="MapBackgroundColorAction" />
@@ -559,18 +585,17 @@
 					<Entry name="SaveAcceleratorPresetsAction"/>
 				</Entry>
 				<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
+				<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
 				<Entry name="scripting" plugin="org.freeplane.plugin.script">
+					<Entry builder="radio_button_group" selectedActionProperty="ScriptsRunToggleAction.default">
+						<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE"/>
+						<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
+						<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
+					</Entry> 
+					<Entry name="userScripts" builder="userScripts" />
 					<Entry name="ExecuteScriptForSelectionAction" />
 					<Entry name="ExecuteScriptForAllNodes" />
 					<Entry name="ScriptEditor" />
-					<Entry name="userScripts">
-						<Entry builder="radio_button_group">
-							<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE" />
-							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
-							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
-						</Entry> 
-						<Entry builder="script_actions" /> 
-					</Entry>
 				</Entry>
 				<Entry name="formula.menuname" plugin="org.freeplane.plugin.formula">
 					<Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
@@ -603,7 +628,7 @@
 					<Entry name="SetBooleanPropertyAction.center_selected_node" />
 				</Entry>
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
-				<Entry name="ToggleFullScreenAction" />
+				<Entry name="ToggleFullScreenAction" accelerator="F11" />
 				<Entry name="SetBooleanPropertyAction.presentation_mode" />
 			</Entry>
 			<Entry name="elements" builder="ribbon_band">
@@ -636,7 +661,7 @@
 			<Entry name="toolbars" builder="ribbon_band">
 				<Entry name="ToggleFBarAction" />
 				<Entry name="ToggleLeftToolbarAction" priority="top" />
-				<Entry name="ShowFormatPanel" priority="top" />
+				<Entry name="ShowFormatPanel" priority="top" accelerator="control alt P"/>
 				<Entry name="ShowFilterToolbarAction" priority="top"
 					accelerator="control F" />
 				<Entry name="ToggleStatusAction" />
@@ -726,8 +751,8 @@
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="EnterPassword" />
-		<Entry name="scripting" plugin="org.freeplane.plugin.script"
-			builder="node_popup_scripting" />
+		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
+			builder="userScripts" />
 		<Entry builder="separator" />
 		<Entry name="CutAction" accelerator="control X" />
 		<Entry name="CopyAction" accelerator="control C" />

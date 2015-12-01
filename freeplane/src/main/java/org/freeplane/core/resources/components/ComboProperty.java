@@ -121,11 +121,6 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		firePropertyChangeEvent();
 	}
 
-	@Override
-    protected Component[] getComponents() {
-	    return mComboBox.getComponents();
-    }
-
 	public void setEditable(boolean aFlag) {
 	    mComboBox.setEditable(aFlag);
     }

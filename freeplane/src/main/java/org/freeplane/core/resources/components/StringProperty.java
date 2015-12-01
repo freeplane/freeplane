@@ -60,9 +60,4 @@ public class StringProperty extends PropertyBean implements IPropertyControl {
 		mTextField.setText(value);
 		mTextField.selectAll();
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{mTextField};
-    }
 }

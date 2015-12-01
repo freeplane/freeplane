@@ -304,7 +304,7 @@ class ScriptEditorPanel extends JDialog {
 
 	public ScriptEditorPanel( final IScriptModel pScriptModel,
 	                         final boolean pHasNewScriptFunctionality) {
-		super(Controller.getCurrentController().getViewController().getJFrame(), true /* modal */);
+		super(UITools.getCurrentFrame(), true /* modal */);
 		mScriptModel = pScriptModel;
 		this.setTitle(TextUtils.getText("plugins/ScriptEditor/window.title"));
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

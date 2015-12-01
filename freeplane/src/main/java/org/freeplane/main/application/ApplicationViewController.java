@@ -48,6 +48,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -92,7 +93,7 @@ class ApplicationViewController extends FrameController {
 		controller.addAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		this.frame = frame;
-		getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
 		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
 		// disable all hotkeys for JSplitPane
@@ -106,9 +107,9 @@ class ApplicationViewController extends FrameController {
 		final Component contentPane;
 		mapViewWindows = new MapViewDockingWindows();
 		contentPane = mapViewWindows.getMapPane();
-		getContentPane().add(contentPane, BorderLayout.CENTER);
+		frame.getContentPane().add(contentPane, BorderLayout.CENTER);
 		mapPane = mapViewWindows.getMapPane();
-		getContentPane().add(mSplitPane, BorderLayout.CENTER);
+		frame.getContentPane().add(mSplitPane, BorderLayout.CENTER);
 		mSplitPane.setLeftComponent(mapPane);
 		mSplitPane.setRightComponent(null);
 		initFrame(frame);
@@ -129,35 +130,9 @@ class ApplicationViewController extends FrameController {
 		return resourceController.getProperty(label);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getContentPane()
-	 */
-	@Override
-	public RootPaneContainer getRootPaneContainer() {
-		return frame;
-	}
-
 	@Override
 	public FreeplaneMenuBar getFreeplaneMenuBar() {
 		return Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBar();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getJFrame()
-	 */
-	@Override
-	public JFrame getJFrame() {
-		return frame;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getLayeredPane()
-	 */
-	public JLayeredPane getLayeredPane() {
-		return frame.getLayeredPane();
 	}
 
 	@Override
@@ -222,92 +197,9 @@ class ApplicationViewController extends FrameController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-		String uriString = uri.toString();
-		final String UNC_PREFIX = "file:////";
-		if (uriString.startsWith(UNC_PREFIX)) {
-			uriString = "file://" + uriString.substring(UNC_PREFIX.length());
-		}
-		final String osName = System.getProperty("os.name");
-		if (osName.substring(0, 3).equals("Win")) {
-			String propertyString = "default_browser_command_windows";
-			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
-				propertyString += "_9x";
-			}
-			else {
-				propertyString += "_nt";
-			}
-			String[] command = null;
-			try {
-				final Object[] messageArguments = { uriString };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
-				    .getProperty(propertyString));
-				final String browserCommand = formatter.format(messageArguments);
-				final String scheme = uri.getScheme();
-                if (scheme.equals("file") || scheme.equals("smb")) {
-                    if(scheme.equals("smb")){
-                        uriString = Compat.smbUri2unc(uri);
-                    }
-					if (System.getProperty("os.name").startsWith("Windows 2000"))
-						command = new String[] { "rundll32", "shell32.dll,ShellExec_RunDLL", uriString };
-					else
-	                    command = new String[] { "rundll32", "url.dll,FileProtocolHandler", uriString };
-				}
-				else if (uriString.startsWith("mailto:")) {
-					command = new String[] { "rundll32", "url.dll,FileProtocolHandler", uriString };
-				}
-				else {
-					Controller.exec(browserCommand);
-					return;
-				}
-				Controller.exec(command);
-			}
-			catch (final IOException x) {
-				UITools
-				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
-				            + command
-				            + "\".\n\nYou may look at the user or default property called '"
-				            + propertyString
-				            + "'.");
-				System.err.println("Caught: " + x);
-			}
-		}
-		else if (osName.startsWith("Mac OS")) {
-			String browserCommand = null;
-			try {
-				final Object[] messageArguments = { uriString, uriString };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
-				    .getProperty("default_browser_command_mac"));
-				browserCommand = formatter.format(messageArguments);
-				Controller.exec(browserCommand);
-			}
-			catch (final IOException ex2) {
-				UITools
-				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
-				            + browserCommand
-				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_mac'.");
-				System.err.println("Caught: " + ex2);
-			}
-		}
-		else {
-			String browserCommand = null;
-			try {
-				final Object[] messageArguments = { uriString, uriString };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
-				    .getProperty("default_browser_command_other_os"));
-				browserCommand = formatter.format(messageArguments);
-				Controller.exec(browserCommand);
-			}
-			catch (final IOException ex2) {
-				UITools
-				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
-				            + browserCommand
-				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_other_os'.");
-				System.err.println("Caught: " + ex2);
-			}
-		}
+		new Browser().openDocument(uri);
 	}
-
-	/**
+/**
 	 * Open url in WWW browser. This method hides some differences between
 	 * operating systems.
 	 */
@@ -367,7 +259,7 @@ class ApplicationViewController extends FrameController {
 	@Override
 	public void saveProperties() {
 		saveSplitPanePosition();
-		if (!isFullScreenEnabled()) {
+		if (frame.isResizable()) {
 			final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 			if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 				resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
@@ -509,4 +401,23 @@ class ApplicationViewController extends FrameController {
 		mapViewWindows.selectNextMapView();
 	}
 
+	@Override
+	protected void setFullScreen(boolean fullScreen) {
+		super.setFullScreen(fullScreen);
+		if(fullScreen)
+			mapViewWindows.setTabAreaInvisiblePolicy((JFrame) UITools.getCurrentRootComponent());
+		else
+			mapViewWindows.setTabAreaVisiblePolicy((JFrame)UITools.getCurrentRootComponent());
+	}
+
+	@Override
+	public Component getCurrentRootComponent() {
+		final Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
+		return mapViewComponent != null ? SwingUtilities.getRoot(mapViewComponent) : frame;
+	}
+
+	@Override
+	public Component getMenuComponent() {
+		return frame;
+	}
 }

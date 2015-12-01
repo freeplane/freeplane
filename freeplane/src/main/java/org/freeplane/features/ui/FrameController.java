@@ -26,6 +26,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
 import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
@@ -122,14 +124,14 @@ abstract public class FrameController implements ViewController {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						getParent().invalidate();
-						((JComponent) getContentPane()).revalidate();
+						((JComponent) getMainContentPane()).revalidate();
 					}
 				});
 			}
 		}
 	}
 
-	// // 	final private Controller controller;
+	final protected Controller controller;
 	final private JLabel status;
 	final private Map<String, Component> statusInfos;
 	final private JPanel statusPanel;
@@ -144,7 +146,6 @@ abstract public class FrameController implements ViewController {
 		this.frameSize = frameSize;
 	}
 
-	private int winState;
 	final private String propertyKeyPrefix;
 	public static Icon textIcon;
 	public static Icon numberIcon;
@@ -157,6 +158,7 @@ abstract public class FrameController implements ViewController {
 	public FrameController(Controller controller,  final IMapViewManager mapViewManager,
 	                      final String propertyKeyPrefix) {
 		super();
+		this.controller = controller;
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if(textIcon == null){
 			FrameController.textIcon = new ImageIcon(resourceController.getResource("/images/text.png"));
@@ -198,29 +200,11 @@ abstract public class FrameController implements ViewController {
 		status.setText(msg);
 	}
 
-	/**
-	 * @return
-	 */
-	abstract public RootPaneContainer getRootPaneContainer();
-
-	public Container getContentPane(){
-		return getRootPaneContainer().getContentPane();
-	}
-
 	protected Controller getController() {
 		return Controller.getCurrentController();
 	}
 
-	public Frame getFrame() {
-		return JOptionPane.getFrameForComponent(getContentPane());
-	}
-
 	abstract public FreeplaneMenuBar getFreeplaneMenuBar();
-
-	/**
-	 * @return
-	 */
-	abstract public JFrame getJFrame();
 
 	/**
 	 */
@@ -230,8 +214,9 @@ abstract public class FrameController implements ViewController {
 
 	public void init(Controller controller) {
 		final Component ribbon = findRibbon();
+		final JComponent mainContentPane = getMainContentPane();
 		if(ribbon == null) {
-			getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
+			mainContentPane.add(toolbarPanel[TOP], BorderLayout.NORTH);
 		}
 		else {
 			JPanel northPanel = new JPanel();
@@ -241,22 +226,22 @@ abstract public class FrameController implements ViewController {
 			northPanel.add(ribbonBox, BorderLayout.NORTH);
 			northPanel.add(toolbarPanel[TOP], BorderLayout.CENTER);
 
-			getContentPane().add(northPanel, BorderLayout.NORTH);
+			mainContentPane.add(northPanel, BorderLayout.NORTH);
 		}
 
 //		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
-		getContentPane().add(toolbarPanel[LEFT], BorderLayout.WEST);
-		getContentPane().add(toolbarPanel[RIGHT], BorderLayout.EAST);
-		getContentPane().add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
+		mainContentPane.add(toolbarPanel[LEFT], BorderLayout.WEST);
+		mainContentPane.add(toolbarPanel[RIGHT], BorderLayout.EAST);
+		mainContentPane.add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
 //		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
-		getRootPaneContainer().getRootPane().putClientProperty(Controller.class, controller);
-		final Frame frame = getFrame();
+		mainContentPane.getRootPane().putClientProperty(Controller.class, controller);
+		final Frame frame = (Frame) getMenuComponent();
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(final ComponentEvent e) {
 				final Frame frame = (Frame) e.getComponent();
-				if (frame.getExtendedState() != Frame.NORMAL || isFullScreenEnabled()) {
+				if (frame.getExtendedState() != Frame.NORMAL || ! frame.isResizable()) {
 					return;
 				}
 				frameSize = frame.getBounds();
@@ -269,8 +254,12 @@ abstract public class FrameController implements ViewController {
 		});
 	}
 
+	private JComponent getMainContentPane() {
+		return (JComponent) ((RootPaneContainer)getMenuComponent()).getContentPane();
+	}
+
 	public Component findRibbon() {
-	    return ((BorderLayout)getContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
+	    return ((BorderLayout)getMainContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
     }
 
 	abstract public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
@@ -287,7 +276,7 @@ abstract public class FrameController implements ViewController {
 
 	private boolean isComponentVisible(String component) {
 	    final String property;
-		if (isFullScreenEnabled()) {
+		if (isMenuComponentInFullScreenMode()) {
 			property = component+"Visible.fullscreen";
 		}
 		else {
@@ -297,6 +286,19 @@ abstract public class FrameController implements ViewController {
 		    getPropertyKeyPrefix() + property);
 		return booleanProperty;
     }
+
+	boolean isMenuComponentInFullScreenMode() {
+		return isFullScreenEnabled(getMenuComponent());
+	}
+	
+	boolean isFullScreenEnabled() {
+		return isFullScreenEnabled(getCurrentRootComponent());
+	}
+
+	boolean isFullScreenEnabled(final Component currentRootComponent) {
+		return currentRootComponent instanceof Frame && !((Frame)currentRootComponent).isResizable();
+	}
+
 
 	abstract public void openDocument(URI uri) throws IOException;
 
@@ -430,7 +432,7 @@ abstract public class FrameController implements ViewController {
 
 	private void setComponentVisibleProperty(final String componentName, final boolean visible) {
 	    final String property;
-		if (isFullScreenEnabled()) {
+		if (isMenuComponentInFullScreenMode()) {
 			property = componentName+"Visible.fullscreen";
 		}
 		else {
@@ -452,9 +454,20 @@ abstract public class FrameController implements ViewController {
 
 	public void viewNumberChanged(final int number) {
 	}
+	
+	static class FrameState{
+		final Rectangle bounds;
+		final int winState;
+		public FrameState(Rectangle bounds, int winState) {
+			super();
+			this.bounds = bounds;
+			this.winState = winState;
+		}
+		
+	}
 
-	void setFullScreen(final boolean fullScreen) {
-		final Frame frame = getFrame();
+	protected void setFullScreen(final boolean fullScreen) {
+		final JFrame frame = (JFrame) getCurrentRootComponent();
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		if (fullScreen == isFullScreenEnabled()) {
 			return;
@@ -463,11 +476,13 @@ abstract public class FrameController implements ViewController {
 		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY, Boolean.toString(!fullScreen),Boolean.toString(fullScreen));
 		Iterable<Window> visibleFrames = collectVisibleFrames(frame);
 		if (fullScreen) {
-			winState = frame.getExtendedState();
+			final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
+			final Rectangle bounds = graphicsConfiguration.getBounds();
+			frame.getRootPane().putClientProperty(FrameState.class, new FrameState(frame.getBounds(), frame.getExtendedState())); 
+			frame.getExtendedState();
 			frame.dispose();
 			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-			final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			frame.setBounds(0, 0, screenSize.width, screenSize.height);
+			frame.setBounds(bounds);
 			frame.setUndecorated(true);
 			frame.setResizable(false);
 			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
@@ -484,8 +499,9 @@ abstract public class FrameController implements ViewController {
 			frame.dispose();
 			frame.setUndecorated(false);
 			frame.setResizable(true);
-			frame.setBounds(frameSize);
-			frame.setExtendedState(winState);
+			FrameState frameState = (FrameState) frame.getRootPane().getClientProperty(FrameState.class);
+			frame.setBounds(frameState.bounds);
+			frame.setExtendedState(frameState.winState);
 			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
@@ -522,10 +538,6 @@ abstract public class FrameController implements ViewController {
 			return null;
 		}
 		return UIComponentVisibilityDispatcher.dispatcher(toolBar).completeVisiblePropertyKey();
-	}
-
-	public boolean isFullScreenEnabled() {
-		return !getFrame().isResizable();
 	}
 
 	protected String getPropertyKeyPrefix() {

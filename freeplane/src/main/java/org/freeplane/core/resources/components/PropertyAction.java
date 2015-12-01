@@ -75,8 +75,9 @@ public class PropertyAction extends AFreeplaneAction {
 				}
 			}
 		}
-		if(dialog == null)
-			dialog= new JDialog(UITools.getFrame(), true /* modal */);
+		if(dialog == null){
+			dialog= new JDialog((Frame) UITools.getMenuComponent(), true /* modal */);
+		}
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
 		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
@@ -90,7 +91,7 @@ public class PropertyAction extends AFreeplaneAction {
 					ResourceController.getResourceController().setProperty(key, newProperty);
 				}
 				if (propertiesChanged) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), TextUtils
+					JOptionPane.showMessageDialog(UITools.getMenuComponent(), TextUtils
 					    .getText("option_changes_may_require_restart"));
 					ResourceController.getResourceController().saveProperties();
 				}

@@ -22,6 +22,7 @@ package org.freeplane.features.link.mindmapmode;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -112,7 +113,7 @@ public class SelectMenuItemDialog extends JDialog {
 	}
 
 	public SelectMenuItemDialog(final NodeModel node) {
-		super(UITools.getFrame(), TextUtils.getText("select_menu_item_dialog"), true);
+		super((Frame) UITools.getMenuComponent(), TextUtils.getText("select_menu_item_dialog"), true);
 		Controller.getCurrentController().getMapViewManager().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(this, node);
 		setSize(DIALOG_DIMENSION);

@@ -27,15 +27,7 @@ import java.util.Vector;
 
 public abstract class PropertyBean extends PropertyAdapter implements IPropertyControl {
 	
-	private class MouseClickListener extends MouseAdapter{
-		@Override
-        public void mousePressed(MouseEvent e) {
-			firePropertyChangeEvent();
-        }
-	}
-	
 	final private List<PropertyChangeListener> mPropertyChangeListeners = new Vector<PropertyChangeListener>();
-	private MouseClickListener mouseCliskListener;
 
 	public PropertyBean(final String name) {
 		super(name);
@@ -47,17 +39,6 @@ public abstract class PropertyBean extends PropertyAdapter implements IPropertyC
 
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		mPropertyChangeListeners.add(listener);
-	}
-	
-	public void fireOnMouseClick(){
-		if(mouseCliskListener != null){
-			return;
-		}
-		mouseCliskListener = new MouseClickListener();
-		final Component[] components = getComponents();
-		for(Component c:components){
-			c.addMouseListener(mouseCliskListener);
-		}
 	}
 
 	protected void firePropertyChangeEvent() {
@@ -79,6 +60,4 @@ public abstract class PropertyBean extends PropertyAdapter implements IPropertyC
 	public String toString() {
 		return getClass().getSimpleName() + "(" + getName() + "->" + getValue() + ")";
 	}
-	
-	protected abstract Component[] getComponents();
 }

@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.menubuilders.ribbon;
 
+import java.awt.Component;
 import java.awt.Frame;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -16,7 +17,7 @@ public class JRibbonBuilder implements EntryVisitor {
 
 	public JRibbonBuilder(IUserInputListenerFactory userInputListenerFactory) {
 		super();
-		Frame frame = UITools.getFrame();
+		Component frame = UITools.getMenuComponent();
 		if(frame instanceof JRibbonFrame) {
 			this.ribbon = ((JRibbonFrame)frame).getRibbon();
 			Controller.getCurrentController().addAction(new ToggleRibbonAction(this.ribbon));

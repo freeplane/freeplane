@@ -52,7 +52,7 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(TextUtils.getText("select_folder_for_importing"));
 		final ViewController viewController = Controller.getCurrentController().getViewController();
-		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
+		final int returnVal = chooser.showOpenDialog(viewController.getCurrentRootComponent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
 			viewController.out("Importing folder structure ...");

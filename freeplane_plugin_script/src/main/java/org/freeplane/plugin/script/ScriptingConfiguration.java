@@ -121,10 +121,22 @@ class ScriptingConfiguration {
 		public ScriptingPermissions getPermissions() {
         	return permissions;
         }
+
+		public boolean hasMenuLocation() {
+			for (String location : executionModeLocationMap.values()) {
+				if (location != null)
+					return true;
+			}
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return "ScriptMetaData(" + scriptName + ", locations: " + executionModeLocationMap + ", titles: "
+			        + executionModeTitleKeyMap + ")";
+		}
 	}
 
-	static final String MENU_SCRIPTS_LOCATION = "main_menu_scripting";
-	static final String CONTEXT_MENU_SCRIPTS_LOCATIONS = "node_popup_scripting";
 	private static final String JAR_REGEX = ".+\\.jar$";
 	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();

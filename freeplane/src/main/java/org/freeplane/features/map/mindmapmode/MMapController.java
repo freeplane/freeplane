@@ -20,6 +20,7 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -30,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,15 +42,19 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FreeNode;
@@ -56,6 +62,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryNode;
@@ -190,9 +197,11 @@ public class MMapController extends MapController {
 		NodeModel selected = selection.getSelected();
 		final NodeModel parentNode = selected.getParentNode();
 		final boolean isLeft = selected.isLeft();
-		final NodeModel newNode = addNewNode(parentNode, end+1, isLeft);
+		final NodeModel newSummaryNode = addNewNode(parentNode, end+1, isLeft);
 		final SummaryNode summary = modeController.getExtension(SummaryNode.class);
-		summary.undoableActivateHook(newNode, summary);
+		summary.undoableActivateHook(newSummaryNode, summary);
+		AlwaysUnfoldedNode unfolded = modeController.getExtension(AlwaysUnfoldedNode.class);
+		unfolded.undoableActivateHook(newSummaryNode, unfolded);
 		final FirstGroupNode firstGroup = modeController.getExtension(FirstGroupNode.class);
 		final NodeModel firstNode = parentNode.getChildAt(start);
 		firstGroup.undoableActivateHook(firstNode, firstGroup);
@@ -208,8 +217,9 @@ public class MMapController extends MapController {
 			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
 				firstGroup.undoableActivateHook(node, firstGroup);
 		}
-		startEditingAfterSelect(newNode);
-		select(newNode);
+		final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, isLeft);
+		startEditingAfterSelect(firstSummaryChildNode);
+		select(firstSummaryChildNode);
 
 	}
 
@@ -280,8 +290,13 @@ public class MMapController extends MapController {
 			if (views.size() == 1) {
 				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 				final String title = TextUtils.getText("SaveAction.text");
-				final int returnVal = JOptionPane.showOptionDialog(
-				    Controller.getCurrentController().getViewController().getContentPane(), text, title,
+				Component dialogParent;
+				final Frame viewFrame = JOptionPane.getFrameForComponent(views.get(0));
+				if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
+					dialogParent = viewFrame;
+				else
+					dialogParent = UITools.getCurrentRootComponent();
+				final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
 				    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (returnVal == JOptionPane.YES_OPTION) {
 					final boolean savingNotCancelled = ((MFileManager) UrlManager.getController())
@@ -657,7 +672,9 @@ public class MMapController extends MapController {
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
 		if(! addNewNode(newNode, target, -1, newNodeIsLeft))
 			return null;
-		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, -1, pt.x, pt.y);
+		final Quantity<LengthUnits> x = new Quantity<LengthUnits>(pt.x, LengthUnits.px).in(LengthUnits.pt);
+		final Quantity<LengthUnits> y = new Quantity<LengthUnits>(pt.y, LengthUnits.px).in(LengthUnits.pt);
+		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, x, y);
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if (component == null)
 			return newNode;
@@ -810,4 +827,39 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
+
+	@Override
+	protected void setFoldingState(final NodeModel node, final boolean folded) {
+		if(isFoldingPersistent()){
+			IActor foldingActor = new IActor() {
+				@Override
+				public void undo() {
+					unfoldHiddenChildren(node);
+					MMapController.super.setFoldingState(node, ! folded);
+				}
+				
+				@Override
+				public String getDescription() {
+					return "setFoldingState";
+				}
+				
+				@Override
+				public void act() {
+					unfoldHiddenChildren(node);
+					MMapController.super.setFoldingState(node, folded);
+				}
+			};
+			getMModeController().execute(foldingActor, node.getMap());
+		}
+		else
+			super.setFoldingState(node, folded);
+	}
+	
+	static private final List<String> foldingSavedOptions = Arrays.asList(NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING, NodeBuilder.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
+	
+	private boolean isFoldingPersistent() {
+	    final ResourceController resourceController = ResourceController.getResourceController();
+		return foldingSavedOptions.contains(resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING));
+	}
+
 }

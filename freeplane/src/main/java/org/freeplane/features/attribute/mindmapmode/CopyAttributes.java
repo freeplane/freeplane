@@ -103,7 +103,7 @@ class PasteAttributes extends AMultipleNodeAction {
 	private void pasteAttributes(final NodeModel node) {
 		Object[] attributes = CopyAttributes.getAttributes();
 		if (attributes == null) {
-			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(), TextUtils
+			JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent(), TextUtils
 			    .getText("no_copy_attributes_before_paste_attributes"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}

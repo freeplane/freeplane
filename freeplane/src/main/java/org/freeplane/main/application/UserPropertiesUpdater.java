@@ -61,7 +61,7 @@ public class UserPropertiesUpdater {
 		}
 		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
 		if(userPreferencesFile.exists()){
-			removeOpenedMaps(userPreferencesFile);
+			removeVersionSpecificProperties(userPreferencesFile);
 			return;
 		}
 		final File oldUserPreferencesFile =new File(System.getProperty("user.home"), ".freeplane/auto.properties");
@@ -110,18 +110,24 @@ public class UserPropertiesUpdater {
         }
 	}
 
-	private void removeOpenedMaps(File userPreferencesFile) {
+	private void removeVersionSpecificProperties(File userPreferencesFile) {
 		try {
 			Properties userProp = loadProperties(userPreferencesFile);
-	        userProp.remove("lastOpened_1.0.20");
-	        userProp.remove("openedNow_1.0.20");
-	        userProp.remove("browse_url_storage");
-	        userProp.remove("single_backup_directory_path");
-	        saveProperties(userProp, userPreferencesFile);
+			for(String name : new String[]{
+					"lastOpened_1.0.20",
+					"openedNow_1.0.20",
+					"openedNow_1.3.04",
+					"browse_url_storage",
+					"single_backup_directory_path",
+			"standard_template"})
+				userProp.remove(name);
+
+			saveProperties(userProp, userPreferencesFile);
         }
         catch (IOException e) {
         }
     }
+
 
 	Properties loadProperties(File userPreferencesFile) throws IOException {
 	    FileInputStream inputStream = null;
@@ -160,16 +166,17 @@ public class UserPropertiesUpdater {
         }
     }
 
-	void importOldDefaultStyle() {
+	void createUserStandardTemplate() {
 		final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
 		MFileManager fm = MFileManager.getController(modeController);
-		final String standardTemplateName = fm.getStandardTemplateName();
-		final File userDefault;
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final String standardTemplateName = resourceController.getProperty(MFileManager.STANDARD_TEMPLATE);
+		File userDefault;
 		final File absolute = new File(standardTemplateName);
+		final File userTemplates = fm.defaultUserTemplateDir();
 		if(absolute.isAbsolute())
 			userDefault = absolute;
 		else{
-			final File userTemplates = fm.defaultUserTemplateDir();
 			userDefault= new File(userTemplates, standardTemplateName);
 		}
 		if(userDefault.exists()){
@@ -181,14 +188,23 @@ public class UserPropertiesUpdater {
 		}
 		MapModel defaultStyleMap = new MapModel();
 		final File allUserTemplates = fm.defaultStandardTemplateDir();
-		final File standardTemplate = new File(allUserTemplates, "standard.mm");
+		File standardTemplate = new File(allUserTemplates, standardTemplateName);
+		if(! standardTemplate.exists()) {
+			final String defaultStandardTemplate = resourceController.getDefaultProperty(MFileManager.STANDARD_TEMPLATE);
+			resourceController.setProperty(MFileManager.STANDARD_TEMPLATE, defaultStandardTemplate);
+			standardTemplate = new File(allUserTemplates, defaultStandardTemplate);
+			userDefault = new File(userTemplates, standardTemplateName);
+			if(userDefault.exists()){
+				return;
+			}
+		}
 		try {
 			fm.loadCatchExceptions(standardTemplate.toURL(), defaultStyleMap);
 		}
 		catch (Exception e) {
 			LogUtils.warn(e);
 			try {
-				fm.loadCatchExceptions(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), defaultStyleMap);
+				fm.loadCatchExceptions(resourceController.getResource("/styles/viewer_standard.mm"), defaultStyleMap);
 			}
 			catch (Exception e2) {
 				defaultStyleMap.createNewRoot();

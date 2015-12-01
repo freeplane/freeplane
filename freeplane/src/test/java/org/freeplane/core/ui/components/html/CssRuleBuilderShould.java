@@ -1,13 +1,14 @@
 package org.freeplane.core.ui.components.html;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.util.Convertible;
+import org.freeplane.core.util.Quantity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,7 +72,7 @@ public class CssRuleBuilderShould {
 		cssRuleBuilder.withBackground(Color.WHITE);
 		assertRule("background-color: #ffffff;");
 	}
-	
+
 
 	@Test
 	public void addCenterAlignment() throws Exception {
@@ -91,4 +92,35 @@ public class CssRuleBuilderShould {
 		assertRule("text-align: right;");
 	}
 
+	enum Metrics implements Convertible{
+		m(1d), cm(0.01d);
+
+		Metrics(double factor){
+			this.factor = factor;
+		}
+
+		final private double factor;
+		@Override
+		public double factor() {
+			return factor;
+		}
+	}
+
+	@Test
+	public void addWidth() throws Exception {
+		cssRuleBuilder.withMaxWidthAsPt(new Quantity<Metrics>(1000, Metrics.cm));
+		assertRule("width: 10pt;");
+	}
+
+	@Test
+	public void addMaxWidth() throws Exception {
+		cssRuleBuilder.withMaxWidthAsPt(new Quantity<Metrics>(2, Metrics.m), new Quantity<Metrics>(1, Metrics.m));
+		assertRule("width: 2pt;");
+	}
+
+	@Test
+	public void ignoreNullWidth() throws Exception {
+		cssRuleBuilder.withMaxWidthAsPt((Quantity<Metrics>) null);
+		assertRule("");
+	}
 }

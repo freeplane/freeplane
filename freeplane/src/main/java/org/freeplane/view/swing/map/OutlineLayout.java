@@ -60,9 +60,9 @@ public class OutlineLayout implements INodeViewLayout {
             ((NodeView) component).validateTree();
         }
         int spaceAround = view.getSpaceAround();
-		final int hgapProperty = ResourceController.getResourceController().getIntProperty("outline_hgap", 0);
+		final int hgapProperty = ResourceController.getResourceController().getLengthProperty("outline_hgap");
 		int hgap = view.getMap().getZoomed(hgapProperty);
-		final int vgapPropertyValue = ResourceController.getResourceController().getIntProperty("outline_vgap", 0);
+		final int vgapPropertyValue = ResourceController.getResourceController().getLengthProperty("outline_vgap");
 		int vgap = view.getMap().getZoomed(vgapPropertyValue);
 		JComponent content = view.getContent();
 		int baseX = content.getX();
@@ -71,6 +71,8 @@ public class OutlineLayout implements INodeViewLayout {
 			baseX += hgap;
 			y += vgap;
 		}
+		else if (view.isSummary())
+			baseX += hgap;
 		int right = baseX + content.getWidth() + spaceAround;
 		NodeView child = null;
 		for (int i = 0; i < childCount; i++) {
@@ -78,8 +80,7 @@ public class OutlineLayout implements INodeViewLayout {
 			child = component;
 			final int additionalCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child) / 2;
 			y += additionalCloudHeigth;
-			final int childHGap = child.getContent().isVisible() ? hgap : 0;
-			final int x = baseX + childHGap - child.getContent().getX();
+			final int x = baseX - child.getContent().getX();
 			child.setLocation(x, y);
 			final int childHeight = child.getHeight() - 2 * spaceAround;
 			if (childHeight != 0) {

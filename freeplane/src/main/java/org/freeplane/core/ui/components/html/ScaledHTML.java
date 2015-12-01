@@ -28,6 +28,7 @@ import java.io.StringReader;
 import java.net.URL;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -44,10 +45,9 @@ public class ScaledHTML extends BasicHTML{
      * Create an html renderer for the given component and
      * string of html.
      */
-    public static View createHTMLView(JComponent c, String html) {
+    public static View createHTMLView(JLabel c, String html) {
 	ScaledEditorKit kit = ScaledEditorKit.create();
-	Document doc = kit.createDefaultDocument(c.getFont(),
-                                                 c.getForeground());
+	Document doc = kit.createDefaultDocument(c);
 	Object base = c.getClientProperty(documentBaseKey);
 	if (base instanceof URL) {
 	    ((HTMLDocument)doc).setBase((URL)base);
@@ -63,7 +63,7 @@ public class ScaledHTML extends BasicHTML{
 	return v;
     }
 
-     public static void updateRenderer(JComponent c, String text) {
+     public static void updateRenderer(JLabel c, String text) {
     	View value = null;
     	try{
     	View oldValue = (View)c.getClientProperty(propertyKey);

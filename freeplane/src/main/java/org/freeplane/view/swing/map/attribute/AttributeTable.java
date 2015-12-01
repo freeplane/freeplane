@@ -74,10 +74,12 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -251,7 +253,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			tableHeader.setResizingAllowed(false);
 		}
 		setModel(attributeView.getCurrentAttributeTableModel());
-		updateFontSize(this, 1F);
+		updateComponent(this);
 		updateColumnWidths();
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
@@ -356,7 +358,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Icon getLinkIcon(final URI uri) {
 		NodeModel nodeModel = ((IAttributeTableModel)getModel()).getNode();
-	    final Icon linkIcon = LinkController.getLinkIcon(uri, nodeModel);
+	    final Icon linkIcon =  Controller.getCurrentModeController().getExtension(LinkController.class).getLinkIcon(uri, nodeModel);
 	    return linkIcon;
     }
 	
@@ -486,10 +488,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		return AttributeTable.dtcr;
 	}
 
-	private float getFontSize() {
-		return UITools.FONT_SCALE_FACTOR * AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
-	}
-
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
 		if (!isValid()) {
@@ -501,7 +499,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final MapView map = nodeView.getMap();
 			final ModeController modeController = map.getModeController();
 			final NodeStyleController nsc = NodeStyleController.getController(modeController);
-			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getModel())), dimension.width);
+			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getModel()).toBaseUnits()), dimension.width);
 			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
 		}
 		else{
@@ -593,7 +591,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final DefaultComboBoxModel currentModel = new DefaultComboBoxModel(items);
 		comboBox.setModel(currentModel);
-		updateFontSize(comboBox, getZoom());
+		updateComponent(comboBox);
+		final Component editorComponent = comboBox.getEditor().getEditorComponent();
+		updateComponent(editorComponent);
+		final Font font = editorComponent.getFont();
+		editorComponent.setFont(font.deriveFont(font.getSize2D() * getZoom()));
 		return super.prepareEditor(tce, row, col);
 	}
 
@@ -716,7 +718,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public void setOptimalColumnWidths() {
 		Component comp = null;
 		int cellWidth = 0;
-		int maxCellWidth = 2 * (int) (Math.ceil(getFontSize() + AttributeTable.TABLE_ROW_HEIGHT));
+		int maxCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  AttributeTable.TABLE_ROW_HEIGHT));
 		for (int col = 0; col < 2; col++) {
 			for (int row = 0; row < getRowCount(); row++) {
 				comp = AttributeTable.dtcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row,
@@ -773,7 +775,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	void updateAttributeTable() {
-		updateFontSize(this, 1F);
+		updateComponent(this);
 		updateRowHeights();
 		updateColumnWidths();
 	}
@@ -786,17 +788,17 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private void updateFontSize(final Component c, final float zoom) {
-		Font font = c.getFont();
-		if (font != null) {
-			final float oldFontSize = font.getSize2D();
-			final float newFontSize = getFontSize() * zoom;
-			if (Float.compare(oldFontSize, newFontSize) != 0) {
-				font = font.deriveFont(newFontSize);
-				c.setFont(font);
-			}
-		}
-	}
+	private void updateComponent(final Component c) {
+		final MapView mapView = attributeView.getMapView();
+		final ModeController modeController = mapView.getModeController();
+		final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
+        final Font font = style.getFont(attributeStyleNode);
+        c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));
+        c.setBackground(style.getBackgroundColor(attributeStyleNode));
+        c.setForeground(style.getColor(attributeStyleNode));
+    }
 
 	private void updateRowHeights() {
 		if(! isDisplayable()){

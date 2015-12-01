@@ -75,9 +75,4 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 			mFontComboBox.setSelectedIndex(0);
 		}
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return mFontComboBox.getComponents();
-    }
 }

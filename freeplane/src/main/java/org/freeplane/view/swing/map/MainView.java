@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
@@ -62,9 +64,13 @@ import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -88,6 +94,7 @@ public abstract class MainView extends ZoomableLabel {
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.OUT;
+	final static Stroke DEF_STROKE = new BasicStroke();
 	private static final int DRAG_OVAL_WIDTH = 10;
 
 	boolean isShortened() {
@@ -111,6 +118,8 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public boolean dropAsSibling(final double xCoord) {
+		if(getNodeView().isRoot())
+			return false;
 		if(dropLeft(xCoord))
 		return ! isInVerticalRegion(xCoord, 2. / 3);
 		else
@@ -120,7 +129,11 @@ public abstract class MainView extends ZoomableLabel {
 	/** @return true if should be on the left, false otherwise. */
 	public boolean dropLeft(final double xCoord) {
 		/* here it is the same as me. */
-		return getNodeView().isLeft();
+		NodeView nodeView = getNodeView();
+		if(getNodeView().isRoot())
+			return xCoord < getSize().width * 1 / 2;
+		else
+			return nodeView.isLeft();
 	}
 
 	public int getDeltaX() {
@@ -173,7 +186,8 @@ public abstract class MainView extends ZoomableLabel {
 
 	public abstract Point getRightPoint();
 
-	public abstract String getShape();
+	
+	abstract public ShapeConfigurationModel getShapeConfiguration();
 
 	int getZoomedFoldingSymbolHalfWidth() {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
@@ -220,13 +234,9 @@ public abstract class MainView extends ZoomableLabel {
 			super.paint(g);
 	}
 
-	protected void paintBackground(final Graphics2D graphics, final Color color) {
-		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-	}
-
+	
 	public void paintDragOver(final Graphics2D graphics) {
-		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
+		if (isDraggedOver == NodeView.DRAGGED_OVER_SON || isDraggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
 			paintDragOverSon(graphics);
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
@@ -241,7 +251,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private void paintDragOverSon(final Graphics2D graphics) {
-		if (getNodeView().isLeft()) {
+		if (getNodeView().isLeft() || isDraggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
 			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
 			    NodeView.dragColor));
 			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
@@ -254,16 +264,16 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
-		if (mapController.isFolded(node) && (node.isVisible() || node.getFilterInfo().isAncestor())) {
+		if (mapController.isFolded(node) && (node.hasVisibleContent() || node.getFilterInfo().isAncestor())) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (child.isVisible() && child.containsExtension(HideChildSubtree.class)) {
+			if (child.hasVisibleContent() && child.containsExtension(HideChildSubtree.class)) {
 				return FoldingMark.ITSELF_FOLDED;
 			}
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (!child.isVisible() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
+			if (!child.hasVisibleContent() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
 				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
 			}
 		}
@@ -346,7 +356,7 @@ public abstract class MainView extends ZoomableLabel {
 			g2.setColor(Color.BLUE);
 			g.fillOval(r.x, r.y, r.width - 1, r.height - 1);
 		}
-		else if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
+		else if (LocationModel.getModel(movedView.getModel()).getHGap().value <= 0) {
 			g2.setColor(Color.RED);
 			g.fillOval(r.x, r.y, r.width- 1, r.height- 1);
 		}
@@ -384,17 +394,22 @@ public abstract class MainView extends ZoomableLabel {
 		g.setColor(color);
     }
 
-	public void paintBackgound(final Graphics2D g) {
+	protected void paintBackgound(final Graphics2D g) {
+		final Color color = getPaintedBackground();
+		paintBackground(g, color);
+	}
+
+	public Color getPaintedBackground() {
 		final Color color;
 		if (getNodeView().useSelectionColors()) {
 			color = getNodeView().getSelectedColor();
-			paintBackground(g, color);
 		}
 		else {
 			color = getNodeView().getTextBackground();
 		}
-		paintBackground(g, color);
+		return color;
 	}
+	abstract protected void paintBackground(final Graphics2D graphics, final Color color);
 
 	/*
 	 * (non-Javadoc)
@@ -418,7 +433,20 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	public void setDraggedOver(final Point p) {
-		setDraggedOver((dropAsSibling(p.getX())) ? NodeView.DRAGGED_OVER_SIBLING : NodeView.DRAGGED_OVER_SON);
+		final int draggedOver;
+		if(getNodeView().isRoot()) {
+			if (dropLeft(p.getX()))
+				draggedOver = NodeView.DRAGGED_OVER_SON_LEFT;
+			else
+				draggedOver = NodeView.DRAGGED_OVER_SON;
+		} 
+		else {
+			if (dropAsSibling(p.getX()))
+				draggedOver = NodeView.DRAGGED_OVER_SIBLING;
+			else
+				draggedOver = NodeView.DRAGGED_OVER_SON;
+		}
+		setDraggedOver(draggedOver);
 	}
 
 	public void updateFont(final NodeView node) {
@@ -445,7 +473,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
-			final Icon icon = LinkController.getLinkIcon(link, model);
+			final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
 			if(icon != null)
 				iconImages.addLinkIcon(icon);
 	}
@@ -455,6 +483,13 @@ public abstract class MainView extends ZoomableLabel {
 		    node.getModel());
 		setForeground(color);
 	}
+	
+	void updateTextAlign(NodeView node) {
+		final TextAlign textAlign = NodeStyleController.getController(node.getMap().getModeController()).getTextAlign(node.getModel());
+		final boolean isCenteredByDefault = textAlign == TextAlign.DEFAULT && node.isRoot();
+		setHorizontalAlignment(isCenteredByDefault ? TextAlign.CENTER.swingConstant : textAlign.swingConstant);
+	}
+
 
 	public boolean isEdited() {
 		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
@@ -631,6 +666,8 @@ public abstract class MainView extends ZoomableLabel {
 	public boolean isInDragRegion(Point p) {
 		if (p.y >= 0 && p.y < getHeight()){
 			final NodeView nodeView = getNodeView();
+			if(nodeView.isRoot())
+				return false;
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
 				return false;
 			final int draggingWidth = getDraggingWidth();
@@ -762,4 +799,7 @@ public abstract class MainView extends ZoomableLabel {
 			return null;
 	}
 	
+	public int getSingleChildShift() {
+		return 0;
+	}
 }

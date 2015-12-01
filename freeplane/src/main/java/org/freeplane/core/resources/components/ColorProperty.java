@@ -132,9 +132,4 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	public void setValue(final String value) {
 		setColorValue(ColorUtils.stringToColor(value));
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{mButton};
-    }
 }

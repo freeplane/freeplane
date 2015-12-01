@@ -138,12 +138,7 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
 	private void calculateLayoutY(final boolean isLeft) {
-		final int vGap;
-		if (view.getModel().isVisible()) {
-			vGap = view.getVGap();
-		} else {
-			vGap = view.getVisibleParentView().getVGap();
-		}
+		final int vGap = view.getChildDistanceContainer().getMinimalDistanceBetweenChildren();
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int top = 0;
@@ -237,10 +232,6 @@ class VerticalNodeViewLayoutStrategy {
 									- child.getBottomOverlap();
 						}
 						y = Math.max(y, summaryY);
-						final int summaryContentHeight = contentHeightSumAtGroupStart[itemLevel] + childContentHeight;
-						if (childContentHeightSum < summaryContentHeight) {
-							childContentHeightSum = summaryContentHeight;
-						}
 					}
 				}
 				if (!isItem || !isFreeNode) {
@@ -275,9 +266,11 @@ class VerticalNodeViewLayoutStrategy {
 				if (child.isContentVisible())
 					childHGap = child.getHGap();
 				else if (child.isSummary())
-					childHGap = child.getZoomed(LocationModel.HGAP);
+					childHGap = child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 				else
 					childHGap = 0;
+				if(view.getModel().isHiddenSummary())
+					childHGap -= child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 
 				if (isItem) {
 					if (!isFreeNode && (oldLevel > 0 || child.isFirstGroupNode()))

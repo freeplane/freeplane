@@ -15,7 +15,6 @@
 				<boolean name="load_last_maps" />
 				<boolean name="always_load_last_maps" />
 				<boolean name="experimental_file_locking_on" />
-				<string name="standard_template" />
 			</separator>
 			<separator name="load">
 				<combo name="load_folding">
@@ -141,8 +140,8 @@
 				<number name="el__max_default_window_width" />
 			</separator>
 			<separator name="outline_view">
-				<number name="outline_vgap" min="1" />
-				<number name="outline_hgap" min="1" />
+				<length defaultUnit = "px" name="outline_vgap" min="0" max = "1000" step = "0.1"/>
+				<length defaultUnit = "px" name="outline_hgap" min="0" max = "1000" step = "0.1" />
 			</separator>
 			<separator name="icon_properties">
 				<boolean name="structured_icon_toolbar" />
@@ -165,7 +164,7 @@
 				<boolean name="disable_cursor_move_paper" />
 				<number name="foldingsymbolwidth" />
 				<boolean name="edit_on_double_click" />
-				<number name="grid_size" min="1" />
+				<length name="grid_size" defaultUnit = "px" min="0" max = "1000" step = "0.01"/>
 				<number name="scrolling_speed" min="1" max="30" />
 				<boolean name="goto_note_end_on_edit" />
 				<combo name="key_type_action">
@@ -240,44 +239,6 @@
 					<choice value="PASTE_HTML" />
 					<choice value="PASTE_PLAIN_TEXT" />
 				</combo>
-			</separator>
-			<separator name="edge_colors">
-				<boolean name="use_auto_edge_color_0">
-					<color name="auto_edge_color_0" />
-				</boolean>
-				<boolean name="use_auto_edge_color_1">
-					<color name="auto_edge_color_1" />
-				</boolean>
-				<boolean name="use_auto_edge_color_2">
-					<color name="auto_edge_color_2" />
-				</boolean>
-				<boolean name="use_auto_edge_color_3">
-					<color name="auto_edge_color_3" />
-				</boolean>
-				<boolean name="use_auto_edge_color_4">
-					<color name="auto_edge_color_4" />
-				</boolean>
-				<boolean name="use_auto_edge_color_5">
-					<color name="auto_edge_color_5" />
-				</boolean>
-				<boolean name="use_auto_edge_color_6">
-					<color name="auto_edge_color_6" />
-				</boolean>
-				<boolean name="use_auto_edge_color_7">
-					<color name="auto_edge_color_7" />
-				</boolean>
-				<boolean name="use_auto_edge_color_8">
-					<color name="auto_edge_color_8" />
-				</boolean>
-				<boolean name="use_auto_edge_color_9">
-					<color name="auto_edge_color_9" />
-				</boolean>
-				<boolean name="use_auto_edge_color_10">
-					<color name="auto_edge_color_10" />
-				</boolean>
-				<boolean name="use_auto_edge_color_11">
-					<color name="auto_edge_color_11" />
-				</boolean>
 			</separator>
 		</tab>
 		<tab name="HTML">

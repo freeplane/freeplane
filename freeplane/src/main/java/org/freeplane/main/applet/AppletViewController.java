@@ -21,6 +21,7 @@ package org.freeplane.main.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -64,14 +65,6 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		mapViewController.addMapViewChangeListener(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.controller.views.ViewController#getContentPane()
-	 */
-	@Override
-	public RootPaneContainer getRootPaneContainer() {
-		return applet;
-	}
 
 	@Override
 	public FreeplaneMenuBar getFreeplaneMenuBar() {
@@ -82,21 +75,13 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		return FreeplaneVersion.getVersion();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getJFrame()
-	 */
-	@Override
-	public JFrame getJFrame() {
-		throw new IllegalArgumentException("The applet has no frames");
-	}
 
 	@Override
 	public void init(Controller controller) {
 		mapContentBox = new JPanel(new BorderLayout());
 		scrollPane = new MapViewScrollPane();
 		mapContentBox.add(scrollPane, BorderLayout.CENTER);
-		getContentPane().add(mapContentBox, BorderLayout.CENTER);
+		applet.getContentPane().add(mapContentBox, BorderLayout.CENTER);
 		super.init(controller);
 		SwingUtilities.updateComponentTreeUI(applet);
 		if (!EventQueue.isDispatchThread()) {
@@ -245,5 +230,17 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 
 	public void nextMapView() {
 		throw new RuntimeException("Method not implemented");
+	}
+
+
+	@Override
+	public Component getCurrentRootComponent() {
+		return applet;
+	}
+
+
+	@Override
+	public Component getMenuComponent() {
+		return applet;
 	}
 }

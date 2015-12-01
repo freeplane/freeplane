@@ -25,8 +25,8 @@ import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
+import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
-import org.freeplane.features.edge.mindmapmode.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
 import org.freeplane.features.export.mindmapmode.ExportController;
@@ -130,7 +130,7 @@ public class HeadlessMModeControllerFactory {
 		NoteController.install(new MNoteController(modeController));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(textController);
-		LinkController.install(new MLinkController());
+		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());
 		LocationController.install(new MLocationController());

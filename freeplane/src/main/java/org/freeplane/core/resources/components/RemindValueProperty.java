@@ -115,9 +115,4 @@ public class RemindValueProperty extends PropertyBean implements IPropertyContro
 		}
 		return RemindValueProperty.DON_T_TOUCH_VALUE_INT;
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{mButton};
-    }
 }

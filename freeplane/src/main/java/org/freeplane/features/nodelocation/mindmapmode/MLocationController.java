@@ -21,50 +21,96 @@ package org.freeplane.features.nodelocation.mindmapmode;
 
 import java.util.ArrayList;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.map.IExtensionCopier;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
+import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MLocationController extends LocationController {
+	
+	private static class StyleCopier implements IExtensionCopier {
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			LocationModel source = from.getExtension(LocationModel.class);
+			if(source != null){
+				LocationModel.createLocationModel(to).setVGap(source.getVGap());
+			}
+		}
+
+		public void remove(Object key, NodeModel from) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			LocationModel target = from.getExtension(LocationModel.class);
+			if(target != null){
+				target.setVGap(LocationModel.DEFAULT_VGAP);
+			}
+		}
+
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+			LocationModel model = which.getExtension(LocationModel.class);
+			if(model != null && model.getVGap() != LocationModel.DEFAULT_VGAP ){
+				remove(key, from);
+			}
+		}
+
+		@Override
+		public void resolveParentExtensions(Object key, NodeModel to) {
+		}
+	}
+	
 	public MLocationController() {
 		super();
-		createActions();
+		final ModeController modeController = Controller.getCurrentModeController();
+		createActions(modeController);
+		modeController.registerExtensionCopier(new StyleCopier());
 	}
 
-	private void createActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
+	private void createActions(ModeController modeController) {
 		modeController.addAction(new ResetNodeLocationAction());
 	}
 
-	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
+	public void moveNodePosition(final NodeModel node, final Quantity<LengthUnits> hGap, final Quantity<LengthUnits> shiftY) {
+		final ModeController currentModeController = Controller.getCurrentModeController();
+		MapModel map = node.getMap();
 		ArrayList<IActor> actors = new ArrayList<IActor>(3);
 		actors.add(new ChangeShiftXActor(node, hGap));
 		actors.add(new ChangeShiftYActor(node, shiftY));
-		final NodeModel parentNode = node.getParentNode();
-		if(parentNode != null)
-			actors.add(new ChangeVGapActor(parentNode, parentVGap));
-		for (final IActor actor : actors)
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		for (final IActor actor : actors) {
+			currentModeController.execute(actor, map);
+		}
 	}
 
-
-	public void setHorizontalShift(NodeModel node, final int horizontalShift){
+	public void setHorizontalShift(NodeModel node, final Quantity<LengthUnits> horizontalShift){
 		final IActor actor = new ChangeShiftXActor(node, horizontalShift);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setVerticalShift(NodeModel node, final int verticalShift){
+	public void setVerticalShift(NodeModel node, final Quantity<LengthUnits> verticalShift){
 		final IActor actor = new ChangeShiftYActor(node, verticalShift);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setMinimalDistanceBetweenChildren(NodeModel node, final int minimalDistanceBetweenChildren){
-		final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+	public void setMinimalDistanceBetweenChildren(NodeModel node, final Quantity<LengthUnits> minimalDistanceBetweenChildren){
+		if(node != null){
+			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
+			Controller.getCurrentModeController().execute(actor, node.getMap());
+		}
+
 	}
 }

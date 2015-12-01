@@ -80,6 +80,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            final Color nodeTextColor = getTextColor(node);
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground());
+				editNodeWYSIWYG.setTextAlignment(mainView.getHorizontalAlignment());
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();
@@ -87,6 +88,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
                 editNodeWYSIWYG.setFont(map.getDetailFont());
                 editNodeWYSIWYG.setTextColor(map.getDetailForeground());
                 editNodeWYSIWYG.setBackground (nodeView.getDetailBackground());
+                editNodeWYSIWYG.setTextAlignment(map.getDetailHorizontalAlignment());
 			}
 			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();

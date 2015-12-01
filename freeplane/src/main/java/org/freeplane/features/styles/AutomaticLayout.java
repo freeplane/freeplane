@@ -3,5 +3,10 @@ package org.freeplane.features.styles;
 import org.freeplane.core.extension.IExtension;
 
 public enum AutomaticLayout implements IExtension{
-	HEADINGS, ALL
+	HEADINGS(false), ALL(true);
+	public boolean applyToLeaves;
+	private AutomaticLayout(boolean applyToLeaves) {
+		this.applyToLeaves = applyToLeaves;
+	}
+	
 }

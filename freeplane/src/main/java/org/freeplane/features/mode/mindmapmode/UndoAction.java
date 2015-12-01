@@ -29,22 +29,17 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.IMapSelectionListener;
-import org.freeplane.features.map.INodeChangeListener;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeChangeEvent;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 
-class UndoAction extends AFreeplaneAction implements IMapSelectionListener, INodeChangeListener {
+class UndoAction extends AFreeplaneAction implements IMapSelectionListener{
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Action redo;
 	private final ChangeListener changeListener;
-	private NodeModel lastChangedNode;
 
 	public UndoAction() {
 		super("UndoAction");
@@ -73,19 +68,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener, INod
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		mapController.addNodeChangeListener(this);
-		try{
-			undoHandler.getUndoAction().actionPerformed(e);
-		if(lastChangedNode != null){
-			mapController.displayNode(lastChangedNode);
-			controller.getSelection().selectAsTheOnlyOneSelected(lastChangedNode);
-			lastChangedNode = null;
-		}
-		}
-		finally{
-			mapController.removeNodeChangeListener(this);
-		}
+		undoHandler.getUndoAction().actionPerformed(e);
 
 	}
 
@@ -116,7 +99,4 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener, INod
 		this.redo = redo;
 	}
 
-	public void nodeChanged(NodeChangeEvent event) {
-		lastChangedNode = event.getNode();
-    };
 }

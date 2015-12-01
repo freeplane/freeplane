@@ -73,7 +73,7 @@ public class OptionalDontShowMeAgainDialog {
 	                                      final String pPropertyName, final int pMessageType) {
 //		this.controller = controller;
 		Controller controller = Controller.getCurrentController();
-		mParent = controller.getViewController().getFrame();
+		mParent = UITools.getCurrentFrame();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
 			mNode = selection.getSelected();

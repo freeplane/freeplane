@@ -38,6 +38,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -56,6 +58,7 @@ import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -64,6 +67,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
+import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.ui.menubuilders.ribbon.RibbonBuildProcessFactory;
 import org.freeplane.core.util.LogUtils;
@@ -95,11 +99,15 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	static private ActionAcceleratorManager acceleratorManager;
 	private final boolean useRibbonMenu;
 	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
+	final private List<BuildPhaseListener> buildPhaseListeners;
 	private Entry genericMenuStructure;
 	private SubtreeProcessor subtreeBuilder;
+	final private ModeController modeController;
 
 	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
+		this.modeController = modeController;
 		customBuilders = new ArrayList<>(Phase.values().length);
+		buildPhaseListeners = new ArrayList<>();
 		for (@SuppressWarnings("unused")
 		Phase phase : Phase.values()) {
 			customBuilders.add(new HashMap<String, BuilderDestroyerPair>());
@@ -414,9 +422,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
 			final BuildProcessFactory buildProcessFactory = useRibbonMenu() ? 
 					new RibbonBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries):
-					new MenuBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries);
+					new MenuBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries, buildPhaseListeners);
 			final PhaseProcessor buildProcessor = buildProcessFactory.getBuildProcessor();
 			subtreeBuilder = buildProcessFactory.getChildProcessor();
+			acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
 			for (final Phase phase : Phase.values())
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
 				    .entrySet())
@@ -425,18 +434,37 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 			genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
 			buildProcessor.build(genericMenuStructure);
+			if(Boolean.getBoolean("org.freeplane.outputUnusedActions"))
+				outputUnusedActions();
 		}
 		catch (Exception e) {
 			if (isUserDefined) {
 				LogUtils.warn(e);
 				String myMessage = TextUtils.format("menu_error", genericStructure.getPath(), e.getMessage());
 				UITools.backOtherWindows();
-				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(UITools.getMenuComponent(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
 				System.exit(-1);
 			}
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	private void outputUnusedActions() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Unused actions for mode ").append(modeController.getModeName()).append('\n');
+		TreeSet<String> actionKeys = new TreeSet<>();
+		actionKeys.addAll(modeController.getActionKeys());
+		actionKeys.addAll(modeController.getController().getActionKeys());
+		KEYS: for(String key : actionKeys){
+			final List<Entry> entries = genericMenuStructure.findEntries(key);
+			for(Entry entry : entries)
+				if(new EntryAccessor().getComponent(entry) != null)
+					continue KEYS;
+			sb.append(key).append('\n');
+		}
+		LogUtils.info(sb.toString());
+		
 	}
 
 	public boolean useRibbonMenu() {
@@ -445,6 +473,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair) {
 		customBuilders.get(phase.ordinal()).put(name, builderDestroyerPair);
+	}
+	
+	public void addBuildPhaseListener(BuildPhaseListener listener) {
+		buildPhaseListeners.add(listener);
 	}
 
 	@Override

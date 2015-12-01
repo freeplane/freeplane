@@ -64,51 +64,39 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	public Rectangle getFrameSize() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void setFrameSize(Rectangle frameSize) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void changeNoteWindowLocation() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void err(String msg) {
-		throw new RuntimeException("Method not implemented");
-	}
-
-	public RootPaneContainer getRootPaneContainer() {
-		throw new RuntimeException("Method not implemented");
-	}
-
-	public Container getContentPane() {
-		throw new RuntimeException("Method not implemented");
-	}
-
-	public Frame getFrame() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public FreeplaneMenuBar getFreeplaneMenuBar() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public JFrame getJFrame() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public JComponent getStatusBar() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void init(Controller controller) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void insertComponentIntoSplitPane(JComponent noteViewerComponent) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public boolean isApplet() {
@@ -116,83 +104,83 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	public boolean isMenubarVisible() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void openDocument(URI uri) throws IOException {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void openDocument(URL fileToUrl) throws Exception {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void out(String msg) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void addStatusInfo(String key, String info) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void addStatusInfo(String key, Icon icon) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void addStatusInfo(String key, String info, Icon icon) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void addStatusInfo(String key, String info, Icon icon, String tooltip) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void addStatusComponent(String key, Component component) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void removeStatus(String key) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void removeSplitPane() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void saveProperties() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void selectMode(ModeController oldModeController, ModeController newModeController) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void setMenubarVisible(boolean visible) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void setTitle(String frameTitle) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void setWaitingCursor(boolean b) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void viewNumberChanged(int number) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public String completeVisiblePropertyKey(JComponent toolBar) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void addObjectTypeInfo(Object value) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public boolean quit() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public boolean isDispatchThread() {
@@ -227,16 +215,30 @@ public class HeadlessUIController extends FrameController {
 
 	@Override
 	protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar) {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 	}
 
 	public void previousMapView() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
 		
 	}
 
 	public void nextMapView() {
-		throw new RuntimeException("Method not implemented");
+		throw methodNotImplementedException();
+	}
+
+	@Override
+	public Component getCurrentRootComponent() {
+		throw methodNotImplementedException();
+	}
+
+	@Override
+	public Component getMenuComponent() {
+		throw methodNotImplementedException();
+	}
+
+	private RuntimeException methodNotImplementedException() {
+		return new RuntimeException("Method not implemented");
 	}	
 	
 }

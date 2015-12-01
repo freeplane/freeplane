@@ -19,70 +19,21 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
 
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-class BubbleMainView extends MainView {
+class BubbleMainView extends RectangleMainView {
 
-    final static Stroke DEF_STROKE = new BasicStroke();
-	/**
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
-    public
-	Point getLeftPoint() {
-		final Point in = new Point(0, getHeight() / 2);
-		return in;
-	}
-
-	@Override
-    public
-	Point getRightPoint() {
-		final Point in = getLeftPoint();
-		in.x = getWidth() - 1;
-		return in;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getStyle()
-	 */
-	@Override
-    public
-	String getShape() {
-		return NodeStyleModel.STYLE_BUBBLE;
-	}
-
-	@Override
-	public void paintComponent(final Graphics graphics) {
-		final Graphics2D g = (Graphics2D) graphics;
-		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		if (model == null) {
-			return;
-		}
-		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
-		paintBackgound(g);
-		paintDragOver(g);
-		final Color edgeColor = nodeView.getEdgeColor();
-		g.setColor(edgeColor);
-		g.setStroke(BubbleMainView.DEF_STROKE);
+	protected void paintNodeShape(final Graphics2D g) {
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		super.paintComponent(g);
 	}
 
 	@Override
@@ -90,15 +41,9 @@ class BubbleMainView extends MainView {
 		graphics.setColor(color);
 		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 	}
-    private static Insets insets = new Insets(3, 3, 3, 3);
     
-    @Override
-    public Insets getInsets() {
-        return BubbleMainView.insets;
-    }
-
-    @Override
-    public Insets getInsets(Insets insets) {
-        return BubbleMainView.insets;
-    }
+    
+    public BubbleMainView(ShapeConfigurationModel shapeConfiguration) {
+		super(shapeConfiguration);
+	}
 }

@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -41,8 +42,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import javax.swing.JComboBox;
@@ -91,6 +95,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
+	public static final String STANDARD_TEMPLATE = "standard_template";
 	private static final String DEFAULT_SAVE_DIR_PROPERTY = "default_save_dir";
 	private static final String BACKUP_EXTENSION = "bak";
 	private static final int DEBUG_OFFSET = 0;
@@ -265,6 +270,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
 			}
 		}, IndexedTree.AS_CHILD);
+		optionPanelBuilder.addCreator("Environment/files", new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				final TreeSet<String> templates = new TreeSet<String>();
+				for (File dir : new File[]{defaultStandardTemplateDir(), defaultUserTemplateDir()})
+					if(dir.isDirectory())
+						templates.addAll(Arrays.asList(dir.list(new FilenameFilter() {
+							@Override
+							public boolean accept(File dir, String name) {
+								return name.endsWith(FREEPLANE_FILE_EXTENSION);
+							}
+						})));
+				ComboProperty comboProperty = new ComboProperty(STANDARD_TEMPLATE, templates, templates);
+				comboProperty.setEditable(true);
+				return comboProperty;
+			}
+		}, IndexedTree.AS_CHILD);
 	}
 
 	private void backup(final File file) {
@@ -360,7 +381,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		JFileChooser chooser = null;
         final File file = map.getFile();
         if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
-        	JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getContentPane(),
+        	JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
         	    TextUtils.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
         	return null;
         }
@@ -374,7 +395,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         chooser.setFileFilter(chooser.getAcceptAllFileFilter());
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
-            .getContentPane());
+            .getCurrentRootComponent());
         if (returnVal != JFileChooser.APPROVE_OPTION) {
         	return null;
         }
@@ -402,14 +423,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         try {
         	final String lockingUser = tryToLock(map, file);
         	if (lockingUser != null) {
-        		UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
+        		UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
         			TextUtils.format("map_locked_by_open", file.getName(), lockingUser));
         		map.setReadOnly(true);
         	}
         }
         catch (final Exception e) {
         	LogUtils.severe(e);
-        	UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
+        	UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
         		TextUtils.format("locking_failed_by_open", file.getName()));
         	map.setReadOnly(true);
         }
@@ -574,15 +595,18 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	@Override
     public File defaultTemplateFile() {
-		final String userDefinedTemplateFile = getStandardTemplateName();
+		final String userDefinedTemplateFile = ResourceController.getResourceController().getProperty(STANDARD_TEMPLATE);
 		final File absolute = new File(userDefinedTemplateFile);
 		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
 			return absolute;
 		}
-		final File userTemplates = defaultUserTemplateDir();
-		final File userStandard = new File(userTemplates, userDefinedTemplateFile);
-		if(userStandard.exists() && ! userStandard.isDirectory())
-			return userStandard;
+		for (final File userTemplates : new File[]{ defaultUserTemplateDir(), defaultStandardTemplateDir()}){
+			if(userTemplates.isDirectory()) {
+				final File userStandard = new File(userTemplates, userDefinedTemplateFile);
+				if(userStandard.exists() && ! userStandard.isDirectory())
+					return userStandard;
+			}
+		}
 		return null;
 	}
 
@@ -596,10 +620,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final String resourceBaseDir = ResourceController.getResourceController().getResourceBaseDir();
 		final File allUserTemplates = new File(resourceBaseDir, "templates");
 		return allUserTemplates;
-	}
-
-	public String getStandardTemplateName() {
-		return ResourceController.getResourceController().getProperty("standard_template");
 	}
 
 	/**@deprecated -- use MMapIO*/
@@ -692,13 +712,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			final String lockingUser = tryToLock(map, file);
 			if (lockingUser != null) {
-				UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
+				UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
 				    TextUtils.format("map_locked_by_save_as", file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
-			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
+			UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
 			    TextUtils.format("locking_failed_by_save_as", file.getName()));
 			return false;
 		}
@@ -861,7 +881,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(Controller.getCurrentController().getViewController().getFrame(),
+			UITools.informationMessage(UITools.getCurrentRootComponent(),
 			    TextUtils.format("locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
 		}
 		return lockingUser;

@@ -221,7 +221,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 		else{
 			if(oldShortcut != null){
-				final int replace = JOptionPane.showConfirmDialog(UITools.getFrame(), oldShortcut, TextUtils.removeTranslateComment(TextUtils.getText("remove_shortcut_question")), JOptionPane.YES_NO_OPTION);
+				final int replace = JOptionPane.showConfirmDialog(UITools.getCurrentRootComponent(), oldShortcut, TextUtils.removeTranslateComment(TextUtils.getText("remove_shortcut_question")), JOptionPane.YES_NO_OPTION);
 				if (replace != JOptionPane.YES_OPTION) {
 					return;
 				}
@@ -314,7 +314,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	private static boolean askForReplaceShortcutViaDialog(String oldMenuItemTitle) {
-		final int replace = JOptionPane.showConfirmDialog(UITools.getFrame(),
+		final int replace = JOptionPane.showConfirmDialog(UITools.getCurrentRootComponent(),
 				TextUtils.removeTranslateComment(TextUtils.format("replace_shortcut_question", oldMenuItemTitle)),
 				TextUtils.removeTranslateComment(TextUtils.format("replace_shortcut_title")), JOptionPane.YES_NO_OPTION);
 		return replace == JOptionPane.YES_OPTION;

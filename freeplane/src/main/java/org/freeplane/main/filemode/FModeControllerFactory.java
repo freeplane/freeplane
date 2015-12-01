@@ -39,6 +39,8 @@ import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.filemode.FModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
@@ -69,16 +71,16 @@ public class FModeControllerFactory {
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
 		TextController.install(new TextController(modeController));
-		LinkController.install(new LinkController());
+		LinkController.install(new LinkController(modeController));
 		CloudController.install(new CloudController(modeController));
 		ClipboardController.install(new ClipboardController());
 		LocationController.install(new LocationController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		MapStyle.install(true);
 		NodeStyleController.getController().addShapeGetter(new Integer(0),
-		    new IPropertyHandler<String, NodeModel>() {
-			    public String getProperty(final NodeModel node, final String currentValue) {
-				    return "fork";
+		    new IPropertyHandler<ShapeConfigurationModel, NodeModel>() {
+			    public ShapeConfigurationModel getProperty(final NodeModel node, final ShapeConfigurationModel currentValue) {
+				    return ShapeConfigurationModel.FORK;
 			    }
 		    });
 		modeController.addAction(new CenterAction());

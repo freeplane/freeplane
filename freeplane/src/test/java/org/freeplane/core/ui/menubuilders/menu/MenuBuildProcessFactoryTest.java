@@ -5,6 +5,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
+
 import javax.swing.JMenu;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -12,6 +14,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
@@ -34,8 +37,8 @@ public class MenuBuildProcessFactoryTest {
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
 		final FreeplaneMenuBar menubar = new FreeplaneMenuBar();
 		when(userInputListenerFactory.getMenuBar()).thenReturn(menubar);
-		phaseProcessor = (new MenuBuildProcessFactory(userInputListenerFactory, freeplaneActions,
-		    resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction())).getBuildProcessor();
+		phaseProcessor = new MenuBuildProcessFactory(userInputListenerFactory, freeplaneActions,
+			resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction(), Collections.<BuildPhaseListener>emptyList()).getBuildProcessor();
 	}
 
 	@Test

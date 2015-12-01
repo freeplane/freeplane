@@ -159,21 +159,24 @@ public class UITools {
 		LogUtils.warn(myMessage);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
-
-	static public Frame getFrame() {
-		final Frame[] frames = Frame.getFrames();
-		for (final Frame frame : frames) {
-			if (MAIN_FREEPLANE_FRAME.equals(frame.getName())) {
-				return frame;
-			}
-		}
-		return frames.length >= 1 ? frames[0] : null;
+	
+	static public Component getCurrentRootComponent(){
+		return Controller.getCurrentController().getViewController().getCurrentRootComponent();
 	}
 
+	public static Frame getCurrentFrame() {
+		final Component currentRootComponent = getCurrentRootComponent();
+		return currentRootComponent instanceof Frame ? (Frame)currentRootComponent : JOptionPane.getFrameForComponent(currentRootComponent);
+	}
+
+	static public Component getMenuComponent(){
+		return Controller.getCurrentController().getViewController().getMenuComponent();
+	}
+	
 	/** returns a KeyStroke if possible and null otherwise. */
 	public static KeyStroke getKeyStroke(final String keyStrokeDescription) {
 		if (keyStrokeDescription == null) {
@@ -205,22 +208,28 @@ public class UITools {
 	}
 
 	static public void informationMessage(final String message) {
-		UITools.informationMessage(UITools.getFrame(), message);
+		UITools.informationMessage(UITools.getCurrentRootComponent(), message);
 	}
 
-	static public void informationMessage(final Frame frame, final String message) {
+	static public void informationMessage(final Component frame, final String message) {
 		UITools.informationMessage(frame, message, "Freeplane");
 	}
 
-	static public void informationMessage(final Frame frame, final String message, final String title) {
+	static public void informationMessage(final Component frame, final String message, final String title) {
 		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void informationMessage(final Frame frame, final String text, final String string, final int type) {
+	public static void informationMessage(final Component frame, final String text, final String string, final int type) {
 		JOptionPane.showMessageDialog(frame, text, string, type);
 	}
 
 	static public void setBounds(final Component frame, int win_x, int win_y, int win_width, int win_height) {
+		final Rectangle frameBounds = getValidFrameBounds(frame, win_x, win_y, win_width, win_height);
+		frame.setBounds(frameBounds);
+	}
+
+	public static Rectangle getValidFrameBounds(final Component frame, int win_x, int win_y, int win_width,
+			int win_height) {
 		final Rectangle desktopBounds = getDesktopBounds(frame);
 		int screenWidth = desktopBounds.width;
 		if(win_width != -1)
@@ -244,7 +253,8 @@ public class UITools {
 		}
 		else
 			win_y = desktopBounds.y + (screenHeight - win_height) / 2;
-		frame.setBounds(win_x, win_y, win_width, win_height);
+		final Rectangle frameBounds = new Rectangle( win_x, win_y, win_width, win_height);
+		return frameBounds;
 	}
 
 	public static Rectangle getDesktopBounds(Component frame) {
@@ -371,7 +381,7 @@ public class UITools {
 		infoPane.setColumns(60);
 		JScrollPane scrollPane = new JScrollPane(infoPane);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
-		JOptionPane.showMessageDialog(getFrame(), scrollPane, "Freeplane", messageType);
+		JOptionPane.showMessageDialog(getCurrentRootComponent(), scrollPane, "Freeplane", messageType);
 	}
 	public static int showConfirmDialog(final NodeModel node, final Object message, final String title,
 	                                    final int optionType, final int messageType) {
@@ -379,7 +389,7 @@ public class UITools {
 		final IMapViewManager viewController = controller.getMapViewManager();
 		final Component parentComponent;
 		if (node == null) {
-			parentComponent = getFrame();
+			parentComponent = getCurrentRootComponent();
 		}
 		else {
 			viewController.scrollNodeToVisible(node);
@@ -536,9 +546,9 @@ public class UITools {
     }
 
 	public static void backOtherWindows() {
-	    Window owner = getFrame();
-		if(owner != null){
-        	final Window[] ownedWindows = owner.getOwnedWindows();
+	    Component owner = getMenuComponent();
+		if(owner instanceof Window){
+        	final Window[] ownedWindows = ((Window) owner).getOwnedWindows();
         	for(Window w : ownedWindows){
         		if(w.isVisible()){
         			w.toBack();
@@ -604,17 +614,20 @@ public class UITools {
 	}
 
 	public static void showFrame() {
-		final Frame frame = UITools.getFrame();
-		final Window[] ownedWindows = frame.getOwnedWindows();
-		for (int i = 0; i < ownedWindows.length; i++) {
-			final Window window = ownedWindows[i];
-			if (window.getClass().equals(FreeplaneSplashModern.class) && window.isVisible()) {
-				window.setVisible(false);
+		final Component component = UITools.getMenuComponent();
+		if(component instanceof Window) {
+			Window window = (Window) component;
+			final Window[] ownedWindows = window.getOwnedWindows();
+			for (int i = 0; i < ownedWindows.length; i++) {
+				final Window ownedWindow = ownedWindows[i];
+				if (ownedWindow.getClass().equals(FreeplaneSplashModern.class) && ownedWindow.isVisible()) {
+					ownedWindow.setVisible(false);
+				}
 			}
-		}
-		if(frame != null && ! frame.isVisible()){
-			frame.setVisible(true);
-			frame.toFront();
+			if(window != null && ! window.isVisible()){
+				window.setVisible(true);
+				window.toFront();
+			}
 		}
     }
 

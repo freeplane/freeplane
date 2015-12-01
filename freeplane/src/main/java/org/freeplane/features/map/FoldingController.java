@@ -324,7 +324,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (node.isRoot())
 			return 0;
 		final int parentDepth = depth(node.getParentNode());
-		if (! node.isVisible() || AlwaysUnfoldedNode.isConnectorNode(node)) {
+		if (! node.hasVisibleContent() || AlwaysUnfoldedNode.isConnectorNode(node)) {
 			return parentDepth;
 		}
 		else

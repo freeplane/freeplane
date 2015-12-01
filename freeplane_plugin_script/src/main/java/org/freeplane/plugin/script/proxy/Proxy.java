@@ -539,6 +539,10 @@ public interface Proxy {
 		/** a value of 1 means 100%.
 		 * @since 1.2 */
 		void setZoom(final float ratio);
+
+		/** a list of all opened maps.
+		 * @since 1.5 */
+		List<Map> getOpenMaps();
 	}
 
 	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
@@ -684,6 +688,12 @@ public interface Proxy {
 		 * </pre>
 		 * @see FreeplaneIconUtils */
 		void add(String name);
+
+		/** @since 1.4 */
+		void addAll(Collection<String> names);
+
+		/** @since 1.4 */
+		void addAll(IconsRO icons);
 
 		/** @deprecated since 1.2 - use {@link #add(String)} instead. */
 		void addIcon(String name);
@@ -1000,11 +1010,11 @@ public interface Proxy {
          * @since 1.3.3 */
         List<Node> getPathToRoot();
 
-        /** returns the next node with respect to this node in breadth-first order.
+        /** returns the next node with respect to this node in depth-first order.
          * Returns null if this node is the only one in the map. */
         Node getNext();
 
-        /** returns the previous node with respect to this node in breadth-first order.
+        /** returns the previous node with respect to this node in depth-first order.
          * Returns null if this node is the only one in the map. */
         Node getPrevious();
 
@@ -1444,6 +1454,24 @@ public interface Proxy {
 
         /**@since 1.3.7 */
     	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
+    	
+    	/**
+    	 * A sort method that uses the result of the Groovy closure ("block") for comparison. As this closure
+    	 * will be called with a node as an argument (to be referenced by <code>it</code>) the search can
+    	 * evaluate every node property, like attributes, icons, node text or notes.
+    	 * <p>
+    	 * Examples:
+    	 * <pre>
+    	 *    // sort by details text
+    	 *    node.sortChildrenBy{ it.details.to.plain }
+    	 *    // sort numerically
+    	 *    node.sortChildrenBy{ it.to.num0 }
+    	 * </pre>
+    	 * @param closure a Groovy closure that returns a Comparable value like a String. The closure will receive
+    	 *        a NodeModel as an argument.
+    	 * @since 1.4.1
+    	 */
+		void sortChildrenBy(Closure<Comparable<Object>> closure);
 	}
 
 	/** Node's style: <code>node.style</code> - read-only. */

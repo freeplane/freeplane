@@ -21,21 +21,41 @@ package org.freeplane.features.nodestyle;
 
 import java.awt.Color;
 
+import javax.swing.SwingConstants;
+
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public static final String[] NODE_STYLES = new String[] { NodeStyleModel.STYLE_FORK, NodeStyleModel.STYLE_BUBBLE,
-	        NodeStyleModel.SHAPE_AS_PARENT, NodeStyleModel.SHAPE_COMBINED };
-	enum Shapes{as_parent, combined, bubble, fork};
-	public static final String SHAPE_AS_PARENT = "as_parent";
-	public static final String SHAPE_COMBINED = "combined";
-	public static final String STYLE_BUBBLE = "bubble";
-	public static final String STYLE_FORK = "fork";
+	public enum Shape{fork(false), bubble, oval, rectangle, wide_hexagon, narrow_hexagon, as_parent(false), combined;
+		public final boolean hasConfiguration;
+
+		private Shape() {
+			this(true);
+		}
+		private Shape(boolean hasConfiguration) {
+			this.hasConfiguration = hasConfiguration;
+		}
+
+	}
+
+	public enum TextAlign {
+		DEFAULT(SwingConstants.LEFT), 
+		LEFT(SwingConstants.LEFT), 
+		RIGHT(SwingConstants.RIGHT), 
+		CENTER(SwingConstants.CENTER);
+		
+		final public int swingConstant;
+
+		TextAlign(int swingConstant){
+			this.swingConstant = swingConstant;}
+	};
 
 	public static NodeStyleModel createNodeStyleModel(final NodeModel node) {
 		NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
@@ -81,9 +101,14 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getNodeFormat();
 	}
 
-	public static String getShape(final NodeModel node) {
+	public static Shape getShape(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getShape();
+	}
+
+	public static ShapeConfigurationModel getShapeConfiguration(final NodeModel node) {
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? ShapeConfigurationModel.NULL_SHAPE : styleModel.getShapeConfiguration();
 	}
 
 	public static Boolean isBold(final NodeModel node) {
@@ -94,6 +119,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public static Boolean isItalic(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.isItalic();
+	}
+
+	public static TextAlign getTextAlign(final NodeModel node) {
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getTextAlign();
 	}
 
 	public static void setBackgroundColor(final NodeModel node, final Color color) {
@@ -121,15 +151,46 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShape(shape);
 	}
 
+	public static void setShape(final NodeModel node, final Shape shape) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShape(shape);
+	}
+	
+	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withHorizontalMargin(margin));
+	}
+	
+	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withVerticalMargin(margin));
+	}
+
+	public static void setShapeUniform(final NodeModel node, final boolean uniform) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withUniform(uniform));
+	}
+
+	public static void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShapeConfiguration(shape);
+	}
+	
+	public static void setTextAlign(final NodeModel node, final TextAlign textAlign) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setTextAlign(textAlign);
+	}
+
 	private Color backgroundColor;
 	private Color color;
 	private String fontFamilyName = null;
 	private Integer fontSize = null;
 	private Boolean isBold = null;
 	private Boolean isItalic = null;
-	private String shape;
+	private ShapeConfigurationModel shapeConfiguration = ShapeConfigurationModel.NULL_SHAPE;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
+	private  TextAlign textAlign = null;
 
 	@Override
 	protected NodeStyleModel clone() {
@@ -149,12 +210,14 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	        nodeStyleModel.setFontSize(fontSize);
 	    if(isItalic != null)
 	        nodeStyleModel.setItalic(isItalic);
-	    if(shape != null)
-	        nodeStyleModel.setShape(shape);
+	    if(getShapeConfiguration() != null)
+			nodeStyleModel.setShapeConfiguration(getShapeConfiguration());
 	    if(nodeFormat != null)
 	            nodeStyleModel.setNodeFormat(nodeFormat);
 	    if(nodeNumbering != null)
 	        nodeStyleModel.setNodeNumbering(nodeNumbering);
+	    if(textAlign != null)
+	    	nodeStyleModel.setTextAlign(textAlign);
 		return nodeStyleModel;
     }
 
@@ -182,8 +245,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	    return nodeFormat;
     }
 
-	public String getShape() {
-		return shape;
+	public Shape getShape() {
+		return getShapeConfiguration().getShape();
 	}
 
 	public Boolean isBold() {
@@ -192,6 +255,10 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public Boolean isItalic() {
 		return isItalic;
+	}
+
+	public TextAlign getTextAlign() {
+		return textAlign;
 	}
 
 	public void setBackgroundColor(final Color color) {
@@ -228,11 +295,27 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public void setShape(final String shape) {
 		try {
-			if(shape != null)
-				Shapes.valueOf(shape);
-			this.shape = shape;
+			this.setShapeConfiguration(getShapeConfiguration().withShape(shape != null ? Shape.valueOf(shape) : null));
 		} catch (IllegalArgumentException e) {
-			LogUtils.warn("unknown shape " + shape, e);
+			LogUtils.warn("unknown shape " + shape);
 		}
+	}
+	
+	public void setShape(final Shape shape) {
+		this.setShapeConfiguration(getShapeConfiguration().withShape(shape));
+	}
+	
+	public void setTextAlign(final TextAlign textAlign) {
+		this.textAlign = textAlign;
+	}
+
+	public ShapeConfigurationModel getShapeConfiguration() {
+		return shapeConfiguration;
+	}
+
+	public void setShapeConfiguration(ShapeConfigurationModel shapeConfiguration) {
+		if (shapeConfiguration == null)
+			throw new RuntimeException("Null pointer as shapeConfiguration");
+		this.shapeConfiguration = shapeConfiguration;
 	}
 }

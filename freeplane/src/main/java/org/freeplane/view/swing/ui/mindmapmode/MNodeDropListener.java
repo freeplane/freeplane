@@ -251,7 +251,7 @@ private Timer timer;
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (controller.getSelection().size() >= 5) {
-					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(), TextUtils
+					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getCurrentRootComponent(), TextUtils
 					    .getText("lots_of_links_warning"), Integer.toString(controller.getSelection().size())
 					        + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}

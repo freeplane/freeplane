@@ -286,4 +286,13 @@ class ControllerProxy implements Proxy.Controller {
         }
         return null;
     }
+
+    public List<Map> getOpenMaps() {
+    	Collection<MapModel> mapModels = getMapViewManager().getMaps().values();
+    	ArrayList<Map> mapProxies = new ArrayList<Map>(mapModels.size());
+    	for (MapModel mapModel : mapModels) {
+	        mapProxies.add(new MapProxy(mapModel, scriptContext));
+        }
+    	return mapProxies;
+    }
 }

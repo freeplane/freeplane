@@ -32,12 +32,17 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
@@ -103,14 +108,43 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_COLOR", bgHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BACKGROUND_COLOR", bgHandler);
-		final IAttributeHandler styleHandler = new IAttributeHandler() {
+		
+		final IAttributeHandler shapeHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				NodeStyleModel.setShape(node, value);
 			}
 		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", styleHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "STYLE", styleHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", shapeHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "STYLE", shapeHandler);
+		
+		final IAttributeHandler shapeHorizontalMarginHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setShapeHorizontalMargin(node, Quantity.fromString(value, LengthUnits.px));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMarginHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMarginHandler);
+		
+		final IAttributeHandler shapeVerticalMarginHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setShapeVerticalMargin(node, Quantity.fromString(value, LengthUnits.px));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "SHAPE_VERTICAL_MARGIN", shapeVerticalMarginHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "SHAPE_VERTICAL_MARGIN", shapeVerticalMarginHandler);
+
+		final IAttributeHandler uniformShapeHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setShapeUniform(node, Boolean.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "UNIFORM_SHAPE", uniformShapeHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "UNIFORM_SHAPE", uniformShapeHandler);
+
 		reader.addAttributeHandler("font", "SIZE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final FontProperties fp = (FontProperties) userObject;
@@ -158,24 +192,66 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", formatHandler);
 		}
 
+		final IAttributeHandler nodeMaxNodeWidthQuantityHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				try {
+					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
+					NodeSizeModel.setMaxNodeWidth(node, width);
+				} catch (Exception e) {
+					LogUtils.warn("Can not parse quantity " + value);
+				}
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH_QUANTITY", nodeMaxNodeWidthQuantityHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_WIDTH_QUANTITY", nodeMaxNodeWidthQuantityHandler);
+
 		final IAttributeHandler nodeMaxNodeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeSizeModel.setNodeMaxNodeWidth(node, Integer.valueOf(value));
+				if (NodeSizeModel.getMaxNodeWidth(node) == null) {
+					int widthInPixels = Integer.parseInt(value);
+					NodeSizeModel.setMaxNodeWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+				}
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
 
+		final IAttributeHandler nodeMinNodeWidthQuantityHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				try {
+					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
+					NodeSizeModel.setNodeMinWidth(node, width);
+				} catch (Exception e) {
+					LogUtils.warn("Can not parse quantity " + value);
+				}
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH_QUANTITY", nodeMinNodeWidthQuantityHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MIN_WIDTH_QUANTITY", nodeMinNodeWidthQuantityHandler);
+
 		final IAttributeHandler nodeMinWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeSizeModel.setNodeMinWidth(node, Integer.valueOf(value));
+				if (NodeSizeModel.getMinNodeWidth(node) == null) {
+					int widthInPixels = Integer.parseInt(value);
+					NodeSizeModel.setNodeMinWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+				}
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH", nodeMinWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MIN_WIDTH", nodeMinWidthHandler);
 
+		final IAttributeHandler textAlignHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setTextAlign(node, TextAlign.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEXT_ALIGN", textAlignHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEXT_ALIGN", textAlignHandler);
 	}
 
 	/**
@@ -233,9 +309,22 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (backgroundColor != null) {
 			writer.addAttribute("BACKGROUND_COLOR", ColorUtils.colorToString(backgroundColor));
 		}
-		final String shape = forceFormatting ? nsc.getShape(node) : style.getShape();
+		final ShapeConfigurationModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
+		final Shape shape = shapeConfiguration.getShape();
 		if (shape != null) {
-			writer.addAttribute("STYLE", shape);
+			writer.addAttribute("STYLE", shape.toString());
+		}
+		final Quantity<LengthUnits> shapeHorizontalMargin = shapeConfiguration.getHorizontalMargin();
+		if (! shapeHorizontalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
+			writer.addAttribute("SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMargin.toString());
+		}
+		final Quantity<LengthUnits> shapeVerticalMargin = shapeConfiguration.getVerticalMargin();
+		if (! shapeVerticalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
+			writer.addAttribute("SHAPE_VERTICAL_MARGIN", shapeVerticalMargin.toString());
+		}
+		final boolean uniformShape = shapeConfiguration.isUniform();
+		if (uniformShape) {
+			writer.addAttribute("UNIFORM_SHAPE", "true");
 		}
 		final Boolean numbered = forceFormatting ? nsc.getNodeNumbering(node) : style.getNodeNumbering();
 		if (numbered != null && numbered) {
@@ -245,18 +334,24 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (format != null) {
 			writer.addAttribute("FORMAT", format);
 		}
+		final TextAlign textAlign = forceFormatting ? nsc.getTextAlign(node) : style.getTextAlign();
+		if (textAlign != null) {
+			writer.addAttribute("TEXT_ALIGN", textAlign.toString());
+		}
 	}
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeSizeModel size,
 	                             final boolean forceFormatting) {
-		final int maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
-		if (maxTextWidth != NodeSizeModel.NOT_SET) {
-			writer.addAttribute("MAX_WIDTH", Integer.toString(maxTextWidth));
+		final Quantity<LengthUnits> maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
+		if (maxTextWidth != null) {
+			writer.addAttribute("MAX_WIDTH_QUANTITY", maxTextWidth.toString());
+			writer.addAttribute("MAX_WIDTH", maxTextWidth.toBaseUnitsRounded());
 		}
 
-		final int minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
-		if (minTextWidth != NodeSizeModel.NOT_SET) {
-			writer.addAttribute("MIN_WIDTH", Integer.toString(minTextWidth));
+		final Quantity<LengthUnits> minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
+		if (minTextWidth != null) {
+			writer.addAttribute("MIN_WIDTH_QUANTITY", minTextWidth.toString());
+			writer.addAttribute("MIN_WIDTH", minTextWidth.toBaseUnitsRounded());
 		}
 	}
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {

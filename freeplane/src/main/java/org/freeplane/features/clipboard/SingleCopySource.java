@@ -272,7 +272,17 @@ class SingleCopySource extends NodeModel {
 	@Override
     public boolean isVisible() {
 	    return delegate.isVisible();
+	}
+	
+	@Override
+	public boolean hasVisibleContent() {
+	    return delegate.hasVisibleContent();
     }
+	
+	@Override
+	public boolean isHiddenSummary() {
+		return delegate.isHiddenSummary();
+	}
 
 	public void remove(MutableTreeNode node) {
 		   throw new RuntimeException(METHOD_NOT_SUPPORTED);

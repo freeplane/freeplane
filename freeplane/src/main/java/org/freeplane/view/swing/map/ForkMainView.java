@@ -30,6 +30,8 @@ import java.awt.Stroke;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class ForkMainView extends MainView {
 	
@@ -75,29 +77,18 @@ class ForkMainView extends MainView {
 		return in;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getStyle()
-	 */
-	@Override
-    public
-	String getShape() {
-		return NodeStyleModel.STYLE_FORK;
-	}
-
 	@Override
 	public void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
 		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		if (model == null) {
+		if (nodeView.getModel() == null) {
 			return;
 		}
 		paintBackgound(g);
 		paintDragOver(g);
 		super.paintComponent(g);
 	}
-
+	
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
@@ -135,4 +126,16 @@ class ForkMainView extends MainView {
     		insets.set(0, 2, edgeWidth, 2);
         return insets;
     }
+	private final static int SINGLE_CHILD_SHIFT = -2;
+
+	@Override
+	public int getSingleChildShift() {
+		return SINGLE_CHILD_SHIFT;
+	}
+
+	@Override
+	public ShapeConfigurationModel getShapeConfiguration() {
+		return ShapeConfigurationModel.FORK;
+	}
+	
 }

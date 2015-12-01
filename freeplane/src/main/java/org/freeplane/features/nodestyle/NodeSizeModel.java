@@ -20,6 +20,8 @@
 package org.freeplane.features.nodestyle;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -27,6 +29,7 @@ import org.freeplane.features.map.NodeModel;
  * Nov 13, 2011
  */
 public class NodeSizeModel implements IExtension {
+	
 	public static final int NOT_SET = -1;
 
 	public static NodeSizeModel getModel(final NodeModel node) {
@@ -42,42 +45,44 @@ public class NodeSizeModel implements IExtension {
 		return styleModel;
 	}
 
-	private int minNodeWidth = NOT_SET;
-	private int maxTextWidth = NOT_SET;
+	private Quantity<LengthUnits> minNodeWidth = null;
+	private Quantity<LengthUnits> maxTextWidth = null;
 	
-	public int getMaxNodeWidth() {
+	public Quantity<LengthUnits> getMaxNodeWidth() {
     	return maxTextWidth;
     }
-	public void setMaxNodeWidth(int maxTextWidth) {
+	public void setMaxNodeWidth(Quantity<LengthUnits> maxTextWidth) {
     	this.maxTextWidth = maxTextWidth;
     }
-	public int getMinNodeWidth() {
+
+	public Quantity<LengthUnits> getMinNodeWidth() {
     	return minNodeWidth;
     }
-	public void setMinNodeWidth(int minNodeWidth) {
-    	this.minNodeWidth = minNodeWidth;
-    }
 	
-	public static void setNodeMaxNodeWidth(NodeModel node, int maxTextWidth) {
+	public void setMinNodeWidth(Quantity<LengthUnits> quantity) {
+		this.minNodeWidth = quantity;
+	}
+	
+	public static void setMaxNodeWidth(NodeModel node, Quantity<LengthUnits> maxTextWidth) {
 		createNodeSizeModel(node).setMaxNodeWidth(maxTextWidth);
     }
-	public static void setNodeMinWidth(NodeModel node, int minNodeWidth) {
+	public static void setNodeMinWidth(NodeModel node, Quantity<LengthUnits> minNodeWidth) {
 		createNodeSizeModel(node).setMinNodeWidth(minNodeWidth);
     }
 	
-	public static int getNodeMaxNodeWidth(NodeModel node) {
+	public static Quantity<LengthUnits> getMaxNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
-		return extension != null ? extension.getMaxNodeWidth() : NOT_SET;
+		return extension != null ? extension.getMaxNodeWidth() : null;
     }
-	public static int getMinNodeWidth(NodeModel node) {
+	public static Quantity<LengthUnits> getMinNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
-		return extension != null ? extension.getMinNodeWidth() : NOT_SET;
+		return extension != null ? extension.getMinNodeWidth() : null;
     }
 
 	public void copyTo(NodeSizeModel to) {
-	    if(maxTextWidth != NOT_SET)
+	    if(maxTextWidth != null)
 	    	to.setMaxNodeWidth(maxTextWidth);
-	    if(minNodeWidth != NOT_SET)
+	    if(minNodeWidth != null)
 	    	to.setMinNodeWidth(minNodeWidth);
     }
 }

@@ -53,7 +53,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(TextUtils.getText("select_favorites_folder"));
-		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
 			Controller.getCurrentController().getViewController().out("Importing Favorites ...");

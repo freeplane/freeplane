@@ -91,9 +91,4 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 	public void setValue(final String value) {
 		setScriptValue(value);
 	}
-
-	@Override
-    protected Component[] getComponents() {
-	    return new Component[]{mButton};
-    }
 }

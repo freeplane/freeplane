@@ -33,6 +33,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -44,11 +46,13 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.view.swing.map.MainView;
 
 
 /**
@@ -265,21 +269,19 @@ public class TextController implements IExtension {
 			        Font detailFont = style.getFont(detailStyleNode);
 			        Color detailBackground = style.getBackgroundColor(detailStyleNode);
 			        Color detailForeground = style.getColor(detailStyleNode);
+			        final int alignment = style.getTextAlign(detailStyleNode).swingConstant;
 					
-					final StringBuilder rule = new StringBuilder();
-					rule.append("font-family: " + detailFont.getFamily() + ";");
-					rule.append("font-size: " + detailFont.getSize() + "pt;");
-	                if (detailFont.isItalic()) {
-	                    rule.append("font-style: italic; ");
-	                }
-	                if (detailFont.isBold()) {
-	                    rule.append("font-weight: bold; ");
-	                }
-					rule.append("color: ").append(ColorUtils.colorToString(detailForeground)).append(";");
-					rule.append("background-color: ").append(ColorUtils.colorToString(detailBackground)).append(";");
+					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
+							.append(new CssRuleBuilder()
+							.withFont(detailFont)
+							.withColor(detailForeground)
+							.withBackground(detailBackground)
+							.withAlignment(alignment)
+							.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(detailStyleNode), style.getMaxWidth(node)))
+							.append("\">");
 					
 					String noteText= detailText.getHtml();
-					final String tooltipText = noteText.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+					final String tooltipText = noteText.replaceFirst("<body>",  htmlBodyStyle.toString())
 					    .replaceFirst("</body>", "</div></body>");
 					return tooltipText;
 				}
@@ -288,24 +290,21 @@ public class TextController implements IExtension {
 
 	private void registerNodeTextTooltip() {
 		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
-			    public String getTooltip(final ModeController modeController, NodeModel node, Component view) {
+			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
+				return getTooltip(modeController, node, (MainView)view);
+			}
+			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
 				    if (!ShortenedTextModel.isShortened(node)) {
 					    return null;
 				    }
 				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 				    final Font font = style.getFont(node);
-				    final StringBuilder rule = new StringBuilder();
-				    rule.append("font-family: " + font.getFamily() + ";");
-				    rule.append("font-size: " + font.getSize() + "pt;");
-				    rule.append("margin-top:0;");
-					if (font.isItalic()) {
-						rule.append("font-style: italic; ");
-					}
-					if (font.isBold()) {
-						rule.append("font-weight: bold; ");
-					}
-					final Color nodeTextColor = view.getForeground();
-					rule.append("color: ").append(ColorUtils.colorToString(nodeTextColor)).append(";");
+					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
+							.append(new CssRuleBuilder().withFont(font)
+							.withColor(view.getForeground())
+							.withBackground(view.getNodeView().getTextBackground())
+							.withAlignment(view.getHorizontalAlignment())
+							.withMaxWidthAsPt(style.getMaxWidth(node)));
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {
@@ -313,12 +312,14 @@ public class TextController implements IExtension {
 				    }
 				    catch (Exception e) {
 					    text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
-					    rule.append("color:red;");
+					    htmlBodyStyle.append("color:red;");
 				    }
+
+				    htmlBodyStyle.append("\">");
 				    if (!HtmlUtils.isHtmlNode(text)) {
 					    text = HtmlUtils.plainToHTML(text);
 				    }
-				    final String tooltipText = text.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+				    final String tooltipText = text.replaceFirst("<body>", htmlBodyStyle.toString())
 				        .replaceFirst("</body>", "</div></body>");
 				    return tooltipText;
 			    }

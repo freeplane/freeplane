@@ -160,7 +160,7 @@ public class Filter {
 		if (condition == null) {
 			return true;
 		}
-		if (appliesToVisibleNodesOnly && !node.isVisible()) {
+		if (appliesToVisibleNodesOnly && !node.hasVisibleContent()) {
 			return false;
 		}
 		return condition.checkNode(node);
@@ -215,7 +215,7 @@ public class Filter {
 		boolean next = false;
 		for(NodeModel node : selectedNodes.toArray(array)){
 			if(next){
-				if (!node.isVisible()) {
+				if (!node.hasVisibleContent()) {
 					mapSelection.toggleSelected(node);
 				}
 			}
@@ -223,7 +223,7 @@ public class Filter {
 				next = true;
 		}
 		NodeModel selected = mapSelection.getSelected();
-		if (!selected.isVisible()) {
+		if (!selected.hasVisibleContent()) {
 			if(mapSelection.getSelection().size() > 1){
 				mapSelection.toggleSelected(selected);
 			}

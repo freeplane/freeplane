@@ -21,9 +21,11 @@ package org.freeplane.features.edge.mindmapmode;
 
 import java.awt.Color;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.ObjectRule;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -116,19 +118,19 @@ public class MEdgeController extends EdgeController {
         }
 
 		private void resolveColor(NodeModel to) {
-	        if (null != getColor(to))
+	        if (getColorRule(to).hasValue())
 				return;
 			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
-				final Color color = getColor(source);
-				if(color != null){
-					EdgeModel.createEdgeModel(to).setColor(color);
+				final ObjectRule<Color, Rules> colorRule = getColorRule(source);
+				if(colorRule.hasValue()){
+					EdgeModel.createEdgeModel(to).setColor(colorRule.getValue());
 					return;
 				}
 			}
         }
 		
-		private Color getColor(NodeModel node) {
-			return modeController.getExtension(EdgeController.class).getColor(node, false);
+		private ObjectRule<Color, Rules> getColorRule (NodeModel node) {
+			return modeController.getExtension(EdgeController.class).getColorRule(node);
 		}
 
 		private void resolveWidth(NodeModel to) {

@@ -4,6 +4,8 @@ import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.AC
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI;
 
+import java.util.List;
+
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
@@ -13,6 +15,9 @@ import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
+import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
+import org.freeplane.core.ui.menubuilders.generic.ChildEntryFilter;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
@@ -37,7 +42,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 
 	public MenuBuildProcessFactory(IUserInputListenerFactory userInputListenerFactory,
 	                                                    FreeplaneActions freeplaneActions,
-	                                           ResourceAccessor resourceAccessor, IAcceleratorMap acceleratorMap, EntriesForAction entries) {
+	                                           ResourceAccessor resourceAccessor, IAcceleratorMap acceleratorMap, EntriesForAction entries, List<BuildPhaseListener> buildPhaseListeners) {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
 		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
 
@@ -45,9 +50,8 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
 		    new AcceleratorDestroyer(acceleratorMap, entries));
 
-		RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
+		final RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
 		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
-		uiBuilder.addBuilder("ignore", EntryVisitor.CHILD_ENTRY_REMOVER);
 		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
 		
 		childProcessor = new SubtreeProcessor();
@@ -75,13 +79,20 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
 
+		actionBuilder.addBuilder("ignore", new ChildEntryFilter() {
+			@Override
+			public boolean shouldRemove(Entry entry) {
+				return ! uiBuilder.containsOneOf(entry.builders());
+			}
+		});
+
 		JMenuItemBuilder menuBuilder = new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		    resourceAccessor);
 		JComponentRemover destroyer = new JComponentRemover();
 		uiBuilder.addBuilderPair("menu", menuBuilder, destroyer);
 		uiBuilder.addBuilderPair("menu.action", menuBuilder, destroyer);
 
-		buildProcessor = new PhaseProcessor()
+		buildProcessor = new PhaseProcessor(buildPhaseListeners)
 								.withPhase(ACTIONS, actionBuilder) //
 							    .withPhase(ACCELERATORS, acceleratorBuilder)
 							    .withPhase(UI, uiBuilder);

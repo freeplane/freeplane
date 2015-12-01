@@ -37,6 +37,7 @@ import javax.swing.RootPaneContainer;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.main.application.Browser;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.view.swing.map.MapViewScrollPane;
 
@@ -55,32 +56,14 @@ class DialogController extends FrameController {
 	public DialogController(Controller controller, final IMapViewManager mapViewController, final JDialog dialog) {
 		super(controller, mapViewController, "dialog_");
 		this.dialog = dialog;
-		getContentPane().setLayout(new BorderLayout());
+		dialog.getContentPane().setLayout(new BorderLayout());
 		mapViewScrollPane = new MapViewScrollPane();
-		getContentPane().add(mapViewScrollPane, BorderLayout.CENTER);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getContentPane()
-	 */
-	@Override
-	public RootPaneContainer getRootPaneContainer() {
-		return dialog;
+		dialog.getContentPane().add(mapViewScrollPane, BorderLayout.CENTER);
 	}
 
 	@Override
 	public FreeplaneMenuBar getFreeplaneMenuBar() {
 		return (FreeplaneMenuBar) dialog.getJMenuBar();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#getJFrame()
-	 */
-	@Override
-	public JFrame getJFrame() {
-		return (JFrame) JOptionPane.getFrameForComponent(dialog);
 	}
 
 	/*
@@ -103,7 +86,7 @@ class DialogController extends FrameController {
 
 	@Override
 	public void openDocument(final URI uri) throws IOException {
-		throw new UnsupportedOperationException();
+		new Browser().openDocument(uri);
 	}
 
 	/**
@@ -156,5 +139,15 @@ class DialogController extends FrameController {
 
 	public void nextMapView() {
 		throw new RuntimeException("Method not implemented");
+	}
+
+	@Override
+	public Component getCurrentRootComponent() {
+		return dialog;
+	}
+
+	@Override
+	public Component getMenuComponent() {
+		return dialog;
 	}
 }
