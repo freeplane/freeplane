@@ -72,7 +72,6 @@ import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.edge.AutomaticEdgeColor.Rule;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
@@ -113,8 +112,6 @@ import org.freeplane.features.ui.IMapViewManager;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
-
-import sun.java2d.pipe.ShapeSpanIterator;
 
 public class StyleEditorPanel extends JPanel {
 	private static final NamedObject AUTOMATIC_LAYOUT_DISABLED = new NamedObject("automatic_layout_disabled");
