@@ -36,11 +36,7 @@ class ModesMenuAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Controller.getCurrentController().selectMode(mode);
-			}
-		});
+		Controller.getCurrentController().selectMode(mode);
 	}
 
 	@Override
