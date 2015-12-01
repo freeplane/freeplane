@@ -58,181 +58,6 @@
 		<Entry name="EnterPassword" />
 	</Entry>
 	<Entry name="main_menu" builder="main_menu">
-		<Entry builder="ribbon_taskbar,ignore">
-			<Entry name="NewMapAction" accelerator="control N" mandatory="true" />
-			<Entry name="EncryptedMap" mandatory="true" />
-			<Entry builder="separator" />
-			<Entry name="OpenAction" accelerator="control O" mandatory="true" />
-			<Entry builder="separator" />
-			<Entry name="SaveAction" accelerator="control S" />
-			<Entry name="SaveAsAction" accelerator="control shift S" />
-			<Entry name="SaveAll" />
-		</Entry>
-		<Entry builder="ribbon_menu,ignore">
-			<Entry name="new" builder="primary_entry">
-				<Entry name="new" builder="entry_group">
-					<Entry name="NewMapAction" accelerator="control N" mandatory="true" />
-					<Entry name="new_map_from_user_templates" mandatory="true" />
-					<Entry name="EncryptedMap" mandatory="true" />
-				</Entry>
-			</Entry>
-			<Entry name="open" builder="primary_entry">
-				<Entry name="open" builder="entry_group">
-					<Entry name="OpenAction" accelerator="control O" mandatory="true" />
-					<Entry name="OpenURLMapAction" mandatory="true" />
-					<Entry name="RevertAction" mandatory="true" />
-				</Entry>
-			</Entry>
-			<Entry name="lastOpenedMaps">
-				<Entry builder="lastOpenedMaps" />
-			</Entry>
-			<Entry name="save" builder="primary_entry">
-				<Entry name="save" builder="entry_group">
-					<Entry name="SaveAction" accelerator="control S" />
-					<Entry name="SaveAsAction" accelerator="control shift S" />
-					<Entry name="SaveAll" />
-				</Entry>
-			</Entry>
-			<Entry name="import_export" builder="primary_entry">
-				<Entry name="export" builder="entry_group">
-					<Entry name="ExportAction" />
-					<Entry name="ExportBranchAction" accelerator="alt shift A" />
-				</Entry>
-				<Entry name="import" builder="entry_group">
-					<Entry name="ImportBranchAction" />
-					<Entry name="ImportLinkedBranchAction" />
-					<Entry name="ImportLinkedBranchWithoutRootAction" />
-					<Entry name="ImportExplorerFavoritesAction" />
-					<Entry name="ImportFolderStructureAction" />
-					<Entry name="ImportMindmanagerFiles" />
-				</Entry>
-			</Entry>
-			<Entry name="print" builder="primary_entry">
-				<Entry name="print" builder="entry_group">
-					<Entry name="PageAction" />
-					<Entry name="PrintPreviewAction" />
-					<Entry name="PrintAction" accelerator="control P" />
-				</Entry>
-			</Entry>
-			<Entry name="OpenUserDirAction" mandatory="true" builder="primary_entry" />
-			<Entry name="PropertyAction" mandatory="true" builder="primary_entry" />
-			<Entry name="AboutAction" mandatory="true" builder="primary_entry" />
-			<Entry name="help" builder="primary_entry">
-				<Entry name="help" builder="entry_group">
-					<Entry name="OpenFreeplaneSiteAction" mandatory="true" />
-					<Entry name="GettingStartedAction" accelerator="F1"
-						mandatory="true" />
-					<Entry name="AskForHelp" mandatory="true" />
-					<Entry name="RequestFeatureAction" mandatory="true" />
-					<Entry name="ReportBugAction" mandatory="true" />
-					<Entry name="HotKeyInfoAction" mandatory="true" />
-				</Entry>
-			</Entry>
-			<Entry name="CloseAction" accelerator="control W" mandatory="true"
-				builder="footer_entry" />
-			<Entry name="QuitAction" mandatory="true" accelerator="alt F4"
-				builder="footer_entry" />
-		</Entry>
-		<Entry name="home" orderPriority="first" builder="ribbon_task,ignore">
-			<Entry name="basics" builder="ribbon_band">
-				<Entry name="NewMapAction" accelerator="control N" mandatory="true">
-					<Entry name="EncryptedMap" mandatory="true" />
-				</Entry>
-				<Entry name="OpenAction" accelerator="control O" mandatory="true">
-					<Entry name="OpenURLMapAction" mandatory="true" />
-					<Entry name="RevertAction" mandatory="true" />
-				</Entry>
-				<Entry name="SaveAction" accelerator="control S">
-					<Entry name="SaveAsAction" accelerator="control shift S" />
-					<Entry name="SaveAll" />
-				</Entry>
-				<Entry name="CloseAction" accelerator="control W" />
-				<Entry name="CutAction" accelerator="control X" priority="medium" />
-				<Entry name="CopyAction" accelerator="control C" priority="medium">
-					<Entry name="CopySingleAction" accelerator="control shift C" />
-					<Entry name="CopyIDAction" />
-					<Entry name="CopyNodeURIAction" />
-				</Entry>
-				<Entry name="PasteAction" accelerator="control V" priority="medium">
-					<Entry name="SelectedPasteAction" />
-					<Entry name="MoveAction" />
-					<Entry name="CloneAction" />
-				</Entry>
-				<Entry name="UndoAction" accelerator="control Z" priority="medium">
-					<Entry name="RedoAction" accelerator="control Y" />
-				</Entry>
-			</Entry>
-			<Entry name="nodes" builder="ribbon_band">
-				<Entry name="ToggleFoldedAction" accelerator="SPACE" priority="top">
-					<Entry name="ToggleChildrenFoldedAction" accelerator="control SPACE" />
-					<Entry name="UnfoldAllAction" accelerator="alt END" />
-					<Entry name="FoldAllAction" accelerator="alt HOME" />
-				</Entry>
-				<Entry name="NewChildAction" accelerator="INSERT" priority="top" />
-				<Entry name="NewSiblingAction" accelerator="ENTER">
-					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
-				</Entry>
-
-				<Entry name="EditAction" priority="Medium">
-					<Entry name="EditLongAction" priority="Top" accelerator="alt ENTER" />
-				</Entry>
-				<Entry name="BackAction" accelerator="alt LEFT" priority="Medium" />
-				<Entry name="ForwardAction" accelerator="alt RIGHT" priority="Medium" />
-			</Entry>
-			<Entry name="fontStyleContributor" builder="ribbon_contributor,skip" />
-			<Entry name="font">
-				<Entry name="BoldAction" />
-				<Entry name="ItalicAction" />
-			</Entry>
-			<Entry name="textalignment">
-				<Entry name="TextAlignAction.LEFT" />
-				<Entry name="TextAlignAction.CENTER" />
-				<Entry name="TextAlignAction.RIGHT" />
-			</Entry>
-			<Entry name="resources" builder="ribbon_band">
-				<Entry name="ExternalImageAddAction" accelerator="alt shift K"
-					priority="Top">
-					<Entry name="ExternalImageChangeAction" />
-					<Entry name="ExternalImageRemoveAction" />
-				</Entry>
-				<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex">
-					<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
-				</Entry>
-				<Entry name="EditAttributesAction" accelerator="alt F9"
-					priority="medium">
-					<Entry name="attributes_AddAttributeAction" />
-					<Entry name="AssignAttributesAction" />
-					<Entry name="CopyAttributes" />
-					<Entry name="PasteAttributes" />
-					<Entry name="attributes_RemoveAllAttributesAction" />
-					<Entry name="attributes_RemoveFirstAttributeAction" />
-					<Entry name="attributes_RemoveLastAttributeAction" />
-					<Entry builder="radio_button_group">
-						<Entry name="ShowSelectedAttributesAction" />
-						<Entry name="ShowAllAttributesAction" />
-						<Entry name="HideAllAttributesAction" />
-					</Entry>
-					<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
-					<Entry name="ShowAttributeDialogAction" />
-				</Entry>
-				<Entry name="AddConnectorAction">
-					<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
-					<Entry name="SetLinkByFileChooserAction" />
-					<Entry name="SetLinkByTextFieldAction" />
-					<Entry name="ExtractLinkFromTextAction" />
-				</Entry>
-				<Entry name="IconSelectionPlugin">
-					<Entry name="RemoveAllIconsAction" />
-					<Entry name="RemoveIcon_0_Action" />
-					<Entry name="RemoveIconAction" />
-				</Entry>
-				<Entry name="CloudAction" />
-				<Entry name="CloudColorAction" />
-				<Entry name="EditNoteInDialogAction">
-					<Entry name="RemoveNoteAction" />
-				</Entry>
-			</Entry>
-		</Entry>
 		<Entry name="file">
 			<Entry name="NewMapAction" accelerator="control N" />
 			<Entry name="new_map_from_user_templates" />
@@ -500,7 +325,7 @@
 				<Entry name="UsePlainTextAction" accelerator="alt shift P" />
 			</Entry>
 			<Entry name="cloud_shapes">
-				<Entry builder="radio_button_group" name="shapes">
+				<Entry builder="radio_button_group">
 					<Entry name="CloudShapeAction.ARC" />
 					<Entry name="CloudShapeAction.STAR" />
 					<Entry name="CloudShapeAction.RECT" />
@@ -589,50 +414,42 @@
 			<Entry name="QuickFindAction.FORWARD" />
 		</Entry>
 		<Entry name="extras">
-			<Entry name="time">
-				<Entry name="TimeManagementAction" accelerator="control T" />
-				<Entry name="TimeListAction" />
-				<Entry name="ReminderHookAction" />
-			</Entry>
+			<Entry name="TimeManagementAction" accelerator="control T" />
+			<Entry name="TimeListAction" />
+			<Entry name="ReminderHookAction" />
 			<Entry builder="separator" />
-			<Entry name="encryption">
-				<Entry name="EnterPassword" />
-				<Entry name="RemoveEncryption" />
-			</Entry>
+			<Entry name="EnterPassword" />
+			<Entry name="RemoveEncryption" />
 			<Entry builder="separator" />
-			<Entry name="first">
-				<Entry name="options">
-					<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
-					<Entry name="SetAcceleratorOnNextClickAction" />
-					<Entry name="acceleratorPresets">
-						<Entry name="load_accelerator_presets">
-							<Entry builder="acceleratorPresets" />
-						</Entry>
-						<Entry name="SaveAcceleratorPresetsAction" />
-					</Entry>
-					<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
-					<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
-					<Entry name="scripting" plugin="org.freeplane.plugin.script">
-						<Entry builder="radio_button_group" selectedActionProperty="ScriptsRunToggleAction.default">
-							<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE" />
-							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
-							<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
-						</Entry>
-						<Entry name="userScripts" builder="userScripts" />
-						<Entry name="ExecuteScriptForSelectionAction" />
-						<Entry name="ExecuteScriptForAllNodes" />
-						<Entry name="ScriptEditor" />
-					</Entry>
-					<Entry name="formula.menuname" plugin="org.freeplane.plugin.formula">
-						<Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
-						<Entry builder="separator" />
-					</Entry>
-					<Entry builder="separator" />
-					<Entry name="OpenUserDirAction" />
+			<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
+			<Entry name="SetAcceleratorOnNextClickAction" />
+			<Entry name="acceleratorPresets">
+				<Entry name="load_accelerator_presets">
+					<Entry builder="acceleratorPresets" />
 				</Entry>
-				<Entry builder="separator" />
-				<Entry name="PropertyAction" accelerator="control COMMA" />
+				<Entry name="SaveAcceleratorPresetsAction" />
 			</Entry>
+			<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
+			<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
+			<Entry name="scripting" plugin="org.freeplane.plugin.script">
+				<Entry builder="radio_button_group" selectedActionProperty="ScriptsRunToggleAction.default">
+					<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE" />
+					<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
+					<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
+				</Entry>
+				<Entry name="userScripts" builder="userScripts" />
+				<Entry name="ExecuteScriptForSelectionAction" />
+				<Entry name="ExecuteScriptForAllNodes" />
+				<Entry name="ScriptEditor" />
+			</Entry>
+			<Entry name="formula.menuname" plugin="org.freeplane.plugin.formula">
+				<Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
+				<Entry builder="separator" />
+			</Entry>
+			<Entry builder="separator" />
+			<Entry name="OpenUserDirAction" />
+			<Entry builder="separator" />
+			<Entry name="PropertyAction" accelerator="control COMMA" />
 		</Entry>
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
@@ -652,7 +469,7 @@
 				<Entry name="RequestFeatureAction" />
 			</Entry>
 			<Entry builder="separator" />
-			<Entry name="AboutAction"/>
+			<Entry name="AboutAction" />
 			<Entry builder="separator" />
 			<Entry name="GettingStartedAction" accelerator="F1" />
 			<Entry name="DocumentationAction" />
