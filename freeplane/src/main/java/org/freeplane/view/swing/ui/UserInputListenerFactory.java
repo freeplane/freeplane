@@ -413,7 +413,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
 		
 		final URL genericStructure = ResourceController.getResourceController().getResource(
-		    menuStructureResource.replace("menu.xml", ".generic.xml"));
+		    menuStructureResource);
 		final boolean isUserDefined = genericStructure.getProtocol().equalsIgnoreCase("file");
 		try {
 			final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
