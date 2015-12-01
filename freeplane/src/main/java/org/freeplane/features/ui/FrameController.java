@@ -287,7 +287,7 @@ abstract public class FrameController implements ViewController {
 		return booleanProperty;
     }
 
-	boolean isMenuComponentInFullScreenMode() {
+	protected boolean isMenuComponentInFullScreenMode() {
 		return isFullScreenEnabled(getMenuComponent());
 	}
 	

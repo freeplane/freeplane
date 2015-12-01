@@ -236,6 +236,11 @@ public class HeadlessUIController extends FrameController {
 	public Component getMenuComponent() {
 		throw methodNotImplementedException();
 	}
+	
+	@Override
+	protected boolean isMenuComponentInFullScreenMode() {
+		return false;
+	}
 
 	private RuntimeException methodNotImplementedException() {
 		return new RuntimeException("Method not implemented");
