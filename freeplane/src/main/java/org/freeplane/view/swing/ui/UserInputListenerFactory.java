@@ -69,7 +69,6 @@ import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcesso
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
-import org.freeplane.core.ui.menubuilders.ribbon.RibbonBuildProcessFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -420,9 +419,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 			final EntriesForAction entries = new EntriesForAction();
 			final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
-			final BuildProcessFactory buildProcessFactory = useRibbonMenu() ? 
-					new RibbonBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries):
-					new MenuBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries, buildPhaseListeners);
+			final BuildProcessFactory buildProcessFactory =  new MenuBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries, buildPhaseListeners);
 			final PhaseProcessor buildProcessor = buildProcessFactory.getBuildProcessor();
 			subtreeBuilder = buildProcessFactory.getChildProcessor();
 			acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));

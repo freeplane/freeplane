@@ -80,7 +80,6 @@ import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
-import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 
@@ -124,7 +123,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	final private boolean firstRun;
 	private static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String LOAD_LAST_MAP = "load_last_map";
-	public static Boolean USE_RIBBONS_MENU;
 	final private Options options;
 
 	public FreeplaneGUIStarter(String[] args) {
@@ -153,14 +151,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			    .getProperty("lookandfeel"));
 			FrameController.setLookAndFeel(lookandfeel);
 			final JFrame frame;
-			USE_RIBBONS_MENU = UITools.useRibbonsMenu();
-			if(USE_RIBBONS_MENU) {
-				frame = new JRibbonFrame("Freeplane");
-				initIcons(applicationResourceController);
-			}
-			else {
-				frame = new JFrame("Freeplane");
-			}
+			frame = new JFrame("Freeplane");
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
@@ -273,19 +264,15 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		mindMapModeController.addUiBuilder(Phase.ACTIONS, "filterConditions", FilterController
 		    .getController(controller)
 		    .getMenuBuilder(), EntryVisitor.CHILD_ENTRY_REMOVER);
-		if(! USE_RIBBONS_MENU){
-			BModeControllerFactory.createModeController();
-			FModeControllerFactory.createModeController();
-		}
+		BModeControllerFactory.createModeController();
+		FModeControllerFactory.createModeController();
     }
 
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
 		LoadAcceleratorPresetsAction.install(controller.getModeController(MModeController.MODENAME));
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
-	    if(! USE_RIBBONS_MENU){
-	    	buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
-	    	buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
-	    }
+	    buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
+	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
     }
 
 	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {

@@ -56,7 +56,6 @@ import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.pushingpixels.flamingo.api.ribbon.JRibbon;
 
 /**
  * @author Dimitry Polivaev
@@ -101,14 +100,8 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		final LayoutManager layoutManager = oldContentPane.getLayout();
 		oldContentPane.setLayout(null);
 		newContentPane.setLayout(layoutManager);
-		//RIBBONS impl: if ribbon found add it to NORTH
 		for (Component c : oldContentPane.getComponents()) {
-			if(c instanceof JRibbon) {
-				newContentPane.add(c, BorderLayout.NORTH);
-			}
-			else {
-				newContentPane.add(c);
-			}
+			newContentPane.add(c);
 		}
 		rootPane.setContentPane(newContentPane);
 		buttons = new HashMap<Integer, JButton[]>();

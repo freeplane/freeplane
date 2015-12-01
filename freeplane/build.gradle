@@ -7,11 +7,6 @@ dependencies {
             'commons-codec:commons-codec:1.7',
             'com.jgoodies:jgoodies-forms:1.6.0',
             'com.jgoodies:jgoodies-common:1.4.0',
-            'com.github.insubstantial:flamingo:7.3',
-            'com.github.insubstantial:substance:7.3',
-            'com.github.insubstantial:substance-flamingo:7.3',
-            'com.github.insubstantial:substance-swingx:7.3',
-            'com.github.insubstantial:trident:7.3',
             'gnu-regexp:gnu-regexp:1.1.4'
     
     testCompile 'junit:junit:4.12',
@@ -65,9 +60,6 @@ jar {
         			org.freeplane.core.ui.menubuilders.action,
 					org.freeplane.core.ui.menubuilders.generic,
 					org.freeplane.core.ui.menubuilders.menu,
-                    org.freeplane.core.ui.ribbon,
-                    org.freeplane.core.ui.ribbon.event,
-                    org.freeplane.core.ui.ribbon.special,
                     org.freeplane.core.undo,
                     org.freeplane.core.util,
                     org.freeplane.core.util.collection,
@@ -159,13 +151,7 @@ jar {
                     org.apache.commons.lang.builder,
                     org.apache.commons.lang.exception,
                     org.apache.commons.lang.math,
-                    org.apache.commons.lang.time,
-                    org.pushingpixels.flamingo.api.common,
-                    org.pushingpixels.flamingo.api.common.icon,
-                    org.pushingpixels.flamingo.api.common.model,
-                    org.pushingpixels.flamingo.api.common.popup,
-                    org.pushingpixels.flamingo.api.ribbon,
-                    org.pushingpixels.flamingo.api.ribbon.resize
+                    org.apache.commons.lang.time
                     """
         attributes 'Export-Package': exports.replaceAll("\\s+", "")
 

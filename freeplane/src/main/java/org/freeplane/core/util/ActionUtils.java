@@ -5,34 +5,14 @@ import java.awt.event.ActionEvent;
 import java.net.URL;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.menubuilders.ribbon.RibbonComponentDecorationProvider;
-import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
-import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
 public abstract class ActionUtils {
 
-	public static ResizableIcon getActionIcon(final AFreeplaneAction action) {
-		ResizableIcon icon = null;
-		ImageIcon ico = (ImageIcon) action.getValue(Action.SMALL_ICON);
-		if(ico != null) {
-			icon = ImageWrapperResizableIcon.getIcon(ico.getImage(), new Dimension(ico.getIconWidth(), ico.getIconHeight()));
-		}
-		else {
-			String resource = ResourceController.getResourceController().getProperty(action.getIconKey(), null);
-			if (resource != null) {
-				URL location = ResourceController.getResourceController().getResource(resource);
-				icon = ImageWrapperResizableIcon.getIcon(location, new Dimension(16, 16));
-			}
-		}
-		if(icon == null) {
-			icon = RibbonComponentDecorationProvider.BLANK_ACTION_ICON;
-		}
-		return icon;
-	}
 
 	public static String getActionTitle(final AFreeplaneAction action) {
 		String title = (String)action.getValue(Action.NAME);

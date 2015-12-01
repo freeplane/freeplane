@@ -146,7 +146,6 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	    final EntryAccessor entryAccessor = new EntryAccessor();
 		final Entry scriptEntry = new Entry();
 		entryAccessor.setAction(scriptEntry, action);
-		entryAccessor.setIcon(scriptEntry, ActionUtils.getActionIcon(action));
 		return scriptEntry;
     }
 
