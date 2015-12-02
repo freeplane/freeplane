@@ -51,8 +51,6 @@ public interface IUserInputListenerFactory {
 	
 	public ActionAcceleratorManager getAcceleratorManager();
 	
-	public boolean useRibbonMenu();
-
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers();
 
 	DragGestureListener getNodeDragListener();

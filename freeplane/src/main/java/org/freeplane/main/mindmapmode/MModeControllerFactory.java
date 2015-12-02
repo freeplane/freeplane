@@ -202,7 +202,7 @@ public class MModeControllerFactory {
 	private void createStandardControllers() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController, UITools.useRibbonsMenu());
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 
         final IMouseListener nodeMouseMotionListener = new MNodeMotionListener();
         userInputListenerFactory.setNodeMouseMotionListener(nodeMouseMotionListener);
@@ -249,9 +249,7 @@ public class MModeControllerFactory {
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		final FrameController frameController = (FrameController) controller.getViewController();
 		UIComponentVisibilityDispatcher.install(frameController, toolbar, "toolbarVisible");
-		if(!userInputListenerFactory.useRibbonMenu()) {
-			userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
-		}
+		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
 		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.BOTTOM, FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, frameController
 		    .getStatusBar());

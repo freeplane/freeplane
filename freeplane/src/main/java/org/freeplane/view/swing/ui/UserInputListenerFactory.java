@@ -96,14 +96,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
 	static private ActionAcceleratorManager acceleratorManager;
-	private final boolean useRibbonMenu;
 	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
 	final private List<BuildPhaseListener> buildPhaseListeners;
 	private Entry genericMenuStructure;
 	private SubtreeProcessor subtreeBuilder;
 	final private ModeController modeController;
 
-	public UserInputListenerFactory(final ModeController modeController, boolean useRibbons) {
+	public UserInputListenerFactory(final ModeController modeController) {
 		this.modeController = modeController;
 		customBuilders = new ArrayList<>(Phase.values().length);
 		buildPhaseListeners = new ArrayList<>();
@@ -111,7 +110,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		Phase phase : Phase.values()) {
 			customBuilders.add(new HashMap<String, BuilderDestroyerPair>());
 		}
-		useRibbonMenu = useRibbons;
 		Controller controller = Controller.getCurrentController();
 		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));		
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
@@ -462,10 +460,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		LogUtils.info(sb.toString());
 		
-	}
-
-	public boolean useRibbonMenu() {
-		return useRibbonMenu;
 	}
 
 	public void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair) {

@@ -144,7 +144,6 @@ abstract public class FrameController implements ViewController {
 	public static Icon dateTimeIcon;
 	public static Icon linkIcon;
 	public static Icon localLinkIcon;
-	private Box ribbonBox;
 
 	public FrameController(Controller controller,  final IMapViewManager mapViewManager,
 	                      final String propertyKeyPrefix) {
@@ -204,27 +203,11 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public void init(Controller controller) {
-		final Component ribbon = findRibbon();
 		final JComponent mainContentPane = getMainContentPane();
-		if(ribbon == null) {
-			mainContentPane.add(toolbarPanel[TOP], BorderLayout.NORTH);
-		}
-		else {
-			JPanel northPanel = new JPanel();
-			northPanel.setLayout(new BorderLayout());
-			FrameController frameController = (FrameController) controller.getViewController();
-			ribbonBox = new CollapseableBoxBuilder(frameController).setPropertyNameBase("menubarVisible").setResizeable(false).createBox(ribbon, Direction.UP);
-			northPanel.add(ribbonBox, BorderLayout.NORTH);
-			northPanel.add(toolbarPanel[TOP], BorderLayout.CENTER);
-
-			mainContentPane.add(northPanel, BorderLayout.NORTH);
-		}
-
-//		getContentPane().add(toolbarPanel[TOP], BorderLayout.NORTH);
+		mainContentPane.add(toolbarPanel[TOP], BorderLayout.NORTH);
 		mainContentPane.add(toolbarPanel[LEFT], BorderLayout.WEST);
 		mainContentPane.add(toolbarPanel[RIGHT], BorderLayout.EAST);
 		mainContentPane.add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
-//		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 		mainContentPane.getRootPane().putClientProperty(Controller.class, controller);
 	}
@@ -232,10 +215,6 @@ abstract public class FrameController implements ViewController {
 	private JComponent getMainContentPane() {
 		return (JComponent) ((RootPaneContainer)getMenuComponent()).getContentPane();
 	}
-
-	public Component findRibbon() {
-	    return ((BorderLayout)getMainContentPane().getLayout()).getLayoutComponent(BorderLayout.NORTH);
-    }
 
 	abstract public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
@@ -373,14 +352,8 @@ abstract public class FrameController implements ViewController {
 				toolbarPanel[j].repaint();
 			}
 		}
-		if(newUserInputListenerFactory.useRibbonMenu()) {
-			//TODO - RIBBON unify menu initialization
-			//newUserInputListenerFactory.getMenuBuilder(RibbonBuilder.class).buildRibbon();
-		}
-		else {
-			setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
-			setUIComponentsVisible(newModeController.getController().getMapViewManager(), isMenubarVisible());
-		}
+		setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
+		setUIComponentsVisible(newModeController.getController().getMapViewManager(), isMenubarVisible());
 
 	}
 
@@ -392,13 +365,8 @@ abstract public class FrameController implements ViewController {
 
 	public void setMenubarVisible(final boolean visible) {
 		setComponentVisibleProperty("menubar", visible);
-		if(UITools.useRibbonsMenu()){
-			UIComponentVisibilityDispatcher.dispatcher(ribbonBox).setVisible(visible);
-		}
-		else{
-			final Component freeplaneMenuBar = getFreeplaneMenuBar();
-			freeplaneMenuBar.setVisible(visible);
-		}
+		final Component freeplaneMenuBar = getFreeplaneMenuBar();
+		freeplaneMenuBar.setVisible(visible);
 	}
 
 	public void setScrollbarsVisible(final boolean visible) {
