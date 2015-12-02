@@ -57,6 +57,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundClearAction;

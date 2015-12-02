@@ -33,7 +33,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.mindmapmode.SetBooleanMapPropertyAction;
+import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 
 public class MAttributeController extends AttributeController {
 	
@@ -539,7 +539,6 @@ public class MAttributeController extends AttributeController {
 		modeController.addAction(new CopyAttributes());
 		modeController.addAction(new PasteAttributes());
 		modeController.addAction(new AddStyleAttributes());
-		modeController.addAction(new SetBooleanMapPropertyAction(SHOW_ICON_FOR_ATTRIBUTES));
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {

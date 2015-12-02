@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.styles.mindmapmode;
+package org.freeplane.features.styles;
 
 import java.awt.event.ActionEvent;
 
@@ -29,7 +29,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.MapStyle;
 
 /**
  * @author Dimitry Polivaev

@@ -43,6 +43,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MapView;
 
@@ -75,6 +76,7 @@ public class AttributeController implements IExtension {
 		final MapReader mapReader = mapController.getMapReader();
 		final AttributeBuilder attributeBuilder = new AttributeBuilder(this, mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
+		modeController.addAction(new SetBooleanMapPropertyAction(SHOW_ICON_FOR_ATTRIBUTES));
 		registerTooltipProvider();
 		registerStateIconProvider();
 	}
