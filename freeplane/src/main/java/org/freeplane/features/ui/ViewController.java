@@ -51,9 +51,6 @@ public interface ViewController {
 	public static final int TOP = 0;
 	public static final String RESOURCE_ANTIALIAS = "antialias";
 
-	public Rectangle getFrameSize();
-	public void setFrameSize(final Rectangle frameSize);
-	
 	public static final String SLOW_SCROLLING = "slowScrolling";
 	public void changeNoteWindowLocation();
 

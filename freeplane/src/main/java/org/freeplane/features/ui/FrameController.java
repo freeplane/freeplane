@@ -136,15 +136,6 @@ abstract public class FrameController implements ViewController {
 	final private Map<String, Component> statusInfos;
 	final private JPanel statusPanel;
 	final private JComponent toolbarPanel[];
-	private Rectangle frameSize;
-
-	public Rectangle getFrameSize() {
-		return frameSize;
-	}
-
-	public void setFrameSize(final Rectangle frameSize) {
-		this.frameSize = frameSize;
-	}
 
 	final private String propertyKeyPrefix;
 	public static Icon textIcon;
@@ -236,22 +227,6 @@ abstract public class FrameController implements ViewController {
 //		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 		mainContentPane.getRootPane().putClientProperty(Controller.class, controller);
-		final Frame frame = (Frame) getMenuComponent();
-		frame.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(final ComponentEvent e) {
-				final Frame frame = (Frame) e.getComponent();
-				if (frame.getExtendedState() != Frame.NORMAL || ! frame.isResizable()) {
-					return;
-				}
-				frameSize = frame.getBounds();
-			}
-
-			@Override
-			public void componentMoved(final ComponentEvent e) {
-				componentResized(e);
-			}
-		});
 	}
 
 	private JComponent getMainContentPane() {

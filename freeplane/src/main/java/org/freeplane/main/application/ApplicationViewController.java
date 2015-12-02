@@ -358,8 +358,6 @@ class ApplicationViewController extends FrameController {
 		final int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", -1);
 		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", -1);
 		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
-		setFrameSize(frame.getBounds());
-		
 		applyFrameSize(frame, win_x, win_y);
 		
 		int win_state = Integer
