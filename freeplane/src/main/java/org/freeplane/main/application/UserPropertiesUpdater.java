@@ -29,7 +29,6 @@ import java.util.Properties;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.edge.EdgeModel;
@@ -50,8 +49,6 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
  * Nov 1, 2010
  */
 public class UserPropertiesUpdater {
-
-
 	private static final String ORG_FREEPLANE_OLD_USERFPDIR = "org.freeplane.old_userfpdir";
 
 	void importOldProperties(){
@@ -61,15 +58,14 @@ public class UserPropertiesUpdater {
 		}
 		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
 		if(userPreferencesFile.exists()){
-			removeVersionSpecificProperties(userPreferencesFile);
-			return;
+			try {
+				Properties userProp = loadProperties(userPreferencesFile);
+				removeVersionSpecificProperties(userProp);
+				saveProperties(userProp, userPreferencesFile);
+			}
+			catch (IOException e) {
+			}
 		}
-		final File oldUserPreferencesFile =new File(System.getProperty("user.home"), ".freeplane/auto.properties");
-		if(! oldUserPreferencesFile.exists()){
-			return;
-		}
-		importOldPreferences(userPreferencesFile, oldUserPreferencesFile);
-		importOldIcons();
 	}
 
 	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
@@ -95,38 +91,16 @@ public class UserPropertiesUpdater {
 	    return old_userfpdir != null;
     }
 
-	private void importOldPreferences(final File userPreferencesFile,
-			final File oldUserPreferencesFile) {
-		try {
-			Properties userProp = loadProperties(userPreferencesFile);
-	        userProp.remove("lastOpened_1.0.20");
-	        userProp.remove("openedNow_1.0.20");
-	        userProp.remove("browse_url_storage");
-	        fixFontSize(userProp, "defaultfontsize");
-	        fixFontSize(userProp, "label_font_size");
-	        saveProperties(userProp, userPreferencesFile);
-        }
-        catch (IOException e) {
-        }
+	private void removeVersionSpecificProperties(Properties userProp) {
+		for(String name : new String[]{
+				"lastOpened_1.0.20",
+				"openedNow_1.0.20",
+				"openedNow_1.3.04",
+				"browse_url_storage",
+				"single_backup_directory_path",
+		"standard_template"})
+			userProp.remove(name);
 	}
-
-	private void removeVersionSpecificProperties(File userPreferencesFile) {
-		try {
-			Properties userProp = loadProperties(userPreferencesFile);
-			for(String name : new String[]{
-					"lastOpened_1.0.20",
-					"openedNow_1.0.20",
-					"openedNow_1.3.04",
-					"browse_url_storage",
-					"single_backup_directory_path",
-			"standard_template"})
-				userProp.remove(name);
-
-			saveProperties(userProp, userPreferencesFile);
-        }
-        catch (IOException e) {
-        }
-    }
 
 
 	Properties loadProperties(File userPreferencesFile) throws IOException {
@@ -151,19 +125,6 @@ public class UserPropertiesUpdater {
 	    finally {
 	    	org.freeplane.core.util.FileUtils.silentlyClose(outputStream);
 	    }
-    }
-
-	private void fixFontSize(Properties userProp, String name) {
-	    final Object defaultFontSizeObj = userProp.remove(name);
-	    if(defaultFontSizeObj == null)
-	    	return;
-	    try {
-	        int oldDefaultFontSize = Integer.parseInt(defaultFontSizeObj.toString());
-	        int newDefaultFontSize = Math.round(oldDefaultFontSize / UITools.FONT_SCALE_FACTOR);
-	        userProp.put(name, Integer.toString(newDefaultFontSize));
-        }
-        catch (NumberFormatException e) {
-        }
     }
 
 	void createUserStandardTemplate() {
@@ -267,27 +228,6 @@ public class UserPropertiesUpdater {
        nodeStyleModel.setFontFamilyName(defaultFont.getFamily());
        nodeStyleModel.setFontSize(defaultFont.getSize());
        styleNode.addExtension(nodeStyleModel);
-   }
-
-   private void importOldIcons() {
-		final File oldUserPreferencesFile =new File(System.getProperty("user.home"), ".freeplane/auto.properties");
-		if(! oldUserPreferencesFile.exists()){
-			return;
-		}
-	   final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
-		final File iconDir = new File(userPreferencesFile.getParentFile(), "icons");
-		if (iconDir.exists()) {
-			return;
-		}
-		LogUtils.info("creating user icons directory " + iconDir);
-		iconDir.mkdirs();
-		final File oldIconDir = new File(oldUserPreferencesFile.getParentFile(), "icons");
-		if(oldIconDir.exists()){
-			try {
-				org.apache.commons.io.FileUtils.copyDirectory(oldIconDir, iconDir);
-			} catch (Exception e) {
-			}
-		}
    }
 }
 
