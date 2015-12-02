@@ -18,13 +18,13 @@
 			</Entry>
 		</Entry>
 		<Entry name="view">
-					<Entry name="toolbars">
-						<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
-						<Entry name="ToggleToolbarAction" />
-						<Entry name="ShowFilterToolbarAction" accelerator="control F" />
-						<Entry name="ToggleScrollbarsAction" />
-						<Entry name="SetBooleanPropertyAction.presentation_mode" />
-					</Entry>
+			<Entry name="toolbars">
+				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleToolbarAction" />
+				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
+				<Entry name="ToggleScrollbarsAction" />
+				<Entry name="SetBooleanPropertyAction.presentation_mode" />
+			</Entry>
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
@@ -39,7 +39,7 @@
 			<Entry name="navigate">
 				<Entry accelerator="control shift TAB" name="NavigationPreviousMapAction" />
 				<Entry accelerator="control TAB" name="NavigationNextMapAction" />
-				<Entry name="folding">
+				<Entry name="fold">
 					<Entry accelerator="SPACE" name="ToggleFoldedAction" />
 					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
 					<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
@@ -50,26 +50,22 @@
 			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
 		</Entry>
 		<Entry name="filter">
-			<Entry name="Filter">
-				<Entry name="DoFilter">
-					<Entry name="UndoFilterAction" />
-					<Entry name="RedoFilterAction" />
-					<Entry name="ReapplyFilterAction" />
-					<Entry name="QuickFilterAction" />
-					<Entry name="ApplySelectedViewConditionAction" />
-					<Entry name="QuickFindAllAction" />
-					<Entry name="ApplyNoFilteringAction" />
-					<Entry name="EditFilterAction" />
-				</Entry>
-				<Entry name="FilterCondition">
-					<Entry name="ApplyToVisibleAction" />
-					<Entry name="ShowAncestorsAction" />
-					<Entry name="ShowDescendantsAction" />
-				</Entry>
-				<Entry name="Find">
-					<Entry name="QuickFindAction.BACK" />
-					<Entry name="QuickFindAction.FORWARD" />
-				</Entry>
+			<Entry name="UndoFilterAction" />
+			<Entry name="RedoFilterAction" />
+			<Entry name="ReapplyFilterAction" />
+			<Entry name="QuickFilterAction" />
+			<Entry name="ApplySelectedViewConditionAction" />
+			<Entry name="QuickFindAllAction" />
+			<Entry name="ApplyNoFilteringAction" />
+			<Entry name="EditFilterAction" />
+			<Entry name="FilterCondition">
+				<Entry name="ApplyToVisibleAction" />
+				<Entry name="ShowAncestorsAction" />
+				<Entry name="ShowDescendantsAction" />
+			</Entry>
+			<Entry name="find">
+				<Entry name="QuickFindAction.BACK" />
+				<Entry name="QuickFindAction.FORWARD" />
 			</Entry>
 		</Entry>
 		<Entry name="mindmaps">
@@ -78,18 +74,13 @@
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 		</Entry>
 		<Entry name="help">
-			<Entry name="update">
-				<Entry name="UpdateCheckAction" />
-			</Entry>
-			<Entry name="Web resources">
+			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
 				<Entry name="AskForHelp" />
 				<Entry name="ReportBugAction" />
 				<Entry name="RequestFeatureAction" />
 			</Entry>
-			<Entry name="legacy">
-				<Entry name="AboutAction" builder="MB_AboutAction" />
-			</Entry>
+			<Entry name="AboutAction" />
 			<Entry name="GettingStartedAction" />
 			<Entry accelerator="F1" name="DocumentationAction" />
 		</Entry>
@@ -97,7 +88,7 @@
 	<Entry name="map_popup" builder="map_popup">
 		<Entry builder="navigate_maps,radio_button_group" />
 		<Entry builder="separator" />
-		<Entry name="ToggleMenubarAction"/>
+		<Entry name="ToggleMenubarAction" />
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ShowFilterToolbarAction" />
 		<Entry name="ToggleScrollbarsAction" />
@@ -109,9 +100,9 @@
 		<Entry name="CenterAction" />
 	</Entry>
 	<Entry name="main_toolbar">
-		<Entry builder="main_toolbar_update"/>
-			<Entry name="NavigationPreviousMapAction" />
-			<Entry name="NavigationNextMapAction" />
+		<Entry builder="main_toolbar_update" />
+		<Entry name="NavigationPreviousMapAction" />
+		<Entry name="NavigationNextMapAction" />
 		<Entry builder="main_toolbar_zoom" name="zoom">
 			<Entry name="CenterAction" />
 		</Entry>

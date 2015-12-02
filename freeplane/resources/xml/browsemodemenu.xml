@@ -48,19 +48,18 @@
 				<Entry accelerator="alt F2" name="ToggleDetailsAction" />
 				<Entry name="SetBooleanPropertyAction.show_node_tooltips" />
 			</Entry>
-			<Entry name="AttributeView">
-				<Entry builder="radio_button_group" name="menu_displayAttributes">
-					<Entry name="ShowSelectedAttributesAction" />
-					<Entry name="ShowAllAttributesAction" />
-					<Entry name="HideAllAttributesAction" />
-				</Entry>
+			<Entry builder="radio_button_group" name="menu_displayAttributes">
+				<Entry name="ShowSelectedAttributesAction" />
+				<Entry name="ShowAllAttributesAction" />
+				<Entry name="HideAllAttributesAction" />
+				<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
 			</Entry>
 		</Entry>
 		<Entry name="navigate">
 			<Entry name="navigate">
 				<Entry accelerator="control shift TAB" name="NavigationPreviousMapAction" />
 				<Entry accelerator="control TAB" name="NavigationNextMapAction" />
-				<Entry name="folding">
+				<Entry name="fold">
 					<Entry accelerator="SPACE" name="ToggleFoldedAction" />
 					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
 					<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
@@ -82,26 +81,22 @@
 			</Entry>
 		</Entry>
 		<Entry name="filter">
-			<Entry name="Filter">
-				<Entry name="DoFilter">
-					<Entry name="UndoFilterAction" />
-					<Entry name="RedoFilterAction" />
-					<Entry name="ReapplyFilterAction" />
-					<Entry name="QuickFilterAction" />
-					<Entry name="ApplySelectedViewConditionAction" />
-					<Entry name="QuickFindAllAction" />
-					<Entry name="ApplyNoFilteringAction" />
-					<Entry name="EditFilterAction" />
-				</Entry>
-				<Entry name="FilterCondition">
-					<Entry name="ApplyToVisibleAction" />
-					<Entry name="ShowAncestorsAction" />
-					<Entry name="ShowDescendantsAction" />
-				</Entry>
-				<Entry name="Find">
-					<Entry name="QuickFindAction.BACK" />
-					<Entry name="QuickFindAction.FORWARD" />
-				</Entry>
+			<Entry name="UndoFilterAction" />
+			<Entry name="RedoFilterAction" />
+			<Entry name="ReapplyFilterAction" />
+			<Entry name="QuickFilterAction" />
+			<Entry name="ApplySelectedViewConditionAction" />
+			<Entry name="QuickFindAllAction" />
+			<Entry name="ApplyNoFilteringAction" />
+			<Entry name="EditFilterAction" />
+			<Entry name="FilterCondition">
+				<Entry name="ApplyToVisibleAction" />
+				<Entry name="ShowAncestorsAction" />
+				<Entry name="ShowDescendantsAction" />
+			</Entry>
+			<Entry name="find">
+				<Entry name="QuickFindAction.BACK" />
+				<Entry name="QuickFindAction.FORWARD" />
 			</Entry>
 		</Entry>
 		<Entry name="extras">
@@ -115,23 +110,18 @@
 			<Entry builder="main_menu_mindmaps" name="mindmaps" />
 		</Entry>
 		<Entry name="help">
-			<Entry name="update">
-				<Entry name="UpdateCheckAction" />
-			</Entry>
-			<Entry name="Web resources">
+			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
 				<Entry name="AskForHelp" />
 				<Entry name="ReportBugAction" />
 				<Entry name="RequestFeatureAction" />
 			</Entry>
-			<Entry name="legacy">
-				<Entry name="AboutAction" builder="MB_AboutAction" />
-			</Entry>
+			<Entry name="AboutAction"/>
 			<Entry name="GettingStartedAction" />
 			<Entry accelerator="F1" name="DocumentationAction" />
 		</Entry>
 	</Entry>
-	<Entry name="map_popup"  builder="map_popup">
+	<Entry name="map_popup" builder="map_popup">
 		<Entry builder="navigate_maps,radio_button_group" />
 		<Entry builder="separator" />
 		<Entry name="ToggleMenubarAction" />

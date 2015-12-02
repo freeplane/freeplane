@@ -344,7 +344,7 @@
 					<Entry name="EdgeStyleAction.horizontal" />
 					<Entry name="EdgeStyleAction.hide_edge" />
 				</Entry>
-				<Entry builder="radio_button_group" name="widths">
+				<Entry builder="radio_button_group" name="edge_widths">
 					<Entry name="EdgeWidthAction_width_parent" />
 					<Entry name="EdgeWidthAction_width_thin" />
 					<Entry name="EdgeWidthAction_1" />
@@ -361,7 +361,7 @@
 				<Entry name="NavigationPreviousMapAction" accelerator="control shift TAB" />
 				<Entry name="NavigationNextMapAction" accelerator="control TAB" />
 				<Entry builder="separator" />
-				<Entry name="folding">
+				<Entry name="fold">
 					<Entry name="ToggleFoldedAction" accelerator="SPACE" />
 					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
 					<Entry name="ToggleChildrenFoldedAction" accelerator="control SPACE" />
@@ -390,7 +390,7 @@
 				<Entry builder="menu_goto_links" />
 			</Entry>
 		</Entry>
-		<Entry name="Filter">
+		<Entry name="filter">
 			<Entry name="filterConditions">
 				<Entry builder="filterConditions" />
 			</Entry>
@@ -462,7 +462,7 @@
 		<Entry name="help">
 			<Entry name="UpdateCheckAction" />
 			<Entry builder="separator" />
-			<Entry name="Web resources">
+			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
 				<Entry name="AskForHelp" />
 				<Entry name="ReportBugAction" />
