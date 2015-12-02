@@ -2,7 +2,9 @@
 <FreeplaneUIEntries>
 	<Entry builder="main_menu">
 		<Entry name="file">
-			<Entry builder="main_menu_most_recent_files" name="last" />
+			<Entry name="lastOpenedMaps">
+				<Entry builder="lastOpenedMaps" />
+			</Entry>
 			<Entry name="PageAction" />
 			<Entry name="PrintPreviewAction" />
 			<Entry accelerator="control P" name="PrintAction" />
