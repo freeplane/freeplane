@@ -131,7 +131,7 @@
 		<Entry name="ViewLayoutTypeAction.OUTLINE" />
 		<Entry name="SetBooleanPropertyAction.presentation_mode" />
 		<Entry name="CenterSelectedNodeAction" />
-		<Entry accelerator="ESCAPE" name="MoveToRootAction" />
+		<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 		<Entry name="GotoNodeAction" />
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
