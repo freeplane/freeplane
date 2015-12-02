@@ -67,7 +67,7 @@
 					<Entry name="HideAllAttributesAction" />
 				</Entry>
 			</Entry>
-		<Entry name="formatting">
+		<Entry name="format">
 			<Entry name="menu_manageStyles">
 				<Entry accelerator="" name="DeleteUserStyleAction" />
 				<Entry name="NewLevelStyleAction" accelerator="control shift N" />
