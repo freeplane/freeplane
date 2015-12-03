@@ -18,7 +18,7 @@
 			<Entry name="SaveAction" />
 			<Entry name="SaveAsAction" />
 			<Entry name="PrintAction" />
-			<Entry name="PrintDirectAction"/>
+			<Entry name="PrintDirectAction" />
 			<Entry name="CloseAction" />
 		</Entry>
 		<Entry builder="separator" />
@@ -120,7 +120,7 @@
 				<Entry builder="separator" />
 				<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
 				<Entry name="AddMenuItemLinkAction" />
-				<Entry name="AddExecutionLinkAction"/>
+				<Entry name="AddExecutionLinkAction" />
 				<Entry builder="separator" />
 				<Entry name="SetLinkAnchorAction" />
 				<Entry name="MakeLinkFromAnchorAction" />
@@ -210,8 +210,8 @@
 			</Entry>
 			<Entry name="PasteAction" accelerator="control V" />
 			<Entry name="SelectedPasteAction" />
-			<Entry name="MoveAction"/>
-			<Entry name="CloneAction"/>
+			<Entry name="MoveAction" />
+			<Entry name="CloneAction" />
 			<Entry builder="separator" />
 			<Entry name="menu_moveNode">
 				<Entry name="NodeUpAction" accelerator="control UP" />
@@ -306,9 +306,11 @@
 			<Entry name="FormatCopy" accelerator="alt shift C" />
 			<Entry name="FormatPaste" accelerator="alt shift V" />
 			<Entry builder="separator" />
-			<Entry name="MapBackgroundImageAction"/>
-			<Entry name="MapBackgroundColorAction" />
-			<Entry name="MapBackgroundClearAction"/>
+			<Entry name="map_background">
+				<Entry name="MapBackgroundImageAction" />
+				<Entry name="MapBackgroundColorAction" />
+				<Entry name="MapBackgroundClearAction" />
+			</Entry>
 			<Entry name="menu_coreFormat">
 				<Entry name="BoldAction" accelerator="control B" />
 				<Entry name="ItalicAction" accelerator="control I" />
@@ -416,7 +418,7 @@
 				<Entry name="ShowDescendantsAction" />
 			</Entry>
 			<Entry builder="separator" />
-			<Entry name="QuickHighlightAction"/>
+			<Entry name="QuickHighlightAction" />
 			<Entry name="QuickFindAction.BACK" />
 			<Entry name="QuickFindAction.FORWARD" />
 		</Entry>
@@ -471,7 +473,7 @@
 			<Entry builder="separator" />
 			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
-				<Entry name="WebDocuAction"/>
+				<Entry name="WebDocuAction" />
 				<Entry name="AskForHelp" />
 				<Entry name="ReportBugAction" />
 				<Entry name="RequestFeatureAction" />
@@ -538,10 +540,10 @@
 			<Entry name="MakeLinkFromAnchorAction" />
 			<Entry name="MakeLinkToAnchorAction" />
 			<Entry name="ClearLinkAnchorAction" />
-			<Entry name="goto" processOnPopup="true">
-				<Entry builder="link_actions" />
-				<Entry builder="clone_actions" />
-			</Entry>
+		</Entry>
+		<Entry name="goto" processOnPopup="true">
+			<Entry builder="link_actions" />
+			<Entry builder="clone_actions" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="EnterPassword" />
