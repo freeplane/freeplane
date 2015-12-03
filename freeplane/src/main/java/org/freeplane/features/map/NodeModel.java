@@ -653,17 +653,4 @@ public class NodeModel{
 	public boolean isCloneTreeNode(){
 		return parent != null && clones.size() > 1 && parent.clones.size() == clones.size();
 	}
-	
-	/*
-				if (node.clones().size() <= 1) {
-					return null;
-				}
-				final NodeModel parentNode = node.getParentNode();
-				if(parentNode != null && parentNode.clones().size() == node.clones().size())
-	                return CLONE_ICON;
-				else
-					return CLONEROOT_ICON;
-
-	 */
-
 }
