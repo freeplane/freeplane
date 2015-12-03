@@ -33,10 +33,12 @@ public class SharedNodeData {
 	final private NodeIconSetModel icons;
 	private Object userObject;
 	private String xmlText;
+	private boolean folded;
 
 	public SharedNodeData() {
 		extensionContainer = new ExtensionContainer(new SmallExtensionMap());
 		icons = new NodeIconSetModel();
+		folded = false;
 	}
 
 	public ExtensionContainer getExtensionContainer() {
@@ -85,5 +87,13 @@ public class SharedNodeData {
 			userObject = " " + text;
 			xmlText = null;
 		}
+	}
+
+	public void setFolded(boolean folded) {
+		this.folded = folded;
+	}
+
+	public boolean isFolded() {
+		return folded;
 	}
 }

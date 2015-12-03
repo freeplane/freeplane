@@ -65,7 +65,6 @@ public class NodeModel{
 	private final List<NodeModel> children;
 	private NodeModel parent;
 	final private FilterInfo filterInfo;
-	private boolean folded;
 	private String id;
 	private MapModel map = null;
 	private int position = NodeModel.UNKNOWN_POSITION;
@@ -101,7 +100,6 @@ public class NodeModel{
 	private NodeModel(NodeModel toBeCloned){
 		this.map = toBeCloned.map;
 		this.sharedData = toBeCloned.sharedData;
-		this.folded = toBeCloned.folded;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
 		clones = new DetachedNodeList(this, toBeCloned);
@@ -372,7 +370,7 @@ public class NodeModel{
 	}
 
 	public boolean isFolded() {
-		return folded;
+		return sharedData.isFolded();
 	}
 
 	/*
@@ -468,10 +466,10 @@ public class NodeModel{
 	}
 
 	public void setFolded(boolean folded) {
-		boolean wasFolded = this.folded;
+		boolean wasFolded = isFolded();
 		if (wasFolded != folded) {
 			final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-			this.folded = encryptionModel != null && !encryptionModel.isAccessible() || folded && ! AlwaysUnfoldedNode.isConnectorNode(this);
+			sharedData.setFolded(encryptionModel != null && !encryptionModel.isAccessible() || folded && ! AlwaysUnfoldedNode.isConnectorNode(this));
 		}
 		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded)));
 	}

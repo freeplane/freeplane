@@ -107,7 +107,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
         	}
         }
 		if (mayWriteChildren && (writeFolded || !mode(writer).equals(Mode.FILE))) {
-			if(mapController.isFolded(node)){
+			if(mapController.isFolded(node) && ! isNodeAlreadyWritten){
 				writer.addAttribute("FOLDED", "true");
 			}
 			else if(node.isRoot() && ! Mode.STYLE.equals(mode)){
