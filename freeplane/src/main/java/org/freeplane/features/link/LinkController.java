@@ -75,7 +75,6 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.map.CloneStateIconSupplier;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -282,7 +281,6 @@ public class LinkController extends SelectionController implements IExtension {
 						final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
 						NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
 						gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
-						gotoLinkNodeAction.putValue(Action.SMALL_ICON, CloneStateIconSupplier.CLONEROOT_ICON.getIcon());
 						if (firstAction) {
 							target.addChild(new Entry().setBuilders("separator"));
 							firstAction = false;

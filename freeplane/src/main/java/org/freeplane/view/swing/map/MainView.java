@@ -285,13 +285,22 @@ public abstract class MainView extends ZoomableLabel {
 		paintDragRectangle(g);
 		paintFoldingMark(nodeView, g);
         if (isShortened()) {
-        	final int size = getZoomedFoldingSymbolHalfWidth();
-			int width = size * 7 / 3;
-            int x = nodeView.isLeft() ? getWidth() : 0 - width;
-            int height = size * 5 / 3;
-            int y = (getHeight() - height) / 2;
-            FoldingMark.SHORTENED.draw(g, nodeView, new Rectangle(x, y, width, height));
+        	FoldingMark.SHORTENED.draw(g, nodeView, decorationMarkBounds(nodeView, 7./3, 5./3));
         }
+        else if (nodeView.getModel().isCloneTreeRoot())
+        	FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 2, 2.5));
+        else if (nodeView.getModel().isCloneTreeNode())
+        	FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 1.5, 2.5));
+	}
+
+	private Rectangle decorationMarkBounds(final NodeView nodeView, double widthFactor, double heightFactor) {
+		final int size = getZoomedFoldingSymbolHalfWidth();
+		int width = (int) (size * widthFactor);
+		int x = nodeView.isLeft() ? getWidth() : 0 - width;
+		int height = (int) (size * heightFactor);
+		int y = (getHeight() - height) / 2;
+		Rectangle decorationMarkBounds = new Rectangle(x, y, width, height);
+		return decorationMarkBounds;
 	}
 
 	protected void paintFoldingMark(final NodeView nodeView, final Graphics2D g) {

@@ -73,7 +73,6 @@ import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
-import org.freeplane.features.map.CloneStateIconSupplier;
 import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
@@ -321,7 +320,6 @@ public class MModeControllerFactory {
 			    }
 		    }));
 
-		new CloneStateIconSupplier().registerStateIconProvider();
 
 //		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
 //			public UIIcon getStateIcon(NodeModel node) {

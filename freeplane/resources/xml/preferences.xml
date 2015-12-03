@@ -110,9 +110,11 @@
 			<separator name="size_limits">
 				<number name="max_shortened_text_length" />
 				<number name="max_image_width" />
+				<number name="foldingsymbolwidth" />
 				<number name="toolTipManager.max_tooltip_width" />
 				<number name="default_attribute_key_column_width" min="10" />
 				<number name="default_attribute_value_column_width" min="10" />
+				
 			</separator>
 			<separator name="connectors">
 				<color name="standardlinkcolor" />
@@ -161,7 +163,6 @@
 				<boolean name="unfold_on_paste" />
 				<boolean name="fold_on_click_inside" />
 				<boolean name="disable_cursor_move_paper" />
-				<number name="foldingsymbolwidth" />
 				<boolean name="edit_on_double_click" />
 				<length name="grid_size" defaultUnit = "px" min="0" max = "1000" step = "0.01"/>
 				<number name="scrolling_speed" min="1" max="30" />
