@@ -168,6 +168,8 @@ jar {
 task copyOSGiJars(type: Copy) {
      from ("$buildDir/libs") {
           include("*.jar")
+		  exclude('framework-*.jar')
+		  exclude('freeplane-*.jar')
      }
      from ('lib') {
           include("*.jar")
