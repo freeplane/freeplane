@@ -830,12 +830,16 @@ public class MMapController extends MapController {
 
 	@Override
 	protected void setFoldingState(final NodeModel node, final boolean folded) {
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		final boolean wasFolded = mapViewManager.isFoldedOnCurrentView(node);
+		if(wasFolded == folded && mapViewManager.getComponent(node) == null)
+			return;
 		if(isFoldingPersistent()){
 			IActor foldingActor = new IActor() {
 				@Override
 				public void undo() {
 					unfoldHiddenChildren(node);
-					MMapController.super.setFoldingState(node, ! folded);
+					MMapController.super.setFoldingState(node, wasFolded);
 				}
 				
 				@Override
