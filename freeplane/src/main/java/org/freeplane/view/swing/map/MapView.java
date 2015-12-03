@@ -710,7 +710,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final int mainViewWidth = mainView.getWidth();
 		final int mainViewHeight = mainView.getHeight();
 		final Point anchorCenterPoint = new Point((int) (mainViewWidth * anchorHorizontalPoint), (int) (mainViewHeight * anchorVerticalPoint));
-		SwingUtilities.convertPointToScreen(anchorCenterPoint, mainView);
+		final JViewport viewPort = (JViewport) getParent();
+		UITools.convertPointToAncestor(mainView, anchorCenterPoint, this);
+		final Dimension extentSize = viewPort.getExtentSize();
+		anchorCenterPoint.x += (extentSize.width - viewPort.getWidth()) / 2;
+		anchorCenterPoint.y += (extentSize.height - viewPort.getHeight()) / 2;
 		return anchorCenterPoint;
 	}
 
