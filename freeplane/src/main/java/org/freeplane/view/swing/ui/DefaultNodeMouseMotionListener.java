@@ -102,7 +102,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
+					final boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, nodeView)) && ! mapController.hasHiddenChildren(node);
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
@@ -124,7 +124,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e))
 		        && !nodeSelector.shouldSelectOnClick(e)) {
-			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, node)) && ! mapController.hasHiddenChildren(node);
+			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, nodeView)) && ! mapController.hasHiddenChildren(node);
 			doubleClickTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();

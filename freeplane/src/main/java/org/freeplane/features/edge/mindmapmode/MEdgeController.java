@@ -232,7 +232,9 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeStyleRefresh(final NodeModel node) {
-				for (final NodeModel child : modeController.getMapController().childrenFolded(node)) {
+				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+					if(child.getViewers().isEmpty())
+						continue;
 					final EdgeModel edge = EdgeModel.getModel(child);
 					if (edge == null || edge.getStyle() == null) {
 						modeController.getMapController().nodeRefresh(child);
@@ -268,7 +270,9 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				for (final NodeModel child : modeController.getMapController().childrenFolded(node)) {
+				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+					if(child.getViewers().isEmpty())
+						continue;
 					final EdgeModel edge = EdgeModel.getModel(child);
 					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
 						modeController.getMapController().nodeRefresh(child);

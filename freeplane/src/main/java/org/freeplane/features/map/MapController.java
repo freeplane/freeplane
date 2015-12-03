@@ -303,14 +303,16 @@ public class MapController extends SelectionController implements IExtension{
 		boolean mapChanged = false;
 	    if (unfold && unfoldInvisibleChildren(node, true))
 	        mapChanged = true;
-		if (node.isFolded() != folded && !(node.isRoot() && folded)){
-			setFoldingState(node, folded);
-			mapChanged = true;
-		}
+	    if (!(node.isRoot() && folded)) {
+	    	if (node.isFolded() != folded) {
+	    		mapChanged = true;
+	    	}
+	    	setFoldingState(node, folded);
+	    }
 		if(mapChanged){
 			fireFoldingChanged(node);
 		}
-		else if(childShown)
+		if(childShown)
 	        fireNodeUnfold(node);
 	}
 
@@ -322,7 +324,7 @@ public class MapController extends SelectionController implements IExtension{
 	public boolean showNextChild(final NodeModel node) {
 		if (node.getChildCount() == 0)
 			return false;
-		final boolean unfold = node.isFolded();
+		final boolean unfold = Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
 		if (unfold){
 			for(NodeModel child:childrenUnfolded(node)){
 				child.addExtension(HideChildSubtree.instance);
@@ -345,15 +347,11 @@ public class MapController extends SelectionController implements IExtension{
 
 
 	private void fireNodeUnfold(final NodeModel node) {
-	    node.fireNodeChanged(new NodeChangeEvent(node, NodeChangeType.FOLDING, Boolean.TRUE,
-	    	Boolean.FALSE));
+		node.fireNodeChanged(new NodeChangeEvent(node, HideChildSubtree.instance, null,
+				null));
     }
 
 	public boolean hasHiddenChildren(final NodeModel node){
-		if(! node.hasChildren())
-			return false;
-		if(node.isFolded())
-			return true;
 		for(NodeModel child:childrenUnfolded(node)){
 			if (child.containsExtension(HideChildSubtree.class)){
 				return true;
@@ -566,7 +564,10 @@ public class MapController extends SelectionController implements IExtension{
 				continue;
 			}
 			if (state == null) {
-				state = hasHiddenChildren(node);
+				if (Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node))
+					state = true;
+				else
+					state = hasHiddenChildren(node);
 			}
 			else {
 				if (hasHiddenChildren(node) != state) {
@@ -675,7 +676,7 @@ public class MapController extends SelectionController implements IExtension{
 		fireNodeInserted(parent, newNode, index);
 	}
 
-	public boolean isFolded(final NodeModel node) {
+	 public boolean isFolded(final NodeModel node) {
 		return node.isFolded();
 	}
 
@@ -961,11 +962,6 @@ public class MapController extends SelectionController implements IExtension{
 		for (final NodeModel node:nodes) {
 			setFolded(node, shouldBeFolded);
 		}
-	}
-
-
-	public void toggleFolded(final NodeModel node) {
-		setFolded(node, ! node.isFolded());
 	}
 
 }

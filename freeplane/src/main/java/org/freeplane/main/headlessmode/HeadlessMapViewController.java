@@ -270,4 +270,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public JComboBox createZoomBox() {
 		throw new RuntimeException("Method not implemented");
 	}
+
+	@Override
+	public boolean isFoldedOnCurrentView(NodeModel node) {
+		return node.isFolded();
+	}
 }

@@ -34,6 +34,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -72,11 +73,12 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
         	return;
         }
         MainView mainView = (MainView) component;
-        final NodeModel model = mainView.getNodeView().getModel();
+        NodeView nodeView = mainView.getNodeView();
+		final NodeModel model = nodeView.getModel();
         switch(e.getClickCount()){
         	case 1:
         		final MapController mapController = Controller.getCurrentModeController().getMapController();
-				mapController.setFolded(model, ! model.isFolded());
+				mapController.setFolded(model, ! nodeView.isFolded());
         		break;
         	case 2:
     	        nodeSelector.nodeSelected(model);

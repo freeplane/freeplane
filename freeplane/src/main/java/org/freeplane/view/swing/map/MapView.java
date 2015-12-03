@@ -994,7 +994,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
-			if (getModeController().getMapController().isFolded(oldModel)) {
+			if (oldSelected.isFolded()) {
 				getModeController().getMapController().setFolded(oldModel, false);
 				return oldSelected;
 			}
@@ -1067,7 +1067,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
-			if (getModeController().getMapController().isFolded(oldModel)) {
+			if (oldSelected.isFolded()) {
 				getModeController().getMapController().setFolded(oldModel, false);
 				if(oldSelected.getModel().hasVisibleContent())
 					return oldSelected;
@@ -2158,7 +2158,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public int getDetailHorizontalAlignment() {
 		return detailHorizontalAlignment;
 	}
-	private boolean isSelected() {
+	
+	public boolean isSelected() {
 	    return Controller.getCurrentController().getMapViewManager().getMapViewComponent() == MapView.this;
     }
 

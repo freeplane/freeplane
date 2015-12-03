@@ -130,8 +130,9 @@ private Timer timer;
 			timer = new Timer(UNFOLD_DELAY_MILLISECONDS, new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(mainView.isDisplayable()){
-						final NodeModel node = mainView.getNodeView().getModel();
-						Controller.getCurrentModeController().getMapController().setFolded(node, !node.isFolded());
+						NodeView nodeView = mainView.getNodeView();
+						final NodeModel node = nodeView.getModel();
+						Controller.getCurrentModeController().getMapController().setFolded(node, !nodeView.isFolded());
 					}
 				}
 			});
@@ -269,7 +270,7 @@ private Timer timer;
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 					moveNodes(mapController, targetNode, t, dropAsSibling, isLeft);
 					
-					if(dropAsSibling || ! targetNode.isFolded())
+					if(dropAsSibling || ! targetNodeView.isFolded())
 					    controller.getSelection().replaceSelection(array);
 					else
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);

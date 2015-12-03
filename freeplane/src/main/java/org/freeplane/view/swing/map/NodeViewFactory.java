@@ -111,7 +111,7 @@ class NodeViewFactory {
 		final NodeModel model = node.getModel();
 		ShapeConfigurationModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model);
 		if (shapeConfiguration.getShape().equals(NodeStyleModel.Shape.combined)) {
-			if (Controller.getCurrentModeController().getMapController().isFolded(model)) {
+			if (node.isFolded()) {
 				shapeConfiguration= shapeConfiguration.withShape(NodeStyleModel.Shape.bubble);
 			}
 			else {

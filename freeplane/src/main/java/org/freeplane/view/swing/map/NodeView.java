@@ -128,13 +128,19 @@ public class NodeView extends JComponent implements INodeView {
 
 	private int topOverlap;
 	private int bottomOverlap;
-
+	private boolean isFolded;
+	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 
 	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
 		this.model = model;
 		this.map = map;
+		this.isFolded = map.getModeController().getMapController().isFolded(model);
+	}
+
+	public boolean isFolded(){
+		return isFolded;
 	}
 
 	void addDragListener(final DragGestureListener dgl) {
@@ -849,12 +855,18 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		final Object property = event.getProperty();
-		if (property == NodeChangeType.FOLDING) {
-			treeStructureChanged();
-			getMap().selectIfSelectionIsEmpty(this);
-			Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-			if (shape.equals(NodeStyleModel.Shape.combined))
-				update();
+		if (property == NodeChangeType.FOLDING || property == HideChildSubtree.instance) {
+			if(map.isSelected()){
+				boolean wasFolded = isFolded;
+				isFolded = getMap().getModeController().getMapController().isFolded(model);
+				if(wasFolded != isFolded || property == HideChildSubtree.instance) {
+					treeStructureChanged();
+					getMap().selectIfSelectionIsEmpty(this);
+					Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+					if (shape.equals(NodeStyleModel.Shape.combined))
+						update();
+				}
+			}
 			return;
 		}
 		// is node is not fully initialized, skip the rest.
@@ -884,7 +896,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-		if (getMap().getModeController().getMapController().isFolded(model)) {
+		if (isFolded) {
 			return;
 		}
 		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
@@ -929,7 +941,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
 		assert parent == model;
-		if (getMap().getModeController().getMapController().isFolded(model)) {
+		if (isFolded) {
 			return;
 		}
 		addChildView(child, index);

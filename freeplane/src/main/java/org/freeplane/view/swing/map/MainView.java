@@ -138,8 +138,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	public int getDeltaX() {
 		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		if (nodeView.getMap().getModeController().getMapController().isFolded(model) && nodeView.isLeft()) {
+		if (nodeView.isFolded() && nodeView.isLeft()) {
 			return getZoomedFoldingSymbolHalfWidth() * 3;
 		}
 		else
@@ -167,7 +166,7 @@ public abstract class MainView extends ZoomableLabel {
 		int width = getWidth();
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
-		if (nodeView.getMap().getModeController().getMapController().isFolded(model)) {
+		if (nodeView.isFolded()) {
 			width += getZoomedFoldingSymbolHalfWidth() * 3;
 		}
 		return width;
@@ -263,8 +262,9 @@ public abstract class MainView extends ZoomableLabel {
 		}
 	}
 
-	public FoldingMark foldingMarkType(MapController mapController, NodeModel node) {
-		if (mapController.isFolded(node) && (node.hasVisibleContent() || node.getFilterInfo().isAncestor())) {
+	public FoldingMark foldingMarkType(MapController mapController, NodeView nodeView) {
+		NodeModel node = nodeView.getModel();
+		if (nodeView.isFolded()) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
@@ -272,8 +272,8 @@ public abstract class MainView extends ZoomableLabel {
 				return FoldingMark.ITSELF_FOLDED;
 			}
 		}
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (!child.hasVisibleContent() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, child))) {
+		for (final NodeView childView : nodeView.getChildrenViews()) {
+			if (!childView.getModel().hasVisibleContent() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, childView))) {
 				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
 			}
 		}
@@ -299,8 +299,7 @@ public abstract class MainView extends ZoomableLabel {
 			return;
 		final MapView map = getMap();
 		final MapController mapController = map.getModeController().getMapController();
-		final NodeModel node = nodeView.getModel();
-		final FoldingMark markType = foldingMarkType(mapController, node);
+		final FoldingMark markType = foldingMarkType(mapController, nodeView);
 	    Point mousePosition = null;
 	    try {
 	        mousePosition = getMousePosition();
@@ -318,6 +317,7 @@ public abstract class MainView extends ZoomableLabel {
 				p.x -= width;
 			final FoldingMark foldingCircle;
 			if(markType.equals(FoldingMark.UNFOLDED)) {
+				final NodeModel node = nodeView.getModel();
 				if(mapController.hasHiddenChildren(node))
 					foldingCircle = FoldingMark.FOLDING_CIRCLE_HIDDEN_CHILD;
 				else

@@ -28,9 +28,6 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class ForkMainView extends MainView {
@@ -62,8 +59,7 @@ class ForkMainView extends MainView {
 	protected int getMainViewHeightWithFoldingMark() {
 		int height = getHeight();
 		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
-		if (nodeView.getMap().getModeController().getMapController().isFolded(model)) {
+		if (nodeView.isFolded()) {
 			height += getZoomedFoldingSymbolHalfWidth();
 		}
 		return height;

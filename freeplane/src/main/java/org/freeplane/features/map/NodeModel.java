@@ -468,22 +468,12 @@ public class NodeModel{
 	}
 
 	public void setFolded(boolean folded) {
-		if (this.folded == folded) {
-			return;
+		boolean wasFolded = this.folded;
+		if (wasFolded != folded) {
+			final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
+			this.folded = encryptionModel != null && !encryptionModel.isAccessible() || folded && ! AlwaysUnfoldedNode.isConnectorNode(this);
 		}
-		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-		if (encryptionModel != null && !encryptionModel.isAccessible() && folded == false) {
-			folded = true;
-		}
-		else if (AlwaysUnfoldedNode.isConnectorNode(this)){
-			folded = false;
-		}
-		if (this.folded == folded) {
-			return;
-		}
-		this.folded = folded;
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded),
-		    Boolean.valueOf(folded)));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded)));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
