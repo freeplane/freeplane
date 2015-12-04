@@ -32,12 +32,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 ArchitecturesInstallIn64BitMode=x64 ia64
-OutputDir=..\..\DIST
-#if MyStatus == ""
-  OutputBaseFilename=Freeplane-Setup-{#MyVersion}
-#else
-  OutputBaseFilename=Freeplane-Setup-{#MyVersion}-{#MyStatus}
-#endif
+OutputDir=.
+OutputBaseFilename=Freeplane-Setup
 SetupIconFile=Setup.ico
 VersionInfoDescription=Free mind mapping software. Fast. Simple. Streamlined.
 ChangesAssociations=true

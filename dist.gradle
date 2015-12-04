@@ -6,14 +6,7 @@ props.load(new FileInputStream(rootDir.path + '/freeplane/viewer-resources/versi
 ext.majorVersion = props['freeplane_version']
 ext.versionStatus = props['freeplane_version_status']
 ext.minorVersion = System.getProperty('minor', '')
-def distVersion
-if (!versionStatus.empty) {
-  distVersion = majorVersion + '-' + versionStatus
-}
-if(! minorVersion.empty){
-  distVersion = majorVersion + '-pre' + minorVersion
-}
-ext.distVersion = distVersion
+ext.distVersion = "$majorVersion${versionStatus.empty?'':'-'+versionStatus}${minorVersion.empty?'':'-pre' + minorVersion}"
 
 task gitinfoDist(type: Copy) {
     from(globalBuild) {

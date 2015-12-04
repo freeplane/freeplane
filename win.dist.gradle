@@ -8,6 +8,9 @@ task windowsInstaller(type: Exec) {
     workingDir = rootDir.path + '/freeplane_framework/windows-installer'
 
     commandLine 'cmd.exe', '/c', 'ISCC.exe /Q Freeplane_without_Java.iss'
+	doLast {
+         new File(workingDir, 'Freeplane-Setup.exe').renameTo(new File(globalDist, "Freeplane-Setup-${distVersion}.exe"))
+	}
 
     for (p in subprojects) {
         dependsOn p.tasks.getByPath("build")
@@ -89,8 +92,9 @@ task windowsPortableInstaller(type: Exec) {
 
     doLast {
          new File(portableInstallerDir).deleteDir() 
-         new File(globalDist).eachFileMatch(FileType.FILES, ~/.*\.paf\.exe/) {
-			 f -> f.renameTo(new File(globalDist, f.name.replace('_' as char, '-' as char)))
+         new File(globalDist).eachFileMatch(FileType.FILES, ~/FreeplanePortable_.*\.paf\.exe/) {
+			 f -> 
+			 f.renameTo(new File(globalDist, "FreeplanePortable-${distVersion}.paf.exe"))
 		 }
     }
 }
