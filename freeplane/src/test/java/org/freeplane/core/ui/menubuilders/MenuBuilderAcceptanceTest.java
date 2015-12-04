@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
 
+import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -31,8 +32,9 @@ public class MenuBuilderAcceptanceTest {
 	@BeforeClass
 	static public void setup() {
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
-		JToolBar toolbar = new JToolBar();
-		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(toolbar);
+		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(new JToolBar());
+		when(userInputListenerFactory.getNodePopupMenu()).thenReturn(new JPopupMenu());
+		when(userInputListenerFactory.getMapPopup()).thenReturn(new JPopupMenu());
 		final PhaseProcessor buildProcessor = new MenuBuildProcessFactory(
 		    userInputListenerFactory, Controller.getCurrentModeController(), new FreeplaneResourceAccessor(),
 		    mock(IAcceleratorMap.class), 
