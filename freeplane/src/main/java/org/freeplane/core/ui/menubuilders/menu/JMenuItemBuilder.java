@@ -6,8 +6,6 @@ import java.awt.Container;
 import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionEnabler;
@@ -90,42 +88,9 @@ public class JMenuItemBuilder implements EntryVisitor{
 		if(actionComponent != null){
 			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
-		addPopupMenuListener(entry, menu.getPopupMenu());
+		menu.getPopupMenu().addPopupMenuListener(new PopupMenuListenerForEntry(entry, popupListener));
 
 	}
-
-	protected void addPopupMenuListener(final Entry entry, final JPopupMenu popupMenu) {
-	    popupMenu.addPopupMenuListener(new PopupMenuListener() {
-			
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				fireChildEntriesWillBecomeVisible(entry);
-			}
-
-			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				fireChildEntriesWillBecomeInvisible(entry);
-			}
-
-			private void fireChildEntriesWillBecomeVisible(final Entry entry) {
-				popupListener.childEntriesWillBecomeVisible(entry);
-				for (Entry child : entry.children())
-					if (!(entryAccessor.getComponent(child) instanceof JMenu))
-						fireChildEntriesWillBecomeVisible(child);
-			}
-
-			private void fireChildEntriesWillBecomeInvisible(final Entry entry) {
-	            popupListener.childEntriesWillBecomeInvisible(entry);
-				for (Entry child : entry.children())
-					if (!(entryAccessor.getComponent(child) instanceof JMenu))
-						fireChildEntriesWillBecomeInvisible(child);
-            }
-			
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {
-			}
-		});
-    }
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {

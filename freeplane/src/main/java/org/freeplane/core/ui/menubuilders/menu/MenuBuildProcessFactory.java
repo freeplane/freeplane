@@ -74,9 +74,9 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		        resourceAccessor), new JComponentRemover());
 		
-		uiBuilder.addBuilder("map_popup", new MapPopupBuilder(userInputListenerFactory));
+		uiBuilder.addBuilder("map_popup", new PopupBuilder(userInputListenerFactory.getMapPopup(), entryPopupListenerCollection));
 		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu.action");
-		uiBuilder.addBuilder("node_popup", new NodePopupBuilder(userInputListenerFactory));
+		uiBuilder.addBuilder("node_popup", new PopupBuilder(userInputListenerFactory.getNodePopupMenu(), entryPopupListenerCollection));
 		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
 
 		actionBuilder.addBuilder("ignore", new ChildEntryFilter() {
