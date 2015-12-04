@@ -354,7 +354,9 @@ public abstract class PersistentNodeHook {
 	}
 
 	public void undoableActivateHook(final NodeModel node, final IExtension extension) {
-		undoableToggleHook(node, extension);
+		if (! node.containsExtension(extension.getClass())) {
+			undoableToggleHook(node, extension);
+		}
 	}
 
 	public void undoableDeactivateHook(final NodeModel node) {

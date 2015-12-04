@@ -196,7 +196,7 @@ public class MMapController extends MapController {
 		final NodeModel firstNode = parentNode.getChildAt(start);
 		firstGroup.undoableActivateHook(firstNode, firstGroup);
 		int level = summaryLevel;
-		for(int i = start+1; i < end; i++){
+		for(int i = start+1; i <= end; i++){
 			NodeModel node = parentNode.getChildAt(i);
 			if(isLeft != node.isLeft())
 				continue;
@@ -205,7 +205,7 @@ public class MMapController extends MapController {
 			else
 				level = 0;
 			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
-				firstGroup.undoableActivateHook(node, firstGroup);
+				firstGroup.undoableDeactivateHook(node);
 		}
 		final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, isLeft);
 		startEditingAfterSelect(firstSummaryChildNode);
