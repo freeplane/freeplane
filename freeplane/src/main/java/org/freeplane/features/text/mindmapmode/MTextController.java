@@ -778,7 +778,6 @@ public class MTextController extends TextController {
 						modeController.resetRedo();
 				    }
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
-					mapController.select(prevSelectedModel);
 					if (parentFolded) {
 						mapController.setFolded(prevSelectedModel, true);
 					}
