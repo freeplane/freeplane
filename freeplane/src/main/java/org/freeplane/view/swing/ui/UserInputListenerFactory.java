@@ -38,7 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.swing.JComponent;
@@ -51,14 +50,13 @@ import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
-import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
 import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
+import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -85,7 +83,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private MouseWheelListener mapMouseWheelListener;
 	private JPopupMenu mapsPopupMenu;
 	private FreeplaneMenuBar menuBar;
-	private final Map<Class<? extends Object>, Object> menuBuilderList = new HashMap<Class<? extends Object>, Object>();
 	final private HashSet<IMouseWheelEventHandler> mRegisteredMouseWheelEventHandler = new HashSet<IMouseWheelEventHandler>();
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
@@ -111,7 +108,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			customBuilders.add(new HashMap<String, BuilderDestroyerPair>());
 		}
 		Controller controller = Controller.getCurrentController();
-		menuBuilderList.put(MenuBuilder.class, new MenuBuilder(modeController, getAcceleratorManager()));		
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				if (modeController.equals(Controller.getCurrentModeController())) {
@@ -173,11 +169,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public <T> T getMenu(Class<T> clazz) {
 		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T getMenuBuilder(Class<T> clazz) {
-		return (T) menuBuilderList.get(clazz);
 	}
 
 	public ActionAcceleratorManager getAcceleratorManager() {

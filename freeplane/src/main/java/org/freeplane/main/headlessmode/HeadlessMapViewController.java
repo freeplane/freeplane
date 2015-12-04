@@ -37,7 +37,6 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -45,6 +44,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
+
+import javafx.scene.control.MenuBuilder;
 
 /**
  * @author Dimitry Polivaev

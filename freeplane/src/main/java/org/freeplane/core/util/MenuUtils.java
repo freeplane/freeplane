@@ -35,7 +35,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.IndexedTree.Node;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -45,6 +44,8 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+
+import javafx.scene.control.MenuBuilder;
 
 /** Utilities for dealing with the Freeplane menu: In scripts available as "global variable" menuUtils. */
 public class MenuUtils {

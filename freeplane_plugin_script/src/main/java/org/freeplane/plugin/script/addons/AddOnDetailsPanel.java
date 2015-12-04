@@ -16,7 +16,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -153,34 +152,38 @@ public class AddOnDetailsPanel extends JPanel {
     }
 
 	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
-		final String location = script.menuLocation == null ? "main_menu_scripting" : script.menuLocation;
-		MenuBuilder menuBuilder = Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-		// "/menu_bar/edit/menu_extensions" -> [Node Extensions, Edit]
-		final List<String> pathElements = getMenuPathElements(menuBuilder, location);
-		Collections.reverse(pathElements);
-		pathElements.add(TextUtils.getText(script.menuTitleKey));
-		//TODO - impl. ribbons contribution
-		return StringUtils.join(pathElements.iterator(), "->");
+		return "";
 	}
+// FIXME implement formatMenuLocation
+//	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
+//		final String location = script.menuLocation == null ? "main_menu_scripting" : script.menuLocation;
+//		MenuBuilder menuBuilder = Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
+//		// "/menu_bar/edit/menu_extensions" -> [Node Extensions, Edit]
+//		final List<String> pathElements = getMenuPathElements(menuBuilder, location);
+//		Collections.reverse(pathElements);
+//		pathElements.add(TextUtils.getText(script.menuTitleKey));
+//		//TODO - impl. ribbons contribution
+//		return StringUtils.join(pathElements.iterator(), "->");
+//	}
 
-	public static List<String> getMenuPathElements(MenuBuilder menuBuilder, final String location) {
-		final ArrayList<String> pathElements = new ArrayList<String>();
-		final DefaultMutableTreeNode node = menuBuilder.get(location);
-		if (node != null) {
-			pathElements.addAll(getMenuPathElements(node));
-		}
-		else {
-			int index = location.lastIndexOf('/');
-			if (index != -1) {
-				final String lastKey = location.substring(index + 1);
-				pathElements.add(TextUtils.getText(lastKey, TextUtils.getText("addons." + lastKey, lastKey)));
-				// recurse
-				if (index > 1)
-					pathElements.addAll(getMenuPathElements(menuBuilder, location.substring(0, index)));
-			}
-		}
-		return pathElements;
-	}
+//	public static List<String> getMenuPathElements(MenuBuilder menuBuilder, final String location) {
+//		final ArrayList<String> pathElements = new ArrayList<String>();
+//		final DefaultMutableTreeNode node = menuBuilder.get(location);
+//		if (node != null) {
+//			pathElements.addAll(getMenuPathElements(node));
+//		}
+//		else {
+//			int index = location.lastIndexOf('/');
+//			if (index != -1) {
+//				final String lastKey = location.substring(index + 1);
+//				pathElements.add(TextUtils.getText(lastKey, TextUtils.getText("addons." + lastKey, lastKey)));
+//				// recurse
+//				if (index > 1)
+//					pathElements.addAll(getMenuPathElements(menuBuilder, location.substring(0, index)));
+//			}
+//		}
+//		return pathElements;
+//	}
 
 	private static List<String> getMenuPathElements(DefaultMutableTreeNode node) {
 		ArrayList<String> pathElements = new ArrayList<String>();

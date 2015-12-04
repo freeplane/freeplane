@@ -49,16 +49,13 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -457,20 +454,21 @@ public class LinkController extends SelectionController implements IExtension {
 				if (e == null) {
 					throw new IllegalArgumentException("ActionEvent is needed for menu item links");
 				}
-				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-				final DefaultMutableTreeNode treeNode = menuBuilder.get(LinkController.parseSpecialLink(link));
-				if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
-					LogUtils.warn("node " + link + " should have been an executable action");
-					return;
-				}
-				final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
-				final Action action = menuItem.getAction();
-
-				if (action != null) {
-					action.actionPerformed(e);
-				} else {
-					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
-				}
+//FIXME execute menu item link				
+//				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
+//				final DefaultMutableTreeNode treeNode = menuBuilder.get(LinkController.parseSpecialLink(link));
+//				if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
+//					LogUtils.warn("node " + link + " should have been an executable action");
+//					return;
+//				}
+//				final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
+//				final Action action = menuItem.getAction();
+//
+//				if (action != null) {
+//					action.actionPerformed(e);
+//				} else {
+//					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
+//				}
 			}
 			else if (LinkController.isSpecialLink(LinkController.EXECUTE_APP_SCHEME, link)) {
 				final String command = LinkController.parseSpecialLink(link);

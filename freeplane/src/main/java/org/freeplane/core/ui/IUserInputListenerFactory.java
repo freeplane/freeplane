@@ -47,8 +47,6 @@ public interface IUserInputListenerFactory {
 
 	public FreeplaneMenuBar getMenuBar();
 
-	<T> T getMenuBuilder(final Class<T> clazz);
-	
 	public ActionAcceleratorManager getAcceleratorManager();
 	
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers();

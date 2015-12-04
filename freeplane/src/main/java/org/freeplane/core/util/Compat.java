@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -161,8 +160,6 @@ public class Compat {
 		final Controller controller = Controller.getCurrentController();
 		final Set<String> modes = controller .getModes();
 		for (final String mode : modes) {
-			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
-			    .getMenuBuilder(MenuBuilder.class);
 			final String[] keys = {
 					"MB_ToggleMenubarAction",
 					"MP_ToggleMenubarAction",
@@ -170,11 +167,14 @@ public class Compat {
 			        "MB_PropertyAction",
 			        "MB_AboutAction"
 			};
-			for (final String key : keys) {
-				if (builder.contains(key)) {
-					builder.removeElement(key);
-				}
-			}
+// FIXME remove menu items			
+//			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
+//		    .getMenuBuilder(MenuBuilder.class);
+//			for (final String key : keys) {
+//				if (builder.contains(key)) {
+//					builder.removeElement(key);
+//				}
+//			}
 		}
 	}
 	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.4.x";

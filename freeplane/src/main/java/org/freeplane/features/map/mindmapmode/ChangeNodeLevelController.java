@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.FreeNode;
@@ -92,9 +91,6 @@ public class ChangeNodeLevelController {
 //		this.controller = controller;
 		modeController.addAction(new ChangeNodeLevelLeftsAction());
 		modeController.addAction(new ChangeNodeLevelRightsAction());
-	}
-
-	public void addActionsAtMenuBuilder(final MenuBuilder menuBuilder) {
 	}
 
 	private boolean checkSelection() {

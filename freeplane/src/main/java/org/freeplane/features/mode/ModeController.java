@@ -34,9 +34,7 @@ import java.util.TreeMap;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -64,7 +62,6 @@ public class ModeController extends AController implements FreeplaneActions{
 	private boolean isBlocked = false;
 	private MapController mapController;
 	final private Map<Integer, ITooltipProvider> toolTip = new TreeMap<Integer, ITooltipProvider>();
-	final private List<IMenuContributor> menuContributors = new LinkedList<IMenuContributor>();
 	/**
 	 * The model, this controller belongs to. It may be null, if it is the
 	 * default controller that does not show a map.
@@ -233,11 +230,6 @@ public class ModeController extends AController implements FreeplaneActions{
 	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.add(listener);
 	}
-
-	public void addMenuContributor(final IMenuContributor contributor) {
-		menuContributors.add(contributor);
-	}
-
 	public void addUiBuilder(Phase phase, String name, EntryVisitor builder) {
 		addUiBuilder(phase, name, new BuilderDestroyerPair(builder));
 	}
@@ -390,11 +382,6 @@ public class ModeController extends AController implements FreeplaneActions{
 	public void updateMenus(String menuStructure, final Set<String> plugins) {
 		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
 		userInputListenerFactory.updateMenus(menuStructure, plugins);
-		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder(MenuBuilder.class);
-		final Iterator<IMenuContributor> iterator = menuContributors.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().updateMenus(this, menuBuilder);
-		}
 		userInputListenerFactory.getAcceleratorManager().loadDefaultAcceleratorPresets();
 	}
 

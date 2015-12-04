@@ -21,6 +21,8 @@ package org.freeplane.core.ui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
@@ -30,8 +32,19 @@ import javax.swing.JPopupMenu;
  * 23.01.2013
  */
 public class MenuSplitter{
-	private static final String EXTRA_SUBMENU = MenuBuilder.class.getName()+".extra_submenu";
-	
+	private static final String EXTRA_SUBMENU = MenuSplitter.class.getName()+".extra_submenu";
+
+	static final int MAX_HEIGHT;
+
+	static {		
+		if (!GraphicsEnvironment.isHeadless()) {
+			MAX_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height - 100;
+		} else {
+			MAX_HEIGHT = 0;
+		}
+	}
+
+
 	public static int count = 0;
 	private final int maxMenuItemCount;
 
@@ -91,7 +104,7 @@ public class MenuSplitter{
 
 	private boolean fitsOnScreen(final JPopupMenu popupMenu, final Component component) {
 		final int itemCount = popupMenu.getComponentCount();
-	    return itemCount < getMaxMenuItemCount() && (popupMenu.getPreferredSize().height + component.getPreferredSize().height) < MenuBuilder.MAX_HEIGHT;
+	    return itemCount < getMaxMenuItemCount() && (popupMenu.getPreferredSize().height + component.getPreferredSize().height) < MAX_HEIGHT;
     }
 
 	protected int getMaxMenuItemCount() {
