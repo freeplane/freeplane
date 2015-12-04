@@ -99,7 +99,6 @@ public class NodeView extends JComponent implements INodeView {
 	public final static int DRAGGED_OVER_SON = 1;
 	/** For RootNodeView. */
 	public final static int DRAGGED_OVER_SON_LEFT = 3;
-	static private int FOLDING_SYMBOL_WIDTH = -1;
 	private static final long serialVersionUID = 1L;
 	static final int SPACE_AROUND = 50;
 	public static final int MAIN_VIEWER_POSITION = 1;
@@ -772,11 +771,12 @@ public class NodeView extends JComponent implements INodeView {
 	}
 	
 	public int getZoomedFoldingSymbolHalfWidth() {
-		if (NodeView.FOLDING_SYMBOL_WIDTH == -1) {
-			NodeView.FOLDING_SYMBOL_WIDTH = ResourceController.getResourceController().getIntProperty(
-			    "foldingsymbolwidth", 8);
-		}
-		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map.getZoom()) / 2);
+		final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10) * map.getZoom()) / 2);
+		return preferredFoldingSymbolHalfWidth;
+	}
+
+	public int getZoomedStateSymbolHalfWidth() {
+		final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("statesymbolwidth", 10) * map.getZoom()) / 2);
 		return preferredFoldingSymbolHalfWidth;
 	}
 

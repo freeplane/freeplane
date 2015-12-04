@@ -294,7 +294,7 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private Rectangle decorationMarkBounds(final NodeView nodeView, double widthFactor, double heightFactor) {
-		final int size = getZoomedFoldingSymbolHalfWidth();
+		final int size = nodeView.getZoomedStateSymbolHalfWidth();
 		int width = (int) (size * widthFactor);
 		int x = nodeView.isLeft() ? getWidth() : 0 - width;
 		int height = (int) (size * heightFactor);
