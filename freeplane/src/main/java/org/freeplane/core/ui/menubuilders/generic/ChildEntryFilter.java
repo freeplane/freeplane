@@ -1,7 +1,7 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 
-public abstract class ChildEntryFilter extends ChildEntryRemover {
+public abstract class ChildEntryFilter implements EntryVisitor {
 	abstract public boolean shouldRemove(Entry entry);
 
 	@Override

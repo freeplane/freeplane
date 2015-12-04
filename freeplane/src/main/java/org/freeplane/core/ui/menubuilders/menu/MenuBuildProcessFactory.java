@@ -24,6 +24,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.FreeplaneActions;
 
 public class MenuBuildProcessFactory implements BuildProcessFactory {
@@ -85,6 +86,15 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 				return ! uiBuilder.containsOneOf(entry.builders());
 			}
 		});
+		
+		if(Compat.isMacOsX()){
+			actionBuilder.addBuilder("removeOnMac", new ChildEntryFilter() {
+				@Override
+				public boolean shouldRemove(Entry entry) {
+					return true;
+				}
+			});
+		}
 
 		JMenuItemBuilder menuBuilder = new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 		    resourceAccessor);

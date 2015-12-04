@@ -152,31 +152,7 @@ public class Compat {
 	public static boolean isX11WindowManager() {
 	    return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
     }
-
-	public static void macMenuChanges() {
-		if (!Compat.isMacOsX()) {
-			return;
-		}
-		final Controller controller = Controller.getCurrentController();
-		final Set<String> modes = controller .getModes();
-		for (final String mode : modes) {
-			final String[] keys = {
-					"MB_ToggleMenubarAction",
-					"MP_ToggleMenubarAction",
-					"MB_QuitAction",
-			        "MB_PropertyAction",
-			        "MB_AboutAction"
-			};
-// FIXME remove menu items			
-//			final MenuBuilder builder = controller.getModeController(mode).getUserInputListenerFactory()
-//		    .getMenuBuilder(MenuBuilder.class);
-//			for (final String key : keys) {
-//				if (builder.contains(key)) {
-//					builder.removeElement(key);
-//				}
-//			}
-		}
-	}
+	
 	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.4.x";
 	final public static String PREVIOUS_VERSION_DIR_NAME = "1.3.x";
 
