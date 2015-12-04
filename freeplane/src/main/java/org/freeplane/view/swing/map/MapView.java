@@ -108,6 +108,7 @@ import org.freeplane.view.swing.features.filepreview.IViewerFactory;
 import org.freeplane.view.swing.features.filepreview.ImageLoadingListener;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
+import org.freeplane.view.swing.map.MapView.ScrollingDirective;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
@@ -423,7 +424,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private final ModeController modeController;
 	final private MapModel model;
 	
-	enum ScrollingDirective {SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_THE_LEFT, MAKE_NODE_VISIBLE, DONE, ANCHOR};
+	enum ScrollingDirective {SCROLL_NODE_TO_CENTER, SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR};
 	private ScrollingDirective scrollingDirective = ScrollingDirective.DONE;
 	private NodeView scrolledNode = null;
 	private NodeView rootView = null;
@@ -569,22 +570,56 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void scrollNodeNow(boolean slowScroll) {
-	    final JViewport viewPort = (JViewport) getParent();
+		final JViewport viewPort = (JViewport) getParent();
 		if(slowScroll)
 			viewPort.putClientProperty(ViewController.SLOW_SCROLLING, Boolean.TRUE);
-		final Dimension d = viewPort.getExtentSize();
-		final JComponent content = scrolledNode.getContent();
-		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
-		        / 2, d.width, d.height);
-		if(scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_THE_LEFT)
-			rect.x += (d.width - content.getWidth()) / 2 - 10;
-		content.scrollRectToVisible(rect);
+		final Rectangle rect = calculateOptimalVisibleRectangle();
+		scrollRectToVisible(rect);
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
 		this.slowScroll = false;
 		this.anchorContentLocation = getAnchorCenterPoint();
-    }
-	
+	}
+
+	private Rectangle calculateOptimalVisibleRectangle() {
+		final JViewport viewPort = (JViewport) getParent();
+		final Dimension extentSize = viewPort.getExtentSize();
+		final JComponent content = scrolledNode.getContent();
+		Point contentLocation = new Point();
+		UITools.convertPointToAncestor(content, contentLocation, this);
+		final Rectangle rect = new Rectangle(contentLocation.x + content.getWidth() / 2 - extentSize.width / 2, 
+				contentLocation.y + content.getHeight() / 2 - extentSize.height
+				/ 2, extentSize.width, extentSize.height);
+		
+		if(scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION){
+			final Rectangle innerBounds = getInnerBounds();
+			if(innerBounds.width <= extentSize.width){
+				rect.x = innerBounds.x - (extentSize.width - innerBounds.width) / 2;
+			}
+			else {
+				NodeView root = getRoot();
+				if(!isOutlineLayoutSet()) {
+					boolean scrollToTheLeft = false;
+
+					final List<NodeModel> children = root.getModel().getChildren();
+					if(! children.isEmpty()){
+						scrollToTheLeft = true;
+						final boolean outlineLayoutSet = isOutlineLayoutSet();
+						for(NodeModel node :children) {
+							if(! outlineLayoutSet && node.isLeft()){
+								scrollToTheLeft = false;
+								break;
+							}
+						}
+					}
+					if(scrollToTheLeft)
+						rect.x += (extentSize.width - content.getWidth()) / 2 - 10;
+				}
+			}
+		}
+		return rect;
+	}
+
 	
 
 	@Override
@@ -737,10 +772,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public Rectangle getInnerBounds() {
 		final Rectangle innerBounds = rootView.getBounds();
 		final Rectangle maxBounds = new Rectangle(0, 0, getWidth(), getHeight());
-		for (int i = 0; i < arrowLinkViews.size(); ++i) {
-			final ILinkView arrowView = arrowLinkViews.get(i);
-			arrowView.increaseBounds(innerBounds);
-		}
+		if(arrowLinkViews != null)
+			for (int i = 0; i < arrowLinkViews.size(); ++i) {
+				final ILinkView arrowView = arrowLinkViews.get(i);
+				arrowView.increaseBounds(innerBounds);
+			}
 		return innerBounds.intersection(maxBounds);
 	}
 
@@ -1835,7 +1871,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void scrollNodeToVisible(final NodeView node, final int extraWidth) {
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {
 			if (node != scrolledNode) {
-				if (scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_THE_LEFT && !node.isRoot())
+				if (scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION && !node.isRoot())
 					scrollingDirective = ScrollingDirective.SCROLL_NODE_TO_CENTER;
 				scrollNode(node, scrollingDirective, false);
 			}
@@ -2087,25 +2123,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void scrollToRootNode() {
-		NodeView root = getRoot();
-		ScrollingDirective scrollingDirective;
-		if(isOutlineLayoutSet()){
-			scrollingDirective = ScrollingDirective.SCROLL_NODE_TO_CENTER;
-		}
-		else {
-			scrollingDirective= ScrollingDirective.SCROLL_NODE_TO_CENTER;
-
-			final List<NodeModel> children = root.getModel().getChildren();
-			if(! children.isEmpty()){
-				scrollingDirective = ScrollingDirective.SCROLL_NODE_TO_THE_LEFT;
-				for(NodeModel node :children)
-					if(node.isLeft()){
-						scrollingDirective = ScrollingDirective.SCROLL_NODE_TO_CENTER;
-						break;
-					}
-			}
-		}
-		scrollNode(root, scrollingDirective, false);
+		scrollNode(getRoot(), ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION, false);
 	}
 
 	/*
