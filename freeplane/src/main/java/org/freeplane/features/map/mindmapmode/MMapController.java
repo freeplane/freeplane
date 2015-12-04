@@ -174,19 +174,9 @@ public class MMapController extends MapController {
     }
 
 	private void stopEditing() {
-		final ModeController modeController = Controller.getCurrentModeController();
 		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
 			((MTextController) textController).stopEditing();
-		}
-		if (textController instanceof MTextController) {
-			modeController.startTransaction();
-			try {
-				((MTextController) TextController.getController()).stopEditing();
-			}
-			finally {
-				modeController.commit();
-			}
 		}
     }
 
