@@ -1368,6 +1368,7 @@ public class NodeView extends JComponent implements INodeView {
 		updateCloud();
 		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model);
 		revalidate();
+		repaint();
 	}
 
 	public boolean isShortened() {
