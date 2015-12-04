@@ -52,11 +52,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlProcessor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.IconMouseListener;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
@@ -64,13 +64,11 @@ import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -517,8 +515,6 @@ public abstract class MainView extends ZoomableLabel {
 		Object content = userObject;
 		String text;
 		try {
-			if(isShortened && (content instanceof String))
-				content = HtmlUtils.htmlToPlain((String) content);
 			final Object transformedContent = textController.getTransformedObject(content, nodeModel, userObject);
 			if(nodeView.isSelected()){
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(transformedContent);
@@ -557,7 +553,8 @@ public abstract class MainView extends ZoomableLabel {
 
 	private String shortenText(String longText) {
 		String text;
-	    if(HtmlUtils.isHtmlNode(longText)){
+	    final boolean isHtml = HtmlUtils.isHtmlNode(longText);
+		if(isHtml){
 	    	text = HtmlUtils.htmlToPlain(longText).trim();
 	    }
 	    else{
@@ -568,16 +565,18 @@ public abstract class MainView extends ZoomableLabel {
 	    final int maxShortenedNodeWidth = ResourceController.getResourceController().getIntProperty("max_shortened_text_length");
 		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxShortenedNodeWidth){
 	    	if(length <= maxShortenedNodeWidth){
-	    		return text;
+	    		return longText;
 	    	}
 	    	length = maxShortenedNodeWidth;
 	    }
 	    else{
 	    	length = eolPosition;
 	    }
-	    text = text.substring(0, length);
-	    return text;
-    }
+		if(isHtml)
+			return new HtmlProcessor(longText).htmlSubstring(0, length);
+		else
+			return text.substring(0, length);
+	}
 
 	@Override
     public JToolTip createToolTip() {
