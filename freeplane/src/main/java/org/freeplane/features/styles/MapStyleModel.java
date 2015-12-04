@@ -196,7 +196,7 @@ public class MapStyleModel implements IExtension {
 			predefinedStyleParentNode.setUserObject(new StyleNamedObject(groupName));
 			root.insert(predefinedStyleParentNode);
 		}
-		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.fork);
+		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.bubble);
 		return predefinedStyleParentNode;
 	}
 
