@@ -2,10 +2,18 @@ ext.globalDist = rootDir.path + '/DIST'
 
 Properties props = new Properties()
 props.load(new FileInputStream(rootDir.path + '/freeplane/viewer-resources/version.properties'))
-ext.distVersion = props['freeplane_version']
-if (!props['freeplane_version_status'].empty) {
-  ext.distVersion = ext.distVersion + '-' + props['freeplane_version_status']
+
+ext.majorVersion = props['freeplane_version']
+ext.versionStatus = props['freeplane_version_status']
+ext.minorVersion = System.getProperty('minor', '')
+def distVersion
+if (!versionStatus.empty) {
+  distVersion = majorVersion + '-' + versionStatus
 }
+if(! minorVersion.empty){
+  distVersion = majorVersion + '-pre' + minorVersion
+}
+ext.distVersion = distVersion
 
 task gitinfoDist(type: Copy) {
     from(globalBuild) {
@@ -42,3 +50,19 @@ task cleanDist(type: Delete) {
     delete globalDist
 }
 clean.dependsOn cleanDist
+
+task createGitTag(type: Exec) {
+	def tag = "${versionStatus.empty ? 'release':versionStatus}-$majorVersion${minorVersion.empty ? '':'-pre'+minorVersion}"
+    ignoreExitValue = true
+	doFirst {
+		println "> Press enter to create tag $tag"
+		System.in.newReader().readLine()
+	}
+    commandLine 'git', 'tag', tag
+}
+
+task release {
+	dependsOn (clean, dist, createGitTag)
+}
+dist.mustRunAfter clean
+createGitTag.mustRunAfter dist
