@@ -454,21 +454,14 @@ public class LinkController extends SelectionController implements IExtension {
 				if (e == null) {
 					throw new IllegalArgumentException("ActionEvent is needed for menu item links");
 				}
-//FIXME execute menu item link				
-//				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-//				final DefaultMutableTreeNode treeNode = menuBuilder.get(LinkController.parseSpecialLink(link));
-//				if (treeNode == null || !treeNode.isLeaf() || !(treeNode.getUserObject() instanceof JMenuItem)) {
-//					LogUtils.warn("node " + link + " should have been an executable action");
-//					return;
-//				}
-//				final JMenuItem menuItem = (JMenuItem) treeNode.getUserObject();
-//				final Action action = menuItem.getAction();
-//
-//				if (action != null) {
-//					action.actionPerformed(e);
-//				} else {
-//					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
-//				}
+				final String actionKey = LinkController.parseSpecialLink(link);
+				final Action action = modeController.getAction(actionKey);
+
+				if (action != null) {
+					action.actionPerformed(e);
+				} else {
+					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
+				}
 			}
 			else if (LinkController.isSpecialLink(LinkController.EXECUTE_APP_SCHEME, link)) {
 				final String command = LinkController.parseSpecialLink(link);
