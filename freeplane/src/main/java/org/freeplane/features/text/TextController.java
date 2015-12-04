@@ -340,10 +340,6 @@ public class TextController implements IExtension {
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, shortened);   
 	}
 
-	public void toggleShortened(NodeModel node) {
-		setIsMinimized(node, ! isMinimized(node)); 
-    }
-
 	public String getNodeFormat(NodeModel node) {
 		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
 		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
