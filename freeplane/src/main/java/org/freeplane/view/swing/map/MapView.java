@@ -2180,10 +2180,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
     public void setSize(int width, int height) {
-		super.setSize(width, height);
-	    validate();
-		if(isDisplayable())
-	    	scrollView();
+		if(getWidth() != width || getHeight() != height) {
+			super.setSize(width, height);
+			validate();
+			if(isDisplayable())
+				scrollView();
+		}
     }
 
 	@Override
