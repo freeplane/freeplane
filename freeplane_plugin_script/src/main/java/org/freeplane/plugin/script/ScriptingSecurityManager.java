@@ -123,7 +123,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkDelete(final String pFile) {
-		if (mWithoutReadRestriction) {
+		if (mWithoutWriteRestriction) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Delete);
