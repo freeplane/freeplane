@@ -346,7 +346,7 @@ public class LinkController extends SelectionController implements IExtension {
 			ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
 			if (dest != null) {
-				return TextController.getController().getShortText(dest);
+				return TextController.getController().getShortPlainText(dest);
 			}
 			return TextUtils.getText("link_not_available_any_more");
 		}

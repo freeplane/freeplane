@@ -530,7 +530,7 @@ public abstract class MainView extends ZoomableLabel {
 			textModified = TextModificationState.FAILURE;
 		}
 		if(isShortened){
-			text = textController.getShortHtmlText(text);
+			text = textController.getShortText(text);
 		}
 		text = convertTextToHtmlLink(text,  nodeModel);
 		updateText(text);

@@ -78,7 +78,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			return;
 		}
 		chooser = new JFileChooser(file.getParentFile());
-		chooser.setSelectedFile(new File(createFileName(TextController.getController().getShortText(existingNode))));
+		chooser.setSelectedFile(new File(createFileName(TextController.getController().getShortPlainText(existingNode))));
 		if (((MFileManager) UrlManager.getController()).getFileFilter() != null) {
 			chooser.addChoosableFileFilter(((MFileManager) UrlManager.getController())
 			    .getFileFilter());

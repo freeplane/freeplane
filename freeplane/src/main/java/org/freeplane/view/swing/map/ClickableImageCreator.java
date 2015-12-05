@@ -75,8 +75,8 @@ class ClickableImageCreator {
 		final NodeView nodeView = mapView.getNodeView(node);
 		if (nodeView != null) {
 			final AreaHolder holder = new AreaHolder();
-			holder.title = TextController.getController().getShortText(node);
-			holder.alt = TextController.getController().getShortText(node);
+			holder.title = TextController.getController().getShortPlainText(node);
+			holder.alt = TextController.getController().getShortPlainText(node);
 			holder.href = node.createID();
 			final Point contentXY = mapView.getNodeContentLocation(nodeView);
 			final JComponent content = nodeView.getContent();

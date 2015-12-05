@@ -355,7 +355,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public String getShortText() {
 		final TextController textController = TextController.getController();
-		return textController.getShortText(getDelegate());
+		return textController.getShortPlainText(getDelegate());
 	}
 	
 	// NodeRO: R

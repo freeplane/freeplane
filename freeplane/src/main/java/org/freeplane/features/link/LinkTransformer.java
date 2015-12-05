@@ -66,7 +66,7 @@ public class LinkTransformer extends AbstractContentTransformer {
 		final String nodeID=string.substring(1);
 		final NodeModel target = map.getNodeForID(nodeID);
 		if(target != null){
-			final String shortText = TextController.getController(modeController).getShortText(target);
+			final String shortText = TextController.getController(modeController).getShortPlainText(target);
 			final Icon icon = FrameController.localLinkIcon;
 			return new ObjectAndIcon(shortText, icon);
 		}

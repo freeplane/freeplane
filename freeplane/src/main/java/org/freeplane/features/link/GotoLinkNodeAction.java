@@ -50,7 +50,7 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 
 	public void configureText(String actionName, final NodeModel target) {
 	    if (target != null) {
-			final String adaptedText = TextController.getController().getShortText(target);
+			final String adaptedText = TextController.getController().getShortPlainText(target);
 			putValue(Action.NAME, TextUtils.format(actionName, adaptedText));
 			StringBuilder path = new StringBuilder();
 			appendPath(path, target.getParentNode());
@@ -62,7 +62,7 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 	private void appendPath(StringBuilder path, final NodeModel target) {
 		if(target != null){
 			appendPath(path, target.getParentNode());
-			final String shortText = TextController.getController().getShortText(target);
+			final String shortText = TextController.getController().getShortPlainText(target);
 			path.append(shortText);
 			path.append(" -> ");
 		}

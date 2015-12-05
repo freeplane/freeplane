@@ -239,7 +239,7 @@ public class TextController implements IExtension {
 	    return text;
     }
 
-	public String getShortText(NodeModel nodeModel) {
+	public String getShortPlainText(NodeModel nodeModel) {
 		String adaptedText = getPlainTextContent(nodeModel);
 		if (adaptedText.length() > 40) {
 			adaptedText = adaptedText.substring(0, 40) + " ...";
@@ -247,7 +247,7 @@ public class TextController implements IExtension {
 		return adaptedText;
 	}
 	
-	public String getShortHtmlText(String longText) {
+	public String getShortText(String longText) {
 		String text;
 	    final boolean isHtml = HtmlUtils.isHtmlNode(longText);
 		if(isHtml){
@@ -338,7 +338,7 @@ public class TextController implements IExtension {
 				    String text;
 				    try {
 					    text = getTransformedText(data, node, data);
-					    if(text.equals(getShortHtmlText(text)))
+					    if(text.equals(getShortText(text)))
 					    	return null;
 				    }
 				    catch (Exception e) {
