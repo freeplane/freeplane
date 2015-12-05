@@ -106,20 +106,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			viewR.height = (int)(height / zoom) - (insets.top + insets.bottom);
 			if(viewR.width < 0)
 				viewR.width = 0;
-			ScaledHTML.Renderer v = (ScaledHTML.Renderer) label.getClientProperty(BasicHTML.propertyKey);
-		    if (v != null) {
-		    	float preferredWidth = v.getPreferredSpan(View.X_AXIS);
-		    	int textWidth = viewR.width;
-				if(icon != null)
-		    		textWidth -= icon.getIconWidth() + label.getIconTextGap();
-				if(preferredWidth < textWidth){
-					v.setSize(textWidth, 1);
-					super.layoutCL(zLabel, zLabel.getFontMetrics(), text, icon, viewR, iconR, textR);
-					v.setSize(textR.width, textR.height);
-					return text;
-				}
-		    }
-		} else {
+		} 
+		else {
 			if(zLabel.getMaximumWidth() != Integer.MAX_VALUE){
 				final int maximumWidth = (int) (zLabel.getMaximumWidth() / zoom);
 				final Insets insets = label.getInsets();
@@ -340,7 +328,9 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
 		}
 		final AffineTransform transform = g2.getTransform();
-		final float zoom = mainView.getZoom() * 0.97f;
+		final float factor = 0.97f;
+//		final float factor = 1f;
+		final float zoom = mainView.getZoom() * factor;
 		g2.scale(zoom, zoom);
 		final boolean htmlViewSet = null != label.getClientProperty(BasicHTML.propertyKey);
 		try {

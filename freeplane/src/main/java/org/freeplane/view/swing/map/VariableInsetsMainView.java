@@ -44,7 +44,7 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 		if (isPreferredSizeSet()) {
 			return super.getPreferredSize();
 		}
-		final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
+		final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
 		final double widthWithMargin = Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getZoom() * getMinimumHorizontalInset());
 		prefSize.width =  limitWidth((int) Math.ceil(widthWithMargin));
 		prefSize.height = (int) Math.ceil(Math.max(prefSize.height *getVerticalMarginFactor(), prefSize.height + getZoom() * getMinimumVerticalInset()));
@@ -63,7 +63,7 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 		return getShapeConfiguration().getVerticalMargin().toBaseUnitsRounded();
 	}
 
-	protected Dimension getPreferredSizeWithoutMargin(int maximumWidth) {
+	protected Dimension getPreferredRectangleSizeWithoutMargin(int maximumWidth) {
 		int scaledMaximumWidth = maximumWidth != Integer.MAX_VALUE ? (int)(maximumWidth / getHorizontalMarginFactor()) : maximumWidth;
 		final int zoomedHorizontalInsetBackup = zoomedHorizontalInset;
 		final int zoomedVerticalInsetBackup = zoomedVerticalInset;
@@ -106,10 +106,14 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		Dimension preferredSize = getPreferredSizeWithoutMargin(getMaximumWidth());
+		final int oldMinimumWidth = getMinimumWidth();
+		setMinimumWidth(0);
+		Dimension preferredRectangleSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
+		final Dimension preferredSize = getPreferredSize();
+		setMinimumWidth(oldMinimumWidth);
 		super.setBounds(x, y, width, height);
-		zoomedHorizontalInset = (width - preferredSize.width) / 2;
-		zoomedVerticalInset = (height - preferredSize.height) / 2;
+		zoomedHorizontalInset = (Math.min(preferredSize.width, width) - preferredRectangleSize.width) / 2;
+		zoomedVerticalInset = (Math.min(preferredSize.height, height) - preferredRectangleSize.height) / 2;
 	}
 
 	@Override

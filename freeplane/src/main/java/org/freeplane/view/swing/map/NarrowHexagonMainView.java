@@ -57,7 +57,7 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 			return super.getPreferredSize();
 		}
 		if(getShapeConfiguration().isUniform()){
-			final Dimension prefSize = getPreferredSizeWithoutMargin(getMaximumWidth());
+			final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
 			double width = (int) Math.ceil(prefSize.width + getZoom() * getMinimumHorizontalInset());
 			width = limitWidth(width);
 			prefSize.width = (int) width;
