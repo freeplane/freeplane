@@ -530,7 +530,7 @@ public abstract class MainView extends ZoomableLabel {
 			textModified = TextModificationState.FAILURE;
 		}
 		if(isShortened){
-			text = shortenText(text);
+			text = textController.getShortHtmlText(text);
 		}
 		text = convertTextToHtmlLink(text,  nodeModel);
 		updateText(text);
@@ -549,33 +549,6 @@ public abstract class MainView extends ZoomableLabel {
 		sb.append(xmlEscapedText);
 		sb.append("</a></body></html>");
 		return sb.toString();
-	}
-
-	private String shortenText(String longText) {
-		String text;
-	    final boolean isHtml = HtmlUtils.isHtmlNode(longText);
-		if(isHtml){
-	    	text = HtmlUtils.htmlToPlain(longText).trim();
-	    }
-	    else{
-	    	text = longText;
-	    }
-	    int length = text.length();
-	    final int eolPosition = text.indexOf('\n');
-	    final int maxShortenedNodeWidth = ResourceController.getResourceController().getIntProperty("max_shortened_text_length");
-		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxShortenedNodeWidth){
-	    	if(length <= maxShortenedNodeWidth){
-	    		return longText;
-	    	}
-	    	length = maxShortenedNodeWidth;
-	    }
-	    else{
-	    	length = eolPosition;
-	    }
-		if(isHtml)
-			return new HtmlProcessor(longText).htmlSubstring(0, length);
-		else
-			return text.substring(0, length);
 	}
 
 	@Override
