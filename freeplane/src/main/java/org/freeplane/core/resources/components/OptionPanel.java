@@ -214,14 +214,15 @@ public class OptionPanel {
 		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.children(); i.hasMoreElements();) {
 			final DefaultMutableTreeNode node = i.nextElement();
 			final IPropertyControlCreator creator = (IPropertyControlCreator) node.getUserObject();
-			if (creator == null) {
-				continue;
+			if (creator != null) {
+				final IPropertyControl control = creator.createControl();
+				controls.add(control);
+				if (parentControl != null)
+					parentControl.enables(control);
+				addChildControls(asBooleanProperty(control), node);
 			}
-			final IPropertyControl control = creator.createControl();
-			controls.add(control);
-			if (parentControl != null)
-				parentControl.enables(control);
-			addChildControls(asBooleanProperty(control), node);
+			else
+				addChildControls(parentControl, node);
 		}
 	}
 
