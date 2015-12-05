@@ -23,6 +23,7 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
@@ -83,13 +84,28 @@ import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 
+	private static String RESOURCE_BASE_DIRECTORY;
+	private static String INSTALLATION_BASE_DIRECTORY;
+	static {
+		try {
+			RESOURCE_BASE_DIRECTORY = new File(System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
+			FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR)).getCanonicalPath();
+			INSTALLATION_BASE_DIRECTORY = new File(System.getProperty(FreeplaneStarter.ORG_FREEPLANE_BASEDIRECTORY, RESOURCE_BASE_DIRECTORY + "/..")).getCanonicalPath();
+		} catch (IOException e) {
+		}
+	}
+	
+
 	static{
 		Compat.fixMousePointerForLinux();
 	}
 
 	public static String getResourceBaseDir() {
-		return System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
-		    FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
+		return RESOURCE_BASE_DIRECTORY;
+	}
+
+	public static String getInstallationBaseDir() {
+		return INSTALLATION_BASE_DIRECTORY;
 	}
 
 	public static void showSysInfo() {

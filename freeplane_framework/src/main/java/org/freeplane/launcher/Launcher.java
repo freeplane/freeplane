@@ -50,6 +50,7 @@ public class Launcher {
 		setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
 		if(isDefineNotSet("org.freeplane.globalresourcedir"))
 			setDefine("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
+		setDefine("org.freeplane.basedirectory", frameworkDir.getAbsolutePath());
 		
 	}
 

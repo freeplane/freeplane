@@ -20,11 +20,13 @@
  */
 package org.freeplane.plugin.script;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
 import java.util.HashSet;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ICondition;
@@ -228,7 +230,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(final String pFile) {
-		if (mWithoutReadRestriction) {
+		if (mWithoutReadRestriction || pFile.startsWith(ResourceController.getResourceController().getInstallationBaseDir() + File.separatorChar)) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read, pFile);
@@ -236,10 +238,7 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(final String pFile, final Object pContext) {
-		if (mWithoutReadRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
+		checkRead(pFile);
 	}
 
 	@Override

@@ -181,7 +181,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getInstallationBaseDir() {
-		return new File(getResourceBaseDir()).getAbsoluteFile().getParent();
+		return FreeplaneGUIStarter.getInstallationBaseDir();
     }
 
 	public static File getUserPreferencesFile() {
