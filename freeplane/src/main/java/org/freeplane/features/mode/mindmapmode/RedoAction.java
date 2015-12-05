@@ -26,20 +26,15 @@ import javax.swing.Action;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.features.map.INodeChangeListener;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeChangeEvent;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-class RedoAction extends AFreeplaneAction implements INodeChangeListener{
+class RedoAction extends AFreeplaneAction{
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Action undo;
-	private NodeModel lastChangedNode;
 
 	public RedoAction() {
 		super("RedoAction");
@@ -52,22 +47,9 @@ class RedoAction extends AFreeplaneAction implements INodeChangeListener{
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		mapController.addNodeChangeListener(this);
-		try{
 		undoHandler.getRedoAction().actionPerformed(e);
-		if(lastChangedNode != null){
-			mapController.displayNode(lastChangedNode);
-			controller.getSelection().selectAsTheOnlyOneSelected(lastChangedNode);
-			lastChangedNode = null;
-		}
 		undo.setEnabled(undoHandler.canUndo());
 		setEnabled(undoHandler.canRedo());
-		}
-		finally{
-			mapController.removeNodeChangeListener(this);
-		}
-
 	}
 
 	public void reset() {
@@ -82,8 +64,4 @@ class RedoAction extends AFreeplaneAction implements INodeChangeListener{
 	}
 	@Override
     public void afterMapChange(final Object newMap) {}
-
-	public void nodeChanged(NodeChangeEvent event) {
-		lastChangedNode = event.getNode();
-    };
 }
