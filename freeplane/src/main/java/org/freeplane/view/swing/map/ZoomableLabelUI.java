@@ -12,6 +12,7 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicHTML;
@@ -329,8 +330,11 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		}
 		final AffineTransform transform = g2.getTransform();
 		final float factor = 0.97f;
-//		final float factor = 1f;
 		final float zoom = mainView.getZoom() * factor;
+		if(mainView.getVerticalAlignment() == SwingConstants.CENTER) {
+			final float translationFactorY = 0.5f;
+			g2.translate(0, mainView.getHeight() * (1f - factor) * translationFactorY);
+		}
 		g2.scale(zoom, zoom);
 		final boolean htmlViewSet = null != label.getClientProperty(BasicHTML.propertyKey);
 		try {
