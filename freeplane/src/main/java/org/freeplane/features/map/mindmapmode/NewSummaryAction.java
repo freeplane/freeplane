@@ -27,6 +27,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -45,42 +46,53 @@ class NewSummaryAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if(! check()){
+		if(! addNewSummaryNodeStartEditing()){
 			UITools.errorMessage(TextUtils.getText("summary_not_possible"));
-			return;
 		}
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		mapController.addNewSummaryNodeStartEditing(summaryLevel, start, end);
 	}
 
-	private boolean check() {
-		start = -1;
-		end = -1;
-		summaryLevel = -1;
+	private boolean addNewSummaryNodeStartEditing() {
 	    final ModeController modeController = Controller.getCurrentModeController();
 		final IMapSelection selection = modeController.getController().getSelection();
 
 		final List<NodeModel> sortedSelection = selection.getSortedSelection(false);
 		
 		final NodeModel firstNode = sortedSelection.get(0);
-		
-		final NodeModel parentNode = firstNode.getParentNode();
-		// root node selected
-		if(parentNode == null)
-			return false;
-		
 		final NodeModel lastNode = sortedSelection.get(sortedSelection.size()-1);
-		// different parents
-		if(! parentNode.equals(lastNode.getParentNode())){
-			return false;
-		}
+		
 		final boolean isLeft = firstNode.isLeft();
 		// different sides
 		if(isLeft!=lastNode.isLeft()){
 			return false;
 		}
+		final NodeModel parentNode = firstNode.getParentNode();
+		if(parentNode == null)
+			return false;
+		final NodeModel lastParent = lastNode.getParentNode();
+		if(lastParent == null)
+			return false;
+		if(parentNode.equals(lastParent))
+			return addNewSummaryNodeStartEditing(firstNode, lastNode);
+		else {
+			final NodeRelativePath nodeRelativePath = new NodeRelativePath(firstNode, lastNode);
+			final NodeModel newFirstNode = nodeRelativePath.beginPathElement(1);
+			final NodeModel newLastNode = nodeRelativePath.endPathElement(1);
+			return addNewSummaryNodeStartEditing(newFirstNode, newLastNode);
+		}
+    }
+
+	private boolean addNewSummaryNodeStartEditing(final NodeModel firstNode, final NodeModel lastNode) {
+
+		final NodeModel parentNode = firstNode.getParentNode();
+		final ModeController modeController = Controller.getCurrentModeController();
+		final boolean isLeft = firstNode.isLeft();
 		start = parentNode.getIndex(firstNode);
 		end = parentNode.getIndex(lastNode);
+		if(end < start){
+			int temp = end;
+			end = start;
+			start = temp;
+		}
 		
 		summaryLevel = SummaryNode.getSummaryLevel(firstNode);
 		
@@ -100,6 +112,7 @@ class NewSummaryAction extends AFreeplaneAction {
 			if(level > summaryLevel)
 				return false;
 		}
+		((MMapController) modeController.getMapController()).addNewSummaryNodeStartEditing(parentNode, start, end, summaryLevel, isLeft);
 		return true;
-    }
+	}
 }

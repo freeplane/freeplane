@@ -69,17 +69,18 @@ public class NodeRelativePath {
     }
 
 	public NodeModel pathBegin(NodeModel commonAncestor) {
-		return relativeNode(commonAncestor, beginPath);
+		return relativeNode(commonAncestor, beginPath, beginPath.length);
     }
 
 	public NodeModel pathEnd(NodeModel commonAncestor) {
-		return relativeNode(commonAncestor, endPath);
+		return relativeNode(commonAncestor, endPath, endPath.length);
     }
 
-	private NodeModel relativeNode(NodeModel commonAncestor, final int[] path) {
+	private NodeModel relativeNode(NodeModel commonAncestor, final int[] path, int level) {
 	    NodeModel relativeNode = commonAncestor;
-		for(int childNumber : path)
-	    	relativeNode = relativeNode.getChildAt(childNumber);
+		for(int position = 0; position < level; position++){
+	    	relativeNode = relativeNode.getChildAt(path[position]);
+		}
 	    return relativeNode;
     }
 
@@ -102,6 +103,13 @@ public class NodeRelativePath {
 	public boolean equalPathsTo(NodeRelativePath nodeRelativePath2) {
 	    return Arrays.equals(beginPath, nodeRelativePath2.beginPath) && Arrays.equals(endPath, nodeRelativePath2.endPath);
     }
-	
+
+	public NodeModel beginPathElement(int level) {
+		return relativeNode(commonAncestor, beginPath, level);
+	}
+
+	public NodeModel endPathElement(int level) {
+		return relativeNode(commonAncestor, endPath, level);
+	}
 	
 }

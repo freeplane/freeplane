@@ -94,4 +94,25 @@ public class NodeRelativePathTest {
 		final NodeRelativePath nodeRelativePath2 = new NodeRelativePath(node1, node2);
 		assertTrue(nodeRelativePath1.equalPathsTo(nodeRelativePath2));
 	}
+
+	@Test
+	public void beginPathElement(){
+		final NodeModel parent = root();
+		final NodeModel node1 = new NodeModel("node1", map);
+		parent.insert(node1);
+		final NodeModel node2 = new NodeModel("node2", map);
+		parent.insert(node2);
+		final NodeRelativePath nodeRelativePath = new NodeRelativePath(node1, node2);
+		assertThat(nodeRelativePath.beginPathElement(1), equalTo(node1));
+	}
+	@Test
+	public void endPathElement(){
+		final NodeModel parent = root();
+		final NodeModel node1 = new NodeModel("node1", map);
+		parent.insert(node1);
+		final NodeModel node2 = new NodeModel("node2", map);
+		parent.insert(node2);
+		final NodeRelativePath nodeRelativePath = new NodeRelativePath(node1, node2);
+		assertThat(nodeRelativePath.endPathElement(1), equalTo(node2));
+	}
 }

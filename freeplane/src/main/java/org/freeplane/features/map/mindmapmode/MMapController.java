@@ -180,13 +180,10 @@ public class MMapController extends MapController {
 		}
     }
 
-	public void addNewSummaryNodeStartEditing(final int summaryLevel, final int start, final int end){
-		stopEditing();
+	public void addNewSummaryNodeStartEditing(final NodeModel parentNode, final int start, final int end,
+			final int summaryLevel, final boolean isLeft) {
 		ModeController modeController = getMModeController();
-		final IMapSelection selection = modeController.getController().getSelection();
-		NodeModel selected = selection.getSelected();
-		final NodeModel parentNode = selected.getParentNode();
-		final boolean isLeft = selected.isLeft();
+		stopEditing();
 		final NodeModel newSummaryNode = addNewNode(parentNode, end+1, isLeft);
 		final SummaryNode summary = modeController.getExtension(SummaryNode.class);
 		summary.undoableActivateHook(newSummaryNode, summary);
@@ -210,7 +207,6 @@ public class MMapController extends MapController {
 		final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, isLeft);
 		startEditingAfterSelect(firstSummaryChildNode);
 		select(firstSummaryChildNode);
-
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
