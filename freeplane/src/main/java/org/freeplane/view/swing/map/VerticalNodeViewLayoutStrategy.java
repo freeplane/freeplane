@@ -269,7 +269,7 @@ class VerticalNodeViewLayoutStrategy {
 					childHGap = child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 				else
 					childHGap = 0;
-				if(view.getModel().isHiddenSummary())
+				if(view.getModel().isHiddenSummary() && ! child.getModel().isHiddenSummary())
 					childHGap -= child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 
 				if (isItem) {
