@@ -19,29 +19,19 @@
  */
 package org.freeplane.main.application;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.swing.JLabel;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.nodestyle.NodeSizeModel;
-import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.note.mindmapmode.MNoteController;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 
 /**
@@ -58,24 +48,20 @@ public class UserPropertiesUpdater {
 		}
 		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
 		if(userPreferencesFile.exists()){
-			try {
-				Properties userProp = loadProperties(userPreferencesFile);
-				removeVersionSpecificProperties(userProp);
-				saveProperties(userProp, userPreferencesFile);
-			}
-			catch (IOException e) {
-			}
+			removeVersionSpecificProperties(userPreferencesFile);
+			return;
 		}
 	}
 
 	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
 		final File parentDirectory = targetDirectory.getParentFile();
+		final String previousDirName = Compat.PREVIOUS_VERSION_DIR_NAME;
 		final File sourceDirectory;
 		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
 		if (isDefined(old_userfpdir))
-			sourceDirectory = new File(old_userfpdir, Compat.PREVIOUS_VERSION_DIR_NAME);
+			sourceDirectory = new File(old_userfpdir, previousDirName);
 		else
-			sourceDirectory = new File(parentDirectory, Compat.PREVIOUS_VERSION_DIR_NAME);
+			sourceDirectory = new File(parentDirectory, previousDirName);
 		if (sourceDirectory.exists() && !sourceDirectory.getAbsolutePath().equals(targetDirectory.getAbsolutePath())) {
 			try {
 				parentDirectory.mkdirs();
@@ -91,17 +77,23 @@ public class UserPropertiesUpdater {
 	    return old_userfpdir != null;
     }
 
-	private void removeVersionSpecificProperties(Properties userProp) {
-		for(String name : new String[]{
-				"lastOpened_1.0.20",
-				"openedNow_1.0.20",
-				"openedNow_1.3.04",
-				"browse_url_storage",
-				"single_backup_directory_path",
-		"standard_template"})
-			userProp.remove(name);
-	}
+	private void removeVersionSpecificProperties(File userPreferencesFile) {
+		try {
+			Properties userProp = loadProperties(userPreferencesFile);
+			for(String name : new String[]{
+					"lastOpened_1.0.20",
+					"openedNow_1.0.20",
+					"openedNow_1.3.04",
+					"browse_url_storage",
+					"single_backup_directory_path",
+			"standard_template"})
+				userProp.remove(name);
 
+			saveProperties(userProp, userPreferencesFile);
+        }
+        catch (IOException e) {
+        }
+    }
 
 	Properties loadProperties(File userPreferencesFile) throws IOException {
 	    FileInputStream inputStream = null;
@@ -172,10 +164,6 @@ public class UserPropertiesUpdater {
 				LogUtils.severe(e);
 			}
 		}
-        final NodeStyleController nodeStyleController = NodeStyleController.getController(modeController);
-        updateDefaultStyle(nodeStyleController, defaultStyleMap);
-        updateNoteStyle(nodeStyleController, defaultStyleMap);
-
         try {
 	        fm.writeToFile(defaultStyleMap, userDefault);
         }
@@ -184,50 +172,5 @@ public class UserPropertiesUpdater {
 
 
 	}
-   private void updateDefaultStyle(final NodeStyleController nodeStyleController, MapModel defaultStyleMap) {
-        NodeModel styleNode1 = MapStyleModel.getExtension(defaultStyleMap).getStyleNode(MapStyleModel.DEFAULT_STYLE);
-		NodeModel styleNode = styleNode1;
-		styleNode.removeExtension(NodeStyleModel.class);
-		styleNode.removeExtension(EdgeModel.class);
-
-		final NodeStyleModel nodeStyleModel = new NodeStyleModel();
-
-		nodeStyleModel.setBackgroundColor(nodeStyleController.getBackgroundColor(styleNode));
-		nodeStyleModel.setBold(nodeStyleController.isBold(styleNode));
-		nodeStyleModel.setColor(nodeStyleController.getColor(styleNode));
-		nodeStyleModel.setFontFamilyName(nodeStyleController.getFontFamilyName(styleNode));
-		nodeStyleModel.setFontSize(nodeStyleController.getFontSize(styleNode));
-		nodeStyleModel.setItalic(nodeStyleController.isItalic(styleNode));
-		nodeStyleModel.setShape(nodeStyleController.getShape(styleNode));
-
-		styleNode.addExtension(nodeStyleModel);
-
-		final NodeSizeModel nodeSizeModel = new NodeSizeModel();
-		nodeSizeModel.setMaxNodeWidth(nodeStyleController.getMaxWidth(styleNode));
-		nodeSizeModel.setMinNodeWidth(nodeStyleController.getMinWidth(styleNode));
-
-		final EdgeModel standardEdgeModel = EdgeModel.getModel(styleNode);
-		if(standardEdgeModel != null){
-			final EdgeModel edgeModel = new EdgeModel();
-			edgeModel.setColor(standardEdgeModel.getColor());
-			edgeModel.setStyle(standardEdgeModel.getStyle());
-			edgeModel.setWidth(standardEdgeModel.getWidth());
-			styleNode.addExtension(edgeModel);
-		}
-    }
-
-   private void updateNoteStyle(final NodeStyleController nodeStyleController, MapModel defaultStyleMap) {
-       if (ResourceController.getResourceController().getBooleanProperty((MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)))
-           return;
-       final NodeModel styleNode = MapStyleModel.getExtension(defaultStyleMap).getStyleNode(MapStyleModel.NOTE_STYLE);
-       if(styleNode == null)
-           return;
-       styleNode.removeExtension(NodeStyleModel.class);
-       final Font defaultFont = new JLabel().getFont();
-       final NodeStyleModel nodeStyleModel = new NodeStyleModel();
-       nodeStyleModel.setFontFamilyName(defaultFont.getFamily());
-       nodeStyleModel.setFontSize(defaultFont.getSize());
-       styleNode.addExtension(nodeStyleModel);
-   }
 }
 
