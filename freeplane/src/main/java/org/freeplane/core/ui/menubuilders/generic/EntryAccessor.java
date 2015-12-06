@@ -10,9 +10,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 public class EntryAccessor {
 
 	public static final String COMPONENT = "component";
-	public static final String ACTION = "action";
+	public static final Class<AFreeplaneAction> ACTION = AFreeplaneAction.class;
 	public static final String TEXT = "text";
-	public static final String ICON = "icon";
+	public static final Class<Icon> ICON = Icon.class;
 	public static final String ACCELERATOR = "accelerator";
 	public final ResourceAccessor resourceAccessor;
 
@@ -26,7 +26,7 @@ public class EntryAccessor {
 
 	public Icon getIcon(final Entry entry) {
 		if (entry.getAttribute(ICON) != null)
-			return (Icon) entry.getAttribute(ICON);
+			return entry.getAttribute(ICON);
 		else {
 			String name = entry.getName();
 			final String key = name + ".icon";
@@ -76,7 +76,7 @@ public class EntryAccessor {
 	}
 
 	public AFreeplaneAction getAction(final Entry entry) {
-		return (AFreeplaneAction) entry.getAttribute(ACTION);
+		return entry.getAttribute(ACTION);
 	}
 
 	public void setAction(final Entry entry, AFreeplaneAction action) {
@@ -111,7 +111,7 @@ public class EntryAccessor {
 
 	public void addChildAction(Entry target, AFreeplaneAction action) {
 		final Entry actionEntry = new Entry();
-		new EntryAccessor().setAction(actionEntry, action);
+		setAction(actionEntry, action);
 		target.addChild(actionEntry);
 	}
 }
