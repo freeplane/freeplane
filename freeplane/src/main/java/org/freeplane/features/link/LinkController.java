@@ -155,13 +155,10 @@ public class LinkController extends SelectionController implements IExtension {
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(listener);
 	}
 
-	private void addLinks(final JComponent arrowLinkPopup, final NodeModel source) {
-		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
-		if (!selection.isSelected(source)) {
-			GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
-			gotoLinkNodeAction.configureText("follow_graphical_link", source);
-			addAction(arrowLinkPopup, gotoLinkNodeAction);
-		}
+	private JButton addLinks(final JComponent arrowLinkPopup, final NodeModel source) {
+		GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
+		gotoLinkNodeAction.configureText("follow_graphical_link", source);
+		return addAction(arrowLinkPopup, gotoLinkNodeAction);
 	}
 
     protected void addPopupComponent(final JComponent arrowLinkPopup, final String label, final JComponent component) {
@@ -323,8 +320,27 @@ public class LinkController extends SelectionController implements IExtension {
 
 		final NodeModel source = link.getSource();
 		final NodeModel target = link.getTarget();
-		addLinks(arrowLinkPopup, source);
-		addLinks(arrowLinkPopup, target);
+		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
+		final JButton sourceButton = addLinks(arrowLinkPopup, source);
+		sourceButton.setEnabled(!selection.isSelected(source));
+		final JButton targetButton = addLinks(arrowLinkPopup, target);
+		targetButton.setEnabled(!selection.isSelected(target));
+		
+		sourceButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sourceButton.setEnabled(false);
+				targetButton.setEnabled(true);
+			}
+		});
+
+		targetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				targetButton.setEnabled(false);
+				sourceButton.setEnabled(true);
+			}
+		});
 	}
 
 	private void registerCloseActions(final JComponent arrowLinkPopup) {
