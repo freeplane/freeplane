@@ -463,7 +463,7 @@
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 			<Entry builder="separator" />
-			<Entry name="maps">
+			<Entry name="maps" processOnPopup="true">
 				<Entry builder="navigate_maps,radio_button_group" />
 			</Entry>
 			<Entry builder="separator" />
@@ -488,8 +488,8 @@
 			<Entry builder="separator" />
 		</Entry>
 	</Entry>
-	<Entry name="map_popup" builder="map_popup">
-		<Entry builder="navigate_maps,radio_button_group" />
+	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
+		<Entry builder="navigate_maps,radio_button_group"/> 
 		<Entry builder="separator" />
 		<Entry name="ToggleFullScreenAction" />
 		<Entry name="ToggleMenubarAction"  builder="removeOnMac"/>
