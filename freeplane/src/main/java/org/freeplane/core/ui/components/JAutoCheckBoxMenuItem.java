@@ -48,7 +48,8 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements IKeyBind
 	@Override
     protected void configurePropertiesFromAction(Action a) {
 	    super.configurePropertiesFromAction(a);
-	    setSelected(((IFreeplaneAction)a).isSelected());
+	    if(a != null)
+	    	setSelected(((IFreeplaneAction)a).isSelected());
     }
 
 	@Override

@@ -63,8 +63,11 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private Component createActionComponent(Entry entry) {
 	    final Component component = menuActionComponentProvider.createComponent(entry);
 		final AFreeplaneAction action = entryAccessor.getAction(entry);
-		if (action != null)
-			action.addPropertyChangeListener(new ActionEnabler(component));
+		if (action != null) {
+			final ActionEnabler actionEnabler = new ActionEnabler(component);
+			action.addPropertyChangeListener(actionEnabler);
+			entry.setAttribute(actionEnabler.getClass(), actionEnabler);
+		}
 		return component;
     }
 
