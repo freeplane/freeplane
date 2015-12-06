@@ -33,8 +33,11 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 			final EntryAccessor entryAccessor = new EntryAccessor();
 			entryAccessor.setComponent(entry, component);
 			final AFreeplaneAction action = entryAccessor.getAction(entry);
-			if (action != null)
-				action.addPropertyChangeListener(new ActionEnabler(component));
+			if (action != null) {
+				final ActionEnabler actionEnabler = new ActionEnabler(component);
+				action.addPropertyChangeListener(actionEnabler);
+				entry.setAttribute(actionEnabler.getClass(), actionEnabler);
+			}
 			final Container container = (Container) new EntryAccessor().getAncestorComponent(entry);
 			if (container instanceof JToolBar)
 				container.add(component);
