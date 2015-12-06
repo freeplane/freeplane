@@ -155,6 +155,13 @@ public class EntryTest {
 		entry.setAttribute("key", "value2");
 	}
 
+	@Test(expected=AttributeAlreadySetException.class)
+	public void cannotSetDifferentClassAttributeValue() {
+		Entry entry = new Entry();
+		entry.setAttribute(String.class, "value");
+		entry.setAttribute(String.class, "value2");
+	}
+
 	@Test
 	public void canRemoveAttribute() {
 		Entry entry = new Entry();
@@ -162,6 +169,16 @@ public class EntryTest {
 		entry.removeAttribute("key");
 		entry.setAttribute("key", "value2");
 		assertThat(entry.getAttribute("key"), CoreMatchers.<Object>equalTo("value2"));
+	}
+
+	@Test
+	public void canRemoveClassAttribute() {
+		Entry entry = new Entry();
+		entry.setAttribute(String.class, "value1");
+		entry.removeAttribute(String.class);
+		entry.setAttribute(String.class, "value2");
+		String value = entry.getAttribute(String.class);
+		assertThat(value, CoreMatchers.<Object>equalTo("value2"));
 	}
 
 	@Test

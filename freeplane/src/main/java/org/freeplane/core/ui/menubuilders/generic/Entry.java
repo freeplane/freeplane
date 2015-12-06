@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.util.LogUtils;
 
 /**
@@ -19,7 +20,7 @@ public class Entry {
 	private String name;
 	private Entry parent;
 	private List<String> builders;
-	final private Map<String, Object> attributes;
+	final private Map<Object, Object> attributes;
 	final private ArrayList<Entry> childEntries;
 
 
@@ -33,6 +34,14 @@ public class Entry {
 
 
 	public void setAttribute(final String key, Object value) {
+		setAttributeObject(key, value);
+	}
+
+	public void setAttribute(Class<?> valueClass, Object value) {
+		setAttributeObject(valueClass, value);
+	}
+	
+	private void setAttributeObject(final Object key, Object value) {
 		if(attributes.containsKey(key)){
 			if(value != attributes.get(key)) {
 				LogUtils.warn("Entry: " + getName());
@@ -46,6 +55,11 @@ public class Entry {
 	
 	public Object getAttribute(final String key) {
 		return attributes.get(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(final Class<T> key) {
+		return (T)attributes.get(key);
 	}
 
 	public void addChild(Entry entry) {
@@ -114,6 +128,10 @@ public class Entry {
 		return attributes.remove(key);
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T removeAttribute(Class<T> valueClass) {
+		return (T) attributes.remove(valueClass);
+	}
 
 	public boolean hasChildren() {
 		return ! childEntries.isEmpty();
