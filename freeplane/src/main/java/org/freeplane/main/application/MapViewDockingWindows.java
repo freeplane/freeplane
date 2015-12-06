@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -483,5 +484,19 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			if (!(window instanceof FloatingWindow)) 
 				setTabAreaInvisiblePolicies(window);
 		}
+	}
+
+	public List<? extends Component> getMapViewVector() {
+		final ArrayList<Component> orderedMapViews = new ArrayList<>(mapViews.size());
+		addMapViews(orderedMapViews, rootWindow);
+		return orderedMapViews;
+	}
+
+	private void addMapViews(ArrayList<Component> orderedMapViews, DockingWindow window) {
+		if(window instanceof View)
+			orderedMapViews.add(getContainedMapView((View) window));
+		else
+			for (int windowIndex = 0; windowIndex < window.getChildWindowCount(); windowIndex++)
+				addMapViews(orderedMapViews, window.getChildWindow(windowIndex));
 	}
 }

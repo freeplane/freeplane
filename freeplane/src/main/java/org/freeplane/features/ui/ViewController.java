@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.Icon;
@@ -133,4 +134,5 @@ public interface ViewController {
 	public void nextMapView();
 	public Component getCurrentRootComponent();
 	public Component getMenuComponent();
+	public List<? extends Component> getMapViewVector();
 }

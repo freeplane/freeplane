@@ -39,6 +39,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
@@ -418,4 +419,10 @@ class ApplicationViewController extends FrameController {
 	public Component getMenuComponent() {
 		return frame;
 	}
+
+	@Override
+	public List<? extends Component> getMapViewVector() {
+		return mapViewWindows.getMapViewVector();
+	}
+
 }

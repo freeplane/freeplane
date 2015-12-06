@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -144,11 +145,13 @@ abstract public class FrameController implements ViewController {
 	public static Icon dateTimeIcon;
 	public static Icon linkIcon;
 	public static Icon localLinkIcon;
+	private final IMapViewManager mapViewManager;
 
 	public FrameController(Controller controller,  final IMapViewManager mapViewManager,
 	                      final String propertyKeyPrefix) {
 		super();
 		this.controller = controller;
+		this.mapViewManager = mapViewManager;
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if(textIcon == null){
 			FrameController.textIcon = new ImageIcon(resourceController.getResource("/images/text.png"));
@@ -647,4 +650,9 @@ abstract public class FrameController implements ViewController {
 	    return false;
     }
 
+
+	@Override
+	public List<? extends Component> getMapViewVector() {
+		return mapViewManager.getMapViewVector();
+	}
 }
