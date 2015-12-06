@@ -45,8 +45,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 
-import javafx.scene.control.MenuBuilder;
-
 /**
  * @author Dimitry Polivaev
  * 24.12.2012
@@ -233,10 +231,6 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public Container getViewport() {
-		throw new RuntimeException("Method not implemented");
-	}
-
-	public void updateMenus(MenuBuilder menuBuilder) {
 		throw new RuntimeException("Method not implemented");
 	}
 

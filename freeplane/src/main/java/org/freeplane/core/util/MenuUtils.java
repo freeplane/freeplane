@@ -45,8 +45,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
-import javafx.scene.control.MenuBuilder;
-
 /** Utilities for dealing with the Freeplane menu: In scripts available as "global variable" menuUtils. */
 public class MenuUtils {
 	/** The userObject type for createMenuEntryTree(). */
