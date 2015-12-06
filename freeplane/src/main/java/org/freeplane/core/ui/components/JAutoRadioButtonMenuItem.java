@@ -20,7 +20,6 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
@@ -28,19 +27,16 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
 
 /**
  * @author Dimitry Polivaev
  * Feb 23, 2009
  */
-public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements PropertyChangeListener,
-        IKeyBindingManager {
+public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements IKeyBindingManager {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoRadioButtonMenuItem(final IFreeplaneAction a) {
 		super();
@@ -56,19 +52,8 @@ public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements Pr
 
 	@Override
 	protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {
-		defaultPropertyChanegListener = super.createActionPropertyChangeListener(a);
-		return this;
+		return new PropertyChangeListenerWithSelectionSupport(this, super.createActionPropertyChangeListener(a));
 	};
-
-	public void propertyChange(final PropertyChangeEvent e) {
-		if (e.getPropertyName().equals(SelectableAction.SELECTION_PROPERTY)) {
-			final Boolean isSelected = (Boolean) e.getNewValue();
-			setSelected(isSelected.booleanValue());
-		}
-		else {
-			defaultPropertyChanegListener.propertyChange(e);
-		}
-	}
 
 	private boolean isKeyBindingProcessed = false;
 
