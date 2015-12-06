@@ -24,6 +24,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +54,7 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -313,19 +319,36 @@ public class LinkController extends SelectionController implements IExtension {
 	protected static final String CLOSE = "CLOSE";
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
 
-		final InputMap inputMap = arrowLinkPopup.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		final ActionMap actionMap = arrowLinkPopup.getActionMap();
-		inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), CANCEL);
-		actionMap.put(CANCEL, new ClosePopupAction(CANCEL));
-		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
-		final KeyStroke close = KeyStroke.getKeyStroke(enterConfirms ? "ENTER" : "alt ENTER");
-		inputMap.put(close, CLOSE);
-		actionMap.put(CLOSE, new ClosePopupAction(CLOSE));
+		registerCloseActions(arrowLinkPopup);
 
 		final NodeModel source = link.getSource();
 		final NodeModel target = link.getTarget();
 		addLinks(arrowLinkPopup, source);
 		addLinks(arrowLinkPopup, target);
+	}
+
+	private void registerCloseActions(final JComponent arrowLinkPopup) {
+		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
+			
+			@Override
+			public void hierarchyChanged(HierarchyEvent e) {
+				if(arrowLinkPopup.isDisplayable()) {
+					arrowLinkPopup.removeHierarchyListener(this);
+					final JRootPane rootPane = arrowLinkPopup.getRootPane();
+					final InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+					final ActionMap actionMap = rootPane.getActionMap();
+					final ClosePopupAction closeAction = new ClosePopupAction(CLOSE);
+					final ClosePopupAction cancelAction = new ClosePopupAction(CANCEL);
+					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelAction);
+					actionMap.put(cancelAction, cancelAction);
+					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.ALT_DOWN_MASK), closeAction);
+					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
+					if(enterConfirms)
+						inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), closeAction);
+					actionMap.put(closeAction, closeAction);
+				}
+			}
+		});
 	}
 
 	public Color getColor(final ConnectorModel model) {
