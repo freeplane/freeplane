@@ -253,6 +253,10 @@ public abstract class ResourceController {
 		setProperty(property, Boolean.toString(value));
 	}
 
+	public void setProperty(String name, int value) {
+		setProperty(name, Integer.toString(value));
+	}
+
 	abstract public void setProperty(final String property, final String value);
 	
 	/** adds properties from url to properties. Existing properties in resultProps will be overridden.
