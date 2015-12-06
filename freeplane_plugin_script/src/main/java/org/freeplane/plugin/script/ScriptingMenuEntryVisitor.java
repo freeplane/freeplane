@@ -149,7 +149,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 			String longTitle = createTooltip(title, executionMode);
 			String menuItemTitle = hasMultipleExcecutionModes(metaData) ? longTitle : title;
 			AFreeplaneAction action = new ExecuteScriptAction(scriptName, menuItemTitle, scriptPath, executionMode,
-				metaData.cacheContent(), metaData.getPermissions());
+				metaData.getPermissions());
 			action.putValue(Action.SHORT_DESCRIPTION, longTitle);
 			action.putValue(Action.LONG_DESCRIPTION, longTitle);
 			modeController.addAction(action);

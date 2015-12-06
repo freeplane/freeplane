@@ -65,7 +65,6 @@ class ScriptingConfiguration {
 	static class ScriptMetaData {
 		private final TreeMap<ExecutionMode, String> executionModeLocationMap = new TreeMap<ExecutionMode, String>();
 		private final TreeMap<ExecutionMode, String> executionModeTitleKeyMap = new TreeMap<ExecutionMode, String>();
-		private boolean cacheContent = false;
 		private final String scriptName;
 		private ScriptingPermissions permissions;
 
@@ -90,14 +89,6 @@ class ScriptingConfiguration {
 		public String getTitleKey(final ExecutionMode executionMode) {
 			final String key = executionModeTitleKeyMap.get(executionMode);
 			return key == null ? getExecutionModeKey(executionMode) : key;
-		}
-
-		public boolean cacheContent() {
-			return cacheContent;
-		}
-
-		public void setCacheContent(final boolean cacheContent) {
-			this.cacheContent = cacheContent;
 		}
 
 		public String getScriptName() {
@@ -308,25 +299,14 @@ class ScriptingConfiguration {
 	ScriptMetaData analyseScriptContent(final String content, final String scriptName) {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
 		setExecutionModes(content, metaData);
-		setCacheMode(content, metaData);
 		return metaData;
 	}
 	
 	private ScriptMetaData createMetaData(final String scriptName, final Script scriptConfig) {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
 		metaData.addExecutionMode(scriptConfig.executionMode, scriptConfig.menuLocation, scriptConfig.menuTitleKey);
-//		metaData.setCacheContent(true);
 		metaData.setPermissions(scriptConfig.permissions);
 		return metaData;
-	}
-
-	private void setCacheMode(final String content, final ScriptMetaData metaData) {
-		final Pattern cacheScriptPattern = ScriptingConfiguration
-		    .makeCaseInsensitivePattern("@CacheScriptContent\\s*\\(\\s*(true|false)\\s*\\)");
-		final Matcher matcher = cacheScriptPattern.matcher(content);
-		if (matcher.find()) {
-			metaData.setCacheContent(new Boolean(matcher.group(1)));
-		}
 	}
 
 	public static void setExecutionModes(final String content, final ScriptMetaData metaData) {

@@ -55,7 +55,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	private final IScript script;
 
 	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String scriptFile,
-	                           final ExecutionMode mode, final boolean cacheContent, ScriptingPermissions permissions) {
+	                           final ExecutionMode mode, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
