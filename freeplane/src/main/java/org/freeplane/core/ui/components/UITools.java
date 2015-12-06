@@ -173,6 +173,10 @@ public class UITools {
 		return currentRootComponent instanceof Frame ? (Frame)currentRootComponent : JOptionPane.getFrameForComponent(currentRootComponent);
 	}
 
+	public static Frame getFrame() {
+		return getCurrentFrame();
+	}
+
 	static public Component getMenuComponent(){
 		return Controller.getCurrentController().getViewController().getMenuComponent();
 	}
