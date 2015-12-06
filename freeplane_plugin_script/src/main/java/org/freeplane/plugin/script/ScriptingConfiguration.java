@@ -61,6 +61,7 @@ import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
  * @author Volker Boerchers
  */
 class ScriptingConfiguration {
+	private static final ExecutionMode DEFAULT_EXECUTION_MODE = ExecutionMode.ON_SELECTED_NODE;
 	static class ScriptMetaData {
 		private final TreeMap<ExecutionMode, String> executionModeLocationMap = new TreeMap<ExecutionMode, String>();
 		private final TreeMap<ExecutionMode, String> executionModeTitleKeyMap = new TreeMap<ExecutionMode, String>();
@@ -70,9 +71,6 @@ class ScriptingConfiguration {
 
 		ScriptMetaData(final String scriptName) {
 			this.scriptName = scriptName;
-			executionModeLocationMap.put(ExecutionMode.ON_SINGLE_NODE, null);
-			executionModeLocationMap.put(ExecutionMode.ON_SELECTED_NODE, null);
-			executionModeLocationMap.put(ExecutionMode.ON_SELECTED_NODE_RECURSIVELY, null);
 		}
 
 		public Set<ExecutionMode> getExecutionModes() {
@@ -83,14 +81,6 @@ class ScriptingConfiguration {
 			executionModeLocationMap.put(executionMode, location);
 			if (titleKey != null)
 				executionModeTitleKeyMap.put(executionMode, titleKey);
-		}
-
-		public void removeExecutionMode(final ExecutionMode executionMode) {
-			executionModeLocationMap.remove(executionMode);
-		}
-
-		public void removeAllExecutionModes() {
-			executionModeLocationMap.clear();
 		}
 
 		protected String getMenuLocation(final ExecutionMode executionMode) {
@@ -317,10 +307,6 @@ class ScriptingConfiguration {
 	// not private to enable tests
 	ScriptMetaData analyseScriptContent(final String content, final String scriptName) {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
-		if (ScriptingConfiguration.firstCharIsEquals(content)) {
-			// would make no sense
-			metaData.removeExecutionMode(ExecutionMode.ON_SINGLE_NODE);
-		}
 		setExecutionModes(content, metaData);
 		setCacheMode(content, metaData);
 		return metaData;
@@ -328,7 +314,6 @@ class ScriptingConfiguration {
 	
 	private ScriptMetaData createMetaData(final String scriptName, final Script scriptConfig) {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
-		metaData.removeAllExecutionModes();
 		metaData.addExecutionMode(scriptConfig.executionMode, scriptConfig.menuLocation, scriptConfig.menuTitleKey);
 //		metaData.setCacheContent(true);
 		metaData.setPermissions(scriptConfig.permissions);
@@ -351,11 +336,11 @@ class ScriptingConfiguration {
 		final Pattern pOuter = makeCaseInsensitivePattern("@ExecutionModes\\(\\{(" + modeDefs + ")\\}\\)");
 		final Matcher mOuter = pOuter.matcher(content.replaceAll("\\s+", ""));
 		if (!mOuter.find()) {
+			metaData.addExecutionMode(DEFAULT_EXECUTION_MODE, null, null);
 //			System.err.println(metaData.getScriptName() + ": '" + pOuter + "' did not match "
 //			        + content.replaceAll("\\s+", ""));
 			return;
 		}
-		metaData.removeAllExecutionModes();
 		final Pattern pattern = makeCaseInsensitivePattern(modeDef);
 		final String[] locations = mOuter.group(1).split(",");
 		for (String match : locations) {
@@ -370,10 +355,6 @@ class ScriptingConfiguration {
 				continue;
 			}
 		}
-	}
-
-	private static boolean firstCharIsEquals(final String content) {
-		return content.length() == 0 ? false : content.charAt(0) == '=';
 	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */

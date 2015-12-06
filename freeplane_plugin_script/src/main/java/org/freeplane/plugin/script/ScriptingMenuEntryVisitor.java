@@ -16,7 +16,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
@@ -24,35 +23,28 @@ import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
 
 public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListener {
 	private ScriptingConfiguration configuration;
-	private ExecutionModeSelector modeSelector;
 	private final HashSet<String> registeredLocations = new HashSet<String>();
 	private EntryNavigator entryNavigator;
 	private ModeController modeController;
 
-	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ExecutionModeSelector modeSelector, ModeController modeController) {
+	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ModeController modeController) {
 		this.configuration = configuration;
-		this.modeSelector = modeSelector;
 		this.modeController = modeController;
 	}
 
 	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
 		if (entryNavigator == null) {
 			entryNavigator = new EntryNavigator();
-			final Entry userScriptsEntry = scriptingEntry.getParent();
-			// TODO: read this mapping from config file
-			entryNavigator.addAlias("main_menu_scripting" + "/scripts", userScriptsEntry.getPath());
-			entryNavigator.addAlias("main_menu_scripting", userScriptsEntry.getParent().getPath());
-			entryNavigator.addAlias("/menu_bar/help", "main_menu/help/help_misc");
+			entryNavigator.addAlias("main_menu_scripting" + "/scripts", scriptingEntry.getPath());
+			entryNavigator.addAlias("main_menu_scripting", scriptingEntry.getParent().getPath());
 			entryNavigator.addAlias("/menu_bar", "main_menu");
 			entryNavigator.addAlias("node_popup_scripting", "node_popup/node_popup_scripting");
+			// TODO: read further mapping from a config file
 		}
 		return entryNavigator;
     }
 
-	/** builds menu entries for scripts without a special menu location.
-	 * Add entry for all scripts and execution modes.
-	 * Scripts that don't support selected exec mode are made invisible in buildPhaseFinished()  
-	 */
+	/** builds menu entries for scripts without a special menu location. */
 	@Override
 	public void visit(Entry target) {
 		initEntryNavigator(target);
@@ -73,11 +65,8 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 
 	@Override
 	public void buildPhaseFinished(Phase actions, Entry target) {
-		if (target.getParent() == null) {
-			if (actions == Phase.ACTIONS)
-				buildEntriesWithSpecialMenuLocation(target);
-			else if (actions == Phase.UI)
-				modeSelector.updateMenus();
+		if (target.getParent() == null && actions == Phase.ACTIONS) {
+			buildEntriesWithSpecialMenuLocation(target);
 		}
 	}
 
@@ -107,6 +96,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private Entry findOrCreateEntry(Entry rootEntry, final String path) {
 		Entry entry = entryNavigator.findChildByPath(rootEntry, path);
 		if (entry == null) {
+			// System.err.println("creating submenu " + path);
 			Entry parent = findOrCreateEntry(rootEntry, ScriptingMenuUtils.parentLocation(path));
 			Entry menuEntry = new Entry();
 			menuEntry.setName(lastPathElement(path));
@@ -145,6 +135,8 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private Entry createEntry(AFreeplaneAction action) {
 	    final EntryAccessor entryAccessor = new EntryAccessor();
 		final Entry scriptEntry = new Entry();
+		scriptEntry.setName(action.getKey());
+		// System.err.println("registering " + scriptEntry.getName());
 		entryAccessor.setAction(scriptEntry, action);
 		return scriptEntry;
     }
@@ -154,11 +146,12 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 		final String key = ExecuteScriptAction.makeMenuItemKey(scriptName, executionMode);
 		final AFreeplaneAction alreadyRegisteredAction = modeController.getAction(key);
 		if (alreadyRegisteredAction == null) {
-			AFreeplaneAction action = new ExecuteScriptAction(scriptName, title, scriptPath, executionMode,
+			String longTitle = createTooltip(title, executionMode);
+			String menuItemTitle = hasMultipleExcecutionModes(metaData) ? longTitle : title;
+			AFreeplaneAction action = new ExecuteScriptAction(scriptName, menuItemTitle, scriptPath, executionMode,
 				metaData.cacheContent(), metaData.getPermissions());
-			String tooltip = createTooltip(title, metaData);
-			action.putValue(Action.SHORT_DESCRIPTION, tooltip);
-			action.putValue(Action.LONG_DESCRIPTION, tooltip);
+			action.putValue(Action.SHORT_DESCRIPTION, longTitle);
+			action.putValue(Action.LONG_DESCRIPTION, longTitle);
 			modeController.addAction(action);
 			return action;
 		}
@@ -167,23 +160,24 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 		}
     }
 
-	private String createTooltip(String title, ScriptMetaData metaData) {
-		final StringBuffer tooltip = new StringBuffer("<html>") //
-		    .append(TextUtils.format(ScriptingMenuUtils.LABEL_AVAILABLE_MODES_TOOLTIP, title)) //
-		    .append("<ul>");
-		for (ExecutionMode executionMode : metaData.getExecutionModes()) {
-			tooltip.append("<li>");
-			tooltip.append(getTitleForExecutionMode(executionMode));
-			tooltip.append("</li>");
-		}
-		tooltip.append("</ul>");
-		return tooltip.toString();
+	private boolean hasMultipleExcecutionModes(ScriptMetaData metaData) {
+		return metaData.getExecutionModes().size() > 1;
 	}
 
-    private String getTitleForExecutionMode(ExecutionMode executionMode) {
-        final String scriptLabel = TextUtils.getText(ScriptingMenuUtils.LABEL_SCRIPT);
-        return TextUtils.format(ScriptingConfiguration.getExecutionModeKey(executionMode), scriptLabel);
-    }
+	private String createTooltip(String title, ExecutionMode mode) {
+		return TextUtils.format(executionMode2TranslationProperty(mode), title);
+	}
+
+	private String executionMode2TranslationProperty(ExecutionMode mode) {
+		switch (mode) {
+			case ON_SINGLE_NODE:
+				return "ExecuteScriptOnSingleNode.text";
+			case ON_SELECTED_NODE_RECURSIVELY:
+				return "ExecuteScriptOnSelectedNodeRecursively.text";
+			default:
+				return "ExecuteScriptOnSelectedNode.text";
+		}
+	}
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {

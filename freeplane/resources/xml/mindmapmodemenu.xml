@@ -431,6 +431,12 @@
 			<Entry name="RemoveEncryption" />
 			<Entry builder="separator" />
 			<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
+			<Entry name="scripting" plugin="org.freeplane.plugin.script" builder="userScripts" />
+			<Entry name="ExecuteScriptForSelectionAction" />
+			<Entry name="ExecuteScriptForAllNodes" />
+			<Entry name="ScriptEditor" />
+			<Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
+			<Entry builder="separator" />
 			<Entry name="SetAcceleratorOnNextClickAction" />
 			<Entry name="acceleratorPresets">
 				<Entry name="load_accelerator_presets">
@@ -439,22 +445,6 @@
 				<Entry name="SaveAcceleratorPresetsAction" />
 			</Entry>
 			<Entry name="SetAcceleratorOnNextClickAction" priority="Top" />
-			<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
-			<Entry name="scripting" plugin="org.freeplane.plugin.script">
-				<Entry builder="radio_button_group" selectedActionProperty="ScriptsRunToggleAction.default">
-					<Entry name="ScriptsRunToggleAction.ON_SINGLE_NODE" />
-					<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE" />
-					<Entry name="ScriptsRunToggleAction.ON_SELECTED_NODE_RECURSIVELY" />
-				</Entry>
-				<Entry name="userScripts" builder="userScripts" />
-				<Entry name="ExecuteScriptForSelectionAction" />
-				<Entry name="ExecuteScriptForAllNodes" />
-				<Entry name="ScriptEditor" />
-			</Entry>
-			<Entry name="formula.menuname" plugin="org.freeplane.plugin.formula">
-				<Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
-				<Entry builder="separator" />
-			</Entry>
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />

@@ -54,7 +54,6 @@ import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
-import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.addons.ManageAddOnsAction;
@@ -134,7 +133,6 @@ class ScriptingRegistration {
 	}
 
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
-	private ExecutionModeSelector modeSelector = new ExecutionModeSelector();
 
 	public ScriptingRegistration(ModeController modeController) {
 		register(modeController);
@@ -193,15 +191,8 @@ class ScriptingRegistration {
         		dialog.install(url);
         	}
         });
-		addModeSelectors(modeController);
         updateMenus(modeController, new ScriptingConfiguration());
     }
-
-	private void addModeSelectors(ModeController modeController) {
-		for (ExecutionMode mode : ExecutionMode.values()) {
-			modeController.addAction(new ScriptsRunToggleAction(modeSelector, mode));
-		}
-	}
 
     private void addPropertiesToOptionPanel() {
         final URL preferences = this.getClass().getResource("preferences.xml");
@@ -233,8 +224,7 @@ class ScriptingRegistration {
     }
 
     private void updateMenus(ModeController modeController, final ScriptingConfiguration configuration) {
-		ScriptingMenuEntryVisitor builder = new ScriptingMenuEntryVisitor(configuration,
-		    modeSelector, modeController);
+		ScriptingMenuEntryVisitor builder = new ScriptingMenuEntryVisitor(configuration, modeController);
 		modeController.addUiBuilder(Phase.ACTIONS, "userScripts", builder, EntryVisitor.CHILD_ENTRY_REMOVER);
 		modeController.getUserInputListenerFactory().addBuildPhaseListener(builder); 
     }
