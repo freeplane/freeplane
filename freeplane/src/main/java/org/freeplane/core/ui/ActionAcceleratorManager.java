@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -69,12 +70,38 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	public void loadDefaultAcceleratorPresets() {
 	    try {
-			if (ResourceController.getResourceController().getFreeplaneUserDirectory() != null)
-				loadAcceleratorPresets(new FileInputStream(getPresetsFile()));
+			if (ResourceController.getResourceController().getFreeplaneUserDirectory() != null) {
+				final File defaultPresetsFile = getPresetsFile();
+				if(defaultPresetsFile.exists()) {
+					try (final FileInputStream inputStream = new FileInputStream(defaultPresetsFile)){
+						loadAcceleratorPresets(inputStream);
+					}
+				}
+				else {
+					updateAcceleratorsFromUserProperties();
+				}
+			}
 		}
 		catch (IOException ex) {
 		}
     }
+
+	private void updateAcceleratorsFromUserProperties() {
+		final Properties properties = ResourceController.getResourceController().getProperties();
+		Iterator<Entry<Object, Object>> propertyIterator = properties.entrySet().iterator();
+		while (propertyIterator.hasNext()){
+			Entry<Object, Object> property = propertyIterator.next();
+			final String key = (String)property.getKey();
+			final String oldPrefix = "acceleratorFor";
+			if(key.startsWith(oldPrefix)){
+				String newKey = SHORTCUT_PROPERTY_PREFIX +  key.substring(oldPrefix.length()).replaceFirst("\\$", "").replaceFirst("\\$\\d", "");
+				String value = (String)property.getValue();
+				loadAcceleratorPreset(newKey, value);
+				propertyIterator.remove();
+			}
+		}
+		saveAcceleratorPresets();
+	}
 
 	/***********************************************************************************
 	 * METHODS
@@ -235,6 +262,10 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			keysetProps.setProperty(shortcutKey, toString(newAccelerator));
 			LogUtils.info("created shortcut '" + toString(newAccelerator) + "' for action '" + action+ "', shortcutKey '" + shortcutKey + "' (" + ActionUtils.getActionTitle(action) + ")");
 		}
+		saveAcceleratorPresets();
+	}
+
+	private void saveAcceleratorPresets() {
 		try {
 			if(!getPresetsFile().exists()) {
 					getPresetsFile().createNewFile();
@@ -246,11 +277,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
  	public File getPresetsFile() {
- 		File ribbonsDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory());
-		if(!ribbonsDir.exists()) {
-			ribbonsDir.mkdirs();
+ 		File userDirectory = new File(ResourceController.getResourceController().getFreeplaneUserDirectory());
+		if(!userDirectory.exists()) {
+			userDirectory.mkdirs();
 		}
-		return new File(ribbonsDir, "accelerator.properties");
+		return new File(userDirectory, "accelerator.properties");
  	}
 
  	public void loadAcceleratorPresets(final InputStream in) {
@@ -260,48 +291,52 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			for (final Entry<Object, Object> property : prop.entrySet()) {
 				final String shortcutKey = (String) property.getKey();
 				final String keystrokeString = (String) property.getValue();
-				if (!shortcutKey.startsWith(SHORTCUT_PROPERTY_PREFIX)) {
-					LogUtils.warn("wrong property key " + shortcutKey);
-					continue;
-				}
-				final int pos = shortcutKey.indexOf("/", SHORTCUT_PROPERTY_PREFIX.length());
-				if (pos <= 0) {
-					LogUtils.warn("wrong property key " + shortcutKey);
-					continue;
-				}
-				final String modeName = shortcutKey.substring(SHORTCUT_PROPERTY_PREFIX.length(), pos);
-				final String itemKey = shortcutKey.substring(pos + 1);
-				Controller controller = Controller.getCurrentController();
-				final ModeController modeController = controller.getModeController(modeName);
-				if (modeController != null) {
-    				final AFreeplaneAction action = modeController.getAction(itemKey);
-    				if (action == null) {
-    					LogUtils.warn("wrong key in " + shortcutKey);
-    					continue;
-    				}
-    				final KeyStroke keyStroke;
-    				if (!keystrokeString.equals("")) {
-    					keyStroke = UITools.getKeyStroke(parseKeyStroke(keystrokeString).toString());
-						final AFreeplaneAction oldAction = accelerators.get(key(modeController, keyStroke));
-    					if (oldAction != null) {
-							setAccelerator(modeController, oldAction, null);
-    						final Object key = oldAction.getKey();
-    						final String oldShortcutKey = getPropertyKey(key.toString());
-    						keysetProps.setProperty(oldShortcutKey, "");
-    					}
-    				}
-    				else {
-    					keyStroke = null;
-    				}
-					setAccelerator(modeController, action, keyStroke);
-				}
-				keysetProps.setProperty(shortcutKey, keystrokeString);
+				loadAcceleratorPreset(shortcutKey, keystrokeString);
 			}
 		}
 		catch (final IOException e) {
 			LogUtils.warn("shortcut presets not stored: "+e.getMessage());
 		}
 	}
+
+ 	private void loadAcceleratorPreset(final String shortcutKey, final String keystrokeString) {
+ 		if (!shortcutKey.startsWith(SHORTCUT_PROPERTY_PREFIX)) {
+ 			LogUtils.warn("wrong property key " + shortcutKey);
+ 			return;
+ 		}
+ 		final int pos = shortcutKey.indexOf("/", SHORTCUT_PROPERTY_PREFIX.length());
+ 		if (pos <= 0) {
+ 			LogUtils.warn("wrong property key " + shortcutKey);
+ 			return;
+ 		}
+ 		final String modeName = shortcutKey.substring(SHORTCUT_PROPERTY_PREFIX.length(), pos);
+ 		final String itemKey = shortcutKey.substring(pos + 1);
+ 		Controller controller = Controller.getCurrentController();
+ 		final ModeController modeController = controller.getModeController(modeName);
+ 		if (modeController != null) {
+ 			final AFreeplaneAction action = modeController.getAction(itemKey);
+ 			if (action == null) {
+ 				LogUtils.warn("wrong key in " + shortcutKey);
+ 				return;
+ 			}
+ 			final KeyStroke keyStroke;
+ 			if (!keystrokeString.equals("")) {
+ 				keyStroke = UITools.getKeyStroke(parseKeyStroke(keystrokeString).toString());
+ 				final AFreeplaneAction oldAction = accelerators.get(key(modeController, keyStroke));
+ 				if (oldAction != null) {
+ 					setAccelerator(modeController, oldAction, null);
+ 					final Object key = oldAction.getKey();
+ 					final String oldShortcutKey = getPropertyKey(key.toString());
+ 					keysetProps.setProperty(oldShortcutKey, "");
+ 				}
+ 			}
+ 			else {
+ 				keyStroke = null;
+ 			}
+ 			setAccelerator(modeController, action, keyStroke);
+ 		}
+ 		keysetProps.setProperty(shortcutKey, keystrokeString);
+ 	}
 
 	public void storeAcceleratorPreset(OutputStream out) {
  		try {
