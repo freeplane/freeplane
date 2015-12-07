@@ -219,10 +219,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return menuBar;
 	}
 
-//	public MenuBuilder getMenuBuilder() {
-//		return menuBuilder;
-//	}
-
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers() {
 		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
 	}
