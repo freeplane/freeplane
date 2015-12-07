@@ -16,6 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -145,9 +146,9 @@ public class AddOnDetailsPanel extends JPanel {
 
     private String formatShortcut(final Script script) {
         final String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode);
-        final String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey);
-        final String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
-        final KeyStroke keyStroke = UITools.getKeyStroke(oldShortcut != null ? oldShortcut : script.keyboardShortcut);
+        final ActionAcceleratorManager acceleratorManager = Controller.getCurrentModeController().getUserInputListenerFactory().getAcceleratorManager();
+        final KeyStroke userDefinedKeystroke = acceleratorManager.getAccelerator(menuItemKey);
+        final KeyStroke keyStroke = userDefinedKeystroke != null ?   userDefinedKeystroke : UITools.getKeyStroke(script.keyboardShortcut);
         return UITools.keyStrokeToString(keyStroke);
     }
 

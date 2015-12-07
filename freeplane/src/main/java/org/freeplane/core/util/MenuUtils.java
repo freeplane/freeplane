@@ -276,17 +276,6 @@ public class MenuUtils {
 		}
 		return null;
 	}
-
-	/** that's the key that is used to define keyboard accelerators, e.g. found in the auto.properties. */
-	public static String makeAcceleratorKey(String menuItemKey) {
-		return "acceleratorForMindMap/$" + menuItemKey + "$0";
-	}
-
-	/** "optionalLeadingGarbage$AddConnectorAction$0" -> "AddConnectorAction" */
-	private static String makeActionNameFromMenuItemKey(String menuItemKey) {
-		return menuItemKey.replaceFirst(".*\\$(.*)\\$0", "$1");
-	}
-
 	/**
 	 * to be used from scripts to execute menu items. Find out the menuItemKey
 	 * of a menu item with the devtools add-on. It contains a tool for that.
@@ -296,7 +285,7 @@ public class MenuUtils {
 		final Entry genericMenuStructure = genericMenuStructure();
 		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
 		for (String menuItemKey : menuItemKeys) {
-			Entry menuItem = genericMenuStructure.findEntry(makeActionNameFromMenuItemKey(menuItemKey));
+			Entry menuItem = genericMenuStructure.findEntry(menuItemKey);
 			final AFreeplaneAction action = entryAccessor.getAction(menuItem);
 			if (action == null) {
 				UITools.errorMessage(TextUtils.format("MenuUtils.invalid_menuitem", menuItemKey));
@@ -310,7 +299,7 @@ public class MenuUtils {
 
 	/** returns the icon for a menuItemKey or null if it has none. */
 	public static Icon getMenuItemIcon(String menuItemKey) {
-		Entry menuItem = genericMenuStructure().findEntry(makeActionNameFromMenuItemKey(menuItemKey));
+		Entry menuItem = genericMenuStructure().findEntry(menuItemKey);
 		if (menuItem == null)
 			return null;
 		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());

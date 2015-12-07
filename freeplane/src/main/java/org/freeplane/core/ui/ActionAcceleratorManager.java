@@ -178,9 +178,14 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
  	public KeyStroke getAccelerator(AFreeplaneAction action) {
-		KeyStroke ks = actionMap.get(key(action.getKey()));
- 		return ks;
+		final String actionKey = action.getKey();
+		return getAccelerator(actionKey);
  	}
+
+	public KeyStroke getAccelerator(final String actionKey) {
+		KeyStroke ks = actionMap.get(key(actionKey));
+ 		return ks;
+	}
 
  	public void addAcceleratorChangeListener(IAcceleratorChangeListener changeListener) {
 		synchronized (changeListeners) {
