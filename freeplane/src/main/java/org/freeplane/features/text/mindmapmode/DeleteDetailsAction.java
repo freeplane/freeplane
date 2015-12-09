@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.DetailTextModel;
@@ -44,6 +45,8 @@ class DeleteDetailsAction extends AMultipleNodeAction {
 		if (detailText == null) {
 			return;
 		}
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		selection.keepNodePosition(selection.getSelected(), 0.0f, 0.0f);
 		final MTextController controller = MTextController.getController();
 		controller.setDetailsHidden(node, false);
 		controller.setDetails(node, null);

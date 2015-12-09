@@ -501,11 +501,19 @@ public class MTextController extends TextController {
 						modeController.undo();
 						modeController.resetRedo();
 					}
-					else
+					else {
+						keepNodePosition();
 						setDetailsHtmlText(nodeModel, null);
-				else
+					}
+				else{
+					keepNodePosition();					
 					setDetailsHtmlText(nodeModel, newText);
+				}
 				stop();
+			}
+
+			private void keepNodePosition() {
+				Controller.getCurrentController().getSelection().keepNodePosition(nodeModel, 0, 0);
 			}
 
 			public void split(final String newText, final int position) {
@@ -793,9 +801,15 @@ public class MTextController extends TextController {
 
 			public void ok(final String text) {
 				String processedText = makePlainIfNoFormattingFound(text);
+				keepNodePosition();
 				setGuessedNodeObject(nodeModel, processedText);
 				stop();
 			}
+			
+			private void keepNodePosition() {
+				Controller.getCurrentController().getSelection().keepNodePosition(nodeModel, 0, 0);
+			}
+
 
 			public void split(final String newText, final int position) {
 				splitNode(nodeModel, position, newText);
