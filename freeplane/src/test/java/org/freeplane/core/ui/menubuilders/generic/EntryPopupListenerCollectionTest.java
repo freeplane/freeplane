@@ -27,8 +27,8 @@ public class EntryPopupListenerCollectionTest {
 		EntryPopupListener  popupMenuListener = mock(EntryPopupListener.class);
 		entryEntryPopupListenerAccessor.addEntryPopupListener(popupMenuListener);
 		
-		entryEntryPopupListenerAccessor.childEntriesWillBecomeInvisible(entry);
-		verify(popupMenuListener).childEntriesWillBecomeInvisible(entry);
+		entryEntryPopupListenerAccessor.childEntriesHidden(entry);
+		verify(popupMenuListener).childEntriesHidden(entry);
 	}
 
 

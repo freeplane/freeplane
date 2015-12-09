@@ -243,6 +243,6 @@ public class JMenuItemBuilderTest {
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 		item.getPopupMenu().setVisible(true);
 		item.getPopupMenu().setVisible(false);
-		verify(popupListener).childEntriesWillBecomeInvisible(menuEntry);
+		verify(popupListener).childEntriesHidden(menuEntry);
 	}
 }

@@ -21,9 +21,9 @@ public class EntryPopupListenerCollection implements EntryPopupListener {
 		
 	}
 
-	public void childEntriesWillBecomeInvisible(Entry entry) {
+	public void childEntriesHidden(Entry entry) {
 		for(EntryPopupListener entryPopupListener : listeners)
-			entryPopupListener.childEntriesWillBecomeInvisible(entry);
+			entryPopupListener.childEntriesHidden(entry);
 	}
 
 	public void removeEntryPopupListener(EntryPopupListener entryPopupListener) {

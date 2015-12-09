@@ -48,7 +48,7 @@ public class SubtreeProcessorTest {
 		final Entry entry = new Entry();
 		final Entry child = new Entry();
 		entry.addChild(child);
-		childProcessor.childEntriesWillBecomeInvisible(entry);
+		childProcessor.childEntriesHidden(entry);
 		verify(processor, never()).destroy(child);
 	}
 
@@ -62,7 +62,7 @@ public class SubtreeProcessorTest {
 		entry.setAttribute(RecursiveMenuStructureProcessor.PROCESS_ON_POPUP, true);
 		final Entry child = new Entry();
 		entry.addChild(child);
-		childProcessor.childEntriesWillBecomeInvisible(entry);
+		childProcessor.childEntriesHidden(entry);
 		verify(processor).destroy(child);
 	}
 }

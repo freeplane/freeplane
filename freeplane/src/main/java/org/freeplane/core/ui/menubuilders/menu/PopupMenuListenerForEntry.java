@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -8,7 +9,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 
-class PopupMenuListenerForEntry implements PopupMenuListener {
+class PopupMenuListenerForEntry implements PopupMenuListener{
 	private final Entry entry;
 	private final EntryPopupListener popupListener;
 	final EntryAccessor entryAccessor = new EntryAccessor();
@@ -25,9 +26,14 @@ class PopupMenuListenerForEntry implements PopupMenuListener {
 
 	@Override
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		fireChildEntriesWillBecomeInvisible(entry);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				fireChildEntriesHidden(entry);
+			}
+		});
 	}
-
+	
 	private void fireChildEntriesWillBecomeVisible(final Entry entry) {
 		popupListener.childEntriesWillBecomeVisible(entry);
 		for (Entry child : entry.children())
@@ -35,11 +41,11 @@ class PopupMenuListenerForEntry implements PopupMenuListener {
 				fireChildEntriesWillBecomeVisible(child);
 	}
 
-	private void fireChildEntriesWillBecomeInvisible(final Entry entry) {
-	    popupListener.childEntriesWillBecomeInvisible(entry);
+	private void fireChildEntriesHidden(final Entry entry) {
+	    popupListener.childEntriesHidden(entry);
 		for (Entry child : entry.children())
 			if (!(entryAccessor.getComponent(child) instanceof JMenu))
-				fireChildEntriesWillBecomeInvisible(child);
+				fireChildEntriesHidden(child);
 	}
 
 	@Override

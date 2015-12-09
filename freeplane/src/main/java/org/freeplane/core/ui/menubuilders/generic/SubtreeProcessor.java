@@ -37,7 +37,7 @@ public class SubtreeProcessor implements EntryPopupListener {
     }
 
 	@Override
-	public void childEntriesWillBecomeInvisible(Entry entry) {
+	public void childEntriesHidden(Entry entry) {
 		if (RecursiveMenuStructureProcessor.shouldProcessOnEvent(entry)) {
 			destroyChildren(entry);
 		}

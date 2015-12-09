@@ -5,6 +5,6 @@ public interface EntryPopupListener {
 
 	void childEntriesWillBecomeVisible(Entry entry);
 
-	void childEntriesWillBecomeInvisible(Entry entry);
+	void childEntriesHidden(Entry entry);
 
 }

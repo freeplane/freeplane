@@ -14,6 +14,6 @@ public class ActionSelectListener implements EntryPopupListener {
 		}
 	}
 
-	public void childEntriesWillBecomeInvisible(final Entry target) {
+	public void childEntriesHidden(final Entry target) {
 	}
 }
