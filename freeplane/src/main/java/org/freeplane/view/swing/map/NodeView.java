@@ -73,8 +73,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.AutomaticLayoutController;
-import org.freeplane.features.styles.IStyle;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
