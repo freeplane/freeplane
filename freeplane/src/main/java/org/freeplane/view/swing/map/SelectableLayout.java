@@ -55,22 +55,10 @@ public class SelectableLayout implements INodeViewLayout {
 		final NodeView view = (NodeView) parent;
 		MapView map = view.getMap();
 		final MapViewLayout layoutType = map.getLayoutType();
-		if (layoutType == MapViewLayout.OUTLINE) {
+		if (layoutType == MapViewLayout.OUTLINE)
 			return OutlineLayout.getInstance();
-		}
-		final INodeViewLayout layout;
-		if (view.isRoot()) {
-			layout = VerticalRootNodeViewLayout.getInstance();
-		}
-		else {
-			if (view.isLeft()) {
-				layout =  LeftNodeViewLayout.getInstance();
-			}
-			else {
-				layout =  RightNodeViewLayout.getInstance();
-			}
-		}
-		return layout;
+		else
+		return NodeViewLayout.getInstance();
 	}
 
 	static LayoutManager getInstance() {

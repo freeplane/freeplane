@@ -26,21 +26,21 @@ import java.awt.Dimension;
 /**
  * @author Dimitry Polivaev
  */
-public class LeftNodeViewLayout implements INodeViewLayout{
-	static private LeftNodeViewLayout instance = null;
+public class NodeViewLayout implements INodeViewLayout{
+	static private NodeViewLayout instance = null;
 
 	static INodeViewLayout getInstance() {
-		if (LeftNodeViewLayout.instance == null) {
-			LeftNodeViewLayout.instance = new LeftNodeViewLayout();
+		if (NodeViewLayout.instance == null) {
+			NodeViewLayout.instance = new NodeViewLayout();
 		}
-		return LeftNodeViewLayout.instance;
+		return NodeViewLayout.instance;
 	}
 
     public void layoutContainer(final Container c) {
         NodeView view = (NodeView) c;
  		if(view.getContent() != null){
         	final VerticalNodeViewLayoutStrategy layoutData = new VerticalNodeViewLayoutStrategy(view);
-        	layoutData.layoutLeftSide();
+        	layoutData.calculateLayoutData();
         }
     }
 

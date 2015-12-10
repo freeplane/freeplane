@@ -65,21 +65,6 @@ class VerticalNodeViewLayoutStrategy {
 		}
 	}
 
-	public void layoutLeftSide() {
-		calculateLayoutData(new boolean[]{true});
-		applyLayoutToChildComponents();
-	}
-
-	public void layoutRightSide() {
-		calculateLayoutData(new boolean[]{false});
-		applyLayoutToChildComponents();
-	}
-
-	public void layoutLeftAndRightSide() {
-		calculateLayoutData(new boolean[]{true, false});
-		applyLayoutToChildComponents();
-	}
-	
 	private void setFreeChildNodes(final boolean isLeft) {
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeView child = (NodeView) view.getComponent(i);
@@ -87,10 +72,11 @@ class VerticalNodeViewLayoutStrategy {
 				this.isChildFreeNode[i] = child.isFree();
 		}
 	}
-	private void calculateLayoutData(final boolean[] sides) {
-		viewLevels = new SummaryLevels(view.getModel(), sides);
-		for(boolean isLeft : sides)
+	public void calculateLayoutData() {
+		viewLevels = new SummaryLevels(view.getModel());
+		for(boolean isLeft : viewLevels.sides)
 			calculateLayoutData(isLeft);
+		applyLayoutToChildComponents();
 	}
 	
 	private void calculateLayoutData(final boolean isLeft) {
