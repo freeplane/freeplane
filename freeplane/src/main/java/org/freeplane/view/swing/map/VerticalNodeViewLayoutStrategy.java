@@ -25,6 +25,7 @@ import java.awt.Dimension;
 
 import javax.swing.JComponent;
 
+import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
 
 class VerticalNodeViewLayoutStrategy {
@@ -35,7 +36,7 @@ class VerticalNodeViewLayoutStrategy {
 	private final int[] xCoordinates;
 	private final int[] yCoordinates;
 	private final boolean[] isChildFreeNode;
-	private ViewSummaryLevels viewLevels;
+	private SummaryLevels viewLevels;
 	private int left;
 	private int childContentHeight;
 	private int top;
@@ -87,7 +88,7 @@ class VerticalNodeViewLayoutStrategy {
 		}
 	}
 	private void calculateLayoutData(final boolean[] sides) {
-		viewLevels = new ViewSummaryLevels(view, sides);
+		viewLevels = new SummaryLevels(view.getModel(), sides);
 		for(boolean isLeft : sides)
 			calculateLayoutData(isLeft);
 	}
