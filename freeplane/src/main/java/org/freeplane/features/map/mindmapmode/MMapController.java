@@ -36,6 +36,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -65,6 +67,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -486,7 +489,9 @@ public class MMapController extends MapController {
 	}
 
 	public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
-		final List<NodeModel> mySelecteds = new ArrayList<NodeModel>(movedNodes);
+		final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodes);
+		removeSummaryNodes(movedNodeSet);
+		
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
             public int compare(final Object o1, final Object o2) {
                 final int i1 = ((Integer) o1).intValue();
@@ -494,14 +499,23 @@ public class MMapController extends MapController {
                 return i2 - i1;
             }
         };
-		if (mySelecteds.size() == 0)
+		if (movedNodeSet.size() == 0)
 			return;
-		Collection<NodeModel> selectedNodes = new ArrayList<NodeModel>(getSelectedNodes());
-		final NodeModel parent = mySelecteds.get(0).getParentNode();
+		final NodeModel oneMovedNode = movedNodeSet.iterator().next();
+		final boolean onTheLeft = oneMovedNode.isLeft();
+		final NodeModel parent = oneMovedNode.getParentNode();
         if (parent != null) {
+        	final SummaryLevels summaryLevels = new SummaryLevels(parent);
+        	for (NodeModel child : parent.getChildren()){
+        		if(child.isLeft() == onTheLeft && SummaryNode.isSummaryNode(child)) {
+					final Collection<NodeModel> summarizedNodes = summaryLevels.summarizedNodes(child);
+					if (movedNodeSet.containsAll(summarizedNodes))
+						movedNodeSet.add(child);
+				}
+        	}
             final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
             final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
-            for (final NodeModel node : mySelecteds) {
+            for (final NodeModel node : movedNodeSet) {
                 if (node.getParentNode() != parent) {
                     LogUtils.warn("Not all selected nodes have the same parent.");
                     return;
@@ -516,6 +530,7 @@ public class MMapController extends MapController {
                 }
                 last = newInt;
             }
+            Collection<NodeModel> selectedNodes = new ArrayList<NodeModel>(getSelectedNodes());
             for (final Integer position : range) {
                 final NodeModel node = sortedChildren.get(position.intValue());
                 moveSingleNodeInGivenDirection(node, direction);
@@ -528,7 +543,14 @@ public class MMapController extends MapController {
         }
     }
 
-    private int moveSingleNodeInGivenDirection(final NodeModel child, final int direction) {
+    private void removeSummaryNodes(Collection<NodeModel> nodes) {
+    	final Iterator<NodeModel> iterator = nodes.iterator();
+    	while(iterator.hasNext())
+    		if(SummaryNode.isSummaryNode(iterator.next()))
+    			iterator.remove();
+	}
+
+	private int moveSingleNodeInGivenDirection(final NodeModel child, final int direction) {
         final NodeModel parent = child.getParentNode();
         final int index = parent.getIndex(child);
         int newIndex = index;
