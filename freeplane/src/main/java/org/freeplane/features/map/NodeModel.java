@@ -653,4 +653,15 @@ public class NodeModel{
 	public boolean isCloneTreeNode(){
 		return parent != null && clones.size() > 1 && parent.clones.size() == clones.size();
 	}
+	
+	public NodeModel nextNode(int index, final boolean leftSide) {
+		for(int i = index + 1; i < getChildCount(); i++){
+			final NodeModel followingNode = getChildAt(i);
+			if(followingNode.isLeft() == leftSide) {
+				return followingNode;
+			}
+		}
+		return null;
+	}
+
 }
