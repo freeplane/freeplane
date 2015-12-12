@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.map;
 
+import static org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag.FIRST_GROUP;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
@@ -30,9 +32,19 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 @NodeHookDescriptor(hookName = "FirstGroupNode", onceForMap = false)
 public class FirstGroupNode extends PersistentNodeHook implements IExtension{
+	
+	public static class FirstGroupNodeFlag implements IExtension {
+		public static FirstGroupNodeFlag FIRST_GROUP = new FirstGroupNodeFlag();
+		private FirstGroupNodeFlag(){};
+	}
+
 	@Override
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
-		return this;
+		return FIRST_GROUP;
 	}
 	
+	@Override
+	protected Class<? extends IExtension> getExtensionClass() {
+		return FirstGroupNodeFlag.class;
+	}
 }

@@ -19,6 +19,9 @@
  */
 package org.freeplane.features.map.mindmapmode;
 
+import static org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag.FIRST_GROUP;
+import static org.freeplane.features.map.SummaryNode.SummaryNodeFlag.SUMMARY;
+
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Point;
@@ -59,6 +62,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
+import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -69,6 +73,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.map.SummaryNode.SummaryNodeFlag;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -189,12 +194,12 @@ public class MMapController extends MapController {
 		stopEditing();
 		final NodeModel newSummaryNode = addNewNode(parentNode, end+1, isLeft);
 		final SummaryNode summary = modeController.getExtension(SummaryNode.class);
-		summary.undoableActivateHook(newSummaryNode, summary);
+		summary.undoableActivateHook(newSummaryNode, SUMMARY);
 		AlwaysUnfoldedNode unfolded = modeController.getExtension(AlwaysUnfoldedNode.class);
 		unfolded.undoableActivateHook(newSummaryNode, unfolded);
 		final FirstGroupNode firstGroup = modeController.getExtension(FirstGroupNode.class);
 		final NodeModel firstNode = parentNode.getChildAt(start);
-		firstGroup.undoableActivateHook(firstNode, firstGroup);
+		firstGroup.undoableActivateHook(firstNode, FIRST_GROUP);
 		int level = summaryLevel;
 		for(int i = start+1; i <= end; i++){
 			NodeModel node = parentNode.getChildAt(i);

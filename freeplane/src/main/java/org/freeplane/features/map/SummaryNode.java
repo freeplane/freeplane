@@ -19,7 +19,10 @@
  */
 package org.freeplane.features.map;
 
+import static org.freeplane.features.map.SummaryNode.SummaryNodeFlag.SUMMARY;
+
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -34,6 +37,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "SummaryNode", onceForMap = false)
 public class SummaryNode extends PersistentNodeHook implements IExtension{
 	
+	public static class SummaryNodeFlag implements IExtension {
+		public static SummaryNodeFlag SUMMARY = new SummaryNodeFlag();
+		private SummaryNodeFlag(){};
+	}
+	
 	private ModeController modeController;
 
 	public static void install(){
@@ -42,7 +50,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	};
 	
 	static public boolean isFirstGroupNode(final NodeModel nodeModel) {
-		return nodeModel.containsExtension(FirstGroupNode.class);
+		return nodeModel.containsExtension(FirstGroupNodeFlag.class);
 	}
 	
 	
@@ -78,19 +86,22 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 			
 			@Override
 			public void mapChanged(MapChangeEvent event) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}
 
 	@Override
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
-		return this;
+		return SUMMARY;
 	}
 	
+	@Override
+	protected Class<? extends IExtension> getExtensionClass() {
+		return SummaryNodeFlag.class;
+	}
+
 	static public boolean isSummaryNode(final NodeModel nodeModel) {
-		return nodeModel.containsExtension(SummaryNode.class);
+		return nodeModel.containsExtension(SummaryNodeFlag.class);
 	}
 
 	static public boolean isHidden(final NodeModel nodeModel) {
