@@ -528,7 +528,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	void anchorToSelected(final NodeView view, final float horizontalPoint, final float verticalPoint) {
 		if (view != null && view.getMainView() != null) {
-			anchor = view;
+			setAnchorView(view);
 			anchorHorizontalPoint = horizontalPoint;
 			anchorVerticalPoint = verticalPoint;
 			this.anchorContentLocation = getAnchorCenterPoint();
@@ -538,6 +538,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				extraWidth = 0;
 			}
 		}
+	}
+
+	private void setAnchorView(final NodeView view) {
+		anchor = view;
+	}
+
+	private String viewText(final NodeView view) {
+		if (view != null) {
+			final String text = view.getMainView().getText();
+			if(text.isEmpty())
+				return text;
+			else
+				return text;
+		} else
+			return "null";
 	}
 
 	/*
@@ -578,6 +593,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
 		this.slowScroll = false;
+		if(! anchor.equals(getRoot()))
+			this.anchor = getRoot();
 		this.anchorContentLocation = getAnchorCenterPoint();
 	}
 
@@ -1134,7 +1151,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void initRoot() {
 		this.anchorContentLocation = new Point();
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), this, this, 0);
-		anchor = rootView;
+		setAnchorView(rootView);
 	}
 	
 	public boolean isPrinting() {
@@ -1868,7 +1885,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		scrollNodeToVisible(node, 0);
 	}
 
-	public void scrollNodeToVisible(final NodeView node, final int extraWidth) {
+	private void scrollNodeToVisible(final NodeView node, final int extraWidth) {
+		if(scrollingDirective == ScrollingDirective.DONE || scrollingDirective == ScrollingDirective.ANCHOR)
+			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {
 			if (node != scrolledNode) {
 				if (scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION && !node.isRoot())
@@ -2041,7 +2060,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		vp.setScrollMode(scrollMode);
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
-		anchor = getRoot();
+		setAnchorView(getRoot());
 		anchorHorizontalPoint = anchorVerticalPoint = 0;
 		this.anchorContentLocation = getAnchorCenterPoint();
 	}
@@ -2203,6 +2222,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			validate();
 			if(isDisplayable())
 				scrollView();
+		}
+		else{
+			setAnchorView(getRoot());
+			anchorContentLocation = getAnchorCenterPoint();
 		}
     }
 
