@@ -11,13 +11,13 @@ abstract public class AMapChangeListenerAdapter implements IMapChangeListener, I
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 	}
 
-	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
 	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
 	}
 
-	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
 	public void nodeChanged(NodeChangeEvent event) {

@@ -78,6 +78,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -257,8 +258,7 @@ public class MLinkController extends LinkController {
 			});
 		}
 
-		public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-		                        final NodeModel child, final int newIndex) {
+		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
@@ -361,8 +361,7 @@ public class MLinkController extends LinkController {
 			}
 		}
 
-		public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-		                           final NodeModel child, final int newIndex) {
+		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 	}
 

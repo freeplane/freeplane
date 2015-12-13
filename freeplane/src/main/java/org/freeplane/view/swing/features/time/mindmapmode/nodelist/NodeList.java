@@ -83,6 +83,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -96,7 +97,7 @@ import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
  */
 public class NodeList {
 	private final class MapChangeListener implements IMapChangeListener, INodeChangeListener, IMapSelectionListener {
-	    public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	    	disposeDialog();
 	    }
 
@@ -104,7 +105,7 @@ public class NodeList {
 	    	disposeDialog();
 	    }
 
-	    public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	    	disposeDialog();
 	    }
 

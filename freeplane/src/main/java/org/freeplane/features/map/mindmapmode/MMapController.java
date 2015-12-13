@@ -70,6 +70,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
@@ -634,14 +635,17 @@ public class MMapController extends MapController {
 	                          final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
-		firePreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+		final boolean oldSideLeft = child.isLeft();
+		final boolean newSideLeft = changeSide ? isLeft : child.isLeft();
+		final NodeMoveEvent nodeMoveEvent = new NodeMoveEvent(oldParent, oldIndex, oldSideLeft, newParent, child, newIndex, newSideLeft);
+		firePreNodeMoved(nodeMoveEvent);
 		oldParent.remove(oldParent.getIndex(child));
 		if (changeSide) {
 			child.setParent(newParent);
 			child.setLeft(isLeft);
 		}
 		newParent.insert(child, newIndex);
-		fireNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+		fireNodeMoved(nodeMoveEvent);
 		setSaved(newParent.getMap(), false);
 		return newIndex;
 	}

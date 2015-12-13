@@ -48,6 +48,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.mode.CombinedPropertyChain;
 import org.freeplane.features.mode.Controller;
@@ -151,7 +152,7 @@ public class LogicalStyleController implements IExtension {
 		ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(new IMapChangeListener() {
-			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+			public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 				clearCache();
 			}
 
@@ -159,7 +160,7 @@ public class LogicalStyleController implements IExtension {
 				clearCache();
 			}
 
-			public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+			public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 				clearCache();
 			}
 

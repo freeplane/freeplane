@@ -53,6 +53,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -264,8 +265,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                        final NodeModel child, final int newIndex) {
+	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
@@ -479,7 +479,6 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
     }
 
-	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                           final NodeModel child, final int newIndex) {
+	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 }

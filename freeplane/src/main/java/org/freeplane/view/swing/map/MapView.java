@@ -92,6 +92,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -1416,8 +1417,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                        final NodeModel child, final int newIndex) {
+	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
 	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
@@ -2156,8 +2156,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super.validateTree();
 	}
 
-	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                           final NodeModel child, final int newIndex) {
+	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
 	public void repaintVisible() {

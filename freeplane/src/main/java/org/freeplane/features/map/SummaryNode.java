@@ -61,7 +61,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 		modeController.getMapController().addMapChangeListener(new IMapChangeListener() {
 			
 			@Override
-			public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+			public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			}
 			
 			@Override
@@ -69,7 +69,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 			}
 			
 			@Override
-			public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+			public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			}
 			
 			@Override

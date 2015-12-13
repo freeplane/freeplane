@@ -29,6 +29,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
@@ -149,13 +150,12 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		setStyleRecursive(child);
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                        final NodeModel child, final int newIndex) {
-		if (!isActive(newParent)) {
+	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
+		if (!isActive(nodeMoveEvent.newParent)) {
 			return;
 		}
-		setStyleRecursive(oldParent);
-		setStyleRecursive(child);
+		setStyleRecursive(nodeMoveEvent.oldParent);
+		setStyleRecursive(nodeMoveEvent.child);
 	}
 
 	public void onPreNodeDelete(final NodeModel parent, final NodeModel child, final int index) {
@@ -198,8 +198,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		}
 	}
 
-	public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                           final NodeModel child, final int newIndex) {
+	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 	
 	

@@ -106,13 +106,11 @@ public class MapController extends SelectionController implements IExtension{
 			action.setEnabled();
 		}
 
-		public void onNodeMoved(NodeModel oldParent, int oldIndex,
-				NodeModel newParent, NodeModel child, int newIndex) {
+		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			action.setEnabled();
 		}
 
-		public void onPreNodeMoved(NodeModel oldParent, int oldIndex,
-				NodeModel newParent, NodeModel child, int newIndex) {
+		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 
 		public void onPreNodeDelete(NodeModel oldParent,
@@ -176,8 +174,7 @@ public class MapController extends SelectionController implements IExtension{
 			setActionSelected();
 		}
 
-		public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-		                        final NodeModel child, final int newIndex) {
+		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			setActionSelected();
 		}
 
@@ -185,8 +182,7 @@ public class MapController extends SelectionController implements IExtension{
 			setActionSelected();
 		}
 
-		public void onPreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-		                           final NodeModel child, final int newIndex) {
+		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			setActionSelected();
 		}
 	}
@@ -529,19 +525,17 @@ public class MapController extends SelectionController implements IExtension{
 		}
 	}
 
-	protected void fireNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                             final NodeModel child, final int newIndex) {
+	protected void fireNodeMoved(final NodeMoveEvent nodeMoveEvent) {
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
 		for (final IMapChangeListener next : list) {
-			next.onNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+			next.onNodeMoved(nodeMoveEvent);
 		}
 	}
 
-	protected void firePreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
-	                                final NodeModel child, final int newIndex) {
+	protected void firePreNodeMoved(final NodeMoveEvent nodeMoveEvent) {
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
 		for (final IMapChangeListener next : list) {
-			next.onPreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+			next.onPreNodeMoved(nodeMoveEvent);
 		}
 	}
 
