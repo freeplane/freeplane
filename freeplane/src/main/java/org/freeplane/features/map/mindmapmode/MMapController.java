@@ -417,11 +417,11 @@ public class MMapController extends MapController {
 		moveNodes(children, newParent, newIndex, false, false);
 	}
 
-	public void moveNodes(final List<NodeModel> children, final NodeModel newParent, final int newIndex, final boolean isLeft,
+	public void moveNodes(final List<NodeModel> movedNodes, final NodeModel newParent, final int newIndex, final boolean isLeft,
 	                     final boolean changeSide) {
 		int index = newIndex;
-		for(NodeModel child : children)
-			moveNode(child, newParent, index++, isLeft, changeSide && child.isLeft() != isLeft);
+		for(NodeModel node : movedNodes)
+			moveNode(node, newParent, index++, isLeft, changeSide && node.isLeft() != isLeft);
 	}
 
 	private void moveNode(NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
