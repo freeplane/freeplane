@@ -140,8 +140,8 @@ public class ChangeNodeLevelController {
 		if (directSibling != null) {
 			for (final NodeModel node : selectedNodes) {
 				((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
-				mapController.moveNode(node, directSibling, directSibling.getChildCount());
 			}
+			mapController.moveNodes(selectedNodes, directSibling, directSibling.getChildCount());
 			Controller.getCurrentModeController().getMapController().selectMultipleNodes(selectedNode, selectedNodes);
 		}
 	}
@@ -165,25 +165,17 @@ public class ChangeNodeLevelController {
 			changeSide = true;
 			leftSide = ! leftSide;
 			final int childCount = selectedParent.getChildCount();
-			for(position = childCount - 1; 
-				position >= 0 && ((NodeModel)selectedParent.getChildAt(position)).isLeft() != leftSide;
-				position--);
+			position = childCount -  selectedNodes.size();
 		}
 		else {
 			final NodeModel grandParent = selectedParent.getParentNode();
-			position = grandParent.getChildPosition(selectedParent);
+			position = grandParent.getChildPosition(selectedParent) + 1;
 			selectedParent = grandParent;
 			changeSide = false;
 		}
-		boolean increasePosition = !changeSide;
-		for (final NodeModel node : selectedNodes) {
+		for (final NodeModel node : selectedNodes)
 			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
-			increasePosition = increasePosition || selectedParent.getIndex(node) > position;
-			if (increasePosition) {
-				position++;
-			}
-			mapController.moveNode(node, selectedParent, position, leftSide, changeSide);
-		}
+		mapController.moveNodes(selectedNodes, selectedParent, position, leftSide, changeSide);
 		mapController.selectMultipleNodes(selectedNode, selectedNodes);
 	}
 }

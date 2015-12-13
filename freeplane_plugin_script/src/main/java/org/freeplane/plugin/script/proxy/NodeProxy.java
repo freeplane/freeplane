@@ -454,7 +454,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
         final MMapController mapController = (MMapController) getModeController().getMapController();
-        mapController.moveNodeAsChild(movedNode, parentNode, movedNode.isLeft(), parentNode.isLeft() != movedNode.isLeft());
+        mapController.moveNodesAsChildren(Arrays.asList(movedNode), parentNode, movedNode.isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 
 	// Node: R/W
@@ -463,7 +463,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
         final NodeModel movedNode = getDelegate();
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(movedNode);
-		mapController.moveNode(movedNode, parentNode, position, getDelegate().isLeft(), parentNode.isLeft() != movedNode.isLeft());
+		mapController.moveNodes(Arrays.asList(movedNode), parentNode, position, getDelegate().isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 
 	// Node: R/W
@@ -831,7 +831,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		for (final NodeModel child : children) {
 			((FreeNode) Controller.getCurrentModeController().getExtension(FreeNode.class))
 			    .undoableDeactivateHook(child);
-			mapController.moveNode(child, node, i++);
+			mapController.moveNode(child, i++);
 		}
 	}
 

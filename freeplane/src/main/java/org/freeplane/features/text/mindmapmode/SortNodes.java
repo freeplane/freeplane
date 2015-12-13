@@ -70,7 +70,7 @@ public class SortNodes extends AMultipleNodeAction {
 		int i = 0;
 		for (final NodeModel child : sortVector) {
 			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(child);
-			mapController.moveNode(child, node, i++);
+			mapController.moveNode(child, i++);
 		}
 	}
 }

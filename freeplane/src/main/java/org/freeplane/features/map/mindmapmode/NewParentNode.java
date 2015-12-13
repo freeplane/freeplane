@@ -104,9 +104,7 @@ public class NewParentNode extends AFreeplaneAction {
             }
         }
         final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-        for (final NodeModel node : selectedNodes) {
-            mapController.moveNodeAsChild(node, newParent, false, false);
-        }
+        mapController.moveNodesAsChildren(selectedNodes, newParent, false, false);
         return newParent;
 	}
 }

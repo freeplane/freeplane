@@ -294,14 +294,11 @@ private Timer timer;
 	                       final boolean dropAsSibling, final boolean isLeft) throws UnsupportedFlavorException,
 	        IOException {
 		final List<NodeModel> movedNodes = getNodeObjects(t);
-		for (final NodeModel node : movedNodes) {
-			boolean changeSide = isLeft != node.isLeft();
-			if (dropAsSibling) {
-				mapController.moveNodeBefore(node, targetNode, isLeft, changeSide);
-			}
-			else {
-				mapController.moveNodeAsChild(node, targetNode, isLeft, changeSide);
-			}
+		if (dropAsSibling) {
+			mapController.moveNodesBefore(movedNodes, targetNode, isLeft, true);
+		}
+		else {
+			mapController.moveNodesAsChildren(movedNodes, targetNode, isLeft, true);
 		}
 	}
 

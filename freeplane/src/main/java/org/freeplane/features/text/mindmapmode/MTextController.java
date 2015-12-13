@@ -33,6 +33,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -262,9 +263,7 @@ public class MTextController extends TextController {
 			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
 			if (node != selectedNode) {
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-				for(final NodeModel child: node.getChildren().toArray(new NodeModel[]{})){
-					mapController.moveNode(child, selectedNode, selectedNode.getChildCount());
-				}
+				mapController.moveNodes(node.getChildren(), selectedNode, selectedNode.getChildCount());
 				mapController.deleteNode(node);
 			}
 			isHtml = isHtml || isHtmlNode;

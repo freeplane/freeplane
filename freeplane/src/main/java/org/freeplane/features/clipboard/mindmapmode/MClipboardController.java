@@ -828,10 +828,11 @@ public class MClipboardController extends ClipboardController {
 		try {
 	        @SuppressWarnings("unchecked")
 	        final List<NodeModel> clonedNodes = (List<NodeModel>) transferable.getTransferData(MindMapNodesSelection.mindMapNodeObjectsFlavor);
+	        final List<NodeModel> movedNodes = new ArrayList<>(clonedNodes.size());
+	        final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 	        for(NodeModel clonedNode:clonedNodes){
 	        	if(clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))
 	        		return;
-	        	final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 	        	if (!clonedNode.isRoot() && ! clonedNode.subtreeContainsCloneOf(target)) {
 	        		switch(operation){
 	        			case CLONE:
@@ -839,10 +840,16 @@ public class MClipboardController extends ClipboardController {
 	        				mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
 	        				break;
 	        			case MOVE:
-	        				mapController.moveNodeAsChild(clonedNode, target, target.isNewChildLeft(), target.isNewChildLeft()!=clonedNode.isLeft());
+	        				movedNodes.add(clonedNode);
 	        				break;
 	        		}
 	        	}
+	        }
+	        switch(operation){
+	        case MOVE:
+				mapController.moveNodesAsChildren(movedNodes, target, target.isNewChildLeft(), true);
+			default:
+				break;
 	        }
         }
         catch (Exception e) {

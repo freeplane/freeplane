@@ -318,7 +318,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 				selectedsBackup = selecteds.toArray(new NodeModel[selecteds.size()]);
 			}
-			mapController.moveNode(node, node.getParentNode(), newIndex, isLeft, false);
+			mapController.moveNode(node, newIndex);
 		}
 		return selectedsBackup;
 	}

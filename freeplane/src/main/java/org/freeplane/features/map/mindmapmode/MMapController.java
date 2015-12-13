@@ -400,23 +400,27 @@ public class MMapController extends MapController {
 		return true;
 	}
 
-	public void moveNode(NodeModel node, int i) {
-		   moveNode(node, node.getParentNode(), i);
+	public void moveNode(NodeModel node, int newIndex) {
+		moveNodes(Arrays.asList(node), node.getParentNode(), newIndex);
 	}
 
-	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex) {
-		moveNode(child, newParent, newIndex, false, false);
+	public void moveNodes(final List<NodeModel> children, final NodeModel newParent, final int newIndex) {
+		moveNodes(children, newParent, newIndex, false, false);
 	}
 
-	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
+	public void moveNodes(final List<NodeModel> children, final NodeModel newParent, final int newIndex, final boolean isLeft,
 	                     final boolean changeSide) {
+		int index = newIndex;
+		for(NodeModel child : children)
+			moveNode(child, newParent, index++, isLeft, changeSide && child.isLeft() != isLeft);
+	}
+
+	private void moveNode(NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
+			final boolean changeSide) {
 		if(child.subtreeContainsCloneOf(newParent)){
 			UITools.errorMessage("not allowed");
 			return;
 		}
-
-
-
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
 		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
@@ -463,34 +467,40 @@ public class MMapController extends MapController {
 		Controller.getCurrentModeController().execute(actor, newParent.getMap());
     }
 
-	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
+	public void moveNodesAsChildren(final List<NodeModel> children, final NodeModel target, final boolean isLeft,
 	                            final boolean changeSide) {
-		int position = selectedParent.getChildCount();
-		if (selectedParent.clones().contains(node.getParentNode())) {
-			position--;
-		}
 		FreeNode r = Controller.getCurrentModeController().getExtension(FreeNode.class);
-		final IExtension extension = node.getExtension(FreeNode.class);
-        if (extension != null) {
-        	r.undoableToggleHook(node, extension);
-        	if (MapStyleModel.FLOATING_STYLE.equals(LogicalStyleModel.getStyle(node)))
-        		((MLogicalStyleController)MLogicalStyleController.getController(getMModeController())).setStyle(node, null);
-        }
-		moveNode(node, selectedParent, position, isLeft, changeSide);
+		for(NodeModel node : children){
+			final IExtension extension = node.getExtension(FreeNode.class);
+			if (extension != null) {
+				r.undoableToggleHook(node, extension);
+				if (MapStyleModel.FLOATING_STYLE.equals(LogicalStyleModel.getStyle(node)))
+					((MLogicalStyleController)MLogicalStyleController.getController(getMModeController())).setStyle(node, null);
+			}
+		}
+		int position = target.getChildCount();
+		for(NodeModel node : children){
+			if (target.clones().contains(node.getParentNode())) {
+				position--;
+			}
+		}
+		moveNodes(children, target, position, isLeft, changeSide);
 	}
 
-	public void moveNodeBefore(final NodeModel node, final NodeModel target, final boolean isLeft,
+	public void moveNodesBefore(final List<NodeModel> children, final NodeModel target, final boolean isLeft,
 	                           final boolean changeSide) {
         final NodeModel newParent = target.getParentNode();
-        final NodeModel oldParent = node.getParentNode();
-		int newIndex = newParent.getChildPosition(target);
-	    if(newParent.equals(oldParent)){
-	        final int oldIndex = oldParent.getChildPosition(node);
-            if(oldIndex < newIndex)
-                newIndex--;
-	    }
-		Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(node);
-        moveNode(node, newParent, newIndex, isLeft, changeSide);
+        int newIndex = newParent.getChildPosition(target);
+        for(NodeModel node : children){
+        	final NodeModel oldParent = node.getParentNode();
+        	if(newParent.equals(oldParent)){
+        		final int oldIndex = oldParent.getChildPosition(node);
+        		if(oldIndex < newIndex)
+        			newIndex--;
+        	}
+        	Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(node);
+        }
+        moveNodes(children, newParent, newIndex, isLeft, changeSide);
 	}
 
 	public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
@@ -570,7 +580,7 @@ public class MMapController extends MapController {
         }
         final NodeModel destinationNode = sortedNodesIndices.get(newPositionInVector);
         newIndex = parent.getIndex(destinationNode);
-        ((MMapController) Controller.getCurrentModeController().getMapController()).moveNode(child, parent, newIndex, false, false);
+        moveNode(child, newIndex);
         return newIndex;
     }
     /**
