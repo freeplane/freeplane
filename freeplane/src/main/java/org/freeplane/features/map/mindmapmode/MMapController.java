@@ -319,11 +319,17 @@ public class MMapController extends MapController {
 		modeController.addAction(new NodeDownAction());
 	}
 
-	public void deleteNode(final NodeModel node) {
-	    final NodeModel parentNode = node.getParentNode();
-		final int index = parentNode.getIndex(node);
-		for(NodeModel parentClone : parentNode.clones())
-			deleteSingleNode(parentClone, index);
+	public void deleteNode(NodeModel node) {
+		deleteNodes(Arrays.asList(node));
+	}
+	
+	public void deleteNodes(final List<NodeModel> nodes) {
+		for(NodeModel node : nodes){
+		    final NodeModel parentNode = node.getParentNode();
+			final int index = parentNode.getIndex(node);
+			for(NodeModel parentClone : parentNode.clones())
+				deleteSingleNode(parentClone, index);
+		}
 	}
 
 	private void deleteSingleNode(final NodeModel parentNode, final int index) {

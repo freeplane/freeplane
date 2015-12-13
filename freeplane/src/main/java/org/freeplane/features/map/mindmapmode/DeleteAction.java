@@ -56,9 +56,6 @@ class DeleteAction extends AFreeplaneAction {
 			return;
 		}
 		final MMapController mapController = (MMapController) modeController.getMapController();
-		final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection(true).iterator();
-		while (iterator.hasNext()) {
-			mapController.deleteNode(iterator.next());
-		}
+		mapController.deleteNodes(controller.getSelection().getSortedSelection(true));
 	}
 }
