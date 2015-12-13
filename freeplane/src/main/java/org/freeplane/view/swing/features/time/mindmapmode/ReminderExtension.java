@@ -25,6 +25,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
@@ -138,8 +139,8 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
 		displayStateIcon(nodeMoveEvent.newParent, ClockState.CLOCK_VISIBLE);
 	}
 
-	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
-		displayStateIcon(oldParent, null);
+	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+		displayStateIcon(nodeDeletionEvent.parent, null);
 	}
 
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
@@ -149,7 +150,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
 	public void mapChanged(final MapChangeEvent event) {
 	}
 
-	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 	}
 	
 	public void displayState(final ClockState stateAdded, final NodeModel pNode,

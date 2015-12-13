@@ -82,6 +82,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
@@ -101,7 +102,7 @@ public class NodeList {
 	    	disposeDialog();
 	    }
 
-		public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 	    	disposeDialog();
 	    }
 
@@ -113,7 +114,7 @@ public class NodeList {
 	    	disposeDialog();
 	    }
 
-	    public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+	    public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 	    	disposeDialog();
 	    }
 

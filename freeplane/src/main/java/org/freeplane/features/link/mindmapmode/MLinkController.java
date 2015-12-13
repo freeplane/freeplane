@@ -77,6 +77,7 @@ import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
@@ -247,7 +248,7 @@ public class MLinkController extends LinkController {
 		public void mapChanged(final MapChangeEvent event) {
 		}
 
-		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
@@ -261,11 +262,11 @@ public class MLinkController extends LinkController {
 		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 
-		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
-			deletedNodeParent = oldParent;
-			deletedNodeRoot = model;
-			deletedNodeindex = oldIndex;
-			onChange(model, true);
+		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+			deletedNodeParent = nodeDeletionEvent.parent;
+			deletedNodeRoot = nodeDeletionEvent.node;
+			deletedNodeindex = nodeDeletionEvent.index;
+			onChange(nodeDeletionEvent.node, true);
 			deletedNodeParent = null;
 			deletedNodeRoot = null;
 		}

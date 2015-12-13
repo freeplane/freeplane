@@ -6,6 +6,7 @@ import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
@@ -24,8 +25,8 @@ public class NodeUpdateChangeListener implements INodeChangeListener, IMapChange
 		}
 	}
 
-	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-		nodeChangedImpl(true, parent);
+	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+		nodeChangedImpl(true, nodeDeletionEvent.parent);
 	}
 
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
@@ -42,7 +43,7 @@ public class NodeUpdateChangeListener implements INodeChangeListener, IMapChange
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
-	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 	}
 	
 	public void mapChanged(MapChangeEvent event) {

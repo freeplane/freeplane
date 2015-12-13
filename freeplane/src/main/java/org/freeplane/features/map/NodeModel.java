@@ -200,8 +200,9 @@ public class NodeModel{
 			return;
 		}
 		final Iterator<INodeView> iterator = views.iterator();
+		final NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(this, child, index);
 		while (iterator.hasNext()) {
-			iterator.next().onNodeDeleted(this, child, index);
+			iterator.next().onNodeDeleted(nodeDeletionEvent);
 		}
 	}
 

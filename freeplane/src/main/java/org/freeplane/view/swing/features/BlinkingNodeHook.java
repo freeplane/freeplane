@@ -38,6 +38,7 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
@@ -114,8 +115,8 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		public void mapChanged(final MapChangeEvent event) {
 		}
 
-		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-			if (Controller.getCurrentModeController().isUndoAction() || !(node.equals(child) || node.isDescendantOf(child))) {
+		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+			if (Controller.getCurrentModeController().isUndoAction() || !(node.equals(nodeDeletionEvent.node) || node.isDescendantOf(nodeDeletionEvent.node))) {
 				return;
 			}
 			final IActor actor = new IActor() {
@@ -144,7 +145,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 
-		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 		}
 
 		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {

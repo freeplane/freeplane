@@ -38,6 +38,7 @@ import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
@@ -215,7 +216,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		}
 	}
 
-	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
@@ -224,7 +225,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
-	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 	}
 
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {

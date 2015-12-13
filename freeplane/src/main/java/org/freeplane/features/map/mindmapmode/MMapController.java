@@ -69,6 +69,7 @@ import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
@@ -353,11 +354,12 @@ public class MMapController extends MapController {
 
 	private void deleteWithoutUndo(final NodeModel parent, final int index) {
 	    final NodeModel child = parent.getChildAt(index);
-		firePreNodeDelete(parent, child, index);
+	    final NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(parent, child, index);
+		firePreNodeDelete(nodeDeletionEvent);
 		final MapModel map = parent.getMap();
 		setSaved(map, false);
 		parent.remove(index);
-		fireNodeDeleted(parent, child, index);
+		fireNodeDeleted(nodeDeletionEvent);
     }
 
 	public MModeController getMModeController() {

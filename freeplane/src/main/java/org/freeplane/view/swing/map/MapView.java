@@ -91,6 +91,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.SummaryNode;
@@ -1411,7 +1412,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return selectSibling(continious, true, false);
     }
 
-	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
@@ -1420,7 +1421,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
-	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
+	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 	}
 
 	/*****************************************************************
