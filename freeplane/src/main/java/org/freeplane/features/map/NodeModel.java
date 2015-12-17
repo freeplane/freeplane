@@ -656,7 +656,15 @@ public class NodeModel{
 	}
 	
 	public NodeModel nextNode(int index, final boolean leftSide) {
-		for(int i = index + 1; i < getChildCount(); i++){
+		return nextNode(index, leftSide, -1);
+	}
+
+	public NodeModel previousNode(int index, final boolean leftSide) {
+		return nextNode(index, leftSide, +1);
+	}
+
+	private NodeModel nextNode(int index, final boolean leftSide, final int step) {
+		for(int i = index  + step; i >= 0 && i < getChildCount(); i+=step){
 			final NodeModel followingNode = getChildAt(i);
 			if(followingNode.isLeft() == leftSide) {
 				return followingNode;
@@ -664,5 +672,4 @@ public class NodeModel{
 		}
 		return null;
 	}
-
 }
