@@ -523,7 +523,6 @@ public class MMapController extends MapController {
 
 	public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
 		final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodes);
-		removeSummaryNodes(movedNodeSet);
 		
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
             public int compare(final Object o1, final Object o2) {
@@ -535,17 +534,8 @@ public class MMapController extends MapController {
 		if (movedNodeSet.size() == 0)
 			return;
 		final NodeModel oneMovedNode = movedNodeSet.iterator().next();
-		final boolean onTheLeft = oneMovedNode.isLeft();
 		final NodeModel parent = oneMovedNode.getParentNode();
         if (parent != null) {
-        	final SummaryLevels summaryLevels = new SummaryLevels(parent);
-        	for (NodeModel child : parent.getChildren()){
-        		if(child.isLeft() == onTheLeft && SummaryNode.isSummaryNode(child)) {
-					final Collection<NodeModel> summarizedNodes = summaryLevels.summarizedNodes(child);
-					if (movedNodeSet.containsAll(summarizedNodes))
-						movedNodeSet.add(child);
-				}
-        	}
             final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
             final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
             for (final NodeModel node : movedNodeSet) {
@@ -575,13 +565,6 @@ public class MMapController extends MapController {
             }
         }
     }
-
-    private void removeSummaryNodes(Collection<NodeModel> nodes) {
-    	final Iterator<NodeModel> iterator = nodes.iterator();
-    	while(iterator.hasNext())
-    		if(SummaryNode.isSummaryNode(iterator.next()))
-    			iterator.remove();
-	}
 
 	private int moveSingleNodeInGivenDirection(final NodeModel child, final int direction) {
         final NodeModel parent = child.getParentNode();
