@@ -655,21 +655,34 @@ public class NodeModel{
 		return parent != null && clones.size() > 1 && parent.clones.size() == clones.size();
 	}
 	
-	public NodeModel nextNode(int index, final boolean leftSide) {
-		return nextNode(index, leftSide, -1);
+	public int nextNodeIndex(int index, final boolean leftSide) {
+		return nextNodeIndex(index, leftSide, +1);
 	}
 
-	public NodeModel previousNode(int index, final boolean leftSide) {
-		return nextNode(index, leftSide, +1);
+	public int previousNodeIndex(int index, final boolean leftSide) {
+		return nextNodeIndex(index, leftSide, -1);
 	}
 
-	private NodeModel nextNode(int index, final boolean leftSide, final int step) {
+	private int nextNodeIndex(int index, final boolean leftSide, final int step) {
 		for(int i = index  + step; i >= 0 && i < getChildCount(); i+=step){
 			final NodeModel followingNode = getChildAt(i);
 			if(followingNode.isLeft() == leftSide) {
-				return followingNode;
+				return i;
 			}
 		}
-		return null;
+		return -1;
+	}
+
+	public NodeModel previousNode(int start, boolean isLeft) {
+		final int previousNodeIndex = previousNodeIndex(start, isLeft);
+		if(previousNodeIndex >= 0)
+			return parent.getChildAt(previousNodeIndex);
+		else
+			return null;
+	}
+
+	public int getIndex() {
+		final NodeModel parentNode = getParentNode();
+		return parentNode != null ? parentNode.getIndex(this) : -1;
 	}
 }

@@ -72,4 +72,35 @@ public class SummaryLevels{
 			return arrayList;
 		}
 	}
+	public NodeModel findSummaryNode(int index) {
+		final int nodeLevel = summaryLevels[index];
+		final boolean leftSide = parentNode.getChildAt(index).isLeft();
+		for (int i = index + 1; i < parentNode.getChildCount(); i++){
+			final int level = summaryLevels[i];
+			if(level == nodeLevel && SummaryNode.isFirstGroupNode(parentNode.getChildAt(i)))
+				return null;
+			if(level > nodeLevel) {
+				final NodeModel summaryNode = parentNode.getChildAt(i);
+				if(summaryNode.isLeft() == leftSide)
+					return summaryNode;
+			}
+		}
+		return null;
+	}
+	
+	public NodeModel findGroupBeginNode(int index) {
+		int nodeLevel = summaryLevels[index];
+		final boolean leftSide = parentNode.getChildAt(index).isLeft();
+		for (int i = index - 1; i >= 0; i--){
+			final int level = summaryLevels[i];
+			if(level > nodeLevel)
+				return null;
+			if(level == nodeLevel) {
+				final NodeModel groupBeginNode = parentNode.getChildAt(i);
+				if(groupBeginNode.isLeft() == leftSide && SummaryNode.isFirstGroupNode(groupBeginNode))
+					return groupBeginNode;
+			}
+		}
+		return null;
+	}
 }
