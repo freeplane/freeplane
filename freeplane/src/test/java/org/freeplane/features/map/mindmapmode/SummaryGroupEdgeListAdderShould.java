@@ -1,7 +1,7 @@
 package org.freeplane.features.map.mindmapmode;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +10,6 @@ import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapFake;
 import org.freeplane.features.map.NodeModel;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SummaryGroupEdgeListAdderShould {
@@ -117,4 +116,25 @@ public class SummaryGroupEdgeListAdderShould {
 	}
 
 
+	@Test
+	public void multipleParents() throws Exception {
+		final NodeModel parent1 = mapFake.addNode("parent1");
+		final NodeModel begin1 = mapFake.createGroupBeginNode();
+		parent1.insert(begin1);
+		final NodeModel summarized1 = mapFake.createNode("1");
+		parent1.insert(summarized1);
+		final NodeModel summary1 = mapFake.createSummaryNode();
+		parent1.insert(summary1);
+
+		final NodeModel parent2 = mapFake.addNode("parent2");
+		final NodeModel begin2 = mapFake.createGroupBeginNode();
+		parent2.insert(begin2);
+		final NodeModel summarized2 = mapFake.createNode("2");
+		parent2.insert(summarized2);
+		final NodeModel summary2 = mapFake.createSummaryNode();
+		parent2.insert(summary2);
+		
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized1, summarized2));
+		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(begin1, summarized1, summary1, begin2, summarized2, summary2)));
+	}
 }

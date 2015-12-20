@@ -20,14 +20,20 @@ public class MapFake {
 
 
 	public NodeModel addSummaryNode() {
-		final NodeModel summaryNode = createNode();
-		summaryNode.addExtension(SummaryNodeFlag.SUMMARY);
+		final NodeModel summaryNode = createSummaryNode();
 		root.insert(summaryNode);
 		return summaryNode;
 	}
 
 
-	private NodeModel createNode(String string) {
+	public NodeModel createSummaryNode() {
+		final NodeModel summaryNode = createNode();
+		summaryNode.addExtension(SummaryNodeFlag.SUMMARY);
+		return summaryNode;
+	}
+
+
+	public NodeModel createNode(String string) {
 		final NodeModel node = createNode();
 		node.setText(string);
 		return node;
@@ -43,9 +49,15 @@ public class MapFake {
 	}
 
 	public NodeModel addGroupBeginNode() {
+		final NodeModel firstEdge = createGroupBeginNode();
+		root.insert(firstEdge);
+		return firstEdge;
+	}
+
+
+	public NodeModel createGroupBeginNode() {
 		final NodeModel firstEdge = createNode();
 		firstEdge.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
-		root.insert(firstEdge);
 		return firstEdge;
 	}
 
