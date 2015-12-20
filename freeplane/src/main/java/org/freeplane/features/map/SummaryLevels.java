@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class SummaryLevels{
+	public static final int NODE_NOT_FOUND = -1;
 	private static final boolean[] BOTH_SIDES = {true, false};
 	private static final boolean[] LEFT_SIDE = {true};
 	private static final boolean[] RIGHT_SIDE = {false};
@@ -57,50 +58,65 @@ public class SummaryLevels{
 		else {
 			final ArrayList<NodeModel> arrayList = new ArrayList<>();
 			for(int i = summaryNodeIndex - 1; i >= 0; i--){
-				if(summaryLevels[i] >= summaryLevel) {
+				final int level = summaryLevels[i];
+				if(level >= summaryLevel) {
 					if(sides != BOTH_SIDES || parentNode.getChildAt(i).isLeft() == summaryNode.isLeft())
 						return arrayList;
-				} else if (summaryLevels[i] == summaryLevel - 1) {
+				} else if (level == summaryLevel - 1) {
 					final NodeModel child = parentNode.getChildAt(i);
 					if (sides != BOTH_SIDES || child.isLeft() == summaryNode.isLeft()) {
+						if(SummaryNode.isFirstGroupNode(child)) {
+							if(level > 0)
+								arrayList.add(child);
+							return arrayList;
+						}
 						arrayList.add(child);
 					}
-					if(SummaryNode.isFirstGroupNode(child))
-						return arrayList;
 				}
 			}
 			return arrayList;
 		}
 	}
 	public NodeModel findSummaryNode(int index) {
+		final int summaryNodeIndex = findSummaryNodeIndex(index);
+		return parentNode.getChildAt(summaryNodeIndex);
+	}
+
+	public int findSummaryNodeIndex(int index) {
 		final int nodeLevel = summaryLevels[index];
 		final boolean leftSide = parentNode.getChildAt(index).isLeft();
 		for (int i = index + 1; i < parentNode.getChildCount(); i++){
 			final int level = summaryLevels[i];
 			if(level == nodeLevel && SummaryNode.isFirstGroupNode(parentNode.getChildAt(i)))
-				return null;
+				return NODE_NOT_FOUND;
 			if(level > nodeLevel) {
 				final NodeModel summaryNode = parentNode.getChildAt(i);
 				if(summaryNode.isLeft() == leftSide)
-					return summaryNode;
+					return i;
 			}
 		}
-		return null;
+		return NODE_NOT_FOUND;
 	}
 	
 	public NodeModel findGroupBeginNode(int index) {
+		final int groupBeginNodeIndex = findGroupBeginNodeIndex(index);
+		return parentNode.getChildAt(groupBeginNodeIndex);
+	}
+	
+	public int findGroupBeginNodeIndex(int index) {
 		int nodeLevel = summaryLevels[index];
 		final boolean leftSide = parentNode.getChildAt(index).isLeft();
 		for (int i = index - 1; i >= 0; i--){
 			final int level = summaryLevels[i];
 			if(level > nodeLevel)
-				return null;
+				return NODE_NOT_FOUND;
 			if(level == nodeLevel) {
 				final NodeModel groupBeginNode = parentNode.getChildAt(i);
 				if(groupBeginNode.isLeft() == leftSide && SummaryNode.isFirstGroupNode(groupBeginNode))
-					return groupBeginNode;
+					return i;
 			}
 		}
-		return null;
+		return NODE_NOT_FOUND;
 	}
+	
 }

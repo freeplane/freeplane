@@ -211,7 +211,7 @@ public class NodeModel{
 	};
 
 	public NodeModel getChildAt(final int childIndex) {
-		return getChildrenInternal().get(childIndex);
+		return childIndex >= 0 ? getChildrenInternal().get(childIndex) : null; 
 	}
 
 	public int getChildCount() {
@@ -675,10 +675,7 @@ public class NodeModel{
 
 	public NodeModel previousNode(int start, boolean isLeft) {
 		final int previousNodeIndex = previousNodeIndex(start, isLeft);
-		if(previousNodeIndex >= 0)
-			return parent.getChildAt(previousNodeIndex);
-		else
-			return null;
+		return parent.getChildAt(previousNodeIndex);
 	}
 
 	public int getIndex() {

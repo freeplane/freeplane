@@ -21,6 +21,9 @@ package org.freeplane.features.map;
 
 import static org.freeplane.features.map.SummaryNode.SummaryNodeFlag.SUMMARY;
 
+import java.util.List;
+import java.util.Set;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -127,6 +130,5 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 		}
 		return level;
     }
-	
 }
 

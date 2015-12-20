@@ -220,8 +220,12 @@ public class MMapController extends MapController {
 				level++;
 			else
 				level = 0;
-			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node))
-				firstGroupNodeHook.undoableDeactivateHook(node);
+			if(level == summaryLevel && SummaryNode.isFirstGroupNode(node)){
+				if(level > 0)
+					firstGroupNodeHook.undoableDeactivateHook(node);
+				else
+					deleteSingleNodeWithClones(node);
+			}
 		}
 		final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, isLeft);
 		startEditingAfterSelect(firstSummaryChildNode);
@@ -335,12 +339,17 @@ public class MMapController extends MapController {
 	}
 	
 	public void deleteNodes(final List<NodeModel> nodes) {
-		for(NodeModel node : nodes){
-		    final NodeModel parentNode = node.getParentNode();
-			final int index = parentNode.getIndex(node);
-			for(NodeModel parentClone : parentNode.clones())
-				deleteSingleNode(parentClone, index);
+		final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
+		for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
+		    deleteSingleNodeWithClones(node);
 		}
+	}
+
+	private void deleteSingleNodeWithClones(NodeModel node) {
+		final NodeModel parentNode = node.getParentNode();
+		final int index = parentNode.getIndex(node);
+		for(NodeModel parentClone : parentNode.clones())
+			deleteSingleNode(parentClone, index);
 	}
 
 	private void deleteSingleNode(final NodeModel parentNode, final int index) {
@@ -428,8 +437,9 @@ public class MMapController extends MapController {
 
 	public void moveNodes(final List<NodeModel> movedNodes, final NodeModel newParent, final int newIndex, final boolean isLeft,
 	                     final boolean changeSide) {
+		final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
 		int index = newIndex;
-		for(NodeModel node : movedNodes)
+		for(NodeModel node : movedNodesWithSummaryGroupIndicators)
 			moveNode(node, newParent, index++, isLeft, changeSide && node.isLeft() != isLeft);
 	}
 
@@ -522,7 +532,8 @@ public class MMapController extends MapController {
 	}
 
 	public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
-		final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodes);
+		final List<NodeModel> movedNodesWithEdges = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
+		final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodesWithEdges);
 		
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
             public int compare(final Object o1, final Object o2) {
@@ -536,7 +547,7 @@ public class MMapController extends MapController {
 		final NodeModel oneMovedNode = movedNodeSet.iterator().next();
 		final NodeModel parent = oneMovedNode.getParentNode();
         if (parent != null) {
-            final Vector<NodeModel> sortedChildren = getSortedSiblings(parent);
+            final List<NodeModel> sortedChildren = getSiblingsSortedOnSide(parent);
             final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
             for (final NodeModel node : movedNodeSet) {
                 if (node.getParentNode() != parent) {
@@ -571,24 +582,24 @@ public class MMapController extends MapController {
         final int index = parent.getIndex(child);
         int newIndex = index;
         final int maxIndex = parent.getChildCount();
-        final Vector<NodeModel> sortedNodesIndices = getSortedSiblings(parent);
-        int newPositionInVector = sortedNodesIndices.indexOf(child) + direction;
+        final List<NodeModel> sortedOnSideNodes = getSiblingsSortedOnSide(parent);
+        int newPositionInVector = sortedOnSideNodes.indexOf(child) + direction;
         if (newPositionInVector < 0) {
             newPositionInVector = maxIndex - 1;
         }
         if (newPositionInVector >= maxIndex) {
             newPositionInVector = 0;
         }
-        final NodeModel destinationNode = sortedNodesIndices.get(newPositionInVector);
+        final NodeModel destinationNode = sortedOnSideNodes.get(newPositionInVector);
         newIndex = parent.getIndex(destinationNode);
-        moveNode(child, newIndex);
+        moveNode(child, parent, newIndex, child.isLeft(),false);
         return newIndex;
     }
     /**
      * Sorts nodes by their left/right status. The left are first.
      */
-    private Vector<NodeModel> getSortedSiblings(final NodeModel node) {
-        final Vector<NodeModel> nodes = new Vector<NodeModel>();
+    private List<NodeModel> getSiblingsSortedOnSide(final NodeModel node) {
+        final ArrayList<NodeModel> nodes = new ArrayList<NodeModel>(node.getChildCount());
         for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
             nodes.add(child);
         }
@@ -627,6 +638,10 @@ public class MMapController extends MapController {
 	 */
 	private int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex,
 	                          final boolean isLeft, final boolean changeSide) {
+		if(newIndex > newParent.getChildCount()){
+			return moveNodeToWithoutUndo(child, newParent, newParent.getChildCount(), isLeft, changeSide);
+		}
+			
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
 		final boolean oldSideLeft = child.isLeft();

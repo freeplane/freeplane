@@ -122,17 +122,17 @@ public class ChangeNodeLevelController {
 		final int ownPosition = selectedParent.getChildPosition(selectedNode);
 		NodeModel directSibling = null;
 		for (int i = ownPosition - 1; i >= 0; --i) {
-			final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
-			if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
-				directSibling = sibling;
+			final NodeModel targetCandidate = (NodeModel) selectedParent.getChildAt(i);
+			if (canMoveTo(selectedNode, selectedNodes, targetCandidate)) {
+				directSibling = targetCandidate;
 				break;
 			}
 		}
 		if (directSibling == null) {
 			for (int i = ownPosition + 1; i < selectedParent.getChildCount(); ++i) {
-				final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
-				if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
-					directSibling = sibling;
+				final NodeModel targetCandidate = (NodeModel) selectedParent.getChildAt(i);
+				if (canMoveTo(selectedNode, selectedNodes, targetCandidate)) {
+					directSibling = targetCandidate;
 					break;
 				}
 			}
@@ -144,6 +144,12 @@ public class ChangeNodeLevelController {
 			mapController.moveNodes(selectedNodes, directSibling, directSibling.getChildCount());
 			Controller.getCurrentModeController().getMapController().selectMultipleNodes(selectedNode, selectedNodes);
 		}
+	}
+
+	private boolean canMoveTo(final NodeModel selectedNode, final List<NodeModel> selectedNodes,
+			final NodeModel targetCandidate) {
+		return !selectedNodes.contains(targetCandidate) && selectedNode.isLeft() == targetCandidate.isLeft() 
+				&& (targetCandidate.hasChildren() || ! targetCandidate.isHiddenSummary());
 	}
 
 	private void moveUpwards( final NodeModel selectedNode) {
@@ -164,8 +170,7 @@ public class ChangeNodeLevelController {
 			}
 			changeSide = true;
 			leftSide = ! leftSide;
-			final int childCount = selectedParent.getChildCount();
-			position = childCount -  selectedNodes.size();
+			position = selectedParent.getChildCount();
 		}
 		else {
 			final NodeModel grandParent = selectedParent.getParentNode();

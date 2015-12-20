@@ -13,6 +13,25 @@ public class SummaryLevelsShould {
 		mapFake = new MapFake();
 	}
 	
+	public static class FindSummaryNodeIndex extends SummaryLevelsShould{
+
+		@Test
+		public void returnNull_IfSummaryNodeDoesNotExist() throws Exception {
+			mapFake.addNode("1");
+			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot());
+			assertThat(summaryLevels.findSummaryNodeIndex(0), equalTo(-1));
+
+		}
+
+		@Test
+		public void returnSummaryNodeLevel1AfterItem() throws Exception {
+			mapFake.addNode("1");
+			final NodeModel summaryNode = mapFake.addSummaryNode();
+			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot());
+			assertThat(summaryLevels.findSummaryNodeIndex(0), equalTo(summaryNode.getIndex()));
+
+		}
+	}
 	public static class FindSummaryNode extends SummaryLevelsShould{
 
 		@Test
@@ -71,6 +90,24 @@ public class SummaryLevelsShould {
 			mapFake.addSummaryNode();
 			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot());
 			assertThat(summaryLevels.findSummaryNode(0), equalTo((NodeModel)null));
+
+		}
+	}
+	public static class FindGroupBeginNodeIndex extends SummaryLevelsShould{
+
+		@Test
+		public void returnNull_IfGroupBeginNodeDoesNotExist() throws Exception {
+			final NodeModel node = mapFake.addNode("1");
+			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot());
+			assertThat(summaryLevels.findGroupBeginNodeIndex(node.getIndex()), equalTo(-1));
+		}
+
+		@Test
+		public void returnGroupBeginNodeLevel1AfterItem() throws Exception {
+			final NodeModel groupBeginNode = mapFake.addGroupBeginNode();
+			final NodeModel node = mapFake.addNode("1");
+			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot());
+			assertThat(summaryLevels.findGroupBeginNodeIndex(node.getIndex()), equalTo(groupBeginNode.getIndex()));
 
 		}
 	}

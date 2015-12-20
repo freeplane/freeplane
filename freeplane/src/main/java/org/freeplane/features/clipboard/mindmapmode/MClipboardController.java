@@ -70,6 +70,7 @@ import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.map.mindmapmode.SummaryGroupEdgeListAdder;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.TextController;
@@ -509,7 +510,7 @@ public class MClipboardController extends ClipboardController {
 
 	Transferable cut(final List<NodeModel> collection) {
 		Controller.getCurrentModeController().getMapController().sortNodesByDepth(collection);
-		final MindMapNodesSelection transferable = copy(collection, true);
+		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes(), true);
 		((MMapController) Controller.getCurrentModeController().getMapController()).deleteNodes(collection);
 		setClipboardContents(transferable);
 		return transferable;
