@@ -107,8 +107,6 @@
 				<Entry name="NewSummaryAction" accelerator="alt shift INSERT" />
 			</Entry>
 			<Entry name="menu_group">
-				<Entry name="FirstGroupNodeAction" accelerator="alt shift B" />
-				<Entry name="SummaryNodeAction" accelerator="alt shift S" />
 				<Entry name="AlwaysUnfoldedNodeAction" />
 				<Entry name="CloudAction" accelerator="control shift B" />
 			</Entry>
@@ -512,7 +510,6 @@
 		<Entry name="EditAttributesAction" accelerator="alt F9" />
 		<Entry builder="separator" />
 		<Entry name="NewSummaryAction" accelerator="alt shift INSERT" />
-		<Entry name="SummaryNodeAction" accelerator="alt shift S" />
 		<Entry name="AlwaysUnfoldedNodeAction" />
 		<Entry name="FreeNodeAction" />
 		<Entry name="CloudAction" accelerator="control shift B" />

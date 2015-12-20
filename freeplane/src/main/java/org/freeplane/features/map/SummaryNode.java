@@ -103,6 +103,11 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	protected Class<? extends IExtension> getExtensionClass() {
 		return SummaryNodeFlag.class;
 	}
+	
+	@Override
+	protected HookAction createHookAction() {
+		return null;
+	}
 
 	static public boolean isSummaryNode(final NodeModel nodeModel) {
 		return nodeModel.containsExtension(SummaryNodeFlag.class);

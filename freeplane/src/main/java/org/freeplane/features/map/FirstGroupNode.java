@@ -47,4 +47,10 @@ public class FirstGroupNode extends PersistentNodeHook implements IExtension{
 	protected Class<? extends IExtension> getExtensionClass() {
 		return FirstGroupNodeFlag.class;
 	}
+	
+	@Override
+	protected HookAction createHookAction() {
+		return null;
+	}
+
 }
