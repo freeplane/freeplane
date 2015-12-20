@@ -33,6 +33,13 @@ public class SummaryGroupEdgeListAdderShould {
 	}
 
 	@Test
+	public void forRootNode_returnSameList() throws Exception {
+		final NodeModel root = mapFake.getRoot();
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(root));
+		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(root)));
+	}
+
+	@Test
 	public void forListWithSingleSummarizedNode_returnListWithEdgeNodes() throws Exception {
 		final NodeModel firstEdge = mapFake.addGroupBeginNode();
 		final NodeModel summarized = mapFake.addNode("1");

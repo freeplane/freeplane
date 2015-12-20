@@ -13,6 +13,7 @@ import org.freeplane.features.map.SummaryNode;
 public class SummaryGroupEdgeListAdder {
 
 	final private Collection<NodeModel> nodes;
+	private List<NodeModel> nodesWithSummaryNodes;
 
 	public SummaryGroupEdgeListAdder(Collection<NodeModel> nodes) {
 		this.nodes = nodes;
@@ -28,7 +29,7 @@ public class SummaryGroupEdgeListAdder {
 			this.parentNode = parent;
 		}
 		
-		void addSummaryEdgeNodes(List<NodeModel> nodesWithSummaryNodes, NodeModel node) {
+		void addSummaryEdgeNodes(NodeModel node) {
 			final int nodeIndex = node.getIndex();
 			if(lastSummaryNodeIndex > nodeIndex){
 				nodesWithSummaryNodes.add(++lastAddedNodeIndex, node);
@@ -69,7 +70,7 @@ public class SummaryGroupEdgeListAdder {
 
 	public List<NodeModel> addSummaryEdgeNodes() {
 		Map<NodeModel, ParentProcessedNodes> processedNodes = new HashMap<>();
-		List<NodeModel> nodesWithSummaryNodes = new LinkedList<>();
+		nodesWithSummaryNodes = new LinkedList<>();
 		for(NodeModel node : nodes){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode != null) {
@@ -78,9 +79,10 @@ public class SummaryGroupEdgeListAdder {
 					parentProcessedNodes = new ParentProcessedNodes(parentNode);
 					processedNodes.put(parentNode, parentProcessedNodes);
 				}
-				
-				parentProcessedNodes.addSummaryEdgeNodes(nodesWithSummaryNodes, node);
+				parentProcessedNodes.addSummaryEdgeNodes(node);
 			}
+			else
+				nodesWithSummaryNodes.add(node);
 		}
 		return nodesWithSummaryNodes;	
 	}
