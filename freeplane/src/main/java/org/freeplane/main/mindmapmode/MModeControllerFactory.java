@@ -80,6 +80,7 @@ import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.mindmapmode.ChangeNodeLevelController;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.NewParentNode;
+import org.freeplane.features.map.mindmapmode.SummaryNodeMapUpdater;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -164,6 +165,8 @@ public class MModeControllerFactory {
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
 		SummaryNode.install();
+		final MMapController mapController = (MMapController) modeController.getMapController();
+		mapController.addMapLifeCycleListener(new SummaryNodeMapUpdater(modeController, mapController));
 		AlwaysUnfoldedNode.install();
 		FreeNode.install();
 		new CreationModificationPlugin();

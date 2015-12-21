@@ -104,19 +104,29 @@ public class SummaryLevels{
 	}
 	
 	public int findGroupBeginNodeIndex(int index) {
+		if(index < 0)
+			return NODE_NOT_FOUND;
 		int nodeLevel = summaryLevels[index];
 		final boolean leftSide = parentNode.getChildAt(index).isLeft();
 		for (int i = index - 1; i >= 0; i--){
 			final int level = summaryLevels[i];
-			if(level > nodeLevel)
-				return NODE_NOT_FOUND;
-			if(level == nodeLevel) {
-				final NodeModel groupBeginNode = parentNode.getChildAt(i);
-				if(groupBeginNode.isLeft() == leftSide && SummaryNode.isFirstGroupNode(groupBeginNode))
-					return i;
+			final NodeModel groupBeginNode = parentNode.getChildAt(i);
+			if(groupBeginNode.isLeft() == leftSide) {
+				if(level > nodeLevel) {
+					return parentNode.nextNodeIndex(i, leftSide);
+				}
+				if(level == nodeLevel) {
+					if(SummaryNode.isFirstGroupNode(groupBeginNode))
+						return i;
+				}
 			}
 		}
-		return NODE_NOT_FOUND;
+		for (int i = 0; i <= index; i++){
+			final NodeModel groupBeginNode = parentNode.getChildAt(i);
+			if(groupBeginNode.isLeft() == leftSide &&  summaryLevels[i] == nodeLevel)
+				return i;
+		}
+		return index;
 	}
 	
 }
