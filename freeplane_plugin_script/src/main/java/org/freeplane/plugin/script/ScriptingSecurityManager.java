@@ -201,7 +201,9 @@ class ScriptingSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(final String pFile) {
-		if (mWithoutReadRestriction || pFile.startsWith(ResourceController.getResourceController().getInstallationBaseDir() + File.separatorChar)) {
+		if (mWithoutReadRestriction 
+				|| pFile.startsWith(ResourceController.getResourceController().getInstallationBaseDir() + File.separatorChar)
+				|| pFile.startsWith(System.getProperty("java.home")+ File.separatorChar)) {
 			return;
 		}
 		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read, pFile);
