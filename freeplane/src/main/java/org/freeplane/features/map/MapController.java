@@ -558,19 +558,20 @@ public class MapController extends SelectionController implements IExtension{
 				continue;
 			}
 			if (state == null) {
-				if (Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node))
-					state = true;
-				else
-					state = hasHiddenChildren(node);
+				state = canBeUnfolded(node);
 			}
 			else {
-				if (hasHiddenChildren(node) != state) {
-					// no common state
+				if (canBeUnfolded(node) != state) {
 					return null;
 				}
 			}
 		}
 		return state;
+	}
+
+
+	private boolean canBeUnfolded(final NodeModel node) {
+		return Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node) ||  hasHiddenChildren(node);
 	}
 
 	public MapReader getMapReader() {
