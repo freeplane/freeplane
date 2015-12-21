@@ -21,7 +21,7 @@ public class SummaryNodeMapUpdater extends AMapChangeListenerAdapter {
 	@Override
 	public void onCreate(MapModel map) {
 		final MapVersionInterpreter mapXmlVersionInterpreter = map.getExtension(MapVersionInterpreter.class);
-		if(mapXmlVersionInterpreter.version < 6){
+		if(mapXmlVersionInterpreter == null || mapXmlVersionInterpreter.version < 6){
 			modeController.deactivateUndo((MMapModel) map);
 			updateSummaryNodes(map.getRootNode());
 		}
