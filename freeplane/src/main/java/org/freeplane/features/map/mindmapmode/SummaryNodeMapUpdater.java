@@ -1,7 +1,5 @@
 package org.freeplane.features.map.mindmapmode;
 
-import java.util.Arrays;
-
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
@@ -61,7 +59,7 @@ public class SummaryNodeMapUpdater extends AMapChangeListenerAdapter {
 							node.removeExtension(FirstGroupNodeFlag.class);
 							newParent.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 						}
-						mapController.moveNodesAsChildren(Arrays.asList(node), newParent, false, false);
+						mapController.moveNodeAndItsClones(node, newParent, 0, false, false);
 					}
 				}
 			}

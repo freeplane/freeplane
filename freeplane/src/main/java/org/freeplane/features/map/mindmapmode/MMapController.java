@@ -440,10 +440,10 @@ public class MMapController extends MapController {
 		final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
 		int index = newIndex;
 		for(NodeModel node : movedNodesWithSummaryGroupIndicators)
-			moveNode(node, newParent, index++, isLeft, changeSide && node.isLeft() != isLeft);
+			moveNodeAndItsClones(node, newParent, index++, isLeft, changeSide && node.isLeft() != isLeft);
 	}
 
-	private void moveNode(NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
+	public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
 			final boolean changeSide) {
 		if(child.subtreeContainsCloneOf(newParent)){
 			UITools.errorMessage("not allowed");
@@ -592,7 +592,7 @@ public class MMapController extends MapController {
         }
         final NodeModel destinationNode = sortedOnSideNodes.get(newPositionInVector);
         newIndex = parent.getIndex(destinationNode);
-        moveNode(child, parent, newIndex, child.isLeft(),false);
+        moveNodeAndItsClones(child, parent, newIndex, child.isLeft(),false);
         return newIndex;
     }
     /**
