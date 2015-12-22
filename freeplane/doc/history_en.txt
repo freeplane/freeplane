@@ -1,4 +1,13 @@
 ===============================
+1.5.3
+===============================
+Background images
+Clones
+Scripting API extensions
+Save and restore last edit location
+New handling for summary nodes 
+
+===============================
 1.5.2
 ===============================
 Save node location options in length units
@@ -27,15 +36,6 @@ Configurable default Map Save Directory
 Changed behavior of read-only maps
 Make data formatting, formula processing and LaTeX rendering independently configurable
 Keep icon name of user icon if it's not found in the current installation
-
-===============================
-1.4.1
-===============================
-Ribbon UI
-Background images
-Clones
-Scripting API extensions
-Save and restore last edit location
 
 ===============================
 1.3.16
