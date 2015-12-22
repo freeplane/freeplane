@@ -24,7 +24,7 @@ public class EntryAccessorTest {
 	public void getsIconFromEntryAttributeIcon() throws Exception {
 		final Entry entry = new Entry();
 		final Icon icon = new ImageIcon();
-		entry.setAttribute("icon", icon);
+		entry.setAttribute(EntryAccessor.ICON, icon);
 		final EntryAccessor entryAccessor = new EntryAccessor();
 		final Icon entryIcon = entryAccessor.getIcon(entry);
 		Assert.assertThat(entryIcon, equalTo(icon));
