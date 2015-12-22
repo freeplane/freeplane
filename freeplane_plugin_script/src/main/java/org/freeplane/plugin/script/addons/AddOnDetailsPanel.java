@@ -1,26 +1,19 @@
 package org.freeplane.plugin.script.addons;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.mode.Controller;
@@ -28,9 +21,9 @@ import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.plugin.script.ExecuteScriptAction;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 
-import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 @SuppressWarnings("serial")
@@ -153,47 +146,7 @@ public class AddOnDetailsPanel extends JPanel {
     }
 
 	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
-		return "";
-	}
-// FIXME implement formatMenuLocation
-//	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
-//		final String location = script.menuLocation == null ? "main_menu_scripting" : script.menuLocation;
-//		MenuBuilder menuBuilder = Controller.getCurrentModeController().getUserInputListenerFactory().getMenuBuilder(MenuBuilder.class);
-//		// "/menu_bar/edit/menu_extensions" -> [Node Extensions, Edit]
-//		final List<String> pathElements = getMenuPathElements(menuBuilder, location);
-//		Collections.reverse(pathElements);
-//		pathElements.add(TextUtils.getText(script.menuTitleKey));
-//		//TODO - impl. ribbons contribution
-//		return StringUtils.join(pathElements.iterator(), "->");
-//	}
-
-//	public static List<String> getMenuPathElements(MenuBuilder menuBuilder, final String location) {
-//		final ArrayList<String> pathElements = new ArrayList<String>();
-//		final DefaultMutableTreeNode node = menuBuilder.get(location);
-//		if (node != null) {
-//			pathElements.addAll(getMenuPathElements(node));
-//		}
-//		else {
-//			int index = location.lastIndexOf('/');
-//			if (index != -1) {
-//				final String lastKey = location.substring(index + 1);
-//				pathElements.add(TextUtils.getText(lastKey, TextUtils.getText("addons." + lastKey, lastKey)));
-//				// recurse
-//				if (index > 1)
-//					pathElements.addAll(getMenuPathElements(menuBuilder, location.substring(0, index)));
-//			}
-//		}
-//		return pathElements;
-//	}
-
-	private static List<String> getMenuPathElements(DefaultMutableTreeNode node) {
-		ArrayList<String> pathElements = new ArrayList<String>();
-		while (node != null) {
-			if (node.getUserObject() instanceof JMenuItem)
-				pathElements.add(((JMenuItem) node.getUserObject()).getText());
-			node = (DefaultMutableTreeNode) node.getParent();
-		}
-		return pathElements;
+		return script.menuLocation;
 	}
 
 	private String bold(final String text) {
