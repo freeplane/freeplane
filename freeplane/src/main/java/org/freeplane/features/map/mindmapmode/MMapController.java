@@ -19,8 +19,8 @@
  */
 package org.freeplane.features.map.mindmapmode;
 
-import static org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag.FIRST_GROUP;
-import static org.freeplane.features.map.SummaryNode.SummaryNodeFlag.SUMMARY;
+import static org.freeplane.features.map.FirstGroupNodeFlag.FIRST_GROUP;
+import static org.freeplane.features.map.SummaryNodeFlag.SUMMARY;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -39,15 +39,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -62,7 +58,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
-import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -73,9 +68,7 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
-import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
-import org.freeplane.features.map.SummaryNode.SummaryNodeFlag;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;

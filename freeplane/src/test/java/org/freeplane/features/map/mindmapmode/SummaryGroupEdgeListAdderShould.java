@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
+import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapFake;
 import org.freeplane.features.map.NodeModel;
 import org.junit.Before;

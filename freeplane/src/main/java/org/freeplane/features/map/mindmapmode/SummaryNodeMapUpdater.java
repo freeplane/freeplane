@@ -1,12 +1,12 @@
 package org.freeplane.features.map.mindmapmode;
 
 import org.freeplane.features.map.AMapChangeListenerAdapter;
-import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
+import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
-import org.freeplane.features.map.SummaryNode.SummaryNodeFlag;
+import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.MapVersionInterpreter;
 

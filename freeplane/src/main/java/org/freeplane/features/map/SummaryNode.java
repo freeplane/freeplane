@@ -17,15 +17,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.map;
-
-import static org.freeplane.features.map.SummaryNode.SummaryNodeFlag.SUMMARY;
-
-import java.util.List;
-import java.util.Set;
+package org.freeplane.features.map;	
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -39,11 +33,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 @NodeHookDescriptor(hookName = "SummaryNode", onceForMap = false)
 public class SummaryNode extends PersistentNodeHook implements IExtension{
-	
-	public static class SummaryNodeFlag implements IExtension {
-		public static SummaryNodeFlag SUMMARY = new SummaryNodeFlag();
-		private SummaryNodeFlag(){};
-	}
 	
 	private ModeController modeController;
 
@@ -96,7 +85,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 
 	@Override
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
-		return SUMMARY;
+		return SummaryNodeFlag.SUMMARY;
 	}
 	
 	@Override

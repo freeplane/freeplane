@@ -2,8 +2,6 @@ package org.freeplane.features.map;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.FirstGroupNode.FirstGroupNodeFlag;
-import org.freeplane.features.map.SummaryNode.SummaryNodeFlag;
 import org.mockito.Mockito;
 
 public class MapFake {
