@@ -1,0 +1,46 @@
+// copy gitinfo.txt from root (necessary when building from
+// src/srcpure because git is not available!)
+task copyGitTxt(type: Copy) {
+    onlyIf { new File(rootDir, 'gitinfo.txt').exists() }
+
+    from(rootDir) {
+        include('gitinfo.txt')
+    }
+    into(globalBuild)
+}
+
+// copy gitinfo.properties from root (necessary when building from
+// src/srcpure because git is not available!)
+task copyGitProperty(type: Copy) {
+    onlyIf { new File(rootDir, 'gitinfo.properties').exists() }
+
+    from(rootDir) {
+        include('gitinfo.properties')
+    }
+    into(globalBuild + '/resources')
+}
+
+task createGitProperty(type: Exec) {
+    // for src/srcpure tarballs, /gitinfo.txt exists, so we don't call git
+    // (which is not available)
+    onlyIf { !new File(rootDir, 'gitinfo.txt').exists() }
+
+    ignoreExitValue = true
+
+    commandLine 'git', 'log', '--pretty=format:git-revision=%H %cn %ci', '-n1'
+
+    doFirst {
+        standardOutput = new FileOutputStream(new File(globalBuild, 'gitinfo.txt'))
+    }
+    doLast {
+        // create gitinfo.properties!
+        copy {
+            from(globalBuild) {
+                include('gitinfo.txt')
+                rename('gitinfo.txt', 'gitinfo.properties')
+                filter(org.apache.tools.ant.filters.EscapeUnicode)
+            }
+            into(globalBuild + '/resources')
+        }
+    }
+}

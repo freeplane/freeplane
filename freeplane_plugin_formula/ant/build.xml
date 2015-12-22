@@ -19,19 +19,12 @@
 	<property name="build.compiler" value="modern" />
 	<property name="classpath" value="${framework.jar}:${freeplane.jars}:${external.jars}:${freeplanescript.jar}"/>
 
-	<target name="build" depends="build-ui-xml">
+	<target name="build">
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}" encoding="utf8">
 		</javac>
 	</target>
-
-	<target name="build-ui-xml">
-		<xslt in="${src.pluginclass}/preferences.mm"
-		      style="${xslt.base}/mm2preferences.xsl"
-		      out="${src.pluginclass}/preferences.xml"/>
-	</target>
-
 
 	<target name="dist" depends="build">
 		<jar jarfile="lib/plugin.jar">
@@ -68,7 +61,6 @@
 		<delete>
 			<fileset defaultexcludes="no" dir="${src}" includes="**/*~"/>
 		</delete>
-		<delete file="${src.pluginclass}/preferences.xml" quiet="true"/>
 	</target>
 	
 </project>

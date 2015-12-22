@@ -1,3 +1,4 @@
+<!-- Alot of this needs moved into the root project -->
 <project name="freeplane" default="dist" basedir="..">
 	<property name="workspace" location=".." />
 	<property file="${workspace}/freeplane/viewer-resources/version.properties" />
@@ -20,6 +21,7 @@
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
 
+    <!-- Not sure what this does -->
 	<condition property="freeplane_version_status_suffix" value="" else="-${freeplane_version_status}">
 		<equals arg1="${freeplane_version_status}" arg2=""/>
 	</condition>
@@ -42,15 +44,19 @@
 		<os family="mac"/>
 	</condition>
 
+    <!-- Mac stuff. Move this to the root I guess -->
 	<property name="mac-appbundler" value = "${root}/mac-appbundler"/>
 	<property name="appbundler.jar" value = "appbundler-1.0.jar"/>
 	<taskdef name="appbundler" onerror="report"
 			 classpath="${mac-appbundler}/${appbundler.jar}"
 			 classname="com.oracle.appbundler.AppBundlerTask" />
+
 	<taskdef name="create-plugin" onerror="report"
 			 classpath="${freeplaneant.jar}"
 			 classname="org.freeplane.ant.CreatePlugin"/>
 
+    <!-- Need to make this an ant task to call. In root project probably? -->
+    <!-- This ant task will also publish to the correct directory -->
 	<target name="makePlugin">
 		<ant antfile="ant/build.xml" target="${anttarget}" dir="${workspace}/${plugindir}" inheritall="false" />
 		<mkdir dir="${build}/${targetdir}/${pluginname}" />
@@ -60,6 +66,8 @@
 	</target>
 
 
+    <!-- Important one? -->
+    <!-- These builds all belong to root -->
 	<target name="build_core">
 		<echo>Freeplane Version = ${ver}.</echo>
 
@@ -71,6 +79,7 @@
 			<param name="pluginname" value="org.freeplane.core"/>
 		</antcall>
 	</target>
+
 
 	<target name="build_help" unless="skip_help">
 		<antcall target="makePlugin" inheritall="false">
@@ -142,20 +151,21 @@
 			<param name="plugindir" value="freeplane_plugin_openmaps" />
 			<param name="pluginname" value="org.freeplane.plugin.openmaps"/>
 		</antcall>
-</target>
+	</target>
 
-    <target name="build_workspace" unless="skip_workspace">
-        <antcall target="makePlugin" inheritall="false">
-            <param name="anttarget" value="dist"/>
-            <param name="targetdir" value="plugins"/>
-            <param name="plugindir" value="freeplane_plugin_workspace"/>
-            <param name="pluginname" value="org.freeplane.plugin.workspace"/>
-        </antcall>
-    </target>
+	<target name="build_workspace" unless="skip_workspace">
+		<antcall target="makePlugin" inheritall="false">
+			<param name="anttarget" value="dist"/>
+			<param name="targetdir" value="plugins"/>
+			<param name="plugindir" value="freeplane_plugin_workspace"/>
+			<param name="pluginname" value="org.freeplane.plugin.workspace"/>
+		</antcall>
+	</target>
 
+    <!-- Main build for this project? Should this be a seperate project? -->
 	<target name="build_launcher" depends="build_core">
 		<mkdir dir="${launcher_build}" />
-		<javac srcdir="${launcher_src}" destdir="${launcher_build}" classpath="${launcher_classpath}"
+		<javac srcdir="${launcher_src}" destdir="${launcher_build}" classpath="${launcher_classpath}" 
 			debug="${debug}" source="${java_source_version}" target="${java_target_version}" encoding="utf8"/>
 		<jar jarfile="${freeplanelauncher.jar}" manifest="${launcher_manifest}">
 			<fileset dir="${launcher_build}">
@@ -174,6 +184,7 @@
 		<chmod file="${build}/freeplane.sh" perm="ugo+rx" />
 	</target>
 
+    <!-- Does some publishing aswell as the builds -->
 	<target name="build" depends="build_core, build_latex, build_svg, build_script, build_formula, build_bugreport, build_openmaps, build_workspace, build_launcher, git_version_info">
 		<mkdir dir="${build.resources}" />
 		<copy todir="${build.resources}">
@@ -204,6 +215,7 @@
 	</target>
 
 
+    <!-- For release targets. Again move to top level? -->
 	<target name="rungit" depends="mkdistdir">
 		<delete file="${build}/gitinfo.txt" quiet="true"/>
 		<delete file="${dist}/git.properties" quiet="true"/>
@@ -228,6 +240,7 @@
 		</exec>
 	</target>
 
+    <!-- publishing? -->
 	<target name="binzip" depends="build">
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
 			<zipfileset dir="${build}" prefix="freeplane-${ver}">
@@ -240,108 +253,100 @@
 		</zip>
 	</target>
 
-  <target name="srczip" depends="mkdistdir, git_version_info">
-    <tempfile property="src.temp.dir" destDir="${java.io.tmpdir}" prefix="build-src"/>
-    <mkdir dir="${src.temp.dir}"/>
-    <copy todir="${src.temp.dir}" overwrite="true">
-      <fileset dir="${workspace}">
-        <include name="build.xml" />
-        <include name="freeplane/**" />
-        <include name="freeplane_plugin*/**" />
-        <include name="freeplane_ant/**" />
-        <include name="freeplane_mac/**" />
-        <include name="freeplane_framework/**" />
-        <include name="freeplane_devresources/**" />
-        <include name="JOrtho_0.4_freeplane/**" />
-        <include name="build.xml" />
-        <exclude name=".*/**" />
-        <exclude name="**/~*" />
-        <exclude name="**/signjar.properties"/>
-        <exclude name="**/backups/**" />
-        <exclude name="bin/**" />
-        <exclude name="build/**" />
-        <exclude name="dist/**" />
-        <exclude name="*/bin/**" />
-        <exclude name="*/build/**" />
-        <exclude name="*/launcher_build/**" />
-        <exclude name="*/build-nodehighlighter/**" />
-        <exclude name="*/build4mac/**" />
-        <exclude name="*/dist/**" />
-        <exclude name="**/.backup/**" />
-        <exclude name="**/backups/**" />
-        <exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
-        <exclude name="freeplane_framework/windows-icons/Objects/**" />
-        <exclude name="freeplane_framework/windows-icons/*.layout" />
-        <exclude name="freeplane_framework/windows-icons/Makefile.win" />
-        <exclude name="freeplane_framework/windows-icons/build/*"/>
+	<target name="srczip" depends="mkdistdir, git_version_info">
+		<tempfile property="src.temp.dir" destDir="${java.io.tmpdir}" prefix="build-src" />
+		<mkdir dir="${src.temp.dir}" />
+		<copy todir="${src.temp.dir}" overwrite="true">
+			<fileset dir="${workspace}">
+				<include name="build.xml" />
+				<include name="freeplane/**" />
+				<include name="freeplane_plugin*/**" />
+				<include name="freeplane_ant/**" />
+				<include name="freeplane_mac/**" />
+				<include name="freeplane_framework/**" />
+				<include name="freeplane_devresources/**" />
+				<include name="JOrtho_0.4_freeplane/**" />
+				<include name="build.xml" />
+				<exclude name=".*/**" />
+				<exclude name="**/~*" />
+				<exclude name="**/signjar.properties" />
+				<exclude name="**/backups/**" />
+				<exclude name="bin/**" />
+				<exclude name="build/**" />
+				<exclude name="dist/**" />
+				<exclude name="*/bin/**" />
+				<exclude name="*/build/**" />
+				<exclude name="*/launcher_build/**" />
+				<exclude name="*/build-nodehighlighter/**" />
+				<exclude name="*/build4mac/**" />
+				<exclude name="*/dist/**" />
+				<exclude name="**/.backup/**" />
+				<exclude name="**/backups/**" />
+				<exclude name="JOrtho_0.4_freeplane/src/dictionary_*.ortho" />
+				<exclude name="freeplane_framework/windows-icons/Objects/**" />
+				<exclude name="freeplane_framework/windows-icons/*.layout" />
+				<exclude name="freeplane_framework/windows-icons/Makefile.win" />
 
-        <!-- these are generated using mm2menu.xsl/mm2preferences.xsl! -->
-        <exclude name="freeplane/resources/xml/browsemodemenu.xml"/>
-        <exclude name="freeplane/resources/xml/filemodemenu.xml"/>
-        <exclude name="freeplane/resources/xml/mindmapmodemenu.xml"/>
-        <exclude name="freeplane/resources/xml/preferences.xml"/>
-        <exclude name="freeplane/resources/xml/stylemodemenu.xml"/>
-        <exclude name="freeplane/viewer-resources/xml/appletMenu.xml"/>
-        <exclude name="freeplane_plugin_formula/src/org/freeplane/plugin/formula/preferences.xml"/>
-        <exclude name="freeplane_plugin_script/src/org/freeplane/plugin/script/preferences.xml"/>
-        <exclude name="freeplane_plugin_latex/src/org/freeplane/plugin/latex/preferences.xml"/>
+				<!-- these are generated using ribbons2menu.xsl! -->
+				<exclude name="freeplane/resources/xml/mindmapmodemenu.xml" />
 
-      </fileset>
-    </copy>
-    <!-- fix crlf->lf so that the Linux package patches apply, no matter whether this is
-         built on Windows or UNIX -->
-    <echo>Normalizing line endings to LF in ${src.temp.dir}</echo>
-    <fixcrlf srcDir="${src.temp.dir}" eol="lf" eof="asis" fixlast="false">
-      <include name="**/*.java"/>
-      <include name="**/*.xml"/>
-      <include name="**/*.xsl"/>
-      <include name="**/*.mm"/>
-      <include name="**/*.MF"/>
-      <include name="**/*.properties"/>
-    </fixcrlf>
-    <tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip" longfile="gnu">
-      <tarfileset prefix="freeplane-${ver}" dir="${src.temp.dir}" mode="664">
-        <include name="**"/>
-      </tarfileset>
-      <tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
-        <include name="${license}" />
-        <include name="${readme_src}" />
-      </tarfileset>
-    </tar>
-    <!-- build the srcpure tar file with the normalized files
-         (this is used for linux packages)
-    -->
-    <tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
-      <tarfileset prefix="freeplane-${ver}" dir="${src.temp.dir}" mode="664">
-        <!-- this file is built from latex.flex using jflex! -->
-        <exclude name="freeplane_plugin_script/src-jsyntaxpane/jsyntaxpane/lexers/LaTeXLexer.java"/>
-        <!-- these license files are in separate packages! -->
-        <exclude name="freeplane_plugin_openmaps/lib/Gpl.txt"/>
-        <exclude name="freeplane_plugin_latex/lib/COPYING"/>
-        <exclude name="freeplane_plugin_latex/lib/LICENSE"/>
-        <!-- the flash files don't have a source in the freeplane-distrib,
-             which is a problem for Debian,
-             see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736106
-             (the source is here: https://github.com/freeplane/misc/tree/master/flash-browser)
-        -->
-        <exclude name="freeplane/resources/flash/visorFreeplane.swf"/>
-        <exclude name="freeplane/resources/flash/flashobject.js"/>
-        <!-- windows stuff -->
-        <exclude name="**/*.exe" />
-        <exclude name="**/*.res" />
-        <exclude name="**/*.jar" />
-        <exclude name="**/*.dll" />
-        <exclude name="**/*JavaApplicationStub*" />
-      </tarfileset>
-      <tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
-        <include name="${license}" />
-        <include name="${readme_src}" />
-      </tarfileset>
-    </tar>
-    <delete dir="${src.temp.dir}"/>
-  </target>
+			</fileset>
+		</copy>
+		<!-- fix crlf->lf so that the Linux package patches apply, no matter whether this is
+	         built on Windows or UNIX -->
+		<echo>Normalizing line endings to LF in ${src.temp.dir}</echo>
+		<fixcrlf srcDir="${src.temp.dir}" eol="lf" eof="asis" fixlast="false">
+			<include name="**/*.java" />
+			<include name="**/*.xml" />
+			<include name="**/*.xsl" />
+			<include name="**/*.mm" />
+			<include name="**/*.MF" />
+			<include name="**/*.properties" />
+		</fixcrlf>
+		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset prefix="freeplane-${ver}" dir="${src.temp.dir}" mode="664">
+				<include name="**" />
+			</tarfileset>
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
+				<include name="${license}" />
+				<include name="${readme_src}" />
+			</tarfileset>
+		</tar>
+		<!-- build the srcpure tar file with the normalized files 
+	         (this is used for linux packages)
+	    -->
+		<tar destfile="${dist}/freeplane_srcpure-${ver}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset prefix="freeplane-${ver}" dir="${src.temp.dir}" mode="664">
+				<!-- this file is built from latex.flex using jflex! -->
+				<exclude name="freeplane_plugin_script/src-jsyntaxpane/jsyntaxpane/lexers/LaTeXLexer.java" />
+				<!-- these license files are in separate packages! -->
+				<exclude name="freeplane_plugin_openmaps/lib/Gpl.txt" />
+				<exclude name="freeplane_plugin_latex/lib/COPYING" />
+				<exclude name="freeplane_plugin_latex/lib/LICENSE" />
+				<!-- the flash files don't have a source in the freeplane-distrib,
+		             which is a problem for Debian,
+		             see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736106 
+		             (the source is here: https://github.com/freeplane/misc/tree/master/flash-browser)
+		        -->
+				<exclude name="freeplane/resources/flash/visorFreeplane.swf" />
+				<exclude name="freeplane/resources/flash/flashobject.js" />
+				<!-- windows stuff -->
+				<exclude name="**/*.exe" />
+				<exclude name="**/*.res" />
+				<exclude name="**/*.jar" />
+				<exclude name="**/*.dll" />
+				<exclude name="**/*JavaApplicationStub*" />
+			</tarfileset>
+			<tarfileset prefix="freeplane-${ver}" dir="${root}" mode="664">
+				<include name="${license}" />
+				<include name="${readme_src}" />
+			</tarfileset>
+		</tar>
+		<delete dir="${src.temp.dir}" />
+	</target>
 
-
+    <!-- Need someone to test this -->
+    <!-- Move the the gradle exec command -->
 	<target name="installer" depends="build, mkdistdir">
 		<exec osfamily="windows" dir="${workspace}/freeplane_framework/windows-installer" executable="iscc.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="/Q Freeplane_without_Java.iss" />
@@ -372,10 +377,10 @@
 				<exclude name="*.sh" />
 			</fileset>
 		</copy>
-		<copy file="${root}/portableApps/portable.ini"
+		<copy file="${root}/portableApps/portable.ini"  
 			tofile="${workingdir}/App/Freeplane/freeplane.l4j.ini"/>
 
-		<copy file="${root}/portableApps/portable.ini"
+		<copy file="${root}/portableApps/portable.ini"  
 			tofile="${workingdir}/App/Freeplane/freeplaneConsole.l4j.ini"/>
 
 		<dirname property="workingdir.path" file="${workingdir}/file" />
@@ -402,7 +407,7 @@
 		
 <!--
 		<mkdir dir="${workingdir}/App/Freeplane/resources/images" />
-		<copy file="${root}/portableApps/Splash.png"
+		<copy file="${root}/portableApps/Splash.png"  
 			tofile="${workingdir}/App/Freeplane/resources/images/Freeplane_splash.png"/>
 		<exec osfamily="windows" executable="PortableApps.comInstaller.exe" failifexecutionfails="false" failonerror="true">
 			<arg line="${workingdir.path}" />
@@ -504,9 +509,9 @@
 
 	<target name="renameDistFiles" if="minor">
 		<move todir="${dist}" includeemptydirs="false">
-		    <fileset dir="${dist}">
-		      <include name="*${freeplane_version}.*"/>
-		    </fileset>
+			<fileset dir="${dist}">
+				<include name="*${freeplane_version}.*"/>
+			</fileset>
 			<mapper type="regexp" from="^(.*[-_])${freeplane_version}(\..*)$" to="\1${ver}\2"/>
 		</move>
 		<move todir="${dist}" includeemptydirs="false">
@@ -518,14 +523,15 @@
 	</target>
 
 
+    <!-- important -->
 	<target name="dist" depends="copyDistFiles, renameDistFiles">
 		<checksum>
-		  <fileset dir="${dist}">
-		    <include name="*.dmg"/>
-		    <include name="*.zip"/>
-		    <include name="*.gz"/>
-		    <include name="*.exe"/>
-		  </fileset>
+			<fileset dir="${dist}">
+				<include name="*.dmg"/>
+				<include name="*.zip"/>
+				<include name="*.gz"/>
+				<include name="*.exe"/>
+			</fileset>
 		</checksum>
 	</target>
 
@@ -543,6 +549,7 @@
 	<target name="cleandist" depends="clean,dist">
 	</target>
 
+    <!-- Doesn't need to be here -->
 	<target name="check-translation">
 		<ant antfile="ant/build.xml" target="check-translation" dir="${workspace}/freeplane" />
 	</target>
@@ -555,12 +562,14 @@
 	<target name="create-plugin">
 		<create-plugin />
 	</target>
+    <!-- Gradle fixes this -->
 	<target name="test">
 		<ant antfile="build.xml" target="test" dir="${workspace}/freeplane_ant" inheritall="false" />
 		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_plugin_script" inheritall="false" />
 		<ant antfile="ant/build.xml" target="test" dir="${workspace}/freeplane_uitest" inheritall="false" />
 	</target>
 
+    <!-- Gradle should handle this? -->
 	<target name="clean">
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="${build}" />
@@ -584,7 +593,7 @@
 			  dir="${workspace}/freeplane_plugin_bugreport"/>
 		<ant antfile="ant/build.xml" target="clean" inheritall="false"
 			  dir="${workspace}/freeplane_plugin_openmaps"/>
-        <ant antfile="ant/build.xml" target="clean" inheritall="false"
+		<ant antfile="ant/build.xml" target="clean" inheritall="false"
               dir="${workspace}/freeplane_plugin_workspace"/>
 	</target>
 

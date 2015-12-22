@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<FreeplaneUIEntries>
+	<Entry builder="main_menu">
+		<Entry name="file">
+			<Entry name="styledialog.ok" accelerator="control ENTER" />
+			<Entry name="styledialog.cancel" accelerator="ESCAPE" />
+		</Entry>
+		<Entry name="edit">
+			<Entry name="menu_group">
+				<Entry accelerator="control shift B" name="CloudAction" />
+			</Entry>
+			<Entry name="icons">
+				<Entry name="icons">
+					<Entry builder="icon_actions" />
+				</Entry>
+				<Entry name="menu_remove_icons">
+					<Entry name="RemoveIcon_0_Action" />
+					<Entry name="RemoveIconAction" />
+					<Entry name="RemoveAllIconsAction" />
+				</Entry>
+			</Entry>
+			<Entry name="menu_extensions">
+				<Entry name="EditDetailsAction" />
+				<Entry name="EditDetailsInDialogAction" />
+				<Entry name="DeleteDetailsAction" />
+				<Entry accelerator="alt F9" name="EditAttributesAction" />
+				<Entry name="CopyAttributes" />
+				<Entry name="PasteAttributes" />
+			</Entry>
+			<Entry name="notes">
+				<Entry name="EditNoteInDialogAction" />
+				<Entry name="RemoveNoteAction" />
+			</Entry>
+			<Entry accelerator="control Z" name="UndoAction" />
+			<Entry accelerator="control Y" name="RedoAction" />
+			<Entry name="menu_moveNode">
+				<Entry accelerator="control UP" name="NodeUpAction" />
+				<Entry accelerator="control DOWN" name="NodeDownAction" />
+			</Entry>
+			<Entry name="find">
+				<Entry accelerator="control G" name="FindAction" />
+				<Entry accelerator="control shift G" name="QuickFindAction.FORWARD" />
+				<Entry name="QuickFindAction.BACK" />
+			</Entry>
+		</Entry>
+		<Entry name="view">
+			<Entry name="toolbars">
+				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleToolbarAction" />
+				<Entry name="ToggleLeftToolbarAction" />
+			</Entry>
+			<Entry name="zoom">
+				<Entry accelerator="alt UP" name="ZoomInAction" />
+				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
+				<Entry name="CenterSelectedNodeAction" accelerator="control alt C" />
+			</Entry>
+			<Entry name="menu_viewmode">
+				<Entry name="ViewLayoutTypeAction.OUTLINE" />
+				<Entry name="ShowSelectionAsRectangleAction" />
+			</Entry>
+			<Entry name="menu_hoverView">
+				<Entry accelerator="alt F2" name="ToggleDetailsAction" />
+			</Entry>
+				<Entry builder="radio_button_group" name="menu_displayAttributes">
+					<Entry name="ShowSelectedAttributesAction" />
+					<Entry name="ShowAllAttributesAction" />
+					<Entry name="HideAllAttributesAction" />
+				</Entry>
+			</Entry>
+		<Entry name="format">
+			<Entry name="menu_manageStyles">
+				<Entry accelerator="" name="DeleteUserStyleAction" />
+				<Entry name="NewLevelStyleAction" accelerator="control shift N" />
+				<Entry name="DeleteLevelStyleAction" />
+				<Entry name="NewUserStyleAction" />
+				<Entry name="ManageNodeConditionalStylesAction" />
+			</Entry>
+			<Entry accelerator="alt shift C" name="FormatCopy" />
+			<Entry accelerator="alt shift V" name="FormatPaste" />
+			<Entry name="menu_coreFormat">
+				<Entry accelerator="control B" name="BoldAction" />
+				<Entry accelerator="control I" name="ItalicAction" />
+				<Entry accelerator="control PLUS" name="IncreaseNodeFontAction" />
+				<Entry accelerator="control MINUS" name="DecreaseNodeFontAction" />
+				<Entry builder="separator" />
+				<Entry name="TextAlignAction.LEFT" />
+				<Entry name="TextAlignAction.CENTER" />
+				<Entry name="TextAlignAction.RIGHT" />
+				<Entry builder="separator" />
+				<Entry accelerator="alt shift F" name="NodeColorAction" />
+				<Entry name="NodeColorBlendAction" />
+				<Entry name="NodeBackgroundColorAction" />
+				<Entry builder="separator" />
+				<Entry name="NodeShapeAction.fork" />
+				<Entry name="NodeShapeAction.bubble" />
+				<Entry builder="separator" />
+				<Entry name="RemoveFormatAction" />
+			</Entry>
+			<Entry name="CloudColorAction" />
+			<Entry name="EdgeProperties">
+				<Entry builder="radio_button_group" name="styles">
+					<Entry name="EdgeStyleAsParentAction" />
+					<Entry name="EdgeStyleAction.linear" />
+					<Entry name="EdgeStyleAction.bezier" />
+					<Entry name="EdgeStyleAction.sharp_linear" />
+					<Entry name="EdgeStyleAction.sharp_bezier" />
+					<Entry name="EdgeStyleAction.horizontal" />
+					<Entry name="EdgeStyleAction.hide_edge" />
+				</Entry>
+				<Entry builder="radio_button_group" name="format_menu_edge_widths">
+					<Entry name="EdgeWidthAction_width_parent" />
+					<Entry name="EdgeWidthAction_width_thin" />
+					<Entry name="EdgeWidthAction_1" />
+					<Entry name="EdgeWidthAction_2" />
+					<Entry name="EdgeWidthAction_4" />
+					<Entry name="EdgeWidthAction_8" />
+				</Entry>
+				<Entry accelerator="alt shift E" name="EdgeColorAction" />
+			</Entry>
+		</Entry>
+		<Entry name="navigate">
+			<Entry name="navigate">
+				<Entry accelerator="SPACE" name="ToggleFoldedAction" />
+				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+				<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
+			</Entry>
+			<Entry accelerator="control A" name="SelectAllAction" />
+			<Entry accelerator="control shift A" name="SelectBranchAction" />
+		</Entry>
+		<Entry name="mindmaps">
+			<Entry builder="main_menu_modes" name="modes" />
+			<Entry builder="main_menu_navigate_maps" name="navigate" />
+			<Entry builder="main_menu_mindmaps" name="mindmaps" />
+		</Entry>
+	</Entry>
+	<Entry name="map_popup">
+		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
+		<Entry name="ToggleToolbarAction" />
+		<Entry name="ToggleLeftToolbarAction" />
+		<Entry name="ViewLayoutTypeAction.OUTLINE" />
+		<Entry name="CenterSelectedNodeAction" />
+	</Entry>
+	<Entry name="node_popup"  builder="node_popup">
+		<Entry accelerator="alt shift C" name="FormatCopy" />
+		<Entry accelerator="alt shift V" name="FormatPaste" />
+		<Entry name="NewUserStyleAction" />
+		<Entry name="DeleteUserStyleAction" />
+		<Entry name="NewLevelStyleAction" />
+		<Entry name="DeleteLevelStyleAction" />
+	</Entry>
+	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry name="styledialog.ok" />
+		<Entry name="styledialog.cancel" />
+		<Entry name="undo">
+			<Entry name="UndoAction" />
+			<Entry name="RedoAction" />
+		</Entry>
+		<Entry name="toolbar_styles" builder="main_toolbar_style" />
+		<Entry builder="main_toolbar_font" name="font">
+			<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
+			<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
+			<Entry name="BoldAction" />
+			<Entry name="ItalicAction" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry>
+			<Entry name="TextAlignAction.LEFT" />
+			<Entry name="TextAlignAction.CENTER" />
+			<Entry name="TextAlignAction.RIGHT" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry name="clouds">
+			<Entry name="CloudAction" />
+			<Entry name="CloudColorAction" />
+		</Entry>
+	</Entry>
+</FreeplaneUIEntries>

@@ -1,0 +1,205 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *
+ *  This file is modified by Dimitry Polivaev in 2008.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.features.link;
+
+import java.awt.Color;
+import java.awt.Point;
+
+import org.freeplane.features.map.NodeModel;
+
+public class ConnectorModel extends NodeLinkModel {
+
+	public static enum Shape {
+		LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE
+	};
+	
+	final private ConnectorProperties connectorProperties;
+	
+	public ConnectorModel(final NodeModel source, final String targetID, final Color color,
+	                      final int alpha, final Shape shape, final int width,
+	                      final String labelFontFamily, final int labelFontSize) {
+		this(source, targetID, new ConnectorProperties(color, alpha, shape, width, labelFontFamily, labelFontSize));
+	}
+
+	private ConnectorModel(final NodeModel source, final String targetID, final ConnectorProperties connectorProperties) {
+		super(source, targetID);
+		assert source != null;
+		this.connectorProperties = connectorProperties;
+	}
+
+	public Shape getShape() {
+	    return connectorProperties.getShape();
+    }
+
+	public void setShape(Shape shape) {
+	    connectorProperties.setShape(shape);
+    }
+
+	public int[] getDash() {
+	    return connectorProperties.getDash();
+    }
+
+	public void setDash(int[] dash) {
+	    connectorProperties.setDash(dash);
+    }
+
+	public Color getColor() {
+	    return connectorProperties.getColor();
+    }
+
+	public ArrowType getEndArrow() {
+	    return connectorProperties.getEndArrow();
+    }
+
+	public Point getEndInclination() {
+	    return connectorProperties.getEndInclination();
+    }
+
+	public String getMiddleLabel() {
+	    return connectorProperties.getMiddleLabel();
+    }
+
+	public String getSourceLabel() {
+	    return connectorProperties.getSourceLabel();
+    }
+
+	public ArrowType getStartArrow() {
+	    return connectorProperties.getStartArrow();
+    }
+
+	public Point getStartInclination() {
+	    return connectorProperties.getStartInclination();
+    }
+
+	public String getTargetLabel() {
+	    return connectorProperties.getTargetLabel();
+    }
+
+	public int getWidth() {
+	    return connectorProperties.getWidth();
+    }
+
+	public void setColor(Color color) {
+	    connectorProperties.setColor(color);
+    }
+
+	public void setEndArrow(ArrowType endArrow) {
+	    connectorProperties.setEndArrow(endArrow);
+    }
+
+	public void setEndInclination(Point endInclination) {
+	    connectorProperties.setEndInclination(endInclination);
+    }
+
+	public void setMiddleLabel(String middleLabel) {
+	    connectorProperties.setMiddleLabel(middleLabel);
+    }
+
+	public boolean getShowControlPointsFlag() {
+	    return connectorProperties.getShowControlPointsFlag();
+    }
+
+	public void setShowControlPoints(boolean bShowControlPointsFlag) {
+	    connectorProperties.setShowControlPoints(bShowControlPointsFlag);
+    }
+
+	public void setSourceLabel(String label) {
+	    connectorProperties.setSourceLabel(label);
+    }
+
+	public void setStartArrow(ArrowType startArrow) {
+	    connectorProperties.setStartArrow(startArrow);
+    }
+
+	public void setStartInclination(Point startInclination) {
+	    connectorProperties.setStartInclination(startInclination);
+    }
+
+	public void setTargetLabel(String targetLabel) {
+	    connectorProperties.setTargetLabel(targetLabel);
+    }
+
+	public void setWidth(int width) {
+	    connectorProperties.setWidth(width);
+    }
+
+	public void setAlpha(int alpha) {
+	    connectorProperties.setAlpha(alpha);
+    }
+
+	public int getAlpha() {
+	    return connectorProperties.getAlpha();
+    }
+
+	public String getLabelFontFamily() {
+	    return connectorProperties.getLabelFontFamily();
+    }
+
+	public void setLabelFontFamily(String labelFontFamily) {
+	    connectorProperties.setLabelFontFamily(labelFontFamily);
+    }
+
+	public int getLabelFontSize() {
+	    return connectorProperties.getLabelFontSize();
+    }
+
+	public void setLabelFontSize(int labelFontSize) {
+	    connectorProperties.setLabelFontSize(labelFontSize);
+    }
+
+	public void changeInclination(int deltaX, int deltaY, NodeModel linkedNodeView, Point changedInclination) {
+	    connectorProperties.changeInclination(deltaX, deltaY, linkedNodeView, changedInclination);
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + connectorProperties.hashCode();
+	    result = prime * result + getSource().hashCode();
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return result;
+		result = prime * result + targetID.hashCode();
+		return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    ConnectorModel other = (ConnectorModel) obj;
+	    if (!connectorProperties.equals(other.connectorProperties) || !getSource().equals(other.getSource()))
+	        return false;
+	    final String targetID = getTargetID();
+	    if(targetID == null)
+	    	return other.getTargetID() == null;
+	    else
+	    	return targetID.equals(other.getTargetID());
+    }
+
+	public NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId) {
+	    return new ConnectorModel(sourceClone, targetId, connectorProperties);
+    }
+}

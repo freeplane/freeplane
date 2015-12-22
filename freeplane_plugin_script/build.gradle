@@ -1,0 +1,104 @@
+dependencies {
+    compile project(':freeplane')
+    compile project(':freeplane_plugin_jsyntaxpane')
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.3.1'
+}
+
+jar {
+    manifest {
+        name = pluginid
+        symbolicName = pluginid
+
+        configurations.runtime.transitive = false
+        def deps = configurations.runtime.files.collect { "lib/${it.name}" }
+        deps.add(0, "lib/plugin-" + project.version + '.jar')
+
+        deps = filterPluginDeps(deps)
+        attributes 'Class-Path': deps.join(', ')
+        attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
+
+        instruction 'Bundle-Vendor', 'Freeplane Project'
+        instruction 'Bundle-Activator', pluginid + ".Activator"
+        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.6'
+
+        def imports = """\
+                      org.osgi.framework;version="1.3.0",
+                      com.jgoodies.forms.builder,
+                      com.jgoodies.forms.debug,
+                      com.jgoodies.forms.factories,
+                      com.jgoodies.forms.layout,
+                      com.jgoodies.forms.util,
+                      jsyntaxpane.lexers,
+                      jsyntaxpane.syntaxkits,
+                      jsyntaxpane.actions,
+                      org.freeplane.core.*,
+                      org.freeplane.features.*,
+                      org.freeplane.main.*,
+                      org.freeplane.n3.*,
+                      org.freeplane.view.*,
+                      org.apache.commons.lang.*,
+                      org.apache.commons.io.*,
+                      """
+        instruction 'Import-Package', imports.replaceAll("\\s+", "")
+        // avoid that bnd creates Private-Package: for org.freeplane.plugin.script.*!
+        instruction 'Private-Package', ''
+
+        def exports = """\
+                      org.freeplane.plugin.script,
+                      org.freeplane.plugin.script.addons,
+                      org.freeplane.plugin.script.filter,
+                      org.freeplane.plugin.script.proxy
+                      """
+        // bnd f**cks up the exports, so we bypass it using attributes!
+        attributes 'Export-Package': exports.replaceAll("\\s+", "")
+        
+        // Require-Bundle is ignored by bnd => replaced by Import-Package!
+        //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1"'
+    }
+}
+
+task copyScripts(type: Copy) {
+    from('scripts/') {
+        include('**')
+    }
+    into(globalBuild + '/scripts')
+}
+
+javadoc {
+    enabled = true
+
+    // we need source from both this and the freeplane project!
+    //  source = sourceSets.main.allJava
+
+    ext.javadocInputFromThisProject = fileTree(dir: 'src/main/java')
+      .include('**/Proxy.java')
+      .include('**/Convertible.java')
+      .include('**/FreeplaneScriptBaseClass.java')
+      .include('**/ScriptUtils.java')
+    ext.javadocInputFromFreeplaneProject = fileTree(dir: '../freeplane/src/main/java')
+      .include('**/UITools.java')
+      .include('**/TextUtils.java')
+      .include('**/FreeplaneVersion.java')
+      .include('**/HtmlUtils.java')
+      .include('**/LogUtils.java')
+      .include('**/MenuUtils.java')
+
+    source = ext.javadocInputFromThisProject + ext.javadocInputFromFreeplaneProject
+    destinationDir = new File(globalBuild + '/doc/api/')
+}
+
+// TODO: this doesn't work yet!
+/*
+task zipJavadoc(type: Zip) {
+  baseName = 'scripting-api'
+  from (globalBuild + '/doc/api/') {
+      include('**')
+  }
+  destinationDir = new File(globalBuild)
+  dependsOn javadoc
+}
+*/
+
+build.dependsOn copyScripts
+build.dependsOn javadoc
+//build.dependsOn zipJavadoc

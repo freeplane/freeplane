@@ -1,0 +1,9 @@
+import org.apache.tools.ant.taskdefs.condition.Os;
+
+dependencies {
+    compile (project(':freeplane')) {
+        transitive = false
+    }
+}
+
+compileJava.onlyIf { Os.isFamily(Os.FAMILY_MAC) }

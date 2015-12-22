@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences_structure xmlns="http://freeplane.sf.net/ui/preferences/1.0">
+<tabbed_pane>
+<tab name="plugins">
+<separator name="scripting">
+<remind_value name="execute_scripts_without_asking"/>
+<boolean name="execute_scripts_without_file_restriction"/>
+<boolean name="execute_scripts_without_write_restriction"/>
+<boolean name="execute_scripts_without_network_restriction"/>
+<boolean name="execute_scripts_without_exec_restriction"/>
+<boolean name="signed_script_are_trusted"/>
+<string name="script_user_key_name_for_signing"/>
+<string name="script_compilation_disabled_extensions"/>
+<string name="script_directories"/>
+<string name="script_classpath"/>
+<font name="groovy_editor_font"/>
+<number name="groovy_editor_font_size" min="4" max="216"/>
+</separator>
+</tab>
+</tabbed_pane>
+</preferences_structure>

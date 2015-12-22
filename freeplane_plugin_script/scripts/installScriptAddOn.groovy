@@ -8,33 +8,23 @@
 
 import groovy.swing.SwingBuilder
 
-import java.awt.Component;
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Toolkit
-import java.awt.event.KeyEvent
 import java.util.zip.ZipInputStream
 
 import javax.swing.BoxLayout
-import javax.swing.JDialog;
-import javax.swing.JMenuItem
 import javax.swing.JOptionPane
 import javax.swing.KeyStroke
-import javax.swing.tree.DefaultMutableTreeNode
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.WordUtils
 import org.freeplane.core.resources.ResourceController
-import org.freeplane.core.ui.MenuBuilder
 import org.freeplane.core.util.FreeplaneVersion
-import org.freeplane.core.util.MenuUtils
 import org.freeplane.core.util.TextUtils
 import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.main.addons.AddOnsController
-import org.freeplane.plugin.script.ExecuteScriptAction
-import org.freeplane.plugin.script.ScriptResources;
-import org.freeplane.plugin.script.ScriptingEngine
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.AddOnDetailsPanel
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
@@ -320,34 +310,10 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
     // check key syntax
 	KeyStroke newKeyStroke = ui.getKeyStroke(newShortcut)
 	mapStructureAssert(newKeyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', newShortcut))
-	// check if key is used (see AccelerateableAction.newAccelerator())
-	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
-	String shortcutKey = MenuUtils.makeAcceleratorKey(menuItemKey)
-	String oldShortcut = ResourceController.getResourceController().getProperty(shortcutKey);
-	if (oldShortcut) {
-	    // script had been installed before
-        if (oldShortcut.equals(newShortcut) || !askIfNewFunctionWasAssignedToAnotherShortcut(oldShortcut))
-            return
-        // FIXME: improved message would be:
-        //    insertInlineImage.groovy currently is assigned the shortcut xy\nReplace this assignment by yz?
-	}
-	else {
-	    MenuBuilder menuBuilder = Controller.currentModeController.userInputListenerFactory.menuBuilder
-		// it's a long way to the menu item title
-		DefaultMutableTreeNode menubarNode = menuBuilder.getMenuBar(menuBuilder.get("main_menu_scripting"));
-		assert menubarNode != null : "can't find menubar"
-		def priorAssigned = MenuUtils.findAssignedMenuItemNodeRecursively(menubarNode, newKeyStroke);
-		if (priorAssigned != null && !priorAssigned.getKey().equals(menuItemKey)) {
-			if (askIfNewShortcutWasAssignedToAnotherFunction(((JMenuItem) priorAssigned.getUserObject()).getText())) {
-				String priorShortcutKey = menuBuilder.getShortcutKey(priorAssigned.getKey().toString());
-				if (priorShortcutKey)
-					ResourceController.getResourceController().setProperty(priorShortcutKey, "")
-			}
-			else {
-				return
-			}
-		}
-	}
+	def acceleratorManager = Controller.currentModeController.userInputListenerFactory.acceleratorManager
+// TODO: ActionAcceleratorManager must register key without having an action at hand
+//	String shortcutKey = ?MenuUtils?.makeAcceleratorKey(menuItemKey)
+//	acceleratorManager.newAccelerator(shortcutKey, newAccelerator)
 	debugPrintln "set keyboardShortcut $shortcutKey to $newShortcut"
 	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
 }

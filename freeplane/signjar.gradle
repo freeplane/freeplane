@@ -1,0 +1,51 @@
+def signJarProperties = file('signjar.properties')
+
+Properties props = new Properties()
+if (signJarProperties.exists())
+{
+    props.load(new FileInputStream(signJarProperties))
+}
+
+task signViewerJarTsa {
+    onlyIf { props['signjar.alias'] && props['signjar.tsaurl'] }
+    doLast {
+        def freeplaneViewerJar = files(viewerJar).getSingleFile()
+        ant.signjar(jar: freeplaneViewerJar,
+            alias: props['signjar.alias'],
+            keystore: props['signjar.keystore'],
+            storetype: props['signjar.storetype'],
+            storepass: props['signjar.storepass'],
+            keypass: props['signjar.keypass'],
+            tsaurl: props['signjar.tsaurl'])
+    }
+    dependsOn viewerJar
+}
+
+task signViewerJarNoTsa {
+    onlyIf { props['signjar.alias'] && !props['signjar.tsaurl'] }
+    doLast {
+        def freeplaneViewerJar = files(viewerJar).getSingleFile()
+        ant.signjar(jar: freeplaneViewerJar,
+            alias: props['signjar.alias'],
+            keystore: props['signjar.keystore'],
+            storetype: props['signjar.storetype'],
+            storepass: props['signjar.storepass'],
+            keypass: props['signjar.keypass'])
+    }
+    dependsOn viewerJar
+}
+
+task doNotSignViewerJar {
+    onlyIf { !props['signjar.alias'] }
+    doLast {
+        println('No ' + rootDir.path + '/freeplane/signjar.properties found')
+        println('Applet is NOT signed!')
+        println('(see ' + rootDir.path + '/freeplane/signjar-example.properties)')
+    }
+    dependsOn viewerJar
+}
+
+// exactly one of three is always enabled (see above)!
+copyOSGiJars.dependsOn signViewerJarTsa
+copyOSGiJars.dependsOn signViewerJarNoTsa
+copyOSGiJars.dependsOn doNotSignViewerJar

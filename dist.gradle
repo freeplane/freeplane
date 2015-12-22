@@ -1,0 +1,61 @@
+ext.globalDist = rootDir.path + '/DIST'
+
+Properties props = new Properties()
+props.load(new FileInputStream(rootDir.path + '/freeplane/viewer-resources/version.properties'))
+
+ext.majorVersion = props['freeplane_version']
+ext.versionStatus = props['freeplane_version_status']
+ext.minorVersion = System.getProperty('minor', '')
+ext.distVersion = "$majorVersion${versionStatus.empty?'':'-'+versionStatus}${minorVersion.empty?'':'-pre' + minorVersion}"
+
+task gitinfoDist(type: Copy) {
+    from(globalBuild) {
+        include('gitinfo.txt')
+    }
+    from(globalBuild + '/resources') {
+        include('gitinfo.properties')
+    }
+    into(globalDist)
+
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
+}
+
+apply from: './mac.dist.gradle'
+apply from: './win.dist.gradle'
+apply from: './bin.dist.gradle'
+apply from: './src.dist.gradle'
+
+// meta task
+task dist {
+    dependsOn binZip
+    dependsOn srcTarGz
+    dependsOn srcpureTarGz
+    dependsOn windowsInstaller
+    dependsOn windowsPortableInstaller
+    dependsOn macDist
+    dependsOn gitinfoDist
+}
+
+// clean
+task cleanDist(type: Delete) {
+    delete globalDist
+}
+clean.dependsOn cleanDist
+
+task createGitTag(type: Exec) {
+	def tag = "${versionStatus.empty ? 'release':versionStatus}-$majorVersion${minorVersion.empty ? '':'-pre'+minorVersion}"
+    ignoreExitValue = true
+	doFirst {
+		println "> Press enter to create tag $tag"
+		System.in.newReader().readLine()
+	}
+    commandLine 'git', 'tag', tag
+}
+
+task release {
+	dependsOn (clean, dist, createGitTag)
+}
+dist.mustRunAfter clean
+createGitTag.mustRunAfter dist

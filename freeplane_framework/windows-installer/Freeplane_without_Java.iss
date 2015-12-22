@@ -11,8 +11,8 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.5.2"
-#define MyStatus ""
+#define MyVersion "1.5.3"
+#define MyStatus "alpha"
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
@@ -23,7 +23,7 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
-AppCopyright=Copyright © 2000-2015 Freeplane team and others
+AppCopyright=Copyright ï¿½ 2000-2015 Freeplane team and others
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
@@ -32,12 +32,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 ArchitecturesInstallIn64BitMode=x64 ia64
-OutputDir=..\dist
-#if MyStatus == ""
-  OutputBaseFilename=Freeplane-Setup-{#MyVersion}
-#else
-  OutputBaseFilename=Freeplane-Setup-{#MyVersion}-{#MyStatus}
-#endif
+OutputDir=.
+OutputBaseFilename=Freeplane-Setup
 SetupIconFile=Setup.ico
 VersionInfoDescription=Free mind mapping software. Fast. Simple. Streamlined.
 ChangesAssociations=true
@@ -75,7 +71,7 @@ Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescri
 
 
 [Files]
-Source: ..\build\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: fwdir\*
+Source: "..\..\BUILD\*"; DestDir: "{app}"; Flags: ignoreversion createallsubdirs recursesubdirs; Excludes: "fwdir\*"
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

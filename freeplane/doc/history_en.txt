@@ -27,7 +27,15 @@ Configurable default Map Save Directory
 Changed behavior of read-only maps
 Make data formatting, formula processing and LaTeX rendering independently configurable
 Keep icon name of user icon if it's not found in the current installation
-Full screen without distracting elements
+
+===============================
+1.4.1
+===============================
+Ribbon UI
+Background images
+Clones
+Scripting API extensions
+Save and restore last edit location
 
 ===============================
 1.3.16
@@ -77,12 +85,13 @@ Bug fixes
 ===============================
 1.3.8
 ===============================
-Bug fixes
+
 ===============================
 1.3.7
 ===============================
 compress tabs and remove ".mm" from tab titles
 Add Format=Unparsed LaTeX and \unparsedlatex node prefix to allow LaTeX content that is solely used for export
+
 ===============================
 1.3.6
 ===============================

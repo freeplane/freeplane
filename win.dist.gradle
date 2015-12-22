@@ -1,0 +1,100 @@
+import groovy.io.FileType
+import org.apache.tools.ant.taskdefs.condition.Os
+
+task windowsInstaller(type: Exec) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
+    ignoreExitValue = true
+    workingDir = rootDir.path + '/freeplane_framework/windows-installer'
+
+    commandLine 'cmd.exe', '/c', 'ISCC.exe /Q Freeplane_without_Java.iss'
+	doLast {
+         new File(workingDir, 'Freeplane-Setup.exe').renameTo(new File(globalDist, "Freeplane-Setup-${distVersion}.exe"))
+	}
+
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
+}
+
+def portableInstallerDir = new File(globalDist, 'FreeplanePortable').path
+
+task copyWindowsPortableInstallerBasicFiles(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
+    // copy windows-portable files
+    from(rootDir.path + '/freeplane_framework/windows-portable') {
+         include('**')
+    }
+    into(portableInstallerDir)
+}
+task copyWindowsPortableInstallerLicense(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
+    // copy license
+    from(rootDir.path + '/freeplane/resources/') {
+         include('license.txt')
+         rename('license.txt', 'EULA.txt')
+    }
+    into(portableInstallerDir + '/Other/Source/')
+}
+task copyWindowsPortableInstallerIcon(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
+    // copy icon
+    from(rootDir.path + '/freeplane_framework/launch4j') {
+        include('Freeplane_app.ico')
+        rename('Freeplane_app.ico', 'appicon.ico')
+    }
+    into(portableInstallerDir + '/App/AppInfo/')
+}
+
+task copyWindowsPortableInstallerFiles(type: Copy) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
+    // copy INI I
+    from(rootDir.path + '/freeplane_framework/portableApps') {
+        include('portable.ini')
+        rename('portable.ini', 'freeplane.l4j.ini')
+    }
+
+    // copy INI II
+    from(rootDir.path + '/freeplane_framework/portableApps') {
+        include('portable.ini')
+        rename('portable.ini', 'freeplaneConsole.l4j.ini')
+    }
+
+    // copy all other files
+    from (globalBuild) {
+        exclude('*.bat', '*.ini', '*.sh')
+        exclude('doc/api/**')
+    }
+    into(portableInstallerDir + '/App/Freeplane/')
+
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
+    dependsOn copyWindowsPortableInstallerBasicFiles
+    dependsOn copyWindowsPortableInstallerLicense
+    dependsOn copyWindowsPortableInstallerIcon
+}
+
+task windowsPortableInstaller(type: Exec) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+
+    // continue the build when running windows but PortableApps.comInstaller.exe is not installed?
+    ignoreExitValue = true
+    workingDir = rootDir.path + '/freeplane_framework'
+
+    commandLine 'cmd.exe', '/c', 'PortableApps.comInstaller.exe', portableInstallerDir
+
+    dependsOn copyWindowsPortableInstallerFiles
+
+    doLast {
+         new File(portableInstallerDir).deleteDir() 
+         new File(globalDist).eachFileMatch(FileType.FILES, ~/FreeplanePortable_.*\.paf\.exe/) {
+			 f -> 
+			 f.renameTo(new File(globalDist, "FreeplanePortable-${distVersion}.paf.exe"))
+		 }
+    }
+}

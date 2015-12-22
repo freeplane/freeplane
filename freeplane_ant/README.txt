@@ -1,12 +1,12 @@
 Custom Ant tasks for use in freeplane.
 ======================================
 
- - target "jar" builds build/freeplaneant.jar
+ - target "jar" builds build/libs/freeplaneant-<version>.jar
  - target "test" performs some tests
- - See test/build.xml for examples of their use
 
 Task FormatTranslation
 ----------------------
+(e.g. "gradle format_translation")
 formats a translation file and writes the result to another file.
 
 The following transformations are made:
@@ -29,6 +29,7 @@ Attributes:
 
 Task FormatTranslationCheck
 ---------------------------
+(e.g. "gradle check_translation")
 Does the same thing as FormatTranslation with the following exceptions:
 
 - no files are written or changed.

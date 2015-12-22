@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<FreeplaneUIEntries>
+	<Entry builder="main_menu">
+		<Entry name="file">
+			<Entry name="PageAction" />
+			<Entry name="PrintPreviewAction" />
+			<Entry accelerator="control P" name="PrintAction" />
+			<Entry name="FilePropertiesAction" />
+		</Entry>
+		<Entry name="edit">
+			<Entry name="SetShortenerStateAction" />
+			<Entry accelerator="control C" name="CopyAction" />
+			<Entry accelerator="control shift C" name="CopySingleAction" />
+			<Entry accelerator="control F" name="FindAction" />
+			<Entry accelerator="control G" name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAction.BACK" />
+		</Entry>
+		<Entry name="view">
+			<Entry name="toolbars">
+				<Entry name="ToggleMenubarAction"/>
+				<Entry name="ToggleToolbarAction" />
+				<Entry name="ShowFilterToolbarAction" />
+				<Entry name="ToggleScrollbarsAction" />
+			</Entry>
+			<Entry name="zoom">
+				<Entry accelerator="alt UP" name="ZoomInAction" />
+				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
+				<Entry accelerator="control alt C" name="CenterSelectedNodeAction" />
+			</Entry>
+			<Entry name="menu_viewmode">
+				<Entry name="ViewLayoutTypeAction.OUTLINE" />
+				<Entry name="ShowSelectionAsRectangleAction" />
+			</Entry>
+			<Entry name="menu_hoverView">
+				<Entry accelerator="alt F2" name="ToggleDetailsAction" />
+				<Entry name="SetBooleanPropertyAction.show_node_tooltips" />
+			</Entry>
+			<Entry builder="radio_button_group" name="menu_displayAttributes">
+				<Entry name="ShowSelectedAttributesAction" />
+				<Entry name="ShowAllAttributesAction" />
+				<Entry name="HideAllAttributesAction" />
+				<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+			</Entry>
+		</Entry>
+		<Entry name="navigate">
+			<Entry name="folding">
+				<Entry accelerator="SPACE" name="ToggleFoldedAction" />
+				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+				<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
+				<Entry accelerator="alt PAGE_DOWN" name="UnfoldOneLevelAction" />
+				<Entry accelerator="alt PAGE_UP" name="FoldOneLevelAction" />
+				<Entry accelerator="alt END" name="UnfoldAllAction" />
+				<Entry accelerator="alt HOME" name="FoldAllAction" />
+			</Entry>
+			<Entry name="MoveToRootAction" accelerator="ESCAPE" />
+			<Entry name="GotoNodeAction" />
+			<Entry name="NextNodeAction.BACK" accelerator="control alt LEFT" />
+			<Entry name="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
+			<Entry name="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
+			<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+			<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
+			<Entry accelerator="control ENTER" name="FollowLinkAction" />
+		</Entry>
+		<Entry name="filter">
+			<Entry name="UndoFilterAction" />
+			<Entry name="RedoFilterAction" />
+			<Entry name="ReapplyFilterAction" />
+			<Entry name="QuickFilterAction" />
+			<Entry name="ApplySelectedViewConditionAction" />
+			<Entry name="QuickFindAllAction" />
+			<Entry name="ApplyNoFilteringAction" />
+			<Entry name="EditFilterAction" />
+			<Entry name="FilterCondition">
+				<Entry name="ApplyToVisibleAction" />
+				<Entry name="ShowAncestorsAction" />
+				<Entry name="ShowDescendantsAction" />
+			</Entry>
+			<Entry name="find">
+				<Entry name="QuickFindAction.BACK" />
+				<Entry name="QuickFindAction.FORWARD" />
+			</Entry>
+		</Entry>
+		<Entry name="extras">
+			<Entry name="encryption">
+				<Entry name="EnterPassword" />
+			</Entry>
+		</Entry>
+	</Entry>
+	<Entry name="help">
+			<Entry name="OpenFreeplaneSiteAction" />
+			<Entry name="AboutAction"/>
+	</Entry>
+	<Entry name="map_popup" builder="map_popup">
+		<Entry name="ToggleMenubarAction"/>
+		<Entry name="ToggleToolbarAction" />
+		<Entry name="ShowFilterToolbarAction" />
+		<Entry name="ToggleScrollbarsAction" />
+		<Entry name="ViewLayoutTypeAction.OUTLINE" />
+		<Entry name="CenterSelectedNodeAction" />
+		<Entry name="MoveToRootAction" accelerator="ESCAPE" />
+		<Entry name="GotoNodeAction" />
+	</Entry>
+	<Entry name="node_popup" builder="node_popup">
+		<Entry name="SetShortenerStateAction" />
+		<Entry name="EnterPassword" />
+		<Entry name="CopyAction" accelerator="control C" />
+		<Entry name="CopySingleAction" accelerator="control shift C" />
+	</Entry>
+	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry builder="main_toolbar_zoom" name="zoom" />
+		<Entry name="open">
+			<Entry name="PrintAction" />
+			<Entry name="PrintDirectAction" />
+		</Entry>
+		<Entry name="paste">
+			<Entry name="CopyAction" />
+		</Entry>
+		<Entry name="folding">
+			<Entry name="UnfoldOneLevelAction" />
+			<Entry name="FoldOneLevelAction" />
+			<Entry name="UnfoldAllAction" />
+			<Entry name="FoldAllAction" />
+		</Entry>
+		<Entry name="find">
+			<Entry name="FindAction" />
+			<Entry name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAction.BACK" />
+		</Entry>
+		<Entry name="EnterPassword" />
+	</Entry>
+</FreeplaneUIEntries>

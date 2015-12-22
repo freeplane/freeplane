@@ -1,0 +1,238 @@
+allprojects {
+    // in a multi-project setup, all projects must have the same version number!
+    // the real (specific) version number is in freeplane/viewer-resources/version.properties!
+    version = '1.4'
+
+    // WARNING: this is removed with "gradle clean"!!
+    ext.globalBuild = rootDir.path + '/BUILD'
+
+    repositories {
+        // this is necessary to grab both binary and source jars
+        // for local (git) dependencies
+        flatDir name: 'localGitDepsRepository',
+                dirs: [rootDir.path + "/freeplane/lib",
+                       rootDir.path + "/freeplane_plugin_jsyntaxpane/lib",
+                       rootDir.path + "/freeplane_plugin_openmaps/lib",
+                       rootDir.path + "/freeplane_plugin_svg/lib"]
+    }
+
+}
+
+def filterPluginDeps(listOfPaths) {
+    def filteredListOfPaths = []
+
+    for (path in listOfPaths) {
+        if (path.startsWith('lib/framework-')) {
+            continue;
+        }
+        if (path == ("lib/freeplane-" + project.version + ".jar")) {
+            continue;
+        }
+        if (path.startsWith('lib/freeplane_plugin_') &&
+            path.endsWith('-' + project.version + '.jar')) {
+            continue;
+        }
+        filteredListOfPaths.add(path)
+    }
+
+    return filteredListOfPaths
+}
+
+// we need this filter to convert i.e.:
+// lib/foo, li
+//  b/bar
+// TO:
+// lib/foo, lib/bar
+// !
+class UnwrapManifestFilter extends FilterReader {
+    UnwrapManifestFilter(Reader input) {
+        super(new StringReader(input.text.replace("\r\n ", "").replace("\n ", "").replace("\r ", "")))
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    compileJava {
+      options.encoding = "UTF-8"
+    }
+    javadoc {
+      options.encoding = "UTF-8"
+      enabled = false
+      failOnError = false  
+    }
+
+    repositories {
+       maven  {
+        url "http://repo1.maven.org/maven2"
+       }
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.11'
+    }
+
+    task copyEclipseSettings(type: Copy) {
+        from(rootDir.path + "/freeplane_framework/eclipse/settings-templates/") {
+            include("*.prefs")
+        }
+        into(project.file(".settings/"))
+    }
+    eclipseJdt.dependsOn copyEclipseSettings
+
+    task cleanEclipseSettings(type: Delete) {
+        delete(project.file(".settings"))
+    }
+    cleanEclipseJdt.dependsOn cleanEclipseSettings
+}
+
+// OSGi projects (/plugin/, freeplane) need this for compilation (e.g. resolve Bundle),
+// and freeplane_framework needs to copy it to BUILD/framework.jar
+configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
+    repositories {
+        maven {
+            url 'http://www.knopflerfish.org/maven2/'
+        }
+    }
+
+    dependencies {
+        compile group: 'org.knopflerfish', name:'framework', version: '7.1.2'
+    }
+}
+
+// common configuration for all OSGi projects...
+configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
+    apply plugin: 'osgi'
+
+    if (project.name.equals("freeplane"))
+       ext.pluginid = 'org.freeplane.core'
+    else
+       ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
+
+    task copyDeps(type: Copy) {
+        from project.configurations.runtime
+        into "$buildDir/libs"
+    }
+    jar.dependsOn copyDeps
+
+    task filterOSGiManifestForEclipse(type: Copy) {
+        from('build/tmp/jar/MANIFEST.MF') {
+        }
+        into('META-INF/')
+        // unwrap each header
+        filter UnwrapManifestFilter
+        // replace path for dependencies
+        filter { line -> line.replace("lib/", "build/libs/") }
+        // re-wrap each header (TODO: use CRLF?)
+        filter { line -> line.replace(",", ",\n ") }
+    }
+    filterOSGiManifestForEclipse.dependsOn jar
+    build.dependsOn filterOSGiManifestForEclipse
+
+    task cleanOSGiManifestForEclipse(type: Delete) {
+       delete "META-INF/MANIFEST.MF"
+    }
+    clean.dependsOn cleanOSGiManifestForEclipse
+
+    // fix eclipse classpath: artifacts to be Export-Package:'d need
+    // to be referenced from build/libs (and not from ~/.gradle/caches)
+    eclipse.classpath.file {
+        whenMerged { classpath ->
+           for (entry in classpath.entries)
+           {
+               if (entry.getKind().equals('lib'))
+               {
+                   def jarName = new File(entry.path).name
+                   def localDep = project.configurations.runtime.files.any { it.name.equals(jarName) }
+                   if (localDep)
+                   {
+                       entry.path = "build/libs/" + jarName
+                   }
+               }
+           }
+           return classpath
+        }
+    }
+
+    //Configure plugins as eclipse-plugins.
+    eclipse.project {
+      buildCommand 'org.eclipse.pde.SchemaBuilder'
+      natures      'org.eclipse.pde.PluginNature'
+    }
+}
+
+// common configuration for all plugins...
+configure(subprojects.findAll {it.name =~ /plugin/ }) {
+
+    task copyOSGiJars(type: Copy) {
+        from ("$buildDir/libs") {
+            include("*.jar")
+            // TODO: this is redundant with regard to 'filterPluginDeps' (see above)!
+            exclude('framework-*.jar')
+            exclude('freeplane-' + project.version + '.jar')
+            exclude('freeplane_plugin_*-' + project.version + '.jar')
+        }
+        from ('lib') {
+            include("*.jar")
+            exclude('*-sources.jar')
+        }
+        into(globalBuild + '/plugins/' + pluginid + '/lib/')
+    }
+
+    task copyOSGiManifest(type: Copy) {
+        from ("$buildDir/tmp/jar/") {
+            include("MANIFEST.MF")
+        }
+        into(globalBuild + '/plugins/' + pluginid + '/META-INF/')
+    }
+
+    build.dependsOn copyOSGiJars
+    build.dependsOn copyOSGiManifest
+
+    // create a separate non-OSGi(!) jar for each plugin!
+    task pluginJar(type: Jar) {
+         baseName = 'plugin'
+         dependsOn classes
+    
+         from (sourceSets.main.output) {
+             include("**")
+         }
+         // unfortunately some resource (xml,properties) files (e.g. preferences.xml in latex plugin)
+         // are in src/main/java...
+         from (sourceSets.main.allSource) {
+             include("**/*.xml")
+             include("**/*.properties")
+         }
+         includeEmptyDirs = false
+
+         // use a non-OSGi manifest (this jar is referenced from an OSGi bundle)!
+         project.manifest { }
+    }
+
+    // jar must execute after pluginJar so that the OSGi manifest can still be
+    // picked up from build/tmp/jar (and isn't overwritten by plugin*.jar's non-OSGi
+    // manifest!)
+    jar.dependsOn pluginJar
+}
+
+apply plugin: 'base' // necessary to get the global 'clean' task
+
+// remove globalBuild/**
+task cleanBUILD(type: Delete) {
+    delete globalBuild
+}
+clean.dependsOn(cleanBUILD)
+
+task check_translation {
+    dependsOn ':JOrtho_0.4_freeplane:check_translation'
+    dependsOn ':freeplane:check_translation'
+}
+task format_translation {
+    dependsOn ':JOrtho_0.4_freeplane:format_translation'
+    dependsOn ':freeplane:format_translation'
+}
+
+apply from: './dist.gradle'
+apply from: './jdt-config.gradle'
