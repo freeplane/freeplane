@@ -8,33 +8,23 @@
 
 import groovy.swing.SwingBuilder
 
-import java.awt.Component;
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Toolkit
-import java.awt.event.KeyEvent
 import java.util.zip.ZipInputStream
 
 import javax.swing.BoxLayout
-import javax.swing.JDialog;
-import javax.swing.JMenuItem
 import javax.swing.JOptionPane
 import javax.swing.KeyStroke
-import javax.swing.tree.DefaultMutableTreeNode
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.WordUtils
 import org.freeplane.core.resources.ResourceController
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FreeplaneVersion
-import org.freeplane.core.util.MenuUtils
 import org.freeplane.core.util.TextUtils
 import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.main.addons.AddOnsController
-import org.freeplane.plugin.script.ExecuteScriptAction
-import org.freeplane.plugin.script.ScriptResources;
-import org.freeplane.plugin.script.ScriptingEngine
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.AddOnDetailsPanel
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
