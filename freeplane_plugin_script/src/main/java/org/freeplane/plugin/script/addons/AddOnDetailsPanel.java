@@ -12,11 +12,14 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.plugin.script.ExecuteScriptAction;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
@@ -30,6 +33,7 @@ import com.jgoodies.forms.layout.RowSpec;
 public class AddOnDetailsPanel extends JPanel {
 	private int maxWidth = 500;
 	private String warning;
+	private static EntryNavigator entryNavigator = createEntryNavigator();
 
 	public AddOnDetailsPanel(final AddOnProperties addOn, final String warning) {
 		this.warning = warning;
@@ -63,6 +67,12 @@ public class AddOnDetailsPanel extends JPanel {
 		add(box, "3, 8, left, default");
 		JComponent details = createDetails(addOn);
 		add(details, "3, 9");
+	}
+
+	private static EntryNavigator createEntryNavigator() {
+		EntryNavigator entryNavigator = new EntryNavigator();
+		entryNavigator.initFromProperties();
+		return entryNavigator;
 	}
 
 	private JLabel createImageLabel(AddOnProperties addOn) {
@@ -146,7 +156,10 @@ public class AddOnDetailsPanel extends JPanel {
     }
 
 	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
-		return script.menuLocation;
+		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		Entry top = modeController.getUserInputListenerFactory().getGenericMenuStructure();
+		Entry entry = entryNavigator.findChildByPath(top, script.menuLocation);
+		return (entry == null) ? script.menuLocation : entry.getPath();
 	}
 
 	private String bold(final String text) {
