@@ -11,6 +11,7 @@ import groovy.swing.SwingBuilder
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.Toolkit
+import java.awt.event.ActionEvent;
 import java.util.zip.ZipInputStream
 
 import javax.swing.BoxLayout
@@ -20,11 +21,13 @@ import javax.swing.KeyStroke
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.WordUtils
 import org.freeplane.core.resources.ResourceController
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FreeplaneVersion
 import org.freeplane.core.util.TextUtils
 import org.freeplane.features.mode.Controller
 import org.freeplane.main.addons.AddOnProperties
 import org.freeplane.main.addons.AddOnsController
+import org.freeplane.plugin.script.ExecuteScriptAction;
 import org.freeplane.plugin.script.ScriptingPermissions
 import org.freeplane.plugin.script.addons.AddOnDetailsPanel
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties
@@ -310,30 +313,12 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
     // check key syntax
 	KeyStroke newKeyStroke = ui.getKeyStroke(newShortcut)
 	mapStructureAssert(newKeyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', newShortcut))
+	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
+	def action = new AFreeplaneAction(menuItemKey) {
+		public void actionPerformed(ActionEvent e) {}
+	};
 	def acceleratorManager = Controller.currentModeController.userInputListenerFactory.acceleratorManager
-// TODO: ActionAcceleratorManager must register key without having an action at hand
-//	String shortcutKey = ?MenuUtils?.makeAcceleratorKey(menuItemKey)
-//	acceleratorManager.newAccelerator(shortcutKey, newAccelerator)
-	debugPrintln "set keyboardShortcut $shortcutKey to $newShortcut"
-	ResourceController.getResourceController().setProperty(shortcutKey, newShortcut)
-}
-
-String keyStrokeToString(KeyStroke keyStroke) {
-    return keyStroke.toString().replaceFirst("pressed ", "");
-}
-
-private boolean askIfNewShortcutWasAssignedToAnotherFunction(String currentAssignee) {
-	int replace = JOptionPane.showConfirmDialog(ui.frame,
-		TextUtils.format("replace_shortcut_question", currentAssignee),
-		TextUtils.getText("replace_shortcut_title"), JOptionPane.YES_NO_OPTION);
-	return replace == JOptionPane.YES_OPTION;
-}
-
-private boolean askIfNewFunctionWasAssignedToAnotherShortcut(String oldShortcut) {
-    // this is a irritating dialog but we can't change it before the 1.2 release
-    int replace = JOptionPane.showConfirmDialog(ui.frame, oldShortcut,
-        TextUtils.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
-    return replace == JOptionPane.YES_OPTION;
+	acceleratorManager.newAccelerator(action, newKeyStroke)
 }
 
 ScriptingPermissions parsePermissions(Proxy.Node propertyNode, String scriptName) {
