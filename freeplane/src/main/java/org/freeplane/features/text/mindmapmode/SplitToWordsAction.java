@@ -43,12 +43,16 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	
 	static final Pattern WORD_PATTERN = Pattern.compile("-?\\d+(?:[,.]\\d+)*|[\\p{L}\\d][\\p{L}\\d-]*");
 	private Collection<String> auxillaryWords;
+	private boolean leaveOriginalNodeEmpty;
+	private boolean saveOriginalTextAsDetails;
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String auxillaryWordList = ResourceController.getResourceController().getProperty("SplitToWordsAction.auxillaryWordList");
+		String auxillaryWordList = ResourceController.getResourceController().getProperty("SplitToWordsAction.auxillaryWordList").toLowerCase();
 		auxillaryWords = Arrays.asList(auxillaryWordList.split("\\s*,\\s*"));
+		leaveOriginalNodeEmpty = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.leaveOriginalNodeEmpty");
+		saveOriginalTextAsDetails = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.saveOriginalTextAsDetails");
 		super.actionPerformed(e);
 	}
 
@@ -69,8 +73,6 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 		
 		int nodeCountInLine;
 		boolean newNode;
-		
-		final boolean leaveOriginalNodeEmpty = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.leaveOriginalNodeEmpty");
 		
 		if(leaveOriginalNodeEmpty){
 			nodeCountInLine = 0;
@@ -115,8 +117,10 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 				newNode = false;
 			}
 		}
-		textController.setDetails(currentNode, HtmlUtils.isHtmlNode(details) ?  details : HtmlUtils.plainToHTML(details));
-		textController.setIsMinimized(currentNode, true);
+		if(saveOriginalTextAsDetails) {
+			textController.setDetails(currentNode, HtmlUtils.isHtmlNode(details) ?  details : HtmlUtils.plainToHTML(details));
+			textController.setIsMinimized(currentNode, true);
+		}
 	}
 
 	private String capitalize(String word) {

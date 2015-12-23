@@ -6,6 +6,7 @@ Clones
 Scripting API extensions
 Save and restore last edit location
 New handling for summary nodes 
+Actions for splitting node text to words
 
 ===============================
 1.5.2

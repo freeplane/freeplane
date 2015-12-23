@@ -179,6 +179,7 @@
 				<string name="SplitToWordsAction.auxillaryWordList"/>
 				<string name="SplitToWordsAction.nodeNumbersInLine"/>
 				<boolean name="SplitToWordsAction.leaveOriginalNodeEmpty"/>
+				<boolean name="SplitToWordsAction.saveOriginalTextAsDetails"/>
 			</separator>
 			<separator name="data_formats">
 				<boolean name="parse_data" />
