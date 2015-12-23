@@ -153,7 +153,7 @@ public class Compat {
 	    return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
     }
 	
-	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.4.x";
+	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.5.x";
 	final public static String PREVIOUS_VERSION_DIR_NAME = "1.3.x";
 
 
