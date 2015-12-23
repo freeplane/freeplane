@@ -94,20 +94,20 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		public void mapChanged(MapChangeEvent event) {
-			action.setEnabled();
+			setActionEnabled();
 		}
 
 		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-			action.setEnabled();
+			setActionEnabled();
 		}
 
 		public void onNodeInserted(NodeModel parent, NodeModel child,
 				int newIndex) {
-			action.setEnabled();
+			setActionEnabled();
 		}
 
 		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-			action.setEnabled();
+			setActionEnabled();
 		}
 
 		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
