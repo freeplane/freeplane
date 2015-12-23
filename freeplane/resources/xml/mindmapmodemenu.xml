@@ -208,9 +208,9 @@
 				<Entry name="CopyNodeURIAction" />
 			</Entry>
 			<Entry name="PasteAction" accelerator="control V" />
-			<Entry name="SelectedPasteAction" />
+			<Entry name="SelectedPasteAction" accelerator="control shift V"/>
 			<Entry name="MoveAction" />
-			<Entry name="CloneAction" />
+			<Entry name="CloneAction" accelerator="control D"/>
 			<Entry builder="separator" />
 			<Entry name="menu_moveNode">
 				<Entry name="NodeUpAction" accelerator="control UP" />
