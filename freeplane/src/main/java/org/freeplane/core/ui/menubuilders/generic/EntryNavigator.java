@@ -37,12 +37,17 @@ public class EntryNavigator {
 	}
 
 	public Entry findChildByPath(Entry top, String path) {
+		final String canonicalPath = replaceAliases(path);
+		return top.getChildByPath(canonicalPath.split("/"));
+	}
+
+	public String replaceAliases(String path) {
 		for (Map.Entry<String, String> entry : aliases.entrySet()) {
 			final String alias = entry.getKey();
 			if (path.startsWith(alias))
 				path = entry.getValue() + path.substring(alias.length());
 		}
-		return top.getChildByPath(path.split("/"));
+		return path;
 	}
 
 	public void addAlias(String alias, String path) {

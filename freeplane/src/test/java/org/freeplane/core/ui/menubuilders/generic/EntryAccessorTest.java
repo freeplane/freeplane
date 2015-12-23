@@ -69,14 +69,6 @@ public class EntryAccessorTest {
 	}
 
 	@Test
-	public void givenEntryWithoutComponent_returnsEmtpyLocationDescription() throws Exception {
-		entryAccessor.setText(entry, "entry text");
-		
-		final String entryText = entryAccessor.getLocationDescription(entry);
-		Assert.assertThat(entryText, equalTo(""));
-	}
-
-	@Test
 	public void givenEntryWithoutText_returnsEmtpyLocationDescription() throws Exception {
 		entryAccessor.setComponent(entry, new JSeparator());
 		

@@ -6,6 +6,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.TextUtils;
 
 public class EntryAccessor {
 
@@ -15,7 +16,7 @@ public class EntryAccessor {
 	public static final Class<Icon> ICON = Icon.class;
 	public static final String ACCELERATOR = "accelerator";
 	public final ResourceAccessor resourceAccessor;
-	private static final String MENU_ELEMENT_SEPARATOR = " -> ";
+	public static final String MENU_ELEMENT_SEPARATOR = " -> ";
 
 	public EntryAccessor(ResourceAccessor resourceAccessor) {
 		this.resourceAccessor = resourceAccessor;
@@ -126,8 +127,7 @@ public class EntryAccessor {
 		final Entry parent = entry.getParent();
 		if(parent != null)
 			buildLocationDescription(parent, stringBuilder);
-		final Object component = getComponent(entry);
-		final String entryText = component != null ? getText(entry) : "";
+		final String entryText = TextUtils.removeMnemonic (getText(entry));
 		if(! entryText.isEmpty()){
 			if(stringBuilder.length() > 0)
 				stringBuilder.append(MENU_ELEMENT_SEPARATOR);
