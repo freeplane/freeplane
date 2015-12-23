@@ -35,11 +35,8 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
 		if (entryNavigator == null) {
 			entryNavigator = new EntryNavigator();
-			entryNavigator.addAlias("main_menu_scripting" + "/scripts", scriptingEntry.getPath());
-			entryNavigator.addAlias("main_menu_scripting", scriptingEntry.getParent().getPath());
-			entryNavigator.addAlias("/menu_bar", "main_menu");
-			entryNavigator.addAlias("node_popup_scripting", "node_popup/node_popup_scripting");
-			// TODO: read further mapping from a config file
+			entryNavigator.initFromProperties();
+			System.out.println(entryNavigator);
 		}
 		return entryNavigator;
     }
