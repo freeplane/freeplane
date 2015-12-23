@@ -5,35 +5,40 @@ import static org.mockito.Mockito.mock;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JSeparator;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class EntryAccessorTest {
+	Entry entry;
+	EntryAccessor entryAccessor;
+	
+	@Before
+	public void setup(){
+		entry = new Entry();
+		entryAccessor = new EntryAccessor();
+	}
+	
 	@Test
 	public void getsTextFromEntryAttributeText() throws Exception {
-		final Entry entry = new Entry();
 		entry.setAttribute("text", "entry text");
-		final EntryAccessor entryAccessor = new EntryAccessor();
 		final String entryText = entryAccessor.getText(entry);
 		Assert.assertThat(entryText, equalTo("entry text"));
 	}
 
 	@Test
 	public void getsIconFromEntryAttributeIcon() throws Exception {
-		final Entry entry = new Entry();
 		final Icon icon = new ImageIcon();
 		entry.setAttribute(EntryAccessor.ICON, icon);
-		final EntryAccessor entryAccessor = new EntryAccessor();
 		final Icon entryIcon = entryAccessor.getIcon(entry);
 		Assert.assertThat(entryIcon, equalTo(icon));
 	}
 
 	@Test
 	public void setsTextToEntryAttributeText() throws Exception {
-		final Entry entry = new Entry();
-		final EntryAccessor entryAccessor = new EntryAccessor();
 		entryAccessor.setText(entry, "entry text");
 		final String entryText = entryAccessor.getText(entry);
 		Assert.assertThat(entryText, equalTo("entry text"));
@@ -41,8 +46,6 @@ public class EntryAccessorTest {
 
 	@Test
 	public void setsIconToEntryAttributeIcon() throws Exception {
-		final Entry entry = new Entry();
-		final EntryAccessor entryAccessor = new EntryAccessor();
 		final Icon icon = new ImageIcon();
 		entryAccessor.setIcon(entry, icon);
 		final Icon entryIcon = entryAccessor.getIcon(entry);
@@ -51,8 +54,6 @@ public class EntryAccessorTest {
 
 	@Test
 	public void setsAction() throws Exception {
-		final Entry entry = new Entry();
-		final EntryAccessor entryAccessor = new EntryAccessor();
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		entryAccessor.setAction(entry, action);
 		final AFreeplaneAction entryAction = entryAccessor.getAction(entry);
@@ -61,11 +62,49 @@ public class EntryAccessorTest {
 
 	@Test
 	public void addsChildAction() throws Exception {
-		final Entry entry = new Entry();
-		final EntryAccessor entryAccessor = new EntryAccessor();
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		entryAccessor.addChildAction(entry, action);
 		final AFreeplaneAction entryAction = entryAccessor.getAction(entry.getChild(0));
 		Assert.assertThat(entryAction, equalTo(action));
+	}
+
+	@Test
+	public void givenEntryWithoutComponent_returnsEmtpyLocationDescription() throws Exception {
+		entryAccessor.setText(entry, "entry text");
+		
+		final String entryText = entryAccessor.getLocationDescription(entry);
+		Assert.assertThat(entryText, equalTo(""));
+	}
+
+	@Test
+	public void givenEntryWithoutText_returnsEmtpyLocationDescription() throws Exception {
+		entryAccessor.setComponent(entry, new JSeparator());
+		
+		final String entryText = entryAccessor.getLocationDescription(entry);
+		Assert.assertThat(entryText, equalTo(""));
+	}
+
+	@Test
+	public void givenEntryWithTextAndComponent_returnsNonEmtpyLocationDescription() throws Exception {
+		String text = "entry text";
+		entryAccessor.setText(entry, text);
+		entryAccessor.setComponent(entry, new JSeparator());
+		
+		final String entryText = entryAccessor.getLocationDescription(entry);
+		Assert.assertThat(entryText, equalTo(text));
+	}
+
+	@Test
+	public void givenEntryWithParent_joinesTheirDescritionsSeparatedByArrow() throws Exception {
+		entryAccessor.setText(entry, "entry");
+		entryAccessor.setComponent(entry, new JSeparator());
+
+		Entry parent = new Entry();
+		parent.addChild(entry);
+		entryAccessor.setText(parent, "parent");
+		entryAccessor.setComponent(parent, new JSeparator());
+
+		final String entryText = entryAccessor.getLocationDescription(entry);
+		Assert.assertThat(entryText, equalTo("parent -> entry"));
 	}
 }
