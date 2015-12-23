@@ -175,6 +175,12 @@
 					<choice value="ADD_CHILD" />
 				</combo>
 			</separator>
+			<separator name="SplitToWordsAction">
+				<string name="SplitToWordsAction.auxillaryWordList"/>
+				<string name="SplitToWordsAction.nodeNumbersInLine"/>
+				<boolean name="SplitToWordsAction.leaveOriginalNodeEmpty"/>
+				<boolean name="SplitToWordsAction.saveOriginalTextAsDetails"/>
+			</separator>
 			<separator name="data_formats">
 				<boolean name="parse_data" />
 				<string name="number_format" />

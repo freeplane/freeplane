@@ -134,6 +134,7 @@
 				<Entry name="EditLongAction" accelerator="alt ENTER" />
 				<Entry name="JoinNodesAction" accelerator="control J" />
 				<Entry name="SplitNode" accelerator="alt S" />
+				<Entry builder="splitToWordsActions" />
 				<Entry name="RevisionPluginAction" />
 				<Entry builder="separator" />
 				<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" />

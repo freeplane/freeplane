@@ -512,21 +512,20 @@ public abstract class MainView extends ZoomableLabel {
 		final TextController textController = TextController.getController(modeController);
 		isShortened = textController.isMinimized(nodeModel);
 		final Object userObject = nodeModel.getUserObject();
-		Object content = userObject;
 		String text;
 		try {
-			final Object transformedContent = textController.getTransformedObject(content, nodeModel, userObject);
+			final Object transformedContent = textController.getTransformedObject(nodeModel);
 			if(nodeView.isSelected()){
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(transformedContent);
 			}
-			Icon icon = textController.getIcon(transformedContent, nodeModel, content);
+			Icon icon = textController.getIcon(transformedContent, nodeModel, userObject);
 			putClientProperty(TEXT_RENDERING_ICON, icon);
 			text = transformedContent.toString();
 			textModified = transformedContent instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
-			text = TextUtils.format("MainView.errorUpdateText", String.valueOf(content), e.getLocalizedMessage());
+			text = TextUtils.format("MainView.errorUpdateText", String.valueOf(userObject), e.getLocalizedMessage());
 			textModified = TextModificationState.FAILURE;
 		}
 		if(isShortened){

@@ -59,6 +59,10 @@ import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
@@ -137,7 +141,7 @@ public class MTextController extends TextController {
 	}
 
 	private void createActions() {
-		ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditAction());
 		modeController.addAction(new UsePlainTextAction());
 		modeController.addAction(new JoinNodesAction());
@@ -146,6 +150,30 @@ public class MTextController extends TextController {
         modeController.addAction(new EditDetailsAction(false));
         modeController.addAction(new EditDetailsAction(true));
 		modeController.addAction(new DeleteDetailsAction());
+		modeController.addUiBuilder(Phase.ACTIONS, "splitToWordsActions", new EntryVisitor() {
+			
+			@Override
+			public void visit(Entry target) {
+				final String[] nodeNumbersInLine = ResourceController.getResourceController().getProperty("SplitToWordsAction.nodeNumbersInLine").split("[^\\d]+");
+				for(String nodeNumberInLineAsString : nodeNumbersInLine){
+					try {
+						final int nodeNumberInLine = Integer.parseInt(nodeNumberInLineAsString);
+						if(nodeNumberInLine > 0) {
+							final SplitToWordsAction action = new SplitToWordsAction(nodeNumberInLine);
+							new EntryAccessor().addChildAction(target, action);
+							modeController.addAction(action);
+						}
+					} catch (NumberFormatException e) {
+					}
+				}
+			}
+			
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return true;
+			}
+		});
+			
 	}
 
 	private String[] getContent(final String text, final int pos) {
