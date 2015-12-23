@@ -22,6 +22,13 @@ task gitinfoDist(type: Copy) {
     }
 }
 
+task historyDist(type:Copy) {
+	from(rootDir.path + '/freeplane/doc'){
+		include 'history_en.txt'
+	}
+	into(globalDist)
+}
+
 apply from: './mac.dist.gradle'
 apply from: './win.dist.gradle'
 apply from: './bin.dist.gradle'
@@ -36,6 +43,7 @@ task dist {
     dependsOn windowsPortableInstaller
     dependsOn macDist
     dependsOn gitinfoDist
+	dependsOn historyDist
 }
 
 // clean
