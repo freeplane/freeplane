@@ -249,8 +249,10 @@ public class ExportWithXSLT implements IExportEngine {
 				}
 				if (success && StringUtils.equals(getProperty("copy_map"), "true")) {
 	                String copyМapХsltFile = getProperty("copy_map_xslt_file");
-					if (copyМapХsltFile != null)
-	                    success = transformMapWithXslt(copyМapХsltFile, new File(directoryName, "map.mm"), "", Mode.EXPORT, new String[]{});
+					if (copyМapХsltFile != null){
+						final Mode copymode = Mode.valueOf(getProperty("copymode", Mode.EXPORT.name()));
+	                    success = transformMapWithXslt(copyМapХsltFile, new File(directoryName, "map.mm"), "", copymode, new String[]{});
+					}
                     else
 						success = copyMap(map, directoryName);
 				}

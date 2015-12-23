@@ -36,8 +36,8 @@
             files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,/html/freeplane_applet.jnlp"
             file_prefix=""
             copy_map="true"
-            copy_map_xslt_file="/xslt/exportmm2appletmm.xsl"
             copymode="FILE"
+            mode="FILE"
             load_file="true" 
             set_properties="show_note_icons,
             				show_icon_for_attributes,
@@ -53,6 +53,8 @@
             files_to_copy="visorFreeplane.swf,flashobject.js"
             file_prefix="/flash/"
             copy_map="true"
+            copymode="EXPORT"
+            mode="FILE"
             load_file="true" />
     </action>
     <action
