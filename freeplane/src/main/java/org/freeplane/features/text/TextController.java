@@ -200,6 +200,7 @@ public class TextController implements IExtension {
 		return getTransformedObject(userObject, node, userObject);
 	}
 	
+
 	public Object getTransformedObjectNoThrow(NodeModel node) {
 		final Object userObject = node.getUserObject();
 		return getTransformedObjectNoThrow(userObject, node, userObject);
