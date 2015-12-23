@@ -1,7 +1,10 @@
 package org.freeplane.plugin.script.addons;
 
 import java.awt.Dimension;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -12,6 +15,7 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
@@ -23,6 +27,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.plugin.script.ExecuteScriptAction;
+import org.freeplane.plugin.script.ScriptingMenuUtils;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -126,7 +131,7 @@ public class AddOnDetailsPanel extends JPanel {
 				text.append("<table border='1'>");
 				text.append(row("th", getText("header.function"), getText("header.menu"), getText("header.shortcut")));
 				for (ScriptAddOnProperties.Script script : scripts) {
-					text.append(row("td", bold(TextUtils.getText(script.menuTitleKey)), formatMenuLocation(script),
+					text.append(row("td", bold(TextUtils.getText(script.menuTitleKey)), HtmlUtils.toXMLEscapedText(formatMenuLocation(script)),
 						formatShortcut(script)));
 				}
 				text.append("</table>");
@@ -159,8 +164,34 @@ public class AddOnDetailsPanel extends JPanel {
 	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		Entry top = modeController.getUserInputListenerFactory().getGenericMenuStructure();
-		Entry entry = entryNavigator.findChildByPath(top, script.menuLocation);
-		return (entry == null) ? script.menuLocation : new EntryAccessor().getLocationDescription(entry);
+		final String canonicalPath = entryNavigator.replaceAliases(script.menuLocation);
+		final String[] pathElements = canonicalPath.split("/");
+		Entry entry = top;
+		final ListIterator<String> pathIterator = Arrays.asList(pathElements).listIterator();
+		while (pathIterator.hasNext()) {
+			String name = pathIterator.next();
+			if (!name.isEmpty()) {
+				final Entry child = entry.getChild(name);
+				if (child == null){
+					pathIterator.previous();
+					break;
+				}
+				entry = child;
+			}
+		}
+		if(entry == null)
+			return script.menuLocation;
+		final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
+		final EntryAccessor entryAccessor = new EntryAccessor(resourceAccessor);
+		final String entryLocationDescription = entryAccessor.getLocationDescription(entry);
+		if(!pathIterator.hasNext())
+			return entryLocationDescription;
+		StringBuilder menuLocationDescription = new StringBuilder(entryLocationDescription);
+		while(pathIterator.hasNext()){
+			menuLocationDescription.append(EntryAccessor.MENU_ELEMENT_SEPARATOR);
+			menuLocationDescription.append(ScriptingMenuUtils.scriptNameToMenuItemTitle(pathIterator.next()));
+		}
+		return menuLocationDescription.toString();
 	}
 
 	private String bold(final String text) {
