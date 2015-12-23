@@ -13,6 +13,7 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -159,7 +160,7 @@ public class AddOnDetailsPanel extends JPanel {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		Entry top = modeController.getUserInputListenerFactory().getGenericMenuStructure();
 		Entry entry = entryNavigator.findChildByPath(top, script.menuLocation);
-		return (entry == null) ? script.menuLocation : entry.getPath();
+		return (entry == null) ? script.menuLocation : new EntryAccessor().getLocationDescription(entry);
 	}
 
 	private String bold(final String text) {
