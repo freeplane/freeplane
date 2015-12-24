@@ -470,14 +470,17 @@ public class MMapController extends MapController {
 		}
 	}
 
-	private void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex,
+	private void moveSingleNode(final NodeModel child, final NodeModel newParent, int newIndex,
                                 final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
+		final int childCount = newParent.getChildCount();
+		final int correctedNewIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
+		
 		final boolean wasLeft = child.isLeft();
 		final IActor actor = new IActor() {
 			public void act() {
-				moveNodeToWithoutUndo(child, newParent, newIndex, isLeft, changeSide);
+				moveNodeToWithoutUndo(child, newParent, correctedNewIndex, isLeft, changeSide);
 			}
 
 			public String getDescription() {
@@ -633,12 +636,8 @@ public class MMapController extends MapController {
 	 *
 	 * @return returns the new index.
 	 */
-	private int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex,
+	private int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, int newIndex,
 	                          final boolean isLeft, final boolean changeSide) {
-		if(newIndex > newParent.getChildCount()){
-			return moveNodeToWithoutUndo(child, newParent, newParent.getChildCount(), isLeft, changeSide);
-		}
-			
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
 		final boolean oldSideLeft = child.isLeft();
