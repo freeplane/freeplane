@@ -506,11 +506,6 @@ public class MMapController extends MapController {
 			}
 		}
 		int position = target.getChildCount();
-		for(NodeModel node : children){
-			if (target.clones().contains(node.getParentNode())) {
-				position--;
-			}
-		}
 		moveNodes(children, target, position, isLeft, changeSide);
 	}
 
