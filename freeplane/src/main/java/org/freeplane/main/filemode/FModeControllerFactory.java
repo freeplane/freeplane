@@ -90,7 +90,7 @@ public class FModeControllerFactory {
 		FrameController frameController = (FrameController) controller.getViewController();
 		UIComponentVisibilityDispatcher.install(frameController, toolBar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.BOTTOM, FilterController.getCurrentFilterController().getFilterToolbar());
+		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getCurrentFilterController().getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController().getStatusBar());
 		NodeHistory.install(modeController);
 		return modeController;

@@ -76,6 +76,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -87,6 +88,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
+	public static int TOOLBAR_SIDE = ViewController.TOP;
 	@SuppressWarnings("serial")
     @SelectableAction(checkOnPopup = true)
 	private class ToggleFilterToolbarAction extends ToggleToolbarAction {

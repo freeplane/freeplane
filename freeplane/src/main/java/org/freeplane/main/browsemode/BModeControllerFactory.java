@@ -99,7 +99,7 @@ public class BModeControllerFactory {
 		FrameController frameController = (FrameController) controller.getViewController();
 		UIComponentVisibilityDispatcher.install(frameController, toolBar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.BOTTOM, FilterController.getController(
+		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getController(
 		    controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());

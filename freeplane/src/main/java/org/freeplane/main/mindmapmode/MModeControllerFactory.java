@@ -252,7 +252,7 @@ public class MModeControllerFactory {
 		final FrameController frameController = (FrameController) controller.getViewController();
 		UIComponentVisibilityDispatcher.install(frameController, toolbar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
-		userInputListenerFactory.addToolBar("/filter_toolbar", ViewController.BOTTOM, FilterController.getController(controller).getFilterToolbar());
+		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, frameController
 		    .getStatusBar());
 		final JTabbedPane formattingPanel = new JTabbedPane();
