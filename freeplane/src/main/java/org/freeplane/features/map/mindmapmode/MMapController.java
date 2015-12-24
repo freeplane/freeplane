@@ -325,6 +325,8 @@ public class MMapController extends MapController {
 		modeController.addAction(new DeleteAction());
 		modeController.addAction(new NodeUpAction());
 		modeController.addAction(new NodeDownAction());
+		modeController.addAction(new SetAlwaysUnfoldedNodeFlagsAction());
+		modeController.addAction(new RemoveAllAlwaysUnfoldedNodeFlagsAction());
 	}
 
 	public void deleteNode(NodeModel node) {

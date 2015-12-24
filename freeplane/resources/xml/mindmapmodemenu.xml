@@ -106,10 +106,7 @@
 				<Entry name="NewFreeNodeAction" />
 				<Entry name="NewSummaryAction" accelerator="alt shift INSERT" />
 			</Entry>
-			<Entry name="menu_group">
-				<Entry name="AlwaysUnfoldedNodeAction" />
-				<Entry name="CloudAction" accelerator="control shift B" />
-			</Entry>
+			<Entry name="CloudAction" accelerator="control shift B" />
 			<Entry name="AddConnectorAction" accelerator="control L" />
 			<Entry name="links">
 				<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
@@ -364,19 +361,20 @@
 			<Entry builder="separator" />
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
-			<Entry name="navigate">
-				<Entry name="NavigationPreviousMapAction" accelerator="control shift TAB" />
-				<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="NavigationPreviousMapAction" accelerator="control shift TAB" />
+			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="fold">
+				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
+				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+				<Entry name="ToggleChildrenFoldedAction" accelerator="control SPACE" />
+				<Entry name="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
+				<Entry name="FoldOneLevelAction" accelerator="alt PAGE_UP" />
+				<Entry name="UnfoldAllAction" accelerator="alt END" />
+				<Entry name="FoldAllAction" accelerator="alt HOME" />
 				<Entry builder="separator" />
-				<Entry name="fold">
-					<Entry name="ToggleFoldedAction" accelerator="SPACE" />
-					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
-					<Entry name="ToggleChildrenFoldedAction" accelerator="control SPACE" />
-					<Entry name="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
-					<Entry name="FoldOneLevelAction" accelerator="alt PAGE_UP" />
-					<Entry name="UnfoldAllAction" accelerator="alt END" />
-					<Entry name="FoldAllAction" accelerator="alt HOME" />
-				</Entry>
+				<Entry name="SetAlwaysUnfoldedNodeFlagsAction" />
+				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
+				<Entry name="AlwaysUnfoldedNodeAction" />
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
