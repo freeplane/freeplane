@@ -222,16 +222,6 @@ public class NodeModel{
 		return encryptionModel == null || encryptionModel.isAccessible() ? getChildrenInternal().size() : 0;
 	}
 
-	public int getChildPosition(final NodeModel childNode) {
-		int position = 0;
-		for (final ListIterator<NodeModel> i = getChildrenInternal().listIterator(); i.hasNext(); ++position) {
-			if ((i.next()) == childNode) {
-				return position;
-			}
-		}
-		return -1;
-	}
-
 	public List<NodeModel> getChildren() {
 		List<NodeModel> childrenList;
 		if (getChildrenInternal() != null) {

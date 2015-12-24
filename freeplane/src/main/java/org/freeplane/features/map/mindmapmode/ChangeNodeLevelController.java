@@ -119,7 +119,7 @@ public class ChangeNodeLevelController {
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		final int ownPosition = selectedParent.getChildPosition(selectedNode);
+		final int ownPosition = selectedParent.getIndex(selectedNode);
 		NodeModel directSibling = null;
 		for (int i = ownPosition - 1; i >= 0; --i) {
 			final NodeModel targetCandidate = (NodeModel) selectedParent.getChildAt(i);
@@ -174,7 +174,8 @@ public class ChangeNodeLevelController {
 		}
 		else {
 			final NodeModel grandParent = selectedParent.getParentNode();
-			position = grandParent.getChildPosition(selectedParent) + 1;
+			final NodeModel childNode = selectedParent;
+			position = grandParent.getIndex(childNode) + 1;
 			selectedParent = grandParent;
 			changeSide = false;
 		}

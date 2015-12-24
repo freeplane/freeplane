@@ -739,7 +739,8 @@ public class MClipboardController extends ClipboardController {
 		if (asSibling) {
 			NodeModel target = parent;
 			parent = parent.getParentNode();
-			insertionIndex = parent.getChildPosition(target);
+			final NodeModel childNode = target;
+			insertionIndex = parent.getIndex(childNode);
 		}
 		else{
 			insertionIndex = parent.getChildCount();

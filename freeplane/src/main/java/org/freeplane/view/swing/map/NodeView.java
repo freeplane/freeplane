@@ -1415,7 +1415,8 @@ public class NodeView extends JComponent implements INodeView {
 		if(rule == EdgeController.Rules.BY_BRANCH && parentNode.isRoot()){
 			ModeController modeController = getMap().getModeController();
 			AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
-			int index = parentNode.getChildPosition(model) + 1;
+			final NodeModel childNode = model;
+			int index = parentNode.getIndex(childNode) + 1;
 			NodeModel styleNode = automaticLayoutController.getStyleNode(map.getModel(), index, true);
 			if(styleNode != null){
 				Color color = modeController.getExtension(EdgeController.class).getColor(styleNode);
