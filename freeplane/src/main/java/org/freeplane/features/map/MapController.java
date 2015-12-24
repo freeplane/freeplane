@@ -245,7 +245,7 @@ public class MapController extends SelectionController implements IExtension{
 			if (n1.isRoot()) {
 				return 0;
 			}
-			return n1.getParentNode().getChildPosition(n1) - n2.getParentNode().getChildPosition(n2);
+			return n1.getParentNode().getIndex(n1) - n2.getParentNode().getIndex(n2);
 		}
 	}
 

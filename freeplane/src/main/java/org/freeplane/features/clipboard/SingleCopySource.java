@@ -146,11 +146,6 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public int getChildPosition(NodeModel childNode) {
-	    return super.getChildPosition(childNode);
-    }
-
-	@Override
     public List<NodeModel> getChildren() {
 	    return super.getChildren();
     }

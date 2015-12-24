@@ -118,7 +118,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			final URI oldUri = LinkController.toLinkTypeDependantURI(chosenFile, file);
 			((MLinkController) LinkController.getController()).setLink(existingNode,
 			    oldUri, LinkController.LINK_ABSOLUTE);
-			final int nodePosition = parent.getChildPosition(existingNode);
+			final int nodePosition = parent.getIndex(existingNode);
 			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.undoableResolveParentExtensions(LogicalStyleKeys.NODE_STYLE, existingNode);
 			final MMapController mMapController = (MMapController) modeController.getMapController();

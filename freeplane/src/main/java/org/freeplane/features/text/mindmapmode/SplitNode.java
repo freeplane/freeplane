@@ -94,7 +94,7 @@ public class SplitNode extends AFreeplaneAction {
 		}
 		((MTextController) TextController.getController()).setNodeText(node, parts[firstPartNumber]);
 		final NodeModel parent = node.getParentNode();
-		final int nodePosition = parent.getChildPosition(node) + 1;
+		final int nodePosition = parent.getIndex(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
 			final MMapController mapController = (MMapController) c.getMapController();
 			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node.isLeft());

@@ -483,8 +483,7 @@ public class MTextController extends TextController {
 		setNodeObject(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
-		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
-		    .getChildPosition(node) + 1, node.isLeft());
+		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent.getIndex(node) + 1, node.isLeft());
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);

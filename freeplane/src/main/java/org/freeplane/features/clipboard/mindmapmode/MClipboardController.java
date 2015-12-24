@@ -503,7 +503,7 @@ public class MClipboardController extends ClipboardController {
 	@Override
     public Transferable copy(IMapSelection selection) {
 	    final List<NodeModel> collection = selection.getSortedSelection(true);
-		final MindMapNodesSelection transferable = copy(collection, false);
+		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes(), false);
 		transferable.setNodeObjects(collection);
 		return transferable;
     }
@@ -739,7 +739,8 @@ public class MClipboardController extends ClipboardController {
 		if (asSibling) {
 			NodeModel target = parent;
 			parent = parent.getParentNode();
-			insertionIndex = parent.getChildPosition(target);
+			final NodeModel childNode = target;
+			insertionIndex = parent.getIndex(childNode);
 		}
 		else{
 			insertionIndex = parent.getChildCount();

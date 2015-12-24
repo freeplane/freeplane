@@ -27,6 +27,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -90,9 +91,6 @@ public class NewParentNode extends AFreeplaneAction {
 
 	private NodeModel moveToNewParent(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
 		final NodeModel oldParent = selectedNode.getParentNode();
-		final int childPosition = oldParent.getChildPosition(selectedNode);
-		final NodeModel newParent = ((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(oldParent,
-		    childPosition, selectedNode.isLeft());
         for (final NodeModel node: selectedNodes) {
             if (node.getParentNode() != oldParent) {
                 UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
@@ -104,6 +102,16 @@ public class NewParentNode extends AFreeplaneAction {
             }
         }
         final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+        final SummaryLevels summaryLevels = new SummaryLevels(oldParent);
+        int childPosition = selectedNode.getIndex();
+		final NodeModel summaryNode = summaryLevels.findSummaryNode(childPosition);
+        if(summaryNode != null){
+        	final Collection<NodeModel> summarizedNodes = summaryLevels.summarizedNodes(summaryNode);
+        	if(selectedNodes.containsAll(summarizedNodes))
+        		childPosition = summaryLevels.findGroupBeginNodeIndex(childPosition);
+        	
+        }
+		final NodeModel newParent = mapController.addNewNode(oldParent, childPosition, selectedNode.isLeft());
         mapController.moveNodesAsChildren(selectedNodes, newParent, false, false);
         return newParent;
 	}

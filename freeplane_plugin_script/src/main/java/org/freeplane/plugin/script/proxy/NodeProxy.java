@@ -189,7 +189,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	public int getChildPosition(final Proxy.Node childNode) {
 		final NodeModel childNodeModel = ((NodeProxy) childNode).getDelegate();
-		return getDelegate().getChildPosition(childNodeModel);
+		return getDelegate().getIndex(childNodeModel);
 	}
 
 	// NodeRO: R
