@@ -62,4 +62,11 @@ public class UserIcon extends MindIcon {
 		}
 		return result;
 	}
+
+	@Override
+	public String getTranslationValueLabel() {
+		return getTranslationKeyLabel();
+	}
+	
+	
 }

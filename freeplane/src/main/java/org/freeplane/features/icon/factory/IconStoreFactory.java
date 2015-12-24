@@ -130,8 +130,8 @@ public class IconStoreFactory {
 		final List<MindIcon> icons = new ArrayList<MindIcon>(userIconArray.length);
 		for (final String fileName : userIconArray) {
 			final File childDir = new File(iconDir, fileName);
-			final String fullName = dir + fileName;
 			if (childDir.isDirectory()) {
+				final String fullName = dir + fileName;
 				final List<MindIcon> childUserIcons = IconStoreFactory.getUserIcons(childDir, fullName + '/');
 				icons.addAll(childUserIcons);
 			}

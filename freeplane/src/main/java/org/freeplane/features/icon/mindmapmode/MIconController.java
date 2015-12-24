@@ -127,6 +127,7 @@ public class MIconController extends IconController {
 					submenu = new Entry();
 					entryAccessor.setText(submenu, submenuName);
 					submenuEntries.put(submenuKey, submenu);
+					target.addChild(submenu);
 				}
 				addAction(submenu, submenuKey, icon, fileName.substring(separatorPosition + 1));
 			}
@@ -273,7 +274,7 @@ public class MIconController extends IconController {
 			final IIconInformation info = (IIconInformation) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
 				public IPropertyControl createControl() {
-					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslationKeyLabel());
+					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslationValueLabel());
 					keyProperty.setImageIcon(info.getIcon());
 					keyProperty.disableModifiers();
 					return keyProperty;

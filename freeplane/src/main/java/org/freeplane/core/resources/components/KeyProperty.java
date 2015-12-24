@@ -51,8 +51,9 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		super(name);
 	}
 
-	public KeyProperty(String shortcutKey, String translationKeyLabel) {
-		super(shortcutKey, translationKeyLabel, null);
+	public KeyProperty(String shortcutKey, String labelText) {
+		super(shortcutKey, null, null);
+		this.labelText = labelText;
 	}
 
 	public void disableModifiers() {
