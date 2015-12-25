@@ -3,6 +3,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
@@ -21,6 +22,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.SynchronousScaledEditorKit;
@@ -67,9 +69,10 @@ public class NodeTooltip extends JToolTip {
         }
     }
 	
-	final private JEditorPane tip; 
+	final private JEditorPane tip;
+	private int maximumWidth; 
 	
-	public NodeTooltip(){
+	public NodeTooltip(GraphicsConfiguration graphicsConfiguration){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
 		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
@@ -89,21 +92,22 @@ public class NodeTooltip extends JToolTip {
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(tip);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, maximumWidth / 2));
+		final Rectangle screenBounds = graphicsConfiguration.getBounds();
+		final int screenHeigth = screenBounds.height - 80;
+		final int screenWidth = screenBounds.width - 80;
+		final int maximumHeight = Math.min(screenHeigth, getIntProperty("toolTipManager.max_tooltip_height"));
+		final int scrollBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
+		scrollPane.setMaximumSize(new Dimension(screenWidth, maximumHeight));
+		maximumWidth = Math.min(screenWidth, getIntProperty("toolTipManager.max_tooltip_width")) - scrollBarWidth;
 		UITools.setScrollbarIncrement(scrollPane);
 		add(scrollPane);
 		tip.setOpaque(true);
 	}
-	
-	private static int maximumWidth = Integer.MAX_VALUE;
-	/**
-	 *  set maximum width
-	 *  0 = no maximum width
-	 */
-	public static void setMaximumWidth(final int width) {
-		maximumWidth = width;
-	}
 
+	private int getIntProperty(String propertyName) {
+		return ResourceController.getResourceController().getIntProperty(propertyName, Integer.MAX_VALUE);
+	}
+	
 	@Override
     public void setTipText(String tipText) {
 		try{
@@ -163,4 +167,5 @@ public class NodeTooltip extends JToolTip {
 	public void setBase(URL url){
 		((HTMLDocument)tip.getDocument()).setBase(url);
 	}
+
 }
