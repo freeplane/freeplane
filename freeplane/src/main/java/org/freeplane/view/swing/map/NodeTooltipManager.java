@@ -66,9 +66,6 @@ public class NodeTooltipManager implements IExtension{
 			}
 		}
 		final NodeTooltipManager instance = new NodeTooltipManager();
-		final int maxWidth = ResourceController.getResourceController().getIntProperty(
-			"toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
-		NodeTooltip.setMaximumWidth(maxWidth);
 		setTooltipDelays(instance);
 		UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {

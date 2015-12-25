@@ -113,6 +113,7 @@
 				<number name="foldingsymbolwidth" />
 				<number name="statesymbolwidth" />
 				<number name="toolTipManager.max_tooltip_width" />
+				<number name="toolTipManager.max_tooltip_height" />
 				<number name="default_attribute_key_column_width" min="10" />
 				<number name="default_attribute_value_column_width" min="10" />
 				
