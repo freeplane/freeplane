@@ -595,16 +595,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	@Override
     public File defaultTemplateFile() {
-		final String userDefinedTemplateFile = ResourceController.getResourceController().getProperty(STANDARD_TEMPLATE);
-		final File absolute = new File(userDefinedTemplateFile);
-		if(absolute.isAbsolute() && absolute.exists() && ! absolute.isDirectory()){
-			return absolute;
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final String userDefinedTemplateFilePath = resourceController.getProperty(STANDARD_TEMPLATE);
+		final File userDefinedTemplateFile = new File(userDefinedTemplateFilePath);
+		if(userDefinedTemplateFile.isAbsolute() && userDefinedTemplateFile.exists() && ! userDefinedTemplateFile.isDirectory()){
+			return userDefinedTemplateFile;
 		}
-		for (final File userTemplates : new File[]{ defaultUserTemplateDir(), defaultStandardTemplateDir()}){
-			if(userTemplates.isDirectory()) {
-				final File userStandard = new File(userTemplates, userDefinedTemplateFile);
-				if(userStandard.exists() && ! userStandard.isDirectory())
-					return userStandard;
+		for (final String filePath : new String[]{ userDefinedTemplateFilePath, resourceController.getDefaultProperty(STANDARD_TEMPLATE)}){
+			for (final File userTemplates : new File[]{ defaultUserTemplateDir(), defaultStandardTemplateDir()}){
+				if(userTemplates.isDirectory()) {
+					final File userStandard = new File(userTemplates, filePath);
+					if(userStandard.exists() && ! userStandard.isDirectory()) {
+						if(! filePath.equals(userDefinedTemplateFilePath))
+							resourceController.setProperty(STANDARD_TEMPLATE, filePath);
+						return userStandard;
+					}
+				}
 			}
 		}
 		return null;

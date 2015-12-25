@@ -302,7 +302,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
-		new UserPropertiesUpdater().createUserStandardTemplate();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init(Controller.getCurrentController());
