@@ -26,7 +26,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import org.freeplane.core.extension.ExtensionContainer;
@@ -59,7 +58,6 @@ public class NodeModel{
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
 	public static final String NODE_ICON = "icon";
-	//DOCEAR - fixed: new property type for node link changes
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
 	private final List<NodeModel> children;
