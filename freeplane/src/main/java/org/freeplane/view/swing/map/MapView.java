@@ -1008,7 +1008,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean viewBelongsToSelectedSubtreeOrItsClone(final NodeView view) {
 		HashSet<NodeModel> selectedNodesWithClones = new HashSet<NodeModel>();
 		for (NodeView selectedView : selection.getSelectedList())
-			for(NodeModel clone : selectedView.getModel().clones())
+			for(NodeModel clone : selectedView.getModel().subtreeClones())
 				selectedNodesWithClones.add(clone);
 			
 	    for (Component parent = view.getParent(); parent instanceof NodeView; parent = parent.getParent()) {

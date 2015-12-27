@@ -19,6 +19,9 @@
  */
 package org.freeplane.features.map;
 
+import static org.freeplane.features.map.NodeModel.CloneType.CONTENT;
+import static org.freeplane.features.map.NodeModel.CloneType.TREE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +29,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import org.freeplane.core.extension.ExtensionContainer;
@@ -35,6 +37,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.map.NodeModel.CloneType;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -50,6 +53,10 @@ public class NodeModel{
 	public enum NodeChangeType {
 		FOLDING, REFRESH
 	}
+	
+	public enum CloneType{TREE, CONTENT}
+	final static int TREE_CLONE_INDEX = CloneType.TREE.ordinal();
+	final static int CONTENT_CLONE_INDEX = CloneType.CONTENT.ordinal();
 
 	private static final boolean ALLOWSCHILDREN = true;
 	public final static int LEFT_POSITION = -1;
@@ -59,7 +66,6 @@ public class NodeModel{
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
 	public static final String NODE_ICON = "icon";
-	//DOCEAR - fixed: new property type for node link changes
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
 	private final List<NodeModel> children;
@@ -72,10 +78,10 @@ public class NodeModel{
 	private Collection<INodeView> views = null;
 
 	private SharedNodeData sharedData;
-	private Clones clones;
+	private Clones[] clones;
 
 	void setClones(Clones clones) {
-		this.clones = clones;
+		this.clones[clones.getCloneType().ordinal()] = clones;
 		for(NodeModel clone : clones)
 			clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
 	}
@@ -94,15 +100,15 @@ public class NodeModel{
 		this.map = map;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
-		clones = new DetachedNodeList(this);
+		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
 	}
 
-	private NodeModel(NodeModel toBeCloned){
+	private NodeModel(NodeModel toBeCloned, CloneType cloneType){
 		this.map = toBeCloned.map;
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
-		clones = new DetachedNodeList(this, toBeCloned);
+		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CloneType.CONTENT)};
 	}
 
 	protected void init(final Object userObject) {
@@ -504,20 +510,22 @@ public class NodeModel{
 	}
 
 	void attach() {
-	    clones.attach();
+		for(Clones clonesGroup : clones)
+			clonesGroup.attach();
 	    for(NodeModel child : children)
 	    	child.attach();
     }
 
 	private void detach() {
-	    clones.detach(this);
+		for(Clones clonesGroup : clones)
+			clonesGroup.detach(this);
 	    for(NodeModel child : children)
 	    	child.detach();
     }
 
 
 	boolean isAttached() {
-	    return clones.size() != 0;
+	    return clones[0].size() != 0;
     }
 
 	public final void setText(final String text) {
@@ -566,15 +574,10 @@ public class NodeModel{
     }
 
 	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
-		if(clones.size() == 1)
-			fireSingleNodeChanged(nodeChangeListeners, nodeChangeEvent);
-		else{
-			for(NodeModel node : clones){
-				final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
-				node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
-			}
+		for(NodeModel node : clones[CONTENT.ordinal()]){
+			final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
+			node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
 		}
-
 	}
 
 	private void fireSingleNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
@@ -589,8 +592,12 @@ public class NodeModel{
 		return clone;
 	}
 
-	protected NodeModel cloneNode() {
-	    final NodeModel clone = new NodeModel(this);
+    public NodeModel cloneContent() {
+		return cloneNode(CloneType.CONTENT);
+	}
+
+	protected NodeModel cloneNode(CloneType cloneType) {
+	    final NodeModel clone = new NodeModel(this, cloneType);
 		return clone;
     }
 
@@ -602,17 +609,27 @@ public class NodeModel{
 		return Collections.emptyList();
     }
 
-	public void convertToClone(NodeModel node) {
+	public void convertToClone(NodeModel node, CloneType cloneType) {
 		sharedData = node.sharedData;
-		clones = new DetachedNodeList(this, node);
+		if(cloneType == TREE)
+			this.clones[TREE.ordinal()] = new DetachedNodeList(this, node, TREE);
+		this.clones[CONTENT.ordinal()] = new DetachedNodeList(this, node, CONTENT);
     }
 
-	public  Clones clones() {
-	    return clones;
+	public  Clones subtreeClones() {
+	    return clones(CloneType.TREE);
     }
+
+	public  Clones allClones() {
+	    return clones(CloneType.CONTENT);
+    }
+
+	Clones clones(final CloneType cloneType) {
+		return clones[cloneType.ordinal()];
+	}
 
 	public boolean subtreeContainsCloneOf(NodeModel node) {
-		for(NodeModel clone : node.clones())
+		for(NodeModel clone : node.subtreeClones())
 			if(equals(clone))
 				return true;
 		for(NodeModel child : children)
@@ -621,8 +638,8 @@ public class NodeModel{
 		return false;
     }
 
-	public boolean isCloneOf(NodeModel ancestorClone) {
-	    return clones().contains(ancestorClone);
+	public boolean isSubtreeCloneOf(NodeModel ancestorClone) {
+	    return subtreeClones().contains(ancestorClone);
     }
 
 	public NodeModel getSubtreeRoot() {
@@ -634,15 +651,16 @@ public class NodeModel{
     }
 
 	private boolean isSubtreeRoot() {
-	    return parent == null || parent.clones.size() < clones.size();
+	    return parent == null || isCloneTreeRoot();
     }
 	
 	public boolean isCloneTreeRoot(){
-		return parent != null && parent.clones.size() < clones.size();
+		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size()
+				|| clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
 	}
 	
 	public boolean isCloneTreeNode(){
-		return parent != null && clones.size() > 1 && parent.clones.size() == clones.size();
+		return parent != null && clones[TREE_CLONE_INDEX].size() > 1 && parent.clones[TREE_CLONE_INDEX].size() == clones[TREE_CLONE_INDEX].size();
 	}
 	
 	public int nextNodeIndex(int index, final boolean leftSide) {

@@ -21,6 +21,8 @@ package org.freeplane.features.map;
 
 import java.util.Collection;
 
+import org.freeplane.features.map.NodeModel.CloneType;
+
 /**
  * @author Dimitry Polivaev
  * 09.02.2014
@@ -33,4 +35,5 @@ public interface Clones extends Iterable<NodeModel>{
 	Collection<NodeModel> toCollection();
 	boolean contains(NodeModel node);
 	NodeModel head();
+	CloneType getCloneType();
 }

@@ -65,7 +65,7 @@ public class AcceleratorBuilderTest {
 	}
 
 	@Test
-	public void givenEntryWithoutAccelerator_doesSetsDefaultAccelerator() {
+	public void givenEntryWithoutAccelerator_setsUserDefinedAccelerator() {
 		Entry actionEntry = new Entry();
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		new EntryAccessor().setAction(actionEntry, action);
@@ -74,7 +74,7 @@ public class AcceleratorBuilderTest {
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map, mock(IEntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 
-		Mockito.verify(map).setDefaultAccelerator(action);
+		Mockito.verify(map).setUserDefinedAccelerator(action);
 
 	}
 

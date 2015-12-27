@@ -504,9 +504,18 @@ public class MClipboardController extends ClipboardController {
     public Transferable copy(IMapSelection selection) {
 	    final List<NodeModel> collection = selection.getSortedSelection(true);
 		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes(), false);
-		transferable.setNodeObjects(collection);
+		transferable.setNodeObjects(collection, false);
 		return transferable;
     }
+	
+	
+
+	@Override
+	public Transferable copySingle(Collection<NodeModel> source) {
+		final MindMapNodesSelection transferable = (MindMapNodesSelection) super.copySingle(source);
+		transferable.setNodeObjects(new ArrayList<NodeModel>(source), true);
+		return transferable;
+	}
 
 	Transferable cut(final List<NodeModel> collection) {
 		Controller.getCurrentModeController().getMapController().sortNodesByDepth(collection);
@@ -814,43 +823,53 @@ public class MClipboardController extends ClipboardController {
 	
 	public void addClone(final Transferable transferable, final NodeModel target) {
 		processTransferable(transferable, target, Operation.CLONE);
-    }
+	}
 
 	public void move(final Transferable transferable, final NodeModel target) {
 		processTransferable(transferable, target, Operation.MOVE);
-    }
-	
+	}
+
+	@SuppressWarnings("unchecked")
 	private void processTransferable(final Transferable transferable, final NodeModel target, Operation operation) {
-	    if(!transferable.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeObjectsFlavor))
-			return;
 		try {
-	        @SuppressWarnings("unchecked")
-	        final List<NodeModel> clonedNodes = (List<NodeModel>) transferable.getTransferData(MindMapNodesSelection.mindMapNodeObjectsFlavor);
-	        final List<NodeModel> movedNodes = new ArrayList<>(clonedNodes.size());
-	        final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-	        for(NodeModel clonedNode:clonedNodes){
-	        	if(clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))
-	        		return;
-	        	if (!clonedNode.isRoot() && ! clonedNode.subtreeContainsCloneOf(target)) {
-	        		switch(operation){
-	        			case CLONE:
-	        				final NodeModel clone = clonedNode.cloneTree();
-	        				mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
-	        				break;
-	        			case MOVE:
-	        				movedNodes.add(clonedNode);
-	        				break;
-	        		}
-	        	}
-	        }
-	        switch(operation){
-	        case MOVE:
+			final Collection<NodeModel> clonedNodes;
+			final boolean asSingleNodes; 
+			if (operation == Operation.CLONE && transferable.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeSingleObjectsFlavor)){
+				clonedNodes = (Collection<NodeModel>) transferable.getTransferData(MindMapNodesSelection.mindMapNodeSingleObjectsFlavor);
+				asSingleNodes = true;
+			}
+			else if(transferable.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeObjectsFlavor)){
+				clonedNodes = (Collection<NodeModel>) transferable.getTransferData(MindMapNodesSelection.mindMapNodeObjectsFlavor);
+				asSingleNodes = false;
+			}
+			else
+				return;
+
+			final List<NodeModel> movedNodes = new ArrayList<>(clonedNodes.size());
+			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			for(NodeModel clonedNode:clonedNodes){
+				if(clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))
+					return;
+				if (!clonedNode.isRoot() && ! clonedNode.subtreeContainsCloneOf(target)) {
+					switch(operation){
+					case CLONE:
+						final NodeModel clone = asSingleNodes ? clonedNode.cloneContent() : clonedNode.cloneTree();
+						mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
+						break;
+					case MOVE:
+						movedNodes.add(clonedNode);
+						break;
+					}
+				}
+			}
+			switch(operation){
+			case MOVE:
 				mapController.moveNodesAsChildren(movedNodes, target, target.isNewChildLeft(), true);
 			default:
 				break;
-	        }
-        }
-        catch (Exception e) {
+			}
+		}
+		catch (Exception e) {
 	        LogUtils.severe(e);
         }
     }

@@ -19,12 +19,13 @@
  */
 package org.freeplane.features.map;
 
+import static org.freeplane.features.map.NodeModel.CloneType.TREE;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import org.hamcrest.collection.IsEmptyIterable;
 import static org.junit.Assert.assertThat;
 
+import org.hamcrest.collection.IsEmptyIterable;
 import org.junit.Test;
 
 /**
@@ -36,14 +37,14 @@ public class ClonesTest {
 
 	private NodeModel root() {
 	    final NodeModel parent = new NodeModel("parent", map);
-		parent.setClones(new SingleNodeList(parent));
+		parent.setClones(new SingleNodeList(parent, TREE));
 	    return parent;
     }
 
 	@Test
 	public void clonesContainsNothingBeforeAddingToTree() {
 		final NodeModel node = new NodeModel("node", map);
-		assertThat(node.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
+		assertThat(node.subtreeClones(), IsEmptyIterable.<NodeModel>emptyIterable());
 
 	}
 
@@ -52,7 +53,7 @@ public class ClonesTest {
 		final NodeModel parent = new NodeModel("parent", map);
 		final NodeModel node = new NodeModel("node", map);
 		parent.insert(node);
-		assertThat(node.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
+		assertThat(node.subtreeClones(), IsEmptyIterable.<NodeModel>emptyIterable());
 	}
 
 	@Test
@@ -60,7 +61,7 @@ public class ClonesTest {
 		final NodeModel parent = root();
 		final NodeModel node = new NodeModel("node", map);
 		parent.insert(node);
-		assertThat(node.clones(), contains(node));
+		assertThat(node.subtreeClones(), contains(node));
 	}
 
 	@Test
@@ -70,7 +71,7 @@ public class ClonesTest {
 		final NodeModel child = new NodeModel("child", map);
 		node.insert(child);
 		parent.insert(node);
-		assertThat(child.clones(), contains(child));
+		assertThat(child.subtreeClones(), contains(child));
 	}
 
 	@Test
@@ -79,7 +80,7 @@ public class ClonesTest {
 		final NodeModel node = new NodeModel("node", map);
 		parent.insert(node);
 		parent.remove(parent.getIndex(node));
-		assertThat(node.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
+		assertThat(node.subtreeClones(), IsEmptyIterable.<NodeModel>emptyIterable());
 	}
 
 	@Test
@@ -90,7 +91,7 @@ public class ClonesTest {
 		final NodeModel child = new NodeModel("child", map);
 		node.insert(child);
 		parent.remove(parent.getIndex(node));
-		assertThat(child.clones(), IsEmptyIterable.<NodeModel>emptyIterable());
+		assertThat(child.subtreeClones(), IsEmptyIterable.<NodeModel>emptyIterable());
 	}
 
 	@Test
@@ -100,7 +101,8 @@ public class ClonesTest {
 		parent.insert(node);
 		final NodeModel clone = node.cloneTree();
 		parent.insert(clone);
-		assertThat(node.clones(), contains(node, clone));
+		assertThat(node.subtreeClones(), contains(node, clone));
+		assertThat(node.allClones(), contains(node, clone));
 	}
 
 	@Test
@@ -111,8 +113,8 @@ public class ClonesTest {
 		final NodeModel clone = node.cloneTree();
 		parent.insert(clone);
 		parent.remove(parent.getIndex(clone));
-		assertThat(node.clones(), contains(node));
-		assertThat(node.clones(), not(contains(clone)));
+		assertThat(node.subtreeClones(), contains(node));
+		assertThat(node.allClones(), not(contains(clone)));
 	}
 	@Test
 	public void subtreeContainsClone() {

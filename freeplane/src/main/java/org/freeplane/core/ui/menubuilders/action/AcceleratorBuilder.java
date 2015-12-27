@@ -4,7 +4,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
-import org.freeplane.core.util.Compat;
 
 public class AcceleratorBuilder implements EntryVisitor{
 
@@ -25,13 +24,9 @@ public class AcceleratorBuilder implements EntryVisitor{
 				map.setDefaultAccelerator(action, accelerator);
 			}
 			else
-				map.setDefaultAccelerator(action);
+				map.setUserDefinedAccelerator(action);
 			entries.registerEntry(action, entry);
 		}
-	}
-
-	protected boolean isMacOsX() {
-		return Compat.isMacOsX();
 	}
 
 	@Override

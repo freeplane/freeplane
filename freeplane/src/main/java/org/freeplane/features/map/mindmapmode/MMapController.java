@@ -254,7 +254,7 @@ public class MMapController extends MapController {
 		}
 		stopEditing();
 		insertSingleNewNode(newNode, parent, index, newNodeIsLeft);
-		for(NodeModel parentClone : parent.clones()){
+		for(NodeModel parentClone : parent.subtreeClones()){
 			if(parentClone != parent) {
 				final NodeModel childClone = newNode.cloneTree();
 				insertSingleNewNode(childClone, parentClone, index, parentClone.isLeft());
@@ -343,7 +343,7 @@ public class MMapController extends MapController {
 	private void deleteSingleNodeWithClones(NodeModel node) {
 		final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
-		for(NodeModel parentClone : parentNode.clones())
+		for(NodeModel parentClone : parentNode.subtreeClones())
 			deleteSingleNode(parentClone, index);
 	}
 
@@ -448,13 +448,13 @@ public class MMapController extends MapController {
 		final NodeModel childNode = child;
 		final int oldIndex = oldParent.getIndex(childNode);
 		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
-			final Set<NodeModel> oldParentClones = new HashSet<NodeModel>(oldParent.clones().toCollection());
-			final Set<NodeModel> newParentClones = new HashSet<NodeModel>(newParent.clones().toCollection());
+			final Set<NodeModel> oldParentClones = new HashSet<NodeModel>(oldParent.subtreeClones().toCollection());
+			final Set<NodeModel> newParentClones = new HashSet<NodeModel>(newParent.subtreeClones().toCollection());
 
 			final NodeRelativePath nodeRelativePath = new NodeRelativePath(oldParent, newParent);
 
 			final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
-			for (NodeModel commonAncestorClone: commonAncestor.clones()){
+			for (NodeModel commonAncestorClone: commonAncestor.subtreeClones()){
 					NodeModel oldParentClone = nodeRelativePath.pathBegin(commonAncestorClone);
 					NodeModel newParentClone = nodeRelativePath.pathEnd(commonAncestorClone);
 					moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex, isLeft, changeSide);

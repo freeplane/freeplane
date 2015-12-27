@@ -142,8 +142,12 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void writeReferenceNodeId(ITreeWriter writer, NodeModel node) {
 	    final NodeModel referenceNode = alreadyWrittenSharedContent.get(node.getSharedData());
-	    if(referenceNode != null)
-	    	writer.addAttribute("REFERENCE_ID", referenceNode.createID());
+	    if(referenceNode != null){
+	    	if(referenceNode.isSubtreeCloneOf(node))
+	    		writer.addAttribute("TREE_ID", referenceNode.createID());
+	    	else
+	    		writer.addAttribute("CONTENT_ID", referenceNode.createID());
+	    }
 
     }
 

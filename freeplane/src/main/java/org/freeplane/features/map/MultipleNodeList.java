@@ -23,11 +23,18 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.freeplane.features.map.NodeModel.CloneType;
+
 /**
  * @author Dimitry Polivaev
  * 09.02.2014
  */
 public class MultipleNodeList implements Clones {
+	private final CloneType cloneType;
+	public MultipleNodeList(CloneType cloneType) {
+		this.cloneType = cloneType;
+	}
+
 	LinkedList<NodeModel> nodes = new LinkedList<NodeModel>();
 	public Clones add(NodeModel nodeModel) {
 		nodes.add(nodeModel);
@@ -37,7 +44,7 @@ public class MultipleNodeList implements Clones {
 	public Clones remove(NodeModel nodeModel) {
 		nodes.remove(nodeModel);
 		if(nodes.size() == 1)
-			return new SingleNodeList(head());
+			return new SingleNodeList(head(), cloneType);
 		else
 			return this;
 
@@ -62,7 +69,7 @@ public class MultipleNodeList implements Clones {
 	public void detach(NodeModel nodeModel) {
 		final Clones reducedClones = remove(nodeModel);
 		final NodeModel head = head();
-		nodeModel.setClones(new DetachedNodeList(nodeModel, head));
+		nodeModel.setClones(new DetachedNodeList(nodeModel, head, cloneType));
 		head.setClones(reducedClones);
     }
 
@@ -71,10 +78,14 @@ public class MultipleNodeList implements Clones {
     }
 
 	public boolean contains(NodeModel node) {
-	    return node != null && head().equals(node.clones().head());
+	    return node != null && head().equals(node.clones(cloneType).head());
     }
 
 	public NodeModel head() {
 	    return nodes.get(0);
     }
+
+	public CloneType getCloneType() {
+		return cloneType;
+	}
 }

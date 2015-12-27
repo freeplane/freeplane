@@ -62,7 +62,7 @@ public abstract class NodeLinkModel{
 	}
 	
     public Collection<NodeLinkModel> clones() {
-	    final Clones sourceNodeClones = getSource().clones();
+	    final Clones sourceNodeClones = getSource().subtreeClones();
 	    if(sourceNodeClones.size() == 1)
 	    	return Arrays.<NodeLinkModel>asList(this);
 	    ArrayList<NodeLinkModel> clones = new ArrayList<NodeLinkModel>(sourceNodeClones.size());
@@ -81,7 +81,7 @@ public abstract class NodeLinkModel{
     		final NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
     		final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
     		final NodeModel ancestorClone = nodeRelativePath.ancestorForBegin(sourceClone);
-    		if(commonAncestor.isCloneOf(ancestorClone)) {
+    		if(commonAncestor.isSubtreeCloneOf(ancestorClone)) {
 	            final NodeRelativePath pathAncestorToSource = new NodeRelativePath(commonAncestor, source);
 				final NodeRelativePath clonePath = new NodeRelativePath(ancestorClone, sourceClone);
 				if (pathAncestorToSource.equalPathsTo(clonePath)) {

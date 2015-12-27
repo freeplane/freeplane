@@ -21,6 +21,8 @@ package org.freeplane.features.map;
 
 import java.util.List;
 
+import org.freeplane.features.map.NodeModel.CloneType;
+
 /**
  * @author Dimitry Polivaev
  * 09.02.2014
@@ -39,7 +41,7 @@ class Cloner {
 	}
 
 	private NodeModel cloneStructure(NodeModel node) {
-		final NodeModel clone = node.cloneNode();
+		final NodeModel clone = node.cloneNode(CloneType.TREE);
 		final List<NodeModel> cloneChildren = clone.getChildrenInternal();
 		for (NodeModel childNode : node.getChildrenInternal()){
 			final NodeModel childClone = cloneStructure(childNode);
