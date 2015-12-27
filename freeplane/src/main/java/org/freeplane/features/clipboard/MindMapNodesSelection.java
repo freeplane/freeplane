@@ -25,6 +25,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.ByteArrayInputStream;
+import java.util.Collection;
 import java.util.List;
 
 import org.freeplane.core.util.LogUtils;
@@ -36,11 +37,13 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	public static DataFlavor htmlFlavor = null;
 	public static DataFlavor mindMapNodesFlavor = null;
 	public static DataFlavor mindMapNodeObjectsFlavor = null;
+	public static DataFlavor mindMapNodeSingleObjectsFlavor = null;
 	public static DataFlavor rtfFlavor = null;
 	static {
 		try {
 			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
-			MindMapNodesSelection.mindMapNodeObjectsFlavor = new DataFlavor("application/freeplane-nodes; class=java.util.List");
+			MindMapNodesSelection.mindMapNodeObjectsFlavor = new DataFlavor("application/freeplane-nodes; class=java.util.Collection");
+			MindMapNodesSelection.mindMapNodeSingleObjectsFlavor = new DataFlavor("application/freeplane-single-nodes; class=java.util.Collection");
 			MindMapNodesSelection.rtfFlavor = new DataFlavor("text/rtf; class=java.io.InputStream");
 			MindMapNodesSelection.htmlFlavor = new DataFlavor("text/html; class=java.lang.String");
 			MindMapNodesSelection.fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
@@ -55,7 +58,8 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	final private String rtfContent;
 	final private String stringContent;
 	private String dropActionContent;
-	private List<NodeModel> nodes;
+	private Collection<NodeModel> nodes;
+	private boolean selectionContainsSingleNodes;
 
 	public MindMapNodesSelection(final String nodesContent, final String stringContent, final String rtfContent,
 	                             final String htmlContent) {
@@ -87,16 +91,22 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return htmlContent;
 		}
-		if (flavor.equals(MindMapNodesSelection.mindMapNodeObjectsFlavor)) {
+		if (containsObjectsFor(flavor)) {
 			return nodes;
 		}
 		throw new UnsupportedFlavorException(flavor);
 	}
 
+	boolean containsObjectsFor(final DataFlavor flavor) {
+		return nodes != null && (flavor.equals(MindMapNodesSelection.mindMapNodeObjectsFlavor) && ! selectionContainsSingleNodes 
+				|| flavor.equals(MindMapNodesSelection.mindMapNodeSingleObjectsFlavor) && selectionContainsSingleNodes);
+	}
+
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[] { DataFlavor.stringFlavor, MindMapNodesSelection.mindMapNodesFlavor,
 		        MindMapNodesSelection.rtfFlavor, MindMapNodesSelection.htmlFlavor,
-		        MindMapNodesSelection.dropActionFlavor, MindMapNodesSelection.mindMapNodeObjectsFlavor };
+		        MindMapNodesSelection.dropActionFlavor, 
+		        MindMapNodesSelection.mindMapNodeObjectsFlavor , MindMapNodesSelection.mindMapNodeSingleObjectsFlavor };
 	}
 
 	public boolean isDataFlavorSupported(final DataFlavor flavor) {
@@ -115,7 +125,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.mindMapNodeObjectsFlavor) && nodes != null) {
+		if (containsObjectsFor(flavor)) {
 			return true;
 		}
 		return false;
@@ -128,7 +138,8 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		this.dropActionContent = dropActionContent;
 	}
 
-	public void setNodeObjects(List<NodeModel> collection) {
+	public void setNodeObjects(Collection<NodeModel> collection, boolean selectionContainsSingleNodes) {
 	    nodes = collection;
+	    this.selectionContainsSingleNodes = selectionContainsSingleNodes;
     }
 }

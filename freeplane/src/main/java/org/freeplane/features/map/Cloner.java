@@ -40,10 +40,6 @@ class Cloner {
 		return clone;
 	}
 
-    public NodeModel cloneContent() {
-		return nodeModel.cloneNode(CloneType.CONTENT);
-	}
-
 	private NodeModel cloneStructure(NodeModel node) {
 		final NodeModel clone = node.cloneNode(CloneType.TREE);
 		final List<NodeModel> cloneChildren = clone.getChildrenInternal();

@@ -37,6 +37,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.map.NodeModel.CloneType;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -589,6 +590,10 @@ public class NodeModel{
     public NodeModel cloneTree(){
 		final NodeModel clone = new Cloner(this).cloneTree();
 		return clone;
+	}
+
+    public NodeModel cloneContent() {
+		return cloneNode(CloneType.CONTENT);
 	}
 
 	protected NodeModel cloneNode(CloneType cloneType) {

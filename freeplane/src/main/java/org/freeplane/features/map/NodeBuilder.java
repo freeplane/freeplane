@@ -37,6 +37,21 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class NodeBuilder implements IElementDOMHandler {
 
 
+	private class CloneHandler implements IAttributeHandler {
+		private final CloneType cloneType;
+
+		public CloneHandler(CloneType cloneType) {
+			super();
+			this.cloneType = cloneType;
+		}
+
+		public void setAttribute(final Object userObject, final String proposedReferenceId) {
+			final NodeModel node = (NodeModel) userObject;
+			final String realReference = mapReader.getCurrentNodeTreeCreator().substitutedID(proposedReferenceId);
+			node.convertToClone(getMap().getNodeForID(realReference), cloneType);
+		}
+	}
+
 	static class IconProperties {
 		String iconName;
 	}
@@ -223,13 +238,12 @@ public class NodeBuilder implements IElementDOMHandler {
 				}
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "REFERENCE_ID", new IAttributeHandler() {
-			public void setAttribute(final Object userObject, final String proposedReferenceId) {
-				final NodeModel node = (NodeModel) userObject;
-				final String realReference = mapReader.getCurrentNodeTreeCreator().substitutedID(proposedReferenceId);
-				node.convertToClone(getMap().getNodeForID(realReference), CloneType.TREE);
-			}
-		});
+		
+		final IAttributeHandler subtreeReferenceHandler = new CloneHandler(CloneType.TREE);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "REFERENCE_ID", subtreeReferenceHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TREE_ID", subtreeReferenceHandler);
+		final IAttributeHandler contentReferenceHandler = new CloneHandler(CloneType.CONTENT);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "CONTENT_ID", contentReferenceHandler);
 	}
 
 	/**
