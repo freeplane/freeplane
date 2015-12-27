@@ -37,7 +37,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAcceleratorChangeListener, IAcceleratorMap {
+public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAcceleratorMap {
 
 	<V> Pair<ModeController, V> key(V value) {
 		return key(Controller.getCurrentModeController(), value);
@@ -68,7 +68,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		defaultProps = new Properties();
  	}
 
-	public void loadDefaultAcceleratorPresets() {
+	public void loadAcceleratorPresets() {
 	    try {
 			if (ResourceController.getResourceController().getFreeplaneUserDirectory() != null) {
 				final File defaultPresetsFile = getPresetsFile();
@@ -377,15 +377,6 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			}
 		}
 		return false;
-	}
-
-	public void acceleratorChanged(AFreeplaneAction action, KeyStroke oldStroke, KeyStroke newStroke) {
-		final String actionKey = action.getKey();
-		KeyStroke ks = actionMap.put(key(actionKey), newStroke);
-		if(ks != null) {
-			accelerators.remove(key(ks));
-		}
-		accelerators.put(key(newStroke), action);
 	}
 
 	/***********************************************************************************
