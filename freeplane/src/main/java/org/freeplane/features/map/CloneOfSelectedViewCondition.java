@@ -40,7 +40,7 @@ public class CloneOfSelectedViewCondition extends ASelectableCondition implement
 	public boolean checkNode(final NodeModel node) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		if (selection != null){
-			for(NodeModel clone : node.clones())
+			for(NodeModel clone : node.allClones())
 				if (selection.isSelected(clone))
 					return true;
 		}

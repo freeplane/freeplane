@@ -313,9 +313,11 @@ public class MLinkController extends LinkController {
 	        final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
 	        if (nodeLinks != null) {
 	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
+	        		final NodeModel linkSource = link.getSource();
+					if(linkSource.equals(model) || linkSource.isSubtreeCloneOf(model))
 	        		links.remove(link);
 	        	}
-	        	final NodeModel notDeletedClone = notDeletedClone(model);
+	        	final NodeModel notDeletedClone = notDeletedSubtreeClone(model);
 	        	if(notDeletedClone != null){
 	        		nodeLinks.replaceSource(model, notDeletedClone);
 	        		for (final NodeLinkModel link : nodeLinks.getLinks()) {
@@ -325,11 +327,11 @@ public class MLinkController extends LinkController {
 	        }
         }
 
-		private NodeModel notDeletedClone(NodeModel model) {
-			CLONES: for (NodeModel clone : model.clones()) {
-				for (NodeModel deletedClone : deletedNodeRoot.clones()) {
+		private NodeModel notDeletedSubtreeClone(NodeModel model) {
+			CLONES: for (NodeModel clone : model.subtreeClones()) {
+				for (NodeModel deletedClone : deletedNodeRoot.subtreeClones()) {
 					final NodeModel parentClone = deletedClone.getParentNode();
-					final boolean cloneShallBeDeleted = deletedNodeParent.clones().contains(parentClone) 
+					final boolean cloneShallBeDeleted = deletedNodeParent.subtreeClones().contains(parentClone) 
 							&& deletedNodeParent.getChildCount() == parentClone.getChildCount()
 							&& parentClone.getIndex(deletedClone) == deletedNodeindex;
 					if (cloneShallBeDeleted && clone.isDescendantOf(deletedClone))

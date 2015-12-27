@@ -19,6 +19,9 @@
  */
 package org.freeplane.features.map;
 
+import static org.freeplane.features.map.NodeModel.CloneType.CONTENT;
+import static org.freeplane.features.map.NodeModel.CloneType.TREE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,6 +55,7 @@ public class NodeModel{
 	
 	public enum CloneType{TREE, CONTENT}
 	final static int TREE_CLONE_INDEX = CloneType.TREE.ordinal();
+	final static int CONTENT_CLONE_INDEX = CloneType.CONTENT.ordinal();
 
 	private static final boolean ALLOWSCHILDREN = true;
 	public final static int LEFT_POSITION = -1;
@@ -95,7 +99,7 @@ public class NodeModel{
 		this.map = map;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
-		clones = new Clones[]{new DetachedNodeList(this, CloneType.TREE), new DetachedNodeList(this, CloneType.CONTENT)};
+		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
 	}
 
 	private NodeModel(NodeModel toBeCloned, CloneType cloneType){
@@ -103,9 +107,7 @@ public class NodeModel{
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
-		clones = new Clones[]{new DetachedNodeList(this, CloneType.TREE), new DetachedNodeList(this, CloneType.CONTENT)};
-		Clones list = new DetachedNodeList(this, toBeCloned, cloneType);
-		this.clones[list.getCloneType().ordinal()] = list;
+		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CloneType.CONTENT)};
 	}
 
 	protected void init(final Object userObject) {
@@ -571,14 +573,9 @@ public class NodeModel{
     }
 
 	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
-		fireSingleNodeChanged(nodeChangeListeners, nodeChangeEvent);
-		for(Clones cloneGroup : clones) {
-			for(NodeModel node : cloneGroup){
-				if (node != this) {
-				final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
-				node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
-				}
-			}
+		for(NodeModel node : clones[CONTENT.ordinal()]){
+			final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
+			node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
 		}
 	}
 
@@ -609,16 +606,25 @@ public class NodeModel{
 
 	public void convertToClone(NodeModel node, CloneType cloneType) {
 		sharedData = node.sharedData;
-		final DetachedNodeList list = new DetachedNodeList(this, node, cloneType);
-		this.clones[list.getCloneType().ordinal()] = list;
+		if(cloneType == TREE)
+			this.clones[TREE.ordinal()] = new DetachedNodeList(this, node, TREE);
+		this.clones[CONTENT.ordinal()] = new DetachedNodeList(this, node, CONTENT);
     }
 
-	public  Clones clones() {
-	    return clones[CloneType.TREE.ordinal()];
+	public  Clones subtreeClones() {
+	    return clones(CloneType.TREE);
     }
+
+	public  Clones allClones() {
+	    return clones(CloneType.CONTENT);
+    }
+
+	Clones clones(final CloneType cloneType) {
+		return clones[cloneType.ordinal()];
+	}
 
 	public boolean subtreeContainsCloneOf(NodeModel node) {
-		for(NodeModel clone : node.clones())
+		for(NodeModel clone : node.subtreeClones())
 			if(equals(clone))
 				return true;
 		for(NodeModel child : children)
@@ -627,8 +633,8 @@ public class NodeModel{
 		return false;
     }
 
-	public boolean isCloneOf(NodeModel ancestorClone) {
-	    return clones().contains(ancestorClone);
+	public boolean isSubtreeCloneOf(NodeModel ancestorClone) {
+	    return subtreeClones().contains(ancestorClone);
     }
 
 	public NodeModel getSubtreeRoot() {
@@ -640,11 +646,12 @@ public class NodeModel{
     }
 
 	private boolean isSubtreeRoot() {
-	    return parent == null || parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size();
+	    return parent == null || isCloneTreeRoot();
     }
 	
 	public boolean isCloneTreeRoot(){
-		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size();
+		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size()
+				|| clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
 	}
 	
 	public boolean isCloneTreeNode(){

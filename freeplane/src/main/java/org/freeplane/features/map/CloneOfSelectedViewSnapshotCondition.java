@@ -43,7 +43,7 @@ public class CloneOfSelectedViewSnapshotCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		for(NodeModel clone : node.clones())
+		for(NodeModel clone : node.allClones())
 			if (selectedNodes.contains(clone))
 				return true;
 		return false;

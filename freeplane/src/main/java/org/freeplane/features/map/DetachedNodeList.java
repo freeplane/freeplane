@@ -60,7 +60,7 @@ public class DetachedNodeList implements Clones {
 			clonedNode.setClones(new DetachedNodeList(clonedNode, clone, cloneType));
 		}
         else {
-	        final Clones clonesWithNewClone = clonedNode.clones().add(clone);
+	        final Clones clonesWithNewClone = clonedNode.clones(cloneType).add(clone);
 	        clonedNode.setClones(clonesWithNewClone);
 	        clone.setClones(clonesWithNewClone);
         }
