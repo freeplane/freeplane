@@ -109,29 +109,6 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		this.keyProcessor = proc;
 	}
 
-//	public void acceleratorChanged(final JMenuItem action, final KeyStroke oldStroke, final KeyStroke newStroke) {
-//		final int oldButtonNumber = oldStroke != null ? oldStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
-//		final int newButtonNumber = newStroke != null ? newStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
-//		if (oldButtonNumber >= 0 && oldButtonNumber < BUTTON_NUMBER) {
-//			final int modifiers = oldStroke.getModifiers()
-//			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
-//			final JButton[] buttonRow = buttons.get(modifiers);
-//			final JButton button = buttonRow[oldButtonNumber];
-//			setAcceleratorAction(button, oldStroke);
-//		}
-//		if (newButtonNumber >= 0 && newButtonNumber < BUTTON_NUMBER) {
-//			final int modifiers = newStroke.getModifiers()
-//			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
-//			final JButton[] buttonRow = createButtons(modifiers);
-//			final JButton button = buttonRow[newButtonNumber];
-//			final String text = action.getActionCommand();
-//			button.setText(text);
-//			button.setToolTipText(text);
-//			button.setAction(action.getAction());
-//			button.setEnabled(action.isEnabled());
-//		}
-//	}
-	 
 	public void acceleratorChanged(final AFreeplaneAction action, final KeyStroke oldStroke, final KeyStroke newStroke) {
 		final int oldButtonNumber = oldStroke != null ? oldStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
 		final int newButtonNumber = newStroke != null ? newStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
@@ -147,7 +124,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
 			final JButton[] buttonRow = createButtons(modifiers);
 			final JButton button = buttonRow[newButtonNumber];
-			final String text = TextUtils.getText(action.getTextKey());
+			final String text = (String) action.getValue(Action.NAME);
 			button.setText(text);
 			button.setToolTipText(text);
 			button.setAction(action);
