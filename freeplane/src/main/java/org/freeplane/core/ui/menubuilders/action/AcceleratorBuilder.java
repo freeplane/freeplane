@@ -24,7 +24,7 @@ public class AcceleratorBuilder implements EntryVisitor{
 				map.setDefaultAccelerator(action, accelerator);
 			}
 			else
-				map.setDefaultAccelerator(action);
+				map.setUserDefinedAccelerator(action);
 			entries.registerEntry(action, entry);
 		}
 	}

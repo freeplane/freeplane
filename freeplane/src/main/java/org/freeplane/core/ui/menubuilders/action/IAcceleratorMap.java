@@ -6,7 +6,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
 
 public interface IAcceleratorMap {
-	void setDefaultAccelerator(AFreeplaneAction action);
+	void setUserDefinedAccelerator(AFreeplaneAction action);
 	void setDefaultAccelerator(final AFreeplaneAction action, final String accelerator);
 	public KeyStroke getAccelerator(AFreeplaneAction action);
 	void addAcceleratorChangeListener(IAcceleratorChangeListener changeListener);
