@@ -31,6 +31,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel.CloneType;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeBuilder implements IElementDOMHandler {
@@ -226,7 +227,7 @@ public class NodeBuilder implements IElementDOMHandler {
 			public void setAttribute(final Object userObject, final String proposedReferenceId) {
 				final NodeModel node = (NodeModel) userObject;
 				final String realReference = mapReader.getCurrentNodeTreeCreator().substitutedID(proposedReferenceId);
-				node.convertToClone(getMap().getNodeForID(realReference));
+				node.convertToClone(getMap().getNodeForID(realReference), CloneType.TREE);
 			}
 		});
 	}

@@ -19,12 +19,13 @@
  */
 package org.freeplane.features.map;
 
+import static org.freeplane.features.map.NodeModel.CloneType.TREE;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import org.hamcrest.collection.IsEmptyIterable;
 import static org.junit.Assert.assertThat;
 
+import org.hamcrest.collection.IsEmptyIterable;
 import org.junit.Test;
 
 /**
@@ -36,7 +37,7 @@ public class ClonesTest {
 
 	private NodeModel root() {
 	    final NodeModel parent = new NodeModel("parent", map);
-		parent.setClones(new SingleNodeList(parent));
+		parent.setClones(new SingleNodeList(parent, TREE));
 	    return parent;
     }
 

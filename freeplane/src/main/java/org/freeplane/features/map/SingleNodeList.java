@@ -23,19 +23,23 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.freeplane.features.map.NodeModel.CloneType;
+
 /**
  * @author Dimitry Polivaev
  * 09.02.2014
  */
 public class SingleNodeList implements Clones{
 	private final NodeModel nodeModel;
+	private final CloneType cloneType;
 
-	SingleNodeList(NodeModel nodeModel) {
+	SingleNodeList(NodeModel nodeModel, CloneType cloneType) {
 		this.nodeModel = nodeModel;
+		this.cloneType = cloneType;
 	}
 
 	public Clones add(NodeModel nodeModel) {
-		final MultipleNodeList multipleNodeList = new MultipleNodeList();
+		final MultipleNodeList multipleNodeList = new MultipleNodeList(cloneType);
 		multipleNodeList.add(this.nodeModel);
 		multipleNodeList.add(nodeModel);
 		return multipleNodeList;
@@ -58,7 +62,7 @@ public class SingleNodeList implements Clones{
     }
 
 	public void detach(NodeModel nodeModel) {
-	    nodeModel.setClones(new DetachedNodeList(nodeModel));
+	    nodeModel.setClones(new DetachedNodeList(nodeModel, cloneType));
     }
 
 	public Collection<NodeModel> toCollection() {
@@ -72,4 +76,8 @@ public class SingleNodeList implements Clones{
 	public NodeModel head() {
 	    return nodeModel;
     }
+
+	public CloneType getCloneType() {
+		return cloneType;
+	}
 }

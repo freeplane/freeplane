@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.map;
 
+import static org.freeplane.features.map.NodeModel.CloneType.TREE;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -34,7 +35,7 @@ public class NodeRelativePathTest {
 
 	private NodeModel root() {
 	    final NodeModel parent = new NodeModel("parent", map);
-		parent.setClones(new SingleNodeList(parent));
+		parent.setClones(new SingleNodeList(parent, TREE));
 	    return parent;
     }
 
