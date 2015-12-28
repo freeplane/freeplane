@@ -356,11 +356,12 @@ public class MLinkController extends LinkController {
 				return;
 			}
 			for (final NodeLinkModel link : linkModels) {
-				if (link instanceof HyperTextLinkModel) {
-					final NodeModel source = ((HyperTextLinkModel) link).getSource();
+				final NodeModel source = link.getSource();
+				if (link instanceof HyperTextLinkModel)
 					Controller.getCurrentModeController().getMapController().delayedNodeRefresh(source, NodeModel.NODE_ICON,
 						null, null);
-				}
+				else if(link instanceof ConnectorModel)
+					fireNodeConnectorChange(source, (ConnectorModel) link);
 			}
 		}
 
