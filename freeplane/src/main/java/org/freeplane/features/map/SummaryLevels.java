@@ -108,7 +108,7 @@ public class SummaryLevels{
 			return NODE_NOT_FOUND;
 		int nodeLevel = summaryLevels[index];
 		final boolean leftSide = parentNode.getChildAt(index).isLeft();
-		for (int i = index - 1; i >= 0; i--){
+		for (int i = index; i >= 0; i--){
 			final int level = summaryLevels[i];
 			final NodeModel groupBeginNode = parentNode.getChildAt(i);
 			if(groupBeginNode.isLeft() == leftSide) {
