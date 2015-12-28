@@ -243,8 +243,6 @@
 				<Entry name="ZoomInAction" accelerator="alt UP" />
 				<Entry name="ZoomOutAction" accelerator="alt DOWN" />
 				<Entry name="FitToPage" />
-				<Entry name="CenterSelectedNodeAction" accelerator="control alt C" />
-				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="menu_viewmode">
@@ -253,6 +251,8 @@
 				<Entry name="SetBooleanPropertyAction.presentation_mode" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
+				<Entry name="CenterSelectedNodeAction" accelerator="control alt C" />
+				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SetShortenerStateAction" accelerator="alt F3" />
