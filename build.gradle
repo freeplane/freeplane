@@ -7,6 +7,7 @@ allprojects {
     ext.globalBuild = rootDir.path + '/BUILD'
 
     repositories {
+		maven { url "http://dl.bintray.com/freeplane/freeplane" } 
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
         flatDir name: 'localGitDepsRepository',
