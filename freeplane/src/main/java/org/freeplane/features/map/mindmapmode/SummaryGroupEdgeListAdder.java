@@ -74,12 +74,14 @@ public class SummaryGroupEdgeListAdder {
 		for(NodeModel node : nodes){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode != null) {
-				ParentProcessedNodes parentProcessedNodes = processedNodes.get(parentNode);
-				if(parentProcessedNodes == null){
-					parentProcessedNodes = new ParentProcessedNodes(parentNode);
-					processedNodes.put(parentNode, parentProcessedNodes);
+				if(! (SummaryNode.isFirstGroupNode(node) || SummaryNode.isSummaryNode(node))) {
+					ParentProcessedNodes parentProcessedNodes = processedNodes.get(parentNode);
+					if(parentProcessedNodes == null){
+						parentProcessedNodes = new ParentProcessedNodes(parentNode);
+						processedNodes.put(parentNode, parentProcessedNodes);
+					}
+					parentProcessedNodes.addSummaryEdgeNodes(node);
 				}
-				parentProcessedNodes.addSummaryEdgeNodes(node);
 			}
 			else
 				nodesWithSummaryNodes.add(node);
