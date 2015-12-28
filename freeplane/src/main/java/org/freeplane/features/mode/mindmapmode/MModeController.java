@@ -139,8 +139,8 @@ public class MModeController extends ModeController {
 
 	@Override
 	public void execute(final IActor actor, final MapModel map) {
-		actor.act();
 		addUndoableActor(actor, map);
+		actor.act();
 	}
 
 	@Override
