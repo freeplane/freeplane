@@ -632,7 +632,11 @@ public class NodeView extends JComponent implements INodeView {
 
 	protected LinkedList<NodeView> getSiblingViews() {
 		LinkedList<NodeView> v = null;
-		if (getParentView().getModel().isRoot()) {
+		final NodeView parentView = getParentView();
+		if (parentView == null){
+			UITools.errorMessage("unexpected error: node " + getMainView().getText() + " has lost its parent ");
+		}
+		if (parentView.getModel().isRoot()) {
 			if (this.isLeft()) {
 				v = (getParentView()).getLeft(true);
 			}
