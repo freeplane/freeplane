@@ -2001,7 +2001,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				boolean selectionRequiredNow = ! selectionRequired && onNewSelectionMargin;
 				selectionRequired = selectionRequired || selectionRequiredNow;
 				
-				if(selectionRequired && ! selectionFound)
+				if(selectionRequired && ! selectionFound && child.getModel().hasVisibleContent())
 					selection.add(child);
 				else if(! selectionRequired && selectionFound)
 					selection.deselect(child);
