@@ -34,9 +34,4 @@ public interface IViewerFactory {
 	 */
 	String getDescription();
 
-	/**
-	 * Returns implementation
-	 */
-	ScalableComponent getComponent();
-
 }

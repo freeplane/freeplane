@@ -1227,7 +1227,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void loadBackgroundImage() {
-		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+ 		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
 		final String uriString = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
 		backgroundComponent = null;
 		if (uriString != null) {

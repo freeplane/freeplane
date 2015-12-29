@@ -38,8 +38,6 @@ import org.freeplane.core.util.TextUtils;
  * 22.08.2009
  */
 public class BitmapViewerFactory implements IViewerFactory {
-	private ScalableComponent bitmapViewerComponent;
-
 	public boolean accept(final URI uri) {
 		final Iterator<ImageReader> readers = getImageReaders(uri);
 		return readers.hasNext();
@@ -60,7 +58,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 	public ScalableComponent createViewer(final ExternalResource resource,
 			final URI uri, int maximumWidth) throws MalformedURLException,
 	        IOException {
-		bitmapViewerComponent = new BitmapViewerComponent(uri);
+		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
 		final Dimension originalSize = bitmapViewerComponent.getOriginalSize();
 		float zoom = resource.getZoom();
 		if(zoom == -1){
@@ -77,7 +75,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 	public ScalableComponent createViewer(final URI uri,
 			final Dimension preferredSize) throws MalformedURLException,
 	        IOException {
-		bitmapViewerComponent = new BitmapViewerComponent(uri);
+		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
 		bitmapViewerComponent.setFinalViewerSize(preferredSize);
 		return bitmapViewerComponent;
 	}
@@ -86,13 +84,9 @@ public class BitmapViewerFactory implements IViewerFactory {
 		return TextUtils.getText("bitmaps");
 	}
 
-	public ScalableComponent getComponent() {
-		return bitmapViewerComponent;
-	}
-
 	public ScalableComponent createViewer(URI uri, float zoom)
 			throws MalformedURLException, IOException {
-		bitmapViewerComponent = new BitmapViewerComponent(uri);
+		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
 		bitmapViewerComponent.setFinalViewerSize(zoom);
 		return bitmapViewerComponent;
 	}

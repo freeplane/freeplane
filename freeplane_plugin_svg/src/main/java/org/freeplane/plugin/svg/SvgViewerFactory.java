@@ -22,7 +22,6 @@ import org.w3c.dom.svg.SVGSVGElement;
 
 public class SvgViewerFactory implements IViewerFactory {
 
-	private ViewerComponent canvas;
 
 	private final class ViewerComponent extends JSVGCanvas implements ScalableComponent {
 		private static final long serialVersionUID = 1L;
@@ -131,7 +130,7 @@ public class SvgViewerFactory implements IViewerFactory {
 	};
 
 	public ScalableComponent createViewer(final ExternalResource resource, final URI uri, final int maximumWidth) {
-		canvas = new ViewerComponent(uri);
+		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
@@ -152,7 +151,7 @@ public class SvgViewerFactory implements IViewerFactory {
 	}
 
 	public ScalableComponent createViewer(final URI uri, final Dimension preferredSize) {
-		canvas = new ViewerComponent(uri);
+		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.setFinalViewerSize(preferredSize);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
@@ -165,12 +164,8 @@ public class SvgViewerFactory implements IViewerFactory {
 		return canvas;
 	}
 
-	public ScalableComponent getComponent() {
-		return canvas;
-	}
-
 	public ScalableComponent createViewer(URI uri, final float zoom) throws MalformedURLException, IOException {
-		canvas = new ViewerComponent(uri);
+		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {

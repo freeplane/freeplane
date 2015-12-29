@@ -57,13 +57,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
-		private ScalableComponent component;
 
 		public ScalableComponent createViewer(final URI uri,
 				final Dimension preferredSize) throws MalformedURLException,
 				IOException {
 			factory = getViewerFactory(uri);
-			component = (factory == null ? null : factory.createViewer(uri,
+			ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
 					preferredSize));
 			return component;
 		}
@@ -72,7 +71,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				final URI absoluteUri, final int maximumWidth)
 		        throws MalformedURLException, IOException {
 			factory = getViewerFactory(absoluteUri);
-			component = factory.createViewer(resource, absoluteUri,
+			ScalableComponent component = factory.createViewer(resource, absoluteUri,
 					maximumWidth);
 			return component;
 		}
@@ -92,14 +91,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return getViewerFactory(uri) != null;
 		}
 
-		public ScalableComponent getComponent() {
-			return component;
-		}
-
 		public ScalableComponent createViewer(URI uri, float zoom)
 				throws MalformedURLException, IOException {
 			factory = getViewerFactory(uri);
-			component = (factory == null ? null : factory.createViewer(uri,
+			ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
 					zoom));
 			return component;
 		}
