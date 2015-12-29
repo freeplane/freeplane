@@ -314,7 +314,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	KeyStroke newKeyStroke = ui.getKeyStroke(newShortcut)
 	mapStructureAssert(newKeyStroke, textUtils.format('addons.installer.invalid.keyboard.shortcut', newShortcut))
 	String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode)
-	def action = new AFreeplaneAction(menuItemKey) {
+	def action = new AFreeplaneAction(menuItemKey, menuItemKey, null) {
 		public void actionPerformed(ActionEvent e) {}
 	};
 	def acceleratorManager = Controller.currentModeController.userInputListenerFactory.acceleratorManager
