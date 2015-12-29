@@ -83,6 +83,7 @@ import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.Clones;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
@@ -998,7 +999,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		final ArrayList<NodeModel> selectedNodes = new ArrayList<NodeModel>();
 		for (final LinkedList<NodeModel> nodeList : sortedNodes.values()) {
-			for (final NodeModel nodeModel : nodeList) {
+			ADD_NODES: for (final NodeModel nodeModel : nodeList) {
+				if(differentSubtrees){
+					final NodeModel parentNode = nodeModel.getParentNode();
+					final int index = parentNode.getIndex(nodeModel);
+					for(NodeModel parentClone : parentNode.subtreeClones())
+						if(selectedNodes.contains(parentClone.getChildAt(index)))
+							continue ADD_NODES;
+
+				}
 				selectedNodes.add(nodeModel);
 			}
 		}
