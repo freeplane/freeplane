@@ -64,9 +64,12 @@ public class ExternalResource implements IExtension {
 		zoom = r;
 		for (final NodeView nodeView : viewers) {
 			final JComponent viewer = nodeView.getContent(ViewerController.VIEWER_POSITION);
-			final Dimension preferredSize = ((ViewerLayoutManager)viewer.getLayout()).calculatePreferredSize();
-			((ScalableComponent) viewer).setFinalViewerSize(preferredSize);
-			viewer.revalidate();
+			final ViewerLayoutManager layoutManager = (ViewerLayoutManager)viewer.getLayout();
+			if(layoutManager != null) {
+				final Dimension preferredSize = layoutManager.calculatePreferredSize();
+				((ScalableComponent) viewer).setFinalViewerSize(preferredSize);
+				viewer.revalidate();
+			}
 		}
 	}
 	
