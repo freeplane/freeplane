@@ -438,7 +438,7 @@ public class MMapController extends MapController {
 			moveNodeAndItsClones(node, newParent, index++, isLeft, changeSide && node.isLeft() != isLeft);
 	}
 
-	public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
+	public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, int newIndex, final boolean isLeft,
 			final boolean changeSide) {
 		if(child.subtreeContainsCloneOf(newParent)){
 			UITools.errorMessage("not allowed");
@@ -447,6 +447,9 @@ public class MMapController extends MapController {
 		final NodeModel oldParent = child.getParentNode();
 		final NodeModel childNode = child;
 		final int oldIndex = oldParent.getIndex(childNode);
+		final int childCount = newParent.getChildCount();
+		newIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
+
 		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
 			final Set<NodeModel> oldParentClones = new HashSet<NodeModel>(oldParent.subtreeClones().toCollection());
 			final Set<NodeModel> newParentClones = new HashSet<NodeModel>(newParent.subtreeClones().toCollection());
@@ -470,17 +473,15 @@ public class MMapController extends MapController {
 		}
 	}
 
-	private void moveSingleNode(final NodeModel child, final NodeModel newParent, int newIndex,
+	private void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex,
                                 final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
-		final int childCount = newParent.getChildCount();
-		final int correctedNewIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
 		
 		final boolean wasLeft = child.isLeft();
 		final IActor actor = new IActor() {
 			public void act() {
-				moveNodeToWithoutUndo(child, newParent, correctedNewIndex, isLeft, changeSide);
+				moveNodeToWithoutUndo(child, newParent, newIndex, isLeft, changeSide);
 			}
 
 			public String getDescription() {
