@@ -66,22 +66,13 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 				return;
 			}
 		}
-		final Properties keysetProperties = new Properties();
-		final Set<Entry<Object, Object>> allProperties = ResourceController.getResourceController().getProperties()
-		    .entrySet();
-		for (final Entry<Object, Object> p : allProperties) {
-			if (!p.getKey().toString().startsWith("acceleratorFor")) {
-				continue;
-			}
-			keysetProperties.put(p.getKey(), p.getValue());
-		}
 		try {
 			acceleratorsUserDirectory.mkdirs();
 			final OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile));
-			keysetProperties.store(output, "");
-			output.close();
 			final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController()
-			    .getUserInputListenerFactory();
+					.getUserInputListenerFactory();
+			userInputListenerFactory.getAcceleratorManager().storeAcceleratorPreset(output);
+			output.close();
 			userInputListenerFactory.rebuildMenus("load_accelerator_presets");
 		}
 		catch (final IOException e1) {

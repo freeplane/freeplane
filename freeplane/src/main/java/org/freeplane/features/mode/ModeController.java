@@ -47,6 +47,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.mindmapmode.AssignStyleAction;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 
 /**
@@ -91,6 +92,12 @@ public class ModeController extends AController implements FreeplaneActions{
 		}
 	}
 
+
+	public void addActionIfNotAlreadySet(AFreeplaneAction action) {
+		if(getAction(action.getKey())== null) 
+			addAction(action);
+	}
+	
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
 	}
@@ -328,6 +335,18 @@ public class ModeController extends AController implements FreeplaneActions{
 		return action;
 	}
 
+	public AFreeplaneAction removeActionIfSet(final String key) {
+		if(getAction(key) != null ){
+			final AFreeplaneAction action = super.removeAction(key);
+			if (mapController != null) {
+				mapController.removeListenerForAction(action);
+			}
+			return action;
+		}
+		else
+			return null;
+	}
+	
 	public void removeINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.remove(listener);
 	}

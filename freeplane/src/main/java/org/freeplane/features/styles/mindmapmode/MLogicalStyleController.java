@@ -27,6 +27,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -221,8 +222,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new CopyMapStylesAction());
 		}
 		if(! modeController.getController().getViewController().isHeadless()){
-			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(),
-			    EntryVisitor.CHILD_ENTRY_REMOVER);
+			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(modeController),
+			    new ChildActionEntryRemover(modeController));
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			//TODO RIBBONS - apply to ribbons as well
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
@@ -268,6 +269,12 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	class StyleMenuBuilder implements EntryVisitor {
+		private final ModeController modeController;
+		
+		public StyleMenuBuilder(ModeController modeController) {
+			super();
+			this.modeController = modeController;
+		}
 
 		@Override
 		public void visit(Entry target) {
@@ -291,6 +298,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			actions.clear();
 			final NodeModel rootNode = extension.getStyleMap().getRootNode();
 			final AssignStyleAction resetAction = new AssignStyleAction(null);
+			modeController.addActionIfNotAlreadySet(resetAction);
 			actions.add(resetAction);
 			new EntryAccessor().addChildAction(target, resetAction);
 			addStyleMenu(target, rootNode, extension);
@@ -306,6 +314,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 				}
 				else if (null != extension.getStyleNode(style)) {
 					final AssignStyleAction action = new AssignStyleAction(style);
+					modeController.addActionIfNotAlreadySet(action);
 					actions.add(action);
 					entryAccessor.addChildAction(target, action);
 				}

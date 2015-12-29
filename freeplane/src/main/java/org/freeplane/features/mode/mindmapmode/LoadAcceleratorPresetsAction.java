@@ -29,6 +29,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -67,11 +68,18 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 	}
 
 	final static public void install(ModeController modeController) {
-		modeController.addUiBuilder(Phase.ACTIONS, "acceleratorPresets", new AcceleratorPresetsBuilder(),
-		    EntryVisitor.CHILD_ENTRY_REMOVER);
+		modeController.addUiBuilder(Phase.ACTIONS, "acceleratorPresets", new AcceleratorPresetsBuilder(modeController),
+			    new ChildActionEntryRemover(modeController));
 	}
 
 	static class AcceleratorPresetsBuilder implements EntryVisitor {
+		final private ModeController modeController;
+		
+		public AcceleratorPresetsBuilder(ModeController modeController) {
+			super();
+			this.modeController = modeController;
+		}
+
 		@Override
 		public void visit(Entry target) {
 			final File[] dirs = { LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory(),
@@ -96,6 +104,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 							final String title = TextUtils.getText(key + ".text", propName);
 							final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
 							    prop.toURL(), key, title);
+						modeController.addActionIfNotAlreadySet(loadAcceleratorPresetsAction);
 						new EntryAccessor().addChildAction(target, loadAcceleratorPresetsAction);
 					}
 					catch (final Exception e) {

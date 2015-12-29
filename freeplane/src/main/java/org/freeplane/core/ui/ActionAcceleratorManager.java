@@ -247,10 +247,9 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private void saveAcceleratorPresets() {
 		try {
-			if(!getPresetsFile().exists()) {
-					getPresetsFile().createNewFile();
-			}
-			storeAcceleratorPreset(new FileOutputStream(getPresetsFile()));
+			final FileOutputStream output = new FileOutputStream(getPresetsFile());
+			storeAcceleratorPreset(output);
+			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -320,7 +319,6 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  		try {
  			final OutputStream output = new BufferedOutputStream(out);
  			keysetProps.store(output, "");
- 			output.close();
  		}
  		catch (final IOException e1) {
  			UITools.errorMessage(TextUtils.removeTranslateComment(TextUtils.getText("can_not_save_key_set")));
