@@ -439,7 +439,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				final int childWindowIndex = tabWindow.getChildWindowIndex(selectedWindow);
 				final int childWindowCount = tabWindow.getChildWindowCount();
 				final int nextWindowIndex = (childWindowIndex + childWindowCount + tabIndexChange) % childWindowCount;
-				tabWindow.setSelectedTab(nextWindowIndex);
+				final View nextWindow = (View) tabWindow.getChildWindow(nextWindowIndex);
+				final Component nextMapView = getContainedMapView(nextWindow);
+				Controller.getCurrentController().getMapViewManager().changeToMapView(nextMapView);
 			}
 		}
 	}
