@@ -106,6 +106,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
+								mc.getController().getSelection().keepNodePosition(node, 0, 0);
 								mapController.setFolded(node, fold);
 							}
 						});
@@ -126,6 +127,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		        && !nodeSelector.shouldSelectOnClick(e)) {
 			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, nodeView)) && ! mapController.hasHiddenChildren(node);
 			doubleClickTimer.cancel();
+			mc.getController().getSelection().keepNodePosition(node, 0, 0);
 			mapController.setFolded(node, fold);
 			e.consume();
 			return;
