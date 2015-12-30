@@ -4,6 +4,7 @@
 Single node clones
 Copy format to new siblings (option)
 Scroll map after unfolding a node (option)
+Change node size on mouse wheel scrolling
 
 
 ===============================
