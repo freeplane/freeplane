@@ -31,7 +31,7 @@ class MapScroller {
 		this.anchorContentLocation = new Point();
 	}
 
-	void anchorToSelected(final NodeView view, final float horizontalPoint, final float verticalPoint) {
+	void anchorToNode(final NodeView view, final float horizontalPoint, final float verticalPoint) {
 		if (view != null && view.getMainView() != null) {
 			setAnchorView(view);
 			anchorHorizontalPoint = horizontalPoint;

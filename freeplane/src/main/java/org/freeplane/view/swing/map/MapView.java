@@ -178,7 +178,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void keepNodePosition(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
-			mapScroller.anchorToSelected(getNodeView(node), horizontalPoint, verticalPoint);
+			mapScroller.anchorToNode(getNodeView(node), horizontalPoint, verticalPoint);
 		}
 		
 		public void scrollNodeTreeToVisible(final NodeModel  node, boolean slow) {
@@ -1866,7 +1866,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
-		mapScroller.anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
+		mapScroller.anchorToNode(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
 		getRoot().updateAll();
 		adjustBackgroundComponentScale();
 	}
