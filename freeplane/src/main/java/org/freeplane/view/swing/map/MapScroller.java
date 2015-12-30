@@ -12,7 +12,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.ui.ViewController;
 
-public class MapScroller {
+class MapScroller {
 
 	private NodeView anchor;
 	private Point anchorContentLocation;
@@ -29,11 +29,6 @@ public class MapScroller {
 	public MapScroller(MapView map) {
 		this.map = map;
 		this.anchorContentLocation = new Point();
-	}
-
-	void anchorToSelected(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
-		final NodeView view = map.getNodeView(node);
-		anchorToSelected(view, horizontalPoint, verticalPoint);
 	}
 
 	void anchorToSelected(final NodeView view, final float horizontalPoint, final float verticalPoint) {
@@ -128,7 +123,7 @@ public class MapScroller {
 	private void scrollNodeNow(boolean slowScroll) {
 		final JViewport viewPort = (JViewport) map.getParent();
 		if(slowScroll)
-			viewPort.putClientProperty(ViewController.SLOW_SCROLLING, Boolean.TRUE);
+			viewPort.putClientProperty(ViewController.SLOW_SCROLLING, 20);
 		final Rectangle rect = calculateOptimalVisibleRectangle();
 		map.scrollRectToVisible(rect);
 		scrolledNode = null;
@@ -245,6 +240,38 @@ public class MapScroller {
 		anchorContentLocation = getAnchorCenterPoint();
 	}
 
+	public void scrollNodeTreeToVisible(NodeView node, boolean slow) {
+		final Rectangle visibleRect = map.getVisibleRect();
+		Rectangle requiredRectangle = new Rectangle(node.getSize());
+		int margin = 30;
+		int spaceToCut = node.getSpaceAround() - margin;
+		requiredRectangle.x += spaceToCut;
+		requiredRectangle.y += spaceToCut;
+		requiredRectangle.width -= 2*spaceToCut; 
+		requiredRectangle.height -= 2*spaceToCut;
+		final Rectangle contentBounds = node.getContent().getBounds();
+		int lackingWidth = requiredRectangle.width - visibleRect.width;
+		if(lackingWidth > 0){
+			int leftGap = contentBounds.x - requiredRectangle.x - margin;
+			int rightGap = requiredRectangle.x + requiredRectangle. width  - contentBounds.x - contentBounds.width - margin;
+			requiredRectangle.width  = visibleRect.width;
+			requiredRectangle.x += lackingWidth * leftGap /  (leftGap + rightGap);
+		}
+		int lackingHeight = requiredRectangle.height - visibleRect.height;
+		if(lackingHeight > 0){
+			int topGap = contentBounds.y - requiredRectangle.y - margin;
+			int bottomGap = requiredRectangle.y + requiredRectangle. height  - contentBounds.y - contentBounds.height - margin;
+			requiredRectangle.height  = visibleRect.height;
+			requiredRectangle.y += lackingHeight * topGap /  (topGap + bottomGap);
+		}
+		if(! node.getVisibleRect().contains(requiredRectangle)){
+			if(slow){
+				final JViewport viewPort = (JViewport) map.getParent();
+				viewPort.putClientProperty(ViewController.SLOW_SCROLLING, 10);
+			}
+			node.scrollRectToVisible(requiredRectangle);
+		}
+	}
 }
 
 enum ScrollingDirective {SCROLL_NODE_TO_CENTER, SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR}

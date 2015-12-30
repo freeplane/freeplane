@@ -178,8 +178,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void keepNodePosition(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
-			mapScroller.anchorToSelected(node, horizontalPoint, verticalPoint);
+			mapScroller.anchorToSelected(getNodeView(node), horizontalPoint, verticalPoint);
 		}
+		
+		public void scrollNodeTreeToVisible(final NodeModel  node, boolean slow) {
+			final NodeView nodeView = getNodeView(node);
+			if(nodeView != null)
+				mapScroller.scrollNodeTreeToVisible(nodeView, slow);
+		}
+
 
 		public void makeTheSelected(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
@@ -946,7 +953,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		else {
 			if (oldSelected.isFolded()) {
-				getModeController().getMapController().setFolded(oldModel, false);
+				getModeController().getMapController().setFoldedAndScroll(oldModel, false);
 				return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet(), true);
@@ -1019,7 +1026,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		else {
 			if (oldSelected.isFolded()) {
-				getModeController().getMapController().setFolded(oldModel, false);
+				getModeController().getMapController().setFoldedAndScroll(oldModel, false);
 				if(oldSelected.getModel().hasVisibleContent())
 					return oldSelected;
 			}
@@ -2031,6 +2038,4 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void scrollNodeToVisible(NodeView node) {
 		mapScroller.scrollNodeToVisible(node);
 	}
-
-	
 }

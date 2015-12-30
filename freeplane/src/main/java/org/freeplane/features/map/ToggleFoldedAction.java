@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
@@ -39,6 +40,13 @@ class ToggleFoldedAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getCurrentModeController().getMapController().toggleFolded();
+		MapController r = Controller.getCurrentModeController().getMapController();
+		final Collection<NodeModel> selectedNodes = r.getSelectedNodes();
+		if(selectedNodes.size() > 1)
+			r.toggleFolded(selectedNodes);
+		else {
+			final NodeModel selectedNode = r.getSelectedNode();
+			r.setFoldedAndScroll(selectedNode, ! selectedNode.isFolded());
+		}
 	}
 }

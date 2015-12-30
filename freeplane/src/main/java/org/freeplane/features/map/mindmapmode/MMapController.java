@@ -868,7 +868,7 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
-
+	
 	@Override
 	protected void setFoldingState(final NodeModel node, final boolean folded) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();

@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Action;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -287,6 +288,21 @@ public class MapController extends SelectionController implements IExtension{
 		createActions(modeController);
 	}
 
+	public void setFoldedAndScroll(final NodeModel node, final boolean folded){
+		if(node.isFolded() != folded){
+			setFolded(node, folded);
+			if(! folded && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")){
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node, false);
+					}
+				});
+				
+			}
+		}
+	}
+	
 	public void setFolded(final NodeModel node, final boolean folded) {
 		if (node == null) {
 			throw new IllegalArgumentException("setFolded was called with a null node.");
@@ -943,11 +959,6 @@ public class MapController extends SelectionController implements IExtension{
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {
 		Collections.sort(collection, new NodesDepthComparator());
-	}
-
-	public void toggleFolded() {
-		final Collection<NodeModel> selectedNodes = getSelectedNodes();
-		toggleFolded(selectedNodes);
 	}
 
 	public void toggleFolded(final Collection<NodeModel> collection) {
