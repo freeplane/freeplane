@@ -176,6 +176,7 @@
 					<choice value="ADD_CHILD" />
 				</combo>
 				<boolean name="copyFormatToNewSibling"/>
+				<boolean name="copyFormatToNewSiblingIncludesIcons"/>
 				<boolean name="scrollOnUnfold"/>
 			</separator>
 			<separator name="SplitToWordsAction">

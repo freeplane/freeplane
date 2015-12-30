@@ -21,11 +21,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
@@ -54,8 +57,12 @@ class CopyFormat extends AFreeplaneAction {
 	 */
 	private void copyFormat(final NodeModel node) {
 		CopyFormat.pattern = new NodeModel(null);
-		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, pattern);
-		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, pattern);
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, node, pattern);
+		modeController.copyExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, pattern);
+		if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSiblingIncludesIcons")) {
+			modeController.copyExtensions(Keys.ICONS, node, pattern);
+		}
 	}
 }
 
@@ -83,9 +90,15 @@ class PasteFormat extends AMultipleNodeAction {
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, node);
-		Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
-		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
-		Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
+		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.undoableRemoveExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, node);
+		modeController.undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
+		modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+		modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
+		if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSiblingIncludesIcons")) {
+			modeController.undoableRemoveExtensions(Keys.ICONS, node, node);
+			modeController.undoableCopyExtensions(Keys.ICONS, pattern, node);
+		}
+		
 	}
 }

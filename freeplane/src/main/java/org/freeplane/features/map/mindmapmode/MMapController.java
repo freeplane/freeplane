@@ -55,6 +55,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
@@ -137,6 +138,9 @@ public class MMapController extends MapController {
 					if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSibling")) {
 						getMModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, targetNode, newNode);
 						getMModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, targetNode, newNode);
+						if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSiblingIncludesIcons")) {
+							getMModeController().undoableCopyExtensions(Keys.ICONS, targetNode, newNode);
+						}
 					}
 					startEditingAfterSelect(newNode);
 					select(newNode);
