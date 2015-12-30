@@ -301,6 +301,7 @@
 			</Entry>
 			<Entry name="FormatCopy" accelerator="alt shift C" />
 			<Entry name="FormatPaste" accelerator="alt shift V" />
+			<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
 			<Entry builder="separator" />
 			<Entry name="map_background">
 				<Entry name="MapBackgroundImageAction" />
