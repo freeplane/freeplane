@@ -26,17 +26,17 @@ public class SummaryGroupEdgeListAdderShould {
 	}
 
 	@Test
-	public void forGroupBeginNode_returnEmptyList() throws Exception {
+	public void forGroupBeginNode_returnsGroupBeginNode() throws Exception {
 		final NodeModel node = mapFake.addGroupBeginNode();
 		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(node));
-		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Collections.<NodeModel>emptyList()));
+		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(node)));
 	}
 
 	@Test
-	public void forSummaryNode_returnEmptyList() throws Exception {
+	public void forSummaryNode_returnSummaryNode() throws Exception {
 		final NodeModel node = mapFake.addSummaryNode();
 		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(node));
-		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Collections.<NodeModel>emptyList()));
+		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(node)));
 	}
 
 	@Test

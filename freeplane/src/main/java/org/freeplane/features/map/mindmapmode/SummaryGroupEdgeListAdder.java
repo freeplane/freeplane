@@ -31,8 +31,9 @@ public class SummaryGroupEdgeListAdder {
 		
 		void addSummaryEdgeNodes(NodeModel node) {
 			final int nodeIndex = node.getIndex();
-			if(lastSummaryNodeIndex > nodeIndex){
-				nodesWithSummaryNodes.add(++lastAddedNodeIndex, node);
+			if(lastSummaryNodeIndex >= nodeIndex){
+				if(summaryLevels.summaryLevels[nodeIndex] == 0)
+					nodesWithSummaryNodes.add(++lastAddedNodeIndex, node);
 			}
 			else {
 				final int groupBeginNodeIndex = summaryLevels.findGroupBeginNodeIndex(nodeIndex);
@@ -42,10 +43,14 @@ public class SummaryGroupEdgeListAdder {
 					final NodeModel summaryNode = parentNode.getChildAt(lastSummaryNodeIndex);
 					final Collection<NodeModel> summarizedNodes = summaryLevels.summarizedNodes(summaryNode);
 					if(nodes.containsAll(summarizedNodes)) {
-						if(groupBeginNode != null )
+						if(groupBeginNode != null ){
 							nodesWithSummaryNodes.add(groupBeginNode);
-						lastAddedNodeIndex = nodesWithSummaryNodes.size();
-						nodesWithSummaryNodes.add(node);
+							lastAddedNodeIndex++;
+						}
+						if(groupBeginNode != node ){
+							nodesWithSummaryNodes.add(node);
+							lastAddedNodeIndex++;
+						}
 						nodesWithSummaryNodes.add(summaryNode);
 						while(parentNode.getChildCount() > lastSummaryNodeIndex + 1){
 							final NodeModel nextNode = parentNode.getChildAt(lastSummaryNodeIndex + 1);
@@ -62,7 +67,7 @@ public class SummaryGroupEdgeListAdder {
 						return;
 					}
 				}
-				lastAddedNodeIndex = nodesWithSummaryNodes.size();
+				lastAddedNodeIndex++;
 				nodesWithSummaryNodes.add(node);
 			}
 		}
@@ -74,14 +79,12 @@ public class SummaryGroupEdgeListAdder {
 		for(NodeModel node : nodes){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode != null) {
-				if(! (SummaryNode.isFirstGroupNode(node) || SummaryNode.isSummaryNode(node))) {
-					ParentProcessedNodes parentProcessedNodes = processedNodes.get(parentNode);
-					if(parentProcessedNodes == null){
-						parentProcessedNodes = new ParentProcessedNodes(parentNode);
-						processedNodes.put(parentNode, parentProcessedNodes);
-					}
-					parentProcessedNodes.addSummaryEdgeNodes(node);
+				ParentProcessedNodes parentProcessedNodes = processedNodes.get(parentNode);
+				if(parentProcessedNodes == null){
+					parentProcessedNodes = new ParentProcessedNodes(parentNode);
+					processedNodes.put(parentNode, parentProcessedNodes);
 				}
+				parentProcessedNodes.addSummaryEdgeNodes(node);
 			}
 			else
 				nodesWithSummaryNodes.add(node);

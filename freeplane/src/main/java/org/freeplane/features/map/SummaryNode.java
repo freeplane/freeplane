@@ -70,10 +70,14 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 			
 			@Override
 			public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-				final NodeModel parent = nodeDeletionEvent.parent;
-				if (!modeController.isUndoAction() && ! parent.isFolded() && ! parent.hasChildren() && isSummaryNode(parent)&& parent.getText().isEmpty()){
+				final NodeModel hiddenSummaryNode = nodeDeletionEvent.parent;
+				if (!modeController.isUndoAction() && ! hiddenSummaryNode.isFolded() && ! hiddenSummaryNode.hasChildren() && isSummaryNode(hiddenSummaryNode)&& hiddenSummaryNode.getText().isEmpty()){
+					final NodeModel summaryParent = hiddenSummaryNode.getParentNode();
+					final SummaryLevels summaryLevels = new SummaryLevels(summaryParent);
+					final NodeModel groupBeginNode = summaryLevels.findGroupBeginNode(hiddenSummaryNode.getIndex() - 1);
 					MMapController mapController =  (MMapController) modeController.getMapController();
-					mapController.deleteNode(parent);
+					mapController.deleteNode(groupBeginNode);
+					mapController.deleteNode(hiddenSummaryNode);
 				}
 			}
 			
