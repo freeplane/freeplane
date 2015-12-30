@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,15 +177,13 @@ public class MIconController extends IconController {
 			}
 			final List<MindIcon> targetIcons = from.getIcons();
 			final List<MindIcon> whichIcons = which.getIcons();
-			for (final MindIcon icon : targetIcons) {
+			final Iterator<MindIcon> targetIconIterator = targetIcons.iterator();
+			while (targetIconIterator.hasNext()) {
+				MindIcon icon = targetIconIterator.next();
 				if (!whichIcons.contains(icon)) {
 					continue;
 				}
-				final int position = targetIcons.lastIndexOf(icon);
-				if (position == -1) {
-					continue;
-				}
-				from.removeIcon(position);
+				targetIconIterator.remove();
 			}
 		}
 		public void resolveParentExtensions(Object key, NodeModel to) {
