@@ -42,6 +42,8 @@ public interface IUserInputListenerFactory {
 	IMouseListener getMapMouseListener();
 
 	MouseWheelListener getMapMouseWheelListener();
+	
+	MouseWheelListener getNodeMouseWheelListener();
 
 	JPopupMenu getMapPopup();
 

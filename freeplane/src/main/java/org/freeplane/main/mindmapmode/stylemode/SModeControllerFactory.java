@@ -85,6 +85,7 @@ import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.ui.mindmapmode.MMapMouseListener;
+import org.freeplane.view.swing.ui.mindmapmode.MNodeMouseWheelListener;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -119,6 +120,7 @@ public class SModeControllerFactory {
 		modeController.addAction(new DeleteLevelStyleAction());
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener());
+		userInputListenerFactory.setNodeMouseWheelListener(new MNodeMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener()));
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
 		new MMapController(modeController);

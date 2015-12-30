@@ -1271,6 +1271,7 @@ public class NodeView extends JComponent implements INodeView {
 					.getUserInputListenerFactory();
 			mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
 			mainView.addMouseMotionListener(userInputListenerFactory.getNodeMouseMotionListener());
+			mainView.addMouseWheelListener(userInputListenerFactory.getNodeMouseWheelListener());
 			mainView.addKeyListener(userInputListenerFactory.getNodeKeyListener());
 			addDragListener(userInputListenerFactory.getNodeDragListener());
 			addDropListener(userInputListenerFactory.getNodeDropTargetListener());

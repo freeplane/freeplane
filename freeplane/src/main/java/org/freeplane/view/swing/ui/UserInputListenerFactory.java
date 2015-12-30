@@ -90,6 +90,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private KeyListener nodeKeyListener;
 	private IMouseListener nodeMotionListener;
 	private IMouseListener nodeMouseMotionListener;
+	private MouseWheelListener nodeMouseWheelListener;
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
@@ -249,6 +250,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodeMouseMotionListener;
 	}
 
+	public MouseWheelListener getNodeMouseWheelListener() {
+		if (nodeMouseWheelListener == null) {
+			nodeMouseWheelListener = new DefaultNodeMouseWheelListener(getMapMouseWheelListener());
+		}
+		return nodeMouseWheelListener;
+	}
+
 	public JPopupMenu getNodePopupMenu() {
 		return nodePopupMenu;
 	}
@@ -320,6 +328,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			throw new RuntimeException("already set");
 		}
 		this.nodeMouseMotionListener = nodeMouseMotionListener;
+	}
+
+	public void setNodeMouseWheelListener(MouseWheelListener nodeMouseWheelListener) {
+		if (this.nodeMouseWheelListener != null) {
+			throw new RuntimeException("already set");
+		}
+		this.nodeMouseWheelListener = nodeMouseWheelListener;
 	}
 
 	public void setNodePopupMenu(final JPopupMenu nodePopupMenu) {
