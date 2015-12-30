@@ -83,7 +83,6 @@ import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
-import org.freeplane.features.map.Clones;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
@@ -105,13 +104,11 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
 import org.freeplane.view.swing.features.filepreview.ImageLoadingListener;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
-import org.freeplane.view.swing.map.MapView.ScrollingDirective;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
@@ -121,7 +118,8 @@ import org.freeplane.view.swing.map.link.ILinkView;
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener {
-
+	
+	private final MapScroller mapScroller;
 	private MapViewLayout layoutType;
 
 	public MapViewLayout getLayoutType() {
@@ -153,7 +151,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public void centerNode(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
 			if (nodeView != null) {
-				MapView.this.scrollNode(nodeView, ScrollingDirective.SCROLL_NODE_TO_CENTER, false);
+				mapScroller.scrollNode(nodeView, ScrollingDirective.SCROLL_NODE_TO_CENTER, false);
 			}
 		}
 
@@ -180,7 +178,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void keepNodePosition(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
-			anchorToSelected(node, horizontalPoint, verticalPoint);
+			mapScroller.anchorToSelected(node, horizontalPoint, verticalPoint);
 		}
 
 		public void makeTheSelected(final NodeModel node) {
@@ -191,7 +189,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void scrollNodeToVisible(final NodeModel node) {
-			MapView.this.scrollNodeToVisible(getNodeView(node));
+			mapScroller.scrollNodeToVisible(getNodeView(node));
 		}
 
 		public void selectAsTheOnlyOneSelected(final NodeModel node) {
@@ -214,7 +212,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public void selectRoot() {
 			final NodeModel rootNode = getModel().getRootNode();
 			selectAsTheOnlyOneSelected(rootNode);
-			scrollToRootNode();
+			mapScroller.scrollToRootNode();
 		}
 
 		public void setSiblingMaxLevel(final int nodeLevel) {
@@ -412,37 +410,28 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static Color standardSelectColor;
 	private static Stroke standardSelectionStroke;
 	static Color standardSelectRectangleColor;
-	private NodeView anchor;
-	private Point anchorContentLocation;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
 	private JComponent backgroundComponent;
 	private Rectangle boundingRectangle = null;
 	private boolean disableMoveCursor = true;
-	private int extraWidth;
 	private FitMap fitMap = FitMap.USER_DEFINED;
 	private boolean isPreparedForPrinting = false;
 	private boolean isPrinting = false;
 	private final ModeController modeController;
 	final private MapModel model;
 	
-	enum ScrollingDirective {SCROLL_NODE_TO_CENTER, SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR};
-	private ScrollingDirective scrollingDirective = ScrollingDirective.DONE;
-	private NodeView scrolledNode = null;
 	private NodeView rootView = null;
 	private boolean selectedsValid = true;
 	final private Selection selection = new Selection();
 	private int siblingMaxLevel;
 	private float zoom = 1F;
-	private float anchorHorizontalPoint;
-	private float anchorVerticalPoint;
-    private Font noteFont;
+	private Font noteFont;
     private Font detailFont;
     private int detailHorizontalAlignment;
     private Color detailForeground;
     private Color detailBackground;
-	private boolean slowScroll;
 	private static boolean presentationModeEnabled;
 	private boolean fitToViewport;
 	private static int transparency;
@@ -453,6 +442,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super();
 		this.model = model;
 		this.modeController = modeController;
+		mapScroller = new MapScroller(this);
 		final String name = model.getTitle();
 		setName(name);
 		if (MapView.standardSelectColor == null) {
@@ -524,29 +514,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    return Collections.emptySet();
     }
 
-	private void anchorToSelected(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
-		final NodeView view = getNodeView(node);
-		anchorToSelected(view, horizontalPoint, verticalPoint);
-	}
-
-	void anchorToSelected(final NodeView view, final float horizontalPoint, final float verticalPoint) {
-		if (view != null && view.getMainView() != null) {
-			setAnchorView(view);
-			anchorHorizontalPoint = horizontalPoint;
-			anchorVerticalPoint = verticalPoint;
-			this.anchorContentLocation = getAnchorCenterPoint();
-			if (scrolledNode == null) {
-				scrolledNode = anchor;
-				scrollingDirective = ScrollingDirective.ANCHOR;
-				extraWidth = 0;
-			}
-		}
-	}
-
-	private void setAnchorView(final NodeView view) {
-		anchor = view;
-	}
-
 	private String viewText(final NodeView view) {
 		if (view != null) {
 			final String text = view.getMainView().getText();
@@ -568,17 +535,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		scrollRectToVisible(r);
 	}
 
-	public void scrollNode(final NodeView node, ScrollingDirective scrollingDirective, boolean slowScroll) {
-		if (node != null) {
-			this.slowScroll = slowScroll;
-			scrolledNode = node;
-			this.scrollingDirective = scrollingDirective;
-			if (isDisplayable() && frameLayoutCompleted())
-				scrollNodeNow(slowScroll);
-		}
-	}
-
-	private boolean frameLayoutCompleted() {
+	boolean frameLayoutCompleted() {
 		final Frame frame = JOptionPane.getFrameForComponent(this);
 		final Insets frameInsets = frame.getInsets();
 		final Component rootPane = frame.getComponent(0);
@@ -587,60 +544,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return frameLayoutCompleted; 
 	}
 
-	private void scrollNodeNow(boolean slowScroll) {
-		final JViewport viewPort = (JViewport) getParent();
-		if(slowScroll)
-			viewPort.putClientProperty(ViewController.SLOW_SCROLLING, Boolean.TRUE);
-		final Rectangle rect = calculateOptimalVisibleRectangle();
-		scrollRectToVisible(rect);
-		scrolledNode = null;
-		scrollingDirective = ScrollingDirective.DONE;
-		this.slowScroll = false;
-		if(! anchor.equals(getRoot()))
-			this.anchor = getRoot();
-		this.anchorContentLocation = getAnchorCenterPoint();
-	}
-
-	private Rectangle calculateOptimalVisibleRectangle() {
-		final JViewport viewPort = (JViewport) getParent();
-		final Dimension extentSize = viewPort.getExtentSize();
-		final JComponent content = scrolledNode.getContent();
-		Point contentLocation = new Point();
-		UITools.convertPointToAncestor(content, contentLocation, this);
-		final Rectangle rect = new Rectangle(contentLocation.x + content.getWidth() / 2 - extentSize.width / 2, 
-				contentLocation.y + content.getHeight() / 2 - extentSize.height
-				/ 2, extentSize.width, extentSize.height);
-		
-		if(scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION){
-			final Rectangle innerBounds = getInnerBounds();
-			if(innerBounds.width <= extentSize.width){
-				rect.x = innerBounds.x - (extentSize.width - innerBounds.width) / 2;
-			}
-			else {
-				NodeView root = getRoot();
-				if(!isOutlineLayoutSet()) {
-					boolean scrollToTheLeft = false;
-
-					final List<NodeModel> children = root.getModel().getChildren();
-					if(! children.isEmpty()){
-						scrollToTheLeft = true;
-						final boolean outlineLayoutSet = isOutlineLayoutSet();
-						for(NodeModel node :children) {
-							if(! outlineLayoutSet && node.isLeft()){
-								scrollToTheLeft = false;
-								break;
-							}
-						}
-					}
-					if(scrollToTheLeft)
-						rect.x += (extentSize.width - content.getWidth()) / 2 - 10;
-				}
-			}
-		}
-		return rect;
-	}
-
-	
 
 	@Override
     public void addNotify() {
@@ -655,9 +558,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	((JViewport) getParent()).setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
 	    else
 	    	((JViewport) getParent()).setScrollMode(JViewport.BLIT_SCROLL_MODE);
-    }
+	}
 
-
+	
 	@Override
     public void removeNotify() {
 		modeController.getMapController().removeNodeChangeListener(connectorChangeListener);
@@ -755,22 +658,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (MapView.printOnWhiteBackground) {
 			setBackground(background);
 		}
-	}
-
-	private Point getAnchorCenterPoint() {
-		if (! isDisplayable()) {
-			return new Point();
-		}
-		final MainView mainView = anchor.getMainView();
-		final int mainViewWidth = mainView.getWidth();
-		final int mainViewHeight = mainView.getHeight();
-		final Point anchorCenterPoint = new Point((int) (mainViewWidth * anchorHorizontalPoint), (int) (mainViewHeight * anchorVerticalPoint));
-		final JViewport viewPort = (JViewport) getParent();
-		UITools.convertPointToAncestor(mainView, anchorCenterPoint, this);
-		final Dimension extentSize = viewPort.getExtentSize();
-		anchorCenterPoint.x += (extentSize.width - viewPort.getWidth()) / 2;
-		anchorCenterPoint.y += (extentSize.height - viewPort.getHeight()) / 2;
-		return anchorCenterPoint;
 	}
 
 	/*
@@ -1072,7 +959,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return newSelected;
 	}
 
-	private boolean isOutlineLayoutSet() {
+	boolean isOutlineLayoutSet() {
 		return layoutType.equals(MapViewLayout.OUTLINE);
 	}
 
@@ -1160,9 +1047,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	private void initRoot() {
-		this.anchorContentLocation = new Point();
+		
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), this, this, 0);
-		setAnchorView(rootView);
+		mapScroller.setAnchorView(rootView);
 	}
 	
 	public boolean isPrinting() {
@@ -1183,7 +1070,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	void addSelected(final NodeView newSelected, boolean scroll) {
 		selection.add(newSelected);
 		if(scroll)
-			scrollNodeToVisible(newSelected);
+			mapScroller.scrollNodeToVisible(newSelected);
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
@@ -1380,7 +1267,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					addSelected(node, false);
 				}while(node != nextSelected);
 				selection.setSelectionEnd(nextSelected);
-				scrollNodeToVisible(nextSelected);
+				mapScroller.scrollNodeToVisible(nextSelected);
 			}
 		}
 		else
@@ -1865,83 +1752,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	/**
-	 * Scroll the viewport of the map to the south-west, i.e. scroll the map
-	 * itself to the north-east.
-	 */
-	public void scrollBy(final int x, final int y) {
-		final JViewport mapViewport = (JViewport) getParent();
-		if (mapViewport != null) {
-			final Point currentPoint = mapViewport.getViewPosition();
-			currentPoint.translate(x, y);
-			if (currentPoint.getX() < 0) {
-				currentPoint.setLocation(0, currentPoint.getY());
-			}
-			if (currentPoint.getY() < 0) {
-				currentPoint.setLocation(currentPoint.getX(), 0);
-			}
-			final double maxX = getSize().getWidth() - mapViewport.getExtentSize().getWidth();
-			final double maxY = getSize().getHeight() - mapViewport.getExtentSize().getHeight();
-			if (currentPoint.getX() > maxX) {
-				currentPoint.setLocation(maxX, currentPoint.getY());
-			}
-			if (currentPoint.getY() > maxY) {
-				currentPoint.setLocation(currentPoint.getX(), maxY);
-			}
-			mapViewport.setViewPosition(currentPoint);
-		}
-	}
-
-	public void scrollNodeToVisible(final NodeView node) {
-		scrollNodeToVisible(node, 0);
-	}
-
-	private void scrollNodeToVisible(final NodeView node, final int extraWidth) {
-		if(scrollingDirective == ScrollingDirective.DONE || scrollingDirective == ScrollingDirective.ANCHOR)
-			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
-		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {
-			if (node != scrolledNode) {
-				if (scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION && !node.isRoot())
-					scrollingDirective = ScrollingDirective.SCROLL_NODE_TO_CENTER;
-				scrollNode(node, scrollingDirective, false);
-			}
-			return;
-		}
-		if (!isValid()) {
-			scrolledNode = node;
-			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
-			this.extraWidth = extraWidth;
-			return;
-		}
-		final int HORIZ_SPACE = 10;
-		final int HORIZ_SPACE2 = 20;
-		final int VERT_SPACE = 5;
-		final int VERT_SPACE2 = 10;
-		final JComponent nodeContent = node.getContent();
-		int width = nodeContent.getWidth();
-		if (extraWidth < 0) {
-			width -= extraWidth;
-			nodeContent.scrollRectToVisible(new Rectangle(-HORIZ_SPACE + extraWidth, -VERT_SPACE, width + HORIZ_SPACE2,
-			    nodeContent.getHeight() + VERT_SPACE2));
-		}
-		else {
-			width += extraWidth;
-			nodeContent.scrollRectToVisible(new Rectangle(-HORIZ_SPACE, -VERT_SPACE, width + HORIZ_SPACE2, nodeContent
-			    .getHeight()
-			        + VERT_SPACE2));
-		}
-	}
-
-	/**
 	 * Select the node, resulting in only that one being selected.
 	 */
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
 		if(! newSelected.getModel().hasVisibleContent())
 			throw new AssertionError("select invisible node");
 		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
-			scrollNode(newSelected, ScrollingDirective.SCROLL_NODE_TO_CENTER, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
+			mapScroller.scrollNode(newSelected, ScrollingDirective.SCROLL_NODE_TO_CENTER, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
 		}
 		else {
-			scrollNodeToVisible(newSelected);
+			mapScroller.scrollNodeToVisible(newSelected);
 		}
 		selectAsTheOnlyOneSelected(newSelected, true);
 		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
@@ -1951,7 +1771,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (requestFocus) {
 			newSelected.requestFocusInWindow();
 		}
-		scrollNodeToVisible(newSelected);
+		mapScroller.scrollNodeToVisible(newSelected);
 		if(selection.size() == 1 && getSelected().equals(newSelected)){
 			return;
 		}
@@ -1994,7 +1814,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selection.setSelectionStart(newSelected);
 			if(!newSelected.isSelected())
 				selection.add(newSelected);
-			scrollNodeToVisible(newSelected);
+			mapScroller.scrollNodeToVisible(newSelected);
 			return;
 		}
 
@@ -2022,7 +1842,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 		selection.setSelectionEnd(newSelected);
-		scrollNodeToVisible(newSelected);
+		mapScroller.scrollNodeToVisible(newSelected);
 		
 	}
 
@@ -2037,47 +1857,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		siblingMaxLevel = level;
 	}
 
-	private void scrollView() {
-		if(scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE
-				&& scrollingDirective != ScrollingDirective.ANCHOR){
-			scrollNode(scrolledNode, scrollingDirective, slowScroll);
-			return;
-		}
-		if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
-			return;
-		}
-		final JViewport vp = (JViewport) getParent();
-		final int scrollMode = vp.getScrollMode();
-		vp.setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
-		final Point viewPosition = vp.getViewPosition();
-		final Point oldAnchorContentLocation = anchorContentLocation;
-		final Point newAnchorContentLocation = getAnchorCenterPoint();
-		final int deltaX = newAnchorContentLocation.x - oldAnchorContentLocation.x;
-		final int deltaY = newAnchorContentLocation.y - oldAnchorContentLocation.y;
-		if (deltaX != 0 || deltaY != 0) {
-			viewPosition.x += deltaX;
-			viewPosition.y += deltaY;
-			vp.setViewPosition(viewPosition);
-		}
-		else {
-			repaintVisible();
-		}
-		if (scrolledNode == null){
-			scrolledNode = selection.selectedNode;
-			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
-		}
-		scrollNodeToVisible(scrolledNode, extraWidth);
-		vp.setScrollMode(scrollMode);
-		scrolledNode = null;
-		scrollingDirective = ScrollingDirective.DONE;
-		setAnchorView(getRoot());
-		anchorHorizontalPoint = anchorVerticalPoint = 0;
-		this.anchorContentLocation = getAnchorCenterPoint();
-	}
-
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
-		anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
+		mapScroller.anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
 		getRoot().updateAll();
 		adjustBackgroundComponentScale();
 	}
@@ -2109,7 +1891,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else {
 			selection.setSelectionStart(nodeView);
 			selection.add(nodeView);
-			scrollNodeToVisible(nodeView);
+			mapScroller.scrollNodeToVisible(nodeView);
 		}
 	}
 
@@ -2122,7 +1904,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(selectedView == null){
 			final NodeView root = getRoot();
 			selectAsTheOnlyOneSelected(root);
-			scrollToRootNode();
+			mapScroller.scrollToRootNode();
 			return;
 		}
 		final NodeModel selectedNode = selectedView.getModel();
@@ -2149,10 +1931,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 		selectAsTheOnlyOneSelected(getRoot());
-	}
-
-	private void scrollToRootNode() {
-		scrollNode(getRoot(), ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION, false);
 	}
 
 	/*
@@ -2230,11 +2008,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			super.setSize(width, height);
 			validate();
 			if(isDisplayable())
-				scrollView();
+				mapScroller.scrollView();
 		}
 		else{
-			setAnchorView(getRoot());
-			anchorContentLocation = getAnchorCenterPoint();
+			mapScroller.setAnchorView(getRoot());
+			mapScroller.setAnchorContentLocation();
 		}
     }
 
@@ -2242,8 +2020,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public void setLocation(int x, int y) {
 	    if(isValid()){
 	    	super.setLocation(x, y);
-	    	this.anchorContentLocation = getAnchorCenterPoint();
+	    	mapScroller.setAnchorContentLocation();
 	    }
     }
 
+	public void scrollBy(int x, int y) {
+		mapScroller.scrollBy(x, y);
+	}
+
+	public void scrollNodeToVisible(NodeView node) {
+		mapScroller.scrollNodeToVisible(node);
+	}
+
+	
 }
