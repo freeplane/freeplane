@@ -2,6 +2,8 @@
 1.5.4
 ===============================
 Single node clones
+Copy format to new siblings (option)
+
 
 ===============================
 1.5.3

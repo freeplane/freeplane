@@ -175,6 +175,7 @@
 					<choice value="ADD_SIBLING" />
 					<choice value="ADD_CHILD" />
 				</combo>
+				<boolean name="copyFormatToNewSibling"/>
 			</separator>
 			<separator name="SplitToWordsAction">
 				<string name="SplitToWordsAction.auxillaryWordList"/>

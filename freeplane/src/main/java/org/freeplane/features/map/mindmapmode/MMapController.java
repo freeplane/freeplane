@@ -73,6 +73,9 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
@@ -130,6 +133,10 @@ public class MMapController extends MapController {
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
 					if (newNode == null) {
 						return null;
+					}
+					if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSibling")) {
+						getMModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, targetNode, newNode);
+						getMModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, targetNode, newNode);
 					}
 					startEditingAfterSelect(newNode);
 					select(newNode);
