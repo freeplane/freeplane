@@ -36,6 +36,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -290,15 +291,20 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected NodeModel[] getSelectedNodes() {
-		final Collection<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
-		final int size = selection.size();
-		final NodeModel[] nodes = new NodeModel[size];
-		final Iterator<NodeModel> iterator = selection.iterator();
-		int i = 0;
-		while (iterator.hasNext()) {
-			nodes[i++] = iterator.next();
+		final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
+		if(mapSelection != null) {
+			final Collection<NodeModel> selection = mapSelection.getSelection();
+			final int size = selection.size();
+			final NodeModel[] nodes= new NodeModel[size];
+			final Iterator<NodeModel> iterator = selection.iterator();
+			int i = 0;
+			while (iterator.hasNext()) {
+				nodes[i++] = iterator.next();
+			}
+			return nodes;
 		}
-		return nodes;
+		else
+		return new NodeModel[]{};
 	}
 
 	public boolean isActive(final NodeModel nodeModel) {
