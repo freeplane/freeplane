@@ -26,15 +26,19 @@ public class MNodeMouseWheelListener extends DefaultNodeMouseWheelListener {
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
+		if(! e.isShiftDown()){
+			super.mouseWheelMoved(e);
+			return;
+		}
 		final MainView view = (MainView) e.getComponent();
 		final MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, view);
 		final int wheelRotation = e.getWheelRotation();
-		final int factor = e.isShiftDown() ? 1 : 6;
 		final NodeView nodeView = view.getNodeView();
 		if(! nodeView.isSelected())
 			map.selectAsTheOnlyOneSelected(nodeView);
 		
-		float newZoomedWidth =  (view.getWidth() - wheelRotation * factor) / map.getZoom();
+		final double factor = e.isControlDown() ? 1 : 6 * LengthUnits.pt.factor();
+		double newZoomedWidth =  (view.getWidth() - wheelRotation * factor) / map.getZoom();
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		Quantity<LengthUnits> newZoomedWidthQuantity = new Quantity<>(newZoomedWidth, LengthUnits.px).in(LengthUnits.pt);
 		final ModeController modeController = map.getModeController();
