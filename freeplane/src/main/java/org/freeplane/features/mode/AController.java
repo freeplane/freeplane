@@ -60,6 +60,11 @@ public class AController {
 		}
 	}
 
+	public void addActionIfNotAlreadySet(AFreeplaneAction action) {
+		if(getAction(action.getKey())== null) 
+			addAction(action);
+	}
+	
 	public AFreeplaneAction getAction(final String key) {
 		return getActions().get(key);
 	}
@@ -80,4 +85,13 @@ public class AController {
 		}
 		return action;
 	}
+
+	public AFreeplaneAction removeActionIfSet(final String key) {
+		if(getAction(key) != null ){
+			return removeAction(key);
+		}
+		else
+			return null;
+	}
+	
 }

@@ -46,7 +46,7 @@ import org.freeplane.features.ui.ViewController;
  * Provides the methods to edit/change a Node. Forwards all messages to
  * MapModel(editing) or MapView(navigation).
  */
-public class Controller extends AController {
+public class Controller extends AController implements FreeplaneActions{
 	private final ExtensionContainer extensionContainer;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
