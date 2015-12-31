@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -245,7 +246,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		saveAcceleratorPresets();
 	}
 
-	private void saveAcceleratorPresets() {
+	public void saveAcceleratorPresets() {
 		try {
 			final FileOutputStream output = new FileOutputStream(getPresetsFile());
 			storeAcceleratorPreset(output);
@@ -268,14 +269,25 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		try {
 			prop.load(in);
 			for (final Entry<Object, Object> property : prop.entrySet()) {
-				final String shortcutKey = (String) property.getKey();
+				String shortcutKey = (String) property.getKey();
 				final String keystrokeString = (String) property.getValue();
-				loadAcceleratorPreset(shortcutKey, keystrokeString);
+				loadAcceleratorPreset(updateShortcutKey(shortcutKey), keystrokeString);
 			}
 		}
 		catch (final IOException e) {
 			LogUtils.warn("shortcut presets not stored: "+e.getMessage());
 		}
+	}
+
+ 	final static Pattern oldKeyFormatPattern = Pattern.compile("\\$(.*?)\\$0$"); 
+	String updateShortcutKey(final String shortcutKey) {
+		final int dotPosition = "acceleratorFor".length();
+		if(shortcutKey.length() > dotPosition && shortcutKey.charAt(dotPosition) != '.') {
+			String updatedShortcutKey = "acceleratorFor." + shortcutKey.substring(dotPosition);
+			updatedShortcutKey = oldKeyFormatPattern.matcher(updatedShortcutKey).replaceFirst("$1");
+			return updatedShortcutKey;
+		} else
+			return shortcutKey;
 	}
 
  	private void loadAcceleratorPreset(final String shortcutKey, final String keystrokeString) {

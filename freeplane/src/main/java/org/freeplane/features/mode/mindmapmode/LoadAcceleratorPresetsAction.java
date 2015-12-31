@@ -131,10 +131,10 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		InputStream in = null;
 		try {
 			in = resource.openStream();
-			final InputStream in1 = in;
 			final ActionAcceleratorManager acclMgr = Controller.getCurrentModeController()
 			    .getUserInputListenerFactory().getAcceleratorManager();
-			acclMgr.loadAcceleratorPresets(in1);
+			acclMgr.loadAcceleratorPresets(in);
+			acclMgr.saveAcceleratorPresets();
 		}
 		catch (final IOException e1) {
 			e1.printStackTrace();
