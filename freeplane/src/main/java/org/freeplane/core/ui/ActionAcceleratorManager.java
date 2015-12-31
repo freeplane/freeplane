@@ -182,7 +182,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
  	public String getPropertyKey(final String key) {
-		return SHORTCUT_PROPERTY_PREFIX + Controller.getCurrentModeController().getModeName() + "/" + key;
+		return getPropertyKey(Controller.getCurrentModeController(), key);
+	}
+
+	String getPropertyKey(final ModeController modeController, final String key) {
+		return SHORTCUT_PROPERTY_PREFIX + modeController.getModeName() + "/" + key;
 	}
 
  	public KeyStroke getAccelerator(AFreeplaneAction action) {
@@ -227,7 +231,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 				final String shortcut = grabKeyDialog.getShortcut();
 				final KeyStroke accelerator = UITools.getKeyStroke(shortcut);
 				setAccelerator(action, accelerator);
-				keysetProps.setProperty(shortcutKey, shortcut);
+				setKeysetProperty(shortcutKey, shortcut);
 				LogUtils.info("created shortcut '" + shortcut + "' for action '" + action.getKey() + "', shortcutKey '"
 				+ shortcutKey + "' (" + ActionUtils.getActionTitle(action) + ")");
 			}
@@ -240,7 +244,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 				}
 			}
 			setAccelerator(action, newAccelerator);
-			keysetProps.setProperty(shortcutKey, toString(newAccelerator));
+			setKeysetProperty(shortcutKey, toString(newAccelerator));
 			LogUtils.info("created shortcut '" + toString(newAccelerator) + "' for action '" + action+ "', shortcutKey '" + shortcutKey + "' (" + ActionUtils.getActionTitle(action) + ")");
 		}
 		saveAcceleratorPresets();
@@ -312,8 +316,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  				if (oldAction != null) {
  					setAccelerator(modeController, oldAction, null);
  					final Object key = oldAction.getKey();
- 					final String oldShortcutKey = getPropertyKey(key.toString());
- 					keysetProps.setProperty(oldShortcutKey, "");
+ 					final String oldShortcutKey = getPropertyKey(modeController, key.toString());
+ 					setKeysetProperty(oldShortcutKey, "");
  				}
  			}
  			else {
@@ -324,7 +328,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  				setAccelerator(modeController, action, keyStroke);
  			}
  		}
- 		keysetProps.setProperty(shortcutKey, keystrokeString);
+ 		setKeysetProperty(shortcutKey, keystrokeString);
  	}
 
 	public void storeAcceleratorPreset(OutputStream out) {
@@ -389,7 +393,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			if (askForReplaceShortcutViaDialog(oldMenuItemTitle)) {
 				setAccelerator(action, null);
 				final String shortcutKey = getPropertyKey(action.getKey());
-				keysetProps.setProperty(shortcutKey, "");
+				setKeysetProperty(shortcutKey, "");
 				return true;
 			} else {
 				return false;
@@ -431,5 +435,12 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			return KeyStroke.getKeyStroke(accelerator);
 		}
 		return null;
+	}
+
+	private void setKeysetProperty(String key, String value) {
+//		if(! key.startsWith("acceleratorFor.MindMap"))
+//			throw new AssertionError(key);
+		keysetProps.setProperty(key, value);
+		
 	}
 }
