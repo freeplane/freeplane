@@ -196,7 +196,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
-		filterMenuBuilder = new FilterMenuBuilder(this);
+		filterMenuBuilder = new FilterMenuBuilder(controller, this);
 		history = new FilterHistory();
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();
