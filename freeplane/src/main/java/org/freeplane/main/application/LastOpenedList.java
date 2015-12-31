@@ -39,6 +39,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -135,14 +136,14 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 			@Override
 			public void visit(Entry target) {
-				updateMenus(target);
+				updateMenus(modeController, target);
 			}
 
 			@Override
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
-		}, EntryVisitor.CHILD_ENTRY_REMOVER);
+		}, new ChildActionEntryRemover(modeController));
 
 	}
 
@@ -430,9 +431,10 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		userInputListenerFactory.rebuildMenus("lastOpenedMaps");
 	}
 
-	private void updateMenus(Entry target) {
+	private void updateMenus(ModeController modeController, Entry target) {
 		List<AFreeplaneAction> openMapActions = createOpenLastMapActionList();
 		for (AFreeplaneAction openMapAction : openMapActions) {
+			modeController.addAction(openMapAction);
 			new EntryAccessor().addChildAction(target, openMapAction);
 		}
 	}
