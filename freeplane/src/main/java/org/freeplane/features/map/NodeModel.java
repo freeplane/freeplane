@@ -37,7 +37,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.map.NodeModel.CloneType;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -108,7 +107,7 @@ public class NodeModel{
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
 		filterInfo = new FilterInfo();
-		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CloneType.CONTENT)};
+		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CONTENT)};
 	}
 
 	protected void init(final Object userObject) {

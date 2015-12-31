@@ -3,8 +3,6 @@
  */
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.Closure;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,7 +55,10 @@ import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.plugin.script.proxy.Proxy.Cloud;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
+import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
 import org.freeplane.plugin.script.proxy.Proxy.Reminder;
+
+import groovy.lang.Closure;
 
 class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	private static final Integer ONE = 1;
@@ -83,10 +84,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	public Proxy.Node createChild() {
-		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
-		mapController.insertNode(newNodeModel, getDelegate());
+		getMapController().insertNode(newNodeModel, getDelegate());
 		return new NodeProxy(newNodeModel, getScriptContext());
+	}
+
+	private MMapController getMapController() {
+		return (MMapController) getModeController().getMapController();
 	}
 	
 	// Node: R/W
@@ -98,9 +102,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	public Proxy.Node createChild(final int position) {
-		final MMapController mapController = (MMapController) getModeController().getMapController();
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
-		mapController.insertNode(newNodeModel, getDelegate(), position);
+		getMapController().insertNode(newNodeModel, getDelegate(), position);
 		return new NodeProxy(newNodeModel, getScriptContext());
 	}
 
@@ -117,15 +120,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	private Proxy.Node appendBranchImpl(Proxy.NodeRO node, boolean withChildren) {
 	    final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController();
 		final NodeModel newNodeModel = clipboardController.duplicate(((NodeProxy) node).getDelegate(), withChildren);
-		final MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.insertNode(newNodeModel, getDelegate());
+		getMapController().insertNode(newNodeModel, getDelegate());
 		return new NodeProxy(newNodeModel, getScriptContext());
     }
 
 	// Node: R/W
 	public void delete() {
-		final MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.deleteNode(getDelegate());
+		getMapController().deleteNode(getDelegate());
 	}
 
 	// NodeRO: R
@@ -453,17 +454,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void moveTo(final Proxy.Node parentNodeProxy) {
 		final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
-        final MMapController mapController = (MMapController) getModeController().getMapController();
-        mapController.moveNodesAsChildren(Arrays.asList(movedNode), parentNode, movedNode.isLeft(), parentNode.isLeft() != movedNode.isLeft());
+        getMapController().moveNodesAsChildren(Arrays.asList(movedNode), parentNode, movedNode.isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 
 	// Node: R/W
 	public void moveTo(final Proxy.Node parentNodeProxy, final int position) {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
-		final MMapController mapController = (MMapController) getModeController().getMapController();
 		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(movedNode);
-		mapController.moveNodes(Arrays.asList(movedNode), parentNode, position, getDelegate().isLeft(), parentNode.isLeft() != movedNode.isLeft());
+		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position, getDelegate().isLeft(), parentNode.isLeft() != movedNode.isLeft());
 	}
 
 	// Node: R/W
@@ -476,8 +475,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	public void setFolded(final boolean folded) {
-		final MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.setFolded(getDelegate(), folded);
+		getMapController().setFolded(getDelegate(), folded);
 	}
 
     // Node: R/W
@@ -841,5 +839,36 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 				return closure.call(o1).compareTo(closure.call(o2));
 			}
 		};
+	}
+
+	@Override
+	public Node appendAsClone(NodeRO toBeCloned) {
+		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), false);
+	}
+
+	@Override
+	public Node appendAsCloneWithoutChildren(NodeRO toBeCloned) {
+		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), true);
+	}
+	
+	private Node appendAsCloneImpl(NodeModel toBeCloned, boolean asSingleNodes) {
+		final NodeModel target = getDelegate();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		if (toBeCloned.getParentNode() == null || toBeCloned.isRoot())
+			throw new IllegalArgumentException("can't clone root node or node without parent");
+		if (!toBeCloned.getMap().equals(getDelegate().getMap()))
+			throw new IllegalArgumentException("can't clone a node from another map");
+		if (toBeCloned.subtreeContainsCloneOf(target))
+			throw new IllegalArgumentException("can't clone a node which has this node as child");
+		final NodeModel clone = asSingleNodes ? toBeCloned.cloneContent() : toBeCloned.cloneTree();
+		mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
+		return new NodeProxy(clone, getScriptContext());
+	}
+
+	@Override
+	public void pasteAsClone() {
+		final MClipboardController clipboardController = (MClipboardController) ClipboardController
+			    .getController();
+		clipboardController.addClone(clipboardController.getClipboardContents(), getDelegate());
 	}
 }
