@@ -1143,7 +1143,7 @@ public interface Proxy {
 		
 		/** if this node's text is shortened for display. */
 		boolean isMinimized();
-		
+
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
@@ -1214,6 +1214,29 @@ public interface Proxy {
 		 * @since 1.2 */
 		Node appendBranch(NodeRO node);
 		
+		/** inserts the node as clone child including child nodes if available.
+		 * @throws IllegalArgumentException if
+		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,  
+		 *     b) toBeCloned is the root node,
+		 *     c) toBeCloned comes from a different map.
+		 * @since 1.5 */
+		Node appendAsClone(NodeRO toBeCloned);
+		
+		/** inserts the node as clone child.
+		 * @throws IllegalArgumentException if
+		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,  
+		 *     b) toBeCloned is the root node,
+		 *     c) toBeCloned comes from a different map.
+		 * @since 1.5 */
+		Node appendAsCloneWithoutChildren(NodeRO toBeCloned);
+
+		/** inserts the node(s) copied from clipboard as clone(s). Errors like
+		 * if the clipboard doesn't contain proper content will only be reported to the log.
+		 * You should prefer {@link #appendAsClone(NodeRO)} or {@link #appendAsCloneWithoutChildren(NodeRO)}
+		 * instead if possible - they give you more control.
+		 * @since 1.5 */
+		void pasteAsClone();
+
 		void delete();
 
 		void moveTo(Node parentNode);

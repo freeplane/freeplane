@@ -6,6 +6,7 @@ Copy format to new siblings (option)
 Scroll map after unfolding a node (option)
 Change node size on mouse wheel scrolling
 Optionally copy icons with node format
+Extend scripting API for clones
 
 ===============================
 1.5.3
