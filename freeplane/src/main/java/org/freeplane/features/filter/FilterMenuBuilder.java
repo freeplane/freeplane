@@ -50,7 +50,7 @@ public class FilterMenuBuilder implements EntryVisitor {
 			final String conditionName = condition.getUserName();
 			if(conditionName != null && usedNames.add(conditionName)){
 				final ApplyNamedFilterAction action = new ApplyNamedFilterAction(filterController, condition);
-				controller.addAction(action);
+				controller.addActionIfNotAlreadySet(action);
 				new EntryAccessor().addChildAction(target, action);
 			}
 		}
