@@ -161,13 +161,16 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		updateLastVisitedNodeId(oldView);
 	}
 
-	private void selectLastVisitedNode(RecentFile recentFile) {
+	private boolean selectLastVisitedNode(RecentFile recentFile) {
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
 			final NodeModel node = Controller.getCurrentController().getMap()
 			    .getNodeForID(recentFile.lastVisitedNodeId);
-			if (node != null)
+			if (node != null) {
 				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+				return true;
+			}
 		}
+		return false;
 	}
 
 	private boolean saveLastPositionInMapEnabled() {
@@ -178,8 +181,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		final MapModel map = getMapModel(mapView);
 		final RecentFile recentFile = findRecentFileByMapModel(map);
 		// the next line will only succeed if the map is already opened 
-		if (saveLastPositionInMapEnabled()) {
-			selectLastVisitedNode(recentFile);
+		if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
 			ensureSelectLastVisitedNodeOnOpen(map, recentFile);
 		}
 	}
