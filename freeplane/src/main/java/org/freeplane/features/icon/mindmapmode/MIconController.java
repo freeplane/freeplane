@@ -256,7 +256,7 @@ public class MIconController extends IconController {
 		modeController.addAction(new RemoveAllIconsAction());
 		for (final MindIcon icon : STORE.getMindIcons()) {
 			final IconAction myAction = new IconAction(icon);
-			modeController.addAction(myAction);
+			modeController.addActionIfNotAlreadySet(myAction);
 			iconActions.put(icon, myAction);
 		}
 	}
