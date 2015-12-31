@@ -22,8 +22,8 @@ package org.freeplane.plugin.latex;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.text.ConditionalContentTransformer;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
 
 /**
  * @author Stefan Ott
