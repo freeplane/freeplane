@@ -17,12 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.text;
+package org.freeplane.features.text.mindmapmode;
 
 import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.IContentTransformer;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.TransformationException;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 
 /**
  * Decorator for IContentTransformer implementations that enables to switch
@@ -32,7 +36,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Felix Natter
  *
  */
-public class ConditionalContentTransformer implements IContentTransformer {
+public class ConditionalContentTransformer implements IContentTransformer, IEditBaseCreator {
 
 	private final IContentTransformer target;
 	private final String prefsConditionKey;
@@ -75,6 +79,14 @@ public class ConditionalContentTransformer implements IContentTransformer {
 	@Override
 	public boolean markTransformation() {
 		return target.markTransformation();
+	}
+
+	@Override
+	public EditNodeBase createEditor(NodeModel nodeModel, IEditControl editControl, String text, boolean editLong) {
+		if (target instanceof IEditBaseCreator && ResourceController.getResourceController().getBooleanProperty(prefsConditionKey))
+			return ((IEditBaseCreator)target).createEditor(nodeModel, editControl, text, editLong);
+		else
+			return null;
 	}
 
 }

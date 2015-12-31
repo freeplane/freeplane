@@ -63,6 +63,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -203,8 +204,9 @@ public class LinkController extends SelectionController implements IExtension {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new FollowLinkAction());
 		modeController.addUiBuilder(Phase.ACTIONS, "clone_actions", new ClonesMenuBuilder(modeController),
-		    EntryVisitor.CHILD_ENTRY_REMOVER);
-		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController), EntryVisitor.CHILD_ENTRY_REMOVER);
+				new ChildActionEntryRemover(modeController));
+		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController), 
+				new ChildActionEntryRemover(modeController));
 	}
 
 	final class LinkMenuBuilder implements EntryVisitor {
@@ -247,6 +249,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    			entry.addChild(new Entry().setBuilders("separator"));
 	    			firstAction = false;
 	    		}
+	    		modeController.addActionIfNotAlreadySet(gotoLinkNodeAction);
 				new EntryAccessor().addChildAction(entry, gotoLinkNodeAction);
 	    	}
 	    }
@@ -285,6 +288,7 @@ public class LinkController extends SelectionController implements IExtension {
 							target.addChild(new Entry().setBuilders("separator"));
 							firstAction = false;
 						}
+						modeController.addActionIfNotAlreadySet(gotoLinkNodeAction);
 						new EntryAccessor().addChildAction(target, gotoLinkNodeAction);
 					}
 				}

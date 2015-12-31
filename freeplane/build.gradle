@@ -7,7 +7,7 @@ dependencies {
             'com.jgoodies:jgoodies-forms:1.6.0',
             'com.jgoodies:jgoodies-common:1.4.0',
             'gnu-regexp:gnu-regexp:1.1.4',
-            'com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.12'
+            'com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.13'
     
     testCompile 'junit:junit:4.12',
                 'org.hamcrest:hamcrest-all:1.3',

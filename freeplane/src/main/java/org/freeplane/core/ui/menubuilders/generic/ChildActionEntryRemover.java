@@ -1,15 +1,15 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.FreeplaneActions;
 
 public class ChildActionEntryRemover extends ChildEntryRemover{
-	private final ModeController modeController;
+	private final FreeplaneActions freeplaneActions;
 	private final static EntryAccessor entryAccessor = new EntryAccessor();
 	
-	public ChildActionEntryRemover(ModeController modeController) {
+	public ChildActionEntryRemover(FreeplaneActions freeplaneActions) {
 		super();
-		this.modeController = modeController;
+		this.freeplaneActions = freeplaneActions;
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class ChildActionEntryRemover extends ChildEntryRemover{
 	private void unregisterActions(Entry target) {
 		final AFreeplaneAction action = entryAccessor.getAction(target);
 		if(action != null)
-			modeController.removeActionIfSet(action.getKey());
+			freeplaneActions.removeActionIfSet(action.getKey());
 		for(Entry entry : target.children())
 			unregisterActions(entry);
 	}

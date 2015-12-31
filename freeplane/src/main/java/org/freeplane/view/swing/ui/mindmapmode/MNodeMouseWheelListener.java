@@ -1,5 +1,6 @@
 package org.freeplane.view.swing.ui.mindmapmode;
 
+import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -26,7 +27,7 @@ public class MNodeMouseWheelListener extends DefaultNodeMouseWheelListener {
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if(! e.isShiftDown()){
+		if(! e.isAltDown()){
 			super.mouseWheelMoved(e);
 			return;
 		}

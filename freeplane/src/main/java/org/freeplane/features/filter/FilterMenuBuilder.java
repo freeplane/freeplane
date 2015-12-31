@@ -36,8 +36,10 @@ import org.freeplane.features.mode.Controller;
  */
 public class FilterMenuBuilder implements EntryVisitor {
 	private final FilterController filterController;
-	FilterMenuBuilder(FilterController filtercontroller){
-		this.filterController = filtercontroller;
+	private final Controller controller;
+	FilterMenuBuilder(Controller controller, FilterController filterController){
+		this.controller = controller;
+		this.filterController = filterController;
 	}
 	@Override
 	public void visit(Entry target) {
@@ -48,6 +50,7 @@ public class FilterMenuBuilder implements EntryVisitor {
 			final String conditionName = condition.getUserName();
 			if(conditionName != null && usedNames.add(conditionName)){
 				final ApplyNamedFilterAction action = new ApplyNamedFilterAction(filterController, condition);
+				controller.addActionIfNotAlreadySet(action);
 				new EntryAccessor().addChildAction(target, action);
 			}
 		}

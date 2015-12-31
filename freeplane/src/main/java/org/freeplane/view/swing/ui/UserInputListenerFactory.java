@@ -58,6 +58,7 @@ import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
+import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -148,7 +149,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
-		}, EntryVisitor.CHILD_ENTRY_REMOVER));
+		}, new ChildActionEntryRemover(modeController)));
 
 		addUiBuilder(Phase.ACTIONS, "navigate_modes", new BuilderDestroyerPair(new EntryVisitor() {
 			@Override
@@ -160,7 +161,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
-		}, EntryVisitor.CHILD_ENTRY_REMOVER));
+		}, new ChildActionEntryRemover(modeController)));
 
 		toolBars = new LinkedHashMap<String, JComponent>();
 		toolbarLists = newListArray();
@@ -357,6 +358,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		EntryAccessor entryAccessor = new EntryAccessor();
 		for (final String key : new LinkedList<String>(controller.getModes())) {
 			final AFreeplaneAction modesMenuAction = new ModesMenuAction(key, controller);
+			modeController.addActionIfNotAlreadySet(modesMenuAction);
 			Entry actionEntry = new Entry();
 			entryAccessor.setAction(actionEntry, modesMenuAction);
 			final ModeController modeController = controller.getModeController();
@@ -379,7 +381,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		for (final Component mapView : mapViewVector) {
 			final String displayName = mapView.getName();
 			Entry actionEntry = new Entry();
-			entryAccessor.setAction(actionEntry, new MapsMenuAction(displayName));
+			final MapsMenuAction action = new MapsMenuAction(displayName);
+			modeController.addActionIfNotAlreadySet(action);
+			entryAccessor.setAction(actionEntry, action);
 			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {

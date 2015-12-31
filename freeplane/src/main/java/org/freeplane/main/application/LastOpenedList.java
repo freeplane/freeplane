@@ -39,6 +39,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -135,14 +136,14 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 			@Override
 			public void visit(Entry target) {
-				updateMenus(target);
+				updateMenus(modeController, target);
 			}
 
 			@Override
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
-		}, EntryVisitor.CHILD_ENTRY_REMOVER);
+		}, new ChildActionEntryRemover(modeController));
 
 	}
 
@@ -160,13 +161,16 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		updateLastVisitedNodeId(oldView);
 	}
 
-	private void selectLastVisitedNode(RecentFile recentFile) {
+	private boolean selectLastVisitedNode(RecentFile recentFile) {
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
 			final NodeModel node = Controller.getCurrentController().getMap()
 			    .getNodeForID(recentFile.lastVisitedNodeId);
-			if (node != null)
+			if (node != null) {
 				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+				return true;
+			}
 		}
+		return false;
 	}
 
 	private boolean saveLastPositionInMapEnabled() {
@@ -177,8 +181,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		final MapModel map = getMapModel(mapView);
 		final RecentFile recentFile = findRecentFileByMapModel(map);
 		// the next line will only succeed if the map is already opened 
-		if (saveLastPositionInMapEnabled()) {
-			selectLastVisitedNode(recentFile);
+		if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
 			ensureSelectLastVisitedNodeOnOpen(map, recentFile);
 		}
 	}
@@ -430,9 +433,10 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		userInputListenerFactory.rebuildMenus("lastOpenedMaps");
 	}
 
-	private void updateMenus(Entry target) {
+	private void updateMenus(ModeController modeController, Entry target) {
 		List<AFreeplaneAction> openMapActions = createOpenLastMapActionList();
 		for (AFreeplaneAction openMapAction : openMapActions) {
+			modeController.addActionIfNotAlreadySet(openMapAction);
 			new EntryAccessor().addChildAction(target, openMapAction);
 		}
 	}

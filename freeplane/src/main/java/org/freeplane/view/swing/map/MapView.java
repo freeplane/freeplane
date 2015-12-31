@@ -896,10 +896,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			ADD_NODES: for (final NodeModel nodeModel : nodeList) {
 				if(differentSubtrees){
 					final NodeModel parentNode = nodeModel.getParentNode();
-					final int index = parentNode.getIndex(nodeModel);
-					for(NodeModel parentClone : parentNode.subtreeClones())
-						if(selectedNodes.contains(parentClone.getChildAt(index)))
-							continue ADD_NODES;
+					if(parentNode != null){
+						final int index = parentNode.getIndex(nodeModel);
+						for(NodeModel parentClone : parentNode.subtreeClones())
+							if(selectedNodes.contains(parentClone.getChildAt(index)))
+								continue ADD_NODES;
+					}
 
 				}
 				selectedNodes.add(nodeModel);
