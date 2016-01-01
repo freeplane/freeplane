@@ -272,10 +272,18 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		final Properties prop = new Properties();
 		try {
 			prop.load(in);
-			for (final Entry<Object, Object> property : prop.entrySet()) {
+			for (final Entry<Object, Object> property : new ArrayList<>(prop.entrySet())) {
 				String shortcutKey = (String) property.getKey();
 				final String keystrokeString = (String) property.getValue();
-				loadAcceleratorPreset(updateShortcutKey(shortcutKey), keystrokeString);
+				final String updatedShortcutKey = updateShortcutKey(shortcutKey);
+				if(! updatedShortcutKey.equals(shortcutKey)) {
+					prop.remove(shortcutKey);
+					if (prop.get(updatedShortcutKey) == null)
+						prop.setProperty(updatedShortcutKey, keystrokeString);
+					else
+						continue;
+				}
+				loadAcceleratorPreset(updatedShortcutKey, keystrokeString);
 			}
 		}
 		catch (final IOException e) {
@@ -285,13 +293,13 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
  	final static Pattern oldKeyFormatPattern = Pattern.compile("\\$(.*?)\\$0$"); 
 	String updateShortcutKey(final String shortcutKey) {
+		String updatedShortcutKey = shortcutKey;
 		final int dotPosition = "acceleratorFor".length();
-		if(shortcutKey.length() > dotPosition && shortcutKey.charAt(dotPosition) != '.') {
-			String updatedShortcutKey = "acceleratorFor." + shortcutKey.substring(dotPosition);
+		if(shortcutKey.length() > dotPosition && shortcutKey.charAt(dotPosition) != '.')
+			updatedShortcutKey = "acceleratorFor." + shortcutKey.substring(dotPosition);
+		if(updatedShortcutKey.endsWith("$0"))
 			updatedShortcutKey = oldKeyFormatPattern.matcher(updatedShortcutKey).replaceFirst("$1");
-			return updatedShortcutKey;
-		} else
-			return shortcutKey;
+		return updatedShortcutKey;
 	}
 
  	private void loadAcceleratorPreset(final String shortcutKey, final String keystrokeString) {
