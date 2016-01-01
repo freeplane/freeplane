@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node LOCALIZED_TEXT="new_mindmap" STYLE="circle">
+<node LOCALIZED_TEXT="new_mindmap" STYLE="oval">
 <font SIZE="18"/>
 <hook NAME="MapStyle">
 <map_styles>
@@ -36,20 +36,45 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
 <font SIZE="16"/>
+<edge COLOR="#ff0000"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#00b439">
 <font SIZE="14"/>
+<edge COLOR="#0000ff"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#990000">
 <font SIZE="12"/>
+<edge COLOR="#00ff00"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#111111">
 <font SIZE="10"/>
+<edge COLOR="#ff00ff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,5">
+<edge COLOR="#00ffff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,6">
+<edge COLOR="#7c0000"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,7">
+<edge COLOR="#00007c"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,8">
+<edge COLOR="#007c00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,9">
+<edge COLOR="#7c007c"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,10">
+<edge COLOR="#007c7c"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,11">
+<edge COLOR="#7c7c00"/>
 </stylenode>
 </stylenode>
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor"/>
+<hook NAME="AutomaticEdgeColor"  COUNTER="0" RULE="ON_BRANCH_CREATION"/>
 </node>
 </map>
