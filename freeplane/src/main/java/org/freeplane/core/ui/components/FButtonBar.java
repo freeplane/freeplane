@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.ui.components;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -72,11 +71,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	private int lastModifiers = -1;
 	private int nextModifiers = 0;
 	private JFrame ownWindowAncestor;
-	final private Timer timer = new Timer(500, new ActionListener() {
-		public void actionPerformed(final ActionEvent e) {
-			onModifierChangeImpl();
-		}
-	});
+	final private Timer timer;
 	private final KeyBindingProcessor keyProcessor;
 	
 	@SuppressWarnings("serial")
@@ -94,6 +89,12 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	}
 
 	public FButtonBar(JRootPane rootPane, KeyBindingProcessor proc) {
+		timer = new Timer(500, new ActionListener() {
+				public void actionPerformed(final ActionEvent e) {
+					onModifierChangeImpl();
+				}
+			});
+		timer.setRepeats(false);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		final Container oldContentPane = rootPane.getContentPane();
 		final ContentPane newContentPane = new ContentPane();
@@ -315,7 +316,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	}
 
 	private void setModifiers(final int modifiers) {
-		if ((nextModifiers ^ modifiers) == 0) {
+		if ((modifiers & ~ nextModifiers) == 0) {
 			return;
 		}
 		nextModifiers |= modifiers;
