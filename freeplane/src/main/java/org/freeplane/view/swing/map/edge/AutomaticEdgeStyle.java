@@ -67,6 +67,6 @@ public class AutomaticEdgeStyle {
 	}
 	
 	public Color getColor(){
-		return edgeController.getColor(levelStyleNode);
+		return levelStyleNode != null ? edgeController.getColor(levelStyleNode) : EdgeController.STANDARD_EDGE_COLOR;
 	}
 }
