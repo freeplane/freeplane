@@ -8,10 +8,8 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 public class AcceleratorDestroyer implements EntryVisitor{
 
 	private final IEntriesForAction entries;
-	private IAcceleratorMap acceleratorMap;
 
-	public AcceleratorDestroyer(IAcceleratorMap acceleratorMap, IEntriesForAction entries) {
-		this.acceleratorMap = acceleratorMap;
+	public AcceleratorDestroyer(IEntriesForAction entries) {
 		this.entries = entries;
 	}
 
@@ -19,7 +17,6 @@ public class AcceleratorDestroyer implements EntryVisitor{
 		final AFreeplaneAction action = new EntryAccessor().getAction(entry);
 		if (action != null) {
 			entries.unregisterEntry(action, entry);
-			acceleratorMap.removeAction(action);
 		}
 	}
 

@@ -49,7 +49,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 
 		final RecursiveMenuStructureProcessor acceleratorBuilder = new RecursiveMenuStructureProcessor();
 		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
-		    new AcceleratorDestroyer(acceleratorMap, entries));
+		    new AcceleratorDestroyer(entries));
 
 		final RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
 		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);

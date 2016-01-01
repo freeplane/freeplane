@@ -14,22 +14,9 @@ public class AcceleratorDestroyerTest {
 		Entry actionEntry = new Entry();
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		new EntryAccessor().setAction(actionEntry, action);
-		IAcceleratorMap acceleratorMap = mock(IAcceleratorMap.class);
 		IEntriesForAction entries = mock(IEntriesForAction.class);
-		final AcceleratorDestroyer acceleratorDestroyer = new AcceleratorDestroyer(acceleratorMap, entries);
+		final AcceleratorDestroyer acceleratorDestroyer = new AcceleratorDestroyer(entries);
 		acceleratorDestroyer.visit(actionEntry);
 		Mockito.verify(entries).unregisterEntry(action, actionEntry);
-	}
-
-	@Test
-	public void removesActionFromAcceleratorMap() {
-		Entry actionEntry = new Entry();
-		final AFreeplaneAction action = mock(AFreeplaneAction.class);
-		new EntryAccessor().setAction(actionEntry, action);
-		IAcceleratorMap acceleratorMap = mock(IAcceleratorMap.class);
-		IEntriesForAction entries = mock(IEntriesForAction.class);
-		final AcceleratorDestroyer acceleratorDestroyer = new AcceleratorDestroyer(acceleratorMap, entries);
-		acceleratorDestroyer.visit(actionEntry);
-		Mockito.verify(acceleratorMap).removeAction(action);
 	}
 }
