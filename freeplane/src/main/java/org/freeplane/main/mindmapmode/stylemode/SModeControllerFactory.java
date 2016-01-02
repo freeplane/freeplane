@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
@@ -118,6 +119,7 @@ public class SModeControllerFactory {
 		modeController.addAction(new DeleteUserStyleAction());
 		modeController.addAction(new NewLevelStyleAction());
 		modeController.addAction(new DeleteLevelStyleAction());
+		modeController.addAction(new SetAcceleratorOnNextClickAction());
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener());
 		userInputListenerFactory.setNodeMouseWheelListener(new MNodeMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener()));
