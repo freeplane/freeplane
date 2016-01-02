@@ -91,4 +91,9 @@ public class BitmapViewerFactory implements IViewerFactory {
 		return bitmapViewerComponent;
 	}
 
+	/** extracted to {@link ScalableComponent} but still used in add-ons. */
+	@Deprecated
+	public Dimension getOriginalSize(final JComponent viewer) {
+		return ((BitmapViewerComponent) viewer).getOriginalSize();
+	}
 }
