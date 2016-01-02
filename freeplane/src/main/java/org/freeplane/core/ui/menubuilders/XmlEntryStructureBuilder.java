@@ -66,7 +66,7 @@ class MenuStructureXmlHandler extends DefaultHandler {
 	final private LinkedList<Entry> childStack;
 
 	public MenuStructureXmlHandler(Entry root) {
-		 childStack = new LinkedList<>();
+		 childStack = new LinkedList<Entry>();
 		 childStack.add(root);
 	}
 

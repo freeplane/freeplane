@@ -56,7 +56,7 @@ public class SummaryLevels{
 		if(summaryLevel == 0)
 			return Collections.emptyList();
 		else {
-			final ArrayList<NodeModel> arrayList = new ArrayList<>();
+			final ArrayList<NodeModel> arrayList = new ArrayList<NodeModel>();
 			for(int i = summaryNodeIndex - 1; i >= 0; i--){
 				final int level = summaryLevels[i];
 				if(level >= summaryLevel) {

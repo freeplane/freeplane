@@ -13,7 +13,7 @@ import java.util.Set;
 public class AltCodeChecker {
 	private static Set<Character> altCodes;
 	static {
-		altCodes = new HashSet<>(7);
+		altCodes = new HashSet<Character>(7);
 		altCodes.addAll(Arrays.asList(
 /* Alt + 7, 8, 9*/	'\u2022', '\u25d8', '\u25cb', 
 /* Alt + 4, 5, 6*/	'\u2666', '\u2663', '\u2660', 

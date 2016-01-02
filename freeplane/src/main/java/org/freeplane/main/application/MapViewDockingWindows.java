@@ -489,7 +489,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	}
 
 	public List<? extends Component> getMapViewVector() {
-		final ArrayList<Component> orderedMapViews = new ArrayList<>(mapViews.size());
+		final ArrayList<Component> orderedMapViews = new ArrayList<Component>(mapViews.size());
 		addMapViews(orderedMapViews, rootWindow);
 		return orderedMapViews;
 	}

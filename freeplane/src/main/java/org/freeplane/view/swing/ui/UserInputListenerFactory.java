@@ -104,8 +104,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public UserInputListenerFactory(final ModeController modeController) {
 		this.modeController = modeController;
-		customBuilders = new ArrayList<>(Phase.values().length);
-		buildPhaseListeners = new ArrayList<>();
+		customBuilders = new ArrayList<Map<String, BuilderDestroyerPair>>(Phase.values().length);
+		buildPhaseListeners = new ArrayList<BuildPhaseListener>();
 		for (@SuppressWarnings("unused")
 		Phase phase : Phase.values()) {
 			customBuilders.add(new HashMap<String, BuilderDestroyerPair>());
@@ -350,7 +350,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			rebuildMenu(entry);
 	}
 
-	final private Map<Entry, Entry> mapMenuEntries = new IdentityHashMap<>();
+	final private Map<Entry, Entry> mapMenuEntries = new IdentityHashMap<Entry, Entry>();
 
 	private void createModeActions(final Entry modesMenuEntry) {
 		rebuildMenuOnMapChange(modesMenuEntry);
@@ -455,7 +455,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private void outputUnusedActions() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Unused actions for mode ").append(modeController.getModeName()).append('\n');
-		TreeSet<String> actionKeys = new TreeSet<>();
+		TreeSet<String> actionKeys = new TreeSet<String>();
 		actionKeys.addAll(modeController.getActionKeys());
 		actionKeys.addAll(modeController.getController().getActionKeys());
 		KEYS: for(String key : actionKeys){

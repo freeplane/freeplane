@@ -32,7 +32,7 @@ public class RecursiveMenuStructureProcessor{
 	public RecursiveMenuStructureProcessor() {
 		visitors = new HashMap<String, BuilderDestroyerPair>();
 		subtreeDefaultVisitors = new HashMap<String, String>();
-		subtreeDefaultVisitorStack = new LinkedList<>(); 
+		subtreeDefaultVisitorStack = new LinkedList<String>(); 
 	}
 
 	public void addBuilderPair(String name, BuilderDestroyerPair pair) {

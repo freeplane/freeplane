@@ -74,8 +74,8 @@ public class SummaryGroupEdgeListAdder {
 	}
 
 	public List<NodeModel> addSummaryEdgeNodes() {
-		Map<NodeModel, ParentProcessedNodes> processedNodes = new HashMap<>();
-		nodesWithSummaryNodes = new LinkedList<>();
+		Map<NodeModel, ParentProcessedNodes> processedNodes = new HashMap<NodeModel, ParentProcessedNodes>();
+		nodesWithSummaryNodes = new LinkedList<NodeModel>();
 		for(NodeModel node : nodes){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode != null) {

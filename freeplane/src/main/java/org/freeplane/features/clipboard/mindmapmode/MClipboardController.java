@@ -845,7 +845,7 @@ public class MClipboardController extends ClipboardController {
 			else
 				return;
 
-			final List<NodeModel> movedNodes = new ArrayList<>(clonedNodes.size());
+			final List<NodeModel> movedNodes = new ArrayList<NodeModel>(clonedNodes.size());
 			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			for(NodeModel clonedNode:clonedNodes){
 				if(clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))

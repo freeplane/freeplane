@@ -33,6 +33,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Pair;
 import org.freeplane.core.util.TextUtils;
@@ -53,8 +54,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private static final String SHORTCUT_PROPERTY_PREFIX = "acceleratorFor.";
 
-	private final Map<Pair<ModeController, KeyStroke>, AFreeplaneAction> accelerators = new HashMap<>();
-	private final Map<Pair<ModeController, String>, KeyStroke> actionMap = new HashMap<>();
+	private final Map<Pair<ModeController, KeyStroke>, AFreeplaneAction> accelerators = new HashMap<Pair<ModeController, KeyStroke>, AFreeplaneAction>();
+	private final Map<Pair<ModeController, String>, KeyStroke> actionMap = new HashMap<Pair<ModeController, String>, KeyStroke>();
 	private final List<IAcceleratorChangeListener> changeListeners = new ArrayList<IAcceleratorChangeListener>();
 
 	private final Properties keysetProps;
@@ -75,8 +76,13 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			if (ResourceController.getResourceController().getFreeplaneUserDirectory() != null) {
 				final File defaultPresetsFile = getPresetsFile();
 				if(defaultPresetsFile.exists()) {
-					try (final FileInputStream inputStream = new FileInputStream(defaultPresetsFile)){
+					FileInputStream inputStream = null;
+					try{
+						inputStream = new FileInputStream(defaultPresetsFile);
 						loadAcceleratorPresets(inputStream);
+					}
+					finally{
+						FileUtils.silentlyClose(inputStream);
 					}
 				}
 				else {
@@ -272,7 +278,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		final Properties prop = new Properties();
 		try {
 			prop.load(in);
-			for (final Entry<Object, Object> property : new ArrayList<>(prop.entrySet())) {
+			for (final Entry<Object, Object> property : new ArrayList<Entry<Object, Object>>(prop.entrySet())) {
 				String shortcutKey = (String) property.getKey();
 				final String keystrokeString = (String) property.getValue();
 				final String updatedShortcutKey = updateShortcutKey(shortcutKey);
