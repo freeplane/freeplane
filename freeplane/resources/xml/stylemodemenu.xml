@@ -132,6 +132,9 @@
 			<Entry builder="main_menu_navigate_maps" name="navigate" />
 			<Entry builder="main_menu_mindmaps" name="mindmaps" />
 		</Entry>
+		<Entry name="extras">
+			<Entry name="SetAcceleratorOnNextClickAction" />
+		</Entry>
 	</Entry>
 	<Entry name="map_popup">
 		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
