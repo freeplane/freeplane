@@ -440,4 +440,8 @@ public class ModeController extends AController implements FreeplaneActions{
 	public boolean canEdit(NodeModel model) {
 		return true;
 	}
+
+	public boolean supportsHookActions() {
+		return false;
+	}
 }

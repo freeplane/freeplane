@@ -46,7 +46,6 @@ public class MModeController extends ModeController {
     static public final String MODENAME = "MindMap";
 	private RedoAction redo;
 	public static final String RESOURCES_DELETE_NODES_WITHOUT_QUESTION = "delete_nodes_without_question";
-	private static final String PREF_MM2XML = "/xslt/mm2preferences.xsl";
 	private UndoAction undo;
 
 	static public MModeController getMModeController() {
@@ -221,6 +220,11 @@ public class MModeController extends ModeController {
 
 	@Override
 	public boolean canEdit() {
+		return true;
+	}
+	
+	@Override
+	public boolean supportsHookActions() {
 		return true;
 	}
 }

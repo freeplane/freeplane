@@ -78,6 +78,13 @@ class SModeController extends MModeController {
 	public int getStatus() {
 		return status;
 	}
+	
+	static public final String MODENAME = "StyleMap";
+	
+	@Override
+	public String getModeName() {
+		return SModeController.MODENAME;
+	}
 
 
 	protected void closeDialog() {

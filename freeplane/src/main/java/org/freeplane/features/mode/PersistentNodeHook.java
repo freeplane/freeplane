@@ -185,7 +185,7 @@ public abstract class PersistentNodeHook {
 		//		this.modeController = modeController;
 		//		controller = modeController.getController();
 		final ModeController modeController = Controller.getCurrentModeController();
-		if (modeController.getModeName().equals("MindMap"))
+		if (modeController.supportsHookActions())
 			registerActions();
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
