@@ -23,6 +23,7 @@ import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -257,13 +258,13 @@ public class GrabKeyDialog extends JDialog {
 	private IKeystrokeValidator validator;
 
 	public GrabKeyDialog(final String input, final int modifierMask) {
-		super((Frame) UITools.getMenuComponent(), GrabKeyDialog.getText("grab-key.title"), true);
+		super((Window) UITools.getMenuComponent(), ModalityType.APPLICATION_MODAL);
+		setTitle(GrabKeyDialog.getText("grab-key.title"));
 		init(input, modifierMask);
 	}
 
 	public GrabKeyDialog(final String input) {
-		super((Frame) UITools.getMenuComponent(), GrabKeyDialog.getText("grab-key.title"), true);
-		init(input, 0);
+		this(input, 0);
 	}
 
 	public boolean canClose(final KeyStroke ks) {
