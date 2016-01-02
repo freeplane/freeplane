@@ -1214,7 +1214,9 @@ public interface Proxy {
 		 * @since 1.2 */
 		Node appendBranch(NodeRO node);
 		
-		/** inserts the node as a clone of toBeCloned including its child nodes if available.
+		/** inserts the node as a clone of toBeCloned <em>including</em> its current and/or future
+		 * subtree. That is all changes of descendent nodes of toBeCloned are reflected in the subtree
+		 * of the new node <em>and vice versa</em>.
 		 * <br/><em>Note:</em> Cloning works symmetrically so we could better speak of two
 		 * shared nodes instead of clone and cloned since none of both is privileged.
 		 * @return the new child node
@@ -1225,8 +1227,8 @@ public interface Proxy {
 		 * @since 1.5 */
 		Node appendAsCloneWithSubtree(NodeRO toBeCloned);
 		
-		/** inserts the node as a clone of toBeCloned. Children of toBeCloned are not and
-		 * will not be shared with the new child node.
+		/** inserts the node as a clone of toBeCloned <em>without</em> its current and/or future
+		 * subtree. That is toBeCloned and the new node have children of their own. 
 		 * <br/><em>Note:</em> Cloning works symmetrically so we could better speak of two
 		 * shared nodes instead of clone and cloned since none of both is privileged.
 		 * @return the new child node
