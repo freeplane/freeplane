@@ -24,8 +24,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
@@ -503,7 +501,8 @@ public class LinkController extends SelectionController implements IExtension {
 				if (action != null) {
 					action.actionPerformed(e);
 				} else {
-					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
+					LogUtils.warn("Trying to call a menu hyperlink action with key '" //
+						+ actionKey + "'that doesn't exist.");
 				}
 			}
 			else if (LinkController.isSpecialLink(LinkController.EXECUTE_APP_SCHEME, link)) {
@@ -793,7 +792,11 @@ public class LinkController extends SelectionController implements IExtension {
 
 	// this will fail badly for non-menuitem uris!
 	public static String parseSpecialLink(final URI uri) {
-		return uri.getSchemeSpecificPart().substring(1);
+		return convertPre15VersionStyleKeysToCurrent(uri.getSchemeSpecificPart().substring(1));
+	}
+
+	private static String convertPre15VersionStyleKeysToCurrent(final String actionKey) {
+		return actionKey.startsWith("$") ? actionKey.replaceFirst("\\$(.*)\\$0", "$1") : actionKey;
 	}
 
 	public int getStandardConnectorWidth() {
