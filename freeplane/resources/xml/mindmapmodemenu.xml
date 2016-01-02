@@ -442,7 +442,6 @@
 				</Entry>
 				<Entry name="SaveAcceleratorPresetsAction" />
 			</Entry>
-			<Entry name="SetAcceleratorOnNextClickAction" />
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
