@@ -313,6 +313,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		private boolean deselect(final NodeView node) {
 			if(selectionStart == node)
 				selectionEnd = selectionStart = null;
+			else if (selectionEnd  == node)
+				selectionEnd = selectionStart;
 			final boolean selectedChanged = selectedNode != null && selectedNode.equals(node);
 			if (selectedChanged) {
 				removeSelectionForHooks(node);
