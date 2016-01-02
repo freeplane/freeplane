@@ -842,16 +842,16 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	@Override
-	public Node appendAsClone(NodeRO toBeCloned) {
+	public Node appendAsCloneWithSubtree(NodeRO toBeCloned) {
 		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), false);
 	}
 
 	@Override
-	public Node appendAsCloneWithoutChildren(NodeRO toBeCloned) {
+	public Node appendAsCloneWithoutSubtree(NodeRO toBeCloned) {
 		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), true);
 	}
 	
-	private Node appendAsCloneImpl(NodeModel toBeCloned, boolean asSingleNodes) {
+	private Node appendAsCloneImpl(NodeModel toBeCloned, boolean withSubtree) {
 		final NodeModel target = getDelegate();
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		if (toBeCloned.getParentNode() == null || toBeCloned.isRoot())
@@ -860,7 +860,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			throw new IllegalArgumentException("can't clone a node from another map");
 		if (toBeCloned.subtreeContainsCloneOf(target))
 			throw new IllegalArgumentException("can't clone a node which has this node as child");
-		final NodeModel clone = asSingleNodes ? toBeCloned.cloneContent() : toBeCloned.cloneTree();
+		final NodeModel clone = withSubtree ? toBeCloned.cloneTree() : toBeCloned.cloneContent();
 		mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
 		return new NodeProxy(clone, getScriptContext());
 	}

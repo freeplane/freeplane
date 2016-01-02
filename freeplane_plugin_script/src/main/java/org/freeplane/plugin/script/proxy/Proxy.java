@@ -1214,25 +1214,32 @@ public interface Proxy {
 		 * @since 1.2 */
 		Node appendBranch(NodeRO node);
 		
-		/** inserts the node as clone child including child nodes if available.
+		/** inserts the node as a clone of toBeCloned including its child nodes if available.
+		 * <br/><em>Note:</em> Cloning works symmetrically so we could better speak of two
+		 * shared nodes instead of clone and cloned since none of both is privileged.
+		 * @return the new child node
 		 * @throws IllegalArgumentException if
 		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,  
 		 *     b) toBeCloned is the root node,
 		 *     c) toBeCloned comes from a different map.
 		 * @since 1.5 */
-		Node appendAsClone(NodeRO toBeCloned);
+		Node appendAsCloneWithSubtree(NodeRO toBeCloned);
 		
-		/** inserts the node as clone child.
+		/** inserts the node as a clone of toBeCloned. Children of toBeCloned are not and
+		 * will not be shared with the new child node.
+		 * <br/><em>Note:</em> Cloning works symmetrically so we could better speak of two
+		 * shared nodes instead of clone and cloned since none of both is privileged.
+		 * @return the new child node
 		 * @throws IllegalArgumentException if
 		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,  
 		 *     b) toBeCloned is the root node,
 		 *     c) toBeCloned comes from a different map.
 		 * @since 1.5 */
-		Node appendAsCloneWithoutChildren(NodeRO toBeCloned);
+		Node appendAsCloneWithoutSubtree(NodeRO toBeCloned);
 
 		/** inserts the node(s) copied from clipboard as clone(s). Errors like
 		 * if the clipboard doesn't contain proper content will only be reported to the log.
-		 * You should prefer {@link #appendAsClone(NodeRO)} or {@link #appendAsCloneWithoutChildren(NodeRO)}
+		 * You should prefer {@link #appendAsCloneWithSubtree(NodeRO)} or {@link #appendAsCloneWithoutSubtree(NodeRO)}
 		 * instead if possible - they give you more control.
 		 * @since 1.5 */
 		void pasteAsClone();
