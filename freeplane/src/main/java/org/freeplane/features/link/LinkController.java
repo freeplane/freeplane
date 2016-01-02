@@ -503,7 +503,8 @@ public class LinkController extends SelectionController implements IExtension {
 				if (action != null) {
 					action.actionPerformed(e);
 				} else {
-					LogUtils.warn("Trying to call a menu hyperlink action that doesn't exist.");
+					LogUtils.warn("Trying to call a menu hyperlink action with key '" //
+						+ actionKey + "'that doesn't exist.");
 				}
 			}
 			else if (LinkController.isSpecialLink(LinkController.EXECUTE_APP_SCHEME, link)) {
