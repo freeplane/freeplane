@@ -1144,34 +1144,34 @@ public interface Proxy {
 		/** if this node's text is shortened for display. */
 		boolean isMinimized();
 
-		/** The count of node sharing its content with this node. Use <code>if (node.countSharingContent() > 0)</code>
+		/** The count of node sharing their content with this node. Use <code>if (node.countNodesSharingContent() &gt; 0)</code>
 		 * to check if a node has any clones.
-		 * <br/><em>Note:</em> {@link #getCountSharingContent()} &ge; {@link #getCountSharingContentAndSubtree()}.
+		 * <br/><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
 		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
 		 * @see #getNodesSharingContent()
 		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
 		 * @since 1.5 */
-		int getCountSharingContent();
+		int getCountNodesSharingContent();
 
-		/** The count of nodes sharing its content and subtree with this node.
-		 * <br/><em>Note:</em> {@link #getCountSharingContent()} &ge; {@link #getCountSharingContentAndSubtree()}.
+		/** The count of nodes sharing their content and subtree with this node.
+		 * <br/><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
 		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
 		 * @see #getNodesSharingContentAndSubtree()
 		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
 		 * @since 1.5 */
-		int getCountSharingContentAndSubtree();
+		int getCountNodesSharingContentAndSubtree();
 		
-		/** The count of nodes sharing its content with this node.
-		 * <br/><em>Note:</em> {@link #getCountSharingContent()} &ge; {@link #getCountSharingContentAndSubtree()}.
+		/** The count of nodes sharing their content with this node.
+		 * <br/><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
 		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
-		 * @see #getCountSharingContent()
+		 * @see #getCountNodesSharingContent()
 		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
 		 * @since 1.5 */
 		List<Node> getNodesSharingContent();
 		
-		/** The nodes sharing its content and subtree with this node.
+		/** The nodes sharing their content and subtree with this node.
 		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
-		 * @see #getCountSharingContentAndSubtree()
+		 * @see #getCountNodesSharingContentAndSubtree()
 		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
 		 * @since 1.5 */
 		List<Node> getNodesSharingContentAndSubtree();

@@ -842,12 +842,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	@Override
-	public int getCountSharingContent() {
+	public int getCountNodesSharingContent() {
 		return getDelegate().allClones().size() - 1;
 	}
 
 	@Override
-	public int getCountSharingContentAndSubtree() {
+	public int getCountNodesSharingContentAndSubtree() {
 		return getDelegate().subtreeClones().size() - 1;
 	}
 
