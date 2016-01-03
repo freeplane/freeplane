@@ -53,7 +53,7 @@ public class PhaseProcessor{
 
 	
 	public void destroy(Entry entry) {
-		final ListIterator<RecursiveMenuStructureProcessor> processorIterator = new ArrayList<>(processors.values())
+		final ListIterator<RecursiveMenuStructureProcessor> processorIterator = new ArrayList<RecursiveMenuStructureProcessor>(processors.values())
 		    .listIterator(processors.size());
 		while (processorIterator.hasPrevious())
 			processorIterator.previous().destroy(entry);

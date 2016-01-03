@@ -78,7 +78,7 @@ import org.freeplane.features.ui.FrameController;
  */
 public class MIconController extends IconController {
 	private final class IconActionBuilder implements EntryVisitor {
-		private final HashMap<String, Entry> submenuEntries = new HashMap<>();
+		private final HashMap<String, Entry> submenuEntries = new HashMap<String, Entry>();
 		final private ModeController modeController;
 
 		public IconActionBuilder(ModeController modeController) {

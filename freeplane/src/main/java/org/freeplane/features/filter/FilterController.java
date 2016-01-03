@@ -566,6 +566,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterConditions.addListDataListener(filterChangeListener);
 		showAncestors.addChangeListener(filterChangeListener);
 		showDescendants.addChangeListener(filterChangeListener);
+		quickFilterAction.setSelected(isFilterActive());
 	}
 
 	private ICondition condition(final Filter filter) {

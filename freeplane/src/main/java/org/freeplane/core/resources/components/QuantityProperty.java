@@ -48,7 +48,7 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 		this.defaultUnit = defaultUnit;
 		numberSpinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
 		NamedObject[] units = NamedObject.fromEnum(defaultUnit.getDeclaringClass());
-		unitBox = new JComboBox<>(units);
+		unitBox = new JComboBox(units);
 		addChangeListeners();
 	}
 

@@ -21,6 +21,8 @@ package org.freeplane.features.filter;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -56,9 +58,11 @@ final class QuickFilterAction extends AFreeplaneAction {
 		if(condition == null){
 			return;
 		}
-		if (isSelected())
+		if (isSelected() && ! filterController.getApplyToVisibleNodeOnly().isSelected())
 			filterController.applyNoFiltering();
-		else
+		else {
+			setSelected(false);
 			filterController.apply(condition);
+		}
 	}
 }

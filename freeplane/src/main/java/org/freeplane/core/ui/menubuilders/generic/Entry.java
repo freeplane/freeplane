@@ -26,8 +26,8 @@ public class Entry {
 	public Entry() {
 		super();
 		this.name = "";
-		childEntries = new ArrayList<>();
-		attributes = new HashMap<>();
+		childEntries = new ArrayList<Entry>();
+		attributes = new HashMap<Object, Object>();
 		builders = Collections.emptyList();
 	}
 
