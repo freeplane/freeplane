@@ -22,6 +22,7 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 import java.util.Date;
 import java.util.Timer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
