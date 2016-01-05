@@ -325,7 +325,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  		if (modeController != null) {
  			final KeyStroke keyStroke;
  			if (!keystrokeString.equals("")) {
- 				keyStroke = UITools.getKeyStroke(parseKeyStroke(keystrokeString).toString());
+ 				final KeyStroke keyStrokeFromProperty = parseKeyStroke(keystrokeString);
+				keyStroke = keyStrokeFromProperty != null ? UITools.getKeyStroke(keyStrokeFromProperty.toString()) : null;
  				final AFreeplaneAction oldAction = accelerators.get(key(modeController, keyStroke));
  				if (oldAction != null) {
  					setAccelerator(modeController, oldAction, null);
