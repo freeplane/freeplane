@@ -218,7 +218,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
             return Math.round(d);
     }
     
-    /** round to the given number of decimal places: <code>round(0.1234, 2) -> 0.12</code> */
+    /** round to the given number of decimal places: <code>round(0.1234, 2) &rarr; 0.12</code> */
     public Double round(final Double d, final int precision) {
             if (d == null)
                     return d;
