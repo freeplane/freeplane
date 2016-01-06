@@ -21,14 +21,14 @@ import org.freeplane.features.text.TransformationException;
 @SuppressWarnings("serial")
 public class SplitToWordsAction extends AMultipleNodeAction{
 	static{
-		ResourceController.getResourceController().setDefaultProperty("SplitToWordsAction.auxillaryWordList", TextUtils.getText("defaultAuxillaryWordList"));
+		ResourceController.getResourceController().setDefaultProperty("SplitToWordsAction.auxiliaryWordList", TextUtils.getText("defaultAuxiliaryWordList"));
 	}
 
 	private final int nodeNumberInLine;
 
 	public SplitToWordsAction(int nodeNumberInLine) {
 		super(createActionKey(nodeNumberInLine), createActionText(nodeNumberInLine), null);
-		auxillaryWords = Collections.emptySet();
+		auxiliaryWords = Collections.emptySet();
 		this.nodeNumberInLine = nodeNumberInLine;
 	}
 
@@ -42,15 +42,15 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	}
 	
 	static final Pattern WORD_PATTERN = Pattern.compile("-?\\d+(?:[,.]\\d+)*|[\\p{L}\\d][\\p{L}\\d-]*");
-	private Collection<String> auxillaryWords;
+	private Collection<String> auxiliaryWords;
 	private boolean leaveOriginalNodeEmpty;
 	private boolean saveOriginalTextAsDetails;
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String auxillaryWordList = ResourceController.getResourceController().getProperty("SplitToWordsAction.auxillaryWordList").toLowerCase();
-		auxillaryWords = Arrays.asList(auxillaryWordList.split("\\s*,\\s*"));
+		String auxiliaryWordList = ResourceController.getResourceController().getProperty("SplitToWordsAction.auxiliaryWordList").toLowerCase();
+		auxiliaryWords = Arrays.asList(auxiliaryWordList.split("\\s*,\\s*"));
 		leaveOriginalNodeEmpty = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.leaveOriginalNodeEmpty");
 		saveOriginalTextAsDetails = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.saveOriginalTextAsDetails");
 		super.actionPerformed(e);
@@ -106,9 +106,9 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 			else
 				currentText = currentNode.getText() + ' ';
 			
-			boolean auxillaryWord = auxillaryWords.contains(word.toLowerCase());
+			boolean auxiliaryWord = auxiliaryWords.contains(word.toLowerCase());
 			
-			if (! auxillaryWord) {
+			if (! auxiliaryWord) {
 				textController.setNodeText(currentNode, currentText + capitalize(word));
 				newNode = true;
 			}

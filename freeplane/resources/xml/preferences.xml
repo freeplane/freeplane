@@ -181,7 +181,7 @@
 				<boolean name="remindersBlink" />
 			</separator>
 			<separator name="SplitToWordsAction">
-				<string name="SplitToWordsAction.auxillaryWordList"/>
+				<string name="SplitToWordsAction.auxiliaryWordList"/>
 				<string name="SplitToWordsAction.nodeNumbersInLine"/>
 				<boolean name="SplitToWordsAction.leaveOriginalNodeEmpty"/>
 				<boolean name="SplitToWordsAction.saveOriginalTextAsDetails"/>
