@@ -37,6 +37,10 @@ public class DetachedNodeList implements Clones {
 	public DetachedNodeList(NodeModel clonedNode, CloneType cloneType) {
 		this(clonedNode, clonedNode, cloneType);
     }
+	
+	public DetachedNodeList forClone(NodeModel node){
+		return new DetachedNodeList(node, clone == clonedNode ? node : clonedNode, cloneType);
+	}
 
 	public DetachedNodeList(NodeModel clone, NodeModel clonedNode, CloneType cloneType) {
 		this.clone = clone;

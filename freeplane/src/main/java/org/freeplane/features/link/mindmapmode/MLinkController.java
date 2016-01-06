@@ -239,7 +239,7 @@ public class MLinkController extends LinkController {
 	/**
 	 * @author Dimitry Polivaev
 	 */
-	private final class NodeDeletionListener implements IMapChangeListener {
+	private final class MapLinkChanger implements IMapChangeListener {
 
 		private NodeModel deletedNodeParent;
 		private NodeModel deletedNodeRoot;
@@ -372,9 +372,11 @@ public class MLinkController extends LinkController {
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 	private String anchorID;
+	final private MapLinkChanger mapLinkChanger;
 	public MLinkController(ModeController modeController) {
 		super(modeController);
 		this.anchorID = "";
+		mapLinkChanger = new MapLinkChanger();
 	}
 
 	@Override
@@ -383,7 +385,7 @@ public class MLinkController extends LinkController {
 		this.anchorID = "";
 		createActions();
 		modeController.registerExtensionCopier(new StyleCopier());
-		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
+		(modeController.getMapController()).addMapChangeListener(mapLinkChanger);
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final NodeModel target) {
@@ -1144,4 +1146,53 @@ public class MLinkController extends LinkController {
 	private void fireNodeConnectorChange(NodeModel source, ConnectorModel arrowLink) {
 	    Controller.getCurrentModeController().getMapController().nodeChanged(source, NodeLinks.CONNECTOR, arrowLink, arrowLink);
     }
+	
+	public void deleteMapLinksForClone(final NodeModel model){
+		final MapModel map = model.getMap();
+		final MapLinks mapLinks = map.getExtension(MapLinks.class);
+		if(mapLinks != null){
+			IActor actor = new IActor() {
+				@Override
+				public void undo() {
+					mapLinkChanger.insertMapLinks(mapLinks, model);
+				}
+				
+				@Override
+				public String getDescription() {
+					return "deleteMapLinks";
+				}
+				
+				@Override
+				public void act() {
+					mapLinkChanger.deleteMapLinks(mapLinks, model);
+				}
+			};
+			modeController.execute(actor, map);
+		}
+	}
+
+	
+	public void insertMapLinksForClone(final NodeModel model){
+		final MapModel map = model.getMap();
+		final MapLinks mapLinks = map.getExtension(MapLinks.class);
+		if(mapLinks != null){
+			IActor actor = new IActor() {
+				@Override
+				public void undo() {
+					mapLinkChanger.deleteMapLinks(mapLinks, model);
+				}
+				
+				@Override
+				public String getDescription() {
+					return "deleteMapLinks";
+				}
+				
+				@Override
+				public void act() {
+					mapLinkChanger.insertMapLinks(mapLinks, model);
+				}
+			};
+			modeController.execute(actor, map);
+		}
+	}
 }

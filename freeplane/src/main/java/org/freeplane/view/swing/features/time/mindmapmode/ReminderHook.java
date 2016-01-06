@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
@@ -66,6 +67,7 @@ import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 public class ReminderHook extends PersistentNodeHook implements IExtension {
 
+	private static final String REMINDERS_BLINK = "remindersBlink";
 	//******************************************	
 	@EnabledAction(checkOnNodeChange = true)
 	private class ReminderHookAction extends HookAction {
@@ -263,7 +265,9 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		if (model.getNode().getMap() != Controller.getCurrentController().getMap()) {
 			return;
 		}
-		model.displayState((stateAdded) ? ClockState.CLOCK_VISIBLE : ClockState.CLOCK_INVISIBLE, model.getNode(), true);
+		model.displayState((stateAdded) ? ClockState.CLOCK_INVISIBLE : ClockState.CLOCK_VISIBLE, model.getNode(), true);
+		if(! ResourceController.getResourceController().getBooleanProperty(REMINDERS_BLINK))
+			model.deactivateTimer();
 	}
 
 	@Override

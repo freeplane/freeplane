@@ -402,6 +402,7 @@ public class LinkController extends SelectionController implements IExtension {
 		if (links == null) {
 			return Collections.emptySet();
 		}
+		
 		final Set<NodeLinkModel> set = links.get(target.createID());
 		if (set == null) {
 			return Collections.emptySet();

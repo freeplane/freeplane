@@ -151,9 +151,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	public void setDefaultAccelerator(final AFreeplaneAction action, String accelerator) {
 		final String shortcutKey = getPropertyKey(action.getKey());
 		if (null == getShortcut(shortcutKey)) {
-			if (Compat.isMacOsX()) {
-				accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
-			}
+			accelerator = replaceModifiersForMac(accelerator);
 			defaultProps.setProperty(shortcutKey, accelerator);
 			KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
 			setAccelerator(action, ks);
@@ -325,7 +323,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  		if (modeController != null) {
  			final KeyStroke keyStroke;
  			if (!keystrokeString.equals("")) {
- 				keyStroke = UITools.getKeyStroke(parseKeyStroke(keystrokeString).toString());
+				keyStroke = UITools.getKeyStroke(keystrokeString);
  				final AFreeplaneAction oldAction = accelerators.get(key(modeController, keyStroke));
  				if (oldAction != null) {
  					setAccelerator(modeController, oldAction, null);
@@ -438,17 +436,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 	}
 
-	public static KeyStroke parseKeyStroke(String accelerator) {
-		if (accelerator != null) {
-			if (Compat.isMacOsX()) {
-				accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
-			}
-			else {
-				accelerator = accelerator.replaceFirst("META", "CONTROL").replaceFirst("meta", "control");
-			}
-			return KeyStroke.getKeyStroke(accelerator);
+	private static String replaceModifiersForMac(String accelerator) {
+		if (Compat.isMacOsX()) {
+			accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 		}
-		return null;
+		return accelerator;
 	}
 
 	private void setKeysetProperty(String key, String value) {

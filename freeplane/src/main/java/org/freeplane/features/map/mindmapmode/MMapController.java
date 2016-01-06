@@ -30,6 +30,8 @@ import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -55,7 +57,10 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
@@ -70,6 +75,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -338,6 +344,7 @@ public class MMapController extends MapController {
 		modeController.addAction(new NodeDownAction());
 		modeController.addAction(new SetAlwaysUnfoldedNodeFlagsAction());
 		modeController.addAction(new RemoveAllAlwaysUnfoldedNodeFlagsAction());
+		modeController.addAction(new ConvertCloneToIndependentNodeAction());
 	}
 
 	public void deleteNode(NodeModel node) {
@@ -349,6 +356,46 @@ public class MMapController extends MapController {
 		for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
 		    deleteSingleNodeWithClones(node);
 		}
+	}
+	
+	public void convertClonesToIndependentNodes(final NodeModel node){
+		final MLinkController linkController = (MLinkController) MLinkController.getController();
+		if(node.isCloneTreeRoot()){
+			linkController.deleteMapLinksForClone(node);
+			convertCloneToNode(node);
+			linkController.insertMapLinksForClone(node);
+		}
+	}
+
+	private void convertCloneToNode(final NodeModel node) {
+		final MModeController mModeController = getMModeController();
+		final ClipboardController clipboardController = mModeController.getExtension(ClipboardController.class);
+		final NodeModel duplicate = clipboardController.duplicate(node, false);
+		IActor converter = new IActor() {
+			
+			@Override
+			public void act() {
+				node.swapData(duplicate);
+				nodeChanged(node);
+			}
+			
+			@Override
+			public void undo() {
+				node.swapData(duplicate);
+				nodeChanged(node);
+			}
+			
+			@Override
+			public String getDescription() {
+				return "convertClonesToIndependentNodes";
+			}
+			
+		};
+		final boolean shouldConvertChildNodes = node.subtreeClones().size() > 1;
+		mModeController.execute(converter, node.getMap());
+		if(shouldConvertChildNodes)
+			for (NodeModel child : node.getChildren())
+				convertCloneToNode(child);
 	}
 
 	private void deleteSingleNodeWithClones(NodeModel node) {

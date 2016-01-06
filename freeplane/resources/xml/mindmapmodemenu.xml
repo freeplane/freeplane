@@ -208,6 +208,7 @@
 			<Entry name="SelectedPasteAction" accelerator="control shift V"/>
 			<Entry name="MoveAction" />
 			<Entry name="CloneAction" accelerator="control D"/>
+			<Entry name="ConvertCloneToIndependentNodeAction"/>
 			<Entry builder="separator" />
 			<Entry name="menu_moveNode">
 				<Entry name="NodeUpAction" accelerator="control UP" />
