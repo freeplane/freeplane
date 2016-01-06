@@ -106,7 +106,7 @@ public class HtmlUtils {
 	}
 
 	/** removes html markup and entities, partly and where appropriate by replacing it by plaintext equivalents like 
-	 * &lt;li&gt; -> '*'.
+	 * &lt;li&gt; &rarr; '*'.
 	 * @param strictHTMLOnly if true does nothing unless the text starts with &lt;html&gt;
 	 * @param removeNewLines set to false to keep all blank lines. */
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly, final boolean removeNewLines) {
@@ -228,7 +228,7 @@ public class HtmlUtils {
 	}
 
 	/**
-	 * Removes all tags (<..>) from a string if it starts with "<html>..." to
+	 * Removes all tags (&lt;..&gt;) from a string if it starts with "&lt;html&gt;..." to
 	 * make it compareable.
 	 */
 	public static String removeHtmlTagsFromString(final String text) {
@@ -765,7 +765,7 @@ public class HtmlUtils {
      *   // this will insert two paragraphs:
      *   HtmlUtils.join("text1", "\n", "text2");
      * }</pre>
-     * @param texts either html (starting with <HTML> or <html>) or plain text.
+     * @param texts either html (starting with &lt;HTML&gt; or &lt;html&gt;) or plain text.
      * @return html
      */
     public static String join(String... texts) {

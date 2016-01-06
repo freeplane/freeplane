@@ -1,7 +1,11 @@
+repositories {
+    maven { url "https://josm.openstreetmap.de/nexus/content/groups/public/" }
+}
+
 dependencies {
     compile project(':freeplane')
 
-    compile ':JMapViewer-1.11'
+    compile 'org.openstreetmap.jmapviewer:jmapviewer:1.14'
 }
 
 jar {

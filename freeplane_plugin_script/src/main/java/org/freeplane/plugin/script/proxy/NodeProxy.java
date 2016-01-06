@@ -842,6 +842,30 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	@Override
+	public int getCountNodesSharingContent() {
+		return getDelegate().allClones().size() - 1;
+	}
+
+	@Override
+	public int getCountNodesSharingContentAndSubtree() {
+		return getDelegate().subtreeClones().size() - 1;
+	}
+
+	@Override
+	public List<Node> getNodesSharingContent() {
+		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().allClones().toCollection());
+		nodeModels.remove(getDelegate());
+		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
+	}
+
+	@Override
+	public List<Node> getNodesSharingContentAndSubtree() {
+		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().subtreeClones().toCollection());
+		nodeModels.remove(getDelegate());
+		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
+	}
+
+	@Override
 	public Node appendAsCloneWithSubtree(NodeRO toBeCloned) {
 		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), false);
 	}

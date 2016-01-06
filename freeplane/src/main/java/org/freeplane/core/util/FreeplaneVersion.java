@@ -131,7 +131,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	 * <pre>
      *   import org.freeplane.core.util.FreeplaneVersion
      *   def required = FreeplaneVersion.getVersion("1.2.20")
-     *   if (c.freeplaneVersion < required)
+     *   if (c.freeplaneVersion &lt; required)
 	 *       ui.errorMessage("Freeplane version ${c.freeplaneVersion}"
 	 *           + " not supported - update to at least ${required}")
 	 * </pre>

@@ -175,7 +175,6 @@ public class MenuUtils {
 	 * contain a <code>JMenuItem</code>!
 	 * 
 	 * @param menuRootKey the key of the node that should form the root of the output.
-	 * @param menuBuilder access point for the menu(s).
 	 * @throws IllegalArgumentException if the menuRootKey does not point to an entry in the menu tree
 	 */
 	public static DefaultMutableTreeNode createMenuEntryTree(final String menuRootKey) {
@@ -183,7 +182,7 @@ public class MenuUtils {
 	}
 
 	/** Used as the basis for dynamic generation of hotkey list.
-	 * Same as {@link #createMenuEntryTree(String, MenuBuilder)} but all MenuEntries without associated accelerator
+	 * Same as {@link #createMenuEntryTree(String)} but all MenuEntries without associated accelerator
 	 * and (then) empty submenus are removed from the result.
 	 * @throws IllegalArgumentException if the menuRootKey does not point to an entry in the menu tree
 	 */

@@ -113,7 +113,7 @@ public interface Proxy {
 		 * returned as a list of {@link Convertible} enables conversion. The following formula sums all attributes
 		 * whose names are not equal to 'TOTAL':
 		 * <pre>
-		 *  = attributes.findValues{key,val-> key != 'TOTAL'}.sum(0){it.num0}
+		 *  = attributes.findValues{key,val&rarr; key != 'TOTAL'}.sum(0){it.num0}
 		 * </pre>
 		 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean. 
 		 * @since 1.2 */
@@ -364,7 +364,7 @@ public interface Proxy {
 		/** A read-only list of selected nodes. That is you cannot select a node by adding it to the returned list. */
 		List<Node> getSelecteds();
 
-		/** returns List<Node> of Node objects sorted on Y
+		/** returns List&lt;Node&gt; of Node objects sorted on Y
 		 *
 		 * @param differentSubtrees if true
 		 *   children/grandchildren/grandgrandchildren/... nodes of selected
@@ -379,7 +379,7 @@ public interface Proxy {
 		 *   import org.freeplane.core.ui.components.UITools
 		 * 
 		 *   def required = FreeplaneVersion.getVersion("1.1.2");
-		 *   if (c.freeplaneVersion < required)
+		 *   if (c.freeplaneVersion &lt; required)
 		 *       UITools.errorMessage("Freeplane version " + c.freeplaneVersion
 		 *           + " not supported - update to at least " + required);
 		 * </pre>
@@ -484,14 +484,14 @@ public interface Proxy {
 		
 		void select(Node toSelect);
 		
-		/** toSelect is a List<Node> of Node objects
+		/** toSelect is a List&lt;Node&gt; of Node objects
 		 * @since 1.4 */
 		void select(Collection<Node> toSelect);
 
 		/** selects branchRoot and all children */
 		void selectBranch(Node branchRoot);
 
-		/** toSelect is a Collection<Node> of Node objects */
+		/** toSelect is a Collection&lt;Node&gt; of Node objects */
 		void selectMultipleNodes(Collection<Node> toSelect);
 
 		/** reset undo / redo lists and deactivate Undo for current script */
@@ -566,7 +566,7 @@ public interface Proxy {
 
 		void setType(EdgeStyle type);
 
-		/** can be -1 for default, 0 for thin, >0 */
+		/** can be -1 for default, 0 for thin, &gt;0 */
 		void setWidth(int width);
 	}
 
@@ -642,7 +642,7 @@ public interface Proxy {
 
 	/** Node's icons: <code>node.icons</code> - read-only. */
 	interface IconsRO {
-		/** returns the name of the icon at the given index (starting at 0) or null if <code>index >= size</code>.
+		/** returns the name of the icon at the given index (starting at 0) or null if <code>index &ge; size</code>.
 		 * Use it like this: <pre>
 		 *   def secondIconName = node.icons[1]
 		 * </pre>
@@ -806,7 +806,7 @@ public interface Proxy {
 		/**
 		 * closes a map. Note that there is <em>no undo</em> for this method!
 		 * @param force close map even if there are unsaved changes.
-		 * @param allowInteraction if (allowInteraction && ! force) a saveAs dialog will be opened if there are
+		 * @param allowInteraction if (allowInteraction &amp;&amp; ! force) a saveAs dialog will be opened if there are
 		 *        unsaved changes.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
 		 * @throws RuntimeException if the map contains changes and parameter force is false.
@@ -839,7 +839,7 @@ public interface Proxy {
 		
 		/** install a Groovy closure as the current filter in this map. If <code>closure</code> is null then filtering will
 		 * be disabled. The filter state of a node can be checked by {@link Node#isVisible()}. <br>
-		 * To undo filtering use <em>Tools -> Undo</em>. After execution of the following you have to use it seven times to
+		 * To undo filtering use <em>Tools &rarr; Undo</em>. After execution of the following you have to use it seven times to
 		 * return to the initial filter state.
 		 * <pre>
 		 * // show only matching nodes
@@ -1120,7 +1120,7 @@ public interface Proxy {
 		 * @since 1.2 */
 		byte[] getBinary();
 
-		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal<em>
+		/** returns true if p is a parent, or grandparent, ... of this node, or if it <em>is equal</em>
 		 * to this node; returns false otherwise. */
 		boolean isDescendantOf(Node p);
 
@@ -1143,6 +1143,38 @@ public interface Proxy {
 		
 		/** if this node's text is shortened for display. */
 		boolean isMinimized();
+
+		/** The count of node sharing their content with this node. Use <code>if (node.countNodesSharingContent() &gt; 0)</code>
+		 * to check if a node has any clones.
+		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
+		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
+		 * @see #getNodesSharingContent()
+		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @since 1.5 */
+		int getCountNodesSharingContent();
+
+		/** The count of nodes sharing their content and subtree with this node.
+		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
+		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
+		 * @see #getNodesSharingContentAndSubtree()
+		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @since 1.5 */
+		int getCountNodesSharingContentAndSubtree();
+		
+		/** The count of nodes sharing their content with this node.
+		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
+		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
+		 * @see #getCountNodesSharingContent()
+		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @since 1.5 */
+		List<Node> getNodesSharingContent();
+		
+		/** The nodes sharing their content and subtree with this node.
+		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
+		 * @see #getCountNodesSharingContentAndSubtree()
+		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @since 1.5 */
+		List<Node> getNodesSharingContentAndSubtree();
 
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
@@ -1214,8 +1246,10 @@ public interface Proxy {
 		 * @since 1.2 */
 		Node appendBranch(NodeRO node);
 		
-		/** inserts the node as a clone of toBeCloned including its child nodes if available.
-		 * <br/><em>Note:</em> Cloning works symmetrically so we could better speak of two
+		/** inserts the node as a clone of toBeCloned <em>including</em> its current and/or future
+		 * subtree. That is all changes of descendent nodes of toBeCloned are reflected in the subtree
+		 * of the new node <em>and vice versa</em>.
+		 * <br><em>Note:</em> Cloning works symmetrically so we could better speak of two
 		 * shared nodes instead of clone and cloned since none of both is privileged.
 		 * @return the new child node
 		 * @throws IllegalArgumentException if
@@ -1225,9 +1259,9 @@ public interface Proxy {
 		 * @since 1.5 */
 		Node appendAsCloneWithSubtree(NodeRO toBeCloned);
 		
-		/** inserts the node as a clone of toBeCloned. Children of toBeCloned are not and
-		 * will not be shared with the new child node.
-		 * <br/><em>Note:</em> Cloning works symmetrically so we could better speak of two
+		/** inserts the node as a clone of toBeCloned <em>without</em> its current and/or future
+		 * subtree. That is toBeCloned and the new node have children of their own. 
+		 * <br><em>Note:</em> Cloning works symmetrically so we could better speak of two
 		 * shared nodes instead of clone and cloned since none of both is privileged.
 		 * @return the new child node
 		 * @throws IllegalArgumentException if
@@ -1551,7 +1585,7 @@ public interface Proxy {
 	interface NodeStyle extends NodeStyleRO {
 		void setStyle(IStyle style);
 
-		/** Selects a style by name, see menu Styles -> Pre/Userdefined styles for valid style names or use
+		/** Selects a style by name, see menu Styles &rarr; Pre/Userdefined styles for valid style names or use
 		 * {@link #getName()} to display the name of a node's style.
 		 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
 		 * @param styleName can be the name visible in the style menu or its translation key as returned by
