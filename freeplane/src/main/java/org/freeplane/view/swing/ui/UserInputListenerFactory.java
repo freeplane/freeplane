@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -435,6 +436,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final InputStream resource = genericStructure.openStream();
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
 			genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
+			filterPlugins(genericMenuStructure, plugins);
 			buildProcessor.build(genericMenuStructure);
 			if(Boolean.getBoolean("org.freeplane.outputUnusedActions"))
 				outputUnusedActions();
@@ -450,6 +452,18 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	private void filterPlugins(Entry entry, Set<String> plugins) {
+		final Iterator<Entry> iterator = entry.children().iterator();
+		while(iterator.hasNext()){
+			final Entry child = iterator.next();
+			final Object plugin = child.getAttribute("plugin");
+			if(plugin != null && ! plugins.contains(plugin))
+				iterator.remove();
+			else
+				filterPlugins(child, plugins);
+		}
 	}
 
 	private void outputUnusedActions() {
