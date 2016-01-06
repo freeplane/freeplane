@@ -263,10 +263,13 @@
 				<Entry name="SetBooleanPropertyAction.show_styles_in_tooltip" />
 				<Entry name="CreationModificationPluginAction" />
 			</Entry>
-			<Entry builder="radio_button_group" name="menu_displayAttributes">
-				<Entry name="ShowSelectedAttributesAction" />
-				<Entry name="ShowAllAttributesAction" />
-				<Entry name="HideAllAttributesAction" />
+			<Entry name="menu_displayAttributes">
+				<Entry builder="radio_button_group">
+					<Entry name="ShowSelectedAttributesAction" />
+					<Entry name="ShowAllAttributesAction" />
+					<Entry name="HideAllAttributesAction" />
+				</Entry>
+				<Entry builder="separator" />
 				<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
 			</Entry>
 			<Entry name="menu_noteView">
