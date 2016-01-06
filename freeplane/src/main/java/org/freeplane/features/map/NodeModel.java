@@ -509,18 +509,26 @@ public class NodeModel{
 	}
 
 	void attach() {
-		for(Clones clonesGroup : clones)
-			clonesGroup.attach();
+		attachClones();
 	    for(NodeModel child : children)
 	    	child.attach();
     }
 
-	private void detach() {
+	private void attachClones() {
 		for(Clones clonesGroup : clones)
-			clonesGroup.detach(this);
+			clonesGroup.attach();
+	}
+
+	private void detach() {
+		detachClones();
 	    for(NodeModel child : children)
 	    	child.detach();
     }
+
+	private void detachClones() {
+		for(Clones clonesGroup : clones)
+			clonesGroup.detach(this);
+	}
 
 
 	boolean isAttached() {
@@ -688,5 +696,21 @@ public class NodeModel{
 	public int getIndex() {
 		final NodeModel parentNode = getParentNode();
 		return parentNode != null ? parentNode.getIndex(this) : -1;
+	}
+
+	public void swapData(NodeModel duplicate) {
+		this.detachClones();
+		SharedNodeData sharedDataSwap = sharedData;
+		this.sharedData = duplicate.sharedData;
+		duplicate.sharedData = sharedDataSwap;
+		Clones[] clonesSwap = clones;
+		this.clones = duplicate.clones;
+		duplicate.clones = clonesSwap;
+		for(CloneType cloneType : CloneType.values()) {
+			final DetachedNodeList detachedClone = (DetachedNodeList) clones[cloneType.ordinal()];
+			clones[cloneType.ordinal()] = detachedClone.forClone(this);
+		} 
+
+		this.attachClones();
 	}
 }
