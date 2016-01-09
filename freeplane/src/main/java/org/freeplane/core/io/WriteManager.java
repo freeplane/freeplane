@@ -86,7 +86,7 @@ public class WriteManager {
 		assert removed;
 	}
 
-	public void removeExtensionNodeWriter(final Class<? extends IExtension> clazz, final IExtensionElementWriter nw) {
+	public void removeExtensionElementWriter(final Class<? extends IExtension> clazz, final IExtensionElementWriter nw) {
 		final boolean removed = extensionElementWriters.remove(clazz, nw);
 		assert removed;
 	}

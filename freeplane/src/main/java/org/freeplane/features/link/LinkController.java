@@ -129,8 +129,8 @@ public class LinkController extends SelectionController implements IExtension {
 		createActions();
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
-		final WriteManager writeManager = mapController.getWriteManager();
-		new LinkBuilder(this).registerBy(readManager, writeManager);
+		LinkBuilder linkBuilder = new LinkBuilder(this);
+		linkBuilder.registerBy(readManager);
 		
 		// this IContentTransformer is unconditional because the outcome
 		// (#ID_1698830792 -> Nodename) is usually wanted
