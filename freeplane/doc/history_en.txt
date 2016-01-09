@@ -7,6 +7,8 @@ Scroll map after unfolding a node (option)
 Change node size on mouse wheel scrolling
 Optionally copy icons with node format
 Extend scripting API for clones
+Only connectors inside cloned subtrees are replicated
+Local hyperlink targets are not changed for clones
 
 ===============================
 1.5.3
