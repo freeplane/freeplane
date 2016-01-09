@@ -232,7 +232,8 @@ class ActivatorImpl implements BundleActivator {
 				final Bundle[] bundles = context.getBundles();
 				final HashSet<String> plugins = new HashSet<String>();
 				for(Bundle bundle:bundles){
-					plugins.add(bundle.getSymbolicName());
+					if(bundle.getState() == bundle.ACTIVE)
+						plugins.add(bundle.getSymbolicName());
 				}
 				FilterController.getController(controller).loadDefaultConditions();
 				starter.buildMenus(controller, plugins);

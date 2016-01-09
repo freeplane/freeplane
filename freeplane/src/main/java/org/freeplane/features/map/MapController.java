@@ -255,7 +255,7 @@ public class MapController extends SelectionController implements IExtension{
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
 	final private MapWriter mapWriter;
-// 	final private ModeController modeController;
+ 	final private ModeController modeController;
 	final LinkedList<INodeChangeListener> nodeChangeListeners;
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
@@ -263,7 +263,7 @@ public class MapController extends SelectionController implements IExtension{
 	public MapController(ModeController modeController) {
 		super();
 		modeController.setMapController(this);
-//		this.modeController = modeController;
+		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		writeManager = new WriteManager();
 		mapWriter = new MapWriter(this);
@@ -968,6 +968,10 @@ public class MapController extends SelectionController implements IExtension{
 		for (final NodeModel node:nodes) {
 			setFolded(node, shouldBeFolded);
 		}
+	}
+
+	public ModeController getModeController() {
+		return modeController;
 	}
 
 }

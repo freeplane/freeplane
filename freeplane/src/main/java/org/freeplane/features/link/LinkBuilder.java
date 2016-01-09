@@ -29,15 +29,11 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
-import org.freeplane.core.io.IExtensionAttributeWriter;
-import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.ColorUtils;
@@ -47,17 +43,16 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
-        IExtensionAttributeWriter {
+public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 	private static final int FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS = 3;
 	private static final String FORMAT_AS_HYPERLINK = "FORMAT_AS_HYPERLINK";
 	private static final String LINK = "LINK";
-	final private HashSet<NodeLinkModel> arrowLinks;
+	final private HashSet<NodeLinkModel> processedLinks;
 	private final LinkController linkController;
 
 	public LinkBuilder(final LinkController linkController) {
 		this.linkController = linkController;
-		arrowLinks = new HashSet<NodeLinkModel>();
+		processedLinks = new HashSet<NodeLinkModel>();
 	}
 
 	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
@@ -82,7 +77,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	 * registry.
 	 */
 	public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
-		final Iterator<NodeLinkModel> iterator = arrowLinks.iterator();
+		final Iterator<NodeLinkModel> iterator = processedLinks.iterator();
 		while (iterator.hasNext()) {
 			final NodeLinkModel arrowLink = iterator.next();
 			final String id = arrowLink.getTargetID();
@@ -96,7 +91,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			final NodeModel source = arrowLink.getSource();
 			NodeLinks.createLinkExtension(source).addArrowlink(arrowLink);
 		}
-		arrowLinks.clear();
+		processedLinks.clear();
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {
@@ -105,7 +100,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 				final NodeModel node = (NodeModel) userObject;
 				linkController.loadLink(node, value);
 				final Collection<NodeLinkModel> links = NodeLinks.getLinks(node);
-				arrowLinks.addAll(links);
+				processedLinks.addAll(links);
 			}
 		});
 		
@@ -146,7 +141,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setTargetID(value);
-				arrowLinks.add(arrowLink);
+				processedLinks.add(arrowLink);
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "SOURCE_LABEL", new IAttributeHandler() {
@@ -242,14 +237,10 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			connector.setShape(Shape.LINE);
 	}
 
-	/**
-	 */
-	public void registerBy(final ReadManager reader, final WriteManager writer) {
+	void registerBy(final ReadManager reader) {
 		reader.addElementHandler("arrowlink", this);
 		registerAttributeHandlers(reader);
 		reader.addReadCompletionListener(this);
-		writer.addExtensionAttributeWriter(NodeLinks.class, this);
-		writer.addExtensionElementWriter(NodeLinks.class, this);
 	}
 
 	public void save(final ITreeWriter writer, final ConnectorModel model) throws IOException {
@@ -329,33 +320,43 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
-	public void writeAttributes(final ITreeWriter writer, final Object node, final IExtension extension) {
-		final NodeLinks links = (NodeLinks) extension;
-		final URI link = links.getHyperLink((NodeModel) node);
-		if (link != null) {
-			final String string = link.toString();
-			if (string.startsWith("#")) {
-				if (((NodeModel) node).getMap().getNodeForID(string.substring(1)) == null) {
-					return;
+	public void writeAttributes(final ITreeWriter writer, final NodeModel node) {
+		final NodeLinks links = node.getExtension(NodeLinks.class);
+		if(links != null) { 
+			final URI link = links.getHyperLink(node);
+			if (link != null) {
+				final String string = link.toString();
+				if (string.startsWith("#")) {
+					if ((node).getMap().getNodeForID(string.substring(1)) == null) {
+						return;
+					}
 				}
+				writer.addAttribute(LINK, string);
 			}
-			writer.addAttribute(LINK, string);
-		}
-		final Boolean formatNodeAsHyperlink = links.formatNodeAsHyperlink();
-		if (formatNodeAsHyperlink != null) {
-			writer.addAttribute(FORMAT_AS_HYPERLINK, formatNodeAsHyperlink.toString());
+			final Boolean formatNodeAsHyperlink = links.formatNodeAsHyperlink();
+			if (formatNodeAsHyperlink != null) {
+				writer.addAttribute(FORMAT_AS_HYPERLINK, formatNodeAsHyperlink.toString());
+			}
 		}
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
-	        throws IOException {
-		final NodeLinks links = (NodeLinks) extension;
-		final Iterator<NodeLinkModel> iterator = links.getLinks().iterator();
-		while (iterator.hasNext()) {
-			final NodeLinkModel linkModel = iterator.next();
-			if (linkModel instanceof ConnectorModel) {
-				final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel.cloneForSource((NodeModel) node);
-				save(writer, arrowLinkModel);
+	public void writeContent(final ITreeWriter writer, final NodeModel node)
+			throws IOException {
+		final NodeLinks links = node.getExtension(NodeLinks.class);
+		if(links != null) { 
+			final Iterator<NodeLinkModel> iterator = links.getLinks().iterator();
+			while (iterator.hasNext()) {
+				final NodeLinkModel linkModel = iterator.next();
+				if (linkModel instanceof ConnectorModel) {
+					final boolean linkNotWrittenBefore = ! processedLinks.contains(linkModel);
+					if(linkNotWrittenBefore) {
+						final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel.cloneForSource((NodeModel) node);
+						if(arrowLinkModel != null) {
+							save(writer, arrowLinkModel);
+							processedLinks.add(linkModel);
+						}
+					}
+				}
 			}
 		}
 	}

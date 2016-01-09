@@ -22,10 +22,14 @@ public class RichTextModel {
 			html = null;
 			return;
 		}
-		html = XmlUtils.makeValidXml(pNoteText);
-		xml = HtmlUtils.toXhtml(html);
-		if (xml != null && !xml.startsWith("<")) {
-			html = xml;
+		try {
+			html = XmlUtils.makeValidXml(pNoteText);
+			xml = HtmlUtils.toXhtml(html);
+			if (xml != null && !xml.startsWith("<")) {
+				html = xml;
+			}
+		} catch (Exception e) {
+			html = xml = HtmlUtils.unescapeHTMLUnicodeEntity(pNoteText);
 		}
 	}
 

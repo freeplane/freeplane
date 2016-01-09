@@ -26,8 +26,10 @@ import java.util.Map;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.MapWriter.WriterHint;
@@ -50,9 +52,11 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	private final Map<SharedNodeData, NodeModel> alreadyWrittenSharedContent;
+	private final LinkBuilder linkBuilder;
 
-	public NodeWriter(final MapController mapController, final String nodeTag, final boolean writeChildren,
+	public NodeWriter(final MapController mapController, LinkBuilder linkBuilder, final String nodeTag, final boolean writeChildren,
 	                  final boolean writeInvisible) {
+		this.linkBuilder = linkBuilder;
 		alreadyWrittenSharedContent = new HashMap<SharedNodeData, NodeModel>();
 		this.mapController = mapController;
 		this.shouldWriteChildren = writeChildren;
@@ -135,8 +139,10 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 					.getHistoryInformation().getLastModifiedAt()));
 			}
 		}
-		if(! isNodeAlreadyWritten || Mode.EXPORT.equals(mode))
+		if(! isNodeAlreadyWritten || Mode.EXPORT.equals(mode)) {
+			linkBuilder.writeAttributes(writer, node);
 			writer.addExtensionAttributes(node, node.getSharedExtensions().values());
+		}
 		writer.addExtensionAttributes(node, node.getIndividualExtensionValues());
 	}
 
@@ -165,6 +171,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		final boolean isNodeContentWrittenFirstTime = ! isAlreadyWritten(node);
 		if(isNodeContentWrittenFirstTime)
 			registerWrittenNode(node);
+		linkBuilder.writeContent(writer, node);
 		if(isNodeContentWrittenFirstTime || Mode.EXPORT.equals(mode(writer))){
 			writer.addExtensionNodes(node, node.getSharedExtensions().values());
 			for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
@@ -182,5 +189,15 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	String getNodeTag() {
 		return nodeTag;
+	}
+
+	void registerBy(WriteManager writeManager) {
+		writeManager.addElementWriter(getNodeTag(), this);
+		writeManager.addAttributeWriter(getNodeTag(), this);
+	}
+
+	void unregisterFrom(WriteManager writeManager) {
+		writeManager.removeElementWriter(getNodeTag(), this);
+		writeManager.removeAttributeWriter(getNodeTag(), this);
 	}
 }

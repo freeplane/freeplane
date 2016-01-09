@@ -265,6 +265,10 @@ public class MMapController extends MapController {
 
 	private void insertNewNode(final NodeModel newNode, final NodeModel parent, final int index,
                                final boolean newNodeIsLeft) {
+		if(index < 0 || index > parent.getChildCount()){
+			insertNewNode(newNode, parent, parent.getChildCount(), newNodeIsLeft);
+			return;
+		}
 		if(newNode.subtreeContainsCloneOf(parent)){
 			UITools.errorMessage("not allowed");
 			return;
@@ -762,7 +766,7 @@ public class MMapController extends MapController {
 		final NodeModel newNode = newNode("", target.getMap());
 		LogicalStyleModel.createExtension(newNode).setStyle(MapStyleModel.FLOATING_STYLE);
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
-		if(! addNewNode(newNode, target, -1, newNodeIsLeft))
+		if(! addNewNode(newNode, target, target.getChildCount(), newNodeIsLeft))
 			return null;
 		final Quantity<LengthUnits> x = new Quantity<LengthUnits>(pt.x, LengthUnits.px).in(LengthUnits.pt);
 		final Quantity<LengthUnits> y = new Quantity<LengthUnits>(pt.y, LengthUnits.px).in(LengthUnits.pt);

@@ -66,8 +66,11 @@ public abstract class NodeLinkModel{
 	    if(sourceNodeClones.size() == 1)
 	    	return Arrays.<NodeLinkModel>asList(this);
 	    ArrayList<NodeLinkModel> clones = new ArrayList<NodeLinkModel>(sourceNodeClones.size());
-	    for(NodeModel sourceClone : sourceNodeClones)
-	    	clones.add(cloneForSource(sourceClone));
+	    for(NodeModel sourceClone : sourceNodeClones) {
+			final NodeLinkModel cloneForSource = cloneForSource(sourceClone);
+			if(cloneForSource != null)
+				clones.add(cloneForSource);
+		}
 	    return clones;
     }
 
@@ -75,7 +78,6 @@ public abstract class NodeLinkModel{
     	final NodeModel source = getSource();
     	if(sourceClone == source)
     		return this;
-    	String targetID = getTargetID();
     	final NodeModel target = getTarget();
     	if(target != null && target.getParentNode() != null && source.getParentNode() != null){
     		final NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
@@ -86,11 +88,12 @@ public abstract class NodeLinkModel{
 				final NodeRelativePath clonePath = new NodeRelativePath(ancestorClone, sourceClone);
 				if (pathAncestorToSource.equalPathsTo(clonePath)) {
 	            	final NodeModel targetClone = nodeRelativePath.pathEnd(ancestorClone);
-	            	targetID = targetClone.createID();
+	            	String targetID = targetClone.createID();
+	            	return cloneForSource(sourceClone, targetID);
 	            }
             }
     	}
-		return cloneForSource(sourceClone, targetID);
+		return null;
     }
 
 	public abstract NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId);

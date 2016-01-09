@@ -30,6 +30,8 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.features.link.LinkBuilder;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -56,7 +58,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;
 	private boolean saveInvisible;
-	final private WriteManager writeManager;
+	final WriteManager writeManager;
 
 	public MapWriter(final MapController mapController) {
 		this.mapController = mapController;
@@ -110,23 +112,19 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		else {
 			nodeTag = NodeBuilder.XML_NODE;
 		}
-		if (oldNodeWriter != null) {
-			writeManager.removeElementWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
-			writeManager.removeAttributeWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
-		}
-		currentNodeWriter = new NodeWriter(mapController, nodeTag, writeChildren, writeInvisible);
+		if (oldNodeWriter != null)
+			oldNodeWriter.unregisterFrom(writeManager);
+		LinkBuilder currentLinkBuilder = new LinkBuilder(mapController.getModeController().getExtension(LinkController.class));
+		currentNodeWriter = new NodeWriter(mapController, currentLinkBuilder, nodeTag, writeChildren, writeInvisible);
 		try {
-			writeManager.addElementWriter(nodeTag, currentNodeWriter);
-			writeManager.addAttributeWriter(nodeTag, currentNodeWriter);
+			currentNodeWriter.registerBy(writeManager);
 			xmlWriter.addElement(node, nodeTag);
 		}
 		finally {
-			writeManager.removeElementWriter(nodeTag, currentNodeWriter);
-			writeManager.removeAttributeWriter(nodeTag, currentNodeWriter);
-			if (oldNodeWriter != null) {
-				writeManager.addElementWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
-				writeManager.addAttributeWriter(oldNodeWriter.getNodeTag(), oldNodeWriter);
-			}
+			
+			currentNodeWriter.unregisterFrom(writeManager);
+				if (oldNodeWriter != null)
+				oldNodeWriter.registerBy(writeManager);
 			currentNodeWriter = oldNodeWriter;
 		}
 	}

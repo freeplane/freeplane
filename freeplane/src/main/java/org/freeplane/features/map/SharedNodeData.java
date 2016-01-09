@@ -81,9 +81,14 @@ public class SharedNodeData {
 	}
 
 	public void setText(String text) {
-		userObject = XmlUtils.makeValidXml(text);
-		xmlText = HtmlUtils.toXhtml(text);
-		if (xmlText != null && !xmlText.startsWith("<")) {
+		try {
+			userObject = XmlUtils.makeValidXml(text);
+			xmlText = HtmlUtils.toXhtml(text);
+			if (xmlText != null && !xmlText.startsWith("<")) {
+				userObject = " " + text;
+				xmlText = null;
+			}
+		} catch (Exception e) {
 			userObject = " " + text;
 			xmlText = null;
 		}

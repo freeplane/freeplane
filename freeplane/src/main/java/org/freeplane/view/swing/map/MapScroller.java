@@ -227,7 +227,8 @@ class MapScroller {
 			scrolledNode = map.getSelected();
 			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
 		}
-		scrollNodeToVisible(scrolledNode, extraWidth);
+		if(scrolledNode != null)
+			scrollNodeToVisible(scrolledNode, extraWidth);
 		vp.setScrollMode(scrollMode);
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
