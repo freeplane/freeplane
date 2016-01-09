@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.note;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.net.URL;
@@ -116,18 +117,7 @@ public class NoteController implements IExtension {
 				final String noteText = NoteModel.getNoteText(node);
 				if (noteText == null)
 					return null;
-				final StringBuilder rule = new StringBuilder();
-				// set default font for notes:
-				final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-				    NodeStyleController.class);
-				MapModel map = modeController.getController().getMap();
-				if(map != null){
-					final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-					final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
-				    final Font defaultFont = style.getFont(noteStyleNode);
-				    rule.append(new CssRuleBuilder().withFont(defaultFont)
-				    		.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node)));
-				}
+				final String rule = getNoteCSSStyle(modeController, node, true);
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
 				tooltipBodyBegin.append("\">");
@@ -159,6 +149,31 @@ public class NoteController implements IExtension {
 	public boolean showNotesInMap(MapModel model) {
 		final String property = MapStyleModel.getExtension(model).getProperty(NoteController.SHOW_NOTES_IN_MAP);
 		return Boolean.parseBoolean(property);
+	}
+
+	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, boolean withWidth) {
+		final StringBuilder rule = new StringBuilder();
+		// set default font for notes:
+		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
+		    NodeStyleController.class);
+		MapModel map = modeController.getController().getMap();
+		if(map != null){
+			final MapStyleModel model = MapStyleModel.getExtension(map);
+			final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
+		    final Font noteFont = style.getFont(noteStyleNode);
+		    Color noteBackground = style.getBackgroundColor(noteStyleNode);
+		    Color noteForeground = style.getColor(noteStyleNode);
+		    final int alignment = style.getTextAlign(noteStyleNode).swingConstant;
+		    final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder()
+		    		.withFont(noteFont)
+		    		.withColor(noteForeground)
+					.withBackground(noteBackground)
+					.withAlignment(alignment);
+		    if(withWidth)
+		    	cssRuleBuilder.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
+			rule.append(cssRuleBuilder);
+		}
+		return rule.toString();
 	}
 
 }

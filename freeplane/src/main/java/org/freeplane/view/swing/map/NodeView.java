@@ -1572,12 +1572,7 @@ public class NodeView extends JComponent implements INodeView {
 		return FreeNode.isFreeNode(getModel());
 	}
 
-    public Color getDetailBackground() {
-        final Color detailBackground = getMap().getDetailBackground();
-        return detailBackground;
-     }
-
-	int getTopOverlap() {
+ 	int getTopOverlap() {
 		return topOverlap;
 	}
 

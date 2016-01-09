@@ -232,7 +232,11 @@ class NodeViewFactory {
 			nodeView.removeContent(NodeView.NOTE_VIEWER_POSITION);
 			return;
 		}
-		view.setFont(nodeView.getMap().getDefaultNoteFont());
+		final MapView map = nodeView.getMap();
+		view.setFont(map.getNoteFont());
+		view.setForeground(map.getNoteForeground());
+		view.setBackground(map.getNoteBackground());
+		view.setHorizontalAlignment(map.getNoteHorizontalAlignment());
 		view.updateText(newText);
 
 	}
@@ -261,7 +265,7 @@ class NodeViewFactory {
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			detailContent.updateText(detailText.getHtml());
 			detailContent.setForeground(map.getDetailForeground());
-			detailContent.setBackground(nodeView.getDetailBackground());
+			detailContent.setBackground(map.getDetailBackground());
 		}
 		detailContent.setMinimumWidth(minNodeWidth);
 		detailContent.setMaximumWidth(maxNodeWidth);
