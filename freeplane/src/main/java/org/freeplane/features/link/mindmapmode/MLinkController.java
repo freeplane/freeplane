@@ -37,6 +37,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -241,20 +242,21 @@ public class MLinkController extends LinkController {
 	 */
 	private final class MapLinkChanger implements IMapChangeListener {
 
-		private NodeModel deletedNodeParent;
-		private NodeModel deletedNodeRoot;
-		private int deletedNodeindex;
-
 		public void mapChanged(final MapChangeEvent event) {
 		}
 
 		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 		}
 
-		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+		public void onNodeInserted(final NodeModel parent, final NodeModel model, final int newIndex) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					onChange(child, false);
+					final MapModel map = model.getMap();
+					final MapLinks links = map.getExtension(MapLinks.class);
+					if (links != null) {
+						insertMapLinks(links, model);
+						updateMapLinksForTargetTree(links, model);
+					}
 				}
 			});
 		}
@@ -263,25 +265,13 @@ public class MLinkController extends LinkController {
 		}
 
 		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-			deletedNodeParent = nodeDeletionEvent.parent;
-			deletedNodeRoot = nodeDeletionEvent.node;
-			deletedNodeindex = nodeDeletionEvent.index;
-			onChange(nodeDeletionEvent.node, true);
-			deletedNodeParent = null;
-			deletedNodeRoot = null;
-		}
-
-		private void onChange(final NodeModel model, final boolean delete) {
+			NodeModel model = nodeDeletionEvent.node;
 			final MapModel map = model.getMap();
 			final MapLinks links = map.getExtension(MapLinks.class);
-			if (links == null) {
-				return;
-			}
-			if(delete)
+			if (links != null) {
 				deleteMapLinks(links, model);
-			else
-				insertMapLinks(links, model);
-			updateMapLinksForTargetTree(links, model);
+				updateMapLinksForTargetTree(links, model);
+			}
 		}
 
 		private void insertMapLinks(final MapLinks links, final NodeModel model) {
@@ -306,40 +296,10 @@ public class MLinkController extends LinkController {
 			for (final NodeModel child : children) {
 				deleteMapLinks(links, child);
 			}
-			deleteMapLinksForDeletedSourceNode(links, model);
-		}
-
-		private void deleteMapLinksForDeletedSourceNode(MapLinks links, NodeModel model) {
-	        final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
-	        if (nodeLinks != null) {
-	        	for (final NodeLinkModel link : nodeLinks.getLinks()) {
-	        		final NodeModel linkSource = link.getSource();
-					if(linkSource.equals(model) || linkSource.isSubtreeCloneOf(model))
-	        		links.remove(link);
-	        	}
-	        	final NodeModel notDeletedClone = notDeletedSubtreeClone(model);
-	        	if(notDeletedClone != null){
-	        		nodeLinks.replaceSource(model, notDeletedClone);
-	        		for (final NodeLinkModel link : nodeLinks.getLinks()) {
-	        			links.add(link);
-	        		}
-	        	}
-	        }
-        }
-
-		private NodeModel notDeletedSubtreeClone(NodeModel model) {
-			CLONES: for (NodeModel clone : model.subtreeClones()) {
-				for (NodeModel deletedClone : deletedNodeRoot.subtreeClones()) {
-					final NodeModel parentClone = deletedClone.getParentNode();
-					final boolean cloneShallBeDeleted = deletedNodeParent.subtreeClones().contains(parentClone) 
-							&& deletedNodeParent.getChildCount() == parentClone.getChildCount()
-							&& parentClone.getIndex(deletedClone) == deletedNodeindex;
-					if (cloneShallBeDeleted && clone.isDescendantOf(deletedClone))
-						continue CLONES;
-				}
-				return clone;
+			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
+			if (nodeLinks != null) {
+				nodeLinks.replaceMapLinksForDeletedSourceNode(links, model);
 			}
-			return null;
 		}
 
 		private void updateMapLinksForTargetTree(final MapLinks links, final NodeModel model) {

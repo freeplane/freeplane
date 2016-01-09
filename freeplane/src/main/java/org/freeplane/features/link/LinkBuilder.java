@@ -355,7 +355,8 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			final NodeLinkModel linkModel = iterator.next();
 			if (linkModel instanceof ConnectorModel) {
 				final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel.cloneForSource((NodeModel) node);
-				save(writer, arrowLinkModel);
+				if(arrowLinkModel != null)
+					save(writer, arrowLinkModel);
 			}
 		}
 	}

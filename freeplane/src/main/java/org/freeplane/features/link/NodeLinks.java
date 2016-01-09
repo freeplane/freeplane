@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
@@ -82,7 +83,9 @@ public class NodeLinks implements IExtension {
 	        final Collection<NodeLinkModel> sharedLinks = links.getLinks();
 	        final ArrayList<NodeLinkModel> clones = new ArrayList<NodeLinkModel>(sharedLinks.size());
 	        for(NodeLinkModel sharedLink : sharedLinks){
-	        	clones.add(sharedLink.cloneForSource(node));
+				final NodeLinkModel cloneForSource = sharedLink.cloneForSource(node);
+				if(cloneForSource != null)
+					clones.add(cloneForSource);
 	        }
 	        return clones;
         }
@@ -126,7 +129,7 @@ public class NodeLinks implements IExtension {
 			final NodeLinkModel link = iterator.next();
 			if (link instanceof HyperTextLinkModel) {
 				try {
-	                return new URI("#" + link.cloneForSource(clone).getTargetID());
+	                return new URI("#" + link.getTargetID());
                 }
                 catch (URISyntaxException e) {
 	                LogUtils.severe(e);
@@ -136,14 +139,14 @@ public class NodeLinks implements IExtension {
 		return null;
 	}
 
-	public Collection<NodeLinkModel> getLinks() {
-		return Collections.unmodifiableCollection(links);
+	public List<NodeLinkModel> getLinks() {
+		return Collections.unmodifiableList(links);
 	}
 
 	public void removeArrowlink(final NodeLinkModel link) {
 		final NodeModel node = link.getSource();
 		for (final NodeLinkModel i : NodeLinks.getLinkExtension(node).links) {
-			if (i.cloneForSource(link.getSource()).equals(link)) {
+			if (link.equals(i.cloneForSource(link.getSource()))) {
 				links.remove(i);
 				final MapModel map = link.getSource().getMap();
 				removeLinkFromMap(map, i);
@@ -207,15 +210,25 @@ public class NodeLinks implements IExtension {
     	this.formatNodeAsHyperlink = formatNodeAsHyperlink;
     }
 
-	public void replaceSource(NodeModel oldSource, NodeModel newSource) {
-		final ListIterator<NodeLinkModel> listIterator = links.listIterator();
-		while(listIterator.hasNext()){
-			final NodeLinkModel link = listIterator.next();
-			if(link.getSource().equals(oldSource)){
-				listIterator.remove();
-				listIterator.add(link.cloneForSource(newSource));
+	public void replaceMapLinksForDeletedSourceNode(MapLinks mapLinks, NodeModel model) {
+		final ListIterator<NodeLinkModel> linkIterator = links.listIterator();
+		LINKS: while (linkIterator.hasNext()) {
+			NodeLinkModel link = linkIterator.next();
+			final NodeModel linkSource = link.getSource();
+			if(linkSource.equals(model)) {
+				mapLinks.remove(link);
+				for(NodeModel newSource : model.subtreeClones()){
+					if(model != newSource) {
+						final NodeLinkModel cloneForSource = link.cloneForSource(newSource);
+						if(cloneForSource != null){
+							linkIterator.remove();
+							linkIterator.add(cloneForSource);
+							mapLinks.add(cloneForSource);
+							continue LINKS;
+						}
+					}
+				}
 			}
 		}
-    }
-
+	}
 }

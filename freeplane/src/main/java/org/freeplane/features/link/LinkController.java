@@ -394,6 +394,10 @@ public class LinkController extends SelectionController implements IExtension {
 		return adaptedText;
 	}
 
+	public Collection<NodeLinkModel> getLinksFrom(NodeModel node) {
+		return NodeLinks.getLinks(node);
+	}
+	
 	public Collection<NodeLinkModel> getLinksTo(final NodeModel target) {
 		if (target.hasID() == false) {
 			return Collections.emptySet();
@@ -403,18 +407,24 @@ public class LinkController extends SelectionController implements IExtension {
 			return Collections.emptySet();
 		}
 		
-		final Set<NodeLinkModel> set = links.get(target.createID());
-		if (set == null) {
-			return Collections.emptySet();
+		ArrayList<NodeLinkModel> clonedLinks = null;
+		for(NodeModel targetClone : target.subtreeClones()){
+			final Set<NodeLinkModel> set = links.get(targetClone.createID());
+			if (set == null) {
+				continue;
+			}
+			if(target.subtreeClones().size() == 1)
+				return set;
+			if (clonedLinks == null)
+				clonedLinks = new ArrayList<NodeLinkModel>(10);
+			for(NodeLinkModel sharedLink : set){
+				final Collection<NodeLinkModel> linkClones = sharedLink.clones();
+				for(NodeLinkModel linkClone : linkClones)
+					if(target.equals(linkClone.getTarget()))
+						clonedLinks.add(linkClone);
+			}
 		}
-		ArrayList<NodeLinkModel> clonedLinks = new ArrayList<NodeLinkModel>(set.size() * 3);
-		for(NodeLinkModel sharedLink : set){
-			final Collection<NodeLinkModel> linkClones = sharedLink.clones();
-			for(NodeLinkModel linkClone : linkClones)
-				if(target.equals(linkClone.getTarget()))
-					clonedLinks.add(linkClone);
-		}
-		return clonedLinks;
+		return clonedLinks != null  ? clonedLinks : Collections.<NodeLinkModel>emptySet();
 	}
 
 	/**
@@ -951,5 +961,4 @@ public class LinkController extends SelectionController implements IExtension {
 		final Boolean formatNodeAsHyperlink = linkModel.formatNodeAsHyperlink();
 		return formatNodeAsHyperlink;
 	}
-
 }

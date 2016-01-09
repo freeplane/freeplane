@@ -1527,10 +1527,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void paintLinks(final NodeView source, final Graphics2D graphics,
 	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
+		final LinkController linkController = LinkController.getController(getModeController());
 		final NodeModel node = source.getModel();
-		final Collection<NodeLinkModel> outLinks = NodeLinks.getLinks(node);
+		final Collection<NodeLinkModel> outLinks = linkController.getLinksFrom(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
-		final Collection<NodeLinkModel> inLinks = LinkController.getController(getModeController()).getLinksTo(node);
+		final Collection<NodeLinkModel> inLinks = linkController.getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
 		final int nodeViewCount = source.getComponentCount();
 		for (int i = 0; i < nodeViewCount; i++) {
