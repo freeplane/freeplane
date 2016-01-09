@@ -88,7 +88,6 @@ final class NoteManager implements INodeSelectionListener {
 			finally {
 				ignoreEditorUpdate = false;
 			}
-			noteController.setLastContentEmpty(editorContentEmpty);
 		}
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);
 	}
@@ -121,16 +120,12 @@ final class NoteManager implements INodeSelectionListener {
 		}
 		catch (final Exception e) {
 		}
-		noteController.setDefaultFont();
+		noteController.setDefaultStyle(node);
 		final String note = node != null ? NoteModel.getNoteText(node) : null;
-		if (note != null) {
+		if (note != null)
 			noteViewerComponent.setCurrentDocumentContent(note);
-			noteController.setLastContentEmpty(false);
-		}
-		else if (!noteController.isLastContentEmpty()) {
+		else 
 			noteViewerComponent.setCurrentDocumentContent("");
-			noteController.setLastContentEmpty(true);
-		}
 		document.addDocumentListener(mNoteDocumentListener);
 	}
 }

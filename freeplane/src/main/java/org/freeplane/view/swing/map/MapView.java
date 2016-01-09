@@ -441,6 +441,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int detailHorizontalAlignment;
     private Color detailForeground;
     private Color detailBackground;
+    private int noteHorizontalAlignment;
+    private Color noteForeground;
+    private Color noteBackground;
 	private static boolean presentationModeEnabled;
 	private boolean fitToViewport;
 	private static int transparency;
@@ -1197,13 +1200,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void updateContentStyle() {
         final NodeStyleController style = Controller.getCurrentModeController().getExtension(NodeStyleController.class);
         MapModel map = getModel();
-        noteFont = UITools.scale(style.getDefaultFont(map, MapStyleModel.NOTE_STYLE));
         final MapStyleModel model = MapStyleModel.getExtension(map);
         final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
         detailFont = UITools.scale(style.getFont(detailStyleNode));
         detailBackground = style.getBackgroundColor(detailStyleNode);
         detailForeground = style.getColor(detailStyleNode);
         detailHorizontalAlignment = style.getTextAlign(detailStyleNode).swingConstant;
+        
+        final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
+        noteFont = UITools.scale(style.getFont(noteStyleNode));
+        noteBackground = style.getBackgroundColor(noteStyleNode);
+        noteForeground = style.getColor(noteStyleNode);
+        noteHorizontalAlignment = style.getTextAlign(noteStyleNode).swingConstant;
+
     }
 
 	public boolean selectLeft(boolean continious) {
@@ -1975,11 +1984,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		selectAsTheOnlyOneSelected(preferred);
     }
 
-    public Font getDefaultNoteFont() {
+    public Font getNoteFont() {
         return noteFont;
     }
 
-    public Font getDetailFont() {
+    public Color getNoteForeground() {
+        return noteForeground;
+    }
+
+    public Color getNoteBackground() {
+        return noteBackground;
+    }
+
+	public int getNoteHorizontalAlignment() {
+		return noteHorizontalAlignment;
+	}
+	
+   public Font getDetailFont() {
         return detailFont;
     }
 

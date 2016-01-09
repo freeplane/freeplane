@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="freeplane 1.5.3">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="New Concept Map" STYLE="oval">
 <hook NAME="MapStyle" max_node_width="600">
@@ -23,7 +23,7 @@
 		<font NAME="Arial" SIZE="10" BOLD="false" ITALIC="false"/>
 		</stylenode>
 		<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
-		<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+		<stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#ffffff" TEXT_ALIGN="LEFT" />
 		<stylenode LOCALIZED_TEXT="defaultstyle.floating">
 		<edge STYLE="hide_edge"/>
 		<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>

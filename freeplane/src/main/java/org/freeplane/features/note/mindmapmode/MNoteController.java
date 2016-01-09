@@ -120,11 +120,6 @@ public class MNoteController extends NoteController {
 	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
 	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
 	static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
-	/**
-	 * Indicates, whether or not the main panel has to be refreshed with new
-	 * content. The typical content will be empty, so this state is saved here.
-	 */
-	private boolean mLastContentEmpty = true;
 	private final NoteManager noteManager;
 	private SHTMLPanel noteViewerComponent;
 
@@ -209,10 +204,6 @@ public class MNoteController extends NoteController {
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
 	}
 
-	boolean isLastContentEmpty() {
-		return mLastContentEmpty;
-	}
-
 	@Override
 	protected void onWrite(final MapModel map) {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -223,10 +214,6 @@ public class MNoteController extends NoteController {
 		}
 		final NodeModel selected = selection.getSelected();
 		noteManager.saveNote(selected);
-	}
-
-	void setLastContentEmpty(final boolean mLastContentEmpty) {
-		this.mLastContentEmpty = mLastContentEmpty;
 	}
 
 	public void setNoteText(final NodeModel node, final String newText) {
@@ -310,32 +297,23 @@ public class MNoteController extends NoteController {
 		southPanel.revalidate();
 	}
 
-	void setDefaultFont() {
+	void setDefaultStyle(NodeModel node) {
 	    final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
 	    styleSheet.removeStyle("body");
 	    styleSheet.removeStyle("p");
 	    // set default font for notes:
-	    final NodeStyleController style = Controller.getCurrentModeController().getExtension(
-	        NodeStyleController.class);
-	    MapModel map = Controller.getCurrentModeController().getController().getMap();
-	    if(map != null){
-	        final Font defaultFont = style.getDefaultFont(map, MapStyleModel.NOTE_STYLE);
-	        String content = new CssRuleBuilder()
-					.withFont(defaultFont)
-					.buildRule();
-	        StringBuilder rule = new StringBuilder( "body {").append(content).append("}\n");
-	        styleSheet.addRule(rule.toString());
-	    }
+	    final ModeController modeController = Controller.getCurrentModeController();
+	    String noteCssRule = getNoteCSSStyle(modeController, node, false);
+		String bodyRule = new StringBuilder( "body {").append(noteCssRule).append("}\n").toString();
+		styleSheet.addRule(bodyRule);
 	    if (ResourceController.getResourceController().getBooleanProperty(
 	        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
 			/* this is used for paragraph spacing. I put it here, too, as
 			 * the tooltip display uses the same spacing. But it is to be discussed.
 			 * fc, 23.3.2009.
 			 */
-			String rule = "p {";
-			rule += "margin-top:0;";
-			rule += "}\n";
-			styleSheet.addRule(rule);
+			String paragraphtRule = "p {margin-top:0;}\n";
+			styleSheet.addRule(paragraphtRule);
 		}
 	}
 

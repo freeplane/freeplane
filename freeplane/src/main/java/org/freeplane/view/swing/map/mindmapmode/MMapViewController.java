@@ -87,14 +87,16 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTitle("edit_details");
                 editNodeWYSIWYG.setFont(map.getDetailFont());
                 editNodeWYSIWYG.setTextColor(map.getDetailForeground());
-                editNodeWYSIWYG.setBackground (nodeView.getDetailBackground());
+                editNodeWYSIWYG.setBackground (map.getDetailBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getDetailHorizontalAlignment());
 			}
 			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();
 	            editNodeWYSIWYG.setTitle("edit_note");
-                editNodeWYSIWYG.setFont(map.getDefaultNoteFont());
-                editNodeWYSIWYG.setBackground (Color.WHITE);
+                editNodeWYSIWYG.setFont(map.getNoteFont());
+                editNodeWYSIWYG.setTextColor(map.getNoteForeground());
+                editNodeWYSIWYG.setBackground (map.getNoteBackground());
+                editNodeWYSIWYG.setTextAlignment(map.getNoteHorizontalAlignment());
 			}
 			return editNodeWYSIWYG;
 		}
@@ -132,7 +134,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		if(EditedComponent.TEXT.equals(parent))
 			textField.setBackground (nodeView.getTextBackground());
 		else if(EditedComponent.DETAIL.equals(parent))
-			textField.setBackground (nodeView.getDetailBackground());
+			textField.setBackground (nodeView.getMap().getDetailBackground());
 		return textField;
 	}
 

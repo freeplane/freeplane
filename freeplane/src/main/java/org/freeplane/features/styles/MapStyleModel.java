@@ -172,6 +172,7 @@ public class MapStyleModel implements IExtension {
             }
             if(styleNodes.get(NOTE_STYLE) == null){
                 final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
+                NodeStyleModel.createNodeStyleModel(newNode).setBackgroundColor(Color.WHITE);
                 predefinedStyleParentNode.insert(newNode, 3);
                 addStyleNode(newNode);
             }
