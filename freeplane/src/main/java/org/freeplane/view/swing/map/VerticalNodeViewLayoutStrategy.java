@@ -25,6 +25,7 @@ import java.awt.Dimension;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
 
@@ -104,6 +105,15 @@ class VerticalNodeViewLayoutStrategy {
 			if (child.isLeft() == isLeft) {
 				final int childHeight = child.getHeight() - 2 * spaceAround;
 				final int oldLevel = level;
+				if(childViewIndex >= viewLevels.summaryLevels.length){
+					final String errorMessage = "Bad node view child components: missing node for component " + childViewIndex;
+					UITools.errorMessage(errorMessage);
+					System.err.println(errorMessage);
+					for (int i = 0; i < view.getComponentCount(); i++){
+						final Component component = view.getComponent(i);
+						System.err.println(component);
+					}
+				}
 				level = viewLevels.summaryLevels[childViewIndex];
 				boolean isFreeNode = child.isFree();
 				boolean isItem = level == 0;
