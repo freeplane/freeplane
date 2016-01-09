@@ -61,7 +61,7 @@ public class PhaseProcessor{
 
 	public void buildChildren(Entry entry) {
 		for ( Map.Entry<Phase, RecursiveMenuStructureProcessor> processEntry : processors.entrySet()){
-			for(Entry child : entry.children())
+			for(Entry child : new ArrayList<Entry>(entry.children()))
 				processEntry.getValue().build(child);
 			for(BuildPhaseListener listener : buildPhaseListeners)
 				listener.buildPhaseFinished(processEntry.getKey(), entry);
