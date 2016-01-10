@@ -76,7 +76,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		return (MModeController) controller.getModeController(MModeController.MODENAME);
 	}
 	
-	@Override
+	
 	public void handleQuitRequestWith(QuitEvent event, QuitResponse response) {
 		try {
 			controller.quit();
@@ -86,7 +86,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		response.cancelQuit();
 	}
 
-	@Override
+	
 	public void openURI(OpenURIEvent event) {
 		URI uri = event.getURI();
 		
@@ -105,13 +105,13 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		}
 	}
 
-	@Override
+	
 	public void handlePreferences(PreferencesEvent event) {
 		getModeController().getAction("PropertyAction").actionPerformed(null);
 		
 	}
 
-	@Override
+	
 	public void openFiles(OpenFilesEvent event) {
 		for(File file : event.getFiles()){
 			String filePath = file.getPath();
@@ -135,7 +135,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		}
 	}
 
-	@Override
+	
 	public void handleAbout(AboutEvent event) {
 		getModeController().getController().getAction("AboutAction").actionPerformed(null);
 		
