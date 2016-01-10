@@ -61,6 +61,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.attribute.AttributeRegistry;
@@ -451,7 +452,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final JComboBox comboBox;
 		if (dce == null) {
-			comboBox = new JComboBox(){
+			comboBox = new JComboBoxWithBorder(){
 
 				// Workaround for bug introduced in Java 8: they use wrong component in DefaultCellEditor.EditorDelegate
 				@Override

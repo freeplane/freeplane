@@ -64,6 +64,7 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -328,7 +329,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	@Override
     protected JComponent createDirectorySelector(final JFileChooser chooser) {
-		final JComboBox box = new JComboBox();
+		final JComboBox box = new JComboBoxWithBorder();
 		box.setEditable(false);
 		final File dir = getLastCurrentDir() != null ? getLastCurrentDir() : chooser.getCurrentDirectory();
 		final File templateDir = defaultStandardTemplateDir();

@@ -57,6 +57,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.calendar.JCalendar;
 import org.freeplane.core.ui.components.calendar.JDayChooser;

@@ -55,6 +55,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.LogUtils;
@@ -358,7 +359,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"),
 		    applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
-		activeFilterConditionComboBox = new JComboBox(getFilterConditions());
+		activeFilterConditionComboBox = new JComboBoxWithBorder(getFilterConditions());
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
 		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));

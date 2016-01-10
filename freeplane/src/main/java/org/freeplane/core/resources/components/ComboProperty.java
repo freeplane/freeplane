@@ -30,6 +30,7 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -51,7 +52,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	                     final Collection<String> possibleTranslations) {
 		super(name);
 		fillPossibleValues(possibles);
-		mComboBox = new JComboBox();
+		mComboBox = new JComboBoxWithBorder();
 		mComboBox.setModel(new DefaultComboBoxModel(new Vector<String>(possibleTranslations)));
 		mComboBox.addActionListener(this);
 		//mComboBox.setRenderer(ComboBoxSmallFontRenderer.INSTANCE);

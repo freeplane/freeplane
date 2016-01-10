@@ -53,7 +53,7 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 	public ContainerComboBoxEditor() {
 		editors = new HashMap<NamedObject, ComboBoxEditor>();
 		editorComponent = Box.createHorizontalBox();
-		editorSelector = new JComboBox();
+		editorSelector = new JComboBoxWithBorder();
 		editorSelector.setEditable(false);
 		editorSelector.setRenderer(NamedObject.getIconRenderer());
 		editorSelector.addActionListener(new ActionListener() {

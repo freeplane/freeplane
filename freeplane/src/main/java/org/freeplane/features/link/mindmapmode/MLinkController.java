@@ -62,6 +62,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
@@ -269,7 +270,7 @@ public class MLinkController extends LinkController {
 			final MapModel map = model.getMap();
 			final MapLinks links = map.getExtension(MapLinks.class);
 			if (links != null) {
-				deleteMapLinks(links, model);
+				deleteMapLinks(links, model, model);
 				updateMapLinksForTargetTree(links, model);
 			}
 		}
@@ -291,14 +292,14 @@ public class MLinkController extends LinkController {
 	        }
         }
 
-		private void deleteMapLinks(final MapLinks links, final NodeModel model) {
-			final List<NodeModel> children = model.getChildren();
+		private void deleteMapLinks(final MapLinks links, final NodeModel deletionRoot, NodeModel node) {
+			final List<NodeModel> children = node.getChildren();
 			for (final NodeModel child : children) {
-				deleteMapLinks(links, child);
+				deleteMapLinks(links, deletionRoot, child);
 			}
-			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
+			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
 			if (nodeLinks != null) {
-				nodeLinks.replaceMapLinksForDeletedSourceNode(links, model);
+				nodeLinks.replaceMapLinksForDeletedSourceNode(links, deletionRoot, node);
 			}
 		}
 
@@ -464,7 +465,7 @@ public class MLinkController extends LinkController {
 			final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 			DefaultComboBoxModel fonts = new DefaultComboBoxModel(envFonts);
 			fonts.setSelectedItem(link.getLabelFontFamily());
-			JComboBox fontBox = new JComboBox(fonts);
+			JComboBox fontBox = new JComboBoxWithBorder(fonts);
 			fontBox.setEditable(false);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_family"), fontBox);
 			fontBox.addItemListener(new ItemListener() {
@@ -479,7 +480,7 @@ public class MLinkController extends LinkController {
 			final Integer[] sizes = {4, 6, 8, 10, 12, 14, 16, 18, 24, 36};
 			DefaultComboBoxModel sizesModel = new DefaultComboBoxModel(sizes);
 			sizesModel.setSelectedItem(link.getLabelFontSize());
-			JComboBox sizesBox = new JComboBox(sizesModel);
+			JComboBox sizesBox = new JComboBoxWithBorder(sizesModel);
 			sizesBox.setEditable(true);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
 			sizesBox.addItemListener(new ItemListener() {
@@ -558,7 +559,7 @@ public class MLinkController extends LinkController {
 
     @SuppressWarnings("serial")
     protected JComboBox createActionBox(AFreeplaneAction[] items) {
-        final JComboBox box = new JComboBox();
+        final JComboBox box = new JComboBoxWithBorder();
         box.setEditable(false);
         box.setModel(new DefaultComboBoxModel(items));
         for(AFreeplaneAction item : items){
@@ -1124,7 +1125,7 @@ public class MLinkController extends LinkController {
 				
 				@Override
 				public void act() {
-					mapLinkChanger.deleteMapLinks(mapLinks, model);
+					mapLinkChanger.deleteMapLinks(mapLinks, model, model);
 				}
 			};
 			modeController.execute(actor, map);
@@ -1139,7 +1140,7 @@ public class MLinkController extends LinkController {
 			IActor actor = new IActor() {
 				@Override
 				public void undo() {
-					mapLinkChanger.deleteMapLinks(mapLinks, model);
+					mapLinkChanger.deleteMapLinks(mapLinks, model, model);
 				}
 				
 				@Override

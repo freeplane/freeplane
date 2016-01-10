@@ -41,6 +41,7 @@ import javax.swing.border.EtchedBorder;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -126,7 +127,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 		gridBagConstraints.gridy++;
 		//Attribute name combo-box
 		gridBagConstraints.insets = new Insets(2, 10, 20, 10);
-		attributeNames = new JComboBox();
+		attributeNames = new JComboBoxWithBorder();
 		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		final ComboBoxModel names = attributes.getComboBoxModel();
@@ -141,7 +142,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 		});
 		panel.add(attributeNames, gridBagConstraints);
 		//Attribute value combo-box
-		attributeValues = new JComboBox();
+		attributeValues = new JComboBoxWithBorder();
 		attributeValues.setRenderer(new TypedListCellRenderer());
 		attributeValues.setMaximumSize(comboBoxMaximumSize);
 		attributeValues.setPreferredSize(comboBoxMaximumSize);

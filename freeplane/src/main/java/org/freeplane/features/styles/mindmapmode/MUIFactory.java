@@ -31,6 +31,7 @@ import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -187,13 +188,13 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	public Container createStyleBox() {
-		final JComboBox stylesBox = new JComboBox(styles);
+		final JComboBox stylesBox = new JComboBoxWithBorder(styles);
 		stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
 		return stylesBox;
 	}
 
 	public Container createSizeBox() {
-		final JComboBox sizeBox = new JComboBox(size);
+		final JComboBox sizeBox = new JComboBoxWithBorder(size);
 		final Dimension preferredSize = sizeBox.getPreferredSize();
 		sizeBox.setPreferredSize(new Dimension(50, preferredSize.height));
 		sizeBox.setEditor(new FixedBasicComboBoxEditor());
@@ -202,7 +203,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	public Container createFontBox() {
-		final JComboBox fontsBox = new JComboBox(fonts);
+		final JComboBox fontsBox = new JComboBoxWithBorder(fonts);
 		fontsBox.setMaximumRowCount(9);
 		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
 		return fontsBox;

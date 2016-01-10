@@ -59,6 +59,7 @@ import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
@@ -892,7 +893,7 @@ public class StyleEditorPanel extends JPanel {
 		{
 		if(mAutomaticLayoutComboBox == null){
 			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticLayout.class);
-			 mAutomaticLayoutComboBox = new JComboBox(automaticLayoutTypes);
+			 mAutomaticLayoutComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
 			 DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();
 			 automaticLayoutComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
 			 automaticLayoutComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
@@ -919,7 +920,7 @@ public class StyleEditorPanel extends JPanel {
 			
 			if(mAutomaticEdgeColorComboBox == null){
 	 			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
-	 			 mAutomaticEdgeColorComboBox = new JComboBox(automaticLayoutTypes);
+	 			 mAutomaticEdgeColorComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
 				 DefaultComboBoxModel automaticEdgeColorComboBoxModel = (DefaultComboBoxModel) mAutomaticEdgeColorComboBox.getModel();
 				 automaticEdgeColorComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
 				 automaticEdgeColorComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
