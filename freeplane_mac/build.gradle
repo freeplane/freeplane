@@ -6,4 +6,4 @@ dependencies {
     }
 }
 
-compileJava.onlyIf { Os.isFamily(Os.FAMILY_MAC) }
+compileJava.onlyIf { Os.isFamily(Os.FAMILY_MAC) && Boolean.getBoolean('compileMacChanges')}
