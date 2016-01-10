@@ -269,7 +269,7 @@ public class MLinkController extends LinkController {
 			final MapModel map = model.getMap();
 			final MapLinks links = map.getExtension(MapLinks.class);
 			if (links != null) {
-				deleteMapLinks(links, model);
+				deleteMapLinks(links, model, model);
 				updateMapLinksForTargetTree(links, model);
 			}
 		}
@@ -291,14 +291,14 @@ public class MLinkController extends LinkController {
 	        }
         }
 
-		private void deleteMapLinks(final MapLinks links, final NodeModel model) {
-			final List<NodeModel> children = model.getChildren();
+		private void deleteMapLinks(final MapLinks links, final NodeModel deletionRoot, NodeModel node) {
+			final List<NodeModel> children = node.getChildren();
 			for (final NodeModel child : children) {
-				deleteMapLinks(links, child);
+				deleteMapLinks(links, deletionRoot, child);
 			}
-			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(model);
+			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
 			if (nodeLinks != null) {
-				nodeLinks.replaceMapLinksForDeletedSourceNode(links, model);
+				nodeLinks.replaceMapLinksForDeletedSourceNode(links, deletionRoot, node);
 			}
 		}
 
@@ -1124,7 +1124,7 @@ public class MLinkController extends LinkController {
 				
 				@Override
 				public void act() {
-					mapLinkChanger.deleteMapLinks(mapLinks, model);
+					mapLinkChanger.deleteMapLinks(mapLinks, model, model);
 				}
 			};
 			modeController.execute(actor, map);
@@ -1139,7 +1139,7 @@ public class MLinkController extends LinkController {
 			IActor actor = new IActor() {
 				@Override
 				public void undo() {
-					mapLinkChanger.deleteMapLinks(mapLinks, model);
+					mapLinkChanger.deleteMapLinks(mapLinks, model, model);
 				}
 				
 				@Override

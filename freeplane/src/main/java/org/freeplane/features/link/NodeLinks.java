@@ -210,15 +210,15 @@ public class NodeLinks implements IExtension {
     	this.formatNodeAsHyperlink = formatNodeAsHyperlink;
     }
 
-	public void replaceMapLinksForDeletedSourceNode(MapLinks mapLinks, NodeModel model) {
+	public void replaceMapLinksForDeletedSourceNode(MapLinks mapLinks, final NodeModel deletionRoot, NodeModel node) {
 		final ListIterator<NodeLinkModel> linkIterator = links.listIterator();
 		LINKS: while (linkIterator.hasNext()) {
 			NodeLinkModel link = linkIterator.next();
 			final NodeModel linkSource = link.getSource();
-			if(linkSource.equals(model)) {
+			if(linkSource.equals(node)) {
 				mapLinks.remove(link);
-				for(NodeModel newSource : model.subtreeClones()){
-					if(model != newSource) {
+				for(NodeModel newSource : node.subtreeClones()){
+					if(node != newSource && ! newSource.isDescendantOf(deletionRoot)) {
 						final NodeLinkModel cloneForSource = link.cloneForSource(newSource);
 						if(cloneForSource != null){
 							linkIterator.remove();
