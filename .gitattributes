@@ -21,5 +21,5 @@ freeplane_framework/mac-jarbundler/universalJavaApplicationStub eol=lf
 
 *.exe -text
 *.dll -text
-freeplane_framework/mac-jarbundler/FreeplaneJavaApplicationStub -text
+
 
