@@ -414,11 +414,9 @@
 			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="EditFilterAction" />
 			<Entry builder="separator" />
-			<Entry name="FilterCondition">
-				<Entry name="ApplyToVisibleAction" />
-				<Entry name="ShowAncestorsAction" />
-				<Entry name="ShowDescendantsAction" />
-			</Entry>
+			<Entry name="ApplyToVisibleAction" />
+			<Entry name="ShowAncestorsAction" />
+			<Entry name="ShowDescendantsAction" />
 			<Entry builder="separator" />
 			<Entry name="QuickHighlightAction" />
 			<Entry name="QuickFindAction.BACK" />

@@ -70,15 +70,14 @@
 			<Entry name="QuickFindAllAction" />
 			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="EditFilterAction" />
-			<Entry name="FilterCondition">
-				<Entry name="ApplyToVisibleAction" />
-				<Entry name="ShowAncestorsAction" />
-				<Entry name="ShowDescendantsAction" />
-			</Entry>
-			<Entry name="find">
-				<Entry name="QuickFindAction.BACK" />
-				<Entry name="QuickFindAction.FORWARD" />
-			</Entry>
+			<Entry builder="separator" />
+			<Entry name="ShowAncestorsAction" />
+			<Entry name="ShowDescendantsAction" />
+			<Entry name="ApplyToVisibleAction" />
+			<Entry builder="separator" />
+			<Entry name="QuickHighlightAction" />
+			<Entry name="QuickFindAction.BACK" />
+			<Entry name="QuickFindAction.FORWARD" />
 		</Entry>
 		<Entry name="extras">
 			<Entry name="encryption">
