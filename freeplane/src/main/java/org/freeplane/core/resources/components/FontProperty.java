@@ -27,13 +27,14 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.util.LogUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class FontProperty extends PropertyBean implements IPropertyControl {
 	final private String[] mAvailableFontFamilyNames;
-	JComboBox mFontComboBox = new JComboBox();
+	JComboBox mFontComboBox = new JComboBoxWithBorder();
 
 	/**
 	 */

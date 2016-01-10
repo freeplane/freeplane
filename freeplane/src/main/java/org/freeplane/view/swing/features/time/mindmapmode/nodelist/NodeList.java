@@ -71,6 +71,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -352,7 +353,7 @@ public class NodeList {
 		this.modal = modal;
 		this.showAllNodes = showAllNodes;
 		this.searchInAllMaps = searchInAllMaps;
-		mFilterTextSearchField = new JComboBox();
+		mFilterTextSearchField = new JComboBoxWithBorder();
 		mFilterTextSearchField.setEditable(true);
 		final FilterTextDocumentListener listener = new FilterTextDocumentListener();
 		mFilterTextSearchField.addActionListener(listener);
@@ -366,7 +367,7 @@ public class NodeList {
 				}
 			}
 		});
-		mFilterTextReplaceField = new JComboBox();
+		mFilterTextReplaceField = new JComboBoxWithBorder();
 		mFilterTextReplaceField.setEditable(true);
 		mFilterTextReplaceField.addKeyListener(new KeyAdapter() {
 			@Override

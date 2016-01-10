@@ -38,6 +38,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
@@ -221,7 +222,7 @@ public class AttributePanelManager{
             	if(! items.get(i).canFormat(NodeAttributeTableModel.class))
             		items.remove(i);
             }
-			final JComboBox formatChooser = new JComboBox(items);
+			final JComboBox formatChooser = new JComboBoxWithBorder(items);
             formatChooser.setEditable(true);
             formatChooser.setSelectedItem(null);
             final String NODE_FORMAT = "OptionPanel.nodeformat"; // duplicated from StyleEditorPanel

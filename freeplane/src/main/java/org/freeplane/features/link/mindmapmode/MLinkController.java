@@ -62,6 +62,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
@@ -464,7 +465,7 @@ public class MLinkController extends LinkController {
 			final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 			DefaultComboBoxModel fonts = new DefaultComboBoxModel(envFonts);
 			fonts.setSelectedItem(link.getLabelFontFamily());
-			JComboBox fontBox = new JComboBox(fonts);
+			JComboBox fontBox = new JComboBoxWithBorder(fonts);
 			fontBox.setEditable(false);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_family"), fontBox);
 			fontBox.addItemListener(new ItemListener() {
@@ -479,7 +480,7 @@ public class MLinkController extends LinkController {
 			final Integer[] sizes = {4, 6, 8, 10, 12, 14, 16, 18, 24, 36};
 			DefaultComboBoxModel sizesModel = new DefaultComboBoxModel(sizes);
 			sizesModel.setSelectedItem(link.getLabelFontSize());
-			JComboBox sizesBox = new JComboBox(sizesModel);
+			JComboBox sizesBox = new JComboBoxWithBorder(sizesModel);
 			sizesBox.setEditable(true);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
 			sizesBox.addItemListener(new ItemListener() {
@@ -558,7 +559,7 @@ public class MLinkController extends LinkController {
 
     @SuppressWarnings("serial")
     protected JComboBox createActionBox(AFreeplaneAction[] items) {
-        final JComboBox box = new JComboBox();
+        final JComboBox box = new JComboBoxWithBorder();
         box.setEditable(false);
         box.setModel(new DefaultComboBoxModel(items));
         for(AFreeplaneAction item : items){

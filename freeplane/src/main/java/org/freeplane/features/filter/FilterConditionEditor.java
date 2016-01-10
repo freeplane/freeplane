@@ -48,6 +48,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -170,7 +171,7 @@ public class FilterConditionEditor extends JComponent {
 		this.filterController = filterController;
 		//Basic layout
 		//Item to search for
-		filteredPropertiesComponent = new JComboBox();
+		filteredPropertiesComponent = new JComboBoxWithBorder();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
 		filteredPropertiesComponent.setModel(filteredPropertiesModel);
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
@@ -181,14 +182,14 @@ public class FilterConditionEditor extends JComponent {
 		gridBagConstraints.gridx++;
 		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
 		//Search condition
-		elementaryConditions = new JComboBox();
+		elementaryConditions = new JComboBoxWithBorder();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
 		elementaryConditions.setAlignmentY(Component.TOP_ALIGNMENT);
 		add(elementaryConditions, gridBagConstraints);
 		gridBagConstraints.gridx++;
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		//Search value
-		values = new JComboBox();
+		values = new JComboBoxWithBorder();
 		values.setPreferredSize(new Dimension(240,20));
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		add(values, gridBagConstraints);
