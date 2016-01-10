@@ -35,10 +35,10 @@ jar {
         symbolicName = pluginid
 
         def deps = configurations.runtime.files.collect { "lib/${it.name}" }
-        deps.add(0, "lib/freeplaneosgi-" + project.version + ".jar")
+        deps.add(0, "lib/freeplaneosgi-${project.version}.jar")
         // this is built from :freeplane_mac on a Mac!
-        //deps.add(0, "lib/freeplanemac.jar")
-        deps.add(0, "lib/freeplaneeditor-" + project.version + ".jar")
+        deps.add(0, "lib/freeplane_mac-${project.version}.jar")
+        deps.add(0, "lib/freeplaneeditor-${project.version}.jar")
         deps.add(0, "lib/freeplaneviewer.jar")
 
         attributes 'Class-Path' : deps.join(', ')
