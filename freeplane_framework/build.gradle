@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.*
+
 task freeplanelauncherJar(type: Jar) {
      archiveName = 'freeplanelauncher.jar'
      destinationDir = new File(globalBuild)
@@ -17,11 +19,17 @@ task freeplanelauncherJar(type: Jar) {
 
 jar.dependsOn freeplanelauncherJar
 
-task copyLauncherStuff(type: Copy) {
+task copyFreeplaneShellScript(type: Copy) {
      from('script/') {
          include('freeplane.sh')
          fileMode = 0755
      }
+	 into(globalBuild)
+	 filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
+}	 
+
+task copyLauncherStuff(type: Copy) {
+	 dependsOn 'copyFreeplaneShellScript'
      from('script/') {
          include('*')
          exclude('freeplane.sh')
