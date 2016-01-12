@@ -515,6 +515,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	public FilterComposerDialog getFilterComposerDialog() {
 		if(filterComposerDialog == null){
 			filterComposerDialog = new FilterComposerDialog();
+			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(filterComposerDialog);
 		}
 		return filterComposerDialog;
     }
