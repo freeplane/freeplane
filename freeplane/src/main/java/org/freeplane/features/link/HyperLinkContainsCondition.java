@@ -45,7 +45,7 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 		this.matchCase = matchCase;
 		this.matchApproximately = matchApproximately;
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
-			new ExactStringMatchingStrategy();
+			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	@Override

@@ -58,7 +58,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		this.matchCase = matchCase;
 		this.matchApproximately = matchApproximately;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
-			new ExactStringMatchingStrategy();
+			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if(value instanceof String && resourceController.getBooleanProperty("compare_as_number") && TextUtils.isNumber((String) value)) {
 			Number number = TextUtils.toNumber((String) value);
@@ -94,7 +94,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		this.matchApproximately = false;
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
-			new ExactStringMatchingStrategy();
+			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	protected CompareConditionAdapter(final Long value) {
@@ -103,7 +103,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 		this.matchApproximately = false;
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
-			new ExactStringMatchingStrategy();
+			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	@Override

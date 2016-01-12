@@ -52,7 +52,7 @@ public class NodeContainsCondition extends ASelectableCondition {
 		this.nodeItem = nodeItem;
 		this.matchApproximately = matchApproximately; 
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
-			new ExactStringMatchingStrategy();
+			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	public boolean checkNode(final NodeModel node) {

@@ -58,7 +58,7 @@ final class QuickFilterAction extends AFreeplaneAction {
 		if(condition == null){
 			return;
 		}
-		if (isSelected() && ! filterController.getApplyToVisibleNodeOnly().isSelected())
+		if (condition.equals(filterController.getSelectedCondition()))
 			filterController.applyNoFiltering();
 		else {
 			setSelected(false);

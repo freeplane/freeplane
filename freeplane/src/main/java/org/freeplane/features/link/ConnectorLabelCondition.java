@@ -61,7 +61,7 @@ public abstract class ConnectorLabelCondition extends ASelectableCondition {
 		this.text = text;
 		this.matchApproximately = matchApproximately;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
-			new ExactStringMatchingStrategy();
+			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	public String getText() {

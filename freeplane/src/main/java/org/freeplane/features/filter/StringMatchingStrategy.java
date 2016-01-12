@@ -25,7 +25,8 @@ public interface StringMatchingStrategy {
 	
 	double APPROXIMATE_MATCHING_MINPROB = ResourceController.getResourceController().getDoubleProperty("approximate_search_threshold");
 	
-	StringMatchingStrategy DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY = new PseudoDamerauLevenshtein();
+	static final StringMatchingStrategy DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY = new PseudoDamerauLevenshtein();
+	static final StringMatchingStrategy EXACT_STRING_MATCHING_STRATEGY = new ExactStringMatchingStrategy();
 	
 	/**
 	 * Check for a match between a search term and a text.
