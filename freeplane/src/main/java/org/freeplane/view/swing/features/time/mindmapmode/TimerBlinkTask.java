@@ -23,6 +23,8 @@ import java.util.TimerTask;
 
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.ResourceController;
+
 
 /**
  * @author Dimitry Polivaev
@@ -60,7 +62,17 @@ class TimerBlinkTask extends TimerTask {
 					runScript = false;
 					reminderController.runScript(reminderExtension);
 				}
-				alreadyExecuted = true;
+				if(! alreadyExecuted){
+					if(ResourceController.getResourceController().getBooleanProperty("remindersShowNotifications"))
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								reminderController.showNotificationPopup(reminderExtension);
+							}
+						});
+						
+					alreadyExecuted = true;
+				}
 				stateAdded = !stateAdded;
 				reminderController.blink(reminderExtension, stateAdded);
 			}

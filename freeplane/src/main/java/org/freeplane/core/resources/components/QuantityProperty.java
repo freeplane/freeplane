@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -62,13 +61,16 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 		unitBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				final U newUnit = getCurrentUnit();
-				double value = (Double) numberSpinner.getValue();
-				final Quantity<U> newQuantity = new Quantity<U>(value, currentUnit).in(newUnit);
-				if(value != newQuantity.value)
-					numberSpinner.setValue(newQuantity.value);
-				else
-					firePropertyChangeEvent();
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					final U newUnit = getCurrentUnit();
+					double value = (Double) numberSpinner.getValue();
+					final Quantity<U> newQuantity = new Quantity<U>(value, currentUnit).in(newUnit);
+					currentUnit = newUnit;
+					if(value != newQuantity.value)
+						numberSpinner.setValue(newQuantity.value);
+					else
+						firePropertyChangeEvent();
+				}
 			}
 		});
 	}

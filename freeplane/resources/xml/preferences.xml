@@ -38,7 +38,7 @@
 				<path name="default_save_dir" dir="true"/>
 			</separator>
 			<separator name="automatic_save">
-				<number name="time_for_automatic_save" min="0" />
+				<time_period name="time_for_automatic_save" />
 				<boolean name="single_backup_directory" />
 				<path name="single_backup_directory_path" dir="true" />
 				<boolean name="delete_automatic_saves_at_exit" />
@@ -179,6 +179,7 @@
 				<boolean name="copyFormatToNewSiblingIncludesIcons"/>
 				<boolean name="scrollOnUnfold"/>
 				<boolean name="remindersBlink" />
+				<time_period name="remindersStandardDelay" />
 			</separator>
 			<separator name="SplitToWordsAction">
 				<string name="SplitToWordsAction.auxiliaryWordList"/>

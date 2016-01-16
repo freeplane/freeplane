@@ -138,7 +138,7 @@ public class MapStyleModel implements IExtension {
 			NodeStyleModel.setShapeConfiguration(root, ShapeConfigurationModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
 			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
-			final Quantity<LengthUnits> styleBlockGap = ResourceController.getResourceController().getQuantityProperty("style_block_gap");
+			final Quantity<LengthUnits> styleBlockGap = ResourceController.getResourceController().getLengthQuantityProperty("style_block_gap");
 			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
 			insertStyleMap(parentMap, styleMap);
 			NodeModel predefinedStyleParentNode = createStyleGroupNode(styleMap, STYLES_PREDEFINED);

@@ -27,6 +27,8 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -54,6 +56,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.script.IScriptStarter;
+import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.features.time.mindmapmode.TimeManagement.JTimePanel;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.AllMapsNodeListAction;
@@ -348,4 +351,42 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 			return;
 		starter.executeScript(node, script);
     }
+	/**
+	 * @author Dimitry
+	 *
+	 */
+	enum NotificationOptions {
+		SELECT_NODE, REMOVE_REMINDER, REMIND_ME_LATER, CLOSE;
+
+		@Override
+		public String toString() {
+			return TextUtils.getText("NotificationOptions." + name());
+		}
+		
+	};
+	public void showNotificationPopup(ReminderExtension reminderExtension) {
+		final NodeModel node = reminderExtension.getNode();
+		
+		String information = modeController.getExtension(TextController.class).getText(node);
+		String title = TextUtils.getText("reminderNotification");
+		final int option = JOptionPane.showOptionDialog(UITools.getCurrentFrame(), new JLabel(information), title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, NotificationOptions.values(), NotificationOptions.SELECT_NODE);
+		switch(NotificationOptions.values()[option]){
+		case SELECT_NODE:
+			Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+			break;
+		case REMOVE_REMINDER:
+			undoableDeactivateHook(node);
+			break;
+		case REMIND_ME_LATER:
+			remove(node, reminderExtension);
+			final long now = new Date().getTime();
+			final int delay = ResourceController.getResourceController().getTimeProperty("remindersStandardDelay");
+			reminderExtension.setRemindUserAt(now + delay);
+			add(node, reminderExtension);
+			break;
+		case CLOSE:
+			break;
+		}
+		
+	}
 }

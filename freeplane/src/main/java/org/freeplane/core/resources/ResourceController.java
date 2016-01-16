@@ -37,6 +37,7 @@ import java.util.Vector;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
@@ -156,13 +157,24 @@ public abstract class ResourceController {
 
 
 	public int getLengthProperty(String name) {
-		final Quantity<LengthUnits> quantity = getQuantityProperty(name);
+		final Quantity<LengthUnits> quantity = getLengthQuantityProperty(name);
 		return quantity.toBaseUnitsRounded();
 	}
 
-	public Quantity<LengthUnits> getQuantityProperty(String name) {
+	public Quantity<LengthUnits> getLengthQuantityProperty(String name) {
 		final String property = getProperty(name);
 		final Quantity<LengthUnits> quantity = Quantity.fromString(property, LengthUnits.px);
+		return quantity;
+	}
+	
+	public int getTimeProperty(String name) {
+		final Quantity<TimePeriodUnits> quantity = getTimeQuantityProperty(name);
+		return quantity.toBaseUnitsRounded();
+	}
+
+	public Quantity<TimePeriodUnits> getTimeQuantityProperty(String name) {
+		final String property = getProperty(name);
+		final Quantity<TimePeriodUnits> quantity = Quantity.fromString(property, TimePeriodUnits.ms);
 		return quantity;
 	}
 
