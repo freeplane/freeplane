@@ -10,7 +10,9 @@ Extend scripting API for clones
 Only connectors inside cloned subtrees are replicated
 Local hyperlink targets are not changed for clones
 Save autosave period in time period units
-Reminder notifications
+Reminder notification popups
+Change shortcut for blue color in inline editor to control + L
+Use dark green in inline editor
 
 ===============================
 1.5.3
