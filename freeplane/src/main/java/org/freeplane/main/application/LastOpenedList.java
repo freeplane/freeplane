@@ -165,7 +165,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
 			final NodeModel node = Controller.getCurrentController().getMap()
 			    .getNodeForID(recentFile.lastVisitedNodeId);
-			if (node != null) {
+			if (node != null && node.hasVisibleContent()) {
 				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 				return true;
 			}
