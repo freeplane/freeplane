@@ -1,4 +1,12 @@
 ===============================
+1.5.5
+===============================
+Save autosave period in time period units
+Reminder notification popups
+Change shortcut for blue color in inline editor to control + L
+Use dark green in inline editor
+
+===============================
 1.5.4
 ===============================
 Single node clones
@@ -9,10 +17,6 @@ Optionally copy icons with node format
 Extend scripting API for clones
 Only connectors inside cloned subtrees are replicated
 Local hyperlink targets are not changed for clones
-Save autosave period in time period units
-Reminder notification popups
-Change shortcut for blue color in inline editor to control + L
-Use dark green in inline editor
 
 ===============================
 1.5.3
