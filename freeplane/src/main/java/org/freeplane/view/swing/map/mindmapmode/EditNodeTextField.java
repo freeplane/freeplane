@@ -485,7 +485,7 @@ public class EditNodeTextField extends EditNodeBase {
 		redAction = new ForegroundAction(TextUtils.getText("red"), Color.RED);
 		redAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control R"));
 		
-		greenAction = new ForegroundAction(TextUtils.getText("green"), Color.GREEN);
+		greenAction = new ForegroundAction(TextUtils.getText("green"), Color.GREEN.darker());
 		greenAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control G"));
 		
 		blueAction = new ForegroundAction(TextUtils.getText("blue"), Color.BLUE);
