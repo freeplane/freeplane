@@ -125,7 +125,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e))
 		        && !nodeSelector.shouldSelectOnClick(e)) {
-			boolean fold = FoldingMark.UNFOLDED.equals(component.foldingMarkType(mapController, nodeView)) && ! mapController.hasHiddenChildren(node);
+			boolean fold = ! node.isFolded();
 			doubleClickTimer.cancel();
 			mc.getController().getSelection().keepNodePosition(node, 0, 0);
 			mapController.setFolded(node, fold);
