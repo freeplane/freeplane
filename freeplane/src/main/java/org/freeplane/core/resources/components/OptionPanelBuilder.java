@@ -43,6 +43,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -224,6 +225,30 @@ public class OptionPanelBuilder {
 			final String maxString = data.getAttribute("max", "100000");
 			final String stepString = data.getAttribute("step", "0.1");
 			final String defaultUnit = data.getAttribute("defaultUnit", "px");
+			return createNumberPropertyCreator(name,
+					defaultUnit,
+					Double.parseDouble(minString),
+					Double.parseDouble(stepString),
+					Double.parseDouble(maxString));
+		}
+	}
+	
+	private class TimePeriodOptionCreator extends PropertyCreator {
+		private IPropertyControlCreator createNumberPropertyCreator(
+				final String name, final String defaultUnit, final double min, final double step, final double max) {
+			return new IPropertyControlCreator() {
+				public IPropertyControl createControl() {
+					return new QuantityProperty<TimePeriodUnits>(name, min, max, step, TimePeriodUnits.valueOf(defaultUnit));
+				}
+			};
+		}
+		
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			final String minString = data.getAttribute("min", "0");
+			final String maxString = data.getAttribute("max", "100000");
+			final String stepString = data.getAttribute("step", "1");
+			final String defaultUnit = data.getAttribute("defaultUnit", "ms");
 			return createNumberPropertyCreator(name,
 					defaultUnit,
 					Double.parseDouble(minString),
@@ -595,6 +620,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("boolean", new BooleanOptionCreator());
 		readManager.addElementHandler("number", new NumberOptionCreator());
 		readManager.addElementHandler("length", new LengthOptionCreator());
+		readManager.addElementHandler("time_period", new TimePeriodOptionCreator());
 		readManager.addElementHandler("path", new PathOptionCreator());
 		readManager.addElementHandler("color", new ColorOptionCreator());
 		readManager.addElementHandler("combo", new ComboOptionCreator());
