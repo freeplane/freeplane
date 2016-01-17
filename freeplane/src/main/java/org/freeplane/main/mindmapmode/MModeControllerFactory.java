@@ -65,6 +65,7 @@ import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
+import org.freeplane.features.export.mindmapmode.ImportXmlFile;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.icon.IconController;
@@ -192,6 +193,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new SplitNode());
 		new ChangeNodeLevelController(modeController);
 		NodeHistory.install(modeController);
+		modeController.addAction(new ImportXmlFile());
 		modeController.addAction(new ImportMindmanagerFiles());
 	}
 

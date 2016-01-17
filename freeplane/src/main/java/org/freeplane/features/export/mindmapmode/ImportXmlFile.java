@@ -20,33 +20,29 @@ package org.freeplane.features.export.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ExampleFileFilter;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 
 /**
  * Applies an XSLT to the Document.xml file of MindManager(c) files.
  */
-public class ImportMindmanagerFiles extends AFreeplaneAction {
+public class ImportXmlFile extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ImportMindmanagerFiles() {
-		super("ImportMindmanagerFiles");
+	public ImportXmlFile() {
+		super("ImportXmlFile");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String type = "mmap";
+		final String type = "xml";
 		final Component component = Controller.getCurrentController().getViewController().getCurrentRootComponent();
 		final JFileChooser chooser = new JFileChooser();
 		final ExampleFileFilter filter = new ExampleFileFilter(type, null);
@@ -61,32 +57,16 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			return;
 		}
 		final File chosenFile = chooser.getSelectedFile();
-		importMindmanagerFile(chosenFile);
+		importXmlFile(chosenFile);
 	}
 
-	private void importMindmanagerFile(final File file) {
-		ZipInputStream in = null;
-		try {
-			in = new ZipInputStream(new FileInputStream(file));
-			while (in.available() != 0) {
-				final ZipEntry entry = in.getNextEntry();
-				if (entry == null) {
-					break;
-				}
-				if (!entry.getName().equals("Document.xml")) {
-					continue;
-				}
-				final String xsltFileName = "/xslt/mindmanager2mm.xsl";
-				final File outputFile = new File (file.getParent(), file.getName() + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
-				new XmlImporter(xsltFileName).importXml(in, outputFile);
-				break;
-			}
+	private void importXmlFile(final File file) {
+		final String xsltFileName = "/xslt/xml2mm.xsl";
+		try{
+			new XmlImporter(xsltFileName).importXml(file);
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
-		}
-		finally {
-			FileUtils.silentlyClose(in);
 		}
 	}
 
