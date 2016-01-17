@@ -21,6 +21,9 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Date;
 
@@ -32,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.Timer;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -372,7 +376,21 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final int option = JOptionPane.showOptionDialog(UITools.getCurrentFrame(), new JLabel(information), title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, NotificationOptions.values(), NotificationOptions.SELECT_NODE);
 		switch(NotificationOptions.values()[option]){
 		case SELECT_NODE:
-			Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+			UITools.executeWhenNodeHasFocus(new Runnable() {
+				@Override
+				public void run() {
+					// Work around because docking windows work with delayed actions
+					final Timer timer = new Timer(100, new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Controller.getCurrentModeController().getMapController().select(node);
+						}
+					});
+					timer.setRepeats(false);
+					timer.start();
+				}
+			});
+				
 			break;
 		case REMOVE_REMINDER:
 			undoableDeactivateHook(node);

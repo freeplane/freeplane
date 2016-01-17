@@ -153,6 +153,15 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 	}
 
+	@Override
+	public void changeToMap(MapModel map) {
+		for (final MapView view : mapViewVector) {
+			if (view.getModel().equals(map)) {
+				changeToMapView(view);
+			}
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#changeToMapView(org.freeplane.view.swing.map.MapView)
 	 */
@@ -584,6 +593,9 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	public boolean tryToChangeToMapView(URL url) throws MalformedURLException {
+		final MapModel currentMap = getModel();
+		if(currentMap != null && url.equals(currentMap.getURL()))
+			return true;
 		final String mapExtensionKey = checkIfFileIsAlreadyOpened(url);
 		if (mapExtensionKey != null) {
 			tryToChangeToMapView(mapExtensionKey);

@@ -67,20 +67,34 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
+
+	@Override
+	public void changeToMap(MapModel map) {
+		for(Map.Entry<String, MapModel> mapEntry : maps.entrySet())
+			if(mapEntry.getValue().equals(map)) {
+				changeToMap(map, mapEntry.getKey());
+				return;
+			}
+	}
+	
 	public boolean changeToMapView(String mapViewDisplayName) {
 		if(mapViewDisplayName != null && maps.containsKey(mapViewDisplayName)) {
 			final MapModel nextMap = maps.get(mapViewDisplayName);
-			MapModel oldMap = currentMap;
-			for(IMapSelectionListener mapSelectionListener : mapSelectionListeners)
-				mapSelectionListener.beforeMapChange(oldMap, nextMap);
-			currentKey = mapViewDisplayName;
-			currentMap = nextMap;
-			for(IMapSelectionListener mapSelectionListener : mapSelectionListeners)
-				mapSelectionListener.afterMapChange(oldMap, nextMap);
+			changeToMap(nextMap, mapViewDisplayName);
 	        return true;
         }
         else
 			return false;
+	}
+
+	private void changeToMap(final MapModel nextMap, String mapViewDisplayName) {
+		MapModel oldMap = currentMap;
+		for(IMapSelectionListener mapSelectionListener : mapSelectionListeners)
+			mapSelectionListener.beforeMapChange(oldMap, nextMap);
+		currentKey = mapViewDisplayName;
+		currentMap = nextMap;
+		for(IMapSelectionListener mapSelectionListener : mapSelectionListeners)
+			mapSelectionListener.afterMapChange(oldMap, nextMap);
 	}
 
 	public boolean changeToMode(String modeName) {

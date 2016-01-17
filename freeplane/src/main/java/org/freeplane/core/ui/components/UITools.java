@@ -35,6 +35,8 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.net.URI;
 
@@ -641,5 +643,26 @@ public class UITools {
 		final boolean isTextComponentFocused = focusOwner instanceof JTextComponent;
 		return isTextComponentFocused && focusOwner.isShowing() && ((JTextComponent)focusOwner).isEditable();
     }
+
+	public static void executeWhenNodeHasFocus(final Runnable runnable) {
+		final Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
+		if(selectedComponent != null && ! selectedComponent.hasFocus()){
+			selectedComponent.addFocusListener(new  FocusListener() {
+	
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+	
+				@Override
+				public void focusGained(FocusEvent e) {
+					selectedComponent.removeFocusListener(this);
+					runnable.run();
+				}
+			});
+			selectedComponent.requestFocusInWindow();
+		}
+		else
+			runnable.run();
+	}
 
 }

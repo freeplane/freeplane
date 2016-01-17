@@ -938,8 +938,13 @@ public class MapController extends SelectionController implements IExtension{
     }
 
 	public void select(final NodeModel node) {
+		final MapModel map = node.getMap();
+		final Controller controller = Controller.getCurrentController();
+		if (! map.equals(controller.getMap())){
+			controller.getMapViewManager().changeToMap(map);
+		}
 		displayNode(node);
-		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+		controller.getSelection().selectAsTheOnlyOneSelected(node);
 	}
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {

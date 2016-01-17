@@ -54,6 +54,8 @@ public interface IMapViewManager {
 	public boolean changeToMapView(final Component newMapView);
 
 	public boolean changeToMapView(final String mapViewDisplayName);
+	
+	public void changeToMap(MapModel map);
 
 	public boolean changeToMode(final String modeName);
 
@@ -142,4 +144,5 @@ public interface IMapViewManager {
 	public boolean closeAllMaps();
 
 	public JComboBox createZoomBox();
+
 }
