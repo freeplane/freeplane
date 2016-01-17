@@ -84,7 +84,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			action.setEnabled();
+			setActionEnabled();
 		}
 
 		public void onDeselect(final NodeModel node) {
@@ -862,7 +862,7 @@ public class MapController extends SelectionController implements IExtension{
 			nodesToRefresh.put(key, old);
 		}
         if (startThread) {
-			EventQueue.invokeLater(new Runnable() {
+			final Runnable refresher = new Runnable() {
 				public void run() {
 					final ModeController currentModeController = Controller.getCurrentModeController();
 					final Iterator<Entry<NodeRefreshKey, NodeRefreshValue>> it = nodesToRefresh.entrySet().iterator();
@@ -876,7 +876,8 @@ public class MapController extends SelectionController implements IExtension{
 					    it.remove();
 					}
 				}
-			});
+			};
+			EventQueue.invokeLater(refresher);
 		}
 	}
 

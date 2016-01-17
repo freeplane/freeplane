@@ -173,6 +173,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public boolean isSelected(final NodeModel node) {
+			if (! getModel().equals(node.getMap()))
+				return false;
 			final NodeView nodeView = getNodeView(node);
 			return nodeView != null && MapView.this.isSelected(nodeView);
 		}
@@ -525,18 +527,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Set<AWTKeyStroke> emptyNodeViewSet() {
 	    return Collections.emptySet();
     }
-
-	private String viewText(final NodeView view) {
-		if (view != null) {
-			final String text = view.getMainView().getText();
-			if(text.isEmpty())
-				return text;
-			else
-				return text;
-		} else
-			return "null";
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.dnd.Autoscroll#autoscroll(java.awt.Point)
