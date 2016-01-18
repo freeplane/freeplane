@@ -84,6 +84,7 @@
 				<Entry builder="separator" />
 				<Entry name="ImportExplorerFavoritesAction" />
 				<Entry name="ImportFolderStructureAction" />
+				<Entry name="ImportXmlFile" />
 				<Entry name="ImportMindmanagerFiles" />
 			</Entry>
 			<Entry builder="separator" />
