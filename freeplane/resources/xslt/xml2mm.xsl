@@ -41,9 +41,6 @@
 						</stylenode>
 					</map_styles>
 				</hook>
-				<xsl:element name="node">
-					<xsl:attribute name="TEXT">&lt;configuration&gt;</xsl:attribute>
-					<xsl:attribute name="POSITION">left</xsl:attribute>
 					<xsl:for-each select="namespace::*">
 						<xsl:if test="string() != 'http://www.w3.org/XML/1998/namespace'">
 							<attribute_layout NAME_WIDTH="60" VALUE_WIDTH="240"/>
@@ -61,7 +58,6 @@
 							</xsl:element>
 						</xsl:if>
 					</xsl:for-each>
-				</xsl:element>
 			</xsl:if>
 			<xsl:apply-templates select="node()" />
 		</xsl:element>
