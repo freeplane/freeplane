@@ -58,6 +58,8 @@ public class XmlImporter	{
 			throw new IllegalArgumentException("Can't find " + xsltResource + " as resource.");
 		}
 		if(outputFile.exists()){
+			if(Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(Compat.fileToUrl(outputFile)))
+				return;
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController()
 					.getMapViewManager().getMapViewComponent(), TextUtils.getText("map_already_exists"), "Freeplane",
 					JOptionPane.YES_NO_OPTION);
