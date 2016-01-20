@@ -5,6 +5,9 @@ Save autosave period in time period units
 Reminder notification popups
 Change shortcut for blue color in inline editor to control + L
 Use dark green in inline editor
+Import arbitrary xml as mind maps
+Export mind maps to xml (no syntax validation)
+Move menu and preference configuration to external resources
 
 ===============================
 1.5.4
