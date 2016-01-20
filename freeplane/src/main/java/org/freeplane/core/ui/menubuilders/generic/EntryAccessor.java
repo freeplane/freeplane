@@ -13,6 +13,7 @@ public class EntryAccessor {
 	public static final String COMPONENT = "component";
 	public static final Class<AFreeplaneAction> ACTION = AFreeplaneAction.class;
 	public static final String TEXT = "text";
+	public static final String TEXT_KEY = "textKey";
 	public static final Class<Icon> ICON = Icon.class;
 	public static final String ACCELERATOR = "accelerator";
 	public final ResourceAccessor resourceAccessor;
@@ -49,18 +50,23 @@ public class EntryAccessor {
 		if (entry.getAttribute(TEXT) != null)
 			return (String) entry.getAttribute(TEXT);
 		else {
-			final AFreeplaneAction action = getAction(entry);
-			if (action != null)
-				return action.getRawText();
-			String name = entry.getName();
-			if (name.isEmpty())
-				return "";
+			final String textKey = (String) entry.getAttribute(TEXT_KEY);
+			if (textKey != null)
+				return (String) resourceAccessor.getRawText(textKey);
 			else {
-				final String rawText = resourceAccessor.getRawText(name);
-				if (rawText != null)
-					return rawText;
-				else
+				final AFreeplaneAction action = getAction(entry);
+				if (action != null)
+					return action.getRawText();
+				String name = entry.getName();
+				if (name.isEmpty())
 					return "";
+				else {
+					final String rawText = resourceAccessor.getRawText(name);
+					if (rawText != null)
+						return rawText;
+					else
+						return "";
+				}
 			}
 		}
 	}

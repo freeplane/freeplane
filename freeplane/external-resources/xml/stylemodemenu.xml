@@ -98,7 +98,7 @@
 			</Entry>
 			<Entry name="CloudColorAction" />
 			<Entry name="EdgeProperties">
-				<Entry builder="radio_button_group" name="styles">
+				<Entry builder="radio_button_group" name="styleActions" textKey="styles">
 					<Entry name="EdgeStyleAsParentAction" />
 					<Entry name="EdgeStyleAction.linear" />
 					<Entry name="EdgeStyleAction.bezier" />

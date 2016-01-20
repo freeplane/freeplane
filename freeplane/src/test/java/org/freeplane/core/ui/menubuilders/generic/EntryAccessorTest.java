@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders.generic;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -15,16 +16,26 @@ import org.junit.Test;
 public class EntryAccessorTest {
 	Entry entry;
 	EntryAccessor entryAccessor;
+	ResourceAccessor resourceAccessor;
 	
 	@Before
 	public void setup(){
+		resourceAccessor = mock(ResourceAccessor.class);
 		entry = new Entry();
-		entryAccessor = new EntryAccessor();
+		entryAccessor = new EntryAccessor(resourceAccessor);
 	}
 	
 	@Test
 	public void getsTextFromEntryAttributeText() throws Exception {
 		entry.setAttribute("text", "entry text");
+		final String entryText = entryAccessor.getText(entry);
+		Assert.assertThat(entryText, equalTo("entry text"));
+	}
+	
+	@Test
+	public void getsTextFromEntryAttributeTextKey() throws Exception {
+		entry.setAttribute("textKey", "entry text key");
+		when(resourceAccessor.getRawText("entry text key")).thenReturn("entry text");
 		final String entryText = entryAccessor.getText(entry);
 		Assert.assertThat(entryText, equalTo("entry text"));
 	}

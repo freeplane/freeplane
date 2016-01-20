@@ -73,6 +73,7 @@
 			<Entry name="OpenURLMapAction" />
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
+				<Entry builder="noActions" />
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="ExportAction" />
@@ -286,7 +287,7 @@
 			</Entry>
 		</Entry>
 		<Entry name="format">
-			<Entry name="styles">
+			<Entry name="styleActions" textKey="menu_applyStyle">
 				<Entry builder="style_actions" />
 			</Entry>
 			<Entry name="automatic_layout">
@@ -345,7 +346,7 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="EdgeProperties">
-				<Entry builder="radio_button_group" name="styles">
+				<Entry builder="radio_button_group" name="edgeStyles" textKey="styles">
 					<Entry name="EdgeStyleAsParentAction" />
 					<Entry name="EdgeStyleAction.linear" />
 					<Entry name="EdgeStyleAction.bezier" />
@@ -404,6 +405,7 @@
 		<Entry name="filter">
 			<Entry name="filterConditions">
 				<Entry builder="filterConditions" />
+				<Entry builder="noActions" />
 			</Entry>
 			<Entry name="UndoFilterAction" />
 			<Entry name="RedoFilterAction" />
@@ -442,6 +444,7 @@
 			<Entry name="acceleratorPresets">
 				<Entry name="load_accelerator_presets">
 					<Entry builder="acceleratorPresets" />
+					<Entry builder="noActions" />
 				</Entry>
 				<Entry name="SaveAcceleratorPresetsAction" />
 			</Entry>
@@ -515,7 +518,9 @@
 		<Entry name="AlwaysUnfoldedNodeAction" />
 		<Entry name="FreeNodeAction" />
 		<Entry name="CloudAction" accelerator="control shift B" />
-		<Entry name="menu_applyStyle" builder="node_popup_styles" />
+		<Entry name="styleActions" textKey="menu_applyStyle">
+				<Entry builder="style_actions" />
+		</Entry>
 		<Entry name="AddConnectorAction" accelerator="control L" />
 		<Entry name="links" builder="popup_navigate">
 			<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
@@ -533,6 +538,7 @@
 		<Entry name="goto" processOnPopup="true">
 			<Entry builder="link_actions" />
 			<Entry builder="clone_actions" />
+			<Entry builder="noActions" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="EnterPassword" />

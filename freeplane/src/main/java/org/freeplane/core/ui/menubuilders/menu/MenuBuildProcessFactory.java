@@ -101,6 +101,8 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		JComponentRemover destroyer = new JComponentRemover();
 		uiBuilder.addBuilderPair("menu", menuBuilder, destroyer);
 		uiBuilder.addBuilderPair("menu.action", menuBuilder, destroyer);
+		uiBuilder.addBuilderPair("noActions", new EmptyMenuItemBuilder(resourceAccessor), destroyer);
+
 
 		buildProcessor = new PhaseProcessor(buildPhaseListeners)
 								.withPhase(ACTIONS, actionBuilder) //

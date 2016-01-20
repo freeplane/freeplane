@@ -71,6 +71,8 @@ import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
  * 28.09.2009
  */
 public class MLogicalStyleController extends LogicalStyleController {
+	private static final String STYLE_ACTIONS = "styleActions";
+
 	private final class RemoveConditionalStyleActor implements IActor {
 		private final int index;
 		private final ConditionalStyleModel conditionalStyleModel;
@@ -231,7 +233,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 				}
 
 				public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-					userInputListenerFactory.rebuildMenus("styles");
+					userInputListenerFactory.rebuildMenus(STYLE_ACTIONS);
 				}
 			});
 			final MapController mapController = modeController.getMapController();
@@ -253,7 +255,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 				public void mapChanged(final MapChangeEvent event) {
 					if (event.getProperty().equals(MapStyle.MAP_STYLES)) {
-						userInputListenerFactory.rebuildMenus("styles");
+						userInputListenerFactory.rebuildMenus(STYLE_ACTIONS);
 					}
 				}
 			});
