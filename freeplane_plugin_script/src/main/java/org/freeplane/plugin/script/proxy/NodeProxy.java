@@ -867,12 +867,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	@Override
 	public Node appendAsCloneWithSubtree(NodeRO toBeCloned) {
-		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), false);
+		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), true);
 	}
 
 	@Override
 	public Node appendAsCloneWithoutSubtree(NodeRO toBeCloned) {
-		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), true);
+		return appendAsCloneImpl(((NodeProxy) toBeCloned).getDelegate(), false);
 	}
 	
 	private Node appendAsCloneImpl(NodeModel toBeCloned, boolean withSubtree) {
