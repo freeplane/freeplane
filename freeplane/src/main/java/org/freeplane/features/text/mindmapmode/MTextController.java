@@ -961,7 +961,8 @@ public class MTextController extends TextController {
 
 			@Override
 			public String getSelectedText() {
-				return super.getSelectedText().replace('\u00a0', ' ');
+				final String selectedText = super.getSelectedText();
+				return selectedText != null ? selectedText.replace('\u00a0', ' ') : null;
 			}
 
 			@Override
