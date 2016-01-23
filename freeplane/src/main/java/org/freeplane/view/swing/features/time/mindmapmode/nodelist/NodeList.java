@@ -124,9 +124,6 @@ public class NodeList {
 	    }
 
 		public void nodeChanged(NodeChangeEvent event) {
-			if(event.getProperty().equals(NodeModel.NODE_TEXT)){
-				disposeDialog();
-			}
         }
 
 		public void afterMapChange(MapModel oldMap, MapModel newMap) {
@@ -258,10 +255,8 @@ public class NodeList {
 	}
 
 	private class HolderAccessor{
-		final private boolean selectedOnly;
-		private HolderAccessor(boolean selectedOnly) {
+		private HolderAccessor() {
 	        super();
-	        this.selectedOnly = selectedOnly;
         }
 
 		public void changeString(final TextHolder textHolder, final String newText) {
@@ -273,19 +268,12 @@ public class NodeList {
 		}
 
 		public TextHolder[] getNodeHoldersAt(final int row) {
-			return selectedOnly ? getSelectedNodeHoldersAt(row):getAnyNodeHoldersAt(row);
-		}
-		public TextHolder[] getAnyNodeHoldersAt(final int i) {
 			return new TextHolder[]{
-					(TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_TEXT_COLUMN),
-					(TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_DETAILS_COLUMN),
-					(TextHolder) mFlatNodeTableFilterModel.getValueAt(i, NodeList.NODE_NOTES_COLUMN)
+					(TextHolder) sorter.getValueAt(row, NodeList.NODE_TEXT_COLUMN),
+					(TextHolder) sorter.getValueAt(row, NodeList.NODE_DETAILS_COLUMN),
+					(TextHolder) sorter.getValueAt(row, NodeList.NODE_NOTES_COLUMN)
 			};
 		}
-		public TextHolder[] getSelectedNodeHoldersAt(final int i) {
-			return new TextHolder[]{(TextHolder) sorter.getValueAt(tableView.getSelectedRows()[i], NodeList.NODE_TEXT_COLUMN)};
-		}
-
 	}
 
 	private static String COLUMN_CREATED = "Created";
@@ -334,7 +322,7 @@ public class NodeList {
 	private JLabel mTreeLabel;
 	private TextRenderer textRenderer;
 	private boolean showAllNodes = false;
-	private org.freeplane.view.swing.features.time.mindmapmode.nodelist.TableSorter sorter;
+	private TableSorter sorter;
 	private JTable tableView;
 	private DefaultTableModel tableModel;
 	private final boolean searchInAllMaps;
@@ -441,7 +429,7 @@ public class NodeList {
 		return selectedNode;
 	}
 
-	private void replace(final HolderAccessor holderAccessor) {
+	private void replace(final HolderAccessor holderAccessor, boolean selectedOnly) {
 		final String searchString = (String) mFilterTextSearchField.getSelectedItem();
 		if(searchString == null)
 			return;
@@ -458,25 +446,27 @@ public class NodeList {
 		final String replacement = replaceString == null ? "" : replaceString;
 		final int length = holderAccessor.getLength();
 		for (int i = 0; i < length; i++) {
-			TextHolder[] textHolders = holderAccessor.getNodeHoldersAt(i);
-			for(final TextHolder textHolder:textHolders){
-				final String text = textHolder.getText();
-				final String replaceResult;
-				final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
-				try {
-					if (HtmlUtils.isHtmlNode(text)) {
-						replaceResult = NodeList.replace(p, text,literalReplacement);
+			if( !selectedOnly || tableView.isRowSelected(i)){
+				TextHolder[] textHolders = holderAccessor.getNodeHoldersAt(i);
+				for(final TextHolder textHolder:textHolders){
+					final String text = textHolder.getText();
+					final String replaceResult;
+					final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
+					try {
+						if (HtmlUtils.isHtmlNode(text)) {
+							replaceResult = NodeList.replace(p, text,literalReplacement);
+						}
+						else {
+							replaceResult = p.matcher(text).replaceAll(literalReplacement);
+						}
 					}
-					else {
-						replaceResult = p.matcher(text).replaceAll(literalReplacement);
+					catch (Exception e) {
+						UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, e.getMessage()));
+						return;
 					}
-				}
-				catch (Exception e) {
-					UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, e.getMessage()));
-					return;
-				}
-				if (!StringUtils.equals(text, replaceResult)) {
-					holderAccessor.changeString(textHolder, replaceResult);
+					if (!StringUtils.equals(text, replaceResult)) {
+						holderAccessor.changeString(textHolder, replaceResult);
+					}
 				}
 			}
 		}
@@ -668,7 +658,7 @@ public class NodeList {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
-				replace(new HolderAccessor(false));
+				replace(new HolderAccessor(), false);
 			}
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
@@ -680,7 +670,7 @@ public class NodeList {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
-				replace(new HolderAccessor(true));
+				replace(new HolderAccessor(), true);
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
