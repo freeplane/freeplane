@@ -374,37 +374,38 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		String information = modeController.getExtension(TextController.class).getText(node);
 		String title = TextUtils.getText("reminderNotification");
 		final int option = JOptionPane.showOptionDialog(UITools.getCurrentFrame(), new JLabel(information), title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, NotificationOptions.values(), NotificationOptions.SELECT_NODE);
-		switch(NotificationOptions.values()[option]){
-		case SELECT_NODE:
-			UITools.executeWhenNodeHasFocus(new Runnable() {
-				@Override
-				public void run() {
-					// Work around because docking windows work with delayed actions
-					final Timer timer = new Timer(100, new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							Controller.getCurrentModeController().getMapController().select(node);
-						}
-					});
-					timer.setRepeats(false);
-					timer.start();
-				}
-			});
-				
-			break;
-		case REMOVE_REMINDER:
-			undoableDeactivateHook(node);
-			break;
-		case REMIND_ME_LATER:
-			remove(node, reminderExtension);
-			final long now = new Date().getTime();
-			final int delay = ResourceController.getResourceController().getTimeProperty("remindersStandardDelay");
-			reminderExtension.setRemindUserAt(now + delay);
-			add(node, reminderExtension);
-			break;
-		case CLOSE:
-			break;
+		if(option >= 0) {
+			switch(NotificationOptions.values()[option]){
+			case SELECT_NODE:
+				UITools.executeWhenNodeHasFocus(new Runnable() {
+					@Override
+					public void run() {
+						// Work around because docking windows work with delayed actions
+						final Timer timer = new Timer(100, new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								Controller.getCurrentModeController().getMapController().select(node);
+							}
+						});
+						timer.setRepeats(false);
+						timer.start();
+					}
+				});
+
+				break;
+			case REMOVE_REMINDER:
+				undoableDeactivateHook(node);
+				break;
+			case REMIND_ME_LATER:
+				remove(node, reminderExtension);
+				final long now = new Date().getTime();
+				final int delay = ResourceController.getResourceController().getTimeProperty("remindersStandardDelay");
+				reminderExtension.setRemindUserAt(now + delay);
+				add(node, reminderExtension);
+				break;
+			case CLOSE:
+				break;
+			}
 		}
-		
 	}
 }
