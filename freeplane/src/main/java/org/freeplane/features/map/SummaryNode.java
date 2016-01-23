@@ -106,6 +106,18 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 		return nodeModel.containsExtension(SummaryNodeFlag.class);
 	}
 
+	static public NodeModel getRealNode(final NodeModel nodeModel) {
+		if (!isSummaryNode(nodeModel))
+			return nodeModel;
+		for(int i = nodeModel.getChildCount() - 1; i >= 0; i--){
+			final NodeModel child = nodeModel.getChildAt(i);
+			if(! isHidden(child)) {
+				return child;
+			}
+		}
+		return nodeModel;
+	}
+	
 	static public boolean isHidden(final NodeModel nodeModel) {
 		return ! nodeModel.isFolded()  && (nodeModel.hasChildren() && isSummaryNode(nodeModel) || isFirstGroupNode(nodeModel))&& nodeModel.getText().isEmpty(); 
 	}
