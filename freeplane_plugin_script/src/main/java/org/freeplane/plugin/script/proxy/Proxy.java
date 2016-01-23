@@ -13,9 +13,11 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormattedDate;
@@ -1620,10 +1622,26 @@ public interface Proxy {
          * @since 1.2.20 */
         void setMinNodeWidth(int width);
         
+        /** Set to null to restore default 
+         * @since 1.5.5 */
+        void setMinNodeWidth(Quantity<LengthUnits> width);
+
+        /** use length units like "1 cm" or "6 pt"
+         * @since 1.5.5 */
+        void setMinNodeWidth(String width);
+        
         /** minNodeWidth in px - set to -1 to restore default.
          * @since 1.2.20 */
         void setMaxNodeWidth(int width);
+        
+        /** Set to null to restore default 
+         * @since 1.5.5 */
+        void setMaxNodeWidth(Quantity<LengthUnits> width);
 
+        /** use length units like "1 cm" or "6 pt"
+         * @since 1.5.5 */
+        void setMaxNodeWidth(String width);
+        
         /** @since 1.3.8 */
         void setNumberingEnabled(boolean enabled);
 	}

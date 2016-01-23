@@ -62,6 +62,12 @@ public class QuantityShould {
 	}
 	
 	@Test
+	public void fromNullString() throws Exception {
+		Quantity<Metrics> quantity = Quantity.fromString(null, Metrics.cm);
+		assertNull(quantity);
+	}
+	
+	@Test
 	public void fromString_0_cm() throws Exception {
 		Quantity<Metrics> quantity = Quantity.fromString("0 cm", Metrics.cm);
 		assertEquals("0.0 cm", quantity.toString());

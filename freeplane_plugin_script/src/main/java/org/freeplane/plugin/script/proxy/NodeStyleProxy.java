@@ -185,17 +185,25 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return quantity;
 	}
 
-	public void setMinNodeWidth(Quantity<LengthUnits> quantity) {
-		getStyleController().setMinNodeWidth(getDelegate(), quantity);
+	public void setMinNodeWidth(Quantity<LengthUnits> width) {
+		getStyleController().setMinNodeWidth(getDelegate(), width);
 	}
 
+	public void setMinNodeWidth(String width) {
+		getStyleController().setMinNodeWidth(getDelegate(), Quantity.fromString(width, LengthUnits.px));
+	}
+	
     public void setMaxNodeWidth(int width) {
         Quantity<LengthUnits> quantity = inPixels(width);
 		setMaxNodeWidth(quantity);
     }
 
-	public void setMaxNodeWidth(Quantity<LengthUnits> quantity) {
-		getStyleController().setMaxNodeWidth(getDelegate(), quantity);
+	public void setMaxNodeWidth(Quantity<LengthUnits> width) {
+		getStyleController().setMaxNodeWidth(getDelegate(), width);
+	}
+
+	public void setMaxNodeWidth(String width) {
+		getStyleController().setMaxNodeWidth(getDelegate(), Quantity.fromString(width, LengthUnits.px));
 	}
 
     public boolean isNumberingEnabled() {

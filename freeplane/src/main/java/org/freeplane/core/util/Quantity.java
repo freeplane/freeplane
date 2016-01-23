@@ -3,6 +3,8 @@ package org.freeplane.core.util;
 public class Quantity <U extends Enum<U> & Convertible >{
 	
 	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, U defaultUnit) {
+		if(valueString == null)
+			return null;
 		final int separatorPosition = valueString.lastIndexOf(' ');
 		final String numberString;
 		final U unit;
