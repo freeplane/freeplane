@@ -8,6 +8,8 @@ Use dark green in inline editor
 Import arbitrary xml as mind maps
 Export mind maps to xml (no syntax validation)
 Move menu and preference configuration to external resources
+Save attribute column widths in points
+Open new maps near selected maps
 
 ===============================
 1.5.4
