@@ -58,7 +58,8 @@ public class NodeRelativePath {
 	    if(path.length > 0){
 	    	for(int i = 0; i < path.length; i++){
 	    		NodeModel nodeOnPath = absolutePath.next();
-	    		path[i] = nodeOnPath.getParentNode().getIndex(nodeOnPath);
+	    		final NodeModel parentNode = nodeOnPath.getParentNode();
+				path[i] = parentNode.getIndex(nodeOnPath);
 	    	}
 	    }
 		return path;
