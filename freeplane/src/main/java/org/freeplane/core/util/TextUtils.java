@@ -167,4 +167,9 @@ public class TextUtils {
 	public static void copyToClipboard(String string) {
 	    ClipboardController.getController().setClipboardContents(string);
     }
+	
+	/** Shortcut for scripting: Copies <code>html</code> with mimetype text/html to the system clipboard. */
+	public static void copyHtmlToClipboard(String html) {
+		ClipboardController.getController().setClipboardContentsToHtml(html);
+	}
 }

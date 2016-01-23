@@ -287,6 +287,11 @@ public class ClipboardController implements IExtension {
     public void setClipboardContents(final String string) {
         setClipboardContents(new StringSelection(string));
     }
+    
+    /** copies a string to the system clipboard with text/html mimetype. */
+    public void setClipboardContentsToHtml(final String html) {
+    	setClipboardContents(new HtmlSelection(html));
+    }
 
 	public NodeModel duplicate(final NodeModel source, boolean withChildren) {
 		try {
