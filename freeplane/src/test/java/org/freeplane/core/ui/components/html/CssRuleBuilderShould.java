@@ -36,16 +36,18 @@ public class CssRuleBuilderShould {
 
 	@Test
 	public void addFont() throws Exception {
-		cssRuleBuilder.withFont(new Font("arial", Font.BOLD | Font.ITALIC, 10));
-		assertRule(" font-family: Arial;  font-size: 10pt; font-weight: bold; font-style: italic;");
+		final Font font = new Font("arial", Font.BOLD | Font.ITALIC, 10);
+		cssRuleBuilder.withFont(font);
+		assertRule(" font-family: " + font.getFamily() + ";  font-size: 10pt; font-weight: bold; font-style: italic;");
 	}
 
 
 	@Test
 	public void addFontScaleSize() throws Exception {
 		final float fontScaleFactor = 2f;
-		cssRuleBuilder.withFont(new Font("arial", Font.BOLD | Font.ITALIC, 10), fontScaleFactor);
-		assertRule(" font-family: Arial;  font-size: 5pt; font-weight: bold; font-style: italic;");
+		final Font font = new Font("arial", Font.BOLD | Font.ITALIC, 10);
+		cssRuleBuilder.withFont(font, fontScaleFactor);
+		assertRule(" font-family: " + font.getFamily() + ";  font-size: 5pt; font-weight: bold; font-style: italic;");
 	}
 
 
