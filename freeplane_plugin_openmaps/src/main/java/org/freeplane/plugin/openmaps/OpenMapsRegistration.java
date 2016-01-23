@@ -22,9 +22,11 @@ public class OpenMapsRegistration {
 			modeController.addAction(viewOpenMapsAction);
 			modeController.getExtension(IconController.class).addIconMouseListener(new IconMouseListener() {
 				
-				public void uiIconClicked(IconClickedEvent event) {
-					if (event.getUIIcon().getName().equals(OpenMapsNodeHook.ICON_NAME))
+				public boolean onIconClicked(IconClickedEvent event) {
+					final boolean canProcess = event.getUIIcon().getName().equals(OpenMapsNodeHook.ICON_NAME);
+					if (canProcess)
 						nodeHook.viewCurrentlySelectedLocation(event.getNode());
+					return canProcess;
 				}
 			});
 		}

@@ -138,11 +138,16 @@ public class IconController implements IExtension {
 		}
 		return icons;
 	}
-	public void onIconClicked(NodeModel node, UIIcon icon) {
+	public boolean onIconClicked(NodeModel node, UIIcon icon) {
+		boolean processed = false;
 		for (IconMouseListener listener : iconMouseListeners)
 		{
-			listener.uiIconClicked(new IconClickedEvent(icon, node));
+			final IconClickedEvent event = new IconClickedEvent(icon, node);
+			if(listener.onIconClicked(event)) {
+				processed = true;
+			}
 		}
+		return processed;
 	}
 
 }
