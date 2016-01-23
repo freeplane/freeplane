@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.FormattedDate;
@@ -57,7 +59,7 @@ public class ProxyUtils {
 	}
 
 	static ICondition createCondition(final Closure<Boolean> closure, final ScriptContext scriptContext) {
-	    final ICondition condition = new ICondition() {
+	    final ICondition condition = new ASelectableCondition() {
 			public boolean checkNode(final NodeModel node) {
 				try {
 					final Boolean result = closure
@@ -71,6 +73,16 @@ public class ProxyUtils {
 					throw new RuntimeException("find(): closure returned " + e.getMessage()
 					        + " instead of boolean/Boolean");
 				}
+			}
+
+			@Override
+			protected String createDescription() {
+				return "<Closure>";
+			}
+
+			@Override
+			protected String getName() {
+				return  "Closure";
 			}
 		};
 	    return condition;
