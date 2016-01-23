@@ -259,7 +259,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					return;
 				}
 			}
-	        addDockedWindow(pNewMap);
+	        addDockedWindow(pOldMap, pNewMap);
         }
 		else if(mapViews.contains(pNewMap))
 			return;
@@ -270,17 +270,18 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	    return (View) SwingUtilities.getAncestorOfClass(View.class, pNewMap);
     }
 
-	protected void addDockedView(View dynamicView) {
-		DockingWindow lastFocusedChildWindow = getLastFocusedChildWindow(rootWindow);
+	private void addDockedView(View oldSelected, View newView) {
+		DockingWindow lastFocusedChildWindow = oldSelected != null ? oldSelected : getLastFocusedChildWindow(rootWindow);
 	    if(lastFocusedChildWindow == null) {
-	        DockingUtil.addWindow(dynamicView, rootWindow);
+	        DockingUtil.addWindow(newView, rootWindow);
        }
        else{
 			Container parent = SwingUtilities.getAncestorOfClass(DockingWindow.class, lastFocusedChildWindow);
-			if(parent instanceof TabWindow)
-				((TabWindow)parent).addTab(dynamicView);
-			else
-				DockingUtil.addWindow(dynamicView, lastFocusedChildWindow.getRootWindow());
+			if(parent instanceof TabWindow) {
+				final TabWindow tabWindow = (TabWindow)parent;
+				tabWindow.addTab(newView, tabWindow.getChildWindowIndex(lastFocusedChildWindow) + 1);
+			} else
+				DockingUtil.addWindow(newView, lastFocusedChildWindow.getRootWindow());
 		}
     }
 
@@ -290,9 +291,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
         return view;
     }
 
-	private void addDockedWindow(final Component pNewMap) {
+	private void addDockedWindow(final Component pOldMap, final Component pNewMap) {
 	    final View viewFrame = viewSerializer.newDockedView(pNewMap);
-		addDockedView(viewFrame);
+		addDockedView(pOldMap != null ? getContainingDockedWindow(pOldMap) : null, viewFrame);
     }
 
 	public void afterViewClose(final Component pOldMapView) {
