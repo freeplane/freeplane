@@ -36,7 +36,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Action;
@@ -51,6 +50,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -72,13 +72,20 @@ public class MapController extends SelectionController implements IExtension{
 	public enum Direction {
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
-
+	
 	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IMapChangeListener {
 		final private Collection<AFreeplaneAction> actions;
+		final private DelayedRunner runner;
 
 		public ActionEnablerOnChange() {
 			super();
 			actions = new HashSet<AFreeplaneAction>();
+			runner = new DelayedRunner(new Runnable() {
+				@Override
+				public void run() {
+					setActionsEnabledNow();
+				}
+			});
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
@@ -89,7 +96,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		public void onSelect(final NodeModel node) {
-			setActionsEnabledNow();
+			runner.runLater();
 		}
 
 		private void setActionsEnabledNow() {
@@ -126,7 +133,7 @@ public class MapController extends SelectionController implements IExtension{
 			if (selection == null || selection.getSelected() == null) {
 				return;
 			}
-			setActionsEnabledNow();
+			runner.runLater();
 		}
 
 		public void add(AFreeplaneAction action) {
@@ -140,9 +147,17 @@ public class MapController extends SelectionController implements IExtension{
 
 	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener, IMapChangeListener {
 		final private Collection<AFreeplaneAction> actions;
+		final private DelayedRunner runner;
+
 		public ActionSelectorOnChange() {
 			super();
 			actions = new HashSet<AFreeplaneAction>();
+			runner = new DelayedRunner(new Runnable() {
+				@Override
+				public void run() {
+					setActionsSelectedNow();
+				}
+			});
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
@@ -157,7 +172,7 @@ public class MapController extends SelectionController implements IExtension{
 			if (selection == null || selection.getSelected() == null) {
 				return;
 			}
-			setActionsSelectedNow();
+			runner.runLater();
 		}
 
 		private void setActionsSelectedNow() {
