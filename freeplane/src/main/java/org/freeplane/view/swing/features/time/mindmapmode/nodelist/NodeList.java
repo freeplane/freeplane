@@ -73,6 +73,7 @@ import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
@@ -99,6 +100,18 @@ import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
  */
 public class NodeList {
 	private final class MapChangeListener implements IMapChangeListener, INodeChangeListener, IMapSelectionListener {
+		public MapChangeListener() {
+			super();
+			this.runner = new DelayedRunner(new Runnable() {
+				
+				@Override
+				public void run() {
+					tableModel.fireTableDataChanged();
+				}
+			});
+		}
+
+		final private DelayedRunner runner;
 	    public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	    	disposeDialog();
 	    }
@@ -124,6 +137,7 @@ public class NodeList {
 	    }
 
 		public void nodeChanged(NodeChangeEvent event) {
+			runner.runLater();
         }
 
 		public void afterMapChange(MapModel oldMap, MapModel newMap) {
@@ -330,6 +344,7 @@ public class NodeList {
 	private final JCheckBox useRegexInFind;
 	private final JCheckBox matchCase;
 	final private boolean modal;
+	private final MapChangeListener mapChangeListener;
 
 	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps) {
 	    this(false, showAllNodes, searchInAllMaps);
@@ -373,12 +388,7 @@ public class NodeList {
 		useRegexInFind.addChangeListener(listener);
 		matchCase = new JCheckBox();
 		matchCase.addChangeListener(listener);
-		final MapChangeListener mapChangeListener = new MapChangeListener();
-		final ModeController modeController = Controller.getCurrentModeController();
-		final MapController mapController = modeController.getMapController();
-		mapController.addMapChangeListener(mapChangeListener);
-		mapController.addNodeChangeListener(mapChangeListener);
-		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(mapChangeListener);
+		mapChangeListener = new MapChangeListener();
 
 	}
 
@@ -400,6 +410,11 @@ public class NodeList {
 		dialog.setVisible(false);
 		dialog.dispose();
 		dialog = null;
+		final ModeController modeController = Controller.getCurrentModeController();
+		final MapController mapController = modeController.getMapController();
+		mapController.removeMapChangeListener(mapChangeListener);
+		mapController.removeNodeChangeListener(mapChangeListener);
+		Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(mapChangeListener);
 	}
 
 	protected void exportSelectedRowsAndClose() {
@@ -470,7 +485,6 @@ public class NodeList {
 				}
 			}
 		}
-		tableModel.fireTableDataChanged();
 		mFlatNodeTableFilterModel.resetFilter();
 		mFilterTextSearchField.insertItemAt(mFilterTextSearchField.getSelectedItem(), 0);
 		mFilterTextReplaceField.insertItemAt(mFilterTextReplaceField.getSelectedItem(), 0);
@@ -773,6 +787,11 @@ public class NodeList {
 		}
 		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(),
 			matchCase.isSelected(), useRegexInFind.isSelected());
+		final ModeController modeController = Controller.getCurrentModeController();
+		final MapController mapController = modeController.getMapController();
+		mapController.addMapChangeListener(mapChangeListener);
+		mapController.addNodeChangeListener(mapChangeListener);
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(mapChangeListener);
 		dialog.setVisible(true);
 	}
 
