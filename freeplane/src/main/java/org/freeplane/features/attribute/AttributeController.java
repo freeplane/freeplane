@@ -25,10 +25,12 @@ import java.net.URI;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
@@ -133,7 +135,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col, final int width) {
+	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> width) {
 		throw new UnsupportedOperationException();
 	}
 

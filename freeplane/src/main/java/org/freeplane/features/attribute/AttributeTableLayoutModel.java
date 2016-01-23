@@ -22,6 +22,8 @@ package org.freeplane.features.attribute;
 import javax.swing.event.EventListenerList;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 
 /**
  * @author Dimitry Polivaev
@@ -32,9 +34,9 @@ public class AttributeTableLayoutModel {
 	public static final String SHOW_SELECTED = "selected";
 	ColumnWidthChangeEvent[] layoutChangeEvent = { null, null };
 	private EventListenerList listenerList = null;
-	final private int[] width = { 
-			ResourceController.getResourceController().getIntProperty("default_attribute_key_column_width"),
-			ResourceController.getResourceController().getIntProperty("default_attribute_value_column_width") 
+	final private Quantity<?>[] width = new Quantity<?>[]{ 
+			ResourceController.getResourceController().getLengthQuantityProperty("default_attribute_key_column_width").in(LengthUnits.pt),
+			ResourceController.getResourceController().getLengthQuantityProperty("default_attribute_value_column_width").in(LengthUnits.pt) 
 	};
 
 	public AttributeTableLayoutModel() {
@@ -57,8 +59,9 @@ public class AttributeTableLayoutModel {
 		}
 	}
 
-	public int getColumnWidth(final int col) {
-		return width[col];
+	@SuppressWarnings("unchecked")
+	public Quantity<LengthUnits> getColumnWidth(final int col) {
+		return (Quantity<LengthUnits>) width[col];
 	}
 
 	/**
@@ -75,8 +78,8 @@ public class AttributeTableLayoutModel {
 		getListenerList().remove(IColumnWidthChangeListener.class, l);
 	}
 
-	public void setColumnWidth(final int col, final int width) {
-		if (this.width[col] != width) {
+	public void setColumnWidth(final int col, final Quantity<LengthUnits> width) {
+		if (! this.width[col].equals(width)) {
 			this.width[col] = width;
 			fireColumnWidthChanged(col);
 		}

@@ -114,8 +114,8 @@
 				<number name="statesymbolwidth" />
 				<number name="toolTipManager.max_tooltip_width" />
 				<number name="toolTipManager.max_tooltip_height" />
-				<number name="default_attribute_key_column_width" min="10" />
-				<number name="default_attribute_value_column_width" min="10" />
+				<length name="default_attribute_key_column_width" defaultUnit = "px" min="0" max = "1000" step = "0.1" />
+				<length name="default_attribute_value_column_width" defaultUnit = "px" min="0" max = "1000" step = "0.1" />
 				
 			</separator>
 			<separator name="connectors">

@@ -61,9 +61,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ColumnWidthChangeEvent;
@@ -132,10 +134,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table
 			.getModel();
 			for (int col = 0; col < table.getColumnCount(); col++) {
-				final int modelColumnWidth = model.getColumnWidth(col);
+				final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
 				final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);
 				if (modelColumnWidth != currentColumnWidth) {
-					model.setColumnWidth(col, currentColumnWidth);
+					model.setColumnWidth(col, LengthUnits.pixelsInPt(currentColumnWidth));
 				}
 			}
 		}
@@ -300,7 +302,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final float zoom = getZoom();
 		final int col = event.getColumnNumber();
 		final AttributeTableLayoutModel layoutModel = (AttributeTableLayoutModel) event.getSource();
-		final int width = layoutModel.getColumnWidth(col);
+		final int width = layoutModel.getColumnWidth(col).toBaseUnitsRounded();
 		getColumnModel().getColumn(col).setPreferredWidth((int) (width * zoom));
 		final MapView map = attributeView.getMapView();
 		final NodeModel node = attributeView.getNode();
@@ -727,7 +729,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				cellWidth = comp.getPreferredSize().width;
 				maxCellWidth = Math.max(cellWidth, maxCellWidth);
 			}
-			getAttributeTableModel().setColumnWidth(col, maxCellWidth + 1);
+			getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth + 1));
 		}
 	}
 
@@ -784,7 +786,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private void updateColumnWidths() {
 		final float zoom = getZoom();
 		for (int i = 0; i < 2; i++) {
-			final int width = (int) (getAttributeTableModel().getColumnWidth(i) * zoom);
+			final int width = (int) (getAttributeTableModel().getColumnWidth(i).toBaseUnitsRounded() * zoom);
 			getColumnModel().getColumn(i).setPreferredWidth(width);
 		}
 	}

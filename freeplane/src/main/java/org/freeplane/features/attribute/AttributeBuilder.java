@@ -30,7 +30,9 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
@@ -193,7 +195,7 @@ class AttributeBuilder implements IElementDOMHandler {
 				final NodeModel node = (NodeModel) userObject;
 				attributeController.createAttributeTableModel(node);
 				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
-				layout.setColumnWidth(0, Integer.parseInt(value));;
+				layout.setColumnWidth(0, LengthUnits.fromStringInPt(value));
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "VALUE_WIDTH", new IAttributeHandler() {
@@ -201,7 +203,7 @@ class AttributeBuilder implements IElementDOMHandler {
 				final NodeModel node = (NodeModel) userObject;
 				attributeController.createAttributeTableModel(node);
 				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
-				layout.setColumnWidth(1, Integer.parseInt(value));;
+				layout.setColumnWidth(1, LengthUnits.fromStringInPt(value));
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "NAME", new IAttributeHandler() {
@@ -277,17 +279,17 @@ class AttributeBuilder implements IElementDOMHandler {
 		}
 	}
 
-	private static final int DEFAULT_COLUMN_WIDTH = 75;
+	private static final Quantity<LengthUnits> DEFAULT_COLUMN_WIDTH = new Quantity<LengthUnits>(60, LengthUnits.pt);
 	private void saveLayout(AttributeTableLayoutModel layout, final ITreeWriter writer) throws IOException {
 		if (layout != null) {
 			XMLElement attributeElement = null;
-			if (layout.getColumnWidth(0) != DEFAULT_COLUMN_WIDTH) {
+			if (!DEFAULT_COLUMN_WIDTH.equals(layout.getColumnWidth(0))) {
 				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("NAME_WIDTH", Integer.toString(layout.getColumnWidth(0)));
+				attributeElement.setAttribute("NAME_WIDTH", layout.getColumnWidth(0).toString());
 			}
-			if (layout.getColumnWidth(1) != DEFAULT_COLUMN_WIDTH) {
+			if (!DEFAULT_COLUMN_WIDTH.equals(layout.getColumnWidth(1))) {
 				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("VALUE_WIDTH", Integer.toString(layout.getColumnWidth(1)));
+				attributeElement.setAttribute("VALUE_WIDTH", layout.getColumnWidth(1).toString());
 			}
 			if (attributeElement != null) {
 				writer.addElement(layout, attributeElement);

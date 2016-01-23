@@ -19,13 +19,15 @@
  */
 package org.freeplane.features.attribute;
 
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  */
 public interface IAttributeTableModel {
-	int getColumnWidth(int col);
+	Quantity<LengthUnits> getColumnWidth(int col);
 
 	NodeModel getNode();
 

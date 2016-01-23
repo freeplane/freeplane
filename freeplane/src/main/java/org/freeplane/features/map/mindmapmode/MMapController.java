@@ -768,8 +768,8 @@ public class MMapController extends MapController {
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
 		if(! addNewNode(newNode, target, target.getChildCount(), newNodeIsLeft))
 			return null;
-		final Quantity<LengthUnits> x = new Quantity<LengthUnits>(pt.x, LengthUnits.px).in(LengthUnits.pt);
-		final Quantity<LengthUnits> y = new Quantity<LengthUnits>(pt.y, LengthUnits.px).in(LengthUnits.pt);
+		final Quantity<LengthUnits> x = LengthUnits.pixelsInPt(pt.x);
+		final Quantity<LengthUnits> y = LengthUnits.pixelsInPt(pt.y);
 		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, x, y);
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if (component == null)

@@ -22,7 +22,9 @@ package org.freeplane.features.attribute.mindmapmode;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
@@ -328,10 +330,10 @@ public class MAttributeController extends AttributeController {
 	private static class SetAttributeColumnWidthActor implements IActor {
 		private final int col;
 		private final NodeAttributeTableModel model;
-		private final int oldWidth;
-		private final int width;
+		private final Quantity<LengthUnits> oldWidth;
+		private final Quantity<LengthUnits> width;
 
-		private SetAttributeColumnWidthActor(final int col, final int oldWidth, final int width,
+		private SetAttributeColumnWidthActor(final int col, final Quantity<LengthUnits> oldWidth, final Quantity<LengthUnits> width,
 		                                     final NodeAttributeTableModel model) {
 			this.col = col;
 			this.oldWidth = oldWidth;
@@ -728,9 +730,9 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col, final int width) {
-		final int oldWidth = model.getLayout().getColumnWidth(col);
-		if (width == oldWidth) {
+	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> width) {
+		final Quantity<LengthUnits> oldWidth = model.getLayout().getColumnWidth(col);
+		if (width.equals(oldWidth)) {
 			return;
 		}
 		final IActor actor = new SetAttributeColumnWidthActor(col, oldWidth, width, model);
