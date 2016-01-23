@@ -7,7 +7,7 @@
 	<xsl:strip-space elements="*" />
 
 	<xsl:template match="/">
-		<map version="freeplane 1.5.3">
+		<map version="freeplane 1.5.5">
 			<xsl:apply-templates select="node()" />
 		</map>
 	</xsl:template>
@@ -32,8 +32,8 @@
 								<stylenode LOCALIZED_TEXT="default" COLOR="#000000"
 									STYLE="bubble"
 									SHAPE_HORIZONTAL_MARGIN="3.0 px" SHAPE_VERTICAL_MARGIN="2.0 px"
-									MAX_WIDTH_QUANTITY="300 px"
-									MIN_WIDTH_QUANTITY="300 px" 
+									MAX_WIDTH_QUANTITY="240 pt"
+									MIN_WIDTH_QUANTITY="240 pt" 
 									VGAP_QUANTITY="2.0 px">
 									<font NAME="Arial" SIZE="8" BOLD="false" ITALIC="false" />
 								</stylenode>
@@ -43,7 +43,7 @@
 				</hook>
 					<xsl:for-each select="namespace::*">
 						<xsl:if test="string() != 'http://www.w3.org/XML/1998/namespace'">
-							<attribute_layout NAME_WIDTH="60" VALUE_WIDTH="240"/>
+							<attribute_layout NAME_WIDTH="50 pt" VALUE_WIDTH="180 pt"/>
 							<xsl:element name="attribute">
 								<xsl:attribute name="NAME">
 									<xsl:text>xmlns</xsl:text>
@@ -64,7 +64,7 @@
 	</xsl:template>
 
 	<xsl:template match="@*">
-		<attribute_layout NAME_WIDTH="60" VALUE_WIDTH="240"/>
+		<attribute_layout NAME_WIDTH="50 pt" VALUE_WIDTH="180 pt"/>
 		<xsl:element name="attribute">
 			<xsl:attribute name="NAME">
 				<xsl:value-of select="name()" />
