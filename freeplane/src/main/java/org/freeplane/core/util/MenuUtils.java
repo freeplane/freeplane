@@ -285,7 +285,7 @@ public class MenuUtils {
 		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
 		for (String menuItemKey : menuItemKeys) {
 			Entry menuItem = genericMenuStructure.findEntry(menuItemKey);
-			final AFreeplaneAction action = entryAccessor.getAction(menuItem);
+			final AFreeplaneAction action = menuItem != null ? entryAccessor.getAction(menuItem) : null;
 			if (action == null) {
 				UITools.errorMessage(TextUtils.format("MenuUtils.invalid_menuitem", menuItemKey));
 				return;
