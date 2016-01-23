@@ -50,7 +50,8 @@ public class IconRegistry implements IExtension {
 	}
 
 	public void addIcon(final UIIcon icon) {
-		mapIcons.add(icon);
+		if(icon != null)
+			mapIcons.add(icon);
 	}
 
 	public ListModel getIconsAsListModel() {
