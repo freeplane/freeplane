@@ -20,7 +20,6 @@
 package org.freeplane.features.mode;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 import org.freeplane.core.util.LogUtils;
