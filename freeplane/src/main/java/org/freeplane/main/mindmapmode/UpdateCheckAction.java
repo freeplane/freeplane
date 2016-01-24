@@ -122,7 +122,11 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}
 		new Thread(new Runnable() {
 			public void run() {
-				checkForUpdates(autoRun);
+				try {
+					checkForUpdates(autoRun);
+				} catch (SecurityException e) {
+					// this can happens if the action is started when script is executed
+				}
 			}
 		}, "checkForUpdates").start();
 	}
