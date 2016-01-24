@@ -12,7 +12,7 @@ import java.util.List;
 
 // http://stackoverflow.com/questions/30518705/copy-jtextarea-as-text-html-dataflavor
 public class HtmlSelection implements Transferable {
-	private static List<DataFlavor> htmlFlavors = new ArrayList<>(3);
+	private static List<DataFlavor> htmlFlavors = new ArrayList<DataFlavor>(3);
 
 	static {
 		try {
