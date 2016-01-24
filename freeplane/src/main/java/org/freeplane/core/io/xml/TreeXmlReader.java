@@ -35,6 +35,7 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.IXMLBuilder;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.NonValidator;
@@ -103,8 +104,12 @@ public class TreeXmlReader implements IXMLBuilder {
 		if (saveAsXmlUntil == null && attributeHandlersForTag != null) {
 			final IAttributeHandler attributeHandler = attributeHandlersForTag.get(key);
 			if (attributeHandler != null) {
-				attributeHandler.setAttribute(currentElement, value);
-				return true;
+				try {
+					attributeHandler.setAttribute(currentElement, value);
+					return true;
+				} catch (Exception e) {
+					LogUtils.severe("Can not process attribute" + key + " = '" + value + "'", e);
+				}
 			}
 		}
 		return false;
@@ -150,7 +155,11 @@ public class TreeXmlReader implements IXMLBuilder {
 		final XMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
 		while (iterator.hasNext() && currentElement == null) {
 			nodeCreator = iterator.next();
-			currentElement = nodeCreator.createElement(parentElement, name, lastBuiltElement);
+			try {
+				currentElement = nodeCreator.createElement(parentElement, name, lastBuiltElement);
+			} catch (Exception e) {
+				LogUtils.severe("Can not process element" + name, e);
+			}
 		}
 		if (currentElement != null) {
 			if (nodeCreator instanceof IElementContentHandler) {
@@ -196,12 +205,16 @@ public class TreeXmlReader implements IXMLBuilder {
 		}
 		final Object element = currentElement;
 		currentElement = elementStack.removeLast();
-		if (nodeCreator instanceof IElementContentHandler) {
-			((IElementContentHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement,
-			    elementContentAsString);
-		}
-		else if (nodeCreator instanceof IElementDOMHandler) {
-			((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement);
+		try {
+			if (nodeCreator instanceof IElementContentHandler) {
+				((IElementContentHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement,
+						elementContentAsString);
+			}
+			else if (nodeCreator instanceof IElementDOMHandler) {
+				((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement);
+			}
+		} catch (Exception e) {
+			LogUtils.severe("Can not process element" + name, e);
 		}
 		final XMLElement top = lastBuiltElement.getParent();
 		if (nodeCreator != null && top != null && top.hasChildren()) {
@@ -294,7 +307,11 @@ public class TreeXmlReader implements IXMLBuilder {
 		final List<IElementHandler> handlers = getElementHandlers().list(tag);
 		if (handlers != null && handlers.size() == 1) {
 			nodeCreator = handlers.get(0);
-			currentElement = nodeCreator.createElement(parentElement, tag, null);
+			try {
+				currentElement = nodeCreator.createElement(parentElement, tag, null);
+			} catch (Exception e) {
+				LogUtils.severe("Can not process element" + tag, e);
+			}
 		}
 		if (currentElement != null) {
 			attributeHandlersForTag = getAttributeLoaders().get(tag);
