@@ -1,4 +1,9 @@
 ===============================
+1.5.6
+===============================
+Format changes (save length/width attributes as quantities)
+Scripting: textUtils.setClipboardContentsToHtml()
+===============================
 1.5.5
 ===============================
 Save autosave period in time period units
@@ -10,7 +15,6 @@ Export mind maps to xml (no syntax validation)
 Move menu and preference configuration to external resources
 Save attribute column widths in points
 Open new maps near selected maps
-Scripting: textUtils.setClipboardContentsToHtml()
 
 ===============================
 1.5.4

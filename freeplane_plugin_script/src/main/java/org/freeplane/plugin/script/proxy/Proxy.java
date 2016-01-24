@@ -1515,31 +1515,31 @@ public interface Proxy {
         /**@since 1.3.7 */
     	void setHorizontalShift(final int horizontalShift);
 
-        /**@since 1.5.5 */
+        /**@since 1.5.6 */
     	void setHorizontalShift(Quantity<LengthUnits> verticalShift);
 
         /** use length units like "1 cm" or "6 pt"
-         * @since 1.5.5 */
+         * @since 1.5.6 */
     	void setHorizontalShift(String verticalShift);
 
     	/**@since 1.3.7 */
     	void setVerticalShift(final int verticalShift);
 
-        /**@since 1.5.5 */
+        /**@since 1.5.6 */
     	void setVerticalShift(Quantity<LengthUnits> verticalShift);
 
         /** use length units like "1 cm" or "6 pt"
-         * @since 1.5.5 */
+         * @since 1.5.6 */
     	void setVerticalShift(String verticalShift);
 
         /**@since 1.3.7 */
     	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
 
-        /**@since 1.5.5 */
+        /**@since 1.5.6 */
     	void setMinimalDistanceBetweenChildren(Quantity<LengthUnits> verticalShift);
 
         /** use length units like "1 cm" or "6 pt"
-         * @since 1.5.5 */
+         * @since 1.5.6 */
     	void setMinimalDistanceBetweenChildren(String verticalShift);
     	
     	/**
@@ -1644,11 +1644,11 @@ public interface Proxy {
         void setMinNodeWidth(int width);
         
         /** Set to null to restore default 
-         * @since 1.5.5 */
+         * @since 1.5.6 */
         void setMinNodeWidth(Quantity<LengthUnits> width);
 
         /** use length units like "1 cm" or "6 pt"
-         * @since 1.5.5 */
+         * @since 1.5.6 */
         void setMinNodeWidth(String width);
         
         /** minNodeWidth in px - set to -1 to restore default.
@@ -1656,11 +1656,11 @@ public interface Proxy {
         void setMaxNodeWidth(int width);
         
         /** Set to null to restore default 
-         * @since 1.5.5 */
+         * @since 1.5.6 */
         void setMaxNodeWidth(Quantity<LengthUnits> width);
 
         /** use length units like "1 cm" or "6 pt"
-         * @since 1.5.5 */
+         * @since 1.5.6 */
         void setMaxNodeWidth(String width);
         
         /** @since 1.3.8 */
