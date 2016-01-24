@@ -1515,11 +1515,32 @@ public interface Proxy {
         /**@since 1.3.7 */
     	void setHorizontalShift(final int horizontalShift);
 
-        /**@since 1.3.7 */
+        /**@since 1.5.5 */
+    	void setHorizontalShift(Quantity<LengthUnits> verticalShift);
+
+        /** use length units like "1 cm" or "6 pt"
+         * @since 1.5.5 */
+    	void setHorizontalShift(String verticalShift);
+
+    	/**@since 1.3.7 */
     	void setVerticalShift(final int verticalShift);
+
+        /**@since 1.5.5 */
+    	void setVerticalShift(Quantity<LengthUnits> verticalShift);
+
+        /** use length units like "1 cm" or "6 pt"
+         * @since 1.5.5 */
+    	void setVerticalShift(String verticalShift);
 
         /**@since 1.3.7 */
     	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
+
+        /**@since 1.5.5 */
+    	void setMinimalDistanceBetweenChildren(Quantity<LengthUnits> verticalShift);
+
+        /** use length units like "1 cm" or "6 pt"
+         * @since 1.5.5 */
+    	void setMinimalDistanceBetweenChildren(String verticalShift);
     	
     	/**
     	 * A sort method that uses the result of the Groovy closure ("block") for comparison. As this closure

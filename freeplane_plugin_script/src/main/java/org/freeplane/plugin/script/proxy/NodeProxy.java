@@ -795,20 +795,36 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return LocationController.getController().getHorizontalShift(getDelegate()).toBaseUnitsRounded();
 	}
 
+	public int getVerticalShift(){
+		return LocationController.getController().getVerticalShift(getDelegate()).toBaseUnitsRounded();
+	}
+
 	public void setHorizontalShift(final int horizontalShift){
 		final Quantity<LengthUnits> horizontalShiftQuantity = new Quantity<LengthUnits>(horizontalShift, LengthUnits.px);
 		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(),horizontalShiftQuantity);
 	}
 
-	public int getVerticalShift(){
-		return LocationController.getController().getVerticalShift(getDelegate()).toBaseUnitsRounded();
+	public void setHorizontalShift(Quantity<LengthUnits> verticalShift) {
+		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), verticalShift);
 	}
 
+	public void setHorizontalShift(String verticalShift) {
+		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnits.px));
+	}
+	
 	public void setVerticalShift(final int verticalShift){
 		final Quantity<LengthUnits> verticalShiftQuantity = new Quantity<LengthUnits>(verticalShift, LengthUnits.px);
 		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShiftQuantity);
 	}
 
+	public void setVerticalShift(Quantity<LengthUnits> verticalShift) {
+		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShift);
+	}
+
+	public void setVerticalShift(String verticalShift) {
+		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnits.px));
+	}
+	
 	public int getMinimalDistanceBetweenChildren(){
 		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate()).toBaseUnitsRounded();
 	}
@@ -818,6 +834,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
 	}
 
+	public void setMinimalDistanceBetweenChildren(Quantity<LengthUnits> minimalDistanceBetweenChildren) {
+		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+	}
+
+	public void setMinimalDistanceBetweenChildren(String minimalDistanceBetweenChildren) {
+		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnits.px));
+	}
+	
 	@Override
 	public void sortChildrenBy(Closure<Comparable<Object>> closure) {
 		getScriptContext().accessNode(getDelegate());
