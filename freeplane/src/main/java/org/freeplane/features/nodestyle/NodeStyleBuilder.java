@@ -195,12 +195,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler nodeMaxNodeWidthQuantityHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				try {
-					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
-					NodeSizeModel.setMaxNodeWidth(node, width);
-				} catch (Exception e) {
-					LogUtils.warn("Can not parse quantity " + value);
-				}
+				Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
+				NodeSizeModel.setMaxNodeWidth(node, width);
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH_QUANTITY", nodeMaxNodeWidthQuantityHandler);
@@ -210,7 +206,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				if (NodeSizeModel.getMaxNodeWidth(node) == null) {
-					nodeMaxNodeWidthQuantityHandler.setAttribute(nodeMaxNodeWidthQuantityHandler, value);
+					nodeMaxNodeWidthQuantityHandler.setAttribute(node, value);
 				}
 			}
 		};
@@ -220,12 +216,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler nodeMinNodeWidthQuantityHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				try {
-					Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
-					NodeSizeModel.setNodeMinWidth(node, width);
-				} catch (Exception e) {
-					LogUtils.warn("Can not parse quantity " + value);
-				}
+				Quantity<LengthUnits> width = Quantity.fromString(value, LengthUnits.px);
+				NodeSizeModel.setNodeMinWidth(node, width);
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MIN_WIDTH_QUANTITY", nodeMinNodeWidthQuantityHandler);
@@ -235,7 +227,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				if (NodeSizeModel.getMinNodeWidth(node) == null) {
-					nodeMinNodeWidthQuantityHandler.setAttribute(nodeMaxNodeWidthQuantityHandler, value);
+					nodeMinNodeWidthQuantityHandler.setAttribute(node, value);
 				}
 			}
 		};
