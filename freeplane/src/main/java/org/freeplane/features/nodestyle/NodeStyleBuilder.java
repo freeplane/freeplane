@@ -210,8 +210,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				if (NodeSizeModel.getMaxNodeWidth(node) == null) {
-					int widthInPixels = Integer.parseInt(value);
-					NodeSizeModel.setMaxNodeWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+					nodeMaxNodeWidthQuantityHandler.setAttribute(nodeMaxNodeWidthQuantityHandler, value);
 				}
 			}
 		};
@@ -236,8 +235,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				if (NodeSizeModel.getMinNodeWidth(node) == null) {
-					int widthInPixels = Integer.parseInt(value);
-					NodeSizeModel.setNodeMinWidth(node, new Quantity<LengthUnits>(widthInPixels, LengthUnits.px));
+					nodeMinNodeWidthQuantityHandler.setAttribute(nodeMaxNodeWidthQuantityHandler, value);
 				}
 			}
 		};
@@ -344,14 +342,12 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	                             final boolean forceFormatting) {
 		final Quantity<LengthUnits> maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
 		if (maxTextWidth != null) {
-			writer.addAttribute("MAX_WIDTH_QUANTITY", maxTextWidth.toString());
-			writer.addAttribute("MAX_WIDTH", maxTextWidth.toBaseUnitsRounded());
+			writer.addAttribute("MAX_WIDTH", maxTextWidth.toString());
 		}
 
 		final Quantity<LengthUnits> minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
 		if (minTextWidth != null) {
-			writer.addAttribute("MIN_WIDTH_QUANTITY", minTextWidth.toString());
-			writer.addAttribute("MIN_WIDTH", minTextWidth.toBaseUnitsRounded());
+			writer.addAttribute("MIN_WIDTH", minTextWidth.toString());
 		}
 	}
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
