@@ -18,7 +18,12 @@
       <xsl:apply-templates select="node"/>
   </xsl:template>
 
-  <xsl:template match="node[@TEXT]">
+  <xsl:template match="node[starts-with(@TEXT, '&quot;')]" priority="2">
+  	<xsl:variable name="length" select="string-length(@TEXT)"/>
+  	<xsl:value-of select="substring(@TEXT,2,($length - 2))"/>
+  </xsl:template>
+  
+  <xsl:template match="node[@TEXT]" priority="1">
 	<xsl:text>&#10;</xsl:text>
 	<xsl:text disable-output-escaping="yes">&lt;</xsl:text>
 	<xsl:value-of select="@TEXT"/>
