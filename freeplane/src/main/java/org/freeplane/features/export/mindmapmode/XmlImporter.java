@@ -6,7 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -25,7 +29,13 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -50,15 +60,16 @@ public class XmlImporter	{
 		}
 	}
 
-	public void importXml(InputStream in, final File outputFile) throws IOException, FileNotFoundException,
+	public void importXml(final InputStream in, final File outputFile) throws IOException, FileNotFoundException,
 	XMLParseException, URISyntaxException, XMLException, MalformedURLException {
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltResource);
 		if (xsltUrl == null) {
 			LogUtils.severe("Can't find " + xsltResource + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltResource + " as resource.");
 		}
+		final URL mapUrl = Compat.fileToUrl(outputFile);
 		if(outputFile.exists()){
-			if(Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(Compat.fileToUrl(outputFile)))
+			if(Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(mapUrl))
 				return;
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController()
 					.getMapViewManager().getMapViewComponent(), TextUtils.getText("map_already_exists"), "Freeplane",
@@ -67,20 +78,35 @@ public class XmlImporter	{
 				return ;
 			}
 		}
-		InputStream xsltFile = null;
-		FileWriter fileWriter = null;
-		try{
-			xsltFile = xsltUrl.openStream();
-			fileWriter = new FileWriter(outputFile);
-			final Result result = new StreamResult(fileWriter);
-			transform(new StreamSource(in), xsltFile, result);
-		}
-		finally {
-			FileUtils.silentlyClose(xsltFile);
-			FileUtils.silentlyClose(fileWriter);
-		}
-
-		Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(outputFile));
+		final PipedReader reader = new PipedReader();
+		final Writer writer = new PipedWriter(reader);
+		final Thread transformationThread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				InputStream xsltFile = null;
+				try{
+					xsltFile = xsltUrl.openStream();
+					final Result result = new StreamResult(writer);
+					transform(new StreamSource(in), xsltFile, result);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				finally {
+					FileUtils.silentlyClose(xsltFile);
+					FileUtils.silentlyClose(writer);
+				}
+			}
+		}, "XSLT Transformation");
+		transformationThread.start();
+		final ModeController modeController = Controller.getCurrentModeController();
+		final MapController mapController = modeController.getMapController();
+		final MapModel map = new MMapModel();
+		modeController.getMapController().getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
+		map.setURL(mapUrl);
+		map.setSaved(false);
+		mapController.fireMapCreated(map);
+		mapController.newMapView(map);
 	}
 
 	private void transform(final Source xmlSource, final InputStream xsltStream, final Result result)
