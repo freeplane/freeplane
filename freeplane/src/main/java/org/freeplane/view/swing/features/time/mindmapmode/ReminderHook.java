@@ -176,7 +176,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 					icon = getClockIcon();
 				}
 				else if (stateAdded == ClockState.CLOCK_INVISIBLE) {
-					if (reminder != null && node == reminder.getNode()) {
+					if (reminder != null && node.allClones().contains(reminder.getNode())) {
 						icon = getBellIcon();
 					}
 					else {
