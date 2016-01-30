@@ -1,6 +1,7 @@
 package org.freeplane.features.url;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ public class MapVersionInterpreter implements IExtension{
 	static final public IMapInputStreamConverter DEFAULT_INPUTSTREAM_CONVERTER = new IMapInputStreamConverter() {
 		private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 		public Reader getConvertedStream(File f) throws FileNotFoundException, IOException {
-			return new XsltPipeReaderFactory().getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
+			return new XsltPipeReaderFactory(FREEPLANE_VERSION_UPDATER_XSLT).getReader(new FileInputStream(f));
 		}
 	};
 	static final public MapVersionInterpreter DEFAULT = new MapVersionInterpreter("", 0, "", true, true, null, null);
