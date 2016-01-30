@@ -19,9 +19,11 @@
  */
 package org.freeplane.main.application;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -398,16 +400,20 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	}
 
     private void toFront() {
-        final Frame frame = (Frame) UITools.getMenuComponent();
-        if(frame == null)
-            return;
-        final int state = frame.getExtendedState();
-        if ((state & Frame.ICONIFIED) != 0)
-            frame.setExtendedState(state & ~Frame.ICONIFIED);
-        if (!frame.isVisible())
-            frame.setVisible(true);
-        frame.toFront();
-        frame.requestFocus();
+    	final Component menuComponent = UITools.getMenuComponent();
+    	if(menuComponent instanceof Frame) {
+    		final Frame frame = (Frame) menuComponent;
+    		final int state = frame.getExtendedState();
+    		if ((state & Frame.ICONIFIED) != 0)
+    			frame.setExtendedState(state & ~Frame.ICONIFIED);
+    	}
+    	if(menuComponent instanceof Window) {
+    		Window window = (Window) menuComponent;
+    		if (!window.isVisible())
+    			window.setVisible(true);
+    		window.toFront();
+    		window.requestFocus();
+    	}
     }
 
 
