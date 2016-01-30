@@ -252,7 +252,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
-	public void setTitle() {
+	public void setMapTitles() {
 		throw new RuntimeException("Method not implemented");
 	}
 

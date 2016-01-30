@@ -579,7 +579,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				break;
 			}
 		}
-		Controller.getCurrentController().getMapViewManager().setTitle();
+		Controller.getCurrentController().getMapViewManager().setMapTitles();
 	}
 
 	/**@deprecated -- use MMapIO*/

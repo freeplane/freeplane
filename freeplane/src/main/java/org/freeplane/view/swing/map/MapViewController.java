@@ -652,7 +652,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 				controller.selectMode(newModeController);
 			}
 		}
-		setTitle();
+		setMapTitles();
 		controller.getViewController().viewNumberChanged(getViewNumber());
 		newModeController.getUserInputListenerFactory().updateMapList();
 		if (pNewMap != null) {
@@ -860,7 +860,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			changeAntialias(newValue);
 		}
 	}
-	public void setTitle() {
+	public void setMapTitles() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController == null) {
 			controller.getViewController().setTitle("");

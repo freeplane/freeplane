@@ -87,7 +87,8 @@ class MapViewSerializer implements ViewSerializer {
     			}
     			Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
     			if(mapViewComponent.getParent() == null) {
-                    return newDockedView(mapViewComponent);
+                    final Component pNewMap = mapViewComponent;
+					return newDockedView(pNewMap, pNewMap.getName());
                 }
                 else
     				return newViewToBeRemoved();
@@ -105,16 +106,15 @@ class MapViewSerializer implements ViewSerializer {
 		return view;
     }
 
-	protected View newDockedView(final Component pNewMap) {
+	protected View newDockedView(final Component pNewMap, final String title) {
 		if(pNewMap.getParent() != null)
 			return null;
-	    final String title = pNewMap.getName();
 		MapViewScrollPane mapViewScrollPane = new MapViewScrollPane();
 		mapViewScrollPane.getViewport().setView(pNewMap);
 		@SuppressWarnings("serial")
         final View viewFrame = new ConnectedToMenuView(title, null, mapViewScrollPane);
 	    return viewFrame;
-    }
+	}
 
 	public void removeDummyViews() {
 	    for(View view : viewsToBeRemoved)

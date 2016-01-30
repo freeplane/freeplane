@@ -138,7 +138,7 @@ public interface IMapViewManager {
 
 	public List<Component> getViews(MapModel map);
 	public void obtainFocusForSelected();
-	public void setTitle();
+	public void setMapTitles();
 	public Object setEdgesRenderingHint(final Graphics2D g);
 	public void setTextRenderingHint(final Graphics2D g);
 	public boolean closeAllMaps();

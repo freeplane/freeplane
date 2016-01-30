@@ -739,7 +739,7 @@ public class MMapController extends MapController {
 		mapModel.setSaved(saved);
 		if (setTitle) {
 			final Controller controller = Controller.getCurrentController();
-			controller.getMapViewManager().setTitle();
+			controller.getMapViewManager().setMapTitles();
 			final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
 			if(saveAction != null)
 				saveAction.setEnabled();
