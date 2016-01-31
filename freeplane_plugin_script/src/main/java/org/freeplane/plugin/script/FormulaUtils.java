@@ -45,8 +45,17 @@ public class FormulaUtils {
     }
 
 	public static boolean containsFormula(final String text) {
-	    return text != null && text.length() > 2 && text.charAt(0) == '=' && text.charAt(1) != '=';
-    }
+		// ignore == and => since these are often used in text
+		return startsWithEqualSign(text) && secondCharIsntSpecial(text.charAt(1));
+	}
+
+	private static boolean startsWithEqualSign(final String text) {
+		return text != null && text.length() > 2 && text.charAt(0) == '=';
+	}
+
+	private static boolean secondCharIsntSpecial(char secondChar) {
+		return secondChar != '=' && secondChar != '>';
+	}
 
 	public static boolean containsFormulaCheckHTML(String text) {
 	    if(HtmlUtils.isHtmlNode(text))
