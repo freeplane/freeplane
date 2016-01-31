@@ -34,7 +34,9 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        def deps = configurations.runtime.files.collect { "lib/${it.name}" }
+        def deps = configurations.runtime.files.collect {
+            externalizeJar(it)
+        }
         deps.add(0, "lib/freeplaneosgi-${project.version}.jar")
         // this is built from :freeplane_mac on a Mac!
         deps.add(0, "lib/freeplane_mac-${project.version}.jar")
