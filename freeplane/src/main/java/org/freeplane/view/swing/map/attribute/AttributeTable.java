@@ -19,10 +19,12 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
@@ -40,6 +42,7 @@ import java.net.URI;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
@@ -52,6 +55,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
@@ -65,23 +69,23 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
@@ -256,14 +260,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			tableHeader.setResizingAllowed(false);
 		}
 		setModel(attributeView.getCurrentAttributeTableModel());
-		updateComponent(this);
-		updateColumnWidths();
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
 		setRowSelectionAllowed(false);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
-		updateRowHeights();
-		updateColumnWidths();
 	}
 
 	@Override
@@ -594,9 +594,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final DefaultComboBoxModel currentModel = new DefaultComboBoxModel(items);
 		comboBox.setModel(currentModel);
-		updateComponent(comboBox);
-		final Component editorComponent = comboBox.getEditor().getEditorComponent();
-		updateComponent(editorComponent);
+		updateComponentColors(comboBox);
+		final JComponent editorComponent = (JComponent) comboBox.getEditor().getEditorComponent();
+		updateComponentColors(editorComponent);
+		editorComponent.setOpaque(true);
 		final Font font = editorComponent.getFont();
 		editorComponent.setFont(font.deriveFont(font.getSize2D() * getZoom()));
 		return super.prepareEditor(tce, row, col);
@@ -627,7 +628,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
                                                       isSelected, hasFocus,
                                                       row, column);
     }
-
+	
 	@Override
 	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		if (ks.getKeyCode() == KeyEvent.VK_TAB && e.getModifiers() == 0 && pressed && getSelectedColumn() == 1
@@ -778,9 +779,38 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	void updateAttributeTable() {
-		updateComponent(this);
+		updateComponentColors(this);
+		updateGridColor();
 		updateRowHeights();
 		updateColumnWidths();
+	}
+
+	private void updateGridColor() {
+		final NodeView nodeView = attributeView.getNodeView();
+		if(! SwingUtilities.isDescendingFrom(this, nodeView))
+			return;
+		final MapView mapView = nodeView.getMap();
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
+        final EdgeModel edge = EdgeModel.getModel(attributeStyleNode);
+        if(edge != null){
+        	final Color edgeColor = edge.getColor();
+        	setGridAndBorderColor(edgeColor);
+        }
+        else
+        	this.gridColor = null;
+	}
+
+	private Color gridColor = null;
+	public void setGridAndBorderColor(Color gridColor) {
+		this.gridColor = gridColor;
+		if(gridColor != null) {
+			if(! gridColor.equals(getGridColor())) {
+				AttributeViewScrollPane scrollPane = (AttributeViewScrollPane) SwingUtilities.getAncestorOfClass(AttributeViewScrollPane.class, this);
+				scrollPane.setBorder(BorderFactory.createLineBorder(gridColor));
+				super.setGridColor(gridColor);
+			}
+		}
 	}
 
 	private void updateColumnWidths() {
@@ -791,15 +821,25 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private void updateComponent(final Component c) {
-		final MapView mapView = attributeView.getMapView();
+	private void updateComponentColors(final JComponent c) {
+		final NodeView nodeView = attributeView.getNodeView();
+		if(! SwingUtilities.isDescendingFrom(this, nodeView))
+			return;
+		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
 		final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
         final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final Font font = style.getFont(attributeStyleNode);
         c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));
-        c.setBackground(style.getBackgroundColor(attributeStyleNode));
+        final Color backgroundColor = NodeStyleModel.getBackgroundColor(attributeStyleNode);
+        if(backgroundColor!= null) {
+        	c.setOpaque(true);
+			c.setBackground(backgroundColor);
+		} else {
+			c.setBackground(nodeView.getBackgroundColor());
+			c.setOpaque(false);
+		}
         c.setForeground(style.getColor(attributeStyleNode));
     }
 
@@ -904,4 +944,17 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			viewController.addObjectTypeInfo(value);
 		}
     }
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		if(gridColor == null){
+			final NodeView nodeView = attributeView.getNodeView();
+			if(SwingUtilities.isDescendingFrom(this, nodeView))
+				setGridAndBorderColor(nodeView.getEdgeColor());
+		}
+		super.paintComponent(g);
+	}
+
+	
+
 }

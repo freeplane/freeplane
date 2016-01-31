@@ -35,8 +35,10 @@ class AttributeViewScrollPane extends JScrollPane {
 	AttributeViewScrollPane(final AttributeTable attributeTable) {
 		super(attributeTable);
 		setAlignmentX(Component.CENTER_ALIGNMENT);
+		setOpaque(false);
+		getViewport().setOpaque(false);
 	}
-
+	
 	@Override
 	public Dimension getMaximumSize() {
 		return getPreferredSize();
