@@ -18,8 +18,16 @@
       <xsl:apply-templates select="node"/>
   </xsl:template>
 
-  <xsl:template match="node[@TEXT]">
-	<xsl:text>&#10;</xsl:text>
+  <xsl:template match="node[starts-with(@TEXT, '&quot;')]" priority="2">
+  	<xsl:variable name="length" select="string-length(@TEXT)"/>
+  	<xsl:value-of select="substring(@TEXT,2,($length - 2))"/>
+  </xsl:template>
+  
+  <xsl:template match="node[@TEXT]" priority="1">
+  	<xsl:variable name="position" select="position()"/>
+  	<xsl:if test="not(../node[$position - 1 and starts-with(@TEXT, '&quot;')])"> 
+		<xsl:text>&#10;</xsl:text>
+  	</xsl:if>
 	<xsl:text disable-output-escaping="yes">&lt;</xsl:text>
 	<xsl:value-of select="@TEXT"/>
 	<xsl:apply-templates select="attribute"/>
@@ -27,7 +35,9 @@
 		<xsl:when test="node[@TEXT]">
 			<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 			<xsl:apply-templates select="node"/>
-			<xsl:text>&#10;</xsl:text>
+		  	<xsl:if test="not(node[position() = last() and starts-with(@TEXT, '&quot;')])"> 
+				<xsl:text>&#10;</xsl:text>
+		  	</xsl:if>
 			<xsl:text disable-output-escaping="yes">&lt;/</xsl:text>
 			<xsl:value-of select="@TEXT"/>
 			<xsl:text disable-output-escaping="yes">&gt;</xsl:text>

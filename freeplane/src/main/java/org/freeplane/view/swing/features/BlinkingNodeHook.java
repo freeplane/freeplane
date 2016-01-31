@@ -23,6 +23,8 @@ package org.freeplane.view.swing.features;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -71,8 +73,8 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 			BlinkingNodeHook.colors.add(Color.CYAN);
 		}
 
-		public NodeModel getNode() {
-			return node;
+		public Iterable<NodeModel> getNodes() {
+			return node != null ? node.allClones() : Collections.<NodeModel>emptyList();
 		}
 
 		public Timer getTimer() {
@@ -84,30 +86,33 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		public void run() {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					if (getNode() == null || Controller.getCurrentModeController().isBlocked()) {
+					final Iterable<NodeModel> nodes = getNodes();
+					if (Controller.getCurrentModeController().isBlocked()) {
 						return;
 					}
-					getNode().acceptViewVisitor(new INodeViewVisitor() {
-						public void visit(final INodeView nodeView) {
-							if(! (nodeView instanceof NodeView)){
-								return;
+					for(NodeModel node :nodes) {
+						node.acceptViewVisitor(new INodeViewVisitor() {
+							public void visit(final INodeView nodeView) {
+								if(! (nodeView instanceof NodeView)){
+									return;
+								}
+								final Component container = ((NodeView)nodeView).getMainView();
+								if (container == null || !container.isVisible()) {
+									return;
+								}
+								final Color col = container.getForeground();
+								int index = -1;
+								if (col != null && BlinkingNodeHook.colors.contains(col)) {
+									index = BlinkingNodeHook.colors.indexOf(col);
+								}
+								index++;
+								if (index >= BlinkingNodeHook.colors.size()) {
+									index = 0;
+								}
+								container.setForeground(BlinkingNodeHook.colors.get(index));
 							}
-							final Component container = ((NodeView)nodeView).getMainView();
-							if (container == null || !container.isVisible()) {
-								return;
-							}
-							final Color col = container.getForeground();
-							int index = -1;
-							if (col != null && BlinkingNodeHook.colors.contains(col)) {
-								index = BlinkingNodeHook.colors.indexOf(col);
-							}
-							index++;
-							if (index >= BlinkingNodeHook.colors.size()) {
-								index = 0;
-							}
-							container.setForeground(BlinkingNodeHook.colors.get(index));
-						}
-					});
+						});
+					}
 				}
 			});
 		}

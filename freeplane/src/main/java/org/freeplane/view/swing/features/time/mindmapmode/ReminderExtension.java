@@ -117,7 +117,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
 	}
 
 	private void displayStateIcon(final NodeModel parent, final ClockState state) {
-		if (task != null || ! task.alreadyExecuted() || !isAncestorNode(parent)) {
+		if (task != null && ! task.alreadyExecuted() || !isAncestorNode(parent)) {
 			return;
 		}
 		displayState(state, parent, true);

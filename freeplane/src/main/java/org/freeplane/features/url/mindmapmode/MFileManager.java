@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.SequenceInputStream;
@@ -520,16 +521,16 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			IMapInputStreamConverter isConverter = versionInterpreter.getMapInputStreamConverter();
 			if (showResult != JOptionPane.OK_OPTION || isConverter == null) {
-				reader = new XsltPipeReaderFactory().getActualReader(sequencedInput);
+				reader = new InputStreamReader(sequencedInput, FileUtils.defaultCharset());
 			}
 			else {
 				sequencedInput.close();
 				//reader = UrlManager.getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
 				reader = isConverter.getConvertedStream(f);
 			}
+		} else {
+			reader = new InputStreamReader(sequencedInput, FileUtils.defaultCharset());
 		}
-		else
-			reader = new XsltPipeReaderFactory().getActualReader(sequencedInput);
 		try {
 			return Controller.getCurrentModeController().getMapController().getMapReader()
 			    .createNodeTreeFromXml(map, reader, Mode.FILE);
@@ -578,7 +579,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				break;
 			}
 		}
-		Controller.getCurrentController().getMapViewManager().setTitle();
+		Controller.getCurrentController().getMapViewManager().setMapTitles();
 	}
 
 	/**@deprecated -- use MMapIO*/

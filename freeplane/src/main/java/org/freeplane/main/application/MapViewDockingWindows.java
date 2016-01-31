@@ -292,7 +292,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
     }
 
 	private void addDockedWindow(final Component pOldMap, final Component pNewMap) {
-	    final View viewFrame = viewSerializer.newDockedView(pNewMap);
+	    final View viewFrame = viewSerializer.newDockedView(pNewMap, createTitle(pNewMap));
 		addDockedView(pOldMap != null ? getContainingDockedWindow(pOldMap) : null, viewFrame);
     }
 
@@ -409,18 +409,23 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			return;
 		for (Component mapViewComponent: mapViews) {
 			if (mapViewComponent instanceof MapView ) {
-	            MapView mapView = (MapView)mapViewComponent;
-	            String name = mapView.getName();
-	            String title;
-	            if(mapView.getModel().isSaved() || mapView.getModel().isReadOnly())
-	            	title = name;
-	            else
-	            	title = name + " *";
+	            String title = createTitle(mapViewComponent);
 	            View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
 				containingDockedWindow.getViewProperties().setTitle(title);
             }
 		}
     }
+
+	private String createTitle(Component mapViewComponent) {
+		MapView mapView = (MapView)mapViewComponent;
+		String name = mapView.getName();
+		String title;
+		if(mapView.getModel().isSaved() || mapView.getModel().isReadOnly())
+			title = name;
+		else
+			title = name + " *";
+		return title;
+	}
 
 	public void selectNextMapView() {
 		selectMap(1);

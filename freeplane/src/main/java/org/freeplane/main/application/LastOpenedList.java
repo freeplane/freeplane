@@ -220,7 +220,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	}
 
 	private String getRestorable(final File file) {
-		if (file == null) {
+		if (file == null || ! file.exists()) {
 			return null;
 		}
 		final String absolutePath = file.getAbsolutePath();
