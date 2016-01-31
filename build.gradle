@@ -18,24 +18,32 @@ allprojects {
 
 }
 
-def filterPluginDeps(listOfPaths) {
-    def filteredListOfPaths = []
+// this is used for (linux) packages, where the dependencies
+// live on the file system (/usr/share/java/*.jar on Debian):
+def externalizeJar(File jar) {
+    // do not externalize, jars are copied over to /BUILD
+    // in development workflow!
+    return "lib/${jar.name}"
+}
 
-    for (path in listOfPaths) {
-        if (path.startsWith('lib/framework-')) {
-            continue;
-        }
-        if (path == ("lib/freeplane-" + project.version + ".jar")) {
-            continue;
-        }
-        if (path.startsWith('lib/freeplane_plugin_') &&
-            path.endsWith('-' + project.version + '.jar')) {
-            continue;
-        }
-        filteredListOfPaths.add(path)
+// this is overridden in linux packages where this might be named
+// knopflerfish-framework.jar
+def isKnopflerfishJar(fileName) {
+    return fileName.startsWith('framework-') &&
+           fileName.endsWith('.jar');
+}
+
+def filterAndExternalizePluginDependencies(runtime_files) {
+    return runtime_files.findAll {
+        File file -> !isKnopflerfishJar(file.name)
+    }.findAll {
+        File file ->
+        file.name != "freeplane-${project.version}.jar" &&
+        !(file.name.startsWith('freeplane_plugin_') &&
+          file.name.endsWith('-' + project.version + '.jar'))
+    }.collect {
+        File file -> externalizeJar(file)
     }
-
-    return filteredListOfPaths
 }
 
 // we need this filter to convert i.e.:
@@ -175,6 +183,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
             include("*.jar")
             // TODO: this is redundant with regard to 'filterPluginDeps' (see above)!
             exclude('framework-*.jar')
+            exclude('knopflerfish-framework-*.jar')
             exclude('freeplane-' + project.version + '.jar')
             exclude('freeplane_plugin_*-' + project.version + '.jar')
         }
