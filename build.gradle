@@ -183,7 +183,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
             include("*.jar")
             // TODO: this is redundant with regard to 'filterPluginDeps' (see above)!
             exclude('framework-*.jar')
-            exclude('knopflerfish-framework-*.jar')
+            exclude('knopflerfish-framework*.jar')
             exclude('freeplane-' + project.version + '.jar')
             exclude('freeplane_plugin_*-' + project.version + '.jar')
         }
