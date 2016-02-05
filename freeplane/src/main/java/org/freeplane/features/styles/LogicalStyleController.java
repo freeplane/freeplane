@@ -85,7 +85,6 @@ public class LogicalStyleController implements IExtension {
 			public Collection<IStyle> getProperty(NodeModel node, Collection<IStyle> currentValue) {
 				final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
 				Collection<IStyle> condStyles = styleModel.getConditionalStyleModel().getStyles(node);
-				clearCache();
 				addAll(node, styleModel, currentValue, condStyles);
 				return currentValue;
 			}
@@ -300,6 +299,7 @@ public class LogicalStyleController implements IExtension {
 			return cachedStyle;
 		}
 		cachedStyle = null;
+		cachedNode = null;
 		cachedStyle = styleHandlers.getProperty(node, new LinkedHashSet<IStyle>());
 		cachedNode = new WeakReference<NodeModel>(node);
 		return cachedStyle;
