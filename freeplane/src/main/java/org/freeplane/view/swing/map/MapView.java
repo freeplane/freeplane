@@ -371,6 +371,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             for(NodeView view : newSelection)
                 if (selectedSet.add(view))
                 	selectedList.add(view);
+			if(!selectedSet.contains(selectionStart))
+				selectionEnd = selectionStart = selectedNode;
+			else if (!selectedSet.contains(selectionEnd))
+				selectionEnd = selectionStart;
+
             if (selectedChanges) {
                 addSelectionForHooks(selectedNode);
             }
