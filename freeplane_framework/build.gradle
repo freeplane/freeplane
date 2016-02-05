@@ -36,7 +36,7 @@ task copyLauncherStuff(type: Copy) {
      }
 
      def knopflerfishJarFile = project.configurations.runtime.files.find {
-         it.name =~ /^framework-[0-9\.]+\.jar$/
+         isKnopflerfishJar(it.name)
      }
      from(knopflerfishJarFile)
      // rename [knopflerfish-]framework-*.jar to framework.jar
