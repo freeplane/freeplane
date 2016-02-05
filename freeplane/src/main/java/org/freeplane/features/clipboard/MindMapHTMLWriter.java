@@ -279,50 +279,43 @@ class MindMapHTMLWriter {
 			localParentID = parentID + "_" + lastChildNumber;
 			writeFoldingButtons(localParentID);
 		}
+		final String fontStyle = fontStyle(nodeStyleController.getColor(model), nodeStyleController.getFont(model));
+		if (!fontStyle.equals("")) {
+			fileout.write("<span style=\"" + fontStyle + "\">");
+		}
 		String link = NodeLinks.getLinkAsString(model);
 		if (link != null) {
 			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				link += ".html";
 			}
-			fileout.write("<a href=\"" + link + "\" target=\"_blank\"><span class=l>~</span>&nbsp;");
-		}
-		final String fontStyle = fontStyle(nodeStyleController.getColor(model), nodeStyleController.getFont(model));
-		if (!fontStyle.equals("")) {
-			fileout.write("<span style=\"" + fontStyle + "\">");
+            fileout.write("<a href=\"" + link + "\" target=\"_blank\">");
 		}
 		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 			writeIcons(model);
 		}
 		writeModelContent(text);
-        final String detailText = DetailTextModel.getDetailTextText(model);
-        if(detailText != null){
-        	writeModelContent(detailText);
+		if (link != null) {
+			fileout.write("</a>" + MindMapHTMLWriter.el);
         }
 		if (fontStyle != "") {
 			fileout.write("</span>");
 		}
+        final String detailText = DetailTextModel.getDetailTextText(model);
+        if(detailText != null){
+        	writeModelContent(detailText);
+        }
         final String noteContent = NoteModel.getNoteText(model);
         if(noteContent != null){
         	writeModelContent(noteContent);
-        }
+            }
 		fileout.write(MindMapHTMLWriter.el);
-		if (link != null) {
-			fileout.write("</a>" + MindMapHTMLWriter.el);
-		}
 		if (heading) {
 			fileout.write("</h" + depth + ">" + MindMapHTMLWriter.el);
-		}
-		boolean treatChildrenAsParagraph = false;
-		for (final NodeModel child : mapController.childrenUnfolded(model)) {
-			if (child.toString().length() > 100) {
-				treatChildrenAsParagraph = true;
-				break;
-			}
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
 			for (final NodeModel child : mapController.childrenUnfolded(model)) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*isRoot=*/false,
-				    treatChildrenAsParagraph, depth + 1);
+				    false, depth + 1);
 			}
 			return lastChildNumber;
 		}
@@ -330,33 +323,24 @@ class MindMapHTMLWriter {
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
-					/*isRoot=*/false, treatChildrenAsParagraph, depth + 1);
+					/*isRoot=*/false, false, depth + 1);
 				}
 			}
 			else if (createFolding) {
 				fileout.write("<ul id=\"fold" + localParentID
 				        + "\" style=\"POSITION: relative; VISIBILITY: visible;\">");
-				if (treatChildrenAsParagraph) {
-					fileout.write("<li>");
-				}
 				int localLastChildNumber = 0;
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
-					/* isRoot=*/false, treatChildrenAsParagraph, depth + 1);
+					/* isRoot=*/false, false, depth + 1);
 				}
 			}
 			else {
 				fileout.write("<ul>");
-				if (treatChildrenAsParagraph) {
-					fileout.write("<li>");
-				}
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
-					/* isRoot= */false, treatChildrenAsParagraph, depth + 1);
+					/* isRoot= */false, false, depth + 1);
 				}
-			}
-			if (treatChildrenAsParagraph) {
-				fileout.write("</li>");
 			}
 			fileout.write(MindMapHTMLWriter.el);
 			fileout.write("</ul>");
@@ -423,7 +407,7 @@ class MindMapHTMLWriter {
 		defaultFont = null;
 		Color color = defaultColor;
 		defaultColor = null;
-		fontStyle(color, font);
+        fileout.write(fontStyle(color, font));
 		defaultFont = font;
 		defaultColor = color;
     }
