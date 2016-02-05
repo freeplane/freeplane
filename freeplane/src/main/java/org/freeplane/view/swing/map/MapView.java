@@ -2031,17 +2031,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
     public void setSize(int width, int height) {
-		if(getWidth() != width || getHeight() != height) {
+		final boolean sizeChanged = getWidth() != width || getHeight() != height;
+		if(sizeChanged) {
 			super.setSize(width, height);
 			validate();
-			if(isDisplayable())
-				mapScroller.scrollView();
-		}
-		else{
-			mapScroller.setAnchorView(getRoot());
-			mapScroller.setAnchorContentLocation();
 		}
     }
+
+	void scrollView() {
+		if(isDisplayable())
+			mapScroller.scrollView();
+	}
 
 	@Override
     public void setLocation(int x, int y) {

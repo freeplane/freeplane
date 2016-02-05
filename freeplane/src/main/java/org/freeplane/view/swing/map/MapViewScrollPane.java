@@ -168,4 +168,16 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		}
         super.doLayout();
     }
+
+	@Override
+	protected void validateTree() {
+		super.validateTree();
+		if(viewport != null){
+			final MapView view = (MapView) viewport.getView();
+			if(view != null)
+				view.scrollView();
+		}
+	}
+	
+	
 }

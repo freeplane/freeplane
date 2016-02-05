@@ -77,7 +77,7 @@ class MapScroller {
 			this.slowScroll = slowScroll;
 			scrolledNode = node;
 			this.scrollingDirective = scrollingDirective;
-			if (map.isDisplayable() && map.frameLayoutCompleted())
+			if (map.isDisplayable() && map.frameLayoutCompleted() && map.isValid())
 				scrollNodeNow(slowScroll);
 		}
 	}

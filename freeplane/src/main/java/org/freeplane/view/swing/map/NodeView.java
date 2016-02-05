@@ -940,9 +940,9 @@ public class NodeView extends JComponent implements INodeView {
 		if (preferred == null) {
 			preferred = this;
 		}
+		revalidate();
 		if(getMap().getSelected() ==  null)
 			getMap().selectVisibleAncestorOrSelf(preferred);
-		revalidate();
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
