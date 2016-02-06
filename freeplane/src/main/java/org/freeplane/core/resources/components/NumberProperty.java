@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.Component;
-
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;

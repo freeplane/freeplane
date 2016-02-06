@@ -19,16 +19,8 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class TextBoxProperty extends PropertyBean implements IPropertyControl {

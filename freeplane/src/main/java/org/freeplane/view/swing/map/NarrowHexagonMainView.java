@@ -24,10 +24,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import javax.swing.SwingConstants;
-
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 class NarrowHexagonMainView extends VariableInsetsMainView {
 	private static final double HORIZONTAL_MARGIN_FACTOR = 1.0;

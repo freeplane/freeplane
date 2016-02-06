@@ -34,7 +34,6 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;

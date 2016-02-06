@@ -6,7 +6,6 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.Convertible;
 import org.freeplane.core.util.Quantity;
 
 public class CssRuleBuilder {

@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -34,18 +33,15 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.ui.ColoredIconCreator;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
-import org.freeplane.view.swing.ui.LinkNavigatorMouseListener;
 
 class NodeViewFactory {
 	private static NodeViewFactory factory;

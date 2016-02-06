@@ -21,8 +21,6 @@ package org.freeplane.view.swing.ui;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
 

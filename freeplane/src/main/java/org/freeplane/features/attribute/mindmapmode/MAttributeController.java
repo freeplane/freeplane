@@ -35,7 +35,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 
 public class MAttributeController extends AttributeController {
 	

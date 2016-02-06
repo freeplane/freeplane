@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;

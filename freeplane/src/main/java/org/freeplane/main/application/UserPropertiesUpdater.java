@@ -25,14 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 
 /**
  * @author Dimitry Polivaev

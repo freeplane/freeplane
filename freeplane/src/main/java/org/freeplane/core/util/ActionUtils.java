@@ -1,14 +1,7 @@
 package org.freeplane.core.util;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.net.URL;
-
 import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 public abstract class ActionUtils {

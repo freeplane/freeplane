@@ -28,7 +28,6 @@ import java.awt.Stroke;
 
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

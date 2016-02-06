@@ -23,16 +23,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.StringReader;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.ColorUtils;
 
 @SuppressWarnings("serial")
 public class ScaledEditorKit extends HTMLEditorKit {

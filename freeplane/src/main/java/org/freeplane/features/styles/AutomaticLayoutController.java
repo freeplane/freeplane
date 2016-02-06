@@ -20,11 +20,9 @@
  */
 package org.freeplane.features.styles;
 
-import java.awt.Color;
 import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;

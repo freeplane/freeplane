@@ -26,8 +26,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
-import java.util.List;
-
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 

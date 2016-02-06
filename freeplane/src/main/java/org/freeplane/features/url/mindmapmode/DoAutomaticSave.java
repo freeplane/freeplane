@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.url.mindmapmode;
 
-import java.awt.EventQueue;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.TimerTask;
 

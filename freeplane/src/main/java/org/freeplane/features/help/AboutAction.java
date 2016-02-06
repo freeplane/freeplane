@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.help;
 
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,7 +36,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.mode.Controller;
 
 
 class AboutAction extends AFreeplaneAction {

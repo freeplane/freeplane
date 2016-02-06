@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.text;
 
-import java.util.Date;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ComboBoxEditor;

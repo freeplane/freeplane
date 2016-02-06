@@ -1,6 +1,5 @@
 package org.freeplane.view.swing.ui.mindmapmode;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 

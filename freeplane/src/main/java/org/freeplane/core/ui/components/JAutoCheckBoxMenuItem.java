@@ -20,7 +20,6 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
@@ -28,7 +27,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
 
 
 public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements IKeyBindingManager {

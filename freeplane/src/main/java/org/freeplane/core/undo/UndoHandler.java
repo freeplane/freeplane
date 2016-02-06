@@ -32,7 +32,6 @@ import javax.swing.event.ChangeListener;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 

@@ -5,8 +5,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
-import org.freeplane.features.nodestyle.NodeStyleController;
-
 class ContentPaneLayout implements LayoutManager {
 	public void addLayoutComponent(final String name, final Component comp) {
 	}

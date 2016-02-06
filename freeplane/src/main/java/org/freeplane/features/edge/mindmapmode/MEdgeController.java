@@ -25,7 +25,6 @@ import org.freeplane.core.util.ObjectRule;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;

@@ -5,8 +5,6 @@ import java.awt.Container;
 
 import javax.swing.Icon;
 import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;

@@ -1,8 +1,6 @@
 package org.freeplane.core.ui.menubuilders.action;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.List;
 
 import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -12,8 +10,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.FreeplaneActions;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
-
-import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 
 public class ActionFinder implements EntryVisitor{
 

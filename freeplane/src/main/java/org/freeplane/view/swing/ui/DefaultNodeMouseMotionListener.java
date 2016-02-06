@@ -1,20 +1,15 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
-import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.AutoHide;
-import org.freeplane.core.ui.components.MultipleImage;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.icon.IconController;
@@ -26,7 +21,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.view.swing.map.FoldingMark;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MouseArea;

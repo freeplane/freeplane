@@ -41,7 +41,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
 class ImportLinkedBranchAction extends AFreeplaneAction {

@@ -23,7 +23,6 @@ package org.freeplane.view.swing.features;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;

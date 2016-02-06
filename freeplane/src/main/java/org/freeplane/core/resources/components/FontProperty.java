@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

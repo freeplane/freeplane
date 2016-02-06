@@ -19,12 +19,8 @@
  */
 package org.freeplane.features.edge;
 
-import java.util.HashMap;
-
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.AutomaticEdgeColor.Rule;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.AMapChangeListenerAdapter;

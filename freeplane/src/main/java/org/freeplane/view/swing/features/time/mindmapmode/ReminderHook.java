@@ -22,8 +22,6 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Date;
 

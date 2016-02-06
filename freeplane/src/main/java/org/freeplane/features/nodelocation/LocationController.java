@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.nodelocation;
 
-import java.awt.Color;
 import java.util.Collection;
 
 import org.freeplane.core.extension.IExtension;
@@ -34,7 +33,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;

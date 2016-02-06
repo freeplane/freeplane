@@ -20,8 +20,6 @@
 package org.freeplane.main.headlessmode;
 
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Frame;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -36,8 +34,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.RootPaneContainer;
-
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
