@@ -48,7 +48,7 @@ import org.freeplane.features.styles.StyleNamedObject;
 public class EdgeController implements IExtension {
 	public static final EdgeStyle STANDARD_EDGE_STYLE = EdgeStyle.EDGESTYLE_BEZIER;
 	public static final Color STANDARD_EDGE_COLOR = new Color(Color.GRAY.getRGB());
-	public static enum Rules {BY_PARENT, BY_COLUMN, BY_BRANCH};
+	public static enum Rules {BY_PARENT, BY_COLUMN, BY_LEVEL, BY_BRANCH};
 
 	public static EdgeController getController() {
 		return getController(Controller.getCurrentModeController());
@@ -85,12 +85,20 @@ public class EdgeController implements IExtension {
 				MapModel map = model.getMap();
 				AutomaticEdgeColor layout = map.getRootNode().getExtension(AutomaticEdgeColor.class);
 				if(layout != null){
-					if (layout.rule == AutomaticEdgeColor.Rule.FOR_COLUMNS)
+					switch(layout.rule) {
+					case FOR_COLUMNS:
 						return new RuleReference<Color, EdgeController.Rules>(Rules.BY_COLUMN);
-					NodeModel parentNode = model.getParentNode();
-					if (parentNode!= null && layout.rule == AutomaticEdgeColor.Rule.FOR_BRANCHES && parentNode.isRoot()){
-						return new RuleReference<Color, EdgeController.Rules>(Rules.BY_BRANCH);
-
+					case FOR_LEVELS:
+						return new RuleReference<Color, EdgeController.Rules>(Rules.BY_LEVEL);
+					case FOR_BRANCHES:{
+						NodeModel parentNode = model.getParentNode();
+						if (parentNode!= null && parentNode.isRoot()){
+							return new RuleReference<Color, EdgeController.Rules>(Rules.BY_BRANCH);
+						}
+						break;
+					}
+					default:
+						break;
 					}
 				}
 				return null;
