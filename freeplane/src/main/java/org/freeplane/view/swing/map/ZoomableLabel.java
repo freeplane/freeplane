@@ -177,12 +177,16 @@ public class ZoomableLabel extends JLabel {
 
 	@Override
 	public FontMetrics getFontMetrics(final Font font) {
-		if (!useFractionalMetrics()) {
+		try {
+			if (!useFractionalMetrics()) {
+				return super.getFontMetrics(font);
+			}
+			fmg.setFont(font);
+			final FontMetrics fontMetrics = fmg.getFontMetrics();
+			return fontMetrics;
+		} catch (Exception e) {
 			return super.getFontMetrics(font);
 		}
-		fmg.setFont(font);
-		final FontMetrics fontMetrics = fmg.getFontMetrics();
-		return fontMetrics;
 	}
 
 	protected boolean useFractionalMetrics() {
