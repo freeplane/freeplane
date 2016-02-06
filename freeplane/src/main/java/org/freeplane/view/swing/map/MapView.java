@@ -1173,10 +1173,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 			});
 		}
-		catch (final MalformedURLException e1) {
-			LogUtils.severe(e1);
-		}
-		catch (final IOException e1) {
+		catch (final Exception e1) {
 			LogUtils.severe(e1);
 		}
 	}
