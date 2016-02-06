@@ -12,9 +12,9 @@ public class RemoveAllAlwaysUnfoldedNodeFlagsAction extends AFreeplaneAction {
 
 	private AlwaysUnfoldedNode flagController;
 
-	public RemoveAllAlwaysUnfoldedNodeFlagsAction() {
+	public RemoveAllAlwaysUnfoldedNodeFlagsAction(AlwaysUnfoldedNode alwaysUnfoldedNode) {
 		super("RemoveAllAlwaysUnfoldedNodeFlagsAction");
-		flagController = Controller.getCurrentModeController().getExtension(AlwaysUnfoldedNode.class);
+		this.flagController = alwaysUnfoldedNode;
 	}
 	
 	@Override
