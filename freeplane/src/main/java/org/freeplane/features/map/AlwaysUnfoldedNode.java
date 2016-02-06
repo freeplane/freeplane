@@ -20,8 +20,11 @@
 package org.freeplane.features.map;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.map.mindmapmode.RemoveAllAlwaysUnfoldedNodeFlagsAction;
+import org.freeplane.features.map.mindmapmode.SetAlwaysUnfoldedNodeFlagsAction;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -31,8 +34,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "AlwaysUnfoldedNode", onceForMap = false)
 public class AlwaysUnfoldedNode extends PersistentNodeHook implements IExtension{
 	
-	public static void install(){
-		new AlwaysUnfoldedNode();
+	public static void install(MModeController modeController){
+		final AlwaysUnfoldedNode alwaysUnfoldedNode = new AlwaysUnfoldedNode();
+		modeController.addAction(new SetAlwaysUnfoldedNodeFlagsAction(alwaysUnfoldedNode));
+		modeController.addAction(new RemoveAllAlwaysUnfoldedNodeFlagsAction(alwaysUnfoldedNode));
 	};
 	
 	@Override

@@ -169,7 +169,7 @@ public class MModeControllerFactory {
 		SummaryNode.install();
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		mapController.addMapLifeCycleListener(new SummaryNodeMapUpdater(modeController, mapController));
-		AlwaysUnfoldedNode.install();
+		AlwaysUnfoldedNode.install(modeController);
 		FreeNode.install();
 		new CreationModificationPlugin();
 		modeController.addExtension(ReminderHook.class, new ReminderHook(modeController));
