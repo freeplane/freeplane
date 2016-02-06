@@ -223,10 +223,10 @@ class MapScroller {
 		else {
 			map.repaintVisible();
 		}
-		if (scrolledNode == null){
-			scrolledNode = map.getSelected();
-			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
-		}
+//		if (scrolledNode == null){
+//			scrolledNode = map.getSelected();
+//			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
+//		}
 		if(scrolledNode != null)
 			scrollNodeToVisible(scrolledNode, extraWidth);
 		vp.setScrollMode(scrollMode);
