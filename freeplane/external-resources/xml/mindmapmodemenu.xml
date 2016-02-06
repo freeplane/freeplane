@@ -311,6 +311,7 @@
 			<Entry builder="separator" />
 			<Entry name="map_background">
 				<Entry name="MapBackgroundImageAction" />
+				<Entry name="SetBooleanMapPropertyAction.fit_to_viewport" />
 				<Entry name="MapBackgroundColorAction" />
 				<Entry name="MapBackgroundClearAction" />
 			</Entry>

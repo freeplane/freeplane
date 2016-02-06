@@ -40,7 +40,7 @@ public class ActionFinderTest {
 		
 		final ActionFinder actionFinder = new ActionFinder(freeplaneActions){
 			@Override
-			protected SetBooleanPropertyAction createSetBooleanPropertyAction(
+			protected AFreeplaneAction createSetBooleanPropertyAction(Class<? extends AFreeplaneAction> actionClass,
 					String propertyName) {
 				return setBooleanPropertyAction;
 			}
