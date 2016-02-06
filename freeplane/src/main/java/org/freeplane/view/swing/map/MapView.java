@@ -1770,10 +1770,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
 		final NodeModel node = newSelected.getModel();
-		if(! node.isVisible())
-			node.getFilterInfo().reset();
-		if(! node.hasVisibleContent())
+		if(node.isHiddenSummary())
 			throw new AssertionError("select invisible node");
+		if(node.isVisible())
+			node.getFilterInfo().reset();
 		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
 			mapScroller.scrollNode(newSelected, ScrollingDirective.SCROLL_NODE_TO_CENTER, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
 		}

@@ -737,7 +737,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 	
 	public NodeView getChildDistanceContainer(){
-		if (model.isVisible() || model.isHiddenSummary()) {
+		if (model.isVisible()) {
 			return this;
 		}
 		NodeView parentView = getParentView();
@@ -1427,7 +1427,11 @@ public class NodeView extends JComponent implements INodeView {
 		final NodeModel parentNode = model.getParentNode();
 		if(rule == EdgeController.Rules.BY_BRANCH && parentNode.isRoot()
 				|| rule == EdgeController.Rules.BY_LEVEL){
-			int index = rule == EdgeController.Rules.BY_BRANCH ? parentNode.getIndex(model) + 1 : model.getNodeLevel(false);
+			final int index;
+			if (rule == EdgeController.Rules.BY_BRANCH)
+				index = parentNode.getIndex(model) + 1;
+			else
+				index = model.getNodeLevel(false) + (model.isHiddenSummary() ? 1 : 0);
 			ModeController modeController = getMap().getModeController();
 			AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
 			NodeModel styleNode = automaticLayoutController.getStyleNode(map.getModel(), index, true);

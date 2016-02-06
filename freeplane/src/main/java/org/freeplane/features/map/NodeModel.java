@@ -278,7 +278,7 @@ public class NodeModel{
 		int level = 0;
 		NodeModel parent;
 		for (parent = getParentNode(); parent != null; parent = parent.getParentNode()) {
-			if (countHidden || parent.hasVisibleContent()) {
+			if (countHidden || parent.isVisible()) {
 				level++;
 			}
 		}
@@ -404,7 +404,12 @@ public class NodeModel{
 	}
 
 	public boolean hasVisibleContent() {
-		return isVisible() && ! isHiddenSummary();
+		return ! isHiddenSummary() && satisfiesFilter();
+	}
+
+	private boolean satisfiesFilter() {
+		final Filter filter = getMap().getFilter();
+		return (filter == null || filter.isVisible(this));
 	}
 
 	public boolean isHiddenSummary() {
@@ -412,8 +417,7 @@ public class NodeModel{
 	}
 
 	public boolean isVisible() {
-		final Filter filter = getMap().getFilter();
-		return (filter == null || filter.isVisible(this));
+		return isHiddenSummary() || satisfiesFilter();
 	}
 
 	public void remove(final int index) {
