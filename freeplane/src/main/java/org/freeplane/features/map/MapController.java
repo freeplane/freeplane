@@ -327,7 +327,7 @@ public class MapController extends SelectionController implements IExtension{
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node, false);
+						Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
 					}
 				});
 				

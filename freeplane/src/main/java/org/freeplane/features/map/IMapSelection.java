@@ -42,7 +42,7 @@ public interface IMapSelection {
 
 	public void keepNodePosition(final NodeModel node, float horizontalPoint, float verticalPoint);
 	
-	public void scrollNodeTreeToVisible(final NodeModel  node, boolean slow);
+	public void scrollNodeTreeToVisible(final NodeModel  node);
 
 	public void makeTheSelected(final NodeModel node);
 

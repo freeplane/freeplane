@@ -183,10 +183,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			mapScroller.anchorToNode(getNodeView(node), horizontalPoint, verticalPoint);
 		}
 		
-		public void scrollNodeTreeToVisible(final NodeModel  node, boolean slow) {
+		public void scrollNodeTreeToVisible(final NodeModel  node) {
 			final NodeView nodeView = getNodeView(node);
 			if(nodeView != null)
-				mapScroller.scrollNodeTreeToVisible(nodeView, slow);
+				mapScroller.scrollNodeTreeToVisible(nodeView);
 		}
 
 

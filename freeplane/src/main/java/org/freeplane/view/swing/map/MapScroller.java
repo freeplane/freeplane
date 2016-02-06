@@ -241,7 +241,7 @@ class MapScroller {
 		anchorContentLocation = getAnchorCenterPoint();
 	}
 
-	public void scrollNodeTreeToVisible(NodeView node, boolean slow) {
+	public void scrollNodeTreeToVisible(NodeView node) {
 		final Rectangle visibleRect = map.getVisibleRect();
 		Rectangle requiredRectangle = new Rectangle(node.getSize());
 		int margin = 30;
@@ -266,10 +266,6 @@ class MapScroller {
 			requiredRectangle.y += lackingHeight * topGap /  (topGap + bottomGap);
 		}
 		if(! node.getVisibleRect().contains(requiredRectangle)){
-			if(slow){
-				final JViewport viewPort = (JViewport) map.getParent();
-				viewPort.putClientProperty(ViewController.SLOW_SCROLLING, 10);
-			}
 			node.scrollRectToVisible(requiredRectangle);
 		}
 	}
