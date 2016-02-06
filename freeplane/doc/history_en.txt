@@ -3,6 +3,11 @@
 ===============================
 Format changes (save length/width attributes as quantities)
 Scripting: textUtils.setClipboardContentsToHtml()
+Attribute table background and border color taken from attribute style or from current node
+Set standard content as default for BigMap.mm
+User defined characters to be accepted in words by SplitToWordsAction
+Automatic edge colors for node levels (format change)
+
 ===============================
 1.5.5
 ===============================
