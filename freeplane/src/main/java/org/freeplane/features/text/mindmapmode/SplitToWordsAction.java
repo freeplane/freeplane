@@ -20,6 +20,17 @@ import org.freeplane.features.text.TransformationException;
 
 @SuppressWarnings("serial")
 public class SplitToWordsAction extends AMultipleNodeAction{
+	
+	static class PatternMaker {
+		static final Pattern ESCAPED_CHARACTERS = Pattern.compile("[\\[\\]\\-\\&\\\\\\^]");
+		static final Pattern WHITE_SPACE = Pattern.compile("\\s+");
+		static String escape(final String characters) {
+			final String withoutWhiteSpace = WHITE_SPACE.matcher(characters).replaceAll("");
+			return ESCAPED_CHARACTERS.matcher(withoutWhiteSpace).replaceAll("\\\\$0");
+		}
+
+	}
+	
 	static{
 		ResourceController.getResourceController().setDefaultProperty("SplitToWordsAction.auxiliaryWordList", TextUtils.getText("defaultAuxiliaryWordList"));
 	}
@@ -41,7 +52,11 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 		return SplitToWordsAction.class.getSimpleName() + "." + nodeNumberInLine;
 	}
 	
-	static final Pattern WORD_PATTERN = Pattern.compile("-?\\d+(?:[,.]\\d+)*|[\\p{L}\\d][\\p{L}\\d-]*");
+	private static String charactersAcceptedInWord;
+	private static String numberRegularExpression;
+	private static String wordRegularExpression;
+	private static String wordOrNumberRegularExpression;
+	private static Pattern compiledWordPattern;
 	private Collection<String> auxiliaryWords;
 	private boolean leaveOriginalNodeEmpty;
 	private boolean saveOriginalTextAsDetails;
@@ -49,11 +64,28 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		compileWordPattern();
 		String auxiliaryWordList = ResourceController.getResourceController().getProperty("SplitToWordsAction.auxiliaryWordList").toLowerCase();
 		auxiliaryWords = Arrays.asList(auxiliaryWordList.split("\\s*,\\s*"));
 		leaveOriginalNodeEmpty = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.leaveOriginalNodeEmpty");
 		saveOriginalTextAsDetails = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.saveOriginalTextAsDetails");
 		super.actionPerformed(e);
+	}
+
+	void compileWordPattern() {
+		charactersAcceptedInWord = charactersAcceptedInWords();
+		wordRegularExpression = "[\\p{L}\\d" + charactersAcceptedInWord + "]+";
+		numberRegularExpression = "-?\\d+(?:[,.]\\d+)*";
+		final String newRegularExpression = numberRegularExpression+"|"+wordRegularExpression;
+		if(! newRegularExpression.equals(wordOrNumberRegularExpression)) {
+			wordOrNumberRegularExpression = newRegularExpression;
+			compiledWordPattern = Pattern.compile(wordOrNumberRegularExpression);
+		}
+	}
+
+	private String charactersAcceptedInWords() {
+		final String characters = ResourceController.getResourceController().getProperty("SplitToWordsAction.charactersAcceptedInWord");
+		return PatternMaker.escape(characters);
 	}
 
 	@Override
@@ -85,7 +117,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 		}
 		
 		NodeModel currentNode = node;
-		final Matcher matcher = WORD_PATTERN.matcher(plainText);
+		final Matcher matcher = compiledWordPattern.matcher(plainText);
 		while (matcher.find()){
 			String word = matcher.group();
 			final String currentText;
