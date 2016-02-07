@@ -197,8 +197,14 @@ class VerticalNodeViewLayoutStrategy {
 					int childUpperCoordinate = this.yCoordinates[childViewIndex] + child.getTopOverlap();
 					int childBottomCoordinate = this.yCoordinates[childViewIndex] + childHeight - child.getBottomOverlap();
 					if (child.isFirstGroupNode()) {
-						groupUpperYCoordinate[level] = childUpperCoordinate;
-						groupLowerYCoordinate[level] = childBottomCoordinate;
+						if(isItem){
+							groupUpperYCoordinate[level] = Integer.MAX_VALUE;
+							groupLowerYCoordinate[level] = Integer.MIN_VALUE;
+						}
+						else{
+							groupUpperYCoordinate[level] = childUpperCoordinate;
+							groupLowerYCoordinate[level] = childBottomCoordinate;
+						}
 					} else {
 						groupUpperYCoordinate[level] = Math.min(groupUpperYCoordinate[level], childUpperCoordinate);
 						groupLowerYCoordinate[level] = Math.max(childBottomCoordinate, groupLowerYCoordinate[level]);
