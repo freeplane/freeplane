@@ -30,6 +30,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
@@ -123,9 +124,11 @@ public class MenuUtils {
 		private void addChildrenRecursively(final DefaultMutableTreeNode treeNode, final Iterable<Entry> menuElements) {
 			for (Entry childMenu : menuElements) {
 				final DefaultMutableTreeNode treeChild = menuNode2menuEntryNode(childMenu);
+				// the tree of Entrys contains pseudo elements like builder nodes that have to be skipped
 				if (treeChild != null) {
-					treeNode.add(treeChild);
 					addChildrenRecursively(treeChild, childMenu.children());
+					if (entryIsActionOrIsSubmenu(childMenu, treeChild))
+						treeNode.add(treeChild);
 				}
 				else {
 					addChildrenRecursively(treeNode, childMenu.children());
@@ -133,27 +136,31 @@ public class MenuUtils {
 			}
 		}
 
-		private DefaultMutableTreeNode menuNode2menuEntryNode(Entry menuItem) {
-			final String name = menuItem.getName();
-			if (name != null) {
-				final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
-				final AFreeplaneAction action = entryAccessor.getAction(menuItem);
-				if (menuItem.hasChildren()) {
-					String text = TextUtils.removeMnemonic(entryAccessor.getText(menuItem));
-					final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new MenuEntry(name, text));
-					if (action != null) {
-						final MenuEntry menuEntry = menuEntry(action);
-						node.add(new DefaultMutableTreeNode(menuEntry));
-					}
-					return node;
-				}
-				else if (action != null) {
-					final MenuEntry menuEntry = menuEntry(action);
-					return new DefaultMutableTreeNode(menuEntry);
-				}
+		private boolean entryIsActionOrIsSubmenu(Entry childMenu, final DefaultMutableTreeNode treeChild) {
+			return !treeChild.isLeaf() || childMenu.isLeaf();
+		}
 
+		private DefaultMutableTreeNode menuNode2menuEntryNode(Entry menuItem) {
+			final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
+			final AFreeplaneAction action = entryAccessor.getAction(menuItem);
+			final String name = menuItem.getName();
+			if (menuItem.hasChildren() && StringUtils.isNotEmpty(name)) {
+				// the tree of Entrys contains pseudo elements like builder nodes that have to be skipped
+				String text = TextUtils.removeMnemonic(entryAccessor.getText(menuItem));
+				final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new MenuEntry(name, text));
+				if (action != null) {
+					final MenuEntry menuEntry = menuEntry(action);
+					node.add(new DefaultMutableTreeNode(menuEntry));
+				}
+				return node;
 			}
-			return null;
+			else if (action != null) {
+				final MenuEntry menuEntry = menuEntry(action);
+				return new DefaultMutableTreeNode(menuEntry);
+			}
+			else {
+				return null;
+			}
 		}
 
 		private MenuEntry menuEntry(final AFreeplaneAction action) {
