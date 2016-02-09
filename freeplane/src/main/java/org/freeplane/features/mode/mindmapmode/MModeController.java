@@ -41,6 +41,8 @@ import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 public class MModeController extends ModeController {
 	private static final String LOOKANDFEEL_PROPERTY = "lookandfeel";
     static public final String MODENAME = "MindMap";
@@ -226,5 +228,9 @@ public class MModeController extends ModeController {
 	@Override
 	public boolean supportsHookActions() {
 		return true;
+	}
+
+	public boolean shouldCenterCompactMaps() {
+		return ResourceController.getResourceController().getBooleanProperty("shouldCenterSmallMaps");
 	}
 }

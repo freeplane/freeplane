@@ -10,6 +10,7 @@ import javax.swing.JViewport;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.ViewController;
 
 class MapScroller {
@@ -94,7 +95,7 @@ class MapScroller {
 		
 		if(scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION){
 			final Rectangle innerBounds = map.getInnerBounds();
-			if(innerBounds.width <= extentSize.width){
+			if(innerBounds.width <= extentSize.width && map.getModeController().shouldCenterCompactMaps()){
 				rect.x = innerBounds.x - (extentSize.width - innerBounds.width) / 2;
 			}
 			else {
@@ -120,6 +121,7 @@ class MapScroller {
 		}
 		return rect;
 	}
+	
 	private void scrollNodeNow(boolean slowScroll) {
 		final JViewport viewPort = (JViewport) map.getParent();
 		if(slowScroll)

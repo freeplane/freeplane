@@ -442,4 +442,8 @@ public class ModeController extends AController implements FreeplaneActions{
 	public boolean supportsHookActions() {
 		return false;
 	}
+
+	public boolean shouldCenterCompactMaps() {
+		return true;
+	}
 }
