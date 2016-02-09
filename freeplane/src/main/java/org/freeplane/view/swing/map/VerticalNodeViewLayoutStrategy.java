@@ -88,7 +88,7 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
 	private void calculateLayoutY(final boolean isLeft) {
-		final int vGap = view.getChildDistanceContainer().getMinimalDistanceBetweenChildren();
+		final int minimalDistanceBetweenChildren = view.getChildDistanceContainer().getMinimalDistanceBetweenChildren();
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int top = 0;
@@ -140,6 +140,12 @@ class VerticalNodeViewLayoutStrategy {
 								y += childShiftY;
 							this.yCoordinates[childViewIndex] = y;
 						}
+						final int vGap;
+						final int summaryNodeIndex = viewLevels.findSummaryNodeIndex(childViewIndex);
+						if(summaryNodeIndex == SummaryLevels.NODE_NOT_FOUND || summaryNodeIndex - 1 == childViewIndex)
+							vGap = minimalDistanceBetweenChildren;
+						else
+							vGap = summarizedNodeDistance(minimalDistanceBetweenChildren);
 						if (childHeight != 0)
 							y += childHeight + vGap - child.getBottomOverlap();
 
@@ -187,7 +193,7 @@ class VerticalNodeViewLayoutStrategy {
 							}
 						}
 						if (childHeight != 0) {
-							summaryY += childHeight + vGap
+							summaryY += childHeight + minimalDistanceBetweenChildren
 									- child.getBottomOverlap();
 						}
 						y = Math.max(y, summaryY);
@@ -214,6 +220,14 @@ class VerticalNodeViewLayoutStrategy {
 		}
 		top += (contentSize.height - childContentHeightSum) / 2;
 		calculateRelativeCoordinatesForContentAndBothSides(isLeft, childContentHeightSum, top);
+	}
+
+	private int summarizedNodeDistance(final int distance) {
+		final int defaultVGap = view.getMap().getZoomed(LocationModel.DEFAULT_VGAP.toBaseUnits());
+		if(defaultVGap >= distance)
+			return distance;
+		else
+			return defaultVGap + (distance - defaultVGap) / 6;
 	}
 
 	private void calculateLayoutX(final boolean isLeft) {
