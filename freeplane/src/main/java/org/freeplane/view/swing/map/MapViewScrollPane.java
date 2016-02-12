@@ -43,26 +43,35 @@ import org.freeplane.features.ui.ViewController;
 public class MapViewScrollPane extends JScrollPane implements IFreeplanePropertyListener {
 	@SuppressWarnings("serial")
     static class MapViewPort extends JViewport{
-
+		private boolean isLayedOut = false;
 		@Override
         public void doLayout() {
 	        final Component view = getView();
 	        if(view != null)
 	        	view.invalidate();
+	        isLayedOut = true;
 	        super.doLayout();
+	        isLayedOut = false;
         }
 
 		private Timer timer;
 
 		@Override
-        public void setViewPosition(Point p) {
-			Integer scrollingDelay = (Integer) getClientProperty(ViewController.SLOW_SCROLLING);
-			if(scrollingDelay != null && scrollingDelay != 0){
-				putClientProperty(ViewController.SLOW_SCROLLING, null);
-				slowSetViewPosition(p, scrollingDelay);
+		public void setViewPosition(Point p) {
+			boolean doit = true;
+			if(doit && ! isLayedOut) {
+				Integer scrollingDelay = (Integer) getClientProperty(ViewController.SLOW_SCROLLING);
+				if(scrollingDelay != null && scrollingDelay != 0){
+					putClientProperty(ViewController.SLOW_SCROLLING, null);
+					slowSetViewPosition(p, scrollingDelay);
+				} else {
+					super.setViewPosition(p);
+					MapView view = (MapView)getView();
+					if (view != null) {
+						view.setAnchorContentLocation();
+					}
+				}
 			}
-			else
-				super.setViewPosition(p);
         }
 
 		@Override
@@ -173,11 +182,12 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	protected void validateTree() {
 		super.validateTree();
 		if(viewport != null){
-			final MapView view = (MapView) viewport.getView();
-			if(view != null)
+			MapView view = (MapView) viewport.getView();
+			if(view != null) {
 				view.scrollView();
+			}
 		}
 	}
-	
-	
+
+
 }
