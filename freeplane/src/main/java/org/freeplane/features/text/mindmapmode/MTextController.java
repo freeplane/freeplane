@@ -142,7 +142,6 @@ public class MTextController extends TextController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditAction());
 		modeController.addAction(new UsePlainTextAction());
-		modeController.addAction(new JoinNodesAction());
 		modeController.addAction(new EditLongAction());
 		modeController.addAction(new SetImageByFileChooserAction());
         modeController.addAction(new EditDetailsAction(false));
@@ -172,6 +171,37 @@ public class MTextController extends TextController {
 			}
 		});
 			
+		modeController.addUiBuilder(Phase.ACTIONS, "joinNodesActions", new EntryVisitor() {
+			
+			@Override
+			public void visit(Entry target) {
+				final String textSeparators = ResourceController.getResourceController()
+						.getProperty("JoinNodesAction.textSeparators");
+				final Pattern JOIN_NODES_ACTION_SEPARATORS = Pattern.compile("\\{\\{.*?\\}\\}");
+				final Matcher matcher = JOIN_NODES_ACTION_SEPARATORS.matcher(textSeparators);
+				if(matcher.find()) {
+					do{
+						String textSeparator = textSeparators.substring(matcher.start() + 2, matcher.end() - 2);
+						addAction(modeController, target, textSeparator);
+					} while(matcher.find());
+				} else {
+					addAction(modeController, target, textSeparators);
+				}
+			}
+
+			private void addAction(final ModeController modeController, Entry target, String textSeparator) {
+				final JoinNodesAction action = new JoinNodesAction(textSeparator);
+				new EntryAccessor().addChildAction(target, action);
+				modeController.addAction(action);
+				if(target.getChildCount() == 1)
+					target.getChild(0).setAttribute(EntryAccessor.ACCELERATOR, "control J");
+			}
+			
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return true;
+			}
+		});
 	}
 
 	private String[] getContent(final String text, final int pos) {
@@ -233,16 +263,16 @@ public class MTextController extends TextController {
 		return strings;
 	}
 
-	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode) {
+	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode, String separator) {
 		if (isHtml) {
-			final String joinedContentParts[] = JoinNodesAction.BODY_END.split(joinedContent, -2);
+			final String joinedContentParts[] = JoinNodesAction.BODY_END.split(joinedContent, 2);
 			joinedContent = joinedContentParts[0];
 			if (!isHtmlNode) {
 				final String end[] = JoinNodesAction.BODY_START.split(joinedContent, 2);
 				if (end.length == 1) {
 					end[0] = "<html>";
 				}
-				nodeContent = end[0] + "<body><p>" + nodeContent + "</p>";
+				nodeContent = end[0] + "<body><p>" + HtmlUtils.toXMLEscapedTextExpandingWhitespace(nodeContent) + "</p>";
 			}
 		}
 		if (isHtmlNode & !joinedContent.equals("")) {
@@ -256,25 +286,24 @@ public class MTextController extends TextController {
 				nodeContent = nodeContentParts[1];
 			}
 			if (!isHtml) {
-				joinedContent = nodeContentParts[0] + "<body><p>" + joinedContent + "</p>";
+				joinedContent = nodeContentParts[0] + "<body><p>" +  HtmlUtils.toXMLEscapedTextExpandingWhitespace(joinedContent) + "</p>";
 			}
 		}
 		if (joinedContent.equals("")) {
 			return nodeContent;
 		}
-		joinedContent += '\n';
+		joinedContent += isHtml ? HtmlUtils.toXMLEscapedTextExpandingWhitespace(separator) : separator;
 		joinedContent += nodeContent;
 		return joinedContent;
 	}
-
-	public void joinNodes(final List<NodeModel> selectedNodes) {
+	
+	public void joinNodes(final List<NodeModel> selectedNodes, final String separator) {
 		if(selectedNodes.isEmpty())
 			return;
 		final NodeModel selectedNode = selectedNodes.get(0);
-		final NodeModel parentNode = selectedNode.getParentNode();
 		for (final NodeModel node: selectedNodes) {
-			if(node.getParentNode() != parentNode){
-				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
+			if(node != selectedNode && node.subtreeContainsCloneOf(selectedNode)){
+				UITools.errorMessage(TextUtils.getText("cannot_move_into_child_node"));
 				return;
 			}
 		}
@@ -286,7 +315,7 @@ public class MTextController extends TextController {
 			final String nodeContent = node.getText();
 			icons.addAll(node.getIcons());
 			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
-			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode);
+			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode, separator);
 			if (node != selectedNode) {
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 				mapController.moveNodes(node.getChildren(), selectedNode, selectedNode.getChildCount());

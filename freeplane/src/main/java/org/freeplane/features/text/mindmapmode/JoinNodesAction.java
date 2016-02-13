@@ -20,10 +20,12 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -34,14 +36,17 @@ class JoinNodesAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private final String separator;
 
-	public JoinNodesAction() {
-		super("JoinNodesAction");
+	public JoinNodesAction(String separator) {
+		super("JoinNodesAction." + separator, TextUtils.format("JoinNodesAction.separator.format", separator), null);
+		this.separator = separator.replaceAll("\\\\n", "\\n").replaceAll("\\\\t", "\t");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
-		MTextController.getController().joinNodes(selectedNodes);
+		final List<NodeModel> orderedSelection = Controller.getCurrentController().getSelection().getOrderedSelection();
+		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>(orderedSelection);
+		MTextController.getController().joinNodes(selectedNodes, separator);
 	}
 
 }

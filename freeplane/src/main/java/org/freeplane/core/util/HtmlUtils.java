@@ -267,7 +267,7 @@ public class HtmlUtils {
 	}
 
 	public static String toXMLEscapedTextExpandingWhitespace(String text) {
-		text = text.replaceAll("\t", "         ");
+		text = text.replaceAll("\t", "    ");
 		final int len = text.length();
 		final StringBuilder result = new StringBuilder(len);
 		char myChar;

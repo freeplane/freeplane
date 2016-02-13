@@ -107,7 +107,6 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
         	if(enctyptedContent != null){
         		writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, enctyptedContent);
         		mayWriteChildren = false;
-        		registerWrittenNode(node);
         	}
         }
 		if (mayWriteChildren && (writeFolded || !mode(writer).equals(Mode.FILE))) {
