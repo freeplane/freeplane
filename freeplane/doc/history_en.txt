@@ -1,4 +1,13 @@
 ===============================
+1.5.7
+===============================
+Keep summarized nodes together
+Option "Center small maps" for map position when root is selected
+Option to copy structure indentation as tabs
+Allow joining non sibling nodes
+Configurable join node action separators
+
+===============================
 1.5.6
 ===============================
 Format changes (save length/width attributes as quantities)
