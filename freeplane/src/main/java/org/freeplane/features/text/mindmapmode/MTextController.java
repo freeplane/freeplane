@@ -194,7 +194,7 @@ public class MTextController extends TextController {
 				new EntryAccessor().addChildAction(target, action);
 				modeController.addAction(action);
 				if(target.getChildCount() == 1)
-					target.getChild(0).setAttribute(EntryAccessor.ACCELERATOR, "control J");
+					target.getChild(0).setAttribute(EntryAccessor.ACCELERATOR, target.getAttribute(EntryAccessor.ACCELERATOR));
 			}
 			
 			@Override
