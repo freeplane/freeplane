@@ -131,9 +131,9 @@
 				<Entry name="EditAction" accelerator="F2" />
 				<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
 				<Entry name="EditLongAction" accelerator="alt ENTER" />
-				<Entry name="JoinNodesAction" accelerator="control J" />
 				<Entry name="SplitNode" accelerator="alt S" />
 				<Entry builder="splitToWordsActions" />
+				<Entry builder="joinNodesActions"/>
 				<Entry name="RevisionPluginAction" />
 				<Entry builder="separator" />
 				<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" />

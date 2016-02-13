@@ -142,7 +142,6 @@ public class MTextController extends TextController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditAction());
 		modeController.addAction(new UsePlainTextAction());
-		modeController.addAction(new JoinNodesAction());
 		modeController.addAction(new EditLongAction());
 		modeController.addAction(new SetImageByFileChooserAction());
         modeController.addAction(new EditDetailsAction(false));
@@ -172,6 +171,37 @@ public class MTextController extends TextController {
 			}
 		});
 			
+		modeController.addUiBuilder(Phase.ACTIONS, "joinNodesActions", new EntryVisitor() {
+			
+			@Override
+			public void visit(Entry target) {
+				final String textSeparators = ResourceController.getResourceController()
+						.getProperty("JoinNodesAction.textSeparators");
+				final Pattern JOIN_NODES_ACTION_SEPARATORS = Pattern.compile("\\{\\{.*?\\}\\}");
+				final Matcher matcher = JOIN_NODES_ACTION_SEPARATORS.matcher(textSeparators);
+				if(matcher.find()) {
+					do{
+						String textSeparator = textSeparators.substring(matcher.start() + 2, matcher.end() - 2);
+						addAction(modeController, target, textSeparator);
+					} while(matcher.find());
+				} else {
+					addAction(modeController, target, textSeparators);
+				}
+			}
+
+			private void addAction(final ModeController modeController, Entry target, String textSeparator) {
+				final JoinNodesAction action = new JoinNodesAction(textSeparator);
+				new EntryAccessor().addChildAction(target, action);
+				modeController.addAction(action);
+				if(target.getChildCount() == 1)
+					target.getChild(0).setAttribute(EntryAccessor.ACCELERATOR, "control J");
+			}
+			
+			@Override
+			public boolean shouldSkipChildren(Entry entry) {
+				return true;
+			}
+		});
 	}
 
 	private String[] getContent(final String text, final int pos) {
@@ -266,8 +296,8 @@ public class MTextController extends TextController {
 		joinedContent += nodeContent;
 		return joinedContent;
 	}
-
-	public void joinNodes(final List<NodeModel> selectedNodes) {
+	
+	public void joinNodes(final List<NodeModel> selectedNodes, final String separator) {
 		if(selectedNodes.isEmpty())
 			return;
 		final NodeModel selectedNode = selectedNodes.get(0);
@@ -280,7 +310,6 @@ public class MTextController extends TextController {
 		String joinedContent = "";
 		final Controller controller = Controller.getCurrentController();
 		boolean isHtml = false;
-		final String separator = getJoinedNodeTextSeparator();
 		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
 		for (final NodeModel node: selectedNodes) {
 			final String nodeContent = node.getText();
@@ -301,12 +330,6 @@ public class MTextController extends TextController {
 		for (final MindIcon icon : icons) {
 			iconController.addIcon(selectedNode, icon);
 		}
-	}
-
-	private String getJoinedNodeTextSeparator() {
-		final String separator = ResourceController.getResourceController().getProperty("joinedNodeTextSeparator") //
-			.replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t");
-		return separator;
 	}
 
 	public void setImageByFileChooser() {
