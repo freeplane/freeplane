@@ -190,6 +190,7 @@ public class AttributePanelManager{
             });
             tablePanel.add(Box.createVerticalStrut(5));
             JComponent c = attributeView.getContainer();
+            attributeView.update();
             c.setAlignmentX(0.5f);
             tablePanel.add(c);
             tablePanel.add(Box.createGlue());
@@ -241,7 +242,6 @@ public class AttributePanelManager{
 		public void nodeChanged(NodeChangeEvent event) {
 			if(attributeView != null && event.getProperty().equals(NodeAttributeTableModel.class)){
 				setSelectedFormatItem();
-				attributeView.update();
 			}
         }
     }
