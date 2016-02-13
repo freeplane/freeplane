@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
@@ -323,14 +324,14 @@ public class ClipboardController implements IExtension {
 		}
 	}
 
-	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth)
+	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth, String indentation)
 	        throws IOException {
 		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 			if (child.hasVisibleContent()) {
-				writeTXT(child, fileout, depth + 1);
+				writeTXT(child, fileout, depth + 1, indentation);
 			}
 			else {
-				writeChildrenText(child, fileout, depth);
+				writeChildrenText(child, fileout, depth, indentation);
 			}
 		}
 	}
@@ -424,9 +425,15 @@ public class ClipboardController implements IExtension {
 	}
 
 	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth) throws IOException {
-		final String plainTextContent = TextController.getController().getPlainTextContent(mindMapNodeModel).replace('\n', ' ');
+		boolean indentationUsesTabsInTextOutput = ResourceController.getResourceController().getBooleanProperty("indentationUsesTabsInTextOutput");
+		String indentation = indentationUsesTabsInTextOutput ? "\t" : "    ";
+		writeTXT(mindMapNodeModel, fileout, depth, indentation);
+	}
+
+	private void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth, String indentation) throws IOException {
+		String plainTextContent = TextController.getController().getPlainTextContent(mindMapNodeModel).replace('\n', ' ');
 		for (int i = 0; i < depth; ++i) {
-			fileout.write("    ");
+			fileout.write(indentation);
 		}
 		if (plainTextContent.matches(" *")) {
 			fileout.write("o");
@@ -444,6 +451,6 @@ public class ClipboardController implements IExtension {
 			}
 		}
 		fileout.write("\n");
-		writeChildrenText(mindMapNodeModel, fileout, depth);
+		writeChildrenText(mindMapNodeModel, fileout, depth, indentation);
 	}
 }
