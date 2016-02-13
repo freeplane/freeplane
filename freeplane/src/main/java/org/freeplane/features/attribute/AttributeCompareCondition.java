@@ -38,7 +38,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	static final String SUCCEED = "SUCCEED";
 
 	static ASelectableCondition load(final XMLElement element) {
-		final String attr = element.getAttribute(ATTRIBUTE, null);
+		final Object attr = AttributeConditionController.toAttributeObject(element.getAttribute(ATTRIBUTE, null));
 		Object value = element.getAttribute(CompareConditionAdapter.VALUE, null);
 		if(value == null){
 			final String spec = element.getAttribute(CompareConditionAdapter.OBJECT, null);
