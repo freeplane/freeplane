@@ -271,10 +271,9 @@ public class MTextController extends TextController {
 		if(selectedNodes.isEmpty())
 			return;
 		final NodeModel selectedNode = selectedNodes.get(0);
-		final NodeModel parentNode = selectedNode.getParentNode();
 		for (final NodeModel node: selectedNodes) {
-			if(node.getParentNode() != parentNode){
-				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
+			if(node != selectedNode && node.subtreeContainsCloneOf(selectedNode)){
+				UITools.errorMessage(TextUtils.getText("cannot_move_into_child_node"));
 				return;
 			}
 		}

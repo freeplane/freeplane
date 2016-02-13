@@ -20,6 +20,7 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,8 @@ class JoinNodesAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
+		final List<NodeModel> orderedSelection = Controller.getCurrentController().getSelection().getOrderedSelection();
+		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>(orderedSelection);
 		MTextController.getController().joinNodes(selectedNodes);
 	}
 
