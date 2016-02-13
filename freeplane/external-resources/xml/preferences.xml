@@ -193,6 +193,9 @@
 				<boolean name="SplitToWordsAction.leaveOriginalNodeEmpty"/>
 				<boolean name="SplitToWordsAction.saveOriginalTextAsDetails"/>
 			</separator>
+			<separator name="JoinNodesAction">
+				<string name="joinedNodeTextSeparator"/>
+			</separator>
 			<separator name="data_formats">
 				<boolean name="parse_data" />
 				<string name="number_format" />
