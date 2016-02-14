@@ -61,6 +61,7 @@ import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.CloneEncryptedNodeException;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
@@ -853,8 +854,12 @@ public class MClipboardController extends ClipboardController {
 				if (!clonedNode.isRoot() && ! clonedNode.subtreeContainsCloneOf(target)) {
 					switch(operation){
 					case CLONE:
-						final NodeModel clone = asSingleNodes ? clonedNode.cloneContent() : clonedNode.cloneTree();
-						mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
+						try {
+							final NodeModel clone = asSingleNodes ? clonedNode.cloneContent() : clonedNode.cloneTree();
+							mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
+						} catch (CloneEncryptedNodeException e) {
+							UITools.errorMessage(TextUtils.getText("can_not_clone_encrypted_node"));
+						}
 						break;
 					case MOVE:
 						movedNodes.add(clonedNode);

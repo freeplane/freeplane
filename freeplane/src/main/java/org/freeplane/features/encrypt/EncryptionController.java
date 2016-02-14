@@ -20,7 +20,9 @@
 package org.freeplane.features.encrypt;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconStore;
@@ -130,6 +132,11 @@ public class EncryptionController implements IExtension {
     }
 
 	private void encrypt(final NodeModel node, PasswordStrategy passwordStrategy) {
+		if(node.allClones().size() > 1) {
+			UITools.errorMessage(TextUtils.getText("can_not_encrypt_cloned_node"));
+			return;
+		}
+			
 		final StringBuilder password = passwordStrategy.getPasswordWithConfirmation();
 		if (passwordStrategy.isCancelled()) {
 			return;
