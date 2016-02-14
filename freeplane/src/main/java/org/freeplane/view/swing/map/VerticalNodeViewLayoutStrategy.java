@@ -211,7 +211,7 @@ class VerticalNodeViewLayoutStrategy {
 							groupUpperYCoordinate[level] = childUpperCoordinate;
 							groupLowerYCoordinate[level] = childBottomCoordinate;
 						}
-					} else {
+					} else if (childHeight != 0){
 						groupUpperYCoordinate[level] = Math.min(groupUpperYCoordinate[level], childUpperCoordinate);
 						groupLowerYCoordinate[level] = Math.max(childBottomCoordinate, groupLowerYCoordinate[level]);
 					}
