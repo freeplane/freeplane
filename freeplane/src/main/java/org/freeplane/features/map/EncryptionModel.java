@@ -132,7 +132,7 @@ public class EncryptionModel implements IExtension {
 	 * @param mode 
 	 * @throws IOException
 	 */
-	private void generateEncryptedContent(final MapController mapController) throws IOException {
+	private void runEncryptedContentGeneration(final MapController mapController) throws IOException {
 		final StringWriter sWriter = new StringWriter();
 		for (final Iterator<NodeModel> i = node.getChildren().listIterator(); i.hasNext();) {
 			final NodeModel child = i.next();
@@ -145,10 +145,10 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = encryptXml(childXml);
 	}
 
-	public String getEncryptedContent(final MapController mapController) {
+	public String calculateEncryptedContent(final MapController mapController) {
 		if (isDecrypted) {
 			try {
-				generateEncryptedContent(mapController);
+				runEncryptedContentGeneration(mapController);
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);

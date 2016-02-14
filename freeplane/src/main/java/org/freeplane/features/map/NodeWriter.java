@@ -103,7 +103,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		final Object mode = mode(writer);
 		final boolean isNodeAlreadyWritten = isAlreadyWritten(node);
 		if (encryptionModel != null && !(encryptionModel.isAccessible() && Mode.EXPORT.equals(mode)) && ! isNodeAlreadyWritten) {
-        	final String enctyptedContent = encryptionModel.getEncryptedContent(mapController);
+        	final String enctyptedContent = encryptionModel.calculateEncryptedContent(mapController);
         	if(enctyptedContent != null){
         		writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, enctyptedContent);
         		mayWriteChildren = false;

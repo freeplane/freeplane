@@ -28,7 +28,7 @@ import org.freeplane.features.map.NodeModel.CloneType;
  * 09.02.2014
  */
 class Cloner {
-
+	
 	private final NodeModel nodeModel;
 
 	public Cloner(NodeModel nodeModel) {
@@ -41,6 +41,8 @@ class Cloner {
 	}
 
 	private NodeModel cloneStructure(NodeModel node) {
+		if(node.containsExtension(EncryptionModel.class))
+			throw new CloneEncryptedNodeException();
 		final NodeModel clone = node.cloneNode(CloneType.TREE);
 		final List<NodeModel> cloneChildren = clone.getChildrenInternal();
 		for (NodeModel childNode : node.getChildrenInternal()){

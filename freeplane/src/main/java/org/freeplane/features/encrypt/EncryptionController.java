@@ -20,7 +20,9 @@
 package org.freeplane.features.encrypt;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconStore;
@@ -71,29 +73,24 @@ public class EncryptionController implements IExtension {
 	public void toggleCryptState(final NodeModel node, PasswordStrategy passwordStrategy) {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null) {
-			final boolean wasAccessible = encryptionModel.isAccessible();
 			final boolean wasFolded = node.isFolded();
-			if (wasAccessible) {
-				encryptionModel.setAccessible(false);
-				encryptionModel.getEncryptedContent(Controller.getCurrentModeController().getMapController());
-				node.setFolded(true);
-			}
+			final boolean wasAccessible = encryptionModel.isAccessible();
+			if (wasAccessible)
+				encryptionModel.calculateEncryptedContent(Controller.getCurrentModeController().getMapController());
 			else {
-				if (doPasswordCheckAndDecryptNode(encryptionModel, passwordStrategy)) {
-					node.setFolded(false);
-				}
-				else {
+				if (!doPasswordCheckAndDecryptNode(encryptionModel, passwordStrategy))
 					return;
-				}
 			}
+			final boolean becomesFolded = wasAccessible;
+			final boolean becomesAccessible = ! wasAccessible;
 			Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 			final IActor actor = new IActor() {
 				public void act() {
-					encryptionModel.setAccessible(!wasAccessible);
-					if (wasAccessible) {
-						node.setFolded(true);
+					encryptionModel.setAccessible(becomesAccessible);
+					if (becomesFolded != wasFolded) {
+						node.setFolded(becomesFolded);
 					}
-					Controller.getCurrentModeController().getMapController().nodeRefresh(node);
+					fireEncyptionChangedEvent(node);
 				}
 
 				public String getDescription() {
@@ -102,10 +99,9 @@ public class EncryptionController implements IExtension {
 
 				public void undo() {
 					encryptionModel.setAccessible(wasAccessible);
-					if (wasAccessible) {
+					if(becomesFolded != wasFolded)
 						node.setFolded(wasFolded);
-					}
-					Controller.getCurrentModeController().getMapController().nodeRefresh(node);
+					fireEncyptionChangedEvent(node);
 				}
 			};
 			Controller.getCurrentModeController().execute(actor, node.getMap());
@@ -136,6 +132,11 @@ public class EncryptionController implements IExtension {
     }
 
 	private void encrypt(final NodeModel node, PasswordStrategy passwordStrategy) {
+		if(node.allClones().size() > 1) {
+			UITools.errorMessage(TextUtils.getText("can_not_encrypt_cloned_node"));
+			return;
+		}
+			
 		final StringBuilder password = passwordStrategy.getPasswordWithConfirmation();
 		if (passwordStrategy.isCancelled()) {
 			return;
@@ -145,7 +146,7 @@ public class EncryptionController implements IExtension {
 		final IActor actor = new IActor() {
 			public void act() {
 				node.addExtension(encryptionModel);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				fireEncyptionChangedEvent(node);
 			}
 
 			public String getDescription() {
@@ -154,9 +155,14 @@ public class EncryptionController implements IExtension {
 
 			public void undo() {
 				node.removeExtension(encryptionModel);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				fireEncyptionChangedEvent(node);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+
+	private void fireEncyptionChangedEvent(final NodeModel node) {
+		Controller.getCurrentModeController().getMapController().nodeRefresh(node, EncryptionModel.class, null, null);
 	}
 }

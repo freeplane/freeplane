@@ -604,6 +604,8 @@ public class NodeModel{
 	}
 
     public NodeModel cloneContent() {
+		if(containsExtension(EncryptionModel.class))
+			throw new CloneEncryptedNodeException();
 		return cloneNode(CloneType.CONTENT);
 	}
 

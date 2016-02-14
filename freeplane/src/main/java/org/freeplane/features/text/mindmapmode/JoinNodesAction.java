@@ -40,7 +40,7 @@ class JoinNodesAction extends AFreeplaneAction {
 
 	public JoinNodesAction(String separator) {
 		super("JoinNodesAction." + separator, TextUtils.format("JoinNodesAction.separator.format", separator), null);
-		this.separator = separator.replaceAll("\\\\n", "\\n").replaceAll("\\\\t", "\t");
+		this.separator = separator.replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
