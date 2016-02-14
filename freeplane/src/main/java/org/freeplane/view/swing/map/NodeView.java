@@ -55,6 +55,7 @@ import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.HistoryInformationModel;
@@ -861,8 +862,8 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		final Object property = event.getProperty();
-		if (property == NodeChangeType.FOLDING || property == HideChildSubtree.instance) {
-			if(map.isSelected()){
+		if (property == NodeChangeType.FOLDING || property == HideChildSubtree.instance || property == EncryptionModel.class) {
+			if(map.isSelected() || property == EncryptionModel.class && ! isFolded){
 				boolean wasFolded = isFolded;
 				isFolded = getMap().getModeController().getMapController().isFolded(model);
 				if(wasFolded != isFolded || property == HideChildSubtree.instance) {
@@ -873,7 +874,8 @@ public class NodeView extends JComponent implements INodeView {
 						update();
 				}
 			}
-			return;
+			if(property != EncryptionModel.class)
+				return;
 		}
 		// is node is not fully initialized, skip the rest.
 		if (mainView == null) {

@@ -88,7 +88,7 @@ public class EncryptionController implements IExtension {
 					if (becomesFolded != wasFolded) {
 						node.setFolded(becomesFolded);
 					}
-					Controller.getCurrentModeController().getMapController().nodeRefresh(node);
+					fireEncyptionChangedEvent(node);
 				}
 
 				public String getDescription() {
@@ -99,7 +99,7 @@ public class EncryptionController implements IExtension {
 					encryptionModel.setAccessible(wasAccessible);
 					if(becomesFolded != wasFolded)
 						node.setFolded(wasFolded);
-					Controller.getCurrentModeController().getMapController().nodeRefresh(node);
+					fireEncyptionChangedEvent(node);
 				}
 			};
 			Controller.getCurrentModeController().execute(actor, node.getMap());
@@ -139,7 +139,7 @@ public class EncryptionController implements IExtension {
 		final IActor actor = new IActor() {
 			public void act() {
 				node.addExtension(encryptionModel);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				fireEncyptionChangedEvent(node);
 			}
 
 			public String getDescription() {
@@ -148,9 +148,14 @@ public class EncryptionController implements IExtension {
 
 			public void undo() {
 				node.removeExtension(encryptionModel);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				fireEncyptionChangedEvent(node);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+
+	private void fireEncyptionChangedEvent(final NodeModel node) {
+		Controller.getCurrentModeController().getMapController().nodeRefresh(node, EncryptionModel.class, null, null);
 	}
 }
