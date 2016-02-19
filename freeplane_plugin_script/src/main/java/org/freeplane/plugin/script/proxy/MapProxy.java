@@ -66,7 +66,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
     public Color getBackgroundColor() {
         // see MapBackgroundColorAction
         final MapStyle mapStyle = (MapStyle) Controller.getCurrentModeController().getExtension(MapStyle.class);
-        final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook();
+        final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook(getDelegate());
         if (model != null) {
             return model.getBackgroundColor();
         }
@@ -134,7 +134,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
     // Map: R/W
     public void setBackgroundColor(Color color) {
         final MapStyle mapStyle = (MapStyle) Controller.getCurrentModeController().getExtension(MapStyle.class);
-        final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook();
+        final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook(getDelegate());
         mapStyle.setBackgroundColor(model, color);
     }
 
