@@ -57,7 +57,7 @@ public abstract class PersistentNodeHook {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			undoableSetHook(!isActiveForSelection());
+			undoableSetHookForSelection(!isActiveForSelection());
 		}
 	}
 
@@ -95,9 +95,9 @@ public abstract class PersistentNodeHook {
 
         @Override
         public void actionPerformed(final ActionEvent e) {
-            undoableSetHook(false);
+            undoableSetHookForSelection(false);
             if(value != null)
-                undoableSetHook((IExtension)value);
+                undoableSetHookForSelection((IExtension)value);
             setSelected(true);
         }
 
@@ -271,19 +271,19 @@ public abstract class PersistentNodeHook {
 		return getHookAnnotation().hookName();
 	}
 
-	public IExtension getMapHook() {
-		final NodeModel rootNode = Controller.getCurrentController().getMap().getRootNode();
+	public IExtension getMapHook(final MapModel map) {
+		final NodeModel rootNode = map.getRootNode();
 		return rootNode.getExtension(getExtensionClass());
 	}
 
-	protected NodeModel[] getNodes() {
+	protected NodeModel[] getNodesForSelection() {
 		if (getHookAnnotation().onceForMap()) {
-			return getRootNode();
+			return getRootNodeForSelection();
 		}
 		return getSelectedNodes();
 	}
 
-	protected NodeModel[] getRootNode() {
+	protected NodeModel[] getRootNodeForSelection() {
 		final NodeModel[] nodes = new NodeModel[1];
 		nodes[0] = Controller.getCurrentController().getMap().getRootNode();
 		return nodes;
@@ -321,7 +321,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected boolean isActiveForSelection() {
-		final NodeModel[] nodes = getNodes();
+		final NodeModel[] nodes = getNodesForSelection();
 		for (int i = 0; i < nodes.length; i++) {
 			final NodeModel nodeModel = nodes[i];
 			if (nodeModel.containsExtension(getExtensionClass())) {
@@ -333,7 +333,7 @@ public abstract class PersistentNodeHook {
 
 
     private boolean isActiveForSelection(Enum<?> value) {
-        final NodeModel[] nodes = getNodes();
+        final NodeModel[] nodes = getNodesForSelection();
         for (int i = 0; i < nodes.length; i++) {
             final NodeModel nodeModel = nodes[i];
             final IExtension nodeValue = nodeModel.getExtension(getExtensionClass());
@@ -371,8 +371,8 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
-	public void undoableSetHook(final boolean enable) {
-		final NodeModel[] nodes = getNodes();
+	public void undoableSetHookForSelection(final boolean enable) {
+		final NodeModel[] nodes = getNodesForSelection();
 		for (int i = 0; i < nodes.length; i++) {
 			final NodeModel node = nodes[i];
 			if (node.containsExtension(getExtensionClass()) != enable) {
@@ -381,8 +381,8 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
-	public void undoableSetHook(final IExtension extension) {
-		final NodeModel[] nodes = getNodes();
+	public void undoableSetHookForSelection(final IExtension extension) {
+		final NodeModel[] nodes = getNodesForSelection();
 		for (int i = 0; i < nodes.length; i++) {
 			final NodeModel node = nodes[i];
 			if (extension != null || node.containsExtension(getExtensionClass())) {

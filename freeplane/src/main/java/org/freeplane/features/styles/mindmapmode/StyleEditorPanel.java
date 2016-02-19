@@ -86,6 +86,7 @@ import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -931,9 +932,10 @@ public class StyleEditorPanel extends JPanel {
 						final ModeController modeController = Controller.getCurrentModeController();
 						AutomaticEdgeColorHook hook = modeController.getExtension(AutomaticEdgeColorHook.class);
 						NamedObject selectedItem = (NamedObject)mAutomaticEdgeColorComboBox.getSelectedItem();
-						final AutomaticEdgeColor oldExtension = (AutomaticEdgeColor) hook.getMapHook();
+						final MapModel map = Controller.getCurrentController().getMap();
+						final AutomaticEdgeColor oldExtension = (AutomaticEdgeColor) hook.getMapHook(map);
 						final int colorCount = oldExtension == null ? 0 : oldExtension.getColorCounter();
-						final NodeModel rootNode = Controller.getCurrentController().getMap().getRootNode();
+						final NodeModel rootNode = map.getRootNode();
 						hook.undoableDeactivateHook(rootNode);
 						if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
 						final AutomaticEdgeColor newExtension = new  AutomaticEdgeColor((AutomaticEdgeColor.Rule) selectedItem.getObject(), colorCount);

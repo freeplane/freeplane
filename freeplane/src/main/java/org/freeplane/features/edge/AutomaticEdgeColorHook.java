@@ -59,7 +59,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				final EdgeModel edgeModel = EdgeModel.createEdgeModel(child);
 				if(null == edgeModel.getColor()){
 					final MEdgeController controller = (MEdgeController) EdgeController.getController();
-					final AutomaticEdgeColor model = (AutomaticEdgeColor) getMapHook();
+					final AutomaticEdgeColor model = (AutomaticEdgeColor) getMapHook(parent.getMap());
 					model.increaseColorCounter();
 					int colorCounter = model.getColorCounter();
 					AutomaticLayoutController automaticLatoutController = modeController.getExtension(AutomaticLayoutController.class);
