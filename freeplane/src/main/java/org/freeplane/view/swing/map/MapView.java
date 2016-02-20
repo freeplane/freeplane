@@ -2046,7 +2046,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	public void setLocation(int x, int y) {
-		new Exception("set map location " + x + ", " + y).printStackTrace(System.out);
+//		new Exception("set map location " + x + ", " + y).printStackTrace(System.out);
 		super.setLocation(x, y);
 	}
 
