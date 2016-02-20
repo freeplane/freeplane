@@ -1,5 +1,6 @@
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -222,8 +223,13 @@ class MapScroller {
 			viewPosition.y += deltaY;
 if(viewPosition.x < 0 || viewPosition.y < 0){
 	try {
+		final MainView mainView = anchor.getMainView();
+		System.out.println("Anchor: " + mainView.getText());
+		System.out.println("MainView: " + mainView);
+		for(Component component = mainView.getNodeView(); component instanceof NodeView ; component = component.getParent()){
+			System.out.println("NodeView: " + component);
+		}
 		System.out.println("Map: " + map.toString());
-		System.out.println("Anchor: " + anchor.getMainView().getText());
 		System.out.println("oldAnchorContentLocation: " + oldAnchorContentLocation);
 		System.out.println("newAnchorContentLocation = " + newAnchorContentLocation);
 		System.out.println("viewPosition: " + viewPosition);
