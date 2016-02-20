@@ -139,6 +139,7 @@ class MapScroller {
 
 	void setAnchorView(final NodeView view) {
 		anchor = view;
+		new Exception("setAnchorView " + view.getMainView().getText()).printStackTrace(System.out);
 	}
 
 	private Point getAnchorCenterPoint() {
