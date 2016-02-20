@@ -454,7 +454,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	public void moveTo(final Proxy.Node parentNodeProxy) {
 		final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
-        getMapController().moveNodesAsChildren(Arrays.asList(movedNode), parentNode, parentNode.isRoot() ? movedNode.isLeft() : parentNode.isLeft(), !parentNode.isRoot() &&  parentNode.isLeft() != movedNode.isLeft());
+		boolean oldSide = movedNode.isLeft();
+		boolean newSide = parentNode.isRoot() ? oldSide : parentNode.isLeft();
+        getMapController().moveNodesAsChildren(Arrays.asList(movedNode), parentNode, newSide, newSide != oldSide);
 	}
 
 	// Node: R/W
@@ -462,7 +464,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
 		((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(movedNode);
-		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position, parentNode.isRoot() ? movedNode.isLeft() :parentNode.isLeft(), ! parentNode.isRoot() &&parentNode.isLeft() != movedNode.isLeft());
+		boolean oldSide = movedNode.isLeft();
+		boolean newSide = parentNode.isRoot() ? oldSide : parentNode.isLeft();
+		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position, newSide, newSide != oldSide);
 	}
 
 	// Node: R/W
