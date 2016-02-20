@@ -2044,12 +2044,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			mapScroller.scrollView();
 	}
 
-	@Override
-	public void setLocation(int x, int y) {
-		new Exception("set map location " + x + ", " + y).printStackTrace(System.out);
-		super.setLocation(x, y);
-	}
-
 	public void scrollBy(int x, int y) {
 		mapScroller.scrollBy(x, y);
 	}
