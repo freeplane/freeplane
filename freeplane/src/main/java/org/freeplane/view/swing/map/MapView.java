@@ -1330,6 +1330,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+		if(nodeDeletionEvent.node.getMap().equals(getModel()))
+			mapScroller.anchorToRoot();
 	}
 
 	/*****************************************************************
@@ -1961,6 +1963,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
+		if(nodeMoveEvent.child.getMap().equals(getModel()))
+			mapScroller.anchorToRoot();
 	}
 
 	public void repaintVisible() {

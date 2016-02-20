@@ -289,6 +289,12 @@ if(viewPosition.x < 0 || viewPosition.y < 0){
 			node.scrollRectToVisible(requiredRectangle);
 		}
 	}
+
+	void anchorToRoot() {
+		final NodeView root = map.getRoot();
+		if(! root.equals(anchor))
+			anchorToNode(root, 0, 0);
+	}
 }
 
 enum ScrollingDirective {SCROLL_NODE_TO_CENTER, SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR}
