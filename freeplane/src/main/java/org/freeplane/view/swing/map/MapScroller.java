@@ -220,6 +220,17 @@ class MapScroller {
 		if (deltaX != 0 || deltaY != 0) {
 			viewPosition.x += deltaX;
 			viewPosition.y += deltaY;
+if(viewPosition.x < 0 || viewPosition.y < 0){
+	try {
+		System.out.println("Map: " + map.toString());
+		System.out.println("Anchor: " + anchor.getMainView().getText());
+		System.out.println("oldAnchorContentLocation: " + oldAnchorContentLocation);
+		System.out.println("newAnchorContentLocation = " + newAnchorContentLocation);
+		System.out.println("viewPosition: " + viewPosition);
+	} catch (Exception e) {
+		e.printStackTrace(System.out);
+	}
+}
 			vp.setViewPosition(viewPosition);
 		}
 		else {
