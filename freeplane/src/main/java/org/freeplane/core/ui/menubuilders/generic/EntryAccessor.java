@@ -119,6 +119,7 @@ public class EntryAccessor {
 
 	public void addChildAction(Entry target, AFreeplaneAction action) {
 		final Entry actionEntry = new Entry();
+		actionEntry.setName(action.getKey());
 		setAction(actionEntry, action);
 		target.addChild(actionEntry);
 	}

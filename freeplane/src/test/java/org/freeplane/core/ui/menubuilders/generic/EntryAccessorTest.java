@@ -74,8 +74,11 @@ public class EntryAccessorTest {
 	@Test
 	public void addsChildAction() throws Exception {
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
+		when(action.getKey()).thenReturn("key");
 		entryAccessor.addChildAction(entry, action);
-		final AFreeplaneAction entryAction = entryAccessor.getAction(entry.getChild(0));
+		final Entry actionEntry = entry.getChild(0);
+		final AFreeplaneAction entryAction = entryAccessor.getAction(actionEntry);
+		Assert.assertThat(actionEntry.getName(), equalTo("key"));
 		Assert.assertThat(entryAction, equalTo(action));
 	}
 
