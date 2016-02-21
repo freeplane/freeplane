@@ -43,9 +43,7 @@ public class Entry {
 	private void setAttributeObject(final Object key, Object value) {
 		if(attributes.containsKey(key)){
 			if(value != attributes.get(key)) {
-				LogUtils.warn("Entry: " + getName());
-				LogUtils.warn("Value: " + String.valueOf(value));
-				throw new AttributeAlreadySetException(key, attributes.get(key));
+				throw new AttributeAlreadySetException(this, key, attributes.get(key));
 			}
 		}
 		else
