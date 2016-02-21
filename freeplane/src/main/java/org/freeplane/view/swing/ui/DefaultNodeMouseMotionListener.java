@@ -102,7 +102,6 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
-								mc.getController().getSelection().keepNodePosition(node, 0, 0);
 								mapController.setFolded(node, fold);
 							}
 						});
@@ -123,7 +122,6 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		        && !nodeSelector.shouldSelectOnClick(e)) {
 			final boolean fold = ! node.isFolded();
 			doubleClickTimer.cancel();
-			mc.getController().getSelection().keepNodePosition(node, 0, 0);
 			mapController.setFolded(node, fold);
 			e.consume();
 			return;

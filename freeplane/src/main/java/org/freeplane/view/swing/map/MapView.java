@@ -2056,5 +2056,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		mapScroller.setAnchorContentLocation();
 	}
 	
-	
+	void keepRootNodePosition() {
+		mapScroller.anchorToRoot();
+	}
 }
