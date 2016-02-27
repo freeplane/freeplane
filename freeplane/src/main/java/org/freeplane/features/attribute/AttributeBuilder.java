@@ -24,10 +24,12 @@ import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.BackwardCompatibleQuantityWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.ui.LengthUnits;
@@ -244,6 +246,7 @@ class AttributeBuilder implements IElementDOMHandler {
 			}
 		});
 	}
+	
 
 	/**
 	 */
@@ -266,6 +269,7 @@ class AttributeBuilder implements IElementDOMHandler {
 				attributes.write(writer);
 			}
 		});
+		writer.addAttributeWriter(XML_NODE_ATTRIBUTE_LAYOUT, AttributeWriter.INSTANCE);
 		registerAttributeHandlers(reader);
 	}
 
@@ -280,30 +284,37 @@ class AttributeBuilder implements IElementDOMHandler {
 	}
 
 	private static final Quantity<LengthUnits> DEFAULT_COLUMN_WIDTH = new Quantity<LengthUnits>(60, LengthUnits.pt);
+	static class AttributeWriter implements IAttributeWriter{
+		static AttributeWriter INSTANCE = new AttributeWriter();
+
+		@Override
+		public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
+			AttributeTableLayoutModel layout = (AttributeTableLayoutModel) userObject;
+			final Quantity<LengthUnits> firstColumnWidth = layout.getColumnWidth(0);
+			final Quantity<LengthUnits> secondColumnWidth = layout.getColumnWidth(1);
+			final boolean firstColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(firstColumnWidth);
+			final boolean secondColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(secondColumnWidth);
+			if (firstColumnHasOwnWidth) {
+				BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("NAME_WIDTH", firstColumnWidth);
+			}
+			if (secondColumnHasOwnWidth) {
+				BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("VALUE_WIDTH", secondColumnWidth);
+			}
+		}
+		
+	}
 	private void saveLayout(AttributeTableLayoutModel layout, final ITreeWriter writer) throws IOException {
 		if (layout != null) {
-			XMLElement attributeElement = null;
-			if (!DEFAULT_COLUMN_WIDTH.equals(layout.getColumnWidth(0))) {
-				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("NAME_WIDTH", layout.getColumnWidth(0).toString());
-			}
-			if (!DEFAULT_COLUMN_WIDTH.equals(layout.getColumnWidth(1))) {
-				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("VALUE_WIDTH", layout.getColumnWidth(1).toString());
-			}
-			if (attributeElement != null) {
-				writer.addElement(layout, attributeElement);
+			final Quantity<LengthUnits> firstColumnWidth = layout.getColumnWidth(0);
+			final Quantity<LengthUnits> secondColumnWidth = layout.getColumnWidth(1);
+			final boolean firstColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(firstColumnWidth);
+			final boolean secondColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(secondColumnWidth);
+			if (firstColumnHasOwnWidth || secondColumnHasOwnWidth ) {
+				writer.addElement(layout, AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT);
 			}
 		}
 	}
-	private XMLElement initializeNodeAttributeLayoutXMLElement(XMLElement attributeElement) {
-		if (attributeElement == null) {
-			attributeElement = new XMLElement();
-			attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT);
-		}
-		return attributeElement;
-	}
-
+	
 	private void saveAttribute(NodeModel node, final ITreeWriter writer, final Attribute attr) throws IOException {
 		final XMLElement attributeElement = new XMLElement();
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);

@@ -30,6 +30,7 @@ import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.BackwardCompatibleQuantityWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.ui.LengthUnits;
@@ -305,11 +306,11 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		}
 		final Quantity<LengthUnits> shapeHorizontalMargin = shapeConfiguration.getHorizontalMargin();
 		if (! shapeHorizontalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
-			writer.addAttribute("SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMargin.toString());
+			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMargin);
 		}
 		final Quantity<LengthUnits> shapeVerticalMargin = shapeConfiguration.getVerticalMargin();
 		if (! shapeVerticalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
-			writer.addAttribute("SHAPE_VERTICAL_MARGIN", shapeVerticalMargin.toString());
+			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("SHAPE_VERTICAL_MARGIN", shapeVerticalMargin);
 		}
 		final boolean uniformShape = shapeConfiguration.isUniform();
 		if (uniformShape) {
@@ -333,12 +334,12 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	                             final boolean forceFormatting) {
 		final Quantity<LengthUnits> maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
 		if (maxTextWidth != null) {
-			writer.addAttribute("MAX_WIDTH", maxTextWidth.toString());
+			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MAX_WIDTH", maxTextWidth);
 		}
 
 		final Quantity<LengthUnits> minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
 		if (minTextWidth != null) {
-			writer.addAttribute("MIN_WIDTH", minTextWidth.toString());
+			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MIN_WIDTH", minTextWidth);
 		}
 	}
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
