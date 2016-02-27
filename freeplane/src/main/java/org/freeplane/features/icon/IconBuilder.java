@@ -55,7 +55,9 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 		if (parent instanceof NodeModel && tag.equals("icon")) {
 			final NodeModel node = (NodeModel) parent;
 			final IconProperties ip = (IconProperties) userObject;
-			node.addIcon(store.getMindIcon(ip.iconName));
+			final String iconName = ip.iconName;
+			if(iconName != null)
+				node.addIcon(store.getMindIcon(iconName));
 			return;
 		}
 	}
