@@ -152,8 +152,7 @@ private Timer timer;
 	public void dragScroll(final DropTargetDragEvent e) {
 	}
 
-	private boolean isDropAcceptable(final DropTargetDropEvent event) {
-		int dropAction = event.getDropAction();
+	private boolean isDropAcceptable(final DropTargetDropEvent event, int dropAction) {
 		if (dropAction == DnDConstants.ACTION_LINK) {
 			return isFromSameMap(event);
 		}
@@ -206,26 +205,17 @@ private Timer timer;
 
 	public void drop(final DropTargetDropEvent dtde) {
 		try {
-			int dropAction = dtde.getDropAction();
-			final Transferable t = dtde.getTransferable();
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final MapView mapView = targetNodeView.getMap();
 			mapView.select();
 			final NodeModel targetNode = targetNodeView.getModel();
 			final Controller controller = Controller.getCurrentController();
-			if (dtde.isLocalTransfer() && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
-				final String sourceAction = (String) t.getTransferData(MindMapNodesSelection.dropActionFlavor);
-				if (sourceAction.equals("LINK")) {
-					dropAction = DnDConstants.ACTION_LINK;
-				}
-				if (sourceAction.equals("COPY")) {
-					dropAction = DnDConstants.ACTION_COPY;
-				}
-			}
+			int dropAction = getDropAction(dtde);
+			final Transferable t = dtde.getTransferable();
 			mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
 			mainView.repaint();
-			if (dtde.isLocalTransfer() && !isDropAcceptable(dtde)) {
+			if (dtde.isLocalTransfer() && !isDropAcceptable(dtde, dropAction)) {
 				dtde.rejectDrop();
 				return;
 			}
@@ -288,6 +278,21 @@ private Timer timer;
 			return;
 		}
 		dtde.dropComplete(true);
+	}
+
+	private int getDropAction(final DropTargetDropEvent dtde) throws UnsupportedFlavorException, IOException {
+		int dropAction = dtde.getDropAction();
+		final Transferable t = dtde.getTransferable();
+		if (dtde.isLocalTransfer() && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
+			final String sourceAction = (String) t.getTransferData(MindMapNodesSelection.dropActionFlavor);
+			if (sourceAction.equals("LINK")) {
+				dropAction = DnDConstants.ACTION_LINK;
+			}
+			if (sourceAction.equals("COPY")) {
+				dropAction = DnDConstants.ACTION_COPY;
+			}
+		}
+		return dropAction;
 	}
 
 	private void moveNodes(final MMapController mapController, final NodeModel targetNode, Transferable t,
