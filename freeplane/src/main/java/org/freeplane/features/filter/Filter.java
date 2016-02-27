@@ -36,7 +36,8 @@ import org.freeplane.features.mode.Controller;
  */
 public class Filter {
 	static Filter createTransparentFilter() {
-		return new Filter(null, true, false, false);
+		final ResourceController resourceController = ResourceController.getResourceController();
+		return new Filter(null, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false);
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
