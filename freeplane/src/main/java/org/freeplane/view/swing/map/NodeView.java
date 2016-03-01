@@ -516,27 +516,35 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	protected NodeView getNextVisibleSibling() {
-		NodeView sibling;
-		NodeView lastSibling = this;
-		for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
-			lastSibling = sibling;
-			sibling = sibling.getNextSiblingSingle();
-			if (sibling != lastSibling) {
-				break;
+		boolean disableCrossingParentNodeBoundary = true;
+		if (disableCrossingParentNodeBoundary) {
+			if (isRoot()) {
+				return this;
 			}
-		}
-		while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
-			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isLeft(),
-			    !this.isLeft());
-			if (first == null) {
-				break;
+			return getNextSiblingSingle();
+		} else {
+			NodeView sibling;
+			NodeView lastSibling = this;
+			for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
+				lastSibling = sibling;
+				sibling = sibling.getNextSiblingSingle();
+				if (sibling != lastSibling) {
+					break;
+				}
 			}
-			sibling = first;
+			while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
+				final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isLeft(),
+					!this.isLeft());
+				if (first == null) {
+					break;
+				}
+				sibling = first;
+			}
+			if (sibling.isRoot()) {
+				return this;
+			}
+			return sibling;
 		}
-		if (sibling.isRoot()) {
-			return this;
-		}
-		return sibling;
 	}
 
 	public NodeView getParentView() {
@@ -654,27 +662,35 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	protected NodeView getPreviousVisibleSibling() {
-		NodeView sibling;
-		NodeView previousSibling = this;
-		for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
-			previousSibling = sibling;
-			sibling = sibling.getPreviousSiblingSingle();
-			if (sibling != previousSibling) {
-				break;
+		boolean disableCrossingParentNodeBoundary = true;
+		if (disableCrossingParentNodeBoundary) {
+			if (isRoot()) {
+				return this;
 			}
-		}
-		while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
-			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isLeft(),
-			    !this.isLeft());
-			if (last == null) {
-				break;
+			return getPreviousSiblingSingle();
+		} else {
+			NodeView sibling;
+			NodeView previousSibling = this;
+			for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
+				previousSibling = sibling;
+				sibling = sibling.getPreviousSiblingSingle();
+				if (sibling != previousSibling) {
+					break;
+				}
 			}
-			sibling = last;
+			while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
+				final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isLeft(),
+					!this.isLeft());
+				if (last == null) {
+					break;
+				}
+				sibling = last;
+			}
+			if (sibling.isRoot()) {
+				return this;
+			}
+			return sibling;
 		}
-		if (sibling.isRoot()) {
-			return this;
-		}
-		return sibling;
 	}
 
 	LinkedList<NodeView> getRight(final boolean onlyVisible) {
