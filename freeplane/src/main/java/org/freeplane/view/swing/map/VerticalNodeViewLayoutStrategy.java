@@ -94,6 +94,7 @@ class VerticalNodeViewLayoutStrategy {
 		int top = 0;
 		int level = viewLevels.highestSummaryLevel + 1;
 		int y = 0;
+		int vGap = 0;
 		int visibleChildCounter = 0;
 		final int[] groupStartIndex = new int[level];
 		final int[] contentHeightSumAtGroupStart = new int[level];
@@ -127,6 +128,10 @@ class VerticalNodeViewLayoutStrategy {
 					if (isFreeNode)
 						this.yCoordinates[childViewIndex] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
 					else {
+						if (childHeight != 0) {
+							if (visibleChildCounter > 0)
+								childContentHeightSum += vGap;
+						}
 						if (childShiftY < 0 || visibleChildCounter == 0)
 							top += childShiftY;
 
@@ -140,7 +145,6 @@ class VerticalNodeViewLayoutStrategy {
 								y += childShiftY;
 							this.yCoordinates[childViewIndex] = y;
 						}
-						final int vGap;
 						final int summaryNodeIndex = viewLevels.findSummaryNodeIndex(childViewIndex);
 						if(summaryNodeIndex == SummaryLevels.NODE_NOT_FOUND || summaryNodeIndex - 1 == childViewIndex)
 							vGap = minimalDistanceBetweenChildren;
@@ -160,10 +164,6 @@ class VerticalNodeViewLayoutStrategy {
 						} else if (child.isFirstGroupNode()) {
 							contentHeightSumAtGroupStart[0] = childContentHeightSum;
 							groupStartIndex[0] = childViewIndex;
-						}
-						if (childHeight != 0) {
-							if (visibleChildCounter > 0)
-								childContentHeightSum += vGap;
 						}
 					}
 					if (childHeight != 0)
