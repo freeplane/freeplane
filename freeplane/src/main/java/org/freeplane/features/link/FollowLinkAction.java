@@ -39,13 +39,9 @@ class FollowLinkAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
-		LinkController linkController = null;
-		for (final NodeModel selNode : mapController.getSelectedNodes()) {
-			if (linkController == null) {
-				linkController = LinkController.getController();
-			}
-			linkController.loadURL(selNode, e);
-		}
+		LinkController linkController = LinkController.getController();
+		NodeModel selNode = mapController.getSelectedNode();
+		linkController.loadURL(selNode, e);
 	}
 
 	@Override
