@@ -66,4 +66,15 @@ public class HyperTextLinkModel extends NodeLinkModel {
 	    else
 	    	return targetID.equals(other.getTargetID());
     }
+
+	public NodeLinkModel cloneForSource(NodeModel sourceClone) {
+		final NodeModel source = getSource();
+		if(sourceClone == source)
+			return this;
+		final NodeModel target = getTarget();
+		if(target != null){
+	        return cloneForSource(sourceClone, target.getID());
+		}
+		return null;
+	}
 }

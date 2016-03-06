@@ -70,9 +70,12 @@
 			<Entry name="QuickFindAction.FORWARD" />
 		</Entry>
 		<Entry name="mindmaps">
-			<Entry builder="navigate_maps,radio_button_group" />
-			<Entry builder="separator" />
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
+			<Entry builder="separator" />
+			<Entry name="maps" processOnPopup="true">
+				<Entry builder="navigate_maps,radio_button_group" />
+			</Entry>
+			<Entry builder="separator" />
 		</Entry>
 		<Entry name="help">
 			<Entry name="web_resources">
@@ -86,7 +89,7 @@
 			<Entry accelerator="F1" name="DocumentationAction" />
 		</Entry>
 	</Entry>
-	<Entry name="map_popup" builder="map_popup">
+	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
 		<Entry builder="navigate_maps,radio_button_group" />
 		<Entry builder="separator" />
 		<Entry name="ToggleMenubarAction" />

@@ -306,7 +306,9 @@ public class UrlManager implements IExtension {
 					if (ref != null) {
 						final ModeController newModeController = Controller.getCurrentModeController();
 						final MapController newMapController = newModeController.getMapController();
-						newMapController.select(newMapController.getNodeFromID(ref));
+						final NodeModel referencedNode = newMapController.getNodeFromID(ref);
+						if(referencedNode != null)
+							newMapController.select(referencedNode);
 					}
 					return;
 				}

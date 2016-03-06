@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Point;
 
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 
 public class ConnectorModel extends NodeLinkModel {
 
@@ -202,4 +203,26 @@ public class ConnectorModel extends NodeLinkModel {
 	public NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId) {
 	    return new ConnectorModel(sourceClone, targetId, connectorProperties);
     }
+
+	public NodeLinkModel cloneForSource(NodeModel sourceClone) {
+		final NodeModel source = getSource();
+		if(sourceClone == source)
+			return this;
+		final NodeModel target = getTarget();
+		if(target != null && target.getParentNode() != null && source.getParentNode() != null){
+			final NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
+			final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
+			final NodeModel ancestorClone = nodeRelativePath.ancestorForBegin(sourceClone);
+			if(commonAncestor.isSubtreeCloneOf(ancestorClone)) {
+	            final NodeRelativePath pathAncestorToSource = new NodeRelativePath(commonAncestor, source);
+				final NodeRelativePath clonePath = new NodeRelativePath(ancestorClone, sourceClone);
+				if (pathAncestorToSource.equalPathsTo(clonePath)) {
+	            	final NodeModel targetClone = nodeRelativePath.pathEnd(ancestorClone);
+	            	String targetID = targetClone.createID();
+	            	return cloneForSource(sourceClone, targetID);
+	            }
+	        }
+		}
+		return null;
+	}
 }
