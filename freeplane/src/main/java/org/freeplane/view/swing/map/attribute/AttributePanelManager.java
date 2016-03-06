@@ -136,8 +136,6 @@ public class AttributePanelManager{
                     final AttributeTable table = attributeView.getAttributeTable();
                     if (table.getSelectedColumn() == 1 && table.getSelectedRow() != -1) {
                         final Object value = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
-                        LogUtils.info("value geändert: " + value + " of class "
-                                + (value == null ? null : value.getClass()) + ", format='" + newFormat + "'");
                         try {
                             final Object newValue = formatValue(newFormat, table, value);
                             if (newValue != null)
