@@ -26,7 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -49,23 +49,23 @@ class IconConditionController implements IElementaryConditionController {
 //		this.controller = controller;
 	}
 
-	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(IconConditionController.FILTER_ICON);
 	}
 
-	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 	    return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
     }
 
-    public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+    public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
                                                 final Object value, final boolean matchCase, final boolean approximateMatching) {
         if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
             return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
@@ -85,28 +85,28 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { 
+		return new TranslatedObject[] { 
 	            TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS), 
 	            TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST), 
 		};
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return null;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
 	    final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
 	    final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 	    extendedComboBoxModel.setExtensionList(icons);
 	    return extendedComboBoxModel;
 	}
 
-	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 	
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
@@ -120,7 +120,7 @@ class IconConditionController implements IElementaryConditionController {
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 		// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
 		// (and that would put in a default string like "No Filtering (remove)"!)
 		return new DefaultConditionRenderer("", true);

@@ -36,7 +36,7 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleFactory;
-import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.styles.StyleTranslatedObject;
 
 /**
  * @author Dimitry Polivaev
@@ -74,7 +74,7 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		NodeModel userStyleParentNode = styleModel.getStyleNodeGroup(map, MapStyleModel.STYLES_USER_DEFINED);
 		if(userStyleParentNode == null){
 			userStyleParentNode = new NodeModel(map);
-			userStyleParentNode.setUserObject(new StyleNamedObject(MapStyleModel.STYLES_USER_DEFINED));
+			userStyleParentNode.setUserObject(new StyleTranslatedObject(MapStyleModel.STYLES_USER_DEFINED));
 			mapController.insertNode(userStyleParentNode, map.getRootNode(), false, false, true);
 
 		}

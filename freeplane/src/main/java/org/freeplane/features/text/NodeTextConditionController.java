@@ -28,7 +28,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
@@ -49,15 +49,15 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class NodeTextConditionController implements IElementaryConditionController {
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
-	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(TextController.FILTER_NODE)
 		|| namedObject.objectEquals(TextController.FILTER_PARENT)
 		|| namedObject.objectEquals(TextController.FILTER_DETAILS)
@@ -65,17 +65,17 @@ class NodeTextConditionController implements IElementaryConditionController {
 		|| namedObject.objectEquals(TextController.FILTER_ANYTEXT);
 	}
 
-	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCondition,
 	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
-		final String item = (String) ((NamedObject)selectedItem).getObject();
+		final String item = (String) ((TranslatedObject)selectedItem).getObject();
 		return createASelectableCondition(item, simpleCondition, value, matchCase, matchApproximately);
 	}
 
-	private ASelectableCondition createASelectableCondition(final String item, final NamedObject simpleCondition, final Object value,
+	private ASelectableCondition createASelectableCondition(final String item, final TranslatedObject simpleCondition, final Object value,
 	                                                   final boolean matchCase, final boolean matchApproximately) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 			if (value.equals("")) {
@@ -115,12 +115,12 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
-		return new DefaultComboBoxModel(new NamedObject[] {
+		return new DefaultComboBoxModel(new TranslatedObject[] {
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
-		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
+		        TranslatedObject.literal(ConditionFactory.FILTER_GT), TranslatedObject.literal(ConditionFactory.FILTER_GE),
+		        TranslatedObject.literal(ConditionFactory.FILTER_LE), TranslatedObject.literal(ConditionFactory.FILTER_LT),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP), });
 	}
 
@@ -134,22 +134,22 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
 				|| selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
 			return new FixedBasicComboBoxEditor();
 		return FrameController.getTextDateTimeEditor();
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
 		return values;
 	}
 
-	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
 	
-	public boolean supportsApproximateMatching(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
 
@@ -216,7 +216,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 		return TextController.getController().getTransformedObjectNoFormattingNoThrow(userObject, node);
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
         if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return null;

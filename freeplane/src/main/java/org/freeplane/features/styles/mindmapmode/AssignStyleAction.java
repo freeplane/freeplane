@@ -30,7 +30,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
-import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.styles.StyleTranslatedObject;
 
 /**
  * @author Dimitry Polivaev
@@ -53,7 +53,7 @@ public class AssignStyleAction extends AMultipleNodeAction {
 
 	private static String actionName(final IStyle style) {
 		if(style != null)
-			return "AssignStyleAction." + StyleNamedObject.toKeyString(style);
+			return "AssignStyleAction." + StyleTranslatedObject.toKeyString(style);
 		return "ResetStyleAction";
     }
 

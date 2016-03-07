@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.clipboard.ClipboardController;
@@ -71,9 +71,9 @@ public class TextUtils {
 		return inputString;
 	}
 
-	public static NamedObject createTranslatedString(final String key) {
+	public static TranslatedObject createTranslatedString(final String key) {
 		final String fs = TextUtils.getText(key);
-		return new NamedObject(key, fs);
+		return new TranslatedObject(key, fs);
 	}
 
 	public static String getText(final String key) {

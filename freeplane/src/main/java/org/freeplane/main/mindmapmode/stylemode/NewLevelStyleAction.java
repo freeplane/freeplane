@@ -21,7 +21,7 @@ package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.MapModel;
@@ -51,7 +51,7 @@ public class NewLevelStyleAction extends AFreeplaneAction {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		NodeModel levelStyleParentNode = styleModel.getStyleNodeGroup(map, MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
 		final String styleName = "AutomaticLayout.level," + levelStyleParentNode.getChildCount();
-		final IStyle styleObject = StyleFactory.create(NamedObject.format(styleName));
+		final IStyle styleObject = StyleFactory.create(TranslatedObject.format(styleName));
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node = new NodeModel(map);
 		node.setUserObject(styleObject);

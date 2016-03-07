@@ -25,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -47,21 +47,21 @@ class NodeLevelConditionController implements IElementaryConditionController {
 	private final ComboBoxModel periodicValues = new DefaultComboBoxModel(PeriodicLevelCondition.createConditions(7));
 
 
-	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object selectedItem, final TranslatedObject simpleCond) {
 		return ! simpleCond.objectEquals(FILTER_PERIODIC_LEVEL);
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		if (namedObject.objectEquals(NodeLevelConditionController.FILTER_LEVEL))
 			return true;
 		return false;
 	}
 
-	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCondition) {
+	public boolean canSelectValues(final Object selectedItem, final TranslatedObject simpleCondition) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return true;
 		}
@@ -87,7 +87,7 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return false;
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
 		if(value instanceof PeriodicLevelCondition){
@@ -96,7 +96,7 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return createASelectableCondition(simpleCond, (String) value, matchCase, matchApproximately);
 	}
 
-	protected ASelectableCondition createASelectableCondition(final NamedObject simpleCondition, final String value,
+	protected ASelectableCondition createASelectableCondition(final TranslatedObject simpleCondition, final String value,
 	                                                   final boolean matchCase, final boolean matchApproximately) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new NodeLevelCompareCondition(value, matchCase, 0, true);
@@ -124,11 +124,11 @@ class NodeLevelConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
-		return new DefaultComboBoxModel(new NamedObject[] {
+		return new DefaultComboBoxModel(new TranslatedObject[] {
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
-		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT),
+		        TranslatedObject.literal(ConditionFactory.FILTER_GT), TranslatedObject.literal(ConditionFactory.FILTER_GE),
+		        TranslatedObject.literal(ConditionFactory.FILTER_LE), TranslatedObject.literal(ConditionFactory.FILTER_LT),
 		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_ROOT),
 		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_LEAF),
 		        TextUtils.createTranslatedString(NodeLevelConditionController.FILTER_PERIODIC_LEVEL),
@@ -141,25 +141,25 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		if(selectedCondition.objectEquals(FILTER_PERIODIC_LEVEL)){
 			return new FixedBasicComboBoxEditor();
 		}
 		return levelEditor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
 		if(simpleCond.objectEquals(FILTER_PERIODIC_LEVEL)){
 			return periodicValues;
 		}
 		return values;
 	}
 
-	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object selectedItem, final TranslatedObject simpleCond) {
 		return false;
 	}
 
-	public boolean supportsApproximateMatching(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object selectedItem, final TranslatedObject simpleCond) {
 		return false;
 	}
 
@@ -179,7 +179,7 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 	    return null;
     }
 }

@@ -22,7 +22,7 @@ package org.freeplane.features.styles;
 
 import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -72,7 +72,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	public IStyle getStyle(final MapModel map, final int depth, boolean cyclic) {
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
 		final String name = depth == 0 ? AUTOMATIC_LAYOUT_LEVEL_ROOT : AUTOMATIC_LAYOUT_LEVEL + depth;
-		final NamedObject styleKey = NamedObject.format(name);
+		final TranslatedObject styleKey = TranslatedObject.format(name);
 		final IStyle style = StyleFactory.create(styleKey);
 		if (extension.getStyleNode(style) != null) {
 			return style;
@@ -80,7 +80,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		if(! cyclic)
 			return null;
 		
-		final NamedObject rootKey = NamedObject.format(AUTOMATIC_LAYOUT_LEVEL_ROOT);
+		final TranslatedObject rootKey = TranslatedObject.format(AUTOMATIC_LAYOUT_LEVEL_ROOT);
 		final IStyle rootStyle = StyleFactory.create(rootKey);
 		NodeModel rootStyleNode = extension.getStyleNode(rootStyle);
 		if(rootStyleNode == null)
@@ -125,9 +125,9 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		if (parentNode == null)
 			return false;
 		Object userObject = parentNode.getUserObject();
-		if (! (userObject instanceof StyleNamedObject))
+		if (! (userObject instanceof StyleTranslatedObject))
 			return false;
-		return ((StyleNamedObject)userObject).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
+		return ((StyleTranslatedObject)userObject).getObject().equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
 	}
 
 }

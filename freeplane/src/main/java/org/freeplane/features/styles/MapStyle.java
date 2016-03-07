@@ -36,7 +36,7 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
@@ -270,7 +270,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			String styleText = styleElement.getAttribute("LOCALIZED_STYLE_REF", null);
 			final IStyle style;
 			if(styleText != null){
-				style = StyleFactory.create(NamedObject.format((String) styleText));
+				style = StyleFactory.create(TranslatedObject.format((String) styleText));
 			}
 			else {
 				style = StyleFactory.create(styleElement.getAttribute("STYLE_REF", null));

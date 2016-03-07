@@ -27,7 +27,7 @@ import java.util.TreeMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -79,7 +79,7 @@ public class ConditionFactory {
 		return iterator;
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
 		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, matchCase,

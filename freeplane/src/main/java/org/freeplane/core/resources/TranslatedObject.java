@@ -32,30 +32,30 @@ import org.freeplane.core.util.TextUtils;
  *
  * @author Dimitry Polivaev
  */
-public class NamedObject {
-	static public NamedObject literal(final String literal) {
-		final NamedObject result = new NamedObject();
+public class TranslatedObject {
+	static public TranslatedObject literal(final String literal) {
+		final TranslatedObject result = new TranslatedObject();
 		result.object = literal;
-		result.name = literal;
+		result.translation = literal;
 		return result;
 	}
 
-	private String name;
+	private String translation;
 	private Object object;
 	private Icon icon;
 	private static ListCellRenderer listCellRenderer;
 
-	private NamedObject() {
+	private TranslatedObject() {
 	}
 
-	public NamedObject(final Object object, final String name) {
+	public TranslatedObject(final Object object, final String translation) {
 		this.object = object;
-		this.name = name;
+		this.translation = translation;
 	}
 
-	public NamedObject(final String object) {
+	public TranslatedObject(final String object) {
 		this.object = object;
-		name = TextUtils.getText(object);
+		translation = TextUtils.getText(object);
 	}
 
 	public Object getObject() {
@@ -68,15 +68,15 @@ public class NamedObject {
 
 	@Override
 	public String toString() {
-		return name;
+		return translation;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof NamedObject)) {
+		if (!(obj instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject nobj = (NamedObject) obj;
+		final TranslatedObject nobj = (TranslatedObject) obj;
 		return object.equals(nobj.object);
 	}
 
@@ -85,15 +85,15 @@ public class NamedObject {
 		return object.hashCode();
 	}
 
-	public static NamedObject format(final String value) {
+	public static TranslatedObject format(final String value) {
 		final int separatorPos = value.indexOf(',');
 		if (separatorPos == -1) {
-			return new NamedObject(value);
+			return new TranslatedObject(value);
 		}
 		final String key = value.substring(0, separatorPos);
 		final String s1 = value.substring(separatorPos + 1);
 		final String text = TextUtils.format(key, s1);
-		return new NamedObject(value, text);
+		return new TranslatedObject(value, text);
 	}
 
 	public Icon getIcon() {
@@ -111,8 +111,8 @@ public class NamedObject {
 			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
 			                                              boolean cellHasFocus) {
 				final Object renderedValue;
-				if(value instanceof NamedObject){
-					final Icon icon = ((NamedObject)value).getIcon();
+				if(value instanceof TranslatedObject){
+					final Icon icon = ((TranslatedObject)value).getIcon();
 					if(icon != null)
 						renderedValue = icon;
 					else
@@ -126,15 +126,15 @@ public class NamedObject {
 		return listCellRenderer;
 	}
 
-	public static NamedObject[] fromEnum(Class<? extends Enum<?>> enumeration) {
+	public static TranslatedObject[] fromEnum(Class<? extends Enum<?>> enumeration) {
 		return fromEnum(enumeration.getSimpleName() + "." , enumeration);
 	}
-	public static NamedObject[] fromEnum(final String prefix, Class<? extends Enum<?>> enumeration) {
+	public static TranslatedObject[] fromEnum(final String prefix, Class<? extends Enum<?>> enumeration) {
 		final Enum<?>[] enumConstants=enumeration.getEnumConstants();
-		NamedObject[] objs = new NamedObject[enumConstants.length];
+		TranslatedObject[] objs = new TranslatedObject[enumConstants.length];
 		int i = 0;
 		for(Enum<?> value : enumConstants){
-			objs[i++] = new NamedObject(value, TextUtils.getText(prefix + value.toString()));
+			objs[i++] = new TranslatedObject(value, TextUtils.getText(prefix + value.toString()));
 		}
 		return objs;
     }

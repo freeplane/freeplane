@@ -21,7 +21,7 @@ package org.freeplane.features.time;
 
 import java.util.Date;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -33,7 +33,7 @@ public abstract class TimeCondition extends ASelectableCondition {
 	static final String FILTER_MODIFIED_AFTER = "filter_modified_after";
 	static final String FILTER_MODIFIED_BEFORE = "filter_modified_before";
 
-	public static ASelectableCondition create(final NamedObject simpleCond, final FormattedDate date) {
+	public static ASelectableCondition create(final TranslatedObject simpleCond, final FormattedDate date) {
 		if (simpleCond.objectEquals(TimeCondition.FILTER_MODIFIED_AFTER)) {
 			return new TimeConditionModifiedAfter(date);
 		}

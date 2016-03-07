@@ -7,7 +7,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -24,23 +24,23 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 //		this.controller = controller;
 	}
 
-	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(LogicalStyleFilterController.FILTER_STYLE);
 	}
 
-	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
 		if(simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO))
 			return new StyleCondition((IStyle) value);
@@ -54,7 +54,7 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	}
 
 	private Object[] getStyleConditionNames() {
-		return new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO) , 
+		return new TranslatedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO) , 
 				TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS) };
 	}
 
@@ -64,20 +64,20 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return null;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
 		final MapStyleModel mapStyles = MapStyleModel.getExtension(Controller.getCurrentController().getMap());
 		return mapStyles.getStylesAsComboBoxModel();
 	}
 
-	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
@@ -91,7 +91,7 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 	    return null;
     }
 }

@@ -21,7 +21,7 @@ package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
@@ -59,7 +59,7 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 			return;
 		}
 		final String styleName = "AutomaticLayout.level," + childNumber;
-		final IStyle styleObject = StyleFactory.create(NamedObject.format(styleName));
+		final IStyle styleObject = StyleFactory.create(TranslatedObject.format(styleName));
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel node = styleModel.getStyleNode(styleObject);
 		mapController.deleteNode(node);

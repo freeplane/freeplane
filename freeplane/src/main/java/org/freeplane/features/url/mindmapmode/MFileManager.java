@@ -56,7 +56,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -332,13 +332,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final File dir = getLastCurrentDir() != null ? getLastCurrentDir() : chooser.getCurrentDirectory();
 		final File templateDir = defaultStandardTemplateDir();
 		final File userTemplateDir = defaultUserTemplateDir();
-		box.addItem(new NamedObject(dir, TextUtils.getText("current_dir")));
-		box.addItem(new NamedObject(templateDir, TextUtils.getText("template_dir")));
-		box.addItem(new NamedObject(userTemplateDir, TextUtils.getText("user_template_dir")));
+		box.addItem(new TranslatedObject(dir, TextUtils.getText("current_dir")));
+		box.addItem(new TranslatedObject(templateDir, TextUtils.getText("template_dir")));
+		box.addItem(new TranslatedObject(userTemplateDir, TextUtils.getText("user_template_dir")));
 		box.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JComboBox box = (JComboBox) e.getSource();
-				final NamedObject obj = (NamedObject) box.getSelectedItem();
+				final TranslatedObject obj = (TranslatedObject) box.getSelectedItem();
 				final File dir = (File) obj.getObject();
 				chooser.setCurrentDirectory(dir);
 			}
@@ -347,7 +347,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final String selectedPath = selectedDir.getAbsolutePath();
 		if (!selectedDir.equals(dir)) {
 			for (int i = 0; i < box.getItemCount(); i++) {
-				NamedObject item = (NamedObject) box.getItemAt(i);
+				TranslatedObject item = (TranslatedObject) box.getItemAt(i);
 				File itemDir = (File) item.getObject();
 				if (itemDir.getAbsolutePath().equals(selectedPath)) {
 					box.setSelectedItem(item);
@@ -652,7 +652,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final Controller controller = Controller.getCurrentController();
 			final MapModel map = controller.getMap();
 			final Object rootText = map.getRootNode().getUserObject();
-			if(rootText instanceof NamedObject){
+			if(rootText instanceof TranslatedObject){
 				map.getRootNode().setText(rootText.toString());
 			}
 			controller.getModeController().getMapController().setSaved(map, true);

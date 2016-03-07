@@ -35,14 +35,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 
 /**
  * @author Dimitry Polivaev
  * Mar 12, 2011
  */
 public class ContainerComboBoxEditor implements ComboBoxEditor {
-	final private Map<NamedObject, ComboBoxEditor> editors;
+	final private Map<TranslatedObject, ComboBoxEditor> editors;
 	private ComboBoxEditor editor;
 	final private JComboBox editorSelector;
 	final private JPanel editorPanel;
@@ -51,14 +51,14 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 	final private List<ActionListener> actionListeners;
 
 	public ContainerComboBoxEditor() {
-		editors = new HashMap<NamedObject, ComboBoxEditor>();
+		editors = new HashMap<TranslatedObject, ComboBoxEditor>();
 		editorComponent = Box.createHorizontalBox();
 		editorSelector = new JComboBoxWithBorder();
 		editorSelector.setEditable(false);
-		editorSelector.setRenderer(NamedObject.getIconRenderer());
+		editorSelector.setRenderer(TranslatedObject.getIconRenderer());
 		editorSelector.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final NamedObject key = (NamedObject) editorSelector.getSelectedItem();
+				final TranslatedObject key = (TranslatedObject) editorSelector.getSelectedItem();
 				editor = editors.get(key);
 				final CardLayout layout = (CardLayout) editorPanel.getLayout();				
 				layout.show(editorPanel,  key.getObject().toString());
@@ -75,7 +75,7 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 		actionListeners = new LinkedList<ActionListener>();
     }
 	
-	public boolean put(NamedObject key, ComboBoxEditor editor){
+	public boolean put(TranslatedObject key, ComboBoxEditor editor){
 		final ComboBoxEditor oldEditor = editors.put(key, editor);
 		if(oldEditor != null){
 			editors.put(key, oldEditor);
@@ -99,11 +99,11 @@ public class ContainerComboBoxEditor implements ComboBoxEditor {
 			setItem("");
 			return;
 		}
-		for(Entry<NamedObject, ComboBoxEditor> editorEntry: editors.entrySet()){
+		for(Entry<TranslatedObject, ComboBoxEditor> editorEntry: editors.entrySet()){
 			final ComboBoxEditor editor = editorEntry.getValue();
 			editor.setItem(anObject);
 			final Object item = editor.getItem();
-			NamedObject key = editorEntry.getKey();
+			TranslatedObject key = editorEntry.getKey();
 			if(anObject.equals(item) && ! key.equals(editorSelector.getSelectedItem())){
 				editorSelector.setSelectedItem(key);
 				return;

@@ -25,8 +25,8 @@ public class StyleContainsCondition extends ASelectableCondition {
 		if (value instanceof StyleString) {
 			child.setAttribute("TEXT", value.toString());
 		}
-		else if (value instanceof StyleNamedObject) {
-			child.setAttribute("LOCALIZED_TEXT", ((StyleNamedObject) value).getObject().toString());
+		else if (value instanceof StyleTranslatedObject) {
+			child.setAttribute("LOCALIZED_TEXT", ((StyleTranslatedObject) value).getObject().toString());
 		}
 	}
 
@@ -37,7 +37,7 @@ public class StyleContainsCondition extends ASelectableCondition {
 		}
 		final String name = element.getAttribute("LOCALIZED_TEXT", null);
 		if (name != null) {
-			return new StyleContainsCondition(new StyleNamedObject(name));
+			return new StyleContainsCondition(new StyleTranslatedObject(name));
 		}
 		return null;
 	}

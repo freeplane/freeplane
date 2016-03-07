@@ -26,7 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -49,19 +49,19 @@ public class ReminderConditionController implements IElementaryConditionControll
 		super();
 	}
 
-	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(ReminderConditionController.FILTER_REMINDER);
 	}
 
-	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 		if(simpleCond.objectEquals(ReminderConditionLater.FILTER_REMINDER_LATER))
 			return false;
 		if(simpleCond.objectEquals(ReminderConditionExecuted.FILTER_REMINDER_EXECUTED))
@@ -69,7 +69,7 @@ public class ReminderConditionController implements IElementaryConditionControll
 		return true;
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
 		return ReminderConditionController.create(simpleCond, (FormattedDate) value);
@@ -86,27 +86,27 @@ public class ReminderConditionController implements IElementaryConditionControll
 	}
 
 	public Object[] getTimeConditionNames() {
-		return new NamedObject[] {
+		return new TranslatedObject[] {
 		        TextUtils.createTranslatedString(ReminderConditionLater.FILTER_REMINDER_LATER),
 		        TextUtils.createTranslatedString(ReminderConditionExecuted.FILTER_REMINDER_EXECUTED),
 		        TextUtils.createTranslatedString(ReminderCondition.FILTER_REMINDER_AFTER),
 		        TextUtils.createTranslatedString(ReminderCondition.FILTER_REMINDER_BEFORE) };
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return editor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
 		values.setSelectedItem(FormattedDate.createDefaultFormattedDate(System.currentTimeMillis(), IFormattedObject.TYPE_DATETIME));
 		return values;
 	}
 
-	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
@@ -135,11 +135,11 @@ public class ReminderConditionController implements IElementaryConditionControll
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 	    return null;
     }
 
-	public static ASelectableCondition create(final NamedObject simpleCond, final FormattedDate date) {
+	public static ASelectableCondition create(final TranslatedObject simpleCond, final FormattedDate date) {
     	if (simpleCond.objectEquals(ReminderConditionLater.FILTER_REMINDER_LATER)) {
     		return new ReminderConditionLater();
     	}

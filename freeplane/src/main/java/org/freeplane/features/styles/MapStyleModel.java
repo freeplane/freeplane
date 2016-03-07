@@ -63,11 +63,11 @@ public class MapStyleModel implements IExtension {
 	public static final String STYLES_PREDEFINED = "styles.predefined";
 	public static final String STYLES_USER_DEFINED = "styles.user-defined";
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
-	public static final IStyle DEFAULT_STYLE = new StyleNamedObject("default");
-    public static final IStyle DETAILS_STYLE = new StyleNamedObject("defaultstyle.details");
-    public static final IStyle ATTRIBUTE_STYLE = new StyleNamedObject("defaultstyle.attributes");
-    public static final IStyle NOTE_STYLE = new StyleNamedObject("defaultstyle.note");
-    public static final IStyle FLOATING_STYLE = new StyleNamedObject("defaultstyle.floating");
+	public static final IStyle DEFAULT_STYLE = new StyleTranslatedObject("default");
+    public static final IStyle DETAILS_STYLE = new StyleTranslatedObject("defaultstyle.details");
+    public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
+    public static final IStyle NOTE_STYLE = new StyleTranslatedObject("defaultstyle.note");
+    public static final IStyle FLOATING_STYLE = new StyleTranslatedObject("defaultstyle.floating");
 	private Map<IStyle, NodeModel> styleNodes;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
@@ -193,7 +193,7 @@ public class MapStyleModel implements IExtension {
 		NodeModel predefinedStyleParentNode = getStyleNodeGroup(styleMap, groupName);
 		if(predefinedStyleParentNode == null){
 			predefinedStyleParentNode = new NodeModel(styleMap);
-			predefinedStyleParentNode.setUserObject(new StyleNamedObject(groupName));
+			predefinedStyleParentNode.setUserObject(new StyleTranslatedObject(groupName));
 			root.insert(predefinedStyleParentNode);
 		}
 		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.bubble);
@@ -328,7 +328,7 @@ public class MapStyleModel implements IExtension {
         final int childCount = rootNode.getChildCount();
         for(int i = 0; i < childCount; i++){
             final NodeModel childNode = (NodeModel) rootNode.getChildAt(i);
-            final StyleNamedObject userObject = (StyleNamedObject) childNode.getUserObject();
+            final StyleTranslatedObject userObject = (StyleTranslatedObject) childNode.getUserObject();
             if(userObject.getObject().equals(group)){
                 return childNode;
             }

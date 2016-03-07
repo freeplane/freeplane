@@ -25,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -44,27 +44,27 @@ public class LinkConditionController implements IElementaryConditionController {
 	static final String CONNECTOR = "connector";
 	private final ComboBoxModel values = new DefaultComboBoxModel();
 
-	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(FILTER_LINK) || namedObject.objectEquals(CONNECTOR_LABEL)
 		        || namedObject.objectEquals(CONNECTOR);
 	}
 
-	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 		return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		if (namedObject.objectEquals(FILTER_LINK)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 				return new HyperLinkEqualsCondition((String) value, matchCase, matchApproximately);
@@ -95,21 +95,21 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
-		final NamedObject no = (NamedObject) property;
+		final TranslatedObject no = (TranslatedObject) property;
 		final Object[] linkConditionNames;
 		if (no.getObject().equals(FILTER_LINK)) {
-			linkConditionNames = new NamedObject[] {
+			linkConditionNames = new TranslatedObject[] {
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST) };
 		}
 		else if (no.getObject().equals(CONNECTOR_LABEL)) {
-			linkConditionNames = new NamedObject[] {
+			linkConditionNames = new TranslatedObject[] {
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS) };
 		}
 		else {
-			linkConditionNames = new NamedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST) };
+			linkConditionNames = new TranslatedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST) };
 		}
 		return new DefaultComboBoxModel(linkConditionNames);
 	}
@@ -122,22 +122,22 @@ public class LinkConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return new FixedBasicComboBoxEditor();
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
 		return values;
 	}
 
-	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
-		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL) ||
-			   ((NamedObject) property).objectEquals(FILTER_LINK);
+	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
+		return ((TranslatedObject) property).objectEquals(CONNECTOR_LABEL) ||
+			   ((TranslatedObject) property).objectEquals(FILTER_LINK);
 	}
 	
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
-		return ((NamedObject) property).objectEquals(CONNECTOR_LABEL) ||
-			   ((NamedObject) property).objectEquals(FILTER_LINK);
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
+		return ((TranslatedObject) property).objectEquals(CONNECTOR_LABEL) ||
+			   ((TranslatedObject) property).objectEquals(FILTER_LINK);
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
@@ -182,9 +182,9 @@ public class LinkConditionController implements IElementaryConditionController {
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
-		if (((NamedObject)selectedProperty).objectEquals(CONNECTOR) ||
-			(((NamedObject)selectedProperty).objectEquals(FILTER_LINK) &&
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
+		if (((TranslatedObject)selectedProperty).objectEquals(CONNECTOR) ||
+			(((TranslatedObject)selectedProperty).objectEquals(FILTER_LINK) &&
 					selectedCondition.objectEquals(ConditionFactory.FILTER_EXIST)))
 		{
 			// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()

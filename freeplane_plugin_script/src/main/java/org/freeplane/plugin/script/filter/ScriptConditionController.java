@@ -29,7 +29,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -58,23 +58,23 @@ public class ScriptConditionController implements IElementaryConditionController
 
 	}
 
-	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(ScriptConditionController.FILTER_SCRIPT);
 	}
 
-	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
 		if(value == null)
@@ -96,23 +96,23 @@ public class ScriptConditionController implements IElementaryConditionController
 	}
 
 	public Object[] getScriptConditionNames() {
-		return new NamedObject[] { new NamedObject(ScriptCondition.NAME, " ")};
+		return new TranslatedObject[] { new TranslatedObject(ScriptCondition.NAME, " ")};
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return editor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
 		values.setSelectedItem("");
 		return values;
 	}
 
-	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
@@ -128,7 +128,7 @@ public class ScriptConditionController implements IElementaryConditionController
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 	    return renderer;
     }
 }

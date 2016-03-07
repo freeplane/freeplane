@@ -31,7 +31,7 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -42,7 +42,7 @@ import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.styles.StyleFactory;
-import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.styles.StyleString;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -142,13 +142,13 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				node.setUserObject(StyleFactory.create(NamedObject.format(value)));
+				node.setUserObject(StyleFactory.create(TranslatedObject.format(value)));
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
-				node.setUserObject(StyleFactory.create(NamedObject.format(value)));
+				node.setUserObject(StyleFactory.create(TranslatedObject.format(value)));
 			}
 		});
 	}
@@ -181,12 +181,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		if(data == null)
 			return;
 		final Class<? extends Object> dataClass = data.getClass();
-		if (dataClass.equals(StyleNamedObject.class)) {
-			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((StyleNamedObject) data).getObject().toString());
+		if (dataClass.equals(StyleTranslatedObject.class)) {
+			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((StyleTranslatedObject) data).getObject().toString());
 			return;
 		}
-		if (dataClass.equals(NamedObject.class)) {
-			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((NamedObject) data).getObject().toString());
+		if (dataClass.equals(TranslatedObject.class)) {
+			writer.addAttribute(NodeTextBuilder.XML_NODE_LOCALIZED_TEXT, ((TranslatedObject) data).getObject().toString());
 			return;
 		}
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));

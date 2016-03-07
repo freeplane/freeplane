@@ -29,7 +29,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.util.Convertible;
 import org.freeplane.core.util.Quantity;
@@ -47,7 +47,7 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 		super(name);
 		this.defaultUnit = defaultUnit;
 		numberSpinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
-		NamedObject[] units = NamedObject.fromEnum(defaultUnit.getDeclaringClass());
+		TranslatedObject[] units = TranslatedObject.fromEnum(defaultUnit.getDeclaringClass());
 		unitBox = new JComboBoxWithBorder(units);
 		addChangeListeners();
 	}

@@ -26,7 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -48,23 +48,23 @@ class CloneConditionController implements IElementaryConditionController {
 //		this.controller = controller;
 	}
 
-	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(CloneConditionController.FILTER_CLONE);
 	}
 
-	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 	    return false;
     }
 
-    public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+    public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
                                                 final Object value, final boolean matchCase, final boolean approximateMatching) {
         return new CloneOfSelectedViewCondition();
     }
@@ -80,27 +80,27 @@ class CloneConditionController implements IElementaryConditionController {
 	}
 
 	public Object[] getCloneConditionNames() {
-		return new NamedObject[] { 
-				NamedObject.literal(""), 
+		return new TranslatedObject[] { 
+				TranslatedObject.literal(""), 
 		};
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return null;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
 	    final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
 	    final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 	    extendedComboBoxModel.setExtensionList(icons);
 	    return extendedComboBoxModel;
 	}
 
-	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 	
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
@@ -111,7 +111,7 @@ class CloneConditionController implements IElementaryConditionController {
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 		return new DefaultConditionRenderer("", true);
     }
 }

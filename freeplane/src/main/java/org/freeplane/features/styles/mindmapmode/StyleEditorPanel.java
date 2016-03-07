@@ -45,7 +45,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
@@ -116,7 +116,7 @@ import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
-	private static final NamedObject AUTOMATIC_LAYOUT_DISABLED = new NamedObject("automatic_layout_disabled");
+	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
 
 	private class BgColorChangeListener extends ChangeListener {
 		public BgColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
@@ -893,7 +893,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
 		{
 		if(mAutomaticLayoutComboBox == null){
-			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticLayout.class);
+			 TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticLayout.class);
 			 mAutomaticLayoutComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
 			 DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();
 			 automaticLayoutComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
@@ -904,7 +904,7 @@ public class StyleEditorPanel extends JPanel {
 						return;
 					final ModeController modeController = Controller.getCurrentModeController();
 					AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
-					NamedObject selectedItem = (NamedObject)mAutomaticLayoutComboBox.getSelectedItem();
+					TranslatedObject selectedItem = (TranslatedObject)mAutomaticLayoutComboBox.getSelectedItem();
 					al.undoableDeactivateHook(Controller.getCurrentController().getMap().getRootNode());
 					if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
 						al.undoableActivateHook(Controller.getCurrentController().getMap().getRootNode(), (AutomaticLayout) selectedItem.getObject());
@@ -920,7 +920,7 @@ public class StyleEditorPanel extends JPanel {
 		{
 			
 			if(mAutomaticEdgeColorComboBox == null){
-	 			 NamedObject[] automaticLayoutTypes = NamedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
+	 			 TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
 	 			 mAutomaticEdgeColorComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
 				 DefaultComboBoxModel automaticEdgeColorComboBoxModel = (DefaultComboBoxModel) mAutomaticEdgeColorComboBox.getModel();
 				 automaticEdgeColorComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
@@ -931,7 +931,7 @@ public class StyleEditorPanel extends JPanel {
 							return;
 						final ModeController modeController = Controller.getCurrentModeController();
 						AutomaticEdgeColorHook hook = modeController.getExtension(AutomaticEdgeColorHook.class);
-						NamedObject selectedItem = (NamedObject)mAutomaticEdgeColorComboBox.getSelectedItem();
+						TranslatedObject selectedItem = (TranslatedObject)mAutomaticEdgeColorComboBox.getSelectedItem();
 						final MapModel map = Controller.getCurrentController().getMap();
 						final AutomaticEdgeColor oldExtension = (AutomaticEdgeColor) hook.getMapHook(map);
 						final int colorCount = oldExtension == null ? 0 : oldExtension.getColorCounter();

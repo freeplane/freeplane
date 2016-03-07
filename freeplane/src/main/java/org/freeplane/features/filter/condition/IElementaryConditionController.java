@@ -24,7 +24,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -32,13 +32,13 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 public interface IElementaryConditionController {
-	boolean canEditValues(final Object property, final NamedObject simpleCond);
+	boolean canEditValues(final Object property, final TranslatedObject simpleCond);
 
 	boolean canHandle(final Object selectedItem);
 
-	boolean canSelectValues(final Object property, final NamedObject simpleCond);
+	boolean canSelectValues(final Object property, final TranslatedObject simpleCond);
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean approximateMatching);
 
@@ -46,15 +46,15 @@ public interface IElementaryConditionController {
 
 	ListModel getFilteredProperties();
 
-	ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition);
+	ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition);
 	
-	ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition);
+	ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition);
 
-	ComboBoxModel getValuesForProperty(final Object property, NamedObject simpleCond);
+	ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond);
 
-	boolean isCaseDependent(final Object property, final NamedObject simpleCond);
+	boolean isCaseDependent(final Object property, final TranslatedObject simpleCond);
 	
-	boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond);
+	boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond);
 
 	ASelectableCondition loadCondition(final XMLElement element);
 }

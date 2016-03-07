@@ -26,7 +26,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -50,23 +50,23 @@ public class TimeConditionController implements IElementaryConditionController {
 //		this.controller = controller;
 	}
 
-	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		if (!(selectedItem instanceof NamedObject)) {
+		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
-		final NamedObject namedObject = (NamedObject) selectedItem;
+		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(TimeConditionController.FILTER_TIME);
 	}
 
-	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
 	                                            final boolean matchApproximately) {
 		return TimeCondition.create(simpleCond, (FormattedDate) value);
@@ -83,26 +83,26 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public Object[] getTimeConditionNames() {
-		return new NamedObject[] { TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
+		return new TranslatedObject[] { TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
 		        TextUtils.createTranslatedString(TimeCondition.FILTER_MODIFIED_BEFORE),
 		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_AFTER),
 		        TextUtils.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return editor;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
 		values.setSelectedItem(FormattedDate.createDefaultFormattedDate(System.currentTimeMillis(), IFormattedObject.TYPE_DATETIME));
 		return values;
 	}
 
-	public boolean isCaseDependent(final Object property, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
@@ -135,7 +135,7 @@ public class TimeConditionController implements IElementaryConditionController {
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 	    return null;
     }
 }

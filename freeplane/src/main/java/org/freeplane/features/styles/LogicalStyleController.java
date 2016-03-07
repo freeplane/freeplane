@@ -33,7 +33,7 @@ import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
@@ -197,7 +197,7 @@ public class LogicalStyleController implements IExtension {
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, "LOCALIZED_STYLE_REF", new IAttributeHandler() {
 			public void setAttribute(final Object node, final String value) {
 				final LogicalStyleModel extension = LogicalStyleModel.createExtension((NodeModel) node);
-				extension.setStyle(StyleFactory.create(NamedObject.format(value)));
+				extension.setStyle(StyleFactory.create(TranslatedObject.format(value)));
 			}
 		});
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -213,8 +213,8 @@ public class LogicalStyleController implements IExtension {
 				if (style == null) {
 					return;
 				}
-				final String value = StyleNamedObject.toKeyString(style);
-				if (style instanceof StyleNamedObject) {
+				final String value = StyleTranslatedObject.toKeyString(style);
+				if (style instanceof StyleTranslatedObject) {
 					writer.addAttribute("LOCALIZED_STYLE_REF", value);
 				}
 				else {

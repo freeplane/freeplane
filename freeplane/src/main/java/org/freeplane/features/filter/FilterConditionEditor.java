@@ -44,7 +44,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.RootPaneContainer;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
@@ -116,7 +116,7 @@ public class FilterConditionEditor extends JComponent {
 		final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
 		final IElementaryConditionController conditionController = filterController.getConditionFactory()
 		    .getConditionController(selectedProperty);
-		final NamedObject selectedCondition = (NamedObject) elementaryConditions.getSelectedItem();
+		final TranslatedObject selectedCondition = (TranslatedObject) elementaryConditions.getSelectedItem();
 		final boolean canSelectValues = conditionController
 		    .canSelectValues(selectedProperty, selectedCondition);
 		values.setEnabled(canSelectValues);
@@ -262,7 +262,7 @@ public class FilterConditionEditor extends JComponent {
 		if (value == null) {
 			value = "";
 		}
-		final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
+		final TranslatedObject simpleCond = (TranslatedObject) elementaryConditions.getSelectedItem();
 		final boolean matchCase = caseSensitive.isSelected();
 		final boolean matchApproximately = approximateMatching.isSelected();
 		ResourceController.getResourceController().setProperty(PROPERTY_FILTER_MATCH_CASE, matchCase);

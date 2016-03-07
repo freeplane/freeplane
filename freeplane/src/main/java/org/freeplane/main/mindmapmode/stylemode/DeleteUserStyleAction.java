@@ -31,7 +31,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.StyleNamedObject;
+import org.freeplane.features.styles.StyleTranslatedObject;
 
 /**
  * @author Dimitry Polivaev
@@ -58,7 +58,7 @@ public class DeleteUserStyleAction extends AFreeplaneAction {
 		final MapModel map = selected.getMap();
 		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final NodeModel styleNodeGroup = styleModel.getStyleNodeGroup(selected);
-        if (! ((StyleNamedObject)styleNodeGroup.getUserObject()).getObject().equals("styles.user-defined")) {
+        if (! ((StyleTranslatedObject)styleNodeGroup.getUserObject()).getObject().equals("styles.user-defined")) {
             UITools.errorMessage(TextUtils.getText("can_not_delete_predefined_style"));
             return;
         }

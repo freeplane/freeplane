@@ -28,7 +28,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.util.TextUtils;
@@ -50,7 +50,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class AttributeConditionController implements IElementaryConditionController {
 private static final String ATTRIBUTE_NAME_OR_VALUE = "attribute_name_or_value";
-static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(ATTRIBUTE_NAME_OR_VALUE);
+static final TranslatedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new TranslatedObject(ATTRIBUTE_NAME_OR_VALUE);
 // // 	final private Controller controller;
 	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
 
@@ -59,7 +59,7 @@ static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(AT
 //		this.controller = controller;
 	}
 
-	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean canEditValues(final Object selectedItem, final TranslatedObject simpleCond) {
 		return canSelectValues(selectedItem, simpleCond);
 	}
 
@@ -67,12 +67,12 @@ static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(AT
 		return ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT.equals(selectedItem) || selectedItem.getClass().equals(String.class);
 	}
 
-	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean canSelectValues(final Object selectedItem, final TranslatedObject simpleCond) {
 		return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)
 		        && !simpleCond.objectEquals(ConditionFactory.FILTER_DOES_NOT_EXIST);
 	}
 
-	public ASelectableCondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
+	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCondition,
 	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
 		final Object attribute = selectedItem;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
@@ -109,15 +109,15 @@ static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(AT
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
-		return new DefaultComboBoxModel(new NamedObject[] {
+		return new DefaultComboBoxModel(new TranslatedObject[] {
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_DOES_NOT_EXIST),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
-		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT)
+		        TranslatedObject.literal(ConditionFactory.FILTER_GT), TranslatedObject.literal(ConditionFactory.FILTER_GE),
+		        TranslatedObject.literal(ConditionFactory.FILTER_LE), TranslatedObject.literal(ConditionFactory.FILTER_LT)
 		});
 	}
 
@@ -131,14 +131,14 @@ static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(AT
 		return anyAttributeList;
 	}
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, NamedObject selectedCondition) {
+	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 	    if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return new FixedBasicComboBoxEditor();
 	    return FrameController.getTextDateTimeEditor();
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem, NamedObject simpleCond) {
+	public ComboBoxModel getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		try {
@@ -158,11 +158,11 @@ static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(AT
 		return values;
 	}
 
-	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
+	public boolean isCaseDependent(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
 	
-	public boolean supportsApproximateMatching(final Object property, final NamedObject simpleCond) {
+	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
 
@@ -185,7 +185,7 @@ static final NamedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new NamedObject(AT
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, NamedObject selectedCondition) {
+	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
         if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return null;
