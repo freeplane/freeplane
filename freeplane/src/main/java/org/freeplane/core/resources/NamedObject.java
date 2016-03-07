@@ -63,7 +63,7 @@ public class NamedObject {
 	}
 
 	public boolean objectEquals(final Object o) {
-		return getObject().equals(o);
+		return object.equals(o);
 	}
 
 	@Override
@@ -77,19 +77,12 @@ public class NamedObject {
 			return false;
 		}
 		final NamedObject nobj = (NamedObject) obj;
-		return object.equals(nobj.object) && name.equals(nobj.name);
+		return object.equals(nobj.object);
 	}
 
 	@Override
 	public int hashCode() {
-		return 37 * object.hashCode() + name.hashCode();
-	}
-
-	static public String toKeyString(final Object obj) {
-		if (obj instanceof NamedObject) {
-			return ((NamedObject) obj).getObject().toString();
-		}
-		return obj.toString();
+		return object.hashCode();
 	}
 
 	public static NamedObject format(final String value) {
