@@ -40,6 +40,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
@@ -203,6 +204,10 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		}
 		else {
 			resetModifiers();
+		}
+		if(e.getKeyCode() == KeyEvent.VK_ALT) {
+			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+			return ! (focusOwner instanceof JRootPane);
 		}
 		return false;
 	}

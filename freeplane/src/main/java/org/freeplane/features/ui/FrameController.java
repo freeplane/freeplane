@@ -26,10 +26,12 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
+import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -509,6 +511,7 @@ abstract public class FrameController implements ViewController {
 					Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
 				}
 			}
+			UIManager.getLookAndFeelDefaults().put("Button.showMnemonics", true);
 		}
 		catch (final Exception ex) {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
