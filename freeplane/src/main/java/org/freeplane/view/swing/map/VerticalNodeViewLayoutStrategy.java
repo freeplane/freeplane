@@ -22,15 +22,20 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.Arrays;
 
 import javax.swing.JComponent;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
 
 class VerticalNodeViewLayoutStrategy {
-	private final int childViewCount;
+	
+	static private boolean wrongChildComponentsReported = false;
+	
+	private int childViewCount;
 	private final int spaceAround;
 	private final NodeView view;
 
@@ -62,7 +67,16 @@ class VerticalNodeViewLayoutStrategy {
 	private void layoutChildViews(NodeView view) {
 		for (int i = 0; i < childViewCount; i++) {
 			final Component component = view.getComponent(i);
-			((NodeView) component).validateTree();
+			if(component instanceof NodeView)
+				((NodeView) component).validateTree();
+			else {
+				childViewCount = i;
+				if(! wrongChildComponentsReported) {
+					wrongChildComponentsReported = true;
+					final String wrongChildComponents = Arrays.toString(view.getComponents());
+					LogUtils.severe("Unexpected child components:" + wrongChildComponents, new Exception());
+				}
+			}
 		}
 	}
 
