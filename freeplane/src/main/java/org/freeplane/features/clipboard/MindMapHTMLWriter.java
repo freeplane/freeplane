@@ -246,6 +246,12 @@ class MindMapHTMLWriter {
 
 	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,
 	                      final boolean treatAsParagraph, final int depth) throws IOException {
+		if (! model.hasVisibleContent()) {
+			for (final NodeModel child : mapController.childrenUnfolded(model)) {
+				lastChildNumber = writeHTML(child, parentID, lastChildNumber, false, false, depth);
+			}
+			return lastChildNumber;
+		}
 		boolean createFolding = false;
 		if(writeFoldingCode){
 			createFolding = mapController.isFolded(model);
