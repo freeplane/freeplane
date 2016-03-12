@@ -6,6 +6,7 @@ Option "Center small maps" for map position when root is selected
 Option to copy structure indentation as tabs
 Allow joining non sibling nodes
 Configurable join node action separators
+Allow to redefine actions for keys LEFT, RIGHT, UP, DOWN, PAGE_UP and PAGE_DOWN
 
 ===============================
 1.5.6
