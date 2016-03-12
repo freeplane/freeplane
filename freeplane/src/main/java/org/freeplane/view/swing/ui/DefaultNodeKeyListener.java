@@ -7,6 +7,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
@@ -32,6 +33,9 @@ public class DefaultNodeKeyListener implements KeyListener {
 		final boolean checkForScrollMap = e.isShiftDown() && e.isControlDown()&& e.isAltDown();
 		final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		if (mapView == null || SwingUtilities.isDescendingFrom(mapView, e.getComponent()))
+			return;
+		final ActionAcceleratorManager acceleratorManager = mapView.getModeController().getUserInputListenerFactory().getAcceleratorManager();
+		if(acceleratorManager.canProcessKeyEvent(e))
 			return;
 		if(checkForScrollMap){
 			switch (e.getKeyCode()) {

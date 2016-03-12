@@ -24,14 +24,17 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
@@ -187,5 +190,17 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		}
 	}
 
+	@Override
+	protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+		if(viewport != null){
+			MapView mapView = (MapView) viewport.getView();
+			final ActionAcceleratorManager acceleratorManager = mapView.getModeController().getUserInputListenerFactory().getAcceleratorManager();
+			if(acceleratorManager.canProcessKeyEvent(e))
+				return false;
+		}
+		return super.processKeyBinding(ks, e, condition, pressed);
+	}
+
+	
 
 }

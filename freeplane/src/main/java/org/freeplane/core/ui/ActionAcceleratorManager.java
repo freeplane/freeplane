@@ -362,16 +362,36 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 				TextUtils.removeTranslateComment(TextUtils.format("replace_shortcut_title")), JOptionPane.YES_NO_OPTION);
 		return replace == JOptionPane.YES_OPTION;
 	}
+
+	public boolean canProcessKeyEvent(KeyEvent e) {
+		KeyStroke ks;
+		KeyStroke ksE = null;
+		boolean pressed = (e.getID() == KeyEvent.KEY_PRESSED);
+		if(e.getID() == KeyEvent.KEY_TYPED) {
+			ks=KeyStroke.getKeyStroke(e.getKeyChar());
+		} else {
+			if(e.getKeyCode() != e.getExtendedKeyCode()) {
+				ksE=KeyStroke.getKeyStroke(e.getExtendedKeyCode(), e.getModifiers(), !pressed);
+			}
+			ks=KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers(), !pressed);
+		}
+		return ksE != null && actionForAccelerator(ksE) != null || actionForAccelerator(ks) != null;
+	}
+
+	private AFreeplaneAction actionForAccelerator(KeyStroke ks) {
+		return accelerators.get(key(ks));
+	}
+
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES
 	 **********************************************************************************/
 
 	public boolean processKeyBinding(KeyStroke ks, KeyEvent event, int condition, boolean pressed, boolean consumed) {
 		if (!consumed && condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT) {
-			AFreeplaneAction action = accelerators.get(key(ks));
+			AFreeplaneAction action = actionForAccelerator(ks);
 			if(action == null) {
 				final KeyStroke derivedKeyStroke = FreeplaneMenuBar.derive(ks, event.getKeyChar());
-				action = accelerators.get(key(derivedKeyStroke));
+				action = actionForAccelerator(derivedKeyStroke);
 			}
 			if(action != null && action.isEnabled()) {
 				if(action != null && SwingUtilities.notifyAction(action, ks, event, event.getComponent(), event.getModifiers())) {
