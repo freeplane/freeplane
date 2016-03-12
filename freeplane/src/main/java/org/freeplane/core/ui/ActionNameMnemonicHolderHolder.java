@@ -1,5 +1,7 @@
 package org.freeplane.core.ui;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.Action;
 
 class ActionNameMnemonicHolderHolder implements INameMnemonicHolder {
@@ -34,10 +36,7 @@ class ActionNameMnemonicHolderHolder implements INameMnemonicHolder {
 	 */
 	public void setMnemonic(final char charAfterMnemoSign) {
 		int vk = charAfterMnemoSign;
-		if (vk >= 'a' && vk <= 'z') {
-			vk -= ('a' - 'A');
-		}
-		action.putValue(Action.MNEMONIC_KEY, new Integer(vk));
+		action.putValue(Action.MNEMONIC_KEY,  KeyEvent.getExtendedKeyCodeForChar(vk));
 	}
 
 	/*

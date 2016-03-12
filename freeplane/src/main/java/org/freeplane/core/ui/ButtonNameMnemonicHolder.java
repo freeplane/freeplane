@@ -1,5 +1,7 @@
 package org.freeplane.core.ui;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.AbstractButton;
 
 class ButtonNameMnemonicHolder implements INameMnemonicHolder {
@@ -32,7 +34,7 @@ class ButtonNameMnemonicHolder implements INameMnemonicHolder {
 	 * @see freeplane.main.Tools.IAbstractButton#setMnemonic(char)
 	 */
 	public void setMnemonic(final char charAfterMnemoSign) {
-		btn.setMnemonic(charAfterMnemoSign);
+		btn.setMnemonic(KeyEvent.getExtendedKeyCodeForChar(charAfterMnemoSign));
 	}
 
 	/*
