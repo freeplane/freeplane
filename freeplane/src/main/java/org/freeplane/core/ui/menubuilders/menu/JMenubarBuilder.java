@@ -1,7 +1,5 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
