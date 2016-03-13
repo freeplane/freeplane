@@ -15,7 +15,7 @@
   <icon>Freeplane_app.ico</icon>
   <jre>
     <path>%FREEPLANE_JAVA_HOME%</path>
-    <minVersion>1.5.0</minVersion>
+    <minVersion>1.7.0</minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>

@@ -5,6 +5,8 @@ import java.awt.Container;
 
 import javax.swing.Icon;
 import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
@@ -89,7 +91,9 @@ public class JMenuItemBuilder implements EntryVisitor{
 		if(actionComponent != null){
 			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
-		menu.getPopupMenu().addPopupMenuListener(new PopupMenuListenerForEntry(entry, popupListener));
+		final JPopupMenu popupMenu = menu.getPopupMenu();
+		popupMenu.addPopupMenuListener(new PopupMenuListenerForEntry(entry, popupListener));
+		popupMenu.addPopupMenuListener(MenuMnemonicSetter.INSTANCE);
 
 	}
 
