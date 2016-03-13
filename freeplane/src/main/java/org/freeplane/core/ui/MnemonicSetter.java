@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.freeplane.core.util.Compat;
+
 public class MnemonicSetter {
 	
 	static class MnemonicMap extends LinkedHashMap<Integer, INameMnemonicHolder> {
@@ -44,6 +46,8 @@ public class MnemonicSetter {
 	}
 
 	public void setMnemonics() {
+		if(Compat.isMacOsX())
+			return; // Mac OS generally does not support mnemonics
 		final Map<Integer, INameMnemonicHolder> usedMnemonics = extractUsedMnemonics(mnemonicHolders);
 		if(usedMnemonics.size() < mnemonicHolders.length) {
 			final Map<Integer, INameMnemonicHolder> mnemonicSet = findMnemonics(usedMnemonics, 0, 0);
