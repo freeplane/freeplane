@@ -1,10 +1,10 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
-import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -19,7 +19,11 @@ public class MenuMnemonicSetter implements PopupMenuListener{
 
 	@Override
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		final JPopupMenu popupMenu = (JPopupMenu) e.getSource();
+		final Container popupMenu = (Container) e.getSource();
+		setComponentMnemonics(popupMenu);
+	}
+
+	public void setComponentMnemonics(final Container popupMenu) {
 		final Component[] components = popupMenu.getComponents();
 		final ArrayList<INameMnemonicHolder> mnemonicHolders = new ArrayList<INameMnemonicHolder>(components.length);
 		for(Component component :components)
