@@ -29,12 +29,13 @@ class ButtonNameMnemonicHolder implements INameMnemonicHolder {
 		btn.setDisplayedMnemonicIndex(mnemoSignIndex);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.Tools.IAbstractButton#setMnemonic(char)
-	 */
 	public void setMnemonic(final char charAfterMnemoSign) {
-		btn.setMnemonic(KeyEvent.getExtendedKeyCodeForChar(charAfterMnemoSign));
+		final int keyCode = KeyEvent.getExtendedKeyCodeForChar(charAfterMnemoSign);
+		setMnemonic(keyCode);
+	}
+
+	public void setMnemonic(final int keyCode) {
+		btn.setMnemonic(keyCode);
 	}
 
 	/*
@@ -43,5 +44,10 @@ class ButtonNameMnemonicHolder implements INameMnemonicHolder {
 	 */
 	public void setText(final String text) {
 		btn.setText(text);
+	}
+
+	@Override
+	public int getMnemonic() {
+		return btn.getMnemonic();
 	}
 }

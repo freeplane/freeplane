@@ -30,13 +30,13 @@ class ActionNameMnemonicHolderHolder implements INameMnemonicHolder {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.Tools.IAbstractButton#setMnemonic(char)
-	 */
 	public void setMnemonic(final char charAfterMnemoSign) {
-		int vk = charAfterMnemoSign;
-		action.putValue(Action.MNEMONIC_KEY,  KeyEvent.getExtendedKeyCodeForChar(vk));
+		final int keyCode = KeyEvent.getExtendedKeyCodeForChar((int) charAfterMnemoSign);
+		setMnemonic(keyCode);
+	}
+
+	public void setMnemonic(final int keyCode) {
+		action.putValue(Action.MNEMONIC_KEY,  keyCode);
 	}
 
 	/*
@@ -45,5 +45,14 @@ class ActionNameMnemonicHolderHolder implements INameMnemonicHolder {
 	 */
 	public void setText(final String text) {
 		action.putValue(Action.NAME, text);
+	}
+
+	@Override
+	public int getMnemonic() {
+		final Object mnemonic = action.getValue(Action.MNEMONIC_KEY);
+		if(mnemonic instanceof Integer)
+			return ((Integer)mnemonic).intValue();
+		else
+			return 0;
 	}
 }
