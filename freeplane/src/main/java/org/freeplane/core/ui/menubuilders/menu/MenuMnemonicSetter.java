@@ -11,6 +11,7 @@ import javax.swing.event.PopupMenuListener;
 import org.freeplane.core.ui.ButtonNameMnemonicHolder;
 import org.freeplane.core.ui.INameMnemonicHolder;
 import org.freeplane.core.ui.MnemonicSetter;
+import org.freeplane.core.util.Compat;
 
 public class MenuMnemonicSetter implements PopupMenuListener{
 	
@@ -24,6 +25,8 @@ public class MenuMnemonicSetter implements PopupMenuListener{
 	}
 
 	public void setComponentMnemonics(final Container popupMenu) {
+		if(Compat.isMacOsX())
+			return; // Mac OS generally does not support mnemonics
 		final Component[] components = popupMenu.getComponents();
 		final ArrayList<INameMnemonicHolder> mnemonicHolders = new ArrayList<INameMnemonicHolder>(components.length);
 		for(Component component :components)
