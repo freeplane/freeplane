@@ -1,6 +1,6 @@
 package org.freeplane.core.ui;
 
-interface INameMnemonicHolder {
+public interface INameMnemonicHolder {
 	String getText();
 
 	void setDisplayedMnemonicIndex(int mnemoSignIndex);

@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractButton;
 
-class ButtonNameMnemonicHolder implements INameMnemonicHolder {
+public class ButtonNameMnemonicHolder implements INameMnemonicHolder {
 	final private AbstractButton btn;
 
 	public ButtonNameMnemonicHolder(final AbstractButton btn) {
@@ -50,4 +50,13 @@ class ButtonNameMnemonicHolder implements INameMnemonicHolder {
 	public int getMnemonic() {
 		return btn.getMnemonic();
 	}
+
+	@Override
+	public String toString() {
+		final int mnemonic = getMnemonic();
+		final String text = getText();
+		return "ButtonNameMnemonicHolder [getText()=" + text + (mnemonic != 0 ? ", getMnemonic()=" + KeyEvent.getKeyText(mnemonic) + "]" : "");
+	}
+	
+	
 }
