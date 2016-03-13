@@ -1,11 +1,10 @@
 package org.freeplane.core.ui;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import java.awt.event.KeyEvent;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MnemonicSetterShould {
@@ -72,15 +71,23 @@ public class MnemonicSetterShould {
 	@Test
 	public void assignsFirstLetter() throws Exception {
 		final MnemonicHolder mnemonicHolderA = new MnemonicHolder("A");
-		new MnemonicSetter(mnemonicHolderA).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderA).setMnemonics();
 		assertMnemonic(mnemonicHolderA, 'A');
 	}
 
+
+	@Test
+	public void skipsSpaces() throws Exception {
+		final MnemonicHolder mnemonicHolderA = new MnemonicHolder(" A");
+		MnemonicSetter.of(mnemonicHolderA).setMnemonics();
+		assertMnemonic(mnemonicHolderA, 'A');
+	}
+	
 	@Test
 	public void assignsSecondLetter_IfFirstLetterIsAlreadyAssigned() throws Exception {
 		final MnemonicHolder mnemonicHolderAB = new MnemonicHolder("AB");
 		final MnemonicHolder mnemonicHolderA = new MnemonicHolder("A", 'A');
-		new MnemonicSetter(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
 		assertMnemonic(mnemonicHolderA, 'A');
 		assertMnemonic(mnemonicHolderAB, 'B');
 	}
@@ -90,7 +97,7 @@ public class MnemonicSetterShould {
 	public void assignsSecondLetter_IfFirstLetterLowerCaseIsAlreadyAssigned() throws Exception {
 		final MnemonicHolder mnemonicHolderAB = new MnemonicHolder("ab");
 		final MnemonicHolder mnemonicHolderA = new MnemonicHolder("A", 'A');
-		new MnemonicSetter(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
 		assertMnemonic(mnemonicHolderA, 'A');
 		assertMnemonic(mnemonicHolderAB, 'B');
 	}
@@ -99,7 +106,7 @@ public class MnemonicSetterShould {
 	public void assignsFirstLetter_ifItIsNotAssignedYet() throws Exception {
 		final MnemonicHolder mnemonicHolderAB = new MnemonicHolder("AB");
 		final MnemonicHolder mnemonicHolderA = new MnemonicHolder("C");
-		new MnemonicSetter(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
 		assertMnemonic(mnemonicHolderAB, 'A');
 	}
 	
@@ -107,7 +114,7 @@ public class MnemonicSetterShould {
 	public void assignsFirstLetter_toSecondHolder() throws Exception {
 		final MnemonicHolder mnemonicHolderAB = new MnemonicHolder("AB");
 		final MnemonicHolder mnemonicHolderC = new MnemonicHolder("C");
-		new MnemonicSetter(mnemonicHolderAB, mnemonicHolderC).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderAB, mnemonicHolderC).setMnemonics();
 		assertMnemonic(mnemonicHolderAB, 'A');
 		assertMnemonic(mnemonicHolderC, 'C');
 	}
@@ -116,7 +123,7 @@ public class MnemonicSetterShould {
 	public void assignsSecondLetter_toSecondHolder() throws Exception {
 		final MnemonicHolder mnemonicHolderAB = new MnemonicHolder("AB");
 		final MnemonicHolder mnemonicHolderAC = new MnemonicHolder("AC");
-		new MnemonicSetter(mnemonicHolderAB, mnemonicHolderAC).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderAB, mnemonicHolderAC).setMnemonics();
 		assertMnemonic(mnemonicHolderAB, 'A');
 		assertMnemonic(mnemonicHolderAC, 'C');
 	}
@@ -125,17 +132,16 @@ public class MnemonicSetterShould {
 	public void assignsNoLetter_ifAllLettersAreAlreadyAssigned() throws Exception {
 		final MnemonicHolder mnemonicHolderA1 = new MnemonicHolder("a");
 		final MnemonicHolder mnemonicHolderA2 = new MnemonicHolder("a", 'A');
-		new MnemonicSetter(mnemonicHolderA1, mnemonicHolderA2).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderA1, mnemonicHolderA2).setMnemonics();
 		assertMnemonic(mnemonicHolderA1, '\0');
 		assertMnemonic(mnemonicHolderA2, 'A');
 	}
-	
 	
 	@Test
 	public void assignsSecondLetter_toFirstHolder() throws Exception {
 		final MnemonicHolder mnemonicHolderAB = new MnemonicHolder("AB");
 		final MnemonicHolder mnemonicHolderA = new MnemonicHolder("A");
-		new MnemonicSetter(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderAB, mnemonicHolderA).setMnemonics();
 		assertMnemonic(mnemonicHolderAB, 'B');
 		assertMnemonic(mnemonicHolderA, 'A');
 	}
@@ -144,7 +150,7 @@ public class MnemonicSetterShould {
 	public void assignsNoLetter_toSecondHolder() throws Exception {
 		final MnemonicHolder mnemonicHolderA1 = new MnemonicHolder("a");
 		final MnemonicHolder mnemonicHolderA2 = new MnemonicHolder("a");
-		new MnemonicSetter(mnemonicHolderA1, mnemonicHolderA2).setMnemonics();
+		MnemonicSetter.of(mnemonicHolderA1, mnemonicHolderA2).setMnemonics();
 		assertMnemonic(mnemonicHolderA1, 'A');
 		assertMnemonic(mnemonicHolderA2, '\0');
 	}
