@@ -12,4 +12,6 @@ public interface INameMnemonicHolder {
 	int getMnemonic();
 
 	void setMnemonic(int key);
+	
+	boolean hasAccelerator();
 }

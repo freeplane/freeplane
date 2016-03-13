@@ -5,11 +5,13 @@ import java.awt.Container;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
+import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.ui.ButtonNameMnemonicHolder;
 import org.freeplane.core.ui.INameMnemonicHolder;
+import org.freeplane.core.ui.MenuItemMnemonicHolder;
 import org.freeplane.core.ui.MnemonicSetter;
 import org.freeplane.core.util.Compat;
 
@@ -30,7 +32,11 @@ public class MenuMnemonicSetter implements PopupMenuListener{
 		final Component[] components = popupMenu.getComponents();
 		final ArrayList<INameMnemonicHolder> mnemonicHolders = new ArrayList<INameMnemonicHolder>(components.length);
 		for(Component component :components)
-			if(component instanceof AbstractButton) {
+			if(component instanceof JMenuItem) {
+				final JMenuItem item = (JMenuItem) component;
+				mnemonicHolders.add(new MenuItemMnemonicHolder(item));
+			}
+			else if(component instanceof AbstractButton) {
 				final AbstractButton button = (AbstractButton) component;
 				mnemonicHolders.add(new ButtonNameMnemonicHolder(button));
 			}

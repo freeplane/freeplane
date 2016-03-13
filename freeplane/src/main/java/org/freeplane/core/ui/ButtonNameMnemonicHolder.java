@@ -57,6 +57,11 @@ public class ButtonNameMnemonicHolder implements INameMnemonicHolder {
 		final String text = getText();
 		return "ButtonNameMnemonicHolder [getText()=" + text + (mnemonic != 0 ? ", getMnemonic()=" + KeyEvent.getKeyText(mnemonic) + "]" : "");
 	}
+
+	@Override
+	public boolean hasAccelerator() {
+		return false;
+	}
 	
 	
 }

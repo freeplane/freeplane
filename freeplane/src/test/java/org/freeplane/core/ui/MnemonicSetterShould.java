@@ -53,6 +53,11 @@ public class MnemonicSetterShould {
 			return keyCode;
 		}
 
+		@Override
+		public boolean hasAccelerator() {
+			return false;
+		}
+
 	}
 
 	private void assertMnemonic(final MnemonicHolder mnemonicHolder, char character) {

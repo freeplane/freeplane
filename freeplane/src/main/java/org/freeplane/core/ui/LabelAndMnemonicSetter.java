@@ -23,7 +23,7 @@ public class LabelAndMnemonicSetter {
 	 * mnemo, while in "&About", mnemo is "Alt + A".
 	 */
 	public static void setLabelAndMnemonic(final Action action, final String inLabel) {
-		LabelAndMnemonicSetter.setLabelAndMnemonic(new ActionNameMnemonicHolderHolder(action), inLabel);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(new ActionNameMnemonicHolder(action), inLabel);
 	}
 
 	static void setLabelAndMnemonic(final INameMnemonicHolder item, final String inLabel) {

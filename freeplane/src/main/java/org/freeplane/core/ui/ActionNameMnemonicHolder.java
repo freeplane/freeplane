@@ -4,10 +4,10 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-class ActionNameMnemonicHolderHolder implements INameMnemonicHolder {
+class ActionNameMnemonicHolder implements INameMnemonicHolder {
 	final private Action action;
 
-	public ActionNameMnemonicHolderHolder(final Action action) {
+	public ActionNameMnemonicHolder(final Action action) {
 		super();
 		this.action = action;
 	}
@@ -54,5 +54,10 @@ class ActionNameMnemonicHolderHolder implements INameMnemonicHolder {
 			return ((Integer)mnemonic).intValue();
 		else
 			return 0;
+	}
+
+	@Override
+	public boolean hasAccelerator() {
+		return action.getValue(Action.ACCELERATOR_KEY) != null;
 	}
 }
