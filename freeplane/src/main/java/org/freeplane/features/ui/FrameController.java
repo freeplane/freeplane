@@ -511,7 +511,6 @@ abstract public class FrameController implements ViewController {
 					Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
 				}
 			}
-			UIManager.getLookAndFeelDefaults().put("Button.showMnemonics", true);
 		}
 		catch (final Exception ex) {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);

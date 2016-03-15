@@ -187,6 +187,8 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		return buttonRow;
 	}
 
+	private boolean altPressedEventHidden = false;
+	
 	public boolean dispatchKeyEvent(final KeyEvent e) {
 		if(! (Controller.getCurrentModeController() instanceof MModeController ))
 			return false;
@@ -206,8 +208,18 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			resetModifiers();
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ALT) {
-			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-			return ! (focusOwner instanceof JRootPane);
+			switch(e.getID()){
+			case KeyEvent.KEY_PRESSED:{
+				final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+				return altPressedEventHidden = ! (focusOwner instanceof JRootPane || 0 == (e.getModifiersEx() & ~(KeyEvent.ALT_MASK | KeyEvent.ALT_DOWN_MASK)));
+			}
+			case KeyEvent.KEY_RELEASED:
+				if(altPressedEventHidden) {
+					altPressedEventHidden = false;
+					return true;
+				}
+				break;
+			}
 		}
 		return false;
 	}
