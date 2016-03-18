@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -273,8 +274,22 @@ public class AddOnProperties {
 		this.homepage = homepage;
 	}
 
-	public void setUpdateUrl(URL updateUrl) {
-		this.updateUrl = updateUrl;
+	public void setUpdateUrl(Object updateUrl) {
+		this.updateUrl = toURL(updateUrl);
+	}
+
+	private URL toURL(Object updateUrl) {
+		try {
+			if (updateUrl instanceof URL)
+				return (URL) updateUrl;
+			else if (updateUrl instanceof URI)
+				return ((URI) updateUrl).toURL();
+			else
+				return new URL((String) updateUrl.toString());
+		}
+		catch (MalformedURLException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 	
 	public String getDescription() {
