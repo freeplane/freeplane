@@ -178,6 +178,7 @@ _debug "Calling: "\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
+ "-Dswing.systemlaf=javax.swing.plaf.metal.MetalLookAndFeel"\
  $JAVA_OPTS\
  $xdockname\
  -jar "${freedir}/freeplanelauncher.jar"\
@@ -189,6 +190,7 @@ _debug "Calling: "\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
+ "-Dswing.systemlaf=javax.swing.plaf.metal.MetalLookAndFeel"\
  $JAVA_OPTS\
  $xdockname\
  -jar "${freedir}/freeplanelauncher.jar"\
