@@ -280,7 +280,9 @@ public class AddOnProperties {
 
 	private URL toURL(Object updateUrl) {
 		try {
-			if (updateUrl instanceof URL)
+			if (updateUrl == null)
+				return null;
+			else if (updateUrl instanceof URL)
 				return (URL) updateUrl;
 			else if (updateUrl instanceof URI)
 				return ((URI) updateUrl).toURL();
