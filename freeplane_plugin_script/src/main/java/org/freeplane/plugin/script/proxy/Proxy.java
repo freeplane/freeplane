@@ -1151,7 +1151,8 @@ public interface Proxy {
 		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
 		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
 		 * @see #getNodesSharingContent()
-		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
+		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
 		 * @since 1.5 */
 		int getCountNodesSharingContent();
 
@@ -1159,7 +1160,8 @@ public interface Proxy {
 		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
 		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
 		 * @see #getNodesSharingContentAndSubtree()
-		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
+		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
 		 * @since 1.5 */
 		int getCountNodesSharingContentAndSubtree();
 		
@@ -1167,14 +1169,16 @@ public interface Proxy {
 		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
 		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
 		 * @see #getCountNodesSharingContent()
-		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
+		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
 		 * @since 1.5 */
 		List<Node> getNodesSharingContent();
 		
 		/** The nodes sharing their content and subtree with this node.
 		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
 		 * @see #getCountNodesSharingContentAndSubtree()
-		 * @see Node#appendAsCloneWithSubtree(NodeRO), {@link Node#appendAsCloneWithoutSubtree(NodeRO)}
+		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
+		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
 		 * @since 1.5 */
 		List<Node> getNodesSharingContentAndSubtree();
 
@@ -1275,7 +1279,7 @@ public interface Proxy {
 
 		/** inserts the node(s) copied from clipboard as clone(s). Errors like
 		 * if the clipboard doesn't contain proper content will only be reported to the log.
-		 * You should prefer {@link #appendAsCloneWithSubtree(NodeRO)} or {@link #appendAsCloneWithoutSubtree(NodeRO)}
+		 * You should prefer {@link #appendAsCloneWithSubtree(Proxy.NodeRO)} or {@link #appendAsCloneWithoutSubtree(Proxy.NodeRO)}
 		 * instead if possible - they give you more control.
 		 * @since 1.5 */
 		void pasteAsClone();
