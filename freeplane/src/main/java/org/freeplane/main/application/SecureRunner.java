@@ -14,6 +14,7 @@ import java.util.concurrent.Callable;
 
 public class SecureRunner {
     private static final Permissions NO_PERMISSIONS = new Permissions();
+    private static final boolean DISABLE_CHECKS = Boolean.getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 
     static {
         RestrictingClassLoader.class.getClassLoader();
@@ -34,6 +35,8 @@ public class SecureRunner {
 
         @Override
         public boolean implies(ProtectionDomain domain, Permission permission) {
+        	if(DISABLE_CHECKS)
+        		return true;
             ClassLoader classLoader = domain.getClassLoader();
             if (classLoader instanceof RestrictingClassLoader) {
                 return ((RestrictingClassLoader) classLoader).implies(permission);
