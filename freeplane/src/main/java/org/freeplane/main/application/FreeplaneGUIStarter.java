@@ -177,7 +177,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			}
 			final MMapViewController mapViewController = new MMapViewController(controller);
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
-			System.setSecurityManager(new FreeplaneSecurityManager());
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();

@@ -40,7 +40,6 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.FreeplaneGUIStarter;
-import org.freeplane.main.application.FreeplaneSecurityManager;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 
@@ -67,7 +66,6 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			final HeadlessMapViewController mapViewController = new HeadlessMapViewController();
 			controller.setMapViewManager(mapViewController);
 			controller.setViewController(new HeadlessUIController(controller, mapViewController, ""));
-			System.setSecurityManager(new FreeplaneSecurityManager());
 			FilterController.install();
 			FormatController.install(new FormatController());
 	        final ScannerController scannerController = new ScannerController();

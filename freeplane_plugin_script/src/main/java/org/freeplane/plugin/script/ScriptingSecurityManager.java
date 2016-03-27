@@ -21,242 +21,75 @@
 package org.freeplane.plugin.script;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.net.InetAddress;
+import java.io.FilePermission;
+import java.net.SocketPermission;
 import java.security.Permission;
-import java.util.HashSet;
+import java.security.Permissions;
+import java.util.concurrent.Callable;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.main.application.SecureRunner;
 
-/**
- * @author foltin
- */
-class ScriptingSecurityManager extends SecurityManager {
-	private static final int PERM_Accept = 0;
-	private static final int PERM_Connect = 1;
-	private static final int PERM_Delete = 7;
-	private static final int PERM_Exec = 5;
-	private static final int PERM_GROUP_EXEC = 2;
-	private static final int PERM_GROUP_FILE = 0;
-	private static final int PERM_GROUP_NETWORK = 1;
-	private static final int PERM_Link = 6;
-	private static final int PERM_Listen = 2;
-	private static final int PERM_Multicast = 3;
-	private static final int PERM_Read = 8;
-	private static final int PERM_SetFactory = 4;
-	private static final int PERM_Write = 9;
-	final private boolean mWithoutReadRestriction;
-	final private boolean mWithoutWriteRestriction;
-	final private boolean mWithoutExecRestriction;
-	final private boolean mWithoutNetworkRestriction;
+import sun.security.util.SecurityConstants;
 
-	public ScriptingSecurityManager(final boolean pWithoutFileRestriction, boolean pWithoutWriteRestriction,
-	                                final boolean pWithoutNetworkRestriction, final boolean pWithoutExecRestriction) {
-		mWithoutReadRestriction = pWithoutFileRestriction;
-		mWithoutWriteRestriction = pWithoutWriteRestriction;
-		mWithoutNetworkRestriction = pWithoutNetworkRestriction;
-		mWithoutExecRestriction = pWithoutExecRestriction;
-	}
+class ScriptingSecurityManager {
 
-	@Override
-	public void checkAccept(final String pHost, final int pPort) {
-		if (mWithoutNetworkRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Accept);
-	}
+    final private Permissions blackList;
 
-	@Override
-	public void checkAccess(final Thread pT) {
-	}
+    final private Permissions whiteList;
 
-	@Override
-	public void checkAccess(final ThreadGroup pG) {
-	}
+    final private SecureRunner secureRunner;
 
-	@Override
-	public void checkAwtEventQueueAccess() {
-	}
+    public ScriptingSecurityManager(boolean pWithoutFileRestriction,
+            boolean pWithoutWriteRestriction,
+            boolean pWithoutNetworkRestriction, boolean pWithoutExecRestriction) {
+        blackList = new Permissions();
+        whiteList = new Permissions();
+        if (!pWithoutNetworkRestriction) {
+            blackList(new SocketPermission("*", SecurityConstants.SOCKET_ACCEPT_ACTION));
+            blackList(new SocketPermission("*", SecurityConstants.SOCKET_CONNECT_ACTION));
+            blackList(new SocketPermission("*", SecurityConstants.SOCKET_LISTEN_ACTION));
+            blackList(new SocketPermission("*",
+                    SecurityConstants.SOCKET_CONNECT_ACCEPT_ACTION));
+            blackList(new RuntimePermission("setFactory"));
+        }
 
-	@Override
-	public void checkConnect(final String pHost, final int pPort) {
-		if (mWithoutNetworkRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Connect);
-	}
+        if (!pWithoutExecRestriction) {
+            blackList(new FilePermission("<<ALL FILES>>",
+                    SecurityConstants.FILE_EXECUTE_ACTION));
+            blackList(new RuntimePermission("loadLibrary.*"));
+        }
 
-	@Override
-	public void checkConnect(final String pHost, final int pPort, final Object pContext) {
-		if (mWithoutNetworkRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Connect);
-	}
-
-	@Override
-	public void checkCreateClassLoader() {
-	}
-
-	@Override
-	public void checkDelete(final String pFile) {
-		if (mWithoutWriteRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Delete);
-	}
-
-	@Override
-	public void checkExec(final String pCmd) {
-		if (mWithoutExecRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_EXEC, ScriptingSecurityManager.PERM_Exec);
-	}
-
-	@Override
-	public void checkExit(final int pStatus) {
-	}
-
-	@Override
-	public void checkLink(final String pLib) {
-		/*
-		 * This should permit system libraries to be loaded.
-		 */
-		final HashSet<String> set = new HashSet<String>();
-		set.add("awt");
-		set.add("net");
-		set.add("jpeg");
-		set.add("fontmanager");
-		if (mWithoutExecRestriction || set.contains(pLib)) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_EXEC, ScriptingSecurityManager.PERM_Link);
-	}
-
-	@Override
-	public void checkListen(final int pPort) {
-		if (mWithoutNetworkRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Listen);
-	}
-
-	@Override
-	public void checkMemberAccess(final Class<?> arg0, final int arg1) {
-	}
-
-	@Override
-	public void checkMulticast(final InetAddress pMaddr) {
-		if (mWithoutNetworkRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Multicast);
-	}
-
-	@Override
-	public void checkMulticast(final InetAddress pMaddr, final byte pTtl) {
-		if (mWithoutNetworkRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Multicast);
-	}
-
-	@Override
-	public void checkPackageAccess(final String pkg) {
-	}
-
-	@Override
-	public void checkPackageDefinition(final String pPkg) {
-	}
-
-	@Override
-	public void checkPermission(final Permission pPerm) {
-	}
-
-	@Override
-	public void checkPermission(final Permission pPerm, final Object pContext) {
-	}
-
-	@Override
-	public void checkPrintJobAccess() {
-	}
-
-	@Override
-	public void checkPropertiesAccess() {
-	}
-
-	@Override
-	public void checkPropertyAccess(final String pKey) {
-	}
-
-	@Override
-	public void checkRead(final FileDescriptor pFd) {
-		if (mWithoutReadRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
-	}
-
-	@Override
-	public void checkRead(final String pFile) {
-		if (mWithoutReadRestriction 
-				|| pFile.startsWith(ResourceController.getResourceController().getInstallationBaseDir() + File.separatorChar)
-				|| pFile.startsWith(System.getProperty("java.home")+ File.separatorChar)) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read, pFile);
-	}
-
-	@Override
-	public void checkRead(final String pFile, final Object pContext) {
-		checkRead(pFile);
-	}
-
-	@Override
-	public void checkSecurityAccess(final String pTarget) {
-	}
-
-	@Override
-	public void checkSetFactory() {
-		if (mWithoutNetworkRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_SetFactory);
-	}
-
-	@Override
-	public void checkSystemClipboardAccess() {
-	}
-
-	@Override
-	public boolean checkTopLevelWindow(final Object pWindow) {
-		return true;
-	}
-
-	@Override
-	public void checkWrite(final FileDescriptor pFd) {
-		if (mWithoutWriteRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Write);
-	}
-
-	@Override
-	public void checkWrite(final String pFile) {
-		if (mWithoutWriteRestriction) {
-			return;
-		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Write);
-	}
-
-	private SecurityException getException(final int pPermissionGroup, final int pPermission, String pFile) {
-		return new SecurityException(TextUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer(
-		    pPermissionGroup), new Integer(pPermission), pFile));
+        if (!pWithoutFileRestriction) {
+            whiteList(new FilePermission(ResourceController.getResourceController()
+                    .getInstallationBaseDir() + File.separatorChar + "*",
+                    SecurityConstants.FILE_READ_ACTION));
+            whiteList(new FilePermission(System.getProperty("java.home") + "*",
+                    SecurityConstants.FILE_READ_ACTION));
+            blackList(new FilePermission("*", SecurityConstants.FILE_READ_ACTION));
+            blackList(new RuntimePermission("readFileDescriptor"));
+        }
+        if (!pWithoutWriteRestriction) {
+            blackList(new RuntimePermission("writeFileDescriptor"));
+            blackList(new FilePermission("*", SecurityConstants.FILE_WRITE_ACTION));
+            blackList(new FilePermission("*",
+                    SecurityConstants.FILE_DELETE_ACTION));
+        }
+        blackList.setReadOnly();
+        whiteList.setReadOnly();
+        secureRunner = new SecureRunner();
     }
 
-	private SecurityException getException(final int pPermissionGroup, final int pPermission) {
-		return getException(pPermissionGroup, pPermission, "");
-	}
+    private void blackList(Permission permission) {
+        blackList.add(permission);
+    }
+
+    private void whiteList(Permission permission) {
+        whiteList.add(permission);
+    }
+
+    public Object call(Callable<?> callable) throws Exception {
+        return secureRunner.call(whiteList, blackList, callable);
+    }
+
 }

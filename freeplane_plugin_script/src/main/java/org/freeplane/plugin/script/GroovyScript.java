@@ -19,36 +19,42 @@
  */
 package org.freeplane.plugin.script;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyRuntimeException;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
-
 import java.io.File;
 import java.io.PrintStream;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.main.application.FreeplaneSecurityManager;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
+
+import groovy.lang.Binding;
+import groovy.lang.GroovyRuntimeException;
+import groovy.lang.GroovyShell;
+import groovy.lang.Script;
 
 /**
  * Special scripting implementation for Groovy.
  */
 public class GroovyScript implements IScript {
     final private Object script;
+
     private final ScriptingPermissions specificPermissions;
+
     private Script compiledScript;
+
     private Throwable errorsInScript;
+
     private IFreeplaneScriptErrorHandler errorHandler;
+
     private PrintStream outStream;
+
     private ScriptContext scriptContext;
+
     private CompileTimeStrategy compileTimeStrategy;
 
     public GroovyScript(String script) {
@@ -119,80 +125,78 @@ public class GroovyScript implements IScript {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
             }
             final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
-            final ScriptingPermissions originalScriptingPermissions = new ScriptingPermissions(ResourceController
-                .getResourceController().getProperties());
-            final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
-            final boolean needToSetFinalSecurityManager = securityManager.needToSetFinalSecurityManager();
             final PrintStream oldOut = System.out;
             try {
                 compileAndCache();
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
-                if (needToSetFinalSecurityManager)
-                    securityManager.setFinalSecurityManager(scriptingSecurityManager);
                 System.setOut(outStream);
-                return compiledScript.run();
-            }
-            finally {
+                return scriptingSecurityManager.call(new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        return compiledScript.run();
+                    }
+                });
+            } finally {
                 System.setOut(oldOut);
-                if (needToSetFinalSecurityManager && securityManager.hasFinalSecurityManager())
-                    securityManager.removeFinalSecurityManager(scriptingSecurityManager);
-                /* restore preferences (and assure that the values are unchanged!). */
-                originalScriptingPermissions.restorePermissions();
             }
-        }
-        catch (final GroovyRuntimeException e) {
+        } catch (final GroovyRuntimeException e) {
             handleScriptRuntimeException(e);
-            // :fixme: This throw is only reached, if handleScriptRuntimeException
+            // :fixme: This throw is only reached, if
+            // handleScriptRuntimeException
             // does not raise an exception. Should it be here at all?
             // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
-        }
-        catch (final Throwable e) {
-            if (Controller.getCurrentController().getSelection() != null)
+        } catch (final Throwable e) {
+            if (Controller.getCurrentController().getSelection() != null) {
                 Controller.getCurrentModeController().getMapController().select(node);
+            }
             throw new ExecuteScriptException(e.getMessage(), e);
         }
     }
 
     private ScriptingSecurityManager createScriptingSecurityManager() {
-        return new ScriptSecurity(script, specificPermissions, outStream).getScriptingSecurityManager();
+        return new ScriptSecurity(script, specificPermissions, outStream)
+                .getScriptingSecurityManager();
     }
 
-	private Script compileAndCache() throws Throwable {
-		if (compileTimeStrategy.canUseOldCompiledScript())
-			return compiledScript;
-		removeOldScript();
-		errorsInScript = null;
-		if (script instanceof Script)
-			return (Script) script;
-		else
-			try {
-				final Binding binding = createBindingForCompilation();
-				final ClassLoader classLoader = GroovyScript.class.getClassLoader();
-				final GroovyShell shell = new GroovyShell(classLoader, binding, createCompilerConfiguration());
-				compileTimeStrategy.scriptCompileStart();
-				if (script instanceof String)
-					compiledScript = shell.parse((String) script);
-				else if (script instanceof File)
-					compiledScript = shell.parse((File) script);
-				else
-					throw new IllegalArgumentException();
-				compileTimeStrategy.scriptCompiled();
-				return compiledScript;
-			}
-			catch (Throwable e) {
-				errorsInScript = e;
-				throw e;
-			}
-	}
+    private Script compileAndCache() throws Throwable {
+        if (compileTimeStrategy.canUseOldCompiledScript()) {
+            return compiledScript;
+        }
+        removeOldScript();
+        errorsInScript = null;
+        if (script instanceof Script) {
+            return (Script) script;
+        } else {
+            try {
+                final Binding binding = createBindingForCompilation();
+                final ClassLoader classLoader = GroovyScript.class.getClassLoader();
+                final GroovyShell shell = new GroovyShell(classLoader, binding,
+                        createCompilerConfiguration());
+                compileTimeStrategy.scriptCompileStart();
+                if (script instanceof String) {
+                    compiledScript = shell.parse((String) script);
+                } else if (script instanceof File) {
+                    compiledScript = shell.parse((File) script);
+                } else {
+                    throw new IllegalArgumentException();
+                }
+                compileTimeStrategy.scriptCompiled();
+                return compiledScript;
+            } catch (Throwable e) {
+                errorsInScript = e;
+                throw e;
+            }
+        }
+    }
 
-	private void removeOldScript() {
-		if (compiledScript != null) {
-			InvokerHelper.removeClass(compiledScript.getClass());
-			compiledScript = null;
-		}
-	}
+    private void removeOldScript() {
+        if (compiledScript != null) {
+            InvokerHelper.removeClass(compiledScript.getClass());
+            compiledScript = null;
+        }
+    }
 
     private Binding createBinding(final NodeModel node) {
         final Binding binding = new Binding();
@@ -201,7 +205,7 @@ public class GroovyScript implements IScript {
         return binding;
     }
 
-	private Binding createBindingForCompilation() {
+    private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
         binding.setVariable("c", null);
         binding.setVariable("node", null);
@@ -215,11 +219,9 @@ public class GroovyScript implements IScript {
         int lineNumber = -1;
         if (module != null) {
             lineNumber = module.getLineNumber();
-        }
-        else if (astNode != null) {
+        } else if (astNode != null) {
             lineNumber = astNode.getLineNumber();
-        }
-        else {
+        } else {
             lineNumber = findLineNumberInString(e.getMessage(), lineNumber);
         }
         outStream.print("Line number: " + lineNumber);
@@ -237,8 +239,9 @@ public class GroovyScript implements IScript {
     }
 
     private int findLineNumberInString(final String resultString, int lineNumber) {
-        final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*@ line ([0-9]+).*",
-            java.util.regex.Pattern.DOTALL);
+        final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
+                ".*@ line ([0-9]+).*",
+                java.util.regex.Pattern.DOTALL);
         final Matcher matcher = pattern.matcher(resultString);
         if (matcher.matches()) {
             lineNumber = Integer.parseInt(matcher.group(1));
@@ -246,17 +249,18 @@ public class GroovyScript implements IScript {
         return lineNumber;
     }
 
-	@Override
+    @Override
     protected void finalize() throws Throwable {
-	    removeOldScript();
-	    super.finalize();
+        removeOldScript();
+        super.finalize();
     }
 
     @Override
     public boolean permissionsEquals(ScriptingPermissions permissions) {
-        if (this.specificPermissions == null)
+        if (this.specificPermissions == null) {
             return this.specificPermissions == permissions;
-        else
+        } else {
             return this.specificPermissions.equals(permissions);
+        }
     }
 }
