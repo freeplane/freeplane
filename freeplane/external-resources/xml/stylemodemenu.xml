@@ -127,14 +127,6 @@
 			<Entry accelerator="control A" name="SelectAllAction" />
 			<Entry accelerator="control shift A" name="SelectBranchAction" />
 		</Entry>
-		<Entry name="mindmaps">
-			<Entry name="modes" builder="navigate_modes,radio_button_group" />
-			<Entry builder="separator" />
-			<Entry name="maps" processOnPopup="true">
-				<Entry builder="navigate_maps,radio_button_group" />
-			</Entry>
-			<Entry builder="separator" />
-		</Entry>
 		<Entry name="extras">
 			<Entry name="SetAcceleratorOnNextClickAction" />
 		</Entry>
