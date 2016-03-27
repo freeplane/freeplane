@@ -130,6 +130,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		JDialog dialog = pane.createDialog(UITools.getMenuComponent(), title);
 		 // the line below is added to the example from the docs
 		 dialog.setModal(false); // this says not to block background components
-		 dialog.setVisible(true);
+		dialog.setResizable(true);
+		dialog.setVisible(true);
     }
 }
