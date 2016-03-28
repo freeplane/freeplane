@@ -1,4 +1,4 @@
-package org.freeplane.main.application;
+package org.freeplane.plugin.script;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -18,10 +18,9 @@ public class SecureRunner {
     private static final Permissions NO_PERMISSIONS = new Permissions();
     private static final boolean DISABLE_CHECKS = Boolean.getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 
-    static {
-        RestrictingClassLoader.class.getClassLoader();
+    static public void installRestrictingPolicy(){
+    	RestrictingClassLoader.class.getClassLoader();
         Policy.setPolicy(new RestrictingPolicy());
-        System.setSecurityManager(new SecurityManager());
     }
 
     private static class RestrictingPolicy extends Policy {
@@ -93,7 +92,8 @@ public class SecureRunner {
         }
 
 		private boolean isAllowed(Permission permission) {
-			return whiteList.implies(permission) || !blackList.implies(permission);
+			final boolean isAllowed = whiteList.implies(permission) || !blackList.implies(permission);
+			return isAllowed;
 		}
 
     }

@@ -36,6 +36,10 @@ import org.freeplane.features.mode.ModeController;
  * @author foltin
  */
 public class ScriptingEngine {
+	static {
+		SecureRunner.installRestrictingPolicy();
+		System.setSecurityManager(new InternationalizedSecurityManager());
+	}
 	public static final String SCRIPT_PREFIX = "script";
 	// need a File for caching! Scripts from String have to be cached elsewhere
     private static Map<File, IScript> scriptCache = new WeakHashMap<File, IScript>();

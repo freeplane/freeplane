@@ -23,15 +23,11 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.FilePermission;
 import java.net.SocketPermission;
-import java.net.URLPermission;
 import java.security.Permission;
 import java.security.Permissions;
 import java.util.concurrent.Callable;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.main.application.SecureRunner;
-
-import sun.security.util.SecurityConstants;
 
 class ScriptingSecurityManager {
 
