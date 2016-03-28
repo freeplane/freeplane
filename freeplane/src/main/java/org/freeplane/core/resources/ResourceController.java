@@ -299,8 +299,7 @@ public abstract class ResourceController {
 	/** use generic to make it useable with Properties. KT and VT must be of type String. */
 	public <KT, VT> void addDefaults(Map<KT, VT> defaultProperties) {
 		for (Entry<KT, VT> entry : defaultProperties.entrySet()) {
-			if (getProperty((String) entry.getKey()) == null)
-				setProperty((String) entry.getKey(), (String) entry.getValue());
+			setDefaultProperty((String) entry.getKey(), (String) entry.getValue());
 		}
     }
 
