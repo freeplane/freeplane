@@ -46,11 +46,7 @@ class ScriptingSecurityManager {
         blackList = new Permissions();
         whiteList = new Permissions();
         if (!pWithoutNetworkRestriction) {
-            blackList(new SocketPermission("*", SecurityConstants.SOCKET_ACCEPT_ACTION));
-            blackList(new SocketPermission("*", SecurityConstants.SOCKET_CONNECT_ACTION));
-            blackList(new SocketPermission("*", SecurityConstants.SOCKET_LISTEN_ACTION));
-            blackList(new SocketPermission("*",
-                    SecurityConstants.SOCKET_CONNECT_ACCEPT_ACTION));
+            blackList(new SocketPermission("*","connect,accept,listen"));
             blackList(new RuntimePermission("setFactory"));
         }
 
@@ -62,18 +58,14 @@ class ScriptingSecurityManager {
 
         if (!pWithoutFileRestriction) {
             whiteList(new FilePermission(ResourceController.getResourceController()
-                    .getInstallationBaseDir() + File.separatorChar + "*",
-                    SecurityConstants.FILE_READ_ACTION));
-            whiteList(new FilePermission(System.getProperty("java.home") + "*",
-                    SecurityConstants.FILE_READ_ACTION));
-            blackList(new FilePermission("*", SecurityConstants.FILE_READ_ACTION));
+                    .getInstallationBaseDir() + File.separatorChar + "*","read"));
+            whiteList(new FilePermission(System.getProperty("java.home") + "*", "read"));
+            blackList(new FilePermission("*", "read"));
             blackList(new RuntimePermission("readFileDescriptor"));
         }
         if (!pWithoutWriteRestriction) {
             blackList(new RuntimePermission("writeFileDescriptor"));
-            blackList(new FilePermission("*", SecurityConstants.FILE_WRITE_ACTION));
-            blackList(new FilePermission("*",
-                    SecurityConstants.FILE_DELETE_ACTION));
+            blackList(new FilePermission("*", "write,delete"));
         }
         blackList.setReadOnly();
         whiteList.setReadOnly();
