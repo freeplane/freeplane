@@ -9,10 +9,10 @@ import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.core.ui.ButtonNameMnemonicHolder;
-import org.freeplane.core.ui.INameMnemonicHolder;
-import org.freeplane.core.ui.MenuItemMnemonicHolder;
-import org.freeplane.core.ui.MnemonicSetter;
+import org.dpolivaev.mnemonicsetter.ButtonNameMnemonicHolder;
+import org.dpolivaev.mnemonicsetter.INameMnemonicHolder;
+import org.dpolivaev.mnemonicsetter.MenuItemMnemonicHolder;
+import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.util.Compat;
 
 public class MenuMnemonicSetter implements PopupMenuListener{

@@ -3,6 +3,9 @@ package org.freeplane.core.ui;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 
+import org.dpolivaev.mnemonicsetter.ActionNameMnemonicHolder;
+import org.dpolivaev.mnemonicsetter.ButtonNameMnemonicHolder;
+import org.dpolivaev.mnemonicsetter.INameMnemonicHolder;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 
