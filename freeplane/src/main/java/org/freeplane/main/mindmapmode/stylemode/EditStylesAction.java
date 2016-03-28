@@ -139,6 +139,7 @@ public class EditStylesAction extends AFreeplaneAction {
 							commit();
 							break;
 						}
+						//$FALL-THROUGH$
 					case JOptionPane.CANCEL_OPTION:
 						rollback();
 				}

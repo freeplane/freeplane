@@ -525,6 +525,7 @@ class XMLUtil {
 					if (dashesRead == 2) {
 						return;
 					}
+					//$FALL-THROUGH$
 				default:
 					dashesRead = 0;
 			}

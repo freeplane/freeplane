@@ -288,6 +288,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 						break;
 					case KeyEvent.VK_ALT:
 						cleanModifiers(KeyEvent.ALT_MASK);
+						break;
 					case KeyEvent.VK_ALT_GRAPH:
 						cleanModifiers(KeyEvent.ALT_GRAPH_MASK);
 						break;

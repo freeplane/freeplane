@@ -870,6 +870,7 @@ public class MClipboardController extends ClipboardController {
 			switch(operation){
 			case MOVE:
 				mapController.moveNodesAsChildren(movedNodes, target, target.isNewChildLeft(), true);
+					break;
 			default:
 				break;
 			}

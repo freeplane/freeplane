@@ -248,6 +248,7 @@ public class XMLWriter {
 						writer.print(c);
 						break;
 					}
+					//$FALL-THROUGH$
 				default:
 					if ((c < ' ') || (c > 0x7E)) {
 						writer.print("&#x");

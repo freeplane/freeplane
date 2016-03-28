@@ -1011,6 +1011,8 @@ public class NodeView extends JComponent implements INodeView {
                     paintEdges(g2, this);
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 					break;
+				default:
+					break;
 			}
 		}
 		if (PAINT_DEBUG_BORDER && isSelected() && paintingMode.equals(PaintingMode.SELECTED_NODES)){

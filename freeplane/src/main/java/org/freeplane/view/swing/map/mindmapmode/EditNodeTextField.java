@@ -369,6 +369,7 @@ public class EditNodeTextField extends EditNodeBase {
 				break;
 				case KeyEvent.VK_TAB:
 					textfield.replaceSelection("    ");
+					//$FALL-THROUGH$
 				case KeyEvent.VK_SPACE:
 					e.consume();
 					break;
