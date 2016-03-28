@@ -3,6 +3,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
+import org.dpolivaev.mnemonicsetter.MenuMnemonicSetter;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.menubuilders.generic.Entry;

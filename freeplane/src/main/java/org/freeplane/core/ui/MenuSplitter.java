@@ -27,7 +27,8 @@ import java.awt.Toolkit;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.core.ui.menubuilders.menu.MenuMnemonicSetter;
+import org.dpolivaev.mnemonicsetter.MenuMnemonicSetter;
+import org.freeplane.core.util.Compat;
 
 /**
  * @author Dimitry Polivaev
@@ -84,7 +85,8 @@ public class MenuSplitter{
 	        		submenu = new JMenu("-");
 	        		submenu.putClientProperty(EXTRA_SUBMENU, Boolean.TRUE);
 	        		popupMenu.add(submenu);
-	        		submenu.getPopupMenu().addPopupMenuListener(MenuMnemonicSetter.INSTANCE);
+	        		if(! Compat.isMacOsX())
+	        			submenu.getPopupMenu().addPopupMenuListener(MenuMnemonicSetter.INSTANCE);
 	        	}
 	        	addMenuComponent(submenu, component, submenu.getPopupMenu().getComponentCount());
 	        }

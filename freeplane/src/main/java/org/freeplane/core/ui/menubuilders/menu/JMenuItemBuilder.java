@@ -19,6 +19,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.dpolivaev.mnemonicsetter.MenuMnemonicSetter;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
