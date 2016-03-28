@@ -23,6 +23,7 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.FilePermission;
 import java.net.SocketPermission;
+import java.net.URLPermission;
 import java.security.Permission;
 import java.security.Permissions;
 import java.util.concurrent.Callable;
@@ -46,13 +47,13 @@ class ScriptingSecurityManager {
         blackList = new Permissions();
         whiteList = new Permissions();
         if (!pWithoutNetworkRestriction) {
-            blackList(new SocketPermission("*","connect,accept,listen"));
+            blackList(new SocketPermission("*","connect,accept,listen,resolve"));
+            blackList(SecureRunner.URL_PERMISSION);
             blackList(new RuntimePermission("setFactory"));
         }
 
         if (!pWithoutExecRestriction) {
-            blackList(new FilePermission("<<ALL FILES>>",
-                    SecurityConstants.FILE_EXECUTE_ACTION));
+            blackList(new FilePermission("<<ALL FILES>>", "execute"));
             blackList(new RuntimePermission("loadLibrary.*"));
         }
 

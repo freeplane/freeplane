@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLPermission;
 import java.security.CodeSource;
 import java.security.Permission;
 import java.security.PermissionCollection;
@@ -13,6 +14,7 @@ import java.security.ProtectionDomain;
 import java.util.concurrent.Callable;
 
 public class SecureRunner {
+	public static final Permission URL_PERMISSION = new URLPermission("http:*");
     private static final Permissions NO_PERMISSIONS = new Permissions();
     private static final boolean DISABLE_CHECKS = Boolean.getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 
@@ -84,8 +86,15 @@ public class SecureRunner {
         }
 
         public boolean implies(Permission permission) {
-            return whiteList.implies(permission) || !blackList.implies(permission);
+        	if(permission instanceof URLPermission)
+        		return isAllowed(URL_PERMISSION);
+        	else
+        		return isAllowed(permission);
         }
+
+		private boolean isAllowed(Permission permission) {
+			return whiteList.implies(permission) || !blackList.implies(permission);
+		}
 
     }
 
