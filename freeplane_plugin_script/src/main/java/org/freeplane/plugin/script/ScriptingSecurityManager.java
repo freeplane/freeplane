@@ -44,7 +44,6 @@ class ScriptingSecurityManager {
         whiteList = new Permissions();
         if (!pWithoutNetworkRestriction) {
             blackList(new SocketPermission("*","connect,accept,listen,resolve"));
-            blackList(SecureRunner.URL_PERMISSION);
             blackList(new RuntimePermission("setFactory"));
         }
 
