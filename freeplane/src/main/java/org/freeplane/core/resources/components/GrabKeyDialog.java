@@ -135,6 +135,7 @@ public class GrabKeyDialog extends JDialog {
 					if (Compat.isWindowsOS()) {
 						return;
 					}
+					break;
 				case KeyEvent.VK_ALT:
 					KeyEventTranslator.modifiers |= InputEvent.ALT_MASK;
 					return;

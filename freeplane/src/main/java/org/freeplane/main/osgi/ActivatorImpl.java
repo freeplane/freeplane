@@ -232,7 +232,7 @@ class ActivatorImpl implements BundleActivator {
 				final Bundle[] bundles = context.getBundles();
 				final HashSet<String> plugins = new HashSet<String>();
 				for(Bundle bundle:bundles){
-					if(bundle.getState() == bundle.ACTIVE)
+					if (bundle.getState() == Bundle.ACTIVE)
 						plugins.add(bundle.getSymbolicName());
 				}
 				FilterController.getController(controller).loadDefaultConditions();

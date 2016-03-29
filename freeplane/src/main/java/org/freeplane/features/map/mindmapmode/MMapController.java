@@ -150,6 +150,7 @@ public class MMapController extends MapController {
 					newNodeMode = MMapController.NEW_CHILD;
 				}
 			}
+			//$FALL-THROUGH$
 			case MMapController.NEW_CHILD: {
 				final boolean parentFolded = isFolded(targetNode);
 				if (parentFolded) {
