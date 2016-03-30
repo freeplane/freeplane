@@ -20,8 +20,6 @@ package org.freeplane.plugin.script;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.AccessControlException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 import org.freeplane.core.util.TextUtils;
 
@@ -43,14 +41,6 @@ class InternationalizedSecurityManager extends SecurityManager {
 	public InternationalizedSecurityManager() {
 	}
 
-	@Override
-	public void checkPackageAccess(String pkg) {
-	}
-
-	@Override
-	public void checkPackageDefinition(String pkg) {
-	}
-	
 	@Override
 	public void checkAccept(final String pHost, final int pPort) {
 		try{
@@ -203,13 +193,9 @@ class InternationalizedSecurityManager extends SecurityManager {
 	}
 
 	private SecurityException getException(final AccessControlException e, final int pPermissionGroup, final int pPermission, final String pFile) {
-		return AccessController.doPrivileged(new PrivilegedAction<SecurityException>() {
-			@Override
-			public SecurityException run() {
-				return new SecurityException(TextUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer(
-					    pPermissionGroup), new Integer(pPermission), pFile), e);
-			}
-		});
+		final String message = TextUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer(
+			    pPermissionGroup), new Integer(pPermission), pFile);
+		return new SecurityException(message, e);
     }
 
 	private SecurityException getException(AccessControlException e, final int pPermissionGroup, final int pPermission) {

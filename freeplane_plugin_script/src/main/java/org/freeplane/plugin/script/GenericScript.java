@@ -256,8 +256,8 @@ public class GenericScript implements IScript {
                 urls.add(pathToUrl(path));
             }
             urls.addAll(jarsInExtDir());
-            classLoader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]),
-                    GenericScript.class.getClassLoader());
+            
+            classLoader = new PrivilegedURLClassLoader(urls.toArray(new URL[urls.size()]), GenericScript.class.getClassLoader());
         }
         return classLoader;
     }
