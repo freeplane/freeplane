@@ -63,4 +63,25 @@ final class PrivilegedURLClassLoader extends URLClassLoader {
 	private Class<?> superLoadClass(final String name) throws ClassNotFoundException {
 		return super.loadClass(name);
 	}
+
+	@Override
+	protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
+		try {
+			return AccessController.doPrivileged(
+			        new PrivilegedExceptionAction<Class<?>>() {
+			            public Class<?> run() throws ClassNotFoundException{
+			        		return superLoadClass(name, resolve);
+			            }
+			        });
+		} catch (PrivilegedActionException e) {
+			throw (ClassNotFoundException)e.getCause();
+		}
+	}
+	
+	
+	private Class<?> superLoadClass(String name, boolean resolve) throws ClassNotFoundException {
+		return super.loadClass(name, resolve);
+	}
+	
+	
 }
