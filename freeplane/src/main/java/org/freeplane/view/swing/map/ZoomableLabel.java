@@ -73,6 +73,8 @@ public class ZoomableLabel extends JLabel {
 		switch (getMap().getPaintingMode()) {
 			case CLOUDS:
 				return;
+			default:
+				break;
 		}
 		super.paint(g);
 	}
