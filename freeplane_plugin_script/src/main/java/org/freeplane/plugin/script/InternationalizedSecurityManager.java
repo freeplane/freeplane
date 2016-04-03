@@ -42,14 +42,6 @@ class InternationalizedSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkPackageAccess(String pkg) {
-	}
-
-	@Override
-	public void checkPackageDefinition(String pkg) {
-	}
-	
-	@Override
 	public void checkAccept(final String pHost, final int pPort) {
 		try{
 			super.checkAccept(pHost, pPort);

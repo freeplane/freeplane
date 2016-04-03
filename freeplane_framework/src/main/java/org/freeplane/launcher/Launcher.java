@@ -48,10 +48,16 @@ public class Launcher {
 	private void setDefines() {
 		setDefine("org.knopflerfish.framework.readonly", "true");
 		setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
-		if(isDefineNotSet("org.freeplane.globalresourcedir"))
-			setDefine("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
-		setDefine("org.freeplane.basedirectory", frameworkDir.getAbsolutePath());
-		
+		setDefine("org.freeplane.basedirectory", getAbsolutePath());
+		setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
+		setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
+		System.setSecurityManager(new SecurityManager());
+	}
+
+	private void setDefineIfNeeded(String name, String value) {
+		if (isDefineNotSet("org.freeplane.globalresourcedir")) {
+			setDefine(name, value);
+		}
 	}
 
 	private boolean isDefineNotSet(String name) {
@@ -70,6 +76,10 @@ public class Launcher {
 				getAbsolutePath("init.xargs")
 		};
 		Main.main(args);
+	}
+
+	private String getAbsolutePath() {
+		return frameworkDir.getAbsolutePath();
 	}
 
 	private String getAbsolutePath(String relativePath) {

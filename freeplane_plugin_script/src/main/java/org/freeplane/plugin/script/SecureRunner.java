@@ -18,33 +18,32 @@ public class SecureRunner {
     private static final Permissions NO_PERMISSIONS = new Permissions();
     private static final boolean DISABLE_CHECKS = Boolean.getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 
-    static public void installRestrictingPolicy(){
-    	RestrictingClassLoader.class.getClassLoader();
-        Policy.setPolicy(new RestrictingPolicy());
-    }
+	static public void installRestrictingPolicy() {
+		RestrictingClassLoader.class.getClassLoader();
+		Policy.setPolicy(new RestrictingPolicy(Policy.getPolicy()));
+	}
 
-    private static class RestrictingPolicy extends Policy {
-        @Override
-        public PermissionCollection getPermissions(CodeSource codesource) {
-            return UNSUPPORTED_EMPTY_COLLECTION;
-        }
+	private static class RestrictingPolicy extends Policy {
+		final private Policy defaultPolicy;
 
-        @Override
-        public PermissionCollection getPermissions(ProtectionDomain domain) {
-            return UNSUPPORTED_EMPTY_COLLECTION;
-        }
+		public RestrictingPolicy(Policy policy) {
+			this.defaultPolicy = policy;
+		}
 
-        @Override
-        public boolean implies(ProtectionDomain domain, Permission permission) {
-        	if(DISABLE_CHECKS)
-        		return true;
-            ClassLoader classLoader = domain.getClassLoader();
-            if (classLoader instanceof RestrictingClassLoader) {
-                return ((RestrictingClassLoader) classLoader).implies(permission);
-            } else {
-                return true;
-            }
-        }
+		@Override
+		public boolean implies(ProtectionDomain domain, Permission permission) {
+			if (DISABLE_CHECKS || defaultPolicy.implies(domain, permission)) {
+				return true;
+			}
+			return false;
+			//			ClassLoader classLoader = domain.getClassLoader();
+			//			if (classLoader instanceof RestrictingClassLoader) {
+			//				return ((RestrictingClassLoader) classLoader).implies(permission);
+			//			}
+			//			else {
+			//				return true;
+			//			}
+		}
     }
 
     public static class Caller {
@@ -53,9 +52,9 @@ public class SecureRunner {
         }
     }
 
-    private static class RestrictingClassLoader extends URLClassLoader {
-        private final Permissions whiteList;
 
+private static class RestrictingClassLoader extends URLClassLoader {
+    private final Permissions whiteList;
         private final Permissions blackList;
 
         private final static URL CLASS_CONTAINING_RESOURCE_URL;

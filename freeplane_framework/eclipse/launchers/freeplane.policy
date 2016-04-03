@@ -1,0 +1,7 @@
+grant codeBase "file:${org.freeplane.basedirectory}/-" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:${eclipse.home}/-" {
+        permission java.security.AllPermission;
+};
