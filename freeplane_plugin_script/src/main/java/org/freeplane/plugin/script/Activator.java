@@ -2,9 +2,6 @@ package org.freeplane.plugin.script;
 
 import java.util.Hashtable;
 
-import jsyntaxpane.DefaultSyntaxKit;
-import jsyntaxpane.syntaxkits.GroovySyntaxKit;
-
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
