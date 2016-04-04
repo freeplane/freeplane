@@ -1,7 +1,15 @@
-grant codeBase "file:${org.freeplane.basedirectory}/-" {
+grant codeBase "file:${org.freeplane.basedirectory}/*" {
         permission java.security.AllPermission;
 };
 
-grant codeBase "file:${eclipse.home}/-" {
+grant codeBase "file:${org.freeplane.basedirectory}/../freeplane_framework/bin/*" {
         permission java.security.AllPermission;
+};
+
+grant codeBase "file:${framework.home}/-" {
+        permission java.security.AllPermission;
+};
+
+grant {
+        permission java.lang.RuntimePermission "getClassLoader";
 };

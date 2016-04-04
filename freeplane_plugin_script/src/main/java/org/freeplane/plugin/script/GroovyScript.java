@@ -34,7 +34,6 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
-import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
 /**

@@ -20,6 +20,7 @@
 package org.freeplane.launcher;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -30,7 +31,17 @@ public class Launcher {
 	private int argCount;
 
 	public Launcher() {
-		frameworkDir = getPathToJar();
+		if (isDefineNotSet("org.freeplane.basedirectory")) {
+			frameworkDir = getPathToJar();
+		}
+		else {
+			try {
+				frameworkDir = new File(System.getProperty("org.freeplane.basedirectory")).getCanonicalFile();
+			}
+			catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
 		argCount = 0;
 	}
 
