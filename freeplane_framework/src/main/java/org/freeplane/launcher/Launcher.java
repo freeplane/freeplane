@@ -66,7 +66,7 @@ public class Launcher {
 	}
 
 	private void setDefineIfNeeded(String name, String value) {
-		if (isDefineNotSet("org.freeplane.globalresourcedir")) {
+		if (isDefineNotSet(name)) {
 			setDefine(name, value);
 		}
 	}
@@ -76,6 +76,7 @@ public class Launcher {
 	}
 
 	private String setDefine(String name, String value) {
+		System.out.println(name + "=" + value);
 		return System.setProperty(name, value);
 	}
 
@@ -100,8 +101,9 @@ public class Launcher {
 	private File getPathToJar() {
 		URL frameworkUrl = Main.class.getProtectionDomain().getCodeSource().getLocation();
 		try {
-			return new File(frameworkUrl.toURI()).getAbsoluteFile().getParentFile();
-		} catch (URISyntaxException e) {
+			return new File(frameworkUrl.toURI()).getCanonicalFile().getParentFile();
+		}
+		catch (URISyntaxException | IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
