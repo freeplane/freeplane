@@ -52,7 +52,9 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 /**
- * Presents the menu bar as a tree. Only allows the selection of leaf nodes.
+ * Presents the menu bar as a tree.
+ * 
+ * Only allows the selection of leaf nodes unless {@link #enableNonLeafNodes()} is invoked.
  *
  * @author vboerchers
  */
@@ -61,6 +63,7 @@ public class SelectMenuItemDialog extends JDialog {
 	// append "/extras/first/scripting/scripts" for scripts
 	private static final String SELECTION_ROOT_KEY = "main_menu";
 	private static final Dimension DIALOG_DIMENSION = new Dimension(350, 350);
+	private boolean enableNonLeafNodes = false;
 	private JButton btnOK;
 	private final JTree tree;
 	private MenuEntry menuItem;
@@ -72,7 +75,7 @@ public class SelectMenuItemDialog extends JDialog {
 				final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
 				    .getLastSelectedPathComponent();
 				// this condition actually has to be true due to the TreeSelectionListener
-				if (selectedNode != null && selectedNode.isLeaf()) {
+				if (selectedNode != null && nodeIsSelectable(selectedNode)) {
 					menuItem = (MenuEntry) selectedNode.getUserObject();
 					dispose();
 				}
@@ -112,8 +115,9 @@ public class SelectMenuItemDialog extends JDialog {
 		}
 	}
 
-	public SelectMenuItemDialog(final NodeModel node) {
+	public SelectMenuItemDialog(final NodeModel node, boolean enableNonLeafNodes) {
 		super((Frame) UITools.getMenuComponent(), TextUtils.getText("select_menu_item_dialog"), true);
+		this.enableNonLeafNodes = enableNonLeafNodes;
 		Controller.getCurrentController().getMapViewManager().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(this, node);
 		setSize(DIALOG_DIMENSION);
@@ -124,6 +128,11 @@ public class SelectMenuItemDialog extends JDialog {
 		getContentPane().add(createButtonBar(), BorderLayout.SOUTH);
 		getRootPane().setDefaultButton(btnOK);
 		setVisible(true);
+	}
+	
+	/** Opens a dialog with only leaf nodes are selectable. */
+	public SelectMenuItemDialog(final NodeModel node) {
+		this(node, false);
 	}
 
 	public MenuEntry getMenuItem() {
@@ -163,7 +172,7 @@ public class SelectMenuItemDialog extends JDialog {
 		jTree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(final TreeSelectionEvent e) {
 				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-				btnOK.setEnabled(node != null && node.isLeaf());
+				btnOK.setEnabled(node != null && nodeIsSelectable(node));
 			}
 		});
 		jTree.addMouseListener(new MouseAdapter() {
@@ -176,5 +185,9 @@ public class SelectMenuItemDialog extends JDialog {
 		});
 
 		return jTree;
+	}
+
+	private boolean nodeIsSelectable(final DefaultMutableTreeNode selectedNode) {
+		return enableNonLeafNodes || selectedNode.isLeaf();
 	}
 }
