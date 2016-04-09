@@ -21,7 +21,6 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -130,12 +129,7 @@ public class GroovyScript implements IScript {
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
-                return scriptingSecurityManager.call(new Callable<Object>() {
-                    @Override
-                    public Object call() throws Exception {
-                        return compiledScript.run();
-                    }
-                });
+				return compiledScript.run();
             } finally {
                 System.setOut(oldOut);
             }
@@ -170,7 +164,7 @@ public class GroovyScript implements IScript {
         } else {
             try {
                 final Binding binding = createBindingForCompilation();
-                final ClassLoader classLoader = GroovyScript.class.getClassLoader();
+				final ClassLoader classLoader = RestrictingClassLoader.createClassLoader();
                 final GroovyShell shell = new GroovyShell(classLoader, binding,
                         createCompilerConfiguration());
                 compileTimeStrategy.scriptCompileStart();

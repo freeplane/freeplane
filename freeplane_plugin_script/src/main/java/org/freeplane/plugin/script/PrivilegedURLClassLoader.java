@@ -18,6 +18,7 @@ final class PrivilegedURLClassLoader extends URLClassLoader {
 	public URL getResource(final String name) {
 		return AccessController.doPrivileged(
 				new PrivilegedAction<URL>() {
+					@Override
 					public URL run(){
 						return superGetResource(name);
 					}
@@ -33,7 +34,8 @@ final class PrivilegedURLClassLoader extends URLClassLoader {
 		try {
 			return AccessController.doPrivileged(
 			        new PrivilegedExceptionAction<Enumeration<URL>>() {
-			            public Enumeration<URL> run() throws IOException{
+			            @Override
+						public Enumeration<URL> run() throws IOException{
 							return superGetResources(name);
 			            }
 			        });
@@ -47,29 +49,12 @@ final class PrivilegedURLClassLoader extends URLClassLoader {
 	}
 
 	@Override
-	public Class<?> loadClass(final String name) throws ClassNotFoundException {
-		try {
-			return AccessController.doPrivileged(
-			        new PrivilegedExceptionAction<Class<?>>() {
-			            public Class<?> run() throws ClassNotFoundException{
-							return superLoadClass(name);
-			            }
-			        });
-		} catch (PrivilegedActionException e) {
-			throw (ClassNotFoundException)e.getCause();
-		}
-	}
-
-	private Class<?> superLoadClass(final String name) throws ClassNotFoundException {
-		return super.loadClass(name);
-	}
-
-	@Override
 	protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
 		try {
 			return AccessController.doPrivileged(
 			        new PrivilegedExceptionAction<Class<?>>() {
-			            public Class<?> run() throws ClassNotFoundException{
+			            @Override
+						public Class<?> run() throws ClassNotFoundException{
 			        		return superLoadClass(name, resolve);
 			            }
 			        });

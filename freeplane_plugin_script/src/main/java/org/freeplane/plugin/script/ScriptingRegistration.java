@@ -175,7 +175,7 @@ class ScriptingRegistration {
 		}
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(100,
 			new ScriptConditionController());
-		SecureRunner.installRestrictingPolicy();
+		RestrictingPolicy.installRestrictingPolicy();
 		System.setSecurityManager(new InternationalizedSecurityManager());
 	}
 

@@ -20,64 +20,57 @@
  */
 package org.freeplane.plugin.script;
 
-import java.io.File;
 import java.io.FilePermission;
 import java.net.SocketPermission;
 import java.security.Permission;
 import java.security.Permissions;
-import java.util.concurrent.Callable;
-
-import org.freeplane.core.resources.ResourceController;
 
 class ScriptingSecurityManager {
 
-    final private Permissions blackList;
-
-    final private Permissions whiteList;
-
-    final private SecureRunner secureRunner;
+    final private Permissions permissions;
 
     public ScriptingSecurityManager(boolean pWithoutFileRestriction,
             boolean pWithoutWriteRestriction,
             boolean pWithoutNetworkRestriction, boolean pWithoutExecRestriction) {
-        blackList = new Permissions();
-        whiteList = new Permissions();
-        if (!pWithoutNetworkRestriction) {
-            blackList(new SocketPermission("*","connect,accept,listen,resolve"));
-            blackList(new RuntimePermission("setFactory"));
+        permissions = new Permissions();
+		if (pWithoutNetworkRestriction) {
+			whiteList(new SocketPermission("*", "connect,accept,listen,resolve"));
+			whiteList(new RuntimePermission("setFactory"));
         }
 
-        if (!pWithoutExecRestriction) {
-            blackList(new FilePermission("<<ALL FILES>>", "execute"));
-            blackList(new RuntimePermission("loadLibrary.*"));
+		if (pWithoutExecRestriction) {
+			whiteList(new FilePermission("<<ALL FILES>>", "execute"));
+			whiteList(new RuntimePermission("loadLibrary.*"));
         }
 
-        if (!pWithoutFileRestriction) {
-            whiteList(new FilePermission(ResourceController.getResourceController()
-                    .getInstallationBaseDir() + File.separatorChar + "*","read"));
-            whiteList(new FilePermission(System.getProperty("java.home") + "*", "read"));
-            blackList(new FilePermission("*", "read"));
-            blackList(new RuntimePermission("readFileDescriptor"));
+		if (pWithoutFileRestriction) {
+			whiteList(new FilePermission("*", "read"));
+			whiteList(new RuntimePermission("readFileDescriptor"));
         }
-        if (!pWithoutWriteRestriction) {
-            blackList(new RuntimePermission("writeFileDescriptor"));
-            blackList(new FilePermission("*", "write,delete"));
+		if (pWithoutWriteRestriction) {
+			whiteList(new RuntimePermission("writeFileDescriptor"));
+			whiteList(new FilePermission("*", "write,delete"));
         }
-        blackList.setReadOnly();
-        whiteList.setReadOnly();
-        secureRunner = new SecureRunner();
-    }
-
-    private void blackList(Permission permission) {
-        blackList.add(permission);
+        permissions.setReadOnly();
     }
 
     private void whiteList(Permission permission) {
-        whiteList.add(permission);
+        permissions.add(permission);
     }
 
-    public Object call(Callable<?> callable) throws Exception {
-        return secureRunner.call(whiteList, blackList, callable);
-    }
+	private static final Permission URL_PERMISSION = new SocketPermission("*", "connect");
 
+	public boolean implies(Permission permission) {
+		if (permission.getClass().getSimpleName().equals("URLPermission")) {
+			return isAllowed(URL_PERMISSION);
+		}
+		else {
+			return isAllowed(permission);
+		}
+	}
+
+	private boolean isAllowed(Permission permission) {
+		final boolean isAllowed = permissions.implies(permission);
+		return isAllowed;
+	}
 }

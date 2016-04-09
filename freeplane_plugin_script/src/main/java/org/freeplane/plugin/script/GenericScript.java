@@ -25,10 +25,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.script.Bindings;
 import javax.script.Compilable;
@@ -98,8 +96,6 @@ public class GenericScript implements IScript {
     private final static Object scriptEngineManagerMutex = new Object();
 
     private static ScriptEngineManager scriptEngineManager;
-
-    private static URLClassLoader classLoader;
 
     private final ScriptEngine engine;
 
@@ -172,27 +168,16 @@ public class GenericScript implements IScript {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
             }
-            final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final PrintStream oldOut = System.out;
             try {
                 final SimpleScriptContext context = createScriptContext(node);
                 if (compilationEnabled && engine instanceof Compilable) {
                     compileAndCache((Compilable) engine);
                     System.setOut(outStream);
-                    return scriptingSecurityManager.call(new Callable<Object>() {
-                        @Override
-                        public Object call() throws Exception {
-                            return compiledScript.eval(context);
-                        }
-                    });
+					return compiledScript.eval(context);
                 } else {
                     System.setOut(outStream);
-                    return scriptingSecurityManager.call(new Callable<Object>() {
-                        @Override
-                        public Object call() throws Exception {
-                            return engine.eval(scriptSource.getScript(), context);
-                        }
-                    });
+					return engine.eval(scriptSource.getScript(), context);
                 }
             } finally {
                 System.setOut(oldOut);
@@ -242,24 +227,11 @@ public class GenericScript implements IScript {
     static ScriptEngineManager getScriptEngineManager() {
         synchronized (scriptEngineManagerMutex) {
             if (scriptEngineManager == null) {
-                final ClassLoader classLoader = createClassLoader();
+                final ClassLoader classLoader = RestrictingClassLoader.createClassLoader();
                 scriptEngineManager = new ScriptEngineManager(classLoader);
             }
             return scriptEngineManager;
         }
-    }
-
-    private static ClassLoader createClassLoader() {
-        if (classLoader == null) {
-            final List<URL> urls = new ArrayList<URL>();
-            for (String path : ScriptResources.getClasspath()) {
-                urls.add(pathToUrl(path));
-            }
-            urls.addAll(jarsInExtDir());
-            
-            classLoader = new PrivilegedURLClassLoader(urls.toArray(new URL[urls.size()]), GenericScript.class.getClassLoader());
-        }
-        return classLoader;
     }
 
     /**
@@ -267,7 +239,7 @@ public class GenericScript implements IScript {
      * to the bundle classloader. So we are adding ext dir jars which also
      * includes JavaFX jar.
      */
-    private static List<URL> jarsInExtDir() {
+    static List<URL> jarsInExtDir() {
         try {
             final List<URL> urls = new ArrayList<URL>();
             String extDirsProperty = System.getProperty("java.ext.dirs");
@@ -286,7 +258,7 @@ public class GenericScript implements IScript {
         }
     }
 
-    private static URL pathToUrl(String path) {
+    static URL pathToUrl(String path) {
         try {
             return new File(path).toURI().toURL();
         } catch (Exception e) {
