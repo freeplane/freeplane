@@ -10,6 +10,10 @@ grant codeBase "file:${framework.home}/-" {
         permission java.security.AllPermission;
 };
 
+grant codeBase "file:${user.home}/.p2/-" {
+        permission java.security.AllPermission;
+};
+
 grant {
         permission java.lang.RuntimePermission "getClassLoader";
 };
