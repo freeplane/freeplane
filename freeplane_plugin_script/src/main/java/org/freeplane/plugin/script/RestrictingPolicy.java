@@ -20,6 +20,7 @@
 package org.freeplane.plugin.script;
 
 import java.security.Permission;
+import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
 
@@ -28,17 +29,37 @@ import java.security.ProtectionDomain;
  * Apr 9, 2016
  */
 class RestrictingPolicy extends Policy {
+	static class RestrictingClassLoader extends ClassLoader {
+		private ScriptingSecurityManager securityManager = null;
+
+		public RestrictingClassLoader(ClassLoader parent) {
+			super(parent);
+		}
+
+		public void setSecurityManager(ScriptingSecurityManager securityManager) {
+			this.securityManager = securityManager;
+		}
+
+		public boolean implies(Permission permission) {
+			return securityManager != null && securityManager.implies(permission);
+		}
+	};
+
 	private static final boolean DISABLE_CHECKS = Boolean
 	    .getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 	final private Policy defaultPolicy;
+	private Permissions permissions;
 
 	public RestrictingPolicy(Policy policy) {
 		this.defaultPolicy = policy;
+		permissions = new Permissions();
+		permissions.add(new RuntimePermission("accessDeclaredMembers"));
+		permissions.add(new RuntimePermission("accessClassInPackage.*"));
 	}
 
 	@Override
 	public boolean implies(ProtectionDomain domain, Permission permission) {
-		if (DISABLE_CHECKS || defaultPolicy.implies(domain, permission)) {
+		if (DISABLE_CHECKS || defaultPolicy.implies(domain, permission) || permissions.implies(permission)) {
 			return true;
 		}
 		for (ClassLoader classLoader = domain.getClassLoader(); classLoader != null; //

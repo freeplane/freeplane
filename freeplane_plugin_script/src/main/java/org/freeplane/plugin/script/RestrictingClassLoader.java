@@ -18,36 +18,3 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.plugin.script;
-
-import java.net.URL;
-import java.security.Permission;
-import java.util.ArrayList;
-import java.util.List;
-
-class RestrictingClassLoader extends ClassLoader {
-	private ScriptingSecurityManager securityManager;
-
-	public void setSecurityManager(ScriptingSecurityManager securityManager) {
-		this.securityManager = securityManager;
-	}
-
-	public RestrictingClassLoader(ClassLoader parent) {
-		super(parent);
-	}
-
-	public boolean implies(Permission permission) {
-		return securityManager != null && securityManager.implies(permission);
-	}
-
-	static ClassLoader createClassLoader() {
-	        final List<URL> urls = new ArrayList<URL>();
-	        for (String path : ScriptResources.getClasspath()) {
-	            urls.add(GenericScript.pathToUrl(path));
-	        }
-	        urls.addAll(GenericScript.jarsInExtDir());
-	        
-		ClassLoader classLoader = new PrivilegedURLClassLoader(urls.toArray(new URL[urls.size()]),
-		    GenericScript.class.getClassLoader());
-		return new RestrictingClassLoader(classLoader);
-	}
-}

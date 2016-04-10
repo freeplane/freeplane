@@ -241,7 +241,7 @@ class ScriptingConfiguration {
     private String createScriptRegExp() {
         final ArrayList<String> extensions = new ArrayList<String>();
 //        extensions.add("clj");
-        for (ScriptEngineFactory scriptEngineFactory : GenericScript.getScriptEngineManager().getEngineFactories()) {
+		for (ScriptEngineFactory scriptEngineFactory : GenericScript.createScriptEngineFactories()) {
             extensions.addAll(scriptEngineFactory.getExtensions());
         }
         LogUtils.info("looking for scripts with the following endings: " + extensions);

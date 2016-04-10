@@ -55,6 +55,8 @@ public class GroovyScript implements IScript {
 
     private CompileTimeStrategy compileTimeStrategy;
 
+	private ScriptClassLoader scriptClassLoader;
+
     public GroovyScript(String script) {
         this((Object) script);
     }
@@ -122,7 +124,6 @@ public class GroovyScript implements IScript {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
             }
-            final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
             final PrintStream oldOut = System.out;
             try {
                 compileAndCache();
@@ -154,7 +155,9 @@ public class GroovyScript implements IScript {
     }
 
     private Script compileAndCache() throws Throwable {
+		final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
         if (compileTimeStrategy.canUseOldCompiledScript()) {
+			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
         }
         removeOldScript();
@@ -164,8 +167,9 @@ public class GroovyScript implements IScript {
         } else {
             try {
                 final Binding binding = createBindingForCompilation();
-				final ClassLoader classLoader = RestrictingClassLoader.createClassLoader();
-                final GroovyShell shell = new GroovyShell(classLoader, binding,
+				scriptClassLoader = ScriptClassLoader.createClassLoader();
+				scriptClassLoader.setSecurityManager(scriptingSecurityManager);
+				final GroovyShell shell = new GroovyShell(scriptClassLoader, binding,
                         createCompilerConfiguration());
                 compileTimeStrategy.scriptCompileStart();
                 if (script instanceof String) {

@@ -7,11 +7,18 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
-final class PrivilegedURLClassLoader extends URLClassLoader {
-	PrivilegedURLClassLoader(URL[] urls, ClassLoader parent) {
+import org.freeplane.plugin.script.RestrictingPolicy.RestrictingClassLoader;
+
+final class ScriptClassLoader extends URLClassLoader {
+	final private RestrictingClassLoader parent;
+
+	ScriptClassLoader(URL[] urls, RestrictingClassLoader parent) {
 		super(urls, parent);
+		this.parent = parent;
 	}
 
 	@Override
@@ -66,6 +73,23 @@ final class PrivilegedURLClassLoader extends URLClassLoader {
 	
 	private Class<?> superLoadClass(String name, boolean resolve) throws ClassNotFoundException {
 		return super.loadClass(name, resolve);
+	}
+
+	public void setSecurityManager(ScriptingSecurityManager securityManager) {
+		parent.setSecurityManager(securityManager);
+	}
+
+	public static ScriptClassLoader createClassLoader() {
+		final List<URL> urls = new ArrayList<URL>();
+		for (String path : ScriptResources.getClasspath()) {
+			urls.add(GenericScript.pathToUrl(path));
+		}
+		urls.addAll(GenericScript.jarsInExtDir());
+		RestrictingClassLoader restrictingClassLoader = new RestrictingClassLoader(
+		    GenericScript.class.getClassLoader());
+		ScriptClassLoader classLoader = new ScriptClassLoader(urls.toArray(new URL[urls.size()]),
+		    restrictingClassLoader);
+		return classLoader;
 	}
 	
 	

@@ -24,6 +24,7 @@ import java.io.FilePermission;
 import java.net.SocketPermission;
 import java.security.Permission;
 import java.security.Permissions;
+import java.util.PropertyPermission;
 
 class ScriptingSecurityManager {
 
@@ -34,31 +35,28 @@ class ScriptingSecurityManager {
             boolean pWithoutNetworkRestriction, boolean pWithoutExecRestriction) {
         permissions = new Permissions();
 		if (pWithoutNetworkRestriction) {
-			whiteList(new SocketPermission("*", "connect,accept,listen,resolve"));
-			whiteList(new RuntimePermission("setFactory"));
+			permissions.add(new SocketPermission("*", "connect,accept,listen,resolve"));
+			permissions.add(new RuntimePermission("setFactory"));
         }
 
 		if (pWithoutExecRestriction) {
-			whiteList(new FilePermission("<<ALL FILES>>", "execute"));
-			whiteList(new RuntimePermission("loadLibrary.*"));
+			permissions.add(new FilePermission("<<ALL FILES>>", "execute"));
+			permissions.add(new RuntimePermission("loadLibrary.*"));
         }
 
 		if (pWithoutFileRestriction) {
-			whiteList(new FilePermission("*", "read"));
-			whiteList(new RuntimePermission("readFileDescriptor"));
+			permissions.add(new FilePermission("<<ALL FILES>>", "read"));
+			permissions.add(new RuntimePermission("readFileDescriptor"));
+			permissions.add(new PropertyPermission("user.dir", "read"));
         }
 		if (pWithoutWriteRestriction) {
-			whiteList(new RuntimePermission("writeFileDescriptor"));
-			whiteList(new FilePermission("*", "write,delete"));
+			permissions.add(new RuntimePermission("writeFileDescriptor"));
+			permissions.add(new FilePermission("<<ALL FILES>>", "write,delete"));
         }
         permissions.setReadOnly();
     }
 
-    private void whiteList(Permission permission) {
-        permissions.add(permission);
-    }
-
-	private static final Permission URL_PERMISSION = new SocketPermission("*", "connect");
+    private static final Permission URL_PERMISSION = new SocketPermission("*", "connect");
 
 	public boolean implies(Permission permission) {
 		if (permission.getClass().getSimpleName().equals("URLPermission")) {
