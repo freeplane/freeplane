@@ -2,6 +2,7 @@
 1.5.8
 ===============================
 Init scripts
+Rework scripting permissions
 
 ===============================
 1.5.7
