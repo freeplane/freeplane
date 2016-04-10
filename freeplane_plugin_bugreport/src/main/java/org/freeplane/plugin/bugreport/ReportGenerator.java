@@ -49,7 +49,13 @@ public class ReportGenerator extends StreamHandler {
 		}
 
 		public void run() {
-			runSubmit();
+			AccessController.doPrivileged(new PrivilegedAction<Void>() {
+			@Override
+				public Void run() {
+					runSubmit();
+					return null;
+				}
+			});
 		}
 	}
 
