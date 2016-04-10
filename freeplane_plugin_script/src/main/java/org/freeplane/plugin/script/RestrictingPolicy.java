@@ -23,6 +23,7 @@ import java.security.Permission;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
+import java.util.PropertyPermission;
 
 /**
  * @author Dimitry Polivaev
@@ -55,6 +56,7 @@ class RestrictingPolicy extends Policy {
 		permissions = new Permissions();
 		permissions.add(new RuntimePermission("accessDeclaredMembers"));
 		permissions.add(new RuntimePermission("accessClassInPackage.*"));
+		permissions.add(new PropertyPermission("*", "read"));
 	}
 
 	@Override
