@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.main.application.ApplicationLifecycleListener;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -60,6 +62,7 @@ public class Controller extends AController implements FreeplaneActions{
 	private final List<IValidator> optionValidators = new ArrayList<IValidator>();
 	private final OptionPanelController optionPanelController;
 	private IMapViewManager mapViewManager;
+	private List<ApplicationLifecycleListener> applicationLifecycleListeners = new ArrayList<ApplicationLifecycleListener>(0);
 
 	public Controller(ResourceController resourceController) {
 		super();
@@ -276,5 +279,14 @@ public class Controller extends AController implements FreeplaneActions{
 	
 	public OptionPanelController getOptionPanelController() {
 		return optionPanelController;
+	}
+
+	/** returns an unmodifiableList. */
+	public List<ApplicationLifecycleListener> getApplicationLifecycleListeners() {
+		return Collections.unmodifiableList(applicationLifecycleListeners);
+	}
+
+	public void addApplicationLifecycleListener(ApplicationLifecycleListener applicationLifecycleListener) {
+		this.applicationLifecycleListeners.add(applicationLifecycleListener);
 	}
 }

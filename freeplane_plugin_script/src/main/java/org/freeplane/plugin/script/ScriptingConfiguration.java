@@ -121,6 +121,7 @@ class ScriptingConfiguration {
 	private static final String JAR_REGEX = ".+\\.jar$";
 	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();
+	private List<IScript> initScripts;
     private static Map<String, Object> staticProperties = createStaticProperties();
 
 	ScriptingConfiguration() {
@@ -153,7 +154,20 @@ class ScriptingConfiguration {
 		for (File dir : getScriptDirs()) {
             addNonAddOnScripts(dir, addOnScriptMap, scriptFilenameFilter);
 		}
+		this.initScripts = findInitScripts(scriptFilenameFilter);
     }
+
+	private List<IScript> findInitScripts(final FilenameFilter scriptFilenameFilter) {
+		final List<IScript> initScripts = new ArrayList<IScript>(0);
+		if (ScriptResources.getInitScriptsDir().isDirectory()) {
+			ScriptingPermissions standardPermissions = null;
+			File[] list = ScriptResources.getInitScriptsDir().listFiles(scriptFilenameFilter);
+			for (File file : list) {
+				initScripts.add(ScriptingEngine.createScriptForFile(file, standardPermissions));
+			}
+		}
+		return initScripts;
+	}
 
 	private Map<File, Script> createAddOnScriptMap() {
 		Map<File, Script> result = new LinkedHashMap<File, Script>();
@@ -449,5 +463,9 @@ class ScriptingConfiguration {
 
 	public static String getScriptsLocation(String parentKey) {
 		return  parentKey + "/scripts";
+	}
+
+	public List<IScript> getInitScripts() {
+		return initScripts;
 	}
 }

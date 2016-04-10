@@ -19,11 +19,13 @@ public class ScriptResources {
     static final String[] SCRIPT_COMPILATION_DISABLED_EXTENSIONS = ResourceController.getResourceController()
         .getProperty(RESOURCES_SCRIPT_COMPILATION_DISABLED_EXTENSIONS, "").split("\\W+");
     private static final String USER_SCRIPTS_DIR = "scripts";
+    private static final String INIT_SCRIPTS_DIR = "scripts/init";
     private static final String USER_LIB_DIR = "lib";
     private static final String BUILTIN_SCRIPTS_DIR = "scripts";
     private static List<String> classpath;
     private static final File builtinScriptsDir = buildBuiltinScriptsDir();
     private static final File userScriptsDir = buildUserScriptsDir(ScriptResources.USER_SCRIPTS_DIR);
+    private static final File initScriptsDir = buildUserScriptsDir(ScriptResources.INIT_SCRIPTS_DIR);
     private static final File userLibDir = buildUserScriptsDir(ScriptResources.USER_LIB_DIR);
 
     /** @deprecated use {@link #getUserScriptDir()} instead. */
@@ -35,6 +37,10 @@ public class ScriptResources {
         return userScriptsDir;
     }
     
+    public static File getInitScriptsDir() {
+        return initScriptsDir;
+    }
+
     public static File getUserLibDir() {
         return userLibDir;
     }

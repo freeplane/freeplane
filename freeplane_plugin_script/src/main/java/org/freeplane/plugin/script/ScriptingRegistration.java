@@ -28,6 +28,7 @@ import java.io.FilenameFilter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.ComboBoxEditor;
@@ -49,6 +50,7 @@ import org.freeplane.features.script.IScriptEditorStarter;
 import org.freeplane.features.script.IScriptStarter;
 import org.freeplane.main.addons.AddOnInstaller;
 import org.freeplane.main.addons.AddOnsController;
+import org.freeplane.main.application.ApplicationLifecycleListener;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -171,6 +173,7 @@ class ScriptingRegistration {
 			registerGuiStuff(modeController);
 			ScriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 			createUserScriptsDirectory();
+			createInitScriptsDirectory();
 			createUserLibDirectory();
 		}
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(100,
@@ -193,7 +196,9 @@ class ScriptingRegistration {
         		dialog.install(url);
         	}
         });
-        updateMenus(modeController, new ScriptingConfiguration());
+        ScriptingConfiguration configuration = new ScriptingConfiguration();
+		updateMenus(modeController, configuration);
+		registerInitScripts(configuration);
     }
 
     private void addPropertiesToOptionPanel() {
@@ -258,10 +263,31 @@ class ScriptingRegistration {
 		}
 	}
 
+	private void registerInitScripts(ScriptingConfiguration configuration) {
+		final List<IScript> initScripts = configuration.getInitScripts();
+		if (!initScripts.isEmpty())
+		Controller.getCurrentController().addApplicationLifecycleListener(new ApplicationLifecycleListener() {
+			@Override
+			public void onStartupFinished() {
+				for (IScript script : initScripts) {
+					LogUtils.info("running init script " + script.getScript());
+					script.execute(null);
+				}
+			}
+		});
+	}
+
 	private void createUserScriptsDirectory() {
-		final File scriptDir = ScriptResources.getUserScriptsDir();
+		createDirIfNotExists(ScriptResources.getUserScriptsDir(), "user scripts");
+	}
+	
+	private void createInitScriptsDirectory() {
+		createDirIfNotExists(ScriptResources.getInitScriptsDir(), "init scripts");
+	}
+
+	private void createDirIfNotExists(final File scriptDir, String what) {
 		if (!scriptDir.exists()) {
-			LogUtils.info("creating user scripts directory " + scriptDir);
+			LogUtils.info("creating " + what + " directory " + scriptDir);
 			scriptDir.mkdirs();
 		}
 	}

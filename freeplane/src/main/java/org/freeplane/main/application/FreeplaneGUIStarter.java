@@ -329,6 +329,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                fireStartupFinished();
                 MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
             }
 
@@ -339,6 +340,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				}
             }
 		});
+	}
+
+	protected void fireStartupFinished() {
+		for (ApplicationLifecycleListener listener : Controller.getCurrentController().getApplicationLifecycleListeners()) {
+			listener.onStartupFinished();
+		}
 	}
 
 	private void loadMaps( final String[] args) {
