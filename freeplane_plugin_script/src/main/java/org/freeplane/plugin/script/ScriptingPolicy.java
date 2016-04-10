@@ -29,29 +29,13 @@ import java.util.PropertyPermission;
  * @author Dimitry Polivaev
  * Apr 9, 2016
  */
-class RestrictingPolicy extends Policy {
-	static class RestrictingClassLoader extends ClassLoader {
-		private ScriptingSecurityManager securityManager = null;
-
-		public RestrictingClassLoader(ClassLoader parent) {
-			super(parent);
-		}
-
-		public void setSecurityManager(ScriptingSecurityManager securityManager) {
-			this.securityManager = securityManager;
-		}
-
-		public boolean implies(Permission permission) {
-			return securityManager != null && securityManager.implies(permission);
-		}
-	};
-
+class ScriptingPolicy extends Policy {
 	private static final boolean DISABLE_CHECKS = Boolean
 	    .getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 	final private Policy defaultPolicy;
 	private Permissions permissions;
 
-	public RestrictingPolicy(Policy policy) {
+	public ScriptingPolicy(Policy policy) {
 		this.defaultPolicy = policy;
 		permissions = new Permissions();
 		permissions.add(new RuntimePermission("accessDeclaredMembers"));
@@ -66,15 +50,15 @@ class RestrictingPolicy extends Policy {
 		}
 		for (ClassLoader classLoader = domain.getClassLoader(); classLoader != null; //
 		classLoader = classLoader.getParent()) {
-			if (classLoader instanceof RestrictingClassLoader) {
-				return ((RestrictingClassLoader) classLoader).implies(permission);
+			if (classLoader instanceof ScriptClassLoader) {
+				return ((ScriptClassLoader) classLoader).implies(permission);
 			}
 		}
 		return false;
 	}
 
 	static public void installRestrictingPolicy() {
-		RestrictingClassLoader.class.getClassLoader();
-		Policy.setPolicy(new RestrictingPolicy(Policy.getPolicy()));
+		ScriptClassLoader.class.getClassLoader();
+		Policy.setPolicy(new ScriptingPolicy(Policy.getPolicy()));
 	}
 }

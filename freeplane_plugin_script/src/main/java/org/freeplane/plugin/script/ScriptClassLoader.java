@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
+import java.security.Permission;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -11,14 +12,22 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.freeplane.plugin.script.RestrictingPolicy.RestrictingClassLoader;
-
 final class ScriptClassLoader extends URLClassLoader {
-	final private RestrictingClassLoader parent;
+	private ScriptingSecurityManager securityManager = null;
 
-	ScriptClassLoader(URL[] urls, RestrictingClassLoader parent) {
+	public static ScriptClassLoader createClassLoader() {
+		final List<URL> urls = new ArrayList<URL>();
+		for (String path : ScriptResources.getClasspath()) {
+			urls.add(GenericScript.pathToUrl(path));
+		}
+		urls.addAll(GenericScript.jarsInExtDir());
+		ScriptClassLoader classLoader = new ScriptClassLoader(urls.toArray(new URL[urls.size()]),
+				GenericScript.class.getClassLoader());
+		return classLoader;
+	}
+	
+	private ScriptClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
-		this.parent = parent;
 	}
 
 	@Override
@@ -74,23 +83,13 @@ final class ScriptClassLoader extends URLClassLoader {
 	private Class<?> superLoadClass(String name, boolean resolve) throws ClassNotFoundException {
 		return super.loadClass(name, resolve);
 	}
-
+	
 	public void setSecurityManager(ScriptingSecurityManager securityManager) {
-		parent.setSecurityManager(securityManager);
+		this.securityManager = securityManager;
 	}
 
-	public static ScriptClassLoader createClassLoader() {
-		final List<URL> urls = new ArrayList<URL>();
-		for (String path : ScriptResources.getClasspath()) {
-			urls.add(GenericScript.pathToUrl(path));
-		}
-		urls.addAll(GenericScript.jarsInExtDir());
-		RestrictingClassLoader restrictingClassLoader = new RestrictingClassLoader(
-		    GenericScript.class.getClassLoader());
-		ScriptClassLoader classLoader = new ScriptClassLoader(urls.toArray(new URL[urls.size()]),
-		    restrictingClassLoader);
-		return classLoader;
+	public boolean implies(Permission permission) {
+		return securityManager != null && securityManager.implies(permission);
 	}
-	
-	
+
 }
