@@ -62,6 +62,7 @@ public class Launcher {
 		setDefine("org.freeplane.basedirectory", getAbsolutePath());
 		setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
 		setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
+		setDefine("org.osgi.framework.storage", getAbsolutePath("fwdir"));
 		System.setSecurityManager(new SecurityManager());
 	}
 
