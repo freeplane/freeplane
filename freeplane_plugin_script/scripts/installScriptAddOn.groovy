@@ -453,7 +453,7 @@ AddOnProperties parse() {
 
 boolean confirmInstall(ScriptAddOnProperties addOn, ScriptAddOnProperties installedAddOn) {
 	def screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	def dialogPrefSize = new Dimension((int) screenSize.getWidth() * 3 / 5, (int) screenSize.getHeight() * 1 / 2);
+	def dialogPrefSize = new Dimension((int) (screenSize.getWidth() * 3 / 5), (int) (screenSize.getHeight() * 1 / 2));
 	def warning = textUtils.removeTranslateComment(textUtils.getText('addons.installer.warning'))
 	def addOnDetailsPanel = new AddOnDetailsPanel(addOn, warning)
 	addOnDetailsPanel.maxWidth = 500
