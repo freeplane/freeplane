@@ -12,7 +12,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.security.AccessController;
 import java.security.MessageDigest;
+import java.security.PrivilegedAction;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -226,7 +228,13 @@ public class ReportGenerator extends StreamHandler {
         final ViewController viewController = controller.getViewController();
 		if (out == null) {
 			out = new ByteArrayOutputStream();
-			setOutputStream(out);
+			AccessController.doPrivileged(new PrivilegedAction<Void>() {
+				@Override
+				public Void run() {
+					setOutputStream(out);
+					return null;
+				}
+			});
 		}
 		if (!isLoggable(record)) {
 			return;
@@ -309,11 +317,17 @@ public class ReportGenerator extends StreamHandler {
 				report.put("log", log);
 				report.put("version", version);
 				report.put("revision", revision);
-				final String status = sendReport(report);
-				if (bugReportListener == null || status == null) {
-					return;
+				String status = AccessController.doPrivileged(new PrivilegedAction<String>() {
+					@Override
+					public String run() {
+						final String status = sendReport(report);
+						return status;
+					}
+				});
+				if (bugReportListener != null && status != null) {
+					bugReportListener.onReportSent(report, status);
 				}
-				bugReportListener.onReportSent(report, status);
+
 			}
 		}
 		catch (final UnsupportedEncodingException e) {

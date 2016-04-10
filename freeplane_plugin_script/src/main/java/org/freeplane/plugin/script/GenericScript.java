@@ -148,7 +148,6 @@ public class GenericScript implements IScript {
 		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
-        engine.put(ScriptEngine.FILENAME, scriptFile.toString());
         compilationEnabled = !disableScriptCompilation(scriptFile);
         compileTimeStrategy = new CompileTimeStrategy(scriptFile);
     }
@@ -197,9 +196,6 @@ public class GenericScript implements IScript {
 				scriptClassLoader.setSecurityManager(createScriptingSecurityManager());
 				Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final SimpleScriptContext context = createScriptContext(node);
-				if (scriptSource.isFile())
-					context.setAttribute(ScriptEngine.FILENAME, scriptSource.getPath(),
-					    javax.script.ScriptContext.ENGINE_SCOPE);
                 if (compilationEnabled && engine instanceof Compilable) {
                     compileAndCache((Compilable) engine);
                     System.setOut(outStream);

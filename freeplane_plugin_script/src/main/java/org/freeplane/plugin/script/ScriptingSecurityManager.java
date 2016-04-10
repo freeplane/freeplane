@@ -48,7 +48,9 @@ class ScriptingSecurityManager {
 			permissions.add(new FilePermission("<<ALL FILES>>", "read"));
 			permissions.add(new RuntimePermission("readFileDescriptor"));
 			permissions.add(new PropertyPermission("user.dir", "read"));
+			permissions.add(new PropertyPermission("org.freeplane.userfpdir", "read"));
         }
+		
 		if (pWithoutWriteRestriction) {
 			permissions.add(new RuntimePermission("writeFileDescriptor"));
 			permissions.add(new FilePermission("<<ALL FILES>>", "write,delete"));
