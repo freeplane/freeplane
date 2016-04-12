@@ -19,11 +19,14 @@
  */
 package org.freeplane.plugin.script;
 
+import java.awt.AWTPermission;
 import java.security.Permission;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.util.PropertyPermission;
+
+import org.osgi.framework.AdminPermission;
 
 /**
  * @author Dimitry Polivaev
@@ -40,7 +43,13 @@ class ScriptingPolicy extends Policy {
 		permissions = new Permissions();
 		permissions.add(new RuntimePermission("accessDeclaredMembers"));
 		permissions.add(new RuntimePermission("accessClassInPackage.*"));
+		permissions.add(new RuntimePermission("modifyThreadGroup"));
+		permissions.add(new RuntimePermission("queuePrintJob"));
 		permissions.add(new PropertyPermission("*", "read"));
+		permissions.add(new AdminPermission("*", "resolve,resource"));
+		permissions.add(new AWTPermission("showWindowWithoutWarningBanner"));
+		permissions.add(new AWTPermission("accessClipboard"));
+		permissions.add(new AWTPermission("accessEventQueue"));
 	}
 
 	@Override
