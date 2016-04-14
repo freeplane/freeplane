@@ -6,10 +6,9 @@ dependencies {
             'commons-codec:commons-codec:1.7',
             'com.jgoodies:jgoodies-forms:1.6.0',
             'com.jgoodies:jgoodies-common:1.4.0',
-            'gnu-regexp:gnu-regexp:1.1.4',
-			'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.3'
+            'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.3'
 
-	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.15') {
+	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.16') {
 		exclude module: 'javahelp'		
 	}
     
