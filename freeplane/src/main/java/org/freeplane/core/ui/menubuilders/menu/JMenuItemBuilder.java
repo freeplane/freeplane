@@ -19,7 +19,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
-import org.dpolivaev.mnemonicsetter.MenuMnemonicSetter;
+import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
@@ -94,7 +94,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 		}
 		final JPopupMenu popupMenu = menu.getPopupMenu();
 		popupMenu.addPopupMenuListener(new PopupMenuListenerForEntry(entry, popupListener));
-		popupMenu.addPopupMenuListener(MenuMnemonicSetter.INSTANCE);
+		popupMenu.addPopupMenuListener(MnemonicSetter.INSTANCE);
 
 	}
 
