@@ -73,6 +73,11 @@ public class MapController extends SelectionController implements IExtension{
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
 	
+	private static boolean hasValidSelection() {
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		return selection != null && selection.getSelected() != null;
+	}
+
 	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IMapChangeListener {
 		final private Collection<AFreeplaneAction> actions;
 		final private DelayedRunner runner;
@@ -100,8 +105,9 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		private void setActionsEnabledNow() {
-			for(AFreeplaneAction action : actions)
-				action.setEnabled();
+			if (hasValidSelection())
+				for (AFreeplaneAction action : actions)
+					action.setEnabled();
 		}
 
 		public void mapChanged(MapChangeEvent event) {
@@ -129,11 +135,8 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		private void setActionEnabled() {
-			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			if (selection == null || selection.getSelected() == null) {
-				return;
-			}
-			runner.runLater();
+			if (hasValidSelection())
+				runner.runLater();
 		}
 
 		public void add(AFreeplaneAction action) {
@@ -168,16 +171,14 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		private void setActionsSelected() {
-			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			if (selection == null || selection.getSelected() == null) {
-				return;
-			}
-			runner.runLater();
+			if (hasValidSelection())
+				runner.runLater();
 		}
 
 		private void setActionsSelectedNow() {
-			for(AFreeplaneAction action : actions)
-				action.setSelected();
+			if (hasValidSelection())
+				for (AFreeplaneAction action : actions)
+					action.setSelected();
 		}
 
 		public void onDeselect(final NodeModel node) {
