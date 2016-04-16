@@ -142,7 +142,7 @@ public class GroovyScript implements IScript {
             // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         } catch (final Throwable e) {
-            if (Controller.getCurrentController().getSelection() != null) {
+			if (Controller.getCurrentController().getSelection() != null && node.hasVisibleContent()) {
                 Controller.getCurrentModeController().getMapController().select(node);
             }
             throw new ExecuteScriptException(e.getMessage(), e);
