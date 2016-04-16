@@ -75,6 +75,9 @@ class NewSummaryAction extends AFreeplaneAction {
 			return addNewSummaryNodeStartEditing(firstNode, lastNode);
 		else {
 			final NodeRelativePath nodeRelativePath = new NodeRelativePath(firstNode, lastNode);
+			NodeModel commonAncestor = nodeRelativePath.commonAncestor();
+			if (commonAncestor == firstNode || commonAncestor == lastNode)
+				return false;
 			final NodeModel newFirstNode = nodeRelativePath.beginPathElement(1);
 			final NodeModel newLastNode = nodeRelativePath.endPathElement(1);
 			return addNewSummaryNodeStartEditing(newFirstNode, newLastNode);
