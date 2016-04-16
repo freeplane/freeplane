@@ -33,6 +33,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IExtensionCopier;
@@ -306,19 +307,26 @@ public class MLogicalStyleController extends LogicalStyleController {
 			addStyleMenu(target, rootNode, extension);
 		}
 
-		private void addStyleMenu(final Entry target, final NodeModel rootNode, MapStyleModel extension) {
-			final List<NodeModel> children = rootNode.getChildren();
+		private void addStyleMenu(final Entry target, final NodeModel styleMapNode, MapStyleModel extension) {
+			final List<NodeModel> children = styleMapNode.getChildren();
 			final EntryAccessor entryAccessor = new EntryAccessor();
 			for (final NodeModel child : children) {
-				final IStyle style = (IStyle) child.getUserObject();
 				if (child.hasChildren()) {
 					addStyleMenu(target, child, extension);
 				}
-				else if (null != extension.getStyleNode(style)) {
-					final AssignStyleAction action = new AssignStyleAction(style);
-					modeController.addActionIfNotAlreadySet(action);
-					actions.add(action);
-					entryAccessor.addChildAction(target, action);
+				else {
+					Object userObject = child.getUserObject();
+					if (userObject instanceof IStyle) {
+						final IStyle style = (IStyle) userObject;
+						if (null != extension.getStyleNode(style)) {
+							final AssignStyleAction action = new AssignStyleAction(style);
+							modeController.addActionIfNotAlreadySet(action);
+							actions.add(action);
+							entryAccessor.addChildAction(target, action);
+						}
+					}
+					else
+						LogUtils.severe("unexpected user object on style map: " + userObject);
 				}
 			}
 		}
