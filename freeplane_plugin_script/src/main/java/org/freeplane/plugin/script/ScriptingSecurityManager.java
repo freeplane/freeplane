@@ -24,7 +24,6 @@ import java.io.FilePermission;
 import java.net.SocketPermission;
 import java.security.Permission;
 import java.security.Permissions;
-import java.util.PropertyPermission;
 
 class ScriptingSecurityManager {
 
@@ -52,6 +51,7 @@ class ScriptingSecurityManager {
 		if (pWithoutWriteRestriction) {
 			permissions.add(new RuntimePermission("writeFileDescriptor"));
 			permissions.add(new FilePermission("<<ALL FILES>>", "write,delete"));
+			permissions.add(new RuntimePermission("preferences"));
         }
         permissions.setReadOnly();
     }
