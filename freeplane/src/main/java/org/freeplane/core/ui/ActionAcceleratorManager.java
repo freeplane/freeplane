@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -37,6 +37,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Pair;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.FreeplaneActions;
 import org.freeplane.features.mode.ModeController;
 
 public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAcceleratorMap {
@@ -55,7 +56,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private final Map<Pair<ModeController, KeyStroke>, AFreeplaneAction> accelerators = new HashMap<Pair<ModeController, KeyStroke>, AFreeplaneAction>();
 	private final Map<Pair<ModeController, String>, KeyStroke> actionMap = new HashMap<Pair<ModeController, String>, KeyStroke>();
-	private final List<IAcceleratorChangeListener> changeListeners = new ArrayList<IAcceleratorChangeListener>();
+	private final Map<FreeplaneActions, Collection<IAcceleratorChangeListener>> changeListenersForActionCollection = new HashMap<FreeplaneActions, Collection<IAcceleratorChangeListener>>();
 
 	private final Properties keysetProps;
 	private final Properties defaultProps;
@@ -133,7 +134,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		if(keyStroke != null) {
 			actionMap.put(key(modeController, actionKey), keyStroke);
 		}
-		fireAcceleratorChanged(action, removedAccelerator, keyStroke);
+		fireAcceleratorChanged(modeController, action, removedAccelerator, keyStroke);
 	}
 
 	@Override
@@ -158,9 +159,9 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	@Override
-	public void removeAction(AFreeplaneAction action) {
+	public void removeAction(FreeplaneActions freeplaneActions, AFreeplaneAction action) {
 		final KeyStroke oldKeystroke = removeAccelerator(action);
-		fireAcceleratorChanged(action, oldKeystroke, null);
+		fireAcceleratorChanged(freeplaneActions, action, oldKeystroke, null);
 	}
 
 
@@ -202,17 +203,23 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  		return ks;
 	}
 
- 	public void addAcceleratorChangeListener(IAcceleratorChangeListener changeListener) {
-		synchronized (changeListeners) {
-			if(!changeListeners.contains(changeListener)) {
+	public void addAcceleratorChangeListener(FreeplaneActions freeplaneActions, IAcceleratorChangeListener changeListener) {
+		synchronized (changeListenersForActionCollection) {
+			Collection<IAcceleratorChangeListener> changeListeners = changeListenersForActionCollection.get(freeplaneActions);
+			if (changeListeners == null) {
+				changeListeners = new ArrayList<IAcceleratorChangeListener>();
+				changeListenersForActionCollection.put(freeplaneActions, changeListeners);
+			}
+			if (!changeListeners.contains(changeListener)) {
 				changeListeners.add(changeListener);
 			}
 		}
 	}
 
- 	protected void fireAcceleratorChanged(AFreeplaneAction action, KeyStroke oldStroke, KeyStroke newStroke) {
- 		synchronized (changeListeners) {
-			for (IAcceleratorChangeListener listener : changeListeners) {
+	protected void fireAcceleratorChanged(FreeplaneActions freeplaneActions, AFreeplaneAction action, KeyStroke oldStroke,
+	                                      KeyStroke newStroke) {
+ 		synchronized (changeListenersForActionCollection) {
+			for (IAcceleratorChangeListener listener : changeListenersForActionCollection.get(freeplaneActions)) {
 				listener.acceleratorChanged(action, oldStroke, newStroke);
 			}
 		}

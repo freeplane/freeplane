@@ -425,10 +425,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 			final EntriesForAction entries = new EntriesForAction();
 			final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
-			final BuildProcessFactory buildProcessFactory =  new MenuBuildProcessFactory(this, Controller.getCurrentModeController(), resourceAccessor, acceleratorManager, entries, buildPhaseListeners);
+			final BuildProcessFactory buildProcessFactory = new MenuBuildProcessFactory(this, modeController,
+			    resourceAccessor, acceleratorManager, entries, buildPhaseListeners);
 			final PhaseProcessor buildProcessor = buildProcessFactory.getBuildProcessor();
 			subtreeBuilder = buildProcessFactory.getChildProcessor();
-			acceleratorManager.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
+			acceleratorManager.addAcceleratorChangeListener(modeController, new MenuAcceleratorChangeListener(entries));
 			for (final Phase phase : Phase.values())
 				for (java.util.Map.Entry<String, BuilderDestroyerPair> entry : customBuilders.get(phase.ordinal())
 				    .entrySet())

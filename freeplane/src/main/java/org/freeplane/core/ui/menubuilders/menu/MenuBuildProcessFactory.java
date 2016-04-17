@@ -14,8 +14,8 @@ import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
-import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
 import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
+import org.freeplane.core.ui.menubuilders.generic.BuildProcessFactory;
 import org.freeplane.core.ui.menubuilders.generic.ChildEntryFilter;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
@@ -42,10 +42,10 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 	}
 
 	public MenuBuildProcessFactory(IUserInputListenerFactory userInputListenerFactory,
-	                                                    FreeplaneActions freeplaneActions,
+	                               FreeplaneActions modeController,
 	                                           ResourceAccessor resourceAccessor, IAcceleratorMap acceleratorMap, EntriesForAction entries, List<BuildPhaseListener> buildPhaseListeners) {
 		final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
-		actionBuilder.setDefaultBuilder(new ActionFinder(freeplaneActions));
+		actionBuilder.setDefaultBuilder(new ActionFinder(modeController));
 
 		final RecursiveMenuStructureProcessor acceleratorBuilder = new RecursiveMenuStructureProcessor();
 		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
@@ -62,7 +62,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 
 		
-		acceleratorMap.addAcceleratorChangeListener(new MenuAcceleratorChangeListener(entries));
+		acceleratorMap.addAcceleratorChangeListener(modeController, new MenuAcceleratorChangeListener(entries));
 		
 		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
