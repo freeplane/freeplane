@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.main.application.protocols.freeplaneresource.Handler;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 
 public class ResourcesUrlHandler extends AbstractURLStreamHandlerService{
-
+	final private Handler handler = new Handler();
     public URLConnection openConnection(URL url) throws IOException{
-        return ResourceController.getResourceController().getResource(url.getPath()).openConnection();
+        return handler.openConnection(url);
     }
 }
