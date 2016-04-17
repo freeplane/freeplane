@@ -93,7 +93,7 @@ public class FileOpener implements DropTargetListener {
 					modeController.getMapController().newMap(Compat.fileToUrl(file));
 				}
 			}
-			if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			else if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				final String urls = (String) transferable.getTransferData(DataFlavor.stringFlavor);
 				if(urls.startsWith("file:")){
 					final Matcher matcher = filePattern.matcher(urls);
