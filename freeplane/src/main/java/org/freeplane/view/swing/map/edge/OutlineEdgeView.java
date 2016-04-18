@@ -71,6 +71,6 @@ public class OutlineEdgeView extends EdgeView {
 
 	@Override
 	protected Stroke getStroke() {
-		return new BasicStroke(getTarget().getMainView().getEdgeWidth());
+		return new BasicStroke(getTarget().getMainView().getZoomedEdgeWidth());
 	}
 }
