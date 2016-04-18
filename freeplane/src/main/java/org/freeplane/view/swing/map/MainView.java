@@ -55,6 +55,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
@@ -780,5 +781,14 @@ public abstract class MainView extends ZoomableLabel {
 	
 	public int getSingleChildShift() {
 		return 0;
+	}
+
+	public int getEdgeWidth() {
+	    final NodeView nodeView = getNodeView();
+	    final int edgeWidth = nodeView.getEdgeWidth();
+		final EdgeStyle style = nodeView.getEdgeStyle();
+		final float nodeLineWidth = style.getNodeLineWidth(edgeWidth);
+		final int zoomedLineWidth = nodeView.getMap().getZoomed(nodeLineWidth);
+		return Math.max(zoomedLineWidth, 1);
 	}
 }

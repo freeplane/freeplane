@@ -42,19 +42,6 @@ class ForkMainView extends MainView {
 		return in;
 	}
 
-	public int getEdgeWidth() {
-	    final NodeView nodeView = getNodeView();
-	    final int edgeWidth = nodeView.getEdgeWidth();
-		final EdgeStyle style = nodeView.getEdgeStyle();
-		final int nodeLineWidth = style.getNodeLineWidth(edgeWidth);
-		if(edgeWidth == 0)
-			return nodeLineWidth;
-		else{
-			final int zoomedLineWidth = nodeView.getMap().getZoomed(nodeLineWidth);
-			return zoomedLineWidth;
-		}
-    }
-
 	@Override
 	protected int getMainViewHeightWithFoldingMark() {
 		int height = getHeight();
@@ -115,7 +102,7 @@ class ForkMainView extends MainView {
     	final NodeView nodeView = getNodeView();
         int edgeWidth = nodeView.getEdgeWidth();
         final EdgeStyle style = nodeView.getEdgeStyle();
-        edgeWidth = style.getNodeLineWidth(edgeWidth);
+        edgeWidth = Math.max((int)style.getNodeLineWidth(edgeWidth), 1);
 		if(insets == null)
     		insets = new Insets(0, 2, edgeWidth, 2);
     	else
