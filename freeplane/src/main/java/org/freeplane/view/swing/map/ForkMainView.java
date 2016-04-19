@@ -37,7 +37,7 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getLeftPoint() {
-		int edgeWidth = getZoomedEdgeWidth();
+		int edgeWidth = (int)getZoomedEdgeWidth();
 		final Point in = new Point(0, getHeight() - edgeWidth / 2);
 		return in;
 	}
@@ -55,7 +55,7 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getRightPoint() {
-		int edgeWidth = getZoomedEdgeWidth();
+		int edgeWidth = (int)getZoomedEdgeWidth();
 		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2);
 		return in;
 	}
@@ -75,7 +75,7 @@ class ForkMainView extends MainView {
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth(), getHeight() - getZoomedEdgeWidth());
+		graphics.fillRect(0, 0, getWidth(), getHeight() - (int)getZoomedEdgeWidth());
 	}
 
 	@Override

@@ -33,7 +33,8 @@ class BubbleMainView extends RectangleMainView {
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+		final int zoomedEdgeWidth = (int) getZoomedEdgeWidth() / 2;
+		g.drawRoundRect(zoomedEdgeWidth, zoomedEdgeWidth, getWidth() - zoomedEdgeWidth * 2 - 1, getHeight() - zoomedEdgeWidth * 2 - 1, 10, 10);
 	}
 
 	@Override

@@ -55,7 +55,7 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 		}
 		if(getShapeConfiguration().isUniform()){
 			final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
-			double width = (int) Math.ceil(prefSize.width + getZoom() * getMinimumHorizontalInset());
+			double width = Math.ceil(prefSize.width + getMinimumHorizontalInset());
 			width = limitWidth(width);
 			prefSize.width = (int) width;
 			prefSize.height = (int) (width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
@@ -71,21 +71,20 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 		Polygon polygon = getPaintedShape();
 		g.draw(polygon);
 	}
-
+	
 	protected Polygon getPaintedShape() {
-		final Polygon polygon;
+		double[] xCoords;
+		double[] yCoords;
 		if(getShapeConfiguration().isUniform()){
-			int[] xCoords = new int[]{getWidth() / 2, 0,  0,  getWidth() / 2, getWidth() - 1, getWidth() - 1};
-			int[] yCoords = new int[]{0,   getHeight()/4, 3 * getHeight() /4 , getHeight() - 1,      3 * getHeight() / 4, getHeight() / 4};
-			polygon = new Polygon(xCoords, yCoords, xCoords.length);
+			xCoords = new double[]{1/2f, 0,  0,  1/2f, 1, 1};
+			yCoords = new double[]{0, 1/4f, 3/4f , 1, 3/4f, 1/4f};
 		}
 		else {
-			final int zoomedVerticalInset = (int) (getHeight() * (1 - 1 / getVerticalMarginFactor() ) / 2);
-			int[] xCoords = new int[]{0,                        getWidth()/2, getWidth() -1,            getWidth() - 1,                             getWidth()/2,   0};
-			int[] yCoords = new int[]{zoomedVerticalInset, 0,            zoomedVerticalInset, getHeight() - zoomedVerticalInset - 1, getHeight() - 1,getHeight() - zoomedVerticalInset - 1};
-			polygon = new Polygon(xCoords, yCoords, xCoords.length);
+			final double zoomedVerticalInset = (1 - 1 / getVerticalMarginFactor() ) / 2;
+			xCoords = new double[]{0, 1/2f, 1, 1, 1/2f, 0};
+			yCoords = new double[]{zoomedVerticalInset, 0, zoomedVerticalInset, 1-zoomedVerticalInset, 1, 1-zoomedVerticalInset};
 		}
-		return polygon;
+		return polygonOf(xCoords, yCoords);
 	}
 
 	@Override
