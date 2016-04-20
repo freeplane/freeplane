@@ -47,8 +47,8 @@ class OvalMainView extends VariableInsetsMainView {
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		final int zoomedEdgeWidth = (int) getZoomedEdgeWidth() / 2;
-		g.drawOval(zoomedEdgeWidth, zoomedEdgeWidth, getWidth() - 1 - zoomedEdgeWidth*2, getHeight() - 1 - zoomedEdgeWidth*2);
+		final int zoomedEdgeWidth = (int) getZoomedEdgeWidth();
+		g.drawOval(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, getWidth() - zoomedEdgeWidth, getHeight() - zoomedEdgeWidth);
 	}
 
 	@Override

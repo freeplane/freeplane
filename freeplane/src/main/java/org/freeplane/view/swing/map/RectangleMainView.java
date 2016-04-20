@@ -35,8 +35,8 @@ class RectangleMainView extends ShapedMainView {
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		final int zoomedEdgeWidth = (int) getZoomedEdgeWidth() / 2;
-		g.drawRect(zoomedEdgeWidth, zoomedEdgeWidth, getWidth() - zoomedEdgeWidth * 2 - 1, getHeight() - zoomedEdgeWidth * 2 - 1);
+		final int zoomedEdgeWidth = (int) getZoomedEdgeWidth();
+		g.drawRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, getWidth() - zoomedEdgeWidth, getHeight() - zoomedEdgeWidth);
 	}
 
 	@Override

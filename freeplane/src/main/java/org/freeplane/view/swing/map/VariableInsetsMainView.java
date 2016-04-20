@@ -130,14 +130,14 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 		final int[] y = new int[relation.length];
 		for(int i = 0; i < relation.length; i++) {
 			double relation1 = relation[i];
-			y[i] = relation1 == 1 ? size - 1 : offset + (int)(size * relation1);
+			y[i] = offset + (int)(size * relation1);
 		}
 		return y;
 	}
 
 	protected Polygon polygonOf(double[] xCoords, double[] yCoords) {
-		int edgeWidthOffset = (int) (getZoomedEdgeWidth()/2);
-		final Polygon polygon = new Polygon(toInt(xCoords, edgeWidthOffset, getWidth() - 2 * edgeWidthOffset), toInt(yCoords, edgeWidthOffset, getHeight() - 2 * edgeWidthOffset), xCoords.length);
+		int edgeWidthOffset = (int) getZoomedEdgeWidth();
+		final Polygon polygon = new Polygon(toInt(xCoords, edgeWidthOffset/2, getWidth() - edgeWidthOffset), toInt(yCoords, edgeWidthOffset/2, getHeight() - edgeWidthOffset), xCoords.length);
 		return polygon;
 	}
 }
