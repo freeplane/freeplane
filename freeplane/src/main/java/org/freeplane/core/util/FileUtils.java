@@ -16,6 +16,8 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.freeplane.core.resources.ResourceController;
@@ -161,15 +163,21 @@ public class FileUtils {
 			}
 		}
 	}
+	
+	final private static Map<String, String> cachedResources = new HashMap<>();
 
 	public static String slurpResource(final String fileName) throws IOException {
+		if(cachedResources.containsKey(fileName))
+			return cachedResources.get(fileName);
 		/* read the resource `fileName` into s atring */
 		final URL resource = ResourceController.getResourceController().getResource(fileName);
 		if (resource == null) {
 			LogUtils.severe("Cannot find resource: " + fileName);
 			return "";
 		}
-		return FileUtils.slurpResource(resource);
+		final String slurpedResource = FileUtils.slurpResource(resource);
+		cachedResources.put(fileName, slurpedResource);
+		return slurpedResource;
 	}
 
 	public static String slurpFile(final File file) throws IOException {
