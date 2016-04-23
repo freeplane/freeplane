@@ -4,7 +4,7 @@
 <font SIZE="18"/>
 <hook NAME="MapStyle">
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" >
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" SHAPE_VERTICAL_MARGIN="12.0 pt" SHAPE_HORIZONTAL_MARGIN="6.0 pt" >
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 <stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
@@ -31,7 +31,7 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval" >
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval" SHAPE_VERTICAL_MARGIN="10.0 pt" SHAPE_HORIZONTAL_MARGIN="10.0 pt" >
 <font SIZE="18"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#0033ff">
