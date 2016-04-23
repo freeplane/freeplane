@@ -12,7 +12,7 @@
 ;****************************************************************************
 
 #define MyVersion "1.5.9"
-#define MyStatus ""
+#define MyStatus "rc"
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
