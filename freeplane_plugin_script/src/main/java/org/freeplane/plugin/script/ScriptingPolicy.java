@@ -45,7 +45,7 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new RuntimePermission("accessClassInPackage.*"));
 		permissions.add(new RuntimePermission("modifyThreadGroup"));
 		permissions.add(new RuntimePermission("queuePrintJob"));
-//		permissions.add(new RuntimePermission("setIO"));
+		permissions.add(new RuntimePermission("setIO"));
 		permissions.add(new PropertyPermission("*", "read,write"));
 		permissions.add(new AdminPermission("*", "resolve,resource"));
 		permissions.add(new AWTPermission("showWindowWithoutWarningBanner"));
