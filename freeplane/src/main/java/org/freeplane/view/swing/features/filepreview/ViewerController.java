@@ -41,6 +41,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.mode.PersistentNodeHook.HookAction;
 import org.freeplane.features.ui.INodeViewLifeCycleListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
@@ -387,7 +388,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		modeController.addExtension(this.getClass(), this);
 		factories.add(new BitmapViewerFactory());
 	}
-
+	
+	@Override
+	protected HookAction createHookAction() {
+		return null;
+	}
+	
 	public void setZoom(final ModeController modeController, final MapModel map, final ExternalResource model,
 	                    final float size) {
 		final float oldSize = model.getZoom();
