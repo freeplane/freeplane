@@ -5,7 +5,6 @@
 			<Entry name="PageAction" />
 			<Entry name="PrintPreviewAction" />
 			<Entry accelerator="control P" name="PrintAction" />
-			<Entry name="FilePropertiesAction" />
 		</Entry>
 		<Entry name="edit">
 			<Entry name="SetShortenerStateAction" />
@@ -17,9 +16,9 @@
 		</Entry>
 		<Entry name="view">
 			<Entry name="toolbars">
-				<Entry name="ToggleMenubarAction"/>
+				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
 				<Entry name="ToggleToolbarAction" />
-				<Entry name="ShowFilterToolbarAction" />
+				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
 				<Entry name="ToggleScrollbarsAction" />
 			</Entry>
 			<Entry name="zoom">
@@ -43,7 +42,7 @@
 			</Entry>
 		</Entry>
 		<Entry name="navigate">
-			<Entry name="folding">
+			<Entry name="navigate">
 				<Entry accelerator="SPACE" name="ToggleFoldedAction" />
 				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
 				<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
@@ -52,14 +51,16 @@
 				<Entry accelerator="alt END" name="UnfoldAllAction" />
 				<Entry accelerator="alt HOME" name="FoldAllAction" />
 			</Entry>
-			<Entry name="MoveToRootAction" accelerator="ESCAPE" />
+			<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 			<Entry name="GotoNodeAction" />
-			<Entry name="NextNodeAction.BACK" accelerator="control alt LEFT" />
-			<Entry name="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
-			<Entry name="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
-			<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
-			<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
+			<Entry accelerator="control alt LEFT" name="NextNodeAction.BACK" />
+			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
+			<Entry accelerator="control alt shift LEFT" name="NextNodeAction.BACK_N_FOLD" />
+			<Entry accelerator="control alt shift RIGHT" name="NextNodeAction.FORWARD_N_FOLD" />
+			<Entry name="NextPresentationItemAction" />
+			<Entry name="links">
 			<Entry accelerator="control ENTER" name="FollowLinkAction" />
+			</Entry>
 		</Entry>
 		<Entry name="filter">
 			<Entry name="UndoFilterAction" />
@@ -80,9 +81,7 @@
 			<Entry name="QuickFindAction.FORWARD" />
 		</Entry>
 		<Entry name="extras">
-			<Entry name="encryption">
 				<Entry name="EnterPassword" />
-			</Entry>
 		</Entry>
 	</Entry>
 	<Entry name="help">

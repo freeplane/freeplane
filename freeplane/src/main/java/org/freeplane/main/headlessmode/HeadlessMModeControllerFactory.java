@@ -94,7 +94,7 @@ public class HeadlessMModeControllerFactory {
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
 		SummaryNode.install();
-		AlwaysUnfoldedNode.install(modeController);
+		new AlwaysUnfoldedNode();
 		FreeNode.install();
 		new CreationModificationPlugin();
 		new AutomaticEdgeColorHook();

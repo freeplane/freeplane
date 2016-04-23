@@ -1,4 +1,12 @@
+configurations{
+	mergedViewerDependencies
+	compile.extendsFrom(mergedViewerDependencies)
+}
+
 dependencies {
+	
+	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.4'
+	
     compile project(':JOrtho_0.4_freeplane')
 
     compile 'commons-lang:commons-lang:2.6',
@@ -175,6 +183,8 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
 		  exclude('framework-*.jar')
 		  exclude('freeplane-*.jar')
+		  exclude('mnemonicsetter-*.jar')
+		  
      }
      from ('lib') {
           include("*.jar")
@@ -215,6 +225,13 @@ task viewerJar(type: Jar) {
     from ('./viewer-resources') {
         exclude('**/appletMenu.mm')
     }
+    
+    configurations.mergedViewerDependencies.files.each {
+    	from(zipTree(it.path)) {
+    		exclude('META-INF/MANIFEST.MF')
+    	}
+    }
+	
     includeEmptyDirs = false
 }
 

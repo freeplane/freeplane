@@ -34,12 +34,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "AlwaysUnfoldedNode", onceForMap = false)
 public class AlwaysUnfoldedNode extends PersistentNodeHook implements IExtension{
 	
-	public static void install(MModeController modeController){
-		final AlwaysUnfoldedNode alwaysUnfoldedNode = new AlwaysUnfoldedNode();
-		modeController.addAction(new SetAlwaysUnfoldedNodeFlagsAction(alwaysUnfoldedNode));
-		modeController.addAction(new RemoveAllAlwaysUnfoldedNodeFlagsAction(alwaysUnfoldedNode));
-	};
-	
 	@Override
 	protected IExtension createExtension(NodeModel node, XMLElement element) {
 		return this;

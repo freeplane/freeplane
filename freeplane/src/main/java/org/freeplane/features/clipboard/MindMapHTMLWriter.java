@@ -402,7 +402,9 @@ class MindMapHTMLWriter {
 		fileout.write("    body {");
 		writeDefaultFontStyle();
 		fileout.write("}" + MindMapHTMLWriter.el);
-		fileout.write(FileUtils.slurpResource("/html/folding.css"));
+		fileout.write(FileUtils.slurpResource("/html/freeplane.css"));
+		if(writeFoldingCode)
+			fileout.write(FileUtils.slurpResource("/html/folding.css"));
 		fileout.write(MindMapHTMLWriter.el + MindMapHTMLWriter.el + "</style>" + MindMapHTMLWriter.el
 			      + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
 	}

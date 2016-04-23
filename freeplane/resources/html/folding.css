@@ -1,6 +1,3 @@
-li { list-style: none;  margin: 0; }
-p { margin: 0; }
-
 span.foldopened, span.foldclosed  {
     font-size: xx-small;
     border-width: 1;
@@ -28,12 +25,3 @@ span.foldspecial {
     background: #e0e0e0;
     cursor:pointer;
 }
-span.l { color: red; font-weight: bold; }
-
-a.mapnode:link,
-a.mapnode:visited,
-a.mapnode:active,
-a.mapnode:hover {
-    text-decoration: none; color: black;
-}
-a.mapnode:hover { background: #eeeee0; }

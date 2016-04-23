@@ -6,6 +6,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 public class EntryAccessor {
@@ -37,7 +38,12 @@ public class EntryAccessor {
 			final Icon icon;
 			if (iconResource != null) {
 				final URL url = resourceAccessor.getResource(iconResource);
-				icon = new ImageIcon(url);
+				if(url != null)
+					icon = new ImageIcon(url);
+				else {
+					LogUtils.severe("Can not load icon '" + iconResource + "'");
+					icon = null;
+				}
 			}
 			else
 				icon = null;

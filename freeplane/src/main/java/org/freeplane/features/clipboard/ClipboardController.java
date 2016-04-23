@@ -147,7 +147,8 @@ public class ClipboardController implements IExtension {
 		ModeController modeController = controller.getModeController();
 		modeController.addAction(new CopyAction());
 		modeController.addAction(new CopySingleAction());
-		modeController.addAction(new CopyIDAction());
+		if(!controller.getViewController().isApplet())
+			modeController.addAction(new CopyIDAction());
 		modeController.addAction(new CopyNodeURIAction());
 	}
 

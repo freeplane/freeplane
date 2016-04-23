@@ -50,7 +50,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		@Override
         public void doLayout() {
 	        final Component view = getView();
-	        layoutInProgress = ! view.isValid();
+	        layoutInProgress = view != null && ! view.isValid();
 	        super.doLayout();
 	        layoutInProgress = false;
         }
@@ -59,8 +59,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
 		@Override
 		public void setViewPosition(Point p) {
-			boolean doit = true;
-			if(doit && ! layoutInProgress) {
+			if(! layoutInProgress) {
 				Integer scrollingDelay = (Integer) getClientProperty(ViewController.SLOW_SCROLLING);
 				if(scrollingDelay != null && scrollingDelay != 0){
 					putClientProperty(ViewController.SLOW_SCROLLING, null);
