@@ -19,6 +19,7 @@ import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
+import org.freeplane.core.ui.menubuilders.generic.EntryNavigatorFactory;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -76,8 +77,7 @@ public class AddOnDetailsPanel extends JPanel {
 	}
 
 	private static EntryNavigator createEntryNavigator() {
-		EntryNavigator entryNavigator = new EntryNavigator();
-		entryNavigator.initFromProperties();
+		EntryNavigator entryNavigator = new EntryNavigatorFactory().createNavigator();
 		return entryNavigator;
 	}
 

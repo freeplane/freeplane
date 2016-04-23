@@ -14,6 +14,7 @@ import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
+import org.freeplane.core.ui.menubuilders.generic.EntryNavigatorFactory;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.TextUtils;
@@ -34,8 +35,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 
 	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
 		if (entryNavigator == null) {
-			entryNavigator = new EntryNavigator();
-			entryNavigator.initFromProperties();
+			entryNavigator = new EntryNavigatorFactory().createNavigator();
 			System.out.println(entryNavigator);
 		}
 		return entryNavigator;
