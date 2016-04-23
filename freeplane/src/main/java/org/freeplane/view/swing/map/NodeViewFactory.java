@@ -115,11 +115,13 @@ class NodeViewFactory {
 			}
 		}
 		else while(shapeConfiguration.getShape().equals(NodeStyleModel.Shape.as_parent)){
-			node = node.getParentView();
-			if (node == null)
+			NodeView parent = node.getParentView();
+			if (parent == null)
+				shapeConfiguration = ShapeConfigurationModel.DEFAULT_ROOT_OVAL;
+			else if (parent.getParentView() == null)
 				shapeConfiguration = ShapeConfigurationModel.FORK;
 			else
-				shapeConfiguration = node.getMainView().getShapeConfiguration();
+				shapeConfiguration = parent.getMainView().getShapeConfiguration();
 		}
 		return shapeConfiguration;
 	}

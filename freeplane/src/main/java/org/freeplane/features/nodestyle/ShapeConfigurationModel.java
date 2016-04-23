@@ -56,6 +56,9 @@ public class ShapeConfigurationModel {
 	public static ShapeConfigurationModel NULL_SHAPE = new ShapeConfigurationModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
 	public static final ShapeConfigurationModel AS_PARENT = NULL_SHAPE.withShape(Shape.as_parent);
 	public static final ShapeConfigurationModel FORK = NULL_SHAPE.withShape(Shape.fork);
+	private static final Quantity<LengthUnits> DEFAULT_OVAL_MARGIN = new Quantity<LengthUnits>(10, LengthUnits.pt);
+	public static final ShapeConfigurationModel DEFAULT_ROOT_OVAL = NULL_SHAPE.withShape(Shape.oval)
+			.withHorizontalMargin(DEFAULT_OVAL_MARGIN).withVerticalMargin(DEFAULT_OVAL_MARGIN);
 	public NodeStyleModel.Shape getShape() {
 		return shape;
 	}
