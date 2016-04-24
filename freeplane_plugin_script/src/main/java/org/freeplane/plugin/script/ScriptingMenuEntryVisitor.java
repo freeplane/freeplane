@@ -36,7 +36,6 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
 		if (entryNavigator == null) {
 			entryNavigator = new EntryNavigatorFactory().createNavigator();
-			System.out.println(entryNavigator);
 		}
 		return entryNavigator;
     }
