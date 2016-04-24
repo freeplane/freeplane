@@ -28,10 +28,6 @@ public class ScriptAddOnProperties extends AddOnProperties {
 		public String toString() {
 			return name + "(" + executionMode + "/" + menuTitleKey + "/" + menuLocation + "" + ")";
 		}
-
-		public String getTranslatedMenuTitle() {
-			return getAddOnTranslation(menuTitleKey);
-		}
 	}
 
 	private List<Script> scripts;
