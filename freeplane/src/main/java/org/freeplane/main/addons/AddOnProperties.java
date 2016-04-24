@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.CdataContentXmlWriter;
@@ -170,7 +171,15 @@ public class AddOnProperties {
 	}
 
 	public String getTranslatedName() {
-		return TextUtils.getRawText(getNameKey());
+		return getAddOnTranslation(getNameKey());
+	}
+
+	/** a version of getText() that neither leads to "missing key" errors nor does it append an
+	 * ugly "[translate me]" since add-ons will likely not be as good translated as the official
+	 * Freeplane code base. */
+	public static String getAddOnTranslation(String key) {
+		String translation = TextUtils.getText(key, null);
+		return (translation == null) ? key : translation.replace(ResourceBundles.POSTFIX_TRANSLATE_ME, "");
 	}
 	
 	public String getName() {

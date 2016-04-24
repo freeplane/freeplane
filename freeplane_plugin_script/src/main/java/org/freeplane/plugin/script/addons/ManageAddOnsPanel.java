@@ -26,7 +26,6 @@ import javax.swing.table.TableColumnModel;
 
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -252,7 +251,7 @@ public class ManageAddOnsPanel extends JPanel {
 				}
 				else {
 					int result = JOptionPane.showConfirmDialog(ManageAddOnsPanel.this,
-					    getText("really.deinstall", TextUtils.getText(addOn.getNameKey())), getText("deinstall"),
+					    getText("really.deinstall", addOn.getTranslatedName()), getText("deinstall"),
 					    JOptionPane.OK_CANCEL_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
 					    deinstall(tableModel, addOn);
