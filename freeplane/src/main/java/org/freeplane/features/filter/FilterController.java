@@ -252,7 +252,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 		final FindAction find = new FindAction();
 		controller.addAction(find);
-//		controller.addAction(find.getFindNextAction());
+		controller.addAction(find.getFindNextAction());
+		controller.addAction(find.getFindPreviousAction());
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 	}

@@ -10,9 +10,9 @@
 			<Entry name="SetShortenerStateAction" />
 			<Entry accelerator="control C" name="CopyAction" />
 			<Entry accelerator="control shift C" name="CopySingleAction" />
-			<Entry accelerator="control F" name="FindAction" />
-			<Entry accelerator="control G" name="QuickFindAction.FORWARD" />
-			<Entry name="QuickFindAction.BACK" />
+			<Entry accelerator="control G" name="FindAction" />
+			<Entry name="FindNextAction" accelerator="control shift G" />
+			<Entry name="FindPreviousAction" />
 		</Entry>
 		<Entry name="view">
 			<Entry name="toolbars">
@@ -121,8 +121,8 @@
 		</Entry>
 		<Entry name="find">
 			<Entry name="FindAction" />
-			<Entry name="QuickFindAction.FORWARD" />
-			<Entry name="QuickFindAction.BACK" />
+			<Entry name="FindNextAction" />
+			<Entry name="FindPreviousAction" />
 		</Entry>
 		<Entry name="EnterPassword" />
 	</Entry>

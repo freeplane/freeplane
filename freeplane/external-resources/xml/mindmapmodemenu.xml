@@ -52,8 +52,8 @@
 		</Entry>
 		<Entry name="find">
 			<Entry name="FindAction" />
-			<Entry name="QuickFindAction.FORWARD" />
-			<Entry name="QuickFindAction.BACK" />
+			<Entry name="FindNextAction" />
+			<Entry name="FindPreviousAction" />
 			<Entry name="NodeListAction" />
 		</Entry>
 		<Entry name="EnterPassword" />
@@ -224,8 +224,8 @@
 			<Entry builder="separator" />
 			<Entry name="find">
 				<Entry name="FindAction" accelerator="control G" />
-				<Entry name="QuickFindAction.FORWARD" accelerator="control shift G" />
-				<Entry name="QuickFindAction.BACK" />
+				<Entry name="FindNextAction"  accelerator="control shift G" />
+				<Entry name="FindPreviousAction" />
 				<Entry name="NodeListAction" accelerator="control shift F" />
 				<Entry name="AllMapsNodeListAction" />
 			</Entry>

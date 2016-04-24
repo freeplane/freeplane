@@ -48,10 +48,12 @@ class FindAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private FilterConditionEditor editor;
 	final private FindNextAction findNextAction;
+	final private AFreeplaneAction findPreviousAction;
 
 	public FindAction() {
 		super(KEY);
 		findNextAction = new FindNextAction();
+		findPreviousAction = new FindPreviousAction();
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -115,10 +117,10 @@ class FindAction extends AFreeplaneAction {
 			return;
 		}
 		info.rootID = Controller.getCurrentController().getSelection().getSelected().createID();
-		findNext();
+		findNext(Direction.FORWARD);
     }
 
-	void findNext() {
+	void findNext(Direction direction) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final FoundNodes info = FoundNodes.get(map);
 		if (info.condition == null) {
@@ -133,14 +135,7 @@ class FindAction extends AFreeplaneAction {
 			displayNoPreviousFindMessage();
 			return;
 		}
-		for (NodeModel n = start; !root.equals(n); n = n.getParentNode()) {
-			if (n == null) {
-				info.condition = null;
-				displayNoPreviousFindMessage();
-				return;
-			}
-		}
-		final NodeModel next = filterController.findNext(start, null, Direction.FORWARD, info.condition);
+		final NodeModel next = filterController.findNext(start, null, direction, info.condition);
 		if (next == null) {
 			displayNotFoundMessage(root, info.condition);
 			return;
@@ -167,15 +162,30 @@ class FindAction extends AFreeplaneAction {
 		return findNextAction;
 	}
 	
+	public AFreeplaneAction getFindPreviousAction() {
+		return findPreviousAction;
+	}
+	
 	@SuppressWarnings("serial")
 	private class FindNextAction extends AFreeplaneAction{
-		public FindNextAction() {
+		FindNextAction() {
 			super("FindNextAction", TextUtils.getRawText("QuickFindAction.FORWARD.text"), null);
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			findNext();
+			findNext(Direction.FORWARD);
+		}
+	}
+	@SuppressWarnings("serial")
+	private class FindPreviousAction extends AFreeplaneAction{
+		FindPreviousAction() {
+			super("FindPreviousAction", TextUtils.getRawText("QuickFindAction.BACK.text"), null);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			findNext(Direction.BACK);
 		}
 	}
 }

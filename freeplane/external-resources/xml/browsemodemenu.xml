@@ -22,8 +22,8 @@
 			</Entry>
 			<Entry name="find">
 				<Entry accelerator="control G" name="FindAction" />
-				<Entry accelerator="control shift G" name="QuickFindAction.FORWARD" />
-				<Entry name="QuickFindAction.BACK" />
+				<Entry name="FindNextAction"  accelerator="control shift G" />
+				<Entry name="FindPreviousAction" />
 			</Entry>
 		</Entry>
 		<Entry name="view">
