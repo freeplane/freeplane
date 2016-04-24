@@ -81,9 +81,8 @@ final class QuickFindAction extends AFreeplaneAction {
 		}
 
 		if(next != null){
-			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			mapController.displayNode(next);
-			selection.selectAsTheOnlyOneSelected(next);
+			FoundNodes.get(next.getMap()).displayFoundNode(next);
+			
 			if (reFocusSearchInputField) 
 			{
 				// this is called by Enter key listener in FilterConditionEditor

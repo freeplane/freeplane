@@ -25,8 +25,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import java.util.LinkedList;
-import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -34,7 +32,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -48,37 +45,13 @@ import org.freeplane.features.mode.Controller;
 
 class FindAction extends AFreeplaneAction {
 	static final String KEY = "FindAction";
-	static private class FindNodeList implements IExtension {
-		String rootID;
-		final LinkedList<String> nodesUnfoldedByDisplay = new LinkedList<String>();
-		ASelectableCondition condition;
-
-		static FindNodeList create(final MapModel map) {
-			FindNodeList list = FindNodeList.get(map);
-			if (list == null) {
-				list = new FindNodeList();
-				map.addExtension(list);
-			}
-			return list;
-		}
-
-		private static FindNodeList get(final MapModel map) {
-			if (map == null) {
-				return null;
-			}
-			final FindNodeList list = (FindNodeList) map.getExtension(FindNodeList.class);
-			return list;
-		}
-	}
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private FilterConditionEditor editor;
+	final private FindNextAction findNextAction;
 
 	public FindAction() {
 		super(KEY);
+		findNextAction = new FindNextAction();
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -136,7 +109,7 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	void findFirst(final ASelectableCondition condition) {
-	    final FindNodeList info = FindNodeList.create(Controller.getCurrentController().getMap());
+	    final FoundNodes info = FoundNodes.get(Controller.getCurrentController().getMap());
 		info.condition = condition;
 		if (info.condition == null) {
 			return;
@@ -147,8 +120,8 @@ class FindAction extends AFreeplaneAction {
 
 	void findNext() {
 		final MapModel map = Controller.getCurrentController().getMap();
-		final FindNodeList info = FindNodeList.get(map);
-		if (info == null || info.condition == null) {
+		final FoundNodes info = FoundNodes.get(map);
+		if (info.condition == null) {
 			displayNoPreviousFindMessage();
 			return;
 		}
@@ -172,43 +145,12 @@ class FindAction extends AFreeplaneAction {
 			displayNotFoundMessage(root, info.condition);
 			return;
 		}
-		displayNode(info, next);
+		info.displayFoundNode(next);
 	}
 
 	private void displayNoPreviousFindMessage() {
 		UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(), TextUtils
 		    .getText("no_previous_find"));
-	}
-
-	/**
-	 * Display a node in the display (used by find and the goto action by arrow
-	 * link actions).
-	 */
-	private void displayNode(final FindNodeList info, final NodeModel node) {
-		final MapModel map = node.getMap();
-		final LinkedList<String> nodesUnfoldedByDisplay = new LinkedList<String>();
-		NodeModel nodeOnPath = null;
-		for (nodeOnPath = node; nodeOnPath != null && !info.nodesUnfoldedByDisplay.contains(nodeOnPath.createID()); nodeOnPath = nodeOnPath
-		    .getParentNode()) {
-			if (Controller.getCurrentModeController().getMapController().isFolded(nodeOnPath)) {
-				nodesUnfoldedByDisplay.add(nodeOnPath.createID());
-			}
-		}
-		final ListIterator<String> oldPathIterator = info.nodesUnfoldedByDisplay
-		    .listIterator(info.nodesUnfoldedByDisplay.size());
-		while (oldPathIterator.hasPrevious()) {
-			final String oldPathNodeID = oldPathIterator.previous();
-			final NodeModel oldPathNode = map.getNodeForID(oldPathNodeID);
-			if (oldPathNode != null && oldPathNode.equals(nodeOnPath)) {
-				break;
-			}
-			oldPathIterator.remove();
-			if (oldPathNode != null) {
-				Controller.getCurrentModeController().getMapController().setFolded(oldPathNode, true);
-			}
-		}
-		info.nodesUnfoldedByDisplay.addAll(nodesUnfoldedByDisplay);
-		Controller.getCurrentModeController().getMapController().select(node);
 	}
 
 	private void displayNotFoundMessage(final NodeModel start, final ICondition condition) {
@@ -219,5 +161,21 @@ class FindAction extends AFreeplaneAction {
 	public String getFindFromText(final NodeModel node) {
 		final String plainNodeText = node.toString().replaceAll("\n", " ");
 		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30) + "...";
+	}
+
+	public AFreeplaneAction getFindNextAction() {
+		return findNextAction;
+	}
+	
+	@SuppressWarnings("serial")
+	private class FindNextAction extends AFreeplaneAction{
+		public FindNextAction() {
+			super("FindNextAction", TextUtils.getRawText("QuickFindAction.FORWARD.text"), null);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			findNext();
+		}
 	}
 }
