@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -109,25 +109,51 @@ public class AddOnsController {
 			registerAddOnResources(addOn, resourceController);
 	}
 
-	/** make the translations of this add-on known system-wide. */
-	public static void registerAddOnResources(final AddOnProperties addOn, final ResourceController resourceController) {
-	    HashSet<String> languages = new HashSet<String>();
-	    languages.add(resourceController.getLanguageCode());
-	    languages.add(resourceController.getDefaultLanguageCode());
-	    for (String language : languages) {
-	    	final Map<String, String> resources = addOn.getTranslations().get(language);
-	    	if (resources != null) {
-	    	    for (Entry<String, String> entry : resources.entrySet()) {
-	    	        if (entry.getValue().indexOf('\\') != -1) {
-	    	            // convert \uFFFF sequences
-	    	            entry.setValue(StringEscapeUtils.unescapeJava(entry.getValue()));
-	    	        }
-	    	    }
-	    		resourceController.addLanguageResources(language, addOptionPanelPrefix(resources, addOn.getName()));
-	    		resourceController.addLanguageResources(language, resources);
-	    	}
-	    }
-    }
+	/** make the translations of this add-on known system-wide.
+	 * Translations of add-ons will always be much worse than of Freeplane itself. By copying translation
+	 * for the default language to the selected language we avoid ugly "[translate me]" strings. */
+	public static void registerAddOnResources(final AddOnProperties addOn, final ResourceController rc) {
+		LinkedHashMap<String, Map<String, String>> translations = new LinkedHashMap<>();
+		String defaultLanguage = rc.getDefaultLanguageCode();
+		translations.put(defaultLanguage, getLanguageResources(addOn, defaultLanguage));
+		if (!defaultLanguage.equals(rc.getLanguageCode())) {
+			translations.put(rc.getLanguageCode(), getLanguageResources(addOn, rc.getLanguageCode()));
+			completeResourcesFromDefault(translations.get(defaultLanguage), translations.get(rc.getLanguageCode()));
+		}
+		for (Entry<String, Map<String, String>> entry : translations.entrySet()) {
+			rc.addLanguageResources(entry.getKey(), entry.getValue());
+			rc.addLanguageResources(entry.getKey(), addOptionPanelPrefix(entry.getValue(), addOn.getName()));
+		}
+	}
+
+	private static void completeResourcesFromDefault(Map<String, String> defaultResources,
+	                                                 Map<String, String> selectedLanguageResources) {
+		for (Entry<String, String> entry : defaultResources.entrySet()) {
+			if (selectedLanguageResources.get(entry.getKey()) == null) {
+				selectedLanguageResources.put(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	private static Map<String, String> getLanguageResources(AddOnProperties addOn, String language) {
+		final Map<String, String> resources = addOn.getTranslations().get(language);
+		if (resources != null) {
+			return unescapeStrings(new LinkedHashMap<>(resources));
+		}
+		else {
+			return new LinkedHashMap<String, String>();
+		}
+	}
+
+	private static Map<String, String> unescapeStrings(final Map<String, String> resources) {
+		for (Entry<String, String> entry : resources.entrySet()) {
+		    if (entry.getValue().indexOf('\\') != -1) {
+		        // convert \uFFFF sequences
+		        entry.setValue(StringEscapeUtils.unescapeJava(entry.getValue()));
+		    }
+		}
+		return resources;
+	}
 
 	/** if the add-on is configurable it's a burden for the add-on-writer that the keys in the configuration are
 	 * prepended by "OptionPanel.". This code relieves the developer from taking care of that. */
