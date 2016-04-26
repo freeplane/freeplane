@@ -169,7 +169,7 @@ class FindAction extends AFreeplaneAction {
 	@SuppressWarnings("serial")
 	private class FindNextAction extends AFreeplaneAction{
 		FindNextAction() {
-			super("FindNextAction", TextUtils.getRawText("QuickFindAction.FORWARD.text"), null);
+			super("FindNextAction");
 		}
 
 		@Override
@@ -180,7 +180,7 @@ class FindAction extends AFreeplaneAction {
 	@SuppressWarnings("serial")
 	private class FindPreviousAction extends AFreeplaneAction{
 		FindPreviousAction() {
-			super("FindPreviousAction", TextUtils.getRawText("QuickFindAction.BACK.text"), null);
+			super("FindPreviousAction");
 		}
 
 		@Override
