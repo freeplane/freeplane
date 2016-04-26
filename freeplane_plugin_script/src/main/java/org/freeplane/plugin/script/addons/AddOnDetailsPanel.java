@@ -2,6 +2,7 @@ package org.freeplane.plugin.script.addons;
 
 import java.awt.Dimension;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -130,7 +131,7 @@ public class AddOnDetailsPanel extends JPanel {
 				text.append("<table border='1'>");
 				text.append(row("th", getText("header.function"), getText("header.menu"), getText("header.shortcut")));
 				for (ScriptAddOnProperties.Script script : scripts) {
-					text.append(row("td", bold(script.getTranslatedMenuTitle()), HtmlUtils.toXMLEscapedText(formatMenuLocation(script)),
+					text.append(row("td", bold(TextUtils.getText(script.menuTitleKey)), HtmlUtils.toXMLEscapedText(formatMenuLocation(script)),
 						formatShortcut(script)));
 				}
 				text.append("</table>");
