@@ -240,7 +240,7 @@
 				<Entry name="ToggleLeftToolbarAction" />
 				<Entry name="ToggleStatusAction" />
 				<Entry name="ToggleScrollbarsAction" />
-				<Entry name="ShowFormatPanel" accelerator="control alt P" />
+				<Entry name="ShowFormatPanel" accelerator="alt P" />
 			</Entry>
 			<Entry name="zoom">
 				<Entry name="ZoomInAction" accelerator="alt UP" />
@@ -254,7 +254,7 @@
 				<Entry name="SetBooleanPropertyAction.presentation_mode" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
-				<Entry name="CenterSelectedNodeAction" accelerator="control alt C" />
+				<Entry name="CenterSelectedNodeAction" accelerator="alt C" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
 			<Entry builder="separator" />

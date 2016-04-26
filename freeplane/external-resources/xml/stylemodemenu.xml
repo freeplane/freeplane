@@ -52,7 +52,6 @@
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
-				<Entry name="CenterSelectedNodeAction" accelerator="control alt C" />
 			</Entry>
 			<Entry name="menu_viewmode">
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />

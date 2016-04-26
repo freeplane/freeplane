@@ -5,7 +5,7 @@ configurations{
 
 dependencies {
 	
-	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.4'
+	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.5'
 	
     compile project(':JOrtho_0.4_freeplane')
 
@@ -13,11 +13,11 @@ dependencies {
             'commons-io:commons-io:2.4',
             'commons-codec:commons-codec:1.7',
             'com.jgoodies:jgoodies-forms:1.6.0',
-            'com.jgoodies:jgoodies-common:1.4.0',
-            'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.4'
+            'com.jgoodies:jgoodies-common:1.4.0'
 
 	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.17') {
-		exclude module: 'javahelp'		
+		exclude module: 'javahelp'
+		exclude module: 'mnemonicsetter'
 	}
     
     testCompile 'junit:junit:4.12',
