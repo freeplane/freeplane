@@ -219,8 +219,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	protected void fireAcceleratorChanged(FreeplaneActions freeplaneActions, AFreeplaneAction action, KeyStroke oldStroke,
 	                                      KeyStroke newStroke) {
  		synchronized (changeListenersForActionCollection) {
-			for (IAcceleratorChangeListener listener : changeListenersForActionCollection.get(freeplaneActions)) {
-				listener.acceleratorChanged(action, oldStroke, newStroke);
+			final Collection<IAcceleratorChangeListener> listeners = changeListenersForActionCollection.get(freeplaneActions);
+			if(listeners != null) {
+				for (IAcceleratorChangeListener listener : listeners) {
+					listener.acceleratorChanged(action, oldStroke, newStroke);
+				}
 			}
 		}
 	}
