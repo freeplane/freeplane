@@ -72,6 +72,12 @@ public abstract class ResourceController {
 	public void addLanguageResources(final String language, final Map<String, String> resources) {
 		this.resources.addResources(language, resources);
     }
+	
+	
+
+	public void putUserResourceString(String key, String value) {
+		resources.putUserResourceString(key, value);
+	}
 
 	public void addPropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.add(listener);

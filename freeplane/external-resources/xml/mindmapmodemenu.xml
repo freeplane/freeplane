@@ -453,6 +453,8 @@
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
 			<Entry name="PropertyAction" accelerator="control COMMA" builder="removeOnMac"/>
+			<Entry name="ChangeUITextAction"/>
+			
 		</Entry>
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />

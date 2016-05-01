@@ -192,7 +192,7 @@ public class ResourceBundles extends ResourceBundle {
 	}
 	
 	public void putUserResourceString(final String key, final String value) {
-		if(value != null)
+		if(value != null && ! value.isEmpty())
 			addUserDefinedString(key, value);
 		else {
 			removeUserDefinedString(key);
