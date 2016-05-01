@@ -92,7 +92,7 @@ public abstract class ResourceController {
 	}
 
 	protected void loadAnotherLanguage() {
-		resources.loadAnotherLanguage();
+		resources.loadAnotherLanguage(getProperty(ResourceBundles.RESOURCE_LANGUAGE));
 	}
 
 	public void firePropertyChanged(final String property, final String value, final String oldValue) {
@@ -232,7 +232,7 @@ public abstract class ResourceController {
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
 		if (resources == null) {
-			resources = new ResourceBundles(this);
+			resources = new ResourceBundles(getProperty(ResourceBundles.RESOURCE_LANGUAGE));
 		}
 		return resources;
 	}
