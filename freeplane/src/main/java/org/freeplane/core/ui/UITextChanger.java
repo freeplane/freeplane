@@ -54,9 +54,9 @@ public class UITextChanger implements KeyEventDispatcher {
 			if(newText == null)
 				newText = TextUtils.getRawText(translationKey);
 			if(component instanceof AbstractButton)
-				((AbstractButton) component).setText(newText);
+				LabelAndMnemonicSetter.setLabelAndMnemonic(((AbstractButton) component), newText);
 			else if(component instanceof JLabel)
-				((JLabel) component).setText(newText);
+				((JLabel) component).setText(TextUtils.removeMnemonic(newText));
 					
 		}
 	}
