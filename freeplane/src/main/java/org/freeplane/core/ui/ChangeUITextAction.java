@@ -81,6 +81,7 @@ public class ChangeUITextAction extends AFreeplaneAction {
 				((AbstractButton) component).setText(newText);
 			else if(component instanceof JLabel)
 				((JLabel) component).setText(newText);
+					
 		}
 	}
 
