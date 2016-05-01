@@ -59,6 +59,7 @@ import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.ui.UITextChanger;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
@@ -841,7 +842,7 @@ public class StyleEditorPanel extends JPanel {
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.border(Borders.DLU2);
-		rightBuilder.appendSeparator(TextUtils.getText("OptionPanel.separator.NodeStyle"));
+		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(rightBuilder);
 		if (addStyleBox) {
 			addAutomaticLayout(rightBuilder);
 			addStyleBox(rightBuilder);
@@ -912,10 +913,7 @@ public class StyleEditorPanel extends JPanel {
 				}
 			});
 		}
-	    final String label = TextUtils.getText("AutomaticLayoutAction.text");
-	    rightBuilder.append(new JLabel(label), 5);
-	    rightBuilder.append(mAutomaticLayoutComboBox);
-	    rightBuilder.nextLine();
+	    appendLabeledComponent(rightBuilder, "AutomaticLayoutAction.text", mAutomaticLayoutComboBox);
 		}
 		{
 			
@@ -944,11 +942,17 @@ public class StyleEditorPanel extends JPanel {
 					}
 				});
 			}
-			final String label = TextUtils.getText("AutomaticEdgeColorHookAction.text");
-			rightBuilder.append(new JLabel(label), 5);
-			rightBuilder.append(mAutomaticEdgeColorComboBox);
-		    rightBuilder.nextLine();
+			appendLabeledComponent(rightBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
 		}
+	}
+
+	private void appendLabeledComponent(final DefaultFormBuilder rightBuilder, String labelKey, Component component) {
+		final String text = TextUtils.getText(labelKey);
+	    final JLabel label = new JLabel(text);
+	    label.putClientProperty(UITextChanger.TRANSLATIONKEY, labelKey);
+		rightBuilder.append(label, 5);
+	    rightBuilder.append(component);
+	    rightBuilder.nextLine();
 	}
 
 	private void setFont(Container c, float size) {
