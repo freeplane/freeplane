@@ -34,7 +34,7 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ChangeUITextAction;
+import org.freeplane.core.ui.UITextChanger;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.KeyBindingProcessor;
@@ -200,7 +200,6 @@ public class MModeControllerFactory {
 		NodeHistory.install(modeController);
 		modeController.addAction(new ImportXmlFile());
 		modeController.addAction(new ImportMindmanagerFiles());
-		modeController.addAction(new ChangeUITextAction());
 	}
 
 	private MModeController createModeControllerImpl() {

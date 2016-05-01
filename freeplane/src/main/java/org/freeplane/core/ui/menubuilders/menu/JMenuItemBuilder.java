@@ -10,7 +10,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionEnabler;
-import org.freeplane.core.ui.ChangeUITextAction;
+import org.freeplane.core.ui.UITextChanger;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.MenuSplitterConfiguration;
@@ -106,7 +106,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 		if(actionComponent instanceof JComponent) {
 		final String textKey = entryAccessor.getTextKey(entry);
 		if(textKey != null)
-			((JComponent) actionComponent).putClientProperty(ChangeUITextAction.TRANSLATIONKEY, textKey);
+			((JComponent) actionComponent).putClientProperty(UITextChanger.TRANSLATIONKEY, textKey);
 		}
 	}
 

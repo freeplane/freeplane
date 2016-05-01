@@ -24,7 +24,7 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.ui.ChangeUITextAction;
+import org.freeplane.core.ui.UITextChanger;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -56,7 +56,7 @@ public class SeparatorProperty implements IPropertyControl {
 		if(text != null) {
 			for (Component child : separator.getComponents()) {
 				if(child instanceof JLabel)
-					((JComponent) child).putClientProperty(ChangeUITextAction.TRANSLATIONKEY, labelKey);
+					((JComponent) child).putClientProperty(UITextChanger.TRANSLATIONKEY, labelKey);
 				break;
 			}
 		}

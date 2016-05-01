@@ -23,7 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ChangeUITextAction;
+import org.freeplane.core.ui.UITextChanger;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -74,7 +74,7 @@ public class PropertyAdapter {
 		final String optionalText = TextUtils.getOptionalText(labelKey);
 		final JLabel label = builder.append(optionalText, component);
 		if(optionalText != null)
-			label.putClientProperty(ChangeUITextAction.TRANSLATIONKEY, labelKey);
+			label.putClientProperty(UITextChanger.TRANSLATIONKEY, labelKey);
 		String tooltip = TextUtils.getOptionalText(getTooltip());
 		label.setToolTipText(tooltip);
 		component.setToolTipText(tooltip);
