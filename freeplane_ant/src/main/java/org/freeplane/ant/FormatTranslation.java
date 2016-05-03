@@ -233,7 +233,7 @@ public class FormatTranslation extends Task {
 				continue;
 			}
 			final String thisKey = keyValue[0];
-			String thisValue = keyValue[1];
+			String thisValue = keyValue[1].trim();
 			if (thisValue.matches("(\\[auto\\]|\\[translate me\\])?")) {
 				warn(filename + ": drop empty translation: " + line);
 				continue;
@@ -352,18 +352,56 @@ public class FormatTranslation extends Task {
 	}
 
 	public String convertUnicodeCharacterRepresentation(String input) {
-		if(! (input.contains("\\u") || input.contains("\\U")))
-			return input;
 		final char[] chars = input.toCharArray();
-		for (int offset = 0; 6 + offset < chars.length;  offset++) {
-	        if (chars[offset] == '\\' && (chars[offset+1] == 'u' || chars[offset+1] == 'U')) {
-	        	chars[offset+1] = 'u';
-	        	for(int i = 2; i < 6; i++){
-	        		chars[offset+i] = Character.toUpperCase(chars[offset+i]);
-	        	}
-	        	offset+=5;
+		int nonAsciiCharCount = countNonAsciiCharacters(chars);
+		if(! (input.contains("\\u") || input.contains("\\U")) && nonAsciiCharCount == 0)
+			return input;
+		int replacedNonAsciiCharacterCount = 0;
+		final char[] result = nonAsciiCharCount == 0 ? chars : new char[chars.length + 5 * nonAsciiCharCount];
+		for (int offset = 0; offset < chars.length;  offset++) {
+			int resultOffset = offset + 5 * replacedNonAsciiCharacterCount;
+			final char c = chars[offset];
+			if (c == '\\' && (chars[offset+1] == 'u' || chars[offset+1] == 'U')) {
+				putFormattedUnicodeRepresentation(chars, offset, result, resultOffset);
+				offset+=5;
+			} else if(c <= 127) {
+				if(resultOffset >= result.length ) {
+					throw new AssertionError(input + "//" + new String(result));
+				}
+				result[resultOffset] = c;
+			} else {
+				putEncodedNonAsciiCharacter(c, result, resultOffset);
+				replacedNonAsciiCharacterCount++;
+	        }
+	         
+        }
+		return new String(result);
+    }
+
+	private void putFormattedUnicodeRepresentation(final char[] input, int inputOffset, final char[] target,
+			int targetOffset) {
+		target[targetOffset+1] = 'u';
+		for(int i = 2; i < 6; i++){
+			target[targetOffset+i] = Character.toUpperCase(input[inputOffset+i]);
+		}
+	}
+
+	private void putEncodedNonAsciiCharacter(final char c, final char[] result, int offset) {
+		result[offset++] = '\\';
+		result[offset++] = 'u';
+		final String hex = String.format("%04X", (int)c);
+		for(char digit : hex.toCharArray()){
+			result[offset++] = digit;
+		}
+	}
+
+	private int countNonAsciiCharacters(final char[] chars) {
+		int nonAsciiCharCount = 0;
+		for (int offset = 0; offset < chars.length;  offset++) {
+	        if (chars[offset] > 127) {
+	        	nonAsciiCharCount++;
 	        }
         }
-		return new String(chars);
-    }
+		return nonAsciiCharCount;
+	}
 }

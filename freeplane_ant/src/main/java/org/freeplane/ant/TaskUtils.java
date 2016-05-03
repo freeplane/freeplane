@@ -123,7 +123,7 @@ public class TaskUtils {
 	static String readFile(final File inputFile) throws IOException {
 		InputStreamReader in = null;
 		try {
-			in = new InputStreamReader(new FileInputStream(inputFile), "US-ASCII");
+			in = new InputStreamReader(new FileInputStream(inputFile), "ISO-8859-1");
 			StringBuilder builder = new StringBuilder();
 			final char[] buf = new char[1024];
 			int len;
