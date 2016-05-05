@@ -148,8 +148,11 @@ public class NodeList {
         }
     }
 
-	final private class FilterTextDocumentListener implements DocumentListener,  ChangeListener, ActionListener {
+	final private class FilterTextDocumentListener implements DocumentListener, ActionListener {
 		private Timer mTypeDelayTimer = null;
+		private String selectedItem = "";
+		private boolean shouldMatchCase = false;
+		private boolean shouldUseRegex = false;
 
 		private synchronized void delayedChange() {
 			stopTimer();
@@ -180,13 +183,15 @@ public class NodeList {
 
 		private synchronized void change() {
 			stopTimer();
-			final Object selectedItem = mFilterTextSearchField.getEditor().getItem();
-			mFlatNodeTableFilterModel.setFilter((String) selectedItem, matchCase.isSelected(),
-			    useRegexInFind.isSelected());
-		}
-
-		public void stateChanged(ChangeEvent e) {
-			change();
+			final String selectedItem = (String)mFilterTextSearchField.getEditor().getItem();
+			final boolean shouldMatchCase = matchCase.isSelected();
+			final boolean shouldUseRegex = useRegexInFind.isSelected();
+			if(!this.selectedItem.equals(selectedItem) || this.shouldMatchCase != shouldMatchCase || this.shouldUseRegex != shouldUseRegex) {
+				this.selectedItem = selectedItem;
+				this.shouldMatchCase = shouldMatchCase;
+				this.shouldUseRegex = shouldUseRegex;
+				mFlatNodeTableFilterModel.setFilter( selectedItem, shouldMatchCase, shouldUseRegex);
+			}
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -385,9 +390,9 @@ public class NodeList {
 		});
 		useRegexInReplace = new JCheckBox();
 		useRegexInFind = new JCheckBox();
-		useRegexInFind.addChangeListener(listener);
+		useRegexInFind.addActionListener(listener);
 		matchCase = new JCheckBox();
-		matchCase.addChangeListener(listener);
+		matchCase.addActionListener(listener);
 		mapChangeListener = new MapChangeListener();
 
 	}
