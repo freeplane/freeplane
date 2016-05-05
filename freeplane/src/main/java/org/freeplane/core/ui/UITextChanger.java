@@ -75,7 +75,7 @@ public class UITextChanger implements KeyEventDispatcher {
 
 	private int showDialog(Component component, ArrayList<JTextField> textFields) {
 		return JOptionPane.showConfirmDialog(component, textFields.toArray(), "replace text",
-		    JOptionPane.OK_CANCEL_OPTION);
+		    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 	}
 
 	private void setEditedTexts(JComponent component, ArrayList<JTextField> textFields) {
