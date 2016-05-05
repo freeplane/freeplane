@@ -22,6 +22,8 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 public class UITextChanger implements KeyEventDispatcher {
+	private static final String TEXT_FIELD_TRANSLATION_KEY = TranslatedElement.class.getName() + ".translationKey";
+
 	public enum TranslatedElement {
 		BORDER, TEXT, TOOLTIP;
 		public String getKey(JComponent component) {
@@ -30,6 +32,10 @@ public class UITextChanger implements KeyEventDispatcher {
 
 		public void setKey(JComponent component, String key) {
 			component.putClientProperty(this, key);
+		}
+
+		public String getTitleKey() {
+			return "TranslatedElement." + name();
 		}
 	}
 
@@ -79,14 +85,14 @@ public class UITextChanger implements KeyEventDispatcher {
 	}
 
 	private void setEditedText(JComponent component, JTextField textField) {
-		TranslatedElement element = (TranslatedElement) textField.getClientProperty(TranslatedElement.class);
-		String translationKey = (String) textField.getClientProperty(element);
+		String translationKey = (String) textField.getClientProperty(TEXT_FIELD_TRANSLATION_KEY);
 		String newText = textField.getText();
 		if (newText.isEmpty())
 			newText = null;
 		ResourceController.getResourceController().putUserResourceString(translationKey, newText);
 		if (newText == null)
 			newText = TextUtils.getRawText(translationKey);
+		TranslatedElement element = (TranslatedElement) textField.getClientProperty(TranslatedElement.class);
 		switch (element) {
 			case TEXT:
 				setNewText(component, newText);
@@ -137,9 +143,11 @@ public class UITextChanger implements KeyEventDispatcher {
 
 	private JTextField createTextField(TranslatedElement element, final String translationKey) {
 		JTextField textField = new JTextField(TextUtils.getRawText(translationKey));
-		UITools.addTitledBorder(textField, element.toString(), 10);
+		String titleKey = element.getTitleKey();
+		UITools.addTitledBorder(textField, TextUtils.getRawText(titleKey), 10);
 		textField.putClientProperty(TranslatedElement.class, element);
-		textField.putClientProperty(element, translationKey);
+		textField.putClientProperty(TEXT_FIELD_TRANSLATION_KEY, translationKey);
+		TranslatedElement.BORDER.setKey(textField, titleKey);
 		return textField;
 	}
 }
