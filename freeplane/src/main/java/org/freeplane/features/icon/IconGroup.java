@@ -82,9 +82,13 @@ public class IconGroup {
 
 	public String getDescription() {
 		if (description == null) {
-			description = TextUtils.getText("IconGroupPopupAction." + name.toLowerCase() + ".text");
+			description = TextUtils.getText(getDescriptionKey());
 		}
 		return description;
+	}
+
+	public String getDescriptionKey() {
+		return "IconGroupPopupAction." + name.toLowerCase() + ".text";
 	}
 
 	public void setDescription(final String description) {
