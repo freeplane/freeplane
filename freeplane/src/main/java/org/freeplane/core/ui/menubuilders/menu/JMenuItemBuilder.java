@@ -14,7 +14,6 @@ import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.MenuSplitterConfiguration;
-import org.freeplane.core.ui.UITextChanger.TranslatedElement;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -22,6 +21,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.ui.textchanger.TranslatedElement;
 
 public class JMenuItemBuilder implements EntryVisitor{
 

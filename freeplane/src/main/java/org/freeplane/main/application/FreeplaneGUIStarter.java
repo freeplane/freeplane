@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
@@ -36,12 +35,10 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JToolBar;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
-import org.freeplane.core.ui.UITextChanger;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
@@ -327,7 +324,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				loadMaps(options.getFilesToOpenAsArray());
 				focusCurrentView();
 				contentPane.setVisible(true);
-				KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new UITextChanger());
 				frame.toFront();
 				startupFinished = true;
 		        System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));

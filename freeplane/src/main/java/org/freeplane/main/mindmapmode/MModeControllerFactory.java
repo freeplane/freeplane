@@ -34,7 +34,6 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.UITextChanger;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.KeyBindingProcessor;
@@ -49,6 +48,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
+import org.freeplane.core.ui.textchanger.TextChangeHotKeyAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.mindmapmode.AddAttributeAction;
@@ -200,6 +200,7 @@ public class MModeControllerFactory {
 		NodeHistory.install(modeController);
 		modeController.addAction(new ImportXmlFile());
 		modeController.addAction(new ImportMindmanagerFiles());
+		modeController.addAction(new TextChangeHotKeyAction());
 	}
 
 	private MModeController createModeControllerImpl() {

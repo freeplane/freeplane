@@ -1,4 +1,4 @@
-package org.freeplane.core.ui;
+package org.freeplane.core.ui.textchanger;
 
 import java.awt.Component;
 import java.awt.KeyEventDispatcher;
@@ -18,31 +18,21 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
-public class UITextChanger implements KeyEventDispatcher {
+class UITextChanger implements KeyEventDispatcher {
 	private static final String TEXT_FIELD_TRANSLATION_KEY = TranslatedElement.class.getName() + ".translationKey";
+	private TextChangeHotKeyAction textChangeAcceleratorAction;
 
-	public enum TranslatedElement {
-		BORDER, TEXT, TOOLTIP;
-		public String getKey(JComponent component) {
-			return (String) (component).getClientProperty(this);
-		}
-
-		public void setKey(JComponent component, String key) {
-			component.putClientProperty(this, key);
-		}
-
-		public String getTitleKey() {
-			return "TranslatedElement." + name();
-		}
+	public UITextChanger(TextChangeHotKeyAction textChangeAcceleratorAction) {
+		this.textChangeAcceleratorAction = textChangeAcceleratorAction;
 	}
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent e) {
-		final int modifiers = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK;
-		if(((e.getModifiersEx() & modifiers) == modifiers) && e.getKeyCode() == KeyEvent.VK_F10) {
+		if (textChangeAcceleratorAction.shouldChangeTextOnEvent(e)) {
 			if (e.getID() == KeyEvent.KEY_PRESSED) {
 				replaceComponentText();
 			}

@@ -23,7 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.UITextChanger.TranslatedElement;
+import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
