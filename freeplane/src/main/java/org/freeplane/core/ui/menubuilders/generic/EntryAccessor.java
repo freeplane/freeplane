@@ -98,6 +98,16 @@ public class EntryAccessor {
 			return name;
 	}
 	
+	public String getTooltipKey(final Entry entry) {
+		final AFreeplaneAction action = getAction(entry);
+		if (action != null) {
+			final String actionTextKey = action.getTooltipKey();
+			if (TextUtils.getRawText(actionTextKey, null) != null)
+				return actionTextKey;
+		}
+		return null;
+	}
+
 	public Object getComponent(final Entry entry) {
 		return entry.getAttribute(COMPONENT);
 	}

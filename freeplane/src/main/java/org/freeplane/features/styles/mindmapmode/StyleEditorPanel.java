@@ -45,8 +45,8 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
@@ -59,7 +59,7 @@ import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.ui.UITextChanger;
+import org.freeplane.core.ui.UITextChanger.TranslatedElement;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
@@ -872,6 +872,7 @@ public class StyleEditorPanel extends JPanel {
 	    button.setHorizontalAlignment(SwingConstants.LEFT);
 	    final String labelText = TextUtils.getText(label);
 	    UITools.addTitledBorder(button, labelText, 10);
+		TranslatedElement.BORDER.setKey(button, label);
 	    rightBuilder.append(button, rightBuilder.getColumnCount());
 		rightBuilder.nextLine();
 		return button;
@@ -949,7 +950,7 @@ public class StyleEditorPanel extends JPanel {
 	private void appendLabeledComponent(final DefaultFormBuilder rightBuilder, String labelKey, Component component) {
 		final String text = TextUtils.getText(labelKey);
 	    final JLabel label = new JLabel(text);
-	    label.putClientProperty(UITextChanger.TRANSLATIONKEY, labelKey);
+		TranslatedElement.TEXT.setKey(label, labelKey);
 		rightBuilder.append(label, 5);
 	    rightBuilder.append(component);
 	    rightBuilder.nextLine();
