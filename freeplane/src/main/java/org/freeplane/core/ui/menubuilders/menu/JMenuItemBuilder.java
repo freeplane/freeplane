@@ -108,7 +108,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 			if (textKey != null)
 				TranslatedElement.TEXT.setKey((JComponent) actionComponent, textKey);
 			String tooltipKey = entryAccessor.getTooltipKey(entry);
-			if (tooltipKey != null)
+			if (textKey != null)
 				TranslatedElement.TOOLTIP.setKey((JComponent) actionComponent, tooltipKey);
 		}
 	}

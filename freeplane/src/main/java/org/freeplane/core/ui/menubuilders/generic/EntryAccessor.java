@@ -101,9 +101,8 @@ public class EntryAccessor {
 	public String getTooltipKey(final Entry entry) {
 		final AFreeplaneAction action = getAction(entry);
 		if (action != null) {
-			final String actionTextKey = action.getTooltipKey();
-			if (TextUtils.getRawText(actionTextKey, null) != null)
-				return actionTextKey;
+			final String actionTooltipKey = action.getTooltipKey();
+			return actionTooltipKey;
 		}
 		return null;
 	}

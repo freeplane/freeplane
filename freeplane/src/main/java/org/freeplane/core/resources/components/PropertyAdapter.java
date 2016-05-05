@@ -77,7 +77,7 @@ public class PropertyAdapter {
 			TranslatedElement.TEXT.setKey(component, labelKey);
 		String tooltipKey = getTooltip();
 		String tooltip = TextUtils.getOptionalText(tooltipKey);
-		if (tooltip != null)
+		if (optionalText != null)
 			TranslatedElement.TOOLTIP.setKey(component, tooltipKey);
 		label.setToolTipText(tooltip);
 		component.setToolTipText(tooltip);

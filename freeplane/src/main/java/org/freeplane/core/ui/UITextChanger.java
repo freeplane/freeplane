@@ -142,7 +142,7 @@ public class UITextChanger implements KeyEventDispatcher {
 	}
 
 	private JTextField createTextField(TranslatedElement element, final String translationKey) {
-		JTextField textField = new JTextField(TextUtils.getRawText(translationKey));
+		JTextField textField = new JTextField(TextUtils.getRawText(translationKey, ""));
 		String titleKey = element.getTitleKey();
 		UITools.addTitledBorder(textField, TextUtils.getRawText(titleKey), 10);
 		textField.putClientProperty(TranslatedElement.class, element);
