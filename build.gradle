@@ -67,7 +67,7 @@ subprojects {
 	sourceCompatibility='1.7'
 
 
-    compileJava {
+    tasks.withType(JavaCompile) {
       options.encoding = "UTF-8"
     }
     javadoc {
