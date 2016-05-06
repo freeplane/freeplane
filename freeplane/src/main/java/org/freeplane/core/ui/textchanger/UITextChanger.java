@@ -81,7 +81,7 @@ class UITextChanger implements KeyEventDispatcher {
 			newText = null;
 		ResourceController.getResourceController().putUserResourceString(translationKey, newText);
 		if (newText == null)
-			newText = TextUtils.getRawText(translationKey);
+			newText = TextUtils.getRawText(translationKey, "");
 		TranslatedElement element = (TranslatedElement) textField.getClientProperty(TranslatedElement.class);
 		switch (element) {
 			case TEXT:
