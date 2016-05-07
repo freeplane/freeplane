@@ -28,6 +28,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
 
 class UITextChanger implements KeyEventDispatcher {
 	private static final String TEXT_FIELD_TRANSLATION_KEY = TranslatedElement.class.getName() + ".translationKey";
@@ -53,20 +54,34 @@ class UITextChanger implements KeyEventDispatcher {
 	        final Point mousePosition = window.getMousePosition(true);
 			if (mousePosition != null) {
 				final Component componentUnderMouse = SwingUtilities.getDeepestComponentAt(window, mousePosition.x, mousePosition.y);
-				replaceComponentText(componentUnderMouse);
+				replaceComponentTexts(componentUnderMouse);
 			}
 	    }
 	}
 
-	private void replaceComponentText(Component component) {
-		if(! (component instanceof JComponent))
-			return;
-		ArrayList<JTextField> textFields = createTextEditors(component);
-		if (textFields.isEmpty())
-			return;
-		int exitCode = showDialog(component, textFields);
+	private void replaceComponentTexts(Component component) {
+		if (component instanceof JComponent)
+			replaceComponentTexts((JComponent) component);
+		else
+			showNoComponentFoundMessage();
+	}
+
+	private void replaceComponentTexts(JComponent c) {
+		ArrayList<JTextField> textFields = createTextEditors(c);
+		if (!textFields.isEmpty())
+			replaceComponentTexts(c, textFields);
+		else
+			showNoComponentFoundMessage();
+	}
+
+	private void showNoComponentFoundMessage() {
+		Controller.getCurrentController().getViewController().out(TextUtils.getRawText("no_translation_strings_found"));
+	}
+
+	private void replaceComponentTexts(JComponent c, ArrayList<JTextField> textFields) {
+		int exitCode = showDialog(c, textFields);
 		if (exitCode == JOptionPane.OK_OPTION) {
-			setEditedTexts((JComponent) component, textFields);
+			setEditedTexts(c, textFields);
 		}
 	}
 
@@ -157,10 +172,10 @@ class UITextChanger implements KeyEventDispatcher {
 			((JLabel) component).setText(TextUtils.removeMnemonic(text));
 	}
 
-	private ArrayList<JTextField> createTextEditors(Component component) {
+	private ArrayList<JTextField> createTextEditors(JComponent component) {
 		ArrayList<JTextField> textFields = new ArrayList<>(TranslatedElement.values().length);
 		for (TranslatedElement element : TranslatedElement.values()) {
-			final String translationKey = element.getKey((JComponent) component);
+			final String translationKey = element.getKey(component);
 			if (translationKey != null) {
 				JTextField textField = createTextField(element, translationKey);
 				textFields.add(textField);
