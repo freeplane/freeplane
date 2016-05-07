@@ -22,6 +22,7 @@ package org.freeplane.plugin.script;
 
 import java.io.FilePermission;
 import java.net.SocketPermission;
+import java.security.AllPermission;
 import java.security.Permission;
 import java.security.Permissions;
 
@@ -33,25 +34,30 @@ class ScriptingSecurityManager {
             boolean pWithoutWriteRestriction,
             boolean pWithoutNetworkRestriction, boolean pWithoutExecRestriction) {
         permissions = new Permissions();
-		if (pWithoutNetworkRestriction) {
-			permissions.add(new SocketPermission("*", "connect,accept,listen,resolve"));
-			permissions.add(new RuntimePermission("setFactory"));
+		if (pWithoutExecRestriction && pWithoutFileRestriction && pWithoutWriteRestriction
+		        && pWithoutNetworkRestriction) {
+			permissions.add(new AllPermission());
         }
+		else {
+			if (pWithoutNetworkRestriction) {
+				permissions.add(new SocketPermission("*", "connect,accept,listen,resolve"));
+				permissions.add(new RuntimePermission("setFactory"));
+			}
 
-		if (pWithoutExecRestriction) {
-			permissions.add(new FilePermission("<<ALL FILES>>", "execute"));
-			permissions.add(new RuntimePermission("loadLibrary.*"));
-        }
+			if (pWithoutExecRestriction) {
+				permissions.add(new FilePermission("<<ALL FILES>>", "execute"));
+				permissions.add(new RuntimePermission("loadLibrary.*"));
+			}
+			if (pWithoutFileRestriction) {
+				permissions.add(new FilePermission("<<ALL FILES>>", "read"));
+				permissions.add(new RuntimePermission("readFileDescriptor"));
+			}
 
-		if (pWithoutFileRestriction) {
-			permissions.add(new FilePermission("<<ALL FILES>>", "read"));
-			permissions.add(new RuntimePermission("readFileDescriptor"));
-        }
-		
-		if (pWithoutWriteRestriction) {
-			permissions.add(new RuntimePermission("writeFileDescriptor"));
-			permissions.add(new FilePermission("<<ALL FILES>>", "write,delete"));
-			permissions.add(new RuntimePermission("preferences"));
+			if (pWithoutWriteRestriction) {
+				permissions.add(new RuntimePermission("writeFileDescriptor"));
+				permissions.add(new FilePermission("<<ALL FILES>>", "write,delete"));
+				permissions.add(new RuntimePermission("preferences"));
+			}
         }
         permissions.setReadOnly();
     }
