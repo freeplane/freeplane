@@ -4,7 +4,13 @@ import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.Point;
 import java.awt.Window;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
@@ -16,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
@@ -64,8 +71,39 @@ class UITextChanger implements KeyEventDispatcher {
 	}
 
 	private int showDialog(Component component, ArrayList<JTextField> textFields) {
+		final JTextField focusOwner = textFields.get(0);
+		setFocusWhenShowed(focusOwner);
 		return JOptionPane.showConfirmDialog(component, textFields.toArray(), "replace text",
 		    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+	}
+
+	private void setFocusWhenShowed(final JTextField focusOwner) {
+		focusOwner.addHierarchyListener(new HierarchyListener() {
+			@Override
+			public void hierarchyChanged(HierarchyEvent e) {
+				if (focusOwner.isShowing()) {
+					final Window windowAncestor = SwingUtilities.getWindowAncestor(focusOwner);
+					if (windowAncestor.isFocused()) {
+					focusOwner.requestFocusInWindow();
+					}
+					else {
+						windowAncestor.addWindowFocusListener(new WindowFocusListener() {
+			                @Override
+			                public void windowLostFocus(WindowEvent e) {
+				                // intentionally left blank
+			                }
+
+			                @Override
+			                public void windowGainedFocus(WindowEvent e) {
+				                focusOwner.requestFocusInWindow();
+				                windowAncestor.removeWindowFocusListener(this);
+			                }
+		                });
+					}
+					focusOwner.removeHierarchyListener(this);
+				}
+			}
+		});
 	}
 
 	private void setEditedTexts(JComponent component, ArrayList<JTextField> textFields) {
@@ -131,8 +169,18 @@ class UITextChanger implements KeyEventDispatcher {
 		return textFields;
 	}
 
+	private static FocusAdapter textFieldTextSelector = new FocusAdapter() {
+		
+		@Override
+		public void focusGained(FocusEvent e) {
+			((JTextComponent) e.getComponent()).selectAll();
+		}
+		
+	};
+
 	private JTextField createTextField(TranslatedElement element, final String translationKey) {
-		JTextField textField = new JTextField(TextUtils.getRawText(translationKey, ""));
+		final JTextField textField = new JTextField(TextUtils.getRawText(translationKey, ""));
+		textField.addFocusListener(textFieldTextSelector);
 		String titleKey = element.getTitleKey();
 		UITools.addTitledBorder(textField, TextUtils.getRawText(titleKey), 10);
 		textField.putClientProperty(TranslatedElement.class, element);
