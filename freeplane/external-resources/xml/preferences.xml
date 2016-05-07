@@ -249,8 +249,6 @@
 			<separator name="tooltip">
 				<boolean name="show_node_tooltips" />
 				<number name="toolTipManager.initialDelay" min="0" />
-				<number name="toolTipManager.dismissDelay" min="0" />
-				<number name="toolTipManager.reshowDelay" min="0" />
 				<boolean name="show_styles_in_tooltip" />
 			</separator>
 			<separator name="undo">
