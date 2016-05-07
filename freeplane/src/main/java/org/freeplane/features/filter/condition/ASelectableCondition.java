@@ -1,6 +1,9 @@
 package org.freeplane.features.filter.condition;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedExceptionAction;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -45,12 +48,18 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 
 	@Override
-    public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if(EQUALS == null){
 			return super.equals(obj);
 		}
 		try {
-	        return (Boolean) EQUALS.invoke(null, this, obj);
+			return AccessController.doPrivileged(new PrivilegedExceptionAction<Boolean>() {
+				@Override
+				public Boolean run()
+			            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+					return (Boolean) EQUALS.invoke(null, ASelectableCondition.this, obj);
+				}
+			}).booleanValue();
         }
         catch (Exception e) {
 	        e.printStackTrace();
