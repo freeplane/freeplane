@@ -5,9 +5,9 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.format.FormatController;
 
@@ -48,6 +48,10 @@ public class TextUtils {
 
 	public static String getOptionalText(final String string) {
 		return string == null ? null : TextUtils.getRawText(string);
+	}
+
+	public static String getOptionalText(final String string, final String defaultValue) {
+		return string == null ? null : TextUtils.getRawText(string, defaultValue);
 	}
 
 	public static String removeMnemonic(final String rawLabel) {
