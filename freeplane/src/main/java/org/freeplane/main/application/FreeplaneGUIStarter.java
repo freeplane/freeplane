@@ -35,7 +35,7 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JToolBar;
+import javax.swing.ToolTipManager;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
@@ -318,6 +318,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				contentPane.setVisible(false);
 				splash.dispose();
 				splash = null;
+				ToolTipManager.sharedInstance().setDismissDelay(12000);
 				frame.setVisible(true);
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
