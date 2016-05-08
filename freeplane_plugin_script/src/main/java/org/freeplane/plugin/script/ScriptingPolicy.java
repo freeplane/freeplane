@@ -43,14 +43,15 @@ class ScriptingPolicy extends Policy {
 		this.defaultPolicy = policy;
 		permissions = new Permissions();
 		permissionBlackList = new Permissions();
+		permissionBlackList.add(new PropertyPermission("org.freeplane.basedirectory", "write"));
 		permissions.add(new RuntimePermission("accessDeclaredMembers"));
 		permissions.add(new RuntimePermission("accessClassInPackage.*"));
+		permissions.add(new RuntimePermission("getProtectionDomain"));
 		permissions.add(new RuntimePermission("modifyThreadGroup"));
 		permissions.add(new RuntimePermission("queuePrintJob"));
 		permissions.add(new RuntimePermission("setIO"));
 		permissions.add(new RuntimePermission("exitVM.0"));
 		permissions.add(new PropertyPermission("*", "read,write"));
-		permissionBlackList.add(new PropertyPermission("org.freeplane.basedirectory", "write"));
 		permissions.add(new AdminPermission("*", "resolve,resource"));
 		permissions.add(new AWTPermission("showWindowWithoutWarningBanner"));
 		permissions.add(new AWTPermission("accessClipboard"));
@@ -68,7 +69,7 @@ class ScriptingPolicy extends Policy {
 		for (ClassLoader classLoader = domain.getClassLoader(); classLoader != null; //
 		classLoader = classLoader.getParent()) {
 			if (classLoader instanceof ScriptClassLoader) {
-				return ((ScriptClassLoader) classLoader).implies(permission);
+				return ((ScriptClassLoader) classLoader).implies(permission) && !permissionBlackList.implies(permission);
 			}
 		}
 		return false;
