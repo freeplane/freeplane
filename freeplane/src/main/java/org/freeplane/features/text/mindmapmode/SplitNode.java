@@ -129,23 +129,15 @@ public class SplitNode extends AFreeplaneAction {
 				int start = parent.getStartOffset();
 				for (int i = 0; i < elementCount; i++) {
 					final Element current = parent.getElement(i);
-					if(current.isLeaf())
+					if(current.isLeaf() && i < elementCount - 1)
 						continue;
 					final int end = current.getEndOffset();
-					final String paragraphText = doc.getText(start, end - start).trim();
-					if (paragraphText.length() > 0) {
-						final StringWriter out = new StringWriter();
-						new FixedHTMLWriter(out, doc, start, end - start).write();
-						final String string = out.toString();
-						if (!string.equals("")) {
-							parts[i] = string;
-							notEmptyElementCount++;
-							start = end;
-						}
-						else {
-							parts[i] = null;
-						}
+					final String newFragment = getFragment(doc, start, end);
+					if(newFragment != null ){
+						parts[i] = newFragment;
+						notEmptyElementCount++;
 					}
+					start = end;
 				}
 				if (notEmptyElementCount <= 1) {
 					return null;
@@ -160,5 +152,19 @@ public class SplitNode extends AFreeplaneAction {
 			return parts;
 		}
 		return text.split("\n");
+	}
+
+	private String getFragment(final HTMLDocument doc, int start, final int end)
+			throws BadLocationException, IOException {
+		final String paragraphText = doc.getText(start, end - start).trim();
+		if (paragraphText.length() > 0) {
+			final StringWriter out = new StringWriter();
+			new FixedHTMLWriter(out, doc, start, end - start).write();
+			final String fragment = out.toString();
+			if (!fragment.equals("")) {
+				return fragment;
+			}
+		}
+		return null;
 	}
 }
