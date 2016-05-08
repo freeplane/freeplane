@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import java.util.Collection;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
+import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
@@ -97,11 +98,11 @@ public class SplitNode extends AFreeplaneAction {
 		final int nodePosition = parent.getIndex(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
 			final MMapController mapController = (MMapController) c.getMapController();
-			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node.isLeft());
 			final String part = parts[i];
 			if (part == null) {
 				continue;
 			}
+			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node.isLeft());
 			((MTextController) TextController.getController()).setNodeText(lowerNode, part);
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 			    .getController();
@@ -125,9 +126,11 @@ public class SplitNode extends AFreeplaneAction {
 				final int elementCount = parent.getElementCount();
 				int notEmptyElementCount = 0;
 				parts = new String[elementCount];
+				int start = parent.getStartOffset();
 				for (int i = 0; i < elementCount; i++) {
 					final Element current = parent.getElement(i);
-					final int start = current.getStartOffset();
+					if(current.isLeaf())
+						continue;
 					final int end = current.getEndOffset();
 					final String paragraphText = doc.getText(start, end - start).trim();
 					if (paragraphText.length() > 0) {
@@ -137,6 +140,7 @@ public class SplitNode extends AFreeplaneAction {
 						if (!string.equals("")) {
 							parts[i] = string;
 							notEmptyElementCount++;
+							start = end;
 						}
 						else {
 							parts[i] = null;
