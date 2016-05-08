@@ -20,11 +20,9 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.LayoutManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,8 +38,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -51,7 +47,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
-import org.freeplane.core.ui.KeyBindingProcessor;
+import org.freeplane.core.ui.IKeyStrokeProcessor;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -62,7 +58,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
  * 03.07.2009
  */
 public class FButtonBar extends JComponent implements IAcceleratorChangeListener, KeyEventDispatcher,
-        WindowFocusListener {
+        WindowFocusListener, IKeyStrokeProcessor {
 	private static final int BUTTON_NUMBER = 12;
 	/**
 	 * 
@@ -73,23 +69,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	private int nextModifiers = 0;
 	private JFrame ownWindowAncestor;
 	final private Timer timer;
-	private final KeyBindingProcessor keyProcessor;
-	
-	@SuppressWarnings("serial")
-    private class ContentPane extends JPanel{
-		@Override
-        protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-			if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT) {
-				if(keyProcessor.processKeyBinding(ks, e, condition, pressed)) {
-					return true;
-				}
-				return processFKey(e);
-			}
-			return false;
-        }
-	}
-
-	public FButtonBar(JRootPane rootPane, KeyBindingProcessor proc) {
+	public FButtonBar(JRootPane rootPane) {
 		timer = new Timer(500, new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					onModifierChangeImpl();
@@ -97,18 +77,8 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			});
 		timer.setRepeats(false);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
-		final Container oldContentPane = rootPane.getContentPane();
-		final ContentPane newContentPane = new ContentPane();
-		final LayoutManager layoutManager = oldContentPane.getLayout();
-		oldContentPane.setLayout(null);
-		newContentPane.setLayout(layoutManager);
-		for (Component c : oldContentPane.getComponents()) {
-			newContentPane.add(c);
-		}
-		rootPane.setContentPane(newContentPane);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();
-		this.keyProcessor = proc;
 	}
 
 	public void acceleratorChanged(final AFreeplaneAction action, final KeyStroke oldStroke, final KeyStroke newStroke) {
@@ -301,11 +271,16 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		}
 	}
 	
+	@Override
+	public boolean processKeyBinding(KeyStroke ks, KeyEvent e) {
+		return processFKey(e);
+	}
+	
 	private boolean processFKey(final KeyEvent e){
 		if(e.getID() != KeyEvent.KEY_PRESSED)
 			return false;
 		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
-		if (windowAncestor != ownWindowAncestor /*|| !ownWindowAncestor.getJMenuBar().isEnabled()*/) {
+		if (windowAncestor != ownWindowAncestor) {
 			resetModifiers();
 			return false;
 		}

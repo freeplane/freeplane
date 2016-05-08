@@ -18,7 +18,7 @@ public class JMenubarBuilderTest {
 	public void createsEmptyToolbarComponent() {
 		Entry toolbarEntry = new Entry();
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
-		final FreeplaneMenuBar menubar = new FreeplaneMenuBar();
+		final FreeplaneMenuBar menubar = TestMenuBarFactory.createFreeplaneMenuBar();
 		when(userInputListenerFactory.getMenuBar()).thenReturn(menubar);
 		final JMenubarBuilder toolbarBuilder = new JMenubarBuilder(userInputListenerFactory);
 		toolbarBuilder.visit(toolbarEntry);

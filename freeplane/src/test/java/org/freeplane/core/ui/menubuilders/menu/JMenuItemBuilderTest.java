@@ -149,7 +149,7 @@ public class JMenuItemBuilderTest {
 	@Test
 	public void createsMainMenuWithoutAction() {
 		Entry parentMenuEntry = new Entry();
-		final FreeplaneMenuBar parentMenu = new FreeplaneMenuBar();
+		final FreeplaneMenuBar parentMenu = TestMenuBarFactory.createFreeplaneMenuBar();
 		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);

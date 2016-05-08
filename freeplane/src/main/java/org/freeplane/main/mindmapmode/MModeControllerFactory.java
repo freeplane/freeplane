@@ -30,13 +30,14 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
+import org.freeplane.core.ui.IKeyStrokeProcessor;
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.ui.KeyBindingProcessor;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -265,15 +266,18 @@ public class MModeControllerFactory {
 		    .getStatusBar());
 		final JTabbedPane formattingPanel = new JTabbedPane();
 		Box resisableTabs = new CollapseableBoxBuilder(frameController).setPropertyNameBase("styleScrollPaneVisible").createBox(formattingPanel, Direction.RIGHT);
-		modeController.getUserInputListenerFactory().addToolBar("/format", ViewController.RIGHT, resisableTabs);
-		KeyBindingProcessor keyProcessor = new KeyBindingProcessor();
-		modeController.addExtension(KeyBindingProcessor.class, keyProcessor);
-		keyProcessor.addKeyStrokeProcessor(userInputListenerFactory.getAcceleratorManager());
+		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		final JRootPane rootPane = ((RootPaneContainer)frameController.getMenuComponent()).getRootPane();
-		final FButtonBar fButtonToolBar = new FButtonBar(rootPane, keyProcessor);
+		final FButtonBar fButtonToolBar = new FButtonBar(rootPane);
 		UIComponentVisibilityDispatcher.install(frameController, fButtonToolBar, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addToolBar("/fbuttons", ViewController.TOP, fButtonToolBar);
+		userInputListenerFactory.setKeyEventProcessor(new IKeyStrokeProcessor() {
+			@Override
+			public boolean processKeyBinding(KeyStroke ks, KeyEvent e) {
+				return userInputListenerFactory.getAcceleratorManager().processKeyBinding(ks, e) || fButtonToolBar.processKeyBinding(ks, e);
+			}
+		});
 		controller.addAction(new ToggleToolbarAction("ToggleFBarAction", "/fbuttons"));
 		SModeControllerFactory.install();
 		modeController.addAction(new SetAcceleratorOnNextClickAction());

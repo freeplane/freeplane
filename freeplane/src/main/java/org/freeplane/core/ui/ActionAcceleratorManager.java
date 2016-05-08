@@ -392,29 +392,20 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		return accelerators.get(key(ks));
 	}
 
-	/***********************************************************************************
-	 * REQUIRED METHODS FOR INTERFACES
-	 **********************************************************************************/
-
-	public boolean processKeyBinding(KeyStroke ks, KeyEvent event, int condition, boolean pressed, boolean consumed) {
-		if (!consumed && condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT) {
-			AFreeplaneAction action = actionForAccelerator(ks);
-			if(action == null) {
-				final KeyStroke derivedKeyStroke = FreeplaneMenuBar.derive(ks, event.getKeyChar());
-				action = actionForAccelerator(derivedKeyStroke);
-			}
-			if(action != null && action.isEnabled()) {
-				if(action != null && SwingUtilities.notifyAction(action, ks, event, event.getComponent(), event.getModifiers())) {
-					return true;
-				}
+	public boolean processKeyBinding(KeyStroke ks, KeyEvent event) {
+		AFreeplaneAction action = actionForAccelerator(ks);
+		if(action == null) {
+			final KeyStroke derivedKeyStroke = FreeplaneMenuBar.derive(ks, event.getKeyChar());
+			action = actionForAccelerator(derivedKeyStroke);
+		}
+		if(action != null && action.isEnabled()) {
+			if(action != null && SwingUtilities.notifyAction(action, ks, event, event.getComponent(), event.getModifiers())) {
+				return true;
 			}
 		}
 		return false;
 	}
 
-	/***********************************************************************************
-	 * NESTED TYPE DECLARATIONS
-	 **********************************************************************************/
 	private class KeystrokeValidator implements IKeystrokeValidator {
 		private final AFreeplaneAction action;
 

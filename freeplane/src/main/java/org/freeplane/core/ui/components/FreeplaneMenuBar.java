@@ -25,6 +25,8 @@ import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.ui.IKeyStrokeProcessor;
+
 /**
  * This is the menu bar for Freeplane. Actions are defined in MenuListener.
  * Moreover, the StructuredMenuHolder of all menus are hold here.
@@ -34,8 +36,10 @@ public class FreeplaneMenuBar extends JMenuBar {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	final private IKeyStrokeProcessor keyEventProcessor;
 
-	public FreeplaneMenuBar() {
+	public FreeplaneMenuBar(IKeyStrokeProcessor keyEventProcessor) {
+		this.keyEventProcessor = keyEventProcessor;
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0), "none");
 	}
 
@@ -84,7 +88,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 		        && 0 == (e.getModifiers() & ~KEY_MODIFIERS) && e.getSource() instanceof JTextComponent) {
 			return false;
 		}
-		if (super.processKeyBinding(ks, e, condition, pressed)) {
+		if (keyEventProcessor.processKeyBinding(ks, e) || super.processKeyBinding(ks, e, condition, pressed)) {
 			return true;
 		}
 		final KeyStroke derivedKS = FreeplaneMenuBar.derive(ks, e.getKeyChar());
