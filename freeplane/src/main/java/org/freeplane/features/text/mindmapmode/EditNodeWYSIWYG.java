@@ -38,6 +38,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
+import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
@@ -92,6 +93,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			buttonPane.add(cancelButton);
 			buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
+			MnemonicSetter.INSTANCE.setComponentMnemonics(buttonPane, htmlEditorPanel.getMenuBar());
+
 			if (ResourceController.getResourceController().getBooleanProperty("el__buttons_above")) {
 				getContentPane().add(buttonPane, BorderLayout.NORTH);
 			}

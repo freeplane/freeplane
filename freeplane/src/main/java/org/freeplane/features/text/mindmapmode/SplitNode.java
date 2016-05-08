@@ -129,7 +129,7 @@ public class SplitNode extends AFreeplaneAction {
 				int start = parent.getStartOffset();
 				for (int i = 0; i < elementCount; i++) {
 					final Element current = parent.getElement(i);
-					if(current.isLeaf() && i < elementCount - 1)
+					if(current.isLeaf() && ! current.getName().equals(HTML.Tag.BR.toString()) && i < elementCount - 1)
 						continue;
 					final int end = current.getEndOffset();
 					final String newFragment = getFragment(doc, start, end);
