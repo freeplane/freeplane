@@ -19,6 +19,7 @@ import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
+import org.freeplane.core.ui.menubuilders.menu.TestMenuBarFactory;
 import org.freeplane.features.mode.Controller;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class MenuBuilderAcceptanceTest {
 		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(new JToolBar());
 		when(userInputListenerFactory.getNodePopupMenu()).thenReturn(new JPopupMenu());
 		when(userInputListenerFactory.getMapPopup()).thenReturn(new JPopupMenu());
-		when(userInputListenerFactory.getMenuBar()).thenReturn(new FreeplaneMenuBar());
+		when(userInputListenerFactory.getMenuBar()).thenReturn(TestMenuBarFactory.createFreeplaneMenuBar());
 		final PhaseProcessor buildProcessor = new MenuBuildProcessFactory(
 		    userInputListenerFactory, Controller.getCurrentModeController(), new FreeplaneResourceAccessor(),
 		    mock(IAcceleratorMap.class), 

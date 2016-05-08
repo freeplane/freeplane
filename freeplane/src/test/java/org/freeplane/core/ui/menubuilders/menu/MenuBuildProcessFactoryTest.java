@@ -35,7 +35,7 @@ public class MenuBuildProcessFactoryTest {
 		final ResourceAccessor resourceAccessorMock = mock(ResourceAccessor.class);
 		when(resourceAccessorMock.getRawText(Matchers.anyString())).thenReturn("text");
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
-		final FreeplaneMenuBar menubar = new FreeplaneMenuBar();
+		final FreeplaneMenuBar menubar = TestMenuBarFactory.createFreeplaneMenuBar();
 		when(userInputListenerFactory.getMenuBar()).thenReturn(menubar);
 		phaseProcessor = new MenuBuildProcessFactory(userInputListenerFactory, freeplaneActions,
 			resourceAccessorMock, mock(IAcceleratorMap.class), new EntriesForAction(), Collections.<BuildPhaseListener>emptyList()).getBuildProcessor();

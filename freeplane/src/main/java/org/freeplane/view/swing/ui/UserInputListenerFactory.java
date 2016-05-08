@@ -22,6 +22,7 @@ package org.freeplane.view.swing.ui;
 import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
@@ -44,10 +45,12 @@ import java.util.TreeSet;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
+import org.freeplane.core.ui.IKeyStrokeProcessor;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -102,10 +105,24 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private Entry genericMenuStructure;
 	private SubtreeProcessor subtreeBuilder;
 	final private ModeController modeController;
+	final static private IKeyStrokeProcessor DEFAULT_PROCESSOR = new IKeyStrokeProcessor() {
+		@Override
+		public boolean processKeyBinding(KeyStroke ks, KeyEvent e) {
+			return acceleratorManager.processKeyBinding(ks, e);
+		}
+	};
+	final private IKeyStrokeProcessor delegateProcessor = new IKeyStrokeProcessor() {
+		@Override
+		public boolean processKeyBinding(KeyStroke ks, KeyEvent e) {
+			return keyEventProcessor.processKeyBinding(ks, e);
+		}
+	};
+	private IKeyStrokeProcessor keyEventProcessor;
 
 	public UserInputListenerFactory(final ModeController modeController) {
 		this.modeController = modeController;
 		customBuilders = new ArrayList<Map<String, BuilderDestroyerPair>>(Phase.values().length);
+		keyEventProcessor = DEFAULT_PROCESSOR;
 		buildPhaseListeners = new ArrayList<BuildPhaseListener>();
 		for (@SuppressWarnings("unused")
 		Phase phase : Phase.values()) {
@@ -181,6 +198,12 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		return acceleratorManager;
 	}
+	
+	
+
+	public void setKeyEventProcessor(IKeyStrokeProcessor keyEventProcessor) {
+		this.keyEventProcessor = keyEventProcessor;
+	}
 
 	// isolate unchecked stuff in this method
 	@SuppressWarnings("unchecked")
@@ -217,7 +240,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public FreeplaneMenuBar getMenuBar() {
 		if (menuBar == null) {
-			menuBar = new FreeplaneMenuBar();
+			menuBar = new FreeplaneMenuBar(delegateProcessor);
 		}
 		return menuBar;
 	}
