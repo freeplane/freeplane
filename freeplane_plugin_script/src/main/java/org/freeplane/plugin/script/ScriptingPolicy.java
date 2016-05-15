@@ -20,12 +20,18 @@
 package org.freeplane.plugin.script;
 
 import java.awt.AWTPermission;
+import java.io.File;
+import java.io.FilePermission;
+import java.io.IOException;
+import java.security.AllPermission;
 import java.security.Permission;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.util.PropertyPermission;
 
+import org.freeplane.core.util.Compat;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.osgi.framework.AdminPermission;
 
 /**
@@ -33,6 +39,7 @@ import org.osgi.framework.AdminPermission;
  * Apr 9, 2016
  */
 class ScriptingPolicy extends Policy {
+	private static final AllPermission ALL_PERMISSION = new AllPermission();
 	private static final boolean DISABLE_CHECKS = Boolean
 	    .getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 	final private Policy defaultPolicy;
@@ -43,7 +50,16 @@ class ScriptingPolicy extends Policy {
 		this.defaultPolicy = policy;
 		permissions = new Permissions();
 		permissionBlackList = new Permissions();
-		permissionBlackList.add(new PropertyPermission("org.freeplane.basedirectory", "write"));
+		permissionBlackList.add(new PropertyPermission(ApplicationResourceController.FREEPLANE_BASEDIRECTORY_PROPERTY, "write"));
+		permissionBlackList.add(new PropertyPermission(Compat.FREEPLANE_USERDIR_PROPERTY, "write"));
+		try {
+			final String userDirectory = new File(Compat.getApplicationUserDirectory()).getCanonicalPath();
+			permissionBlackList.add(new FilePermission(userDirectory + "/lib/-", "write,delete"));
+			final String applicationDirectory = new File(System.getProperty(ApplicationResourceController.FREEPLANE_BASEDIRECTORY_PROPERTY)).getCanonicalPath();
+			permissionBlackList.add(new FilePermission(applicationDirectory + "/-", "write,delete"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		permissions.add(new RuntimePermission("accessDeclaredMembers"));
 		permissions.add(new RuntimePermission("accessClassInPackage.*"));
 		permissions.add(new RuntimePermission("getProtectionDomain"));
@@ -63,13 +79,16 @@ class ScriptingPolicy extends Policy {
 		if (DISABLE_CHECKS || defaultPolicy.implies(domain, permission)) {
 			return true;
 		}
-		if (permissions.implies(permission)) {
-			return !permissionBlackList.implies(permission);
+		final Permission requiredPermission = permissionBlackList.implies(permission) ? ALL_PERMISSION : permission;
+		
+		if (permissions.implies(requiredPermission)) {
+			return true;
 		}
+		
 		for (ClassLoader classLoader = domain.getClassLoader(); classLoader != null; //
 		classLoader = classLoader.getParent()) {
 			if (classLoader instanceof ScriptClassLoader) {
-				return ((ScriptClassLoader) classLoader).implies(permission) && !permissionBlackList.implies(permission);
+				return ((ScriptClassLoader) classLoader).implies(requiredPermission);
 			}
 		}
 		return false;
