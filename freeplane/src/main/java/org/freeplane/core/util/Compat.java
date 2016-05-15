@@ -21,7 +21,7 @@ import org.freeplane.features.mode.Controller;
  * @author robert.ladstaetter
  */
 public class Compat {
-	public static final String PROPERTY_FREEPLANE_USERDIR = "org.freeplane.userfpdir";
+	public static final String FREEPLANE_USERDIR_PROPERTY = "org.freeplane.userfpdir";
     public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String VERSION_1_6_0 = "1.6.0";
 
@@ -163,7 +163,7 @@ public class Compat {
 	}
 
 	public static String getApplicationUserDirectoryExcludingVersion() {
-		String userFpDir = System.getProperty(PROPERTY_FREEPLANE_USERDIR);
+		String userFpDir = System.getProperty(FREEPLANE_USERDIR_PROPERTY);
 		if(userFpDir == null){
 			userFpDir = getDefaultFreeplaneUserDirectory();
 		}

@@ -29,10 +29,6 @@ import org.freeplane.features.mode.Controller;
  * 24.12.2012
  */
 public interface FreeplaneStarter {
-	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
-	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
-	public static final String ORG_FREEPLANE_BASEDIRECTORY = "org.freeplane.basedirectory";
-
 	public void setDontLoadLastMaps();
 
 	public Controller createController();

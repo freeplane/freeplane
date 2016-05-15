@@ -93,9 +93,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static String INSTALLATION_BASE_DIRECTORY;
 	static {
 		try {
-			RESOURCE_BASE_DIRECTORY = new File(System.getProperty(FreeplaneStarter.ORG_FREEPLANE_GLOBALRESOURCEDIR,
-			FreeplaneStarter.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR)).getCanonicalPath();
-			INSTALLATION_BASE_DIRECTORY = new File(System.getProperty(FreeplaneStarter.ORG_FREEPLANE_BASEDIRECTORY, RESOURCE_BASE_DIRECTORY + "/..")).getCanonicalPath();
+			RESOURCE_BASE_DIRECTORY = new File(System.getProperty(ApplicationResourceController.FREEPLANE_GLOBALRESOURCEDIR_PROPERTY,
+			ApplicationResourceController.DEFAULT_FREEPLANE_GLOBALRESOURCEDIR)).getCanonicalPath();
+			INSTALLATION_BASE_DIRECTORY = new File(System.getProperty(ApplicationResourceController.FREEPLANE_BASEDIRECTORY_PROPERTY, RESOURCE_BASE_DIRECTORY + "/..")).getCanonicalPath();
 		} catch (IOException e) {
 		}
 	}

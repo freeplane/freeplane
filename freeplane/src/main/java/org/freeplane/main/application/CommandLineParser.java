@@ -144,7 +144,7 @@ class CommandLineParser {
                         System.err.println("option -U<userdir> misses its parameter");
                 }
                 if (userdir != null) {
-                    System.setProperty("org.freeplane.userfpdir", userdir);
+                    System.setProperty(Compat.FREEPLANE_USERDIR_PROPERTY, userdir);
                     // make sure that old settings aren't imported!
                     System.setProperty("org.freeplane.old_userfpdir", userdir);
                 }
