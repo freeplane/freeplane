@@ -60,6 +60,7 @@ public class Launcher {
 		setDefine("org.knopflerfish.framework.readonly", "true");
 		setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
 		setDefine("org.freeplane.basedirectory", getAbsolutePath());
+		setDefineIfNeeded("org.freeplane.userfpdir", System.getProperty("user.home")+ File.separator + ".freeplane");
 		setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
 		setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
 		setDefine("org.osgi.framework.storage", getAbsolutePath("fwdir"));

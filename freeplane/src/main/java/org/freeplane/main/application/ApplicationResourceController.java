@@ -45,12 +45,15 @@ import org.freeplane.features.filter.FilterController;
  * @author Dimitry Polivaev
  */
 public class ApplicationResourceController extends ResourceController {
-	private static final String FREEPLANE_MAC_PROPERTIES = "/freeplane_mac.properties";
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
 	final private Properties props;
 	final private ClassLoader urlResourceLoader;
+	private static final String FREEPLANE_MAC_PROPERTIES = "/freeplane_mac.properties";
+	public static final String FREEPLANE_BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
+	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
+	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 
 	/**
 	 * @param controller
