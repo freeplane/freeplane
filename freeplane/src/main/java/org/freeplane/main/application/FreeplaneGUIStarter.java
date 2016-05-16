@@ -25,9 +25,12 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Window;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
@@ -61,6 +64,7 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
@@ -82,6 +86,7 @@ import org.freeplane.main.application.CommandLineParser.Options;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
@@ -372,18 +377,22 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			loadLastMaps();
 			addonsController.setAutoInstallEnabled(true);
 		}
+		final MModeController modeController = (MModeController) controller.getModeController();
 		if(firstRun && ! dontLoadLastMaps){
 			final File baseDir = new File(FreeplaneGUIStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			final String map = ResourceController.getResourceController().getProperty("whatsnew_map");
 			final File absolutFile = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, map, Locale.getDefault().getLanguage());
-			if(absolutFile != null)
-				loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});
+			if(absolutFile != null) {
+				try {
+					((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(absolutFile.toURL());
+				} catch (Exception e) {
+				}
+			}
 		}
 		if (null != controller.getMap()) {
 			return;
 		}
 		controller.selectMode(MModeController.MODENAME);
-		final MModeController modeController = (MModeController) controller.getModeController();
 		MFileManager.getController(modeController).newMapFromDefaultTemplate();
 	}
 
