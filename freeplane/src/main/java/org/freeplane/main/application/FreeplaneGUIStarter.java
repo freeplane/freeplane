@@ -374,7 +374,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
 		if(firstRun && ! dontLoadLastMaps){
 			final File baseDir = new File(FreeplaneGUIStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
-			final String map = ResourceController.getResourceController().getProperty("first_start_map");
+			final String map = ResourceController.getResourceController().getProperty("whatsnew_map");
 			final File absolutFile = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, map, Locale.getDefault().getLanguage());
 			if(absolutFile != null)
 				loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});

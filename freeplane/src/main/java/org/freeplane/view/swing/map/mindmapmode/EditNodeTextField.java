@@ -287,6 +287,7 @@ public class EditNodeTextField extends EditNodeBase {
 		else SPLIT_KEY_CODE = -1;
 	}
 	private class TextFieldListener implements KeyListener, FocusListener, MouseListener {
+		private static final int KEYSTROKE_MODIFIERS = KeyEvent.ALT_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK | KeyEvent.META_DOWN_MASK;
 		final int CANCEL = 2;
 		final int EDIT = 1;
 		Integer eventSource = EDIT;
@@ -337,12 +338,14 @@ public class EditNodeTextField extends EditNodeBase {
         }
 
 		public void keyPressed(final KeyEvent e) {
-			if (e.isControlDown() || e.isMetaDown() || eventSource == CANCEL||textfield==null) {
+			if (eventSource == CANCEL||textfield==null) {
 				return;
 			}
 			final int keyCode = e.getKeyCode();
 			switch (keyCode) {
 				case KeyEvent.VK_ESCAPE:
+					if (e.isControlDown() || e.isMetaDown())
+						break;
 					eventSource = CANCEL;
 					hideMe();
 					getEditControl().cancel();
@@ -350,6 +353,8 @@ public class EditNodeTextField extends EditNodeBase {
 					e.consume();
 					break;
 				case KeyEvent.VK_ENTER: {
+					if (e.isControlDown() || e.isMetaDown())
+						break;
 					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
 					if (enterConfirms == e.isAltDown() || e.isShiftDown()) {
 						e.consume();
@@ -368,13 +373,18 @@ public class EditNodeTextField extends EditNodeBase {
 				}
 				break;
 				case KeyEvent.VK_TAB:
+					if (e.isControlDown() || e.isMetaDown())
+						break;
 					textfield.replaceSelection("    ");
-					//$FALL-THROUGH$
+					e.consume();
+					break;
 				case KeyEvent.VK_SPACE:
+					if (e.isControlDown() || e.isMetaDown())
+						break;
 					e.consume();
 					break;
 				default:
-					if(keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown() && getEditControl().canSplit()){
+					if(isSplitActionTriggered(e) && getEditControl().canSplit()){
 						eventSource = CANCEL;
 						final String output = getNewText();
 						final int caretPosition = textfield.getCaretPosition();
@@ -385,6 +395,16 @@ public class EditNodeTextField extends EditNodeBase {
 					}
 					break;
 			}
+		}
+
+		protected boolean isSplitActionTriggered(final KeyEvent e) {
+			final int keyCode = e.getKeyCode();
+			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown())
+				return true;
+			final ModeController modeController = Controller.getCurrentModeController();
+			final KeyStroke splitNodeHotKey = modeController.getUserInputListenerFactory().getAcceleratorManager().getAccelerator("SplitNode");
+			return splitNodeHotKey != null && splitNodeHotKey.getKeyCode() == keyCode  &&  
+					(e.getModifiersEx() & KEYSTROKE_MODIFIERS)  == (splitNodeHotKey.getModifiers() & KEYSTROKE_MODIFIERS);
 		}
 
 		public void keyReleased(final KeyEvent e) {
