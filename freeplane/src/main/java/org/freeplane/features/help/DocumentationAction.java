@@ -61,7 +61,7 @@ class DocumentationAction extends AFreeplaneAction {
 		}
 		try {
 			final URL endUrl = file.toURL();
-			SwingUtilities.invokeLater(new Runnable() {
+			UITools.executeWhenNodeHasFocus(new Runnable() {
 				public void run() {
 					try {
 						if (endUrl.getFile().endsWith(".mm")) {
