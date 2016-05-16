@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
@@ -47,6 +48,8 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
@@ -72,22 +75,20 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
 			LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
 			LabelAndMnemonicSetter.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
-			okButton.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent e) {
-					submit();
-				}
-			});
+			final SubmitAction submitAction = new SubmitAction();
+			okButton.addActionListener(submitAction);
 			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					cancel();
 				}
 			});
-			splitButton.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent e) {
-					split();
-				}
-			});
-			UITools.addKeyActionToDialog(getDialog(), new SubmitAction(), "alt ENTER", "submit");
+			final SplitAction splitAction = new SplitAction();
+			splitButton.addActionListener(splitAction);
+			UITools.addKeyActionToDialog(getDialog(), submitAction, "alt ENTER", "submit");
+			final ModeController modeController = Controller.getCurrentModeController();
+			final KeyStroke splitNodeHotKey = modeController.getUserInputListenerFactory().getAcceleratorManager().getAccelerator("SplitNode");
+			if(splitNodeHotKey != null)
+				UITools.addKeyActionToDialog(getDialog(), splitAction, splitNodeHotKey.toString(), "split");
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(okButton);
 			buttonPane.add(cancelButton);
