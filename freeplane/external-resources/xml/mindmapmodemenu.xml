@@ -476,6 +476,7 @@
 			<Entry name="AboutAction" builder="removeOnMac"/>
 			<Entry builder="separator" />
 			<Entry name="GettingStartedAction" accelerator="F1" />
+			<Entry name="WhatsNewAction" />
 			<Entry name="DocumentationAction" />
 			<Entry name="OnlineReference" />
 			<Entry name="HotKeyInfoAction" />
