@@ -2,6 +2,7 @@
 1.6.0
 ===============================
 User translations
+Dialog to choose template when new map is created
 
 ===============================
 1.5.9
