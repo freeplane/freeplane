@@ -123,26 +123,9 @@ public class OptionPanelBuilder {
 
 		private Set<String> findAvailableLocales() {
 			final TreeSet<String> locales = new TreeSet<String>();
-			final String name = "/translations/locales.txt";
-			final InputStream stream = ResourceController.class.getResourceAsStream(name);
-			if (stream == null) {
-				LogUtils.info("available locales not found");
-                // as this happens when Freeplane is started from Eclipse add some locales for developer's sake
-                locales.addAll(Arrays.asList(("ar,ca,cs,da,de,el,es,et,fr,gl,hr,hu,id,it,ja,ko,lt,nb,nl,nn,pl,pt_BR,"
-                        + "pt_PT,ru,sk,sl,sr,sv,tr,uk_UA,zh_CN,zh_TW,en").split(",")));
-				return locales;
-			}
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try {
-                                FileUtils.copyStream(stream, out);
-                                locales.addAll(Arrays.asList(out.toString().split("\\s+")));
-			}
-			catch (IOException e) {
-				// OK - return locales
-			}
-			finally {
-				FileUtils.silentlyClose(stream);
-			}
+			LogUtils.info("available locales not found");
+			// as this happens when Freeplane is started from Eclipse add some locales for developer's sake
+			locales.addAll(Arrays.asList(ResourceController.getResourceController().getProperty("locales") .split(",")));
 			return locales;
 		}
 	}
