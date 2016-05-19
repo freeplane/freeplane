@@ -253,7 +253,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		final Shape shape = model.getShape();
 		arrowLink.setAttribute("SHAPE", shape.toString());
 		final Color color = model.getColor();
-		arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color));
+		arrowLink.setAttribute("COLOR", ColorUtils.colorToRGBString(color));
 		final int width = model.getWidth();
 		arrowLink.setAttribute("WIDTH", Integer.toString(width));
 		final int alpha = model.getAlpha();
