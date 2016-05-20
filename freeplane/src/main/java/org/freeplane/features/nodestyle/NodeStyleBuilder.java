@@ -90,16 +90,20 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	private void registerAttributeHandlers(final ReadManager reader) {
 		final IAttributeHandler colorHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final NodeModel node = (NodeModel) userObject;
-				NodeStyleModel.setColor(node, ColorUtils.stringToColor(value));
+				if (value.length() == 7) {
+					final NodeModel node = (NodeModel) userObject;
+					NodeStyleModel.setColor(node, ColorUtils.stringToColor(value));
+				}
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "COLOR", colorHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "COLOR", colorHandler);
 		final IAttributeHandler bgHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final NodeModel node = (NodeModel) userObject;
-				NodeStyleModel.setBackgroundColor(node, ColorUtils.stringToColor(value));
+				if (value.length() == 7) {
+					final NodeModel node = (NodeModel) userObject;
+					NodeStyleModel.setBackgroundColor(node, ColorUtils.stringToColor(value));
+				}
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_COLOR", bgHandler);
