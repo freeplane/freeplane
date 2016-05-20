@@ -35,6 +35,8 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -436,13 +438,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     	}
     }
 
+    static private final Pattern freeplaneWithReference = Pattern.compile("\\.mm#(ID_\\d+)$", Pattern.CASE_INSENSITIVE); 
 
     private void loadMaps(final Controller controller, final String[] args) {
 		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			try {
-				final URL url;
 				if(fileArgument.startsWith("http://")) {
 					LinkController.getController().loadURI(new URI(fileArgument));
 				}
@@ -454,12 +456,18 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 					if (!FileUtils.isAbsolutePath(fileArgument)) {
 						fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 					}
-					url = Compat.fileToUrl(new File(fileArgument));
-					if (url.getPath().toLowerCase().endsWith(
+					if (fileArgument.toLowerCase().endsWith(
 						org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-						final MModeController modeController = (MModeController) controller.getModeController();
-						MapController mapController = modeController.getMapController();
-						mapController.openMapSelectReferencedNode(url);
+						LinkController.getController().loadURI(new File(fileArgument).toURI());
+					} else {
+						final Matcher matcher = freeplaneWithReference.matcher(fileArgument);
+						if(matcher.find()) {
+							String nodeReference = matcher.group(1);
+							fileArgument = fileArgument.substring(0, matcher.start(1) - 1);
+							LinkController.getController().loadURI(new File(fileArgument).toURI());
+							controller.getModeController().getMapController().select(nodeReference);
+						}
+							
 					}
 				}
 			}
