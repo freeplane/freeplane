@@ -90,24 +90,36 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	private void registerAttributeHandlers(final ReadManager reader) {
 		final IAttributeHandler colorHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				if (value.length() == 7) {
-					final NodeModel node = (NodeModel) userObject;
-					NodeStyleModel.setColor(node, ColorUtils.stringToColor(value));
-				}
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setColor(node, ColorUtils.stringToColor(value, NodeStyleModel.getColor(node)));
+			}
+		};
+		final IAttributeHandler alphaHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setColor(node, ColorUtils.alphaToColor(value, NodeStyleModel.getColor(node)));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "COLOR", colorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "ALPHA", alphaHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "COLOR", colorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "ALPHA", alphaHandler);
 		final IAttributeHandler bgHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				if (value.length() == 7) {
-					final NodeModel node = (NodeModel) userObject;
-					NodeStyleModel.setBackgroundColor(node, ColorUtils.stringToColor(value));
-				}
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setBackgroundColor(node, ColorUtils.stringToColor(value, NodeStyleModel.getBackgroundColor(node)));
+			}
+		};
+		final IAttributeHandler bgAlphaHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setBackgroundColor(node, ColorUtils.alphaToColor(value, NodeStyleModel.getBackgroundColor(node)));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_COLOR", bgHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_ALPHA", bgAlphaHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BACKGROUND_COLOR", bgHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BACKGROUND_ALPHA", bgAlphaHandler);
 		
 		final IAttributeHandler shapeHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
@@ -293,11 +305,11 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	                             final boolean forceFormatting) {
 		final Color color = forceFormatting ? nsc.getColor(node) : style.getColor();
 		if (color != null) {
-			writer.addAttribute("COLOR", ColorUtils.colorToString(color));
+			ColorUtils.addColorAttributes(writer, "COLOR", "ALPHA", color);
 		}
 		final Color backgroundColor = forceFormatting ? nsc.getBackgroundColor(node) : style.getBackgroundColor();
 		if (backgroundColor != null) {
-			writer.addAttribute("BACKGROUND_COLOR", ColorUtils.colorToString(backgroundColor));
+			ColorUtils.addColorAttributes(writer, "BACKGROUND_COLOR", "BACKGROUND_ALPHA", backgroundColor);
 		}
 		final ShapeConfigurationModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
 		final Shape shape = shapeConfiguration.getShape();

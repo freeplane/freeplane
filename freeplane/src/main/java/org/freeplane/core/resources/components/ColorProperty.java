@@ -81,7 +81,8 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public String getValue() {
-		return ColorUtils.colorToString(getColorValue());
+		final Color colorValue = getColorValue();
+		return ColorUtils.colorToRGBAString(colorValue);
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
@@ -117,7 +118,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 		if (input == null) {
 			input = Color.WHITE;
 		}
-		mButton.setBackground(input);
+		mButton.setBackground(ColorUtils.alphaToColor(255, input));
 		final Color textColor = UITools.getTextColorForBackground(input);
 		mButton.setForeground(textColor);
 		mButton.setText(ColorUtils.colorToString(input));

@@ -214,7 +214,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		if(color != null){
 			arrowLink.setColor(ColorUtils.stringToColor(color));
 			if(transparency == null){
-				arrowLink.setAlpha(255);
+				arrowLink.setAlpha(ColorUtils.NON_TRANSPARENT_ALPHA);
 			}
 		}
 		else{
