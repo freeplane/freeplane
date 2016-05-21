@@ -19,54 +19,25 @@
  */
 package org.freeplane.main.application;
 
-import static java.awt.event.KeyEvent.VK_ALT;
-import static java.awt.event.KeyEvent.VK_CONTROL;
-import static java.awt.event.KeyEvent.VK_META;
-import static java.awt.event.KeyEvent.VK_SHIFT;
-import static java.awt.event.KeyEvent.VK_WINDOWS;
-
 import java.awt.Component;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
 import net.infonode.docking.View;
-
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
  * 27.04.2013
  */
+@SuppressWarnings("serial")
 final class ConnectedToMenuView extends View {
-    ConnectedToMenuView(String title, Icon icon, Component component) {
+	ConnectedToMenuView(String title, Icon icon, Component component) {
 	    super(title, icon, component);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see javax.swing.JComponent#processKeyBinding(javax.swing.KeyStroke,
-     * java.awt.event.KeyEvent, int, boolean)
-     */
     @Override
     protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
-    	if (super.processKeyBinding(ks, e, condition, pressed)) {
-    		return true;
-    	}
-    	if(containsModifierKeyCode(ks))
-    		return false;
-    	final FreeplaneMenuBar freeplaneMenuBar = Controller.getCurrentController().getViewController()
-    	    .getFreeplaneMenuBar();
-    	return freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed);
+    	return super.processKeyBinding(ks, e, condition, pressed) || MenuKeyProcessor.INSTANCE.processKeyBinding(ks, e, condition, pressed);
     }
-
-    private static final List<Integer> modifierKeyCodes = Arrays.asList(VK_CONTROL, VK_ALT, VK_SHIFT, VK_META, VK_WINDOWS);
-	private boolean containsModifierKeyCode(final KeyStroke ks) {
-		return modifierKeyCodes.contains(ks.getKeyCode());
-	}
 }

@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Window;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,6 +41,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
@@ -166,6 +169,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		dontLoadLastMaps = true;
     }
 
+	@SuppressWarnings("serial")
 	public Controller createController() {
 		try {
 			Controller controller = new Controller(applicationResourceController);
@@ -180,6 +184,15 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			FrameController.setLookAndFeel(lookandfeel);
 			final JFrame frame;
 			frame = new JFrame("Freeplane");
+			frame.setContentPane(new JPanel(){
+
+				@Override
+				protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+					return super.processKeyBinding(ks, e, condition, pressed) 
+							|| MenuKeyProcessor.INSTANCE.processKeyBinding(ks, e, condition, pressed);
+				}
+				
+			});
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {

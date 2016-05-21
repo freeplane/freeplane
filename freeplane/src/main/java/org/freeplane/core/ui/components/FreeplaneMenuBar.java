@@ -84,7 +84,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 	@Override
 	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		// ignore key events without modifiers if text component is a source
-		if (e.getKeyChar() != KeyEvent.CHAR_UNDEFINED && e.getKeyChar() != '\0'
+		if (e.getKeyChar() != KeyEvent.CHAR_UNDEFINED && e.getKeyChar() != '\0' && e.getKeyChar() != KeyEvent.VK_ESCAPE
 		        && 0 == (e.getModifiers() & ~KEY_MODIFIERS) && e.getSource() instanceof JTextComponent) {
 			return false;
 		}
