@@ -19,6 +19,7 @@
  */
 package org.freeplane.launcher;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -45,7 +46,20 @@ public class Launcher {
 		argCount = 0;
 	}
 
+	private static void fixDesktopAppName() {
+		try {
+			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+			java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+			awtAppClassNameField.setAccessible(true);
+			awtAppClassNameField.set(xToolkit, "Freeplane");
+		} catch (NoSuchFieldException | SecurityException
+				| IllegalArgumentException | IllegalAccessException e) {
+			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
+		}
+	}
+
 	public static void main(String[] args) {
+		fixDesktopAppName();
 		new Launcher().launch(args);
 	}
 
