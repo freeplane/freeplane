@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.util.LogUtils;
@@ -23,13 +24,16 @@ public class ImagePreview extends BitmapImagePreview {
 
 	@Override
 	protected void updateView(final File file) {
-		final FactoryFileFilter filter = (FactoryFileFilter) fc.getFileFilter();
+		final Object fileFilter = fc.getClientProperty(FactoryFileFilter.class);
+		if(! (fileFilter instanceof FactoryFileFilter))
+			return;
+		final FactoryFileFilter factoryFileFilter = (FactoryFileFilter) fileFilter;
 		final Dimension size = getSize();
 		size.width -= 2 * BORDER_WIDTH;
 		size.height -= 2 * BORDER_WIDTH;
 		JComponent viewer;
 		try {
-			viewer = (JComponent) filter.getFactory().createViewer(file.getAbsoluteFile().toURI(), size);
+			viewer = (JComponent) factoryFileFilter.getFactory().createViewer(file.getAbsoluteFile().toURI(), size);
 		}
 		catch (final MalformedURLException e) {
 			LogUtils.warn(e);

@@ -456,17 +456,19 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
 		final JFileChooser chooser = urlManager.getFileChooser(null, false);
 		chooser.setAcceptAllFileFilterUsed(false);
+		final FileFilter fileFilter;
 		if (factories.size() > 1) {
-			final FileFilter combiFileFilter = getCombiFileFilter();
-			chooser.addChoosableFileFilter(combiFileFilter);
+			fileFilter = getCombiFileFilter();
+			chooser.addChoosableFileFilter(fileFilter);
 			for (final IViewerFactory factory : factories) {
 				chooser.addChoosableFileFilter(new FactoryFileFilter(factory));
 			}
-			chooser.setFileFilter(combiFileFilter);
 		}
 		else {
-			chooser.setFileFilter(new FactoryFileFilter(factories.iterator().next()));
+			fileFilter = new FactoryFileFilter(factories.iterator().next());
 		}
+		chooser.setFileFilter(fileFilter);
+		chooser.putClientProperty(FactoryFileFilter.class, fileFilter);
 		chooser.setAccessory(new ImagePreview(chooser));
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
 		    .getCurrentRootComponent());
