@@ -46,12 +46,15 @@ public class Launcher {
 		argCount = 0;
 	}
 
-	private static void fixDesktopAppName() {
+	private static void fixX11AppName() {
 		try {
 			Toolkit xToolkit = Toolkit.getDefaultToolkit();
-			java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
-			awtAppClassNameField.setAccessible(true);
-			awtAppClassNameField.set(xToolkit, "Freeplane");
+			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
+			{
+				java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+				awtAppClassNameField.setAccessible(true);
+				awtAppClassNameField.set(xToolkit, "Freeplane");
+			}
 		} catch (NoSuchFieldException | SecurityException
 				| IllegalArgumentException | IllegalAccessException e) {
 			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
@@ -59,7 +62,7 @@ public class Launcher {
 	}
 
 	public static void main(String[] args) {
-		fixDesktopAppName();
+		fixX11AppName();
 		new Launcher().launch(args);
 	}
 
