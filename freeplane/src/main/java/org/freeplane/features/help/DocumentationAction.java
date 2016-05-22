@@ -20,23 +20,11 @@
 package org.freeplane.features.help;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import javax.swing.Action;
-import javax.swing.SwingUtilities;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-
-import org.freeplane.core.util.ConfigurationUtils;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-
 
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
@@ -48,41 +36,14 @@ class DocumentationAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		final File userDir = new File(resourceController.getFreeplaneUserDirectory());
-		final File baseDir = new File(resourceController.getInstallationBaseDir());
-		final String languageCode = resourceController.getLanguageCode();
-		final File file = ConfigurationUtils.getLocalizedFile(new File[]{userDir, baseDir}, document, languageCode);
-		if(file == null){
-			String name = (String) getValue(Action.NAME);
-			String errorMessage = TextUtils.format("invalid_file_msg", name);
-			UITools.errorMessage(errorMessage);
-			return;
-		}
-		try {
-			final URL endUrl = file.toURL();
-			UITools.executeWhenNodeHasFocus(new Runnable() {
-				public void run() {
-					try {
-						if (endUrl.getFile().endsWith(".mm")) {
-							 Controller.getCurrentController().selectMode(MModeController.MODENAME);
-							 ((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(endUrl);
-						}
-						else {
-							Controller.getCurrentController().getViewController().openDocument(endUrl);
-						}
-					}
-					catch (final Exception e1) {
-						LogUtils.severe(e1);
-					}
-				}
-			});
-		}
-		catch (final MalformedURLException e1) {
-			LogUtils.warn(e1);
-		}
+		UITools.executeWhenNodeHasFocus(new Runnable() {
+			public void run() {
+				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+				mapController.newDocumentationMap(document);
+			}
+		});
 	}
-	
+
 	@Override
 	public void afterMapChange(final Object newMap) {
 	}

@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;
@@ -52,6 +53,7 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
@@ -85,6 +87,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.features.url.NodeAndMapReference;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
@@ -857,6 +860,43 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
     }
+	
+	public void newDocumentationMap(final String document) {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final File userDir = new File(resourceController.getFreeplaneUserDirectory());
+		final File baseDir = new File(resourceController.getInstallationBaseDir());
+		final String languageCode = resourceController.getLanguageCode();
+		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(document);
+		final File file = ConfigurationUtils.getLocalizedFile(new File[]{userDir, baseDir}, nodeAndMapReference.getMapReference(), languageCode);
+		if(file == null){
+			String errorMessage = TextUtils.format("invalid_file_msg", document);
+			UITools.errorMessage(errorMessage);
+			return;
+		}
+		try {
+			final URL endUrl = file.toURL();
+			try {
+				if (endUrl.getFile().endsWith(".mm")) {
+					Controller.getCurrentController().selectMode(MModeController.MODENAME);
+					newDocumentationMap(endUrl);
+					if(nodeAndMapReference.hasNodeReference())
+						select(nodeAndMapReference.getNodeReference());
+
+				}
+				else {
+					Controller.getCurrentController().getViewController().openDocument(endUrl);
+				}
+			}
+			catch (final Exception e1) {
+				LogUtils.severe(e1);
+			}
+		}
+		catch (final MalformedURLException e1) {
+			LogUtils.warn(e1);
+		}
+	}
+	
+
 
 	/**@throws XMLException
 	 * @deprecated -- use MMapIO*/

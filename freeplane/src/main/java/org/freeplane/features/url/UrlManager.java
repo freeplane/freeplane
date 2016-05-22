@@ -37,8 +37,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -259,19 +257,13 @@ public class UrlManager implements IExtension {
 	@Deprecated
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
-		final boolean hasFreeplaneFileExtension = uriString.toLowerCase().endsWith(
-				org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
-		if (! hasFreeplaneFileExtension) {
-			final Matcher matcher = FREEPLANE_MAP_WITH_NODE_ID.matcher(uriString);
-			if(matcher.find()) {
-				String nodeReference = matcher.group(1);
-				String map = uriString.substring(0, matcher.start(1) - 1);
-				try {
-					loadURL(new URI(map));
-					Controller.getCurrentController().getModeController().getMapController().select(nodeReference);
-				} catch (URISyntaxException e) {
-					LogUtils.severe(e);
-				}
+		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(uriString);
+		if (nodeAndMapReference.hasNodeReference()) {
+			try {
+				loadURL(new URI(nodeAndMapReference.getMapReference()));
+				Controller.getCurrentController().getModeController().getMapController().select(nodeAndMapReference.getNodeReference());
+			} catch (URISyntaxException e) {
+				LogUtils.severe(e);
 			}
 			return;
 		}
@@ -315,7 +307,7 @@ public class UrlManager implements IExtension {
 				}
 			}
 			try {
-				if (hasFreeplaneFileExtension) {
+				if (nodeAndMapReference.hasFreeplaneFileExtension()) {
 					FreeplaneUriConverter freeplaneUriConverter = new FreeplaneUriConverter();
 					final URL url = freeplaneUriConverter.freeplaneUrl(uri);
 					final ModeController modeController = Controller.getCurrentModeController();
@@ -336,7 +328,6 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	private static final Pattern FREEPLANE_MAP_WITH_NODE_ID = Pattern.compile("\\.mm#(ID_\\d+)$", Pattern.CASE_INSENSITIVE);
 	public void loadMap(String map)
 			throws URISyntaxException {
 

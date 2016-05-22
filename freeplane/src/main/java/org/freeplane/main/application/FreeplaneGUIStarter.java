@@ -376,26 +376,16 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			loadLastMaps();
 		}
 		loadMaps(controller, args);
-		if(controller.getMap() != null) {
-			return;
-		}
-		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
+		if (controller.getMap() == null && !alwaysLoadLastMaps && !dontLoadLastMaps) {
 			final AddOnsController addonsController = AddOnsController.getController();
 			addonsController.setAutoInstallEnabled(false);
 			loadLastMaps();
 			addonsController.setAutoInstallEnabled(true);
 		}
-		final MModeController modeController = (MModeController) controller.getModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		if(firstRun && ! dontLoadLastMaps){
-			final File baseDir = new File(FreeplaneGUIStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			final String map = ResourceController.getResourceController().getProperty("whatsnew_map");
-			final File absolutFile = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, map, Locale.getDefault().getLanguage());
-			if(absolutFile != null) {
-				try {
-					((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(absolutFile.toURL());
-				} catch (Exception e) {
-				}
-			}
+			((MMapController)modeController.getMapController()).newDocumentationMap(map);
 		}
 		if (null != controller.getMap()) {
 			return;
