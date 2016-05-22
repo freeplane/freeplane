@@ -861,20 +861,20 @@ public class MMapController extends MapController {
 		}
     }
 	
-	public void newDocumentationMap(final String document) {
+	public void newDocumentationMap(final String file) {
+		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(file);
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final File userDir = new File(resourceController.getFreeplaneUserDirectory());
 		final File baseDir = new File(resourceController.getInstallationBaseDir());
 		final String languageCode = resourceController.getLanguageCode();
-		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(document);
-		final File file = ConfigurationUtils.getLocalizedFile(new File[]{userDir, baseDir}, nodeAndMapReference.getMapReference(), languageCode);
-		if(file == null){
-			String errorMessage = TextUtils.format("invalid_file_msg", document);
+		final File localFile = ConfigurationUtils.getLocalizedFile(new File[]{userDir, baseDir}, nodeAndMapReference.getMapReference(), languageCode);
+		if(localFile == null){
+			String errorMessage = TextUtils.format("invalid_file_msg", file);
 			UITools.errorMessage(errorMessage);
 			return;
 		}
 		try {
-			final URL endUrl = file.toURL();
+			final URL endUrl = localFile.toURL();
 			try {
 				if (endUrl.getFile().endsWith(".mm")) {
 					Controller.getCurrentController().selectMode(MModeController.MODENAME);
