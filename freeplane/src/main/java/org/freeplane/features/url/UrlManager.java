@@ -37,6 +37,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -219,6 +221,7 @@ public class UrlManager implements IExtension {
 		return false;
 	}
 
+
 	/**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
 	@Deprecated
 	public InputStreamReader load(final URL url, final MapModel map)
@@ -256,8 +259,25 @@ public class UrlManager implements IExtension {
 	@Deprecated
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
+		final boolean hasFreeplaneFileExtension = uriString.toLowerCase().endsWith(
+				org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+		if (! hasFreeplaneFileExtension) {
+			final Matcher matcher = FREEPLANE_MAP_WITH_NODE_ID.matcher(uriString);
+			if(matcher.find()) {
+				String nodeReference = matcher.group(1);
+				String map = uriString.substring(0, matcher.start(1) - 1);
+				try {
+					loadURL(new URI(map));
+					Controller.getCurrentController().getModeController().getMapController().select(nodeReference);
+				} catch (URISyntaxException e) {
+					LogUtils.severe(e);
+				}
+			}
+			return;
+		}
+		
 		if (uriString.startsWith("#")) {
-			final String target = uri.getFragment();
+			final String target = uriString.substring(1);
 			try {
 				final ModeController modeController = Controller.getCurrentModeController();
 				final MapController mapController = modeController.getMapController();
@@ -273,7 +293,6 @@ public class UrlManager implements IExtension {
 			return;
 		}
 		try {
-			final String extension = FileUtils.getExtension(uri.getRawPath());
 			if(! uri.isAbsolute()){
 				URI absoluteUri = getAbsoluteUri(uri);
 				if (absoluteUri == null) {
@@ -296,20 +315,11 @@ public class UrlManager implements IExtension {
 				}
 			}
 			try {
-				if ((extension != null)
-				        && extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+				if (hasFreeplaneFileExtension) {
 					FreeplaneUriConverter freeplaneUriConverter = new FreeplaneUriConverter();
 					final URL url = freeplaneUriConverter.freeplaneUrl(uri);
 					final ModeController modeController = Controller.getCurrentModeController();
 					modeController.getMapController().newMap(url);
-					final String ref = uri.getFragment();
-					if (ref != null) {
-						final ModeController newModeController = Controller.getCurrentModeController();
-						final MapController newMapController = newModeController.getMapController();
-						final NodeModel referencedNode = newMapController.getNodeFromID(ref);
-						if(referencedNode != null)
-							newMapController.select(referencedNode);
-					}
 					return;
 				}
 				Controller.getCurrentController().getViewController().openDocument(uri);
@@ -326,6 +336,27 @@ public class UrlManager implements IExtension {
 		}
 	}
 
+	private static final Pattern FREEPLANE_MAP_WITH_NODE_ID = Pattern.compile("\\.mm#(ID_\\d+)$", Pattern.CASE_INSENSITIVE);
+	public void loadMap(String map)
+			throws URISyntaxException {
+
+		if (map.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
+			String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(map);
+			loadURL(new URI(fixedUri));
+			return;
+		}
+		
+		if(map.startsWith("http://") || map.startsWith("https://")|| map.startsWith("file:")) {
+			loadURL(new URI(map));
+		}
+		else {
+			if (!FileUtils.isAbsolutePath(map)) {
+				map = System.getProperty("user.dir") + System.getProperty("file.separator") + map;
+			}
+			loadURL(new File(map).toURI());
+		}
+	}
+	
 	private URI getAbsoluteUri(final URI uri) throws MalformedURLException {
 		if (uri.isAbsolute()) {
 			return uri;

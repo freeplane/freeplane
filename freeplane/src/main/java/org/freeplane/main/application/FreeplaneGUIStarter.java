@@ -30,14 +30,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -54,7 +50,6 @@ import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
@@ -83,8 +78,6 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.FrameController;
-import org.freeplane.features.url.FreeplaneUriConverter;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
@@ -451,38 +444,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     	}
     }
 
-    static private final Pattern freeplaneWithReference = Pattern.compile("\\.mm#(ID_\\d+)$", Pattern.CASE_INSENSITIVE); 
-
     private void loadMaps(final Controller controller, final String[] args) {
 		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			try {
-				if(fileArgument.startsWith("http://")) {
-					LinkController.getController().loadURI(new URI(fileArgument));
-				}
-                else if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
-					String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
-					LinkController.getController().loadURI(new URI(fixedUri));
-				}
-                else {
-					if (!FileUtils.isAbsolutePath(fileArgument)) {
-						fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-					}
-					if (fileArgument.toLowerCase().endsWith(
-						org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-						LinkController.getController().loadURI(new File(fileArgument).toURI());
-					} else {
-						final Matcher matcher = freeplaneWithReference.matcher(fileArgument);
-						if(matcher.find()) {
-							String nodeReference = matcher.group(1);
-							fileArgument = fileArgument.substring(0, matcher.start(1) - 1);
-							LinkController.getController().loadURI(new File(fileArgument).toURI());
-							controller.getModeController().getMapController().select(nodeReference);
-						}
-							
-					}
-				}
+				final LinkController linkController = LinkController.getController();
+				linkController.loadMap(fileArgument);
 			}
 			catch (final Exception ex) {
 				System.err.println("File " + fileArgument + " not loaded");
@@ -490,7 +458,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
     }
 
-	/**
+    /**
 	 */
 	public void run(final String[] args) {
 		try {
