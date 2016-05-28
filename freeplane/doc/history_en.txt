@@ -8,6 +8,8 @@ Dialog to choose template when new map is created
 1.5.9
 ===============================
 Stable release
+User preferences can be saved and loaded from preferences dialog
+Drag and drop of *.freeplaneoptions file into the preferences dialog
 
 ===============================
 1.5.8
