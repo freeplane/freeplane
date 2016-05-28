@@ -224,8 +224,8 @@ public class OptionPanel {
 		if(status != JFileChooser.APPROVE_OPTION)
 			return;
 		final File outputFile = getOutputFile(fileChooser);
-		try {
-			properties.store(new BufferedOutputStream(new FileOutputStream(outputFile)), "");
+		try (final BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(outputFile))){
+			properties.store(output, "");
 		} catch (Exception e) {
 			LogUtils.warn(e);
 		}
