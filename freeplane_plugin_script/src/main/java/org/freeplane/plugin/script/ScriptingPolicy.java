@@ -23,11 +23,16 @@ import java.awt.AWTPermission;
 import java.io.File;
 import java.io.FilePermission;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.AllPermission;
+import java.security.BasicPermission;
+import java.security.CodeSource;
 import java.security.Permission;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
+import java.security.cert.Certificate;
 import java.util.PropertyPermission;
 
 import org.freeplane.core.util.Compat;
@@ -45,6 +50,7 @@ class ScriptingPolicy extends Policy {
 	final private Policy defaultPolicy;
 	final private Permissions permissions;
 	final private Permissions permissionBlackList;
+	final private CodeSource userLibCodeSource;
 
 	public ScriptingPolicy(Policy policy) {
 		this.defaultPolicy = policy;
@@ -52,14 +58,18 @@ class ScriptingPolicy extends Policy {
 		permissionBlackList = new Permissions();
 		permissionBlackList.add(new PropertyPermission(ApplicationResourceController.FREEPLANE_BASEDIRECTORY_PROPERTY, "write"));
 		permissionBlackList.add(new PropertyPermission(Compat.FREEPLANE_USERDIR_PROPERTY, "write"));
+		CodeSource userLibCodeSource;
 		try {
-			final String userDirectory = new File(Compat.getApplicationUserDirectory()).getCanonicalPath();
-			permissionBlackList.add(new FilePermission(userDirectory + "/lib/-", "write,delete"));
+			final String userLibDirectory = Compat.getApplicationUserDirectory() + "/lib/-";
+			final URL userLibUrl = Compat.fileToUrl(new File (userLibDirectory));
+			userLibCodeSource = new CodeSource(userLibUrl, (Certificate[])null);
+			permissionBlackList.add(new FilePermission(userLibDirectory, "write,delete"));
 			final String applicationDirectory = new File(System.getProperty(ApplicationResourceController.FREEPLANE_BASEDIRECTORY_PROPERTY)).getCanonicalPath();
 			permissionBlackList.add(new FilePermission(applicationDirectory + "/-", "write,delete"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			userLibCodeSource = new CodeSource(null, (Certificate[])null);
 		}
+		this.userLibCodeSource = userLibCodeSource;
 		permissions.add(new RuntimePermission("accessDeclaredMembers"));
 		permissions.add(new RuntimePermission("accessClassInPackage.*"));
 		permissions.add(new RuntimePermission("getProtectionDomain"));
@@ -74,9 +84,12 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new AWTPermission("accessEventQueue"));
 	}
 
+
 	@Override
 	public boolean implies(ProtectionDomain domain, Permission permission) {
-		if (DISABLE_CHECKS || defaultPolicy.implies(domain, permission)) {
+		if (DISABLE_CHECKS || //
+				defaultPolicy.implies(domain, permission) || //
+				userLibCodeSource.implies(domain.getCodeSource())) {
 			return true;
 		}
 		final Permission requiredPermission = permissionBlackList.implies(permission) ? ALL_PERMISSION : permission;

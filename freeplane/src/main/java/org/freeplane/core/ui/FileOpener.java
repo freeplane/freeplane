@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.url.mindmapmode;
+package org.freeplane.core.ui;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -29,6 +29,8 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,21 +39,20 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.MindMapNodesSelection;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class FileOpener implements DropTargetListener {
-	/**
-	 *
-	 */
-// 	final private ModeController modeController;
+	
+    private final String fileExtension;
+	private Listener listener;
 
-	/**
-	 * @param modeController
-	 */
-	public FileOpener() {
-//		this.modeController = modeController;
+	public static interface Listener {
+         public void filesDropped(Collection<URL> urls ) throws Exception;
+    }
+    
+
+	public FileOpener(String fileExtension, Listener listener) {
+		this.listener = listener;
+		this.fileExtension = fileExtension;
 	}
 
 	public void dragEnter(final DropTargetDragEvent dtde) {
@@ -71,6 +72,9 @@ public class FileOpener implements DropTargetListener {
 	}
 
 	static final private Pattern filePattern = Pattern.compile("file://[^\\s" + File.pathSeparatorChar + "]+");
+	private boolean isMindMapUrl(final String urlString) {
+	    return urlString.substring(urlString.length() - fileExtension.length() - 1).equalsIgnoreCase("." + fileExtension);
+    }
 
 	@SuppressWarnings("unchecked")
 	public void drop(final DropTargetDropEvent dtde) {
@@ -80,47 +84,47 @@ public class FileOpener implements DropTargetListener {
 		}
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		try {
+			ArrayList<URL> droppedUrls = new ArrayList<>();
 			final Transferable transferable = dtde.getTransferable();
-			Controller.getCurrentController().selectMode(MModeController.MODENAME);
-			ModeController modeController = Controller.getCurrentModeController();
 			if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				final List<File> list = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				for (final File file : list) {
-					String fileName = file.getName();
-					if (file.isDirectory() || !isMindMapUrl(fileName)) {
+					if (file.isDirectory() || ! isMindMapUrl(file.getName()) || ! file.canRead()) {
 						continue;
 					}
-					modeController.getMapController().newMap(Compat.fileToUrl(file));
+					final URL url = Compat.fileToUrl(file);
+					
+					droppedUrls.add(url);
 				}
 			}
 			else if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-				final String urls = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-				if(urls.startsWith("file:")){
-					final Matcher matcher = filePattern.matcher(urls);
+				final String urlStringRepresentation = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+				if(urlStringRepresentation.startsWith("file:")){
+					final Matcher matcher = filePattern.matcher(urlStringRepresentation);
 					while (matcher.find()) {
 						final String urlString = matcher.group();
-						if (!isMindMapUrl(urlString)) {
-							continue;
-						}
-						try {
-							final URI uri = new URI(urlString);
-							final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
-							final File file = Compat.urlToFile(url);
-							if(! file.exists() || file.isDirectory())
+						if(isMindMapUrl(urlString)) {
+							try {
+								final URI uri = new URI(urlString);
+								final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+								final File file = Compat.urlToFile(url);
+								if(! file.exists() || file.isDirectory())
+									continue;
+								droppedUrls.add(url);
+							}
+							catch (final Exception e) {
+								e.printStackTrace();
 								continue;
-							modeController.getMapController().newMap(url);
-						}
-						catch (final Exception e) {
-							e.printStackTrace();
-							continue;
+							}
 						}
 					}
 				}
-				else if(urls.startsWith("http://") && isMindMapUrl(urls)){
-					final URL url = new URL(urls);
-					modeController.getMapController().newMap(url);
+				else if(urlStringRepresentation.startsWith("http://") && isMindMapUrl(urlStringRepresentation)){
+					final URL url = new URL(urlStringRepresentation);
+					droppedUrls.add(url);
 				}
 			}
+			listener.filesDropped(droppedUrls);
 		}
 		catch (final Exception e) {
 			UITools.errorMessage(TextUtils.format("dropped_file_error", e.getMessage()));
@@ -129,10 +133,6 @@ public class FileOpener implements DropTargetListener {
 		}
 		dtde.dropComplete(true);
 	}
-
-	private boolean isMindMapUrl(final String urlString) {
-	    return urlString.substring(urlString.length() - 3).equalsIgnoreCase(".mm");
-    }
 
 	public void dropActionChanged(final DropTargetDragEvent e) {
 	}

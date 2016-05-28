@@ -19,6 +19,7 @@
  */
 package org.freeplane.launcher;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -45,7 +46,23 @@ public class Launcher {
 		argCount = 0;
 	}
 
+	private static void fixX11AppName() {
+		try {
+			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
+			{
+				java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+				awtAppClassNameField.setAccessible(true);
+				awtAppClassNameField.set(xToolkit, "Freeplane");
+			}
+		} catch (NoSuchFieldException | SecurityException
+				| IllegalArgumentException | IllegalAccessException e) {
+			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
+		}
+	}
+
 	public static void main(String[] args) {
+		fixX11AppName();
 		new Launcher().launch(args);
 	}
 
@@ -60,7 +77,6 @@ public class Launcher {
 		setDefine("org.knopflerfish.framework.readonly", "true");
 		setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
 		setDefine("org.freeplane.basedirectory", getAbsolutePath());
-		setDefineIfNeeded("org.freeplane.userfpdir", System.getProperty("user.home")+ File.separator + ".freeplane");
 		setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
 		setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
 		setDefine("org.osgi.framework.storage", getAbsolutePath("fwdir"));

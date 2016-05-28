@@ -74,11 +74,12 @@ import net.infonode.util.Direction;
 
 import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
-import org.freeplane.features.url.mindmapmode.FileOpener;
+import org.freeplane.features.url.mindmapmode.DroppedMindMapOpener;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
@@ -110,7 +111,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
         }
 		removeDesktopPaneAccelerators();
 		mapViews = new Vector<Component>();
-		final FileOpener fileOpener = new FileOpener();
+		final FileOpener fileOpener = new FileOpener("mm", new DroppedMindMapOpener());
 		new DropTarget(rootWindow, fileOpener);
 		rootWindow.addMouseListener(new DefaultMapMouseListener());
 

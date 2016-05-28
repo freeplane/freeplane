@@ -70,7 +70,7 @@ public class ConnectorView extends AConnectorView{
 		textColor = linkController.getColor(connectorModel);
 		this.bgColor =bgColor;
 		final int alpha = linkController.getAlpha(connectorModel);
-		color =  ColorUtils.createColor(textColor, alpha);
+		color =  ColorUtils.alphaToColor(alpha, textColor);
 
 		final int width = linkController.getWidth(connectorModel);
 		if (!isSourceVisible() || !isTargetVisible()) {

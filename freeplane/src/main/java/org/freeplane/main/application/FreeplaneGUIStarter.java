@@ -24,10 +24,12 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Window;
+import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
@@ -35,6 +37,8 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
@@ -46,7 +50,6 @@ import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
@@ -61,6 +64,7 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
@@ -74,14 +78,13 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.FrameController;
-import org.freeplane.features.url.FreeplaneUriConverter;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
@@ -159,6 +162,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		dontLoadLastMaps = true;
     }
 
+	@SuppressWarnings("serial")
 	public Controller createController() {
 		try {
 			Controller controller = new Controller(applicationResourceController);
@@ -173,6 +177,15 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			FrameController.setLookAndFeel(lookandfeel);
 			final JFrame frame;
 			frame = new JFrame("Freeplane");
+			frame.setContentPane(new JPanel(){
+
+				@Override
+				protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+					return super.processKeyBinding(ks, e, condition, pressed) 
+							|| MenuKeyProcessor.INSTANCE.processKeyBinding(ks, e, condition, pressed);
+				}
+				
+			});
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
@@ -363,27 +376,21 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			loadLastMaps();
 		}
 		loadMaps(controller, args);
-		if(controller.getMap() != null) {
-			return;
-		}
-		if (!alwaysLoadLastMaps && !dontLoadLastMaps) {
+		if (controller.getMap() == null && !alwaysLoadLastMaps && !dontLoadLastMaps) {
 			final AddOnsController addonsController = AddOnsController.getController();
 			addonsController.setAutoInstallEnabled(false);
 			loadLastMaps();
 			addonsController.setAutoInstallEnabled(true);
 		}
+		final ModeController modeController = Controller.getCurrentModeController();
 		if(firstRun && ! dontLoadLastMaps){
-			final File baseDir = new File(FreeplaneGUIStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
 			final String map = ResourceController.getResourceController().getProperty("whatsnew_map");
-			final File absolutFile = ConfigurationUtils.getLocalizedFile(new File[]{baseDir}, map, Locale.getDefault().getLanguage());
-			if(absolutFile != null)
-				loadMaps(controller, new String[]{absolutFile.getAbsolutePath()});
+			((MMapController)modeController.getMapController()).newDocumentationMap(map);
 		}
 		if (null != controller.getMap()) {
 			return;
 		}
 		controller.selectMode(MModeController.MODENAME);
-		final MModeController modeController = (MModeController) controller.getModeController();
 		MFileManager.getController(modeController).newMapFromDefaultTemplate();
 	}
 
@@ -427,32 +434,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     	}
     }
 
-
     private void loadMaps(final Controller controller, final String[] args) {
 		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			try {
-				final URL url;
-				if(fileArgument.startsWith("http://")) {
-					LinkController.getController().loadURI(new URI(fileArgument));
-				}
-                else if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
-					String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
-					LinkController.getController().loadURI(new URI(fixedUri));
-				}
-                else {
-					if (!FileUtils.isAbsolutePath(fileArgument)) {
-						fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-					}
-					url = Compat.fileToUrl(new File(fileArgument));
-					if (url.getPath().toLowerCase().endsWith(
-						org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-						final MModeController modeController = (MModeController) controller.getModeController();
-						MapController mapController = modeController.getMapController();
-						mapController.openMapSelectReferencedNode(url);
-					}
-				}
+				final LinkController linkController = LinkController.getController();
+				linkController.loadMap(fileArgument);
 			}
 			catch (final Exception ex) {
 				System.err.println("File " + fileArgument + " not loaded");
@@ -460,7 +448,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
     }
 
-	/**
+    /**
 	 */
 	public void run(final String[] args) {
 		try {

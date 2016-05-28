@@ -67,6 +67,7 @@ import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
@@ -932,7 +933,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public void afterViewCreated(final Component mapView) {
 		if (mapView != null) {
-			final FileOpener fileOpener = new FileOpener();
+			final FileOpener fileOpener = new FileOpener("mm", new DroppedMindMapOpener());
 			new DropTarget(mapView, fileOpener);
 		}
 	}

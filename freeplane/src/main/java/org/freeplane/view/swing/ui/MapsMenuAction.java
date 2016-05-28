@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 
 @SuppressWarnings("serial")
@@ -36,7 +37,12 @@ class MapsMenuAction extends AFreeplaneAction {
 		UITools.executeWhenNodeHasFocus(new Runnable() {
 			@Override
 			public void run() {
-				Controller.getCurrentController().getMapViewManager().changeToMapView(mapId);
+				try {
+					Controller.getCurrentController().getMapViewManager().changeToMapView(mapId);
+				}
+				catch (IllegalArgumentException ex){
+					LogUtils.warn(ex);
+				}
 			}
 		});
 	}

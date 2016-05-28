@@ -1015,4 +1015,9 @@ public class MapController extends SelectionController implements IExtension{
 		return modeController;
 	}
 
+
+	public void select(String nodeReference) {
+		select(getNodeFromID(nodeReference));
+	}
+
 }

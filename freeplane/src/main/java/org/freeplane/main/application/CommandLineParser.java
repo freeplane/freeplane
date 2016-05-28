@@ -15,7 +15,7 @@ class CommandLineParser {
                 + "\n -S: stop after executing menu items" //
                 + "\n -N: set the 'nonInteractive' system property to 'true'" //
                 + "\n -U<userdir>: set the freeplane user config directory (default: "
-                + Compat.getApplicationUserDirectoryExcludingVersion() + ")" //
+                + Compat.getDefaultFreeplaneUserDirectory() + ")" //
                 + "\n -h|--help: print this help";
         private List<String> filesToOpen = new ArrayList<String>();
         private List<String> menuItemsToExecute = new ArrayList<String>();

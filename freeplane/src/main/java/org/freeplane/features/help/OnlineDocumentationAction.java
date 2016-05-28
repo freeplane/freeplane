@@ -25,47 +25,53 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.NodeAndMapReference;
 
 
 class OnlineDocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
-	private final URL url;
+	private final NodeAndMapReference nodeAndMapReference;
 
 	OnlineDocumentationAction( final String actionName, final String urlProperty) {
 		super(actionName);
-		URL url = null;
-		try {
-	        url = new URL(ResourceController.getResourceController().getProperty(urlProperty));
-        }
-        catch (MalformedURLException e) {
-	        e.printStackTrace();
-        }
-		this.url = url;
+		final String urlString = ResourceController.getResourceController().getProperty(urlProperty);
+		nodeAndMapReference = new NodeAndMapReference(urlString);
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		if(url == null)
-			return;
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					if (url.getPath().endsWith(".mm")) {
-						Controller.getCurrentController().selectMode(MModeController.MODENAME);
-						((MMapController)Controller.getCurrentModeController().getMapController()).newDocumentationMap(url);
+	public void actionPerformed(final ActionEvent event) {
+		try {
+			final URL url = new URL(nodeAndMapReference.getMapReference());
+			if(url == null)
+				return;
+			UITools.executeWhenNodeHasFocus( new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						if (nodeAndMapReference.hasFreeplaneFileExtension()) {
+							Controller.getCurrentController().selectMode(MModeController.MODENAME);
+							MMapController mapController = (MMapController)Controller.getCurrentModeController().getMapController();
+							mapController.newDocumentationMap(url);
+							if(nodeAndMapReference.hasNodeReference())
+								mapController.select(nodeAndMapReference.getNodeReference());
+						}
+						else {
+							Controller.getCurrentController().getViewController().openDocument(url);
+						}
 					}
-					else {
-						Controller.getCurrentController().getViewController().openDocument(url);
+					catch (final Exception e1) {
+						LogUtils.severe(e1);
 					}
 				}
-				catch (final Exception e1) {
-					LogUtils.severe(e1);
-				}
-			}
-		});
+			});
+        }
+        catch (MalformedURLException ex) {
+	        ex.printStackTrace();
+        }
 	}
 }

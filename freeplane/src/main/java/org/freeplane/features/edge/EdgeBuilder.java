@@ -82,7 +82,13 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 		reader.addAttributeHandler("edge", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
-				edge.setColor(ColorUtils.stringToColor(value.toString()));
+				edge.setColor(ColorUtils.stringToColor(value, edge.getColor()));
+			}
+		});
+		reader.addAttributeHandler("edge", "ALPHA", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final EdgeModel edge = (EdgeModel) userObject;
+				edge.setColor(ColorUtils.alphaToColor(value, edge.getColor()));
 			}
 		});
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
@@ -149,7 +155,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 				relevant = true;
 			}
 			if (color != null) {
-				edge.setAttribute("COLOR", ColorUtils.colorToString(color));
+				ColorUtils.setColorAttributes(edge, "COLOR", "ALPHA", color);
 				relevant = true;
 			}
 			if (width != EdgeModel.WIDTH_PARENT) {

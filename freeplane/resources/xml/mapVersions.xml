@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MapVersions>
+	<dialect name="FREEPLANE1_5_9" version = "9" versionBegin="freeplane 1.5.9"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
 	<dialect name="FREEPLANE1_5_6" version = "8" versionBegin="freeplane 1.5.6"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
 	<dialect name="FREEPLANE1_5_5" version = "7" versionBegin="freeplane 1.5.5"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
 	<dialect name="FREEPLANE1_5_3" version = "6" versionBegin="freeplane 1.5.3"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />

@@ -2,10 +2,6 @@ grant codeBase "file:${org.freeplane.basedirectory}/*" {
         permission java.security.AllPermission;
 };
 
-grant codeBase "file:${org.freeplane.userfpdir}/1.5.x/lib/-" {
-        permission java.security.AllPermission;
-};
-
 grant codeBase "file:${org.freeplane.basedirectory}/../freeplane_framework/bin/*" {
         permission java.security.AllPermission;
 };

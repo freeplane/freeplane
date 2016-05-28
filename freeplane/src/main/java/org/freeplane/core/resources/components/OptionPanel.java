@@ -19,11 +19,20 @@ package org.freeplane.core.resources.components;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,18 +41,23 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang.StringUtils;
+import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator.ValidationResult;
+import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -53,6 +67,8 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
+	private static final String FILE_EXTENSION = "freeplaneoptions";
+
 	public interface IOptionPanelFeedback {
 		void writeProperties(Properties props);
 	}
@@ -65,6 +81,7 @@ public class OptionPanel {
 	final private HashMap<Integer, String> tabIndexToStringMap = new HashMap<Integer, String>();
 	private String selectedPanel;
 	final private JDialog topDialog;
+	private JFileChooser fileChooser;
 
 	/**
 	 * @throws IOException
@@ -82,27 +99,13 @@ public class OptionPanel {
 	 * @param buttons  an array of buttons to add
 	 * @return a right aligned button bar with the given buttons
 	 */
-	public static JPanel buildRightAlignedBar(JButton[] buttons) {
+	public static JPanel buildRightAlignedBar(JButton... buttons) {
 //        ButtonBarBuilder2 builder = new ButtonBarBuilder2();
 		ButtonBarBuilder builder = new ButtonBarBuilder();
 		builder.addGlue();
 		builder.addButton(buttons);
 		return builder.getPanel();
 	}
-	
-	
-	/**
-	 * Builds and returns a button bar with OK and Cancel.
-	 *
-	 * @param ok		the OK button
-	 * @param cancel	the Cancel button
-	 * @return a panel that contains the button(s)
-	 */
-	public static JPanel buildOKCancelBar(
-			JButton ok, JButton cancel) {
-		return buildRightAlignedBar(new JButton[] {ok, cancel});
-	}
-
 	
 	
 	/**
@@ -156,6 +159,38 @@ public class OptionPanel {
 			tabbedPane.setSelectedIndex(tabStringToIndexMap.get(selectedPanel));
 		}
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
+		final FileOpener fileOpener = new FileOpener(FILE_EXTENSION, new FileOpener.Listener() {
+			
+			@Override
+			public void filesDropped(Collection<URL> urls) throws Exception {
+				for(URL url :urls) {
+					try (final InputStream inputStream = url.openStream()){
+						loadOptions(inputStream);
+					}
+				}
+				
+			}
+		});
+		
+		new DropTarget(centralPanel, fileOpener);
+		
+		final JButton saveButton = new JButton();
+		LabelAndMnemonicSetter.setLabelAndMnemonic(saveButton, TextUtils.getRawText("save"));
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				saveOptionsToFile();
+			}
+		});
+
+		final JButton loadButton = new JButton();
+		LabelAndMnemonicSetter.setLabelAndMnemonic(loadButton, TextUtils.getRawText("load"));
+		loadButton.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				loadOptionsFromFile();
+			}
+
+		});
+
 		final JButton cancelButton = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
@@ -174,11 +209,86 @@ public class OptionPanel {
 			}
 		});
 		topDialog.getRootPane().setDefaultButton(okButton);
-		topDialog.getContentPane().add(buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
+		JButton[] buttons = { saveButton, loadButton, cancelButton, okButton };
+		final JPanel buttonPanel = buildRightAlignedBar(buttons);
+		MnemonicSetter.INSTANCE.setComponentMnemonics(buttonPanel);
+		topDialog.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 	}
 
+	private void saveOptionsToFile() {
+		final Properties properties = getOptionProperties();
+		if(! validate(properties))
+			return;
+		JFileChooser fileChooser = getFileChooser();
+		final int status = fileChooser.showSaveDialog(topDialog);
+		if(status != JFileChooser.APPROVE_OPTION)
+			return;
+		final File outputFile = getOutputFile(fileChooser);
+		try {
+			properties.store(new BufferedOutputStream(new FileOutputStream(outputFile)), "");
+		} catch (Exception e) {
+			LogUtils.warn(e);
+		}
+	}
+
+	private File getOutputFile(JFileChooser fileChooser) {
+		File outputFile = fileChooser.getSelectedFile();
+		if(outputFile.getName().contains("."))
+			return outputFile;
+		else
+			return new File(outputFile.getPath() + '.' + FILE_EXTENSION);
+	}
+
+	private JFileChooser getFileChooser() {
+		if(fileChooser == null)
+			fileChooser = createFileChooser();
+		return fileChooser;
+	}
+
+	private JFileChooser createFileChooser() {
+		final JFileChooser fileChooser = new JFileChooser(new File(Compat.getApplicationUserDirectory()));
+		fileChooser.setMultiSelectionEnabled(false);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		final FileNameExtensionFilter filter = new FileNameExtensionFilter(FILE_EXTENSION, FILE_EXTENSION);
+		fileChooser.setFileFilter(filter);
+		return fileChooser;
+	}
+
+	private void loadOptionsFromFile() {
+		JFileChooser fileChooser = getFileChooser();
+		final int status = fileChooser.showOpenDialog(topDialog);
+		if(status != JFileChooser.APPROVE_OPTION)
+			return;
+		final File inputFile = fileChooser.getSelectedFile();
+		if(! inputFile.canRead())
+			return;
+		try {
+			final BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(inputFile));
+			loadOptions(inStream);
+		} catch (Exception e) {
+			LogUtils.warn(e);
+		}
+	}
+
+	private void loadOptions(final InputStream inputStream) throws IOException {
+		final Properties properties = new Properties();
+		properties.load(inputStream);
+		for (final IPropertyControl control : controls) {
+			if (control instanceof PropertyBean) {
+				final PropertyBean bean = (PropertyBean) control;
+				final String name = bean.getName();
+				final String value = properties.getProperty(name);
+				if(value != null)
+					bean.setValue(value);
+			}
+		}
+	}
 	private boolean validate() {
 		final Properties properties = getOptionProperties();
+		return validate(properties);
+	}
+
+	private boolean validate(final Properties properties) {
 		final ValidationResult result = new ValidationResult();
 		for (final IValidator validator : Controller.getCurrentController().getOptionValidators()) {
 			result.add(validator.validate(properties));

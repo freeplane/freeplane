@@ -3,6 +3,7 @@ package org.freeplane.core.util;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -155,6 +156,8 @@ public class Compat {
 	
 	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.5.x";
 	final public static String PREVIOUS_VERSION_DIR_NAME = "1.3.x";
+	
+	private static String userFpDir = null;
 
 
 	/** the directory *including* the version directory. */
@@ -163,14 +166,26 @@ public class Compat {
 	}
 
 	public static String getApplicationUserDirectoryExcludingVersion() {
-		String userFpDir = System.getProperty(FREEPLANE_USERDIR_PROPERTY);
-		if(userFpDir == null){
-			userFpDir = getDefaultFreeplaneUserDirectory();
-		}
+		if(userFpDir == null)
+			findApplicationUserDirectory();
 		return userFpDir;
 	}
 
-	private static String getDefaultFreeplaneUserDirectory() {
+	protected static void findApplicationUserDirectory() {
+		final String userFpDirByProperty = System.getProperty(FREEPLANE_USERDIR_PROPERTY);
+		final String userFpDirPath = userFpDirByProperty != null ? userFpDirByProperty : getDefaultFreeplaneUserDirectory();
+		try {
+			userFpDir = new File(userFpDirPath).getCanonicalPath();
+		} catch (IOException e) {
+			try {
+				userFpDir = new File(getDefaultFreeplaneUserDirectory()).getCanonicalPath();
+			} catch (IOException e1) {
+				userFpDir = userFpDirPath;
+			}
+		}
+	}
+
+	public static String getDefaultFreeplaneUserDirectory() {
         return System.getProperty("user.home")+ File.separator + ".freeplane";
     }
 
