@@ -249,7 +249,7 @@ public class OptionPanel {
 		final JFileChooser fileChooser = new JFileChooser(new File(Compat.getApplicationUserDirectory()));
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		final FileNameExtensionFilter filter = new FileNameExtensionFilter("*."+FILE_EXTENSION, FILE_EXTENSION);
+		final FileNameExtensionFilter filter = new FileNameExtensionFilter(FILE_EXTENSION, FILE_EXTENSION);
 		fileChooser.setFileFilter(filter);
 		return fileChooser;
 	}
