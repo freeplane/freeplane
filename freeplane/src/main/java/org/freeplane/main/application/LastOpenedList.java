@@ -48,6 +48,7 @@ import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -162,10 +163,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	private boolean selectLastVisitedNode(RecentFile recentFile) {
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
-			final NodeModel node = Controller.getCurrentController().getMap()
-			    .getNodeForID(recentFile.lastVisitedNodeId);
+			final MapModel map = Controller.getCurrentController().getMap();
+			final NodeModel node = map.getNodeForID(recentFile.lastVisitedNodeId);
 			if (node != null && node.hasVisibleContent()) {
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+				IMapSelection selection = Controller.getCurrentController().getSelection();
+				// don't override node selection done by UriManager.loadURI()
+				if (selection.isSelected(map.getRootNode()))
+					selection.selectAsTheOnlyOneSelected(node);
 				return true;
 			}
 		}
