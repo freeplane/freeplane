@@ -123,7 +123,7 @@ public class MModeController extends ModeController {
 			translatedLafNames.add(info.getName());
 		}
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
-		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
+		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
 		return new PropertyAction(optionPanelBuilder.getRoot());
     }
