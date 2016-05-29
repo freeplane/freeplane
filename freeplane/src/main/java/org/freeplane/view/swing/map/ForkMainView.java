@@ -37,23 +37,10 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getLeftPoint() {
-		int edgeWidth = getEdgeWidth();
+		int edgeWidth = (int)getZoomedEdgeWidth();
 		final Point in = new Point(0, getHeight() - edgeWidth / 2);
 		return in;
 	}
-
-	public int getEdgeWidth() {
-	    final NodeView nodeView = getNodeView();
-	    final int edgeWidth = nodeView.getEdgeWidth();
-		final EdgeStyle style = nodeView.getEdgeStyle();
-		final int nodeLineWidth = style.getNodeLineWidth(edgeWidth);
-		if(edgeWidth == 0)
-			return nodeLineWidth;
-		else{
-			final int zoomedLineWidth = nodeView.getMap().getZoomed(nodeLineWidth);
-			return zoomedLineWidth;
-		}
-    }
 
 	@Override
 	protected int getMainViewHeightWithFoldingMark() {
@@ -68,7 +55,7 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getRightPoint() {
-		int edgeWidth = getEdgeWidth();
+		int edgeWidth = (int)getZoomedEdgeWidth();
 		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2);
 		return in;
 	}
@@ -88,13 +75,13 @@ class ForkMainView extends MainView {
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth(), getHeight() - getEdgeWidth());
+		graphics.fillRect(0, 0, getWidth(), getHeight() - (int)getZoomedEdgeWidth());
 	}
 
 	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
-		float edgeWidth  = getEdgeWidth();
+		float edgeWidth  = getZoomedEdgeWidth();
 		g.setStroke(new BasicStroke(edgeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
 		g.setColor(nodeView.getEdgeColor());
@@ -115,7 +102,7 @@ class ForkMainView extends MainView {
     	final NodeView nodeView = getNodeView();
         int edgeWidth = nodeView.getEdgeWidth();
         final EdgeStyle style = nodeView.getEdgeStyle();
-        edgeWidth = style.getNodeLineWidth(edgeWidth);
+        edgeWidth = Math.max((int)style.getNodeLineWidth(edgeWidth), 1);
 		if(insets == null)
     		insets = new Insets(0, 2, edgeWidth, 2);
     	else

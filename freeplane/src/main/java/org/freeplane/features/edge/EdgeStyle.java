@@ -19,11 +19,8 @@ public enum EdgeStyle {
 		return name;
 	}
 
-	public int getNodeLineWidth(final int width) {
-		final int nlWidth = (int) (nodeLineWeight * width);
-		if (nlWidth == 0) {
-			return 1;
-		}
+	public float getNodeLineWidth(final int width) {
+		final float nlWidth = nodeLineWeight * width;
 		return nlWidth;
 	}
 

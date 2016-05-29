@@ -21,17 +21,18 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Polygon;
 
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 abstract class VariableInsetsMainView extends ShapedMainView {
 	private static final long serialVersionUID = 1L;
-	private int zoomedVerticalInset;
-	private int zoomedHorizontalInset;
+	private double zoomedVerticalInset;
+	private double zoomedHorizontalInset;
 	
 	public VariableInsetsMainView(ShapeConfigurationModel shapeConfiguration) {
 		super(shapeConfiguration);
-        zoomedVerticalInset = zoomedHorizontalInset = getMinimumHorizontalInset();
+        zoomedVerticalInset = zoomedHorizontalInset = 0;
 	}
 	
 	protected boolean areInsetsFixed() {
@@ -45,9 +46,9 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 			return super.getPreferredSize();
 		}
 		final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
-		final double widthWithMargin = Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getZoom() * getMinimumHorizontalInset());
+		final double widthWithMargin = Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getMinimumHorizontalInset());
 		prefSize.width =  limitWidth((int) Math.ceil(widthWithMargin));
-		prefSize.height = (int) Math.ceil(Math.max(prefSize.height *getVerticalMarginFactor(), prefSize.height + getZoom() * getMinimumVerticalInset()));
+		prefSize.height = (int) Math.ceil(Math.max(prefSize.height *getVerticalMarginFactor(), prefSize.height + getMinimumVerticalInset()));
 		return prefSize;
 	}
 	
@@ -55,21 +56,20 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	
 	abstract protected double getHorizontalMarginFactor();
 	
-	protected int getMinimumHorizontalInset(){
-		return getShapeConfiguration().getHorizontalMargin().toBaseUnitsRounded();
+	protected double getMinimumHorizontalInset(){
+		return getShapeConfiguration().getHorizontalMargin().toBaseUnits() * getZoom() + getZoomedEdgeWidth() - 1;
 	}
 
-	protected int getMinimumVerticalInset(){
-		return getShapeConfiguration().getVerticalMargin().toBaseUnitsRounded();
+	protected double getMinimumVerticalInset(){
+		return getShapeConfiguration().getVerticalMargin().toBaseUnits() * getZoom()+ getZoomedEdgeWidth() - 1;
 	}
 
 	protected Dimension getPreferredRectangleSizeWithoutMargin(int maximumWidth) {
 		int scaledMaximumWidth = maximumWidth != Integer.MAX_VALUE ? (int)(maximumWidth / getHorizontalMarginFactor()) : maximumWidth;
-		final int zoomedHorizontalInsetBackup = zoomedHorizontalInset;
-		final int zoomedVerticalInsetBackup = zoomedVerticalInset;
-		final float zoom = getZoom();
-		zoomedHorizontalInset  = (int) (zoom * getMinimumHorizontalInset());
-		zoomedVerticalInset =  (int) (zoom * getMinimumVerticalInset());
+		final double zoomedHorizontalInsetBackup = zoomedHorizontalInset;
+		final double zoomedVerticalInsetBackup = zoomedVerticalInset;
+		zoomedHorizontalInset  = getMinimumHorizontalInset();
+		zoomedVerticalInset =  getMinimumVerticalInset();
 		final int oldMinimumWidth = getMinimumWidth();
 		final int oldMaximumWidth = getMaximumWidth();
 		final Dimension prefSize;
@@ -91,17 +91,9 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 
 	@Override
 	public Insets getZoomedInsets() {
-		int topInset = getZoomedVerticalInset();
-		int leftInset = getZoomedHorizontalInset();
+		int topInset = (int)zoomedVerticalInset;
+		int leftInset = (int)zoomedHorizontalInset;
 		return new Insets(topInset, leftInset, topInset, leftInset);
-	}
-
-	protected int getZoomedVerticalInset() {
-		return zoomedVerticalInset;
-	}
-
-	protected int getZoomedHorizontalInset() {
-		return zoomedHorizontalInset;
 	}
 
 	@Override
@@ -132,5 +124,20 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	@Override
 	public Insets getInsets(Insets insets) {
 		return getInsets();
+	}
+
+	protected int[] toInt(double[] relation, int offset, final int size) {
+		final int[] y = new int[relation.length];
+		for(int i = 0; i < relation.length; i++) {
+			double relation1 = relation[i];
+			y[i] = offset + (int)(size * relation1);
+		}
+		return y;
+	}
+
+	protected Polygon polygonOf(double[] xCoords, double[] yCoords) {
+		int edgeWidthOffset = (int) getZoomedEdgeWidth();
+		final Polygon polygon = new Polygon(toInt(xCoords, edgeWidthOffset/2, getWidth() - edgeWidthOffset), toInt(yCoords, edgeWidthOffset/2, getHeight() - edgeWidthOffset), xCoords.length);
+		return polygon;
 	}
 }
