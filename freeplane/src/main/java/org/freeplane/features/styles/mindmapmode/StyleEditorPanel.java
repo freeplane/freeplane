@@ -116,7 +116,7 @@ import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
-	private static final float FONT_SIZE = UITools.FONT_SCALE_FACTOR * 8;
+	private static final int FONT_SIZE = Math.round(UITools.FONT_SCALE_FACTOR * 8);
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
 
 	private class BgColorChangeListener extends ChangeListener {
