@@ -4,6 +4,7 @@
 Stable release
 User preferences can be saved and loaded from preferences dialog
 Drag and drop of *.freeplaneoptions file into the preferences dialog
+Look and feel jar can be put into user lib directory and class name entered into the preferebces
 
 ===============================
 1.5.8
