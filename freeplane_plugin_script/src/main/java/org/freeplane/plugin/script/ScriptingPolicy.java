@@ -82,6 +82,7 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new AWTPermission("showWindowWithoutWarningBanner"));
 		permissions.add(new AWTPermission("accessClipboard"));
 		permissions.add(new AWTPermission("accessEventQueue"));
+		permissions.add(new AWTPermission("setWindowAlwaysOnTop"));
 	}
 
 
