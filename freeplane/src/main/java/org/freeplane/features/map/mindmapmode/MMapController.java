@@ -503,6 +503,11 @@ public class MMapController extends MapController {
 			return;
 		}
 		final NodeModel oldParent = child.getParentNode();
+		if(newParent != oldParent && newParent.subtreeClones().contains(oldParent)) {
+			moveNodeAndItsClones(child, oldParent, newIndex, isLeft, changeSide);
+			return;
+		}
+			
 		final NodeModel childNode = child;
 		final int oldIndex = oldParent.getIndex(childNode);
 		final int childCount = newParent.getChildCount();
@@ -574,7 +579,7 @@ public class MMapController extends MapController {
         int newIndex = newParent.getIndex(target);
         for(NodeModel node : children){
         	final NodeModel oldParent = node.getParentNode();
-        	if(newParent.equals(oldParent)){
+        	if(newParent.subtreeClones().contains(oldParent)){
         		final NodeModel childNode = node;
 				final int oldIndex = oldParent.getIndex(childNode);
         		if(oldIndex < newIndex)
