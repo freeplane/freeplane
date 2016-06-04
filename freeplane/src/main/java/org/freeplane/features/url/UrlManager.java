@@ -259,7 +259,6 @@ public class UrlManager implements IExtension {
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
 		if (uriString.startsWith("#")) {
-			// TODO use nodeAndMapReference?
 			loadLocalLinkURI(uriString);
 		}
 		else {
@@ -268,37 +267,43 @@ public class UrlManager implements IExtension {
 				loadNodeReferenceURI(nodeAndMapReference);
 			}
 			else {
-				// TODO convert nodeAndMapReference to hold an URI? 
-				loadOtherURI(uri, nodeAndMapReference);
+				loadOtherURI(uri, nodeAndMapReference.hasFreeplaneFileExtension());
 			}
 		}
 	}
 
 	private void loadLocalLinkURI(final String uriString) {
 		final String target = uriString.substring(1);
+		selectNode(target);
+	}
+
+	private void selectNode(final String target) {
 		try {
 			final MapController mapController = getMapController();
 			final NodeModel node = mapController.getNodeFromID(target);
 			if (node != null) {
 				mapController.select(node);
 			}
+			else {
+				final String errorMessage = TextUtils.format("link_not_found", target);
+				Controller.getCurrentController().getViewController().err(errorMessage);
+			}
 		}
 		catch (final Exception e) {
-			LogUtils.warn("link " + target + " not found", e);
-			UITools.errorMessage(TextUtils.format("link_not_found", target));
+			LogUtils.severe("link " + target + " not found", e);
 		}
 	}
 
 	private void loadNodeReferenceURI(final NodeAndMapReference nodeAndMapReference) {
 		try {
 			loadURL(new URI(nodeAndMapReference.getMapReference()));
-			getMapController().select(nodeAndMapReference.getNodeReference());
+			selectNode(nodeAndMapReference.getNodeReference());
 		} catch (URISyntaxException e) {
 			LogUtils.severe(e);
 		}
 	}
 
-	private void loadOtherURI(URI uri, final NodeAndMapReference nodeAndMapReference) {
+	private void loadOtherURI(URI uri, final boolean hasFreeplaneFileExtension) {
 		try {
 			if(! uri.isAbsolute()){
 				URI absoluteUri = getAbsoluteUri(uri);
@@ -322,7 +327,7 @@ public class UrlManager implements IExtension {
 				}
 			}
 			try {
-				if (nodeAndMapReference.hasFreeplaneFileExtension()) {
+				if (hasFreeplaneFileExtension) {
 					FreeplaneUriConverter freeplaneUriConverter = new FreeplaneUriConverter();
 					final URL url = freeplaneUriConverter.freeplaneUrl(uri);
 					final ModeController modeController = Controller.getCurrentModeController();
