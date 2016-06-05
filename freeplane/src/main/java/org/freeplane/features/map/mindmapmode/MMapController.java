@@ -524,7 +524,8 @@ public class MMapController extends MapController {
 			for (NodeModel commonAncestorClone: commonAncestor.subtreeClones()){
 					NodeModel oldParentClone = nodeRelativePath.pathBegin(commonAncestorClone);
 					NodeModel newParentClone = nodeRelativePath.pathEnd(commonAncestorClone);
-					moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex, isLeft, changeSide);
+					final boolean isLeftForClone = newParentClone == newParent ? isLeft : newParentClone.isLeft();
+					moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex, isLeftForClone, changeSide);
 					oldParentClones.remove(oldParentClone);
 					newParentClones.remove(newParentClone);
 			}
