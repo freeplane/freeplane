@@ -112,5 +112,9 @@ public class NodeRelativePath {
 	public NodeModel endPathElement(int level) {
 		return relativeNode(commonAncestor, endPath, level);
 	}
+
+	public int getPathLength() {
+		return beginPath.length + endPath.length;
+	}
 	
 }
