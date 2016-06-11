@@ -162,7 +162,7 @@ class VerticalNodeViewLayoutStrategy {
 						final int summaryNodeIndex = viewLevels.findSummaryNodeIndex(childViewIndex);
 						if(summaryNodeIndex == SummaryLevels.NODE_NOT_FOUND || summaryNodeIndex - 1 == childViewIndex)
 							vGap = minimalDistanceBetweenChildren;
-						else
+						else if (childHeight != 0)
 							vGap = summarizedNodeDistance(minimalDistanceBetweenChildren);
 						if (childHeight != 0)
 							y += childHeight + vGap - child.getBottomOverlap();
