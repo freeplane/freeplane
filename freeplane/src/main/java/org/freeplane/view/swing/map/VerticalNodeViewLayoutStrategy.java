@@ -213,7 +213,7 @@ class VerticalNodeViewLayoutStrategy {
 						y = Math.max(y, summaryY);
 					}
 				}
-				if (!isItem || !isFreeNode) {
+				if (! (isItem && isFreeNode)) {
 					int childUpperCoordinate = this.yCoordinates[childViewIndex] + child.getTopOverlap();
 					int childBottomCoordinate = this.yCoordinates[childViewIndex] + childHeight - child.getBottomOverlap();
 					if (child.isFirstGroupNode()) {
@@ -225,7 +225,7 @@ class VerticalNodeViewLayoutStrategy {
 							groupUpperYCoordinate[level] = childUpperCoordinate;
 							groupLowerYCoordinate[level] = childBottomCoordinate;
 						}
-					} else if (childHeight != 0){
+					} else if (childHeight != 0 || isNextNodeSummaryNode(childViewIndex)){
 						groupUpperYCoordinate[level] = Math.min(groupUpperYCoordinate[level], childUpperCoordinate);
 						groupLowerYCoordinate[level] = Math.max(childBottomCoordinate, groupLowerYCoordinate[level]);
 					}
@@ -234,6 +234,10 @@ class VerticalNodeViewLayoutStrategy {
 		}
 		top += (contentSize.height - childContentHeightSum) / 2;
 		calculateRelativeCoordinatesForContentAndBothSides(isLeft, childContentHeightSum, top);
+	}
+
+	private boolean isNextNodeSummaryNode(int childViewIndex) {
+		return childViewIndex + 1 < viewLevels.summaryLevels.length && viewLevels.summaryLevels[childViewIndex + 1] > 0;
 	}
 
 	private int summarizedNodeDistance(final int distance) {
