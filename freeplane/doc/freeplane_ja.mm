@@ -1,10 +1,10 @@
-<map version="freeplane 1.5.6">
+<map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node TEXT="&#x30de;&#x30cb;&#x30e5;&#x30a2;&#x30eb;&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1455910948844" MODIFIED="1455910948844" VGAP_QUANTITY="0.0 px">
+<node TEXT="&#x30de;&#x30cb;&#x30e5;&#x30a2;&#x30eb;&#xa;Freeplane 1.2" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1455910948844" MODIFIED="1465678951781" VGAP_QUANTITY="0.0 px">
 <icon BUILTIN="bee"/>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -12,7 +12,7 @@
             <time_condition_modified_after user_name="1.2.12_03" DATE="1330531663397"/>
         </conditional_style>
     </conditional_styles>
-    <properties show_icon_for_attributes="false" show_note_icons="true" show_notes_in_map="false" fit_to_viewport="false;"/>
+    <properties fit_to_viewport="false;" show_icon_for_attributes="false" show_note_icons="true" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
@@ -154,7 +154,21 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;b&gt;&lt;a href=&quot;freeplaneFunctions_ja.mm&quot;&gt;&lt;font size=&quot;3&quot;&gt;Freeplane &amp;#12398;&amp;#27231;&amp;#33021;&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_232622736" CREATED="1455910948847" MODIFIED="1455910948847" LINK="freeplaneFunctions_ja.mm" HGAP_QUANTITY="-5.0 px" VSHIFT_QUANTITY="-104.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" FOLDED="true" POSITION="right" ID="ID_232622736" CREATED="1455910948847" MODIFIED="1465678948421" LINK="freeplaneFunctions_ja.mm" HGAP_QUANTITY="-35.0 px" VSHIFT_QUANTITY="-119.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <b><a href="freeplaneFunctions_ja.mm"><font size="3">Freeplane &#12398;&#27231;&#33021;</font></a></b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -179,7 +193,21 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;a href=&quot;freeplaneFunctions_ja.mm&quot;&gt;&lt;font size=&quot;3&quot;&gt;&lt;b&gt;Freeplane &amp;#12398;&amp;#36969;&amp;#29992;&amp;#20107;&amp;#20363;&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_766584529" CREATED="1455910948847" MODIFIED="1455910948847" LINK="freeplaneApplications_ja.mm" HGAP_QUANTITY="-85.0 px" VSHIFT_QUANTITY="28.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node ID="ID_766584529" CREATED="1455910948847" MODIFIED="1455910948847" LINK="freeplaneApplications_ja.mm" HGAP_QUANTITY="-85.0 px" VSHIFT_QUANTITY="28.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <a href="freeplaneFunctions_ja.mm"><font size="3"><b>Freeplane &#12398;&#36969;&#29992;&#20107;&#20363;</b></font></a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -206,7 +234,7 @@
 <hook NAME="AlwaysUnfoldedNode"/>
 </node>
 </node>
-<node TEXT="&#x30ea;&#x30d5;&#x30a1;&#x30ec;&#x30f3;&#x30b9;" STYLE_REF="Title" FOLDED="true" POSITION="right" ID="ID_332175012" CREATED="1455910948847" MODIFIED="1455910948847" HGAP_QUANTITY="-37.0 px" VSHIFT_QUANTITY="-64.0 px" TEXT_SHORTENED="true">
+<node TEXT="&#x30ea;&#x30d5;&#x30a1;&#x30ec;&#x30f3;&#x30b9;" STYLE_REF="Title" FOLDED="true" POSITION="right" ID="ID_332175012" CREATED="1455910948847" MODIFIED="1465678951781" HGAP_QUANTITY="-30.0 px" VSHIFT_QUANTITY="-59.0 px" TEXT_SHORTENED="true">
 <icon BUILTIN="wizard"/>
 <richcontent TYPE="DETAILS">
 
@@ -656,7 +684,25 @@
 </richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;div&gt;&#xa;      &lt;div style=&quot;margin-top: 0&quot;&gt;&#xa;        &lt;p&gt;&#xa;          &amp;#26525;&amp;#12434; HTML &amp;#12501;&amp;#12449;&amp;#12452;&amp;#12523;&amp;#12395;&#xa;        &lt;/p&gt;&#xa;      &lt;/div&gt;&#xa;    &lt;/div&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="OptionalValue" ID="ID_1222466772" CREATED="1455910948854" MODIFIED="1455910948854" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node STYLE_REF="OptionalValue" ID="ID_1222466772" CREATED="1455910948854" MODIFIED="1455910948854" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <div>
+      <div style="margin-top: 0">
+        <p>
+          &#26525;&#12434; HTML &#12501;&#12449;&#12452;&#12523;&#12395;
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -678,7 +724,25 @@
 </richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;div&gt;&#xa;      &lt;div style=&quot;margin-top: 0&quot;&gt;&#xa;        &lt;p&gt;&#xa;          Open Office Writer &amp;#12501;&amp;#12449;&amp;#12452;&amp;#12523;&amp;#12395;&amp;#65288;ODT&amp;#65289;&#xa;        &lt;/p&gt;&#xa;      &lt;/div&gt;&#xa;    &lt;/div&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="OptionalValue" ID="ID_413819995" CREATED="1455910948855" MODIFIED="1455910948855" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node STYLE_REF="OptionalValue" ID="ID_413819995" CREATED="1455910948855" MODIFIED="1455910948855" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <div>
+      <div style="margin-top: 0">
+        <p>
+          Open Office Writer &#12501;&#12449;&#12452;&#12523;&#12395;&#65288;ODT&#65289;
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -738,7 +802,34 @@
 </richcontent>
 <attribute NAME="Chapter" VALUE="6"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;br&gt;&#xa;    &#xa;&#xa;    &lt;div&gt;&#xa;      &lt;div style=&quot;margin-top: 0&quot;&gt;&#xa;        &lt;p&gt;&#xa;          XHTML&amp;#65288;&amp;#12463;&amp;#12522;&amp;#12483;&amp;#12459;&amp;#12502;&amp;#12523;&amp;#12510;&amp;#12483;&amp;#12503;&amp;#29256;&amp;#65289;&amp;#12395;&#xa;        &lt;/p&gt;&#xa;      &lt;/div&gt;&#xa;    &lt;/div&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      As XHTML (click-able map image version HTML)...&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="OptionalValue" ID="ID_519681176" CREATED="1455910948855" MODIFIED="1455910948855" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node STYLE_REF="OptionalValue" ID="ID_519681176" CREATED="1455910948855" MODIFIED="1455910948855" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <br/>
+    
+
+    <div>
+      <div style="margin-top: 0">
+        <p>
+          XHTML&#65288;&#12463;&#12522;&#12483;&#12459;&#12502;&#12523;&#12510;&#12483;&#12503;&#29256;&#65289;&#12395;
+        </p>
+      </div>
+    </div>
+    <p>
+      
+    </p>
+    <p>
+      As XHTML (click-able map image version HTML)...
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -4193,7 +4284,20 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &amp;#23646;&amp;#24615;&amp;#12434;&amp;#34920;&amp;#31034;&amp;#65295;&amp;#38750;&amp;#34920;&amp;#31034;&amp;#12392;&lt;i&gt;&amp;#12300;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12398;&amp;#20869;&amp;#23481;&amp;#12434;&amp;#30701;&amp;#32302;&amp;#34920;&amp;#31034;&amp;#12301;&amp;#12398;&amp;#32068;&amp;#12415;&amp;#21512;&amp;#12431;&amp;#12379;&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1420562009" CREATED="1455910948945" MODIFIED="1455910948945">
+<node ID="ID_1420562009" CREATED="1455910948945" MODIFIED="1455910948945"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#23646;&#24615;&#12434;&#34920;&#31034;&#65295;&#38750;&#34920;&#31034;&#12392;<i>&#12300;&#12494;&#12540;&#12489;&#12398;&#20869;&#23481;&#12434;&#30701;&#32302;&#34920;&#31034;&#12301;&#12398;&#32068;&#12415;&#21512;&#12431;&#12379;</i>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <font ITALIC="false"/>
 <richcontent TYPE="NOTE">
 
@@ -4867,7 +4971,20 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &amp;#12377;&amp;#12409;&amp;#12390;&amp;#12398;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12395;&amp;#36969;&amp;#29992;&amp;#12373;&amp;#12428;&amp;#12427;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#38291;&amp;#12398;&amp;#32294;&amp;#38291;&amp;#38548;&amp;#12398;&amp;#26368;&amp;#23567;&amp;#20516;&amp;#12364;&amp;#35373;&amp;#23450;&amp;#12391;&amp;#12365;&amp;#12414;&amp;#12377;&amp;#12290;&lt;i&gt;&amp;#12300;Ctrl&amp;#12301;&lt;/i&gt;&amp;#12461;&amp;#12540;&amp;#12434;&amp;#25276;&amp;#12375;&amp;#12383;&amp;#29366;&amp;#24907;&amp;#12391;&amp;#12289;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12495;&amp;#12531;&amp;#12489;&amp;#12523;&amp;#65288;&amp;#26965;&amp;#20870;&amp;#24418;&amp;#65289;&amp;#12434;&amp;#36984;&amp;#25246;&amp;#12375;&amp;#12289;&amp;#12459;&amp;#12540;&amp;#12477;&amp;#12523;&amp;#12434;&amp;#19978;&amp;#19979;&amp;#12395;&amp;#21205;&amp;#12363;&amp;#12375;&amp;#12390;&amp;#12289;&amp;#12377;&amp;#12409;&amp;#12390;&amp;#12398;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12398;&amp;#32294;&amp;#38291;&amp;#38548;&amp;#12434;&amp;#35519;&amp;#25972;&amp;#12375;&amp;#12390;&amp;#12367;&amp;#12384;&amp;#12373;&amp;#12356;&amp;#12290;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_801516363" CREATED="1455910948959" MODIFIED="1455910948959" HGAP_QUANTITY="-68.0 px" VSHIFT_QUANTITY="36.0 px" TEXT_SHORTENED="true">
+<node ID="ID_801516363" CREATED="1455910948959" MODIFIED="1455910948959" HGAP_QUANTITY="-68.0 px" VSHIFT_QUANTITY="36.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12395;&#36969;&#29992;&#12373;&#12428;&#12427;&#12494;&#12540;&#12489;&#38291;&#12398;&#32294;&#38291;&#38548;&#12398;&#26368;&#23567;&#20516;&#12364;&#35373;&#23450;&#12391;&#12365;&#12414;&#12377;&#12290;<i>&#12300;Ctrl&#12301;</i>&#12461;&#12540;&#12434;&#25276;&#12375;&#12383;&#29366;&#24907;&#12391;&#12289;&#12494;&#12540;&#12489;&#12495;&#12531;&#12489;&#12523;&#65288;&#26965;&#20870;&#24418;&#65289;&#12434;&#36984;&#25246;&#12375;&#12289;&#12459;&#12540;&#12477;&#12523;&#12434;&#19978;&#19979;&#12395;&#21205;&#12363;&#12375;&#12390;&#12289;&#12377;&#12409;&#12390;&#12398;&#12494;&#12540;&#12489;&#12398;&#32294;&#38291;&#38548;&#12434;&#35519;&#25972;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -9194,7 +9311,20 @@
 </node>
 <node TEXT="" ID="ID_291292022" CREATED="1455910949169" MODIFIED="1455910949169">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &amp;#22522;&amp;#26412;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12486;&amp;#12461;&amp;#12473;&amp;#12488;&lt;b&gt;&amp;#20840;&amp;#20307;&lt;/b&gt;&amp;#12398;&amp;#25991;&amp;#23383;&amp;#12501;&amp;#12457;&amp;#12531;&amp;#12488;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1704677561" CREATED="1455910949031" MODIFIED="1455910949031" TEXT_SHORTENED="true">
+<node ID="ID_1704677561" CREATED="1455910949031" MODIFIED="1455910949031" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#22522;&#26412;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;<b>&#20840;&#20307;</b>&#12398;&#25991;&#23383;&#12501;&#12457;&#12531;&#12488;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
@@ -9346,7 +9476,20 @@
 </node>
 <node TEXT="" ID="ID_816283087" CREATED="1455910949170" MODIFIED="1455910949170">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &amp;#22522;&amp;#26412;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12486;&amp;#12461;&amp;#12473;&amp;#12488;&lt;b&gt;&amp;#20840;&amp;#20307;&lt;/b&gt;&amp;#12398;&amp;#33394;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1852080174" CREATED="1455910949034" MODIFIED="1455910949034" TEXT_SHORTENED="true">
+<node ID="ID_1852080174" CREATED="1455910949034" MODIFIED="1455910949034" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#22522;&#26412;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;<b>&#20840;&#20307;</b>&#12398;&#33394;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
@@ -12121,7 +12264,19 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;pre wrap=&quot;&quot;&gt;&lt;a href=&quot;https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076&quot; class=&quot;moz-txt-link-freetext&quot;&gt;https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076&lt;/a&gt;&lt;/pre&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1243435937" CREATED="1455910949089" MODIFIED="1455910949089" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076"/>
+<node ID="ID_1243435937" CREATED="1455910949089" MODIFIED="1455910949089" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <pre wrap=""><a href="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076" class="moz-txt-link-freetext">https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076</a></pre>
+  </body>
+</html>
+
+</richcontent>
+</node>
 </node>
 </node>
 </node>
@@ -12730,7 +12885,20 @@
 </node>
 <node TEXT="" ID="ID_1040200012" CREATED="1455910949179" MODIFIED="1455910949179">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#21336;&amp;#19968;&amp;#12503;&amp;#12525;&amp;#12464;&amp;#12521;&amp;#12512;&amp;#12452;&amp;#12531;&amp;#12473;&amp;#12479;&amp;#12531;&amp;#12473;&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1081383384" CREATED="1455910949098" MODIFIED="1455910949098" TEXT_SHORTENED="true">
+<node ID="ID_1081383384" CREATED="1455910949098" MODIFIED="1455910949098" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#21336;&#19968;&#12503;&#12525;&#12464;&#12521;&#12512;&#12452;&#12531;&#12473;&#12479;&#12531;&#12473;</i>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
 </hook>
@@ -14643,8 +14811,22 @@
 </node>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;span style=&quot;color: #ffffff; font-weight: bold&quot;&gt;&lt;font color=&quot;#ffffff&quot;&gt;&lt;b&gt;&amp;#12518;&amp;#12540;&amp;#12470;&amp;#12460;&amp;#12452;&amp;#12489; &lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="Title" FOLDED="true" POSITION="left" ID="ID_1405760079" CREATED="1455910949123" MODIFIED="1455910949123" HGAP_QUANTITY="-37.0 px" VSHIFT_QUANTITY="-60.0 px" TEXT_SHORTENED="true">
+<node STYLE_REF="Title" FOLDED="true" POSITION="left" ID="ID_1405760079" CREATED="1455910949123" MODIFIED="1455910949123" HGAP_QUANTITY="-37.0 px" VSHIFT_QUANTITY="-60.0 px" TEXT_SHORTENED="true">
 <icon BUILTIN="gohome"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #ffffff; font-weight: bold"><font color="#ffffff"><b>&#12518;&#12540;&#12470;&#12460;&#12452;&#12489; </b></font></span>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -14716,7 +14898,21 @@
 </richcontent>
 <edge STYLE="horizontal"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane&quot;&gt;&amp;#27010;&amp;#12288;&amp;#12288;&amp;#35201;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1455910949123" MODIFIED="1455910949123" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" HGAP_QUANTITY="27.0 px" TEXT_SHORTENED="true" MIN_WIDTH="80.0 px"><richcontent TYPE="DETAILS">
+<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1455910949123" MODIFIED="1455910949123" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" HGAP_QUANTITY="27.0 px" TEXT_SHORTENED="true" MIN_WIDTH="80.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">&#27010;&#12288;&#12288;&#35201;</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -15470,7 +15666,20 @@
 <node TEXT="" ID="ID_778433842" CREATED="1455910949188" MODIFIED="1455910949188">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#31456;&amp;#12301;(Chapter)&lt;/i&gt;&amp;#12434;&amp;#36984;&amp;#25246;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1442970232" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1442970232" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#31456;&#12301;(Chapter)</i>&#12434;&#36984;&#25246;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -15491,7 +15700,20 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#8835;(&amp;#21547;&amp;#12416;)&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#36984;&amp;#25246;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1715867501" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1715867501" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#8835;(&#21547;&#12416;)&#12301;</i>&#12434;&#36984;&#25246;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node TEXT="&#x300c;1&#x300d;&#x3092;&#x9078;&#x629e;&#xff0f;&#x5165;&#x529b;" STYLE_REF="ProcedureStep" ID="ID_1895233466" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true">
@@ -15508,12 +15730,40 @@
 <node TEXT="" ID="ID_1096215978" CREATED="1455910949189" MODIFIED="1455910949189">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12463;&amp;#12451;&amp;#12483;&amp;#12463;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1155342856" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1155342856" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12463;&#12451;&#12483;&#12463;&#12501;&#12451;&#12523;&#12479;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#19978;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12418;&amp;#34920;&amp;#31034;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#28961;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1969361758" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1969361758" CREATED="1455910949128" MODIFIED="1455910949128" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#19978;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 <node TEXT="" ID="ID_1463946528" CREATED="1455910949189" MODIFIED="1455910949189">
@@ -15528,16 +15778,58 @@
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="0"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#19979;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12418;&amp;#34920;&amp;#31034;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#28961;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1666861042" CREATED="1455910949129" MODIFIED="1455910949129" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1666861042" CREATED="1455910949129" MODIFIED="1455910949129" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_descendants"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#19979;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#20013;&amp;#12398;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12434;&amp;#23637;&amp;#38283;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#26377;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_479968616" CREATED="1455910949129" MODIFIED="1455910949129" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_479968616" CREATED="1455910949129" MODIFIED="1455910949129" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_filtered_ancestors"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#20013;&#12398;&#12494;&#12540;&#12489;&#12434;&#23637;&#38283;&#12301;</i>&#12434;&#26377;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &amp;#12300;&lt;i&gt;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#20013;&amp;#12398;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12395;&amp;#36969;&amp;#29992;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#28961;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_994463798" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_994463798" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true">
 <icon BUILTIN="../applies_to_filtered_nodes"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#12300;<i>&#12501;&#12451;&#12523;&#12479;&#20013;&#12398;&#12494;&#12540;&#12489;&#12395;&#36969;&#29992;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 </node>
@@ -15547,24 +15839,78 @@
 <attribute NAME="Chapter" VALUE="0"/>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;1. &amp;#21021;&amp;#12417;&amp;#12390;&amp;#12398;&amp;#12510;&amp;#12452;&amp;#12531;&amp;#12489;&amp;#12510;&amp;#12483;&amp;#12503;&amp;#12301;&lt;/i&gt;&amp;#12398;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#34920;&amp;#31034;&amp;#12434;&amp;#32066;&amp;#12360;&amp;#12427;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="true" ID="ID_1748243017" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true">
+<node FOLDED="true" ID="ID_1748243017" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;1. &#21021;&#12417;&#12390;&#12398;&#12510;&#12452;&#12531;&#12489;&#12510;&#12483;&#12503;&#12301;</i>&#12398;&#12501;&#12451;&#12523;&#12479;&#34920;&#31034;&#12434;&#32066;&#12360;&#12427;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
 <edge STYLE="horizontal"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#35299;&amp;#38500;&amp;#65379;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1282843229" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1282843229" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#35299;&#38500;&#65379;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
 <node TEXT="" ID="ID_1678485240" CREATED="1455910949189" MODIFIED="1455910949189">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12523;&amp;#12540;&amp;#12488;&amp;#12408;&amp;#12472;&amp;#12515;&amp;#12531;&amp;#12503;&amp;#12301;&lt;/i&gt;&amp;#65288;&lt;i&gt;&amp;#12300;Esc&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1072388476" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1072388476" CREATED="1455910949130" MODIFIED="1455910949130" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#65288;<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12377;&amp;#12409;&amp;#12390;&amp;#25240;&amp;#12426;&amp;#30067;&amp;#12416;&amp;#65379;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_903301760" CREATED="1455910949131" MODIFIED="1455910949131" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_903301760" CREATED="1455910949131" MODIFIED="1455910949131" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12377;&#12409;&#12390;&#25240;&#12426;&#30067;&#12416;&#65379;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <attribute NAME="Chapter" VALUE="1"/>
 </node>
 <node TEXT="" ID="ID_170912735" CREATED="1455910949189" MODIFIED="1455910949189">
@@ -15856,29 +16202,155 @@
 </node>
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#xff08;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#xff09;&#x5c55;&#x958b;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_135686189" CREATED="1455910949133" MODIFIED="1455910949133" TEXT_SHORTENED="true">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12523;&amp;#12540;&amp;#12488;&amp;#12408;&amp;#12472;&amp;#12515;&amp;#12531;&amp;#12503;&amp;#12301;&lt;/i&gt;&amp;#160; (&lt;i&gt;&amp;#12300;Esc&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1652334229" CREATED="1455910949133" MODIFIED="1455910949133" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12377;&amp;#12409;&amp;#12390;&amp;#65339;&amp;#12398;&amp;#19979;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12434;&amp;#65341;&amp;#23637;&amp;#38283;&amp;#12377;&amp;#12427;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1437799222" CREATED="1455910949133" MODIFIED="1455910949133" TEXT_SHORTENED="true">
+<node ID="ID_1652334229" CREATED="1455910949133" MODIFIED="1455910949133" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#160; (<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_1437799222" CREATED="1455910949133" MODIFIED="1455910949133" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;&#23637;&#38283;&#12377;&#12427;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x3092;&#x5b9a;&#x7fa9;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1157448205" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;Class&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#36984;&amp;#25246;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_296337141" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#8835;(&amp;#21547;&amp;#12416;)&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#36984;&amp;#25246;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1232714581" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;Definition&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#36984;&amp;#25246;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1783341782" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12463;&amp;#12451;&amp;#12483;&amp;#12463;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1492821244" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true">
+<node ID="ID_296337141" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;Class&#12301;</i>&#12434;&#36984;&#25246;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_1232714581" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#8835;(&#21547;&#12416;)&#12301;</i>&#12434;&#36984;&#25246;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_1783341782" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;Definition&#12301;</i>&#12434;&#36984;&#25246;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_1492821244" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12463;&#12451;&#12483;&#12463;&#12501;&#12451;&#12523;&#12479;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x7d42;&#x3048;&#x308b;&#x306b;&#x306f;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1869718411" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#35299;&amp;#38500;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1896767397" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true">
+<node ID="ID_1896767397" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#35299;&#38500;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="" ID="ID_1702071190" CREATED="1455910949189" MODIFIED="1455910949189">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12523;&amp;#12540;&amp;#12488;&amp;#12408;&amp;#12472;&amp;#12515;&amp;#12531;&amp;#12503;&amp;#12301; &lt;/i&gt;(&lt;i&gt;&amp;#12300;Esc&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_1535041398" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12377;&amp;#12409;&amp;#12390;&amp;#65339;&amp;#12398;&amp;#19979;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12434;&amp;#65341;&lt;/i&gt;&amp;#23637;&amp;#38283;&amp;#12377;&amp;#12427;&amp;#12301;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="ProcedureStep" ID="ID_253518936" CREATED="1455910949135" MODIFIED="1455910949135" TEXT_SHORTENED="true">
+<node STYLE_REF="ProcedureStep" ID="ID_1535041398" CREATED="1455910949134" MODIFIED="1455910949134" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301; </i>(<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node STYLE_REF="ProcedureStep" ID="ID_253518936" CREATED="1455910949135" MODIFIED="1455910949135" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;</i>&#23637;&#38283;&#12377;&#12427;&#12301;&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="" ID="ID_1504036237" CREATED="1455910949189" MODIFIED="1455910949189">
 <hook NAME="SummaryNode"/>
@@ -15963,43 +16435,225 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#19978;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12418;&amp;#34920;&amp;#31034;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#28961;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_597594722" CREATED="1455910949135" MODIFIED="1455910949135" TEXT_SHORTENED="true">
+<node ID="ID_597594722" CREATED="1455910949135" MODIFIED="1455910949135" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#19978;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#19979;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12418;&amp;#34920;&amp;#31034;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#28961;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_186774997" CREATED="1455910949136" MODIFIED="1455910949136" TEXT_SHORTENED="true">
+<node ID="ID_186774997" CREATED="1455910949136" MODIFIED="1455910949136" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_descendants"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#19979;&#20301;&#12494;&#12540;&#12489;&#12418;&#34920;&#31034;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#38750;&amp;#34920;&amp;#31034;&amp;#12398;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12434;&amp;#23637;&amp;#38283;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#28961;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1079412775" CREATED="1455910949136" MODIFIED="1455910949136" TEXT_SHORTENED="true">
+<node ID="ID_1079412775" CREATED="1455910949136" MODIFIED="1455910949136" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_filtered_ancestors"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#38750;&#34920;&#31034;&#12398;&#12494;&#12540;&#12489;&#12434;&#23637;&#38283;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#65378;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#20013;&amp;#12398;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12395;&amp;#36969;&amp;#29992;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#28961;&amp;#21177;&amp;#12395;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1827735442" CREATED="1455910949136" MODIFIED="1455910949136" TEXT_SHORTENED="true">
+<node ID="ID_1827735442" CREATED="1455910949136" MODIFIED="1455910949136" TEXT_SHORTENED="true">
 <icon BUILTIN="../applies_to_filtered_nodes"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#65378;&#12501;&#12451;&#12523;&#12479;&#20013;&#12398;&#12494;&#12540;&#12489;&#12395;&#36969;&#29992;&#12301;</i>&#12434;&#28961;&#21177;&#12395;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x3059;&#x3079;&#x3066;&#xff08;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#xff09;&#x5c55;&#x958b;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_377020575" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12523;&amp;#12540;&amp;#12488;&amp;#12408;&amp;#12472;&amp;#12515;&amp;#12531;&amp;#12503;&amp;#12301;&lt;/i&gt;&amp;#160; (&lt;i&gt;&amp;#12300;Esc&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1460295626" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12377;&amp;#12409;&amp;#12390;&amp;#65339;&amp;#12398;&amp;#19979;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12434;&amp;#65341;&amp;#23637;&amp;#38283;&amp;#12377;&amp;#12427;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1445171717" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
+<node ID="ID_1460295626" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#160; (<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_1445171717" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_all"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;&#23637;&#38283;&#12377;&#12427;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30eb;&#x30fc;&#x30eb;&#x3092;&#x5b9a;&#x7fa9;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_6260706" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12486;&amp;#12461;&amp;#12473;&amp;#12488;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#36984;&amp;#25246;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_167264124" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#8835;(&amp;#21547;&amp;#12416;)&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#36984;&amp;#25246;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1867972368" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;filter&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#12479;&amp;#12452;&amp;#12503;&amp;#20837;&amp;#21147;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_909882711" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12463;&amp;#12451;&amp;#12483;&amp;#12463;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_676302966" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
+<node ID="ID_167264124" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12494;&#12540;&#12489;&#12486;&#12461;&#12473;&#12488;&#12301;</i>&#12434;&#36984;&#25246;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_1867972368" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#8835;(&#21547;&#12416;)&#12301;</i>&#12434;&#36984;&#25246;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_909882711" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;filter&#12301;</i>&#12434;&#12479;&#12452;&#12503;&#20837;&#21147;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_676302966" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12463;&#12451;&#12483;&#12463;&#12501;&#12451;&#12523;&#12479;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="&#x7d42;&#x3048;&#x308b;&#x306b;&#x306f;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1473535137" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&amp;#12434;&amp;#35299;&amp;#38500;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_413785084" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
+<node ID="ID_413785084" CREATED="1455910949137" MODIFIED="1455910949137" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12501;&#12451;&#12523;&#12479;&#12434;&#35299;&#38500;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="" ID="ID_1733149256" CREATED="1455910949190" MODIFIED="1455910949190">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12523;&amp;#12540;&amp;#12488;&amp;#12408;&amp;#12472;&amp;#12515;&amp;#12531;&amp;#12503;&amp;#12301;&lt;/i&gt;&amp;#160; (&lt;i&gt;&amp;#12300;Esc&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_378729960" CREATED="1455910949138" MODIFIED="1455910949138" TEXT_SHORTENED="true"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;&amp;#12300;&amp;#12377;&amp;#12409;&amp;#12390;&amp;#65339;&amp;#12398;&amp;#19979;&amp;#20301;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12434;&amp;#65341;&amp;#23637;&amp;#38283;&amp;#12377;&amp;#12427;&amp;#12301;&lt;/i&gt;&amp;#12434;&amp;#25276;&amp;#12377;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1457654479" CREATED="1455910949138" MODIFIED="1455910949138" TEXT_SHORTENED="true">
+<node ID="ID_378729960" CREATED="1455910949138" MODIFIED="1455910949138" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12523;&#12540;&#12488;&#12408;&#12472;&#12515;&#12531;&#12503;&#12301;</i>&#160; (<i>&#12300;Esc&#12301;</i>&#12434;&#25276;&#12377;)
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node ID="ID_1457654479" CREATED="1455910949138" MODIFIED="1455910949138" TEXT_SHORTENED="true">
 <icon BUILTIN="../fold_all"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>&#12300;&#12377;&#12409;&#12390;&#65339;&#12398;&#19979;&#20301;&#12494;&#12540;&#12489;&#12434;&#65341;&#23637;&#38283;&#12377;&#12427;&#12301;</i>&#12434;&#25276;&#12377;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="" ID="ID_1405414422" CREATED="1455910949190" MODIFIED="1455910949190">
 <hook NAME="SummaryNode"/>
@@ -16122,7 +16776,21 @@
 <node TEXT="&#x30dd;&#x30fc;&#x30bf;&#x30d6;&#x30eb; Freeplane" ID="ID_672630297" CREATED="1455910949139" MODIFIED="1455910949139" TEXT_SHORTENED="true"/>
 <node TEXT="" ID="ID_1816445103" CREATED="1455910949190" MODIFIED="1455910949190">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Wiki &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Support&quot;&gt;Download help&lt;/a&gt;&amp;#160;&amp;#12434;&amp;#21442;&amp;#29031;&amp;#12290;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_797098004" CREATED="1455910949139" MODIFIED="1455910949139"/>
+<node ID="ID_797098004" CREATED="1455910949139" MODIFIED="1455910949139"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Support">Download help</a>&#160;&#12434;&#21442;&#29031;&#12290;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 </node>
 </node>
 <node TEXT="&#x30a4;&#x30f3;&#x30b9;&#x30c8;&#x30fc;&#x30eb;" FOLDED="true" ID="ID_653448739" CREATED="1455910949139" MODIFIED="1455910949139" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
@@ -16454,7 +17122,20 @@
 </node>
 <node TEXT="&#x3053;&#x306e;&#x6587;&#x66f8;&#x306b;&#x3064;&#x3044;&#x3066;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_112557731" CREATED="1455910949142" MODIFIED="1455910949142" HGAP_QUANTITY="32.0 px" VSHIFT_QUANTITY="4.0 px" TEXT_SHORTENED="true">
 <edge STYLE="horizontal"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: centre&quot;&gt;&#xa;      &amp;#12510;&amp;#12491;&amp;#12517;&amp;#12450;&amp;#12523; Freeplane 1.2 &amp;#12398;&amp;#20316;&amp;#25104;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="true" ID="ID_7136454" CREATED="1455910949142" MODIFIED="1455910949142" TEXT_SHORTENED="true">
+<node FOLDED="true" ID="ID_7136454" CREATED="1455910949142" MODIFIED="1455910949142" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: centre">
+      &#12510;&#12491;&#12517;&#12450;&#12523; Freeplane 1.2 &#12398;&#20316;&#25104;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <node TEXT="&#x30c7;&#x30b6;&#x30a4;&#x30f3;&#x539f;&#x5247;&#x3092;&#x6d3b;&#x7528;" FOLDED="true" ID="ID_1451437324" CREATED="1455910949142" MODIFIED="1455910949142" TEXT_SHORTENED="true">
 <node TEXT="&#x4f7f;&#x3044;&#x3084;&#x3059;&#x304f;" FOLDED="true" ID="ID_292534096" CREATED="1455910949142" MODIFIED="1455910949142" TEXT_SHORTENED="true">
 <node TEXT="&#x6559;&#x990a;&#x306f;&#x3042;&#x308b;&#x304c;&#x975e;&#x5c02;&#x9580;&#x5bb6;&#x3092;&#x5bfe;&#x8c61;&#x306b;" FOLDED="true" ID="ID_923262609" CREATED="1455910949142" MODIFIED="1455910949142" TEXT_SHORTENED="true">
@@ -16917,7 +17598,21 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &amp;#23646;&amp;#24615;&amp;#12398;&lt;i&gt;&amp;#12300;Class&amp;#12301;&lt;/i&gt;&amp;#12364;&amp;#12289;&amp;#36969;&amp;#29992;&amp;#12377;&amp;#12427;&amp;#12473;&amp;#12479;&amp;#12452;&amp;#12523;&amp;#12434;&amp;#23450;&amp;#32681;&amp;#12375;&amp;#12414;&amp;#12377;&amp;#12290;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_336620757" CREATED="1455910949148" MODIFIED="1455910949148"/>
+<node ID="ID_336620757" CREATED="1455910949148" MODIFIED="1455910949148"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      &#23646;&#24615;&#12398;<i>&#12300;Class&#12301;</i>&#12364;&#12289;&#36969;&#29992;&#12377;&#12427;&#12473;&#12479;&#12452;&#12523;&#12434;&#23450;&#32681;&#12375;&#12414;&#12377;&#12290;
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 <node TEXT="&#x300c;Class&#x300d;&#x306e;&#x5024; = &#x30b9;&#x30bf;&#x30a4;&#x30eb;&#x540d;&#x4e00;&#x89a7;" ID="ID_303101789" CREATED="1455910949148" MODIFIED="1455910949148"/>
 </node>
 </node>
@@ -17219,7 +17914,21 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;amp;t=77&quot;&gt;&amp;#12494;&amp;#12540;&amp;#12489;&amp;#12398;&amp;#27178;&amp;#24133;&amp;#12395;&amp;#38306;&amp;#12377;&amp;#12427;&amp;#21839;&amp;#38988;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1194109651" CREATED="1455910949150" MODIFIED="1455910949150"/>
+<node ID="ID_1194109651" CREATED="1455910949150" MODIFIED="1455910949150"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=77">&#12494;&#12540;&#12489;&#12398;&#27178;&#24133;&#12395;&#38306;&#12377;&#12427;&#21839;&#38988;</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 <node TEXT="&#x753b;&#x50cf;&#x3078;&#x306e;&#x30a2;&#x30af;&#x30bb;&#x30b9;&#x304c;&#x62d2;&#x5426;&#x3055;&#x308c;&#x308b;&#xff08;Java &#x30a2;&#x30d7;&#x30ec;&#x30c3;&#x30c8;&#xff09;" ID="ID_688930881" CREATED="1455910949150" MODIFIED="1455910949150" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
@@ -17350,7 +18059,20 @@
 <node TEXT="&#x6a19;&#x6e96;&#x7684;&#x306a;&#x30d7;&#x30ed;&#x30d1;&#x30c6;&#x30a3;&#x306e;&#x8a2d;&#x5b9a;" ID="ID_1547921090" CREATED="1455910949151" MODIFIED="1455910949151" LINK="http://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=219"/>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &amp;#12458;&amp;#12531;&amp;#12521;&amp;#12452;&amp;#12531;&amp;#12510;&amp;#12491;&amp;#12517;&amp;#12450;&amp;#12523;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1455910949154" MODIFIED="1455910949154" LINK="#ID_566454554" HGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="111.0 px" TEXT_SHORTENED="true">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1455910949154" MODIFIED="1455910949154" LINK="#ID_566454554" HGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="111.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      &#12458;&#12531;&#12521;&#12452;&#12531;&#12510;&#12491;&#12517;&#12450;&#12523;
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS">
 

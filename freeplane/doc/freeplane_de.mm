@@ -1,7 +1,7 @@
-<map version="0.9.0">
+<map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node ID="ID_911274459" CREATED="1270892460624" MODIFIED="1274305304485" COLOR="#993300">
-<richcontent TYPE="NODE">
+<node FOLDED="false" ID="ID_911274459" CREATED="1270892460624" MODIFIED="1465678798217" COLOR="#993300" MAX_WIDTH="150.0 pt" MIN_WIDTH="150.0 pt"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -11,11 +11,119 @@
       Freeplane<br/><small>- Eine freie Mind Mapping Software -</small>&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600"/>
-<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1275342025939" HGAP="-94" VSHIFT="-27">
-<richcontent TYPE="NODE">
+<hook NAME="MapStyle">
+    <properties fit_to_viewport="false;" show_icon_for_attributes="true"/>
+
+<map_styles>
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt" TEXT_SHORTENED="true">
+<font SIZE="24"/>
+<richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" SHAPE_VERTICAL_MARGIN="0.0 pt" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<font NAME="Arial" SIZE="9" BOLD="true" ITALIC="false"/>
+<edge STYLE="bezier" WIDTH="3"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.details">
+<font SIZE="11"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
+<font SIZE="9"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.floating">
+<edge STYLE="hide_edge"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="styles.important">
+<icon BUILTIN="yes"/>
+<edge COLOR="#0000cc"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval" UNIFORM_SHAPE="true" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<font SIZE="24" ITALIC="true"/>
+<edge STYLE="bezier" WIDTH="3"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1">
+<edge COLOR="#000000"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2">
+<edge COLOR="#ff0033"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3">
+<edge COLOR="#009933"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4">
+<edge COLOR="#3333ff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,5">
+<edge COLOR="#ff6600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,6">
+<edge COLOR="#cc00cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,7">
+<edge COLOR="#ffbf00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,8">
+<edge COLOR="#00ff99"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,9">
+<edge COLOR="#0099ff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,10">
+<edge COLOR="#996600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,11">
+<edge COLOR="#000000"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,12">
+<edge COLOR="#cc0066"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,13">
+<edge COLOR="#33ff00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,14">
+<edge COLOR="#ff9999"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,15">
+<edge COLOR="#0000cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,16">
+<edge COLOR="#cccc00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,17">
+<edge COLOR="#0099cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,18">
+<edge COLOR="#006600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,19">
+<edge COLOR="#ff00cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
+<edge COLOR="#00cc00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,21">
+<edge COLOR="#0066cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,22">
+<edge COLOR="#00ffff"/>
+</stylenode>
+</stylenode>
+</stylenode>
+</map_styles>
+</hook>
+<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1465678798233"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -35,6 +143,7 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Dr&#xfc;cke die Taste Cursor nach links, um Knoten, &#xa;die links vom Wurzelknoten sind, aufzuklappen." ID="ID_1776790765" CREATED="1271002221874" MODIFIED="1275342048072"/>
@@ -229,41 +338,41 @@
 <icon BUILTIN="back"/>
 </node>
 <node TEXT="Knoten k&#xf6;nnen mit Wolken &#xa;zusammengefasst werden" FOLDED="true" ID="_Freeplane_Link_318937820" CREATED="1270892460667" MODIFIED="1274905948870" COLOR="#407000">
-<cloud WIDTH="0"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="...und die Wolken k&#xf6;nnen&#xa;verschiedene Farben haben" ID="ID_1714895943" CREATED="1270892460668" MODIFIED="1274487435773">
-<cloud COLOR="#c4388d" WIDTH="0"/>
+<cloud COLOR="#c4388d" SHAPE="ARC"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
 </node>
-<node TEXT="Knoten k&#xf6;nnen mit Konnektoren verbunden werden" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1274487530655" COLOR="#407000" HGAP="22" VSHIFT="-24">
+<node TEXT="Knoten k&#xf6;nnen mit Konnektoren verbunden werden" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1274487530655" COLOR="#407000" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="-24.0 px">
 <node TEXT="Verbinde einen Knoten..." ID="_Freeplane_Link_1212380407" CREATED="1270892460668" MODIFIED="1274487563858">
-<arrowlink DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="mit einem anderen..." ID="_Freeplane_Link_1249400461" CREATED="1270892460669" MODIFIED="1274487631319">
-<arrowlink COLOR="#6600ff" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#6600ff" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="mit verschiedenen Farben" ID="_Freeplane_Link_880551392" CREATED="1270892460670" MODIFIED="1274487585470">
-<arrowlink DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="und auf verschiedenen Wegen" ID="_Freeplane_Link_1789233193" CREATED="1270892460670" MODIFIED="1274487596684"/>
 </node>
-<node TEXT="Konnektoren k&#xf6;nnen beschriftet werden" FOLDED="true" ID="ID_237593792" CREATED="1270893118534" MODIFIED="1275342253867" VGAP="89" HGAP="29" VSHIFT="1" COLOR="#407000">
+<node TEXT="Konnektoren k&#xf6;nnen beschriftet werden" FOLDED="true" ID="ID_237593792" CREATED="1270893118534" MODIFIED="1275342253867" VGAP_QUANTITY="89.0 px" HGAP_QUANTITY="29.0 px" VSHIFT_QUANTITY="1.0 px" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Quellknoten" ID="ID_1709139591" CREATED="1270893130918" MODIFIED="1274487779390">
-<arrowlink COLOR="#352bca" DESTINATION="ID_1741403088" SOURCE_LABEL="Beschriftung am Anfang" TARGET_LABEL="Beschriftung am Ende" MIDDLE_LABEL="Beschriftung in der Mitte" STARTINCLINATION="115;27;" ENDINCLINATION="202;36;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#352bca" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1741403088" SOURCE_LABEL="Beschriftung am Anfang" TARGET_LABEL="Beschriftung am Ende" MIDDLE_LABEL="Beschriftung in der Mitte" STARTINCLINATION="115;27;" ENDINCLINATION="202;36;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Zielknoten" ID="ID_1741403088" CREATED="1270893138577" MODIFIED="1274487689671"/>
 </node>
-<node TEXT="Konnektoren k&#xf6;nnen so formatiert werden,&#xa;dass sie wie Knotenlinien aussehen" FOLDED="true" ID="ID_589013013" CREATED="1270893418086" MODIFIED="1275342247966" COLOR="#407000" VGAP="20" HGAP="21" VSHIFT="12">
+<node TEXT="Konnektoren k&#xf6;nnen so formatiert werden,&#xa;dass sie wie Knotenlinien aussehen" FOLDED="true" ID="ID_589013013" CREATED="1270893418086" MODIFIED="1275342247966" COLOR="#407000" VGAP_QUANTITY="20.0 px" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="12.0 px">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="1" ID="ID_822615789" CREATED="1270893450078" MODIFIED="1270893469956">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_659652940" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="2" FOLDED="true" ID="ID_1931813528" CREATED="1270893453278" MODIFIED="1270991928052">
 <node TEXT="22" ID="ID_659652940" CREATED="1270893459959" MODIFIED="1270893460779"/>
 </node>
 <node TEXT="3" ID="ID_961774571" CREATED="1270893454198" MODIFIED="1270893480379">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_659652940" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 <node TEXT="Knotenlinien k&#xf6;nnen versteckt werden" FOLDED="true" ID="ID_1539062144" CREATED="1270893550070" MODIFIED="1274817607326" COLOR="#407000">
@@ -274,20 +383,20 @@
 </node>
 <node TEXT="Knoten k&#xf6;nnen Attribute haben" ID="ID_1044646484" CREATED="1270893318566" MODIFIED="1274817881371" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
+<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>
-<node TEXT="Knoten k&#xf6;nnen frei positioniert werden" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1270892460670" MODIFIED="1274817938052" COLOR="#407000" HGAP="25" VSHIFT="36">
-<node TEXT="Einer" ID="_Freeplane_Link_894936766" CREATED="1270892460670" MODIFIED="1274817963942" HGAP="-1" VSHIFT="-27"/>
-<node TEXT="Ein Anderer" ID="_Freeplane_Link_1942481455" CREATED="1270892460670" MODIFIED="1275331926697" HGAP="123" VSHIFT="43"/>
+<node TEXT="Knoten k&#xf6;nnen frei positioniert werden" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1270892460670" MODIFIED="1274817938052" COLOR="#407000" HGAP_QUANTITY="25.0 px" VSHIFT_QUANTITY="36.0 px">
+<node TEXT="Einer" ID="_Freeplane_Link_894936766" CREATED="1270892460670" MODIFIED="1274817963942" HGAP_QUANTITY="-1.0 px" VSHIFT_QUANTITY="-27.0 px"/>
+<node TEXT="Ein Anderer" ID="_Freeplane_Link_1942481455" CREATED="1270892460670" MODIFIED="1275331926697" HGAP_QUANTITY="123.0 px" VSHIFT_QUANTITY="43.0 px"/>
 </node>
 </node>
 <node TEXT="Navigation" FOLDED="true" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1272092212344" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Navigation in der MindMap" FOLDED="true" ID="_Freeplane_Link_1540212684" CREATED="1270892460687" MODIFIED="1274818286956" COLOR="#407000">
-<node ID="ID_159922424" CREATED="1270892460687" MODIFIED="1274906075236">
-<richcontent TYPE="NODE">
+<node ID="ID_159922424" CREATED="1270892460687" MODIFIED="1274906075236"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -297,10 +406,12 @@
       Um den <b>Cursor</b>&#160;nach <b>oben</b>, nach <b>unten</b>, nach <b>links</b><br/>oder nach <b>rechts</b>&#160;zu bewegen, verwende die Cursor-Tasten
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1583313144" CREATED="1270892460687" MODIFIED="1274906093709">
-<richcontent TYPE="NODE">
+<node ID="ID_1583313144" CREATED="1270892460687" MODIFIED="1274906093709"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -310,10 +421,12 @@
       Um an den <b>Anfang des aktiven Zweiges</b>&#160;zu kommen, dr&#252;cke BildAuf
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_144127434" CREATED="1270892460688" MODIFIED="1274906108315">
-<richcontent TYPE="NODE">
+<node ID="ID_144127434" CREATED="1270892460688" MODIFIED="1274906108315"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -323,10 +436,12 @@
       Um ans <b>Ende des aktiven Zweiges</b>&#160;zu kommen, dr&#252;cke BildAb
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_158862259" CREATED="1270892460688" MODIFIED="1274915647666">
-<richcontent TYPE="NODE">
+<node ID="ID_158862259" CREATED="1270892460688" MODIFIED="1274915647666"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -339,10 +454,12 @@
       &quot;Navigieren -&gt; Wurzelknoten zentrieren&quot; (Escape)
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1985477320" CREATED="1271026015708" MODIFIED="1274915676581">
-<richcontent TYPE="NODE">
+<node ID="ID_1985477320" CREATED="1271026015708" MODIFIED="1274915676581"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -352,10 +469,12 @@
       Navigation in der <b>Historie</b>&#160;der <b>zuletzt besuchten Knoten</b>:<br/>- &quot;Navigieren -&gt; Zur&#252;ck&quot; (Alt + Cursor links) navigiert zur&#252;ck in der Historie<br/>- &quot;Navigieren -&gt; Vorw&#228;rts&quot; (Alt + Cursor rechts) navigiert wieder nach vorne in der Historie
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_902784897" CREATED="1271176654062" MODIFIED="1274915710842">
-<richcontent TYPE="NODE">
+<node ID="ID_902784897" CREATED="1271176654062" MODIFIED="1274915710842"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -378,10 +497,12 @@
       Die Reihenfolge der Knoten wird anhand der Hierarchie ermittelt.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1501511305" CREATED="1271177016593" MODIFIED="1274915743605">
-<richcontent TYPE="NODE">
+<node ID="ID_1501511305" CREATED="1271177016593" MODIFIED="1274915743605"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -404,14 +525,16 @@
       Die Reihenfolge der Knoten wird anhand der HIerarchie ermittelt.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Standardm&#xe4;sig werden Knoten ausgew&#xe4;hlt, indem man den Cursor f&#xfc;r einen kurzen, konfigurierbaren, Zeitraum &#xfc;ber ihm platziert.&#xa;Dieses Verhalten kann ge&#xe4;ndert werden unter Extras -&gt; Einstellungen... -&gt; Verhalten in der Sektion &quot;Auswahlmodus&quot;.&#xa;Verf&#xfc;gbare Modi sind: &quot;Direkt&quot;, &quot;Verz&#xf6;gert&quot; (Standard) und &quot;Durch Mausklick&quot;." ID="ID_125952778" CREATED="1271003250866" MODIFIED="1274366224125"/>
 </node>
 <node TEXT="Auswahl von mehreren Knoten" FOLDED="true" ID="Freeplane_Link_653540280" CREATED="1270892460681" MODIFIED="1274818568721" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1732023097" CREATED="1270892460681" MODIFIED="1274906329680">
-<richcontent TYPE="NODE">
+<node ID="ID_1732023097" CREATED="1270892460681" MODIFIED="1274906329680"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -424,11 +547,13 @@
       w&#228;hrend Du auf die Knoten links klickst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1775844952" CREATED="1270892460682" MODIFIED="1274906358844">
-<richcontent TYPE="NODE">
+<node ID="ID_1775844952" CREATED="1270892460682" MODIFIED="1274906358844"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -441,11 +566,13 @@
       indem Du die Strg-Taste gedr&#252;ckt h&#228;lst, w&#228;hrend Du sie mit der Maus anklickst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1843533091" CREATED="1270892460682" MODIFIED="1274906418413">
-<richcontent TYPE="NODE">
+<node ID="ID_1843533091" CREATED="1270892460682" MODIFIED="1274906418413"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -461,11 +588,13 @@
       Dich mit den Cursor-Tasten durch die MindMap bewegst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1178451061" CREATED="1270892460682" MODIFIED="1275332271295">
-<richcontent TYPE="NODE">
+<node ID="ID_1178451061" CREATED="1270892460682" MODIFIED="1275332271295"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -485,10 +614,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1029340509" CREATED="1270892460682" MODIFIED="1274906475113">
-<richcontent TYPE="NODE">
+<node ID="ID_1029340509" CREATED="1270892460682" MODIFIED="1274906475113"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -501,12 +631,14 @@
       Hintergrund der MindMap, oder einen unselektierten Knoten klickst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Falten und Entfalten" FOLDED="true" ID="Freeplane_Link_4727471" CREATED="1270892460688" MODIFIED="1274908801991" COLOR="#407000">
-<node ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1274907536381">
-<richcontent TYPE="NODE">
+<node ID="ID_1622399561" CREATED="1270892460688" MODIFIED="1274907536381"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -516,10 +648,12 @@
       Ein gefalteter Knoten wird durch einen kleinen Kreis an dem Ende, das am weitesten vom Wurzelknoten entfernt ist, angezeigt.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1274914461698">
-<richcontent TYPE="NODE">
+<node ID="ID_1439689412" CREATED="1270892460688" MODIFIED="1274914461698"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -538,10 +672,12 @@
       - Verwende das &quot;Knoten-Kontextmen&#252; -&gt; Knoten falten/ entfalten&quot;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1089564473" CREATED="1270892460688" MODIFIED="1274914441890">
-<richcontent TYPE="NODE">
+<node ID="ID_1089564473" CREATED="1270892460688" MODIFIED="1274914441890"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -563,10 +699,12 @@
       - Verwende das &quot;Knoten-Kontextmen&#252; -&gt; Knoten falten/ entfalten&quot;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_926272054" CREATED="1270892460688" MODIFIED="1275332487191">
-<richcontent TYPE="NODE">
+<node ID="ID_926272054" CREATED="1270892460688" MODIFIED="1275332487191"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -601,10 +739,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1275332565442">
-<richcontent TYPE="NODE">
+<node ID="ID_1233324949" CREATED="1270892460688" MODIFIED="1275332565442"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -627,10 +766,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1624228779" CREATED="1270892460688" MODIFIED="1275332591656">
-<richcontent TYPE="NODE">
+<node ID="ID_1624228779" CREATED="1270892460688" MODIFIED="1275332591656"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -653,13 +793,14 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
 <node TEXT="Die MindMap verschieben" FOLDED="true" ID="Freeplane_Link_467411537" CREATED="1270892460689" MODIFIED="1274909291302" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1291243282" CREATED="1270892460689" MODIFIED="1274910044033">
-<richcontent TYPE="NODE">
+<node ID="ID_1291243282" CREATED="1270892460689" MODIFIED="1274910044033"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -684,14 +825,16 @@
       &#160;&#160;allen Betriebssystemen)&#160;&#160;verschiebt die MindMap horizontal
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
 <node TEXT="Die MindMap zoomen" FOLDED="true" ID="Freeplane_Link_913137192" CREATED="1270892460689" MODIFIED="1274909809443" COLOR="#407000">
-<node ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1274910230674">
-<richcontent TYPE="NODE">
+<node ID="ID_1270232158" CREATED="1272007214049" MODIFIED="1274910230674"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -704,10 +847,12 @@
       &#160;ihn zu verkleinern (Alt + unten) und die MindMap auf die Seite einzupassen.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1692671423" CREATED="1272007458262" MODIFIED="1274910485869">
-<richcontent TYPE="NODE">
+<node ID="ID_1692671423" CREATED="1272007458262" MODIFIED="1274910485869"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -720,10 +865,12 @@
       &#252;ber das man den Zoom-Level direkt auw&#228;hlen kann.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_961139916" CREATED="1270892460689" MODIFIED="1274910640872">
-<richcontent TYPE="NODE">
+<node ID="ID_961139916" CREATED="1270892460689" MODIFIED="1274910640872"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -736,13 +883,15 @@
       Mausrad dreht, w&#228;hrend Du die Strg-Taste gedr&#252;ckt h&#228;lst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Suchen und Filtern" FOLDED="true" ID="Freeplane_Link_423038022" CREATED="1270892460681" MODIFIED="1275332779466" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1565729150" CREATED="1270896350974" MODIFIED="1274912375212">
-<richcontent TYPE="NODE">
+<node ID="ID_1565729150" CREATED="1270896350974" MODIFIED="1274912375212"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -752,10 +901,12 @@
       Du kannst nach Knoten <b>suchen</b>&#160;und sie <b>filtern</b>. Als <b>Kriterien</b>&#160; kannst Du dabei den Knotentext, Icons, Erzeugungs-/&#196;nderungszeit des Knotens, Priorit&#228;t, Konnektoren, Beschriftung von Konnektoren, Hyperlinks, Notizen und Attribute verwenden.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_966700848" CREATED="1270892460681" MODIFIED="1274914344453">
-<richcontent TYPE="NODE">
+<node ID="ID_966700848" CREATED="1270892460681" MODIFIED="1274914344453"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -765,11 +916,13 @@
       Um einen Text, oder andere Kriterien, in einem <b>Knoten und</b>&#160;allen seinen <b>Nachfolgern</b>&#160;zu <b>suchen</b>, verwende &quot;Bearbeiten -&gt; Suchen...&quot; (Strg + F).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1274914332698">
-<richcontent TYPE="NODE">
+<node ID="ID_1646223708" CREATED="1270892460681" MODIFIED="1274914332698"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -782,11 +935,13 @@
       findest Du mit &quot;Bearbeiten -&gt; Weitersuchen&quot; (Strg + G).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_829330412" CREATED="1270892460681" MODIFIED="1275332872246">
-<richcontent TYPE="NODE">
+<node ID="ID_829330412" CREATED="1270892460681" MODIFIED="1275332872246"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -797,10 +952,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_779591913" CREATED="1270892460681" MODIFIED="1274913238008">
-<richcontent TYPE="NODE">
+<node ID="ID_779591913" CREATED="1270892460681" MODIFIED="1274913238008"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -813,10 +969,12 @@
       In zuk&#252;nftigen Versionen wird es eine Option geben, um die Suche auf die ganze MindMap auszudehnen.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1274914012341">
-<richcontent TYPE="NODE">
+<node ID="ID_1761633870" CREATED="1271096970387" MODIFIED="1274914012341"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -826,10 +984,12 @@
       Um die <b>gesammte MindMap</b>&#160;<b>nach</b>&#160;einem <b>Text</b>&#160;zu <b>durchsuchen</b>&#160; <b>und</b>&#160;ihn evtl. zu <b>&#228;ndern</b>, verwende &quot;Bearbeiten -&gt; Suchen und ersetzen...&quot; . Mit &quot;Bearbeiten -&gt; Suchen und ersetzen in allen MindMaps&quot; kannst Du alle ge&#246;ffneten MindMaps durchsuchen.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1274914308250">
-<richcontent TYPE="NODE">
+<node ID="ID_1773253238" CREATED="1270897010863" MODIFIED="1274914308250"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -839,13 +999,15 @@
       Mit der <b>Filter-Toolbar</b>&#160;und dem <b>Filter-Men&#252;</b>&#160;kannst Du <b>Filter definieren</b>&#160;und damit nur den Teil der Knoten anzeigen lassen, die den Kriterien entsprechen.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Wechseln zu einer&#xa;anderen MindMap" FOLDED="true" ID="Freeplane_Link_516331171" CREATED="1270892460688" MODIFIED="1274914587683" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_213892338" CREATED="1270892460689" MODIFIED="1274915092105">
-<richcontent TYPE="NODE">
+<node ID="ID_213892338" CREATED="1270892460689" MODIFIED="1274915092105"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -864,11 +1026,13 @@
       - Klicke rechts auf den Hintergrund und w&#228;hle die MindMap aus dem erscheinenden Kontext-Men&#252; aus.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_233995891" CREATED="1271000255265" MODIFIED="1275333030090">
-<richcontent TYPE="NODE">
+<node ID="ID_233995891" CREATED="1271000255265" MODIFIED="1275333030090"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -885,10 +1049,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_771867461" CREATED="1272092801195" MODIFIED="1274915572850">
-<richcontent TYPE="NODE">
+<node ID="ID_771867461" CREATED="1272092801195" MODIFIED="1274915572850"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -901,15 +1066,17 @@
       kannst Du mit Strg + 1 wechseln.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 </node>
 <node TEXT="MindMaps bearbeiten" FOLDED="true" POSITION="right" ID="ID_393070580" CREATED="1272091239258" MODIFIED="1274394610676" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Knoten erzeugen &#xa;und bearbeiten" FOLDED="true" ID="_Freeplane_Link_1709752669" CREATED="1270892460670" MODIFIED="1274917859485" COLOR="#407000">
-<node ID="ID_847485935" CREATED="1270892460670" MODIFIED="1274918872232">
-<richcontent TYPE="NODE">
+<node ID="ID_847485935" CREATED="1270892460670" MODIFIED="1274918872232"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -919,10 +1086,12 @@
       Um einen neuen <b>Kind-Knoten</b>&#160;zu <b>erzeugen</b>&#160;w&#228;hle &quot;Einf&#252;gen -&gt; Neuer Kind-Knoten&quot;, oder dr&#252;cke die Taste Einfg (bei Mac OS X TAB).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_719677235" CREATED="1270892460671" MODIFIED="1275333322975">
-<richcontent TYPE="NODE">
+<node ID="ID_719677235" CREATED="1270892460671" MODIFIED="1275333322975"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -933,10 +1102,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1715555696" CREATED="1270892460671" MODIFIED="1274918902756">
-<richcontent TYPE="NODE">
+<node ID="ID_1715555696" CREATED="1270892460671" MODIFIED="1274918902756"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -946,10 +1116,12 @@
       Einen <b>neuen Geschwister Knoten unterhalb</b>&#160;des aktiven Knotens <b>erzeugt</b>&#160; man mit &quot;Einf&#252;gen -&gt; Neuer Geschwister-Knoten danach&quot; oder durch dr&#252;cken der Taste Enter.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1942197982" CREATED="1270892460671" MODIFIED="1274918913635">
-<richcontent TYPE="NODE">
+<node ID="ID_1942197982" CREATED="1270892460671" MODIFIED="1274918913635"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -959,10 +1131,12 @@
       Einen <b>neuen Geschwister Knoten oberhalb</b>&#160;des aktiven Knotens <b>erzeugt</b>&#160; man mit &quot;Einf&#252;gen -&gt; Neuer Geschwister-Knoten davor&quot; oder durch dr&#252;cken der Tasten Shift + Enter.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1275333364835">
-<richcontent TYPE="NODE">
+<node ID="ID_1638437345" CREATED="1270892460671" MODIFIED="1275333364835"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -976,10 +1150,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1275333428549">
-<richcontent TYPE="NODE">
+<node ID="ID_1718916776" CREATED="1270892460671" MODIFIED="1275333428549"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -990,10 +1165,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_86882063" CREATED="1270892460671" MODIFIED="1274918826327">
-<richcontent TYPE="NODE">
+<node ID="ID_86882063" CREATED="1270892460671" MODIFIED="1274918826327"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1003,12 +1179,14 @@
       <b>Alle</b>&#160;beschriebenen <b>Befehle</b>&#160;kannst Du auch &#252;ber das <b>Kontextmen&#252; des Knotens</b>&#160;erreichen (Rechtsklick auf einen Knoten; bei Mac OS X Strg + Klick).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Knotentext bearbeiten" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1274990022759" COLOR="#407000">
-<node ID="_Freeplane_Link_519923426" CREATED="1270892460671" MODIFIED="1274990262387">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_519923426" CREATED="1270892460671" MODIFIED="1274990262387"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1018,11 +1196,13 @@
       Um einen <b>Knoten</b>&#160;zu <b>bearbeiten</b>, dr&#252;cke F2, POS1 oder ENDE, oder w&#228;hle im &quot;Knoten Kontextmen&#252; -&gt;Knoten&#160;&#160;bearbeiten&quot;. Der Bearbeitungsmodus wird durch die Taste ENTER beendet.
     </p>
   </body>
-</html></richcontent>
-<arrowlink DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</html>
+
+</richcontent>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node ID="ID_673531040" CREATED="1270892460671" MODIFIED="1275333593738">
-<richcontent TYPE="NODE">
+<node ID="ID_673531040" CREATED="1270892460671" MODIFIED="1275333593738"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1039,10 +1219,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1275333643385">
-<richcontent TYPE="NODE">
+<node ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1275333643385"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1059,10 +1240,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_328110224" CREATED="1270892460672" MODIFIED="1274994117607">
-<richcontent TYPE="NODE">
+<node ID="ID_328110224" CREATED="1270892460672" MODIFIED="1274994117607"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1072,10 +1254,12 @@
       Um einen <b>HTML-Knoten</b>&#160;an der Cursor-Position auf <b>zwei Knoten aufzuteilen</b>, gibt es im Editor den Button &quot;Teilen&quot; (Alt + S).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node FOLDED="true" ID="ID_785582356" CREATED="1270892460672" MODIFIED="1274992054979">
-<richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_785582356" CREATED="1270892460672" MODIFIED="1274992054979"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1088,9 +1272,11 @@
       einzuf&#252;gen verwende Shift + Enter oder Alt + Enter.
     </p>
   </body>
-</html></richcontent>
-<node ID="_Freeplane_Link_1445647544" CREATED="1270892460672" MODIFIED="1274992184660">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="_Freeplane_Link_1445647544" CREATED="1270892460672" MODIFIED="1274992184660"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1100,11 +1286,13 @@
       Standardm&#228;sig beendet Enter den Bearbeitungsmodus eines reinen Text-Knotens und Alt + Enter f&#252;gt einen Zeilenumbruch ein. Unter &quot;Extras -&gt; Einstellungen... -&gt; Verhalten -&gt; &lt;Eingabe&gt; beendet die Texteingabe im Knoten&quot; kann man dieses Verhalten &#228;ndern.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
-<node ID="ID_471748709" CREATED="1270892460672" MODIFIED="1275333745300">
-<richcontent TYPE="NODE">
+<node ID="ID_471748709" CREATED="1270892460672" MODIFIED="1275333745300"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1115,10 +1303,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_128741512" CREATED="1270892460672" MODIFIED="1275333802048">
-<richcontent TYPE="NODE">
+<node ID="ID_128741512" CREATED="1270892460672" MODIFIED="1275333802048"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1129,10 +1318,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1608665009" CREATED="1270996862392" MODIFIED="1274995379887" LINK="#Freeplane_Link_1318678369">
-<richcontent TYPE="NODE">
+<node ID="ID_1608665009" CREATED="1270996862392" MODIFIED="1274995379887" LINK="#Freeplane_Link_1318678369"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1142,12 +1332,14 @@
       Du kannst in Freeplane alle Bearbeitungsschritte <b>R&#252;ckg&#228;ngig</b>&#160; machen.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Rechtschreibpr&#xfc;fung" ID="ID_1122067470" CREATED="1271096284570" MODIFIED="1274995403818" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_784188803" CREATED="1271096294667" MODIFIED="1275333891527">
-<richcontent TYPE="NODE">
+<node ID="ID_784188803" CREATED="1271096294667" MODIFIED="1275333891527"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1158,6 +1350,7 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 <node TEXT="Auf der Freeplane Homepage sind W&#xf6;rterb&#xfc;cher f&#xfc;r viele Sprachen verf&#xfc;gbar." ID="ID_1341966636" CREATED="1271096394315" MODIFIED="1275333942453" LINK="http://sourceforge.net/projects/freeplane/files/spell_check_dictionaries"/>
@@ -1167,8 +1360,8 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 <node TEXT="Drag and Drop bedeutet: Mit gedr&#xfc;ckter Maustaste - in der Regel die Linke - etwas aufzunehmen, zum gew&#xfc;nschten Ziel zu ziehen, und es dort durch Loslassen der Maustaste fallen zu lassen." ID="Freeplane_Link_159607929" CREATED="1274995662437" MODIFIED="1275333999719"/>
-<node ID="Freeplane_Link_1497093408" CREATED="1274995662437" MODIFIED="1275334032871">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_1497093408" CREATED="1274995662437" MODIFIED="1275334032871"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1179,11 +1372,12 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1633776428" CREATED="1271027579490" MODIFIED="1274996157015">
-<richcontent TYPE="NODE">
+<node ID="ID_1633776428" CREATED="1271027579490" MODIFIED="1274996157015"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1193,10 +1387,12 @@
       Alternativ kannst Du <b>Knoten</b>&#160;auch mit der <b>Tastatur verschieben</b>. So lange Du die Strg-Taste gedr&#252;ckt h&#228;lst, kannst kannst Du die Knoten mit den Cursor-Tasten verschieben.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="Freeplane_Link_374323949" CREATED="1274995662437" MODIFIED="1275334201923">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_374323949" CREATED="1274995662437" MODIFIED="1275334201923"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1213,11 +1409,12 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="Freeplane_Link_1069770199" CREATED="1274995662438" MODIFIED="1274996470465">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_1069770199" CREATED="1274995662438" MODIFIED="1274996470465"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1231,11 +1428,13 @@
       Hinweis: Achte beim Positionieren auch hier auf die Farbverlaufs&#228;nderungen. Zum Einf&#252;gen als Geschwisterknoten mu&#223; der obere Bereich des angesteuerten Zielknotens durch Farbverlauf unterlegt sein.&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="_Freeplane_Link_1994214827" CREATED="1270892460683" MODIFIED="1275334362194">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_1994214827" CREATED="1270892460683" MODIFIED="1275334362194"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1246,11 +1445,12 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_694691711" CREATED="1270892460683" MODIFIED="1274996963304">
-<richcontent TYPE="NODE">
+<node ID="ID_694691711" CREATED="1270892460683" MODIFIED="1274996963304"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1260,10 +1460,12 @@
       <b>Vorhandene MindMaps</b>&#160;kannst Du <b>bearbeiten</b>, indem Du die entsprechende Datei &#252;ber dem Hintergrund fallen l&#228;sst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="Freeplane_Link_1940236238" CREATED="1274995662438" MODIFIED="1275334415207">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_1940236238" CREATED="1274995662438" MODIFIED="1275334415207"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1277,10 +1479,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_356858969" CREATED="1270892460683" MODIFIED="1274997299326">
-<richcontent TYPE="NODE">
+<node ID="ID_356858969" CREATED="1270892460683" MODIFIED="1274997299326"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1290,11 +1493,13 @@
       Wenn Du <b>mehrere Knoten ausgew&#228;hlt</b>&#160;hast, dann werden alle verschoben bzw. kopiert.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="Freeplane_Link_873938281" CREATED="1274995662438" MODIFIED="1274997408469">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_873938281" CREATED="1274995662438" MODIFIED="1274997408469"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1304,13 +1509,15 @@
       Freeplane unterst&#252;tzt allgemein (je nach genutzter Betriebssystemplattform) die <b>Daten&#252;bernahme</b>&#160;aus <b>externen Programmen</b>&#160;durch den drag-and-drop Mechanismus wie z. B. Dateien unter Microsoft Windows oder markierten Text von einer besuchten Internetseite.&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Knoten frei positionieren" FOLDED="true" ID="ID_1293447241" CREATED="1270997738611" MODIFIED="1274997499009" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="_Freeplane_Link_97763226" CREATED="1270892460688" MODIFIED="1275334976852" HGAP="21" VSHIFT="16">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_97763226" CREATED="1270892460688" MODIFIED="1275334976852" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="16.0 px"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1321,10 +1528,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_505978546" CREATED="1270997770751" MODIFIED="1275335010525">
-<richcontent TYPE="NODE">
+<node ID="ID_505978546" CREATED="1270997770751" MODIFIED="1275335010525"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1335,10 +1543,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1457898208" CREATED="1270997857923" MODIFIED="1275335088294">
-<richcontent TYPE="NODE">
+<node ID="ID_1457898208" CREATED="1270997857923" MODIFIED="1275335088294"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1349,10 +1558,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_846513064" CREATED="1270998153408" MODIFIED="1275335118169">
-<richcontent TYPE="NODE">
+<node ID="ID_846513064" CREATED="1270998153408" MODIFIED="1275335118169"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1363,13 +1573,14 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
 <node TEXT="Kopieren und einf&#xfc;gen" FOLDED="true" ID="Freeplane_Link_958781924" CREATED="1270892460683" MODIFIED="1274998189283" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1088879884" CREATED="1274998221355" MODIFIED="1275335223713">
-<richcontent TYPE="NODE">
+<node ID="ID_1088879884" CREATED="1274998221355" MODIFIED="1275335223713"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1380,10 +1591,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1563176838" CREATED="1274998221355" MODIFIED="1275335286889">
-<richcontent TYPE="NODE">
+<node ID="ID_1563176838" CREATED="1274998221355" MODIFIED="1275335286889"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1394,6 +1606,7 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 <node TEXT="Baum&#xa; Laubbaum&#xa;  Eiche&#xa; Nadelbaum&#xa;  Tanne" ID="ID_794791780" CREATED="1270892460684" MODIFIED="1275335725894" COLOR="#996600">
@@ -1416,8 +1629,8 @@
 </node>
 </node>
 </node>
-<node ID="ID_780592545" CREATED="1270892460685" MODIFIED="1274998705693">
-<richcontent TYPE="NODE">
+<node ID="ID_780592545" CREATED="1270892460685" MODIFIED="1274998705693"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1427,13 +1640,15 @@
       Wenn Du <b>HTML einf&#252;gst</b>&#160;kann es entweder als einzelner Knoten, oder als ganze Knotenhierarchie eingef&#252;gt werden. Verwende daf&#252;r &quot;Bearbeiten -&gt; Einf&#252;gen als...&quot;.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Ein Beispiel f&#xfc;r &quot;Einf&#xfc;gen als...&quot;" FOLDED="true" ID="ID_637512189" CREATED="1270892460685" MODIFIED="1274999518092">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="HTML als einzelnen Knoten" ID="ID_1806025194" CREATED="1270894542238" MODIFIED="1274999064619">
-<node ID="ID_669110345" CREATED="1270894698475" MODIFIED="1270894698475">
-<richcontent TYPE="NODE">
+<node ID="ID_669110345" CREATED="1270894698475" MODIFIED="1270894698475"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1483,12 +1698,14 @@
       <br/>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Knotenhierarchie als HTML" ID="ID_541043985" CREATED="1270894548254" MODIFIED="1274999480943">
-<node ID="ID_232672532" CREATED="1270894712253" MODIFIED="1270894712253">
-<richcontent TYPE="NODE">
+<node ID="ID_232672532" CREATED="1270894712253" MODIFIED="1270894712253"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1498,10 +1715,12 @@
       <i><b><font size="4">Boost your brain with Freeplane</font></b></i><font size="4"> </font>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_149083422" CREATED="1270894712256" MODIFIED="1270894712257" LINK="http://sourceforge.net/projects/freeplane/">
-<richcontent TYPE="NODE">
+<node ID="ID_149083422" CREATED="1270894712256" MODIFIED="1270894712257" LINK="http://sourceforge.net/projects/freeplane/"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1511,10 +1730,12 @@
       <a href="http://sourceforge.net/projects/freeplane/"><b><font size="4">Download Freeplane now!</font></b></a><font size="4"> </font>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node FOLDED="true" ID="ID_1571069768" CREATED="1270894712263" MODIFIED="1270894712263">
-<richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1571069768" CREATED="1270894712263" MODIFIED="1270894712263"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1524,9 +1745,11 @@
       What is Freeplane?
     </h1>
   </body>
-</html></richcontent>
-<node FOLDED="true" ID="ID_1003296305" CREATED="1270894712271" MODIFIED="1270894712271" LINK="http://freemind.sourceforge.net/">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node FOLDED="true" ID="ID_1003296305" CREATED="1270894712271" MODIFIED="1270894712271" LINK="http://freemind.sourceforge.net/"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1536,9 +1759,11 @@
       Freeplane is a powerful and free mind mapping application. It is a redesigned version of the well known <a href="http://freemind.sourceforge.net/">FreeMind</a>, and is created by one of FreeMind's key developers. The software is written in Java, and supports any platform capable of running current versions of Java, including:
     </p>
   </body>
-</html></richcontent>
-<node ID="ID_1528122430" CREATED="1270894712274" MODIFIED="1270894712274">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="ID_1528122430" CREATED="1270894712274" MODIFIED="1270894712274"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1552,10 +1777,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_624982390" CREATED="1270894712277" MODIFIED="1270894712277">
-<richcontent TYPE="NODE">
+<node ID="ID_624982390" CREATED="1270894712277" MODIFIED="1270894712277"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1569,10 +1796,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_767338979" CREATED="1270894712280" MODIFIED="1270894712280">
-<richcontent TYPE="NODE">
+<node ID="ID_767338979" CREATED="1270894712280" MODIFIED="1270894712280"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1586,10 +1815,12 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_972361679" CREATED="1270894712283" MODIFIED="1270894712283" LINK="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane">
-<richcontent TYPE="NODE">
+<node ID="ID_972361679" CREATED="1270894712283" MODIFIED="1270894712283" LINK="http://freeplane.sourceforge.net/wiki/index.php/Portable_Freeplane"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1603,14 +1834,16 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 </node>
 </node>
 </node>
-<node ID="ID_734855520" CREATED="1274998221364" MODIFIED="1274999786391">
-<richcontent TYPE="NODE">
+<node ID="ID_734855520" CREATED="1274998221364" MODIFIED="1274999786391"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1620,10 +1853,12 @@
       Wenn Du eine im Explorer markierte <b>Dateiliste einf&#252;gst</b>, wird f&#252;r jede Datei ein Knoten mit dem Pfad und dem Namen der Datei und einem Link auf die Datei eingef&#252;gt.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1790983208" CREATED="1274998221364" MODIFIED="1275336289379">
-<richcontent TYPE="NODE">
+<node ID="ID_1790983208" CREATED="1274998221364" MODIFIED="1275336289379"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1634,6 +1869,7 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 <node TEXT="Baum" ID="ID_1805360637" CREATED="1274998221366" MODIFIED="1274998221366">
@@ -1647,8 +1883,8 @@
 </node>
 <node TEXT="Google &lt;http://www.google.com/&gt;" ID="ID_423317930" CREATED="1274998221367" MODIFIED="1274998221367" LINK="http://www.google.com/"/>
 </node>
-<node ID="ID_1140366916" CREATED="1274998221367" MODIFIED="1275000203494">
-<richcontent TYPE="NODE">
+<node ID="ID_1140366916" CREATED="1274998221367" MODIFIED="1275000203494"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1661,10 +1897,12 @@
       Editoren die das Rich-Text-Format (RTF) beherrschen sind zum Beispiel Microsoft Word, OpenOffice.org, Microsoft Outlook, einige Texteditoren unter Linux und TextEdit unter Mac OS X.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1036066408" CREATED="1274998221369" MODIFIED="1275000296467">
-<richcontent TYPE="NODE">
+<node ID="ID_1036066408" CREATED="1274998221369" MODIFIED="1275000296467"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1674,12 +1912,14 @@
       Um einen <b>Knoten</b>&#160;<b>ohne Kinder</b>&#160;und Nachfahren zu <b>kopieren</b>, dr&#252;cke die Tastenkombination 'Strg' + Umschalt + 'C' oder benutze &quot;Einfach kopieren&quot; im Kontextmen&#252; des Knotens.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Hyperlinks" FOLDED="true" ID="Freeplane_Link_203858515" CREATED="1270892460675" MODIFIED="1275001896255" COLOR="#407000">
-<node ID="ID_959010942" CREATED="1270892460676" MODIFIED="1275057777549">
-<richcontent TYPE="NODE">
+<node ID="ID_959010942" CREATED="1270892460676" MODIFIED="1275057777549"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1701,10 +1941,12 @@
       &#160;- Andere Knoten in einer MindMap
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_745700749" CREATED="1270892460675" MODIFIED="1275000970889">
-<richcontent TYPE="NODE">
+<node ID="ID_745700749" CREATED="1270892460675" MODIFIED="1275000970889"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1714,10 +1956,12 @@
       Um einen <b>Hyperlink hinzuzuf&#252;gen</b>&#160;verwende &quot;Einf&#252;gen -&gt; Hyperlink (Textfeld)...&quot;, oder dr&#252;cke die Tasten Strg + K.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1001948679" CREATED="1270892460675" MODIFIED="1275336382806">
-<richcontent TYPE="NODE">
+<node ID="ID_1001948679" CREATED="1270892460675" MODIFIED="1275336382806"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1728,10 +1972,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_9407796" CREATED="1270892460675" MODIFIED="1275336418086">
-<richcontent TYPE="NODE">
+<node ID="ID_9407796" CREATED="1270892460675" MODIFIED="1275336418086"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1745,12 +1990,13 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1275336454432">
-<richcontent TYPE="NODE">
+<node ID="ID_1116507628" CREATED="1270892460676" MODIFIED="1275336454432"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1761,10 +2007,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1275336526220">
-<richcontent TYPE="NODE">
+<node ID="ID_1159570525" CREATED="1270894120878" MODIFIED="1275336526220"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1778,10 +2025,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1153372393" CREATED="1271979133506" MODIFIED="1275336579998">
-<richcontent TYPE="NODE">
+<node ID="ID_1153372393" CREATED="1271979133506" MODIFIED="1275336579998"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1801,6 +2049,7 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
@@ -1808,8 +2057,8 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 <node TEXT="Ein Knoten kann mehrere Icons haben." ID="ID_1983709741" CREATED="1270892460676" MODIFIED="1275001921496"/>
-<node ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1275336633204">
-<richcontent TYPE="NODE">
+<node ID="ID_1126175660" CREATED="1270892460676" MODIFIED="1275336633204"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1823,10 +2072,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1275002288608">
-<richcontent TYPE="NODE">
+<node ID="ID_1703076068" CREATED="1270892460676" MODIFIED="1275002288608"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1836,10 +2086,12 @@
       Das <b>erste Icon entfernst</b>&#160;Du, indem Du auf den Button ganz oben in der Icon-Symbolleiste klickst (mit dem roten Kreuz).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1275002420456">
-<richcontent TYPE="NODE">
+<node ID="ID_1240276527" CREATED="1270892460676" MODIFIED="1275002420456"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1849,10 +2101,12 @@
       Um <b>alle Icons</b>&#160;eines Knotens zu <b>l&#246;schen</b>, klicke auf den dritten Button von oben in der Icon-Symbolleiste (Abfalleimer).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_911756077" CREATED="1270892460676" MODIFIED="1275002517867">
-<richcontent TYPE="NODE">
+<node ID="ID_911756077" CREATED="1270892460676" MODIFIED="1275002517867"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1862,10 +2116,12 @@
       Du kannst <b>neue Icons</b>&#160;auch &#252;ber das Icons-Men&#252; oder mit Strg + F2 <b>einf&#252;gen</b>, anstatt die Icon-Symbolleiste zu verwenden.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_537134358" CREATED="1270892460676" MODIFIED="1275002684010">
-<richcontent TYPE="NODE">
+<node ID="ID_537134358" CREATED="1270892460676" MODIFIED="1275002684010"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1875,10 +2131,12 @@
       Wenn Du <b>eigene Icons</b>&#160;verwenden willst musst Du die Dateien im Freeplane-Verzeichnis im Unterverzeichnis &quot;Icons&quot; ablegen wie z.B. (Linux)&#160;&#160;~/.freeplane/icons/myicon.png
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_250751508" CREATED="1270892460677" MODIFIED="1275002761054">
-<richcontent TYPE="NODE">
+<node ID="ID_250751508" CREATED="1270892460677" MODIFIED="1275002761054"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1888,7 +2146,9 @@
       Die <b>Icon-Symbolleiste</b>&#160;kannst Du &#252;ber &quot;Ansicht -&gt; Icon-Symbolleiste&quot; <b>ein- und ausblenden</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Dieser Knoten zeigt ein paar Icons, die in Freeplane bereits enthalten sind" ID="ID_1664464562" CREATED="1270892460677" MODIFIED="1275002814023">
 <icon BUILTIN="help"/>
@@ -1924,8 +2184,8 @@
 <icon BUILTIN="75%"/>
 <icon BUILTIN="100%"/>
 </node>
-<node ID="ID_26845444" CREATED="1271096826323" MODIFIED="1275336861376">
-<richcontent TYPE="NODE">
+<node ID="ID_26845444" CREATED="1271096826323" MODIFIED="1275336861376"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1936,13 +2196,14 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
 <node TEXT="Notizen" FOLDED="true" ID="ID_774913271" CREATED="1271096054547" MODIFIED="1275003022058" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_1515176011" CREATED="1271096065323" MODIFIED="1275003189553">
-<richcontent TYPE="NODE">
+<node ID="ID_1515176011" CREATED="1271096065323" MODIFIED="1275003189553"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1955,8 +2216,11 @@
       die Du wie im externen Editor bearbeiten kannst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -1966,10 +2230,11 @@
       <b><font color="#fc0b0b"><u>Dieser Knoten hat eine Notiz.</u></font></b>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
-<node ID="ID_1163876330" CREATED="1271096088819" MODIFIED="1275336894289">
-<richcontent TYPE="NODE">
+<node ID="ID_1163876330" CREATED="1271096088819" MODIFIED="1275336894289"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1980,10 +2245,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_510313925" CREATED="1271096117483" MODIFIED="1275003430688">
-<richcontent TYPE="NODE">
+<node ID="ID_510313925" CREATED="1271096117483" MODIFIED="1275003430688"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -1996,10 +2262,12 @@
       Strg + &lt; zwischen dem <b>Notiz-Editor</b>&#160;und der <b>MindMap wechseln</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1710319301" CREATED="1271096150723" MODIFIED="1275003679320">
-<richcontent TYPE="NODE">
+<node ID="ID_1710319301" CREATED="1271096150723" MODIFIED="1275003679320"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2012,13 +2280,15 @@
       auf jede <b>Seite des Fensters verschoben</b>&#160;werden.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Konnektoren" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1270892460679" MODIFIED="1275057825521" COLOR="#407000">
 <node TEXT="Als Konnektor bezeichnet man graphische Verweise zwischen Knoten. Man kann sie verwenden, um Zusammenh&#xe4;nge zu visualisieren, die sich nicht durch die Hierarchie darstellen lassen." ID="ID_1288965487" CREATED="1275057915312" MODIFIED="1275336996023"/>
-<node ID="ID_985897417" CREATED="1270892460679" MODIFIED="1275336995821">
-<richcontent TYPE="NODE">
+<node ID="ID_985897417" CREATED="1270892460679" MODIFIED="1275336995821"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2031,11 +2301,13 @@
       einen Knoten &#252;ber den anderen ziehst und beim Loslassen die Tasten Strg + Shift gedr&#252;ckt h&#228;lst.
     </p>
   </body>
-</html></richcontent>
-<arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</html>
+
+</richcontent>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1275058502752">
-<richcontent TYPE="NODE">
+<node ID="ID_1564001222" CREATED="1270892460679" MODIFIED="1275058502752"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2051,10 +2323,12 @@
       Tastenkombination Strg + L dr&#252;ckst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1275058746447">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_208378337" CREATED="1270892460679" MODIFIED="1275058746447"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2067,10 +2341,12 @@
       &#160;einen Rechtsklick auf den Konnektor (Mac OS X: Strg + klick) und w&#228;hle &quot;Farbe des Konnektors&quot; .
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="_Freeplane_Link_1484370636" CREATED="1270892460679" MODIFIED="1275061916843">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_1484370636" CREATED="1270892460679" MODIFIED="1275061916843"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2083,10 +2359,12 @@
       Du auch die <b>Pfeile</b>&#160;des <b>Konnektors</b>&#160;&#228;ndern.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_469749659" CREATED="1270894208830" MODIFIED="1275062032926">
-<richcontent TYPE="NODE">
+<node ID="ID_469749659" CREATED="1270894208830" MODIFIED="1275062032926"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2099,10 +2377,12 @@
       Konnektors (Rechtsklick auf Konnektor) &#228;ndern.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1970882825" CREATED="1270892460679" MODIFIED="1275062182297">
-<richcontent TYPE="NODE">
+<node ID="ID_1970882825" CREATED="1270892460679" MODIFIED="1275062182297"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2115,10 +2395,12 @@
       Kontextmen&#252; (Rechtsklick auf den Konnektor) tun.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="_Freeplane_Link_266716332" CREATED="1270892460679" MODIFIED="1275062350499">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_266716332" CREATED="1270892460679" MODIFIED="1275062350499"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2131,10 +2413,12 @@
       kannst Du an den <b>Anfangs-</b>&#160;bzw. <b>Endknoten</b>&#160;des <b>Konnektors navigieren</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="_Freeplane_Link_1015289745" CREATED="1270892460679" MODIFIED="1275062530830">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_1015289745" CREATED="1270892460679" MODIFIED="1275062530830"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2147,11 +2431,13 @@
       klickst und dann bei gedr&#252;ckter linker Maustaste den Cursor bewegst.
     </p>
   </body>
-</html></richcontent>
-<arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="244;32;" ENDINCLINATION="256;22;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+</html>
+
+</richcontent>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="244;32;" ENDINCLINATION="256;22;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node ID="ID_1276534365" CREATED="1271981886951" MODIFIED="1275062596475">
-<richcontent TYPE="NODE">
+<node ID="ID_1276534365" CREATED="1271981886951" MODIFIED="1275062596475"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2164,17 +2450,19 @@
       &#160;Gebrauch von Konnektoren.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Beispiel f&#xfc;r den Gebrauch&#xa;von Konnektoren" ID="ID_46167995" CREATED="1270892460680" MODIFIED="1275062645702" COLOR="#996600">
 <node TEXT="Verbindung zu einem andern Teil" ID="_Freeplane_Link_1170112929" CREATED="1270892460680" MODIFIED="1275063477665" COLOR="#996600">
-<arrowlink COLOR="#1010f1" DESTINATION="_Freeplane_Link_1492563156" MIDDLE_LABEL="Konnektor-Beschriftung" STARTINCLINATION="158;-8;" ENDINCLINATION="857;-165;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#1010f1" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1492563156" MIDDLE_LABEL="Konnektor-Beschriftung" STARTINCLINATION="158;-8;" ENDINCLINATION="857;-165;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Knoten mit eingefaltetem&#xa;Kind-Knoten" ID="ID_521887084" CREATED="1270892460680" MODIFIED="1275062819098" COLOR="#996600" HGAP="15" VSHIFT="52">
-<node TEXT="Kind-Knoten" ID="_Freeplane_Link_1492563156" CREATED="1270892460680" MODIFIED="1275062700868" HGAP="25" VSHIFT="7"/>
+<node TEXT="Knoten mit eingefaltetem&#xa;Kind-Knoten" ID="ID_521887084" CREATED="1270892460680" MODIFIED="1275062819098" COLOR="#996600" HGAP_QUANTITY="15.0 px" VSHIFT_QUANTITY="52.0 px">
+<node TEXT="Kind-Knoten" ID="_Freeplane_Link_1492563156" CREATED="1270892460680" MODIFIED="1275062700868" HGAP_QUANTITY="25.0 px" VSHIFT_QUANTITY="7.0 px"/>
 </node>
 <node TEXT="Eine andere Verbindung" ID="_Freeplane_Link_1370577235" CREATED="1270892460680" MODIFIED="1275062797108" COLOR="#996600">
-<arrowlink DESTINATION="_Freeplane_Link_1170112929" SOURCE_LABEL="Beschriftung" STARTINCLINATION="56;22;" ENDINCLINATION="61;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1170112929" SOURCE_LABEL="Beschriftung" STARTINCLINATION="56;22;" ENDINCLINATION="61;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 </node>
@@ -2182,12 +2470,12 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Ein Knoten kann Attribute haben" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1275062896518">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
+<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>
-<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1275063050254">
-<richcontent TYPE="NODE">
+<node ID="ID_541565942" CREATED="1270896865255" MODIFIED="1275063050254"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2200,10 +2488,12 @@
       &quot;Bearbeiten -&gt; Attribute editieren&quot;&#160;oder verwende die Tastenkombination Alt + F9.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1275063440506">
-<richcontent TYPE="NODE">
+<node ID="ID_1213222306" CREATED="1270896956119" MODIFIED="1275063440506"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2216,13 +2506,15 @@
       <b>Attribute</b>&#160;zu <b>mehreren Knoten zuweisen</b>, <b>oder</b>&#160;sie <b>&#228;ndern</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Verwenden von &#xa;HTML in Knoten" FOLDED="true" ID="Freeplane_Link_841140408" CREATED="1270892460698" MODIFIED="1275064177972" COLOR="#407000">
 <node TEXT="Du kannst HTML in Knoten verwenden" ID="ID_1253480988" CREATED="1270892460698" MODIFIED="1275063589349"/>
-<node ID="ID_159304805" CREATED="1270892460698" MODIFIED="1275063919930">
-<richcontent TYPE="NODE">
+<node ID="ID_159304805" CREATED="1270892460698" MODIFIED="1275063919930"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2259,26 +2551,26 @@
     <p class="msonormal">
       Es gibt auch Tabellen:
     </p>
-    <table cellpadding="0" cellspacing="0" border="1" style="border: none" class="msonormaltable">
+    <table cellpadding="0" cellspacing="0" border="1" class="msonormaltable" style="border-top-color: border-color; border-top-style: none; border-top-width: medium; border-right-color: border-color; border-right-style: none; border-right-width: medium; border-bottom-color: border-color; border-bottom-style: none; border-bottom-width: medium; border-left-color: border-color; border-left-style: none; border-left-width: medium">
       <tr>
-        <td style="padding-top: .75pt; padding-left: .75pt; border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
+        <td style="padding-top: .75pt; padding-left: .75pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 1
           </p>
         </td>
-        <td style="border-left: none; padding-top: .75pt; padding-left: .75pt; border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
+        <td style="border-left-color: border-color; border-left-style: none; border-left-width: medium; padding-top: .75pt; padding-left: .75pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 2
           </p>
         </td>
       </tr>
       <tr>
-        <td style="padding-top: .75pt; border-top: none; padding-left: .75pt; border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
+        <td style="padding-top: .75pt; border-top-color: border-color; border-top-style: none; border-top-width: medium; padding-left: .75pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 3
           </p>
         </td>
-        <td style="border-left: none; padding-top: .75pt; border-top: none; padding-left: .75pt; border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding-bottom: .75pt; padding-right: .75pt">
+        <td style="border-left-color: border-color; border-left-style: none; border-left-width: medium; padding-top: .75pt; border-top-color: border-color; border-top-style: none; border-top-width: medium; padding-left: .75pt; padding-bottom: .75pt; padding-right: .75pt">
           <p class="msonormal">
             Zelle 4
           </p>
@@ -2289,10 +2581,12 @@
       &#160;Auperdem kann Schrift verschiedene <font color="#999900">Vordergrundfarben</font>&#160;<font color="#336600">haben</font>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_203319288" CREATED="1270895866070" MODIFIED="1275064320380">
-<richcontent TYPE="NODE">
+<node ID="ID_203319288" CREATED="1270895866070" MODIFIED="1275064320380"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2305,10 +2599,12 @@
       &quot;Format -&gt; Verwende HTML Formatierung&quot;&#160;(Alt + Shift + R) <b>aktivieren</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1308797932" CREATED="1275064183463" MODIFIED="1275064272902">
-<richcontent TYPE="NODE">
+<node ID="ID_1308797932" CREATED="1275064183463" MODIFIED="1275064272902"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2321,7 +2617,9 @@
       &quot;Format -&gt; Benutze reinen Text&quot; (Alt + Shift&#160;&#160;+ P) <b>deaktivieren.</b>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Die HTML-Formatierung geht, genauso wie eingebettete Bilder, beim Export als Text oder RTF (Word, Wordpad) verloren. Sie bleibt aber beim Export als Java-Applet erhalten, so dass Du dieses Format zum Ver&#xf6;ffentlichen im Web nutzen kannst." ID="ID_248995867" CREATED="1270892460699" MODIFIED="1275337250378">
 <font NAME="SansSerif" SIZE="12"/>
@@ -2329,8 +2627,8 @@
 </node>
 <node TEXT="Verwenden von &#xa;Bildern in Knoten" FOLDED="true" ID="Freeplane_Link_271176250" CREATED="1270892460699" MODIFIED="1275184084223" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1487662482" CREATED="1275064589975" MODIFIED="1275337589928">
-<richcontent TYPE="NODE">
+<node ID="ID_1487662482" CREATED="1275064589975" MODIFIED="1275337589928"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2356,10 +2654,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_692449557" CREATED="1271527733841" MODIFIED="1275337561235">
-<richcontent TYPE="NODE">
+<node ID="ID_692449557" CREATED="1271527733841" MODIFIED="1275337561235"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2370,10 +2669,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_890405454" CREATED="1270892460700" MODIFIED="1275130951803">
-<richcontent TYPE="NODE">
+<node ID="ID_890405454" CREATED="1270892460700" MODIFIED="1275130951803"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2389,10 +2689,12 @@
       Diese Methode funktioniert auch, wenn Du mehrere Knoten ausgew&#228;hlt hast.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1275133214045" COLOR="#000000">
-<richcontent TYPE="NODE">
+<node ID="ID_1512479346" CREATED="1270892460700" MODIFIED="1275133214045" COLOR="#000000"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2405,7 +2707,9 @@
       Da es m&#246;glich ist in Knoten HTML formatierten Inhalt zu haben, kann man z.B. mit dem IMG-Tag Bilder in Knoten einbetten. Dazu muss der Knotentext mit dem Tag &lt;html&gt; beginnen.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="Hier einige Beispiele:&#xa;  &lt;html&gt;&lt;img src=&quot;linked/Apple.png&quot;&gt;&#xa;  &lt;html&gt;&lt;img src=&quot;file://C:/Users/My Documents/Mind Maps/Linked/Apple.png&quot;&gt;&#xa;Der relative Link im ersten Beispiel zeigt auf ein Bild in einem Verzeichnis unter dem Verzeichnis, in dem das MindMap-file liegt." ID="ID_258073366" CREATED="1270892460700" MODIFIED="1275133132438">
@@ -2414,8 +2718,8 @@
 <node TEXT="Beispielbilder" ID="Freeplane_Link_1825247742" CREATED="1270892460700" MODIFIED="1275131381309" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="true"/>
 <node TEXT="Linux" ID="ID_1089845997" CREATED="1275131389011" MODIFIED="1275131395617">
-<node ID="ID_1186180877" CREATED="1275131321555" MODIFIED="1275131330241">
-<richcontent TYPE="NODE">
+<node ID="ID_1186180877" CREATED="1275131321555" MODIFIED="1275131330241"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2423,7 +2727,9 @@
   <body>
     <img src="file:/usr/share/app-install/icons/treb.png"/>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Ein Knoten mit eingebettem &#xa;externen Objekt" ID="ID_614702580" CREATED="1275133603088" MODIFIED="1275134581194">
 <hook URI="file:/../../usr/share/hplip/data/images/other/aio_align.png" SIZE="1.6508051" NAME="ExternalObject"/>
@@ -2431,8 +2737,8 @@
 <node TEXT="file:///usr/share/app-install/icons/tsclient.png" ID="ID_965334611" CREATED="1275131506194" MODIFIED="1275131506195" LINK="file:/usr/share/app-install/icons/tsclient.png"/>
 </node>
 <node TEXT="Windows" ID="ID_51996041" CREATED="1275131401442" MODIFIED="1275131405202">
-<node ID="ID_305515055" CREATED="1124560950732" MODIFIED="1275184124329">
-<richcontent TYPE="NODE">
+<node ID="ID_305515055" CREATED="1124560950732" MODIFIED="1275184124329"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2442,10 +2748,12 @@
       <img src="../freeplane.png"/>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_432603647" CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE">
+<node ID="ID_432603647" CREATED="1124560950732" MODIFIED="1124560950732"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2453,10 +2761,12 @@
   <body>
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACBLUPRT.GIF"/>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1475913288" CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE">
+<node ID="ID_1475913288" CREATED="1124560950732" MODIFIED="1124560950732"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2464,9 +2774,11 @@
   <body>
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACEXPDTN.GIF"/>
   </body>
-</html></richcontent>
-<node ID="ID_605964107" CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="ID_605964107" CREATED="1124560950732" MODIFIED="1124560950732"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2474,11 +2786,13 @@
   <body>
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACINDSTR.GIF"/>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
-<node ID="ID_769058522" CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE">
+<node ID="ID_769058522" CREATED="1124560950732" MODIFIED="1124560950732"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2486,9 +2800,11 @@
   <body>
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACRICEPR.GIF"/>
   </body>
-</html></richcontent>
-<node ID="ID_1291538035" CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="ID_1291538035" CREATED="1124560950732" MODIFIED="1124560950732"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2496,9 +2812,11 @@
   <body>
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACSNDSTN.GIF"/>
   </body>
-</html></richcontent>
-<node ID="ID_51328681" CREATED="1124560950732" MODIFIED="1124560950732">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="ID_51328681" CREATED="1124560950732" MODIFIED="1124560950732"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2506,7 +2824,9 @@
   <body>
     <img src="file:/C:/Program Files/Microsoft Office/Office/Bitmaps/Styles/ACSUMIPT.GIF"/>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 </node>
@@ -2520,8 +2840,8 @@
 <node TEXT="Beispiel: mehrzeiliger LaTeX-Text,&#xa;der zu einem Knoten zugewiesen ist." ID="ID_651820837" CREATED="1271097206186" MODIFIED="1275134857754">
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
 </node>
-<node ID="ID_1042304226" CREATED="1271097123195" MODIFIED="1275135248783">
-<richcontent TYPE="NODE">
+<node ID="ID_1042304226" CREATED="1271097123195" MODIFIED="1275135248783"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2534,10 +2854,12 @@
       &#160;verwende &quot;Einf&#252;gen -&gt; LaTeX&quot;.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_21055085" CREATED="1271097312474" MODIFIED="1275337800751">
-<richcontent TYPE="NODE">
+<node ID="ID_21055085" CREATED="1271097312474" MODIFIED="1275337800751"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2551,10 +2873,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1638605492" CREATED="1271097172667" MODIFIED="1275135388880">
-<richcontent TYPE="NODE">
+<node ID="ID_1638605492" CREATED="1271097172667" MODIFIED="1275135388880"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2567,12 +2890,14 @@
       &#160;indem Du erneut auf &quot;Einf&#252;gen -&gt; LaTeX&quot; klickst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Verwenden der &#xa;R&#xfc;ckg&#xe4;ngig- Funktion" FOLDED="true" ID="Freeplane_Link_1318678369" CREATED="1270892460689" MODIFIED="1275135447443" COLOR="#407000">
-<node ID="ID_1877729417" CREATED="1270892460690" MODIFIED="1275135565132">
-<richcontent TYPE="NODE">
+<node ID="ID_1877729417" CREATED="1270892460690" MODIFIED="1275135565132"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2585,10 +2910,12 @@
       &#160;w&#228;hle &quot;Bearbeiten -&gt; R&#252;ckg&#228;ngig&quot;, oder verwende die Tastenkombination Strg + Z.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1501637074" CREATED="1270892460690" MODIFIED="1275135724282">
-<richcontent TYPE="NODE">
+<node ID="ID_1501637074" CREATED="1270892460690" MODIFIED="1275135724282"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2601,10 +2928,12 @@
       &#160;&quot;Bearbeiten -&gt; Wiederherstellen&quot; w&#228;hlst, oder die Tastenkombination Strg + Y verwendest.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_139456632" CREATED="1270892460690" MODIFIED="1275136034685">
-<richcontent TYPE="NODE">
+<node ID="ID_139456632" CREATED="1270892460690" MODIFIED="1275136034685"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2617,7 +2946,9 @@
       sind unter &quot;Extras -&gt; Einstellungen -&gt; Verhalten -&gt; Anzahl wiederrufbarer Aktionen&quot; einstellbar.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 </node>
@@ -2626,8 +2957,8 @@
 <node TEXT="Layout der MindMap" FOLDED="true" ID="ID_710714991" CREATED="1271095870732" MODIFIED="1275136508268" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Die MindMap kann in zwei verschiedenen Layouts angezeigt werden:&#xa;Als MindMap und in der Gliederungsansicht." ID="ID_1920188221" CREATED="1271095880163" MODIFIED="1275136564936"/>
-<node ID="ID_353099197" CREATED="1271095880163" MODIFIED="1275136667643">
-<richcontent TYPE="NODE">
+<node ID="ID_353099197" CREATED="1271095880163" MODIFIED="1275136667643"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2640,13 +2971,15 @@
       &#160;indem Du &quot;Ansicht -&gt; Gliederungsansicht&quot; w&#228;hlst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Die Gliederungsansicht eignet sich beser zum Drucken gro&#xdf;er MindMaps." ID="ID_823999289" CREATED="1271095978107" MODIFIED="1275136721495"/>
 </node>
 <node TEXT="Formatieren von Knoten" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1270892460672" MODIFIED="1275136763038" COLOR="#407000">
-<node ID="ID_896067797" CREATED="1270892460672" MODIFIED="1275337941452">
-<richcontent TYPE="NODE">
+<node ID="ID_896067797" CREATED="1270892460672" MODIFIED="1275337941452"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2660,12 +2993,13 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false"/>
 </node>
-<node ID="ID_1435353677" CREATED="1270892460673" MODIFIED="1275136965314">
-<richcontent TYPE="NODE">
+<node ID="ID_1435353677" CREATED="1270892460673" MODIFIED="1275136965314"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2678,12 +3012,14 @@
       w&#228;hlst, oder die Tastenkombination Strg + I dr&#252;ckst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_786808182" CREATED="1270892460673" MODIFIED="1275137210440">
-<richcontent TYPE="NODE">
+<node ID="ID_786808182" CREATED="1270892460673" MODIFIED="1275137210440"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2696,12 +3032,14 @@
       &#160;oder die Tastenkombination Alt + Shift + F <b>&#228;ndern</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_256179041" CREATED="1270892460673" MODIFIED="1275142879900">
-<richcontent TYPE="NODE">
+<node ID="ID_256179041" CREATED="1270892460673" MODIFIED="1275142879900"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2714,10 +3052,12 @@
       w&#228;hle &quot;Format -&gt; Knotenhintergrundfarbe...&quot;.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1900176546" CREATED="1270892460673" MODIFIED="1275147550010">
-<richcontent TYPE="NODE">
+<node ID="ID_1900176546" CREATED="1270892460673" MODIFIED="1275147550010"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2730,12 +3070,14 @@
       &#160;oder benutze das Tastaturk&#252;rzel Strg + Plus (nimm das plus auf dem Keyboard und nicht das im Nummenrfeld).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1031774745" CREATED="1270892460673" MODIFIED="1275147541076">
-<richcontent TYPE="NODE">
+<node ID="ID_1031774745" CREATED="1270892460673" MODIFIED="1275147541076"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2748,13 +3090,15 @@
       &#160;oder benutze das Tastaturk&#252;rzel Strg + Minus (nimm das minus auf dem Keyboard und nicht das im Nummenrfeld).
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="Alle oben beschriebenen Funktionen sind auch im Kontextmen&#xfc; des Knotens unter Format verf&#xfc;gbar." ID="ID_817931500" CREATED="1271977602378" MODIFIED="1275146781865"/>
-<node ID="ID_975697332" CREATED="1270892460674" MODIFIED="1275146918510">
-<richcontent TYPE="NODE">
+<node ID="ID_975697332" CREATED="1270892460674" MODIFIED="1275146918510"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2764,10 +3108,12 @@
       Die <b>Schriftart</b>&#160;kannst Du im Schriftarten-Auswahlfeld in der Werkzeug-Symbolleiste <b>&#228;ndern</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_880893737" CREATED="1270892460674" MODIFIED="1275147029777">
-<richcontent TYPE="NODE">
+<node ID="ID_880893737" CREATED="1270892460674" MODIFIED="1275147029777"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2780,9 +3126,11 @@
       &quot;Bearbeiten -&gt; Formatierung kopieren&quot;, oder dr&#252;cke Alt + Shift + C.
     </p>
   </body>
-</html></richcontent>
-<node ID="ID_52099291" CREATED="1270892460674" MODIFIED="1275147131412">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="ID_52099291" CREATED="1270892460674" MODIFIED="1275147131412"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2795,7 +3143,9 @@
       &#160;&quot;Bearbeiten -&gt; Formatierung einf&#252;gen&quot;, oder nutze die Tastenkombination Alt + Shift +C.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 </node>
@@ -2822,8 +3172,8 @@
 </node>
 <node TEXT="Arbeiten mit Stilen" FOLDED="true" ID="Freeplane_Link_526328879" CREATED="1270892460674" MODIFIED="1275148241685" COLOR="#407000">
 <node TEXT="Stile erm&#xf6;glichen es, eine ganze Reihe von Formatierungen gemeinsam abzuspeichern, und auf Knoten anzuwenden. Ein Stil kann z.B. eine bestimmte Schriftfarbe, Schriftgr&#xf6;&#xdf;e, ein bestimmtes Knotenlinienformat, oder ein Icon enthalten." ID="ID_7935308" CREATED="1275184379901" MODIFIED="1275338406925"/>
-<node ID="ID_284671582" CREATED="1270892460674" MODIFIED="1275184824627">
-<richcontent TYPE="NODE">
+<node ID="ID_284671582" CREATED="1270892460674" MODIFIED="1275184824627"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2833,10 +3183,12 @@
       Du kannst einen <b>Stil</b>&#160;einem <b>Knoten</b>&#160;<b>zuweisen</b>, indem Du den Knoten markierst und unter &quot;Format -&gt; Stile&quot; den Stil ausw&#228;hlst. Diese Option ist auch &#252;ber das Kontextmen&#252;s des Knotens erreichbar. Au&#223;erdem hat jeder Stil eine Tastenkombination, die Du im Men&#252; sehen kannst.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_58326768" CREATED="1270892460674" MODIFIED="1275185027184">
-<richcontent TYPE="NODE">
+<node ID="ID_58326768" CREATED="1270892460674" MODIFIED="1275185027184"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2849,14 +3201,16 @@
       w&#228;hle &quot;Format -&gt; Stile -&gt; Stile verwalten...&quot;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Automatisches Layout" FOLDED="true" ID="ID_1561765534" CREATED="1271096555907" MODIFIED="1275185089706" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Knoten k&#xf6;nnen abh&#xe4;ngig von ihrer Entfernung zum Wurzelknoten automatisch Formatierungen &#xe4;hnlich den Stilen zugewiesen werden." ID="ID_287999249" CREATED="1271096587963" MODIFIED="1275185306333"/>
-<node ID="ID_495596648" CREATED="1271096619675" MODIFIED="1275185466097">
-<richcontent TYPE="NODE">
+<node ID="ID_495596648" CREATED="1271096619675" MODIFIED="1275185466097"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2869,10 +3223,12 @@
       &#160;w&#228;hle &quot;Format -&gt; Automatisches Layout&quot;.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1678162067" CREATED="1275185485875" MODIFIED="1275185599244">
-<richcontent TYPE="NODE">
+<node ID="ID_1678162067" CREATED="1275185485875" MODIFIED="1275185599244"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2882,13 +3238,15 @@
       Das <b>Automatische Layout</b>&#160;kannst du in den Einstellungen unter &quot;Extras -&gt; Einstellungen... -&gt; Automatisches Layout&quot; <b>konfigurieren</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Knoten mit Wolken hervorheben" FOLDED="true" ID="Freeplane_Link_1697687428" CREATED="1270892460674" MODIFIED="1275185625052" COLOR="#407000">
 <node TEXT="Wolken sind gut geeignet, um einen ganzen Zweig hervorzuheben. Dieses Formatierungselement bezieht sich n&#xe4;mlich auf den Knoten und alle seine Nachfolger." ID="ID_1689467777" CREATED="1270892460675" MODIFIED="1275338506115"/>
-<node ID="ID_1388258473" CREATED="1270892460675" MODIFIED="1275185837991">
-<richcontent TYPE="NODE">
+<node ID="ID_1388258473" CREATED="1270892460675" MODIFIED="1275185837991"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2901,10 +3259,12 @@
       oder verwende die Tastenkombination Strg + Shift +B.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_238365883" CREATED="1270892460675" MODIFIED="1275185900358">
-<richcontent TYPE="NODE">
+<node ID="ID_238365883" CREATED="1270892460675" MODIFIED="1275185900358"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2915,22 +3275,23 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 <node TEXT="Wolken k&#xf6;nnen verschiedene Hintergrundfarben haben, wie gr&#xfc;n..." ID="ID_703286001" CREATED="1270892460675" MODIFIED="1275186034129">
-<cloud COLOR="#32d632" WIDTH="0"/>
+<cloud COLOR="#32d632" SHAPE="ARC"/>
 <node TEXT="... oder rot" ID="ID_1207851558" CREATED="1270892460675" MODIFIED="1275186015216">
-<cloud COLOR="#e81d1f" WIDTH="0"/>
+<cloud COLOR="#e81d1f" SHAPE="ARC"/>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="Weitere Funktionen" FOLDED="true" POSITION="right" ID="ID_827349258" CREATED="1271021855439" MODIFIED="1275186150871" COLOR="#006666" HGAP="29" VSHIFT="-63">
+<node TEXT="Weitere Funktionen" FOLDED="true" POSITION="right" ID="ID_827349258" CREATED="1271021855439" MODIFIED="1275186150871" COLOR="#006666" HGAP_QUANTITY="29.0 px" VSHIFT_QUANTITY="-63.0 px">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Einstellungen vornehmen" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1270892460697" MODIFIED="1275186199211" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_425668379" CREATED="1270892460697" MODIFIED="1275338776557">
-<richcontent TYPE="NODE">
+<node ID="ID_425668379" CREATED="1270892460697" MODIFIED="1275338776557"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2941,10 +3302,11 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
-<node ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1275338836138">
-<richcontent TYPE="NODE">
+<node ID="ID_1823288862" CREATED="1270895079510" MODIFIED="1275338836138"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2955,14 +3317,15 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
 <node TEXT="Dateisperrung" FOLDED="true" ID="ID_1594926210" CREATED="1270892460703" MODIFIED="1275232363559" COLOR="#407000">
 <node TEXT="Das Sperren der ge&#xf6;ffneten MindMap-Datei stellt sicher, dass andere Benutzer nicht zur selben Zeit die von Dir ge&#xf6;ffnete Datei bearbeiten, so dass Informationen nicht &#xfc;berschrieben werden k&#xf6;nnen." ID="ID_1859037836" CREATED="1270892460703" MODIFIED="1275232425727"/>
 <node TEXT="Die in Freeplane im Augenblick implementierte Dateisperrung hat einen experimentellen Status und ist daher standardm&#xe4;sig deaktiviert. In seltenen F&#xe4;llen kann es zu Problemen kommen. F&#xfc;r den allt&#xe4;glichen Gebrauch ist die Dateisperrung aber geeignet." ID="ID_60090824" CREATED="1270892460703" MODIFIED="1275338918192"/>
-<node ID="ID_1792715924" CREATED="1270892460703" MODIFIED="1275338964089">
-<richcontent TYPE="NODE">
+<node ID="ID_1792715924" CREATED="1270892460703" MODIFIED="1275338964089"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -2976,13 +3339,14 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 </node>
 <node TEXT="Drucken" FOLDED="true" ID="Freeplane_Link_1528828442" CREATED="1270892460697" MODIFIED="1275232589985" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1681186639" CREATED="1270892460697" MODIFIED="1275233008481">
-<richcontent TYPE="NODE">
+<node ID="ID_1681186639" CREATED="1270892460697" MODIFIED="1275233008481"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3010,13 +3374,15 @@
       - Benutzerdefinierte Gr&#246;&#223;e
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Es ist empfehlenswert die MindMap im Querformat zu drucken, da so der Platz auf dem Papier besser ausgenutz wird." ID="ID_741420393" CREATED="1270892460698" MODIFIED="1275233170897">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_209381010" CREATED="1270892460698" MODIFIED="1275339012245">
-<richcontent TYPE="NODE">
+<node ID="ID_209381010" CREATED="1270892460698" MODIFIED="1275339012245"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3027,6 +3393,7 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -3049,8 +3416,8 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Als HTML exportieren" FOLDED="true" ID="Freeplane_Link_22510332" CREATED="1270892460690" MODIFIED="1275234526622" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_1502864159" CREATED="1270892460690" MODIFIED="1275236003357">
-<richcontent TYPE="NODE">
+<node ID="ID_1502864159" CREATED="1270892460690" MODIFIED="1275236003357"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3063,12 +3430,14 @@
       &quot;Datei -&gt; Export&quot; verschiedene Export-Methoden zur Verf&#252;gung. Abh&#228;ngig von den Einstellungen unter &quot;Extras -&gt; Einstellungen -&gt; HTML -&gt; HTML Export&quot; werden die Faltung und die Icons mit exportiert.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Exportieren als Bitmap, PDF&#xa;oder SVG" FOLDED="true" ID="Freeplane_Link_1908686168" CREATED="1270892460690" MODIFIED="1275236061727" COLOR="#407000">
-<node ID="ID_216678851" CREATED="1270892460690" MODIFIED="1275236187096">
-<richcontent TYPE="NODE">
+<node ID="ID_216678851" CREATED="1270892460690" MODIFIED="1275236187096"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3078,12 +3447,14 @@
       Im Men&#252; &quot;Datei -&gt; Export&quot; stehen Dir noch <b>weitere Export-Formate</b>&#160;wie *.png, *.jpg, *.pdf oder *.svg zur Verf&#252;gung.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Konvertieren in andere XML-Formate" FOLDED="true" ID="Freeplane_Link_329770204" CREATED="1270892460691" MODIFIED="1275236262989" COLOR="#407000">
-<node ID="ID_1483460074" CREATED="1270892460691" MODIFIED="1275236483091" COLOR="#996600">
-<richcontent TYPE="NODE">
+<node ID="ID_1483460074" CREATED="1270892460691" MODIFIED="1275236483091" COLOR="#996600"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3096,7 +3467,9 @@
       &#160;w&#228;hle &quot;Datei -&gt; Export -&gt; Verschiedene Formate (z.B. *.doc *.xls) mit XSLT...
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Diese Export-Option wendet eine XSLT Transformation auf die Freeplane MindMap an, um die Exportdatei zu erzeugen." ID="ID_1796935486" CREATED="1270897200986" MODIFIED="1275236578454"/>
 <node TEXT="Im Drop-Down Feld Filter des Popup-Fensters von &quot;Datei -&gt; Export -&gt; Verschiedene Formate (z.B. *.doc *.xls) mit XSLT...&quot; kannst Du unter verschiedenen Transformations-Dateien ausw&#xe4;hlen." ID="ID_1457131583" CREATED="1270897200986" MODIFIED="1275236811147"/>
@@ -3104,8 +3477,8 @@
 <node TEXT="XSL-Dateien m&#xfc;ssen die Endung .xsl haben." ID="ID_870607100" CREATED="1270897200996" MODIFIED="1275237007940"/>
 <node TEXT="XSL-Dateien m&#xfc;ssen innerhalb der ersten 5 Zeilen eine Beschreibung Ihrer Funktion in der folgenden Form haben:&#xa;&#xa;MINDMAPEXPORT endung beschreibung" ID="ID_1304075824" CREATED="1270897201015" MODIFIED="1275237107572"/>
 </node>
-<node ID="ID_1185345026" CREATED="1270892460691" MODIFIED="1275237243019">
-<richcontent TYPE="NODE">
+<node ID="ID_1185345026" CREATED="1270892460691" MODIFIED="1275237243019"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3118,13 +3491,15 @@
       &#160;W&#228;hle dazu &quot;Datei -&gt; Export -&gt; Als OpenOffice Writer Dokument&quot;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Importieren von &#xa;Verzeichnisstrukturen" FOLDED="true" ID="Freeplane_Link_1841136119" CREATED="1270892460691" MODIFIED="1275237276267" COLOR="#407000">
 <font NAME="Dialog" SIZE="12"/>
-<node ID="ID_141591900" CREATED="1270892460691" MODIFIED="1275339301636">
-<richcontent TYPE="NODE">
+<node ID="ID_141591900" CREATED="1270892460691" MODIFIED="1275339301636"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3144,6 +3519,7 @@
     </p>
   </body>
 </html>
+
 </richcontent>
 </node>
 <node TEXT="Beispiel" ID="ID_1229069993" CREATED="1270892460691" MODIFIED="1275238428298" COLOR="#996600">
@@ -3182,8 +3558,8 @@
 <node TEXT="Importieren von &#xa;Internet-Explorer Favoriten" FOLDED="true" ID="Freeplane_Link_269203785" CREATED="1270892460695" MODIFIED="1275241757795" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node ID="Freeplane_Link_260446736" CREATED="1270892460695" MODIFIED="1275241990848">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_260446736" CREATED="1270892460695" MODIFIED="1275241990848"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3193,12 +3569,14 @@
       Um <b>Internet-Explorer Favoriten</b>&#160;zu <b>importieren</b>, w&#228;hle &quot;Datei -&gt; Import -&gt; Explorer Favoriten&quot;. Du musst danach den Pfad zum Ordner, der die Favoriten enth&#228;lt eingeben. Bei vielen Windows Versionen ist dies C:\Documents and Settings\&lt;user&gt;\Favorites.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Importieren von MindManager X5 MindMaps" FOLDED="true" ID="Freeplane_Link_1709974530" CREATED="1270892460696" MODIFIED="1275242022246" COLOR="#407000">
-<node ID="ID_75598516" CREATED="1270892460696" MODIFIED="1275242105186">
-<richcontent TYPE="NODE">
+<node ID="ID_75598516" CREATED="1270892460696" MODIFIED="1275242105186"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3211,7 +3589,9 @@
       &#160;&quot;Datei -&gt; Import -&gt; MinndManager X5 Map...&quot;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Integration mit Textverarbeitungs- und E-Mail-Programmen" FOLDED="true" ID="Freeplane_Link_913645795" CREATED="1270892460696" MODIFIED="1275242162498" COLOR="#407000">
@@ -3226,8 +3606,8 @@
 </node>
 </node>
 <node TEXT="Browsen der Dateien auf &#xa;Deinem Computer" FOLDED="true" ID="_Freeplane_Link_353522063" CREATED="1270892460641" MODIFIED="1275247084182" COLOR="#407000">
-<node ID="ID_580394018" CREATED="1270892460642" MODIFIED="1275247209778">
-<richcontent TYPE="NODE">
+<node ID="ID_580394018" CREATED="1270892460642" MODIFIED="1275247209778"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3240,11 +3620,13 @@
       &#160;musst Du &#252;ber &quot;MindMaps -&gt; Datei Explorer&quot; in den browse-Modus schalten.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Der Datei-Baum wird dabei wie eine MindMap dargestellt." ID="ID_752002115" CREATED="1270892460642" MODIFIED="1275247251598"/>
-<node ID="ID_9876074" CREATED="1270892460642" MODIFIED="1275247590773">
-<richcontent TYPE="NODE">
+<node ID="ID_9876074" CREATED="1270892460642" MODIFIED="1275247590773"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3254,7 +3636,9 @@
       Du kannst eine <b>weiteres Explorer-Tab &#246;ffnen</b>, indem Du im Kontext-Men&#252; eines Knotens Zentrieren w&#228;hlst. Dieser Knoten wird dann zum Wurzelknoten einer neuen Dateiansicht.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Um einen Eintrag zu &#xf6;ffnen, ihn auszuf&#xfc;hren oder zu betrachten, folge dem Link des Knotens." ID="ID_355560243" CREATED="1270892460643" MODIFIED="1275247667345"/>
 <node TEXT="Dieser Datei-Modus ist haupts&#xe4;chlich als eine Demonstration der M&#xf6;glichkeit gedacht, Daten aus externen Quellen mit Freeplane zu visualisieren. Software Entwickler k&#xf6;nnen auf diese Art und Weise weitere &quot;Modis&quot; f&#xfc;r ihre Daten programmieren." ID="_Freeplane_Link_279880616" CREATED="1270892460643" MODIFIED="1275247816238"/>
@@ -3263,8 +3647,8 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Freeplane erzeugt in jedem Ordner, der eine editierte MindMap einth&#xe4;lt, einen Unterordner mit dem Namen &quot;.backup&quot;. Hier speichert Freeplane &#xe4;ltere Versionen der aktiven MindMap, sowie automatisch erzeugte backups. Die automatischen Sicherungen haben die Endung &quot;.autosave&quot;." ID="ID_1590067344" CREATED="1271096749626" MODIFIED="1275248093530"/>
 <node TEXT="Standardm&#xe4;sig wird jede Minute eine Sicherung gemacht und es wird eine Historie der letzten 10 Backups als Datensicherung gehalten" ID="ID_1073721425" CREATED="1271177847312" MODIFIED="1275248213218"/>
-<node ID="ID_206842943" CREATED="1271178201859" MODIFIED="1275248553129">
-<richcontent TYPE="NODE">
+<node ID="ID_206842943" CREATED="1271178201859" MODIFIED="1275248553129"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3274,10 +3658,12 @@
       Um die <b>Sicherung wieder herzustellen</b>, musst Du sie h&#228;ndisch umbenennen. Das bedeutet Du musst die Endung &quot;.autosave&quot; und die Nummer entfernen. Standardm&#228;sig reichen die Nummern von 1 bis 10, wobei 10 die letzte Sicherung ist. Nehmen wir an, Du willst eine Datei mit dem Namen freeplane.mm wieder herstellen, dann musst Du aus dem Ordner &quot;./.backup&quot; die Datei &quot;freeplane.mm.10.autosave&quot; in &quot;freeplane.mm&quot; umbenennen.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node FOLDED="true" ID="ID_3064437" CREATED="1271178347062" MODIFIED="1275248780969">
-<richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_3064437" CREATED="1271178347062" MODIFIED="1275248780969"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3287,14 +3673,16 @@
       Du kannst diese <b>Funktionen</b>&#160;unter &quot;Extras -&gt; Einstellungen -&gt; Allgemein -&gt; Automatisches Speichern&quot; <b>konfigurieren.</b>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 </node>
 <node TEXT="Homepage von Freeplane" POSITION="left" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1274306454209" LINK="http://freeplane.sourceforge.net">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Tabelle der vordefinierten Tastaturk&#xfc;rzel (separates Dokument)" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1275251282200" COLOR="#006699" LINK="FP_Key_Mappings_Quick_Guide_de.pdf"/>
+<node TEXT="Tabelle der vordefinierten Tastaturk&#xfc;rzel (separates Dokument)" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1275251282200" LINK="FP_Key_Mappings_Quick_Guide_de.pdf" COLOR="#006699"/>
 <node TEXT="Men&#xfc;-Referenz von Freeplane (separates Dokument)" POSITION="left" ID="ID_640122712" CREATED="1272090985328" MODIFIED="1275251471956" LINK="FP_MenuReference_de.mm" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
@@ -3309,8 +3697,8 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1274392860879">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_139664576" CREATED="1270892460640" MODIFIED="1274392860879"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3323,10 +3711,12 @@
       Freeplane kann dann wie alle anderen Programme &#252;ber das Start-Men&#252; gestartet werden.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="_Freeplane_Link_1380352758" CREATED="1270892460641" MODIFIED="1274392884173">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_1380352758" CREATED="1270892460641" MODIFIED="1274392884173"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3336,11 +3726,13 @@
       <b>Linux:</b>&#160;Lade das Java Runtime Enviroment und Freeplane herunter. Installiere zuerst Java und entpacke dann das Freeplane-Archiv. Zum starten von Freeplane mu&#223;t Du freeplane.sh ausf&#252;hren.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font BOLD="false" ITALIC="false"/>
 </node>
-<node ID="_Freeplane_Link_1808511462" CREATED="1270892460641" MODIFIED="1274393920819">
-<richcontent TYPE="NODE">
+<node ID="_Freeplane_Link_1808511462" CREATED="1270892460641" MODIFIED="1274393920819"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -3369,7 +3761,9 @@
       Im Freeplane-Wiki gibt es eine Mac-Seite mit weiteren Informationen.<br/>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Hinweise f&#xfc;r Mac-Nutzer" FOLDED="true" POSITION="left" ID="_Freeplane_Link_1530607683" CREATED="1270892460643" MODIFIED="1274393981644" COLOR="#006666">
@@ -3416,7 +3810,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1270892460647" MODIFIED="1270892460647" COLOR="#996600" LINK="http://danpolansky.blogspot.com/">
+<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1270892460647" MODIFIED="1270892460647" LINK="http://danpolansky.blogspot.com/" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
@@ -3453,5 +3847,3 @@
 </node>
 </node>
 </map>
-
- 	  	 
