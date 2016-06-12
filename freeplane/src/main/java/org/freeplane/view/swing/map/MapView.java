@@ -44,6 +44,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -1171,6 +1172,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					repaint();
 				}
 			});
+		}
+		catch (final FileNotFoundException e1) {
+			LogUtils.warn(e1);
 		}
 		catch (final Exception e1) {
 			LogUtils.severe(e1);
