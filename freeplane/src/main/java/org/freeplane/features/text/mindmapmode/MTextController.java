@@ -100,6 +100,7 @@ import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 
+import com.jgoodies.common.base.Objects;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
@@ -500,9 +501,12 @@ public class MTextController extends TextController {
 		if (node.isRoot()) {
 			return;
 		}
-		final String futureText = newText != null ? newText : node.getText();
+		final String oldText = node.getText();
+		final String futureText = newText != null ? newText : oldText;
 		final String[] strings = getContent(futureText, caretPosition);
 		if (strings == null) {
+			if(! Objects.equals(futureText, oldText))
+				setNodeObject(node, futureText);
 			return;
 		}
 		final String newUpperContent = makePlainIfNoFormattingFound(strings[0]);
@@ -864,8 +868,9 @@ public class MTextController extends TextController {
 			}
 
 
-			public void split(final String newText, final int position) {
-				splitNode(nodeModel, position, newText);
+			public void split(final String text, final int position) {
+				String processedText = makePlainIfNoFormattingFound(text);
+				splitNode(nodeModel, position, processedText);
 				viewController.obtainFocusForSelected();
 				stop();
 			}
