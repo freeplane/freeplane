@@ -82,6 +82,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -399,7 +400,7 @@ public class EditNodeTextField extends EditNodeBase {
 
 		protected boolean isSplitActionTriggered(final KeyEvent e) {
 			final int keyCode = e.getKeyCode();
-			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown())
+			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown() && ! Compat.isMacOsX())
 				return true;
 			final ModeController modeController = Controller.getCurrentModeController();
 			final KeyStroke splitNodeHotKey = modeController.getUserInputListenerFactory().getAcceleratorManager().getAccelerator("SplitNode");

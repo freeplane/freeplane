@@ -505,8 +505,9 @@ public class MTextController extends TextController {
 		final String futureText = newText != null ? newText : oldText;
 		final String[] strings = getContent(futureText, caretPosition);
 		if (strings == null) {
-			if(! Objects.equals(futureText, oldText))
-				setNodeObject(node, futureText);
+			final String mayBePlainText = makePlainIfNoFormattingFound(futureText);
+			if(! Objects.equals(mayBePlainText, oldText))
+				setNodeObject(node, mayBePlainText);
 			return;
 		}
 		final String newUpperContent = makePlainIfNoFormattingFound(strings[0]);
@@ -595,7 +596,7 @@ public class MTextController extends TextController {
 
 	private void setDetailsHtmlText(final NodeModel node, final String newText) {
 		if(newText != null){
-		final String body = HTML_HEAD.matcher(newText).replaceFirst("");
+		final String body = removeHtmlHead(newText);
         setDetails(node, body.replaceFirst("\\s+$", ""));
 		}
 		else
@@ -869,7 +870,7 @@ public class MTextController extends TextController {
 
 
 			public void split(final String text, final int position) {
-				String processedText = makePlainIfNoFormattingFound(text);
+				String processedText = HtmlUtils.isHtmlNode(text) ? removeHtmlHead(text) : text;
 				splitNode(nodeModel, position, processedText);
 				viewController.obtainFocusForSelected();
 				stop();
@@ -1019,13 +1020,17 @@ public class MTextController extends TextController {
 
 	private String makePlainIfNoFormattingFound(String text) {
 		if(HtmlUtils.isHtmlNode(text)){
-			text = HTML_HEAD.matcher(text).replaceFirst("");
+			text = removeHtmlHead(text);
 			if(! containsFormatting(text)){
 				text = HtmlUtils.htmlToPlain(text);
 			}
 		}
 		text = text.replaceFirst("\\s+$", "");
 		return text;
+	}
+
+	private String removeHtmlHead(String text) {
+		return HTML_HEAD.matcher(text).replaceFirst("");
 	}
 
 	@Override
