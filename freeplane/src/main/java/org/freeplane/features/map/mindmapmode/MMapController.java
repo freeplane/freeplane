@@ -65,8 +65,10 @@ import org.freeplane.features.map.Clones;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FreeNode;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
@@ -74,6 +76,7 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -120,6 +123,43 @@ public class MMapController extends MapController {
 					viewController.addStatusInfo("display_node_id", null, null);
 				}
 			});
+			addMapChangeListener(new IMapChangeListener() {
+				
+				@Override
+				public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
+				}
+				
+				@Override
+				public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+				}
+				
+				@Override
+				public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
+					if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
+						onNodeDeleted(nodeMoveEvent.oldParent);
+				}
+				
+				@Override
+				public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+				}
+				
+				@Override
+				public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+					final NodeModel parent = nodeDeletionEvent.parent;
+					onNodeDeleted(parent);
+				}
+
+				private void onNodeDeleted(final NodeModel node) {
+					if (!getModeController().isUndoAction() && ! node.isFolded() && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty()){
+						deleteSingleSummaryNode(node);
+					}
+				}
+				
+				@Override
+				public void mapChanged(MapChangeEvent event) {
+				}
+			});
+	
 	}
 
 	public NodeModel addNewNode(int newNodeMode) {
@@ -404,6 +444,15 @@ public class MMapController extends MapController {
 		final int index = parentNode.getIndex(node);
 		for(NodeModel parentClone : parentNode.subtreeClones())
 			deleteSingleNode(parentClone, index);
+	}
+
+	private void deleteSingleSummaryNode(NodeModel summarynode) {
+		final NodeModel summaryParent = summarynode.getParentNode();
+		final SummaryLevels summaryLevels = new SummaryLevels(summaryParent);
+		final int summaryNodeIndex = summarynode.getIndex();
+		final int groupBeginNodeIndex = summaryLevels.findGroupBeginNodeIndex(summaryNodeIndex - 1);
+		deleteSingleNode(summaryParent, summaryNodeIndex);
+		deleteSingleNode(summaryParent, groupBeginNodeIndex);
 	}
 
 	private void deleteSingleNode(final NodeModel parentNode, final int index) {
