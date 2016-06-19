@@ -1,9 +1,9 @@
 <map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="      1.5.x Whats New!" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="ID_1573594237" CREATED="1462710693327" MODIFIED="1464551501085" BACKGROUND_COLOR="#eaeaea" BACKGROUND_ALPHA="0" TEXT_ALIGN="RIGHT" MAX_WIDTH="260.0 pt" MIN_WIDTH="182.0 pt">
+<node TEXT="      1.5.x Whats New!" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="ID_1573594237" CREATED="1462710693327" MODIFIED="1464551501085" TEXT_ALIGN="CENTER" MAX_WIDTH="260.0 pt" MIN_WIDTH="182.0 pt">
 <font SIZE="16"/>
 <hook NAME="MapStyle" background="#f7f7f7">
-    <properties show_icon_for_attributes="true" fit_to_viewport="false" show_note_icons="true" backgroundImageURI="Images/doc/Freeplane_splash_%20alpha50.png"/>
+    <properties show_icon_for_attributes="true" show_note_icons="true"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt" TEXT_SHORTENED="true">
