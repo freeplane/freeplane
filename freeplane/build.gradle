@@ -264,6 +264,16 @@ task editorJar(type: Jar) {
     includeEmptyDirs = false
 }
 
+
+
+eclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.append('''encoding//resources/translations=ISO-8859-1
+encoding//viewer-resources/translations=ISO-8859-1
+''')
+}
+
+
 task osgiJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
     manifest = project.manifest {

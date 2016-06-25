@@ -63,6 +63,11 @@ task makeKnopflerfischPermissionDirs << {
 	new File(globalBuild, 'fwdir/condperm').mkdirs()
 }
 
+eclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.append('encoding/windows-installer=ISO-8859-1\n')
+}
+
 build.dependsOn (copyLauncherStuff, makeKnopflerfischPermissionDirs)
 
 
