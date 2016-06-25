@@ -13,10 +13,10 @@
 <edge STYLE="bezier" WIDTH="3"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details">
-<font SIZE="11"/>
+<font SIZE="11" BOLD="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
-<font SIZE="9"/>
+<font SIZE="9" BOLD="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#ffffff" TEXT_ALIGN="LEFT">
 <font BOLD="false"/>
