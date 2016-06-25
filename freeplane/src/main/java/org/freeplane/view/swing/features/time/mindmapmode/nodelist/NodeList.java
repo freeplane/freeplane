@@ -481,7 +481,8 @@ public class NodeList {
 						}
 					}
 					catch (Exception e) {
-						UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, e.getMessage()));
+						final String message = e.getMessage();
+						UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, message != null ? message : e.getClass().getSimpleName()));
 						return;
 					}
 					if (!StringUtils.equals(text, replaceResult)) {
