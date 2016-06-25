@@ -73,7 +73,7 @@ public class CheckerListener implements PopupMenuListener, LanguageChangeListene
 	}
 
 	public void popupMenuWillBecomeVisible(final PopupMenuEvent ev) {
-		if (SpellChecker.getCurrentDictionary() == null) {
+		if (dictionary == null || locale == null) {
 			menu.setEnabled(false);
 			return;
 		}
