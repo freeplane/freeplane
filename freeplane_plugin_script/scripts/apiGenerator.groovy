@@ -268,7 +268,6 @@ makeApi(utils, LogUtils.class)
 def web = createChild(newMap.root, WEB_NODE, 'http://freeplane.sourceforge.net/wiki/index.php/Scripting')
 initHeading(web)
 createChild(web, 'Groovy tutorials (Codehaus)', 'http://groovy.codehaus.org/Beginners+Tutorial')
-createChild(web, 'Groovy presentation (Paul King)', 'http://www.asert.com/pubs/Groovy/Groovy.pdf')
 createChild(web, 'Example scripts', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts')
 createChild(web, 'Scripting API changes', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_API_Changes')
 
