@@ -27,6 +27,7 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.plugin.script.ExecuteScriptException;
+import org.freeplane.plugin.script.proxy.Proxy.Map;
 
 /**
  * This interface alone defines the api for accessing the internal state of the Freeplane. All read-write methods
@@ -537,6 +538,10 @@ public interface Proxy {
 		/** opens a new map for url in the foreground if it isn't opened already.
 		 * @since 1.2 */
 		Map newMap(URL url);
+		
+		/** opens a new map based on given template.
+		 * @since 1.5 */
+		public Map newMapFromTemplate(File templateFile);
 
 		/** a value of 1 means 100%.
 		 * @since 1.2 */
