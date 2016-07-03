@@ -210,6 +210,14 @@ class ControllerProxy implements Proxy.Controller {
 		return new MapProxy(newMap, scriptContext);
 	}
 
+	public Map newMapFromTemplate(File templateFile) {
+		final MapModel oldMap = Controller.getCurrentController().getMap();
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		final MapModel newMap = mapIO.newMapFromTemplate(templateFile);
+		restartTransaction(oldMap, newMap);
+		return new MapProxy(newMap, scriptContext);
+	}
+
 	public Map newMap(URL url) {
 		try {
 			final MapModel oldMap = Controller.getCurrentController().getMap();

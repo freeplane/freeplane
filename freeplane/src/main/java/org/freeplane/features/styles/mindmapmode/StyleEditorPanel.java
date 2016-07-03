@@ -117,6 +117,7 @@ import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
+	private static final int FONT_SIZE = Math.round(UITools.FONT_SCALE_FACTOR * 8);
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
 
 	private class BgColorChangeListener extends ChangeListener {
@@ -857,7 +858,7 @@ public class StyleEditorPanel extends JPanel {
 		}
 		add(rightBuilder.getPanel(), BorderLayout.CENTER);
 		addListeners();
-		setFont(this, 10);
+		setFont(this, FONT_SIZE);
 	}
 
 	private JButton addStyleButton(DefaultFormBuilder rightBuilder, String label, AFreeplaneAction action) {
@@ -871,7 +872,7 @@ public class StyleEditorPanel extends JPanel {
 	    button.addActionListener(action);
 	    button.setHorizontalAlignment(SwingConstants.LEFT);
 	    final String labelText = TextUtils.getText(label);
-	    UITools.addTitledBorder(button, labelText, 10);
+	    UITools.addTitledBorder(button, labelText, FONT_SIZE);
 		TranslatedElement.BORDER.setKey(button, label);
 	    rightBuilder.append(button, rightBuilder.getColumnCount());
 		rightBuilder.nextLine();

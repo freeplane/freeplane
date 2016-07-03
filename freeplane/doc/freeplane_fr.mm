@@ -1,7 +1,7 @@
-<map version="0.9.0">
+<map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node ID="ID_911274459" CREATED="1270892460624" MODIFIED="1275774576843" COLOR="#993300">
-<richcontent TYPE="NODE">
+<node FOLDED="false" ID="ID_911274459" CREATED="1270892460624" MODIFIED="1465678889090" COLOR="#993300"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -11,11 +11,119 @@
       Freeplane<br/><small>- Logiciel Libre de Mind-Mapping -</small>&#160;
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600"/>
-<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1277183184328" HGAP="24" VSHIFT="-45">
-<richcontent TYPE="NODE">
+<hook NAME="MapStyle">
+    <properties fit_to_viewport="false;"/>
+
+<map_styles>
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt" TEXT_SHORTENED="true">
+<font SIZE="24"/>
+<richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" SHAPE_VERTICAL_MARGIN="0.0 pt" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<font NAME="Arial" SIZE="9" BOLD="true" ITALIC="false"/>
+<edge STYLE="bezier" WIDTH="3"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.details">
+<font SIZE="11"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
+<font SIZE="9"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.floating">
+<edge STYLE="hide_edge"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="styles.important">
+<icon BUILTIN="yes"/>
+<edge COLOR="#0000cc"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval" UNIFORM_SHAPE="true" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<font SIZE="24" ITALIC="true"/>
+<edge STYLE="bezier" WIDTH="3"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1">
+<edge COLOR="#000000"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2">
+<edge COLOR="#ff0033"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3">
+<edge COLOR="#009933"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4">
+<edge COLOR="#3333ff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,5">
+<edge COLOR="#ff6600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,6">
+<edge COLOR="#cc00cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,7">
+<edge COLOR="#ffbf00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,8">
+<edge COLOR="#00ff99"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,9">
+<edge COLOR="#0099ff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,10">
+<edge COLOR="#996600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,11">
+<edge COLOR="#000000"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,12">
+<edge COLOR="#cc0066"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,13">
+<edge COLOR="#33ff00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,14">
+<edge COLOR="#ff9999"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,15">
+<edge COLOR="#0000cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,16">
+<edge COLOR="#cccc00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,17">
+<edge COLOR="#0099cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,18">
+<edge COLOR="#006600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,19">
+<edge COLOR="#ff00cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
+<edge COLOR="#00cc00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,21">
+<edge COLOR="#0066cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,22">
+<edge COLOR="#00ffff"/>
+</stylenode>
+</stylenode>
+</stylenode>
+</map_styles>
+</hook>
+<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1270892460656" MODIFIED="1465678889106"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -30,11 +138,13 @@
     <p>
       
     </p>
-    <p style="padding-right: 0cm; padding-bottom: 0cm; margin-bottom: 0cm; border: none; padding-left: 0cm; padding-top: 0cm">
+    <p style="padding-right: 0cm; padding-bottom: 0cm; margin-bottom: 0cm; border-top-color: border-color; border-top-style: none; border-top-width: medium; border-right-color: border-color; border-right-style: none; border-right-width: medium; border-bottom-color: border-color; border-bottom-style: none; border-bottom-width: medium; border-left-color: border-color; border-left-style: none; border-left-width: medium; padding-left: 0cm; padding-top: 0cm">
       <b><font face="SansSerif, sans-serif" color="#0033ff">Appuyez sur la touche fl&#232;che droite, ou cliquez sur le bouton gauche de la souris pour d&#233;plier ce noeud</font></b>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Appuyez sur la fl&#xe8;che gauche pour d&#xe9;ployer les n&#x153;uds situ&#xe9;s &#xe0; la gauche du noeud central" ID="ID_1776790765" CREATED="1271002221874" MODIFIED="1277183252312"/>
 </node>
@@ -235,43 +345,43 @@
 <icon BUILTIN="back"/>
 </node>
 <node TEXT="Des nuages peuvent entourer les noeuds" FOLDED="true" ID="_Freeplane_Link_318937820" CREATED="1270892460667" MODIFIED="1275421333734" COLOR="#407000">
-<cloud WIDTH="0"/>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="avec des couleurs personnalis&#xe9;es" ID="ID_1714895943" CREATED="1270892460668" MODIFIED="1275421343281">
-<cloud COLOR="#ccccff" WIDTH="0"/>
+<cloud COLOR="#ccccff" SHAPE="ARC"/>
 </node>
 </node>
-<node TEXT="Vous pouvez ajouter des connecteurs entre noeuds de la m&#xea;me carte" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1277184731656" COLOR="#407000" HGAP="22" VSHIFT="-24">
+<node TEXT="Vous pouvez ajouter des connecteurs entre noeuds de la m&#xea;me carte" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1270892460668" MODIFIED="1277184731656" COLOR="#407000" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="-24.0 px">
 <node TEXT="connecter un noeud" ID="_Freeplane_Link_1212380407" CREATED="1270892460668" MODIFIED="1277185157250">
-<arrowlink DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="52;0;" ENDINCLINATION="52;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink COLOR="#99ff66" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="64;0;" ENDINCLINATION="64;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#99ff66" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="64;0;" ENDINCLINATION="64;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="52;0;" ENDINCLINATION="52;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="&#xe0; un autre" ID="_Freeplane_Link_1249400461" CREATED="1270892460669" MODIFIED="1277185157250"/>
 <node TEXT="avec des couleurs diff&#xe9;rentes" ID="_Freeplane_Link_880551392" CREATED="1270892460670" MODIFIED="1277185217937">
-<arrowlink COLOR="#ff9999" DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="176;11;" ENDINCLINATION="176;11;" STARTARROW="NONE" ENDARROW="NONE"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff9999" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="176;11;" ENDINCLINATION="176;11;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
 <node TEXT="diff&#xe9;rentes fl&#xe8;ches" ID="ID_835595637" CREATED="1277184818093" MODIFIED="1277185244625">
-<arrowlink COLOR="#0000cc" DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="61;-2;" ENDINCLINATION="61;-2;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#0000cc" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="61;-2;" ENDINCLINATION="61;-2;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="et diff&#xe9;rents trac&#xe9;s" ID="_Freeplane_Link_1789233193" CREATED="1270892460670" MODIFIED="1277185191421"/>
 </node>
-<node TEXT="Les connecteurs peuvent poss&#xe9;der des libell&#xe9;s" FOLDED="true" ID="ID_237593792" CREATED="1270893118534" MODIFIED="1277185368250" VGAP="89" COLOR="#407000">
+<node TEXT="Les connecteurs peuvent poss&#xe9;der des libell&#xe9;s" FOLDED="true" ID="ID_237593792" CREATED="1270893118534" MODIFIED="1277185368250" VGAP_QUANTITY="89.0 px" COLOR="#407000">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_237593792" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<arrowlink DESTINATION="ID_237593792" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="noeud source" ID="ID_1709139591" CREATED="1270893130918" MODIFIED="1277185406578" COLOR="#666666">
-<arrowlink COLOR="#000000" DESTINATION="ID_1741403088" SOURCE_LABEL="libell&#xe9; au d&#xe9;part" TARGET_LABEL="libell&#xe9; &#xe0; l&apos;arriv&#xe9;e" MIDDLE_LABEL="libell&#xe9; central" STARTINCLINATION="103;13;" ENDINCLINATION="174;25;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1741403088" SOURCE_LABEL="libell&#xe9; au d&#xe9;part" TARGET_LABEL="libell&#xe9; &#xe0; l&apos;arriv&#xe9;e" MIDDLE_LABEL="libell&#xe9; central" STARTINCLINATION="103;13;" ENDINCLINATION="174;25;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="noeud cible" ID="ID_1741403088" CREATED="1270893138577" MODIFIED="1277185417671" COLOR="#666666"/>
 </node>
-<node TEXT="Les connecteurs peuvent &#xea;tre mis en forme comme des lignes" FOLDED="true" ID="ID_589013013" CREATED="1270893418086" MODIFIED="1277185488421" COLOR="#407000" VGAP="20" HGAP="19" VSHIFT="66">
+<node TEXT="Les connecteurs peuvent &#xea;tre mis en forme comme des lignes" FOLDED="true" ID="ID_589013013" CREATED="1270893418086" MODIFIED="1277185488421" COLOR="#407000" VGAP_QUANTITY="20.0 px" HGAP_QUANTITY="19.0 px" VSHIFT_QUANTITY="66.0 px">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="1" ID="ID_822615789" CREATED="1270893450078" MODIFIED="1270893469956">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_659652940" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="2" FOLDED="true" ID="ID_1931813528" CREATED="1270893453278" MODIFIED="1270991928052">
 <node TEXT="22 (trac&#xe9; automatique)" ID="ID_659652940" CREATED="1270893459959" MODIFIED="1277185540281"/>
 </node>
 <node TEXT="3" ID="ID_961774571" CREATED="1270893454198" MODIFIED="1270893480379">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_659652940" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_659652940" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 <node TEXT="Les lignes peuvent &#xea;tre cach&#xe9;es" FOLDED="true" ID="ID_1539062144" CREATED="1270893550070" MODIFIED="1275421889171" COLOR="#407000">
@@ -282,13 +392,13 @@
 </node>
 <node TEXT="Les noeuds peuvent avoir des attributs" ID="ID_1044646484" CREATED="1270893318566" MODIFIED="1275421927062" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
+<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>
-<node TEXT="Les noeuds peuvent &#xea;tre positionn&#xe9;s librement" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1270892460670" MODIFIED="1275421947500" COLOR="#407000" HGAP="25" VSHIFT="36">
-<node TEXT="ici" ID="_Freeplane_Link_894936766" CREATED="1270892460670" MODIFIED="1275421958031" HGAP="-1" VSHIFT="-27"/>
-<node TEXT="l&#xe0;" ID="_Freeplane_Link_1942481455" CREATED="1270892460670" MODIFIED="1275421960531" HGAP="123" VSHIFT="43"/>
+<node TEXT="Les noeuds peuvent &#xea;tre positionn&#xe9;s librement" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1270892460670" MODIFIED="1275421947500" COLOR="#407000" HGAP_QUANTITY="25.0 px" VSHIFT_QUANTITY="36.0 px">
+<node TEXT="ici" ID="_Freeplane_Link_894936766" CREATED="1270892460670" MODIFIED="1275421958031" HGAP_QUANTITY="-1.0 px" VSHIFT_QUANTITY="-27.0 px"/>
+<node TEXT="l&#xe0;" ID="_Freeplane_Link_1942481455" CREATED="1270892460670" MODIFIED="1275421960531" HGAP_QUANTITY="123.0 px" VSHIFT_QUANTITY="43.0 px"/>
 </node>
 </node>
 <node TEXT="Navigation" FOLDED="true" POSITION="right" ID="ID_1233270983" CREATED="1272091279810" MODIFIED="1277230218296" COLOR="#006666">
@@ -367,8 +477,8 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="Pour basculer entre les deux derni&#xe8;res cartes &#xe9;dit&#xe9;es : Ctrl + 1" ID="ID_771867461" CREATED="1272092801195" MODIFIED="1277187462843" COLOR="#ff0000">
-<font BOLD="true"/>
 <icon BUILTIN="stop"/>
+<font BOLD="true"/>
 </node>
 </node>
 </node>
@@ -385,12 +495,12 @@
 </node>
 <node TEXT="Modifier le texte d&apos;un noeud" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1270892460671" MODIFIED="1275502747437" COLOR="#407000">
 <node TEXT="Pour &#xe9;diter un noeud, pressez les touches F2, HOME ou FIN . Vous pouvez aussi utiliser le menu contextuel, Pour valider votre saisie pressez la touche &quot;Entr&#xe9;e&quot;." ID="_Freeplane_Link_519923426" CREATED="1270892460671" MODIFIED="1277225482453">
-<arrowlink DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Pour remplacer le texte d&apos;un noeud s&#xe9;lectionn&#xe9;, commencer simplement &#xe0; taper le texte." ID="ID_673531040" CREATED="1270892460671" MODIFIED="1275503155562"/>
 <node TEXT="Pour forcer l&apos;utilisation de l&apos;&#xe9;diteur de n&#x153;ud texte riche, utilisez la commande Edition &gt; Modifier comme texte riche (noeud long) ..., ou appuyer sur &quot;Alt + Entr&#xe9;e&quot;." ID="ID_1386037184" CREATED="1270892460672" MODIFIED="1277225595406"/>
 <node TEXT="Pour diviser le contenu d&apos;un noeud en deux noeuds : ouvrez l&apos;&#xe9;diteur de texte riche, positionnez le curseur &#xe0; l&apos;emplacement souhait&#xe9; pour le s&#xe9;paration et cliquez sur le bouton &quot;Diviser&quot;. Vous pouvez r&#xe9;p&#xe9;ter l&apos;op&#xe9;ration plusieurs fois pour diviser le texte en autant de noeuds que souhait&#xe9;s." ID="ID_328110224" CREATED="1270892460672" MODIFIED="1277225911640">
-<arrowlink DESTINATION="ID_328110224" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_328110224" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Pour ajouter un saut de ligne : pressez Maj+Entr&#xe9;e ou Alt+Entr&#xe9;e." ID="ID_785582356" CREATED="1270892460672" MODIFIED="1277226063000"/>
 <node TEXT="Pour copier une partie du texte pendant l&apos;&#xe9;dition d&apos;un noeud en texte riche (noeud long) : s&#xe9;lectionnez le texte puis faites un clic droit pour obtenir le menu contextuel et choisissez Copier." ID="ID_471748709" CREATED="1270892460672" MODIFIED="1277226129093"/>
@@ -479,7 +589,7 @@
 <node TEXT="H&#xea;tre" ID="Freeplane_Link_446449973" CREATED="1275508661656" MODIFIED="1275508661656" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Google" ID="Freeplane_Link_845756696" CREATED="1275508661656" MODIFIED="1275508661656" COLOR="#996600" LINK="http://www.google.com/">
+<node TEXT="Google" ID="Freeplane_Link_845756696" CREATED="1275508661656" MODIFIED="1275508661656" LINK="http://www.google.com/" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
@@ -494,8 +604,8 @@
 <node TEXT="Pour copier un n&#x153;ud sans ses fils, utillisez la commande &quot;Copier le noeud seul (sans fils)&quot; ou les touches Ctrl + Maj + C." ID="Freeplane_Link_887004814" CREATED="1275508661656" MODIFIED="1277227488281"/>
 </node>
 <node TEXT="Ajouter un hyperlien" FOLDED="true" ID="ID_435612220" CREATED="1275508661625" MODIFIED="1275508661625" COLOR="#407000">
-<node ID="Freeplane_Link_224008087" CREATED="1275508661625" MODIFIED="1277227988984">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_224008087" CREATED="1275508661625" MODIFIED="1277227988984"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -505,10 +615,12 @@
       Pour <b>ajouter</b>&#160;un lien hypertexte &#224; un n&#339;ud : utilisez la commande &quot;Ins&#233;rer&quot; &gt; &quot;Lien libre ... / Modifier lien existant&quot; ou touches Ctrl + K et saisissez la valeur voulue pour le lien.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="Freeplane_Link_789925322" CREATED="1275508661625" MODIFIED="1277228025703">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_789925322" CREATED="1275508661625" MODIFIED="1277228025703"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -518,10 +630,12 @@
       Pour <b>modifier</b>&#160;le lien hypertexte d'un noeud : utilisez la commande &quot;Ins&#233;rer&quot; &gt; &quot;Lien libre ... / Modifier lien existant&quot; ou touches Ctrl + K.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="ID_1008928081" CREATED="1275508661625" MODIFIED="1277228039843">
-<richcontent TYPE="NODE">
+<node ID="ID_1008928081" CREATED="1275508661625" MODIFIED="1277228039843"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -531,7 +645,9 @@
       Pour <b>supprimer</b>&#160;le le lien hypertexte d'un noeud : utilisez la commande &quot;Ins&#233;rer&quot; &gt; &quot;Lien libre ... / Modifier lien existant&quot; ou touches Ctrl + K et effacer la valeur du lien.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="Des liens hypertextes peuvent &#xea;tre cr&#xe9;&#xe9;s vers des pages Web, des fichiers locaux ou des adresses emails car plusieurs protocoles sont support&#xe9;s : http, https, mailto, ftp, UNC ..." FOLDED="true" ID="Freeplane_Link_1046747190" CREATED="1275508661625" MODIFIED="1277228057296">
 <node TEXT="Lien mailto" ID="Freeplane_Link_325647039" CREATED="1275508661625" MODIFIED="1277228267859" LINK="mailto:paul.toto@supermail.com?subject=Notre%20rendez-vous%20de%20demain"/>
@@ -589,8 +705,8 @@
 </node>
 <node TEXT="Ajouter des notes" FOLDED="true" ID="ID_774913271" CREATED="1271096054547" MODIFIED="1275765971359" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="A un noeud, il est possible d&apos;associer une note de texte format&#xe9;" ID="ID_1515176011" CREATED="1271096065323" MODIFIED="1275766082625">
-<richcontent TYPE="NOTE">
+<node TEXT="A un noeud, il est possible d&apos;associer une note de texte format&#xe9;" ID="ID_1515176011" CREATED="1271096065323" MODIFIED="1275766082625"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -600,7 +716,8 @@
       <u>&#224; ce noeud est associ&#233;e <b>une note.</b></u>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Le texte du noeud peut &#xea;tre affich&#xe9; et modifi&#xe9; dans l&apos;&#xe9;diteur de notes" ID="ID_1163876330" CREATED="1271096088819" MODIFIED="1275766110031"/>
 <node TEXT="Edition &gt; Aller &#xe0; l&apos;&#xe9;diteur de Notes ou Ctrl + &lt; pour passer du noeud &#xe0; l&apos;&#xe9;diteur &#xe0; sa note" ID="ID_510313925" CREATED="1271096117483" MODIFIED="1277228966109"/>
@@ -608,7 +725,7 @@
 </node>
 <node TEXT="Ajouter des connecteurs" FOLDED="true" ID="ID_67417015" CREATED="1275400917613" MODIFIED="1277229044234" COLOR="#407000">
 <node TEXT="Pour cr&#xe9;er un connecteur entre deux n&#x153;uds, glissez d&#xe9;posez un n&#x153;ud sur un autre en maintenant press&#xe9;es les touches Ctrl + Maj; relachez le bouton de la souris avant de relacher les touches du clavier." ID="Freeplane_Link_1758636421" CREATED="1275400917613" MODIFIED="1277229415312">
-<arrowlink DESTINATION="ID_865762760" STARTINCLINATION="48;-6;" ENDINCLINATION="180;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_865762760" STARTINCLINATION="48;-6;" ENDINCLINATION="180;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Vous pouvez aussi glisser d&#xe9;poser avec le bouton droit de la souris." ID="Freeplane_Link_976877624" CREATED="1275400917613" MODIFIED="1275400917613"/>
 <node TEXT="Pour changer la couleur du connecteur, utilisez le menu contextuel (clic droit sur le connecteur)" ID="ID_1483173272" CREATED="1275400917613" MODIFIED="1277229320046"/>
@@ -618,13 +735,13 @@
 <node TEXT="Pour changer le parcours d&apos;un lien, cliquez sur le lien puis glissez le &#xe0; la souris" ID="ID_860622424" CREATED="1275400917613" MODIFIED="1277229428328"/>
 <node TEXT="Exemples de connecteurs" FOLDED="true" ID="Freeplane_Link_977688660" CREATED="1275400917613" MODIFIED="1277229376562" COLOR="#996600">
 <node TEXT="Lien vers une autre partie" ID="ID_706510928" CREATED="1275400917613" MODIFIED="1275400917613" COLOR="#996600">
-<arrowlink COLOR="#9999ff" DESTINATION="ID_1814055808" STARTINCLINATION="30;0;" ENDINCLINATION="88;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#9999ff" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1814055808" STARTINCLINATION="30;0;" ENDINCLINATION="88;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="N&#x153;ud avec un sous-n&#x153;ud pli&#xe9;" FOLDED="true" ID="Freeplane_Link_490180926" CREATED="1275400917613" MODIFIED="1277229385125" COLOR="#996600">
 <node TEXT="sous-n&#x153;ud" ID="ID_1814055808" CREATED="1275400917613" MODIFIED="1275400917613"/>
 </node>
 <node TEXT="Un autre lien" ID="ID_1463132732" CREATED="1275400917613" MODIFIED="1277229395500" COLOR="#996600">
-<arrowlink DESTINATION="ID_706510928" STARTINCLINATION="68;40;" ENDINCLINATION="135;77;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_706510928" STARTINCLINATION="68;40;" ENDINCLINATION="135;77;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 </node>
@@ -632,7 +749,7 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Les noeuds peuvent poss&#xe9;der des attributs" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1277229590453">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="40" VALUE_WIDTH="49"/>
+<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>
@@ -641,8 +758,8 @@
 </node>
 <node TEXT="Utiliser du texte riche dans les n&#x153;uds gr&#xe2;ce &#xe0; l&apos;HTML" FOLDED="true" ID="ID_472410185" CREATED="1275400917643" MODIFIED="1275400917643" COLOR="#407000">
 <node TEXT="Les n&#x153;uds commen&#xe7;ant par &lt;html&gt; sont mis en forme en utilisant le HTML qu&apos;ils contiennent. Cette fonctionnalit&#xe9; est utile aux personnes ayant de connaissances techniques. Par exemple:" ID="Freeplane_Link_585709190" CREATED="1275400917643" MODIFIED="1277229678687"/>
-<node ID="Freeplane_Link_1151602814" CREATED="1275400917643" MODIFIED="1277229695031">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_1151602814" CREATED="1275400917643" MODIFIED="1277229695031"><richcontent TYPE="NODE">
+
 <html>
   <head>
     
@@ -665,26 +782,26 @@
     <p class="msonormal">
       Nous avons des caract&#232;res <b>gras</b>&#160;ou <i>italiques</i>. <u>Soulign&#233;s</u>&#160; et <strike>barr&#233;s</strike>&#160;&#233;galement. Un petit tableau:
     </p>
-    <table border="1" cellspacing="0" style="border: none" cellpadding="0" class="msonormaltable">
+    <table border="1" cellspacing="0" cellpadding="0" class="msonormaltable" style="border-top-color: border-color; border-top-style: none; border-top-width: medium; border-right-color: border-color; border-right-style: none; border-right-width: medium; border-bottom-color: border-color; border-bottom-style: none; border-bottom-width: medium; border-left-color: border-color; border-left-style: none; border-left-width: medium">
       <tr>
-        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; padding-bottom: .75pt; border: solid windowtext 1.0pt">
+        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; padding-bottom: .75pt">
           <p class="msonormal">
             Cellule1
           </p>
         </td>
-        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; padding-bottom: .75pt; border-left: none; border: solid windowtext 1.0pt">
+        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; padding-bottom: .75pt; border-left-color: border-color; border-left-style: none; border-left-width: medium">
           <p class="msonormal">
             Cellule2
           </p>
         </td>
       </tr>
       <tr>
-        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; border-top: none; padding-bottom: .75pt; border: solid windowtext 1.0pt">
+        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; border-top-color: border-color; border-top-style: none; border-top-width: medium; padding-bottom: .75pt">
           <p class="msonormal">
             Cellule3
           </p>
         </td>
-        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; border-top: none; padding-bottom: .75pt; border-right: solid windowtext 1.0pt; border-left: none; border-bottom: solid windowtext 1.0pt">
+        <td style="padding-top: .75pt; padding-right: .75pt; padding-left: .75pt; border-top-color: border-color; border-top-style: none; border-top-width: medium; padding-bottom: .75pt; border-left-color: border-color; border-left-style: none; border-left-width: medium">
           <p class="msonormal">
             Cellulle4
           </p>
@@ -695,7 +812,9 @@
       Et&#160;plusieurs <font color="#999900">couleurs</font>&#160;de <font color="#336600">caract&#232;res</font>&#160;sont possibles.
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 <node TEXT="L&apos;export des n&#x153;uds et des images HTML n&apos;est pas support&#xe9; en texte ou RTF (Word, Wordpad). L&apos;HTML est surtout pratique dans le cadre d&apos;une publication sur le Web utilis&#xe9;e conjointement avec l&apos;Applet Freeplane." ID="Freeplane_Link_1349362347" CREATED="1275400917643" MODIFIED="1277229717203">
 <font NAME="SansSerif" SIZE="12"/>
@@ -718,13 +837,13 @@
 </node>
 <node TEXT="Exemple d&apos;images, fonctionne sur certaines versions de Windows" FOLDED="true" ID="ID_1911903659" CREATED="1124560950732" MODIFIED="1194968391453" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="true"/>
-<node ID="Freeplane_Link_1688770779" CREATED="1124560950732" MODIFIED="1194968725078">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_1688770779" CREATED="1124560950732" MODIFIED="1194968725078"><richcontent TYPE="NODE">
+
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
-        body { background-color: #ffffff; font-size: 12pt; font-family: SansSerif }
+      <!--
+        <!<!<!<!<!<!<!<!<!<!<!<! body { background-color: #ffffff; font-size: 12pt; font-family: SansSerif }
         p { margin-top: 0 }
       -->
     </style>
@@ -732,116 +851,130 @@
   </head>
   <body>
     <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_networks.jpg" />
+      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_networks.jpg"/>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node ID="Freeplane_Link_163698799" CREATED="1124560950732" MODIFIED="1194968767171">
-<richcontent TYPE="NODE">
+<node ID="Freeplane_Link_163698799" CREATED="1124560950732" MODIFIED="1194968767171"><richcontent TYPE="NODE">
+
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
-        p { margin-top: 0 }
+      <!--
+        <!<!<!<!<!<!<!<!<!<!<!<! p { margin-top: 0 }
       -->
     </style>
     
   </head>
   <body>
     <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_wizard.jpg" />
+      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_wizard.jpg"/>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
-<node FOLDED="true" ID="Freeplane_Link_1915243487" CREATED="1124560950732" MODIFIED="1194968806046">
-<richcontent TYPE="NODE">
+<node FOLDED="true" ID="Freeplane_Link_1915243487" CREATED="1124560950732" MODIFIED="1194968806046"><richcontent TYPE="NODE">
+
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
-        p { margin-top: 0 }
+      <!--
+        <!<!<!<!<!<!<!<!<!<!<!<! p { margin-top: 0 }
       -->
     </style>
     
   </head>
   <body>
     <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_multiple.jpg" />
+      <img src="file:/C:/Windows/Help/Tours/htmltour/Connected_multiple.jpg"/>
     </p>
   </body>
-</html></richcontent>
-<node ID="Freeplane_Link_453092767" CREATED="1124560950732" MODIFIED="1194968853953">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="Freeplane_Link_453092767" CREATED="1124560950732" MODIFIED="1194968853953"><richcontent TYPE="NODE">
+
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
-        p { margin-top: 0 }
+      <!--
+        <!<!<!<!<!<!<!<!<!<!<!<! p { margin-top: 0 }
       -->
     </style>
     
   </head>
   <body>
     <p>
-      <img src="file:/C:/Windows/Help/Tours/htmltour/end_up.jpg" />
+      <img src="file:/C:/Windows/Help/Tours/htmltour/end_up.jpg"/>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="Freeplane_Link_1332419976" CREATED="1124560950732" MODIFIED="1193212505265">
-<richcontent TYPE="NODE">
+<node FOLDED="true" ID="Freeplane_Link_1332419976" CREATED="1124560950732" MODIFIED="1193212505265"><richcontent TYPE="NODE">
+
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
-        p { margin-top: 0 }
+      <!--
+        <!<!<!<!<!<!<!<!<!<!<!<! p { margin-top: 0 }
       -->
     </style>
     
   </head>
   <body>
     <p>
-      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACRICEPR.GIF" />
+      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACRICEPR.GIF"/>
     </p>
   </body>
-</html></richcontent>
-<node FOLDED="true" ID="Freeplane_Link_1799711958" CREATED="1124560950732" MODIFIED="1193212511062">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node FOLDED="true" ID="Freeplane_Link_1799711958" CREATED="1124560950732" MODIFIED="1193212511062"><richcontent TYPE="NODE">
+
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
-        p { margin-top: 0 }
+      <!--
+        <!<!<!<!<!<!<!<!<!<!<!<! p { margin-top: 0 }
       -->
     </style>
     
   </head>
   <body>
     <p>
-      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSNDSTN.GIF" />
+      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSNDSTN.GIF"/>
     </p>
   </body>
-</html></richcontent>
-<node ID="Freeplane_Link_1719958498" CREATED="1124560950732" MODIFIED="1193212516703">
-<richcontent TYPE="NODE">
+</html>
+
+</richcontent>
+<node ID="Freeplane_Link_1719958498" CREATED="1124560950732" MODIFIED="1193212516703"><richcontent TYPE="NODE">
+
 <html>
   <head>
     <style type="text/css">
-      <!--<!<!<!<!<!<!<!<!<!<!<!<!
-        p { margin-top: 0 }
+      <!--
+        <!<!<!<!<!<!<!<!<!<!<!<! p { margin-top: 0 }
       -->
     </style>
     
   </head>
   <body>
     <p>
-      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSUMIPT.GIF" />
+      <img src="file:/C:/Program Files/Microsoft Office/Office11/Bitmaps/Styles/ACSUMIPT.GIF"/>
     </p>
   </body>
-</html></richcontent>
+</html>
+
+</richcontent>
 </node>
 </node>
 </node>
@@ -915,10 +1048,10 @@
 <node TEXT="Il existe diff&#xe9;rents styles de lignes" ID="ID_1621067344" CREATED="1270896067862" MODIFIED="1277389496234">
 <edge STYLE="linear" WIDTH="1"/>
 </node>
-<node TEXT=" Il est aussi possible de modifier leurs couleurs et leur &#xe9;paisseur" ID="ID_22717831" CREATED="1270896096758" MODIFIED="1277389563093" HGAP="51" VSHIFT="-17">
+<node TEXT=" Il est aussi possible de modifier leurs couleurs et leur &#xe9;paisseur" ID="ID_22717831" CREATED="1270896096758" MODIFIED="1277389563093" HGAP_QUANTITY="51.0 px" VSHIFT_QUANTITY="-17.0 px">
 <edge COLOR="#0033cc" WIDTH="8"/>
 </node>
-<node TEXT="ou les rendre invisible." ID="ID_1737604780" CREATED="1270896109110" MODIFIED="1277389558593" HGAP="23" VSHIFT="17">
+<node TEXT="ou les rendre invisible." ID="ID_1737604780" CREATED="1270896109110" MODIFIED="1277389558593" HGAP_QUANTITY="23.0 px" VSHIFT_QUANTITY="17.0 px">
 <edge STYLE="hide_edge" COLOR="#ffffff" WIDTH="thin"/>
 </node>
 </node>
@@ -938,9 +1071,9 @@
 <node TEXT="Pour ajouter un nuage : Mise en forme &gt; Nuage, touches Ctrl + Maj + B ou Ins&#xe9;rer &gt; Nuage dans le menu contextuel du n&#x153;ud." ID="Freeplane_Link_454267551" CREATED="1275400917613" MODIFIED="1277389993062"/>
 <node TEXT="Pour changer la couleur d&apos;un nuage, Mise en forme &gt; Couleur de nuage ou via le menu contextuel du n&#x153;ud." ID="Freeplane_Link_24021567" CREATED="1275400917613" MODIFIED="1277390069187"/>
 <node TEXT="Les nuages peuvent avoir diff&#xe9;rentes couleurs de fond, comme le vert..." FOLDED="true" ID="Freeplane_Link_1607216642" CREATED="1275400917613" MODIFIED="1277390157984">
-<cloud COLOR="#66ff66" WIDTH="0"/>
+<cloud COLOR="#66ff66" SHAPE="ARC"/>
 <node TEXT="... ou le marron." ID="Freeplane_Link_1420920637" CREATED="1275400917613" MODIFIED="1277390145671" COLOR="#ffffff">
-<cloud COLOR="#993300" WIDTH="0"/>
+<cloud COLOR="#993300" SHAPE="ARC"/>
 </node>
 </node>
 </node>
@@ -1066,7 +1199,7 @@
 <node TEXT="Page d&apos;accueil du site Web Freeplane" POSITION="left" ID="ID_916980386" CREATED="1270892460631" MODIFIED="1277230241468" LINK="http://freeplane.sourceforge.net">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Tableau des raccourcis clavier" POSITION="left" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1277230247296" COLOR="#006699" LINK="FP_Key_Mappings_Quick_Guide.pdf"/>
+<node TEXT="Tableau des raccourcis clavier" POSITION="left" ID="_Freeplane_Link_1091417446" CREATED="1270892460634" MODIFIED="1277230247296" LINK="FP_Key_Mappings_Quick_Guide.pdf" COLOR="#006699"/>
 <node TEXT="R&#xe9;f&#xe9;rentiel des Menus" POSITION="left" ID="ID_640122712" CREATED="1272090985328" MODIFIED="1277230253875" LINK="FP_MenuReference.mm" COLOR="#006699">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
@@ -1126,7 +1259,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
-<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1270892460647" MODIFIED="1270892460647" COLOR="#996600" LINK="http://danpolansky.blogspot.com/">
+<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1270892460647" MODIFIED="1270892460647" LINK="http://danpolansky.blogspot.com/" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>

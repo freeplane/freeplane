@@ -1,5 +1,6 @@
 package org.freeplane.plugin.script;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -12,20 +13,31 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-final class ScriptClassLoader extends URLClassLoader {
+import org.freeplane.core.util.ClassLoaderFactory;
+
+public final class ScriptClassLoader extends URLClassLoader {
 	private ScriptingSecurityManager securityManager = null;
 
 	public static ScriptClassLoader createClassLoader() {
+		final List<String> classpath = ScriptResources.getClasspath();
 		final List<URL> urls = new ArrayList<URL>();
-		for (String path : ScriptResources.getClasspath()) {
-			urls.add(GenericScript.pathToUrl(path));
+		for (String path : classpath) {
+			urls.add(pathToUrl(path));
 		}
-		urls.addAll(GenericScript.jarsInExtDir());
+		urls.addAll(ClassLoaderFactory.jarsInExtDir());
 		ScriptClassLoader classLoader = new ScriptClassLoader(urls.toArray(new URL[urls.size()]),
 				GenericScript.class.getClassLoader());
 		return classLoader;
 	}
 	
+	private static URL pathToUrl(String path) {
+        try {
+            return new File(path).toURI().toURL();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 	private ScriptClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
 	}

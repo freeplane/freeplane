@@ -16,7 +16,8 @@ import org.freeplane.core.util.TextUtils
 import org.freeplane.plugin.script.FreeplaneScriptBaseClass
 import org.freeplane.plugin.script.proxy.Convertible
 import org.freeplane.plugin.script.proxy.Proxy
-import org.freeplane.plugin.script.proxy.ScriptUtils;
+import org.freeplane.plugin.script.proxy.ScriptUtils
+import org.freeplane.core.resources.ResourceController
 
 
 // FIXME: api is installed locally but is there a portable way to find it?
@@ -225,7 +226,10 @@ def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
 def WEB_NODE = textUtils.getText('scripting_api_generator_web')
 def LEGEND_NODE = textUtils.getText('scripting_api_generator_legend')
 c.deactivateUndo()
-Proxy.Map newMap = c.newMap()
+def resourceBaseDir = ResourceController.resourceController.resourceBaseDir;
+def allUserTemplates = new File(resourceBaseDir, 'templates');
+def defaultTemplate = new File(allUserTemplates, 'standard.mm')
+Proxy.Map newMap = defaultTemplate.canRead() ? c.newMapFromTemplate(defaultTemplate) : c.newMap()
 def oldName = newMap.name
 newMap.name = MAP_NAME
 newMap.root.text = MAP_NAME
@@ -264,7 +268,6 @@ makeApi(utils, LogUtils.class)
 def web = createChild(newMap.root, WEB_NODE, 'http://freeplane.sourceforge.net/wiki/index.php/Scripting')
 initHeading(web)
 createChild(web, 'Groovy tutorials (Codehaus)', 'http://groovy.codehaus.org/Beginners+Tutorial')
-createChild(web, 'Groovy presentation (Paul King)', 'http://www.asert.com/pubs/Groovy/Groovy.pdf')
 createChild(web, 'Example scripts', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts')
 createChild(web, 'Scripting API changes', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_API_Changes')
 

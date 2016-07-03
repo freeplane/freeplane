@@ -20,6 +20,7 @@
 package org.freeplane.features.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,6 +55,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.LookAndFeel;
 import javax.swing.RootPaneContainer;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -67,6 +70,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
@@ -507,19 +511,23 @@ abstract public class FrameController implements ViewController {
 				for(LookAndFeelInfo lafInfo : lafInfos){
 					if(lafInfo.getName().equalsIgnoreCase(lookAndFeel)){
 						UIManager.setLookAndFeel(lafInfo.getClassName());
-						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", lafInfo.getClassName());
-						setLnF = true;
-						break;
-					}
-					if(lafInfo.getClassName().equals(lookAndFeel)){
-						UIManager.setLookAndFeel(lafInfo.getClassName());
 						setLnF = true;
 						break;
 					}
 				}
 				if(!setLnF){
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
+					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
+					try{
+						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
+						UIManager.setLookAndFeel((LookAndFeel)lookAndFeelClass.newInstance());
+						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
+						if(userLibClassLoader != uiClassLoader)
+							userLibClassLoader.close();
+						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
+					} catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
+						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
+					}
 				}
 			}
 		}
@@ -542,6 +550,10 @@ abstract public class FrameController implements ViewController {
 			catch (Throwable t1){
 			}
 		}
+		
+		final Color color = UIManager.getColor("control");
+		if(color != null && color.getAlpha() < 255)
+			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
 
 	public void addObjectTypeInfo(Object value) {

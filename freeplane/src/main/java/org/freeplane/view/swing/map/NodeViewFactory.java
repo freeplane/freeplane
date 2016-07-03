@@ -162,7 +162,6 @@ class NodeViewFactory {
 	private void updateNewView(final NodeView newView) {
 		newView.getModel().addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
-		updateNoteViewer(newView);
 		newView.update();
         fireNodeViewCreated(newView);
         newView.addChildViews();
@@ -204,7 +203,7 @@ class NodeViewFactory {
     }
 
 	
-	void updateNoteViewer(NodeView nodeView) {
+	void updateNoteViewer(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
 		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
 		String oldText = note != null ? note.getText() : null;
 		String newText  = null;
@@ -236,6 +235,10 @@ class NodeViewFactory {
 		view.setBackground(map.getNoteBackground());
 		view.setHorizontalAlignment(map.getNoteHorizontalAlignment());
 		view.updateText(newText);
+		view.setMinimumWidth(minNodeWidth);
+		view.setMaximumWidth(maxNodeWidth);
+		view.revalidate();
+		map.repaint();
 
 	}
 

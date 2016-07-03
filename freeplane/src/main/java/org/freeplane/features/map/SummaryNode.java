@@ -50,47 +50,6 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	public SummaryNode() {
 		super();
 		modeController = Controller.getCurrentModeController();
-		modeController.getMapController().addMapChangeListener(new IMapChangeListener() {
-			
-			@Override
-			public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-			}
-			
-			@Override
-			public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-			}
-			
-			@Override
-			public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-				if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
-					onNodeDeleted(nodeMoveEvent.oldParent);
-			}
-			
-			@Override
-			public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-			}
-			
-			@Override
-			public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-				final NodeModel parent = nodeDeletionEvent.parent;
-				onNodeDeleted(parent);
-			}
-
-			private void onNodeDeleted(final NodeModel node) {
-				if (!modeController.isUndoAction() && ! node.isFolded() && ! node.hasChildren() && isSummaryNode(node)&& node.getText().isEmpty()){
-					final NodeModel summaryParent = node.getParentNode();
-					final SummaryLevels summaryLevels = new SummaryLevels(summaryParent);
-					final NodeModel groupBeginNode = summaryLevels.findGroupBeginNode(node.getIndex() - 1);
-					MMapController mapController =  (MMapController) modeController.getMapController();
-					mapController.deleteNode(groupBeginNode);
-					mapController.deleteNode(node);
-				}
-			}
-			
-			@Override
-			public void mapChanged(MapChangeEvent event) {
-			}
-		});
 	}
 
 	@Override

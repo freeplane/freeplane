@@ -232,6 +232,10 @@ public class ReportGenerator extends StreamHandler {
 		    return;
 		}
         final ViewController viewController = controller.getViewController();
+		if (viewController == null) {
+		    // ReportGenerator is not available during controller initialization
+		    return;
+		}
 		if (out == null) {
 			out = new ByteArrayOutputStream();
 			AccessController.doPrivileged(new PrivilegedAction<Void>() {
@@ -356,9 +360,10 @@ public class ReportGenerator extends StreamHandler {
     }
 
 	private String showBugReportDialog() {
-		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
+		final ResourceController resourceController = ResourceController.getResourceController();
+		String option = resourceController.getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
-			if(FreeplaneVersion.getVersion().isFinal())
+			if(resourceController.getBooleanProperty("org.freeplane.plugin.bugreport.dialog.disabled"))
 				return BugReportDialogManager.DENIED;
 			String question = TextUtils.getText("org.freeplane.plugin.bugreport.question");
 			if (!question.startsWith("<html>")) {
@@ -375,7 +380,7 @@ public class ReportGenerator extends StreamHandler {
 			switch (choice) {
 				case 0:
 					option = BugReportDialogManager.ALLOWED;
-					ResourceController.getResourceController().setProperty(OPTION, option);
+					resourceController.setProperty(OPTION, option);
 					break;
 				case 1:
 					option = BugReportDialogManager.ALLOWED;
@@ -385,7 +390,7 @@ public class ReportGenerator extends StreamHandler {
 					break;
 				case 3:
 					option = BugReportDialogManager.DENIED;
-					ResourceController.getResourceController().setProperty(OPTION, option);
+					resourceController.setProperty(OPTION, option);
 					break;
 				default:
 					option = BugReportDialogManager.DENIED;

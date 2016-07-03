@@ -61,6 +61,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -257,33 +258,52 @@ public class UrlManager implements IExtension {
 	@Deprecated
 	public void loadURL(URI uri) {
 		final String uriString = uri.toString();
-		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(uriString);
-		if (nodeAndMapReference.hasNodeReference()) {
-			try {
-				loadURL(new URI(nodeAndMapReference.getMapReference()));
-				Controller.getCurrentController().getModeController().getMapController().select(nodeAndMapReference.getNodeReference());
-			} catch (URISyntaxException e) {
-				LogUtils.severe(e);
-			}
-			return;
-		}
-		
 		if (uriString.startsWith("#")) {
-			final String target = uriString.substring(1);
-			try {
-				final ModeController modeController = Controller.getCurrentModeController();
-				final MapController mapController = modeController.getMapController();
-				final NodeModel node = mapController.getNodeFromID(target);
-				if (node != null) {
-					mapController.select(node);
-				}
-			}
-			catch (final Exception e) {
-				LogUtils.warn("link " + target + " not found", e);
-				UITools.errorMessage(TextUtils.format("link_not_found", target));
-			}
-			return;
+			loadLocalLinkURI(uriString);
 		}
+		else {
+			final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(uriString);
+			if (nodeAndMapReference.hasNodeReference()) {
+				loadNodeReferenceURI(nodeAndMapReference);
+			}
+			else {
+				loadOtherURI(uri, nodeAndMapReference.hasFreeplaneFileExtension());
+			}
+		}
+	}
+
+	private void loadLocalLinkURI(final String uriString) {
+		final String target = uriString.substring(1);
+		selectNode(target);
+	}
+
+	private void selectNode(final String target) {
+		try {
+			final MapController mapController = getMapController();
+			final NodeModel node = mapController.getNodeFromID(target);
+			if (node != null) {
+				mapController.select(node);
+			}
+			else {
+				final String errorMessage = TextUtils.format("link_not_found", target);
+				Controller.getCurrentController().getViewController().err(errorMessage);
+			}
+		}
+		catch (final Exception e) {
+			LogUtils.severe("link " + target + " not found", e);
+		}
+	}
+
+	private void loadNodeReferenceURI(final NodeAndMapReference nodeAndMapReference) {
+		try {
+			loadURL(new URI(nodeAndMapReference.getMapReference()));
+			selectNode(nodeAndMapReference.getNodeReference());
+		} catch (URISyntaxException e) {
+			LogUtils.severe(e);
+		}
+	}
+
+	private void loadOtherURI(URI uri, final boolean hasFreeplaneFileExtension) {
 		try {
 			if(! uri.isAbsolute()){
 				URI absoluteUri = getAbsoluteUri(uri);
@@ -307,7 +327,7 @@ public class UrlManager implements IExtension {
 				}
 			}
 			try {
-				if (nodeAndMapReference.hasFreeplaneFileExtension()) {
+				if (hasFreeplaneFileExtension) {
 					FreeplaneUriConverter freeplaneUriConverter = new FreeplaneUriConverter();
 					final URL url = freeplaneUriConverter.freeplaneUrl(uri);
 					final ModeController modeController = Controller.getCurrentModeController();
@@ -323,9 +343,15 @@ public class UrlManager implements IExtension {
 			return;
 		}
 		catch (final MalformedURLException ex) {
-			LogUtils.warn("URL " + uriString + " not found", ex);
-			UITools.errorMessage(TextUtils.format("link_not_found", uriString));
+			LogUtils.warn("URL " + uri + " not found", ex);
+			UITools.errorMessage(TextUtils.format("link_not_found", uri));
 		}
+	}
+
+	private MapController getMapController() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final MapController mapController = modeController.getMapController();
+		return mapController;
 	}
 
 	public void loadMap(String map)

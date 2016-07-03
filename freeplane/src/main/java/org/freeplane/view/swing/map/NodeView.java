@@ -886,14 +886,6 @@ public class NodeView extends JComponent implements INodeView {
 			revalidate();
 			return;
 		}
-		if (property.equals(NodeModel.NOTE_TEXT)) {
-			NodeViewFactory.getInstance().updateNoteViewer(this);
-			mainView.updateIcons(this);
-			return;
-		}
-		if (property.equals(ShortenedTextModel.SHORTENER)) {
-			NodeViewFactory.getInstance().updateNoteViewer(this);
-		}
 
 		if (property.equals(HistoryInformationModel.class)) {
 			return;
@@ -1363,7 +1355,9 @@ public class NodeView extends JComponent implements INodeView {
 		final boolean textShortened = isShortened();
 
 		if(! textShortened){
-			NodeViewFactory.getInstance().updateDetails(this, minNodeWidth, maxNodeWidth);
+			final NodeViewFactory nodeViewFactory = NodeViewFactory.getInstance();
+			nodeViewFactory.updateDetails(this, minNodeWidth, maxNodeWidth);
+			nodeViewFactory.updateNoteViewer(this, minNodeWidth, maxNodeWidth);
 			if (contentPane != null) {
 				final int componentCount = contentPane.getComponentCount();
 				for (int i = 1; i < componentCount; i++) {
@@ -1489,7 +1483,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void updateAll() {
-		NodeViewFactory.getInstance().updateNoteViewer(this);
 		update();
 		invalidate();
 		for (final NodeView child : getChildrenViews()) {

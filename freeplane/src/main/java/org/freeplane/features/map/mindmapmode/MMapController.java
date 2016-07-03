@@ -61,11 +61,14 @@ import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
+import org.freeplane.features.map.Clones;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FreeNode;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
@@ -73,6 +76,7 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -119,6 +123,43 @@ public class MMapController extends MapController {
 					viewController.addStatusInfo("display_node_id", null, null);
 				}
 			});
+			addMapChangeListener(new IMapChangeListener() {
+				
+				@Override
+				public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
+				}
+				
+				@Override
+				public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+				}
+				
+				@Override
+				public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
+					if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
+						onNodeDeleted(nodeMoveEvent.oldParent);
+				}
+				
+				@Override
+				public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+				}
+				
+				@Override
+				public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+					final NodeModel parent = nodeDeletionEvent.parent;
+					onNodeDeleted(parent);
+				}
+
+				private void onNodeDeleted(final NodeModel node) {
+					if (!getModeController().isUndoAction() && ! node.isFolded() && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty()){
+						deleteSingleSummaryNode(node);
+					}
+				}
+				
+				@Override
+				public void mapChanged(MapChangeEvent event) {
+				}
+			});
+	
 	}
 
 	public NodeModel addNewNode(int newNodeMode) {
@@ -405,6 +446,15 @@ public class MMapController extends MapController {
 			deleteSingleNode(parentClone, index);
 	}
 
+	private void deleteSingleSummaryNode(NodeModel summarynode) {
+		final NodeModel summaryParent = summarynode.getParentNode();
+		final SummaryLevels summaryLevels = new SummaryLevels(summaryParent);
+		final int summaryNodeIndex = summarynode.getIndex();
+		final int groupBeginNodeIndex = summaryLevels.findGroupBeginNodeIndex(summaryNodeIndex - 1);
+		deleteSingleNode(summaryParent, summaryNodeIndex);
+		deleteSingleNode(summaryParent, groupBeginNodeIndex);
+	}
+
 	private void deleteSingleNode(final NodeModel parentNode, final int index) {
 		final NodeModel node = parentNode.getChildAt(index);
 		final IActor actor = new IActor() {
@@ -503,22 +553,28 @@ public class MMapController extends MapController {
 			return;
 		}
 		final NodeModel oldParent = child.getParentNode();
+		if(newParent != oldParent && newParent.subtreeClones().contains(oldParent)) {
+			moveNodeAndItsClones(child, oldParent, newIndex, newParent.isLeft(), false);
+			return;
+		}
+			
 		final NodeModel childNode = child;
 		final int oldIndex = oldParent.getIndex(childNode);
 		final int childCount = newParent.getChildCount();
 		newIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
 
 		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
+			final NodeRelativePath nodeRelativePath = getPathToNearestTargetClone(oldParent, newParent);
+
 			final Set<NodeModel> oldParentClones = new HashSet<NodeModel>(oldParent.subtreeClones().toCollection());
 			final Set<NodeModel> newParentClones = new HashSet<NodeModel>(newParent.subtreeClones().toCollection());
-
-			final NodeRelativePath nodeRelativePath = new NodeRelativePath(oldParent, newParent);
 
 			final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
 			for (NodeModel commonAncestorClone: commonAncestor.subtreeClones()){
 					NodeModel oldParentClone = nodeRelativePath.pathBegin(commonAncestorClone);
 					NodeModel newParentClone = nodeRelativePath.pathEnd(commonAncestorClone);
-					moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex, isLeft, changeSide);
+					final boolean isLeftForClone = newParentClone == newParent ? isLeft : newParentClone.isLeft();
+					moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex, isLeftForClone, changeSide);
 					oldParentClones.remove(oldParentClone);
 					newParentClones.remove(newParentClone);
 			}
@@ -529,6 +585,25 @@ public class MMapController extends MapController {
 			for(NodeModel oldParentClone : oldParentClones)
 					deleteSingleNode(oldParentClone, oldIndex);
 		}
+	}
+
+	private NodeRelativePath getPathToNearestTargetClone(final NodeModel source, final NodeModel target) {
+		if(source == target)
+			return new NodeRelativePath(source, target);
+		final Clones targetClones = target.subtreeClones();
+		final int pathNumber = targetClones.size();
+		if(pathNumber == 1)
+			return new NodeRelativePath(source, target);
+		Collection<NodeRelativePath> paths = new ArrayList<>(pathNumber);
+		for(NodeModel targetClone : targetClones)
+			paths.add(new NodeRelativePath(source, targetClone));
+		final NodeRelativePath shortestPath = Collections.min(paths, new Comparator<NodeRelativePath>() {
+			@Override
+			public int compare(NodeRelativePath o1, NodeRelativePath o2) {
+				return o1.getPathLength() - o2.getPathLength();
+			}
+		});
+		return shortestPath;
 	}
 
 	private void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex,
@@ -574,7 +649,7 @@ public class MMapController extends MapController {
         int newIndex = newParent.getIndex(target);
         for(NodeModel node : children){
         	final NodeModel oldParent = node.getParentNode();
-        	if(newParent.equals(oldParent)){
+        	if(newParent.subtreeClones().contains(oldParent)){
         		final NodeModel childNode = node;
 				final int oldIndex = oldParent.getIndex(childNode);
         		if(oldIndex < newIndex)
