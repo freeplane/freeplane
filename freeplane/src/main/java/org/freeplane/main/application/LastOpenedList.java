@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -223,7 +225,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	}
 
 	private String getRestorable(final File file) {
-		if (file == null || ! file.exists()) {
+		if (file == null //
+				|| !AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+					@Override
+					public Boolean run() {
+						return file.exists();
+					}
+		})) {
 			return null;
 		}
 		final String absolutePath = file.getAbsolutePath();
