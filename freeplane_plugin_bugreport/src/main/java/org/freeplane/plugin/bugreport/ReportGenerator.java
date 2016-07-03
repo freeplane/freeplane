@@ -232,6 +232,10 @@ public class ReportGenerator extends StreamHandler {
 		    return;
 		}
         final ViewController viewController = controller.getViewController();
+		if (viewController == null) {
+		    // ReportGenerator is not available during controller initialization
+		    return;
+		}
 		if (out == null) {
 			out = new ByteArrayOutputStream();
 			AccessController.doPrivileged(new PrivilegedAction<Void>() {

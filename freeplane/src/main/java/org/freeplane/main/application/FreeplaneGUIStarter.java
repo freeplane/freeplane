@@ -187,12 +187,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				
 			});
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
+			final MMapViewController mapViewController = new MMapViewController(controller);
+			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
 				splash.setVisible(true);
 			}
-			final MMapViewController mapViewController = new MMapViewController(controller);
-			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();
