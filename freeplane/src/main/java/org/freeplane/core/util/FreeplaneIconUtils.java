@@ -1,5 +1,7 @@
 package org.freeplane.core.util;
 
+import java.awt.Dimension;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +14,16 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 
+import com.kitfox.svg.SVGUniverse;
+import com.kitfox.svg.app.beans.SVGIcon;
+
 /** utility methods to access Freeplane's (builtin and user) icons. */
 public class FreeplaneIconUtils {
 
+	private static SVGUniverse svgUniverse;
+
 	public static Icon createStandardIcon(String iconKey) {
-        return MindIconFactory.create(iconKey).getIcon();
+        return MindIconFactory.createPng(iconKey).getIcon();
     }
 
 	/** lists all icons that are available in the icon selection dialog. This may include user icons
@@ -38,4 +45,18 @@ public class FreeplaneIconUtils {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		return new ImageIcon(resourceController.getResource(resourceController.getProperty(resourceKey)));
 	}
+
+	public static SVGIcon createSVGIcon(final URL url) {
+		if (svgUniverse == null)
+			svgUniverse = new SVGUniverse();
+
+		final SVGIcon icon = new SVGIcon();
+		icon.setSvgURI(svgUniverse.loadSVG(url));
+		icon.setPreferredSize(new Dimension(16, 16));
+		icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
+		icon.setAntiAlias(true);
+
+		return icon;
+	}
+
 }

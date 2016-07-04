@@ -77,7 +77,7 @@ public class IconStoreFactory {
 			UIIcon groupIcon = null;
 			if ("user".equals(groupName)) {
 				icons = IconStoreFactory.getUserIcons();
-				groupIcon = MindIconFactory.create("user_icon");
+				groupIcon = MindIconFactory.createPng("user_icon");
 			}
 			else {
 				final String groupIconName = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_ICON_KEY, groupName));
@@ -97,7 +97,7 @@ public class IconStoreFactory {
 		    .split(SEPARATOR);
 		final Map<String, MindIcon> icons = new LinkedHashMap<String, MindIcon>(iconNames.length);
 		for (final String iconName : iconNames) {
-			final MindIcon icon = MindIconFactory.create(iconName);
+			final MindIcon icon = MindIconFactory.createSvgOrPng(iconName);
 			icons.put(iconName, icon);
 		}
 		return icons;
@@ -120,8 +120,7 @@ public class IconStoreFactory {
 	private static List<MindIcon> getUserIcons(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
-				final int nameLength = name.length();
-				return nameLength > 4 && name.substring(nameLength - 4).equalsIgnoreCase(".png") || new File(dir, name).isDirectory();
+				return name.matches("(?i).*\\.(svg|png)$") || new File(dir, name).isDirectory();
 			}
 		});
 		if (userIconArray == null) {

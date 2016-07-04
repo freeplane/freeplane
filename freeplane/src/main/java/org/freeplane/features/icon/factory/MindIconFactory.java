@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.icon.factory;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.icon.MindIcon;
 
 /**
@@ -31,8 +32,36 @@ public class MindIconFactory {
 	 * Constructs a MindIcon with the given name from the property file.
 	 * The name of the icon is the file name without the extension.
 	 */
-	public static MindIcon create(final String name) {
+	public static MindIcon createPng(final String name) {
 		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : String.format(DESC_KEY, name);
 		return new MindIcon(name, name + ".png", translationKeyLabel);
+	}
+
+	/**
+	 * Constructs an SVG MindIcon with the given name from the property file.
+	 * The name of the icon is the file name without the extension.
+	 */
+	public static MindIcon createSvg(final String name) {
+		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : String.format(DESC_KEY, name);
+		return new MindIcon(name, name + ".svg", translationKeyLabel);
+	}
+
+	private static boolean isResourceAvailable(final String path) {
+		return ResourceController.getResourceController().getResource(path) != null;
+	}
+
+	/**
+	 * Creates a MindIcon from SVG if exists, otherwise falls back to png.
+	 * @param name icon name
+	 * @return the resulting MindIcon
+	 */
+	public static MindIcon createSvgOrPng(final String name) {
+		final MindIcon svgIcon = createSvg(name);
+		if (isResourceAvailable(svgIcon.getPath())) {
+			return svgIcon;
+		} else {
+			final MindIcon pngIcon = createPng(name);
+			return pngIcon;
+		}
 	}
 }
