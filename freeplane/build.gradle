@@ -26,7 +26,7 @@ dependencies {
 
     // from flatDir "localGitDepsRepository":
     compile ':idw-gpl-1.6.1'
-    compile ':kitfox-svg-salamander-1.0.39'
+    compile ':svgSalamander-tiny-1.0'
 }
 
 sourceSets {
