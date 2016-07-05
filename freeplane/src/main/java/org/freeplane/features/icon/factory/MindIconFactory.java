@@ -26,6 +26,7 @@ import org.freeplane.features.icon.MindIcon;
  * @author Tamas Eppel
  */
 public class MindIconFactory {
+	private static final String USE_SVG_ICONS = "use_svg_icons";
 	private static final String DESC_KEY = "icon_%s";
 
 	/**
@@ -50,14 +51,18 @@ public class MindIconFactory {
 		return ResourceController.getResourceController().getResource(path) != null;
 	}
 
+	private static boolean isSvgIconsEnabled() {
+		return ResourceController.getResourceController().getBooleanProperty(USE_SVG_ICONS);
+	}
+
 	/**
-	 * Creates a MindIcon from SVG if exists, otherwise falls back to png.
+	 * Creates a MindIcon from SVG if exists (and the pref option is set), otherwise falls back to png.
 	 * @param name icon name
 	 * @return the resulting MindIcon
 	 */
 	public static MindIcon createSvgOrPng(final String name) {
 		final MindIcon svgIcon = createSvg(name);
-		if (isResourceAvailable(svgIcon.getPath())) {
+		if (isSvgIconsEnabled() && isResourceAvailable(svgIcon.getPath())) {
 			return svgIcon;
 		} else {
 			final MindIcon pngIcon = createPng(name);

@@ -108,6 +108,10 @@
 					<choice value="antialias_none" />
 				</combo>
 			</separator>
+			<separator name="svg_icons">
+				<boolean name="use_svg_icons" />
+				<boolean name="antialias_svg" />
+			</separator>
 			<separator name="size_limits">
 				<number name="max_shortened_text_length" />
 				<number name="max_image_width" />

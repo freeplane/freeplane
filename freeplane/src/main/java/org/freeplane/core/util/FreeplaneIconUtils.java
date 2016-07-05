@@ -20,6 +20,7 @@ import com.kitfox.svg.app.beans.SVGIcon;
 /** utility methods to access Freeplane's (builtin and user) icons. */
 public class FreeplaneIconUtils {
 
+	private static final String ANTIALIAS_SVG = "antialias_svg";
 	private static SVGUniverse svgUniverse;
 
 	public static Icon createStandardIcon(String iconKey) {
@@ -46,6 +47,10 @@ public class FreeplaneIconUtils {
 		return new ImageIcon(resourceController.getResource(resourceController.getProperty(resourceKey)));
 	}
 
+	private static boolean isSvgAntialiasEnabled() {
+		return ResourceController.getResourceController().getBooleanProperty(ANTIALIAS_SVG);
+	}
+
 	public static SVGIcon createSVGIcon(final URL url) {
 		if (svgUniverse == null)
 			svgUniverse = new SVGUniverse();
@@ -54,7 +59,7 @@ public class FreeplaneIconUtils {
 		icon.setSvgURI(svgUniverse.loadSVG(url));
 		icon.setPreferredSize(new Dimension(16, 16));
 		icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
-		icon.setAntiAlias(true);
+		icon.setAntiAlias(isSvgAntialiasEnabled());
 
 		return icon;
 	}
