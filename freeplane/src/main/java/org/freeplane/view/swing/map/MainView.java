@@ -221,8 +221,8 @@ public abstract class MainView extends ZoomableLabel {
 	@Override
 	final public void paint(Graphics g){
 		final PaintingMode paintingMode = getMap().getPaintingMode();
-		if(!paintingMode.equals(PaintingMode.SELECTED_NODES)
-				&& !paintingMode.equals(PaintingMode.NODES))
+		if(! (PaintingMode.SELECTED_NODES.equals(paintingMode)
+				 || PaintingMode.NODES.equals(paintingMode)))
 			return;
 		final NodeView nodeView = getNodeView();
 		final boolean selected = nodeView.isSelected();
