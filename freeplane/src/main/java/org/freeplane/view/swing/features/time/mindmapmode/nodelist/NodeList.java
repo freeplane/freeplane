@@ -323,8 +323,8 @@ public class NodeList {
 //	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
-	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = NodeList.class.getName() + "_properties";
-
+	private final String windowPreferenceStorageProperty;
+// = NodeList.class.getName() + "_properties"
 	private static String replace(final Pattern p, String input, final String replacement) {
 		final String result = HtmlUtils.getReplaceResult(p, input, replacement);
 		return result;
@@ -351,11 +351,11 @@ public class NodeList {
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
 
-	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps) {
-	    this(false, showAllNodes, searchInAllMaps);
+	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	    this(false, showAllNodes, searchInAllMaps, windowPreferenceStorageProperty);
     }
 
-	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {
+	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.modal = modal;
@@ -394,7 +394,7 @@ public class NodeList {
 		matchCase = new JCheckBox();
 		matchCase.addActionListener(listener);
 		mapChangeListener = new MapChangeListener();
-
+		this.windowPreferenceStorageProperty = windowPreferenceStorageProperty;
 	}
 
 	/**
@@ -411,7 +411,7 @@ public class NodeList {
 			setting.setColumnSorting(sorter.getSortingStatus(i));
 			storage.addTimeWindowColumnSetting(setting);
 		}
-		storage.storeDialogPositions(dialog, NodeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(dialog, windowPreferenceStorageProperty);
 		dialog.setVisible(false);
 		dialog.dispose();
 		dialog = null;
@@ -778,7 +778,7 @@ public class NodeList {
 			}
 		});
 		final String marshalled = ResourceController.getResourceController().getProperty(
-		    NodeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+				windowPreferenceStorageProperty);
 		final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(marshalled, dialog);
 		final WindowConfigurationStorage storage = result;
 		if (storage != null) {
