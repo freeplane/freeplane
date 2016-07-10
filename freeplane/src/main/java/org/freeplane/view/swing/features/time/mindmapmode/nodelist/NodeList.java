@@ -33,8 +33,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.EventListener;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -90,6 +93,7 @@ import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -137,7 +141,8 @@ public class NodeList {
 	    }
 
 		public void nodeChanged(NodeChangeEvent event) {
-			runner.runLater();
+			if(hasTableFieldValueChanged(event.getProperty()))
+				runner.runLater();
         }
 
 		public void afterMapChange(MapModel oldMap, MapModel newMap) {
@@ -874,4 +879,12 @@ public class NodeList {
 			updateModel(model, child);
 		}
 	}
+	static private HashSet<Object> changeableProperties = new HashSet<Object>(
+			Arrays.asList(NodeModel.NODE_TEXT, NodeModel.NODE_ICON, DetailTextModel.class, NodeModel.NOTE_TEXT)
+			);
+	
+	private boolean hasTableFieldValueChanged(Object property) {
+		return changeableProperties.contains(property);
+	}
+
 }
