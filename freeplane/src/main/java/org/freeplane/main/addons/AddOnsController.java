@@ -99,14 +99,14 @@ public class AddOnsController {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (addOn.getDefaultProperties() != null)
 			resourceController.addDefaults(addOn.getDefaultProperties());
+		if (addOn.getTranslations() != null)
+			registerAddOnResources(addOn, resourceController);
 		if (addOn.getPreferencesXml() != null) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			if (modeController instanceof MModeController) {
 				((MModeController)modeController).getOptionPanelBuilder().load(new StringReader(addOn.getPreferencesXml()));
 			}
 		}
-		if (addOn.getTranslations() != null)
-			registerAddOnResources(addOn, resourceController);
 	}
 
 	/** make the translations of this add-on known system-wide.
