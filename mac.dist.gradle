@@ -43,17 +43,6 @@ task macosxapp {
                                  java.nio.file.Paths.get(dist_macos_info),
                    java.nio.file.StandardCopyOption.REPLACE_EXISTING)
 
-        def maclauncherfullpath = macappfullpath.path + '/Contents/MacOS'
-        delete maclauncherfullpath + '/JavaAppLauncher'
-        copy {
-            from('freeplane_framework/mac-appbundler'){
-                include('universalJavaApplicationStub.sh')
-                fileMode = 0755
-            }
-            into (maclauncherfullpath)
-			filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
-        }
-
         def macjavafullpath = macappfullpath.path + '/Contents/Java'
         copy {
             from(globalBuild) {
@@ -91,10 +80,10 @@ task zip4mac(type: Zip) {
     archiveName = 'freeplane_macos_bin-' + distVersion + '.zip'
 
     from(build4mac) {
-        exclude('**/universalJavaApplicationStub.sh')
+        exclude('**/JavaAppLauncher')
     }
     from(build4mac) {
-        include('**/universalJavaApplicationStub.sh')
+        include('**/JavaAppLauncher')
         fileMode = 0775
     }
 
