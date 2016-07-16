@@ -5,6 +5,16 @@ User translations
 Dialog to choose template when new map is created
 
 ===============================
+1.5.12
+===============================
+Bug fixes
+
+===============================
+1.5.11
+===============================
+Restore old default map template
+
+===============================
 1.5.10
 ===============================
 Stable release

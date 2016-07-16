@@ -45,6 +45,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.ObjectRule;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -983,6 +984,15 @@ public class NodeView extends JComponent implements INodeView {
 		if(getMainView() == null)
 			return;
 		final PaintingMode paintingMode = map.getPaintingMode();
+		if(paintingMode == null){
+			LogUtils.severe("paintingMode = null");
+			LogUtils.severe("own map ="  + map);
+			final MapView ancestorMap = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+			LogUtils.severe("parent component map ="  + ancestorMap);
+			if(ancestorMap != null)
+				LogUtils.severe("ancestor map paintingMode = " + ancestorMap.getPaintingMode());
+			throw new NullPointerException();
+		}
 		if (isContentVisible()) {
 			final Graphics2D g2 = (Graphics2D) g;
 			final ModeController modeController = map.getModeController();

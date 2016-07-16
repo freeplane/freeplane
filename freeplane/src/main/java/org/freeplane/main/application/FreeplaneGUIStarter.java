@@ -274,7 +274,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
-				loadMaps(options.getFilesToOpenAsArray());
+				loadMaps(CommandLineParser.parse(args, false).getFilesToOpenAsArray());
 				focusCurrentView();
 				contentPane.setVisible(true);
 				frame.toFront();
