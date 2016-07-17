@@ -490,7 +490,7 @@ abstract public class FrameController implements ViewController {
 		return propertyKeyPrefix;
 	}
 
-	public static void setLookAndFeel(final String lookAndFeel) {
+	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
 			if (lookAndFeel.equals("default")) {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -526,7 +526,9 @@ abstract public class FrameController implements ViewController {
 		}
 
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
-		scaleDefaultUIFonts();
+		
+		if(supportHidpi)
+			scaleDefaultUIFonts();
 
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
