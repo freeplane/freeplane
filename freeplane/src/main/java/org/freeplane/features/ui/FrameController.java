@@ -560,7 +560,6 @@ abstract public class FrameController implements ViewController {
 				    font = UITools.scaleFontInt(font, 0.8);
 				    UIManager.put(key, font);
 				    lookAndFeelDefaults.put(key, font);
-				    System.out.println(key  + ", " + font.getSize2D());
 				}
 		    }
 		
