@@ -8,6 +8,7 @@ Improve posisioning of inline editing field for left side nodes
 ===============================
 1.5.12
 ===============================
+Improvements in launcher for Mac OS
 Bug fixes
 
 ===============================
