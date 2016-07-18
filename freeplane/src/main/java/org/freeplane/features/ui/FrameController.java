@@ -25,14 +25,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
-import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Window;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -44,6 +43,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -57,13 +57,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LookAndFeel;
 import javax.swing.RootPaneContainer;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
@@ -489,7 +490,7 @@ abstract public class FrameController implements ViewController {
 		return propertyKeyPrefix;
 	}
 
-	public static void setLookAndFeel(final String lookAndFeel) {
+	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
 			if (lookAndFeel.equals("default")) {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -525,6 +526,9 @@ abstract public class FrameController implements ViewController {
 		}
 
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
+		
+		if(supportHidpi)
+			scaleDefaultUIFonts();
 
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
@@ -544,6 +548,30 @@ abstract public class FrameController implements ViewController {
 		if(color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
+	
+	private static void scaleDefaultUIFonts() {
+        Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
+		Object[] keys = keySet.toArray(new Object[keySet.size()]);
+		final UIDefaults uiDefaults = UIManager.getDefaults();
+		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
+		
+		for (Object key : keys) {
+		    if (isFontKey(key)) {
+				Font font = uiDefaults.getFont(key);
+				if (font != null) {
+				    font = UITools.scaleFontInt(font, 0.8);
+				    UIManager.put(key, font);
+				    lookAndFeelDefaults.put(key, font);
+				}
+		    }
+		
+		}
+    }
+
+	private static boolean isFontKey(Object key) {
+		return key != null && key.toString().toLowerCase().endsWith("font");
+	}
+
 
 	public void addObjectTypeInfo(Object value) {
 		if (value instanceof FormattedObject) {

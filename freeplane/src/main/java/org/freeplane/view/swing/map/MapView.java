@@ -180,7 +180,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void keepNodePosition(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
-			mapScroller.anchorToNode(getNodeView(node), horizontalPoint, verticalPoint);
+			final NodeView nodeView = getNodeView(node);
+			MapView.this.keepNodePosition(nodeView, horizontalPoint, verticalPoint);
 		}
 		
 		public void scrollNodeTreeToVisible(final NodeModel  node) {
@@ -2063,4 +2064,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	void keepRootNodePosition() {
 		mapScroller.anchorToRoot();
 	}
+
+	public void keepNodePosition(final NodeView nodeView, final float horizontalPoint, final float verticalPoint) {
+		mapScroller.anchorToNode(nodeView, horizontalPoint, verticalPoint);
+	}
+
 }
