@@ -2,6 +2,8 @@
 1.5.13
 ===============================
 Support High Density Monitors by scaling UI elements
+New SimplyHTML actions and short cuts for color and font size changes
+Improve posisioning of inline editing field for left side nodes
 
 ===============================
 1.5.12
