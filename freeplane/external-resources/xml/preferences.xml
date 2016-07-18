@@ -80,6 +80,7 @@
 				<group name="lookandfeel" />
 				<boolean name="apply_system_screen_resolution" />
 				<number name="user_defined_screen_resolution" min="72" max="1200" />
+				<boolean name="lookandfeel.scaleuifonts" />
 				<boolean name="resources_use_default_font_for_notes_too" />
 				<boolean name="resources_use_margin_top_zero_for_notes" />
 				<number name="max_menu_item_count" min="10" />
