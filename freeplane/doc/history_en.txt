@@ -4,6 +4,8 @@
 Support High Density Monitors by scaling UI elements
 New SimplyHTML actions and short cuts for color and font size changes
 Improve posisioning of inline editing field for left side nodes
+Performance optimizations for filtered maps
+Performance optimizations for huge maps
 
 ===============================
 1.5.12
