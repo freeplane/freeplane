@@ -81,6 +81,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.MapLinks;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapChangeListener;
@@ -1527,18 +1528,24 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		arrowLinkViews = new Vector<ILinkView>();
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(
 		    graphics);
-		paintLinks(rootView, graphics, new HashSet<ConnectorModel>());
+		paintLinks(rootView, graphics, MapLinks.countLinks(model), new HashSet<ConnectorModel>());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
 	private void paintLinks(final NodeView source, final Graphics2D graphics,
-	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
+	                        int totalLinksNumber, final HashSet<ConnectorModel> alreadyPaintedLinks) {
+		if(totalLinksNumber <= alreadyPaintedLinks.size())
+			return;
 		final LinkController linkController = LinkController.getController(getModeController());
 		final NodeModel node = source.getModel();
 		final Collection<NodeLinkModel> outLinks = linkController.getLinksFrom(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
+		if(totalLinksNumber <= alreadyPaintedLinks.size())
+			return;
 		final Collection<NodeLinkModel> inLinks = linkController.getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
+		if(totalLinksNumber <= alreadyPaintedLinks.size())
+			return;
 		final int nodeViewCount = source.getComponentCount();
 		for (int i = 0; i < nodeViewCount; i++) {
 			final Component component = source.getComponent(i);
@@ -1560,7 +1567,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					continue;
 				}
 			}
-			paintLinks(child, graphics, alreadyPaintedLinks);
+			paintLinks(child, graphics, totalLinksNumber, alreadyPaintedLinks);
 		}
 	}
 
