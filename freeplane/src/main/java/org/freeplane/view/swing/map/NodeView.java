@@ -1345,6 +1345,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void update() {
+		invalidate();
 		updateShape();
 		updateEdge();
 		if (!isContentVisible()) {
