@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +50,7 @@ import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -162,10 +165,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	private boolean selectLastVisitedNode(RecentFile recentFile) {
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
-			final NodeModel node = Controller.getCurrentController().getMap()
-			    .getNodeForID(recentFile.lastVisitedNodeId);
+			final MapModel map = Controller.getCurrentController().getMap();
+			final NodeModel node = map.getNodeForID(recentFile.lastVisitedNodeId);
 			if (node != null && node.hasVisibleContent()) {
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+				IMapSelection selection = Controller.getCurrentController().getSelection();
+				// don't override node selection done by UriManager.loadURI()
+				if (selection.isSelected(map.getRootNode()))
+					selection.selectAsTheOnlyOneSelected(node);
 				return true;
 			}
 		}
@@ -219,7 +225,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	}
 
 	private String getRestorable(final File file) {
-		if (file == null || ! file.exists()) {
+		if (file == null //
+				|| !AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+					@Override
+					public Boolean run() {
+						return file.exists();
+					}
+		})) {
 			return null;
 		}
 		final String absolutePath = file.getAbsolutePath();

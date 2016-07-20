@@ -15,7 +15,7 @@ dependencies {
             'com.jgoodies:jgoodies-forms:1.6.0',
             'com.jgoodies:jgoodies-common:1.4.0'
 
-	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.17') {
+	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.18') {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}
@@ -264,6 +264,16 @@ task editorJar(type: Jar) {
     }
     includeEmptyDirs = false
 }
+
+
+
+eclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.append('''encoding//resources/translations=ISO-8859-1
+encoding//viewer-resources/translations=ISO-8859-1
+''')
+}
+
 
 task osgiJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!

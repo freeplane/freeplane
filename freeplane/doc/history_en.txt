@@ -5,11 +5,35 @@ User translations
 Dialog to choose template when new map is created
 
 ===============================
-1.5.9
+1.5.13
+===============================
+Support High Density Monitors by scaling UI elements
+New SimplyHTML actions and short cuts for color and font size changes
+Improve posisioning of inline editing field for left side nodes
+Performance optimizations for filtered maps
+Performance optimizations for huge maps
+
+===============================
+1.5.12
+===============================
+Improvements in launcher for Mac OS
+Bug fixes
+
+===============================
+1.5.11
+===============================
+Restore old default map template
+
+===============================
+1.5.10
 ===============================
 Stable release
+===============================
+1.5.9
+===============================
 User preferences can be saved and loaded from preferences dialog
 Drag and drop of *.freeplaneoptions file into the preferences dialog
+Look and feel jar can be put into user lib directory and class name entered into the preferences
 
 ===============================
 1.5.8

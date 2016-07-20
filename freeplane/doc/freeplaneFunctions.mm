@@ -1,10 +1,10 @@
-<map version="freeplane 1.5.6">
+<map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="Freeplane 1.2&#xa;Functions" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1323787510068" BACKGROUND_COLOR="#00ff99" VGAP_QUANTITY="0.0 px">
 <icon BUILTIN="bee"/>
 <font BOLD="true"/>
 <hook NAME="MapStyle">
-    <properties show_icon_for_attributes="false" show_note_icons="false" show_notes_in_map="false" fit_to_viewport="false;"/>
+    <properties fit_to_viewport="false;" show_icon_for_attributes="false" show_note_icons="false" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
@@ -154,7 +154,20 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      In &lt;b&gt;node core&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" POSITION="left" ID="ID_1556354626" CREATED="1319792091506" MODIFIED="1329860019627" HGAP_QUANTITY="1.0 px" VSHIFT_QUANTITY="-32.0 px" BACKGROUND_COLOR="#ffff00" NUMBERED="true">
+<node POSITION="left" ID="ID_1556354626" CREATED="1319792091506" MODIFIED="1329860019627" HGAP_QUANTITY="1.0 px" VSHIFT_QUANTITY="-32.0 px" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In <b>node core</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <font BOLD="false"/>
 <richcontent TYPE="NOTE">
 
@@ -178,7 +191,21 @@
 </html>
 </richcontent>
 <edge STYLE="sharp_bezier" COLOR="#000099" WIDTH="2"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;b&gt;Text &lt;/b&gt;&amp;#160;with &lt;a href=&quot;http://www.freeplane.org&quot;&gt;in-line&lt;/a&gt;&amp;#160;hyperlink(s), and:&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1266354824" CREATED="1319799106394" MODIFIED="1334839359981" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
+<node ID="ID_1266354824" CREATED="1319799106394" MODIFIED="1334839359981" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <b>Text </b>&#160;with <a href="http://www.freeplane.org">in-line</a>&#160;hyperlink(s), and:
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -201,7 +228,18 @@
 </richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;img src=&quot;Images/doc/freeplaneApplications.png&quot;&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_300419503" CREATED="1319798221748" MODIFIED="1336132729252" HGAP_QUANTITY="316.0 px" VSHIFT_QUANTITY="-75.0 px" STYLE="bubble">
+<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1336132729252" HGAP_QUANTITY="316.0 px" VSHIFT_QUANTITY="-75.0 px" STYLE="bubble"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/doc/freeplaneApplications.png"/>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="FreeNode"/>
 <edge STYLE="hide_edge"/>
 <richcontent TYPE="NOTE">
@@ -226,7 +264,20 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Internal arrow-link (one), or:&lt;br&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1323786286031" LINK="#ID_784697063" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="-2.0 px" TEXT_SHORTENED="true">
+<node ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1323786286031" LINK="#ID_784697063" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="-2.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Internal arrow-link (one), or:<br/>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <edge STYLE="horizontal" WIDTH="thin"/>
 <richcontent TYPE="NOTE">
 
@@ -481,7 +532,23 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Below node core:&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Node extensions&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" POSITION="right" ID="ID_1077719150" CREATED="1319792123071" MODIFIED="1319923775793" VGAP_QUANTITY="0.0 px" HGAP_QUANTITY="-10.0 px" BACKGROUND_COLOR="#ffff00" NUMBERED="true">
+<node POSITION="right" ID="ID_1077719150" CREATED="1319792123071" MODIFIED="1319923775793" VGAP_QUANTITY="0.0 px" HGAP_QUANTITY="-10.0 px" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>Below node core:</i>
+    </p>
+    <p>
+      <b>Node extensions</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <font BOLD="false"/>
 <richcontent TYPE="NOTE">
 
@@ -525,7 +592,20 @@
 <hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
 <edge STYLE="bezier" WIDTH="thin"/>
 <hook URI="Images/doc/freeplaneApplications.png" SIZE="0.4148148" NAME="ExternalObject"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Node details&lt;/b&gt;&amp;#160;(text)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="Reference" ID="ID_965583686" CREATED="1319872918353" MODIFIED="1320248359904" HGAP_QUANTITY="240.0 px" VSHIFT_QUANTITY="-1.0 px">
+<node STYLE_REF="Reference" ID="ID_965583686" CREATED="1319872918353" MODIFIED="1320248359904" HGAP_QUANTITY="240.0 px" VSHIFT_QUANTITY="-1.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Node details</b>&#160;(text)
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_965583686" STARTINCLINATION="-65;17;" ENDINCLINATION="-65;17;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <richcontent TYPE="NOTE">
 
@@ -551,8 +631,28 @@
 <hook NAME="FreeNode"/>
 <font BOLD="false"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Can be &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;hidden &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;(&lt;b&gt;tooltip&lt;/b&gt;)&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_242844262" CREATED="1319799725287" MODIFIED="1323787594293" HGAP_QUANTITY="370.0 px" VSHIFT_QUANTITY="29.0 px" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_242844262" CREATED="1319799725287" MODIFIED="1323787594293" HGAP_QUANTITY="370.0 px" VSHIFT_QUANTITY="29.0 px" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>Can be </i>
+    </p>
+    <p>
+      <i>hidden </i>
+    </p>
+    <p>
+      <i>(<b>tooltip</b>)</i>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="FreeNode"/>
 <edge STYLE="hide_edge"/>
 <richcontent TYPE="NOTE">
@@ -608,7 +708,20 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Scientific &lt;b&gt;formula&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="Reference" ID="ID_1064212525" CREATED="1319872918353" MODIFIED="1320248333790" HGAP_QUANTITY="240.0 px" VSHIFT_QUANTITY="119.0 px">
+<node STYLE_REF="Reference" ID="ID_1064212525" CREATED="1319872918353" MODIFIED="1320248333790" HGAP_QUANTITY="240.0 px" VSHIFT_QUANTITY="119.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Scientific <b>formula</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1064212525" STARTINCLINATION="-94;-18;" ENDINCLINATION="-94;-18;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <richcontent TYPE="NOTE">
 
@@ -634,7 +747,20 @@
 <hook NAME="FreeNode"/>
 <font BOLD="false"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Sizeable &lt;b&gt;image&lt;/b&gt;&amp;#160;(one)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="Reference" ID="ID_1639134686" CREATED="1319873881764" MODIFIED="1320248317831" HGAP_QUANTITY="40.0 px" VSHIFT_QUANTITY="90.0 px">
+<node STYLE_REF="Reference" ID="ID_1639134686" CREATED="1319873881764" MODIFIED="1320248317831" HGAP_QUANTITY="40.0 px" VSHIFT_QUANTITY="90.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Sizeable <b>image</b>&#160;(one)
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1639134686" STARTINCLINATION="-134;-30;" ENDINCLINATION="-134;-30;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font BOLD="false"/>
 <richcontent TYPE="NOTE">
@@ -659,17 +785,34 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Drag here &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;to resize&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1802101455" CREATED="1319799725287" MODIFIED="1329859505294" HGAP_QUANTITY="138.0 px" VSHIFT_QUANTITY="192.0 px" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_1802101455" CREATED="1319799725287" MODIFIED="1329859505294" HGAP_QUANTITY="138.0 px" VSHIFT_QUANTITY="192.0 px" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>Drag here </i>
+    </p>
+    <p>
+      <i>to resize</i>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1802101455" STARTINCLINATION="-22;-15;" ENDINCLINATION="-22;-15;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <edge STYLE="hide_edge"/>
 <hook NAME="FreeNode"/>
 </node>
 </node>
 <node TEXT="Edges" STYLE_REF="Reference" FOLDED="true" ID="ID_1944496966" CREATED="1319872918353" MODIFIED="1329859454342" HGAP_QUANTITY="-60.0 px" VSHIFT_QUANTITY="-91.0 px">
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-137;25;" ENDINCLINATION="-137;25;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-48;91;" ENDINCLINATION="-48;91;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <richcontent TYPE="NOTE">
 
 <html>
@@ -726,7 +869,23 @@
 </node>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Below node extensions &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;or in separate window&lt;/i&gt;: &lt;b&gt;Note&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" POSITION="right" ID="ID_1125102706" CREATED="1319918074662" MODIFIED="1320001831898" BACKGROUND_COLOR="#ffff00" NUMBERED="true">
+<node POSITION="right" ID="ID_1125102706" CREATED="1319918074662" MODIFIED="1320001831898" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>Below node extensions </i>
+    </p>
+    <p>
+      <i>or in separate window</i>: <b>Note</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <edge STYLE="sharp_bezier" COLOR="#006633" WIDTH="2"/>
 <richcontent TYPE="NOTE">
 
@@ -843,14 +1002,42 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="5" TRANSPARENCY="80" FONT_SIZE="8" FONT_FAMILY="SansSerif" DESTINATION="ID_268922755" SOURCE_LABEL="parent" TARGET_LABEL="grand child" MIDDLE_LABEL="hierarchy" STARTINCLINATION="-2;23;" ENDINCLINATION="-21;59;" STARTARROW="NONE" ENDARROW="NONE"/>
 <node TEXT="node b" ID="ID_1908863616" CREATED="1288535688688" MODIFIED="1319920379262" VGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="10.0 px" STYLE="bubble">
 <edge STYLE="bezier" WIDTH="thin"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Indicator &lt;b&gt;tool tip&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1947425814" CREATED="1319799725287" MODIFIED="1323787460834" HGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="-46.0 px" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_1947425814" CREATED="1319799725287" MODIFIED="1323787460834" HGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="-46.0 px" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Indicator <b>tool tip</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1947425814" STARTINCLINATION="4;47;" ENDINCLINATION="4;47;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <edge STYLE="hide_edge"/>
 <hook NAME="FreeNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Indicator&amp;#160;&lt;b&gt;Unfold&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1143366438" CREATED="1319799725287" MODIFIED="1323787452551" HGAP_QUANTITY="110.0 px" VSHIFT_QUANTITY="-16.0 px" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_1143366438" CREATED="1319799725287" MODIFIED="1323787452551" HGAP_QUANTITY="110.0 px" VSHIFT_QUANTITY="-16.0 px" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
+<richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Indicator&#160;<b>Unfold</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1143366438" STARTINCLINATION="-41;22;" ENDINCLINATION="-41;22;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font BOLD="false"/>
 <edge STYLE="hide_edge"/>
@@ -877,7 +1064,23 @@
 </richcontent>
 <node TEXT="etc." ID="ID_1829616131" CREATED="1319919735822" MODIFIED="1319919743997"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Connector&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      (bilateral)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="Reference" ID="ID_389809087" CREATED="1319872918353" MODIFIED="1320248200160" HGAP_QUANTITY="140.0 px" VSHIFT_QUANTITY="79.0 px">
+<node STYLE_REF="Reference" ID="ID_389809087" CREATED="1319872918353" MODIFIED="1320248200160" HGAP_QUANTITY="140.0 px" VSHIFT_QUANTITY="79.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Connector</b>
+    </p>
+    <p>
+      (bilateral)
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_389809087" STARTINCLINATION="-80;-24;" ENDINCLINATION="-80;-24;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <richcontent TYPE="NOTE">
 
@@ -932,7 +1135,23 @@
 </node>
 <node TEXT="below a" ID="ID_975219834" CREATED="1288536218798" MODIFIED="1319919509381" HGAP_QUANTITY="27.0 px" VSHIFT_QUANTITY="34.0 px" STYLE="bubble"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Connector&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      (unilateral)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="Reference" POSITION="right" ID="ID_1828022839" CREATED="1319963720129" MODIFIED="1329859481362" HGAP_QUANTITY="541.0 px" VSHIFT_QUANTITY="183.0 px">
+<node STYLE_REF="Reference" POSITION="right" ID="ID_1828022839" CREATED="1319963720129" MODIFIED="1329859481362" HGAP_QUANTITY="541.0 px" VSHIFT_QUANTITY="183.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Connector</b>
+    </p>
+    <p>
+      (unilateral)
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-60;-48;" ENDINCLINATION="-60;-48;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <hook NAME="FreeNode"/>
 <font BOLD="false"/>
@@ -979,7 +1198,21 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Node core in &lt;b&gt;bubble&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1794331644" CREATED="1288536624648" MODIFIED="1320003893255" STYLE="bubble" VSHIFT_QUANTITY="110.0 px"/>
+<node ID="ID_1794331644" CREATED="1288536624648" MODIFIED="1320003893255" STYLE="bubble" VSHIFT_QUANTITY="110.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Node core in <b>bubble</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 <node TEXT="Color" ID="ID_1602479950" CREATED="1288536644733" MODIFIED="1320005140877">
 <node TEXT="Node color" ID="ID_1350125844" CREATED="1288536652401" MODIFIED="1320005085890" COLOR="#ff0066"/>
 <node TEXT="Node background color" ID="ID_113421480" CREATED="1288536658726" MODIFIED="1320005121096" BACKGROUND_COLOR="#00ff00"/>
@@ -1005,7 +1238,21 @@
 <hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="Special" POSITION="left" ID="ID_206364326" CREATED="1319795251644" MODIFIED="1319991650705" VSHIFT_QUANTITY="20.0 px">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Protect&lt;/b&gt;&amp;#160;with password&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1320074831732" TEXT_SHORTENED="true" HGAP_QUANTITY="30.0 px"><richcontent TYPE="NOTE">
+<node ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1320074831732" TEXT_SHORTENED="true" HGAP_QUANTITY="30.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Protect</b>&#160;with password
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -1027,7 +1274,21 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Calculate&lt;/b&gt;&amp;#160;=3+4&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_49859005" CREATED="1319800320485" MODIFIED="1320074545705" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
+<node ID="ID_49859005" CREATED="1319800320485" MODIFIED="1320074545705" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Calculate</b>&#160;=3+4
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -1069,7 +1330,20 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Reminder (&lt;b&gt;Calendar&lt;/b&gt;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1885496887" CREATED="1288542096079" MODIFIED="1320074842745" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true">
+<node ID="ID_1885496887" CREATED="1288542096079" MODIFIED="1320074842745" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Reminder (<b>Calendar</b>)
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="plugins/TimeManagementReminder.xml">
     <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
 </hook>
@@ -1097,7 +1371,21 @@
 </node>
 </node>
 <node TEXT="Other" POSITION="left" ID="ID_454770946" CREATED="1319875565802" MODIFIED="1320075121393" VSHIFT_QUANTITY="30.0 px">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Filter&lt;/b&gt;&amp;#160;&amp;amp; S&lt;b&gt;ort&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1987204825" CREATED="1319925023100" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
+<node ID="ID_1987204825" CREATED="1319925023100" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Filter</b>&#160;&amp; S<b>ort</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -1120,7 +1408,21 @@
 </richcontent>
 <edge STYLE="horizontal"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Template&lt;/b&gt;&amp;#160;&amp;amp; &lt;b&gt;Style&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1603681371" CREATED="1319875570304" MODIFIED="1323787030981" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
+<node ID="ID_1603681371" CREATED="1319875570304" MODIFIED="1323787030981" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Template</b>&#160;&amp; <b>Style</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -1165,7 +1467,21 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Script&lt;/b&gt;&amp;#160;&amp;amp; &lt;b&gt;Add-on&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1058310897" CREATED="1319923489096" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
+<node ID="ID_1058310897" CREATED="1319923489096" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Script</b>&#160;&amp; <b>Add-on</b>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="NOTE">
 
 <html>
   <head>
@@ -1188,7 +1504,21 @@
 </richcontent>
 <edge STYLE="horizontal"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Spell check&lt;/b&gt;&amp;#160;&amp;amp; Academic Writing suite&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_739070756" CREATED="1319915355170" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
+<node ID="ID_739070756" CREATED="1319915355170" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Spell check</b>&#160;&amp; Academic Writing suite
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="NOTE">
 
 <html>
   <head>

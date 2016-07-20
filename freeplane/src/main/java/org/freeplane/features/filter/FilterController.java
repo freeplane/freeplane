@@ -557,9 +557,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		addStandardConditions();
 		filterConditions.addListDataListener(filterChangeListener);
 		applyFilter(false);
-		Controller controller = Controller.getCurrentController();
 		filterMenuBuilder.updateMenus();
-		//TODO RIBBONS: apply to ribbons as well, if necessary
 	}
 
 	private void updateSettingsFromFilter(final Filter filter) {

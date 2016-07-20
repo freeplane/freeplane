@@ -193,7 +193,7 @@ public class FreeplaneApplet extends JApplet {
 		String lookAndFeel = "";
 		appletResourceController.setPropertyByParameter(this, "lookandfeel");
 		lookAndFeel = appletResourceController.getProperty("lookandfeel");
-		FrameController.setLookAndFeel(lookAndFeel);
+		FrameController.setLookAndFeel(lookAndFeel, true);
 	}
 
 	@Override

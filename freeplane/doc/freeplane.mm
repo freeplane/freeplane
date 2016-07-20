@@ -1,10 +1,10 @@
-<map version="freeplane 1.5.6">
+<map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry SHOW_ATTRIBUTES="hide">
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node TEXT="Documentation&#xa;Freeplane 1.3" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1455910903866" MODIFIED="1455910903866" VGAP_QUANTITY="0.0 px">
+<node TEXT="Documentation&#xa;Freeplane 1.3" STYLE_REF="MainMenu" FOLDED="false" ID="ID_1723255651" CREATED="1455910903866" MODIFIED="1465594674017" VGAP_QUANTITY="0.0 px">
 <icon BUILTIN="bee"/>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -12,7 +12,7 @@
             <time_condition_modified_after user_name="1.2.12_03" DATE="1330531663397"/>
         </conditional_style>
     </conditional_styles>
-    <properties show_icon_for_attributes="false" show_note_icons="true" show_notes_in_map="false" fit_to_viewport="false;"/>
+    <properties fit_to_viewport="false;" show_icon_for_attributes="false" show_note_icons="true" show_notes_in_map="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
@@ -136,7 +136,21 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;font size=&quot;3&quot;&gt;&lt;a href=&quot;freeplaneFunctions.mm&quot;&gt;&lt;b&gt;Functions&lt;/b&gt;&lt;/a&gt;&lt;/font&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_232622736" CREATED="1455910903870" MODIFIED="1455910903870" LINK="freeplaneFunctions.mm" HGAP_QUANTITY="19.0 px" VSHIFT_QUANTITY="-108.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_232622736" CREATED="1455910903870" MODIFIED="1465594648999" LINK="freeplaneFunctions.mm" HGAP_QUANTITY="-16.0 px" VSHIFT_QUANTITY="-166.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <font size="3"><a href="freeplaneFunctions.mm"><b>Functions</b></a></font>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -161,7 +175,21 @@
 </html>
 </richcontent>
 <hook NAME="FreeNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;font size=&quot;3&quot;&gt;&lt;a href=&quot;freeplaneFunctions.mm&quot;&gt;&lt;b&gt;Applications&lt;/b&gt;&lt;/a&gt;&lt;/font&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_766584529" CREATED="1455910903870" MODIFIED="1455910903870" LINK="freeplaneApplications.mm" HGAP_QUANTITY="-85.0 px" VSHIFT_QUANTITY="28.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node ID="ID_766584529" CREATED="1455910903870" MODIFIED="1455910903870" LINK="freeplaneApplications.mm" HGAP_QUANTITY="-85.0 px" VSHIFT_QUANTITY="28.0 px" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <font size="3"><a href="freeplaneFunctions.mm"><b>Applications</b></a></font>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -254,7 +282,21 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane&quot;&gt;Overview&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1455910903870" MODIFIED="1455910903870" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" HGAP_QUANTITY="27.0 px" TEXT_SHORTENED="true" MIN_WIDTH="80.0 px"><richcontent TYPE="DETAILS">
+<node STYLE_REF="UserGuide" FOLDED="true" ID="ID_1108028010" CREATED="1455910903870" MODIFIED="1455910903870" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" HGAP_QUANTITY="27.0 px" TEXT_SHORTENED="true" MIN_WIDTH="80.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Overview</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -1654,7 +1696,21 @@
 <node TEXT="Portable Freeplane" ID="ID_252894978" CREATED="1455910903908" MODIFIED="1455910903908"/>
 <node TEXT="" ID="ID_557475794" CREATED="1455910904135" MODIFIED="1455910904135">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Wiki &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Support&quot;&gt;Download help&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_797098004" CREATED="1455910903908" MODIFIED="1455910903908"/>
+<node ID="ID_797098004" CREATED="1455910903908" MODIFIED="1455910903908"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Support">Download help</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 </node>
 </node>
 <node TEXT="Install" FOLDED="true" ID="Freeplane_Link_1822195277" CREATED="1455910903908" MODIFIED="1455910903908" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
@@ -1958,7 +2014,20 @@
 </richcontent>
 </node>
 <node TEXT="This Documentation" STYLE_REF="UserGuide" FOLDED="true" ID="ID_1263067716" CREATED="1455910903909" MODIFIED="1455910903909" HGAP_QUANTITY="28.0 px" VSHIFT_QUANTITY="4.0 px">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: centre&quot;&gt;&#xa;      Making This Documentation 1.2&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="true" ID="ID_518502200" CREATED="1455910903910" MODIFIED="1455910903910">
+<node FOLDED="true" ID="ID_518502200" CREATED="1455910903910" MODIFIED="1455910903910"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: centre">
+      Making This Documentation 1.2
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <node TEXT="Use Design principles" FOLDED="true" ID="ID_1034693607" CREATED="1455910903910" MODIFIED="1455910903910" TEXT_SHORTENED="true">
 <node TEXT="Easy use" FOLDED="true" ID="ID_971999971" CREATED="1455910903910" MODIFIED="1455910903910" TEXT_SHORTENED="true">
 <node TEXT="Target group: educated laymen" FOLDED="true" ID="ID_650466721" CREATED="1455910903910" MODIFIED="1455910903910" TEXT_SHORTENED="true">
@@ -2685,7 +2754,21 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;amp;t=77&quot;&gt;issue with node width&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1194109651" CREATED="1455910903918" MODIFIED="1455910903918"/>
+<node ID="ID_1194109651" CREATED="1455910903918" MODIFIED="1455910903918"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="https://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=77">issue with node width</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 <node TEXT=" image access  denied (Java applet)" ID="ID_44291998" CREATED="1455910903918" MODIFIED="1455910903918"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
@@ -2799,7 +2882,20 @@
 <node TEXT="Setting the default properties" ID="ID_1547921090" CREATED="1455910903918" MODIFIED="1455910903918" LINK="http://sourceforge.net/apps/phpbb/freeplane/viewtopic.php?f=1&amp;t=219"/>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      Online doc .&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1455910903922" MODIFIED="1455910903922" LINK="#ID_566454554" VSHIFT_QUANTITY="111.0 px" TEXT_SHORTENED="true">
+<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_1658062789" CREATED="1455910903922" MODIFIED="1455910903922" LINK="#ID_566454554" VSHIFT_QUANTITY="111.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      Online doc .
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS">
 
@@ -2817,7 +2913,7 @@
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Contributors" ID="ID_1675707038" CREATED="1455910903922" MODIFIED="1455910903922" LINK="http://freeplane.sourceforge.net/wiki/index.php/Contributors" HGAP_QUANTITY="-95.0 px" VSHIFT_QUANTITY="29.0 px"/>
 </node>
-<node TEXT="Reference" STYLE_REF="Title" POSITION="right" ID="ID_332175012" CREATED="1455910903922" MODIFIED="1455910903922" HGAP_QUANTITY="-37.0 px" VSHIFT_QUANTITY="-64.0 px" TEXT_SHORTENED="true">
+<node TEXT="Reference" STYLE_REF="Title" POSITION="right" ID="ID_332175012" CREATED="1455910903922" MODIFIED="1465594674016" HGAP_QUANTITY="-36.0 px" VSHIFT_QUANTITY="-53.0 px" TEXT_SHORTENED="true">
 <icon BUILTIN="wizard"/>
 <richcontent TYPE="DETAILS">
 
@@ -6585,7 +6681,20 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Show/Hide attribute&amp;#160;&amp;#160;&amp;quot;hover text&lt;i&gt;&amp;quot;&amp;#160; &lt;/i&gt;set&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_510422017" CREATED="1455910904004" MODIFIED="1455910904004" TEXT_SHORTENED="true">
+<node ID="ID_510422017" CREATED="1455910904004" MODIFIED="1455910904004" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Show/Hide attribute&#160;&#160;&quot;hover text<i>&quot;&#160; </i>set
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <font ITALIC="false"/>
 <richcontent TYPE="NOTE">
 
@@ -6685,7 +6794,21 @@
 <node TEXT="" ID="ID_1602823329" CREATED="1455910904138" MODIFIED="1455910904138">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Add &lt;i&gt;legacy!&lt;/i&gt;&amp;#160;LaTeX formula...&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_816429133" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node ID="ID_816429133" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Add <i>legacy!</i>&#160;LaTeX formula...
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -6706,13 +6829,39 @@
 </hook>
 <attribute NAME="Chapter" VALUE="3,7"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Edit &lt;i&gt;legacy!&lt;/i&gt;&amp;#160;LaTeX formula...&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1933244848" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true">
+<node ID="ID_1933244848" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Edit <i>legacy!</i>&#160;LaTeX formula...
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,7"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Remove &lt;i&gt;legacy!&lt;/i&gt;&amp;#160;LaTeX formula&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1339380039" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true">
+<node ID="ID_1339380039" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Remove <i>legacy!</i>&#160;LaTeX formula
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6720,7 +6869,20 @@
 </node>
 <node TEXT="" ID="ID_1805968035" CREATED="1455910904138" MODIFIED="1455910904138">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;legacy!&lt;/i&gt;&amp;#160;LaTeX formula&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1750517188" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true">
+<node ID="ID_1750517188" CREATED="1455910904005" MODIFIED="1455910904005" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>legacy!</i>&#160;LaTeX formula
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <font NAME="SansSerif" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS">
 
@@ -11282,7 +11444,20 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 <node TEXT="" ID="ID_1506754187" CREATED="1455910904145" MODIFIED="1455910904145">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Font &lt;b&gt;whole&lt;/b&gt;&amp;#160;basic node text&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_863447007" CREATED="1455910904052" MODIFIED="1455910904052" TEXT_SHORTENED="true">
+<node ID="ID_863447007" CREATED="1455910904052" MODIFIED="1455910904052" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Font <b>whole</b>&#160;basic node text
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
@@ -11431,7 +11606,20 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 <node TEXT="" ID="ID_150044680" CREATED="1455910904145" MODIFIED="1455910904145">
 <hook NAME="SummaryNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Color &lt;b&gt;whole&lt;/b&gt;&amp;#160;basic node text&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1370207590" CREATED="1455910904057" MODIFIED="1455910904057" TEXT_SHORTENED="true">
+<node ID="ID_1370207590" CREATED="1455910904057" MODIFIED="1455910904057" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Color <b>whole</b>&#160;basic node text
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuGroupLabel" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Exception" LAST="false"/>
@@ -14221,7 +14409,19 @@ elements from the styles activated by conditions are copied.</pre>
 </html>
 </richcontent>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;pre wrap=&quot;&quot;&gt;&lt;a href=&quot;https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076&quot; class=&quot;moz-txt-link-freetext&quot;&gt;https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076&lt;/a&gt;&lt;/pre&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1243435937" CREATED="1455910904095" MODIFIED="1455910904095" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076"/>
+<node ID="ID_1243435937" CREATED="1455910904095" MODIFIED="1455910904095" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <pre wrap=""><a href="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076" class="moz-txt-link-freetext">https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4652076</a></pre>
+  </body>
+</html>
+
+</richcontent>
+</node>
 </node>
 </node>
 </node>
@@ -16656,7 +16856,7 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 </node>
-<node TEXT="Main New Features in 1.3.x" POSITION="right" ID="ID_438899606" CREATED="1455910904128" MODIFIED="1455910904128" STYLE="as_parent">
+<node TEXT="Main New Features in 1.3.x" FOLDED="true" POSITION="right" ID="ID_438899606" CREATED="1455910904128" MODIFIED="1455910904128" STYLE="as_parent">
 <font SIZE="8" BOLD="true"/>
 <edge STYLE="bezier" WIDTH="thin"/>
 <node TEXT="LaTeX &quot;in core&quot;" FOLDED="true" ID="ID_379700040" CREATED="1455910904128" MODIFIED="1455910904128" STYLE="as_parent">
@@ -16666,7 +16866,20 @@ elements from the styles activated by conditions are copied.</pre>
 <node TEXT="using a &quot;\latex &quot; prefix:" FOLDED="true" ID="ID_1360996420" CREATED="1455910904129" MODIFIED="1455910904129">
 <node TEXT="\latex my formula: $x_2=\frac{1}{2}$" ID="ID_1388189693" CREATED="1455910904129" MODIFIED="1455910904129"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;View-&amp;gt;Properties panel&lt;/i&gt;, then &lt;i&gt;Core text-&amp;gt;Format-&amp;gt;LaTeX&lt;/i&gt;&amp;#160;:&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="true" ID="ID_918479072" CREATED="1455910904129" MODIFIED="1455910904129">
+<node FOLDED="true" ID="ID_918479072" CREATED="1455910904129" MODIFIED="1455910904129"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>View-&gt;Properties panel</i>, then <i>Core text-&gt;Format-&gt;LaTeX</i>&#160;:
+    </p>
+  </body>
+</html>
+
+</richcontent>
 <node TEXT="my formula: $x_2=\frac{1}{2}$" ID="ID_1836098760" CREATED="1455910904129" MODIFIED="1455910904129" FORMAT="latexPatternFormat"/>
 </node>
 </node>
@@ -16690,7 +16903,21 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 <node TEXT="Open Maps Integration" FOLDED="true" ID="ID_868486925" CREATED="1455910904129" MODIFIED="1455910904129">
 <edge STYLE="bezier"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      See &lt;i&gt;Reference&lt;/i&gt;-&amp;gt;&lt;i&gt;Edit&lt;/i&gt;-&amp;gt;&lt;i&gt;Node extensions&lt;/i&gt;-&amp;gt;&lt;i&gt;Add/Remove/View OpenMaps Location&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1004924037" CREATED="1455910904129" MODIFIED="1455910904129"/>
+<node ID="ID_1004924037" CREATED="1455910904129" MODIFIED="1455910904129"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      See <i>Reference</i>-&gt;<i>Edit</i>-&gt;<i>Node extensions</i>-&gt;<i>Add/Remove/View OpenMaps Location</i>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 <node TEXT="See Wiki Page" STYLE_REF="Refine" ID="ID_371827729" CREATED="1455910904129" MODIFIED="1455910904129" LINK="http://freeplane.sourceforge.net/wiki/index.php/Open_Street_Map_Plugin">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 </node>

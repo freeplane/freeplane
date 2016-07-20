@@ -265,7 +265,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return false;
 		}
 		int index = mapViewVector.indexOf(mapView);
-		mapController.removeMapChangeListener(mapView);
+		mapView.getModel().removeMapChangeListener(mapView);
 		ResourceController.getResourceController().removePropertyChangeListener(mapView);
 		mapViewVector.remove(mapView);
 		if (mapViewVector.isEmpty()) {
@@ -474,7 +474,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public void newMapView(final MapModel map, final ModeController modeController) {
 		final MapView mapView = new MapView(map, modeController);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
-		modeController.getMapController().addMapChangeListener(mapView);
+		map.addMapChangeListener(mapView);
 		ResourceController.getResourceController().addPropertyChangeListener(mapView);
 		mapViewChangeListeners.mapViewCreated(mapView);
 		changeToMapView(mapView);

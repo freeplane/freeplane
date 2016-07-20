@@ -128,11 +128,7 @@ public class WindowConfigurationStorage {
 				LogUtils.severe(e);
 			}
 		}
-		final Frame rootFrame = JOptionPane.getFrameForComponent(dialog);
-		final Dimension prefSize = rootFrame.getSize();
-		prefSize.width = prefSize.width * 3 / 4;
-		prefSize.height = prefSize.height * 3 / 4;
-		dialog.setSize(prefSize);
+		UITools.setBounds(dialog, -1, -1, -1, -1);
 		return null;
 	}
 }

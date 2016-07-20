@@ -20,10 +20,12 @@
 package org.freeplane.features.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.KeyboardFocusManager;
@@ -36,12 +38,14 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -53,8 +57,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.LookAndFeel;
 import javax.swing.RootPaneContainer;
 import javax.swing.Timer;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -67,6 +73,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
@@ -496,7 +503,7 @@ abstract public class FrameController implements ViewController {
 		return propertyKeyPrefix;
 	}
 
-	public static void setLookAndFeel(final String lookAndFeel) {
+	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
 			if (lookAndFeel.equals("default")) {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -507,19 +514,23 @@ abstract public class FrameController implements ViewController {
 				for(LookAndFeelInfo lafInfo : lafInfos){
 					if(lafInfo.getName().equalsIgnoreCase(lookAndFeel)){
 						UIManager.setLookAndFeel(lafInfo.getClassName());
-						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", lafInfo.getClassName());
-						setLnF = true;
-						break;
-					}
-					if(lafInfo.getClassName().equals(lookAndFeel)){
-						UIManager.setLookAndFeel(lafInfo.getClassName());
 						setLnF = true;
 						break;
 					}
 				}
 				if(!setLnF){
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
+					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
+					try{
+						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
+						UIManager.setLookAndFeel((LookAndFeel)lookAndFeelClass.newInstance());
+						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
+						if(userLibClassLoader != uiClassLoader)
+							userLibClassLoader.close();
+						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
+					} catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
+						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
+					}
 				}
 			}
 		}
@@ -528,6 +539,9 @@ abstract public class FrameController implements ViewController {
 		}
 
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
+		
+		if(supportHidpi)
+			scaleDefaultUIFonts();
 
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
@@ -542,7 +556,35 @@ abstract public class FrameController implements ViewController {
 			catch (Throwable t1){
 			}
 		}
+		
+		final Color color = UIManager.getColor("control");
+		if(color != null && color.getAlpha() < 255)
+			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
+	
+	private static void scaleDefaultUIFonts() {
+        Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
+		Object[] keys = keySet.toArray(new Object[keySet.size()]);
+		final UIDefaults uiDefaults = UIManager.getDefaults();
+		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
+		
+		for (Object key : keys) {
+		    if (isFontKey(key)) {
+				Font font = uiDefaults.getFont(key);
+				if (font != null) {
+				    font = UITools.scaleFontInt(font, 0.8);
+				    UIManager.put(key, font);
+				    lookAndFeelDefaults.put(key, font);
+				}
+		    }
+		
+		}
+    }
+
+	private static boolean isFontKey(Object key) {
+		return key != null && key.toString().toLowerCase().endsWith("font");
+	}
+
 
 	public void addObjectTypeInfo(Object value) {
 		if (value instanceof FormattedObject) {

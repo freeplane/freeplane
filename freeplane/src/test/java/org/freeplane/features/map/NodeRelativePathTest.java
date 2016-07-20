@@ -47,6 +47,13 @@ public class NodeRelativePathTest {
 	}
 
 	@Test
+	public void zeroLevelAncestorPahLength(){
+		final NodeModel parent = root();
+		final NodeRelativePath nodeRelativePath = new NodeRelativePath(parent, parent);
+		assertThat(nodeRelativePath.getPathLength(),  equalTo(0));
+	}
+
+	@Test
 	public void zeroLevelBegin(){
 		final NodeModel parent = root();
 		final NodeRelativePath nodeRelativePath = new NodeRelativePath(parent, parent);
@@ -82,6 +89,17 @@ public class NodeRelativePathTest {
 		parent.insert(node2);
 		NodeModel commonAncestor = new NodeRelativePath(node1, node2).commonAncestor();
 		assertThat(commonAncestor, equalTo(parent));
+	}
+	
+	@Test
+	public void oneLevelAncestorPathLength(){
+		final NodeModel parent = root();
+		final NodeModel node1 = new NodeModel("node1", map);
+		parent.insert(node1);
+		final NodeModel node2 = new NodeModel("node2", map);
+		parent.insert(node2);
+		final NodeRelativePath nodeRelativePath = new NodeRelativePath(node1, node2);
+		assertThat(nodeRelativePath.getPathLength(),  equalTo(2));
 	}
 	
 	@Test

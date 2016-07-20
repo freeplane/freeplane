@@ -416,18 +416,24 @@ public class OptionPanelBuilder {
 	}
 
 	public void addBooleanProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createBooleanOptionCreator(name), path + "/" + name, position);
+		addCreator(path, createBooleanOptionCreator(name), name, position);
 	}
 
 	public void addColorProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createColorOptionCreator(name), path + "/" + name, position);
+		addCreator(path, createColorOptionCreator(name), name, position);
 	}
 
 	public void addComboProperty(final String path, final String name, final Vector<String> choices,
 	                             final Vector<String> translations, final int position) {
-		tree.addElement(path, createComboProperty(name, choices, translations), path + "/" + name, position);
+		final IPropertyControlCreator creator = createComboProperty(name, choices, translations);
+		addCreator(path, creator, name, position);
 	}
 
+	public void addEditableComboProperty(final String path, final String name, final Vector<String> choices,
+			final Vector<String> translations, final int position) {
+		final IPropertyControlCreator creator = createEditableComboProperty(name, choices, translations);
+		addCreator(path, creator, name, position);
+	}
 	public void addCreator(final String path, final IPropertyControlCreator creator, final int position) {
 		tree.addElement(path, creator, position);
 	}
@@ -438,24 +444,24 @@ public class OptionPanelBuilder {
 	}
 
 	public void addFontProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createFontOptionCreator(name), path + "/" + name, position);
+		addCreator(path, createFontOptionCreator(name), name, position);
 	}
 
 	public void addKeyProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createKeyOptionCreator(name), path + "/" + name, position);
+		addCreator(path, createKeyOptionCreator(name), name, position);
 	}
 
 	public void addNumberProperty(final String path, final String name, final int min, final int max, final int step,
 	                              final int position) {
-		tree.addElement(path, createNumberOptionCreator(name, min, max, step), path + "/" + name, position);
+		addCreator(path, createNumberOptionCreator(name, min, max, step), name, position);
 	}
 
 	public void addRemindValueProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createRemindValueProperty(name), path + "/" + name, position);
+		addCreator(path, createRemindValueProperty(name), name, position);
 	}
 
 	public void addSeparator(final String path, final String name, final int position) {
-		tree.addElement(path, createSeparatorCreator(name), path + "/" + name, position);
+		addCreator(path, createSeparatorCreator(name), name, position);
 	}
 
 	public void addSpace(final String path, final int position) {
@@ -463,7 +469,7 @@ public class OptionPanelBuilder {
 	}
 
 	public void addStringProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createStringOptionCreator(name), path + "/" + name, position);
+		addCreator(path, createStringOptionCreator(name), name, position);
 	}
 
 	public void addTab(final String name) {
@@ -475,7 +481,7 @@ public class OptionPanelBuilder {
 	}
 
 	public void addText(final String path, final String name, final int position) {
-		tree.addElement(path, createTextCreator(name), path + "/" + name, position);
+		addCreator(path, createTextCreator(name), name, position);
 	}
 
 	private IPropertyControlCreator createBooleanOptionCreator(final String name) {
@@ -495,10 +501,21 @@ public class OptionPanelBuilder {
 	}
 
 	private IPropertyControlCreator createComboProperty(final String name, final Vector<String> choices,
-	                                                    final Vector<String> translations) {
+			final Vector<String> translations) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
 				return new ComboProperty(name, choices, translations);
+			}
+		};
+	}
+
+	private IPropertyControlCreator createEditableComboProperty(final String name, final Vector<String> choices,
+			final Vector<String> translations) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				final ComboProperty comboProperty = new ComboProperty(name, choices, translations);
+				comboProperty.setEditable(true);
+				return comboProperty;
 			}
 		};
 	}
@@ -519,7 +536,7 @@ public class OptionPanelBuilder {
 		};
 	}
 
-	private Object createNumberOptionCreator(final String name, final int min, final int max, final int step) {
+	private IPropertyControlCreator createNumberOptionCreator(final String name, final int min, final int max, final int step) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
 				return new NumberProperty(name, min, max, step);

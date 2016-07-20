@@ -1,23 +1,122 @@
-<map version="0.9.0">
+<map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry>
-    <attribute_name MANUAL="true" NAME="X"/>
-    <attribute_name MANUAL="true" NAME="Y"/>
+    <attribute_name MANUAL="true" NAME="X">
+        <attribute_value VALUE="10"/>
+    </attribute_name>
+    <attribute_name MANUAL="true" NAME="Y">
+        <attribute_value VALUE="20"/>
+    </attribute_name>
 </attribute_registry>
-<node ID="ID_911274459" CREATED="1124560950701" MODIFIED="1216753542772" COLOR="#993300">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body width="">
-    <p align="center">
-      Freeplane<br/><small>- free mind mapping software -</small>&#xc2;&#xa0;
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body width=&quot;&quot;&gt;&#xa;    &lt;p align=&quot;center&quot;&gt;&#xa;      Freeplane&lt;br&gt;&lt;small&gt;- free mind mapping software -&lt;/small&gt;&amp;#xc2;&amp;#xa0;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="false" ID="ID_911274459" CREATED="1124560950701" MODIFIED="1465678925346" COLOR="#993300">
 <font NAME="Dialog" SIZE="18" BOLD="true"/>
-<hook NAME="MapStyle" max_node_width="600"/>
+<hook NAME="MapStyle">
+    <properties fit_to_viewport="false;"/>
+
+<map_styles>
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt" TEXT_SHORTENED="true">
+<font SIZE="24"/>
+<richcontent TYPE="DETAILS" LOCALIZED_HTML="styles_background_html"/>
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" SHAPE_VERTICAL_MARGIN="0.0 pt" FORMAT="NO_FORMAT" TEXT_ALIGN="CENTER" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<font NAME="Arial" SIZE="9" BOLD="true" ITALIC="false"/>
+<edge STYLE="bezier" WIDTH="3"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.details">
+<font SIZE="11"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#000000" BACKGROUND_COLOR="#ffffff">
+<font SIZE="9"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.floating">
+<edge STYLE="hide_edge"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="styles.important">
+<icon BUILTIN="yes"/>
+<edge COLOR="#0000cc"/>
+</stylenode>
+</stylenode>
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
+<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval" UNIFORM_SHAPE="true" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<font SIZE="24" ITALIC="true"/>
+<edge STYLE="bezier" WIDTH="3"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1">
+<edge COLOR="#000000"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2">
+<edge COLOR="#ff0033"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3">
+<edge COLOR="#009933"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4">
+<edge COLOR="#3333ff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,5">
+<edge COLOR="#ff6600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,6">
+<edge COLOR="#cc00cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,7">
+<edge COLOR="#ffbf00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,8">
+<edge COLOR="#00ff99"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,9">
+<edge COLOR="#0099ff"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,10">
+<edge COLOR="#996600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,11">
+<edge COLOR="#000000"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,12">
+<edge COLOR="#cc0066"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,13">
+<edge COLOR="#33ff00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,14">
+<edge COLOR="#ff9999"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,15">
+<edge COLOR="#0000cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,16">
+<edge COLOR="#cccc00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,17">
+<edge COLOR="#0099cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,18">
+<edge COLOR="#006600"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,19">
+<edge COLOR="#ff00cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
+<edge COLOR="#00cc00"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,21">
+<edge COLOR="#0066cc"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,22">
+<edge COLOR="#00ffff"/>
+</stylenode>
+</stylenode>
+</stylenode>
+</map_styles>
+</hook>
 <node TEXT="Pagina internet di Freeplane" POSITION="left" ID="ID_913646046" CREATED="1124560950701" MODIFIED="1280835607586" LINK="http://freeplane.sourceforge.net">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -38,45 +137,9 @@
 </node>
 <node TEXT="Scaricare Freeplane" ID="ID_125757182" CREATED="1265292892913" MODIFIED="1266589975310" LINK="https://sourceforge.net/projects/freeplane/files/"/>
 </node>
-<node ID="_Freeplane_Link_139664576" CREATED="1124560950701" MODIFIED="1280836749882">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per installare Freeplane in <b>Microsoft Windows</b>, installare Java Sun quindi installare Freeplane usando il file di installazione.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="_Freeplane_Link_1380352758" CREATED="1124560950701" MODIFIED="1280836726741">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per installare Freeplane in <b>Linux</b>, scaricare Java Runtime Environment e Freeplane. Installare prima Java, poi scompattare Freeplane. Per eseguire Freeplane, lanciare freeplane.sh.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1068063073" CREATED="1280836356174" MODIFIED="1280836713944">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per installare Freeplane con il sistema operativo <b>Mac OS X</b>, la prima cosa &#232; assicurarsi di avere tutti gli ultimi aggiornamenti disponibili, in particolare Java. L'aggiornamento Software si trova sotto il menu logo Apple in alto a sinistra dello schermo.<br/><br/>Quindi scaricare una versione per Mac specifica di Freeplane. La versione Dmg &#232; pi&#249; facile da installare, attraverso un file .zip disponibile. Quando il download &#232; completato, il file pu&#242; essere montato automaticamente (o decompresso) a seconda delle impostazioni del browser web. In caso contrario, fare doppio clic sul file. Dmg scaricato per &quot;montare&quot;, o fare doppio clic sul file. Zip scaricato per scompattarlo.<br/><br/>Ora si dovrebbe vedere una icona dell'applicazione Freeplane, che &#232; possibile trascinare nella cartella Applicazioni. Poi si pu&#242; opzionalmente creare un alias (collegamento) sul desktop, e / o nel Dock. Per eseguire Freeplane, fare doppio clic sulla sua icona dell'applicazione (nella cartella Applicazioni) o sul suo collegamento sul desktop, oppure fare clic una volta sulla sua icona nel Dock. Il wiki di Freeplane ha una pagina per Macintosh, con ulteriori informazioni.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per installare Freeplane in &lt;b&gt;Microsoft Windows&lt;/b&gt;, installare Java Sun quindi installare Freeplane usando il file di installazione.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="_Freeplane_Link_139664576" CREATED="1124560950701" MODIFIED="1280836749882"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per installare Freeplane in &lt;b&gt;Linux&lt;/b&gt;, scaricare Java Runtime Environment e Freeplane. Installare prima Java, poi scompattare Freeplane. Per eseguire Freeplane, lanciare freeplane.sh.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="_Freeplane_Link_1380352758" CREATED="1124560950701" MODIFIED="1280836726741"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per installare Freeplane con il sistema operativo &lt;b&gt;Mac OS X&lt;/b&gt;, la prima cosa &amp;#232; assicurarsi di avere tutti gli ultimi aggiornamenti disponibili, in particolare Java. L&apos;aggiornamento Software si trova sotto il menu logo Apple in alto a sinistra dello schermo.&lt;br&gt;&lt;br&gt;Quindi scaricare una versione per Mac specifica di Freeplane. La versione Dmg &amp;#232; pi&amp;#249; facile da installare, attraverso un file .zip disponibile. Quando il download &amp;#232; completato, il file pu&amp;#242; essere montato automaticamente (o decompresso) a seconda delle impostazioni del browser web. In caso contrario, fare doppio clic sul file. Dmg scaricato per &amp;quot;montare&amp;quot;, o fare doppio clic sul file. Zip scaricato per scompattarlo.&lt;br&gt;&lt;br&gt;Ora si dovrebbe vedere una icona dell&apos;applicazione Freeplane, che &amp;#232; possibile trascinare nella cartella Applicazioni. Poi si pu&amp;#242; opzionalmente creare un alias (collegamento) sul desktop, e / o nel Dock. Per eseguire Freeplane, fare doppio clic sulla sua icona dell&apos;applicazione (nella cartella Applicazioni) o sul suo collegamento sul desktop, oppure fare clic una volta sulla sua icona nel Dock. Il wiki di Freeplane ha una pagina per Macintosh, con ulteriori informazioni.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1068063073" CREATED="1280836356174" MODIFIED="1280836713944"/>
 </node>
 <node TEXT="Note sull&apos;utilizzo per Macintosh" FOLDED="true" POSITION="left" ID="ID_482183510" CREATED="1270892460643" MODIFIED="1281346026398" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -129,14 +192,14 @@
 <node TEXT="Joerg Mueller" FOLDED="true" ID="_Freeplane_Link_1896457660" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node TEXT="ponders@t-online.de" ID="ID_1031957688" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#558000" LINK="mailto:ponders@t-online.de">
+<node TEXT="ponders@t-online.de" ID="ID_1031957688" CREATED="1124560950701" MODIFIED="1124560950701" LINK="mailto:ponders@t-online.de" COLOR="#558000">
 <font NAME="Dialog" SIZE="10"/>
 </node>
 <node TEXT="University of Freiburg, Germany" ID="ID_1110910078" CREATED="1124560950701" MODIFIED="1124560950701" COLOR="#999999">
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1124560950701" MODIFIED="1216753531920" COLOR="#996600" LINK="http://danpolansky.blogspot.com/">
+<node TEXT="Daniel Polansky" ID="_Freeplane_Link_984984595" CREATED="1124560950701" MODIFIED="1216753531920" LINK="http://danpolansky.blogspot.com/" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
 </node>
@@ -171,36 +234,7 @@
 </node>
 </node>
 </node>
-<node FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1124560950701" MODIFIED="1281346788961" COLOR="#407000" HGAP="-139" VSHIFT="-33">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b><font size="5" color="#000000">Introduzione</font></b>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <font color="#000000">Freeplane rende possibile la creazione delle cosi dette mappe mentali. Molte persone le usano gi&#224; in alternativa alle note di testo o per la gestione personale. Le informazioni sono immagazzinate in celle di testo chiamate nodi. I nodi sono connessi assieme usando linee curve chiamate collegamenti Questa &#232; una documentazione per Freeplane 1.1.2. I tasti rapidi e le funzioni potranno cambiare con le versioni future. </font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b><font color="#000000">Si consiglia di utilizzare i tasti rapidi per velocizzare l'uso di questo programma.</font></b><font color="#000000">&#160;Chi usa molto il computer, sa che il mouse rende l'accesso alle funzioni dei programmi pi&#249; facile, ma pi&#249; lento. Imparare o personalizzare una combinazione di tasti per le funzioni pi&#249; ricorrenti, accelera notevolmente il flusso di lavoro.</font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b><font color="#0000ff">Premere il tasto freccia destra, o il tasto sinistro del mouse su questo nodo per espanderlo</font></b>
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;&lt;font size=&quot;5&quot; color=&quot;#000000&quot;&gt;Introduzione&lt;/font&gt;&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;font color=&quot;#000000&quot;&gt;Freeplane rende possibile la creazione delle cosi dette mappe mentali. Molte persone le usano gi&amp;#224; in alternativa alle note di testo o per la gestione personale. Le informazioni sono immagazzinate in celle di testo chiamate nodi. I nodi sono connessi assieme usando linee curve chiamate collegamenti Questa &amp;#232; una documentazione per Freeplane 1.1.2. I tasti rapidi e le funzioni potranno cambiare con le versioni future. &lt;/font&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;&lt;font color=&quot;#000000&quot;&gt;Si consiglia di utilizzare i tasti rapidi per velocizzare l&apos;uso di questo programma.&lt;/font&gt;&lt;/b&gt;&lt;font color=&quot;#000000&quot;&gt;&amp;#160;Chi usa molto il computer, sa che il mouse rende l&apos;accesso alle funzioni dei programmi pi&amp;#249; facile, ma pi&amp;#249; lento. Imparare o personalizzare una combinazione di tasti per le funzioni pi&amp;#249; ricorrenti, accelera notevolmente il flusso di lavoro.&lt;/font&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;&lt;font color=&quot;#0000ff&quot;&gt;Premere il tasto freccia destra, o il tasto sinistro del mouse su questo nodo per espanderlo&lt;/font&gt;&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="true" POSITION="right" ID="_Freeplane_Link_1596161299" CREATED="1124560950701" MODIFIED="1465678925361" COLOR="#407000">
 <node TEXT="Premere il tasto freccia sinistro per espandere i nodi posizionati alla sinistra del nodo centrale" ID="ID_710242785" CREATED="1264149127531" MODIFIED="1280837601943"/>
 </node>
 <node TEXT="Dimostrazione di alcune caratteristiche" FOLDED="true" POSITION="right" ID="_Freeplane_Link_706084071" CREATED="1124560950701" MODIFIED="1281346161367" COLOR="#006666">
@@ -348,32 +382,8 @@
 </node>
 <node TEXT="Per seguire un collegamento, cliccare sull&apos;icona" FOLDED="true" ID="ID_1673793348" CREATED="1280837890593" MODIFIED="1280837937860" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node ID="ID_236721766" CREATED="1280837947454" MODIFIED="1280838060268">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Una <font color="#00ff00">freccia verde</font>&#160;indica un collegamento locale, all'interno della stessa mappa
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_429828118" CREATED="1280837991892" MODIFIED="1280838046549">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Una <font color="#ff0000">freccia rossa</font>&#160;indica un collegamento esterno alla mappa corrente
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Una &lt;font color=&quot;#00ff00&quot;&gt;freccia verde&lt;/font&gt;&amp;#160;indica un collegamento locale, all&apos;interno della stessa mappa&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_236721766" CREATED="1280837947454" MODIFIED="1280838060268"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Una &lt;font color=&quot;#ff0000&quot;&gt;freccia rossa&lt;/font&gt;&amp;#160;indica un collegamento esterno alla mappa corrente&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_429828118" CREATED="1280837991892" MODIFIED="1280838046549"/>
 </node>
 <node TEXT="Nodi con pi&#xf9; righe" FOLDED="true" ID="_Freeplane_Link_839677176" CREATED="1124560950717" MODIFIED="1264172978859" COLOR="#669900">
 <font NAME="SansSerif" SIZE="12"/>
@@ -428,43 +438,43 @@
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="back"/>
 </node>
-<node TEXT="Si possono racchiudere i nodi con delle nuvole" FOLDED="true" ID="_Freeplane_Link_318937820" CREATED="1124560950717" MODIFIED="1281346190664" COLOR="#407000" LINK="#Freeplane_Link_1697687428">
-<cloud WIDTH="0"/>
+<node TEXT="Si possono racchiudere i nodi con delle nuvole" FOLDED="true" ID="_Freeplane_Link_318937820" CREATED="1124560950717" MODIFIED="1281346190664" LINK="#Freeplane_Link_1697687428" COLOR="#407000">
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="Con colori personalizzati" ID="ID_1525540268" CREATED="1124560950717" MODIFIED="1264175862628">
-<cloud COLOR="#cccc00" WIDTH="0"/>
+<cloud COLOR="#cccc00" SHAPE="ARC"/>
 </node>
 <node TEXT="Non &#xe8; necessario disegnarle, basta attivarle e si adatteranno automaticamente ai nodi" ID="ID_1254003650" CREATED="1264175641794" MODIFIED="1264175712999"/>
 </node>
-<node TEXT="E&apos; possibile avere collegamenti grafici" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1124560950717" MODIFIED="1281346218085" COLOR="#407000" LINK="#_Freeplane_Link_1996597932">
+<node TEXT="E&apos; possibile avere collegamenti grafici" FOLDED="true" ID="_Freeplane_Link_1750585847" CREATED="1124560950717" MODIFIED="1281346218085" LINK="#_Freeplane_Link_1996597932" COLOR="#407000">
 <node TEXT="Connettere un nodo" ID="_Freeplane_Link_1212380407" CREATED="1124560950717" MODIFIED="1264177830717">
-<arrowlink DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1249400461" STARTINCLINATION="41;0;" ENDINCLINATION="41;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="A un&apos;altro" ID="_Freeplane_Link_1249400461" CREATED="1124560950717" MODIFIED="1264177836468">
-<arrowlink COLOR="#6600ff" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#6600ff" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_880551392" STARTINCLINATION="47;0;" ENDINCLINATION="47;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Con colore diverso" ID="_Freeplane_Link_880551392" CREATED="1124560950717" MODIFIED="1264177843250">
-<arrowlink DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1789233193" STARTINCLINATION="82;44;" ENDINCLINATION="82;44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Ed un percorso diverso" ID="_Freeplane_Link_1789233193" CREATED="1124560950717" MODIFIED="1264177858844"/>
 </node>
-<node TEXT="I collegamenti grafici possono avere etichette" FOLDED="true" ID="ID_1234443629" CREATED="1280838831482" MODIFIED="1281272569387" HGAP="18" VSHIFT="20" COLOR="#407000" LINK="#_Freeplane_Link_1996597932">
+<node TEXT="I collegamenti grafici possono avere etichette" FOLDED="true" ID="ID_1234443629" CREATED="1280838831482" MODIFIED="1281272569387" LINK="#_Freeplane_Link_1996597932" HGAP_QUANTITY="18.0 px" VSHIFT_QUANTITY="20.0 px" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="Nodo sorgente" ID="ID_265365223" CREATED="1280838852419" MODIFIED="1280840660130" VSHIFT="-51">
+<node TEXT="Nodo sorgente" ID="ID_265365223" CREATED="1280838852419" MODIFIED="1280840660130" VSHIFT_QUANTITY="-51.0 px">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_450078201" SOURCE_LABEL="ETICHETTA SORGENTE" TARGET_LABEL="ETICHETTA DESTINATARIO" MIDDLE_LABEL="ETICHETTA CENTRALE" STARTINCLINATION="125;21;" ENDINCLINATION="125;21;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<arrowlink DESTINATION="ID_450078201" SOURCE_LABEL="ETICHETTA SORGENTE" TARGET_LABEL="ETICHETTA DESTINATARIO" MIDDLE_LABEL="ETICHETTA CENTRALE" STARTINCLINATION="125;21;" ENDINCLINATION="125;21;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
-<node TEXT="Nodo destinatario" ID="ID_450078201" CREATED="1280838860685" MODIFIED="1280838872763" VSHIFT="56"/>
+<node TEXT="Nodo destinatario" ID="ID_450078201" CREATED="1280838860685" MODIFIED="1280838872763" VSHIFT_QUANTITY="56.0 px"/>
 </node>
-<node TEXT="I collegamenti grafici possono essere formattati per sembrare dei collegamenti" FOLDED="true" ID="ID_819889601" CREATED="1280840738725" MODIFIED="1281346239210" HGAP="24" VSHIFT="19" COLOR="#407000">
+<node TEXT="I collegamenti grafici possono essere formattati per sembrare dei collegamenti" FOLDED="true" ID="ID_819889601" CREATED="1280840738725" MODIFIED="1281346239210" HGAP_QUANTITY="24.0 px" VSHIFT_QUANTITY="19.0 px" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<node TEXT="1" ID="ID_1293027527" CREATED="1280841406108" MODIFIED="1280841503532" HGAP="21" VSHIFT="-23">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_1744531235" STARTINCLINATION="45;0;" ENDINCLINATION="45;0;" STARTARROW="NONE" ENDARROW="NONE"/>
+<node TEXT="1" ID="ID_1293027527" CREATED="1280841406108" MODIFIED="1280841503532" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="-23.0 px">
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1744531235" STARTINCLINATION="45;0;" ENDINCLINATION="45;0;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
 <node TEXT="2" FOLDED="true" ID="ID_1898562702" CREATED="1280841409312" MODIFIED="1280841410171">
-<node TEXT="22" ID="ID_1744531235" CREATED="1280841426327" MODIFIED="1280841510688" HGAP="44"/>
+<node TEXT="22" ID="ID_1744531235" CREATED="1280841426327" MODIFIED="1280841510688" HGAP_QUANTITY="44.0 px"/>
 </node>
-<node TEXT="3" ID="ID_1673487352" CREATED="1280841410827" MODIFIED="1280841497953" HGAP="27" VSHIFT="22">
-<arrowlink EDGE_LIKE="true" DESTINATION="ID_1744531235" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="NONE"/>
+<node TEXT="3" ID="ID_1673487352" CREATED="1280841410827" MODIFIED="1280841497953" HGAP_QUANTITY="27.0 px" VSHIFT_QUANTITY="22.0 px">
+<arrowlink SHAPE="EDGE_LIKE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1744531235" STARTINCLINATION="46;0;" ENDINCLINATION="46;0;" STARTARROW="NONE" ENDARROW="NONE"/>
 </node>
 </node>
 <node TEXT="I collegamenti possono essere nascosti" FOLDED="true" ID="ID_294841155" CREATED="1280841586704" MODIFIED="1280841652987" COLOR="#407000">
@@ -473,14 +483,14 @@
 <edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="I nodi possono avere attributi" ID="ID_879501139" CREATED="1280841656393" MODIFIED="1281346270289" COLOR="#407000" LINK="#ID_1041784802">
+<node TEXT="I nodi possono avere attributi" ID="ID_879501139" CREATED="1280841656393" MODIFIED="1281346270289" LINK="#ID_1041784802" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <attribute NAME="X" VALUE="10"/>
 <attribute NAME="Y" VALUE="20"/>
 </node>
-<node TEXT="I nodi possono essere posizionati liberamente" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1124560950717" MODIFIED="1280840679177" COLOR="#407000" HGAP="19" VSHIFT="26">
-<node TEXT="Uno" ID="_Freeplane_Link_894936766" CREATED="1124560950717" MODIFIED="1264177913864" HGAP="-2" VSHIFT="-21"/>
-<node TEXT="Un&apos;altro" ID="_Freeplane_Link_1942481455" CREATED="1124560950717" MODIFIED="1264177920708" HGAP="215" VSHIFT="14"/>
+<node TEXT="I nodi possono essere posizionati liberamente" FOLDED="true" ID="_Freeplane_Link_127668276" CREATED="1124560950717" MODIFIED="1280840679177" COLOR="#407000" HGAP_QUANTITY="19.0 px" VSHIFT_QUANTITY="26.0 px">
+<node TEXT="Uno" ID="_Freeplane_Link_894936766" CREATED="1124560950717" MODIFIED="1264177913864" HGAP_QUANTITY="-2.0 px" VSHIFT_QUANTITY="-21.0 px"/>
+<node TEXT="Un&apos;altro" ID="_Freeplane_Link_1942481455" CREATED="1124560950717" MODIFIED="1264177920708" HGAP_QUANTITY="215.0 px" VSHIFT_QUANTITY="14.0 px"/>
 </node>
 </node>
 <node TEXT="Navigazione ed esplorazione della mappa" FOLDED="true" POSITION="right" ID="ID_418018884" CREATED="1280845405945" MODIFIED="1281280123406" COLOR="#006666">
@@ -491,19 +501,7 @@
 <node TEXT="Per spostarsi al nodo pi&#xf9; alto del ramo corrente, Pag. Su" ID="ID_716871966" CREATED="1280846619990" MODIFIED="1280846737211"/>
 <node TEXT="Per spostarsi al nodo pi&#xf9; basso del ramo corrente, Pag. Giu" ID="ID_1800037789" CREATED="1280846670929" MODIFIED="1280846722617"/>
 <node TEXT="Per spostarsi al nodo centrale premere Esc" ID="ID_827891383" CREATED="1280846751118" MODIFIED="1280846763634"/>
-<node ID="ID_1406866713" CREATED="1280848768285" MODIFIED="1281007712263">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per spostarsi avanti e indietro nella cronologia dei nodi visitati, usare Naviga -&gt; Avanti <b>(Alt+Destra)</b>&#160;o Indietro <b>(Alt+Sinistra)</b>
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per spostarsi avanti e indietro nella cronologia dei nodi visitati, usare Naviga -&amp;gt; Avanti &lt;b&gt;(Alt+Destra)&lt;/b&gt;&amp;#160;o Indietro &lt;b&gt;(Alt+Sinistra)&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1406866713" CREATED="1280848768285" MODIFIED="1281007712263"/>
 <node TEXT="Per visitare tutti i nodi di una mappa, usare Naviga &gt; Nodo Successivo (Ctrl + Alt + Destra) e Nodo Precedente (Ctrl + Alt + Sinistra)" ID="ID_501983345" CREATED="1280999285981" MODIFIED="1281006773230"/>
 <node TEXT="Per collassare i nodi dopo averli visualizzati, usare Naviga &gt; Nodo Successivo (collassa) (Ctrl + Alt + Shift + Destra) e Nodo Precedente (collassa) (Ctrl + Alt + Shift + Sinistra)" ID="ID_1282565645" CREATED="1281006794011" MODIFIED="1281007151639"/>
 <node TEXT="Premere Ctrl+F per cercare. Premere Ctrl + G per cercare ancora. La ricerca sar&#xe0; effettuata nel nodo selezionato ed in tutti i suoi figli. Per cercare in tutta la mappa, premere Esc per tornare al nodo centrale, prima della ricerca." ID="ID_1238769160" CREATED="1124560950701" MODIFIED="1281007770156">
@@ -548,62 +546,17 @@
 <node TEXT="Ricerca e Filtri" FOLDED="true" ID="Freeplane_Link_423038022" CREATED="1124560950717" MODIFIED="1281084461314" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <node TEXT="E&apos; possibile cercare e filtrare nodi in base al testo contenuto, icone, tempo di creazione/modifica, posizione, priorit&#xe0;, collegamenti grafici, collegamenti ipertestuali, note e attributi." ID="ID_1567618889" CREATED="1281083881609" MODIFIED="1281083966500"/>
-<node ID="ID_966700848" CREATED="1124560950717" MODIFIED="1281084446422">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per cercare un testo in un nodo ed in tutti i suoi nodi discendenti, premere <b>Ctrl+F</b>&#160;o scegliere &quot;Trova...&quot; dal menu Modifica.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per cercare un testo in un nodo ed in tutti i suoi nodi discendenti, premere &lt;b&gt;Ctrl+F&lt;/b&gt;&amp;#160;o scegliere &amp;quot;Trova...&amp;quot; dal menu Modifica.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_966700848" CREATED="1124560950717" MODIFIED="1281084446422">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1646223708" CREATED="1124560950717" MODIFIED="1281084454610">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per ripetere la ricerca e cercare il testo successivo, premere <b>Ctrl+G</b>&#160; o dal menu &quot;Modifica&quot; scegliere Trova successivo.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per ripetere la ricerca e cercare il testo successivo, premere &lt;b&gt;Ctrl+G&lt;/b&gt;&amp;#160; o dal menu &amp;quot;Modifica&amp;quot; scegliere Trova successivo.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1646223708" CREATED="1124560950717" MODIFIED="1281084454610">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="La ricerca &#xe8; in base alla profondit&#xe0;. Cio&#xe8; la ricerca parte dai nodi pi&#xf9; vicini al nodo centrale, in modo da riportare prima le idee principali, quindi i dettagli." ID="ID_829330412" CREATED="1124560950717" MODIFIED="1264682452232"/>
 <node TEXT="Per cercare nell&apos;intera mappa, selezionare il nodo centrale ad esempio premendo Esc, prima della ricerca." ID="ID_488311689" CREATED="1124560950717" MODIFIED="1264608058234"/>
 <node TEXT="Ricordare che la ricerca non viene effettuata su tutta la mappa, ma solo sul nodo selezionato e su tutti i suoi discendenti." ID="ID_779591913" CREATED="1124560950717" MODIFIED="1264682514702"/>
-<node ID="ID_790814993" CREATED="1281084100064" MODIFIED="1281084405512">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Il comando <b>Trova e sostituisci</b>, &#232; una ricerca avanzata con la possibilit&#224; di sostituire un testo. Viene visualizzato anche un elenco di tutti i nodi.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_113607096" CREATED="1281084223533" MODIFIED="1281084431921">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Il comando <b>Trova e sostituisci in tutte le mappe</b>, effettua l'azione su tutte le mappe aperte.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Il comando &lt;b&gt;Trova e sostituisci&lt;/b&gt;, &amp;#232; una ricerca avanzata con la possibilit&amp;#224; di sostituire un testo. Viene visualizzato anche un elenco di tutti i nodi.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_790814993" CREATED="1281084100064" MODIFIED="1281084405512"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Il comando &lt;b&gt;Trova e sostituisci in tutte le mappe&lt;/b&gt;, effettua l&apos;azione su tutte le mappe aperte.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_113607096" CREATED="1281084223533" MODIFIED="1281084431921">
 <font BOLD="false"/>
 </node>
 <node TEXT="E&apos; possibile costruire anche dei filtri per vedere solo i nodi di interesse. Usare la barra dei filtri o il menu Filtra." ID="ID_1646245084" CREATED="1281084329501" MODIFIED="1281084390478"/>
@@ -614,19 +567,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node TEXT="Per scorrere le mappe aperte, usare il menu Naviga &gt; Mappa precedente (Shift + Alt + Sinistra) e Mappa Successiva (Shift + Alt + Destra)" ID="ID_844364399" CREATED="1281084584305" MODIFIED="1281084653496"/>
-<node ID="ID_620055192" CREATED="1281084674076" MODIFIED="1281084716875">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per commutare tra le ultime due mappe modificare, usare <b>Ctrl + 1</b>
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per commutare tra le ultime due mappe modificare, usare &lt;b&gt;Ctrl + 1&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_620055192" CREATED="1281084674076" MODIFIED="1281084716875"/>
 </node>
 </node>
 <node TEXT="Modificare il contenuto della mappa" FOLDED="true" POSITION="right" ID="ID_1395035101" CREATED="1280845450820" MODIFIED="1281279920359" COLOR="#006666">
@@ -642,25 +583,13 @@
 </node>
 <node TEXT="Editare il testo di un nodo" FOLDED="true" ID="Freeplane_Link_1700974092" CREATED="1124560950717" MODIFIED="1281087973970" COLOR="#407000">
 <node TEXT="Per editare un nodo, premere il tasto F2, Home o Fine o nel men&#xf9; contestuale scegliere &quot;Modifica Nodo&quot;. Per terminare, premere Invio oppure Ins per terminare ed inserire un nuovo nodo figlio." ID="_Freeplane_Link_519923426" CREATED="1124560950717" MODIFIED="1281087571139">
-<arrowlink DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_519923426" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Per sostituire il testo del nodo selezionato, semplicemente iniziare a scrivere." ID="ID_309576072" CREATED="1124560950717" MODIFIED="1264179361749"/>
-<node ID="ID_1312466817" CREATED="1124560950717" MODIFIED="1281087638389">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#006666">Per</font>&#160;<b>scrivere</b>&#160;<font size="5">testi</font>&#160;<font face="Arial Black">pi&#249;</font>&#160;<u><i>elaborati</i></u>, premere Alt + Invio o scegliere il comando Formato &gt; Usa formattazione testo avanzata.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;font color=&quot;#006666&quot;&gt;Per&lt;/font&gt;&amp;#160;&lt;b&gt;scrivere&lt;/b&gt;&amp;#160;&lt;font size=&quot;5&quot;&gt;testi&lt;/font&gt;&amp;#160;&lt;font face=&quot;Arial Black&quot;&gt;pi&amp;#249;&lt;/font&gt;&amp;#160;&lt;u&gt;&lt;i&gt;elaborati&lt;/i&gt;&lt;/u&gt;, premere Alt + Invio o scegliere il comando Formato &amp;gt; Usa formattazione testo avanzata.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1312466817" CREATED="1124560950717" MODIFIED="1281087638389"/>
 <node TEXT="Per dividere un nodo con testo avanzato, usare il tasto &quot;Dividi&quot; sotto alla finestra dell&apos;editor, o premere Alt + D." ID="ID_1313747130" CREATED="1124560950717" MODIFIED="1264349097704"/>
 <node TEXT="Per inserire una linea vuota nel testo avanzato, premere Ctrl + Invio." ID="ID_274195390" CREATED="1124560950717" MODIFIED="1266589639335">
-<arrowlink DESTINATION="_Freeplane_Link_1445647544" STARTINCLINATION="118;0;" ENDINCLINATION="118;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1445647544" STARTINCLINATION="118;0;" ENDINCLINATION="118;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Per copiare la selezione corrente durante la modfica avanzata, premere il tasto destro del mouse e scegliere copia." ID="ID_1426436726" CREATED="1124560950717" MODIFIED="1264350033282"/>
 <node TEXT="Per inserire un simbolo speciale come &#xa9;, inserirlo nel vostro editor di testo favorito, ad esempio open office, ed incollarlo in freeplane." ID="ID_1461873887" CREATED="1124560950717" MODIFIED="1264350729219"/>
@@ -757,7 +686,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Google" ID="ID_1246514257" CREATED="1124560950732" MODIFIED="1124560950732" COLOR="#996600" LINK="http://www.google.com/">
+<node TEXT="Google" ID="ID_1246514257" CREATED="1124560950732" MODIFIED="1124560950732" LINK="http://www.google.com/" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
@@ -768,38 +697,11 @@
 <node TEXT="I collegamenti ipertestuali possono fare riferimento a file locali, pagine internet o indirizzi email." ID="ID_1984331453" CREATED="1124560950717" MODIFIED="1264424998728"/>
 <node TEXT="Per aggiungere un collegamento ipertestuale, premere Ctrl + K o nel menu contestuale usare Inserisci - Collegamento ipertestuale web." ID="ID_43116335" CREATED="1124560950717" MODIFIED="1264424932666"/>
 <node TEXT="Per rimuoverlo, cancellare il contenuto del campo, dopo aver premuto Ctrl + K." ID="ID_118433387" CREATED="1124560950717" MODIFIED="1264424649416"/>
-<node ID="ID_1544807906" CREATED="1124560950717" MODIFIED="1264424769150">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    Per creare un collegamento ad un indirizzo email, usare il formato:
-
-    <p>
-      <i>mailto:don.bonton@supermail.com</i>.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    Per creare un collegamento ad un indirizzo email, usare il formato:&#xa;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;mailto:don.bonton@supermail.com&lt;/i&gt;.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1544807906" CREATED="1124560950717" MODIFIED="1264424769150">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1339265232" CREATED="1124560950717" MODIFIED="1265113593467">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    Per creare un collegamento ad un indirizzo email inserendo gi&#224; il soggetto, usare il formato:
-
-    <p>
-      <i>mailto:don.bonton@supermail.com?subject=Ultima telefonata</i>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    Per creare un collegamento ad un indirizzo email inserendo gi&amp;#224; il soggetto, usare il formato:&#xa;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;mailto:don.bonton@supermail.com?subject=Ultima telefonata&lt;/i&gt;.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1339265232" CREATED="1124560950717" MODIFIED="1265113593467"/>
 <node TEXT="Per creare un collegamento ad uno o pi&#xf9; file, selezionarlo in esplora file e copiarlo. In freeplane, selezionare semplicemente un nodo e dare il comando incolla." ID="ID_1742297791" CREATED="1264425072041" MODIFIED="1266590084562"/>
 <node TEXT="Per creare un collegamento ad una pagina web, copiare l&apos;indirizzo nel browser ed incollarlo in freeplane, non si deve essere in modifica, il  nodo deve essere solo selezionato." ID="ID_1748638430" CREATED="1264440352008" MODIFIED="1266590086265"/>
 </node>
@@ -847,8 +749,8 @@
 <node TEXT="Aggiungere note" FOLDED="true" ID="ID_491043541" CREATED="1281103662038" MODIFIED="1281272231340" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <edge WIDTH="thin"/>
-<node TEXT="Un nodo pu&#xf2; avere un testo avanzato allegato come nota. L&apos;icona all&apos;inizio di questo ramo indica che c&apos;&#xe8; una nota allegata. Posizionarsi sopra col mouse per visualizzarla" ID="ID_762650615" CREATED="1271096065323" MODIFIED="1281110928814">
-<richcontent TYPE="NOTE">
+<node TEXT="Un nodo pu&#xf2; avere un testo avanzato allegato come nota. L&apos;icona all&apos;inizio di questo ramo indica che c&apos;&#xe8; una nota allegata. Posizionarsi sopra col mouse per visualizzarla" ID="ID_762650615" CREATED="1271096065323" MODIFIED="1281110928814"><richcontent TYPE="NOTE">
+
 <html>
   <head>
     
@@ -858,7 +760,8 @@
       Questo nodo ha una<u>&#160;nota </u><b>allegata</b>.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="Questo testo pu&#xf2; essere modificato nella finestra delle note" ID="ID_414462622" CREATED="1271096088819" MODIFIED="1281109993286"/>
 <node TEXT="Usare Modifica &gt; Modifica note per commutare tra la finestra principale e quella delle note o Ctrl + &lt; ." ID="ID_1743035107" CREATED="1271096117483" MODIFIED="1281110863220">
@@ -866,9 +769,9 @@
 </node>
 <node TEXT="La finestra di modifica delle note, pu&#xf2; essere posizionata liberamente, usando Visualizza &gt; Posizione finestra delle note." ID="ID_1394490930" CREATED="1271096150723" MODIFIED="1281272201309"/>
 </node>
-<node TEXT="Collegamenti grafici" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1124560950717" MODIFIED="1281272592903" COLOR="#407000" LINK="#ID_1234443629">
+<node TEXT="Collegamenti grafici" FOLDED="true" ID="_Freeplane_Link_1996597932" CREATED="1124560950717" MODIFIED="1281272592903" LINK="#ID_1234443629" COLOR="#407000">
 <node TEXT="Per creare un collegamento grafico tra due nodi, selezionare un nodo e tenendo premuto i tasti Shift e Ctrl trascinarlo sul secondo nodo; Rilasciare il pulsante del mouse prima di aver rilasciato i tasti Shift e Ctrl." ID="ID_985897417" CREATED="1124560950717" MODIFIED="1266487915471">
-<arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="255;0;" ENDINCLINATION="255;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="E&apos; anche possibile trascinare un nodo e rilasciarlo usando il tasto destro del mouse." ID="ID_201784782" CREATED="1124560950717" MODIFIED="1264753262546"/>
 <node TEXT="Alternativamente &#xe8; possibile selezionare due nodi usando il tasto Ctrl e scegliere &quot;Aggiungi Collegamento grafico&quot; dal menu inserisci o usando i tasti rapidi Ctrl + L" ID="ID_1564001222" CREATED="1216753755454" MODIFIED="1266487938112"/>
@@ -878,18 +781,18 @@
 <node TEXT="Per cancellarlo usare il menu contestuale, tasto destro mouse sul collegamento grafico" ID="ID_1970882825" CREATED="1124560950717" MODIFIED="1266487973862"/>
 <node TEXT="Per spostarsi da una estremit&#xe0; all&apos;altra, usare il menu contestuale &quot;vai a&quot;." ID="_Freeplane_Link_266716332" CREATED="1124560950717" MODIFIED="1264596736155"/>
 <node TEXT="Per cambiare il percorso, selezionarlo e muoverlo." ID="_Freeplane_Link_1015289745" CREATED="1124560950717" MODIFIED="1281272413919">
-<arrowlink DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="243;35;" ENDINCLINATION="255;31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_266716332" STARTINCLINATION="243;35;" ENDINCLINATION="255;31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Di seguito un esempio di Collegamenti grafici" ID="ID_1872914317" CREATED="1124560950717" MODIFIED="1266487996659"/>
 <node TEXT="Esempio" FOLDED="true" ID="ID_46167995" CREATED="1124560950717" MODIFIED="1264596783453" COLOR="#996600">
 <node TEXT="Collegamento ad un&apos;altra parte" ID="_Freeplane_Link_1170112929" CREATED="1124560950717" MODIFIED="1264596803562" COLOR="#996600">
-<arrowlink COLOR="#9999ff" DESTINATION="_Freeplane_Link_1492563156" STARTINCLINATION="30;0;" ENDINCLINATION="116;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#9999ff" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1492563156" STARTINCLINATION="30;0;" ENDINCLINATION="116;0;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Nodo con discendente collassato" ID="ID_1991835511" CREATED="1124560950717" MODIFIED="1264682544671" COLOR="#996600">
 <node TEXT="Subnodo" ID="_Freeplane_Link_1492563156" CREATED="1124560950717" MODIFIED="1266488016268"/>
 </node>
 <node TEXT="Un&apos;altro collegamento" ID="_Freeplane_Link_1370577235" CREATED="1124560950717" MODIFIED="1281272538872" COLOR="#996600">
-<arrowlink DESTINATION="_Freeplane_Link_1170112929" SOURCE_LABEL="Etichetta" STARTINCLINATION="63;7;" ENDINCLINATION="63;7;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="_Freeplane_Link_1170112929" SOURCE_LABEL="Etichetta" STARTINCLINATION="63;7;" ENDINCLINATION="63;7;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 </node>
@@ -906,65 +809,7 @@
 </node>
 <node TEXT="Usando testo avanzato (rich text) tramite l&apos;HTML nei nodi" FOLDED="true" ID="Freeplane_Link_841140408" CREATED="1124560950732" MODIFIED="1281273089997" COLOR="#407000">
 <node TEXT="E&apos; possibile usare HTML nei nodi" ID="ID_1312572391" CREATED="1281273203090" MODIFIED="1281273218700"/>
-<node ID="ID_500316127" CREATED="1124560950732" MODIFIED="1265116137663">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <h3>
-      Esempio HTML
-    </h3>
-    <p class="msonormal">
-      Ci sono diversi elementi:
-    </p>
-    <ul type="disc">
-      <li class="msonormal">
-        Elemento uno
-      </li>
-      <li class="msonormal">
-        Elemento due
-      </li>
-    </ul>
-    <p class="msonormal">
-      E' possibile rendere <b>grassetto</b>&#160;or <i>corsivo</i>. <u>Sottolineato</u>&#160;o <strike>barrato</strike>&#160;&#160;a piacere.
-    </p>
-    <p class="msonormal">
-      E' possibile avere anche tabelle:
-    </p>
-    <table style="border: none" border="1" cellpadding="0" class="msonormaltable" cellspacing="0">
-      <tr>
-        <td style="border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-top: .75pt; padding-left: .75pt; padding-right: .75pt">
-          <p class="msonormal">
-            Cell1
-          </p>
-        </td>
-        <td style="padding-bottom: .75pt; border: solid windowtext 1.0pt; border-left: none; padding-top: .75pt; padding-left: .75pt; padding-right: .75pt">
-          <p class="msonormal">
-            Cell2
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding-bottom: .75pt; border: solid windowtext 1.0pt; padding-top: .75pt; border-top: none; padding-left: .75pt; padding-right: .75pt">
-          <p class="msonormal">
-            Cell3
-          </p>
-        </td>
-        <td style="border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding-bottom: .75pt; border-left: none; padding-top: .75pt; padding-left: .75pt; border-top: none; padding-right: .75pt">
-          <p class="msonormal">
-            Cell4.
-          </p>
-        </td>
-      </tr>
-    </table>
-    <p class="msonormal">
-      E avere diversi <font color="#990000">colori.</font>
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;h3&gt;&#xa;      Esempio HTML&#xa;    &lt;/h3&gt;&#xa;    &lt;p class=&quot;msonormal&quot;&gt;&#xa;      Ci sono diversi elementi:&#xa;    &lt;/p&gt;&#xa;    &lt;ul type=&quot;disc&quot;&gt;&#xa;      &lt;li class=&quot;msonormal&quot;&gt;&#xa;        Elemento uno&#xa;      &lt;/li&gt;&#xa;      &lt;li class=&quot;msonormal&quot;&gt;&#xa;        Elemento due&#xa;      &lt;/li&gt;&#xa;    &lt;/ul&gt;&#xa;    &lt;p class=&quot;msonormal&quot;&gt;&#xa;      E&apos; possibile rendere &lt;b&gt;grassetto&lt;/b&gt;&amp;#160;or &lt;i&gt;corsivo&lt;/i&gt;. &lt;u&gt;Sottolineato&lt;/u&gt;&amp;#160;o &lt;strike&gt;barrato&lt;/strike&gt;&amp;#160;&amp;#160;a piacere.&#xa;    &lt;/p&gt;&#xa;    &lt;p class=&quot;msonormal&quot;&gt;&#xa;      E&apos; possibile avere anche tabelle:&#xa;    &lt;/p&gt;&#xa;    &lt;table style=&quot;border: none&quot; border=&quot;1&quot; cellpadding=&quot;0&quot; class=&quot;msonormaltable&quot; cellspacing=&quot;0&quot;&gt;&#xa;      &lt;tr&gt;&#xa;        &lt;td style=&quot;border: solid windowtext 1.0pt; padding-bottom: .75pt; padding-top: .75pt; padding-left: .75pt; padding-right: .75pt&quot;&gt;&#xa;          &lt;p class=&quot;msonormal&quot;&gt;&#xa;            Cell1&#xa;          &lt;/p&gt;&#xa;        &lt;/td&gt;&#xa;        &lt;td style=&quot;padding-bottom: .75pt; border: solid windowtext 1.0pt; border-left: none; padding-top: .75pt; padding-left: .75pt; padding-right: .75pt&quot;&gt;&#xa;          &lt;p class=&quot;msonormal&quot;&gt;&#xa;            Cell2&#xa;          &lt;/p&gt;&#xa;        &lt;/td&gt;&#xa;      &lt;/tr&gt;&#xa;      &lt;tr&gt;&#xa;        &lt;td style=&quot;padding-bottom: .75pt; border: solid windowtext 1.0pt; padding-top: .75pt; border-top: none; padding-left: .75pt; padding-right: .75pt&quot;&gt;&#xa;          &lt;p class=&quot;msonormal&quot;&gt;&#xa;            Cell3&#xa;          &lt;/p&gt;&#xa;        &lt;/td&gt;&#xa;        &lt;td style=&quot;border-bottom: solid windowtext 1.0pt; border-right: solid windowtext 1.0pt; padding-bottom: .75pt; border-left: none; padding-top: .75pt; padding-left: .75pt; border-top: none; padding-right: .75pt&quot;&gt;&#xa;          &lt;p class=&quot;msonormal&quot;&gt;&#xa;            Cell4.&#xa;          &lt;/p&gt;&#xa;        &lt;/td&gt;&#xa;      &lt;/tr&gt;&#xa;    &lt;/table&gt;&#xa;    &lt;p class=&quot;msonormal&quot;&gt;&#xa;      E avere diversi &lt;font color=&quot;#990000&quot;&gt;colori.&lt;/font&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_500316127" CREATED="1124560950732" MODIFIED="1265116137663"/>
 <node TEXT="Formato &gt; Usa formattazione testo avanzata (Alt + Shift + R)&#xa;e Formato &gt;Usa formattazione testo semplice (Alt + Shift + P) abilita e disabilita la formattazione testo avanzato." ID="ID_1651143780" CREATED="1281273225747" MODIFIED="1281273375419"/>
 <node TEXT="I nodi che iniziano con &lt;html&gt; sono rappresentati usando il codice HTML in essi contenuto. Questa caratteristica &#xe8; utile solo per chi conosce il codice HTML. Ecco un esempio." ID="ID_728074598" CREATED="1124560950732" MODIFIED="1265115170921"/>
 <node TEXT="Non c&apos;&#xe8; per&#xf2; alcun supporto ai nodi HTML ed alle immagini per l&apos;esportazione in formato testo. Usare HTML &#xe8; utile per la pubblicazione web usando l&apos;Applet di Freeplane." ID="ID_363130921" CREATED="1124560950732" MODIFIED="1265116277757">
@@ -990,49 +835,25 @@
 </node>
 <node TEXT="Esempio di immagini, funzionano solo su alcune versioni di Windows" FOLDED="true" ID="Freeplane_Link_1825247742" CREATED="1124560950732" MODIFIED="1266590214346" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12" BOLD="true"/>
-<node ID="ID_1796884514" CREATED="1124560950732" MODIFIED="1265285905216">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/Windows/web/wallpaper/pesci.jpg"/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_929740034" CREATED="1124560950732" MODIFIED="1265286485564">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <img src="file:/C:/WINDOWS/Help/Tours/htmlTour/connected_data_big.jpg"/>
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;img src=&quot;file:/C:/Windows/web/wallpaper/pesci.jpg&quot;&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1796884514" CREATED="1124560950732" MODIFIED="1265285905216"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;img src=&quot;file:/C:/WINDOWS/Help/Tours/htmlTour/connected_data_big.jpg&quot;&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_929740034" CREATED="1124560950732" MODIFIED="1265286485564"/>
 <node TEXT="Stonehenge.jpg" FOLDED="true" ID="ID_1565800396" CREATED="1265285803981" MODIFIED="1265285803981" LINK="file:/C:/WINDOWS/Web/Wallpaper/Stonehenge.jpg">
 <node TEXT="Tropici.jpg" ID="ID_1655134105" CREATED="1265285823091" MODIFIED="1265285823091" LINK="file:/C:/WINDOWS/Web/Wallpaper/Tropici.jpg"/>
 </node>
 <node TEXT="connected_wizard_big.jpg" ID="ID_1056169848" CREATED="1265286340078" MODIFIED="1281276597390" LINK="file:/C:/WINDOWS/Help/Tours/htmlTour/connected_wizard_big.jpg">
-<arrowlink DESTINATION="ID_1565800396" STARTINCLINATION="59;0;" ENDINCLINATION="59;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1565800396" STARTINCLINATION="59;0;" ENDINCLINATION="59;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="best_secure.jpg" ID="ID_1924901103" CREATED="1265286340078" MODIFIED="1281276597390" LINK="file:/C:/WINDOWS/Help/Tours/htmlTour/best_secure.jpg">
-<arrowlink DESTINATION="ID_1565800396" STARTINCLINATION="42;0;" ENDINCLINATION="42;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1565800396" STARTINCLINATION="42;0;" ENDINCLINATION="42;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="connected_data_big.jpg" ID="ID_666612005" CREATED="1265286340078" MODIFIED="1281276597390" LINK="file:/C:/WINDOWS/Help/Tours/htmlTour/connected_data_big.jpg">
-<arrowlink DESTINATION="ID_1565800396" STARTINCLINATION="77;0;" ENDINCLINATION="77;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1565800396" STARTINCLINATION="77;0;" ENDINCLINATION="77;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="connected_multiple.jpg" ID="ID_713772237" CREATED="1265286340078" MODIFIED="1281276597390" LINK="file:/C:/WINDOWS/Help/Tours/htmlTour/connected_multiple.jpg">
-<arrowlink DESTINATION="ID_1565800396" STARTINCLINATION="93;0;" ENDINCLINATION="93;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1565800396" STARTINCLINATION="93;0;" ENDINCLINATION="93;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 <node TEXT="Selezionando uno o pi&#xf9; nodi precedenti e dare il comando Inserisci &gt; Immagini (Alt + Shift + K) per trasformare i collegamenti in immagini" ID="ID_824926014" CREATED="1281276301468" MODIFIED="1281276632421">
-<arrowlink DESTINATION="ID_1565800396" STARTINCLINATION="509;0;" ENDINCLINATION="509;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1565800396" STARTINCLINATION="509;0;" ENDINCLINATION="509;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
 </node>
 </node>
@@ -1063,64 +884,19 @@
 <node TEXT="La visualizzazione lineare &#xe8; migliore per stampare mappe grandi" ID="ID_1468424700" CREATED="1281278029656" MODIFIED="1281278067562"/>
 </node>
 <node TEXT="Formattare un nodo" FOLDED="true" ID="Freeplane_Link_1660149394" CREATED="1124560950717" MODIFIED="1281278695187" COLOR="#407000">
-<node ID="ID_1173167518" CREATED="1124560950717" MODIFIED="1281278198500">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per trasformare tutto il testo del nodo selezionato in <b>Grassetto</b>, premere Ctrl + B.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per trasformare tutto il testo del nodo selezionato in &lt;b&gt;Grassetto&lt;/b&gt;, premere Ctrl + B.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1173167518" CREATED="1124560950717" MODIFIED="1281278198500">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1510179977" CREATED="1124560950717" MODIFIED="1281278207046">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per trasformare tutto il testo del nodo selezionato in <i>Corsivo</i>, premere Ctrl + I.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per trasformare tutto il testo del nodo selezionato in &lt;i&gt;Corsivo&lt;/i&gt;, premere Ctrl + I.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1510179977" CREATED="1124560950717" MODIFIED="1281278207046">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1156308247" CREATED="1124560950717" MODIFIED="1281278290296">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per trasformare tutto il <font color="#009933">colore</font>&#160;testo del nodo selezionato, usare Formato &gt; Colore testo nodo o premere Alt+Shift+F
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per trasformare tutto il &lt;font color=&quot;#009933&quot;&gt;colore&lt;/font&gt;&amp;#160;testo del nodo selezionato, usare Formato &amp;gt; Colore testo nodo o premere Alt+Shift+F&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1156308247" CREATED="1124560950717" MODIFIED="1281278290296">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node ID="ID_1322155516" CREATED="1124560950717" MODIFIED="1281278312750" BACKGROUND_COLOR="#ffffff">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p bgcolor="#999900" style="background-color: #999900; font-style: normal; font-weight: normal">
-      Per cambiare il <font color="#ff0033">colore di sfondo</font>&#160;del nodo selezionato, usare Formato &gt; Colore sfondo nodo.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p bgcolor=&quot;#999900&quot; style=&quot;background-color: #999900; font-style: normal; font-weight: normal&quot;&gt;&#xa;      Per cambiare il &lt;font color=&quot;#ff0033&quot;&gt;colore di sfondo&lt;/font&gt;&amp;#160;del nodo selezionato, usare Formato &amp;gt; Colore sfondo nodo.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1322155516" CREATED="1124560950717" MODIFIED="1281278312750" BACKGROUND_COLOR="#ffffff"/>
 <node TEXT="Per incrementare la dimensione del testo, usare Formato &gt; Aumenta carattere o premere i tasti Ctrl e + (non sul tastierino numerico)." ID="ID_1133062099" CREATED="1124560950717" MODIFIED="1281278456531">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="14"/>
@@ -1160,19 +936,7 @@
 <node TEXT="Usare Stile Fisico" FOLDED="true" ID="Freeplane_Link_526328879" CREATED="1124560950717" MODIFIED="1266590062999" COLOR="#407000">
 <node TEXT="Per applicare uno stile fisico, nel menu contestuale o principale usare  Stile fisco &gt; Stile a vostra scelta. Per velocizzarne l&apos;utilizzo, usare le scorciatoie da tastiera come mostrato nel menu." ID="ID_1536109240" CREATED="1124560950717" MODIFIED="1281279359156"/>
 <node TEXT="Per aggiungere uno stile personalizzato, andare nel menu Formato - Stile Fisico - Gestisci schemi." ID="ID_1043170096" CREATED="1124560950717" MODIFIED="1266590065983"/>
-<node ID="Freeplane_Link_1514218661" CREATED="1124560950717" MODIFIED="1281280843296" LINK="#ID_1478588436">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per <b>impostare i tasti rapidi</b>&#160;degli stili, andare nel menu Formato - Stile Fisico e tenendo premuto il stato Ctrl premere sullo stile a cui si vuole assegnare un tasto (come se si volesse usare il comando, ma premere Ctrl). Apparir&#224; una finestra che chieder&#224; quale tasto o combinazione di tasti assegnare.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per &lt;b&gt;impostare i tasti rapidi&lt;/b&gt;&amp;#160;degli stili, andare nel menu Formato - Stile Fisico e tenendo premuto il stato Ctrl premere sullo stile a cui si vuole assegnare un tasto (come se si volesse usare il comando, ma premere Ctrl). Apparir&amp;#224; una finestra che chieder&amp;#224; quale tasto o combinazione di tasti assegnare.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="Freeplane_Link_1514218661" CREATED="1124560950717" MODIFIED="1281280843296" LINK="#ID_1478588436"/>
 </node>
 <node TEXT="Formattazione automatica" FOLDED="true" ID="ID_1643494769" CREATED="1281279223015" MODIFIED="1281279233812" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
@@ -1185,9 +949,9 @@
 <node TEXT="Per aggiungere una nuvola, premere Ctrl + Shift + B o usare il menu contestuale (Inserisci &gt; Nuvola) o l&apos;icona nella barra principale." ID="ID_1892877253" CREATED="1124560950717" MODIFIED="1281279953812"/>
 <node TEXT="Per cambiarne il colore, nel menu contestuale usare Formato &gt; Colore Nuvola o l&apos;icona nella barra principale." ID="ID_663408158" CREATED="1124560950717" MODIFIED="1281279967390"/>
 <node TEXT="Le nuvole possono avere vari colori di sfondo, come verde ..." FOLDED="true" ID="ID_1958126929" CREATED="1124560950717" MODIFIED="1264423224914">
-<cloud COLOR="#e1f2e1" WIDTH="0"/>
+<cloud COLOR="#e1f2e1" SHAPE="ARC"/>
 <node TEXT="... o marrone." ID="ID_1302420936" CREATED="1124560950717" MODIFIED="1264423235820">
-<cloud COLOR="#ede5d5" WIDTH="0"/>
+<cloud COLOR="#ede5d5" SHAPE="ARC"/>
 </node>
 </node>
 </node>
@@ -1196,18 +960,7 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Impostare le preferenze" ID="Freeplane_Link_1822195277" CREATED="1124560950732" MODIFIED="1266590185470" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node FOLDED="true" ID="ID_1568044052" CREATED="1124560950732" MODIFIED="1281346142289">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per modificare le preferenze, dal menu <b>Strumenti</b>&#160;selezionare <b>Preferenze</b>. Oppure premere <b><font size="4">Ctrl ,</font></b>&#160;. Su Mac, si trovano in &quot;Freeplane application menu&quot;.&#160;&#160;Molte delle modifiche avranno effetto solo dopo aver riavviato Freeplane.
-    </p>
-  </body>
-</html></richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per modificare le preferenze, dal menu &lt;b&gt;Strumenti&lt;/b&gt;&amp;#160;selezionare &lt;b&gt;Preferenze&lt;/b&gt;. Oppure premere &lt;b&gt;&lt;font size=&quot;4&quot;&gt;Ctrl ,&lt;/font&gt;&lt;/b&gt;&amp;#160;. Su Mac, si trovano in &amp;quot;Freeplane application menu&amp;quot;.&amp;#160;&amp;#160;Molte delle modifiche avranno effetto solo dopo aver riavviato Freeplane.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="true" ID="ID_1568044052" CREATED="1124560950732" MODIFIED="1281346142289">
 <node TEXT="E&apos; possibile impostare i tasti rapidi, la modalit&#xe0; di esportazione HTML, il modo di selezionare i nodi, la grafica antialiasing e moltissime altre opzioni." ID="ID_546886704" CREATED="1124560950732" MODIFIED="1265114032533"/>
 </node>
 <node TEXT="Per assegnare un tasto rapido ad una voce del menu, usare Strumenti &gt; Assegna scorciatoia. Poi cliccare sul menu desiderato e inserire la nuova combinazione di tasti. Se l&apos;assegnamento &#xe8; gi&#xe0; in uso, ci sar&#xe0; un avviso con richiesta di conferma." ID="ID_1440276670" CREATED="1281280331750" MODIFIED="1281280505812"/>
@@ -1217,36 +970,12 @@
 </node>
 <node TEXT="Usando il blocco file aperti da altri utenti" FOLDED="true" ID="ID_888201444" CREATED="1124560950732" MODIFIED="1266590220642" COLOR="#407000">
 <node TEXT="La versione attuale di Freeplane, ha il blocco file inizialmente disabilitato." ID="ID_558116372" CREATED="1124560950732" MODIFIED="1281277241234"/>
-<node ID="ID_162718243" CREATED="1124560950732" MODIFIED="1265287301866">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per abilitare la funzione, dal menu <b>Strumenti</b>&#160;scegliere <b>Ambiente</b>, quindi selezionare il flag <b>Blocco file aperti da altri utenti</b>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per abilitare la funzione, dal menu &lt;b&gt;Strumenti&lt;/b&gt;&amp;#160;scegliere &lt;b&gt;Ambiente&lt;/b&gt;, quindi selezionare il flag &lt;b&gt;Blocco file aperti da altri utenti&lt;/b&gt;.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_162718243" CREATED="1124560950732" MODIFIED="1265287301866"/>
 <node TEXT="Il blocco file si assicura che pi&#xf9; di un utente non editi la stessa mappa contemporaneamente. Viene cos&#xec; impedita la sovrascrittura accidentale con possibili perdite di dati." ID="ID_894551902" CREATED="1124560950732" MODIFIED="1265287213240"/>
 </node>
 <node TEXT="Stampa" FOLDED="true" ID="Freeplane_Link_1528828442" CREATED="1124560950732" MODIFIED="1281336068789" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
-<node ID="ID_395608743" CREATED="1124560950732" MODIFIED="1265114438525">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      E' possibile stampare in modo da adattare la mappa alla pagina o stamparla su pi&#249; pagine. La scelta si trova nel menu <b>File</b>&#160;- <b>Impostazione Pagina</b>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      E&apos; possibile stampare in modo da adattare la mappa alla pagina o stamparla su pi&amp;#249; pagine. La scelta si trova nel menu &lt;b&gt;File&lt;/b&gt;&amp;#160;- &lt;b&gt;Impostazione Pagina&lt;/b&gt;.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_395608743" CREATED="1124560950732" MODIFIED="1265114438525"/>
 <node TEXT="Per migliorare l&apos;uso dello spazio, impostare la pagina in orizzontale." ID="ID_653074622" CREATED="1124560950732" MODIFIED="1265114499545">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
@@ -1262,45 +991,9 @@
 <node TEXT="Gli scripts possono usare alcune funzionalit&#xe0; che si trovano nelle librerie incluse in Freeplane" ID="ID_699827491" CREATED="1281337267343" MODIFIED="1281337323688"/>
 </node>
 <node TEXT="Gli script possono essere definiti in tre modi" FOLDED="true" ID="ID_702371652" CREATED="1281337348031" MODIFIED="1281338657210">
-<node ID="ID_1673352790" CREATED="1271022419501" MODIFIED="1281338617397">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>I Groovy scripts esterni</b>&#160;possono essere integrati semplicemente dicendo a Freeplane dove sono. Questi script possono usati esattamente come le altre funzioni di Freeplane.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_1600595382" CREATED="1281338281777" MODIFIED="1281338649757">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Gli stili fisici</b>&#160;possono contenere <b>scripts</b>&#160;con lo scopo di formattare la mappa. Esse sono automaticamente applicati a qualsiasi nodo, quando vengono eseguiti.
-    </p>
-  </body>
-</html></richcontent>
-</node>
-<node ID="ID_209164216" CREATED="1281338386094" MODIFIED="1281338589474">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Gli script della mappa locale</b>, possono essere definiti all'interno della mappa come attributi dei nodi. Questi script sono incorporati nella mappa, cos&#236; diventa facile trasportarli su altri computer. Un editor speciale incorporato viene usato per editare gli script locali.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;I Groovy scripts esterni&lt;/b&gt;&amp;#160;possono essere integrati semplicemente dicendo a Freeplane dove sono. Questi script possono usati esattamente come le altre funzioni di Freeplane.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1673352790" CREATED="1271022419501" MODIFIED="1281338617397"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Gli stili fisici&lt;/b&gt;&amp;#160;possono contenere &lt;b&gt;scripts&lt;/b&gt;&amp;#160;con lo scopo di formattare la mappa. Esse sono automaticamente applicati a qualsiasi nodo, quando vengono eseguiti.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1600595382" CREATED="1281338281777" MODIFIED="1281338649757"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;b&gt;Gli script della mappa locale&lt;/b&gt;, possono essere definiti all&apos;interno della mappa come attributi dei nodi. Questi script sono incorporati nella mappa, cos&amp;#236; diventa facile trasportarli su altri computer. Un editor speciale incorporato viene usato per editare gli script locali.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_209164216" CREATED="1281338386094" MODIFIED="1281338589474"/>
 </node>
 <node TEXT="La pagina Wiki di Freeplane ha informazioni estese in merito." ID="ID_807882630" CREATED="1271022540079" MODIFIED="1281337409610" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting"/>
 </node>
@@ -1360,17 +1053,7 @@
 <node TEXT="Importare i preferiti di Internet Explorer" FOLDED="true" ID="Freeplane_Link_269203785" CREATED="1124560950732" MODIFIED="1266590169126" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
-<node ID="Freeplane_Link_260446736" CREATED="1124560950732" MODIFIED="1265106114643">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    Per importare e preferiti di Internet Explorer, dal menu File - Importa - Importa favoriti di Explorer... Verr&#224; richiesto di inserire il percorso della cartella dove sono salvati. Il nome della cartella &#232; favoriti ed il percorso in Windows XP &#232;&#160;&#160;C:\Documents and Settings\&lt;utente&gt;\Preferiti.
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    Per importare e preferiti di Internet Explorer, dal menu File - Importa - Importa favoriti di Explorer... Verr&amp;#224; richiesto di inserire il percorso della cartella dove sono salvati. Il nome della cartella &amp;#232; favoriti ed il percorso in Windows XP &amp;#232;&amp;#160;&amp;#160;C:\Documents and Settings\&amp;lt;utente&amp;gt;\Preferiti.&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="Freeplane_Link_260446736" CREATED="1124560950732" MODIFIED="1265106114643"/>
 </node>
 <node TEXT="Importare mappe di MindManager X5" FOLDED="true" ID="Freeplane_Link_1709974530" CREATED="1124560950732" MODIFIED="1266590176861" COLOR="#407000">
 <node TEXT="Per importarle, dal menu File - Importa scegliere MindManager X5 map." ID="ID_529264217" CREATED="1124560950732" MODIFIED="1265107128079"/>
@@ -1395,33 +1078,9 @@
 <node TEXT="Il salvataggio automatico ed il backup, possono essere configurati dal menu Strumenti &gt; Preferenze &gt; Ambiente &gt; Salvataggio automatico." ID="ID_1200101311" CREATED="1281339709071" MODIFIED="1281339777743"/>
 </node>
 <node TEXT="Esplorare i file del proprio computer" FOLDED="true" ID="_Freeplane_Link_353522063" CREATED="1124560950701" MODIFIED="1281339039401" COLOR="#407000">
-<node ID="ID_791380611" CREATED="1124560950701" MODIFIED="1265296613313">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per esplorare i file del PC, commutare in <b>Esplora</b>&#160;<b>File</b>&#160; dal menu <b>Mappe</b>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per esplorare i file del PC, commutare in &lt;b&gt;Esplora&lt;/b&gt;&amp;#160;&lt;b&gt;File&lt;/b&gt;&amp;#160; dal menu &lt;b&gt;Mappe&lt;/b&gt;.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_791380611" CREATED="1124560950701" MODIFIED="1265296613313"/>
 <node TEXT="Verr&#xe0; visualizzata la struttura dei file, come se fosse una mappa" ID="ID_180885850" CREATED="1124560950701" MODIFIED="1265296675110"/>
-<node ID="ID_700476761" CREATED="1124560950701" MODIFIED="1265296795251">
-<richcontent TYPE="NODE">
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Per fare diventare una cartella il nodo centrale, dal menu contestuale scegliere <b>Centra</b>.
-    </p>
-  </body>
-</html></richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Per fare diventare una cartella il nodo centrale, dal menu contestuale scegliere &lt;b&gt;Centra&lt;/b&gt;.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_700476761" CREATED="1124560950701" MODIFIED="1265296795251"/>
 <node TEXT="Per vedere, modificare o eseguire un file, seguire il collegamento sul nodo stesso." ID="ID_362239329" CREATED="1124560950701" MODIFIED="1265302454799"/>
 <node TEXT="La modalit&#xe0; esplora file, attualmente non &#xe8; veramente comoda. E&apos; una dimostrazione che &#xe8; semplice seguire i dati dell&apos;albero visualizzato come mappa. Non molti usano attualmente questa modalit&#xe0;." ID="_Freeplane_Link_279880616" CREATED="1124560950701" MODIFIED="1265302595972"/>
 </node>
@@ -1432,5 +1091,3 @@
 </node>
 </node>
 </map>
-
- 	  	 

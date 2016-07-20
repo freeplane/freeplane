@@ -70,8 +70,8 @@ public class MMapIO extends MapIO{
 	public void open() {
 	    fileManager.open();
     }
-	public void newMapFromTemplate(File startFile) {
-	    fileManager.newMapFromTemplate(startFile);
+	public MapModel newMapFromTemplate(File startFile) {
+	    return fileManager.newMapFromTemplate(startFile);
     }
 	public void saveAsUserTemplate() {
 	    fileManager.saveAsUserTemplate();

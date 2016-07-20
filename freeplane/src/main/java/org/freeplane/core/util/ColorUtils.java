@@ -42,7 +42,7 @@ public class ColorUtils {
 	}
 
 	public static Color stringToColor(final String str) {
-		if (str == null) {
+		if (str == null || str.equals("none")) {
 			return null;
 		}
 		if(str.length() == 7)
@@ -60,7 +60,7 @@ public class ColorUtils {
 
 	public static Color stringToColor(final String str, final Color alphaHolder) {
 		final Color rgb = stringToColor(str);
-		if(alphaHolder == null || isNonTransparent(alphaHolder))
+		if(alphaHolder == null || isNonTransparent(alphaHolder) || rgb == null)
 			return rgb;
 		else
 			return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(), alphaHolder.getAlpha());

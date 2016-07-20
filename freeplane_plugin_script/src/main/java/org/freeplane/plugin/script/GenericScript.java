@@ -23,9 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.script.Bindings;
@@ -262,38 +260,6 @@ public class GenericScript implements IScript {
 		return createScriptEngineManager(classLoader).getEngineFactories();
 	}
 
-
-    /**
-     * starting from Java 1.8 Javascript library is in ext dir and not available
-     * to the bundle classloader. So we are adding ext dir jars which also
-     * includes JavaFX jar.
-     */
-    static List<URL> jarsInExtDir() {
-        try {
-            final List<URL> urls = new ArrayList<URL>();
-            String extDirsProperty = System.getProperty("java.ext.dirs");
-            for (String path : (extDirsProperty == null ? "" : extDirsProperty).split(
-                    File.pathSeparator)) {
-                File dir = new File(path);
-                if (dir.isDirectory()) {
-                    for (File file : dir.listFiles()) {
-                        urls.add(file.toURI().toURL());
-                    }
-                }
-            }
-            return urls;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static URL pathToUrl(String path) {
-        try {
-            return new File(path).toURI().toURL();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void compileAndCache(Compilable engine) throws Throwable {
         if (compileTimeStrategy.canUseOldCompiledScript()) {

@@ -228,7 +228,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(modeController),
 			    new ChildActionEntryRemover(modeController));
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
-			//TODO RIBBONS - apply to ribbons as well
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 				public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 				}

@@ -227,7 +227,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			cachedImage = ImageIO.read(cacheFile);
 		}
 		catch (final IOException e) {
-			LogUtils.severe(e);
+			LogUtils.severe("ImageIO can not read cache file " + cacheFile , e);
 		}
 	}
 

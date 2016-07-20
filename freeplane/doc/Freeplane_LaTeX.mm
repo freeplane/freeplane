@@ -1,32 +1,20 @@
-<map version="freeplane 1.3.0">
+<map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1356554585594"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p style="text-align: center">
-      <b>LaTeX equations<br/>in Freeplane </b>
-    </p>
-    <p style="text-align: center">
-      <b>&gt;= 1.3.x</b>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="MapStyle" zoom="0.75">
-    <properties show_note_icons="true"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;b&gt;LaTeX equations&lt;br&gt;in Freeplane &lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;b&gt;&amp;gt;= 1.3.x&lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1356554585594"><hook NAME="MapStyle" zoom="0.75">
+    <properties show_note_icons="true" fit_to_viewport="false;"/>
 
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node">
-<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600">
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
+<font SIZE="24"/>
+<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
+<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600.0 px">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <edge STYLE="bezier" COLOR="#808080" WIDTH="1"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes">
+<font SIZE="9"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.floating">
 <edge STYLE="hide_edge"/>
@@ -99,7 +87,7 @@
 <font NAME="Liberation Sans" SIZE="12"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
 <font SIZE="20"/>
 </stylenode>
@@ -118,7 +106,7 @@
 <font SIZE="12"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right"/>
+<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble"/>
 </stylenode>
 </map_styles>
 </hook>
@@ -169,22 +157,7 @@
 </node>
 </node>
 </node>
-<node POSITION="right" ID="ID_1563783701" CREATED="1356719071901" MODIFIED="1356729579399"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      LaTeX equations in Freeplane &gt;= 1.3.x are
-    </p>
-    <p>
-      created by either using a &quot;\latex &quot; prefix or by using <i>Format=LaTeX</i>&#160; (in <i>View-&gt;Properties panel</i>)
-    </p>
-  </body>
-</html>
-</richcontent>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      LaTeX equations in Freeplane &amp;gt;= 1.3.x are&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      created by either using a &amp;quot;\latex &amp;quot; prefix or by using &lt;i&gt;Format=LaTeX&lt;/i&gt;&amp;#160; (in &lt;i&gt;View-&amp;gt;Properties panel&lt;/i&gt;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" POSITION="right" ID="ID_1563783701" CREATED="1356719071901" MODIFIED="1356729579399">
 <node TEXT="http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane" ID="ID_749593148" CREATED="1356719154745" MODIFIED="1356719154745" LINK="http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane"/>
 <node TEXT="\latex example with prefix: $x_2=\frac{1}{3}$" ID="ID_866456539" CREATED="1356719164791" MODIFIED="1357649767422">
 <font SIZE="24"/>
@@ -269,8 +242,8 @@
 </node>
 </node>
 <node TEXT="Some symbols" POSITION="right" ID="ID_1528359489" CREATED="1289989312265" MODIFIED="1289990182156">
-<node TEXT="Latin characters and&#xa;arabic numbers" FOLDED="true" ID="ID_76669942" CREATED="1289989873015" MODIFIED="1290022789776">
-<node TEXT="Latin letters and arabic numbers &#xa;are supported by just typing them" ID="ID_1729735339" CREATED="1290022684336" MODIFIED="1356719899549">
+<node TEXT="Latin characters and&#xa;arabic numbers" FOLDED="true" ID="ID_76669942" CREATED="1289989873015" MODIFIED="1465679121228">
+<node TEXT="Latin letters and arabic numbers &#xa;are supported by just typing them" ID="ID_1729735339" CREATED="1290022684336" MODIFIED="1465679121244">
 <node TEXT="a,b,c,d,e,A,B,C,D,E,&#xf6;,&#xc4;,&#xfc;,1,2,3,4" ID="ID_140439098" CREATED="1356719870987" MODIFIED="1356719904269" FORMAT="latexPatternFormat">
 <font SIZE="24"/>
 </node>
@@ -378,28 +351,7 @@
 <node TEXT="Alignment and multiline" FOLDED="true" POSITION="right" ID="ID_629420174" CREATED="1289990778093" MODIFIED="1290125270000">
 <node TEXT="To display multiple lines in an equation you can use so called enviroments." ID="ID_1483653386" CREATED="1290462372968" MODIFIED="1290462410906"/>
 <node TEXT="An enviroment starts with \begin{enviromentname} and ends with&#xa;\end{enviromentname}" ID="ID_430369769" CREATED="1290462424421" MODIFIED="1290462489171"/>
-<node ID="ID_827402949" CREATED="1290462529312" MODIFIED="1356729217368"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      A powerful yet simple enviroment is the align environment.
-    </p>
-    <ul>
-      <li>
-        \\ starts a new line
-      </li>
-      <li>
-        &amp; aligns the character after this sign. The first &amp; aligns left the second aligns right, the fourth again left...
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      A powerful yet simple enviroment is the align environment.&#xa;    &lt;/p&gt;&#xa;    &lt;ul&gt;&#xa;      &lt;li&gt;&#xa;        \\ starts a new line&#xa;      &lt;/li&gt;&#xa;      &lt;li&gt;&#xa;        &amp;amp; aligns the character after this sign. The first &amp;amp; aligns left the second aligns right, the fourth again left...&#xa;      &lt;/li&gt;&#xa;    &lt;/ul&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_827402949" CREATED="1290462529312" MODIFIED="1356729217368"/>
 <node TEXT="Example" FOLDED="true" ID="ID_504548083" CREATED="1290462739718" MODIFIED="1356729227122">
 <node TEXT="\begin{align}&#xa;&amp;\text{\backslash\,begin\{\,align\} starts the align enviroment}\\&#xa;&amp;\text{ a double backslash starts a new line \backslash\,\backslash} \\&#xa;&amp;\text{the ampersand aligns} &amp;&amp;\text{\&amp;left}&amp;\text{\&amp;\&amp;right} \backslash\,\backslash \\&#xa;&amp;\text{line with the same} &amp;&amp;\text{\&amp;alignment}&amp;\text{\&amp;\&amp;alignment} \backslash\,\backslash \\&#xa;&amp;\text{\backslash\,end\{\,align\} ends the align enviroment}&#xa;\end{align}" ID="ID_1412422742" CREATED="1356729228243" MODIFIED="1356729335552" FORMAT="latexPatternFormat">
 <font SIZE="24"/>

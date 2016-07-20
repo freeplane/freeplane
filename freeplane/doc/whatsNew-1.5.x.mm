@@ -1,9 +1,9 @@
 <map version="freeplane 1.5.9">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="      1.5.x Whats New!" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="ID_1573594237" CREATED="1462710693327" MODIFIED="1464029296799" BACKGROUND_COLOR="#eaeaea" BACKGROUND_ALPHA="0" TEXT_ALIGN="RIGHT" MAX_WIDTH="260.0 pt" MIN_WIDTH="182.0 pt">
+<node TEXT="      1.5.x Whats New!" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="ID_1573594237" CREATED="1462710693327" MODIFIED="1464551501085" TEXT_ALIGN="CENTER" MAX_WIDTH="260.0 pt" MIN_WIDTH="182.0 pt">
 <font SIZE="16"/>
 <hook NAME="MapStyle" background="#f7f7f7">
-    <properties show_icon_for_attributes="true" fit_to_viewport="false" show_note_icons="true" backgroundImageURI="Images/doc/Freeplane_splash_%20alpha50.png"/>
+    <properties show_icon_for_attributes="true" show_note_icons="true"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt" TEXT_SHORTENED="true">
@@ -13,7 +13,7 @@
 <font SIZE="9"/>
 <stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="bubble" SHAPE_VERTICAL_MARGIN="0.0 pt" TEXT_ALIGN="CENTER" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
 <font NAME="Arial" SIZE="9" BOLD="false" ITALIC="false"/>
-<edge STYLE="bezier" WIDTH="3"/>
+<edge STYLE="bezier" WIDTH="1"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details">
 <font SIZE="11"/>
@@ -112,7 +112,7 @@
 </hook>
 <hook NAME="AutomaticEdgeColor" COUNTER="0" RULE="FOR_BRANCHES"/>
 <edge COLOR="#000000"/>
-<node TEXT="Nodes" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="left" ID="ID_1622075986" CREATED="1462726803381" MODIFIED="1464029004241" BACKGROUND_COLOR="#c1c1ff">
+<node TEXT="Nodes" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="left" ID="ID_1622075986" CREATED="1462726803381" MODIFIED="1464551497306" BACKGROUND_COLOR="#c1c1ff">
 <node TEXT="Clones" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1106317150" CREATED="1462726964299" MODIFIED="1463415672587">
 <node LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1121615672" CREATED="1462718982999" MODIFIED="1464029916393"><richcontent TYPE="NODE">
 
@@ -172,19 +172,21 @@
 <node TEXT="" ID="ID_99164438" CREATED="1462820069785" MODIFIED="1462820069791">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Keep summarized nodes together&#xa;(visual distance)" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1309011799" CREATED="1462715687274" MODIFIED="1463417782955" TEXT_ALIGN="LEFT"/>
+<node TEXT="Keep summarized nodes together&#xa;(visual distance)" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1309011799" CREATED="1462715687274" MODIFIED="1464625301178"/>
 <node TEXT="New handling for summary nodes" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1503504156" CREATED="1462715833414" MODIFIED="1463417806728"/>
-<node TEXT="" ID="ID_1936616544" CREATED="1462820069774" MODIFIED="1462820069784">
+<node TEXT="" ID="ID_1936616544" CREATED="1462820069774" MODIFIED="1464625825315">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Summary nodes can now have sibling nodes inserted just using ENTER (inserts below selected node) or using SHIFT+ENTER&amp;#160;&amp;#160;(inserts above selected node)&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Try it out:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Select the node &lt;i&gt;New handling for summary nodes&lt;/i&gt;&amp;#160;and press either ENTER or SHIFT+ENTER to insert siblings&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,4" ID="ID_383619283" CREATED="1462730777789" MODIFIED="1463417722321"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Summary nodes can now have sibling nodes inserted just using ENTER (inserts below selected node) or using SHIFT+ENTER&amp;#160;&amp;#160;(inserts above selected node)&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Try it out:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Select the node &lt;i&gt;New handling for summary nodes&lt;/i&gt;&amp;#160;and press either ENTER or SHIFT+ENTER to insert siblings&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,4" ID="ID_383619283" CREATED="1462730777789" MODIFIED="1464625833727">
+<edge WIDTH="5"/>
+</node>
 </node>
 </node>
 <node TEXT="Option to copy structure indentation as tabs" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1609673206" CREATED="1462715687282" MODIFIED="1463415688617"/>
 </node>
 <node TEXT="Format and styles" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="right" ID="ID_1118780235" CREATED="1462729792536" MODIFIED="1464029330176" BACKGROUND_COLOR="#ffb2d4">
 <node TEXT="Node and detail text alignment" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1446716767" CREATED="1462715833364" MODIFIED="1463415769656">
-<node ID="ID_952863116" CREATED="1462733898957" MODIFIED="1463413022146" MAX_WIDTH="200.0 pt" TEXT_ALIGN="LEFT"><richcontent TYPE="NODE">
+<node ID="ID_952863116" CREATED="1462733898957" MODIFIED="1464625784480" MAX_WIDTH="200.0 pt" MIN_WIDTH="200.0 pt" TEXT_ALIGN="LEFT"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -192,14 +194,17 @@
   </head>
   <body>
     <p>
-      Node detail and text alignment can now be aligned <i>left</i>
+      Node detail and text alignment
+    </p>
+    <p>
+      can now be aligned <i>left</i>
     </p>
   </body>
 </html>
 
 </richcontent>
 </node>
-<node ID="ID_1234066951" CREATED="1462805691022" MODIFIED="1463413022147" STYLE="bubble" SHAPE_VERTICAL_MARGIN="0.0 pt" TEXT_ALIGN="RIGHT" MAX_WIDTH="200.0 pt"><richcontent TYPE="NODE">
+<node ID="ID_1234066951" CREATED="1462805691022" MODIFIED="1464625631031" STYLE="bubble" SHAPE_VERTICAL_MARGIN="0.0 pt" TEXT_ALIGN="RIGHT" MAX_WIDTH="200.0 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -217,7 +222,7 @@
 
 </richcontent>
 </node>
-<node LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1967389286" CREATED="1462805853734" MODIFIED="1463417667284" MAX_WIDTH="200.0 pt" TEXT_ALIGN="CENTER"><richcontent TYPE="NODE">
+<node LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1967389286" CREATED="1462805853734" MODIFIED="1464625628646" MAX_WIDTH="200.0 pt" TEXT_ALIGN="CENTER"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -262,8 +267,9 @@
 </node>
 </node>
 <node TEXT="Make data formatting, formula processing and&#xa;LaTeX rendering independently configurable" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_856820716" CREATED="1462715833432" MODIFIED="1463415982669"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Distance between child nodes can be set in&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Properties panel&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1931822867" CREATED="1462715833364" MODIFIED="1463594160435" VGAP_QUANTITY="1.0 pt">
-<node TEXT="child 1" ID="ID_701167941" CREATED="1462806840153" MODIFIED="1463417586167"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Distance between child nodes can be set in&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Properties panel&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1931822867" CREATED="1462715833364" MODIFIED="1464625570007" VGAP_QUANTITY="1.0 pt">
+<edge WIDTH="1"/>
+<node TEXT="child 1" ID="ID_701167941" CREATED="1462806840153" MODIFIED="1464625618545"/>
 <node LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1372995988" CREATED="1462806854891" MODIFIED="1463594171391" VGAP_QUANTITY="20.0 pt"><richcontent TYPE="NODE">
 
 <html>
@@ -291,10 +297,10 @@
 
 </richcontent>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="child 3" ID="ID_927806003" CREATED="1462807073479" MODIFIED="1463413022150"/>
-<node TEXT="child 4" ID="ID_883836460" CREATED="1462807120463" MODIFIED="1463413022150"/>
+<node TEXT="child 3" ID="ID_927806003" CREATED="1462807073479" MODIFIED="1464625612687"/>
+<node TEXT="child 4" ID="ID_883836460" CREATED="1462807120463" MODIFIED="1464625609504"/>
 </node>
-<node TEXT="child 2" ID="ID_1635586910" CREATED="1462807018481" MODIFIED="1463417588755"/>
+<node TEXT="child 2" ID="ID_1635586910" CREATED="1462807018481" MODIFIED="1464625616027"/>
 </node>
 <node TEXT="Formatted tool tips&#xa;(hold the mouse over this node)" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_479649627" CREATED="1462715833401" MODIFIED="1463415786418"><richcontent TYPE="NOTE">
 
@@ -557,7 +563,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Maps &amp; Mapviews" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="left" ID="ID_1332007370" CREATED="1462729844988" MODIFIED="1464029580871" BACKGROUND_COLOR="#ffd5ad">
+<node TEXT="Maps &amp; Mapviews" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="left" ID="ID_1332007370" CREATED="1462729844988" MODIFIED="1464551501072" BACKGROUND_COLOR="#ffd5ad">
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Added &amp;quot;&lt;i&gt;BigMap.mm&lt;/i&gt;&amp;quot; as Template&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_28841704" CREATED="1462715723956" MODIFIED="1463416066596">
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Jona&apos;s scientific approach to hack and pimp your brain with Freeplane!&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Be more productive, learn and memorize faster based on mindmaps which are optimized to the wonders of the human brain!&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Tutorial videos are available at Jona&apos;s Youtube channel&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.youtube.com/channel/UCh5L_Fyyymhf6X6TnzAMbsg&quot;&gt;https://www.youtube.com/channel/UCh5L_Fyyymhf6X6TnzAMbsg&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &amp;#160;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      You can set it as your standard template at&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Tools&amp;#8594;Preferences&amp;#8594;Environment&amp;#8594;Files&amp;#8594;Standard template file&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1725161496" CREATED="1462718544544" MODIFIED="1463429846436" MAX_WIDTH="270.0 pt"/>
 </node>
@@ -565,14 +571,14 @@
 <node TEXT="Background images" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1429532368" CREATED="1462715799747" MODIFIED="1463416074480">
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Its now possible to use a custom image as the background of a map. This Whats New Map uses one!&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      To set one, just choose one at&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Format&amp;#8594;Map background&amp;#8594;Background Image... &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_272053668" CREATED="1463344303767" MODIFIED="1463594467101"/>
 </node>
-<node TEXT="Option &quot;Center small maps&quot; for map position&#xa;when root is selected" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1317327473" CREATED="1462715687274" MODIFIED="1463416085387"/>
+<node TEXT="Option &quot;Center small maps&quot; for map&#xa;position when root is selected" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1317327473" CREATED="1462715687274" MODIFIED="1464629667997"/>
 <node TEXT="Use dark green in inline editor" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_481081383" CREATED="1462715745830" MODIFIED="1463416093013"/>
 <node TEXT="Scroll map after unfolding a node (option)" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1536706425" CREATED="1462715784618" MODIFIED="1463416096631"/>
 <node TEXT="Change node size on mouse wheel scrolling" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_598226711" CREATED="1462715784625" MODIFIED="1463416101203">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      A new feature for quickly resizing (multiple selected) nodes&apos; width by ALT+&lt;i&gt;Mouse wheel&lt;/i&gt;.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Just try it:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Hover your mouse over a node (or multiple selected nodes). press ALT and scroll your &lt;i&gt;Mouse wheel. &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      In a selection, the resizing for all is based on the node over which the mouse cursor hovers.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Be carefull:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      When your mouse cursor do not hovers over a node,&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      ALT+&lt;i&gt;Mouse wheel&lt;/i&gt;&amp;#160;&amp;#160;will fold and unfold your map&apos;s nodes level-wise.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1539759867" CREATED="1463162432588" MODIFIED="1463417224147"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      A new feature for quickly resizing (multiple selected) nodes&apos; width by ALT+&lt;i&gt;Mouse wheel&lt;/i&gt;.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Just try it:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Hover your mouse over a node (or multiple selected nodes). press ALT and scroll your &lt;i&gt;Mouse wheel. &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      In a selection, the resizing for all is based on the node over which the mouse cursor hovers.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Be carefull:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      When your mouse cursor does not hover over a node,&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      ALT+&lt;i&gt;Mouse wheel&lt;/i&gt;&amp;#160;&amp;#160;will fold and unfold your map&apos;s nodes level-wise.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1539759867" CREATED="1463162432588" MODIFIED="1463417224147"/>
 </node>
 <node TEXT="Nodes folding behaviour (option)" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_62855853" CREATED="1462982954864" MODIFIED="1463416105969">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Under &lt;i&gt;Navigate&amp;#8594;Fold&lt;/i&gt;&amp;#160;you&apos;ll find three new actions:&#xa;    &lt;/p&gt;&#xa;    &lt;ul&gt;&#xa;      &lt;li&gt;&#xa;        &amp;quot;&lt;i&gt;Keep unfolded nodes&lt;/i&gt;&amp;quot; prevents all currently unfolded nodes from being folded. It makes it possible to fold/unfold not just single nodes but bigger map parts.&#xa;      &lt;/li&gt;&#xa;      &lt;li&gt;&#xa;        &amp;quot;&lt;i&gt;Reset unfolded nodes&lt;/i&gt;&amp;quot; is the opposite action. It&apos;ll always reset the folding state of subtree nodes.&#xa;      &lt;/li&gt;&#xa;      &lt;li&gt;&#xa;        &amp;quot;&lt;i&gt;Always unfolded node&lt;/i&gt;&amp;quot; prevents currently selected nodes from being folded.&#xa;      &lt;/li&gt;&#xa;    &lt;/ul&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_794334744" CREATED="1462983044443" MODIFIED="1463417206390"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Under &lt;i&gt;Navigate&amp;#8594;Fold&lt;/i&gt;&amp;#160;you&apos;ll find three new actions:&#xa;    &lt;/p&gt;&#xa;    &lt;ul&gt;&#xa;      &lt;li&gt;&#xa;        &amp;quot;&lt;i&gt;Keep unfolded nodes&lt;/i&gt;&amp;quot; prevents all currently unfolded nodes from being folded. It makes it possible to fold/unfold not just single nodes but bigger map parts.&#xa;      &lt;/li&gt;&#xa;      &lt;li&gt;&#xa;        &amp;quot;&lt;i&gt;Reset unfolded nodes&lt;/i&gt;&amp;quot; is the opposite action. It&apos;ll always reset the folding state of subtree nodes.&#xa;      &lt;/li&gt;&#xa;      &lt;li&gt;&#xa;        &amp;quot;&lt;i&gt;Always unfolded node&lt;/i&gt;&amp;quot; prevents currently selected nodes from being folded.&#xa;      &lt;/li&gt;&#xa;    &lt;/ul&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_794334744" CREATED="1462983044443" MODIFIED="1464550017669"/>
 </node>
 </node>
 <node TEXT="Node CORE" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="right" ID="ID_1983956508" CREATED="1462728817058" MODIFIED="1464025902797" BACKGROUND_COLOR="#cccee9">
@@ -583,9 +589,9 @@
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      There are customizable actions for joining content in Freeplane now. Joining with line breaks {{\n}} is the original action accessable with ALT+J.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      This two separators are added by default:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      {{ }} {{, }}&amp;#160;&amp;#160;&amp;#160;(blank space and comma with a blank space)&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Add you own separators at&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Tools&amp;#8594;Preferences&amp;#8594;Behaviour&amp;#8594;Joining nodes&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Hint:&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Each character within the double braces will be included.&amp;#160;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      The new joining actions &lt;b&gt;&lt;u&gt;do not&lt;/u&gt;&lt;/b&gt;&amp;#160;have hot keys assigned by default and can be found at&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Edit&amp;#8594;Node core&amp;#8594;Join nodes with &amp;lt;separator&amp;gt;&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1685597005" CREATED="1462717949214" MODIFIED="1463417054698" HGAP_QUANTITY="14.6 pt"/>
 </node>
 <node TEXT="Allow joining non sibling nodes" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1210779357" CREATED="1462715687288" MODIFIED="1463416122083">
-<node TEXT="What" ID="ID_1451262145" CREATED="1462813509068" MODIFIED="1463594847840" VGAP_QUANTITY="15.0 pt" TEXT_ALIGN="CENTER">
+<node TEXT="What" ID="ID_1451262145" CREATED="1462813509068" MODIFIED="1464630375332" VGAP_QUANTITY="10.0 pt" TEXT_ALIGN="CENTER">
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="has" ID="ID_1537448104" CREATED="1462813637980" MODIFIED="1463594751774" TEXT_ALIGN="CENTER" VGAP_QUANTITY="2.0 pt">
+<node TEXT="has" ID="ID_1537448104" CREATED="1462813637980" MODIFIED="1464630401692" TEXT_ALIGN="CENTER">
 <node TEXT="been" ID="ID_1072202818" CREATED="1462813637983" MODIFIED="1463413052729" TEXT_ALIGN="CENTER">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_869116818" STARTINCLINATION="-1;16;" ENDINCLINATION="50;-32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 </node>
@@ -607,35 +613,39 @@
 <node TEXT="Even" ID="ID_1182239066" CREATED="1462813637996" MODIFIED="1463594552631" TEXT_ALIGN="CENTER">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_592058136" STARTINCLINATION="-23;24;" ENDINCLINATION="45;-34;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="Beware of the CHAOS that will&#xa;happen when joining linked nodes" ID="ID_1264154941" CREATED="1462814400038" MODIFIED="1463594705811" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt" COLOR="#ff0000" TEXT_ALIGN="CENTER">
-<edge STYLE="hide_edge" COLOR="#808080"/>
+<node TEXT="Beware of the CHAOS that will&#xa;happen when joining linked nodes" ID="ID_1264154941" CREATED="1462814400038" MODIFIED="1464630454237" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt" COLOR="#ff0000" TEXT_ALIGN="CENTER">
+<font BOLD="true"/>
+<edge STYLE="hide_edge" COLOR="#ffffff" ALPHA="0"/>
 </node>
 </node>
 </node>
 <node TEXT="if" ID="ID_592058136" CREATED="1462813637998" MODIFIED="1463413052735" TEXT_ALIGN="CENTER">
 <edge STYLE="hide_edge"/>
-<node TEXT="the" ID="ID_1207630482" CREATED="1462813638000" MODIFIED="1463413052727" TEXT_ALIGN="CENTER">
+<node TEXT="the" ID="ID_1207630482" CREATED="1462813638000" MODIFIED="1464629882146" TEXT_ALIGN="CENTER">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_170616711" STARTINCLINATION="-30;17;" ENDINCLINATION="39;-25;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="you always can undo what has&#xa;been done with CTRL+Z" ID="ID_558730677" CREATED="1462814709421" MODIFIED="1463594715117" COLOR="#ff0000" TEXT_ALIGN="CENTER" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt">
-<edge STYLE="hide_edge" COLOR="#ffffff"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="you always can undo what has&#xa;been done with CTRL+Z" ID="ID_558730677" CREATED="1462814709421" MODIFIED="1464629829111" COLOR="#ff0000" TEXT_ALIGN="CENTER" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt">
+<edge STYLE="hide_edge" COLOR="#ffffff" ALPHA="0"/>
 </node>
 </node>
 </node>
 <node TEXT="nodes" ID="ID_170616711" CREATED="1462813638003" MODIFIED="1463413052735" TEXT_ALIGN="CENTER">
 <edge STYLE="hide_edge"/>
-<node TEXT="to be" FOLDED="true" ID="ID_229734552" CREATED="1462813638005" MODIFIED="1463413052727" VGAP_QUANTITY="0.0 pt" TEXT_ALIGN="CENTER">
+<node TEXT="to be" ID="ID_229734552" CREATED="1462813638005" MODIFIED="1464630419090" TEXT_ALIGN="CENTER">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1594005021" STARTINCLINATION="-1;25;" ENDINCLINATION="30;-31;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="select the nodes to be joined with&#xa;left-click while holding CTRL pressed" ID="ID_493925395" CREATED="1462815200170" MODIFIED="1463594722352" COLOR="#ff0000" TEXT_ALIGN="CENTER" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt">
-<edge STYLE="hide_edge" COLOR="#ffffff"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="select the nodes to be joined with&#xa;left-click while holding CTRL pressed" ID="ID_493925395" CREATED="1462815200170" MODIFIED="1464629836021" COLOR="#ff0000" TEXT_ALIGN="CENTER" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt">
+<edge STYLE="hide_edge" COLOR="#ffffff" ALPHA="0"/>
 </node>
 </node>
 </node>
 <node TEXT="joined" ID="ID_1594005021" CREATED="1462813638007" MODIFIED="1463413052736" TEXT_ALIGN="CENTER">
 <edge STYLE="hide_edge"/>
-<node TEXT="are" ID="ID_1321750994" CREATED="1462813638009" MODIFIED="1463413052726" VGAP_QUANTITY="1.5 pt" TEXT_ALIGN="CENTER">
+<node TEXT="are" ID="ID_1321750994" CREATED="1462813638009" MODIFIED="1464630426023" TEXT_ALIGN="CENTER">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1252623007" STARTINCLINATION="-17;21;" ENDINCLINATION="29;-21;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      the different JOIN-Actions can be&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      found at &lt;i&gt;Edit&amp;#8594;Node Core &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_918257776" CREATED="1462814851647" MODIFIED="1463594732317" COLOR="#ff0000" TEXT_ALIGN="CENTER" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt">
-<edge STYLE="hide_edge" COLOR="#808080"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      the different JOIN-Actions can be&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      found at &lt;i&gt;Edit&amp;#8594;Node Core &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_918257776" CREATED="1462814851647" MODIFIED="1464629858143" COLOR="#ff0000" TEXT_ALIGN="CENTER" MAX_WIDTH="200.0 pt" MIN_WIDTH="150.0 pt">
+<edge STYLE="hide_edge" COLOR="#ffffff" ALPHA="0"/>
 </node>
 </node>
 </node>
@@ -648,20 +658,23 @@
 </node>
 </node>
 </node>
-<node TEXT="General" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="left" ID="ID_1222821095" CREATED="1462729713743" MODIFIED="1464029018187" BACKGROUND_COLOR="#b8b597">
-<node TEXT="Save and restore last edit location" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1034233150" CREATED="1462715799751" MODIFIED="1463427215201">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      The last edited node will be saved and displayed when opening a map. This option can be switched ON / OFF at &lt;i&gt;Tools&amp;#8594;Preferences&amp;#8594;Environment&amp;#8594;Save&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_748438159" CREATED="1462731818854" MODIFIED="1463427282352"/>
+<node TEXT="General" LOCALIZED_STYLE_REF="AutomaticLayout.level,1" POSITION="left" ID="ID_1222821095" CREATED="1462729713743" MODIFIED="1464551497261" BACKGROUND_COLOR="#b8b597">
+<node TEXT="Save and restore last edit location" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1034233150" CREATED="1462715799751" MODIFIED="1464630299453" VGAP_QUANTITY="5.0 pt">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      The last edited node will be saved and displayed when opening a map. This option can be switched ON / OFF at &lt;i&gt;Tools&amp;#8594;Preferences&amp;#8594;Environment&amp;#8594;Save&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_748438159" CREATED="1462731818854" MODIFIED="1464630299453"/>
 </node>
 <node TEXT="Reminder notification popups" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_860303715" CREATED="1462715745815" MODIFIED="1463427338715"/>
 <node TEXT="Configurable default Map Save Directory" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1185441112" CREATED="1462715833421" MODIFIED="1463427215249" VSHIFT_QUANTITY="0.6 pt">
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Want to save Maps to a special directory by default?&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      See the &lt;i&gt;Tools&amp;#8594;Preferences&amp;#8594;Environment&amp;#8594;Save. &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      There a default directory can be set.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1308871614" CREATED="1462731741347" MODIFIED="1463427282356"/>
 </node>
-<node TEXT="Moved menu and preference configuration to external resources" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_944226735" CREATED="1462715745844" MODIFIED="1464025707429" MAX_WIDTH="180.0 pt">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Accelerator keys can now be found and manually edited in the file &amp;quot;&lt;i&gt;accelerator.properties&lt;/i&gt;&amp;quot; which is located in the user directory, as other configuration files for Freeplane, too..&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1947442488" CREATED="1462731516299" MODIFIED="1463427282356"/>
+<node TEXT="Moved menu and preference configuration&#xa;to external resources" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_944226735" CREATED="1462715745844" MODIFIED="1464629647152" VGAP_QUANTITY="5.0 pt">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Accelerator keys can now be found and manually edited in the file &amp;quot;&lt;i&gt;accelerator.properties&lt;/i&gt;&amp;quot; which is located in the user directory, as other configuration files for Freeplane, too..&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Want to reorganize your menu structure? Want to change the ordering of the buttons on the toolbars? Though, its not as easy as cooking an egg, it can be accomplished!.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      You can use freeplane&apos;s new feature &amp;quot;&lt;i&gt;Import arbitrary xml as mind maps&lt;/i&gt;&amp;quot; for that. Configurations files for the UI resides in freeplane&apos;s &amp;quot;\&lt;i&gt;program directory\resources\xml\&amp;quot;. &lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Use &lt;i&gt;File&amp;#8594;Import&amp;#8594;Import xml file &lt;/i&gt;to import the xml file of your choice (e.g. &lt;i&gt;mindmapmodemenu.xml&lt;/i&gt;) and take your time to understand what the nodes stand for and what their contents are. If you compare it with the menu structure you see in freeplane&apos;s window, you&apos;ll get the clue.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      You can reorder the positions of the nodes, but&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;b&gt;NEVER &lt;/b&gt;- &lt;b&gt;CHANGE&lt;/b&gt;&amp;#160;- &lt;b&gt;CONTENTS - IF - YOU &lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;b&gt;DON&apos;T - KNOW - WHAT - YOU&apos;RE - DOING &lt;/b&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;font color=&quot;#ff0000&quot;&gt;&lt;b&gt;Always have a backup of your file to be &lt;/b&gt;&lt;/font&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;font color=&quot;#ff0000&quot;&gt;&lt;b&gt;able to restore if something is broken!!! &lt;/b&gt;&lt;/font&gt;&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Remember to export it again as arbitrary xml with the same name by &lt;i&gt;File&amp;#8594;Export Map&amp;#8594;Filetype: &lt;/i&gt;XML (*.xml) and overwrite the original file after closing all Freeplane instances.&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1947442488" CREATED="1462731516299" MODIFIED="1464629647151"/>
+</node>
+<node TEXT="Save and restore preferences" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_141170450" CREATED="1464546306966" MODIFIED="1464548254551" VGAP_QUANTITY="5.0 pt">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: left&quot;&gt;&#xa;      Customized your Freeplane and need to move to another computer? Don&apos;t trouble your head about it!&#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: left&quot;&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: left&quot;&gt;&#xa;      Your preferences and settings at &lt;i&gt;Tools&lt;/i&gt;&amp;#8594;&lt;i&gt;Preferences &lt;/i&gt;can now be saved and loaded on any computer again.&#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: left&quot;&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: left&quot;&gt;&#xa;      Within the &lt;i&gt;Preferences&lt;/i&gt;&amp;#160;&lt;i&gt;dialog&lt;/i&gt;&amp;#160;you&apos;ll find a button for saving and loading your settings. Every setting managed by &lt;i&gt;Preferences dialog&lt;/i&gt;&amp;#160;will be saved to a file with &lt;i&gt;.freeplaneoptions&lt;/i&gt;&amp;#160;file-extension.&#xa;    &lt;/p&gt;&#xa;    &lt;p style=&quot;text-align: left&quot;&gt;&#xa;      &lt;br&gt;&#xa;      To load the settings again, either use the button in the dialog, or drag and drop your &lt;i&gt;.freeplaneoptions&amp;#160;&lt;/i&gt;file&lt;i&gt;&amp;#160;&lt;/i&gt;onto the opened &lt;i&gt;Preferences dialog&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_827131344" CREATED="1464546617240" MODIFIED="1464548545257"/>
 </node>
 <node TEXT="Supporting length measurement units pt,&#xa;cm, mm and in(ch) in addition to px" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1668524215" CREATED="1462715833395" MODIFIED="1464027410699"/>
-<node TEXT="Keep icon name of user icon if it&apos;s not found in the current installation" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1471950019" CREATED="1462715833437" MODIFIED="1463427215346"/>
-<node TEXT="Allow to redefine actions for keys&#xa;LEFT, RIGHT, UP, DOWN,&#xa;PAGE_UP and PAGE_DOWN" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_150662906" CREATED="1462715687299" MODIFIED="1464027635867"/>
+<node TEXT="Keep icon name of user icon if it&apos;s not&#xa;found in the current installation" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1471950019" CREATED="1462715833437" MODIFIED="1464546634951"/>
+<node TEXT="Allow to redefine actions for keys LEFT, RIGHT,&#xa;UP, DOWN, PAGE_UP and PAGE_DOWN" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_150662906" CREATED="1462715687299" MODIFIED="1464551539107"/>
 <node TEXT="Other minor changes" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_834947347" CREATED="1464026212065" MODIFIED="1464027557818">
 <node TEXT="Save node location options in length units" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1426750894" CREATED="1462715806875" MODIFIED="1464025757898" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4.0 pt" SHAPE_VERTICAL_MARGIN="0.0 pt"/>
 <node TEXT="Save attribute column widths in points" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_1682727870" CREATED="1462715745848" MODIFIED="1463427215374"/>
@@ -673,7 +686,7 @@
 </node>
 <node TEXT="Export / Import" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_834305759" CREATED="1462728678109" MODIFIED="1463427215382">
 <node TEXT="Import arbitrary xml as mind maps" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_37225340" CREATED="1462715745836" MODIFIED="1463427282358"/>
-<node TEXT="Export mind maps to xml (no syntax validation)" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" FOLDED="true" ID="ID_1478488265" CREATED="1462715745840" MODIFIED="1463427282357">
+<node TEXT="Export mind maps to xml (no syntax validation)" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1478488265" CREATED="1462715745840" MODIFIED="1463427282357">
 <node TEXT="Exporting mind maps to arbitrary xml makes only sense for maps created by importing arbitrary xml" ID="ID_833233446" CREATED="1462809962439" MODIFIED="1463416846480" TEXT_ALIGN="LEFT" MAX_WIDTH="200.0 pt"/>
 </node>
 </node>
@@ -682,8 +695,8 @@
 <node TEXT="Reworked scripting permissions" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1262185543" CREATED="1462715666539" MODIFIED="1463427215382">
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Don&apos;t give malicious scripts a chance!&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      Scripting permissions have been reworked.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      If your scripts stopped working, look in Freeplane&apos;s discussion forum or the Wiki (&lt;a href=&quot;http://www.freeplane.org&quot;&gt;www.freeplane.org&lt;/a&gt;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_416228680" CREATED="1462728944099" MODIFIED="1463427282359"/>
 </node>
-<node TEXT="Init scripts" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_462188596" CREATED="1462715666539" MODIFIED="1463427215384">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Freeplane now supports scripts that are executed on startup.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      This is especially useful for scripts that change the behavior of Freeplane (f.e. Eventlisteners).&lt;br&gt;&lt;br&gt;For more, see &lt;a href=&quot;http://www.freeplane.org/wiki/index.php/Init_scripts&quot;&gt;http://www.freeplane.org/wiki/index.php/Init_scripts&lt;/a&gt;&amp;#160;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_778479540" CREATED="1462717664046" MODIFIED="1463427282358"/>
+<node TEXT="Init scripts" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_462188596" CREATED="1462715666539" MODIFIED="1464630263898" VGAP_QUANTITY="5.0 pt">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Freeplane now supports scripts that are executed on startup.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      This is especially useful for scripts that change the behavior of Freeplane (f.e. Event listeners).&lt;br&gt;&lt;br&gt;For more, see &lt;a href=&quot;http://www.freeplane.org/wiki/index.php/Init_scripts&quot;&gt;http://www.freeplane.org/wiki/index.php/Init_scripts&lt;/a&gt;&amp;#160;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_778479540" CREATED="1462717664046" MODIFIED="1464630263897"/>
 </node>
 <node TEXT="General Scripting API extensions" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_947569159" CREATED="1462715799749" MODIFIED="1463427215387">
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Freeplane&apos;s scripting API capabilities are extended with almost each new version.&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      For changes please look here:&lt;br&gt;&lt;a href=&quot;http://www.freeplane.org/wiki/index.php/Scripting:_API_Changes&quot;&gt;http://www.freeplane.org/wiki/index.php/Scripting:_API_Changes&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1553405289" CREATED="1463179807802" MODIFIED="1463427597331"/>
