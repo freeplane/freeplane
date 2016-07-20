@@ -616,6 +616,12 @@ public class UITools {
 	public static Font scale(Font font) {
 		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
 	}
+	
+	public static Font scaleFontInt(Font font, double additionalFactor) {
+		return font.deriveFont(font.getStyle(), Math.round(font.getSize2D()*UITools.FONT_SCALE_FACTOR * additionalFactor));
+	}
+	
+	
 	public static Font invertScale(Font font) {
 		return font.deriveFont(font.getSize2D()/FONT_SCALE_FACTOR);
 	}

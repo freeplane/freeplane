@@ -816,7 +816,10 @@ public class NodeView extends JComponent implements INodeView {
 	/**
 	 */
 	public boolean isContentVisible() {
-		return getModel().hasVisibleContent();
+		if(isValid())
+			return getContent().isVisible();
+		else
+			return getModel().hasVisibleContent();
 	}
 
 	public boolean isLeft() {
@@ -1026,8 +1029,10 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
     public void paint(Graphics g) {
-	    super.paint(g);
-		paintDecoration((Graphics2D) g);
+		if(isHierarchyVisible()) {
+			super.paint(g);
+			paintDecoration((Graphics2D) g);
+		}
     }
 
 	private void paintCloud(final Graphics g) {
@@ -1340,6 +1345,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void update() {
+		invalidate();
 		updateShape();
 		updateEdge();
 		if (!isContentVisible()) {
@@ -1614,6 +1620,10 @@ public class NodeView extends JComponent implements INodeView {
 		if(EdgeController.Rules.BY_PARENT != rule)
 			edgeColor.resetCache();
 		super.setBounds(x, y, width, height);
+	}
+
+	boolean isHierarchyVisible() {
+		return getHeight() > 2 * getSpaceAround();
 	}
 
 	
