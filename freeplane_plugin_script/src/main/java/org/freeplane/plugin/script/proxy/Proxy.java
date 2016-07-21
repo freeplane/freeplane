@@ -1,7 +1,5 @@
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.Closure;
-
 import java.awt.Color;
 import java.io.File;
 import java.net.URI;
@@ -27,7 +25,8 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.plugin.script.ExecuteScriptException;
-import org.freeplane.plugin.script.proxy.Proxy.Map;
+
+import groovy.lang.Closure;
 
 /**
  * This interface alone defines the api for accessing the internal state of the Freeplane. All read-write methods
@@ -734,7 +733,7 @@ public interface Proxy {
 		URI getUri();
 
 		/** returns the link as File if defined and if the link target is a valid File URI and null otherwise.
-		 * @see File#File(URI).
+		 * @see File#File(URI)
 		 * @since 1.2 */
 		File getFile();
 
@@ -746,7 +745,19 @@ public interface Proxy {
 		String get();
 	}
 
-	/** Node's link: <code>node.link</code> - read-write. */
+	/** Node's link: <code>node.link</code> - read-write.
+	 * To set links use the attributes of the {@link Link} and {@link LinkRO} object:
+	 * <pre>
+	 * // a normal href 
+	 * node.link.text = 'http://www.google.com'
+	 * // create a node to the parent node
+	 * node.link.node = node.parent
+	 * // if you have a URI object
+	 * node.link.uri = new URI('http://www.google.com')
+	 * // file
+	 * node.link.file = map.file
+	 * </pre>
+	 */
 	interface Link extends LinkRO {
 		/** target is a stringified URI. Removes any link if uri is null.
 		 * To get a local link (i.e. to another node) target should be: "#" + nodeId or better use setNode(Node).
@@ -925,9 +936,9 @@ public interface Proxy {
 		 */
 		Convertible getAt(String attributeName);
 
-        /**
-         *  @since 1.2
-         */
+		/** a reference to an accessor object for cloud properties of this node. This property is never null.
+		 * @since 1.2
+		 */
 		Cloud getCloud();
 
         /** returns the index (0..) of this node in the (by Y coordinate sorted)
@@ -963,8 +974,10 @@ public interface Proxy {
 
 		ExternalObject getExternalObject();
 
+		/** a reference to an accessor object for icons of this node. This property is never null. */
 		Icons getIcons();
 
+		/** a reference to an accessor object for link properties of this node. This property is never null. */
 		Link getLink();
 
 		/** use it to create and inspect {@link Reminder}s. This property is never null. */
