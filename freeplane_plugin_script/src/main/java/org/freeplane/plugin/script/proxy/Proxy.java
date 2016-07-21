@@ -1380,7 +1380,7 @@ public interface Proxy {
 		 * assert node.object.class.simpleName == "Long"
 		 * </pre>
 		 * @see #setObject(Object)
-		 * @since 1.2, semantics changed for Strings with 1.2.17, see Mantis #1787 */
+		 * @since 1.2, semantics changed for Strings with 1.2.17 */
 		void setText(Object value);
 		
 		/**
