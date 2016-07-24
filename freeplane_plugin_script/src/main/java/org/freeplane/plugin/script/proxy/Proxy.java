@@ -294,7 +294,7 @@ public interface Proxy {
 
 		String getMiddleLabel();
 
-		/* The node without the arrow. On connectors with arrows at both ends one of the ends. */
+		/** The node without the arrow. On connectors with arrows at both ends one of the ends. */
 		Node getSource();
 
 		String getSourceLabel();
@@ -305,7 +305,7 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #hasStartArrow()} instead */
 		ArrowType getStartArrow();
 		
-		/* The node with the arrow. On connectors with arrows at both ends one of the ends. */
+		/** The node with the arrow. On connectors with arrows at both ends one of the ends. */
 		Node getTarget();
 
 		String getTargetLabel();
