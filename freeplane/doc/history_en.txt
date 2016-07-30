@@ -1,4 +1,9 @@
 ===============================
+1.5.14
+===============================
+Fix latex export and support latex in style editor
+
+===============================
 1.5.13
 ===============================
 Support High Density Monitors by scaling UI elements
