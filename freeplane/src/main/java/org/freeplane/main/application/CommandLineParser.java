@@ -10,13 +10,15 @@ class CommandLineParser {
     static final String QUIT_MENU_ITEM_KEY = "MB_QuitAction";
 
     public static class Options {
-        private static final String HELP_MESSAGE = "Use:\n\tfreeplane [options] [file1 [file2 ...]]" //
-                + "\n -X<menukey>: execute menu item with key <menukey>. Use devtools add-on to find the menu keys" //
-                + "\n -S: stop after executing menu items" //
-                + "\n -N: set the 'nonInteractive' system property to 'true'" //
-                + "\n -U<userdir>: set the freeplane user config directory (default: "
+        private static final String HELP_MESSAGE = //
+                "\nUsage:\n\tfreeplane.bat [ <option> ]+ [ <file> ]+\n" //
+                + "\n -X<menukey>   : execute menu item with key <menukey>." //
+                + "\n                 hint: use devtools add-on to find appropriate menu keys" //
+                + "\n -S            : stop after executing menu items" //
+                + "\n -N            : set the 'nonInteractive' system property to 'true'" //
+                + "\n -U<userdir>   : set the freeplane user config directory (default: "
                 + Compat.getDefaultFreeplaneUserDirectory() + ")" //
-                + "\n -h|--help: print this help";
+                + "\n -h , --help   : print this help text";
         private List<String> filesToOpen = new ArrayList<String>();
         private List<String> menuItemsToExecute = new ArrayList<String>();
         private boolean stopAfterLaunch;
@@ -170,6 +172,7 @@ class CommandLineParser {
             result.addMenuItemToExecute(QUIT_MENU_ITEM_KEY);
         if (result.isHelpRequested() && firstRun) {
             System.out.println(result.getHelpMessage());
+            System.exit(0);
         }
         return result;
     }
