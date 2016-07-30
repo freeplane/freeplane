@@ -11,7 +11,7 @@ class CommandLineParser {
 
     public static class Options {
         private static final String HELP_MESSAGE = //
-                "\nUsage:\n\tfreeplane.bat [ <option> ]+ [ <file> ]+\n" //
+                "\nUsage:\n\tfreeplane.bat [options] [file1 [file2 ...]]\n" //
                 + "\n -X<menukey>   : execute menu item with key <menukey>." //
                 + "\n                 hint: use devtools add-on to find appropriate menu keys" //
                 + "\n -S            : stop after executing menu items" //
