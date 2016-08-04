@@ -27,6 +27,7 @@ import java.util.logging.StreamHandler;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
@@ -35,6 +36,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 import org.freeplane.features.ui.ViewController;
 
 public class ReportGenerator extends StreamHandler {
@@ -276,6 +278,9 @@ public class ReportGenerator extends StreamHandler {
 							viewController.addStatusComponent("internal_error", logButton);
 						}
 						logButton.setText(TextUtils.format("errornumber", errorCounter));
+						final JComponent statusBar = viewController.getStatusBar();
+						if(! statusBar.isVisible())
+							UIComponentVisibilityDispatcher.dispatcher(statusBar).setVisible(true); 
 					}
 				}
 				catch (Exception e) {
