@@ -61,31 +61,9 @@ public class ReportGenerator extends StreamHandler {
 		}
 	}
 
-	private class SubmitStarter implements Runnable {
-		SubmitStarter() {
-			if (Controller.getCurrentController().getViewController().isDispatchThread()) {
-				return;
-			}
-			final Thread currentThread = Thread.currentThread();
-			Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
-				public void run() {
-					try {
-						currentThread.join(1000);
-					}
-					catch (final InterruptedException e) {
-					}
-				}
-			});
-		}
-
-		public void run() {
-			startSubmit();
-		}
-	}
-
 	private final static String BUG_TRACKER_REFERENCE_URL = "http://freeplane.sourceforge.net/info/bugtracker.ref.txt";
 	private static String BUG_TRACKER_URL = null;
-	static boolean disabled = false;
+	static boolean isDisabled = false;
 	private static int errorCounter = 0;
 	private static String info;
 	static final private String OPTION = "org.freeplane.plugin.bugreport";
@@ -104,10 +82,9 @@ public class ReportGenerator extends StreamHandler {
 	}
 
 	private String hash = null;
-	private boolean isRunning;
 	private String log = null;
 	private MessageDigest md = null;
-	private boolean reportCollected = false;
+	private boolean isReportGenerationInProgress = false;
 	private IBugReportListener bugReportListener;
 
 	public IBugReportListener getBugReportListener() {
@@ -206,7 +183,7 @@ public class ReportGenerator extends StreamHandler {
 			return BUG_TRACKER_URL;
 		}
 		catch (final Exception e) {
-			disabled = true;
+			isDisabled = true;
 			return null;
 		}
 	}
@@ -225,7 +202,7 @@ public class ReportGenerator extends StreamHandler {
 			}
         }
 	}
-	JButton logButton;
+	private JButton logButton;
 	@Override
 	public synchronized void publish(final LogRecord record) {
 		final Controller controller = Controller.getCurrentController();
@@ -251,43 +228,44 @@ public class ReportGenerator extends StreamHandler {
 		if (!isLoggable(record)) {
 			return;
 		}
-		if (!(disabled || isRunning  || reportCollected)) {
-			reportCollected = true;
-			viewController.invokeLater(new SubmitStarter());
-		}
-		viewController.invokeLater(new Runnable() {
-			@SuppressWarnings("serial")
-			public void run() {
-				try {
-					errorCounter++;
-					if(TextUtils.getRawText("internal_error_tooltip", null) != null){
-						if(logButton == null){
-							final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-									"/images/icons/messagebox_warning.png"));
-							logButton = new JButton(){
-								@Override public Dimension getPreferredSize(){
-									Dimension preferredSize = super.getPreferredSize();
-									preferredSize.height = getIcon().getIconHeight();
-									return preferredSize;
-								}
-							};
-							logButton.addActionListener(new LogOpener());
-							logButton.setIcon(errorIcon);
-							String tooltip = TextUtils.getText("internal_error_tooltip");
-							logButton.setToolTipText(tooltip);
-							viewController.addStatusComponent("internal_error", logButton);
+		if (!(isReportGenerationInProgress)) {
+			isReportGenerationInProgress = true;
+			viewController.invokeLater(new Runnable() {
+				@SuppressWarnings("serial")
+				public void run() {
+					try {
+						errorCounter++;
+						if(TextUtils.getRawText("internal_error_tooltip", null) != null){
+							if(logButton == null){
+								final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+										"/images/icons/messagebox_warning.png"));
+								logButton = new JButton(){
+									@Override public Dimension getPreferredSize(){
+										Dimension preferredSize = super.getPreferredSize();
+										preferredSize.height = getIcon().getIconHeight();
+										return preferredSize;
+									}
+								};
+								logButton.addActionListener(new LogOpener());
+								logButton.setIcon(errorIcon);
+								String tooltip = TextUtils.getText("internal_error_tooltip");
+								logButton.setToolTipText(tooltip);
+								viewController.addStatusComponent("internal_error", logButton);
+							}
+							logButton.setText(TextUtils.format("errornumber", errorCounter));
+							final JComponent statusBar = viewController.getStatusBar();
+							if(! statusBar.isVisible())
+								UIComponentVisibilityDispatcher.dispatcher(statusBar).setVisible(true); 
 						}
-						logButton.setText(TextUtils.format("errornumber", errorCounter));
-						final JComponent statusBar = viewController.getStatusBar();
-						if(! statusBar.isVisible())
-							UIComponentVisibilityDispatcher.dispatcher(statusBar).setVisible(true); 
 					}
+					catch (Exception e) {
+					}
+					runSubmitAfterTimeout();
 				}
-				catch (Exception e) {
-				}
-			}
-		});
-		super.publish(record);
+			});
+		}
+		if(! isDisabled)
+			super.publish(record);
 	}
 
 	private void runSubmit() {
@@ -350,8 +328,7 @@ public class ReportGenerator extends StreamHandler {
 		}
 		finally {
 			out = null;
-			reportCollected = false;
-			isRunning = false;
+			isReportGenerationInProgress = false;
 		}
 	}
 
@@ -439,9 +416,27 @@ public class ReportGenerator extends StreamHandler {
 		return null;
 	}
 
-	private void startSubmit() {
-		isRunning = true;
-		final Thread submitterThread = new Thread(new SubmitRunner(), REMOTE_LOG);
-		submitterThread.start();
+	private void runSubmitAfterTimeout() {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+				Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
+					public void run() {
+						if (! isDisabled) {
+							final Thread submitterThread = new Thread(new SubmitRunner(), REMOTE_LOG);
+							submitterThread.start();
+						}
+						else
+							isReportGenerationInProgress = false;
+					}
+				});
+			}
+		}).start();
+		
 	}
 }
