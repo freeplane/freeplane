@@ -272,7 +272,9 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final Controller controller = modeController.getController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller
 				.getModeController());
-		NodeModel childDistanceContainer = nodeV.getParentView().getChildDistanceContainer().getModel();
+		final NodeView parentView = nodeV.getParentView();
+		final NodeView childDistanceContainerView = parentView.getChildDistanceContainer();
+		NodeModel childDistanceContainer = childDistanceContainerView.getModel();
 		final Quantity<LengthUnits> parentVGap = locationController.getMinimalDistanceBetweenChildren(childDistanceContainer);
 		Quantity<LengthUnits> hgap = LocationModel.getModel(node).getHGap();
 		final Quantity<LengthUnits> shiftY = LocationModel.getModel(node).getShiftY();
