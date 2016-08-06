@@ -50,7 +50,6 @@ public class ApplicationResourceController extends ResourceController {
 	private LastOpenedList lastOpened;
 	final private Properties props;
 	final private ClassLoader urlResourceLoader;
-	private static final String FREEPLANE_MAC_PROPERTIES = "/freeplane_mac.properties";
 	public static final String FREEPLANE_BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
 	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
 	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
@@ -203,9 +202,6 @@ public class ApplicationResourceController extends ResourceController {
 	private Properties readDefaultPreferences() {
 		final Properties props = new Properties();
 		readDefaultPreferences(props, ResourceController.FREEPLANE_PROPERTIES);
-		if (Compat.isMacOsX()) {
-			readDefaultPreferences(props, FREEPLANE_MAC_PROPERTIES);
-		}
 		final String propsLocs = props.getProperty("load_next_properties", "");
 		readDefaultPreferences(props, propsLocs.split(";"));
 		return props;
