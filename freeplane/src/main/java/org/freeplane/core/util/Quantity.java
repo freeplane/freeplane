@@ -74,6 +74,11 @@ public class Quantity <U extends Enum<U> & Convertible >{
 	public Quantity<U> in(U unit) {
 		return new Quantity<U>(value * (this.unit.factor() / unit.factor()), unit);
 	}
+	
+	public void assertNonNegative() {
+		if(value < 0)
+			throw new IllegalStateException("non negative value required");
+	}
 
 	public Quantity<U> add(Quantity<U> second) {
 		if(unit == second.unit)

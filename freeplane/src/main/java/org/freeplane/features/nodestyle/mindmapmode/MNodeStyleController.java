@@ -588,6 +588,7 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.execute(actor, node.getMap());
 	}
 	public void setMinNodeWidth(final NodeModel node, final Quantity<LengthUnits> minNodeWidth) {
+		minNodeWidth.assertNonNegative();
 	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
 		final Quantity<LengthUnits> oldValue = NodeSizeModel.getMinNodeWidth(node);
 		final IActor actor = new IActor() {
@@ -615,6 +616,7 @@ public class MNodeStyleController extends NodeStyleController {
     }
 
 	public void setMaxNodeWidth(final NodeModel node, final Quantity<LengthUnits> maxNodeWidth) {
+		maxNodeWidth.assertNonNegative();
 	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
 		final Quantity<LengthUnits> oldValue = NodeSizeModel.getMaxNodeWidth(node);
 		final IActor actor = new IActor() {
