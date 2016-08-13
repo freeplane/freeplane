@@ -1168,6 +1168,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
             else
 	            backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
+			if(backgroundComponent == null) {
+				LogUtils.warn("no viewer created for " + uri);
+				return;
+			}
 			((ScalableComponent) backgroundComponent).setCenter(true);
 			((ScalableComponent)backgroundComponent).setImageLoadingListener(new ImageLoadingListener() {
 				public void imageLoaded() {
