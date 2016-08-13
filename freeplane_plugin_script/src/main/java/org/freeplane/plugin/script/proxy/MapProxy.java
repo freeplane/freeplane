@@ -89,7 +89,12 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 			throw new RuntimeException("will not close an unsaved map without being told so");
 		final IMapViewManager mapViewManager = getMapViewManager();
 		changeToThisMap(mapViewManager);
-		return mapViewManager.close(force);
+		if(force) {
+			mapViewManager.closeWithoutSaving();
+			return true;
+		}
+		else
+			return mapViewManager.close();
 	}
 
 	private void changeToThisMap(final IMapViewManager mapViewManager) {

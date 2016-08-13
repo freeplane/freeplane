@@ -218,7 +218,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
 			    new LogicalStyleFilterController());
 			MapController.install();
-
 			NodeHistory.install(controller);
 			return controller;
 		}

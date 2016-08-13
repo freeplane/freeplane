@@ -1,5 +1,8 @@
 package org.freeplane.core.util;
 
+import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +34,26 @@ public class FreeplaneIconUtils {
 	}
 
 	public static ImageIcon createImageIcon(final String resourcePath) {
-		return new ImageIcon(ResourceController.getResourceController().getResource(resourcePath));
+		final URL resourceUrl = ResourceController.getResourceController().getResource(resourcePath);
+		return createImageIcon(resourceUrl);
 	}
 	
 	public static ImageIcon createImageIconByResourceKey(final String resourceKey) {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		return new ImageIcon(resourceController.getResource(resourceController.getProperty(resourceKey)));
+		final URL resourceUrl = resourceController.getResource(resourceController.getProperty(resourceKey));
+		return createImageIcon(resourceUrl);
+	}
+
+	public static ImageIcon createImageIconPrivileged(final URL resourceUrl) {
+		return AccessController.doPrivileged(new PrivilegedAction<ImageIcon>() {
+			@Override
+			public ImageIcon run() {
+				return  createImageIcon(resourceUrl);
+			}
+		});
+	}
+
+	private static ImageIcon createImageIcon(final URL resourceUrl) {
+		return new ImageIcon(resourceUrl);
 	}
 }

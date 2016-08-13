@@ -94,7 +94,7 @@ import org.freeplane.view.swing.ui.mindmapmode.MNodeMouseWheelListener;
 public class SModeControllerFactory {
 	private static SModeControllerFactory instance;
 
-	static SModeControllerFactory getInstance() {
+	public static SModeControllerFactory getInstance() {
 		if (instance == null) {
 			instance = new SModeControllerFactory();
 		}
@@ -102,6 +102,7 @@ public class SModeControllerFactory {
 	}
 
 	private SModeController modeController;
+	private ExtensionInstaller extentionInstaller;
 
 	Controller createController(final JDialog dialog) {
 		final Controller controller = new Controller(ResourceController.getResourceController());
@@ -160,6 +161,8 @@ public class SModeControllerFactory {
 		MapStyle.install(false);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
+		if(extentionInstaller != null)
+			extentionInstaller.installExtensions(controller);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		modeController.addAction(new ShowFormatPanelAction());
@@ -223,5 +226,9 @@ public class SModeControllerFactory {
 	public static void install() {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new EditStylesAction());
+	}
+
+	public void setExtensionInstaller(ExtensionInstaller extentionInstaller) {
+		this.extentionInstaller = extentionInstaller;
 	}
 }

@@ -191,6 +191,15 @@ class FileRevisionsDialog extends JDialog {
 		}
 	}
 
+
+	@SuppressWarnings("serial")
+	private class EscapeAction extends AbstractAction {
+		public void actionPerformed(final ActionEvent e) {
+			cancelled = true;
+			dispose();
+		}
+	}
+	
 	public FileRevisionsDialog(final File file, final File[] revisions, AlternativeFileMode mode) {
 		super((Frame) UITools.getMenuComponent(), true);
 		if(mode == AlternativeFileMode.ALL)
@@ -202,7 +211,6 @@ class FileRevisionsDialog extends JDialog {
 		this.selectedFile = this.file = file;
 		setBackground(Color.white);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		UITools.addEscapeActionToDialog(this);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
@@ -233,6 +241,8 @@ class FileRevisionsDialog extends JDialog {
 					table.setRowSelectionInterval(newSelectedRow, newSelectedRow);
 			}
 		});
+		UITools.addEscapeActionToDialog(this, new EscapeAction());
+
 		pack();
 		UITools.showFrame();
 		setLocationRelativeTo(UITools.getMenuComponent());

@@ -5,6 +5,19 @@ User translations
 Dialog to choose template when new map is created
 
 ===============================
+1.5.15
+===============================
+
+===============================
+1.5.14
+===============================
+Fix latex export and support latex in style editor
+Fix default hot keys for NewSummaryAction and NewParentAction on mac
+Check for non negative quantity values for minimalDistanceBetweenChildren, minWidth and maxWidth
+Improve bug report generator
+Command line interface improvements
+
+===============================
 1.5.13
 ===============================
 Support High Density Monitors by scaling UI elements

@@ -679,7 +679,10 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public boolean quit() {
-	    return getController().getMapViewManager().closeAllMaps();
+		final boolean allMapsClosed = Controller.getCurrentModeController().getMapController().closeAllMaps();
+	    if(allMapsClosed)
+	    	getController().getMapViewManager().onQuitApplication();
+	    return allMapsClosed;
     }
 
 	public boolean isDispatchThread() {

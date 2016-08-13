@@ -128,7 +128,7 @@ public class EditStylesAction extends AFreeplaneAction {
 				final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 				final MapModel map = mapViewManager.getModel();
 				final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
-				mapViewManager.close(true);
+				modeController.getMapController().closeWithoutSaving(map);
 				Controller.setCurrentController(mainController);
 				super.componentHidden(e);
 				mainController.getMapViewManager().changeToMapView(currentMapView);

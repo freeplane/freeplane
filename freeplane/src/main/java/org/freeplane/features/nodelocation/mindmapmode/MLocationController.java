@@ -108,6 +108,7 @@ public class MLocationController extends LocationController {
 
 	public void setMinimalDistanceBetweenChildren(NodeModel node, final Quantity<LengthUnits> minimalDistanceBetweenChildren){
 		if(node != null){
+			minimalDistanceBetweenChildren.assertNonNegative();
 			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
 			Controller.getCurrentModeController().execute(actor, node.getMap());
 		}

@@ -25,6 +25,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 class DocumentationAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
@@ -38,7 +39,7 @@ class DocumentationAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		UITools.executeWhenNodeHasFocus(new Runnable() {
 			public void run() {
-				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+				final MMapController mapController = (MMapController) Controller.getCurrentController().getModeController(MModeController.MODENAME).getMapController();
 				mapController.newDocumentationMap(document);
 			}
 		});

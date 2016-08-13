@@ -289,6 +289,7 @@ public class MapController extends SelectionController implements IExtension{
 		modeController.setMapController(this);
 		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
+		addMapLifeCycleListener(modeController.getController());
 		writeManager = new WriteManager();
 		mapWriter = new MapWriter(this);
 		readManager = new ReadManager();
@@ -480,13 +481,26 @@ public class MapController extends SelectionController implements IExtension{
 		return node.getChildren();
 	}
 
-	/**
-	 * Return false if user has canceled.
-	 */
-	public boolean close(final MapModel map, final boolean force) {
+	public boolean close(final MapModel map) {
+		closeWithoutSaving(map);
+		return true;
+	}
+	
+	public boolean closeAllMaps() {
+		final Controller controller = getModeController().getController();
+		for (MapModel map = controller.getMap(); map != null; map = controller.getMap()){
+			final boolean closingNotCancelled = close(map);
+			if (!closingNotCancelled) {
+				return false;
+			}
+			
+		}
+		return true;
+	}
+
+	public void closeWithoutSaving(final MapModel map) {
 		fireMapRemoved(map);
 		map.destroy();
-		return true;
 	}
 
 	/**
@@ -636,6 +650,8 @@ public class MapController extends SelectionController implements IExtension{
 	 */
 	public NodeModel getNodeFromID(final String nodeID) {
 		final MapModel map = Controller.getCurrentController().getMap();
+		if(map == null)
+			return null;
 		final NodeModel node = map.getNodeForID(nodeID);
 		return node;
 	}

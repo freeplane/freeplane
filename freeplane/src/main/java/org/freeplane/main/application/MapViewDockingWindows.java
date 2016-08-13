@@ -136,7 +136,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
             public void windowClosing(DockingWindow window) throws OperationAbortedException {
 				for(Component mapViewComponent : mapViews.toArray(new Component[]{}))
 					if(SwingUtilities.isDescendingFrom(mapViewComponent, window))
-					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent, false))
+					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent))
 						throw new OperationAbortedException("can not close view");
             }
 

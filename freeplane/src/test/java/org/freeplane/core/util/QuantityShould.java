@@ -117,4 +117,16 @@ public class QuantityShould {
 		Quantity<Metrics> first = new Quantity<Metrics>(100, Metrics.cm);
 		assertThat(first.add(2, Metrics.m), equalTo(new Quantity<Metrics>(300, Metrics.cm)));
 	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void negativeQuantity_throwsIllegalStateExceptionOnCheckForNonNegative() throws Exception {
+		Quantity<Metrics> negative = new Quantity<Metrics>(-1, Metrics.cm);
+		negative.assertNonNegative();
+	}
+	
+	@Test()
+	public void zeroQuantity_passesOnCheckForNonNegative() throws Exception {
+		Quantity<Metrics> zero = new Quantity<Metrics>(0, Metrics.cm);
+		zero.assertNonNegative();
+	}
 }

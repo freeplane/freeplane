@@ -39,6 +39,6 @@ public class CloseAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getCurrentController().close(false);
+		Controller.getCurrentController().close();
 	}
 }

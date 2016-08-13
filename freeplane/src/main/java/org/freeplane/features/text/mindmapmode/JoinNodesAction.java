@@ -44,7 +44,7 @@ class JoinNodesAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final List<NodeModel> orderedSelection = Controller.getCurrentController().getSelection().getOrderedSelection();
+		final List<NodeModel> orderedSelection = Controller.getCurrentController().getSelection().getSortedSelection(false);
 		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>(orderedSelection);
 		MTextController.getController().joinNodes(selectedNodes, separator);
 	}

@@ -109,13 +109,17 @@ public class HeadlessMapViewController implements IMapViewManager {
 			return null;
 	}
 
-	public boolean close(boolean withoutSave) {
-		if(currentMap == null)
-			return false;
-		maps.remove(currentKey);
-		currentKey = null;
-		currentMap = null;
+	public boolean close() {
+		closeWithoutSaving();
 		return true;
+	}
+	
+	public void closeWithoutSaving() {
+		if(currentMap != null) {
+			maps.remove(currentKey);
+			currentKey = null;
+			currentMap = null;
+		}
 	}
 
 	public String createHtmlMap() {
@@ -185,7 +189,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public void newMapView(MapModel map, ModeController modeController) {
 		final String key = map.getURL().toString();
 		if(key.equals(currentKey))
-			close(true);
+			close();
 		maps.put(key, map);
 		changeToMapView(key);
 	}
@@ -271,7 +275,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 		return true;
 	}
 
-	public boolean close(Component mapViewComponent, boolean force) {
+	public boolean close(Component mapViewComponent) {
 		throw new RuntimeException("Method not implemented");
     }
 
@@ -283,5 +287,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	@Override
 	public boolean isFoldedOnCurrentView(NodeModel node) {
 		return node.isFolded();
+	}
+
+	@Override
+	public void onQuitApplication() {
 	}
 }
