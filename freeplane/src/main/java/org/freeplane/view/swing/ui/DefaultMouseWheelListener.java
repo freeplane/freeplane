@@ -49,9 +49,8 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		final MapView mapView = (MapView) e.getSource();
 		final ModeController mController = mapView.getModeController();
-		if (mController.isBlocked()) {
+		if (mController.isBlocked() || Controller.getCurrentController().getMap() != mapView.getModel())
 			return;
-		}
 		final Set<IMouseWheelEventHandler> registeredMouseWheelEventHandler = mController.getUserInputListenerFactory()
 		    .getMouseWheelEventHandlers();
 		for (final IMouseWheelEventHandler handler : registeredMouseWheelEventHandler) {
