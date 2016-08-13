@@ -900,7 +900,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-		if (isFolded) {
+		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
 		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
