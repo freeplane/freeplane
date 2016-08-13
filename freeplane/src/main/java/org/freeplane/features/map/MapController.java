@@ -650,6 +650,8 @@ public class MapController extends SelectionController implements IExtension{
 	 */
 	public NodeModel getNodeFromID(final String nodeID) {
 		final MapModel map = Controller.getCurrentController().getMap();
+		if(map == null)
+			return null;
 		final NodeModel node = map.getNodeForID(nodeID);
 		return node;
 	}
