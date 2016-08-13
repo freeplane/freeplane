@@ -25,6 +25,7 @@ import java.util.WeakHashMap;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.features.icon.UIIcon;
 
 /**
@@ -56,7 +57,7 @@ public final class ImageIconFactory {
 				result = ICON_CACHE.get(url);
 			}
 			else {
-				result = new ImageIcon(url);
+				result = FreeplaneIconUtils.createImageIconPrivileged(url);
 				ICON_CACHE.put(url, result);
 			}
 		}
