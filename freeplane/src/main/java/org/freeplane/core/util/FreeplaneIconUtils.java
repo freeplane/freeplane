@@ -60,7 +60,7 @@ public class FreeplaneIconUtils {
 		final SVGIcon icon = new SVGIcon();
 		URI svgUri;
 		try {
-			svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath(), true);
+			svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
 			icon.setSvgUniverse(svgUniverse);
 			icon.setSvgURI(svgUri);
 			icon.setPreferredSize(new Dimension(16, 16));
