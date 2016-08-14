@@ -1,6 +1,8 @@
 package org.freeplane.core.util;
 
 import java.awt.Dimension;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +58,18 @@ public class FreeplaneIconUtils {
 			svgUniverse = new SVGUniverse();
 
 		final SVGIcon icon = new SVGIcon();
-		icon.setSvgURI(svgUniverse.loadSVG(url));
-		icon.setPreferredSize(new Dimension(16, 16));
-		icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
-		icon.setAntiAlias(isSvgAntialiasEnabled());
-
-		return icon;
+		URI svgUri;
+		try {
+			svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath(), true);
+			icon.setSvgUniverse(svgUniverse);
+			icon.setSvgURI(svgUri);
+			icon.setPreferredSize(new Dimension(16, 16));
+			icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
+			icon.setAntiAlias(isSvgAntialiasEnabled());
+			return icon;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
