@@ -77,6 +77,8 @@ import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -315,6 +317,29 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private class IconWidthChangeListener extends ChangeListener {
+		public IconWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(boolean enabled, NodeModel node, PropertyChangeEvent evt) {
+			final IconController iconController = IconController.getController();
+			final Collection<MindIcon> icons = iconController.getIcons(node);
+		}
+	}
+
+	private class IconHeightChangeListener extends ChangeListener {
+		public IconHeightChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(boolean enabled, NodeModel node, PropertyChangeEvent evt) {
+
+		}
+	}
+
 	private class MinNodeWidthChangeListener extends ChangeListener {
 		public MinNodeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -496,7 +521,10 @@ public class StyleEditorPanel extends JPanel {
 	private static final String SHAPE_VERTICAL_MARGIN = "shape_vertical_margin";
 	private static final String UNIFORM_SHAPE = "uniform_shape";
 	
-	
+	private static final String ICON_WIDTH = "icon_width";
+	private static final String ICON_HEIGHT = "icon_height";
+
+
 	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass, int length) {
 		final U[] enumConstants = enumerationClass.getEnumConstants();
 		final String[] strings = new String[length];
@@ -535,7 +563,8 @@ public class StyleEditorPanel extends JPanel {
 	private QuantityProperty<LengthUnits> mMinNodeWidth;
 	private QuantityProperty<LengthUnits> mChildDistance;
 	private ComboProperty mNodeTextAlignment;
-
+	private QuantityProperty<LengthUnits> mIconWidth;
+	private QuantityProperty<LengthUnits> mIconHeight;
 	
 	private BooleanProperty mSetCloud;
 	private BooleanProperty mSetEdgeColor;
@@ -556,6 +585,8 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetMinNodeWidth;
 	private BooleanProperty mSetChildDistance;
 	private BooleanProperty mSetNodeTextAlignment;
+	private BooleanProperty mSetIconWidth;
+	private BooleanProperty mSetIconHeight;
 	
 	
 	private final boolean addStyleBox;
@@ -696,6 +727,26 @@ public class StyleEditorPanel extends JPanel {
 		mMinNodeWidth.addPropertyChangeListener(listener);
 	}
 
+	private void addIconWidthControl(final List<IPropertyControl> controls) {
+		mSetIconWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetIconWidth);
+		mIconWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.ICON_WIDTH, 0, 256, 4, LengthUnits.px);
+		controls.add(mIconWidth);
+		final IconWidthChangeListener listener = new IconWidthChangeListener(mSetIconWidth, mIconWidth);
+		mSetIconWidth.addPropertyChangeListener(listener);
+		mIconWidth.addPropertyChangeListener(listener);
+	}
+
+	private void addIconHeightControl(final List<IPropertyControl> controls) {
+		mSetIconHeight = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetIconHeight);
+		mIconHeight = new QuantityProperty<LengthUnits>(StyleEditorPanel.ICON_HEIGHT, 0, 256, 4, LengthUnits.px);
+		controls.add(mIconHeight);
+		final IconHeightChangeListener listener = new IconHeightChangeListener(mSetIconHeight, mIconHeight);
+		mSetIconHeight.addPropertyChangeListener(listener);
+		mIconHeight.addPropertyChangeListener(listener);
+	}
+
 	private void addChildDistanceControl(final List<IPropertyControl> controls) {
 		mSetChildDistance = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetChildDistance);
@@ -827,6 +878,8 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new NextLineProperty());
 		controls.add(new NextColumnProperty(2));
 		addCloudShapeControl(controls);
+		addIconWidthControl(controls);
+		addIconHeightControl(controls);
 		return controls;
 	}
 	
