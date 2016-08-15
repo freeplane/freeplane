@@ -300,10 +300,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		});
 	}
 
-	protected void fireStartupFinished() {
-		for (ApplicationLifecycleListener listener : Controller.getCurrentController().getApplicationLifecycleListeners()) {
-			listener.onStartupFinished();
-		}
+	private void fireStartupFinished() {
+		Controller.getCurrentController().fireStartupFinished();
 	}
 
 	private void loadMaps( final String[] args) {

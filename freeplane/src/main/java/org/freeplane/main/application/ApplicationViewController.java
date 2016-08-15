@@ -218,6 +218,7 @@ class ApplicationViewController extends FrameController {
 		if (!super.quit()) {
 			return false;
 		}
+		controller.fireApplicationStopped();
 		frame.dispose();
 		return true;
 	}
