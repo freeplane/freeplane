@@ -129,4 +129,11 @@ public class QuantityShould {
 		Quantity<Metrics> zero = new Quantity<Metrics>(0, Metrics.cm);
 		zero.assertNonNegative();
 	}
+	
+	@Test()
+	public void nullQuantity_passesOnCheckForNonNegative() throws Exception {
+		Quantity.assertNonNegativeOrNull(null);
+	}
+	
 }
+
