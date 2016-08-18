@@ -111,21 +111,16 @@ def checkFreeplaneVersion(Map configMap) {
 		terminate(textUtils.format('addons.installer.too.new', currentVersion, versionTo))
 }
 
-def parseFreeplaneVersion(String propertyName, FormattedObject versionObject) {
-    if (versionObject)
-        return parseFreeplaneVersion(propertyName, versionObject.toString())
-    return null
-}   
-
-def parseFreeplaneVersion(String propertyName, String versionString) {
+// version could be a FormattedObject
+def parseFreeplaneVersion(String propertyName, Object version) {
 	try {
-		if (versionString)
-			return FreeplaneVersion.getVersion(versionString.replaceFirst('^v', ''))
+		if (version)
+			return FreeplaneVersion.getVersion(version.toString().replaceFirst('^v', ''))
 		return null
 	}
 	catch (Exception e) {
 		e.printStackTrace()
-		mapStructureAssert(false, textUtils.format('addons.installer.freeplaneversion.format.error', propertyName, versionString))
+		mapStructureAssert(false, textUtils.format('addons.installer.freeplaneversion.format.error', propertyName, version))
 	}
 }
 
