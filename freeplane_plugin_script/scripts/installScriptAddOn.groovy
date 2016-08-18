@@ -111,6 +111,12 @@ def checkFreeplaneVersion(Map configMap) {
 		terminate(textUtils.format('addons.installer.too.new', currentVersion, versionTo))
 }
 
+def parseFreeplaneVersion(String propertyName, FormattedObject versionObject) {
+    if (versionObject)
+        return parseFreeplaneVersion(propertyName, versionObject.toString())
+    return null
+}   
+
 def parseFreeplaneVersion(String propertyName, String versionString) {
 	try {
 		if (versionString)
