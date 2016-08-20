@@ -80,6 +80,11 @@ public class Quantity <U extends Enum<U> & Convertible >{
 			throw new IllegalStateException("non negative value required");
 	}
 
+	public static <U extends Enum<U> & Convertible> void assertNonNegativeOrNull(Quantity<U> quantity) {
+		if(quantity != null)
+			quantity.assertNonNegative();
+	}
+
 	public Quantity<U> add(Quantity<U> second) {
 		if(unit == second.unit)
 			return new Quantity<U>(value + second.value, unit);
