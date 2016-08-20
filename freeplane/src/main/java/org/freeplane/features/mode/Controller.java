@@ -190,10 +190,10 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 
 	public boolean shutdown() {
 		getViewController().saveProperties();
-		ResourceController.getResourceController().saveProperties();
 		if (!getViewController().quit()) {
 			return false;
 		}
+		ResourceController.getResourceController().saveProperties();
 		extensionContainer.getExtensions().clear();
 		return true;
 	}
