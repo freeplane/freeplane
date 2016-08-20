@@ -66,6 +66,9 @@
 			<separator name="updates">
 				<boolean name="check_updates_automatically" />
 			</separator>
+			<separator name="surveys">
+				<boolean name="neverShowSurveys" />
+			</separator>
 			<separator name="org.freeplane.plugin.bugreport">
 				<combo name="org.freeplane.plugin.bugreport">
 					<choice value="org.freeplane.plugin.bugreport.allowed" />

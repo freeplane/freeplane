@@ -81,6 +81,9 @@ import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
+import org.freeplane.main.application.survey.FreeplaneSurveyProperties;
+import org.freeplane.main.application.survey.SurveyRunner;
+import org.freeplane.main.application.survey.SurveyStarter;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
@@ -219,6 +222,11 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			    new LogicalStyleFilterController());
 			MapController.install();
 			NodeHistory.install(controller);
+			final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
+			if(freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
+				URL configurationUrl = freeplaneSurveyProperties.getSurveyUrl();
+				controller.addApplicationLifecycleListener(new SurveyStarter(configurationUrl, new SurveyRunner(freeplaneSurveyProperties)));
+			}
 			return controller;
 		}
 		catch (final Exception e) {
