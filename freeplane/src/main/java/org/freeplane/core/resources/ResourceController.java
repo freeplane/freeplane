@@ -114,6 +114,11 @@ public abstract class ResourceController {
 		return Boolean.parseBoolean(getProperty(key));
 	}
 	
+	public boolean getBooleanProperty(final String key, final boolean defaultValue) {
+		final String value = getProperty(key, null);
+		return value != null ? Boolean.parseBoolean(value) : defaultValue;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T>  defaultValue) {
 		try{
