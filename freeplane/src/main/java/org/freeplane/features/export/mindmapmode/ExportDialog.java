@@ -28,6 +28,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
@@ -56,6 +57,7 @@ import org.freeplane.features.map.MapModel;
  *
  */
 public class ExportDialog {
+	private static final String LAST_CHOOSEN_EXPORT_FILE_FILTER = "lastChoosenExportFileFilter";
 	/** the JFileChooser dialog used to choose filter and the file to export to. */
 	final private JFileChooser fileChooser = new JFileChooser();
 
@@ -74,7 +76,19 @@ public class ExportDialog {
 		for (FileFilter filter : exportEngineRegistry.getFileFilters()) {
 	        fileChooser.addChoosableFileFilter(filter);
         }
-		final FileFilter fileFilter = fileChooser.getChoosableFileFilters()[0];
+		preselectFileFilter();
+	}
+
+	private void preselectFileFilter() {
+		final String lastChoosenExportFileFilter = ResourceController.getResourceController().getProperty(LAST_CHOOSEN_EXPORT_FILE_FILTER, null);
+		final FileFilter[] choosableFileFilters = fileChooser.getChoosableFileFilters();
+		for (FileFilter f: choosableFileFilters){
+			if(f.getDescription().equals(lastChoosenExportFileFilter)) {
+				fileChooser.setFileFilter(f);
+				return;
+			}
+		}
+		final FileFilter fileFilter = choosableFileFilters[0];
 		fileChooser.setFileFilter(fileFilter);
 	}
 
@@ -143,14 +157,19 @@ public class ExportDialog {
 		try {
 			fileChooser.addPropertyChangeListener(filterChangeListener);
 			final int returnVal = fileChooser.showSaveDialog(parentframe);
+			final FileFilter currentfileFilter = fileChooser.getFileFilter();
+			final String lastFileFilterDescription = currentfileFilter.getDescription();
+			if(currentfileFilter instanceof ExampleFileFilter)
+				ResourceController.getResourceController().setProperty(
+					LAST_CHOOSEN_EXPORT_FILE_FILTER, lastFileFilterDescription);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// we check which filter has been selected by the user and use its
 				// description as key for the map to get the corresponding XSLT file
-				if(! (fileChooser.getFileFilter() instanceof ExampleFileFilter)){
+				if(! (currentfileFilter instanceof ExampleFileFilter)){
 					UITools.errorMessage(TextUtils.getText("invalid_export_file"));
 					return;
 				}
-				final ExampleFileFilter fileFilter = (ExampleFileFilter) fileChooser.getFileFilter();
+				final ExampleFileFilter fileFilter = (ExampleFileFilter) currentfileFilter;
 				final File selectedFile = getAcceptableFile(fileChooser.getSelectedFile(), fileFilter);
 				if (selectedFile == null) {
 					return;
