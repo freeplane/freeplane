@@ -236,16 +236,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final MapStyleModel model = new MapStyleModel();
 		final String colorString = element.getAttribute("background", null);
-		final String alphaString = element.getAttribute("background_alpha", null);
-		Color bgColor;
+		final Color bgColor;
 		if (colorString != null) {
 			bgColor = ColorUtils.stringToColor(colorString);
 		}
 		else {
 			bgColor = null;
-		}
-		if (alphaString != null) {
-			bgColor = ColorUtils.alphaToColor(alphaString, bgColor);
 		}
 		model.setBackgroundColor(bgColor);
 		final String zoomString = element.getAttribute("zoom", null);
@@ -429,7 +425,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		super.saveExtension(extension, element);
 		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
-			ColorUtils.setColorAttributes(element, "background", "background_alpha", backgroundColor);
+			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 		}
 		final float zoom = mapStyleModel.getZoom();
 		if (zoom != 1f) {
@@ -473,7 +469,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
 
-	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {
+	public void setBackgroundColor(final MapStyleModel model, final Color color) {
+		final Color actionColor = ColorUtils.makeNonTransparent(color);
 		final Color oldColor = model.getBackgroundColor();
 		if (actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)) {
 			return;
