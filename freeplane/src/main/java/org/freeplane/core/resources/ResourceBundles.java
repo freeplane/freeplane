@@ -175,11 +175,15 @@ public class ResourceBundles extends ResourceBundle {
 		if (value != null) {
 			return value;
 		}
-		value = defaultResources.get(key);
+		value = getOriginalString(key);
 		if (value != null) {
 			return value + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 		return resource;
+	}
+
+	public String getOriginalString(final String key) {
+		return defaultResources.get(key);
 	}
 
 	private String getLanguageString(final String key) {
@@ -220,7 +224,7 @@ public class ResourceBundles extends ResourceBundle {
 		}
 		catch (final Exception ex) {
 			LogUtils.severe("Warning - resource string not found:" + key);
-			return defaultResources.get(key) + ResourceBundles.POSTFIX_TRANSLATE_ME;
+			return getOriginalString(key) + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 	}
 
