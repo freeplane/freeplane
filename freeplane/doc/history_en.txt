@@ -2,6 +2,8 @@
 1.5.16
 ===============================
 Keep last selected exporter in dialog drop-down box
+User translations
+Dialog to choose template when new map is created
 
 ===============================
 1.5.15

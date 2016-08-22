@@ -45,6 +45,7 @@ public class SetBooleanMapPropertyAction extends AFreeplaneAction{
 	    	TextUtils.getRawText("OptionPanel." + propertyName),
 	    	null);
 	    this.propertyName = propertyName;
+	    setTooltip(getTooltipKey());
     }
 
 	public void actionPerformed(ActionEvent e) {
@@ -58,6 +59,17 @@ public class SetBooleanMapPropertyAction extends AFreeplaneAction{
 		mapStyleController.setProperty(map, propertyName, Boolean.toString(set));
 		setSelected(set);
     }
+
+	@Override
+	public String getTextKey() {
+		return "OptionPanel." + propertyName;
+	}
+
+	@Override
+	public String getTooltipKey() {
+		return getTextKey() + ".tooltip";
+	}
+	
 	@Override
 	public void setSelected() {
 		try {

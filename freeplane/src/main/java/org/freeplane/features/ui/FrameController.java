@@ -32,6 +32,8 @@ import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -57,6 +59,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LookAndFeel;
 import javax.swing.RootPaneContainer;
+import javax.swing.Timer;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -169,6 +172,13 @@ abstract public class FrameController implements ViewController {
 		statusPanel.add(status);
 		statusInfos = new HashMap<String, Component>();
 		statusInfos.put(STANDARD_STATUS_INFO_KEY, status);
+		statusTextCleaner = new Timer(10000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				status.setText(null);
+			}
+		});
+		statusTextCleaner.setRepeats(false);
 //		this.controller = controller;
 		controller.setViewController(this);
 		controller.addAction(new ToggleFullScreenAction(this));
@@ -261,8 +271,11 @@ abstract public class FrameController implements ViewController {
 
 	abstract public void openDocument(URL fileToUrl) throws Exception;
 
+	final private Timer statusTextCleaner;
+
 	public void out(final String msg) {
 		status.setText(msg);
+		statusTextCleaner.restart();
 	}
 
 	public void addStatusInfo(final String key, final String info) {

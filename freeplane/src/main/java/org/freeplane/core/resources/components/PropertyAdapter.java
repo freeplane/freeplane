@@ -22,7 +22,7 @@ package org.freeplane.core.resources.components;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -39,9 +39,6 @@ public class PropertyAdapter {
 
 	public PropertyAdapter(final String name) {
 		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
-		if (ResourceController.getResourceController().getText(tooltip, null) == null) {
-			tooltip = null;
-		}
 	}
 
 	public PropertyAdapter(final String name, final String label, final String tooltip) {
@@ -69,8 +66,15 @@ public class PropertyAdapter {
 	}
 	
 	protected void layout(DefaultFormBuilder builder, JComponent component){
-		final JLabel label = builder.append(TextUtils.getOptionalText(getLabel()), component);
-		String tooltip = TextUtils.getOptionalText(getTooltip());
+		final String labelKey = getLabel();
+		final String optionalText = TextUtils.getOptionalText(labelKey);
+		final JLabel label = builder.append(optionalText, component);
+		if(optionalText != null)
+			TranslatedElement.TEXT.setKey(label, labelKey);
+		String tooltipKey = getTooltip();
+		String tooltip = TextUtils.getOptionalText(tooltipKey, null);
+		if (tooltipKey != null)
+			TranslatedElement.TOOLTIP.setKey(label, tooltipKey);
 		label.setToolTipText(tooltip);
 		component.setToolTipText(tooltip);
 	}

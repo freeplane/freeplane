@@ -44,11 +44,15 @@ import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
+import javax.swing.Box;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -58,12 +62,14 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
@@ -270,22 +276,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
 			}
 		}, IndexedTree.AS_CHILD);
-		optionPanelBuilder.addCreator("Environment/files", new IPropertyControlCreator() {
+		optionPanelBuilder.addCreator("Environment/files/skip_template_selection", new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
-				final TreeSet<String> templates = new TreeSet<String>();
-				for (File dir : new File[]{defaultStandardTemplateDir(), defaultUserTemplateDir()})
-					if(dir.isDirectory())
-						templates.addAll(Arrays.asList(dir.list(new FilenameFilter() {
-							@Override
-							public boolean accept(File dir, String name) {
-								return name.endsWith(FREEPLANE_FILE_EXTENSION);
-							}
-						})));
+				final Collection<String> templates = collectAvailableMapTemplates();
 				ComboProperty comboProperty = new ComboProperty(STANDARD_TEMPLATE, templates, templates);
 				comboProperty.setEditable(true);
 				return comboProperty;
 			}
-		}, IndexedTree.AS_CHILD);
+		}, IndexedTree.BEFORE);
 	}
 
 	private void backup(final File file) {
@@ -583,7 +581,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
 	public MapModel newMapFromDefaultTemplate() {
-		final File file = defaultTemplateFile();
+		final File file = chosenTemplateFile();
 		if (file != null) {
 			return newMapFromTemplate(file);
 		}
@@ -593,10 +591,45 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return map;
 	}
 
+	protected File chosenTemplateFile() {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
+		if(skipTemplateSelection)
+			return defaultTemplateFile();
+		final String standardTemplatePath = resourceController.getProperty(STANDARD_TEMPLATE);
+		final TreeSet<String> availableMapTemplates = collectAvailableMapTemplates();
+		availableMapTemplates.add(standardTemplatePath);
+		
+		final Box verticalBox = Box.createVerticalBox();
+		
+		final JComboBox<String> templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
+		templateComboBox.setSelectedItem(standardTemplatePath);
+		templateComboBox.setAlignmentX(0f);
+		verticalBox.add(templateComboBox);
+		
+		final String checkBoxText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.rememberMyDescision");
+		final JCheckBox mDontShowAgainBox = new JCheckBox();
+		mDontShowAgainBox.setAlignmentX(0f);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(mDontShowAgainBox, checkBoxText);
+		verticalBox.add(mDontShowAgainBox);
+
+		JOptionPane.showMessageDialog(UITools.getCurrentFrame(), verticalBox, TextUtils.getText("select_template"), JOptionPane.PLAIN_MESSAGE);
+		final String selectedTemplate = (String)templateComboBox.getSelectedItem();
+		if(mDontShowAgainBox.isSelected()) {
+			resourceController.setProperty("skipTemplateSelection", true);
+			resourceController.setProperty(STANDARD_TEMPLATE, selectedTemplate);
+		}
+		return templateFile(selectedTemplate);
+	}
+
 	@Override
     public File defaultTemplateFile() {
+		final String userDefinedTemplateFilePath = ResourceController.getResourceController().getProperty(STANDARD_TEMPLATE);
+		return templateFile(userDefinedTemplateFilePath);
+	}
+
+	private File templateFile(final String userDefinedTemplateFilePath) {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final String userDefinedTemplateFilePath = resourceController.getProperty(STANDARD_TEMPLATE);
 		final File userDefinedTemplateFile = new File(userDefinedTemplateFilePath);
 		if(userDefinedTemplateFile.isAbsolute() && userDefinedTemplateFile.exists() && ! userDefinedTemplateFile.isDirectory()){
 			return userDefinedTemplateFile;
@@ -907,6 +940,19 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public void beforeViewChange(final Component oldView, final Component newView) {
+	}
+
+	protected TreeSet<String> collectAvailableMapTemplates() {
+		final TreeSet<String> templates = new TreeSet<String>();
+		for (File dir : new File[]{defaultStandardTemplateDir(), defaultUserTemplateDir()})
+			if(dir.isDirectory())
+				templates.addAll(Arrays.asList(dir.list(new FilenameFilter() {
+					@Override
+					public boolean accept(File dir, String name) {
+						return name.endsWith(FREEPLANE_FILE_EXTENSION);
+					}
+				})));
+		return templates;
 	}
 
 	public static MFileManager getController(ModeController modeController) {

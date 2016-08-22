@@ -84,7 +84,12 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		this.key = key;
 		rawText = TextUtils.getRawText(getTextKey());
 		LabelAndMnemonicSetter.setLabelAndMnemonic(this, rawText);
-		final String iconKey = getIconKey();
+		setIcon(getIconKey());
+		setTooltip(getTooltipKey());
+		//		System.out.println(key);
+	}
+
+	protected void setIcon(final String iconKey) {
 		final ImageIcon cachedIcon = iconCache.get(iconKey);
 		if(cachedIcon != null){
 			putValue(SMALL_ICON, cachedIcon);
@@ -103,12 +108,14 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 				}
 			}
 		}
-		final String tooltip = TextUtils.getRawText(getTooltipKey(), null);
+	}
+
+	protected void setTooltip(String tooltipKey) {
+		final String tooltip = TextUtils.getRawText(tooltipKey, null);
 		if (tooltip != null && !"".equals(tooltip)) {
 			putValue(Action.SHORT_DESCRIPTION, tooltip);
 			putValue(Action.LONG_DESCRIPTION, tooltip);
 		}
-		//		System.out.println(key);
 	}
 
 	//	/**
@@ -155,7 +162,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return key + ".text";
 	}
 
-	public final String getTooltipKey() {
+	public String getTooltipKey() {
 		return key + ".tooltip";
 	}
 

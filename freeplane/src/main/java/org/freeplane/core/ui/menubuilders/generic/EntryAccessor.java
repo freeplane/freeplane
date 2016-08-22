@@ -77,6 +77,36 @@ public class EntryAccessor {
 		}
 	}
 
+	public String getTextKey(final Entry entry) {
+		if (entry.getAttribute(TEXT) != null)
+			return null;
+		final String textKey = (String) entry.getAttribute(TEXT_KEY);
+		if (textKey != null)
+			return textKey;
+		final AFreeplaneAction action = getAction(entry);
+		if (action != null) {
+			final String actionTextKey = action.getTextKey();
+			if(TextUtils.getRawText(actionTextKey, null) != null)
+				return actionTextKey;
+			else
+				return null;
+		}
+		String name = entry.getName();
+		if (name.isEmpty())
+			return null;
+		else
+			return name;
+	}
+	
+	public String getTooltipKey(final Entry entry) {
+		final AFreeplaneAction action = getAction(entry);
+		if (action != null) {
+			final String actionTooltipKey = action.getTooltipKey();
+			return actionTooltipKey;
+		}
+		return null;
+	}
+
 	public Object getComponent(final Entry entry) {
 		return entry.getAttribute(COMPONENT);
 	}

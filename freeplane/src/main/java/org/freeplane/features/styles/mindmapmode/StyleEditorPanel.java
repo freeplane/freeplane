@@ -45,8 +45,8 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
@@ -61,6 +61,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
@@ -842,7 +843,7 @@ public class StyleEditorPanel extends JPanel {
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.border(Borders.DLU2);
-		rightBuilder.appendSeparator(TextUtils.getText("OptionPanel.separator.NodeStyle"));
+		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(rightBuilder);
 		if (addStyleBox) {
 			addAutomaticLayout(rightBuilder);
 			addStyleBox(rightBuilder);
@@ -872,6 +873,7 @@ public class StyleEditorPanel extends JPanel {
 	    button.setHorizontalAlignment(SwingConstants.LEFT);
 	    final String labelText = TextUtils.getText(label);
 	    UITools.addTitledBorder(button, labelText, FONT_SIZE);
+		TranslatedElement.BORDER.setKey(button, label);
 	    rightBuilder.append(button, rightBuilder.getColumnCount());
 		rightBuilder.nextLine();
 		return button;
@@ -913,10 +915,7 @@ public class StyleEditorPanel extends JPanel {
 				}
 			});
 		}
-	    final String label = TextUtils.getText("AutomaticLayoutAction.text");
-	    rightBuilder.append(new JLabel(label), 5);
-	    rightBuilder.append(mAutomaticLayoutComboBox);
-	    rightBuilder.nextLine();
+	    appendLabeledComponent(rightBuilder, "AutomaticLayoutAction.text", mAutomaticLayoutComboBox);
 		}
 		{
 			
@@ -945,11 +944,17 @@ public class StyleEditorPanel extends JPanel {
 					}
 				});
 			}
-			final String label = TextUtils.getText("AutomaticEdgeColorHookAction.text");
-			rightBuilder.append(new JLabel(label), 5);
-			rightBuilder.append(mAutomaticEdgeColorComboBox);
-		    rightBuilder.nextLine();
+			appendLabeledComponent(rightBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
 		}
+	}
+
+	private void appendLabeledComponent(final DefaultFormBuilder rightBuilder, String labelKey, Component component) {
+		final String text = TextUtils.getText(labelKey);
+	    final JLabel label = new JLabel(text);
+		TranslatedElement.TEXT.setKey(label, labelKey);
+		rightBuilder.append(label, 5);
+	    rightBuilder.append(component);
+	    rightBuilder.nextLine();
 	}
 
 	private void setFont(Container c, float size) {

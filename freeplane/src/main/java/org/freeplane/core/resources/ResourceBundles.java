@@ -20,6 +20,10 @@
 package org.freeplane.core.resources;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -28,6 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -46,20 +51,23 @@ public class ResourceBundles extends ResourceBundle {
 	/**
 	 *
 	 */
-	final private ResourceController controller;
+//	final private ResourceController controller;
 	private Map<String, String> defaultResources;
 	private final MultipleValueMap<String, URL> externalResources;
 	private String lang;
 	private Map<String, String> languageResources;
+	final private Properties userLanguageResources;
 	final private boolean isUserDefined;
+	private boolean userResourcesHaveChanged;
 
-	ResourceBundles(final ResourceController controller) {
-		this.controller = controller;
+	ResourceBundles(String language) {
 		final URL systemResource = getSystemResourceUrl(DEFAULT_LANGUAGE);
 		isUserDefined = systemResource.getProtocol().equalsIgnoreCase("file");
 		externalResources = new MultipleValueMap<String, URL>();
+		userLanguageResources = new Properties();
+		userResourcesHaveChanged = false;
 		try {
-			loadLocalLanguageResources();
+			loadLocalLanguageResources(language);
 			if(lang.equals(DEFAULT_LANGUAGE))
 				defaultResources = languageResources;
 			else
@@ -130,7 +138,7 @@ public class ResourceBundles extends ResourceBundle {
 		return resources;
 	}
 
-	protected URL getSystemResourceUrl(final String lang) {
+	private URL getSystemResourceUrl(final String lang) {
 	    String resourceName = "/translations/Resources" + "_" + lang + ".properties";
 		final URL systemResource = ResourceController.getResourceController().getResource(resourceName);
 	    return systemResource;
@@ -163,34 +171,94 @@ public class ResourceBundles extends ResourceBundle {
 	}
 
 	public String getResourceString(final String key, final String resource) {
-		String value = languageResources.get(key);
+		String value = getLanguageString(key);
 		if (value != null) {
 			return value;
 		}
-		value = defaultResources.get(key);
+		value = getOriginalString(key);
 		if (value != null) {
 			return value + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 		return resource;
 	}
 
+	public String getOriginalString(final String key) {
+		return defaultResources.get(key);
+	}
+
+	private String getLanguageString(final String key) {
+		final String userString = userLanguageResources.getProperty(key);
+		return userString != null ? userString : languageResources.get(key);
+	}
+
 	public String putResourceString(final String key, final String resource) {
 		return languageResources.put(key, resource);
+	}
+	
+	public void putUserResourceString(final String key, final String value) {
+		if(value != null && ! value.isEmpty())
+			addUserDefinedString(key, value);
+		else {
+			removeUserDefinedString(key);
+		}
+	}
+
+	private void addUserDefinedString(final String key, final String value) {
+		if(! value.equals(userLanguageResources.getProperty(key))) {
+			userResourcesHaveChanged = true;
+			userLanguageResources.setProperty(key, value);
+		}
+	}
+
+	private void removeUserDefinedString(final String key) {
+		if (userLanguageResources.contains(key)) {
+			userLanguageResources.remove(key);
+			userResourcesHaveChanged = true;
+		}
 	}
 	
 	@Override
 	protected Object handleGetObject(final String key) {
 		try {
-			return languageResources.get(key);
+			return getLanguageString(key);
 		}
 		catch (final Exception ex) {
 			LogUtils.severe("Warning - resource string not found:" + key);
-			return defaultResources.get(key) + ResourceBundles.POSTFIX_TRANSLATE_ME;
+			return getOriginalString(key) + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 	}
 
-	private void loadLocalLanguageResources() throws IOException {
-		lang = controller.getProperty(ResourceBundles.RESOURCE_LANGUAGE);
+	private void loadLocalLanguageResources(String newLanguage) throws IOException {
+		loadInternalResources(newLanguage);
+		loadUserResources();
+	}
+
+	private void loadUserResources() throws IOException {
+		userLanguageResources.clear();
+		final File userResourceFile = userResourceFile();
+		if(userResourceFile.exists()) {
+			try (final BufferedInputStream in = new BufferedInputStream(new FileInputStream(userResourceFile))) {
+				userLanguageResources.load(in);
+			}
+		}
+		userResourcesHaveChanged = false;
+	}
+	
+	public void saveUserResources() throws IOException {
+		final File userResourceFile = userResourceFile();
+		if(userResourcesHaveChanged) {
+			userLanguageResources.store(new BufferedOutputStream(new FileOutputStream(userResourceFile)), "");
+			userResourcesHaveChanged = false;
+		}
+	}
+
+
+	private File userResourceFile() {
+		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "UserResources_" + lang + ".properties");
+	}
+
+	private void loadInternalResources(String newLanguage) throws IOException {
+		lang = newLanguage;
 		if (lang == null || lang.equals(LANGUAGE_AUTOMATIC)) {
 			final String country = Locale.getDefault().getCountry();
 			if(! country.equals("")){
@@ -226,10 +294,10 @@ public class ResourceBundles extends ResourceBundle {
 		System.exit(1);
 	}
 
-	public void loadAnotherLanguage() {
+	public void loadAnotherLanguage(String newLanguage) {
 		try {
-			if(! lang.equals(controller.getProperty(ResourceBundles.RESOURCE_LANGUAGE)))
-				loadLocalLanguageResources();
+			if(! lang.equals(newLanguage))
+				loadLocalLanguageResources(newLanguage);
 		}
 		catch (final IOException e) {
 			LogUtils.severe(e);

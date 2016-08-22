@@ -247,6 +247,7 @@ public class ApplicationResourceController extends ResourceController {
 			outputStreamWriter.write('\n');
 			outputStreamWriter.flush();
 			props.store(out, null);
+			((ResourceBundles)getResources()).saveUserResources();
 		}
 		catch (final Exception ex) {
 		}
