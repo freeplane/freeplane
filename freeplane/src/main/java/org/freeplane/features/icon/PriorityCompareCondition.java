@@ -30,6 +30,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
+import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.JCondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
@@ -66,7 +67,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
     protected JComponent createRendererComponent() {
 		final JCondition renderer = new JCondition();
 		final String string = toString();
-		final JLabel label = new JLabel(string.substring(0, string.length() - 3));
+		final JLabel label = ConditionFactory.createConditionLabel(string.substring(0, string.length() - 3));
 		label.setIcon(STORE.getMindIcon(getIconName()).getIcon());
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
 		renderer.add(label);

@@ -23,6 +23,7 @@ import java.awt.Component;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicPanelUI;
 
 /**
  * @author Dimitry Polivaev
@@ -37,6 +38,7 @@ public class JCondition extends JPanel {
 	 */
 	public JCondition() {
 		super();
+		setUI(BasicPanelUI.createUI(this));
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 	}
