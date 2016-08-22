@@ -24,8 +24,10 @@ import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.plaf.basic.BasicLabelUI;
 
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.TextUtils;
@@ -50,9 +52,21 @@ public class ConditionFactory {
 
 	static public JComponent createCellRendererComponent(final String description) {
 		final JCondition component = new JCondition();
-		final JLabel label = new JLabel(description);
+		final JLabel label = createConditionLabel(description);
 		component.add(label);
 		return component;
+	}
+
+	public static JLabel createConditionLabel(final String text) {
+		final JLabel label = new JLabel(text);
+		label.setUI((BasicLabelUI)BasicLabelUI.createUI(label));
+		return label;
+	}
+
+	public static JLabel createConditionLabel(final Icon icon) {
+		final JLabel label = new JLabel(icon);
+		label.setUI((BasicLabelUI)BasicLabelUI.createUI(label));
+		return label;
 	}
 
 	public static String createDescription(final String attribute, final String simpleCondition, final String value,

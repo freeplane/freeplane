@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.JCondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
@@ -86,8 +87,8 @@ public class IconContainedCondition extends ASelectableCondition {
 	public JComponent createRendererComponent() {
 		final JCondition component = new JCondition();
 		final String text = TextUtils.getText("filter_icon") + ' ' + TextUtils.getText("filter_contains") + ' ';
-		component.add(new JLabel(text));
-		JLabel icon = new JLabel(STORE.getUIIcon(getIconName()).getIcon());
+		component.add(ConditionFactory.createConditionLabel(text));
+		JLabel icon = ConditionFactory.createConditionLabel(STORE.getUIIcon(getIconName()).getIcon());
 		component.add(icon);
 		icon.setBackground(Color.WHITE);
 		icon.setOpaque(true);
