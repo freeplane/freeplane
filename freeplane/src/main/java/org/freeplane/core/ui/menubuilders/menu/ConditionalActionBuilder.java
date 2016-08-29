@@ -14,7 +14,6 @@ public class ConditionalActionBuilder implements EntryVisitor {
 
 	public ConditionalActionBuilder(FreeplaneActions freeplaneActions) {
 		this.freeplaneActions = freeplaneActions;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -22,10 +21,17 @@ public class ConditionalActionBuilder implements EntryVisitor {
 		final String property = (String)target.getAttribute("property");
 		if(ResourceController.getResourceController().getBooleanProperty(property, false)) {
 			try {
-				final String className = (String) target.getAttribute("class");
-				final Class<?> classDefinition = getClass().getClassLoader().loadClass(className);
-				final AFreeplaneAction action = (AFreeplaneAction) classDefinition.newInstance();
-				freeplaneActions.addAction(action);
+				final String keyName = (String) target.getAttribute("actionKey");
+				final AFreeplaneAction existingAction = freeplaneActions.getAction(keyName);
+				final AFreeplaneAction action;
+				if(existingAction != null)
+					action = existingAction;
+				else {
+					final String className = (String) target.getAttribute("actionClass");
+					final Class<?> classDefinition = getClass().getClassLoader().loadClass(className);
+					action = (AFreeplaneAction) classDefinition.newInstance();
+					freeplaneActions.addAction(action);
+				}
 				new EntryAccessor().setAction(target, action);
 				return;
 			} catch (Exception e) {
@@ -37,7 +43,6 @@ public class ConditionalActionBuilder implements EntryVisitor {
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

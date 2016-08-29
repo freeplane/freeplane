@@ -82,13 +82,14 @@ public class MapController extends SelectionController implements IExtension{
 		final private Collection<AFreeplaneAction> actions;
 		final private DelayedRunner runner;
 
-		public ActionEnablerOnChange() {
+		public ActionEnablerOnChange(final ModeController modeController) {
 			super();
 			actions = new HashSet<AFreeplaneAction>();
 			runner = new DelayedRunner(new Runnable() {
 				@Override
 				public void run() {
-					setActionsEnabledNow();
+					if(modeController == Controller.getCurrentModeController())
+						setActionsEnabledNow();
 				}
 			});
 		}
@@ -152,13 +153,14 @@ public class MapController extends SelectionController implements IExtension{
 		final private Collection<AFreeplaneAction> actions;
 		final private DelayedRunner runner;
 
-		public ActionSelectorOnChange() {
+		public ActionSelectorOnChange(final ModeController modeController) {
 			super();
 			actions = new HashSet<AFreeplaneAction>();
 			runner = new DelayedRunner(new Runnable() {
 				@Override
 				public void run() {
-					setActionsSelectedNow();
+					if(modeController == Controller.getCurrentModeController())
+						setActionsSelectedNow();
 				}
 			});
 		}
@@ -310,8 +312,8 @@ public class MapController extends SelectionController implements IExtension{
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
-		actionEnablerOnChange = new ActionEnablerOnChange();
-		actionSelectorOnChange = new ActionSelectorOnChange();
+		actionEnablerOnChange = new ActionEnablerOnChange(modeController);
+		actionSelectorOnChange = new ActionSelectorOnChange(modeController);
 		addNodeSelectionListener(actionEnablerOnChange);
 		addNodeChangeListener(actionEnablerOnChange);
 		addMapChangeListener(actionEnablerOnChange);
