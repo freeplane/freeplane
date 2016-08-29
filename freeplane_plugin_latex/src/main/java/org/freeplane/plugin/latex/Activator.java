@@ -3,10 +3,14 @@ package org.freeplane.plugin.latex;
 import java.net.URL;
 import java.util.Hashtable;
 
+import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
+import org.freeplane.main.mindmapmode.stylemode.SModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -22,17 +26,26 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(final BundleContext context) throws Exception {
 		registerMindMapModeExtension(context);
-		registerBrowseModeExtension(context);
 	}
 
 	private void registerMindMapModeExtension(final BundleContext context) {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
-		props.put("mode", new String[] { MModeController.MODENAME });
+		props.put("mode", new String[] { MModeController.MODENAME, SModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(final ModeController modeController) {
-				    new LatexRegistration();
-				    addPreferencesToOptionPanel();
+					//LattexNodeHook -> Menu insert
+					final LatexNodeHook nodeHook = new LatexNodeHook();
+					modeController.getExtension(TextController.class).addTextTransformer(//
+							new ConditionalContentTransformer(new LatexRenderer(), Activator.TOGGLE_PARSE_LATEX));
+					modeController.getController().getExtension(FormatController.class).addPatternFormat(new LatexFormat());
+					modeController.getController().getExtension(FormatController.class).addPatternFormat(new UnparsedLatexFormat());
+					if (modeController.getModeName().equals("MindMap")) {
+						modeController.addAction(new InsertLatexAction(nodeHook));
+						modeController.addAction(new EditLatexAction(nodeHook));
+						modeController.addAction(new DeleteLatexAction(nodeHook));
+						addPreferencesToOptionPanel();
+					}
 			    }
 
 				private void addPreferencesToOptionPanel() {
@@ -43,17 +56,6 @@ public class Activator implements BundleActivator {
 					MModeController modeController = (MModeController) controller.getModeController();
 					modeController.getOptionPanelBuilder().load(preferences);
 				}
-		    }, props);
-	}
-
-	private void registerBrowseModeExtension(final BundleContext context) {
-		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
-		props.put("mode", new String[] { BModeController.MODENAME });
-		context.registerService(IModeControllerExtensionProvider.class.getName(),
-		    new IModeControllerExtensionProvider() {
-			    public void installExtension(final ModeController modeController) {
-				    new LatexRegistration();
-			    }
 		    }, props);
 	}
 

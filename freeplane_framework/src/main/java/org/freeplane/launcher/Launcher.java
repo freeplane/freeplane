@@ -63,9 +63,16 @@ public class Launcher {
 
 	public static void main(String[] args) {
 		fixX11AppName();
+		workAroundForDataFlavorComparator_JDK8130242();
 		new Launcher().launch(args);
 	}
 
+
+	private static void workAroundForDataFlavorComparator_JDK8130242() {
+		final String javaVersion = System.getProperty("java.version");
+		if(javaVersion.startsWith("1.7.") || javaVersion.startsWith("1.8."))
+			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+	}
 
 	private void launch(String[] args) {
 		setDefines();

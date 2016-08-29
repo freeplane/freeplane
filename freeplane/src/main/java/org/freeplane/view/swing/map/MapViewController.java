@@ -54,6 +54,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -73,7 +74,7 @@ import org.freeplane.features.ui.ViewController;
  * exchange between controller and this class is managed by observer pattern
  * (the controller observes changes to the map mapViews here).
  */
-public class MapViewController implements IMapViewManager , IMapViewChangeListener, IFreeplanePropertyListener {
+public class MapViewController implements IMapViewManager , IMapViewChangeListener, IFreeplanePropertyListener, IMapLifeCycleListener {
 	private String lastModeName;
 	/** reference to the current mapmapView; null is allowed, too. */
 	private MapView selectedMapView;
@@ -93,6 +94,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public MapViewController(Controller controller){
 		this.controller =controller;
 		controller.setMapViewManager(this);
+		controller.addMapLifeCycleListener(this);
 		addMapViewChangeListener(this);
 		zoomIn = new ZoomInAction(this);
 		controller.addAction(zoomIn);
@@ -249,23 +251,51 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#close(boolean)
 	 */
-	public boolean close(final boolean force) {
+	public boolean close() {
 		final MapView mapView = getMapView();
-		return close(mapView, force);
+		return close(mapView);
+	}
+	
+	@Override
+	public void closeWithoutSaving() {
+		final MapView mapView = getMapView();
+		closeWithoutSaving(mapView);
 	}
 
-	public boolean close(final Component mapViewComponent, final boolean force) {
+
+	public boolean close(final Component mapViewComponent) {
+		return close(mapViewComponent, false);
+	}
+	
+	public boolean closeWithoutSaving(final Component mapViewComponent) {
+		return close(mapViewComponent, true);
+	}
+	
+	private boolean close(final Component mapViewComponent, boolean forceCloseWithoutSaving) {
 	    if (mapViewComponent == null) {
 			return false;
 		}
 		MapView mapView = (MapView) mapViewComponent;
-		final MapController mapController = mapView.getModeController().getMapController();
-		final boolean closingNotCancelled = mapController.close(mapView.getModel(), force);
-		if (!closingNotCancelled) {
-			return false;
+		final MapModel map = mapView.getModel();
+		final int viewCount = getViews(map).size();
+		if(viewCount == 1) {
+			final MapController mapController = mapView.getModeController().getMapController();
+			if(forceCloseWithoutSaving){
+				mapController.closeWithoutSaving(map);
+				return true;
+			}
+			else
+				return mapController.close(map);
+			
 		}
+		map.removeMapChangeListener(mapView);
+		remove(mapView);
+		mapView.getRoot().remove();
+		return true;
+    }
+
+	private void remove(MapView mapView) {
 		int index = mapViewVector.indexOf(mapView);
-		mapView.getModel().removeMapChangeListener(mapView);
 		ResourceController.getResourceController().removePropertyChangeListener(mapView);
 		mapViewVector.remove(mapView);
 		if (mapViewVector.isEmpty()) {
@@ -279,9 +309,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			changeToMapView((mapViewVector.get(index)));
 		}
 		mapViewChangeListeners.afterMapViewClose(mapView);
-		mapView.getRoot().remove();
-		return true;
-    }
+	}
 
 	public String createHtmlMap() {
 		final MapModel model = getModel();
@@ -775,22 +803,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		});
 	}
 
-	public boolean closeAllMaps() {
-		while (getMapViewVector().size() > 0) {
-			if (getMapView() != null) {
-				final boolean closingNotCancelled = close(false);
-				if (!closingNotCancelled) {
-					return false;
-				}
-			}
-			else {
-				nextMapView();
-			}
-		}
-		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
-		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
-		return true;
-	}
 	private boolean antialiasAll = false;
 	private boolean antialiasEdges = false;
 	private JComboBox zoomBox;
@@ -883,4 +895,22 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		controller.getViewController().setTitle(frameTitle);
 		modeController.getUserInputListenerFactory().updateMapList();
 	}
+
+	@Override
+	public void onCreate(MapModel map) {
+	}
+
+	@Override
+	public void onRemove(MapModel map) {
+		final List<Component> views = getViews(map);
+		for(Component view : views)
+			remove((MapView)view);
+	}
+
+	@Override
+	public void onQuitApplication() {
+		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
+		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
+	}
+
 }

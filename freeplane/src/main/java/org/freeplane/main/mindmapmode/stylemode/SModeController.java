@@ -39,7 +39,7 @@ import org.freeplane.features.ui.IMapViewManager;
  * @author Dimitry Polivaev
  * 18.09.2009
  */
-class SModeController extends MModeController {
+public class SModeController extends MModeController {
 
 	@SuppressWarnings("serial")
     public SModeController(final Controller controller) {

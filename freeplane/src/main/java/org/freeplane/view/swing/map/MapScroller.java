@@ -161,6 +161,8 @@ class MapScroller {
 	}
 
 	private void scrollNodeToVisible(final NodeView node, final int extraWidth) {
+		if(node == null)
+			return;
 		if(scrollingDirective == ScrollingDirective.DONE || scrollingDirective == ScrollingDirective.ANCHOR)
 			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {

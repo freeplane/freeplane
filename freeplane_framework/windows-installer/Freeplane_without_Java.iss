@@ -11,8 +11,8 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.6.0"
-#define MyStatus "alpha"
+#define MyVersion "1.5.16"
+#define MyStatus ""
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"

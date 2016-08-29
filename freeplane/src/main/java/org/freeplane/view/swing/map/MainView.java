@@ -680,7 +680,9 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	private boolean hasChildren() {
-	    return getNodeView().getModel().hasChildren();
+	    final NodeView nodeView = getNodeView();
+		final NodeModel node = nodeView.getModel();
+		return node.hasChildren();
     }
 
 	public MouseArea getMouseArea() {

@@ -201,7 +201,6 @@ public class MModeControllerFactory {
 		NodeHistory.install(modeController);
 		modeController.addAction(new ImportXmlFile());
 		modeController.addAction(new ImportMindmanagerFiles());
-		modeController.addAction(new TextChangeHotKeyAction());
 	}
 
 	private MModeController createModeControllerImpl() {

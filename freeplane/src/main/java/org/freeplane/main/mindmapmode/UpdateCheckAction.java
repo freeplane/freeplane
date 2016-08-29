@@ -55,7 +55,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 	 * the sid.
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int TWO_DAYS = 1 * 24 * 60 * 60 * 1000;
+	private static final int ONE_DAY = 1 * 24 * 60 * 60 * 1000;
 	private static final String UPDATE_BUTTON_LOCATION = "main_toolbar_update";
 //	/**
 //	 * the url where to download the newest version
@@ -274,7 +274,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final Date now = new Date();
 		final long nextCheckMillis = ResourceController.getResourceController().getLongProperty(LAST_UPDATE_CHECK_TIME,
 		    0)
-		        + TWO_DAYS;
+		        + ONE_DAY;
 		final Date nextCheckDate = new Date(nextCheckMillis);
 		if (now.before(nextCheckDate)) {
 			final FreeplaneVersion knownNewVersion = getKnownNewVersion();

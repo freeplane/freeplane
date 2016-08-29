@@ -21,6 +21,10 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.regex.Matcher;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -126,7 +130,7 @@ public class GroovyScript implements IScript {
             }
             final PrintStream oldOut = System.out;
             try {
-                compileAndCache();
+                trustedCompileAndCache();
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
@@ -153,6 +157,25 @@ public class GroovyScript implements IScript {
         return new ScriptSecurity(script, specificPermissions, outStream)
                 .getScriptingSecurityManager();
     }
+
+    private void trustedCompileAndCache() throws Throwable {
+    	AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
+
+			@Override
+			public Void run() throws PrivilegedActionException {
+				try {
+					compileAndCache();
+				} catch (Exception e) {
+					throw new PrivilegedActionException(e);
+				} catch (Error e) {
+					throw e;
+				} catch (Throwable e) {
+					throw new RuntimeException(e);
+				}
+				return null;
+			}
+		});
+	}
 
     private Script compileAndCache() throws Throwable {
 		final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();

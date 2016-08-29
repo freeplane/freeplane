@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.Point;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.HierarchyEvent;
@@ -11,9 +13,16 @@ import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
+import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,10 +36,15 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FreeplaneIconUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 class UITextChanger implements KeyEventDispatcher {
+	private static final String REPLACE_TEXT = "uiTextChanger.replaceText";
+	private static final String ORIGINAL_TEXT_IS_NOT_DEFINED = "uiTextChanger.originalTextIsNotDefined";
+	private static final ImageIcon WEBLATE_ICON = FreeplaneIconUtils.createImageIcon("/images/weblate-32.png");
 	private static final String TEXT_FIELD_TRANSLATION_KEY = TranslatedElement.class.getName() + ".translationKey";
 	private TextChangeHotKeyAction textChangeAcceleratorAction;
 
@@ -88,8 +102,62 @@ class UITextChanger implements KeyEventDispatcher {
 	private int showDialog(Component component, ArrayList<JTextField> textFields) {
 		final JTextField focusOwner = textFields.get(0);
 		setFocusWhenShowed(focusOwner);
-		return JOptionPane.showConfirmDialog(component, textFields.toArray(), "replace text",
+		final String title = TextUtils.getText(REPLACE_TEXT);
+		return JOptionPane.showConfirmDialog(component, createDisplayedComponents(textFields), title,
 		    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+	}
+
+	private Component[] createDisplayedComponents(ArrayList<JTextField> textFields) {
+		final Box[] components = new Box[textFields.size()];
+		final UrlCreator urlCreator = new UrlCreator();
+		for(int i = 0; i < textFields.size(); i++) {
+			final Box box = Box.createHorizontalBox();
+			final JTextField textField = textFields.get(i);
+			box.add(textField);
+			final String textKey = (String)textField.getClientProperty(TEXT_FIELD_TRANSLATION_KEY);
+			final boolean isTranslationKeyDefined = TextUtils.getRawText(textKey, null) != null;
+			final JComponent weblateButton;
+			if(isTranslationKeyDefined) {
+				final String url = urlCreator.createWeblateUrl(textKey);
+				weblateButton = createGoToUrlButton(url, WEBLATE_ICON);
+			}
+			else {
+				weblateButton = new JButton(WEBLATE_ICON);
+				TranslatedElement.TOOLTIP.setKey(weblateButton, ORIGINAL_TEXT_IS_NOT_DEFINED);
+				weblateButton.setToolTipText(TextUtils.getText(ORIGINAL_TEXT_IS_NOT_DEFINED));
+				weblateButton.setEnabled(false);
+			}
+			box.add(weblateButton);
+			components[i] = box;
+		}
+		return components;
+	}
+	
+	static class UrlCreator{
+		final ResourceController resourceController = ResourceController.getResourceController();
+		String weblateUrlFormat = resourceController.getProperty("weblateUrlFormat");
+		final MessageFormat urlCreator = new MessageFormat(weblateUrlFormat);
+		final String languageCode = resourceController.getLanguageCode();
+		public String createWeblateUrl(String key) {
+			return urlCreator.format(new String[]{languageCode, key});
+		}
+	}
+
+	private JComponent createGoToUrlButton(final String url, final Icon icon) {
+		final JButton button = new JButton(icon);
+		button.setToolTipText(url);
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				try {
+					Controller.getCurrentController().getViewController().openDocument(new URL(url));
+				} catch (Exception e) {
+					LogUtils.severe(e);
+				}
+			}
+		});
+		return button;
 	}
 
 	private void setFocusWhenShowed(final JTextField focusOwner) {
@@ -194,10 +262,18 @@ class UITextChanger implements KeyEventDispatcher {
 	};
 
 	private JTextField createTextField(TranslatedElement element, final String translationKey) {
-		final JTextField textField = new JTextField(TextUtils.getRawText(translationKey, ""));
+		final String rawText = TextUtils.getRawText(translationKey, "");
+		final JTextField textField = new JTextField(rawText);
+		final String originalRawText = TextUtils.getOriginalRawText(translationKey);
+		if(originalRawText == null) {
+			TranslatedElement.TOOLTIP.setKey(textField, ORIGINAL_TEXT_IS_NOT_DEFINED);
+			textField.setToolTipText(TextUtils.getText(ORIGINAL_TEXT_IS_NOT_DEFINED));
+		}
+		else if(!( originalRawText.isEmpty() || rawText.equals(originalRawText)))
+			textField.setToolTipText(originalRawText);
 		textField.addFocusListener(textFieldTextSelector);
 		String titleKey = element.getTitleKey();
-		UITools.addTitledBorder(textField, TextUtils.getRawText(titleKey), 10);
+		UITools.addTitledBorder(textField, TextUtils.getRawText(titleKey), Math.round(UITools.FONT_SCALE_FACTOR*10));
 		textField.putClientProperty(TranslatedElement.class, element);
 		textField.putClientProperty(TEXT_FIELD_TRANSLATION_KEY, translationKey);
 		TranslatedElement.BORDER.setKey(textField, titleKey);

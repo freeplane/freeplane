@@ -82,13 +82,14 @@ public class MapController extends SelectionController implements IExtension{
 		final private Collection<AFreeplaneAction> actions;
 		final private DelayedRunner runner;
 
-		public ActionEnablerOnChange() {
+		public ActionEnablerOnChange(final ModeController modeController) {
 			super();
 			actions = new HashSet<AFreeplaneAction>();
 			runner = new DelayedRunner(new Runnable() {
 				@Override
 				public void run() {
-					setActionsEnabledNow();
+					if(modeController == Controller.getCurrentModeController())
+						setActionsEnabledNow();
 				}
 			});
 		}
@@ -152,13 +153,14 @@ public class MapController extends SelectionController implements IExtension{
 		final private Collection<AFreeplaneAction> actions;
 		final private DelayedRunner runner;
 
-		public ActionSelectorOnChange() {
+		public ActionSelectorOnChange(final ModeController modeController) {
 			super();
 			actions = new HashSet<AFreeplaneAction>();
 			runner = new DelayedRunner(new Runnable() {
 				@Override
 				public void run() {
-					setActionsSelectedNow();
+					if(modeController == Controller.getCurrentModeController())
+						setActionsSelectedNow();
 				}
 			});
 		}
@@ -289,6 +291,7 @@ public class MapController extends SelectionController implements IExtension{
 		modeController.setMapController(this);
 		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
+		addMapLifeCycleListener(modeController.getController());
 		writeManager = new WriteManager();
 		mapWriter = new MapWriter(this);
 		readManager = new ReadManager();
@@ -309,8 +312,8 @@ public class MapController extends SelectionController implements IExtension{
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 		nodeChangeListeners = new LinkedList<INodeChangeListener>();
-		actionEnablerOnChange = new ActionEnablerOnChange();
-		actionSelectorOnChange = new ActionSelectorOnChange();
+		actionEnablerOnChange = new ActionEnablerOnChange(modeController);
+		actionSelectorOnChange = new ActionSelectorOnChange(modeController);
 		addNodeSelectionListener(actionEnablerOnChange);
 		addNodeChangeListener(actionEnablerOnChange);
 		addMapChangeListener(actionEnablerOnChange);
@@ -480,13 +483,26 @@ public class MapController extends SelectionController implements IExtension{
 		return node.getChildren();
 	}
 
-	/**
-	 * Return false if user has canceled.
-	 */
-	public boolean close(final MapModel map, final boolean force) {
+	public boolean close(final MapModel map) {
+		closeWithoutSaving(map);
+		return true;
+	}
+	
+	public boolean closeAllMaps() {
+		final Controller controller = getModeController().getController();
+		for (MapModel map = controller.getMap(); map != null; map = controller.getMap()){
+			final boolean closingNotCancelled = close(map);
+			if (!closingNotCancelled) {
+				return false;
+			}
+			
+		}
+		return true;
+	}
+
+	public void closeWithoutSaving(final MapModel map) {
 		fireMapRemoved(map);
 		map.destroy();
-		return true;
 	}
 
 	/**
@@ -636,6 +652,8 @@ public class MapController extends SelectionController implements IExtension{
 	 */
 	public NodeModel getNodeFromID(final String nodeID) {
 		final MapModel map = Controller.getCurrentController().getMap();
+		if(map == null)
+			return null;
 		final NodeModel node = map.getNodeForID(nodeID);
 		return node;
 	}

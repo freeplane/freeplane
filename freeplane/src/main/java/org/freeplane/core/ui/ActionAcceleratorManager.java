@@ -18,7 +18,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -60,6 +59,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private final Properties keysetProps;
 	private final Properties defaultProps;
+	private final Properties overwritttenDefaultProps;
 
 
 	/***********************************************************************************
@@ -67,9 +67,22 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	 **********************************************************************************/
 
  	public ActionAcceleratorManager() {
+ 		overwritttenDefaultProps = new Properties();
+ 		loadDefaultAccelerators("/default_accelerators.properties");
+ 		if(Compat.isMacOsX() )
+ 			loadDefaultAccelerators("/default_accelerators_mac.properties");
  		defaultProps = new Properties();
 		keysetProps = new Properties(defaultProps);
  	}
+
+	private void loadDefaultAccelerators(String resource){
+		try (final InputStream resourceStream = ResourceController.getResourceController().getResourceStream(resource)) {
+			overwritttenDefaultProps.load(resourceStream);
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
+		}
+	}
 
 	public void loadAcceleratorPresets() {
 	    try {
@@ -141,6 +154,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	public void setUserDefinedAccelerator(AFreeplaneAction action) {
 		final String actionKey = action.getKey();
 		final String shortcutKey = getPropertyKey(actionKey);
+		if(overwritttenDefaultProps.containsKey(shortcutKey))
+			defaultProps.setProperty(shortcutKey, overwritttenDefaultProps.getProperty(shortcutKey));
 		String accelerator = getShortcut(shortcutKey);
 		if (accelerator != null){
 			KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
@@ -151,6 +166,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	public void setDefaultAccelerator(final AFreeplaneAction action, String accelerator) {
 		final String shortcutKey = getPropertyKey(action.getKey());
 		if (null == getShortcut(shortcutKey)) {
+			if(overwritttenDefaultProps.containsKey(shortcutKey))
+				accelerator = overwritttenDefaultProps.getProperty(shortcutKey);
 			accelerator = replaceModifiersForMac(accelerator);
 			defaultProps.setProperty(shortcutKey, accelerator);
 			KeyStroke ks = KeyStroke.getKeyStroke(accelerator);

@@ -150,7 +150,8 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	public void fireStateChanged() {
-		for (ChangeListener l : changeListeners) {
+		final ChangeListener[] currentChangeListeners = changeListeners.toArray(new ChangeListener[changeListeners.size()]);
+		for (ChangeListener l : currentChangeListeners) {
 			if (changeEvent == null) {
 				changeEvent = new ChangeEvent(this);
 			}

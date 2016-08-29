@@ -603,6 +603,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final Box verticalBox = Box.createVerticalBox();
 		
 		final JComboBox<String> templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
+		templateComboBox.setSelectedItem(standardTemplatePath);
 		templateComboBox.setAlignmentX(0f);
 		verticalBox.add(templateComboBox);
 		

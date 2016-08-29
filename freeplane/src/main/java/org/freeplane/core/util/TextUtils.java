@@ -91,7 +91,14 @@ public class TextUtils {
 		if (key == null) {
 			return null;
 		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key);
+		return getLanguageResources().getResourceString(key);
+	}
+
+	public static String getOriginalRawText(final String key) {
+		if (key == null) {
+			return null;
+		}
+		return getLanguageResources().getOriginalString(key);
 	}
 
 	public static String getText(final String key, final String defaultString) {
@@ -104,8 +111,11 @@ public class TextUtils {
 		if (key == null) {
 			return defaultString;
 		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key,
-		    defaultString);
+		return getLanguageResources().getResourceString(key, defaultString);
+	}
+
+	private static ResourceBundles getLanguageResources() {
+		return (ResourceBundles) ResourceController.getResourceController().getResources();
 	}
 
 	public static String getOptionalTranslation(String text) {

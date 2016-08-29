@@ -41,6 +41,8 @@ import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
 import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
+import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
+import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -177,43 +179,7 @@ class ActivatorImpl implements BundleActivator {
 		loadPlugins(context);
 		final Controller controller = starter.createController();
 		starter.createModeControllers(controller);
-		try {
-			final ServiceReference[] controllerProviders = context.getServiceReferences(
-			    IControllerExtensionProvider.class.getName(), null);
-			if (controllerProviders != null) {
-				for (int i = 0; i < controllerProviders.length; i++) {
-					final ServiceReference controllerProvider = controllerProviders[i];
-					final IControllerExtensionProvider service = (IControllerExtensionProvider) context
-					    .getService(controllerProvider);
-					service.installExtension(controller);
-					context.ungetService(controllerProvider);
-				}
-			}
-		}
-		catch (final InvalidSyntaxException e) {
-			e.printStackTrace();
-		}
-		try {
-			final Set<String> modes = controller.getModes();
-			for (final String modeName : modes) {
-				final ServiceReference[] modeControllerProviders = context.getServiceReferences(
-				    IModeControllerExtensionProvider.class.getName(), "(mode=" + modeName + ")");
-				if (modeControllerProviders != null) {
-					final ModeController modeController = controller.getModeController(modeName);
-					Controller.getCurrentController().selectModeForBuild(modeController);
-					for (int i = 0; i < modeControllerProviders.length; i++) {
-						final ServiceReference modeControllerProvider = modeControllerProviders[i];
-						final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
-						    .getService(modeControllerProvider);
-						service.installExtension(modeController);
-						context.ungetService(modeControllerProvider);
-					}
-				}
-			}
-		}
-		catch (final InvalidSyntaxException e) {
-			e.printStackTrace();
-		}
+		installControllerExtensions(context, controller);
 		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 			controller.getViewController().invokeLater(new Runnable() {
 				public void run() {
@@ -240,6 +206,63 @@ class ActivatorImpl implements BundleActivator {
 				starter.createFrame(getCallParameters());
 			}
 		});
+	}
+	
+	private static class OsgiExtentionInstaller implements ExtensionInstaller{
+		private final BundleContext context;
+		
+		public OsgiExtentionInstaller(BundleContext context) {
+			super();
+			this.context = context;
+		}
+
+		@Override
+		public void installExtensions(Controller controller) {
+			try {
+				final ServiceReference[] controllerProviders = context.getServiceReferences(
+				    IControllerExtensionProvider.class.getName(), null);
+				if (controllerProviders != null) {
+					for (int i = 0; i < controllerProviders.length; i++) {
+						final ServiceReference controllerProvider = controllerProviders[i];
+						final IControllerExtensionProvider service = (IControllerExtensionProvider) context
+						    .getService(controllerProvider);
+						service.installExtension(controller);
+						context.ungetService(controllerProvider);
+					}
+				}
+			}
+			catch (final InvalidSyntaxException e) {
+				e.printStackTrace();
+			}
+			try {
+				final Set<String> modes = controller.getModes();
+				for (final String modeName : modes) {
+					final ServiceReference[] modeControllerProviders = context.getServiceReferences(
+					    IModeControllerExtensionProvider.class.getName(), "(mode=" + modeName + ")");
+					if (modeControllerProviders != null) {
+						final ModeController modeController = controller.getModeController(modeName);
+						Controller.getCurrentController().selectModeForBuild(modeController);
+						for (int i = 0; i < modeControllerProviders.length; i++) {
+							final ServiceReference modeControllerProvider = modeControllerProviders[i];
+							final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
+							    .getService(modeControllerProvider);
+							service.installExtension(modeController);
+							context.ungetService(modeControllerProvider);
+						}
+					}
+				}
+			}
+			catch (final InvalidSyntaxException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	private void installControllerExtensions(final BundleContext context, final Controller controller) {
+		final ExtensionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context);
+		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
+		osgiExtentionInstaller.installExtensions(controller);
 	}
 
 	public FreeplaneStarter createStarter() {
