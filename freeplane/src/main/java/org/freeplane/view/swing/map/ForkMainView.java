@@ -37,7 +37,7 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getLeftPoint() {
-		int edgeWidth = (int)getZoomedEdgeWidth();
+		int edgeWidth = (int)getZoomedBorderWidth();
 		final Point in = new Point(0, getHeight() - edgeWidth / 2);
 		return in;
 	}
@@ -55,7 +55,7 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getRightPoint() {
-		int edgeWidth = (int)getZoomedEdgeWidth();
+		int edgeWidth = (int)getZoomedBorderWidth();
 		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2);
 		return in;
 	}
@@ -75,13 +75,13 @@ class ForkMainView extends MainView {
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth(), getHeight() - (int)getZoomedEdgeWidth());
+		graphics.fillRect(0, 0, getWidth(), getHeight() - (int)getZoomedBorderWidth());
 	}
 
 	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
-		float edgeWidth  = getZoomedEdgeWidth();
+		float edgeWidth  = getZoomedBorderWidth();
 		g.setStroke(new BasicStroke(edgeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
 		g.setColor(nodeView.getEdgeColor());

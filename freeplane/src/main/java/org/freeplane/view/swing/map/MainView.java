@@ -785,8 +785,12 @@ public abstract class MainView extends ZoomableLabel {
 		return 0;
 	}
 
+	public float getZoomedBorderWidth() {
+	    return getZoomedEdgeWidth();
+	}
+
 	public float getZoomedEdgeWidth() {
-	    final NodeView nodeView = getNodeView();
+		final NodeView nodeView = getNodeView();
 	    final int edgeWidth = nodeView.getEdgeWidth();
 		final EdgeStyle style = nodeView.getEdgeStyle();
 		final float nodeLineWidth = style.getNodeLineWidth(edgeWidth);
@@ -794,7 +798,7 @@ public abstract class MainView extends ZoomableLabel {
 		return Math.max(zoomedLineWidth, 1);
 	}
 
-	public float getUnzoomedEdgeWidth() {
+	public float getUnzoomedBorderWidth() {
 	    final NodeView nodeView = getNodeView();
 	    final int edgeWidth = nodeView.getEdgeWidth();
 		final EdgeStyle style = nodeView.getEdgeStyle();
