@@ -52,7 +52,7 @@ abstract public class ShapedMainView extends MainView {
 		paintDragOver(g);
 		final Color edgeColor = nodeView.getEdgeColor();
 		g.setColor(edgeColor);
-		g.setStroke(new BasicStroke(getZoomedBorderWidth()));
+		g.setStroke(new BasicStroke(getPaintedBorderWidth()));
 		paintNodeShape(g);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paintComponent(g);

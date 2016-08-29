@@ -57,11 +57,11 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	abstract protected double getHorizontalMarginFactor();
 	
 	protected double getMinimumHorizontalInset(){
-		return getShapeConfiguration().getHorizontalMargin().toBaseUnits() * getZoom() + getZoomedBorderWidth() - 1;
+		return getShapeConfiguration().getHorizontalMargin().toBaseUnits() * getZoom() + getPaintedBorderWidth() - 1;
 	}
 
 	protected double getMinimumVerticalInset(){
-		return getShapeConfiguration().getVerticalMargin().toBaseUnits() * getZoom()+ getZoomedBorderWidth() - 1;
+		return getShapeConfiguration().getVerticalMargin().toBaseUnits() * getZoom()+ getPaintedBorderWidth() - 1;
 	}
 
 	protected Dimension getPreferredRectangleSizeWithoutMargin(int maximumWidth) {
@@ -136,7 +136,7 @@ abstract class VariableInsetsMainView extends ShapedMainView {
 	}
 
 	protected Polygon polygonOf(double[] xCoords, double[] yCoords) {
-		int edgeWidthOffset = (int) getZoomedBorderWidth();
+		int edgeWidthOffset = (int) getPaintedBorderWidth();
 		final Polygon polygon = new Polygon(toInt(xCoords, edgeWidthOffset/2, getWidth() - edgeWidthOffset), toInt(yCoords, edgeWidthOffset/2, getHeight() - edgeWidthOffset), xCoords.length);
 		return polygon;
 	}
