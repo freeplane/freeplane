@@ -96,12 +96,12 @@
 						</w:pPr>
 						<w:r>
 							<w:t>
-								<xsl:call-template name="output-node-text-as-text" />
+								<xsl:call-template name="output-node-core" />
 							</w:t>
 						</w:r>
 					</w:p>
-					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
-					<xsl:call-template name="output-note-text-as-bodytext"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
+					<xsl:call-template name="output-added-richcontent"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
+					<xsl:call-template name="output-added-richcontent"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
 					<!--
 						if the level is higher than maxlevel, or if the current node is
 						marked with LastHeading, we start outputting normal paragraphs,
@@ -133,15 +133,16 @@
 			</w:pPr>
 			<w:r>
 				<w:t>
-					<xsl:call-template name="output-node-text-as-text" />
+					<xsl:call-template name="output-node-core" />
 				</w:t>
 			</w:r>
 		</w:p>
-		<xsl:call-template name="output-note-text-as-bodytext" />
+		<xsl:call-template name="output-added-richcontent"><xsl:with-param name="contentType" select="'DETAILS'"/></xsl:call-template>
+		<xsl:call-template name="output-added-richcontent"><xsl:with-param name="contentType" select="'NOTE'"/></xsl:call-template>
 		<xsl:apply-templates select="node" />
 	</xsl:template>
 
-	<xsl:template name="output-node-text-as-text">
+	<xsl:template name="output-node-core">
 		<xsl:choose>
 			<xsl:when test="@TEXT">
 				<xsl:value-of select="normalize-space(@TEXT)" />
@@ -155,8 +156,8 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template name="output-note-text-as-bodytext">
-		<xsl:param name="contentType" select="'DETAILS'"></xsl:param>
+	<xsl:template name="output-added-richcontent">
+		<xsl:param name="contentType"></xsl:param>
 		<xsl:if test="richcontent[@TYPE=$contentType]">
 			<w:p>
 				<w:pPr>
