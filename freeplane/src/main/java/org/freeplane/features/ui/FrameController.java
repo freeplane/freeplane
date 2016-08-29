@@ -80,6 +80,7 @@ import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
@@ -679,6 +680,7 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public boolean quit() {
+		Controller.getCurrentController().selectMode(MModeController.MODENAME);
 		final boolean allMapsClosed = Controller.getCurrentModeController().getMapController().closeAllMaps();
 	    if(allMapsClosed)
 	    	getController().getMapViewManager().onQuitApplication();
