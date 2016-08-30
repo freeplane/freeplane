@@ -45,9 +45,6 @@ public class NodeSizeModel implements IExtension {
 
 	private Quantity<LengthUnits> minNodeWidth = null;
 	private Quantity<LengthUnits> maxTextWidth = null;
-	private Boolean borderWidthMatchesEdgeWidth = null;
-	private Quantity<LengthUnits> borderWidth = null;
-
 	
 	public Quantity<LengthUnits> getMaxNodeWidth() {
     	return maxTextWidth;
@@ -60,26 +57,6 @@ public class NodeSizeModel implements IExtension {
     	return minNodeWidth;
     }
 	
-	public Boolean getBorderWidthMatchesEdgeWidth() {
-		return borderWidthMatchesEdgeWidth;
-	}
-	
-	public static Boolean getBorderWidthMatchesEdgeWidth(final NodeModel node) {
-		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
-		return extension == null ? null : extension.getBorderWidthMatchesEdgeWidth();
-	}
-
-	public static Quantity<LengthUnits> getBorderWidth(final NodeModel node) {
-		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
-		return extension == null ? null : extension.getBorderWidth();
-	}
-
-
-
-	public Quantity<LengthUnits> getBorderWidth() {
-		return borderWidth;
-	}
-
 	public void setMinNodeWidth(Quantity<LengthUnits> quantity) {
 		this.minNodeWidth = quantity;
 	}
@@ -91,14 +68,6 @@ public class NodeSizeModel implements IExtension {
 		createNodeSizeModel(node).setMinNodeWidth(minNodeWidth);
     }
 	
-	public static void setBorderWidthMatchesEdgeWidth(final NodeModel node, final Boolean borderWidthMatchesEdgeWidth) {
-		createNodeSizeModel(node).setBorderWidthMatchesEdgeWidth(borderWidthMatchesEdgeWidth);
-	}
-
-	public static void setBorderWidth(final NodeModel node, final Quantity<LengthUnits> borderWidth) {
-		createNodeSizeModel(node).setBorderWidth(borderWidth);
-	}
-
 	public static Quantity<LengthUnits> getMaxNodeWidth(NodeModel node) {
 		final NodeSizeModel extension = node.getExtension(NodeSizeModel.class);
 		return extension != null ? extension.getMaxNodeWidth() : null;
@@ -108,23 +77,10 @@ public class NodeSizeModel implements IExtension {
 		return extension != null ? extension.getMinNodeWidth() : null;
     }
 
-	public void setBorderWidth(Quantity<LengthUnits> borderWidth) {
-		this.borderWidth = borderWidth;
-		
-	}
-
-	public void setBorderWidthMatchesEdgeWidth(Boolean borderWidthMatchesEdgeWidth) {
-		this.borderWidthMatchesEdgeWidth = borderWidthMatchesEdgeWidth;
-	}
-
 	public void copyTo(NodeSizeModel to) {
 	    if(maxTextWidth != null)
 	    	to.setMaxNodeWidth(maxTextWidth);
 	    if(minNodeWidth != null)
 	    	to.setMinNodeWidth(minNodeWidth);
-	    if(borderWidthMatchesEdgeWidth != null)
-	    	to.setBorderWidthMatchesEdgeWidth(borderWidthMatchesEdgeWidth);
-	    if(borderWidth != null)
-	    	to.setBorderWidth(borderWidth);
     }
 }

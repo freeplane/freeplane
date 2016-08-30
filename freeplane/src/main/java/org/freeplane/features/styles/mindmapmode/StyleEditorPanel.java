@@ -95,6 +95,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
+import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -1100,14 +1101,15 @@ public class StyleEditorPanel extends JPanel {
 				mSetMinNodeWidth.setValue(width != null);
 				mMinNodeWidth.setQuantifiedValue(viewWidth);
 			}
+			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			{
-				final Boolean match = nodeSizeModel != null ? nodeSizeModel.getBorderWidthMatchesEdgeWidth() : null;
+				final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderWidthMatchesEdgeWidth() : null;
 				final Boolean viewMatch = styleController.getBorderWidthMatchesEdgeWidth(node);
 				mSetBorderWidthMatchesEdgeWidth.setValue(match != null);
 				mBorderWidthMatchesEdgeWidth.setValue(viewMatch);
 			}
 			{
-				final Quantity<LengthUnits> width = nodeSizeModel != null ? nodeSizeModel.getBorderWidth() : null;
+				final Quantity<LengthUnits> width = nodeBorderModel != null ? nodeBorderModel.getBorderWidth() : null;
 				final Quantity<LengthUnits> viewWidth = styleController.getBorderWidth(node);
 				mSetBorderWidth.setValue(width != null);
 				mBorderWidth.setQuantifiedValue(viewWidth);

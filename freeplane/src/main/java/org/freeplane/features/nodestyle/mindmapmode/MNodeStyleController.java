@@ -31,6 +31,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -78,14 +79,15 @@ public class MNodeStyleController extends NodeStyleController {
 		}
 
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
-			removeStyleData(key, from, which);
-			removeSizeData(key, from, which);
-		}
-
-		private void removeSizeData(Object key, NodeModel from, NodeModel which) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
+			removeStyleData(key, from, which);
+			removeSizeData(key, from, which);
+			removeBorderData(key, from, which);
+		}
+
+		private void removeSizeData(Object key, NodeModel from, NodeModel which) {
 			final NodeSizeModel whichData = which.getExtension(NodeSizeModel.class);
 			if (whichData == null) {
 				return;
@@ -100,6 +102,17 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichData.getMinNodeWidth()) {
 				fromData.setMinNodeWidth(null);
 			}
+        }
+
+		private void removeBorderData(Object key, NodeModel from, NodeModel which) {
+			final NodeBorderModel whichData = which.getExtension(NodeBorderModel.class);
+			if (whichData == null) {
+				return;
+			}
+			final NodeBorderModel fromData = from.getExtension(NodeBorderModel.class);
+			if (fromData == null) {
+				return;
+			}
 			if (null != whichData.getBorderWidthMatchesEdgeWidth()) {
 				fromData.setBorderWidthMatchesEdgeWidth(null);
 			}
@@ -107,11 +120,8 @@ public class MNodeStyleController extends NodeStyleController {
 				fromData.setBorderWidth(null);
 			}
         }
-
+		
 		private void removeStyleData(Object key, NodeModel from, NodeModel which) {
-			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
-				return;
-			}
 			final NodeStyleModel whichStyle = (NodeStyleModel) which.getExtension(NodeStyleModel.class);
 			if (whichStyle == null) {
 				return;
@@ -222,6 +232,7 @@ public class MNodeStyleController extends NodeStyleController {
 	public void copyStyle(final NodeModel source, final NodeModel target) {
 		copyStyleModel(source, target);
 		copySizeModel(source, target);
+		copyBorderModel(source, target);
 	}
 
 	protected void copyStyleModel(final NodeModel source, final NodeModel target) {
@@ -239,13 +250,20 @@ public class MNodeStyleController extends NodeStyleController {
 			setTextAlign(target, sourceStyleModel.getTextAlign());
 		}
     }
-	protected void copySizeModel(final NodeModel source, final NodeModel target) {
+	
+	private void copySizeModel(final NodeModel source, final NodeModel target) {
 	    final NodeSizeModel sourceSizeModel = NodeSizeModel.getModel(source);
 		if (sourceSizeModel != null) {
 			setMaxNodeWidth(target, sourceSizeModel.getMaxNodeWidth());
 			setMinNodeWidth(target, sourceSizeModel.getMinNodeWidth());
-			setBorderWidthMatchesEdgeWidth(target, sourceSizeModel.getBorderWidthMatchesEdgeWidth());
-			setBorderWidth(target, sourceSizeModel.getBorderWidth());
+		}
+    }
+	
+	private void copyBorderModel(final NodeModel source, final NodeModel target) {
+	    final NodeBorderModel from = NodeBorderModel.getModel(source);
+		if (from != null) {
+			setBorderWidthMatchesEdgeWidth(target, from.getBorderWidthMatchesEdgeWidth());
+			setBorderWidth(target, from.getBorderWidth());
 		}
     }
 
@@ -677,10 +695,10 @@ public class MNodeStyleController extends NodeStyleController {
 
 
 	public void setBorderWidthMatchesEdgeWidth(final NodeModel node, final Boolean borderWidthMatchesEdgeWidth) {
-		final Boolean oldBorderWidthMatchesEdgeWidth = NodeSizeModel.getBorderWidthMatchesEdgeWidth(node);
+		final Boolean oldBorderWidthMatchesEdgeWidth = NodeBorderModel.getBorderWidthMatchesEdgeWidth(node);
 		final IActor actor = new IActor() {
 			public void act() {
-				NodeSizeModel.setBorderWidthMatchesEdgeWidth(node, borderWidthMatchesEdgeWidth);
+				NodeBorderModel.setBorderWidthMatchesEdgeWidth(node, borderWidthMatchesEdgeWidth);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}
@@ -690,7 +708,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			public void undo() {
-				NodeSizeModel.setBorderWidthMatchesEdgeWidth(node, oldBorderWidthMatchesEdgeWidth);
+				NodeBorderModel.setBorderWidthMatchesEdgeWidth(node, oldBorderWidthMatchesEdgeWidth);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}
@@ -700,10 +718,10 @@ public class MNodeStyleController extends NodeStyleController {
 	
 
 	public void setBorderWidth(final NodeModel node, final Quantity<LengthUnits> borderWidth) {
-		final Quantity<LengthUnits> oldBorderWidth = NodeSizeModel.getBorderWidth(node);
+		final Quantity<LengthUnits> oldBorderWidth = NodeBorderModel.getBorderWidth(node);
 		final IActor actor = new IActor() {
 			public void act() {
-				NodeSizeModel.setBorderWidth(node, borderWidth);
+				NodeBorderModel.setBorderWidth(node, borderWidth);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}
@@ -713,7 +731,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			public void undo() {
-				NodeSizeModel.setBorderWidth(node, oldBorderWidth);
+				NodeBorderModel.setBorderWidth(node, oldBorderWidth);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}

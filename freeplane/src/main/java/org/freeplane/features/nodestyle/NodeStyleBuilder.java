@@ -258,7 +258,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler borderWidthMatchesEdgeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeSizeModel.setBorderWidthMatchesEdgeWidth(node, Boolean.valueOf(value));
+				NodeBorderModel.setBorderWidthMatchesEdgeWidth(node, Boolean.valueOf(value));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidthHandler);
@@ -267,7 +267,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler borderWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeSizeModel.setBorderWidth(node, Quantity.fromString(value, LengthUnits.px));
+				NodeBorderModel.setBorderWidth(node, Quantity.fromString(value, LengthUnits.px));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH", borderWidthHandler);
@@ -299,6 +299,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final NodeModel node = (NodeModel) userObject;
 		writeAttributes(writer, node, (NodeStyleModel)null, true);
 		writeAttributes(writer, node, (NodeSizeModel)null, true);
+		writeAttributes(writer, node, (NodeBorderModel)null, true);
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
@@ -314,6 +315,11 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if(extension instanceof NodeSizeModel){
 			final NodeSizeModel size = (NodeSizeModel) extension;
 			writeAttributes(writer, null, size, false);
+			return;
+		}
+		if(extension instanceof NodeBorderModel){
+			final NodeBorderModel border = (NodeBorderModel) extension;
+			writeAttributes(writer, null, border, false);
 			return;
 		}
 
@@ -371,6 +377,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (minTextWidth != null) {
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MIN_WIDTH", minTextWidth);
 		}
+	}
+	
+	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeBorderModel size,
+			final boolean forceFormatting) {
 		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node) : size.getBorderWidthMatchesEdgeWidth();
 		if (borderWidthMatchesEdgeWidth != null) {
 			writer.addAttribute("BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidth.toString());
@@ -380,6 +390,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			writer.addAttribute("BORDER_WIDTH", borderWidth.toString());
 		}
 	}
+	
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (!forceFormatting) {

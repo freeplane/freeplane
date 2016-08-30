@@ -244,11 +244,11 @@ public class NodeStyleController implements IExtension {
 			if (styleNode == null) {
 				continue;
 			}
-			final NodeSizeModel sizeModel = NodeSizeModel.getModel(styleNode);
-			if (sizeModel == null) {
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
 				continue;
 			}
-			final Boolean borderWidthMatchesEdgeWidth = sizeModel.getBorderWidthMatchesEdgeWidth();
+			final Boolean borderWidthMatchesEdgeWidth = borderModel.getBorderWidthMatchesEdgeWidth();
 			if (borderWidthMatchesEdgeWidth == null) {
 				continue;
 			}
@@ -264,11 +264,11 @@ public class NodeStyleController implements IExtension {
 			if (styleNode == null) {
 				continue;
 			}
-			final NodeSizeModel sizeModel = NodeSizeModel.getModel(styleNode);
-			if (sizeModel == null) {
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
 				continue;
 			}
-			final Quantity<LengthUnits> borderWidth = sizeModel.getBorderWidth();
+			final Quantity<LengthUnits> borderWidth = borderModel.getBorderWidth();
 			if (borderWidth == null) {
 				continue;
 			}
