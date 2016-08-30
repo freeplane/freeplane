@@ -94,6 +94,7 @@ public abstract class MainView extends ZoomableLabel {
 	private MouseArea mouseArea = MouseArea.OUT;
 	final static Stroke DEF_STROKE = new BasicStroke();
 	private static final int DRAG_OVAL_WIDTH = 10;
+	private float unzoomedBorderWidth = 1f;
 
 	boolean isShortened() {
     	return isShortened;
@@ -794,13 +795,21 @@ public abstract class MainView extends ZoomableLabel {
 	}
 	
 	public float getPaintedBorderWidth() {
-		final float nodeLineWidth = getUnzoomedEdgeWidth();
-		final float zoomedLineWidth = getNodeView().getMap().getZoom() * nodeLineWidth;
+		final float zoomedLineWidth = getNodeView().getMap().getZoom() * unzoomedBorderWidth;
 		return Math.max(zoomedLineWidth, 1);
 	}
 
 	public float getUnzoomedBorderWidth() {
-	    final float nodeLineWidth = getUnzoomedEdgeWidth();
-		return Math.max(nodeLineWidth, 1);
+		return Math.max(unzoomedBorderWidth, 1);
+	}
+
+	public void updateBorder(NodeView nodeView) {
+		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
+		final NodeModel node = nodeView.getModel();
+		final Boolean borderWidthMatchesEdgeWidth = controller.getBorderWidthMatchesEdgeWidth(node);
+		if(borderWidthMatchesEdgeWidth)
+			unzoomedBorderWidth = getUnzoomedEdgeWidth();
+		else
+			unzoomedBorderWidth = (float) controller.getBorderWidth(node).toBaseUnits();
 	}
 }

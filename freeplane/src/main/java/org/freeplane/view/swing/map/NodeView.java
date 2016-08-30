@@ -1356,6 +1356,7 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.updateTextColor(this);
 		mainView.updateFont(this);
 		mainView.updateTextAlign(this);
+		mainView.updateBorder(this);
         MapView map = getMap();
 		final ModeController modeController = map.getModeController();
         final NodeStyleController nsc = NodeStyleController.getController(modeController);
