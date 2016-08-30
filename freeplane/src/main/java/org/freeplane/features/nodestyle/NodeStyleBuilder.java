@@ -254,6 +254,24 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEXT_ALIGN", textAlignHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEXT_ALIGN", textAlignHandler);
+
+		final IAttributeHandler borderWidthMatchesEdgeWidthHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeSizeModel.setBorderWidthMatchesEdgeWidth(node, Boolean.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidthHandler);
+
+		final IAttributeHandler borderWidthHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeSizeModel.setBorderWidth(node, Quantity.fromString(value, LengthUnits.px));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH", borderWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_WIDTH", borderWidthHandler);
 	}
 
 	/**
@@ -352,6 +370,14 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final Quantity<LengthUnits> minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
 		if (minTextWidth != null) {
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MIN_WIDTH", minTextWidth);
+		}
+		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node) : size.getBorderWidthMatchesEdgeWidth();
+		if (borderWidthMatchesEdgeWidth != null) {
+			writer.addAttribute("BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidth.toString());
+		}
+		final Quantity<LengthUnits> borderWidth = forceFormatting ? nsc.getBorderWidth(node) : size.getBorderWidth();
+		if (borderWidth != null) {
+			writer.addAttribute("BORDER_WIDTH", borderWidth.toString());
 		}
 	}
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {

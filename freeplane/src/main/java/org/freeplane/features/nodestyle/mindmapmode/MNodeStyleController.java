@@ -100,6 +100,12 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichData.getMinNodeWidth()) {
 				fromData.setMinNodeWidth(null);
 			}
+			if (null != whichData.getBorderWidthMatchesEdgeWidth()) {
+				fromData.setBorderWidthMatchesEdgeWidth(null);
+			}
+			if (null != whichData.getBorderWidth()) {
+				fromData.setBorderWidth(null);
+			}
         }
 
 		private void removeStyleData(Object key, NodeModel from, NodeModel which) {
@@ -126,7 +132,7 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getFontSize()) {
 				fromStyle.setFontSize(null);
 			}
-			if (null != whichStyle.getShape()) {
+			if (null != whichStyle.getShapeConfiguration()) {
 				fromStyle.setShapeConfiguration(ShapeConfigurationModel.NULL_SHAPE);
 			}
 			if (null != whichStyle.getColor()) {
@@ -238,6 +244,8 @@ public class MNodeStyleController extends NodeStyleController {
 		if (sourceSizeModel != null) {
 			setMaxNodeWidth(target, sourceSizeModel.getMaxNodeWidth());
 			setMinNodeWidth(target, sourceSizeModel.getMinNodeWidth());
+			setBorderWidthMatchesEdgeWidth(target, sourceSizeModel.getBorderWidthMatchesEdgeWidth());
+			setBorderWidth(target, sourceSizeModel.getBorderWidth());
 		}
     }
 
@@ -654,7 +662,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			public String getDescription() {
-				return "setMaxNodeWidth";
+				return "setTextAlign";
 			}
 
 			public void undo() {
@@ -667,4 +675,51 @@ public class MNodeStyleController extends NodeStyleController {
 		
     }
 
+
+	public void setBorderWidthMatchesEdgeWidth(final NodeModel node, final Boolean borderWidthMatchesEdgeWidth) {
+		final Boolean oldBorderWidthMatchesEdgeWidth = NodeSizeModel.getBorderWidthMatchesEdgeWidth(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				NodeSizeModel.setBorderWidthMatchesEdgeWidth(node, borderWidthMatchesEdgeWidth);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setBorderWidthMatchesEdgeWidth";
+			}
+
+			public void undo() {
+				NodeSizeModel.setBorderWidthMatchesEdgeWidth(node, oldBorderWidthMatchesEdgeWidth);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+    }
+	
+
+	public void setBorderWidth(final NodeModel node, final Quantity<LengthUnits> borderWidth) {
+		final Quantity<LengthUnits> oldBorderWidth = NodeSizeModel.getBorderWidth(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				NodeSizeModel.setBorderWidth(node, borderWidth);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setBorderWidth";
+			}
+
+			public void undo() {
+				NodeSizeModel.setBorderWidth(node, oldBorderWidth);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+		
+    }
+	
 }
