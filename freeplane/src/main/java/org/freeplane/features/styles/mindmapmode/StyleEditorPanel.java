@@ -943,9 +943,7 @@ public class StyleEditorPanel extends JPanel {
 		mBorderWidthMatchesEdgeWidth.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				final boolean borderWidthCanBeSet = ! mBorderWidthMatchesEdgeWidth.getBooleanValue();
-				mSetBorderWidth.setEnabled(borderWidthCanBeSet);
-				mBorderWidth.setEnabled(borderWidthCanBeSet);
+				enableOrDisableBorderWidthControls();
 			}
 		});
 		
@@ -954,9 +952,7 @@ public class StyleEditorPanel extends JPanel {
 		mBorderColorMatchesEdgeColor.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				final boolean borderColorCanBeSet = ! mBorderColorMatchesEdgeColor.getBooleanValue();
-				mSetBorderColor.setEnabled(borderColorCanBeSet);
-				mBorderColor.setEnabled(borderColorCanBeSet);
+				enableOrDisableBorderColorControls();
 			}
 		});
 		
@@ -1178,6 +1174,8 @@ public class StyleEditorPanel extends JPanel {
 				final Quantity<LengthUnits> viewWidth = styleController.getBorderWidth(node);
 				mSetBorderWidth.setValue(width != null);
 				mBorderWidth.setQuantifiedValue(viewWidth);
+				enableOrDisableBorderWidthControls();
+
 			}
 			{
 				final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderColorMatchesEdgeColor() : null;
@@ -1190,6 +1188,7 @@ public class StyleEditorPanel extends JPanel {
 				final Color viewColor = styleController.getBorderColor(node);
 				mSetBorderColor.setValue(color != null);
 				mBorderColor.setColorValue(viewColor);
+				enableOrDisableBorderColorControls();
 			}
 			{
 				final LocationModel locationModel = LocationModel.getModel(node);
@@ -1326,11 +1325,20 @@ public class StyleEditorPanel extends JPanel {
 					return;
 				}
 				if (selection.size() == 1) {
+					setComponentsEnabled(true);
 					setStyle(node);
 				}
 			}
 
+			public void setComponentsEnabled(boolean enabled) {
+				final Container panel = (Container) getComponent(0);
+				for (int i = 0; i < panel.getComponentCount(); i++) {
+					panel.getComponent(i).setEnabled(enabled);
+				}
+			}
+
 			public void onDeselect(final NodeModel node) {
+				setComponentsEnabled(false);
 			}
 		});
 		mapController.addNodeChangeListener(new INodeChangeListener() {
@@ -1360,24 +1368,6 @@ public class StyleEditorPanel extends JPanel {
             }
 			
 		});
-		final IMapViewManager mapViewManager = controller.getMapViewManager();
-		mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
-			public void beforeViewChange(final Component oldView, final Component newView) {
-			}
-
-			public void afterViewCreated(final Component mapView) {
-			}
-
-			public void afterViewClose(final Component oldView) {
-			}
-
-			public void afterViewChange(final Component oldView, final Component newView) {
-				final Container panel = (Container) getComponent(0);
-				for (int i = 0; i < panel.getComponentCount(); i++) {
-					panel.getComponent(i).setEnabled(newView != null);
-				}
-			}
-		});
 	}
 
 	private void enableShapeConfigurationProperties(final boolean enabled, final Shape shape) {
@@ -1385,5 +1375,17 @@ public class StyleEditorPanel extends JPanel {
 		mShapeHorizontalMargin.setEnabled(enableConfigurationProperties);
 		mShapeVerticalMargin.setEnabled(enableConfigurationProperties);
 		mUniformShape.setEnabled(enableConfigurationProperties);
+	}
+
+	public void enableOrDisableBorderWidthControls() {
+		final boolean borderWidthCanBeSet = ! mBorderWidthMatchesEdgeWidth.getBooleanValue();
+		mSetBorderWidth.setEnabled(borderWidthCanBeSet);
+		mBorderWidth.setEnabled(borderWidthCanBeSet);
+	}
+
+	public void enableOrDisableBorderColorControls() {
+		final boolean borderColorCanBeSet = ! mBorderColorMatchesEdgeColor.getBooleanValue();
+		mSetBorderColor.setEnabled(borderColorCanBeSet);
+		mBorderColor.setEnabled(borderColorCanBeSet);
 	}
 }
