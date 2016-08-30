@@ -34,6 +34,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.io.IElementDOMHandler;
@@ -77,32 +79,38 @@ public class OptionPanelBuilder {
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final int childrenCount = data.getChildrenCount();
 			final Vector<String> choices = new Vector<String>(childrenCount);
-			final Vector<String> translations = new Vector<String>(childrenCount);
+			final Vector<Object> displayedItems = new Vector<Object>(childrenCount);
 			for (int i = 0; i < childrenCount; i++) {
 				final XMLElement element = data.getChildAtIndex(i);
 				final String choice = element.getAttribute("value", null);
 				choices.add(choice);
-				final String translationKey = element.getAttribute("text", "OptionPanel." + choice);
-				final String translation = TextUtils.getOptionalText(translationKey);
-				translations.add(translation);
+				final String iconName = element.getAttribute("icon", null);
+				final Object displayedItem;
+				if(iconName != null) {
+					displayedItem = new ImageIcon(ResourceController.getResourceController().getResource("/images/" + iconName));
+				}
+				else {
+					final String translationKey = element.getAttribute("text", "OptionPanel." + choice);
+					displayedItem = TextUtils.getOptionalText(translationKey);
+				}
+				displayedItems.add(displayedItem);
 			}
-			return createComboProperty(name, choices, translations);
+			return createComboProperty(name, choices, displayedItems);
 		}
 	}
-	
 	private class LanguagesComboCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final Set<String> locales = findAvailableLocales();
 			locales.add(ResourceBundles.LANGUAGE_AUTOMATIC);
 			final Vector<String> choices = new Vector<String>(locales.size());
-			final Vector<String> translations = new Vector<String>(locales.size());
+			final Vector<String> displayedItems = new Vector<String>(locales.size());
 			// sort according to current locale
 			final TreeMap<String, String> inverseMap = new TreeMap<String, String>(Collator.getInstance());
 			for (String locale : locales) {
 				final String translation = TextUtils.getOptionalText("OptionPanel." + locale);
 				choices.add(locale);
-				translations.add(translation);
+				displayedItems.add(translation);
 				if (inverseMap.containsKey(translation)) {
 					LogUtils.severe("translation " + translation + " is used for more that one locale, for "
 					        + inverseMap.get(translation) + " and for " + locale + ".");
@@ -112,13 +120,13 @@ public class OptionPanelBuilder {
 			if (inverseMap.size() == choices.size()) {
 				// fix #630: Language not sorted alphabetically
 				choices.clear();
-				translations.clear();
+				displayedItems.clear();
 				for (Entry<String, String> entry : inverseMap.entrySet()) {
 					choices.add(entry.getValue());
-					translations.add(entry.getKey());
+					displayedItems.add(entry.getKey());
 				}
 			}
-			return createComboProperty(name, choices, translations);
+			return createComboProperty(name, choices, displayedItems);
 		}
 
 		private Set<String> findAvailableLocales() {
@@ -424,14 +432,14 @@ public class OptionPanelBuilder {
 	}
 
 	public void addComboProperty(final String path, final String name, final Vector<String> choices,
-	                             final Vector<String> translations, final int position) {
-		final IPropertyControlCreator creator = createComboProperty(name, choices, translations);
+	                             final Vector<String> displayedItems, final int position) {
+		final IPropertyControlCreator creator = createComboProperty(name, choices, displayedItems);
 		addCreator(path, creator, name, position);
 	}
 
 	public void addEditableComboProperty(final String path, final String name, final Vector<String> choices,
-			final Vector<String> translations, final int position) {
-		final IPropertyControlCreator creator = createEditableComboProperty(name, choices, translations);
+			final Vector<String> displayedItems, final int position) {
+		final IPropertyControlCreator creator = createEditableComboProperty(name, choices, displayedItems);
 		addCreator(path, creator, name, position);
 	}
 	public void addCreator(final String path, final IPropertyControlCreator creator, final int position) {
@@ -501,19 +509,19 @@ public class OptionPanelBuilder {
 	}
 
 	private IPropertyControlCreator createComboProperty(final String name, final Vector<String> choices,
-			final Vector<String> translations) {
+			final Vector<?> displayedItems) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
-				return new ComboProperty(name, choices, translations);
+				return new ComboProperty(name, choices, displayedItems);
 			}
 		};
 	}
 
 	private IPropertyControlCreator createEditableComboProperty(final String name, final Vector<String> choices,
-			final Vector<String> translations) {
+			final Vector<String> displayedItems) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
-				final ComboProperty comboProperty = new ComboProperty(name, choices, translations);
+				final ComboProperty comboProperty = new ComboProperty(name, choices, displayedItems);
 				comboProperty.setEditable(true);
 				return comboProperty;
 			}
