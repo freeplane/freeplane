@@ -616,7 +616,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		JOptionPane.showMessageDialog(UITools.getCurrentFrame(), verticalBox, TextUtils.getText("select_template"), JOptionPane.PLAIN_MESSAGE);
 		final String selectedTemplate = (String)templateComboBox.getSelectedItem();
 		if(mDontShowAgainBox.isSelected()) {
-			resourceController.setProperty("skipTemplateSelection", true);
+			resourceController.setProperty("skip_template_selection", true);
 			resourceController.setProperty(STANDARD_TEMPLATE, selectedTemplate);
 		}
 		return templateFile(selectedTemplate);
